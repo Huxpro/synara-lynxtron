@@ -26,6 +26,7 @@ import {
   SETTINGS_EMPTY_STATE_CLASS_NAME,
 } from "~/settingsPanelStyles";
 
+import { getNavigatorPlatform } from "~/platform/env";
 // Stable empty reference while the server config query is still loading.
 const EMPTY_KEYBINDINGS: ResolvedKeybindingsConfig = [];
 
@@ -42,7 +43,7 @@ export function KeyboardShortcutsSettingsPanel() {
   const [query, setQuery] = useState("");
   const serverConfigQuery = useQuery(serverConfigQueryOptions());
   const keybindings = serverConfigQuery.data?.keybindings ?? EMPTY_KEYBINDINGS;
-  const platform = typeof navigator === "undefined" ? "" : navigator.platform;
+  const platform = getNavigatorPlatform();
 
   const sections = buildShortcutSheetSections({
     keybindings,

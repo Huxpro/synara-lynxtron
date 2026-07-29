@@ -2,6 +2,9 @@
 // Purpose: Helpers for reading assistant text selections from the transcript without re-render churn.
 // Layer: Chat transcript interaction helpers
 
+import { getViewportHeight, getViewportWidth, isBrowser } from "~/platform/env";
+
+import { getWindowSelection } from "./chatSelectionDom";
 export interface TranscriptAssistantSelection {
   assistantMessageId: string;
   text: string;
@@ -147,7 +150,7 @@ function getSelectionRect(selection: Selection): DOMRect | null {
 
 // Rect of the active window selection, for positioning floating selection actions.
 export function getActiveSelectionRect(): DOMRect | null {
-  const selection = window.getSelection();
+  const selection = getWindowSelection();
   if (!selection) {
     return null;
   }
@@ -181,7 +184,7 @@ function selectionContainerForNode(node: Node | null): HTMLElement | null {
 export function readTranscriptAssistantSelection(input: {
   container: HTMLElement | null;
 }): { selection: TranscriptAssistantSelection; selectionRect: DOMRect | null } | null {
-  const selection = window.getSelection();
+  const selection = getWindowSelection();
   if (!selection || selection.rangeCount === 0 || selection.isCollapsed) {
     return null;
   }
@@ -222,10 +225,10 @@ export function resolveTranscriptSelectionActionLayout(input: {
 }): TranscriptSelectionActionLayout {
   const viewportWidth =
     input.viewport?.width ??
-    (typeof window === "undefined" ? input.pointer.x + 8 : window.innerWidth);
+    (isBrowser() ? getViewportWidth() : input.pointer.x + 8);
   const viewportHeight =
     input.viewport?.height ??
-    (typeof window === "undefined" ? input.pointer.y + 8 : window.innerHeight);
+    (isBrowser() ? getViewportHeight() : input.pointer.y + 8);
 
   const anchorCenterX =
     input.selectionRect !== null

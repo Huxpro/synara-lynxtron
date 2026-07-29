@@ -11,9 +11,11 @@ import {
   shouldPromptForTerminalClose,
 } from "../../lib/terminalCloseConfirmation";
 import { readNativeApi } from "../../nativeApi";
+import { dialogs } from "../../platform/dialogs";
 import { shouldAutoDeleteTerminalThreadOnLastClose } from "../ChatView.logic";
 import { disposeAndCloseTerminalSession, randomTerminalId } from "../terminal/terminalSession";
 
+import { getDesktopBridge } from "~/platform/desktopBridge";
 type AutoDeleteCandidateThread = Pick<
   Thread,
   "activities" | "latestTurn" | "messages" | "proposedPlans" | "session" | "title"
@@ -226,7 +228,7 @@ export function useChatTerminalController({
   }, [activeProjectPresent, activeThreadId, openFullWidthTerminalInStore, requestTerminalFocus]);
 
   useEffect(() => {
-    const onMenuAction = window.desktopBridge?.onMenuAction;
+    const onMenuAction = getDesktopBridge()?.onMenuAction;
     if (typeof onMenuAction !== "function" || !isFocusedPane) return;
     return onMenuAction((action) => {
       if (action === "new-terminal-tab") createTerminalFromShortcut();
@@ -253,7 +255,7 @@ export function useChatTerminalController({
         thread: activeThread,
       });
       const confirmed = await confirmTerminalTabClose({
-        api,
+        dialogs,
         enabled: shouldPromptForTerminalClose({
           confirmationEnabled: confirmTerminalClose,
           runningTerminalIds: terminalState.runningTerminalIds,

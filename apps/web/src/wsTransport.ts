@@ -41,6 +41,10 @@ import { RpcClient, RpcSerialization } from "effect/unstable/rpc";
 import * as Socket from "effect/unstable/socket/Socket";
 
 import { APP_VERSION } from "./branding";
+import {
+  layerWebSocketConstructorFromPort,
+  resolveDefaultSocketUrl,
+} from "./platform/socket";
 import type { WsTransportState } from "./wsTransportEvents";
 
 type PushListener<C extends WsPushChannel> = (message: WsPushMessage<C>) => void;
@@ -150,14 +154,7 @@ function resolveRpcUrl(rawUrl: string, path: string): string {
 }
 
 function rawSocketUrl(explicitUrl: string | null): string {
-  if (explicitUrl) return explicitUrl;
-  const bridgeUrl = window.desktopBridge?.getWsUrl();
-  const envUrl = import.meta.env.VITE_WS_URL as string | undefined;
-  return bridgeUrl && bridgeUrl.length > 0
-    ? bridgeUrl
-    : envUrl && envUrl.length > 0
-      ? envUrl
-      : `${window.location.protocol === "https:" ? "wss" : "ws"}://${window.location.hostname}:${window.location.port}`;
+  return resolveDefaultSocketUrl(explicitUrl);
 }
 
 function makeSocketUrl(explicitUrl: string | null, path: string): string {
@@ -181,7 +178,7 @@ export function makeFeatureSocketUrl(
 
 function makeProtocolLayer(url: string) {
   const socketLayer = Socket.layerWebSocket(url).pipe(
-    Layer.provide(Socket.layerWebSocketConstructorGlobal),
+    Layer.provide(layerWebSocketConstructorFromPort),
   );
   // JSON keeps the wire format symmetric with any server build: a serialization
   // mismatch on this single multiplexed socket is a hard connect failure, and the
@@ -631,7 +628,7 @@ export class WsTransport {
   private clearStreamCapacityRetryTimer(key: string): void {
     const timeoutId = this.streamCapacityRetryTimers.get(key);
     if (timeoutId === undefined) return;
-    window.clearTimeout(timeoutId);
+    clearTimeout(timeoutId);
     this.streamCapacityRetryTimers.delete(key);
   }
 
@@ -642,7 +639,7 @@ export class WsTransport {
 
   private resetAllStreamCapacityRetries(): void {
     for (const timeoutId of this.streamCapacityRetryTimers.values()) {
-      window.clearTimeout(timeoutId);
+      clearTimeout(timeoutId);
     }
     this.streamCapacityRetryTimers.clear();
     this.streamCapacityRetries.clear();
@@ -663,7 +660,7 @@ export class WsTransport {
   private async openReconnectSession(): Promise<RpcClientInstance> {
     const delayMs = Math.min(500 * 2 ** this.reconnectFailures, 5_000);
     this.reconnectFailures += 1;
-    await new Promise((resolve) => window.setTimeout(resolve, delayMs));
+    await new Promise((resolve) => setTimeout(resolve, delayMs));
     if (this.disposed) {
       throw new Error("Transport disposed");
     }
@@ -793,7 +790,7 @@ export class WsTransport {
           !isTerminalCompatibilityFailure(error)
         ) {
           console.warn("WebSocket RPC channel failed to start", error);
-          window.setTimeout(() => this.startChannelStream(channel), 500);
+          setTimeout(() => this.startChannelStream(channel), 500);
         }
       });
   }
@@ -937,7 +934,7 @@ export class WsTransport {
               const attempt = (this.streamCapacityRetries.get(key) ?? 0) + 1;
               this.streamCapacityRetries.set(key, attempt);
               this.clearStreamCapacityRetryTimer(key);
-              const timeoutId = window.setTimeout(
+              const timeoutId = setTimeout(
                 () => {
                   if (this.streamCapacityRetryTimers.get(key) !== timeoutId) return;
                   this.streamCapacityRetryTimers.delete(key);
@@ -952,7 +949,7 @@ export class WsTransport {
             }
           }
           if (restart && Exit.isFailure(exit) && shouldReconnectAfterStreamFailure(exit.cause)) {
-            window.setTimeout(
+            setTimeout(
               () => {
                 if (!this.disposed && !this.streamCleanups.has(key)) {
                   void this.reconnect()

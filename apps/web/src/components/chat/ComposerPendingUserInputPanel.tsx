@@ -14,6 +14,7 @@ import { cn } from "~/lib/utils";
 import { ComposerChoiceRow } from "./ComposerChoiceRow";
 import { COMPOSER_INPUT_SURFACE_CLASS_NAME } from "./composerPickerStyles";
 
+import { addDocumentEventListener, removeDocumentEventListener } from "~/platform/events";
 interface PendingUserInputPanelProps {
   pendingUserInputs: PendingUserInput[];
   isResponding: boolean;
@@ -92,7 +93,7 @@ function ComposerPendingUserInputCard({
   useEffect(() => {
     return () => {
       if (autoAdvanceTimerRef.current !== null) {
-        window.clearTimeout(autoAdvanceTimerRef.current);
+        clearTimeout(autoAdvanceTimerRef.current);
         autoAdvanceTimerRef.current = null;
       }
     };
@@ -104,9 +105,9 @@ function ComposerPendingUserInputCard({
       return;
     }
     if (autoAdvanceTimerRef.current !== null) {
-      window.clearTimeout(autoAdvanceTimerRef.current);
+      clearTimeout(autoAdvanceTimerRef.current);
     }
-    autoAdvanceTimerRef.current = window.setTimeout(() => {
+    autoAdvanceTimerRef.current = setTimeout(() => {
       autoAdvanceTimerRef.current = null;
       onAdvanceRef.current(nextDraftAnswer ? { [questionId]: nextDraftAnswer } : undefined);
     }, 200);
@@ -140,8 +141,8 @@ function ComposerPendingUserInputCard({
       event.preventDefault();
       handleEffectOptionSelection(activeQuestion.id, option.label);
     };
-    document.addEventListener("keydown", handler);
-    return () => document.removeEventListener("keydown", handler);
+    addDocumentEventListener("keydown", handler);
+    return () => removeDocumentEventListener("keydown", handler);
   }, [activeQuestion, isResponding]);
 
   if (!activeQuestion) {

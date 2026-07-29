@@ -9,6 +9,7 @@
 import { SINGLE_CHAT_PANE_SCOPE_ID } from "./chatPaneScope";
 import { findNearestMeasurableAncestor } from "./domLayout";
 
+import { dispatchWindowEvent } from "~/platform/events";
 // Minimum width (px) the composer's left controls cluster needs before it overflows.
 // Kept intentionally lean: this is only a soft buffer, since canComposerHandlePanelWidth
 // also blocks on real overflow (hasComposerOverflow / overflowsViewport). A smaller value
@@ -20,6 +21,42 @@ const COMPOSER_COMPACT_MIN_LEFT_CONTROLS_WIDTH_PX = 160;
 // BrowserPanel's native webview) can re-sync their bounds. Shared so the event
 // name has a single source of truth across the chat route and BrowserPanel.
 export const PANEL_RESIZE_OVERLAY_SYNC_EVENT = "synara:panel-resize-overlay-sync";
+
+// --- Body cursor/user-select ownership during drag-resize -------------------
+// panelResize is the resize island's DOM boundary: body-level style pokes from
+// split surfaces funnel through these helpers (no direct document.body access).
+
+export interface BodyResizeStyleSnapshot {
+  readonly cursor: string;
+  readonly userSelect: string;
+}
+
+export function captureBodyResizeStyleSnapshot(): BodyResizeStyleSnapshot {
+  if (typeof document === "undefined") return { cursor: "", userSelect: "" };
+  return { cursor: document.body.style.cursor, userSelect: document.body.style.userSelect };
+}
+
+export function applyBodyResizeStyles(cursor: string): void {
+  if (typeof document === "undefined") return;
+  document.body.style.cursor = cursor;
+  document.body.style.userSelect = "none";
+}
+
+export function restoreBodyResizeStyles(snapshot: BodyResizeStyleSnapshot): void {
+  if (typeof document === "undefined") return;
+  document.body.style.cursor = snapshot.cursor;
+  document.body.style.userSelect = snapshot.userSelect;
+}
+
+export function clearBodyResizeStyles(): void {
+  if (typeof document === "undefined") return;
+  document.body.style.removeProperty("cursor");
+  document.body.style.removeProperty("user-select");
+}
+
+export function createResizeGuideElement(): HTMLDivElement | null {
+  return typeof document === "undefined" ? null : document.createElement("div");
+}
 
 // Probe whether the composer can render at `nextWidth` without overflowing its
 // viewport or violating its minimum control width. Applies the width, measures,
@@ -94,11 +131,11 @@ export function createPanelResizeOverlay(): HTMLDivElement {
   overlay.style.cursor = "col-resize";
   overlay.style.background = "transparent";
   document.body.append(overlay);
-  window.dispatchEvent(new Event(PANEL_RESIZE_OVERLAY_SYNC_EVENT));
+  dispatchWindowEvent(new Event(PANEL_RESIZE_OVERLAY_SYNC_EVENT));
   return overlay;
 }
 
 export function removePanelResizeOverlay(overlay: HTMLDivElement): void {
   overlay.remove();
-  window.dispatchEvent(new Event(PANEL_RESIZE_OVERLAY_SYNC_EVENT));
+  dispatchWindowEvent(new Event(PANEL_RESIZE_OVERLAY_SYNC_EVENT));
 }

@@ -4,19 +4,9 @@
 // Exports: downloadBlob, downloadUrlAsBlob
 // Depends on: DOM anchor downloads and Fetch.
 
-export function downloadBlob(blob: Blob, filename: string): void {
-  const url = URL.createObjectURL(blob);
-  try {
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = filename.trim() || "download";
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-  } finally {
-    URL.revokeObjectURL(url);
-  }
-}
+import { downloadBlob } from "~/platform/download";
+
+export { downloadBlob };
 
 const MAX_ERROR_DETAIL_CHARS = 300;
 

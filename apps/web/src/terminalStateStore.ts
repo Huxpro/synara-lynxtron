@@ -36,6 +36,7 @@ import {
   type WorkspaceLayoutPresetId,
 } from "./workspaceTerminalLayoutPresets";
 
+import { webStorage } from "~/platform/storage";
 export interface ThreadTerminalState {
   entryPoint: ThreadPrimarySurface;
   terminalOpen: boolean;
@@ -1296,7 +1297,7 @@ const terminalPersistStorage = createDeferredPersistStorage<
   TerminalStateStoreState,
   Pick<TerminalStateStoreState, "terminalStateByThreadId">
 >({
-  getStorage: () => localStorage,
+  getStorage: () => webStorage,
   partialize: (state) => ({
     terminalStateByThreadId: sanitizePersistedTerminalStateByThreadId(
       state.terminalStateByThreadId,

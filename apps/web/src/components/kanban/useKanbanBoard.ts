@@ -148,7 +148,7 @@ export function useKanbanBoard(): KanbanBoard {
     if (!hasOptimisticDispatches) {
       return;
     }
-    const intervalId = window.setInterval(() => {
+    const intervalId = setInterval(() => {
       const expired = useKanbanUiStore
         .getState()
         .expireOptimisticDispatches(Date.now() - OPTIMISTIC_DISPATCH_TIMEOUT_MS);
@@ -167,7 +167,7 @@ export function useKanbanBoard(): KanbanBoard {
         });
       }
     }, OPTIMISTIC_DISPATCH_EXPIRY_CHECK_MS);
-    return () => window.clearInterval(intervalId);
+    return () => clearInterval(intervalId);
   }, [hasOptimisticDispatches]);
 
   // Project composer drafts down to the few fields the board needs. Empty drafts

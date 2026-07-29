@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { resolveTerminalFontFamilyStack, useAppSettings } from "../appSettings";
 import { getAppTypographyScale } from "../lib/appTypography";
 
+import { getDocumentElement } from "~/platform/env";
 const TERMINAL_FONT_FAMILY_CSS_VARIABLE = "--terminal-font-family";
 
 const TYPOGRAPHY_CSS_VARIABLES = [
@@ -25,7 +26,8 @@ export function useAppTypography() {
 
   useEffect(() => {
     const scale = getAppTypographyScale(settings.chatFontSizePx);
-    const rootStyle = document.documentElement.style;
+    const rootStyle = getDocumentElement()?.style;
+    if (!rootStyle) return;
     const variableValues: Record<(typeof TYPOGRAPHY_CSS_VARIABLES)[number], string> = {
       "--app-font-size-base": `${scale.basePx}px`,
       "--app-font-size-ui": `${scale.uiPx}px`,

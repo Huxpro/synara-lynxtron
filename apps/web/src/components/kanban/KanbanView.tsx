@@ -27,7 +27,7 @@ import { cn, isMacPlatform } from "~/lib/utils";
 // "create new X" family. Matched on event.code so it survives Alt remapping the
 // produced character on some layouts.
 function getNavigatorPlatform(): string {
-  return typeof navigator === "undefined" ? "" : navigator.platform;
+  return getNavigatorPlatform();
 }
 
 const NEW_TASK_SHORTCUT_LABEL = isMacPlatform(getNavigatorPlatform()) ? "⌥⌘T" : "Ctrl+Alt+T";
@@ -55,6 +55,8 @@ import { useKanbanBoard } from "./useKanbanBoard";
 import { useKanbanCardContextMenu } from "./useKanbanCardContextMenu";
 import type { KanbanCard } from "./kanban.logic";
 
+import { getNavigatorPlatform } from "~/platform/env";
+import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
 export default function KanbanView({ projectId }: { projectId: string | null }) {
   const navigate = useNavigate();
   const board = useKanbanBoard();
@@ -120,9 +122,9 @@ export default function KanbanView({ projectId }: { projectId: string | null }) 
       event.preventDefault();
       handleNewTask(projectBoardId);
     }
-    window.addEventListener("keydown", onKeyDown);
+    addWindowEventListener("keydown", onKeyDown);
     return () => {
-      window.removeEventListener("keydown", onKeyDown);
+      removeWindowEventListener("keydown", onKeyDown);
     };
   }, [handleNewTask, newTaskProjectOptions.length, projectBoardId]);
 

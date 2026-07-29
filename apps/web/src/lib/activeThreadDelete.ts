@@ -5,7 +5,7 @@
 
 import type { ThreadId } from "@synara/contracts";
 
-import { terminalRuntimeRegistry } from "../components/terminal/terminalRuntimeRegistry";
+import { terminalRuntimeRegistry } from "~/components/terminal/terminalRuntimeRegistry";
 import { toastManager } from "../components/ui/toast";
 import { readNativeApi } from "../nativeApi";
 import { useStore } from "../store";
@@ -15,6 +15,7 @@ import { formatWorktreePathForDisplay, getOrphanedWorktreePathForThread } from "
 import { reconcileDeletedThreadFromClient } from "./deletedThreadClientReconciliation";
 import { newCommandId } from "./utils";
 
+import { dialogs } from "~/platform/dialogs";
 export async function deleteActiveThreadFromClient<TPrepared = undefined>(input: {
   readonly threadId: ThreadId;
   readonly deletedThreadIds?: ReadonlySet<ThreadId>;
@@ -54,7 +55,7 @@ export async function deleteActiveThreadFromClient<TPrepared = undefined>(input:
     (input.worktreeCleanupMode ?? "prompt") === "prompt" &&
     orphanedWorktreePath !== null &&
     project !== null &&
-    (await api.dialogs.confirm(
+    (await dialogs.confirm(
       [
         "This thread is the only one linked to this worktree:",
         displayWorktreePath ?? orphanedWorktreePath,

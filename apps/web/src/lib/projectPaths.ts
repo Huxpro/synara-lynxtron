@@ -6,6 +6,7 @@ import {
 } from "@synara/shared/path";
 import { isWindowsPlatform } from "./utils";
 
+import { getNavigatorPlatform } from "~/platform/env";
 function isRootPath(value: string): boolean {
   return value === "/" || value === "\\" || /^[a-zA-Z]:[/\\]?$/.test(value);
 }
@@ -102,7 +103,7 @@ function splitAbsolutePath(value: string): {
 
 export function isFilesystemBrowseQuery(
   value: string,
-  platform = typeof navigator === "undefined" ? "" : navigator.platform,
+  platform = getNavigatorPlatform(),
 ): boolean {
   const allowWindowsPaths = isWindowsPlatform(platform);
   return (

@@ -9,10 +9,12 @@
 // - `display: inline` — inline boxes expose no client width/height.
 // Ancestors with a real box are returned even at zero width: a genuinely
 // zero-width viewport is a meaningful measurement, not a wrapper artifact.
+import { getComputedStyleSafe } from "~/platform/env";
+
 export function findNearestMeasurableAncestor(element: HTMLElement): HTMLElement | null {
   let candidate = element.parentElement;
   while (candidate !== null) {
-    const display = window.getComputedStyle(candidate).display;
+    const display = getComputedStyleSafe(candidate)?.display;
     if (display !== "contents" && display !== "inline") {
       return candidate;
     }

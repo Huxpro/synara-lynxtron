@@ -191,7 +191,7 @@ export function orderedActivities(
 
   const ordered = isActivityOrderStable(activities)
     ? activities
-    : activities.toSorted(compareActivitiesByOrder);
+    : [...activities].sort(compareActivitiesByOrder);
   orderedActivitiesCache.set(activities, ordered);
   return ordered;
 }
@@ -1670,7 +1670,7 @@ function areTimelineEntriesOrdered(entries: ReadonlyArray<TimelineEntry>): boole
 }
 
 function sortedTimelineEntries(entries: TimelineEntry[]): TimelineEntry[] {
-  return areTimelineEntriesOrdered(entries) ? entries : entries.toSorted(compareTimelineEntries);
+  return areTimelineEntriesOrdered(entries) ? entries : [...entries].sort(compareTimelineEntries);
 }
 
 function mergeTimelineEntries(

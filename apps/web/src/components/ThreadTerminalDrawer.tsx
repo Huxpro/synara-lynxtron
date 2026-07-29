@@ -49,6 +49,9 @@ import { useTerminalDrawerHeight } from "./terminal/useTerminalDrawerHeight";
 import { TerminalSearch } from "./TerminalSearch";
 import { TerminalScrollToBottom } from "./TerminalScrollToBottom";
 
+import { raf } from "~/platform/frame";
+import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
+import { getWindowSelection } from "./chat/chatSelectionDom";
 function serializeRuntimeEnv(runtimeEnv: Record<string, string> | undefined): string {
   if (!runtimeEnv) return "";
   const entries = Object.entries(runtimeEnv);
@@ -66,7 +69,7 @@ function runtimeEnvFromSerialized(
 }
 
 function getTerminalSelectionRect(mountElement: HTMLElement): DOMRect | null {
-  const selection = window.getSelection();
+  const selection = getWindowSelection();
   if (!selection || selection.rangeCount === 0 || selection.isCollapsed) {
     return null;
   }
@@ -254,7 +257,7 @@ function TerminalViewport({
 
     return () => {
       if (selectionActionTimerRef.current !== null) {
-        window.clearTimeout(selectionActionTimerRef.current);
+        clearTimeout(selectionActionTimerRef.current);
         selectionActionTimerRef.current = null;
       }
       selectionActionOpenRef.current = false;
@@ -306,7 +309,7 @@ function TerminalViewport({
   const clearSelectionAction = useCallback(() => {
     selectionActionRequestIdRef.current += 1;
     if (selectionActionTimerRef.current !== null) {
-      window.clearTimeout(selectionActionTimerRef.current);
+      clearTimeout(selectionActionTimerRef.current);
       selectionActionTimerRef.current = null;
     }
   }, []);
@@ -404,9 +407,9 @@ function TerminalViewport({
       }
       selectionPointerRef.current = { x: event.clientX, y: event.clientY };
       const delay = terminalSelectionActionDelayForClickCount(event.detail);
-      selectionActionTimerRef.current = window.setTimeout(() => {
+      selectionActionTimerRef.current = setTimeout(() => {
         selectionActionTimerRef.current = null;
-        window.requestAnimationFrame(() => {
+        raf(() => {
           void showSelectionAction();
         });
       }, delay);
@@ -417,11 +420,11 @@ function TerminalViewport({
       selectionGestureActiveRef.current = event.button === 0;
     };
 
-    window.addEventListener("mouseup", handleMouseUp);
+    addWindowEventListener("mouseup", handleMouseUp);
     mount.addEventListener("pointerdown", handlePointerDown);
     return () => {
       selectionDisposable.dispose();
-      window.removeEventListener("mouseup", handleMouseUp);
+      removeWindowEventListener("mouseup", handleMouseUp);
       mount.removeEventListener("pointerdown", handlePointerDown);
       clearSelectionAction();
       selectionGestureActiveRef.current = false;

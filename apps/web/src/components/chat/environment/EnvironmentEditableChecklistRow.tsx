@@ -65,7 +65,7 @@ export function EnvironmentEditableChecklistRow({
 
   const clearScheduledJump = () => {
     if (jumpClickTimeoutRef.current !== null) {
-      window.clearTimeout(jumpClickTimeoutRef.current);
+      clearTimeout(jumpClickTimeoutRef.current);
       jumpClickTimeoutRef.current = null;
     }
   };
@@ -123,7 +123,7 @@ export function EnvironmentEditableChecklistRow({
       return;
     }
     clearScheduledJump();
-    jumpClickTimeoutRef.current = window.setTimeout(() => {
+    jumpClickTimeoutRef.current = setTimeout(() => {
       jumpClickTimeoutRef.current = null;
       onJump();
     }, JUMP_CLICK_DELAY_MS);

@@ -9,6 +9,7 @@ import { IconButton } from "~/components/ui/icon-button";
 import { ArrowDownIcon } from "~/lib/icons";
 import { cn } from "~/lib/utils";
 
+import { raf, cancelRaf } from "~/platform/frame";
 interface TerminalScrollToBottomProps {
   terminal: Terminal | null;
 }
@@ -41,7 +42,7 @@ export function TerminalScrollToBottom({ terminal }: TerminalScrollToBottomProps
     if (visibilityRafRef.current !== null) {
       return;
     }
-    visibilityRafRef.current = window.requestAnimationFrame(() => {
+    visibilityRafRef.current = raf(() => {
       visibilityRafRef.current = null;
       checkPosition();
     });
@@ -56,7 +57,7 @@ export function TerminalScrollToBottom({ terminal }: TerminalScrollToBottomProps
     const d2 = terminal.onScroll(scheduleVisibilityCheck);
     return () => {
       if (visibilityRafRef.current !== null) {
-        window.cancelAnimationFrame(visibilityRafRef.current);
+        cancelRaf(visibilityRafRef.current);
         visibilityRafRef.current = null;
       }
       d1.dispose();

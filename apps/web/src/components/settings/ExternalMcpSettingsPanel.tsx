@@ -12,7 +12,7 @@ import { DisclosureRegion } from "~/components/ui/DisclosureRegion";
 import { Input } from "~/components/ui/input";
 import { Switch } from "~/components/ui/switch";
 import { toastManager } from "~/components/ui/toast";
-import { copyTextToClipboard } from "~/hooks/useCopyToClipboard";
+import { copyTextToClipboard } from "~/platform/clipboard";
 import { cn } from "~/lib/utils";
 import { ensureNativeApi } from "~/nativeApi";
 import {
@@ -25,6 +25,7 @@ import {
 } from "./externalMcpSetup";
 import { SettingsListRow, SettingsRow, SettingsSection } from "./SettingsPanelPrimitives";
 
+import { getNavigatorPlatform } from "~/platform/env";
 const INTEGRATIONS_QUERY_KEY = ["server", "externalMcpIntegrations"] as const;
 const PROJECTS_QUERY_KEY = ["orchestration", "externalMcpProjects"] as const;
 const DEFAULT_NAME = "Coding agent";
@@ -73,8 +74,8 @@ export function ExternalMcpSettingsPanel(props: { active: boolean }) {
   useEffect(() => {
     if (!props.active) return;
     setNowMs(Date.now());
-    const timer = window.setInterval(() => setNowMs(Date.now()), 1_000);
-    return () => window.clearInterval(timer);
+    const timer = setInterval(() => setNowMs(Date.now()), 1_000);
+    return () => clearInterval(timer);
   }, [props.active]);
 
   const integrationsQuery = useQuery({
@@ -226,7 +227,7 @@ export function ExternalMcpSettingsPanel(props: { active: boolean }) {
           : pairingExpired
             ? "Pairing code expired"
             : "Waiting for pairing";
-  const platform = typeof navigator === "undefined" ? "" : navigator.platform;
+  const platform = getNavigatorPlatform();
   const setupPrompt = setup
     ? buildExternalMcpSetupPrompt({
         setupCommand: paired ? null : setup.setupCommand,

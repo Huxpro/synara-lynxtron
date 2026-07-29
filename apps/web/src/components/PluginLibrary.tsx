@@ -10,7 +10,7 @@ import {
   type ProviderSkillDescriptor,
 } from "@synara/contracts";
 import { useQuery } from "@tanstack/react-query";
-import React, { useMemo, type ReactNode, useDeferredValue, useState } from "react";
+import React, { useMemo, type ReactNode, useState } from "react";
 import type { IconType } from "react-icons";
 import {
   SiCanva,
@@ -65,6 +65,7 @@ import {
 } from "~/hooks/useDesktopTopBarGutter";
 import { Skeleton } from "./ui/skeleton";
 
+import { useDebouncedValue } from "@tanstack/react-pacer";
 // ── Types ──────────────────────────────────────────────────────────────────
 
 type DiscoveryTab = "plugins" | "skills";
@@ -379,8 +380,8 @@ export function PluginLibrary() {
   const [selectedTab, setSelectedTab] = useState<DiscoveryTab>("plugins");
   const [pluginSearch, setPluginSearch] = useState("");
   const [skillSearch, setSkillSearch] = useState("");
-  const deferredPluginSearch = useDeferredValue(pluginSearch);
-  const deferredSkillSearch = useDeferredValue(skillSearch);
+  const [deferredPluginSearch] = useDebouncedValue(pluginSearch, { wait: 100 });
+  const [deferredSkillSearch] = useDebouncedValue(skillSearch, { wait: 100 });
   const providerThreadId = focusedThreadId;
 
   const serverConfigQuery = useQuery(serverConfigQueryOptions());

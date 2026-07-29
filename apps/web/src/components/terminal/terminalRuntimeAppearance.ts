@@ -4,6 +4,7 @@
 
 import { Terminal, type ITheme } from "@xterm/xterm";
 
+import { isBrowser, getComputedStyleSafe, getDocumentElement } from "~/platform/env";
 const FALLBACK_MONO_FONT_FAMILY =
   '"JetBrains Mono", "JetBrainsMono NFM", "JetBrainsMono NF", monospace';
 const FALLBACK_TERMINAL_FONT_SIZE_PX = 12;
@@ -65,22 +66,22 @@ const LIGHT_TERMINAL_THEME_FALLBACK = {
 let colorNormalizationContext: CanvasRenderingContext2D | null | undefined;
 
 export function getTerminalFontFamily(): string {
-  if (typeof window === "undefined") {
+  if (!isBrowser()) {
     return FALLBACK_MONO_FONT_FAMILY;
   }
 
-  const configuredFontFamily = getComputedStyle(document.documentElement)
+  const configuredFontFamily = getComputedStyleSafe(getDocumentElement()!)
     .getPropertyValue("--terminal-font-family")
     .trim();
   return configuredFontFamily || FALLBACK_MONO_FONT_FAMILY;
 }
 
 export function getTerminalFontSizePx(): number {
-  if (typeof window === "undefined") {
+  if (!isBrowser()) {
     return FALLBACK_TERMINAL_FONT_SIZE_PX;
   }
 
-  const rawValue = getComputedStyle(document.documentElement)
+  const rawValue = getComputedStyleSafe(getDocumentElement()!)
     .getPropertyValue("--app-font-size-terminal")
     .trim();
   const parsedValue = Number.parseFloat(rawValue);
@@ -156,7 +157,7 @@ function resolveTerminalCssColor(
   fallback: string,
   property: "backgroundColor" | "color" = "color",
 ): string {
-  if (typeof window === "undefined" || typeof document === "undefined" || !document.body) {
+  if (!isBrowser() || typeof document === "undefined" || !document.body) {
     return fallback;
   }
 

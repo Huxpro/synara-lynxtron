@@ -54,7 +54,7 @@ export function TerminalSearch({ searchAddon, isOpen, onClose }: TerminalSearchP
   const handleSearch = (direction: "next" | "previous") => {
     if (!searchAddon || !query) return;
     if (searchTimerRef.current !== null) {
-      window.clearTimeout(searchTimerRef.current);
+      clearTimeout(searchTimerRef.current);
       searchTimerRef.current = null;
     }
     const found =
@@ -66,7 +66,7 @@ export function TerminalSearch({ searchAddon, isOpen, onClose }: TerminalSearchP
 
   const clearSearchTimer = () => {
     if (searchTimerRef.current === null) return;
-    window.clearTimeout(searchTimerRef.current);
+    clearTimeout(searchTimerRef.current);
     searchTimerRef.current = null;
   };
 
@@ -78,7 +78,7 @@ export function TerminalSearch({ searchAddon, isOpen, onClose }: TerminalSearchP
       return;
     }
 
-    searchTimerRef.current = window.setTimeout(() => {
+    searchTimerRef.current = setTimeout(() => {
       searchTimerRef.current = null;
       setHasResults(searchAddon.findNext(nextQuery, searchOptions));
     }, SEARCH_DEBOUNCE_MS);
@@ -105,7 +105,7 @@ export function TerminalSearch({ searchAddon, isOpen, onClose }: TerminalSearchP
       // Inline debounce (rather than scheduleSearch) so every state write in
       // this effect happens inside the timer, keeping it compiler-eligible.
       clearSearchTimer();
-      searchTimerRef.current = window.setTimeout(() => {
+      searchTimerRef.current = setTimeout(() => {
         searchTimerRef.current = null;
         setHasResults(searchAddon.findNext(query, searchOptions));
       }, SEARCH_DEBOUNCE_MS);

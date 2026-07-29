@@ -8,6 +8,8 @@
 import type { ProviderKind } from "@synara/contracts";
 import { isPlainObject } from "./persistedRecord";
 
+import { webStorage } from "~/platform/storage";
+import { isBrowser } from "~/platform/env";
 const STORAGE_KEY = "synara:confirmed-custom-binary-paths:v1";
 
 // Mirror of the ProviderKind literal union; the explicit annotation makes the
@@ -29,12 +31,12 @@ function isProviderKind(value: string): value is ProviderKind {
 }
 
 export function loadConfirmedCustomBinaryPaths(): Partial<Record<ProviderKind, string>> {
-  if (typeof window === "undefined") {
+  if (!isBrowser()) {
     return {};
   }
   let raw: string | null = null;
   try {
-    raw = window.localStorage.getItem(STORAGE_KEY);
+    raw = webStorage.getItem(STORAGE_KEY);
   } catch {
     return {};
   }
@@ -66,11 +68,11 @@ export function loadConfirmedCustomBinaryPaths(): Partial<Record<ProviderKind, s
 }
 
 export function saveConfirmedCustomBinaryPaths(paths: Partial<Record<ProviderKind, string>>): void {
-  if (typeof window === "undefined") {
+  if (!isBrowser()) {
     return;
   }
   try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(paths));
+    webStorage.setItem(STORAGE_KEY, JSON.stringify(paths));
   } catch {
     // Best-effort persistence; ignore quota/availability errors.
   }

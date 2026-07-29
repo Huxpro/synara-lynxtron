@@ -6,6 +6,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import { getUserMedia, isGetUserMediaAvailable } from "~/platform/env";
 const TARGET_SAMPLE_RATE = 24_000;
 const BUFFER_SIZE = 4_096;
 
@@ -47,7 +48,7 @@ export function useVoiceRecorder() {
 
   const clearTimer = () => {
     if (timerRef.current !== null) {
-      window.clearInterval(timerRef.current);
+      clearInterval(timerRef.current);
       timerRef.current = null;
     }
   };
@@ -85,7 +86,7 @@ export function useVoiceRecorder() {
     if (runtimeRef.current) {
       throw new Error("Voice recording is already running.");
     }
-    if (!navigator.mediaDevices?.getUserMedia) {
+    if (!isGetUserMediaAvailable()) {
       throw new Error("Microphone recording is unavailable in this browser.");
     }
 
@@ -96,7 +97,7 @@ export function useVoiceRecorder() {
     let silentGainNode: GainNode | null = null;
 
     try {
-      stream = await navigator.mediaDevices.getUserMedia({
+      stream = await getUserMedia({
         audio: {
           channelCount: 1,
           echoCancellation: true,
@@ -169,7 +170,7 @@ export function useVoiceRecorder() {
       setWaveformLevels([]);
       setDurationMs(0);
       setIsRecording(true);
-      timerRef.current = window.setInterval(() => {
+      timerRef.current = setInterval(() => {
         const activeRuntime = runtimeRef.current;
         if (!activeRuntime) {
           return;

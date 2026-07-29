@@ -8,6 +8,7 @@
 
 import { type KeyboardEvent as ReactKeyboardEvent } from "react";
 
+import { getDocumentActiveElement } from "~/platform/env";
 // Tree rows and search-result rows tag themselves with this so the navigator can
 // collect them in DOM (= visual) order without knowing the tree's shape or which
 // directories are currently expanded/loaded.
@@ -70,7 +71,7 @@ function handleExplorerListKeyDown(event: ReactKeyboardEvent<HTMLElement>) {
     return;
   }
 
-  const active = document.activeElement;
+  const active = getDocumentActiveElement();
   let target: HTMLElement | undefined;
   if (isTextEntryElement(active)) {
     // Only ArrowDown enters the list; ArrowUp/Home/End keep editing the query.

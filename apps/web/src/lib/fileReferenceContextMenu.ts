@@ -7,6 +7,7 @@
 import { formatSelectionLabel, type ChatFileReference } from "~/lib/chatReferences";
 import { readNativeApi } from "~/nativeApi";
 
+import { clipboard } from "~/platform/clipboard";
 // Right-click menu shared by explorer rows, changed-file rows, and the file
 // preview. Falls back to a DOM menu outside the desktop app.
 export async function showFileReferenceContextMenu(input: {
@@ -63,6 +64,6 @@ export async function showFileReferenceContextMenu(input: {
     return;
   }
   if (clicked === "copy-path") {
-    void navigator.clipboard?.writeText(input.path);
+    void clipboard.writeText(input.path).catch(() => {});
   }
 }

@@ -139,7 +139,7 @@ export function useThreadRecap(input: UseThreadRecapInput): UseThreadRecapResult
       return;
     }
 
-    const timeoutId = window.setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       const payload = sourcePayloadRef.current;
       const api = readNativeApi();
       if (!api) {
@@ -229,7 +229,7 @@ export function useThreadRecap(input: UseThreadRecapInput): UseThreadRecapResult
         });
     }, idleMs);
 
-    return () => window.clearTimeout(timeoutId);
+    return () => clearTimeout(timeoutId);
   }, [
     cacheEntry?.sourceSignature,
     cacheEntry?.text,

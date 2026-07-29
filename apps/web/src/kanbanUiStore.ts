@@ -9,6 +9,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 
 import type { KanbanOptimisticDispatchSnapshot } from "./components/kanban/kanban.logic";
 
+import { webStorage } from "~/platform/storage";
 interface KanbanUiStoreState {
   /** Manual order of draft-column card ids per project, captured after a drag. */
   draftOrderByProjectId: Record<string, string[]>;
@@ -137,7 +138,7 @@ export const useKanbanUiStore = create<KanbanUiStoreState>()(
     }),
     {
       name: KANBAN_UI_STORAGE_KEY,
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => webStorage),
       partialize: (state) => ({
         draftOrderByProjectId: state.draftOrderByProjectId,
       }),

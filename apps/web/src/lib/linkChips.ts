@@ -7,6 +7,7 @@
 
 import { readNativeApi } from "~/nativeApi";
 
+import { platformWindow } from "~/platform/window";
 const LINK_BODY_SOURCE = String.raw`[^\s<>()\[\]]+`;
 const BARE_DOMAIN_SOURCE = String.raw`(?<![A-Za-z0-9@._/-])(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,63}(?::\d{2,5})?(?:[/?#][^\s<>()\[\]]*)?`;
 const HTTP_URL_PATTERN = /^https?:\/\//i;
@@ -196,9 +197,9 @@ export function openExternalLink(url: string): void {
   const api = readNativeApi();
   if (api) {
     void api.shell.openExternal(href).catch(() => {
-      window.open(href, "_blank", "noopener,noreferrer");
+      platformWindow.openWindow(href);
     });
     return;
   }
-  window.open(href, "_blank", "noopener,noreferrer");
+  platformWindow.openWindow(href);
 }

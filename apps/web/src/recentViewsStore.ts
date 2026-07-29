@@ -14,8 +14,8 @@ import {
   recentViewKey,
   upsertRecentView,
 } from "./recentViews.logic";
-import { createMemoryStorage } from "./lib/storage";
 
+import { webStorage } from "~/platform/storage";
 interface RecentViewsStoreState {
   recentViews: RecentView[];
   recordRecentView: (view: RecentView) => void;
@@ -108,9 +108,7 @@ export const useRecentViewsStore = create<RecentViewsStoreState>()(
     }),
     {
       name: RECENT_VIEWS_STORAGE_KEY,
-      storage: createJSONStorage(() =>
-        typeof localStorage === "undefined" ? createMemoryStorage() : localStorage,
-      ),
+      storage: createJSONStorage(() => webStorage),
       partialize: (state) => ({
         recentViews: normalizeRecentViews(state.recentViews),
       }),

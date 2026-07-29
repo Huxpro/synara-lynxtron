@@ -5,6 +5,7 @@
 
 import { APP_VERSION } from "./branding";
 
+import { getNavigatorPlatform, getViewportWidth, getViewportHeight, getNavigatorUserAgent, getNavigatorLanguage } from "~/platform/env";
 /**
  * `lead` opens the reported summary in the reporter's voice, so the category is
  * readable as a sentence rather than as an enum value.
@@ -124,14 +125,14 @@ export function buildFeedbackSubmission(input: {
   language?: string;
   viewport?: { width: number; height: number };
 }): FeedbackSubmission {
-  const viewport = input.viewport ?? { width: window.innerWidth, height: window.innerHeight };
+  const viewport = input.viewport ?? { width: getViewportWidth(), height: getViewportHeight() };
   const diagnostics: FeedbackDiagnostics = {
     ...input.context,
     appVersion: APP_VERSION,
     submittedAt: (input.now ?? new Date()).toISOString(),
-    userAgent: input.userAgent ?? navigator.userAgent,
-    platform: input.platform ?? navigator.platform,
-    language: input.language ?? navigator.language,
+    userAgent: input.userAgent ?? getNavigatorUserAgent(),
+    platform: input.platform ?? getNavigatorPlatform(),
+    language: input.language ?? getNavigatorLanguage(),
     viewport: `${viewport.width}x${viewport.height}`,
   };
 
@@ -155,7 +156,7 @@ export async function submitFeedback(
   fetchImplementation: typeof fetch = fetch,
 ): Promise<void> {
   const controller = new AbortController();
-  const timeout = window.setTimeout(() => controller.abort(), FEEDBACK_REQUEST_TIMEOUT_MS);
+  const timeout = setTimeout(() => controller.abort(), FEEDBACK_REQUEST_TIMEOUT_MS);
   try {
     const response = await fetchImplementation(feedbackEndpoint(), {
       method: "POST",
@@ -177,6 +178,6 @@ export async function submitFeedback(
     }
     throw error;
   } finally {
-    window.clearTimeout(timeout);
+    clearTimeout(timeout);
   }
 }

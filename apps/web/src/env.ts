@@ -1,8 +1,8 @@
 /**
  * True when running inside the Electron preload bridge, false in a regular browser.
- * The preload script sets window.nativeApi via contextBridge before any web-app
- * code executes, so this is reliable at module load time.
+ * The preload script sets window.desktopBridge via contextBridge before any web-app
+ * code executes, so this is reliable at module load time. (The older
+ * window.nativeApi bridge was removed — see nativeApi.ts.)
  */
 export const isElectron =
-  typeof window !== "undefined" &&
-  (window.desktopBridge !== undefined || window.nativeApi !== undefined);
+  typeof window !== "undefined" && window.desktopBridge !== undefined;

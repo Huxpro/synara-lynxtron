@@ -58,14 +58,16 @@
     "canary:stop": "node scripts/canary.ts stop",
     "canary:status": "node scripts/canary.ts status",
     "canary:rollback": "node scripts/canary.ts rollback",
-    "clean": "rm -rf node_modules apps/*/node_modules packages/*/node_modules scripts/node_modules apps/*/dist apps/*/dist-electron packages/*/dist .turbo apps/*/.turbo packages/*/.turbo"
+    "clean": "rm -rf node_modules apps/*/node_modules packages/*/node_modules scripts/node_modules apps/*/dist apps/*/dist-electron packages/*/dist .turbo apps/*/.turbo packages/*/.turbo",
+    "lynx:css-report": "node scripts/lynx-css-report.ts"
   },
   "devDependencies": {
     "@types/node": "catalog:",
     "oxfmt": "^0.40.0",
     "oxlint": "^1.55.0",
     "turbo": "^2.9.14",
-    "vitest": "catalog:"
+    "vitest": "catalog:",
+    "postcss": "^8.5.19"
   },
   "overrides": {
     "axios": "^1.16.0",

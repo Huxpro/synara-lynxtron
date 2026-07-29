@@ -3,9 +3,13 @@
 // Layer: Browser storage helper
 // Exports: sidebar UI state read/write helpers.
 
-import { normalizeWorkspaceRootForComparison } from "@synara/shared/threadWorkspace";
 import type { LastThreadRoute } from "../chatRouteRestore";
 
+import { webStorage } from "~/platform/storage";
+import { isBrowser } from "~/platform/env";
+import { SIDEBAR_CHAT_SECTION_DEFAULT_EXPANDED } from "./SidebarDefaults.logic";
+import { normalizeSidebarProjectThreadListCwd } from "./SidebarProjectPaging.logic";
+export { normalizeSidebarProjectThreadListCwd } from "./SidebarProjectPaging.logic";
 const SIDEBAR_UI_STATE_STORAGE_KEY = "synara:sidebar-ui:v1";
 
 export type SidebarUiState = {
@@ -17,7 +21,7 @@ export type SidebarUiState = {
 };
 
 const DEFAULT_SIDEBAR_UI_STATE: SidebarUiState = {
-  chatSectionExpanded: false,
+  chatSectionExpanded: SIDEBAR_CHAT_SECTION_DEFAULT_EXPANDED,
   chatThreadListExtraPages: 0,
   projectThreadListExtraPagesByCwd: {},
   dismissedThreadStatusKeyByThreadId: {},
@@ -27,10 +31,6 @@ const DEFAULT_SIDEBAR_UI_STATE: SidebarUiState = {
 // Persisted paging is a request, not a promise: render-time clamping trims it to the real
 // thread count, so the cap here only guards against absurd/corrupted stored values.
 const MAX_PERSISTED_THREAD_LIST_EXTRA_PAGES = 1000;
-
-export function normalizeSidebarProjectThreadListCwd(cwd: string): string {
-  return normalizeWorkspaceRootForComparison(cwd);
-}
 
 function sanitizeThreadListExtraPages(value: unknown): number {
   if (typeof value !== "number" || !Number.isFinite(value)) {
@@ -59,12 +59,12 @@ function sanitizeProjectThreadListExtraPagesByCwd(
 }
 
 export function readSidebarUiState(): SidebarUiState {
-  if (typeof window === "undefined") {
+  if (!isBrowser()) {
     return DEFAULT_SIDEBAR_UI_STATE;
   }
 
   try {
-    const raw = window.localStorage.getItem(SIDEBAR_UI_STATE_STORAGE_KEY);
+    const raw = webStorage.getItem(SIDEBAR_UI_STATE_STORAGE_KEY);
     if (!raw) {
       return DEFAULT_SIDEBAR_UI_STATE;
     }
@@ -135,12 +135,12 @@ export function readSidebarUiState(): SidebarUiState {
 }
 
 export function persistSidebarUiState(input: SidebarUiState): void {
-  if (typeof window === "undefined") {
+  if (!isBrowser()) {
     return;
   }
 
   try {
-    window.localStorage.setItem(
+    webStorage.setItem(
       SIDEBAR_UI_STATE_STORAGE_KEY,
       JSON.stringify({
         chatSectionExpanded: input.chatSectionExpanded,

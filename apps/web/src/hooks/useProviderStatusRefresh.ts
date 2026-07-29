@@ -11,6 +11,8 @@ import { toastManager } from "../components/ui/toast";
 import { readNativeApi } from "../nativeApi";
 import { serverQueryKeys } from "../lib/serverReactQuery";
 
+import { isBrowser, isDocumentVisible, onDocumentVisibilityChange } from "~/platform/env";
+import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
 export type RefreshProviderStatusesOptions = {
   readonly silent?: boolean;
 };
@@ -72,14 +74,14 @@ export function useProviderStatusRefresh(options: ProviderStatusRefreshOptions):
   const refreshOnFocus = options.refreshOnFocus ?? false;
 
   useEffect(() => {
-    if (!enabled || typeof window === "undefined" || typeof document === "undefined") {
+    if (!enabled || !isBrowser()) {
       return;
     }
 
     let disposed = false;
     let lastRefreshAtMs = 0;
     const refreshProviderStatuses = () => {
-      if (document.visibilityState !== "visible") {
+      if (!isDocumentVisible()) {
         return;
       }
       const nowMs = Date.now();
@@ -104,29 +106,31 @@ export function useProviderStatusRefresh(options: ProviderStatusRefreshOptions):
 
     const initialRefreshId =
       typeof initialDelayMs === "number" && initialDelayMs >= 0
-        ? window.setTimeout(refreshProviderStatuses, initialDelayMs)
+        ? setTimeout(refreshProviderStatuses, initialDelayMs)
         : null;
     const refreshIntervalId =
       typeof intervalMs === "number" && intervalMs > 0
-        ? window.setInterval(refreshProviderStatuses, intervalMs)
+        ? setInterval(refreshProviderStatuses, intervalMs)
         : null;
 
     if (refreshOnFocus) {
-      window.addEventListener("focus", refreshProviderStatuses);
-      document.addEventListener("visibilitychange", refreshProviderStatuses);
+      addWindowEventListener("focus", refreshProviderStatuses);
     }
+    const removeVisibilityListener = refreshOnFocus
+      ? onDocumentVisibilityChange(refreshProviderStatuses)
+      : () => {};
 
     return () => {
       disposed = true;
       if (initialRefreshId !== null) {
-        window.clearTimeout(initialRefreshId);
+        clearTimeout(initialRefreshId);
       }
       if (refreshIntervalId !== null) {
-        window.clearInterval(refreshIntervalId);
+        clearInterval(refreshIntervalId);
       }
       if (refreshOnFocus) {
-        window.removeEventListener("focus", refreshProviderStatuses);
-        document.removeEventListener("visibilitychange", refreshProviderStatuses);
+        removeWindowEventListener("focus", refreshProviderStatuses);
+        removeVisibilityListener();
       }
     };
   }, [enabled, initialDelayMs, intervalMs, minIntervalMs, queryClient, refreshOnFocus]);

@@ -21,6 +21,7 @@ import {
   shareIntentUrl,
 } from "./shareCardExport";
 
+import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
 const PREVIEW_WIDTH = 480;
 const CARD_EXPORT_SIZE = { width: SHARE_CARD_WIDTH, height: SHARE_CARD_HEIGHT } as const;
 type CopyResult = "copied" | "render-failed" | "clipboard-unavailable";
@@ -68,8 +69,8 @@ export function ShareDialog({
 
     if (typeof ResizeObserver === "undefined") {
       const handleResize = () => updatePreviewWidth(node.clientWidth || PREVIEW_WIDTH);
-      window.addEventListener("resize", handleResize);
-      return () => window.removeEventListener("resize", handleResize);
+      addWindowEventListener("resize", handleResize);
+      return () => removeWindowEventListener("resize", handleResize);
     }
 
     const observer = new ResizeObserver((entries) => {

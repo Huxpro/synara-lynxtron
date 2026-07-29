@@ -35,7 +35,7 @@ import {
   buildWhyChangedPrompt,
 } from "../lib/chatReferences";
 import { resolveDiffEnvironmentState } from "../lib/threadEnvironment";
-import { disclosureWidthClassName } from "../lib/disclosureMotion";
+import { disclosureWidthClassName } from "~/platform/motion";
 import { useCopyToClipboard } from "../hooks/useCopyToClipboard";
 import { type RepoDiffScope, useRepoDiffScopeStore } from "../repoDiffScopeStore";
 import { useStore } from "../store";
@@ -93,6 +93,7 @@ import { type SplitViewPanePanelState } from "../splitViewStore";
 import { formatShortTimestamp } from "../timestampFormat";
 import type { TurnDiffSummary } from "../types";
 
+import { getWindowSelection } from "~/components/chat/chatSelectionDom";
 const EDITOR_DIFF_OPTIONS_MENU_ICON_CLASS_NAME = "size-3.5 shrink-0 text-muted-foreground";
 
 function EditorDiffOptionsCountBadge(props: { count: number | undefined }) {
@@ -764,21 +765,21 @@ export default function DiffPanel({
     if (!diffOpen || wasOpen) {
       return;
     }
-    const timeoutId = window.setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       setDiffWordWrap(settings.diffWordWrap);
       setDiffViewKind(resolveInitialDiffViewKind(selectedTurnId));
     }, 0);
-    return () => window.clearTimeout(timeoutId);
+    return () => clearTimeout(timeoutId);
   }, [diffOpen, selectedTurnId, settings.diffWordWrap]);
 
   useEffect(() => {
     if (selectedTurnId === null) {
       return;
     }
-    const timeoutId = window.setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       setDiffViewKind((current) => (current === "turn" ? current : "turn"));
     }, 0);
-    return () => window.clearTimeout(timeoutId);
+    return () => clearTimeout(timeoutId);
   }, [selectedTurnId]);
 
   useEffect(() => {
@@ -820,7 +821,7 @@ export default function DiffPanel({
   // The diff body renders inside the @pierre/diffs shadow root, so selection
   // ancestors are resolved through shadow boundaries.
   const readDiffSelection = useCallback((container: HTMLElement) => {
-    const selection = window.getSelection();
+    const selection = getWindowSelection();
     if (!selection || selection.rangeCount === 0 || selection.isCollapsed) {
       return null;
     }

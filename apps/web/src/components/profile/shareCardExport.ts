@@ -8,6 +8,8 @@ import { toBlob } from "html-to-image";
 import { copyPngBlobToDesktopClipboard } from "~/lib/desktopClipboard";
 import { readNativeApi } from "~/nativeApi";
 
+import { clipboard } from "~/platform/clipboard";
+import { platformWindow } from "~/platform/window";
 export { downloadBlob } from "~/lib/browserDownload";
 
 const SHARE_BRAND_HANDLE = "@trySynara";
@@ -41,10 +43,10 @@ export async function copyImageToClipboard(blob: Blob): Promise<boolean> {
   }
 
   try {
-    if (typeof ClipboardItem === "undefined" || !navigator.clipboard?.write) {
+    if (typeof ClipboardItem === "undefined") {
       return false;
     }
-    await navigator.clipboard.write([new ClipboardItem({ [blob.type || "image/png"]: blob })]);
+    await clipboard.writeImageBlob(blob);
     return true;
   } catch {
     return false;
@@ -58,7 +60,7 @@ export function openExternalUrl(url: string): void {
     void api.shell.openExternal(url);
     return;
   }
-  window.open(url, "_blank", "noopener,noreferrer");
+  platformWindow.openWindow(url);
 }
 
 export function shareIntentUrl(target: ShareTarget): string {

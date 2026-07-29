@@ -160,7 +160,7 @@ export function KanbanProjectBoardView({
   const releaseClickSuppression = () => {
     // The trailing click (if any) fires synchronously after dragend; release on the
     // next tick so regular clicks keep working when the drop happens off-card.
-    window.setTimeout(() => {
+    setTimeout(() => {
       suppressClickRef.current = false;
     }, 0);
   };

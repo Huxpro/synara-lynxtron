@@ -34,6 +34,7 @@ import {
 } from "~/workspaceTerminalLayoutPresets";
 import { randomTerminalId } from "./terminal/terminalSession";
 
+import { getDesktopBridge } from "~/platform/desktopBridge";
 export default function WorkspaceView({ workspaceId }: { workspaceId: string }) {
   const desktopTopBarTrafficLightGutterClassName = useDesktopTopBarTrafficLightGutterClassName();
   const desktopTopBarWindowControlsGutterClassName =
@@ -221,7 +222,7 @@ export default function WorkspaceView({ workspaceId }: { workspaceId: string }) 
   };
 
   useEffect(() => {
-    const onMenuAction = window.desktopBridge?.onMenuAction;
+    const onMenuAction = getDesktopBridge()?.onMenuAction;
     if (typeof onMenuAction !== "function") {
       return;
     }

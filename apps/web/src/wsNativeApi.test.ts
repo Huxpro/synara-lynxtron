@@ -80,7 +80,7 @@ vi.mock("./wsTransport", () => {
   };
 });
 
-vi.mock("./contextMenuFallback", () => ({
+vi.mock("~/components/ui/contextMenuFallback", () => ({
   showContextMenuFallback: showContextMenuFallbackMock,
 }));
 

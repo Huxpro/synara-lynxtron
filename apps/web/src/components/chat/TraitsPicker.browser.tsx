@@ -24,6 +24,7 @@ import {
   useEffectiveComposerModelState,
 } from "../../composerDraftStore";
 
+import { webStorage } from "~/platform/storage";
 // ── Claude TraitsPicker tests ─────────────────────────────────────────
 
 const CLAUDE_THREAD_ID = ThreadId.makeUnsafe("thread-claude-traits");
@@ -394,7 +395,7 @@ async function mountCodexPicker(props: { model?: string; options?: CodexModelOpt
 describe("TraitsPicker (Codex)", () => {
   afterEach(() => {
     document.body.innerHTML = "";
-    localStorage.removeItem(COMPOSER_DRAFT_STORAGE_KEY);
+    webStorage.removeItem(COMPOSER_DRAFT_STORAGE_KEY);
     useComposerDraftStore.setState({
       draftsByThreadId: {},
       draftThreadsByThreadId: {},
@@ -739,7 +740,7 @@ async function mountOpenCodePicker(props?: {
 describe("TraitsPicker (OpenCode)", () => {
   afterEach(() => {
     document.body.innerHTML = "";
-    localStorage.removeItem(COMPOSER_DRAFT_STORAGE_KEY);
+    webStorage.removeItem(COMPOSER_DRAFT_STORAGE_KEY);
     useComposerDraftStore.setState({
       draftsByThreadId: {},
       draftThreadsByThreadId: {},

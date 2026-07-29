@@ -60,16 +60,16 @@ export function useThreadNotesAutosave({
   // Manual memoization kept: this file does not compile under React Compiler (see compile-report).
   const scheduleFlush = useCallback((delayMs: number) => {
     if (debounceRef.current !== null) {
-      window.clearTimeout(debounceRef.current);
+      clearTimeout(debounceRef.current);
     }
-    debounceRef.current = window.setTimeout(() => {
+    debounceRef.current = setTimeout(() => {
       void flushRef.current().catch(() => undefined);
     }, delayMs);
   }, []);
 
   const flush = useCallback((): Promise<void> => {
     if (debounceRef.current !== null) {
-      window.clearTimeout(debounceRef.current);
+      clearTimeout(debounceRef.current);
       debounceRef.current = null;
     }
     if (saveInFlightRef.current) {

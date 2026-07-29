@@ -27,6 +27,7 @@ import {
   DialogTitle,
 } from "./ui/dialog";
 
+import { getDesktopBridge } from "~/platform/desktopBridge";
 const APP_SNAP_WELCOME_STORAGE_KEY = "synara:appsnap-welcome:v1";
 
 const AppSnapWelcomeStorageSchema = Schema.Struct({
@@ -51,7 +52,7 @@ export function AppSnapWelcomeDialog() {
       return;
     }
 
-    const bridge = window.desktopBridge?.appSnap;
+    const bridge = getDesktopBridge()?.appSnap;
     if (!bridge) return;
 
     let disposed = false;

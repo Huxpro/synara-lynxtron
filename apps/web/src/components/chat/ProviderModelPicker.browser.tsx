@@ -6,6 +6,7 @@ import { render } from "vitest-browser-react";
 import { ProviderModelPicker } from "./ProviderModelPicker";
 import type { ProviderModelOption } from "../../providerModelOptions";
 
+import { webStorage } from "~/platform/storage";
 const MODEL_OPTIONS_BY_PROVIDER = {
   claudeAgent: [
     { slug: "claude-opus-4-6", name: "Claude Opus 4.6" },
@@ -172,7 +173,7 @@ async function mountPicker(props: {
 describe("ProviderModelPicker", () => {
   afterEach(() => {
     document.body.innerHTML = "";
-    localStorage.clear();
+    webStorage.clear();
   });
 
   it("shows provider submenus when provider switching is allowed", async () => {

@@ -5,7 +5,6 @@ import type { ReactNode } from "react";
 
 import type { ProviderKind } from "@synara/contracts";
 import { basenameOfPath } from "../file-icons";
-import type { ThemeMode, ThemeVariant } from "../theme/theme.logic";
 
 export interface SidebarSearchAction {
   id: string;
@@ -30,9 +29,9 @@ export interface SidebarSearchTheme {
   label: string;
   description: string;
   keywords?: readonly string[];
-  mode?: ThemeMode;
+  mode?: "light" | "dark" | "system";
   codeThemeId?: string;
-  variant?: ThemeVariant;
+  variant?: "light" | "dark";
   isActive: boolean;
 }
 
@@ -77,11 +76,11 @@ export interface SidebarSearchThreadMatch {
 }
 
 function normalizeText(value: string): string {
-  return value.trim().replaceAll(/\s+/g, " ").toLowerCase();
+  return value.trim().replace(/\s+/g, " ").toLowerCase();
 }
 
 function normalizeDisplayText(value: string): string {
-  return value.trim().replaceAll(/\s+/g, " ");
+  return value.trim().replace(/\s+/g, " ");
 }
 
 function tokenizeQuery(value: string): string[] {
@@ -260,7 +259,7 @@ export function matchSidebarSearchActions(
       score: scoreAction(action, normalizedQuery),
     }))
     .filter((candidate) => candidate.score !== null)
-    .toSorted((left, right) => {
+    .sort((left, right) => {
       if (left.score !== right.score) return (right.score ?? 0) - (left.score ?? 0);
       return left.index - right.index;
     })
@@ -283,7 +282,7 @@ export function matchSidebarSearchThemes(
       score: scoreTheme(theme, normalizedQuery),
     }))
     .filter((candidate) => candidate.score !== null)
-    .toSorted((left, right) => {
+    .sort((left, right) => {
       if (left.score !== right.score) return (right.score ?? 0) - (left.score ?? 0);
       if (left.theme.isActive !== right.theme.isActive) {
         return left.theme.isActive ? -1 : 1;
@@ -309,7 +308,7 @@ export function matchSidebarSearchProjects(
       recency: Date.parse(project.updatedAt ?? project.createdAt ?? "") || 0,
     }))
     .filter((candidate) => candidate.score !== null)
-    .toSorted((left, right) => {
+    .sort((left, right) => {
       if (left.score !== right.score) return (right.score ?? 0) - (left.score ?? 0);
       if (left.recency !== right.recency) return right.recency - left.recency;
       return left.project.name.localeCompare(right.project.name);
@@ -336,7 +335,7 @@ export function matchSidebarSearchThreads(
         messageMatchCount: 0,
         recency: Date.parse(thread.updatedAt ?? thread.createdAt) || 0,
       }))
-      .toSorted((left, right) => right.recency - left.recency)
+      .sort((left, right) => right.recency - left.recency)
       .slice(0, 3)
       .map(({ id, matchKind, messageMatchCount, snippet, thread }) => ({
         id,
@@ -401,7 +400,7 @@ export function matchSidebarSearchThreads(
       };
     })
     .filter((candidate) => candidate.score !== null)
-    .toSorted((left, right) => {
+    .sort((left, right) => {
       if (left.score !== right.score) return (right.score ?? 0) - (left.score ?? 0);
       if (left.recency !== right.recency) return right.recency - left.recency;
       if (left.titleLength !== right.titleLength) return left.titleLength - right.titleLength;

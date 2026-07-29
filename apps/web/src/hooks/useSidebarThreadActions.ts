@@ -11,12 +11,14 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import type { AppSettings } from "../appSettings";
 import { useComposerDraftStore } from "../composerDraftStore";
-import { showConfirmDialogFallback } from "../confirmDialogFallback";
+import { showConfirmDialogFallback } from "~/components/ui/confirmDialogFallback";
 import {
   getFallbackThreadIdAfterDelete,
+} from "../components/Sidebar.logic";
+import {
   derivePinnedThreadIdsForSidebar,
   isLatestPinnedThreadMutation,
-} from "../components/Sidebar.logic";
+} from "../components/SidebarThreadPinning.logic";
 import { toastManager } from "../components/ui/toast";
 import { deleteActiveThreadFromClient } from "../lib/activeThreadDelete";
 import { reconcileDeletedThreadsFromClient } from "../lib/deletedThreadClientReconciliation";
@@ -43,6 +45,7 @@ import { getThreadFromState } from "../threadDerivation";
 import { useThreadSelectionStore } from "../threadSelectionStore";
 import type { Project, SidebarThreadSummary } from "../types";
 
+import { dialogs } from "~/platform/dialogs";
 const ARCHIVE_UNDO_TOAST_DURATION_MS = 8000;
 
 interface DeleteProjectThreadsOptions {
@@ -213,7 +216,7 @@ export function useSidebarThreadActions(input: {
     const serverPinnedStateByThreadId = new Map(
       sidebarThreads.map((thread) => [thread.id, thread.isPinned === true] as const),
     );
-    const settle = window.setTimeout(() => {
+    const settle = setTimeout(() => {
       setOptimisticPinnedStateByThreadId((current) => {
         const reconciled = reconcileOptimisticPinState({
           optimisticPinnedStateById: current,
@@ -225,7 +228,7 @@ export function useSidebarThreadActions(input: {
         return reconciled.optimisticPinnedStateById;
       });
     }, 0);
-    return () => window.clearTimeout(settle);
+    return () => clearTimeout(settle);
   }, [sidebarThreads, optimisticPinnedStateByThreadId]);
 
   useEffect(() => {
@@ -361,7 +364,7 @@ export function useSidebarThreadActions(input: {
           "This permanently clears conversation history for this thread.",
         ].join("\n");
         const confirmed = api
-          ? await api.dialogs.confirm(confirmationMessage)
+          ? await dialogs.confirm(confirmationMessage)
           : await showConfirmDialogFallback(confirmationMessage);
         if (!confirmed) return;
       }
@@ -518,7 +521,7 @@ export function useSidebarThreadActions(input: {
           "Archived threads are hidden from the sidebar but can be restored later.",
         ].join("\n");
         const confirmed = api
-          ? await api.dialogs.confirm(confirmationMessage)
+          ? await dialogs.confirm(confirmationMessage)
           : await showConfirmDialogFallback(confirmationMessage);
         if (!confirmed) return;
       }
@@ -567,7 +570,7 @@ export function useSidebarThreadActions(input: {
         );
       }
       const confirmed = api
-        ? await api.dialogs.confirm(archiveLines.join("\n"))
+        ? await dialogs.confirm(archiveLines.join("\n"))
         : await showConfirmDialogFallback(archiveLines.join("\n"));
       if (!confirmed) return;
 
@@ -642,7 +645,7 @@ export function useSidebarThreadActions(input: {
             ].join("\n")
           : options.confirmMessage;
       if (confirmationMessage !== null) {
-        const confirmed = await api.dialogs.confirm(confirmationMessage);
+        const confirmed = await dialogs.confirm(confirmationMessage);
         if (!confirmed) return null;
       }
 

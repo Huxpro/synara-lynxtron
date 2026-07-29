@@ -8,7 +8,7 @@
 
 import { type ReactNode } from "react";
 
-import { cn } from "~/lib/utils";
+import { PanelStateMessageElement } from "~/components/chat/PanelStateMessageElements";
 
 // `comfortable` matches the larger pane placeholders (text-sm, p-6); `compact`
 // matches dense in-panel hints (text-xs, dimmer). `fill` chooses between filling
@@ -22,17 +22,12 @@ export function PanelStateMessage(props: {
   const density = props.density ?? "comfortable";
   const fill = props.fill ?? "full";
   return (
-    <div
-      className={cn(
-        "flex w-full items-center justify-center text-center",
-        fill === "full" ? "h-full min-h-0" : "flex-1",
-        density === "comfortable"
-          ? "p-6 text-sm text-muted-foreground"
-          : "px-5 text-xs text-muted-foreground/70",
-        props.className,
-      )}
+    <PanelStateMessageElement
+      density={density}
+      fill={fill}
+      className={props.className}
     >
       {props.children}
-    </div>
+    </PanelStateMessageElement>
   );
 }

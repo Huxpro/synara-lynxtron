@@ -6,7 +6,7 @@
 import { type ModelSlug, type ProviderKind, type ServerProviderStatus } from "@synara/contracts";
 import { resolveSelectableModel } from "@synara/shared/model";
 import * as Schema from "effect/Schema";
-import { useDeferredValue, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { type ProviderPickerKind, PROVIDER_OPTIONS } from "../../session-logic";
 import { formatProviderModelOptionName } from "../../providerModelOptions";
 import { compareProvidersByOrder } from "../../providerOrdering";
@@ -46,6 +46,7 @@ import {
 } from "../../lib/modelFavorites";
 import { Skeleton } from "../ui/skeleton";
 
+import { useDebouncedValue } from "@tanstack/react-pacer";
 function isAvailableProviderOption(option: (typeof PROVIDER_OPTIONS)[number]): option is {
   value: ProviderKind;
   label: string;
@@ -212,7 +213,7 @@ export const ProviderModelMenuItems = function ProviderModelMenuItems(
     EMPTY_FAVORITE_MODEL_SLUGS,
     FavoriteModelSlugs,
   );
-  const deferredModelSearchQuery = useDeferredValue(modelSearchQuery);
+  const [deferredModelSearchQuery] = useDebouncedValue(modelSearchQuery, { wait: 100 });
   const activeProvider = props.lockedProvider ?? props.provider;
   const hiddenProviders = props.hiddenProviders;
   const providerOrder = props.providerOrder;
@@ -500,10 +501,10 @@ export const ProviderModelPicker = function ProviderModelPicker(props: ProviderM
   };
   const scheduleSelectionCommitted = () => {
     if (selectionCommitTimerRef.current !== null) {
-      window.clearTimeout(selectionCommitTimerRef.current);
+      clearTimeout(selectionCommitTimerRef.current);
     }
     // Base UI restores focus to the trigger while closing; refocus callers after that tick.
-    selectionCommitTimerRef.current = window.setTimeout(() => {
+    selectionCommitTimerRef.current = setTimeout(() => {
       selectionCommitTimerRef.current = null;
       onSelectionCommitted?.();
     }, 0);
@@ -511,7 +512,7 @@ export const ProviderModelPicker = function ProviderModelPicker(props: ProviderM
   useEffect(
     () => () => {
       if (selectionCommitTimerRef.current !== null) {
-        window.clearTimeout(selectionCommitTimerRef.current);
+        clearTimeout(selectionCommitTimerRef.current);
       }
     },
     [],

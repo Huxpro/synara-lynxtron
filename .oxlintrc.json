@@ -18,6 +18,57 @@
   "rules": {
     "react-in-jsx-scope": "off",
     "eslint/no-shadow": "off",
-    "eslint/no-await-in-loop": "off"
-  }
+    "eslint/no-await-in-loop": "off",
+    "no-restricted-globals": [
+      "error",
+      "window",
+      "document",
+      "navigator",
+      "localStorage",
+      "sessionStorage"
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/*.test.*",
+        "**/*.browser.*",
+        "apps/web/src/test/**",
+        "**/__tests__/**"
+      ],
+      "rules": {
+        "no-restricted-globals": "off"
+      }
+    },
+    {
+      "files": [
+        "apps/web/src/platform/**",
+        "apps/web/src/components/ui/**",
+        "apps/web/src/wsNativeApi.ts",
+        "apps/web/src/nativeApi.ts",
+        "apps/web/src/env.ts",
+        "apps/web/src/storageOriginMigration.ts",
+        "apps/web/src/composerDraftStore.ts",
+        "apps/web/src/main.tsx",
+        "apps/web/src/pairingBootstrap.ts",
+        "apps/web/src/authSignedOut.ts",
+        "apps/web/src/components/terminal/**",
+        "apps/web/src/components/BrowserPanel.tsx",
+        "apps/web/src/components/composer-nodes/**",
+        "apps/web/src/components/ComposerPromptEditor.tsx",
+        "apps/web/src/components/chat/MentionChipIcon.tsx",
+        "apps/web/src/components/chat/chatSelectionDom.ts",
+        "apps/web/src/components/chat/chatHeaderControls.tsx",
+        "apps/web/src/components/sidebarHoverCardAnchors.ts",
+        "apps/web/src/components/ChatView.tsx",
+        "apps/web/src/components/profile/**",
+        "apps/web/src/lib/pdf/**",
+        "apps/web/src/lib/central-icons.tsx",
+        "apps/web/src/lib/panelResize.ts"
+      ],
+      "rules": {
+        "no-restricted-globals": "off"
+      }
+    }
+  ]
 }

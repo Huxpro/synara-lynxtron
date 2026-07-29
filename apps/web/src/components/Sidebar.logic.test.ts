@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   buildProjectThreadTree,
+  collectVisibleSidebarThreadIds,
   createSidebarThreadHoverAnchorId,
   derivePinnedProjectIdsForSidebar,
   derivePinnedThreadIdsForSidebar,
@@ -1364,6 +1365,21 @@ describe("getVisibleSidebarThreadIds", () => {
       ThreadId.makeUnsafe("thread-child"),
       ThreadId.makeUnsafe("thread-other"),
     ]);
+  });
+});
+
+describe("collectVisibleSidebarThreadIds", () => {
+  it("preserves section order while removing duplicate rows", () => {
+    expect(
+      collectVisibleSidebarThreadIds({
+        pinnedThreadIds: ["pinned", "shared"],
+        projectVisibleThreadIds: [
+          ["project-a", "shared"],
+          ["project-b"],
+        ],
+        trailingThreadIds: ["chat", "project-a"],
+      }),
+    ).toEqual(["pinned", "shared", "project-a", "project-b", "chat"]);
   });
 });
 

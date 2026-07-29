@@ -9,6 +9,7 @@ import {
   resolveAppNavigationState,
 } from "../appNavigation";
 import ShortcutsDialog from "../components/ShortcutsDialog";
+import { AppShellFrame } from "../components/AppShellFrame";
 import { RecentViewSwitcher } from "../components/RecentViewSwitcher";
 import { shouldRenderTerminalWorkspace } from "../components/ChatView.logic";
 import ThreadSidebar from "../components/Sidebar";
@@ -52,6 +53,9 @@ import {
 import type { SidebarResizableOptions } from "~/components/ui/sidebar";
 import { cn } from "~/lib/utils";
 
+import { getNavigatorPlatform } from "~/platform/env";
+import { getDesktopBridge } from "~/platform/desktopBridge";
+import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
 const EMPTY_KEYBINDINGS: ResolvedKeybindingsConfig = [];
 const THREAD_SIDEBAR_WIDTH_STORAGE_KEY = "chat_thread_sidebar_width";
 const THREAD_SIDEBAR_MIN_WIDTH = 13 * 16;
@@ -242,7 +246,7 @@ function ChatRouteGlobalShortcuts() {
   useTemporaryThreadLifecycle(activeContextThreadId);
   const serverConfigQuery = useQuery(serverConfigQueryOptions());
   const keybindings = serverConfigQuery.data?.keybindings ?? EMPTY_KEYBINDINGS;
-  const platform = typeof navigator === "undefined" ? "" : navigator.platform;
+  const platform = getNavigatorPlatform();
   const providerStatuses = useProviderStatusesForLocalConfig();
   const refreshProviderStatuses = useRefreshProviderStatusesNow();
   const activeThreadTerminalState = activeContextThreadId
@@ -477,9 +481,9 @@ function ChatRouteGlobalShortcuts() {
       );
     };
 
-    window.addEventListener("keydown", onWindowKeyDown, { capture: true });
+    addWindowEventListener("keydown", onWindowKeyDown, { capture: true });
     return () => {
-      window.removeEventListener("keydown", onWindowKeyDown, { capture: true });
+      removeWindowEventListener("keydown", onWindowKeyDown, { capture: true });
     };
   }, [
     activeDraftThread,
@@ -504,7 +508,7 @@ function ChatRouteGlobalShortcuts() {
   ]);
 
   useEffect(() => {
-    const onMenuAction = window.desktopBridge?.onMenuAction;
+    const onMenuAction = getDesktopBridge()?.onMenuAction;
     if (typeof onMenuAction !== "function") {
       return;
     }
@@ -607,8 +611,7 @@ function ChatRouteLayout() {
     >
       <ThreadRetentionMaintenanceToast />
       <ChatRouteGlobalShortcuts />
-      {sidebarElement}
-      {mainContentShell}
+      <AppShellFrame sidebar={sidebarElement}>{mainContentShell}</AppShellFrame>
     </SidebarProvider>
   );
 }

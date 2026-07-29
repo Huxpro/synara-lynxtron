@@ -5,6 +5,7 @@
 import type { ProviderKind } from "@synara/contracts";
 import { Schema } from "effect";
 
+import { webStorage } from "~/platform/storage";
 export const FAVORITE_MODEL_STORAGE_KEYS = {
   cursor: "synara:cursor-favourite-models:v1",
   kilo: "synara:kilo-favourite-models:v1",
@@ -28,7 +29,7 @@ export function readFavoriteModelSlugs(provider: ProviderKind): string[] {
     return [];
   }
   try {
-    const raw = globalThis.localStorage.getItem(FAVORITE_MODEL_STORAGE_KEYS[provider]);
+    const raw = webStorage.getItem(FAVORITE_MODEL_STORAGE_KEYS[provider]);
     if (!raw) return [];
     const parsed: unknown = JSON.parse(raw);
     const decoded = Schema.decodeUnknownSync(FavoriteModelSlugsSchema)(parsed);

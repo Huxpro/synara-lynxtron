@@ -12,6 +12,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { isPlainObject, sanitizeStringKeyedRecord } from "./persistedRecord";
 
+import { webStorage } from "~/platform/storage";
 export interface WorkflowRunUiThreadState {
   pausedByUser: readonly string[];
   dismissed: readonly string[];
@@ -158,7 +159,7 @@ export const useWorkflowRunUiStore = create<WorkflowRunUiStoreState>()(
     }),
     {
       name: WORKFLOW_RUN_UI_STORAGE_KEY,
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => webStorage),
       merge: (persisted, current) => ({
         ...current,
         stateByThreadId: sanitizeWorkflowRunUiStateByThreadId(

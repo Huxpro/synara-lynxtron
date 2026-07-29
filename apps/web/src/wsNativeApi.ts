@@ -45,8 +45,8 @@ import {
 } from "@synara/contracts";
 import { VOICE_TRANSCRIPTION_UPLOAD_ROUTE_PATH } from "@synara/shared/binaryTransfer";
 
-import { showConfirmDialogFallback } from "./confirmDialogFallback";
-import { showContextMenuFallback } from "./contextMenuFallback";
+import { showConfirmDialogFallback } from "~/components/ui/confirmDialogFallback";
+import { showContextMenuFallback } from "~/components/ui/contextMenuFallback";
 import { requireHttpExternalUrl } from "./lib/externalUrl";
 import { WsTransport } from "./wsTransport";
 import { emitWsCompatibilityIssue, emitWsTransportState } from "./wsTransportEvents";

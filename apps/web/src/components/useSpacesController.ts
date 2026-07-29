@@ -30,6 +30,7 @@ import type { SpaceEditorValue } from "./SpaceEditorDialog";
 import { useRouteSpaceSync } from "./useRouteSpaceSync";
 import { toastManager } from "./ui/toast";
 
+import { dialogs } from "~/platform/dialogs";
 type SpaceEditorState =
   | { mode: "create"; projectIdAfterCreate: ProjectId | null }
   | { mode: "edit"; spaceId: SpaceId };
@@ -309,7 +310,7 @@ export function useSpacesController(input: {
       const projectCount = ordinarySpaceProjects.filter(
         (project) => (project.spaceId ?? null) === spaceId,
       ).length;
-      const confirmed = await api.dialogs.confirm(
+      const confirmed = await dialogs.confirm(
         projectCount > 0
           ? `Delete “${space.name}”?\n\n${projectCount} project${projectCount === 1 ? "" : "s"} will move to Void.`
           : `Delete “${space.name}”?`,

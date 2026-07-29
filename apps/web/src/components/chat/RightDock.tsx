@@ -49,6 +49,7 @@ import {
 } from "./rightDockPaneMeta";
 import { useDesktopTopBarWindowControlsGutterClassName } from "~/hooks/useDesktopTopBarGutter";
 
+import { raf, cancelRaf } from "~/platform/frame";
 // Shared sizing defaults for dock hosts: the resize floor for a single readable pane and the
 // "half the shell, but never cramped" opening width. The thread route tunes its own values
 // around the composer; simpler hosts (e.g. the /pull-requests route) use these as-is.
@@ -188,10 +189,10 @@ export function RightDock(props: RightDockProps) {
     if (!shouldSuppressChromeMotion) {
       return;
     }
-    const frameId = window.requestAnimationFrame(() => {
+    const frameId = raf(() => {
       setMotionState({ key: props.motionKey, allow: true });
     });
-    return () => window.cancelAnimationFrame(frameId);
+    return () => cancelRaf(frameId);
   }, [props.motionKey, shouldSuppressChromeMotion]);
 
   // Smooth drawer-style easing for the open/close slide. `ease-linear` (the

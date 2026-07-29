@@ -31,6 +31,11 @@ import {
   canComposerHandlePanelWidth,
   createPanelResizeOverlay,
   removePanelResizeOverlay,
+  applyBodyResizeStyles,
+  captureBodyResizeStyleSnapshot,
+  clearBodyResizeStyles,
+  createResizeGuideElement,
+  restoreBodyResizeStyles,
 } from "../../lib/panelResize";
 import { splitViewPaneScopeId } from "../../lib/chatPaneScope";
 import { resolveActiveSplitView } from "../../splitViewRoute";
@@ -78,6 +83,8 @@ import {
 } from "./composerPickerStyles";
 import { cn } from "~/lib/utils";
 
+import { raf, cancelRaf } from "~/platform/frame";
+import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
 const SPLIT_PANE_PANEL_DEFAULT_WIDTH_PX = 22 * 16;
 const BROWSER_SPLIT_PANE_PANEL_DEFAULT_WIDTH_PX = 30 * 16;
 const SPLIT_PANE_CHAT_MIN_WIDTH = 20 * 16;
@@ -169,15 +176,13 @@ function SplitPaneEmbeddedPanel(props: {
 
     const onPointerUp = () => {
       removePanelResizeOverlay(resizeOverlay);
-      document.body.style.removeProperty("cursor");
-      document.body.style.removeProperty("user-select");
+      clearBodyResizeStyles();
       resizeOverlay.removeEventListener("pointermove", onPointerMove);
       resizeOverlay.removeEventListener("pointerup", onPointerUp);
       resizeOverlay.removeEventListener("pointercancel", onPointerUp);
     };
 
-    document.body.style.cursor = "col-resize";
-    document.body.style.userSelect = "none";
+    applyBodyResizeStyles("col-resize");
     resizeOverlay.addEventListener("pointermove", onPointerMove);
     resizeOverlay.addEventListener("pointerup", onPointerUp);
     resizeOverlay.addEventListener("pointercancel", onPointerUp);
@@ -313,12 +318,11 @@ function SplitDivider(props: {
     let latestRatio = computeRatio(event.clientX, event.clientY);
     let frameId = 0;
     const previousParentPosition = parent.style.position;
-    const previousBodyCursor = document.body.style.cursor;
-    const previousBodyUserSelect = document.body.style.userSelect;
+    const previousBodyStyles = captureBodyResizeStyleSnapshot();
     if (getComputedStyle(parent).position === "static") {
       parent.style.position = "relative";
     }
-    const resizeGuide = document.createElement("div");
+    const resizeGuide = createResizeGuideElement()!;
     resizeGuide.setAttribute("data-split-resize-guide", "true");
     Object.assign(resizeGuide.style, {
       position: "absolute",
@@ -359,30 +363,28 @@ function SplitDivider(props: {
     const onPointerMove = (moveEvent: PointerEvent) => {
       latestRatio = computeRatio(moveEvent.clientX, moveEvent.clientY);
       if (frameId === 0) {
-        frameId = window.requestAnimationFrame(applyGuide);
+        frameId = raf(applyGuide);
       }
     };
     const onPointerUp = () => {
       if (frameId !== 0) {
-        window.cancelAnimationFrame(frameId);
+        cancelRaf(frameId);
         applyGuide();
       }
-      document.body.style.userSelect = previousBodyUserSelect;
-      document.body.style.cursor = previousBodyCursor;
+      restoreBodyResizeStyles(previousBodyStyles);
       parent.style.position = previousParentPosition;
       resizeGuide.remove();
-      window.removeEventListener("pointermove", onPointerMove);
-      window.removeEventListener("pointerup", onPointerUp);
-      window.removeEventListener("pointercancel", onPointerUp);
+      removeWindowEventListener("pointermove", onPointerMove);
+      removeWindowEventListener("pointerup", onPointerUp);
+      removeWindowEventListener("pointercancel", onPointerUp);
       onSetRatio(splitNodeId, latestRatio);
     };
 
-    document.body.style.userSelect = "none";
-    document.body.style.cursor = direction === "horizontal" ? "col-resize" : "row-resize";
+    applyBodyResizeStyles(direction === "horizontal" ? "col-resize" : "row-resize");
     applyGuide();
-    window.addEventListener("pointermove", onPointerMove);
-    window.addEventListener("pointerup", onPointerUp);
-    window.addEventListener("pointercancel", onPointerUp);
+    addWindowEventListener("pointermove", onPointerMove);
+    addWindowEventListener("pointerup", onPointerUp);
+    addWindowEventListener("pointercancel", onPointerUp);
   };
 
   return (

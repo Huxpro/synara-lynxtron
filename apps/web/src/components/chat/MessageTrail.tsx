@@ -12,7 +12,6 @@
 import { type MessageId } from "@synara/contracts";
 import {
   useEffect,
-  useId,
   useRef,
   useState,
   useSyncExternalStore,
@@ -22,7 +21,7 @@ import {
   type PointerEvent as ReactPointerEvent,
 } from "react";
 import { cn } from "~/lib/utils";
-import { DISCLOSURE_CONTENT_MOTION_CLASS } from "~/lib/disclosureMotion";
+import { DISCLOSURE_CONTENT_MOTION_CLASS } from "~/platform/motion";
 import { APP_TOOLTIP_SURFACE_CLASS_NAME } from "./composerPickerStyles";
 import {
   clampNumber,
@@ -39,6 +38,8 @@ import {
   type TrailGeometry,
 } from "./messageTrail.logic";
 
+import { isBrowser, matchMediaSafe } from "~/platform/env";
+import { useUniqueId } from "~/hooks/useUniqueId";
 interface MessageTrailProps {
   items: readonly MessageTrailItem[];
   /** Stable holder for current + visible highlights; only this component re-renders on change. */
@@ -86,7 +87,7 @@ export function MessageTrail({ items, activeStore, onSelect }: MessageTrailProps
   const tooltipMessageRef = useRef<HTMLDivElement | null>(null);
   const tooltipResponseRef = useRef<HTMLDivElement | null>(null);
   const tickRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const tooltipId = useId();
+  const tooltipId = useUniqueId();
 
   const [hasGutter, setHasGutter] = useState(false);
   const [rovingIndex, setRovingIndex] = useState(0);
@@ -375,9 +376,7 @@ export function MessageTrail({ items, activeStore, onSelect }: MessageTrailProps
   // Read the motion preference once (continuous width morphing is motion).
   useEffect(() => {
     reducedMotionRef.current =
-      typeof window !== "undefined" && typeof window.matchMedia === "function"
-        ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
-        : false;
+      matchMediaSafe("(prefers-reduced-motion: reduce)")?.matches ?? false;
   }, []);
 
   // Going inert (narrow pane / N<=1): stop the loop and clear transient state.

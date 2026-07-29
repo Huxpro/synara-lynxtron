@@ -59,6 +59,9 @@ jobs:
       - name: Lint
         run: bun run lint
 
+      - name: Lynx CSS report (ratchet)
+        run: bun run lynx:css-report -- --check
+
       - name: Typecheck
         run: bun run typecheck
 

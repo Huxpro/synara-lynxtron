@@ -32,6 +32,8 @@ import {
   shouldRenderToastForVisibleThreads,
 } from "./toastRouteVisibility";
 
+import { isBrowser } from "~/platform/env";
+import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
 type ThreadToastData = {
   allowCrossThreadVisibility?: boolean;
   copyText?: string;
@@ -138,7 +140,7 @@ function ThreadToastVisibleAutoDismiss({
 }) {
   useEffect(() => {
     if (!dismissAfterVisibleMs || dismissAfterVisibleMs <= 0) return;
-    if (typeof window === "undefined" || typeof document === "undefined") return;
+    if (!isBrowser() || typeof document === "undefined") return;
 
     let remainingMs = threadToastVisibleTimeoutRemainingMs.get(toastId) ?? dismissAfterVisibleMs;
     let startedAtMs: number | null = null;
@@ -147,7 +149,7 @@ function ThreadToastVisibleAutoDismiss({
 
     const clearTimer = () => {
       if (timeoutId === null) return;
-      window.clearTimeout(timeoutId);
+      clearTimeout(timeoutId);
       timeoutId = null;
     };
 
@@ -174,7 +176,7 @@ function ThreadToastVisibleAutoDismiss({
       }
       startedAtMs = Date.now();
       clearTimer();
-      timeoutId = window.setTimeout(() => {
+      timeoutId = setTimeout(() => {
         remainingMs = 0;
         startedAtMs = null;
         closeToast();
@@ -192,13 +194,13 @@ function ThreadToastVisibleAutoDismiss({
 
     syncTimer();
     document.addEventListener("visibilitychange", syncTimer);
-    window.addEventListener("focus", syncTimer);
-    window.addEventListener("blur", syncTimer);
+    addWindowEventListener("focus", syncTimer);
+    addWindowEventListener("blur", syncTimer);
 
     return () => {
       document.removeEventListener("visibilitychange", syncTimer);
-      window.removeEventListener("focus", syncTimer);
-      window.removeEventListener("blur", syncTimer);
+      removeWindowEventListener("focus", syncTimer);
+      removeWindowEventListener("blur", syncTimer);
       pause();
       clearTimer();
     };

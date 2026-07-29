@@ -12,7 +12,9 @@ import { useLayoutEffect } from "react";
 import { isElectron } from "~/env";
 import { useSidebar } from "~/components/ui/sidebar";
 import { isMacPlatform, isWindowsPlatform } from "~/lib/utils";
+import { platformWindow } from "~/platform/window";
 
+import { getNavigatorPlatform, getDocumentElement } from "~/platform/env";
 /**
  * Class name backed by `index.css` (not Tailwind) so the gutter survives zoom
  * retuning via {@link DESKTOP_TOP_BAR_TRAFFIC_LIGHT_GUTTER_CSS_VAR}.
@@ -46,13 +48,11 @@ export function shouldReserveDesktopTopBarTrafficLightGutter(input: {
 }
 
 function readDesktopZoomFactor(): number {
-  const bridge = window.desktopBridge;
-  if (!bridge?.getZoomFactor) return 1;
-  return bridge.getZoomFactor();
+  return platformWindow.getZoomFactor();
 }
 
 function applyTrafficLightGutterCssVar(zoomFactor: number): void {
-  document.documentElement.style.setProperty(
+  getDocumentElement()?.style.setProperty(
     DESKTOP_TOP_BAR_TRAFFIC_LIGHT_GUTTER_CSS_VAR,
     `${resolveMacDesktopTopBarTrafficLightGutterCssPx(zoomFactor)}px`,
   );
@@ -63,7 +63,7 @@ function applyTrafficLightGutterCssVar(zoomFactor: number): void {
  * Mount once near the app root (see `__root.tsx`).
  */
 export function useSyncDesktopTopBarTrafficLightGutterZoom(): void {
-  const isMacDesktop = typeof navigator !== "undefined" ? isMacPlatform(navigator.platform) : false;
+  const isMacDesktop = isMacPlatform(getNavigatorPlatform());
 
   useLayoutEffect(() => {
     if (!isElectron || !isMacDesktop) {
@@ -72,8 +72,7 @@ export function useSyncDesktopTopBarTrafficLightGutterZoom(): void {
 
     applyTrafficLightGutterCssVar(readDesktopZoomFactor());
 
-    const bridge = window.desktopBridge;
-    const unsubscribe = bridge?.onZoomFactorChange?.((zoomFactor) => {
+    const unsubscribe = platformWindow.onZoomFactorChange((zoomFactor) => {
       applyTrafficLightGutterCssVar(zoomFactor);
     });
 
@@ -84,8 +83,8 @@ export function useSyncDesktopTopBarTrafficLightGutterZoom(): void {
 
     return () => {
       cancelAnimationFrame(frame);
-      unsubscribe?.();
-      document.documentElement.style.removeProperty(DESKTOP_TOP_BAR_TRAFFIC_LIGHT_GUTTER_CSS_VAR);
+      unsubscribe();
+      getDocumentElement()?.style.removeProperty(DESKTOP_TOP_BAR_TRAFFIC_LIGHT_GUTTER_CSS_VAR);
     };
   }, [isMacDesktop]);
 }
@@ -99,7 +98,7 @@ export function useSyncDesktopTopBarTrafficLightGutterZoom(): void {
  */
 export function useDesktopTopBarTrafficLightGutterClassName(): string | null {
   const { isMobile, open } = useSidebar();
-  const isMacDesktop = typeof navigator !== "undefined" ? isMacPlatform(navigator.platform) : false;
+  const isMacDesktop = isMacPlatform(getNavigatorPlatform());
   return shouldReserveDesktopTopBarTrafficLightGutter({
     isElectron,
     isMacDesktop,
@@ -153,7 +152,7 @@ export function shouldReserveDesktopTopBarWindowControlsGutter(input: {
  */
 export function useDesktopTopBarWindowControlsGutterClassName(): string | null {
   const isWindowsDesktop =
-    typeof navigator !== "undefined" ? isWindowsPlatform(navigator.platform) : false;
+    isWindowsPlatform(getNavigatorPlatform());
   return shouldReserveDesktopTopBarWindowControlsGutter({
     isElectron,
     isWindowsDesktop,

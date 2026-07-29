@@ -22,6 +22,7 @@ import {
   updatePaneInState,
 } from "./rightDockStore.logic";
 
+import { webStorage } from "~/platform/storage";
 const RIGHT_DOCK_STORAGE_KEY = "synara:right-dock-state:v1";
 
 interface RightDockStore {
@@ -116,7 +117,7 @@ export const useRightDockStore = create<RightDockStore>()(
     }),
     {
       name: RIGHT_DOCK_STORAGE_KEY,
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => webStorage),
       // Validate persisted panes on rehydrate so a stale/unknown pane kind from
       // an older app version can never crash the dock during render.
       merge: (persisted, current) => ({

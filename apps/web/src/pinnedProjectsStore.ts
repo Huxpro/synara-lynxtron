@@ -8,6 +8,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { normalizePinnedIds, pinId, prunePinnedIds, unpinId } from "./pinning.logic";
 
+import { webStorage } from "~/platform/storage";
 interface PinnedProjectsStoreState {
   pinnedProjectIds: ProjectId[];
   pinProject: (projectId: ProjectId) => boolean;
@@ -60,7 +61,7 @@ export const usePinnedProjectsStore = create<PinnedProjectsStoreState>()(
     }),
     {
       name: PINNED_PROJECTS_STORAGE_KEY,
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => webStorage),
       partialize: (state) => ({
         pinnedProjectIds: normalizePinnedIds(state.pinnedProjectIds, PINNED_PROJECTS_OPTIONS),
       }),

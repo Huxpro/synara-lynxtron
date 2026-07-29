@@ -100,7 +100,7 @@ export function useGitProgressToastPreview(enabled: boolean): void {
     stageIndexRef.current = 0;
     applyStage(PREVIEW_STAGES[0]!);
 
-    const intervalId = window.setInterval(() => {
+    const intervalId = setInterval(() => {
       const stageStartedAtMs = stageStartedAtMsRef.current;
       if (stageStartedAtMs === null) return;
       if (Date.now() - stageStartedAtMs < STAGE_DURATION_MS) return;
@@ -126,7 +126,7 @@ export function useGitProgressToastPreview(enabled: boolean): void {
     }, 500);
 
     return () => {
-      window.clearInterval(intervalId);
+      clearInterval(intervalId);
       if (toastIdRef.current) {
         toastManager.close(toastIdRef.current);
         toastIdRef.current = null;

@@ -10,6 +10,9 @@ import {
   resolveTranscriptSelectionActionLayout,
 } from "./chatSelectionActions";
 
+import { raf } from "~/platform/frame";
+import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
+import { clearWindowSelection, onDocumentSelectionChange } from "./chatSelectionDom";
 export interface PendingCodeSelectionAction<T> {
   payload: T;
   left: number;
@@ -42,7 +45,7 @@ export function useCodeSelectionAction<T>(options: {
     const container = event.currentTarget;
     const pointer = { x: event.clientX, y: event.clientY };
     // Wait a frame so the browser finalizes the selection before reading it.
-    window.requestAnimationFrame(() => {
+    raf(() => {
       if (!enabled || !container.isConnected) {
         setPendingAction(null);
         return;
@@ -66,7 +69,7 @@ export function useCodeSelectionAction<T>(options: {
     }
     onCommit(pendingAction.payload);
     setPendingAction(null);
-    window.getSelection()?.removeAllRanges();
+    clearWindowSelection();
   };
 
   useEffect(() => {
@@ -87,15 +90,15 @@ export function useCodeSelectionAction<T>(options: {
       setPendingAction(null);
     };
 
-    window.addEventListener("pointerdown", handlePointerDown);
-    window.addEventListener("resize", handleWindowChange);
-    window.addEventListener("scroll", handleWindowChange, true);
-    document.addEventListener("selectionchange", handleWindowChange);
+    addWindowEventListener("pointerdown", handlePointerDown);
+    addWindowEventListener("resize", handleWindowChange);
+    addWindowEventListener("scroll", handleWindowChange, true);
+    const removeSelectionListener = onDocumentSelectionChange(handleWindowChange);
     return () => {
-      window.removeEventListener("pointerdown", handlePointerDown);
-      window.removeEventListener("resize", handleWindowChange);
-      window.removeEventListener("scroll", handleWindowChange, true);
-      document.removeEventListener("selectionchange", handleWindowChange);
+      removeWindowEventListener("pointerdown", handlePointerDown);
+      removeWindowEventListener("resize", handleWindowChange);
+      removeWindowEventListener("scroll", handleWindowChange, true);
+      removeSelectionListener();
     };
   }, [pendingAction]);
 

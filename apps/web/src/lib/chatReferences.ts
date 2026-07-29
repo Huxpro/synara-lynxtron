@@ -10,6 +10,7 @@ import { requestComposerFocus } from "../composerFocusRequestStore";
 import { formatComposerMentionToken } from "./composerMentions";
 import { createFileCommentDraft, type FileCommentSelection } from "./fileComments";
 
+import { createDocumentRange, getWindowSelection } from "~/components/chat/chatSelectionDom";
 export interface ChatFileReference {
   path: string;
   startLine?: number;
@@ -188,7 +189,7 @@ export interface SelectionWithin {
 function getSelectionRangeWithin(
   container: HTMLElement,
 ): { range: Range; selectedText: string } | null {
-  const selection = window.getSelection();
+  const selection = getWindowSelection();
   if (!selection || selection.rangeCount === 0 || selection.isCollapsed) {
     return null;
   }
@@ -212,7 +213,10 @@ export function getSelectionWithin(container: HTMLElement): SelectionWithin | nu
   if (!scoped) {
     return null;
   }
-  const prefixRange = document.createRange();
+  const prefixRange = createDocumentRange();
+  if (!prefixRange) {
+    return null;
+  }
   prefixRange.selectNodeContents(container);
   prefixRange.setEnd(scoped.range.startContainer, scoped.range.startOffset);
   const prefixText = prefixRange.toString();

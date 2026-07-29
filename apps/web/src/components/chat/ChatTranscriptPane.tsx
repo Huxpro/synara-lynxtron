@@ -21,7 +21,7 @@ import { type TimestampFormat } from "../../appSettings";
 import { type TurnDiffSummary, type WorktreeSetupSnapshot } from "../../types";
 import { ArrowDownIcon } from "~/lib/icons";
 import { cn } from "~/lib/utils";
-import { DISCLOSURE_CONTENT_MOTION_CLASS } from "~/lib/disclosureMotion";
+import { DISCLOSURE_CONTENT_MOTION_CLASS } from "~/platform/motion";
 import { type ExpandedImagePreview } from "./ExpandedImagePreview";
 import { ChatEmptyStateHero } from "./ChatEmptyStateHero";
 import { MessagesTimeline, type MessagesTimelineController } from "./MessagesTimeline";

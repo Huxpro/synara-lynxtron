@@ -48,7 +48,7 @@ function useProjectInstructionsAutosave({
 
   const flush = () => {
     if (debounceRef.current !== null) {
-      window.clearTimeout(debounceRef.current);
+      clearTimeout(debounceRef.current);
       debounceRef.current = null;
     }
     const pendingSave = pendingSaveRef.current;
@@ -100,7 +100,7 @@ function useProjectInstructionsAutosave({
     if (!currentProjectId) {
       pendingSaveRef.current = null;
       if (debounceRef.current !== null) {
-        window.clearTimeout(debounceRef.current);
+        clearTimeout(debounceRef.current);
         debounceRef.current = null;
       }
       return;
@@ -112,9 +112,9 @@ function useProjectInstructionsAutosave({
       lastCommitted: lastCommittedRef.current,
     };
     if (debounceRef.current !== null) {
-      window.clearTimeout(debounceRef.current);
+      clearTimeout(debounceRef.current);
     }
-    debounceRef.current = window.setTimeout(flush, PROJECT_INSTRUCTIONS_AUTOSAVE_DEBOUNCE_MS);
+    debounceRef.current = setTimeout(flush, PROJECT_INSTRUCTIONS_AUTOSAVE_DEBOUNCE_MS);
   };
 
   return {

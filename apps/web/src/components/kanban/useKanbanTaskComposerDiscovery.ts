@@ -39,6 +39,7 @@ import { isMacPlatform } from "~/lib/utils";
 import { AVAILABLE_PROVIDER_OPTIONS } from "../chat/ProviderModelPicker";
 import type { ProviderModelOption } from "../../providerModelOptions";
 
+import { getNavigatorPlatform } from "~/platform/env";
 type ComposerPluginSuggestion = {
   plugin: ProviderPluginDescriptor;
   mention: ProviderMentionReference;
@@ -91,7 +92,7 @@ export function useKanbanTaskComposerDiscovery(input: UseKanbanTaskComposerDisco
     piAgentDir,
   } = input;
 
-  const platform = typeof navigator === "undefined" ? "" : navigator.platform;
+  const platform = getNavigatorPlatform();
   const localFolderBrowseRootPath = getLocalFolderBrowseRootPath(
     serverHomeDir,
     isMacPlatform(platform),

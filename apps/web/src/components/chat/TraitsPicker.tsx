@@ -527,9 +527,9 @@ export const TraitsPicker = memo(function TraitsPicker({
   );
   const scheduleSelectionCommitted = useCallback(() => {
     if (selectionCommitTimerRef.current !== null) {
-      window.clearTimeout(selectionCommitTimerRef.current);
+      clearTimeout(selectionCommitTimerRef.current);
     }
-    selectionCommitTimerRef.current = window.setTimeout(() => {
+    selectionCommitTimerRef.current = setTimeout(() => {
       selectionCommitTimerRef.current = null;
       onSelectionCommitted?.();
     }, 0);
@@ -537,7 +537,7 @@ export const TraitsPicker = memo(function TraitsPicker({
   useEffect(
     () => () => {
       if (selectionCommitTimerRef.current !== null) {
-        window.clearTimeout(selectionCommitTimerRef.current);
+        clearTimeout(selectionCommitTimerRef.current);
       }
     },
     [],

@@ -11,6 +11,7 @@ import {
 } from "@synara/contracts";
 import { isMacPlatform } from "./lib/utils";
 
+import { getNavigatorPlatform } from "~/platform/env";
 export interface ShortcutEventLike {
   type?: string;
   code?: string;
@@ -330,7 +331,7 @@ function resolveEventKeys(event: ShortcutEventLike): Set<string> {
 function matchesShortcutModifiers(
   event: ShortcutEventLike,
   shortcut: KeybindingShortcut,
-  platform = navigator.platform,
+  platform = getNavigatorPlatform(),
 ): boolean {
   const useMetaForMod = isMacPlatform(platform);
   const expectedMeta = shortcut.metaKey || (shortcut.modKey && useMetaForMod);
@@ -346,14 +347,14 @@ function matchesShortcutModifiers(
 function matchesShortcut(
   event: ShortcutEventLike,
   shortcut: KeybindingShortcut,
-  platform = navigator.platform,
+  platform = getNavigatorPlatform(),
 ): boolean {
   if (!matchesShortcutModifiers(event, shortcut, platform)) return false;
   return resolveEventKeys(event).has(shortcut.key);
 }
 
 function resolvePlatform(options: ShortcutMatchOptions | undefined): string {
-  return options?.platform ?? navigator.platform;
+  return options?.platform ?? getNavigatorPlatform();
 }
 
 function resolveContext(options: ShortcutMatchOptions | undefined): ShortcutMatchContext {
@@ -391,7 +392,7 @@ function matchesWhenClause(
   return evaluateWhenNode(whenAst, context);
 }
 
-function shortcutConflictKey(shortcut: KeybindingShortcut, platform = navigator.platform): string {
+function shortcutConflictKey(shortcut: KeybindingShortcut, platform = getNavigatorPlatform()): string {
   const useMetaForMod = isMacPlatform(platform);
   const metaKey = shortcut.metaKey || (shortcut.modKey && useMetaForMod);
   const ctrlKey = shortcut.ctrlKey || (shortcut.modKey && !useMetaForMod);
@@ -499,7 +500,7 @@ function formatShortcutKeyLabel(key: string): string {
 
 export function formatShortcutLabel(
   shortcut: KeybindingShortcut,
-  platform = navigator.platform,
+  platform = getNavigatorPlatform(),
 ): string {
   const keyLabel = formatShortcutKeyLabel(shortcut.key);
   const useMetaForMod = isMacPlatform(platform);
@@ -724,7 +725,7 @@ export function isTerminalClearShortcut(event: ShortcutEventLike): boolean {
 
 export function terminalNavigationShortcutData(
   event: ShortcutEventLike,
-  platform = navigator.platform,
+  platform = getNavigatorPlatform(),
 ): string | null {
   if (event.type !== undefined && event.type !== "keydown") {
     return null;

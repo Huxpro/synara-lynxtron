@@ -118,8 +118,8 @@ function StudioIndexRouteView() {
     if (studioWorkspaceRoot || pathsWaitTimedOut) {
       return;
     }
-    const timer = window.setTimeout(() => setPathsWaitTimedOut(true), WORKSPACE_PATHS_TIMEOUT_MS);
-    return () => window.clearTimeout(timer);
+    const timer = setTimeout(() => setPathsWaitTimedOut(true), WORKSPACE_PATHS_TIMEOUT_MS);
+    return () => clearTimeout(timer);
   }, [pathsWaitTimedOut, studioWorkspaceRoot]);
 
   if (!studioSectionVisible) {

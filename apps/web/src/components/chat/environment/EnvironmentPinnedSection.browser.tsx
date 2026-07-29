@@ -101,7 +101,7 @@ describe("EnvironmentPinnedSection", () => {
     labelButton?.dispatchEvent(new MouseEvent("dblclick", { bubbles: true, detail: 2 }));
 
     await vi.waitFor(() => expect(document.querySelector('input[class*="flex-1"]')).not.toBeNull());
-    await new Promise((resolve) => window.setTimeout(resolve, 220));
+    await new Promise((resolve) => setTimeout(resolve, 220));
     expect(onJump).not.toHaveBeenCalled();
   });
 

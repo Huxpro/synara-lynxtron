@@ -76,6 +76,10 @@ import { Menu, MenuItem, MenuSeparator, MenuTrigger } from "./ui/menu";
 import { Skeleton } from "./ui/skeleton";
 import { toastManager } from "./ui/toast";
 
+import { webStorage } from "~/platform/storage";
+import { getNavigatorPlatform, isBrowser } from "~/platform/env";
+import { raf } from "~/platform/frame";
+import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
 interface BrowserPanelProps {
   mode: DiffPanelMode;
   threadId: ThreadId;
@@ -326,12 +330,12 @@ function isNativeBrowserTransitionSignalTarget(
 }
 
 function isBrowserPerfLoggingEnabled(): boolean {
-  if (typeof window === "undefined") {
+  if (!isBrowser()) {
     return false;
   }
 
   try {
-    return window.localStorage.getItem("synara:browser-perf") === "1";
+    return webStorage.getItem("synara:browser-perf") === "1";
   } catch {
     return false;
   }
@@ -646,7 +650,7 @@ export function BrowserPanel({
     // Timeout-0 keeps the reset writes asynchronous (no wasted pre-paint
     // render), which also keeps this component eligible for React Compiler.
     let cancelled = false;
-    const timeoutId = window.setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       if (cancelled) {
         return;
       }
@@ -668,7 +672,7 @@ export function BrowserPanel({
 
     return () => {
       cancelled = true;
-      window.clearTimeout(timeoutId);
+      clearTimeout(timeoutId);
       void api.browser.hide({ threadId });
     };
   }, [api, isLiveRuntime, runBrowserAction, threadId, upsertThreadState]);
@@ -778,7 +782,7 @@ export function BrowserPanel({
 
     webview.addEventListener("dom-ready", attachVisibleWebview);
     webview.addEventListener("did-start-loading", attachVisibleWebview);
-    window.requestAnimationFrame(attachVisibleWebview);
+    raf(attachVisibleWebview);
 
     return () => {
       webview.removeEventListener("dom-ready", attachVisibleWebview);
@@ -817,7 +821,7 @@ export function BrowserPanel({
       return;
     }
 
-    const intervalId = window.setInterval(() => {
+    const intervalId = setInterval(() => {
       console.info(`[${SYNARA_BROWSER_LABEL} panel perf]`, {
         threadId,
         ...perfCountersRef.current,
@@ -825,7 +829,7 @@ export function BrowserPanel({
     }, BROWSER_PERF_SAMPLE_INTERVAL_MS);
 
     return () => {
-      window.clearInterval(intervalId);
+      clearInterval(intervalId);
     };
   }, [isLiveRuntime, threadId]);
 
@@ -904,7 +908,7 @@ export function BrowserPanel({
           burstFramesRemainingRef.current > 0 &&
           burstStableFramesRef.current < BROWSER_BOUNDS_SYNC_STABLE_FRAME_TARGET
         ) {
-          boundsBurstFrameRef.current = window.requestAnimationFrame(tick);
+          boundsBurstFrameRef.current = raf(tick);
           return;
         }
         boundsBurstFrameRef.current = null;
@@ -912,7 +916,7 @@ export function BrowserPanel({
         burstStableFramesRef.current = 0;
       };
 
-      boundsBurstFrameRef.current = window.requestAnimationFrame(tick);
+      boundsBurstFrameRef.current = raf(tick);
     };
 
     const scheduleSyncBounds = () => {
@@ -921,7 +925,7 @@ export function BrowserPanel({
         perfCountersRef.current.resizeScheduleSkips += 1;
         return;
       }
-      resizeFrameRef.current = window.requestAnimationFrame(() => {
+      resizeFrameRef.current = raf(() => {
         resizeFrameRef.current = null;
         syncBounds();
       });
@@ -954,8 +958,8 @@ export function BrowserPanel({
       scheduleSyncBounds();
     });
     observer.observe(element);
-    window.addEventListener("resize", scheduleSyncBounds);
-    window.addEventListener(PANEL_RESIZE_OVERLAY_SYNC_EVENT, scheduleSyncBounds);
+    addWindowEventListener("resize", scheduleSyncBounds);
+    addWindowEventListener(PANEL_RESIZE_OVERLAY_SYNC_EVENT, scheduleSyncBounds);
     document.addEventListener("transitionrun", handleTransitionBounds, true);
     document.addEventListener("transitionend", handleTransitionBounds, true);
     document.addEventListener("transitioncancel", handleTransitionBounds, true);
@@ -963,8 +967,8 @@ export function BrowserPanel({
     return () => {
       setBrowserWebviewOverlayOcclusion(browserWebviewRef.current, false);
       observer.disconnect();
-      window.removeEventListener("resize", scheduleSyncBounds);
-      window.removeEventListener(PANEL_RESIZE_OVERLAY_SYNC_EVENT, scheduleSyncBounds);
+      removeWindowEventListener("resize", scheduleSyncBounds);
+      removeWindowEventListener(PANEL_RESIZE_OVERLAY_SYNC_EVENT, scheduleSyncBounds);
       document.removeEventListener("transitionrun", handleTransitionBounds, true);
       document.removeEventListener("transitionend", handleTransitionBounds, true);
       document.removeEventListener("transitioncancel", handleTransitionBounds, true);
@@ -1033,7 +1037,7 @@ export function BrowserPanel({
           if (state) {
             upsertThreadState(state);
           }
-          window.requestAnimationFrame(() => {
+          raf(() => {
             addressInputRef.current?.focus();
             addressInputRef.current?.select();
           });
@@ -1102,7 +1106,7 @@ export function BrowserPanel({
       if (state) {
         upsertThreadState(state);
       }
-      window.requestAnimationFrame(() => {
+      raf(() => {
         addressInputRef.current?.focus();
         addressInputRef.current?.select();
       });
@@ -1238,7 +1242,7 @@ export function BrowserPanel({
           alt: event.altKey,
           key: event.key,
         },
-        isMacPlatform(navigator.platform),
+        isMacPlatform(getNavigatorPlatform()),
       );
       if (!matches) {
         return;
@@ -1246,9 +1250,9 @@ export function BrowserPanel({
       event.preventDefault();
       copyActiveTabLink();
     };
-    window.addEventListener("keydown", handleKeyDown);
+    addWindowEventListener("keydown", handleKeyDown);
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+      removeWindowEventListener("keydown", handleKeyDown);
     };
   }, [copyActiveTabLink, isLiveRuntime]);
 

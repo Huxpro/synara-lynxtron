@@ -9,6 +9,7 @@ import { render } from "vitest-browser-react";
 
 import { MessagesTimeline } from "./MessagesTimeline";
 
+import { raf } from "~/platform/frame";
 function ToolDetailsTimeline() {
   return (
     <MessagesTimeline
@@ -65,8 +66,8 @@ function createTimelineHost(): HTMLDivElement {
 }
 
 async function settleLayout(): Promise<void> {
-  await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
-  await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
+  await new Promise<void>((resolve) => raf(() => resolve()));
+  await new Promise<void>((resolve) => raf(() => resolve()));
 }
 
 describe("MessagesTimeline tool details", () => {
@@ -138,7 +139,7 @@ describe("MessagesTimeline tool details", () => {
       expect(closingHiddenRegion?.hasAttribute("inert")).toBe(true);
 
       await new Promise<void>((resolve) => {
-        window.setTimeout(() => resolve(), 320);
+        setTimeout(() => resolve(), 320);
       });
       await expect
         .poll(() => document.querySelector("[data-tool-details-inline='true']"))

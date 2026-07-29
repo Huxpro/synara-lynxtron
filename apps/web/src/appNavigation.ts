@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 
 import { isElectron } from "./env";
 
+import { isBrowser } from "~/platform/env";
 type RouterHistory = ReturnType<typeof createBrowserHistory>;
 type HistorySubscriberEvent = Parameters<Parameters<RouterHistory["subscribe"]>[0]>[0];
 type HistorySubscriberAction = HistorySubscriberEvent["action"];
@@ -20,7 +21,7 @@ type HistorySubscriberAction = HistorySubscriberEvent["action"];
 const HISTORY_STATE_INDEX_KEY = "__TSR_index";
 
 function createAppHistory(): RouterHistory {
-  if (typeof window === "undefined") {
+  if (!isBrowser()) {
     return createMemoryHistory({ initialEntries: ["/"] });
   }
   // Electron loads the app from a file-backed shell, so hash history avoids path resolution issues.

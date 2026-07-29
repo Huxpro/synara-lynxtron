@@ -15,15 +15,15 @@ export function useNowMs(enabled: boolean, intervalMs = 1_000): number {
     // Timeout-0 instead of a synchronous set: the immediate refresh lands a
     // tick after enabling, which is invisible for elapsed-time labels and
     // keeps this hook eligible for React Compiler optimization.
-    const timeoutId = window.setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       setNowMs(Date.now());
     }, 0);
-    const intervalId = window.setInterval(() => {
+    const intervalId = setInterval(() => {
       setNowMs(Date.now());
     }, intervalMs);
     return () => {
-      window.clearTimeout(timeoutId);
-      window.clearInterval(intervalId);
+      clearTimeout(timeoutId);
+      clearInterval(intervalId);
     };
   }, [enabled, intervalMs]);
 

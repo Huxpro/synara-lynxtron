@@ -61,6 +61,8 @@ import { Popover, PopoverPopup, PopoverTrigger } from "./ui/popover";
 import { Switch } from "./ui/switch";
 import { Textarea } from "./ui/textarea";
 
+import { getNavigatorPlatform } from "~/platform/env";
+import { useUniqueId } from "~/hooks/useUniqueId";
 const SCRIPT_ICONS: Array<{ id: ProjectScriptIcon; label: string }> = [
   { id: "play", label: "Play" },
   { id: "test", label: "Test" },
@@ -140,7 +142,7 @@ function keybindingFromEvent(event: KeyboardEvent<HTMLInputElement>): string | n
   if (!keyToken) return null;
 
   const parts: string[] = [];
-  if (isMacPlatform(navigator.platform)) {
+  if (isMacPlatform(getNavigatorPlatform())) {
     if (event.metaKey) parts.push("mod");
     if (event.ctrlKey) parts.push("ctrl");
   } else {
@@ -167,7 +169,7 @@ export default function ProjectScriptsControl({
   onUpdateScript,
   onDeleteScript,
 }: ProjectScriptsControlProps) {
-  const addScriptFormId = React.useId();
+  const addScriptFormId = React.useUniqueId();
   const [editingScriptId, setEditingScriptId] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [name, setName] = useState("");

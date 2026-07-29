@@ -51,7 +51,7 @@ describe("Menu submenu hover", () => {
     await expect.element(page.getByText("Void", { exact: true })).toBeVisible();
 
     await page.getByText("Void", { exact: true }).hover();
-    await new Promise((resolve) => window.setTimeout(resolve, 220));
+    await new Promise((resolve) => setTimeout(resolve, 220));
 
     await expect.element(page.getByText("Void", { exact: true })).toBeVisible();
     await screen.unmount();

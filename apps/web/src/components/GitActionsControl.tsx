@@ -601,7 +601,7 @@ export default function GitActionsControl({
   }, [gitCwd, updateActiveProgressToast]);
 
   useEffect(() => {
-    const interval = window.setInterval(() => {
+    const interval = setInterval(() => {
       if (!activeGitActionProgressRef.current) {
         return;
       }
@@ -609,7 +609,7 @@ export default function GitActionsControl({
     }, 1000);
 
     return () => {
-      window.clearInterval(interval);
+      clearInterval(interval);
     };
   }, [updateActiveProgressToast]);
 

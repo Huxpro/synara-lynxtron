@@ -33,6 +33,8 @@ import type {
 import TerminalActivityIndicator from "./TerminalActivityIndicator";
 import TerminalIdentityIcon from "./TerminalIdentityIcon";
 
+import { raf, cancelRaf } from "~/platform/frame";
+import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
 const MIN_TERMINAL_PANE_SIZE_PX = 180;
 
 interface TerminalViewportPaneProps {
@@ -319,25 +321,25 @@ export default function TerminalViewportPane({
         nextWeights[handleIndex + 1] = resizedNext;
         pendingWeights = nextWeights;
         if (resizeFrame === 0) {
-          resizeFrame = window.requestAnimationFrame(flushResize);
+          resizeFrame = raf(flushResize);
         }
       };
 
       const onPointerUp = () => {
         if (resizeFrame !== 0) {
-          window.cancelAnimationFrame(resizeFrame);
+          cancelRaf(resizeFrame);
           resizeFrame = 0;
         }
         if (pendingWeights) {
           onResizeSplit(groupId, splitNode.id, pendingWeights);
           pendingWeights = null;
         }
-        window.removeEventListener("pointermove", onPointerMove);
-        window.removeEventListener("pointerup", onPointerUp);
+        removeWindowEventListener("pointermove", onPointerMove);
+        removeWindowEventListener("pointerup", onPointerUp);
       };
 
-      window.addEventListener("pointermove", onPointerMove);
-      window.addEventListener("pointerup", onPointerUp, { once: true });
+      addWindowEventListener("pointermove", onPointerMove);
+      addWindowEventListener("pointerup", onPointerUp, { once: true });
     };
 
     return (

@@ -1,5 +1,6 @@
 import { useSyncExternalStore } from "react";
 
+import { isBrowser, matchMediaSafe } from "~/platform/env";
 const BREAKPOINTS = {
   "2xl": 1536,
   "3xl": 1600,
@@ -65,15 +66,15 @@ export function useMediaQuery(query: BreakpointQuery | MediaQueryInput | (string
   const mediaQuery = parseQuery(query);
 
   const subscribe = (callback: () => void) => {
-    if (typeof window === "undefined") return () => {};
-    const mql = window.matchMedia(mediaQuery);
+    if (!isBrowser()) return () => {};
+    const mql = matchMediaSafe(mediaQuery);
     mql.addEventListener("change", callback);
     return () => mql.removeEventListener("change", callback);
   };
 
   const getSnapshot = () => {
-    if (typeof window === "undefined") return false;
-    return window.matchMedia(mediaQuery).matches;
+    if (!isBrowser()) return false;
+    return matchMediaSafe(mediaQuery)?.matches ?? false;
   };
 
   return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);

@@ -1,5 +1,6 @@
 import { useEffect, useEffectEvent } from "react";
 
+import { getDesktopBridge } from "~/platform/desktopBridge";
 export function useBrowserPanelDesktopBridge(input: {
   onToggle: (() => void) | null;
   onOpen: (() => void) | null;
@@ -11,7 +12,7 @@ export function useBrowserPanelDesktopBridge(input: {
   const openEnabled = onOpen !== null;
 
   useEffect(() => {
-    const onMenuAction = window.desktopBridge?.onMenuAction;
+    const onMenuAction = getDesktopBridge()?.onMenuAction;
     if (typeof onMenuAction !== "function" || !toggleEnabled) {
       return;
     }
@@ -28,7 +29,7 @@ export function useBrowserPanelDesktopBridge(input: {
   }, [toggleEnabled]);
 
   useEffect(() => {
-    const onOpenBrowserPanelRequest = window.desktopBridge?.browser.onBrowserUseOpenPanelRequest;
+    const onOpenBrowserPanelRequest = getDesktopBridge()?.browser.onBrowserUseOpenPanelRequest;
     if (typeof onOpenBrowserPanelRequest !== "function" || !openEnabled) {
       return;
     }

@@ -36,6 +36,8 @@ import { AppSnapShortcutControl } from "./AppSnapShortcutControl";
 import { SettingResetButton } from "./SettingControls";
 import { SettingsRow, SettingsSection } from "./SettingsPanelPrimitives";
 
+import { getDesktopBridge } from "~/platform/desktopBridge";
+import { focusWindow } from "~/platform/env";
 function appSnapStatusText(state: DesktopAppSnapState | null): string {
   if (!state) return "Available in the Synara desktop app";
   if (!state.supported) return state.message ?? "Available on macOS only";
@@ -89,10 +91,10 @@ export function NotificationsSettingsPanel({
   );
 
   useEffect(() => {
-    const timeoutId = window.setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       setBrowserNotificationPermission(readBrowserNotificationPermissionState());
     }, 0);
-    return () => window.clearTimeout(timeoutId);
+    return () => clearTimeout(timeoutId);
   }, []);
 
   async function setSystemNotificationsEnabled(nextEnabled: boolean) {
@@ -126,8 +128,8 @@ export function NotificationsSettingsPanel({
     const title = "Activity notification";
     const body = "Notification test for chats and terminal agents.";
 
-    if (window.desktopBridge) {
-      const shown = await window.desktopBridge.notifications.show({ title, body, silent: false });
+    if (getDesktopBridge()) {
+      const shown = await getDesktopBridge().notifications.show({ title, body, silent: false });
       toastManager.add({
         type: shown ? "success" : "warning",
         title: shown ? "Test notification sent" : "Notifications unavailable",
@@ -151,7 +153,7 @@ export function NotificationsSettingsPanel({
 
     const notification = new Notification(title, { body, tag: "synara:test-notification" });
     notification.addEventListener("click", () => {
-      window.focus();
+      focusWindow();
     });
     toastManager.add({
       type: "success",
@@ -241,7 +243,7 @@ export function AppSnapSettingsPanel({
   const keybindings = serverConfigQuery.data?.keybindings ?? EMPTY_KEYBINDINGS;
 
   useEffect(() => {
-    const bridge = window.desktopBridge?.appSnap;
+    const bridge = getDesktopBridge()?.appSnap;
     if (!bridge) return;
     let disposed = false;
     const unsubscribe = bridge.onState((state) => {
@@ -262,7 +264,7 @@ export function AppSnapSettingsPanel({
   async function setAppSnapEnabled(nextEnabled: boolean) {
     const requestGuard = appSnapRequestGuardRef.current;
     const requestId = requestGuard.begin();
-    const bridge = window.desktopBridge?.appSnap;
+    const bridge = getDesktopBridge()?.appSnap;
     if (!bridge) {
       toastManager.add({
         type: "warning",
@@ -302,7 +304,7 @@ export function AppSnapSettingsPanel({
   }
 
   async function recheckAppSnapPermissions() {
-    const bridge = window.desktopBridge?.appSnap;
+    const bridge = getDesktopBridge()?.appSnap;
     if (!bridge) return;
     const requestGuard = appSnapRequestGuardRef.current;
     const requestId = requestGuard.begin();

@@ -5,6 +5,8 @@
 
 import type { WsCompatibilityError } from "@synara/contracts";
 
+import { isBrowser } from "~/platform/env";
+import { addWindowEventListener, dispatchWindowEvent, removeWindowEventListener } from "~/platform/events";
 export type WsTransportState = "connecting" | "open" | "closed" | "incompatible" | "disposed";
 
 export const SYNARA_WS_TRANSPORT_STATE_EVENT = "synara:ws-transport-state";
@@ -23,14 +25,12 @@ export interface WsCompatibilityIssueEventDetail {
 // Emits a browser-local event without leaking transport internals into UI code.
 export function emitWsTransportState(state: WsTransportState): void {
   if (
-    typeof window === "undefined" ||
-    typeof window.dispatchEvent !== "function" ||
-    typeof CustomEvent === "undefined"
+    !isBrowser() || typeof CustomEvent === "undefined"
   ) {
     return;
   }
 
-  window.dispatchEvent(
+  dispatchWindowEvent(
     new CustomEvent<WsTransportStateEventDetail>(SYNARA_WS_TRANSPORT_STATE_EVENT, {
       detail: { state },
     }),
@@ -41,7 +41,7 @@ export function emitWsTransportState(state: WsTransportState): void {
 export function addWsTransportStateListener(
   listener: (state: WsTransportState) => void,
 ): () => void {
-  if (typeof window === "undefined" || typeof window.addEventListener !== "function") {
+  if (!isBrowser()) {
     return () => undefined;
   }
 
@@ -51,9 +51,9 @@ export function addWsTransportStateListener(
     listener(detail.state);
   };
 
-  window.addEventListener(SYNARA_WS_TRANSPORT_STATE_EVENT, handleStateChange);
+  addWindowEventListener(SYNARA_WS_TRANSPORT_STATE_EVENT, handleStateChange);
   return () => {
-    window.removeEventListener(SYNARA_WS_TRANSPORT_STATE_EVENT, handleStateChange);
+    removeWindowEventListener(SYNARA_WS_TRANSPORT_STATE_EVENT, handleStateChange);
   };
 }
 
@@ -64,13 +64,11 @@ export function readLatestWsCompatibilityIssue(): WsCompatibilityError | null {
 export function emitWsCompatibilityIssue(issue: WsCompatibilityError | null): void {
   latestCompatibilityIssue = issue;
   if (
-    typeof window === "undefined" ||
-    typeof window.dispatchEvent !== "function" ||
-    typeof CustomEvent === "undefined"
+    !isBrowser() || typeof CustomEvent === "undefined"
   ) {
     return;
   }
-  window.dispatchEvent(
+  dispatchWindowEvent(
     new CustomEvent<WsCompatibilityIssueEventDetail>(SYNARA_WS_COMPATIBILITY_ISSUE_EVENT, {
       detail: { issue },
     }),
@@ -82,7 +80,7 @@ export function addWsCompatibilityIssueListener(
   options?: { readonly replayCurrent?: boolean },
 ): () => void {
   if (options?.replayCurrent) listener(latestCompatibilityIssue);
-  if (typeof window === "undefined" || typeof window.addEventListener !== "function") {
+  if (!isBrowser()) {
     return () => undefined;
   }
   const handleIssue = (event: Event) => {
@@ -90,8 +88,8 @@ export function addWsCompatibilityIssueListener(
     if (!detail) return;
     listener(detail.issue);
   };
-  window.addEventListener(SYNARA_WS_COMPATIBILITY_ISSUE_EVENT, handleIssue);
+  addWindowEventListener(SYNARA_WS_COMPATIBILITY_ISSUE_EVENT, handleIssue);
   return () => {
-    window.removeEventListener(SYNARA_WS_COMPATIBILITY_ISSUE_EVENT, handleIssue);
+    removeWindowEventListener(SYNARA_WS_COMPATIBILITY_ISSUE_EVENT, handleIssue);
   };
 }

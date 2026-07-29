@@ -37,6 +37,7 @@ import { getThreadFromState } from "../threadDerivation";
 import { useWorkspaceStore } from "../workspaceStore";
 import { resetWsNativeApiForTest } from "../wsNativeApi";
 
+import { webStorage } from "~/platform/storage";
 const THREAD_ID = ThreadId.makeUnsafe("thread-root-browser-test");
 const OTHER_THREAD_ID = ThreadId.makeUnsafe("thread-other-browser-test");
 const PROJECT_ID = ProjectId.makeUnsafe("project-root-browser-test");
@@ -395,7 +396,7 @@ describe("EventRouter scoped orchestration sync", () => {
     threadStreamRequestIdByThreadId.clear();
     threadStreamClientByThreadId.clear();
     delayNextThreadSnapshot = false;
-    localStorage.clear();
+    webStorage.clear();
     useComposerDraftStore.setState({
       draftsByThreadId: {},
       draftThreadsByThreadId: {},
@@ -484,7 +485,7 @@ describe("EventRouter scoped orchestration sync", () => {
 
       sendThreadEventPush(firstAssistantChunk);
 
-      await new Promise((resolve) => window.setTimeout(resolve, 120));
+      await new Promise((resolve) => setTimeout(resolve, 120));
 
       const threadAfterDuplicate = useStore.getState();
       expect(
@@ -806,7 +807,7 @@ describe("EventRouter scoped orchestration sync", () => {
 
       sendThreadEventPush(secondAssistantChunk);
 
-      await new Promise((resolve) => window.setTimeout(resolve, 20));
+      await new Promise((resolve) => setTimeout(resolve, 20));
 
       const threadBeforeThrottleFlush = getThreadFromState(useStore.getState(), THREAD_ID);
       const messageBeforeThrottleFlush = threadBeforeThrottleFlush?.messages.find(
@@ -932,7 +933,7 @@ describe("EventRouter scoped orchestration sync", () => {
 
       sendThreadEventPush(bufferedEvent);
 
-      await new Promise((resolve) => window.setTimeout(resolve, 120));
+      await new Promise((resolve) => setTimeout(resolve, 120));
 
       thread = getThreadFromState(useStore.getState(), recoveryThreadId);
       expect(
@@ -1147,7 +1148,7 @@ describe("EventRouter scoped orchestration sync", () => {
 
       useWorkspaceStore.getState().createWorkspace();
 
-      await new Promise((resolve) => window.setTimeout(resolve, 120));
+      await new Promise((resolve) => setTimeout(resolve, 120));
 
       expect(subscribeShellRequestCount).toBe(initialSubscribeShellCount);
     } finally {

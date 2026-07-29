@@ -5,7 +5,7 @@
 // Exports: CreateProjectDialog, CreateProjectSubmitValue
 
 import { type SpaceId } from "@synara/contracts";
-import { useCallback, useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
 
 import { isElectron } from "../env";
 import {
@@ -37,6 +37,10 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group";
 import { Select, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { CentralIcon } from "~/lib/central-icons";
 
+import { dialogs } from "~/platform/dialogs";
+import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
+import { focusElementById } from "~/platform/env";
+import { useUniqueId } from "~/hooks/useUniqueId";
 // Inputs share one fixed height + radius so every control in the dialog reads
 // as the same size (mirrors EditProfileDialog's field styling).
 const fieldControlClassName = "h-9 rounded-lg border-foreground/12";
@@ -96,7 +100,7 @@ export function CreateProjectDialog(props: {
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const openedRef = useRef(false);
-  const fieldId = useId();
+  const fieldId = useUniqueId();
   const pathInputId = `${fieldId}-path`;
   const submitButtonId = `${fieldId}-submit`;
   const sourceFolderLabelId = `${fieldId}-source-folder`;
@@ -119,7 +123,7 @@ export function CreateProjectDialog(props: {
     setFormError(null);
     // Deferred a frame: the dialog moves focus itself on open, so focusing the
     // path field has to happen after that lands or it is immediately undone.
-    const frame = requestAnimationFrame(() => document.getElementById(pathInputId)?.focus());
+    const frame = requestAnimationFrame(() => focusElementById(pathInputId));
     return () => cancelAnimationFrame(frame);
   }, [pathInputId, props.activeSpaceId, props.open]);
 
@@ -136,7 +140,7 @@ export function CreateProjectDialog(props: {
       setPickedPath(picked);
       setFormError(null);
       // Land focus on the confirm button so a plain Enter finishes the flow.
-      requestAnimationFrame(() => document.getElementById(submitButtonId)?.focus());
+      requestAnimationFrame(() => focusElementById(submitButtonId));
     },
     [submitButtonId],
   );
@@ -151,7 +155,7 @@ export function CreateProjectDialog(props: {
     setIsPickingFolder(true);
     // No try/finally: the React Compiler skips optimizing components that use it.
     try {
-      const picked = await api.dialogs.pickFolder();
+      const picked = await dialogs.pickFolder();
       if (picked) applyPickedFolder(picked);
     } catch (error) {
       setFormError(error instanceof Error ? error.message : "Unable to open the folder picker.");
@@ -194,15 +198,15 @@ export function CreateProjectDialog(props: {
       }
       applyPickedFolder(dropped.path);
     };
-    window.addEventListener("dragenter", handleDragEnter, true);
-    window.addEventListener("dragover", handleDragOver, true);
-    window.addEventListener("dragleave", handleDragLeave, true);
-    window.addEventListener("drop", handleDrop, true);
+    addWindowEventListener("dragenter", handleDragEnter, true);
+    addWindowEventListener("dragover", handleDragOver, true);
+    addWindowEventListener("dragleave", handleDragLeave, true);
+    addWindowEventListener("drop", handleDrop, true);
     return () => {
-      window.removeEventListener("dragenter", handleDragEnter, true);
-      window.removeEventListener("dragover", handleDragOver, true);
-      window.removeEventListener("dragleave", handleDragLeave, true);
-      window.removeEventListener("drop", handleDrop, true);
+      removeWindowEventListener("dragenter", handleDragEnter, true);
+      removeWindowEventListener("dragover", handleDragOver, true);
+      removeWindowEventListener("dragleave", handleDragLeave, true);
+      removeWindowEventListener("drop", handleDrop, true);
     };
   }, [applyPickedFolder, props.open]);
 

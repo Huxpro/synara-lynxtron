@@ -30,6 +30,7 @@ import { formatWorktreePathForDisplay } from "~/worktreeCleanup";
 import { toastManager } from "../ui/toast";
 import { SettingsListRow, SettingsSection } from "./SettingsPanelPrimitives";
 
+import { dialogs } from "~/platform/dialogs";
 type WorktreeAssociation = {
   worktreePath?: string | null | undefined;
   associatedWorktreePath?: string | null | undefined;
@@ -138,7 +139,7 @@ export function WorktreesSettingsPanel({ active }: { readonly active: boolean })
         .map((thread) => thread.id);
       const linkedActiveThreadCount = linkedThreads.length - linkedArchivedThreadIds.length;
       const linkedConversationCount = linkedThreads.length;
-      const confirmed = await api.dialogs.confirm(
+      const confirmed = await dialogs.confirm(
         linkedConversationCount > 0
           ? [
               `Delete worktree "${displayName}"?`,
@@ -332,7 +333,7 @@ export function ArchivedSettingsPanel({ active }: { readonly active: boolean }) 
     async (threadId: ThreadId, threadTitle: string) => {
       const api = readNativeApi();
       if (!api) return;
-      const confirmed = await api.dialogs.confirm(
+      const confirmed = await dialogs.confirm(
         `Permanently delete "${threadTitle}"?\n\nThis will remove the thread and its conversation history forever.`,
       );
       if (!confirmed) return;

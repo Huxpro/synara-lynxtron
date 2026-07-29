@@ -19,6 +19,7 @@ import {
   shouldPromptForTerminalClose,
 } from "~/lib/terminalCloseConfirmation";
 import { readNativeApi } from "~/nativeApi";
+import { dialogs } from "~/platform/dialogs";
 import { selectThreadTerminalState, useTerminalStateStore } from "~/terminalStateStore";
 import {
   disposeAndCloseTerminalSession,
@@ -86,7 +87,7 @@ export function useTerminalSurfaceController(threadId: ThreadId) {
   const closeTerminal = async (terminalId: string) => {
     const api = readNativeApi();
     const confirmed = await confirmTerminalTabClose({
-      api,
+      dialogs,
       enabled: shouldPromptForTerminalClose({
         confirmationEnabled: settings.confirmTerminalTabClose,
         runningTerminalIds: terminalState.runningTerminalIds,

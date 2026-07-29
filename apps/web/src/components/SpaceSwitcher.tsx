@@ -45,6 +45,7 @@ import {
 import { Menu, MenuGroup, MenuItem } from "./ui/menu";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "./ui/tooltip";
 
+import { getDocumentActiveElement } from "~/platform/env";
 export type SpaceActivityTone = "attention" | "running" | "completed";
 
 /** HTML5 drag payload for filing a project by dropping it onto a space tab. */
@@ -436,7 +437,7 @@ function SpaceSwitcherStrip(props: SpaceSwitcherProps) {
       event.currentTarget.querySelectorAll<HTMLButtonElement>("[data-space-tab]"),
     );
     if (tabs.length === 0) return;
-    const currentIndex = tabs.indexOf(document.activeElement as HTMLButtonElement);
+    const currentIndex = tabs.indexOf(getDocumentActiveElement() as HTMLButtonElement);
     const nextIndex =
       event.key === "Home"
         ? 0

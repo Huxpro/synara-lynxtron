@@ -35,6 +35,7 @@ import {
 import { useWorkspaceStore } from "../workspaceStore";
 import type { useHandleNewThread } from "./useHandleNewThread";
 
+import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
 type NewThreadContext = ReturnType<typeof useHandleNewThread>;
 
 const EMPTY_RECENT_VIEW_ENTRIES: RecentViewDisplayEntry[] = [];
@@ -349,11 +350,11 @@ export function useRecentViewSwitcher(input: UseRecentViewSwitcherInput) {
       commitRecentSwitcherSelection();
     };
 
-    window.addEventListener("keyup", onWindowKeyUp, { capture: true });
-    window.addEventListener("blur", onWindowBlur);
+    addWindowEventListener("keyup", onWindowKeyUp, { capture: true });
+    addWindowEventListener("blur", onWindowBlur);
     return () => {
-      window.removeEventListener("keyup", onWindowKeyUp, { capture: true });
-      window.removeEventListener("blur", onWindowBlur);
+      removeWindowEventListener("keyup", onWindowKeyUp, { capture: true });
+      removeWindowEventListener("blur", onWindowBlur);
     };
   }, [commitRecentSwitcherSelection]);
 

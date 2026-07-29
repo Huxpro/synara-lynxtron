@@ -46,13 +46,24 @@ import {
   normalizeUiDensity as normalizeUiDensityValue,
 } from "./lib/appDensity";
 
+import {
+  DEFAULT_SIDEBAR_PROJECT_SORT_ORDER,
+  DEFAULT_SIDEBAR_THREAD_SORT_ORDER,
+  SIDEBAR_PROJECT_SORT_ORDERS,
+  SIDEBAR_THREAD_SORT_ORDERS,
+} from "./sidebarSortDefaults";
+import {
+  DEFAULT_CHAT_FONT_SIZE_PX,
+  MAX_CHAT_FONT_SIZE_PX,
+  MIN_CHAT_FONT_SIZE_PX,
+  normalizeChatFontSizePx,
+} from "./chatFontSize";
+import { webStorage } from "~/platform/storage";
 const APP_SETTINGS_STORAGE_KEY = "synara:app-settings:v1";
 const SERVER_SETTINGS_MIGRATION_STORAGE_KEY = "synara:server-settings-migrated:v1";
 const MAX_CUSTOM_MODEL_COUNT = 32;
 export const MAX_CUSTOM_MODEL_LENGTH = 256;
-export const MIN_CHAT_FONT_SIZE_PX = 11;
-export const MAX_CHAT_FONT_SIZE_PX = 18;
-export const DEFAULT_CHAT_FONT_SIZE_PX = 12;
+export { MIN_CHAT_FONT_SIZE_PX, MAX_CHAT_FONT_SIZE_PX, DEFAULT_CHAT_FONT_SIZE_PX };
 export const MIN_TERMINAL_FONT_SIZE_PX = 10;
 export const MAX_TERMINAL_FONT_SIZE_PX = 22;
 export const DEFAULT_TERMINAL_FONT_SIZE_PX = 12;
@@ -80,12 +91,11 @@ export const TERMINAL_FONT_FAMILY_SUGGESTIONS: ReadonlyArray<string> = [
 export const TimestampFormat = Schema.Literals(["locale", "12-hour", "24-hour"]);
 export type TimestampFormat = typeof TimestampFormat.Type;
 export const DEFAULT_TIMESTAMP_FORMAT: TimestampFormat = "locale";
-export const SidebarProjectSortOrder = Schema.Literals(["updated_at", "created_at", "manual"]);
+export const SidebarProjectSortOrder = Schema.Literals(SIDEBAR_PROJECT_SORT_ORDERS);
 export type SidebarProjectSortOrder = typeof SidebarProjectSortOrder.Type;
-export const DEFAULT_SIDEBAR_PROJECT_SORT_ORDER: SidebarProjectSortOrder = "manual";
-export const SidebarThreadSortOrder = Schema.Literals(["updated_at", "created_at"]);
+export const SidebarThreadSortOrder = Schema.Literals(SIDEBAR_THREAD_SORT_ORDERS);
 export type SidebarThreadSortOrder = typeof SidebarThreadSortOrder.Type;
-export const DEFAULT_SIDEBAR_THREAD_SORT_ORDER: SidebarThreadSortOrder = "updated_at";
+export { DEFAULT_SIDEBAR_PROJECT_SORT_ORDER, DEFAULT_SIDEBAR_THREAD_SORT_ORDER };
 
 export const UiDensity = Schema.Literals(UI_DENSITY_MODES);
 export type UiDensity = typeof UiDensity.Type;
@@ -435,13 +445,7 @@ export function normalizeCustomModelSlugs(
   return normalizedModels;
 }
 
-export function normalizeChatFontSizePx(value: number | null | undefined): number {
-  if (typeof value !== "number" || !Number.isFinite(value)) {
-    return DEFAULT_CHAT_FONT_SIZE_PX;
-  }
-
-  return Math.min(MAX_CHAT_FONT_SIZE_PX, Math.max(MIN_CHAT_FONT_SIZE_PX, Math.round(value)));
-}
+export { normalizeChatFontSizePx };
 
 export function normalizeTerminalFontSizePx(value: number | null | undefined): number {
   if (typeof value !== "number" || !Number.isFinite(value)) {
@@ -1207,13 +1211,13 @@ export function useAppSettings() {
     if (!serverSettingsQuery.data || serverSettingsMigrationInFlight) {
       return;
     }
-    if (globalThis.localStorage?.getItem(SERVER_SETTINGS_MIGRATION_STORAGE_KEY) === "1") {
+    if (webStorage.getItem(SERVER_SETTINGS_MIGRATION_STORAGE_KEY) === "1") {
       return;
     }
 
     const migrationPatch = buildInitialServerSettingsMigrationPatch(localSettings);
     if (isServerSettingsPatchEmpty(migrationPatch)) {
-      globalThis.localStorage?.setItem(SERVER_SETTINGS_MIGRATION_STORAGE_KEY, "1");
+      webStorage.setItem(SERVER_SETTINGS_MIGRATION_STORAGE_KEY, "1");
       return;
     }
 
@@ -1222,7 +1226,7 @@ export function useAppSettings() {
       .server.updateSettings(migrationPatch)
       .then((nextSettings) => {
         queryClient.setQueryData(serverQueryKeys.settings(), nextSettings);
-        globalThis.localStorage?.setItem(SERVER_SETTINGS_MIGRATION_STORAGE_KEY, "1");
+        webStorage.setItem(SERVER_SETTINGS_MIGRATION_STORAGE_KEY, "1");
       })
       .catch(() => {
         void queryClient.invalidateQueries({ queryKey: serverQueryKeys.settings() });

@@ -15,6 +15,7 @@ import {
   type ServerWorkspacePaths,
 } from "./lib/serverWorkspacePaths";
 
+import { webStorage } from "~/platform/storage";
 interface WorkspacePage {
   id: string;
   title: string;
@@ -297,7 +298,7 @@ export const useWorkspaceStore = create<WorkspaceStoreState>()(
     {
       name: WORKSPACE_STORE_STORAGE_KEY,
       version: 2,
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => webStorage),
       partialize: (state) => ({
         homeDir: state.homeDir,
         chatWorkspaceRoot: state.chatWorkspaceRoot,

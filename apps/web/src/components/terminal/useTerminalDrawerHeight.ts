@@ -7,12 +7,14 @@ import { type PointerEvent as ReactPointerEvent, useEffect, useRef, useState } f
 
 import { DEFAULT_THREAD_TERMINAL_HEIGHT } from "../../types";
 
+import { isBrowser, getViewportHeight } from "~/platform/env";
+import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
 const MIN_DRAWER_HEIGHT = 180;
 const MAX_DRAWER_HEIGHT_RATIO = 0.75;
 
 function maxDrawerHeight(): number {
-  if (typeof window === "undefined") return DEFAULT_THREAD_TERMINAL_HEIGHT;
-  return Math.max(MIN_DRAWER_HEIGHT, Math.floor(window.innerHeight * MAX_DRAWER_HEIGHT_RATIO));
+  if (!isBrowser()) return DEFAULT_THREAD_TERMINAL_HEIGHT;
+  return Math.max(MIN_DRAWER_HEIGHT, Math.floor(getViewportHeight() * MAX_DRAWER_HEIGHT_RATIO));
 }
 
 export function clampTerminalDrawerHeight(height: number): number {
@@ -135,9 +137,9 @@ export function useTerminalDrawerHeight(options: {
         syncHeight(clampedHeight);
       }
     };
-    window.addEventListener("resize", onWindowResize);
+    addWindowEventListener("resize", onWindowResize);
     return () => {
-      window.removeEventListener("resize", onWindowResize);
+      removeWindowEventListener("resize", onWindowResize);
     };
   }, [syncHeight]);
 

@@ -3,7 +3,7 @@
 // Layer: UI logic helper
 // Depends on: Native dialog contract from the app shell.
 
-import type { NativeApi } from "@synara/contracts";
+import type { DialogsPort } from "~/platform/dialogs";
 
 function formatTerminalCloseSubject(terminalTitle: string | null | undefined): string {
   const trimmedTitle = terminalTitle?.trim();
@@ -51,16 +51,16 @@ export function shouldPromptForTerminalClose(options: {
 }
 
 export async function confirmTerminalTabClose(options: {
-  api: Pick<NativeApi, "dialogs"> | null | undefined;
+  dialogs: DialogsPort | null | undefined;
   enabled: boolean;
   terminalTitle: string | null | undefined;
   willDeleteThread?: boolean;
 }): Promise<boolean> {
-  if (!options.enabled || !options.api) {
+  if (!options.enabled || !options.dialogs) {
     return true;
   }
 
-  return options.api.dialogs.confirm(
+  return options.dialogs.confirm(
     buildTerminalCloseConfirmationMessage({
       terminalTitle: options.terminalTitle,
       willDeleteThread: options.willDeleteThread ?? false,

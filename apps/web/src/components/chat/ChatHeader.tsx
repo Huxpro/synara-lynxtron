@@ -62,6 +62,7 @@ import { useOpenFavoriteEditorShortcut } from "~/hooks/useOpenFavoriteEditorShor
 import type { RepoDiffTotals } from "~/hooks/useRepoDiffTotals";
 import { ProviderIcon } from "../ProviderIcon";
 import { ProviderUsageMenuControl } from "../ProviderUsageMenuControl";
+import { ChatSurfaceHeaderIdentity } from "./ChatSurfaceHeaderIdentity";
 import { EnvironmentToggle, type EnvironmentToggleState } from "./environment/EnvironmentToggle";
 
 /**
@@ -269,7 +270,7 @@ function EditorRailTabs(props: {
   // asynchronous (no wasted pre-paint render), which also keeps this component
   // eligible for React Compiler; tab seeding/mirroring is invisible at a tick.
   useEffect(() => {
-    const timeoutId = window.setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       const storedTabs = readEditorRailChatTabs(props.projectId);
       setOpenChatTabs(
         storedTabs.length > 0
@@ -283,22 +284,22 @@ function EditorRailTabs(props: {
             ],
       );
     }, 0);
-    return () => window.clearTimeout(timeoutId);
+    return () => clearTimeout(timeoutId);
   }, [props.activeProvider, props.activeThreadId, props.activeThreadTitle, props.projectId]);
   useEffect(() => {
     if (!props.terminalAvailable) {
       return;
     }
-    const timeoutId = window.setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       setTerminalTabOpen(true);
     }, 0);
-    return () => window.clearTimeout(timeoutId);
+    return () => clearTimeout(timeoutId);
   }, [props.terminalAvailable]);
   useEffect(() => {
     if (props.activeSurface !== "chat") {
       return;
     }
-    const timeoutId = window.setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       const activeChatTab: EditorRailChatTab = {
         id: props.activeThreadId,
         title: props.activeThreadTitle,
@@ -319,7 +320,7 @@ function EditorRailTabs(props: {
         return current.map((thread) => (thread.id === activeChatTab.id ? activeChatTab : thread));
       });
     }, 0);
-    return () => window.clearTimeout(timeoutId);
+    return () => clearTimeout(timeoutId);
   }, [
     props.activeProvider,
     props.activeSurface,
@@ -668,53 +669,41 @@ export function ChatHeader({
               </div>
             ) : null}
             <div className={cn("flex min-w-0 items-center gap-2", editorChatControls && "h-full")}>
-              <div
-                className={cn(
-                  "flex min-w-0 items-center gap-2",
-                  showSidechatTitleChip &&
-                    "rounded-lg bg-secondary py-1 pl-2 pr-1 text-secondary-foreground",
-                )}
-              >
-                {threadIconKind === "none" ? null : (
-                  <span
-                    className="inline-flex size-3.5 shrink-0 items-center justify-center"
-                    title={
-                      threadIconKind === "terminal"
-                        ? "Terminal"
-                        : PROVIDER_DISPLAY_NAMES[activeProvider]
-                    }
-                  >
-                    {threadIconKind === "terminal" ? (
-                      <TerminalIcon className="size-3.5 text-[var(--color-text-accent)]" />
-                    ) : (
-                      renderProviderIcon(activeProvider, "size-3.5")
-                    )}
-                  </span>
-                )}
-                <h2
-                  className="max-w-[clamp(12rem,42vw,36rem)] truncate font-system-ui text-[length:var(--app-font-size-ui,12px)] font-normal text-foreground"
-                  title={activeThreadTitle}
-                  onDoubleClick={() => onRenameThread()}
-                >
-                  {activeThreadTitle}
-                </h2>
-                {showSidechatTitleChip && onCloseThreadPane ? (
-                  <IconButton
-                    variant="chrome"
-                    size="icon-xs"
-                    label="Close selected Side"
-                    tooltip="Close selected Side"
-                    tooltipSide="bottom"
-                    className="size-5 rounded-lg [-webkit-app-region:no-drag] [&_svg]:size-3"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      onCloseThreadPane();
-                    }}
-                  >
-                    <XIcon />
-                  </IconButton>
-                ) : null}
-              </div>
+              <ChatSurfaceHeaderIdentity
+                title={activeThreadTitle}
+                highlighted={showSidechatTitleChip}
+                iconTitle={
+                  threadIconKind === "terminal"
+                    ? "Terminal"
+                    : PROVIDER_DISPLAY_NAMES[activeProvider]
+                }
+                icon={
+                  threadIconKind === "none" ? undefined : threadIconKind === "terminal" ? (
+                    <TerminalIcon className="size-3.5 text-[var(--color-text-accent)]" />
+                  ) : (
+                    renderProviderIcon(activeProvider, "size-3.5")
+                  )
+                }
+                onRename={() => onRenameThread()}
+                suffix={
+                  showSidechatTitleChip && onCloseThreadPane ? (
+                    <IconButton
+                      variant="chrome"
+                      size="icon-xs"
+                      label="Close selected Side"
+                      tooltip="Close selected Side"
+                      tooltipSide="bottom"
+                      className="size-5 rounded-lg [-webkit-app-region:no-drag] [&_svg]:size-3"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        onCloseThreadPane();
+                      }}
+                    >
+                      <XIcon />
+                    </IconButton>
+                  ) : null
+                }
+              />
               {editorChatControls ? (
                 <EditorRailTabs
                   projectId={editorChatControls.projectId}

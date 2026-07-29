@@ -8,15 +8,10 @@
 
 import { ThreadId } from "@synara/contracts";
 import { useNavigate } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useCallback } from "react";
 
 import { SplashScreen } from "./SplashScreen";
-import {
-  type EmptyRouteRestoreRecoveryState,
-  type LastThreadRoute,
-  shouldHoldRememberedRouteFallback,
-  shouldStartRememberedRouteRecovery,
-} from "../chatRouteRestore";
+import type { LastThreadRoute } from "../chatRouteRestore";
 import { readSidebarUiState } from "./Sidebar.uiState";
 import {
   refreshEmptyRouteRestoreSnapshot,
@@ -26,16 +21,17 @@ import type { StartContainerChatResult } from "../lib/startContainerChat";
 import { readNativeApi } from "../nativeApi";
 import { useSplitViewStore } from "../splitViewStore";
 import { EMPTY_THREAD_IDS, useStore } from "../store";
+import {
+  type RestoreRouteResolver,
+  type RestoreRouteResolverInput,
+  useRestoreOrCreateChatRouteController,
+} from "./useRestoreOrCreateChatRoute.logic";
 
-export type RestoreRouteResolverInput = {
-  // Split views currently known to the client. Callers that support split-view restore should
-  // filter their resolved route's `splitViewId` against this set.
-  readonly availableSplitViewIds: ReadonlySet<string>;
-};
+export type { RestoreRouteResolver, RestoreRouteResolverInput };
 
-// Resolves which thread route (if any) this surface should restore to. Returning `null` defers
-// to `createFreshChat` (e.g. because there is a draft to reopen instead of an existing thread).
-export type RestoreRouteResolver = (input: RestoreRouteResolverInput) => LastThreadRoute | null;
+function readLastThreadRoute(): LastThreadRoute | null {
+  return readSidebarUiState().lastThreadRoute;
+}
 
 export function RestoreOrCreateChatRoute({
   resolveRestoreRoute,
@@ -55,132 +51,38 @@ export function RestoreOrCreateChatRoute({
   const splitViewIds = Object.keys(splitViewsById).filter(
     (splitViewId) => splitViewsById[splitViewId],
   );
-  const [attempt, setAttempt] = useState(0);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [emptyRestoreRecoveryState, setEmptyRestoreRecoveryState] =
-    useState<EmptyRouteRestoreRecoveryState>("idle");
-  const mountedRef = useRef(true);
-  const emptyRestoreRecoveryRunRef = useRef(0);
-  // One fresh-chat creation at a time per mount: a dep change mid-create re-runs the effect,
-  // and without this guard the superseded run and the new run could both mint a draft.
-  const createFreshChatInFlightRef = useRef(false);
-
-  useEffect(() => {
-    return () => {
-      mountedRef.current = false;
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!(threadIds.length > 0 && emptyRestoreRecoveryState !== "idle")) {
-      return;
-    }
-    // Timeout-0 keeps the state write asynchronous (compiler-eligible); the
-    // recovery machine only gates async restore flows.
-    const timeoutId = window.setTimeout(() => {
-      emptyRestoreRecoveryRunRef.current += 1;
-      setEmptyRestoreRecoveryState("idle");
-    }, 0);
-    return () => window.clearTimeout(timeoutId);
-  }, [emptyRestoreRecoveryState, threadIds.length]);
-
-  useEffect(() => {
-    if (!threadsHydrated || !splitViewsHydrated) {
-      return;
-    }
-
-    let cancelled = false;
-
-    void (async () => {
-      // Yield one microtask so every state write below happens asynchronously
-      // (no wasted pre-paint render; keeps the component compiler-eligible).
-      await Promise.resolve();
-      if (cancelled) {
-        return;
-      }
-      setErrorMessage(null);
-      const lastThreadRoute = readSidebarUiState().lastThreadRoute;
-      if (
-        shouldStartRememberedRouteRecovery({
-          lastThreadRoute,
-          availableThreadCount: threadIds.length,
-          recoveryState: emptyRestoreRecoveryState,
-        })
-      ) {
-        const recoveryRun = (emptyRestoreRecoveryRunRef.current += 1);
-        setEmptyRestoreRecoveryState("pending");
-        await Promise.all([
-          refreshEmptyRouteRestoreSnapshot(readNativeApi()).catch(() => false),
-          waitForEmptyRouteRestoreFallbackDelay(),
-        ]);
-        if (mountedRef.current && emptyRestoreRecoveryRunRef.current === recoveryRun) {
-          setEmptyRestoreRecoveryState("done");
-        }
-        return;
-      }
-
-      if (
-        shouldHoldRememberedRouteFallback({
-          lastThreadRoute,
-          availableThreadCount: threadIds.length,
-          recoveryState: emptyRestoreRecoveryState,
-        })
-      ) {
-        return;
-      }
-
-      const restorableRoute = resolveRestoreRoute({
-        availableSplitViewIds: new Set(splitViewIds),
+  const navigateToRoute = useCallback(
+    async (route: LastThreadRoute) => {
+      await navigate({
+        to: "/$threadId",
+        params: { threadId: ThreadId.makeUnsafe(route.threadId) },
+        replace: true,
+        search: () => ({ splitViewId: route.splitViewId }),
       });
-      if (restorableRoute) {
-        if (cancelled) {
-          return;
-        }
-        await navigate({
-          to: "/$threadId",
-          params: { threadId: ThreadId.makeUnsafe(restorableRoute.threadId) },
-          replace: true,
-          search: () => ({
-            splitViewId: restorableRoute.splitViewId,
-          }),
-        });
-        return;
-      }
-
-      if (cancelled || createFreshChatInFlightRef.current) {
-        return;
-      }
-      createFreshChatInFlightRef.current = true;
-      // .finally instead of try/finally: React Compiler does not yet support
-      // try/finally and would skip optimizing this whole component.
-      const result: StartContainerChatResult = await createFreshChat().finally(() => {
-        createFreshChatInFlightRef.current = false;
-      });
-      if (cancelled || result.ok) {
-        return;
-      }
-      setErrorMessage(result.error);
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [
-    attempt,
-    createFreshChat,
-    emptyRestoreRecoveryState,
-    navigate,
-    resolveRestoreRoute,
-    splitViewIds,
-    splitViewsHydrated,
-    threadIds.length,
+    },
+    [navigate],
+  );
+  const refreshEmptySnapshot = useCallback(
+    () => refreshEmptyRouteRestoreSnapshot(readNativeApi()).catch(() => false),
+    [],
+  );
+  const { errorMessage, retry } = useRestoreOrCreateChatRouteController({
     threadsHydrated,
-  ]);
+    threadIds,
+    splitViewsHydrated,
+    splitViewIds,
+    readLastThreadRoute,
+    resolveRestoreRoute,
+    navigateToRoute,
+    createFreshChat: createFreshChat as () => Promise<StartContainerChatResult>,
+    refreshEmptySnapshot,
+    waitForFallbackDelay: waitForEmptyRouteRestoreFallbackDelay,
+  });
 
   return (
     <SplashScreen
       errorMessage={errorMessage}
-      onRetry={errorMessage ? () => setAttempt((value) => value + 1) : null}
+      onRetry={retry}
     />
   );
 }

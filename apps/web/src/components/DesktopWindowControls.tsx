@@ -4,7 +4,9 @@ import type { DesktopWindowState } from "@synara/contracts";
 
 import { isElectron } from "~/env";
 import { cn, isWindowsPlatform } from "~/lib/utils";
+import { platformWindow } from "~/platform/window";
 
+import { getNavigatorPlatform } from "~/platform/env";
 const DEFAULT_WINDOW_STATE: DesktopWindowState = {
   isMaximized: false,
   isFullscreen: false,
@@ -44,26 +46,26 @@ function CaptionGlyph({ glyph }: { glyph: string }) {
 
 export function DesktopWindowControls({ className }: { className?: string }) {
   const [windowState, setWindowState] = useState<DesktopWindowState>(DEFAULT_WINDOW_STATE);
-  const platform = typeof navigator === "undefined" ? "" : navigator.platform;
+  const platform = getNavigatorPlatform();
   const isWindowsDesktop = isWindowsPlatform(platform);
-  const controls = typeof window === "undefined" ? undefined : window.desktopBridge?.windowControls;
+  const controlsAvailable = platformWindow.hasWindowControls();
 
   useEffect(() => {
-    if (!controls) return;
+    if (!controlsAvailable) return;
     let cancelled = false;
 
-    void controls.getState().then((state) => {
-      if (!cancelled) setWindowState(state);
+    void platformWindow.getWindowState().then((state) => {
+      if (!cancelled && state) setWindowState(state);
     });
-    const unsubscribe = controls.onState(setWindowState);
+    const unsubscribe = platformWindow.onWindowState(setWindowState);
 
     return () => {
       cancelled = true;
       unsubscribe();
     };
-  }, [controls]);
+  }, [controlsAvailable]);
 
-  if (!isElectron || !isWindowsDesktop || !controls) {
+  if (!isElectron || !isWindowsDesktop || !controlsAvailable) {
     return null;
   }
 
@@ -77,7 +79,7 @@ export function DesktopWindowControls({ className }: { className?: string }) {
         title="Minimize"
         className={CAPTION_BUTTON_CLASS}
         onClick={() => {
-          void controls.minimize();
+          void platformWindow.minimize();
         }}
       >
         <CaptionGlyph glyph={GLYPH_MINIMIZE} />
@@ -88,7 +90,9 @@ export function DesktopWindowControls({ className }: { className?: string }) {
         title={isMaximized ? "Restore" : "Maximize"}
         className={CAPTION_BUTTON_CLASS}
         onClick={() => {
-          void controls.toggleMaximize().then(setWindowState);
+          void platformWindow.toggleMaximize().then((state) => {
+            if (state) setWindowState(state);
+          });
         }}
       >
         <CaptionGlyph glyph={isMaximized ? GLYPH_RESTORE : GLYPH_MAXIMIZE} />
@@ -99,7 +103,7 @@ export function DesktopWindowControls({ className }: { className?: string }) {
         title="Close"
         className={cn(CAPTION_BUTTON_CLASS, CLOSE_BUTTON_CLASS)}
         onClick={() => {
-          void controls.close();
+          void platformWindow.close();
         }}
       >
         <CaptionGlyph glyph={GLYPH_CLOSE} />

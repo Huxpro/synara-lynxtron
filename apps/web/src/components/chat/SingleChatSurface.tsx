@@ -227,11 +227,11 @@ export function SingleChatSurface(props: {
     // Re-seed editor view state from storage asynchronously so the reset is not a
     // synchronous setState in the effect body; both setters are user-mutable
     // elsewhere, so deriving here would mean stamping the thread key in every one.
-    const timer = window.setTimeout(() => {
+    const timer = setTimeout(() => {
       setEditorExpandedDirectories(new Set(persisted?.expandedDirectories ?? []));
       setEditorCenterMode(props.search.editorFilePath ? "file" : (persisted?.centerMode ?? "diff"));
     }, 0);
-    return () => window.clearTimeout(timer);
+    return () => clearTimeout(timer);
   }, [props.search.editorFilePath, props.threadId]);
   const editorViewActive = props.search.view === "editor";
   useEffect(() => {
@@ -814,7 +814,7 @@ export function SingleChatSurface(props: {
 
     // Auto-expand the ancestors a tick later so this is not a synchronous setState
     // in the effect body; the functional update still merges with any user toggles.
-    const expandTimer = window.setTimeout(() => {
+    const expandTimer = setTimeout(() => {
       setEditorExpandedDirectories((previous) => {
         let changed = false;
         const next = new Set(previous);
@@ -827,7 +827,7 @@ export function SingleChatSurface(props: {
         return changed ? next : previous;
       });
     }, 0);
-    return () => window.clearTimeout(expandTimer);
+    return () => clearTimeout(expandTimer);
   }, [workspaceRoot, queryClient, selectedEditorFilePath]);
 
   const editorChatPanelState: SplitViewPanePanelState = {

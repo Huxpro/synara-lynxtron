@@ -6,6 +6,8 @@
 import type { ProjectId, ProviderKind, ThreadId } from "@synara/contracts";
 import { isProviderKind } from "./providerOrdering";
 
+import { webStorage } from "~/platform/storage";
+import { isBrowser } from "~/platform/env";
 const EDITOR_VIEW_STATE_STORAGE_KEY = "synara.editor.viewStateByThreadId";
 const EDITOR_RAIL_CHAT_TABS_STORAGE_KEY = "synara.editor.railChatTabsByProjectId";
 const MAX_PERSISTED_THREADS = 50;
@@ -31,11 +33,11 @@ export interface EditorRailChatTabSnapshot {
 type PersistedEditorRailChatTabsMap = Record<string, ReadonlyArray<EditorRailChatTabSnapshot>>;
 
 function readPersistedMap(): PersistedEditorViewStateMap {
-  if (typeof window === "undefined") {
+  if (!isBrowser()) {
     return {};
   }
   try {
-    const raw = window.localStorage.getItem(EDITOR_VIEW_STATE_STORAGE_KEY);
+    const raw = webStorage.getItem(EDITOR_VIEW_STATE_STORAGE_KEY);
     const parsed: unknown = raw === null ? null : JSON.parse(raw);
     if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
       return {};
@@ -60,7 +62,7 @@ export function readEditorViewState(threadId: string): EditorViewStateSnapshot |
 }
 
 export function storeEditorViewState(threadId: string, snapshot: EditorViewStateSnapshot): void {
-  if (typeof window === "undefined") {
+  if (!isBrowser()) {
     return;
   }
   try {
@@ -75,7 +77,7 @@ export function storeEditorViewState(threadId: string, snapshot: EditorViewState
           delete map[staleThreadId];
         });
     }
-    window.localStorage.setItem(EDITOR_VIEW_STATE_STORAGE_KEY, JSON.stringify(map));
+    webStorage.setItem(EDITOR_VIEW_STATE_STORAGE_KEY, JSON.stringify(map));
   } catch {
     // Best-effort preference persistence only.
   }
@@ -104,11 +106,11 @@ function normalizeEditorRailChatTabs(
 }
 
 function readEditorRailChatTabsMap(): PersistedEditorRailChatTabsMap {
-  if (typeof window === "undefined") {
+  if (!isBrowser()) {
     return {};
   }
   try {
-    const raw = window.localStorage.getItem(EDITOR_RAIL_CHAT_TABS_STORAGE_KEY);
+    const raw = webStorage.getItem(EDITOR_RAIL_CHAT_TABS_STORAGE_KEY);
     const parsed: unknown = raw === null ? null : JSON.parse(raw);
     if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
       return {};
@@ -158,7 +160,7 @@ export function storeEditorRailChatTabs(
   projectId: ProjectId,
   tabs: ReadonlyArray<EditorRailChatTabSnapshot>,
 ): void {
-  if (typeof window === "undefined") {
+  if (!isBrowser()) {
     return;
   }
   try {
@@ -169,7 +171,7 @@ export function storeEditorRailChatTabs(
     } else {
       map[projectId] = normalizedTabs;
     }
-    window.localStorage.setItem(EDITOR_RAIL_CHAT_TABS_STORAGE_KEY, JSON.stringify(map));
+    webStorage.setItem(EDITOR_RAIL_CHAT_TABS_STORAGE_KEY, JSON.stringify(map));
   } catch {
     // Best-effort preference persistence only.
   }

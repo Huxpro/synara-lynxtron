@@ -3,7 +3,7 @@
 //          folders while always creating chats as rows inside the shared Chats container.
 // Layer: Chat / empty-state entrypoint
 
-import { Fragment, memo, useCallback, useDeferredValue, useEffect, useMemo, useState } from "react";
+import { Fragment, memo, useCallback, useEffect, useMemo, useState } from "react";
 import { type ProjectDirectoryEntry, type ProjectId, type SpaceId } from "@synara/contracts";
 import { readNativeApi } from "../../nativeApi";
 import { useStore } from "../../store";
@@ -30,6 +30,8 @@ import {
 import { useWorkspaceStore } from "../../workspaceStore";
 import { useSpacesUiStore } from "../../spacesUiStore";
 
+import { dialogs } from "~/platform/dialogs";
+import { useDebouncedValue } from "@tanstack/react-pacer";
 interface ProjectPickerProps {
   align?: "start" | "center" | "end";
   side?: "top" | "bottom";
@@ -112,7 +114,7 @@ export const ProjectPicker = memo(function ProjectPicker({
   const homeDir = useWorkspaceStore((state) => state.homeDir);
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const deferredQuery = useDeferredValue(query);
+  const [deferredQuery] = useDebouncedValue(query, { wait: 100 });
   const [isPicking, setIsPicking] = useState(false);
   const [isLoadingDirectories, setIsLoadingDirectories] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -323,7 +325,7 @@ export const ProjectPicker = memo(function ProjectPicker({
     // Timeout-0 keeps every state write asynchronous (no wasted pre-paint
     // render), which also keeps this component eligible for React Compiler.
     let cancelled = false;
-    const timeoutId = window.setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       if (cancelled) return;
       const api = readNativeApi();
       if (!api) {
@@ -360,7 +362,7 @@ export const ProjectPicker = memo(function ProjectPicker({
     }, 0);
     return () => {
       cancelled = true;
-      window.clearTimeout(timeoutId);
+      clearTimeout(timeoutId);
     };
   }, [directoryEntries.length, homeDir, isLoadingDirectories, isProjectSelectionMode, open]);
 
@@ -399,7 +401,7 @@ export const ProjectPicker = memo(function ProjectPicker({
     setIsPicking(true);
     setErrorMessage(null);
     try {
-      const pickedPath = await api.dialogs.pickFolder();
+      const pickedPath = await dialogs.pickFolder();
       if (!pickedPath) {
         setIsPicking(false);
         return;

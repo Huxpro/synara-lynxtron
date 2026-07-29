@@ -21,6 +21,8 @@ import { useIsMobile } from "~/hooks/useMediaQuery";
 import { getLocalStorageItem, setLocalStorageItem } from "~/hooks/useLocalStorage";
 import { Schema } from "effect";
 
+import { isBrowser } from "~/platform/env";
+import { raf, cancelRaf } from "~/platform/frame";
 const SIDEBAR_COOKIE_NAME = "sidebar_state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
 const SIDEBAR_WIDTH = "16rem";
@@ -467,12 +469,12 @@ function SidebarRail({
         return;
       }
       if (resizeState.rafId !== null) {
-        window.cancelAnimationFrame(resizeState.rafId);
+        cancelRaf(resizeState.rafId);
       }
       resizeState.transitionTargets.forEach((element) => {
         element.style.removeProperty("transition-duration");
       });
-      if (resolvedResizable?.storageKey && typeof window !== "undefined") {
+      if (resolvedResizable?.storageKey && isBrowser()) {
         setLocalStorageItem(resolvedResizable.storageKey, resizeState.width, Schema.Finite);
       }
       resolvedResizable?.onResize?.(resizeState.width);
@@ -565,7 +567,7 @@ function SidebarRail({
         return;
       }
 
-      resizeState.rafId = window.requestAnimationFrame(() => {
+      resizeState.rafId = raf(() => {
         const activeResizeState = resizeStateRef.current;
         if (!activeResizeState || !resolvedResizable) return;
 
@@ -631,7 +633,7 @@ function SidebarRail({
   };
 
   React.useEffect(() => {
-    if (!resolvedResizable?.storageKey || typeof window === "undefined") return;
+    if (!resolvedResizable?.storageKey || !isBrowser()) return;
     const rail = railRef.current;
     if (!rail) return;
     const wrapper = rail.closest<HTMLElement>("[data-slot='sidebar-wrapper']");
@@ -648,7 +650,7 @@ function SidebarRail({
     return () => {
       const resizeState = resizeStateRef.current;
       if (resizeState?.rafId != null) {
-        window.cancelAnimationFrame(resizeState.rafId);
+        cancelRaf(resizeState.rafId);
       }
       resizeState?.transitionTargets.forEach((element) => {
         element.style.removeProperty("transition-duration");

@@ -1,4 +1,4 @@
-import { Kbd, KbdGroup } from "./kbd";
+import { Kbd, KbdGroup } from "~/components/ui/kbd";
 import { splitShortcutLabel } from "../../keybindings";
 import { cn } from "~/lib/utils";
 

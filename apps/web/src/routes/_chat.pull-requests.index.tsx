@@ -10,7 +10,7 @@ import {
 } from "@synara/shared/githubRepository";
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { lazy, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 
 import {
   CHAT_SURFACE_HEADER_DIVIDER_CLASS_NAME,
@@ -78,6 +78,8 @@ import {
 import { useStore } from "~/store";
 import { PR_FINE_TEXT_CLASS_NAME } from "~/components/pullRequest/pullRequestText";
 
+import { getDocumentActiveElement, getDocument } from "~/platform/env";
+import { useDebouncedValue } from "@tanstack/react-pacer";
 export interface PullRequestsSearch {
   involvement: PullRequestInvolvement;
   state: PullRequestState;
@@ -243,7 +245,7 @@ function PullRequestsRouteView() {
   // Multi-project result sets can be large. Keep typing responsive while React catches the
   // filtered rows up in a lower-priority render; virtualization can wait for measured need.
   const normalizedQuery = search.q?.trim().toLowerCase() ?? "";
-  const query = useDeferredValue(normalizedQuery);
+  const [query] = useDebouncedValue(normalizedQuery, { wait: 100 });
   const entries = useMemo(
     () =>
       orderPullRequestEntriesPinnedFirst(
@@ -285,25 +287,25 @@ function PullRequestsRouteView() {
     if (!selectedInput) return;
     // Timeout-0 keeps the state write asynchronous (compiler-eligible); the
     // detail panel animates in over 300ms, so one macrotask is invisible.
-    const timeout = window.setTimeout(() => setRenderedInput(selectedInput), 0);
-    return () => window.clearTimeout(timeout);
+    const timeout = setTimeout(() => setRenderedInput(selectedInput), 0);
+    return () => clearTimeout(timeout);
     // selectedInput is a fresh object literal every render; depend on its primitive
     // fields instead so this only re-fires when the actual selection changes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search.selectedProjectId, search.selectedRepo, search.number]);
   useEffect(() => {
     if (detailOpen) return;
-    const timeout = window.setTimeout(() => setRenderedInput(null), 300);
-    return () => window.clearTimeout(timeout);
+    const timeout = setTimeout(() => setRenderedInput(null), 300);
+    return () => clearTimeout(timeout);
   }, [detailOpen]);
 
   const closeDetail = useCallback(() => {
-    const focusWasInsideDock = isFocusInsideRightDock(document.activeElement);
+    const focusWasInsideDock = isFocusInsideRightDock(getDocumentActiveElement());
     const rowToRestore = selectedInput;
     updateSearch(CLEARED_SELECTION);
     if (focusWasInsideDock && rowToRestore) {
       requestAnimationFrame(() => {
-        focusPullRequestRow(document, rowToRestore);
+        focusPullRequestRow(getDocument()!, rowToRestore);
       });
     }
   }, [selectedInput, updateSearch]);

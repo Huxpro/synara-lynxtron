@@ -52,6 +52,8 @@ import { useStore } from "../store";
 import { useTerminalStateStore } from "../terminalStateStore";
 import { toastManager } from "./ui/toast";
 
+import { getDesktopBridge } from "~/platform/desktopBridge";
+import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
 const MAX_REMEMBERED_CAPTURE_IDS = 100;
 
 interface PersistedAppSnapHydrationTarget {
@@ -284,11 +286,11 @@ export function AppSnapCoordinator() {
       const target = focusedTargetRef.current;
       if (target) lastInteractionRef.current = { ...target, atMs: Date.now() };
     };
-    window.addEventListener("pointerdown", recordInteraction, { capture: true });
-    window.addEventListener("keydown", recordInteraction, { capture: true });
+    addWindowEventListener("pointerdown", recordInteraction, { capture: true });
+    addWindowEventListener("keydown", recordInteraction, { capture: true });
     return () => {
-      window.removeEventListener("pointerdown", recordInteraction, { capture: true });
-      window.removeEventListener("keydown", recordInteraction, { capture: true });
+      removeWindowEventListener("pointerdown", recordInteraction, { capture: true });
+      removeWindowEventListener("keydown", recordInteraction, { capture: true });
     };
   }, []);
 
@@ -300,7 +302,7 @@ export function AppSnapCoordinator() {
     settings.appSnapShortcut.kind === "key-chord" ? settings.appSnapShortcut.key : null;
 
   useEffect(() => {
-    const bridge = window.desktopBridge?.appSnap;
+    const bridge = getDesktopBridge()?.appSnap;
     if (!bridge) return;
     const shortcut: DesktopAppSnapShortcut =
       shortcutModifier && shortcutKey
@@ -489,7 +491,7 @@ export function AppSnapCoordinator() {
   }, [attachCapture]);
 
   useEffect(() => {
-    const bridge = window.desktopBridge?.appSnap;
+    const bridge = getDesktopBridge()?.appSnap;
     if (!bridge) return;
     let disposed = false;
 

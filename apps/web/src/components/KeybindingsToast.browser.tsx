@@ -30,6 +30,7 @@ import {
 import { createBrowserTestServerConfig, createFullscreenTestHost } from "../test/browserHarness";
 import { resetWsNativeApiForTest } from "../wsNativeApi";
 
+import { webStorage } from "~/platform/storage";
 const THREAD_ID = "thread-kb-toast-test" as ThreadId;
 const PROJECT_ID = "project-1" as ProjectId;
 const NOW_ISO = "2026-03-04T12:00:00.000Z";
@@ -339,7 +340,7 @@ describe("Keybindings update toast", () => {
 
   beforeEach(async () => {
     await resetWsNativeApiForTest();
-    localStorage.clear();
+    webStorage.clear();
     document.body.innerHTML = "";
     serverConfigStreamClient = null;
     serverConfigStreamRequestId = null;

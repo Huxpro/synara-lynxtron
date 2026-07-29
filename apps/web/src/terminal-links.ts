@@ -1,5 +1,6 @@
 import { isMacPlatform } from "./lib/utils";
 
+import { getNavigatorPlatform } from "~/platform/env";
 export type TerminalLinkKind = "url" | "path";
 
 export interface TerminalLinkMatch {
@@ -258,7 +259,7 @@ export function wrappedTerminalLinkRangeIntersectsBufferLine(
 
 export function isTerminalLinkActivation(
   event: Pick<MouseEvent, "metaKey" | "ctrlKey">,
-  platform = typeof navigator === "undefined" ? "" : navigator.platform,
+  platform = getNavigatorPlatform(),
 ): boolean {
   if (platform.length === 0) return false;
   return isMacPlatform(platform)

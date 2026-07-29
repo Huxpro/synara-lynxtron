@@ -263,10 +263,10 @@ export function useSidebarProjectRunController(input: {
   useEffect(() => {
     if (dialogProjectId === null) return;
     const defaultCommand = commandByProjectIdRef.current.get(dialogProjectId)?.command ?? "";
-    const settle = window.setTimeout(() => {
+    const settle = setTimeout(() => {
       setDialogCommandDraft(defaultCommand);
     }, 0);
-    return () => window.clearTimeout(settle);
+    return () => clearTimeout(settle);
   }, [dialogProjectId]);
   const confirmProjectRun = useCallback(() => {
     if (!dialogProjectId) return;

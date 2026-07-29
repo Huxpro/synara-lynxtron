@@ -25,6 +25,9 @@ import {
   type TranscriptAssistantSelection,
 } from "./chatSelectionActions";
 
+import { raf } from "~/platform/frame";
+import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
+import { clearWindowSelection, onDocumentSelectionChange } from "./chatSelectionDom";
 export interface PendingTranscriptSelectionAction {
   selection: TranscriptAssistantSelection;
   left: number;
@@ -149,7 +152,7 @@ export function useTranscriptAssistantSelectionAction(
     const container = event.currentTarget;
     const clientX = event.clientX;
     const clientY = event.clientY;
-    window.requestAnimationFrame(() => {
+    raf(() => {
       if (!enabled || !container) {
         setPendingTranscriptSelectionAction(null);
         return;
@@ -189,7 +192,7 @@ export function useTranscriptAssistantSelectionAction(
       !canReferenceAssistantSelection(pendingSelection.selection)
     ) {
       setPendingTranscriptSelectionAction(null);
-      window.getSelection()?.removeAllRanges();
+      clearWindowSelection();
       return;
     }
 
@@ -222,7 +225,7 @@ export function useTranscriptAssistantSelectionAction(
     const inserted = addComposerAssistantSelectionToDraft(nextSelection);
     setPendingTranscriptSelectionAction(null);
     if (inserted) {
-      window.getSelection()?.removeAllRanges();
+      clearWindowSelection();
       scheduleComposerFocus();
     }
   };
@@ -246,13 +249,13 @@ export function useTranscriptAssistantSelectionAction(
       setPendingTranscriptSelectionAction(null);
     };
 
-    window.addEventListener("pointerdown", handlePointerDown);
-    window.addEventListener("resize", handleWindowChange);
-    document.addEventListener("selectionchange", handleWindowChange);
+    addWindowEventListener("pointerdown", handlePointerDown);
+    addWindowEventListener("resize", handleWindowChange);
+    const removeSelectionListener = onDocumentSelectionChange(handleWindowChange);
     return () => {
-      window.removeEventListener("pointerdown", handlePointerDown);
-      window.removeEventListener("resize", handleWindowChange);
-      document.removeEventListener("selectionchange", handleWindowChange);
+      removeWindowEventListener("pointerdown", handlePointerDown);
+      removeWindowEventListener("resize", handleWindowChange);
+      removeSelectionListener();
     };
   }, [pendingTranscriptSelectionAction]);
 

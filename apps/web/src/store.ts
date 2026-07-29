@@ -38,6 +38,8 @@ import {
 import { initialState, type AppState } from "./storeState";
 import type { Project, ThreadWorkspacePatch } from "./types";
 
+import { isBrowser } from "~/platform/env";
+import { addWindowEventListener } from "~/platform/events";
 type ReadModelThread = OrchestrationReadModel["threads"][number];
 
 export type { AppState } from "./storeState";
@@ -327,8 +329,8 @@ useStore.subscribe((state) => {
 });
 
 // Flush pending writes synchronously before page unload to prevent data loss.
-if (typeof window !== "undefined") {
-  window.addEventListener("beforeunload", () => {
+if (isBrowser()) {
+  addWindowEventListener("beforeunload", () => {
     persistAppStateNow();
   });
 }

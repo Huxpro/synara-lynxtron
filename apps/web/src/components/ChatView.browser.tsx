@@ -34,7 +34,7 @@ import { type ComposerImageAttachment, useComposerDraftStore } from "../composer
 import {
   AUTO_SCROLL_BOTTOM_THRESHOLD_PX,
   getScrollContainerDistanceFromBottom,
-} from "../chat-scroll";
+} from "~/platform/scroll";
 import { useLatestProjectStore } from "../latestProjectStore";
 import {
   INLINE_TERMINAL_CONTEXT_PLACEHOLDER,
@@ -42,7 +42,7 @@ import {
   removeInlineTerminalContextPlaceholder,
 } from "../lib/terminalContext";
 import { isMacPlatform } from "../lib/utils";
-import { readNativeApi } from "../nativeApi";
+import { readNativeApi, setNativeApiForTest } from "../nativeApi";
 import { resetHomeChatProjectPrewarmStateForTests } from "../lib/chatProjects";
 import { resetStudioProjectPrewarmStateForTests } from "../lib/studioProjects";
 import { getRouter } from "../router";
@@ -66,6 +66,10 @@ import { resetWsNativeApiForTest } from "../wsNativeApi";
 import "./ChatView";
 import { estimateTimelineMessageHeight } from "./timelineHeight";
 
+import { webStorage } from "~/platform/storage";
+import { getNavigatorPlatform } from "~/platform/env";
+import { raf } from "~/platform/frame";
+import { dispatchWindowEvent } from "~/platform/events";
 const THREAD_ID = "thread-browser-test" as ThreadId;
 const OTHER_THREAD_ID = "thread-browser-test-other" as ThreadId;
 const THREAD_TITLE = "Browser test thread";
@@ -1146,15 +1150,12 @@ function resolveWsRpc(body: WsRequestEnvelope["body"]): unknown {
 }
 
 function installDeterministicSendNativeApi(): () => void {
-  const previousNativeApi = window.nativeApi;
-  const wsNativeApi = readNativeApi();
+    const wsNativeApi = readNativeApi();
   if (!wsNativeApi) {
     throw new Error("Expected browser native API fixture.");
   }
 
-  Object.defineProperty(window, "nativeApi", {
-    configurable: true,
-    value: {
+  setNativeApiForTest({
       ...wsNativeApi,
       git: {
         ...wsNativeApi.git,
@@ -1200,18 +1201,10 @@ function installDeterministicSendNativeApi(): () => void {
           return { sequence: fixture.snapshot.snapshotSequence + 1 };
         },
       },
-    },
-  });
+    });
 
   return () => {
-    if (previousNativeApi) {
-      Object.defineProperty(window, "nativeApi", {
-        configurable: true,
-        value: previousNativeApi,
-      });
-    } else {
-      Reflect.deleteProperty(window, "nativeApi");
-    }
+    setNativeApiForTest(undefined);
   };
 }
 
@@ -1324,7 +1317,7 @@ const worker = setupWorker(
 
 async function nextFrame(): Promise<void> {
   await new Promise<void>((resolve) => {
-    window.requestAnimationFrame(() => resolve());
+    raf(() => resolve());
   });
 }
 
@@ -1441,7 +1434,7 @@ async function waitForServerConfigToApply(): Promise<void> {
 }
 
 function dispatchComposerPickerShortcut(target: EventTarget, key: "m" | "e"): void {
-  const useMetaForMod = isMacPlatform(navigator.platform);
+  const useMetaForMod = isMacPlatform(getNavigatorPlatform());
   target.dispatchEvent(
     new KeyboardEvent("keydown", {
       key,
@@ -1482,7 +1475,7 @@ function dispatchConfiguredShortcut(
   target: EventTarget,
   input: { key: string; shiftKey?: boolean; altKey?: boolean },
 ): void {
-  const useMetaForMod = isMacPlatform(navigator.platform);
+  const useMetaForMod = isMacPlatform(getNavigatorPlatform());
   target.dispatchEvent(
     new KeyboardEvent("keydown", {
       key: input.key,
@@ -1503,7 +1496,7 @@ function dispatchComposerFocusToggleShortcut(): KeyboardEvent {
     bubbles: true,
     cancelable: true,
   });
-  window.dispatchEvent(event);
+  dispatchWindowEvent(event);
   return event;
 }
 
@@ -1528,8 +1521,8 @@ function dispatchTerminalThreadShortcut(): void {
 }
 
 function dispatchThreadShortcut(key: string): void {
-  const useMetaForMod = isMacPlatform(navigator.platform);
-  window.dispatchEvent(
+  const useMetaForMod = isMacPlatform(getNavigatorPlatform());
+  dispatchWindowEvent(
     new KeyboardEvent("keydown", {
       key,
       shiftKey: true,
@@ -1827,7 +1820,7 @@ describe("ChatView timeline estimator parity (full app)", () => {
     await setViewport(DEFAULT_VIEWPORT);
     attachmentResponseDelayMs = 0;
     attachmentUploadSequence = 0;
-    localStorage.clear();
+    webStorage.clear();
     useLatestProjectStore.setState({ latestProjectId: null });
     document.body.innerHTML = "";
     wsRequests.length = 0;
@@ -2267,7 +2260,7 @@ describe("ChatView timeline estimator parity (full app)", () => {
       }) as typeof scrollContainer.scrollTo;
       // Let mount-time tail/image expansion retries (max 260ms) settle before
       // isolating scrolls caused by the state transitions below.
-      await new Promise<void>((resolve) => window.setTimeout(resolve, 300));
+      await new Promise<void>((resolve) => setTimeout(resolve, 300));
       await waitForLayout();
       scrollToCalls.length = 0;
 
@@ -2986,7 +2979,7 @@ describe("ChatView timeline estimator parity (full app)", () => {
         useComposerDraftStore.getState().draftsByThreadId[THREAD_ID]?.interactionMode ?? "default";
       expect(readInteractionMode()).toBe("default");
 
-      window.dispatchEvent(
+      dispatchWindowEvent(
         new KeyboardEvent("keydown", {
           key: "Tab",
           shiftKey: true,
@@ -4109,7 +4102,7 @@ describe("ChatView timeline estimator parity (full app)", () => {
       // A superseded navigation resolves the older navigate() promise before the newer route has
       // committed. Give route effects enough time to expose a late Home redirect, then assert the
       // stable final state and cleanup of the displaced Studio draft.
-      await new Promise<void>((resolve) => window.setTimeout(resolve, 100));
+      await new Promise<void>((resolve) => setTimeout(resolve, 100));
       await vi.waitFor(
         () => {
           const state = useComposerDraftStore.getState();
@@ -4290,8 +4283,7 @@ describe("ChatView timeline estimator parity (full app)", () => {
         targetText: "project picker new test",
       }),
     });
-    const previousNativeApi = window.nativeApi;
-    const wsNativeApi = readNativeApi();
+        const wsNativeApi = readNativeApi();
     expect(wsNativeApi).toBeDefined();
     const pickFolder = vi.fn(async () => "/repo/new-project");
     let createdProjectId: ProjectId | null = null;
@@ -4308,9 +4300,7 @@ describe("ChatView timeline estimator parity (full app)", () => {
       }
       return { sequence: fixture.snapshot.snapshotSequence + 1 };
     });
-    Object.defineProperty(window, "nativeApi", {
-      configurable: true,
-      value: {
+    setNativeApiForTest({
         ...wsNativeApi,
         dialogs: {
           ...wsNativeApi?.dialogs,
@@ -4321,8 +4311,7 @@ describe("ChatView timeline estimator parity (full app)", () => {
           dispatchCommand,
           getShellSnapshot: vi.fn(async () => createShellSnapshotFromReadModel(fixture.snapshot)),
         },
-      },
-    });
+      });
 
     try {
       const newThreadButton = page.getByLabelText("Create new thread in Project");
@@ -4376,14 +4365,7 @@ describe("ChatView timeline estimator parity (full app)", () => {
       );
       expect(mounted.router.state.location.pathname).toBe(newThreadPath);
     } finally {
-      if (previousNativeApi) {
-        Object.defineProperty(window, "nativeApi", {
-          configurable: true,
-          value: previousNativeApi,
-        });
-      } else {
-        Reflect.deleteProperty(window, "nativeApi");
-      }
+      setNativeApiForTest(undefined);
       await mounted.cleanup();
     }
   });
@@ -4543,12 +4525,9 @@ describe("ChatView timeline estimator parity (full app)", () => {
         })),
       },
     });
-    const previousNativeApi = window.nativeApi;
-    const wsNativeApi = readNativeApi();
+        const wsNativeApi = readNativeApi();
     expect(wsNativeApi).toBeDefined();
-    Object.defineProperty(window, "nativeApi", {
-      configurable: true,
-      value: {
+    setNativeApiForTest({
         ...wsNativeApi,
         orchestration: {
           ...wsNativeApi?.orchestration,
@@ -4556,8 +4535,7 @@ describe("ChatView timeline estimator parity (full app)", () => {
             throw new Error("Project creation failed for test.");
           }),
         },
-      },
-    });
+      });
 
     try {
       await page.getByRole("button", { name: "Add project", exact: true }).click();
@@ -4589,14 +4567,7 @@ describe("ChatView timeline estimator parity (full app)", () => {
         .toBeInTheDocument();
     } finally {
       useSpacesUiStore.getState().setActiveSpaceId(null);
-      if (previousNativeApi) {
-        Object.defineProperty(window, "nativeApi", {
-          configurable: true,
-          value: previousNativeApi,
-        });
-      } else {
-        Reflect.deleteProperty(window, "nativeApi");
-      }
+      setNativeApiForTest(undefined);
       await mounted.cleanup();
     }
   });
@@ -5143,7 +5114,7 @@ describe("ChatView timeline estimator parity (full app)", () => {
 
       await newThreadButton.click();
       await new Promise<void>((resolve) => {
-        window.setTimeout(resolve, 64);
+        setTimeout(resolve, 64);
       });
 
       expect(mounted.router.state.location.pathname).toBe(threadPath);
@@ -5897,7 +5868,7 @@ describe("ChatView timeline estimator parity (full app)", () => {
       expect(document.body.textContent).toContain("Used 6 tools");
 
       await new Promise<void>((resolve) => {
-        window.setTimeout(() => resolve(), 260);
+        setTimeout(() => resolve(), 260);
       });
 
       // Once the grace delay lapses the settled turn folds into "Worked for…",
@@ -5918,7 +5889,7 @@ describe("ChatView timeline estimator parity (full app)", () => {
       );
 
       await new Promise<void>((resolve) => {
-        window.setTimeout(() => resolve(), 320);
+        setTimeout(() => resolve(), 320);
       });
 
       // After the close motion finishes, details are only available by opening

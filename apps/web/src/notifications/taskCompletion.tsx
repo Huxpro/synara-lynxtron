@@ -29,24 +29,26 @@ import {
   shouldShowThreadNotificationToast,
 } from "./taskCompletion.logic";
 
+import { isBrowser, isSecureContext, isDocumentVisible, isDocumentFocused, focusWindow, hasNotificationApi } from "~/platform/env";
+import { getDesktopBridge } from "~/platform/desktopBridge";
 export type BrowserNotificationPermissionState =
   | NotificationPermission
   | "unsupported"
   | "insecure";
 
 function isBrowserNotificationSupported(): boolean {
-  return typeof window !== "undefined" && "Notification" in window;
+  return hasNotificationApi();
 }
 
 // Browsers require secure contexts and a user gesture before asking for permission.
 export function readBrowserNotificationPermissionState(): BrowserNotificationPermissionState {
-  if (typeof window === "undefined") {
+  if (!isBrowser()) {
     return "unsupported";
   }
   if (!isBrowserNotificationSupported()) {
     return "unsupported";
   }
-  if (!window.isSecureContext) {
+  if (!isSecureContext()) {
     return "insecure";
   }
   return Notification.permission;
@@ -64,10 +66,10 @@ export async function requestBrowserNotificationPermission(): Promise<BrowserNot
 }
 
 function isWindowForeground(): boolean {
-  if (typeof document === "undefined") {
+  if (!isBrowser()) {
     return true;
   }
-  return document.visibilityState === "visible" && document.hasFocus();
+  return isDocumentVisible() && isDocumentFocused();
 }
 
 interface ThreadNotificationCopy {
@@ -92,12 +94,12 @@ async function showSystemThreadNotification(
 ): Promise<boolean> {
   const { body, title } = copy;
 
-  if (window.desktopBridge) {
-    const supported = await window.desktopBridge.notifications.isSupported();
+  if (getDesktopBridge()) {
+    const supported = await getDesktopBridge().notifications.isSupported();
     if (!supported) {
       return false;
     }
-    return window.desktopBridge.notifications.show({ title, body, silent: false, threadId });
+    return getDesktopBridge().notifications.show({ title, body, silent: false, threadId });
   }
 
   if (readBrowserNotificationPermissionState() !== "granted") {
@@ -109,7 +111,7 @@ async function showSystemThreadNotification(
     tag: `thread-notification:${threadId}`,
   });
   notification.addEventListener("click", () => {
-    window.focus();
+    focusWindow();
     focusThread(threadId, navigate);
   });
   return true;
@@ -163,7 +165,7 @@ export function TaskCompletionNotifications() {
   const readyRef = useRef(false);
 
   useEffect(() => {
-    const onMenuAction = window.desktopBridge?.onMenuAction;
+    const onMenuAction = getDesktopBridge()?.onMenuAction;
     if (typeof onMenuAction !== "function") {
       return;
     }
@@ -231,7 +233,7 @@ export function TaskCompletionNotifications() {
 
     const shouldAttemptSystemNotification =
       settings.enableSystemTaskCompletionNotifications &&
-      (window.desktopBridge ? true : !isWindowForeground());
+      (getDesktopBridge() ? true : !isWindowForeground());
 
     for (const completion of completions) {
       const copy = buildTaskCompletionCopy(completion);

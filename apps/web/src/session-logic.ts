@@ -9,6 +9,10 @@ import {
 import { PROVIDER_DESCRIPTORS } from "@synara/shared/providerMetadata";
 
 import { orderedActivities } from "./workLog";
+import {
+  hasLiveLatestTurn,
+  isLatestTurnSettled,
+} from "./sessionActivity.logic";
 
 import type {
   ChatMessage,
@@ -39,6 +43,10 @@ export {
   type WorkLogSynaraCreatedThread,
   type WorkLogSynaraThreadCreation,
 } from "./workLog";
+export {
+  hasLiveLatestTurn,
+  isLatestTurnSettled,
+} from "./sessionActivity.logic";
 
 export type ProviderPickerKind = ProviderKind;
 
@@ -118,36 +126,6 @@ export function formatElapsed(startIso: string, endIso: string | undefined): str
     return null;
   }
   return formatDuration(endedAt - startedAt);
-}
-
-type LatestTurnTiming = Pick<
-  OrchestrationLatestTurn,
-  "turnId" | "state" | "startedAt" | "completedAt"
->;
-type SessionActivityState = Pick<ThreadSession, "orchestrationStatus" | "activeTurnId">;
-
-export function isLatestTurnSettled(
-  latestTurn: LatestTurnTiming | null,
-  session: SessionActivityState | null,
-): boolean {
-  if (!latestTurn?.startedAt) return false;
-  if (!latestTurn.completedAt) return false;
-  if (latestTurn.state === "interrupted" || latestTurn.state === "error") {
-    return true;
-  }
-  if (!session) return true;
-  if (session.orchestrationStatus === "running") return false;
-  return true;
-}
-
-export function hasLiveLatestTurn(
-  latestTurn: LatestTurnTiming | null,
-  session: SessionActivityState | null,
-): boolean {
-  if (!latestTurn?.startedAt) {
-    return false;
-  }
-  return !isLatestTurnSettled(latestTurn, session);
 }
 
 /**

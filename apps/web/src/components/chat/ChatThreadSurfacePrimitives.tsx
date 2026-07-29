@@ -15,6 +15,7 @@ import { CHAT_SURFACE_HEADER_ROW_CLASS_NAME } from "./chatHeaderControls";
 import { CHAT_BACKGROUND_CLASS_NAME } from "./composerPickerStyles";
 import { cn } from "~/lib/utils";
 
+import { raf, cancelRaf } from "~/platform/frame";
 const DiffPanel = lazy(() => import("../DiffPanel"));
 export const LazyBrowserPanel = lazy(() => import("../BrowserPanel"));
 
@@ -159,12 +160,12 @@ export function DeferredChatView(props: {
     // rAF then stamps the new key once the paint has settled.
     let firstFrame = 0;
     let secondFrame = 0;
-    firstFrame = window.requestAnimationFrame(() => {
-      secondFrame = window.requestAnimationFrame(() => setReadyMountKey(mountKey));
+    firstFrame = raf(() => {
+      secondFrame = raf(() => setReadyMountKey(mountKey));
     });
     return () => {
-      window.cancelAnimationFrame(firstFrame);
-      window.cancelAnimationFrame(secondFrame);
+      cancelRaf(firstFrame);
+      cancelRaf(secondFrame);
     };
   }, [mountKey, props.deferMount]);
 

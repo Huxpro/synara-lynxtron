@@ -1,4 +1,4 @@
-import { type SVGProps, useId } from "react";
+import { type SVGProps } from "react";
 import type { IconType } from "react-icons";
 import {
   SiAndroidstudio,
@@ -19,6 +19,7 @@ import {
 } from "react-icons/si";
 import { AntigravityBrandIcon } from "./AntigravityIcon";
 
+import { useUniqueId } from "~/hooks/useUniqueId";
 export type Icon = React.FC<SVGProps<SVGSVGElement>>;
 
 // Adapts Simple Icons components to the app's SVG icon shape without changing call sites.
@@ -48,7 +49,7 @@ export const CursorIcon: Icon = (props) => (
 );
 
 export const VisualStudioCode: Icon = (props) => {
-  const id = useId();
+  const id = useUniqueId();
   const maskId = `${id}-vscode-a`;
   const topShadowFilterId = `${id}-vscode-b`;
   const sideShadowFilterId = `${id}-vscode-c`;
@@ -142,7 +143,7 @@ export const VisualStudioCode: Icon = (props) => {
 };
 
 export const Zed: Icon = (props) => {
-  const id = useId();
+  const id = useUniqueId();
   const clipPathId = `${id}-zed-logo-a`;
 
   return (

@@ -29,6 +29,10 @@ import {
   updateThemePackFromShareString,
 } from "../theme/theme.logic";
 
+import { webStorage } from "~/platform/storage";
+import { getNavigatorPlatform, isBrowser, matchMediaSafe, getDocumentElement } from "~/platform/env";
+import { getDesktopBridge } from "~/platform/desktopBridge";
+import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
 type ThemeSnapshot = {
   state: ThemeState;
   systemDark: boolean;
@@ -51,11 +55,11 @@ function emitChange() {
 }
 
 function hasThemeStorage(): boolean {
-  return typeof window !== "undefined" && typeof localStorage !== "undefined";
+  return isBrowser();
 }
 
 function getSystemDark(): boolean {
-  return typeof window !== "undefined" && window.matchMedia(MEDIA_QUERY).matches;
+  return isBrowser() && (matchMediaSafe(MEDIA_QUERY)?.matches ?? false);
 }
 
 function readStoredThemeState(): ThemeState {
@@ -64,7 +68,7 @@ function readStoredThemeState(): ThemeState {
   }
 
   try {
-    return parseStoredThemeState(localStorage.getItem(STORAGE_KEY));
+    return parseStoredThemeState(webStorage.getItem(STORAGE_KEY));
   } catch {
     return DEFAULT_THEME_STATE;
   }
@@ -75,7 +79,7 @@ function writeStoredThemeState(state: ThemeState) {
     return;
   }
 
-  localStorage.setItem(STORAGE_KEY, serializeThemeState(state));
+  webStorage.setItem(STORAGE_KEY, serializeThemeState(state));
 }
 
 function getSnapshot(): ThemeSnapshot {
@@ -100,13 +104,13 @@ function updateStoredThemeState(update: (state: ThemeState) => ThemeState) {
 }
 
 function subscribe(listener: () => void): () => void {
-  if (typeof window === "undefined") {
+  if (!isBrowser()) {
     return () => {};
   }
 
   listeners.push(listener);
 
-  const mediaQuery = window.matchMedia(MEDIA_QUERY);
+  const mediaQuery = matchMediaSafe(MEDIA_QUERY);
   const handleMediaChange = () => {
     const state = readStoredThemeState();
     if (state.mode === "system") {
@@ -123,23 +127,23 @@ function subscribe(listener: () => void): () => void {
   };
 
   mediaQuery.addEventListener("change", handleMediaChange);
-  window.addEventListener("storage", handleStorage);
+  addWindowEventListener("storage", handleStorage);
 
   return () => {
     listeners = listeners.filter((currentListener) => currentListener !== listener);
     mediaQuery.removeEventListener("change", handleMediaChange);
-    window.removeEventListener("storage", handleStorage);
+    removeWindowEventListener("storage", handleStorage);
   };
 }
 
 // ─── DOM projection ───────────────────────────────────────────────────────
 
 function applyThemeState(state: ThemeState, suppressTransitions = false) {
-  if (typeof document === "undefined" || typeof window === "undefined") {
+  if (!isBrowser()) {
     return;
   }
 
-  const root = document.documentElement;
+  const root = getDocumentElement();
   // Some server-rendered tests stub only the tiny DOM surface they need.
   if (
     typeof root.classList?.toggle !== "function" ||
@@ -157,7 +161,7 @@ function applyThemeState(state: ThemeState, suppressTransitions = false) {
   const activeTheme = resolveThemePack(state, variant);
   const cssVariableBuild = buildThemeCssVariables(activeTheme, variant, {
     electron: isElectron,
-    isMac: isMacPlatform(typeof navigator === "undefined" ? "" : navigator.platform),
+    isMac: isMacPlatform(getNavigatorPlatform()),
     systemUiFont: state.systemUiFont,
   });
 
@@ -188,11 +192,11 @@ function applyThemeState(state: ThemeState, suppressTransitions = false) {
 }
 
 function syncDesktopTheme(theme: ThemeMode) {
-  if (typeof window === "undefined") {
+  if (!isBrowser()) {
     return;
   }
 
-  const bridge = window.desktopBridge;
+  const bridge = getDesktopBridge();
   if (!bridge || lastDesktopTheme === theme) {
     return;
   }
@@ -206,7 +210,7 @@ function syncDesktopTheme(theme: ThemeMode) {
 }
 
 // Apply immediately on module load to minimize flash before React mounts.
-if (typeof document !== "undefined") {
+if (isBrowser()) {
   applyThemeState(readStoredThemeState());
 }
 

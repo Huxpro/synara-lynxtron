@@ -60,6 +60,16 @@ import {
 import { ProjectMenuPicker, type ProjectMenuPickerOption } from "./ProjectMenuPicker";
 import { WorkspaceFilePreview } from "./WorkspaceFilePreview";
 
+import { webStorage } from "~/platform/storage";
+import { isBrowser } from "~/platform/env";
+import { raf, cancelRaf } from "~/platform/frame";
+import {
+  applyBodyResizeStyles,
+  captureBodyResizeStyleSnapshot,
+  restoreBodyResizeStyles,
+  type BodyResizeStyleSnapshot,
+} from "~/lib/panelResize";
+import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
 type EditorCenterMode = "file" | "diff";
 type EditorActivityBarItem = EditorCenterMode | "search";
 
@@ -104,12 +114,12 @@ function clampEditorChatPaneWidth(width: number): number {
 }
 
 function readStoredEditorChatPaneWidth(): number {
-  if (typeof window === "undefined") {
+  if (!isBrowser()) {
     return EDITOR_CHAT_PANE_DEFAULT_WIDTH;
   }
 
   try {
-    const rawValue = window.localStorage.getItem(EDITOR_CHAT_PANE_STORAGE_KEY);
+    const rawValue = webStorage.getItem(EDITOR_CHAT_PANE_STORAGE_KEY);
     const parsed = rawValue === null ? Number.NaN : Number.parseFloat(rawValue);
     return Number.isFinite(parsed)
       ? clampEditorChatPaneWidth(parsed)
@@ -120,12 +130,12 @@ function readStoredEditorChatPaneWidth(): number {
 }
 
 function storeEditorChatPaneWidth(width: number): void {
-  if (typeof window === "undefined") {
+  if (!isBrowser()) {
     return;
   }
 
   try {
-    window.localStorage.setItem(
+    webStorage.setItem(
       EDITOR_CHAT_PANE_STORAGE_KEY,
       String(clampEditorChatPaneWidth(width)),
     );
@@ -135,22 +145,22 @@ function storeEditorChatPaneWidth(width: number): void {
 }
 
 function readStoredEditorVisibility(key: string): boolean {
-  if (typeof window === "undefined") {
+  if (!isBrowser()) {
     return true;
   }
   try {
-    return window.localStorage.getItem(key) !== "false";
+    return webStorage.getItem(key) !== "false";
   } catch {
     return true;
   }
 }
 
 function storeEditorVisibility(key: string, visible: boolean): void {
-  if (typeof window === "undefined") {
+  if (!isBrowser()) {
     return;
   }
   try {
-    window.localStorage.setItem(key, String(visible));
+    webStorage.setItem(key, String(visible));
   } catch {
     // Best-effort preference persistence only.
   }
@@ -162,8 +172,7 @@ interface EditorChatPaneResizeState {
   startWidth: number;
   pendingWidth: number;
   rafId: number | null;
-  restoreBodyCursor: string;
-  restoreBodyUserSelect: string;
+  restoreBodyStyles: BodyResizeStyleSnapshot;
   onPointerMove: (event: PointerEvent) => void;
   onPointerEnd: (event: PointerEvent) => void;
 }
@@ -413,20 +422,19 @@ export function EditorWorkspaceView(props: EditorWorkspaceViewProps) {
 
   const stopChatPaneResize = () => {
     const resizeState = chatPaneResizeStateRef.current;
-    if (!resizeState || typeof window === "undefined") {
+    if (!resizeState || !isBrowser()) {
       return;
     }
 
     if (resizeState.rafId !== null) {
-      window.cancelAnimationFrame(resizeState.rafId);
+      cancelRaf(resizeState.rafId);
       resizeState.rafId = null;
     }
 
-    window.removeEventListener("pointermove", resizeState.onPointerMove);
-    window.removeEventListener("pointerup", resizeState.onPointerEnd);
-    window.removeEventListener("pointercancel", resizeState.onPointerEnd);
-    document.body.style.cursor = resizeState.restoreBodyCursor;
-    document.body.style.userSelect = resizeState.restoreBodyUserSelect;
+    removeWindowEventListener("pointermove", resizeState.onPointerMove);
+    removeWindowEventListener("pointerup", resizeState.onPointerEnd);
+    removeWindowEventListener("pointercancel", resizeState.onPointerEnd);
+    restoreBodyResizeStyles(resizeState.restoreBodyStyles);
     setChatPaneWidth(resizeState.pendingWidth);
     storeEditorChatPaneWidth(resizeState.pendingWidth);
     chatPaneResizeStateRef.current = null;
@@ -435,7 +443,7 @@ export function EditorWorkspaceView(props: EditorWorkspaceViewProps) {
   useEffect(() => stopChatPaneResize, [stopChatPaneResize]);
 
   const handleChatPaneResizePointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (event.button !== 0 || typeof window === "undefined") {
+    if (event.button !== 0 || !isBrowser()) {
       return;
     }
 
@@ -449,8 +457,7 @@ export function EditorWorkspaceView(props: EditorWorkspaceViewProps) {
       startWidth: chatPaneWidth,
       pendingWidth: chatPaneWidth,
       rafId: null,
-      restoreBodyCursor: document.body.style.cursor,
-      restoreBodyUserSelect: document.body.style.userSelect,
+      restoreBodyStyles: captureBodyResizeStyleSnapshot(),
       onPointerMove: () => undefined,
       onPointerEnd: () => undefined,
     };
@@ -468,7 +475,7 @@ export function EditorWorkspaceView(props: EditorWorkspaceViewProps) {
         return;
       }
 
-      resizeState.rafId = window.requestAnimationFrame(() => {
+      resizeState.rafId = raf(() => {
         resizeState.rafId = null;
         setChatPaneWidth(resizeState.pendingWidth);
       });
@@ -482,11 +489,10 @@ export function EditorWorkspaceView(props: EditorWorkspaceViewProps) {
     };
 
     chatPaneResizeStateRef.current = resizeState;
-    document.body.style.cursor = "col-resize";
-    document.body.style.userSelect = "none";
-    window.addEventListener("pointermove", resizeState.onPointerMove);
-    window.addEventListener("pointerup", resizeState.onPointerEnd);
-    window.addEventListener("pointercancel", resizeState.onPointerEnd);
+    applyBodyResizeStyles("col-resize");
+    addWindowEventListener("pointermove", resizeState.onPointerMove);
+    addWindowEventListener("pointerup", resizeState.onPointerEnd);
+    addWindowEventListener("pointercancel", resizeState.onPointerEnd);
   };
 
   const handleChatPaneResizeDoubleClick = () => {

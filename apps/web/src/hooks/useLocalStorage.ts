@@ -1,23 +1,11 @@
 import * as Schema from "effect/Schema";
-import * as Record from "effect/Record";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const isomorphicLocalStorage: Storage =
-  typeof window !== "undefined"
-    ? window.localStorage
-    : (function () {
-        const store = new Map<string, string>();
-        return {
-          clear: () => store.clear(),
-          getItem: (_) => store.get(_) ?? null,
-          key: (_) => Record.keys(store).at(_) ?? null,
-          get length() {
-            return store.size;
-          },
-          removeItem: (_) => store.delete(_),
-          setItem: (_, value) => store.set(_, value),
-        };
-      })();
+import { webStorage } from "~/platform/storage";
+
+import { isBrowser } from "~/platform/env";
+import { addWindowEventListener, dispatchWindowEvent, removeWindowEventListener } from "~/platform/events";
+const isomorphicLocalStorage = webStorage;
 
 const decode = <T, E>(schema: Schema.Codec<T, E>, value: string) =>
   Schema.decodeSync(Schema.fromJsonString(schema))(value);
@@ -46,8 +34,8 @@ interface LocalStorageChangeDetail {
 }
 
 function dispatchLocalStorageChange(key: string) {
-  if (typeof window === "undefined") return;
-  window.dispatchEvent(
+  if (!isBrowser()) return;
+  dispatchWindowEvent(
     new CustomEvent<LocalStorageChangeDetail>(LOCAL_STORAGE_CHANGE_EVENT, {
       detail: { key },
     }),
@@ -105,7 +93,7 @@ export function useLocalStorage<T, E>(
       return;
     }
     prevKeyRef.current = key;
-    const timeoutId = window.setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       try {
         const newValue = getLocalStorageItem(key, schema);
         setStoredValue(newValue ?? initialValue);
@@ -114,7 +102,7 @@ export function useLocalStorage<T, E>(
       }
     }, 0);
     return () => {
-      window.clearTimeout(timeoutId);
+      clearTimeout(timeoutId);
     };
   }, [key, initialValue, schema]);
 
@@ -141,12 +129,12 @@ export function useLocalStorage<T, E>(
       }
     };
 
-    window.addEventListener("storage", handleStorageChange);
-    window.addEventListener(LOCAL_STORAGE_CHANGE_EVENT, handleLocalChange as EventListener);
+    addWindowEventListener("storage", handleStorageChange);
+    addWindowEventListener(LOCAL_STORAGE_CHANGE_EVENT, handleLocalChange as EventListener);
 
     return () => {
-      window.removeEventListener("storage", handleStorageChange);
-      window.removeEventListener(LOCAL_STORAGE_CHANGE_EVENT, handleLocalChange as EventListener);
+      removeWindowEventListener("storage", handleStorageChange);
+      removeWindowEventListener(LOCAL_STORAGE_CHANGE_EVENT, handleLocalChange as EventListener);
     };
   }, [key, initialValue, schema]);
 

@@ -12,13 +12,10 @@ import { CentralIcon } from "~/lib/central-icons";
 import {
   type CSSProperties,
   useCallback,
-  useDeferredValue,
   useEffect,
   useMemo,
-  useOptimistic,
   useRef,
   useState,
-  useTransition,
 } from "react";
 
 import {
@@ -67,6 +64,7 @@ import {
 import { COMPOSER_TOOLBAR_PICKER_TRIGGER_CLASS_NAME } from "./chat/composerPickerStyles";
 import type { ThreadWorkspacePatch } from "../types";
 
+import { useDebouncedValue } from "@tanstack/react-pacer";
 /**
  * Where the selector is rendered. `toolbar` keeps the compact composer-footer pill;
  * `panel` makes the trigger a full-width Environment panel row and drops its menu
@@ -383,7 +381,7 @@ export function BranchToolbarBranchSelector({
   const [isCreateBranchDialogOpen, setIsCreateBranchDialogOpen] = useState(false);
   const [createBranchName, setCreateBranchName] = useState("");
   const [branchQuery, setBranchQuery] = useState("");
-  const deferredBranchQuery = useDeferredValue(branchQuery);
+  const [deferredBranchQuery] = useDebouncedValue(branchQuery, { wait: 100 });
 
   const branchesQuery = useQuery(gitBranchesQueryOptions(branchCwd));
   const branchStatusQuery = useQuery(gitStatusQueryOptions(branchCwd));
@@ -431,11 +429,12 @@ export function BranchToolbarBranchSelector({
           ),
     [branchPickerItems, normalizedDeferredBranchQuery],
   );
-  const [resolvedActiveBranch, setOptimisticBranch] = useOptimistic(
-    canonicalActiveBranch,
-    (_currentBranch: string | null, optimisticBranch: string | null) => optimisticBranch,
-  );
-  const [isBranchActionPending, startBranchActionTransition] = useTransition();
+  // React 17-safe replacement for useOptimistic+useTransition (P1-F5): the
+  // optimistic value is cleared when the action settles; canonical props flow
+  // through whenever no optimistic override is set.
+  const [optimisticBranch, setOptimisticBranch] = useState<string | null>(null);
+  const resolvedActiveBranch = optimisticBranch ?? canonicalActiveBranch;
+  const [isBranchActionPending, setIsBranchActionPending] = useState(false);
   const [stashDiscardDialog, setStashDiscardDialog] = useState<StashDiscardDialogState | null>(
     null,
   );
@@ -468,10 +467,16 @@ export function BranchToolbarBranchSelector({
   ]);
 
   const runBranchAction = (action: () => Promise<void>) => {
-    startBranchActionTransition(async () => {
-      await action().catch(() => undefined);
-      await invalidateGitQueries(queryClient).catch(() => undefined);
-    });
+    setIsBranchActionPending(true);
+    void (async () => {
+      try {
+        await action().catch(() => undefined);
+        await invalidateGitQueries(queryClient).catch(() => undefined);
+      } finally {
+        setIsBranchActionPending(false);
+        setOptimisticBranch(null);
+      }
+    })();
   };
 
   const openCreateBranchDialog = useCallback(() => {

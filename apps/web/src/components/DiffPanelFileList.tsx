@@ -15,6 +15,7 @@ import { ComposerPickerMenuPopup } from "./chat/ComposerPickerMenuPopup";
 import { IconButton } from "./ui/icon-button";
 import { Menu, MenuItem, MenuTrigger } from "./ui/menu";
 
+import { clipboard } from "~/platform/clipboard";
 type DiffRenderMode = "stacked" | "split";
 
 export interface DiffFileChatActions {
@@ -62,7 +63,7 @@ function DiffFileHeaderActionsMenu(props: { filePath: string; chatActions: DiffF
         </MenuItem>
         <MenuItem
           onClick={() => {
-            void navigator.clipboard?.writeText(props.filePath);
+            void clipboard.writeText(props.filePath).catch(() => {});
           }}
         >
           <CopyIcon className={DIFF_FILE_ACTIONS_MENU_ICON_CLASS_NAME} />

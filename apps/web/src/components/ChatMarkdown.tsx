@@ -13,7 +13,6 @@ import React, {
   isValidElement,
   memo,
   use,
-  useDeferredValue,
   useEffect,
   useMemo,
   useRef,
@@ -27,7 +26,7 @@ import rehypeKatex from "rehype-katex";
 import remarkBreaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
-import { copyTextToClipboard } from "../hooks/useCopyToClipboard";
+import { copyTextToClipboard } from "~/platform/clipboard";
 import { resolveDiffThemeName, type DiffThemeName } from "../lib/diffRendering";
 import { dedentCode, parseCodeFenceInfo, type CodeFenceInfo } from "../lib/codeFence";
 import { getFileIconName, pathLooksLikeKnownFile } from "../file-icons";
@@ -61,6 +60,7 @@ import {
 } from "../lib/remarkComposerChips";
 import { IconButton } from "./ui/icon-button";
 
+import { useDebouncedValue } from "@tanstack/react-pacer";
 const EXTERNAL_HTTP_HREF_PATTERN = /^https?:\/\//i;
 // Trailing `:line` / `:line:col` position suffix on a resolved file link. Kept on
 // the href (so opening jumps to the line) but stripped for icon/title resolution.
@@ -1048,7 +1048,7 @@ function ChatMarkdown({
   // fast token stream (one flush per ~100ms) doesn't re-render the full ReactMarkdown
   // tree on every flush. The deferred value always converges to the latest text, and
   // completed messages render the exact current text immediately (no visual change).
-  const deferredNormalizedText = useDeferredValue(normalizedText);
+  const [deferredNormalizedText] = useDebouncedValue(normalizedText, { wait: 100 });
   const renderedText = isStreaming ? deferredNormalizedText : normalizedText;
   const threadMarkerRemarkPlugin = useMemo(
     () =>

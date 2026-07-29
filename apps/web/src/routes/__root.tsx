@@ -111,6 +111,9 @@ import {
   shouldInvalidateProviderQueriesForEvent,
 } from "./-rootEventInvalidation";
 
+import { getNavigatorPlatform } from "~/platform/env";
+import { getDesktopBridge } from "~/platform/desktopBridge";
+import { reloadPage } from "~/platform/env";
 const SHELL_SNAPSHOT_BOOTSTRAP_FALLBACK_DELAY_MS = 1_500;
 const THREAD_DETAIL_CATCHUP_INTERVAL_MS = 1_500;
 const PENDING_SHELL_EVENT_BUFFER_LIMIT = 1_024;
@@ -271,7 +274,7 @@ function TransportCompatibilityView({ issue }: { issue: WsCompatibilityError }) 
           <Button
             size="sm"
             className={dialogActionButtonClassName}
-            onClick={() => window.location.reload()}
+            onClick={() => reloadPage()}
           >
             Reload app
           </Button>
@@ -584,7 +587,7 @@ function GlobalShortcutsDialog() {
   const { focusedThreadId, activeProject } = useFocusedChatContext();
   const serverConfigQuery = useQuery(serverConfigQueryOptions());
   const keybindings = serverConfigQuery.data?.keybindings ?? [];
-  const platform = typeof navigator === "undefined" ? "" : navigator.platform;
+  const platform = getNavigatorPlatform();
   const activeThreadTerminalState = useTerminalStateStore((state) =>
     focusedThreadId
       ? selectThreadTerminalState(state.terminalStateByThreadId, focusedThreadId)
@@ -597,7 +600,7 @@ function GlobalShortcutsDialog() {
   });
 
   useEffect(() => {
-    const onMenuAction = window.desktopBridge?.onMenuAction;
+    const onMenuAction = getDesktopBridge()?.onMenuAction;
     if (typeof onMenuAction !== "function") {
       return;
     }
@@ -718,7 +721,7 @@ function RootRouteErrorView({ error, reset }: ErrorComponentProps) {
             size="sm"
             variant="outline"
             className={dialogActionButtonClassName}
-            onClick={() => window.location.reload()}
+            onClick={() => reloadPage()}
           >
             Reload app
           </Button>
@@ -1496,10 +1499,10 @@ function EventRouter() {
     void ensureScopedSubscriptions();
     // The shell stream normally delivers the sidebar snapshot. If it fails before
     // the first event, use the same lightweight query instead of the full history.
-    const shellBootstrapFallbackTimer = window.setTimeout(() => {
+    const shellBootstrapFallbackTimer = setTimeout(() => {
       void loadShellSnapshotOnce().catch(() => undefined);
     }, SHELL_SNAPSHOT_BOOTSTRAP_FALLBACK_DELAY_MS);
-    const threadDetailCatchupInterval = window.setInterval(() => {
+    const threadDetailCatchupInterval = setInterval(() => {
       for (const threadId of subscribedThreadIds) {
         if (shouldPollThreadDetailCatchup(threadId)) {
           if (!threadSnapshotSequenceById.has(threadId)) {
@@ -1514,8 +1517,8 @@ function EventRouter() {
     return () => {
       flushPendingDomainEvents();
       disposed = true;
-      window.clearTimeout(shellBootstrapFallbackTimer);
-      window.clearInterval(threadDetailCatchupInterval);
+      clearTimeout(shellBootstrapFallbackTimer);
+      clearInterval(threadDetailCatchupInterval);
       needsProviderInvalidation = false;
       needsBroadGitInvalidation = false;
       pendingGitInvalidationThreadIds = new Set();

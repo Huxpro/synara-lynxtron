@@ -17,12 +17,13 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "~/components/ui/empty";
-import { copyTextToClipboard } from "~/hooks/useCopyToClipboard";
+import { copyTextToClipboard } from "~/platform/clipboard";
 import { CheckIcon, CopyIcon, GitPullRequestIcon, TriangleAlertIcon } from "~/lib/icons";
 import { cn } from "~/lib/utils";
 import { ensureNativeApi } from "~/nativeApi";
 import { PR_FINE_TEXT_CLASS_NAME, PR_META_TEXT_CLASS_NAME } from "./pullRequestText";
 
+import { getNavigatorPlatform } from "~/platform/env";
 export function isPullRequestsUnavailableError(
   error: unknown,
 ): error is { _tag: "PullRequestsUnavailableError"; reason: string; message: string } {
@@ -50,7 +51,7 @@ function CommandLine({ command }: { command: string }) {
     mountedRef.current = true;
     return () => {
       mountedRef.current = false;
-      if (resetTimerRef.current !== null) window.clearTimeout(resetTimerRef.current);
+      if (resetTimerRef.current !== null) clearTimeout(resetTimerRef.current);
     };
   }, []);
 
@@ -62,8 +63,8 @@ function CommandLine({ command }: { command: string }) {
           () => {
             if (!mountedRef.current) return;
             setCopied(true);
-            if (resetTimerRef.current !== null) window.clearTimeout(resetTimerRef.current);
-            resetTimerRef.current = window.setTimeout(() => {
+            if (resetTimerRef.current !== null) clearTimeout(resetTimerRef.current);
+            resetTimerRef.current = setTimeout(() => {
               resetTimerRef.current = null;
               setCopied(false);
             }, 1500);
@@ -119,9 +120,7 @@ export function PullRequestsUnavailableState({
   const notInstalled = unavailable?.reason === "gh-not-installed";
   const notAuthenticated = unavailable?.reason === "gh-not-authenticated";
   const installCommand =
-    notInstalled && typeof navigator !== "undefined"
-      ? githubCliInstallCommand(navigator.platform)
-      : null;
+    notInstalled && isBrowser() ? githubCliInstallCommand(getNavigatorPlatform()) : null;
 
   return (
     <Empty className="py-16">

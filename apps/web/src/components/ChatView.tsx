@@ -111,7 +111,7 @@ import {
   saveConfirmedCustomBinaryPaths,
 } from "../confirmedCustomBinaryPathStore";
 import { isElectron } from "../env";
-import { isScrollContainerNearBottom } from "../chat-scroll";
+import { isScrollContainerNearBottom } from "~/platform/scroll";
 import { stripDiffSearchParams } from "../diffRouteSearch";
 import { resolveSubagentPresentationForThread } from "../lib/subagentPresentation";
 import { ensureHomeChatProject, isHomeChatContainerProject } from "../lib/chatProjects";
@@ -183,6 +183,8 @@ import {
   shouldConsumePendingCustomBinaryConfirmation,
   shouldShowComposerModelBootstrapSkeleton,
 } from "./ChatView.logic";
+import { CenteredEmptyLanding } from "./CenteredEmptyLanding";
+import { CenteredEmptyLandingStack } from "./CenteredEmptyLandingStack";
 import {
   createRelevantWorkLogThreadsSelector,
   createThreadLineageSelector,
@@ -391,6 +393,7 @@ import {
 import { ComposerPromptEditor, type ComposerPromptEditorHandle } from "./ComposerPromptEditor";
 import { PullRequestThreadDialog } from "./PullRequestThreadDialog";
 import { ChatHeader } from "./chat/ChatHeader";
+import { ChatSurfaceHeaderFrame } from "./chat/ChatSurfaceHeaderFrame";
 import { dispatchThreadNotes } from "~/pinnedMessages";
 import {
   mergeProjectInstructionsIntoThreadNotes,
@@ -404,7 +407,6 @@ import {
 import { usePinnedMessageActions } from "./chat/environment/usePinnedMessageActions";
 import {
   CHAT_SURFACE_HEADER_DIVIDER_CLASS_NAME,
-  CHAT_SURFACE_HEADER_HEIGHT_CLASS,
   CHAT_SURFACE_HEADER_PADDING_X_CLASS,
   CHAT_SURFACE_HEADER_ROW_CLASS_NAME,
 } from "./chat/chatHeaderControls";
@@ -560,6 +562,10 @@ import {
   waitForRecoverableProjectForDuplicateCreate,
 } from "../lib/projectCreateRecovery";
 
+import { dialogs } from "~/platform/dialogs";
+import { getNavigatorPlatform, isBrowser } from "~/platform/env";
+import { raf, cancelRaf } from "~/platform/frame";
+import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
 const ATTACHMENT_PREVIEW_HANDOFF_TTL_MS = 5000;
 const EMPTY_ACTIVITIES: OrchestrationThreadActivity[] = [];
 const EMPTY_MESSAGES: ChatMessage[] = [];
@@ -596,7 +602,7 @@ function waitForSetupScriptTerminalActivity(input: {
   observeStartTimeoutMs?: number;
   maxRuntimeMs?: number;
 }): Promise<void> {
-  if (typeof window === "undefined") {
+  if (!isBrowser()) {
     return Promise.resolve();
   }
 
@@ -616,11 +622,11 @@ function waitForSetupScriptTerminalActivity(input: {
 
     const clearTimers = () => {
       if (observeStartTimer !== null) {
-        window.clearTimeout(observeStartTimer);
+        clearTimeout(observeStartTimer);
         observeStartTimer = null;
       }
       if (maxRuntimeTimer !== null) {
-        window.clearTimeout(maxRuntimeTimer);
+        clearTimeout(maxRuntimeTimer);
         maxRuntimeTimer = null;
       }
     };
@@ -635,7 +641,7 @@ function waitForSetupScriptTerminalActivity(input: {
 
     const ensureMaxRuntimeTimer = () => {
       if (maxRuntimeTimer !== null) return;
-      maxRuntimeTimer = window.setTimeout(finish, maxRuntimeMs);
+      maxRuntimeTimer = setTimeout(finish, maxRuntimeMs);
     };
 
     function checkRunningState() {
@@ -643,7 +649,7 @@ function waitForSetupScriptTerminalActivity(input: {
       if (running) {
         observedRunning = true;
         if (observeStartTimer !== null) {
-          window.clearTimeout(observeStartTimer);
+          clearTimeout(observeStartTimer);
           observeStartTimer = null;
         }
         ensureMaxRuntimeTimer();
@@ -656,14 +662,14 @@ function waitForSetupScriptTerminalActivity(input: {
 
     checkRunningState();
     if (!observedRunning) {
-      observeStartTimer = window.setTimeout(finish, observeStartTimeoutMs);
+      observeStartTimer = setTimeout(finish, observeStartTimeoutMs);
     }
   });
 }
 
 function waitForDraftProjectSyncDelay(ms: number): Promise<void> {
   return new Promise((resolve) => {
-    window.setTimeout(resolve, ms);
+    setTimeout(resolve, ms);
   });
 }
 
@@ -731,11 +737,11 @@ function automationScheduleActivityPayload(schedule: AutomationSchedule) {
 }
 
 function revokeBlobPreviewUrlsAfterPaint(previewUrls: readonly string[]): void {
-  if (previewUrls.length === 0 || typeof window === "undefined") {
+  if (previewUrls.length === 0 || !isBrowser()) {
     return;
   }
-  window.requestAnimationFrame(() => {
-    window.setTimeout(() => {
+  raf(() => {
+    setTimeout(() => {
       for (const previewUrl of previewUrls) {
         revokeBlobPreviewUrl(previewUrl);
       }
@@ -1408,12 +1414,12 @@ export default function ChatView({
   useEffect(() => {
     // Async setState (post-paint) keeps this thread-change reset out of the
     // render->effect->render cascade; the pickers already closed post-commit.
-    const settle = window.setTimeout(() => {
+    const settle = setTimeout(() => {
       setComposerCommandPicker(null);
       setIsModelPickerOpen(false);
       setIsTraitsPickerOpen(false);
     }, 0);
-    return () => window.clearTimeout(settle);
+    return () => clearTimeout(settle);
   }, [threadId]);
   useEffect(() => {
     const scrollDebouncer = showScrollDebouncer.current;
@@ -1421,7 +1427,7 @@ export default function ChatView({
       scrollDebouncer.cancel();
       const pendingFrame = pendingInteractionAnchorFrameRef.current;
       if (pendingFrame !== null) {
-        window.cancelAnimationFrame(pendingFrame);
+        cancelRaf(pendingFrame);
       }
     };
   }, []);
@@ -1643,7 +1649,7 @@ export default function ChatView({
       removeComposerDraftPastedText(threadId, pastedTextId);
       setComposerCursor(collapseExpandedComposerCursor(nextPrompt, nextPrompt.length));
       setComposerTrigger(detectComposerTrigger(nextPrompt, nextPrompt.length));
-      window.requestAnimationFrame(() => {
+      raf(() => {
         composerEditorRef.current?.focusAtEnd();
       });
     },
@@ -1682,11 +1688,11 @@ export default function ChatView({
     }
     // Async setState (post-paint) keeps this settled-undo cleanup out of the
     // render->effect->render cascade.
-    const settle = window.setTimeout(() => {
+    const settle = setTimeout(() => {
       setPendingFileUndo(null);
       setIsRevertingCheckpoint(false);
     }, 0);
-    return () => window.clearTimeout(settle);
+    return () => clearTimeout(settle);
   }, [activeThread, pendingFileUndo]);
   const runtimeMode =
     composerDraft.runtimeMode ?? activeThread?.runtimeMode ?? DEFAULT_RUNTIME_MODE;
@@ -2368,10 +2374,10 @@ export default function ChatView({
   useEffect(() => {
     // Async setState (post-paint) keeps this thread-change reset out of the
     // render->effect->render cascade.
-    const settle = window.setTimeout(() => {
+    const settle = setTimeout(() => {
       setOpenAgentActivityId(null);
     }, 0);
-    return () => window.clearTimeout(settle);
+    return () => clearTimeout(settle);
   }, [activeThread?.id]);
   useEffect(() => {
     if (!openAgentActivityId || agentActivityTimelineState.detailById.has(openAgentActivityId)) {
@@ -2379,10 +2385,10 @@ export default function ChatView({
     }
     // Async setState (post-paint) keeps this stale-detail cleanup out of the
     // render->effect->render cascade.
-    const settle = window.setTimeout(() => {
+    const settle = setTimeout(() => {
       setOpenAgentActivityId(null);
     }, 0);
-    return () => window.clearTimeout(settle);
+    return () => clearTimeout(settle);
   }, [agentActivityTimelineState.detailById, openAgentActivityId]);
   const pendingApprovals = useMemo(
     () => derivePendingApprovals(threadActivities, activeThread?.pendingInteractions),
@@ -2748,11 +2754,11 @@ export default function ChatView({
     }
 
     setKeepSettledActiveTurnLayout(true);
-    const timeoutId = window.setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       setKeepSettledActiveTurnLayout(false);
     }, ACTIVE_TURN_LAYOUT_SETTLE_DELAY_MS);
     return () => {
-      window.clearTimeout(timeoutId);
+      clearTimeout(timeoutId);
     };
   }, [activeLatestTurn?.startedAt, activeTurnLayoutKey, activeTurnLayoutLive]);
 
@@ -2798,7 +2804,7 @@ export default function ChatView({
   }, [attachmentPreviewHandoffByMessageId]);
   const clearAttachmentPreviewHandoffs = useCallback(() => {
     for (const timeoutId of Object.values(attachmentPreviewHandoffTimeoutByMessageIdRef.current)) {
-      window.clearTimeout(timeoutId);
+      clearTimeout(timeoutId);
     }
     attachmentPreviewHandoffTimeoutByMessageIdRef.current = {};
     for (const previewUrls of Object.values(attachmentPreviewHandoffByMessageIdRef.current)) {
@@ -2836,9 +2842,9 @@ export default function ChatView({
 
     const existingTimeout = attachmentPreviewHandoffTimeoutByMessageIdRef.current[messageId];
     if (typeof existingTimeout === "number") {
-      window.clearTimeout(existingTimeout);
+      clearTimeout(existingTimeout);
     }
-    attachmentPreviewHandoffTimeoutByMessageIdRef.current[messageId] = window.setTimeout(() => {
+    attachmentPreviewHandoffTimeoutByMessageIdRef.current[messageId] = setTimeout(() => {
       const currentPreviewUrls = attachmentPreviewHandoffByMessageIdRef.current[messageId];
       setAttachmentPreviewHandoffByMessageId((existing) => {
         if (!(messageId in existing)) return existing;
@@ -3168,7 +3174,7 @@ export default function ChatView({
   const composerTriggerKind = composerTrigger?.kind ?? null;
   const mentionTriggerQuery = composerTrigger?.kind === "mention" ? composerTrigger.query : "";
   const isMentionTrigger = composerTriggerKind === "mention";
-  const platform = typeof navigator === "undefined" ? "" : navigator.platform;
+  const platform = getNavigatorPlatform();
   const branchesQuery = useQuery(gitBranchesQueryOptions(gitBranchSourceCwd));
   const localFolderBrowseRootPath = getLocalFolderBrowseRootPath(
     serverConfigQuery.data?.homeDir ?? null,
@@ -3760,14 +3766,14 @@ export default function ChatView({
       threadId: secondaryChromeThreadId,
       ready: false,
     });
-    const frame = window.requestAnimationFrame(() => {
+    const frame = raf(() => {
       setSecondaryChromeState({
         threadId: secondaryChromeThreadId,
         ready: true,
       });
     });
     return () => {
-      window.cancelAnimationFrame(frame);
+      cancelRaf(frame);
     };
   }, [secondaryChromeThreadId, shouldDeferSecondaryChrome]);
   const setThreadError = useCallback(
@@ -3813,7 +3819,7 @@ export default function ChatView({
   }, [focusComposer, secondaryChromeReady]);
   const scheduleComposerFocus = useCallback(() => {
     pendingComposerFocusRef.current = true;
-    window.requestAnimationFrame(() => {
+    raf(() => {
       focusComposer();
     });
   }, [focusComposer]);
@@ -3829,11 +3835,11 @@ export default function ChatView({
   }, [composerFocusRequestNonce, scheduleComposerFocus]);
   useEffect(() => {
     if (!secondaryChromeReady || !pendingComposerFocusRef.current) return;
-    const frame = window.requestAnimationFrame(() => {
+    const frame = raf(() => {
       focusComposer();
     });
     return () => {
-      window.cancelAnimationFrame(frame);
+      cancelRaf(frame);
     };
   }, [focusComposer, secondaryChromeReady, secondaryChromeThreadId]);
   // Keep the two composer picker menus mutually exclusive so shortcuts always open one surface.
@@ -3926,7 +3932,7 @@ export default function ChatView({
       promptRef.current = insertion.prompt;
       setComposerCursor(nextCollapsedCursor);
       setComposerTrigger(detectComposerTrigger(insertion.prompt, insertion.cursor));
-      window.requestAnimationFrame(() => {
+      raf(() => {
         composerEditorRef.current?.focusAt(nextCollapsedCursor);
       });
     },
@@ -4593,7 +4599,7 @@ export default function ChatView({
     const pendingFrame = pendingInteractionAnchorFrameRef.current;
     if (pendingFrame === null) return;
     pendingInteractionAnchorFrameRef.current = null;
-    window.cancelAnimationFrame(pendingFrame);
+    cancelRaf(pendingFrame);
   }, []);
   const onMessagesClickCaptureBase = useCallback(
     (event: MouseEvent<HTMLDivElement>) => {
@@ -4612,7 +4618,7 @@ export default function ChatView({
       };
 
       cancelPendingInteractionAnchorAdjustment();
-      pendingInteractionAnchorFrameRef.current = window.requestAnimationFrame(() => {
+      pendingInteractionAnchorFrameRef.current = raf(() => {
         pendingInteractionAnchorFrameRef.current = null;
         const anchor = pendingInteractionAnchorRef.current;
         pendingInteractionAnchorRef.current = null;
@@ -4655,13 +4661,13 @@ export default function ChatView({
     }
     // Re-apply the bottom stick only for real transcript messages; tool/work
     // rows can arrive quickly and should not churn scroll/layout work.
-    const frameId = window.requestAnimationFrame(() => {
+    const frameId = raf(() => {
       const shouldAnimate = animateNextAutoFollowScrollRef.current;
       animateNextAutoFollowScrollRef.current = false;
       scrollToEnd(shouldAnimate);
     });
     return () => {
-      window.cancelAnimationFrame(frameId);
+      cancelRaf(frameId);
     };
   }, [activeThread?.id, scrollToEnd, transcriptAutoFollowSignal]);
   const {
@@ -4891,9 +4897,9 @@ export default function ChatView({
       if (!wasNearEndBeforeResize) return;
 
       if (pendingScrollTimeout !== null) {
-        window.clearTimeout(pendingScrollTimeout);
+        clearTimeout(pendingScrollTimeout);
       }
-      pendingScrollTimeout = window.setTimeout(() => {
+      pendingScrollTimeout = setTimeout(() => {
         pendingScrollTimeout = null;
         scrollToEnd(false);
       }, 0);
@@ -4903,7 +4909,7 @@ export default function ChatView({
     return () => {
       observer.disconnect();
       if (pendingScrollTimeout !== null) {
-        window.clearTimeout(pendingScrollTimeout);
+        clearTimeout(pendingScrollTimeout);
       }
     };
   }, [
@@ -4923,13 +4929,13 @@ export default function ChatView({
     const openPlanSidebar = planSidebarOpenOnNextThreadRef.current;
     planSidebarOpenOnNextThreadRef.current = false;
     planSidebarDismissedForTurnRef.current = null;
-    const settle = window.setTimeout(() => {
+    const settle = setTimeout(() => {
       setPullRequestDialogState(null);
       setRenameDialogOpen(false);
       setShowScrollToBottom(false);
       setPlanSidebarOpen(openPlanSidebar);
     }, 0);
-    return () => window.clearTimeout(settle);
+    return () => clearTimeout(settle);
   }, [activeThread?.id]);
 
   useEffect(() => {
@@ -4947,19 +4953,19 @@ export default function ChatView({
   useEffect(() => {
     // Async setState (post-paint) keeps this thread-change reset out of the
     // render->effect->render cascade.
-    const settle = window.setTimeout(() => {
+    const settle = setTimeout(() => {
       setIsRevertingCheckpoint(false);
     }, 0);
-    return () => window.clearTimeout(settle);
+    return () => clearTimeout(settle);
   }, [activeThread?.id]);
 
   useEffect(() => {
     if (!activeThread?.id || terminalState.terminalOpen || isInactiveSplitPane) return;
-    const frame = window.requestAnimationFrame(() => {
+    const frame = raf(() => {
       focusComposer();
     });
     return () => {
-      window.cancelAnimationFrame(frame);
+      cancelRaf(frame);
     };
   }, [activeThread?.id, focusComposer, isInactiveSplitPane, terminalState.terminalOpen]);
 
@@ -4995,10 +5001,10 @@ export default function ChatView({
     autoDispatchingQueuedTurnRef.current = false;
     // Async setState (post-paint) keeps this thread-change reset out of the
     // render->effect->render cascade.
-    const settle = window.setTimeout(() => {
+    const settle = setTimeout(() => {
       setQueuedSteerGate(null);
     }, 0);
-    return () => window.clearTimeout(settle);
+    return () => clearTimeout(settle);
   }, [threadId]);
 
   useEffect(() => {
@@ -5016,7 +5022,7 @@ export default function ChatView({
     if (removedMessages.length === 0) {
       return;
     }
-    const timer = window.setTimeout(() => {
+    const timer = setTimeout(() => {
       setOptimisticUserMessages((existing) =>
         existing.filter((message) => !serverIds.has(message.id)),
       );
@@ -5030,7 +5036,7 @@ export default function ChatView({
       revokeUserMessagePreviewUrls(removedMessage);
     }
     return () => {
-      window.clearTimeout(timer);
+      clearTimeout(timer);
     };
   }, [activeThread?.id, activeThread?.messages, handoffAttachmentPreviews, optimisticUserMessages]);
 
@@ -5108,7 +5114,7 @@ export default function ChatView({
     // render->effect->render cascade. The pre-paint overlay clear (optimistic
     // messages, expanded image) lives in the layout effect above, so deferring
     // these residual resets by a tick is imperceptible.
-    const settle = window.setTimeout(() => {
+    const settle = setTimeout(() => {
       setOptimisticUserMessages((existing) => {
         if (existing.length === 0) return existing;
         for (const message of existing) {
@@ -5125,7 +5131,7 @@ export default function ChatView({
       setIsDragOverComposer(false);
       setExpandedImage(null);
     }, 0);
-    return () => window.clearTimeout(settle);
+    return () => clearTimeout(settle);
   }, [threadId]);
 
   useEffect(() => {
@@ -5240,8 +5246,8 @@ export default function ChatView({
       navigateExpandedImage(1);
     };
 
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    addWindowEventListener("keydown", onKeyDown);
+    return () => removeWindowEventListener("keydown", onKeyDown);
   }, [closeExpandedImage, expandedImage, navigateExpandedImage]);
 
   useEffect(() => {
@@ -5261,8 +5267,8 @@ export default function ChatView({
       setComposerTrigger(null);
     };
 
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    addWindowEventListener("keydown", onKeyDown);
+    return () => removeWindowEventListener("keydown", onKeyDown);
   }, [composerMenuOpen]);
 
   const activeWorktreePath = activeThread?.worktreePath;
@@ -5312,7 +5318,7 @@ export default function ChatView({
   // error hold unless a newer dispatch already replaced it.
   const scheduleFailedWorktreeSetupDispatchReset = useCallback(() => {
     const failedDispatchStartedAt = failedWorktreeSetupDispatchStartedAtRef.current;
-    window.setTimeout(() => {
+    setTimeout(() => {
       setLocalDispatch((current) => {
         if (
           !failedDispatchStartedAt ||
@@ -5341,7 +5347,7 @@ export default function ChatView({
       if (!failedDispatchStartedAt) {
         return;
       }
-      const holdTimeout = window.setTimeout(() => {
+      const holdTimeout = setTimeout(() => {
         setLocalDispatch((current) => {
           if (
             !current ||
@@ -5354,7 +5360,7 @@ export default function ChatView({
           return null;
         });
       }, WORKTREE_SETUP_ERROR_HOLD_MS);
-      return () => window.clearTimeout(holdTimeout);
+      return () => clearTimeout(holdTimeout);
     }
     resetLocalDispatch();
   }, [
@@ -5375,11 +5381,11 @@ export default function ChatView({
       return;
     } else if (previous && !current) {
       terminalOpenByThreadRef.current[activeThreadId] = current;
-      const frame = window.requestAnimationFrame(() => {
+      const frame = raf(() => {
         focusComposer();
       });
       return () => {
-        window.cancelAnimationFrame(frame);
+        cancelRaf(frame);
       };
     }
 
@@ -5411,11 +5417,11 @@ export default function ChatView({
       return;
     }
 
-    const frame = window.requestAnimationFrame(() => {
+    const frame = raf(() => {
       focusComposer();
     });
     return () => {
-      window.cancelAnimationFrame(frame);
+      cancelRaf(frame);
     };
   }, [
     focusComposer,
@@ -5558,7 +5564,7 @@ export default function ChatView({
       // Mirror terminal interrupt semantics without stealing regular copy shortcuts.
       if (
         hasLiveTurn &&
-        isMacPlatform(navigator.platform) &&
+        isMacPlatform(getNavigatorPlatform()) &&
         event.ctrlKey &&
         !event.metaKey &&
         !event.altKey &&
@@ -5801,8 +5807,8 @@ export default function ChatView({
       event.stopPropagation();
       void runProjectScript(script);
     };
-    window.addEventListener("keydown", handler, { capture: true });
-    return () => window.removeEventListener("keydown", handler, { capture: true });
+    addWindowEventListener("keydown", handler, { capture: true });
+    return () => removeWindowEventListener("keydown", handler, { capture: true });
   }, [
     activeProject,
     terminalState.terminalOpen,
@@ -5972,7 +5978,7 @@ export default function ChatView({
         setThreadError(activeThread.id, "Interrupt the current turn before reverting checkpoints.");
         return;
       }
-      const confirmed = await api.dialogs.confirm(
+      const confirmed = await dialogs.confirm(
         [
           `Revert this thread to checkpoint ${turnCount}?`,
           "This will discard newer messages and turn diffs in this thread.",
@@ -6014,7 +6020,7 @@ export default function ChatView({
         setThreadError(activeThread.id, "Interrupt the current turn before undoing file changes.");
         return;
       }
-      const confirmed = await api.dialogs.confirm(
+      const confirmed = await dialogs.confirm(
         [
           "Undo the latest file changes shown in this card?",
           "Earlier file changes will remain available to undo.",
@@ -8227,8 +8233,8 @@ export default function ChatView({
     if (transition.expiresInMs === null) {
       return;
     }
-    const timer = window.setTimeout(() => setQueuedSteerGate(null), transition.expiresInMs);
-    return () => window.clearTimeout(timer);
+    const timer = setTimeout(() => setQueuedSteerGate(null), transition.expiresInMs);
+    return () => clearTimeout(timer);
   }, [activeTurnIdForSteerGate, phase, queuedSteerGate, sessionErroredForSteerGate]);
 
   useEffect(() => {
@@ -8253,8 +8259,8 @@ export default function ChatView({
       // These guards are refs, so nothing re-triggers this effect once they
       // reset; poll until the in-flight send settles instead of leaving the
       // queue stuck at the end of a turn.
-      const timer = window.setTimeout(() => setQueuedAutoDispatchTick((tick) => tick + 1), 250);
-      return () => window.clearTimeout(timer);
+      const timer = setTimeout(() => setQueuedAutoDispatchTick((tick) => tick + 1), 250);
+      return () => clearTimeout(timer);
     }
     const nextQueuedTurn = queuedComposerTurns[0];
     if (!nextQueuedTurn) {
@@ -8919,7 +8925,7 @@ export default function ChatView({
       setComposerTrigger(
         detectComposerTrigger(next.text, expandCollapsedComposerCursor(next.text, nextCursor)),
       );
-      window.requestAnimationFrame(() => {
+      raf(() => {
         composerEditorRef.current?.focusAt(nextCursor);
       });
       return nextCursor;
@@ -9050,7 +9056,7 @@ export default function ChatView({
       setComposerCursor(nextCursor);
       setComposerTrigger(detectComposerTrigger(nextPrompt, nextPrompt.length));
       setComposerHighlightedItemId(null);
-      window.requestAnimationFrame(() => {
+      raf(() => {
         composerEditorRef.current?.focusAt(nextCursor);
       });
     },
@@ -9156,7 +9162,7 @@ export default function ChatView({
     (item: ComposerCommandItem) => {
       if (composerSelectLockRef.current) return;
       composerSelectLockRef.current = true;
-      window.requestAnimationFrame(() => {
+      raf(() => {
         composerSelectLockRef.current = false;
       });
       if (item.type === "fork-target") {
@@ -9532,7 +9538,7 @@ export default function ChatView({
         // so an entry ending in a mention/slash token cannot pop a menu that
         // would capture the next arrow keypress.
         setComposerTrigger(null);
-        window.requestAnimationFrame(() => {
+        raf(() => {
           applyingPromptHistoryNavigationRef.current = false;
         });
         return true;
@@ -10588,12 +10594,9 @@ export default function ChatView({
         )}
       />
       {/* Top bar */}
-      <header
+      <ChatSurfaceHeaderFrame
+        editorRail={isEditorRail}
         className={cn(
-          CHAT_SURFACE_HEADER_DIVIDER_CLASS_NAME,
-          !isEditorRail && CHAT_SURFACE_HEADER_PADDING_X_CLASS,
-          "flex items-center",
-          isEditorRail ? "h-10" : CHAT_SURFACE_HEADER_HEIGHT_CLASS,
           isElectron && "drag-region",
           // The editor-rail chat header sits in the editor's second row (inside the
           // right-side chat pane), not flush against the window edges — the editor's
@@ -10690,7 +10693,7 @@ export default function ChatView({
           onRenameThread={() => setRenameDialogOpen(true)}
           {...(onCloseThreadPane ? { onCloseThreadPane } : {})}
         />
-      </header>
+      </ChatSurfaceHeaderFrame>
 
       <RenameThreadDialog
         open={renameDialogOpen}
@@ -10747,60 +10750,35 @@ export default function ChatView({
             )}
           >
             {shouldRenderChatPaneContent && isCenteredEmptyLanding ? (
-              <div
-                className={cn(
-                  "chat-pane-enter flex flex-1 items-center justify-center",
-                  CHAT_COLUMN_GUTTER_CLASS_NAME,
-                )}
-              >
+              <CenteredEmptyLandingStack className={CHAT_COLUMN_GUTTER_CLASS_NAME}>
                 {/* Center the heading, composer, and suggestion list together as a
                     single group: the suggestions live in normal flow so the whole
                     block (composer + suggestions) stays vertically centered in the
                     view instead of the composer being centered with the list hanging
                     below it. */}
-                <div className="flex w-full flex-col justify-center">
-                  <div
-                    className={cn(
-                      "flex flex-col items-center gap-4 px-6 pb-5 text-center select-none",
-                      CHAT_COLUMN_FRAME_CLASS_NAME,
-                    )}
-                  >
-                    <SynaraLogo aria-label="Synara logo" className="size-10" />
-                    <h2
-                      data-testid="empty-landing-heading"
-                      className="text-[26px] font-normal leading-[1.15] tracking-[-0.015em] text-foreground/95 sm:text-[30px]"
-                    >
-                      {isEmptyChatLanding ? (
-                        "What should we work on?"
-                      ) : (
-                        <>
-                          What should we do in{" "}
-                          <span className={COMPOSER_MUTED_ACCENT_TEXT_CLASS_NAME}>
-                            {activeProjectDisplayName ?? "this folder"}
-                          </span>
-                          ?
-                        </>
-                      )}
-                    </h2>
-                  </div>
-                  {composerSection}
-                  {(isGitRepo && !environmentEnabled && !isCenteredEmptyLanding) ||
-                  relocateComposerLeadingControls ? (
-                    <div className={COMPOSER_COLUMN_FRAME_CLASS_NAME}>
-                      <div className="flex w-full items-center gap-1">
-                        {relocateComposerLeadingControls ? (
-                          <div className="flex shrink-0 items-center gap-1 pl-1">
-                            {renderComposerLeadingControls({ iconOnly: true })}
-                          </div>
-                        ) : null}
-                        {isGitRepo && !environmentEnabled && !isCenteredEmptyLanding ? (
-                          <BranchToolbar {...branchToolbarProps} className="min-w-0 flex-1" />
-                        ) : null}
-                      </div>
+                <CenteredEmptyLanding
+                  className={CHAT_COLUMN_FRAME_CLASS_NAME}
+                  projectName={
+                    isEmptyChatLanding ? null : (activeProjectDisplayName ?? "this folder")
+                  }
+                />
+                {composerSection}
+                {(isGitRepo && !environmentEnabled && !isCenteredEmptyLanding) ||
+                relocateComposerLeadingControls ? (
+                  <div className={COMPOSER_COLUMN_FRAME_CLASS_NAME}>
+                    <div className="flex w-full items-center gap-1">
+                      {relocateComposerLeadingControls ? (
+                        <div className="flex shrink-0 items-center gap-1 pl-1">
+                          {renderComposerLeadingControls({ iconOnly: true })}
+                        </div>
+                      ) : null}
+                      {isGitRepo && !environmentEnabled && !isCenteredEmptyLanding ? (
+                        <BranchToolbar {...branchToolbarProps} className="min-w-0 flex-1" />
+                      ) : null}
                     </div>
-                  ) : null}
-                </div>
-              </div>
+                  </div>
+                ) : null}
+              </CenteredEmptyLandingStack>
             ) : null}
 
             {shouldRenderChatPaneContent && !isCenteredEmptyLanding ? (

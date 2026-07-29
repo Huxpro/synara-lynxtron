@@ -166,7 +166,7 @@ export function ComposerLocalDirectoryMenu(props: {
     // Timeout-0 keeps every state write asynchronous (no wasted pre-paint
     // render), which also keeps this component eligible for React Compiler.
     let cancelled = false;
-    const timeoutId = window.setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       if (cancelled) return;
       const api = readNativeApi();
       if (!api) {
@@ -197,7 +197,7 @@ export function ComposerLocalDirectoryMenu(props: {
     }, 0);
     return () => {
       cancelled = true;
-      window.clearTimeout(timeoutId);
+      clearTimeout(timeoutId);
     };
   }, [entriesByPath, expandedDirectory, isAwaitingHomeDir, loadingPaths]);
 

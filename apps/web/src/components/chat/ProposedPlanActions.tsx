@@ -10,6 +10,7 @@ import { readNativeApi } from "~/nativeApi";
 import { IconButton } from "../ui/icon-button";
 import { toastManager } from "../ui/toast";
 
+import { dialogs } from "~/platform/dialogs";
 type PlanActionVariant = "outline" | "ghost";
 
 interface ProposedPlanActionsProps {
@@ -90,7 +91,7 @@ export const ProposedPlanActions = memo(function ProposedPlanActions({
     const api = readNativeApi();
     if (!api) return;
 
-    if (!api.dialogs.saveFile) {
+    if (!dialogs.saveFile) {
       toastManager.add({
         type: "error",
         title: "Export is unavailable",

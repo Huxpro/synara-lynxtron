@@ -14,6 +14,7 @@ import {
 } from "~/lib/dockPaneActivation";
 import type { RightDockPane, RightDockPaneKind } from "~/rightDockStore.logic";
 
+import { raf, cancelRaf } from "~/platform/frame";
 export function useDockPaneRuntimeActivation(input: {
   threadId: ThreadId;
   activePane: RightDockPane | null;
@@ -120,14 +121,14 @@ export function useDockPaneRuntimeActivation(input: {
         setHydratedPaneKey(activePaneKey);
         return;
       }
-      frameId = window.requestAnimationFrame(tick);
+      frameId = raf(tick);
     };
 
-    frameId = window.requestAnimationFrame(tick);
+    frameId = raf(tick);
     return () => {
       cancelled = true;
       if (frameId !== null) {
-        window.cancelAnimationFrame(frameId);
+        cancelRaf(frameId);
       }
     };
   }, [activePaneKey, hydratedPaneKey, input.activePane]);

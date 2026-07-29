@@ -2,6 +2,8 @@
 // Purpose: Keep pure selection-action positioning helpers separate from the browser-heavy drawer.
 // Layer: Chat terminal workspace helpers
 
+import { getViewportHeight, getViewportWidth, isBrowser } from "~/platform/env";
+
 const MULTI_CLICK_SELECTION_ACTION_DELAY_MS = 260;
 
 export function resolveTerminalSelectionActionPosition(options: {
@@ -13,10 +15,10 @@ export function resolveTerminalSelectionActionPosition(options: {
   const { bounds, selectionRect, pointer, viewport } = options;
   const viewportWidth =
     viewport?.width ??
-    (typeof window === "undefined" ? bounds.left + bounds.width + 8 : window.innerWidth);
+    (isBrowser() ? getViewportWidth() : bounds.left + bounds.width + 8);
   const viewportHeight =
     viewport?.height ??
-    (typeof window === "undefined" ? bounds.top + bounds.height + 8 : window.innerHeight);
+    (isBrowser() ? getViewportHeight() : bounds.top + bounds.height + 8);
   const drawerLeft = Math.round(bounds.left);
   const drawerTop = Math.round(bounds.top);
   const drawerRight = Math.round(bounds.left + bounds.width);

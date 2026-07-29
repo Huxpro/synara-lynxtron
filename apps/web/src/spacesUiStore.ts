@@ -6,6 +6,8 @@ import { create } from "zustand";
 
 import { spaceKey } from "~/lib/spaceGrouping";
 
+import { isBrowser } from "~/platform/env";
+import { sessionWebStorage } from "~/platform/storage";
 const STORAGE_KEY = "synara:spaces-ui:v1";
 
 interface PersistedSpacesUiState {
@@ -15,12 +17,12 @@ interface PersistedSpacesUiState {
 }
 
 function readPersisted(): PersistedSpacesUiState {
-  if (typeof window === "undefined") {
+  if (!isBrowser()) {
     return { activeSpaceId: null, lastThreadIdBySpace: {}, lastProjectIdBySpace: {} };
   }
   try {
     const parsed = JSON.parse(
-      window.sessionStorage.getItem(STORAGE_KEY) ?? "null",
+      sessionWebStorage.getItem(STORAGE_KEY) ?? "null",
     ) as Partial<PersistedSpacesUiState> | null;
     return {
       activeSpaceId:
@@ -42,9 +44,9 @@ function readPersisted(): PersistedSpacesUiState {
 function persist(
   state: Pick<SpacesUiState, "activeSpaceId" | "lastThreadIdBySpace" | "lastProjectIdBySpace">,
 ): void {
-  if (typeof window === "undefined") return;
+  if (!isBrowser()) return;
   try {
-    window.sessionStorage.setItem(
+    sessionWebStorage.setItem(
       STORAGE_KEY,
       JSON.stringify({
         activeSpaceId: state.activeSpaceId,

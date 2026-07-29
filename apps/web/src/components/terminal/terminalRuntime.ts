@@ -54,6 +54,8 @@ import type {
 import { waitForTerminalFontReady } from "./terminalFontSettle";
 import { observeTerminalWriteParsed } from "./terminalPerformance";
 
+import { raf, cancelRaf } from "~/platform/frame";
+import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
 const ENABLE_TERMINAL_WEBGL = true;
 const VISUAL_RESIZE_MIN_INTERVAL_MS = 64;
 const BACKEND_RESIZE_DEBOUNCE_MS = 120;
@@ -208,18 +210,18 @@ function replaySnapshot(
 
 function clearBackendResizeTimer(entry: TerminalRuntimeEntry): void {
   if (entry.resizeDispatchTimer !== null) {
-    window.clearTimeout(entry.resizeDispatchTimer);
+    clearTimeout(entry.resizeDispatchTimer);
     entry.resizeDispatchTimer = null;
   }
 }
 
 function clearPendingWrites(entry: TerminalRuntimeEntry): void {
   if (entry.writeRafHandle !== null) {
-    window.cancelAnimationFrame(entry.writeRafHandle);
+    cancelRaf(entry.writeRafHandle);
     entry.writeRafHandle = null;
   }
   if (entry.writeFlushTimeout !== null) {
-    window.clearTimeout(entry.writeFlushTimeout);
+    clearTimeout(entry.writeFlushTimeout);
     entry.writeFlushTimeout = null;
   }
   if (entry.pendingWriteBytes > 0) {
@@ -232,11 +234,11 @@ function clearPendingWrites(entry: TerminalRuntimeEntry): void {
 
 function flushPendingWrites(entry: TerminalRuntimeEntry): void {
   if (entry.writeRafHandle !== null) {
-    window.cancelAnimationFrame(entry.writeRafHandle);
+    cancelRaf(entry.writeRafHandle);
     entry.writeRafHandle = null;
   }
   if (entry.writeFlushTimeout !== null) {
-    window.clearTimeout(entry.writeFlushTimeout);
+    clearTimeout(entry.writeFlushTimeout);
     entry.writeFlushTimeout = null;
   }
   if (entry.pendingWrites.length === 0) {
@@ -275,13 +277,13 @@ function scheduleWrite(entry: TerminalRuntimeEntry, data: string, byteLength: nu
   }
 
   if (entry.writeRafHandle === null) {
-    entry.writeRafHandle = window.requestAnimationFrame(() => {
+    entry.writeRafHandle = raf(() => {
       entry.writeRafHandle = null;
       flushPendingWrites(entry);
     });
   }
   if (entry.writeFlushTimeout === null) {
-    entry.writeFlushTimeout = window.setTimeout(() => {
+    entry.writeFlushTimeout = setTimeout(() => {
       entry.writeFlushTimeout = null;
       flushPendingWrites(entry);
     }, WRITE_BATCH_MAX_LATENCY_MS);
@@ -321,7 +323,7 @@ function queueBackendResize(entry: TerminalRuntimeEntry, cols: number, rows: num
   }
   entry.pendingResize = { cols, rows };
   clearBackendResizeTimer(entry);
-  entry.resizeDispatchTimer = window.setTimeout(() => {
+  entry.resizeDispatchTimer = setTimeout(() => {
     entry.resizeDispatchTimer = null;
     flushPendingResize(entry);
   }, BACKEND_RESIZE_DEBOUNCE_MS);
@@ -369,11 +371,11 @@ function runTerminalResize(
 
 function cancelScheduledVisualResize(entry: TerminalRuntimeEntry): void {
   if (entry.visualResizeFrame !== null) {
-    window.cancelAnimationFrame(entry.visualResizeFrame);
+    cancelRaf(entry.visualResizeFrame);
     entry.visualResizeFrame = null;
   }
   if (entry.visualResizeTimer !== null) {
-    window.clearTimeout(entry.visualResizeTimer);
+    clearTimeout(entry.visualResizeTimer);
     entry.visualResizeTimer = null;
   }
 }
@@ -389,9 +391,9 @@ function scheduleVisualResize(entry: TerminalRuntimeEntry): void {
   const run = () => {
     entry.visualResizeTimer = null;
     if (entry.visualResizeFrame !== null) {
-      window.cancelAnimationFrame(entry.visualResizeFrame);
+      cancelRaf(entry.visualResizeFrame);
     }
-    entry.visualResizeFrame = window.requestAnimationFrame(() => {
+    entry.visualResizeFrame = raf(() => {
       entry.visualResizeFrame = null;
       entry.lastVisualResizeAt = Date.now();
       runTerminalResize(entry);
@@ -403,7 +405,7 @@ function scheduleVisualResize(entry: TerminalRuntimeEntry): void {
     return;
   }
 
-  entry.visualResizeTimer = window.setTimeout(run, remaining);
+  entry.visualResizeTimer = setTimeout(run, remaining);
 }
 
 function startVisibilityRecovery(entry: TerminalRuntimeEntry): void {
@@ -441,15 +443,15 @@ function startVisibilityRecovery(entry: TerminalRuntimeEntry): void {
   const scheduleRecovery = () => {
     if (recoveryFrame !== 0) return;
 
-    recoveryFrame = window.requestAnimationFrame(() => {
+    recoveryFrame = raf(() => {
       recoveryFrame = 0;
       const now = Date.now();
       if (now - lastRunAt < RECOVERY_THROTTLE_MS) {
         const remaining = RECOVERY_THROTTLE_MS - (now - lastRunAt);
         if (throttleTimer !== null) {
-          window.clearTimeout(throttleTimer);
+          clearTimeout(throttleTimer);
         }
-        throttleTimer = window.setTimeout(() => {
+        throttleTimer = setTimeout(() => {
           throttleTimer = null;
           scheduleRecovery();
         }, remaining + 1);
@@ -469,15 +471,15 @@ function startVisibilityRecovery(entry: TerminalRuntimeEntry): void {
   };
 
   document.addEventListener("visibilitychange", handleVisibilityChange);
-  window.addEventListener("focus", handleWindowFocus);
+  addWindowEventListener("focus", handleWindowFocus);
   entry.visibilityCleanup = () => {
     document.removeEventListener("visibilitychange", handleVisibilityChange);
-    window.removeEventListener("focus", handleWindowFocus);
+    removeWindowEventListener("focus", handleWindowFocus);
     if (recoveryFrame !== 0) {
-      window.cancelAnimationFrame(recoveryFrame);
+      cancelRaf(recoveryFrame);
     }
     if (throttleTimer !== null) {
-      window.clearTimeout(throttleTimer);
+      clearTimeout(throttleTimer);
     }
     entry.visibilityCleanup = null;
   };
@@ -538,7 +540,7 @@ function syncTheme(entry: TerminalRuntimeEntry): void {
 
 function cancelPendingWebglLoad(entry: TerminalRuntimeEntry): void {
   if (entry.webglLoadFrame !== null) {
-    window.cancelAnimationFrame(entry.webglLoadFrame);
+    cancelRaf(entry.webglLoadFrame);
     entry.webglLoadFrame = null;
   }
 }
@@ -561,7 +563,7 @@ function maybeLoadWebglAddon(entry: TerminalRuntimeEntry): void {
     return;
   }
 
-  entry.webglLoadFrame = window.requestAnimationFrame(() => {
+  entry.webglLoadFrame = raf(() => {
     entry.webglLoadFrame = null;
     if (
       entry.disposed ||
@@ -598,7 +600,7 @@ function applyInitialVisualResize(entry: TerminalRuntimeEntry): void {
   let firstFrame = 0;
   let secondFrame = 0;
 
-  firstFrame = window.requestAnimationFrame(() => {
+  firstFrame = raf(() => {
     cancelScheduledVisualResize(entry);
     entry.lastVisualResizeAt = Date.now();
     runTerminalResize(entry, {
@@ -606,7 +608,7 @@ function applyInitialVisualResize(entry: TerminalRuntimeEntry): void {
       refresh: true,
     });
 
-    secondFrame = window.requestAnimationFrame(() => {
+    secondFrame = raf(() => {
       entry.lastVisualResizeAt = Date.now();
       runTerminalResize(entry, { refresh: true });
     });
@@ -614,10 +616,10 @@ function applyInitialVisualResize(entry: TerminalRuntimeEntry): void {
 
   entry.attachDisposables.push(() => {
     if (firstFrame !== 0) {
-      window.cancelAnimationFrame(firstFrame);
+      cancelRaf(firstFrame);
     }
     if (secondFrame !== 0) {
-      window.cancelAnimationFrame(secondFrame);
+      cancelRaf(secondFrame);
     }
   });
 }
@@ -638,9 +640,9 @@ function ensureResizeObserver(entry: TerminalRuntimeEntry): void {
       return;
     }
     if (frame !== 0) {
-      window.cancelAnimationFrame(frame);
+      cancelRaf(frame);
     }
-    frame = window.requestAnimationFrame(() => {
+    frame = raf(() => {
       frame = 0;
       scheduleVisualResize(entry);
     });
@@ -651,7 +653,7 @@ function ensureResizeObserver(entry: TerminalRuntimeEntry): void {
   entry.attachDisposables.push(() => {
     observer.disconnect();
     if (frame !== 0) {
-      window.cancelAnimationFrame(frame);
+      cancelRaf(frame);
     }
     if (entry.resizeObserver === observer) {
       entry.resizeObserver = null;
@@ -991,7 +993,7 @@ export function createRuntimeEntry(config: TerminalRuntimeConfig): TerminalRunti
 
   entry.themeObserver = new MutationObserver(() => {
     if (entry.themeRefreshFrame !== 0) return;
-    entry.themeRefreshFrame = window.requestAnimationFrame(() => {
+    entry.themeRefreshFrame = raf(() => {
       entry.themeRefreshFrame = 0;
       syncTheme(entry);
     });
@@ -1070,7 +1072,7 @@ export function createRuntimeEntry(config: TerminalRuntimeConfig): TerminalRunti
           return;
         }
         entry.hasHandledExit = true;
-        window.setTimeout(() => {
+        setTimeout(() => {
           if (!entry.hasHandledExit) {
             return;
           }
@@ -1105,7 +1107,7 @@ function openTerminal(entry: TerminalRuntimeEntry): void {
         replaySnapshot(entry, snapshot, () => setRuntimeStatus(entry, "ready"));
       } else if (entry.outputEventVersion === outputEventVersionAtOpen) {
         setRuntimeStatus(entry, "ready");
-        window.setTimeout(() => {
+        setTimeout(() => {
           if (
             entry.disposed ||
             !entry.opened ||
@@ -1131,7 +1133,7 @@ function openTerminal(entry: TerminalRuntimeEntry): void {
         }, OPEN_SNAPSHOT_RECONCILE_DELAY_MS);
       }
       if (entry.viewState.autoFocus) {
-        window.requestAnimationFrame(() => {
+        raf(() => {
           entry.terminal.focus();
         });
       }
@@ -1184,7 +1186,7 @@ export function updateRuntimeViewState(
   }
 
   if (nextViewState.autoFocus) {
-    window.requestAnimationFrame(() => {
+    raf(() => {
       entry.terminal.focus();
     });
   }
@@ -1214,7 +1216,7 @@ export function disposeRuntimeEntry(entry: TerminalRuntimeEntry): void {
   entry.querySuppressionDispose?.();
   entry.querySuppressionDispose = null;
   if (entry.themeRefreshFrame !== 0) {
-    window.cancelAnimationFrame(entry.themeRefreshFrame);
+    cancelRaf(entry.themeRefreshFrame);
     entry.themeRefreshFrame = 0;
   }
   entry.themeObserver?.disconnect();

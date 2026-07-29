@@ -2,7 +2,7 @@
 // Purpose: Shared create/edit dialog for a Space name and curated Central icon.
 
 import { SPACE_NAME_MAX_LENGTH, type SpaceIconName } from "@synara/contracts";
-import { useCallback, useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
 
 import { suggestSpaceIcon } from "~/lib/spaceIconSuggestion";
 
@@ -21,6 +21,8 @@ import { Input } from "./ui/input";
 import { SPACE_ICON_OPTIONS, SpaceIcon } from "./SpaceIcon";
 import { cn } from "~/lib/utils";
 
+import { getDocumentActiveElement } from "~/platform/env";
+import { useUniqueId } from "~/hooks/useUniqueId";
 const DEFAULT_SPACE_ICON: SpaceIconName = "bag";
 
 const FIELD_LABEL_CLASS_NAME = dialogFieldLabelClassName;
@@ -53,7 +55,7 @@ export function SpaceEditorDialog(props: {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const nameInputRef = useRef<HTMLInputElement | null>(null);
   const openedRef = useRef(false);
-  const fieldId = useId();
+  const fieldId = useUniqueId();
   const nameInputId = `${fieldId}-name`;
   const nameErrorId = `${fieldId}-name-error`;
   const iconLegendId = `${fieldId}-icon-legend`;
@@ -121,7 +123,7 @@ export function SpaceEditorDialog(props: {
       event.currentTarget.querySelectorAll<HTMLButtonElement>("[data-space-icon]"),
     );
     if (cells.length === 0) return;
-    const currentIndex = cells.indexOf(document.activeElement as HTMLButtonElement);
+    const currentIndex = cells.indexOf(getDocumentActiveElement() as HTMLButtonElement);
     const nextIndex =
       step === "first"
         ? 0

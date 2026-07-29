@@ -40,7 +40,7 @@ describe("route Space synchronization", () => {
     const screen = await render(<RouteSpaceSyncFixture />);
 
     await page.getByRole("button").click();
-    await new Promise((resolve) => window.setTimeout(resolve, 1_600));
+    await new Promise((resolve) => setTimeout(resolve, 1_600));
 
     await expect.element(page.getByRole("button")).toHaveTextContent(selectedSpaceId);
     await screen.unmount();

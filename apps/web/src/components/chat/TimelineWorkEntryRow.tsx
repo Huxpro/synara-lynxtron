@@ -52,6 +52,7 @@ import { DiffStatLabel } from "./DiffStatLabel";
 import { type ExpandedImagePreview } from "./ExpandedImagePreview";
 import { LinkChipIcon } from "../LinkChipIcon";
 import { normalizeCompactToolLabel } from "./MessagesTimeline.logic";
+import { TimelineStatusRowComposition } from "./TimelineStatusRowComposition";
 import { SynaraLogo } from "../SynaraLogo";
 import type { SubagentToolTrace } from "./subagentToolTrace.logic";
 import { ToolCallDetailsContent } from "./ToolCallDetailsDialog";
@@ -80,6 +81,7 @@ import {
   resolveSubagentPresentation,
 } from "../../lib/subagentPresentation";
 
+import { raf, cancelRaf } from "~/platform/frame";
 const TRANSCRIPT_DISCLOSURE_TRANSITION_MS = 220;
 const TRANSCRIPT_DISCLOSURE_CLEANUP_BUFFER_MS = 40;
 const WORK_ROW_MUTED_HOVER_TONE: Record<"tool-row" | "file-row", string> = {
@@ -882,7 +884,7 @@ export const TimelineWorkEntryRow = memo(function TimelineWorkEntryRow(props: {
         </div>
       ) : (
         (() => {
-          const rowContentChildren = (
+          const rowContentChildren = showInlineAgentTaskPreview ? (
             <>
               {!isCodexStatusRow ? (
                 <span
@@ -901,52 +903,44 @@ export const TimelineWorkEntryRow = memo(function TimelineWorkEntryRow(props: {
                   )}
                 </span>
               ) : null}
-              <div
-                className={cn(
-                  "min-w-0 overflow-hidden",
-                  // Single-line tool labels size to their content so the disclosure
-                  // chevron can sit right after the name; the multi-line markdown
-                  // preview still needs the full row width.
-                  showInlineAgentTaskPreview && "flex-1",
-                )}
-              >
-                {showInlineAgentTaskPreview ? (
-                  <div className={cn(compact ? "space-y-[1px]" : "space-y-0.5")}>
-                    <p
-                      className="truncate font-medium leading-5 text-muted-foreground/72"
-                      style={{ fontSize: `${rowFontSizePx}px` }}
-                    >
-                      {heading}
-                    </p>
-                    <ChatMarkdown
-                      text={preview ?? ""}
-                      cwd={markdownCwd}
-                      isStreaming={false}
-                      className="leading-relaxed"
-                      style={{
-                        color: "color-mix(in srgb, var(--muted-foreground) 72%, transparent)",
-                        fontSize: `${Math.max(11, rowFontSizePx - 1)}px`,
-                        lineHeight: compact ? "18px" : "19px",
-                      }}
-                      onImageExpand={onImageExpand}
-                    />
-                  </div>
-                ) : (
+              <div className="min-w-0 flex-1 overflow-hidden">
+                <div className={cn(compact ? "space-y-[1px]" : "space-y-0.5")}>
                   <p
-                    className={cn(
-                      compact ? "truncate leading-5" : "truncate leading-6",
-                      // Match the leading icon's tone so the row reads as one muted unit, and
-                      // brighten the whole row to foreground on hover/focus instead of a fill.
-                      WORK_ROW_MUTED_HOVER_TONE["tool-row"],
-                    )}
-                    data-codex-status-row={isCodexStatusRow ? "true" : undefined}
+                    className="truncate font-medium leading-5 text-muted-foreground/72"
                     style={{ fontSize: `${rowFontSizePx}px` }}
                   >
-                    <span data-work-entry-display-text="true">{displayText}</span>
+                    {heading}
                   </p>
-                )}
+                  <ChatMarkdown
+                    text={preview ?? ""}
+                    cwd={markdownCwd}
+                    isStreaming={false}
+                    className="leading-relaxed"
+                    style={{
+                      color: "color-mix(in srgb, var(--muted-foreground) 72%, transparent)",
+                      fontSize: `${Math.max(11, rowFontSizePx - 1)}px`,
+                      lineHeight: compact ? "18px" : "19px",
+                    }}
+                    onImageExpand={onImageExpand}
+                  />
+                </div>
               </div>
             </>
+          ) : (
+            <TimelineStatusRowComposition
+              compact={compact}
+              displayText={displayText}
+              fontSizePx={rowFontSizePx}
+              statusOnly={isCodexStatusRow}
+              tone={workEntry.tone}
+              icon={
+                webFetchUrl ? (
+                  <LinkChipIcon url={webFetchUrl} className={compact ? "size-3.5" : "size-4"} />
+                ) : (
+                  renderWorkEntryIcon(LeftIcon, compact ? "size-3.5" : "size-4")
+                )
+              }
+            />
           );
           if (canOpenToolDetails && workEntry.toolDetails) {
             return (
@@ -1100,11 +1094,11 @@ function ToolDetailsDisclosure(props: {
 
   const clearMotionTimers = useCallback(() => {
     if (openFrameRef.current !== null) {
-      window.cancelAnimationFrame(openFrameRef.current);
+      cancelRaf(openFrameRef.current);
       openFrameRef.current = null;
     }
     if (cleanupTimeoutRef.current !== null) {
-      window.clearTimeout(cleanupTimeoutRef.current);
+      clearTimeout(cleanupTimeoutRef.current);
       cleanupTimeoutRef.current = null;
     }
   }, []);
@@ -1117,7 +1111,7 @@ function ToolDetailsDisclosure(props: {
       if (nextOpen) {
         setRenderDetails(true);
         setMotionOpen(false);
-        openFrameRef.current = window.requestAnimationFrame(() => {
+        openFrameRef.current = raf(() => {
           openFrameRef.current = null;
           setMotionOpen(true);
         });
@@ -1125,7 +1119,7 @@ function ToolDetailsDisclosure(props: {
       }
 
       setMotionOpen(false);
-      cleanupTimeoutRef.current = window.setTimeout(() => {
+      cleanupTimeoutRef.current = setTimeout(() => {
         cleanupTimeoutRef.current = null;
         setRenderDetails(false);
       }, TRANSCRIPT_DISCLOSURE_TRANSITION_MS + TRANSCRIPT_DISCLOSURE_CLEANUP_BUFFER_MS);

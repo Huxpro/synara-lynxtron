@@ -11,6 +11,7 @@ import {
 } from "./ui/dialog";
 import { Input } from "./ui/input";
 
+import { raf, cancelRaf } from "~/platform/frame";
 interface ThreadWorktreeHandoffDialogProps {
   open: boolean;
   worktreeName: string;
@@ -32,12 +33,12 @@ export function ThreadWorktreeHandoffDialog({
 
   useEffect(() => {
     if (!open) return;
-    const frame = window.requestAnimationFrame(() => {
+    const frame = raf(() => {
       worktreeInputRef.current?.focus();
       worktreeInputRef.current?.select();
     });
     return () => {
-      window.cancelAnimationFrame(frame);
+      cancelRaf(frame);
     };
   }, [open]);
 

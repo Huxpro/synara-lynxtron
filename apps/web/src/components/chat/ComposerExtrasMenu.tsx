@@ -4,7 +4,7 @@
 // Depends on: shared menu primitives, icon buttons, and caller-owned composer state callbacks.
 
 import { type ProviderInteractionMode } from "@synara/contracts";
-import { useId, useRef, type ChangeEvent } from "react";
+import { useRef, type ChangeEvent } from "react";
 import { GoTasklist } from "react-icons/go";
 
 import { PaperclipIcon, PlusIcon } from "~/lib/icons";
@@ -22,6 +22,7 @@ import {
   MenuTrigger,
 } from "../ui/menu";
 
+import { useUniqueId } from "~/hooks/useUniqueId";
 export const ComposerExtrasMenu = function ComposerExtrasMenu(props: {
   interactionMode: ProviderInteractionMode;
   supportsFastMode: boolean;
@@ -30,7 +31,7 @@ export const ComposerExtrasMenu = function ComposerExtrasMenu(props: {
   onToggleFastMode: () => void;
   onSetPlanMode: (enabled: boolean) => void;
 }) {
-  const inputId = useId();
+  const inputId = useUniqueId();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   // Reset the hidden input so selecting the same image twice still emits a change event.

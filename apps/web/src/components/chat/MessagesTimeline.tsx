@@ -17,7 +17,6 @@ import {
   memo,
   useCallback,
   useEffect,
-  useId,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -71,6 +70,12 @@ import { InlineSkillChip } from "./InlineSkillChip";
 import { InlineAgentChip } from "./InlineAgentChip";
 import { MessageActionButton, MESSAGE_ACTION_ICON_CLASS_NAME } from "./MessageActionButton";
 import { MessageCopyButton } from "./MessageCopyButton";
+import {
+  MessageAssistantRowComposition,
+  MessageUserBubbleComposition,
+  MessageUserRowComposition,
+} from "./MessageRowComposition";
+import { TimelineStatusRowComposition } from "./TimelineStatusRowComposition";
 import { AssistantSelectionsSummaryChip } from "./AssistantSelectionsSummaryChip";
 import { FileAttachmentChip } from "./FileAttachmentChip";
 import { FileCommentsSummaryChip } from "./FileCommentsSummaryChip";
@@ -138,7 +143,7 @@ import {
   DISCLOSURE_CLEANUP_BUFFER_MS,
   DISCLOSURE_TRANSITION_MS,
   disclosureContentClassName,
-} from "~/lib/disclosureMotion";
+} from "~/platform/motion";
 import { getAppTypographyScale } from "../../lib/appTypography";
 import type { SubagentToolTrace } from "./subagentToolTrace.logic";
 import {
@@ -153,6 +158,8 @@ import {
   type MessageTrailAnchor,
 } from "./messageTrail.logic";
 
+import { raf, cancelRaf } from "~/platform/frame";
+import { useUniqueId } from "~/hooks/useUniqueId";
 const MAX_VISIBLE_INLINE_TOOL_ENTRIES = 4;
 // Changed-files list in the per-turn card is capped so large turns stay compact;
 // the rest are revealed via an inline "Show more" row.
@@ -659,10 +666,10 @@ export const MessagesTimeline = memo(function MessagesTimeline({
   useEffect(
     () => () => {
       if (jumpHighlightTimeoutRef.current !== null) {
-        window.clearTimeout(jumpHighlightTimeoutRef.current);
+        clearTimeout(jumpHighlightTimeoutRef.current);
       }
       if (markerFineScrollFrameRef.current !== null) {
-        window.cancelAnimationFrame(markerFineScrollFrameRef.current);
+        cancelRaf(markerFineScrollFrameRef.current);
       }
       clearActiveMarkerDecoration();
     },
@@ -688,9 +695,9 @@ export const MessagesTimeline = memo(function MessagesTimeline({
     };
     const clearJumpHighlightAfterDelay = () => {
       if (jumpHighlightTimeoutRef.current !== null) {
-        window.clearTimeout(jumpHighlightTimeoutRef.current);
+        clearTimeout(jumpHighlightTimeoutRef.current);
       }
-      jumpHighlightTimeoutRef.current = window.setTimeout(() => {
+      jumpHighlightTimeoutRef.current = setTimeout(() => {
         setHighlightedMessageId(null);
         clearActiveMarkerDecoration();
         jumpHighlightTimeoutRef.current = null;
@@ -698,7 +705,7 @@ export const MessagesTimeline = memo(function MessagesTimeline({
     };
     const cancelPendingMarkerFineScroll = () => {
       if (markerFineScrollFrameRef.current !== null) {
-        window.cancelAnimationFrame(markerFineScrollFrameRef.current);
+        cancelRaf(markerFineScrollFrameRef.current);
         markerFineScrollFrameRef.current = null;
       }
     };
@@ -717,10 +724,10 @@ export const MessagesTimeline = memo(function MessagesTimeline({
         }
         attempts += 1;
         if (getMonotonicTimeMs() <= deadlineMs && attempts < MARKER_FINE_SCROLL_MAX_RETRY_FRAMES) {
-          markerFineScrollFrameRef.current = window.requestAnimationFrame(tick);
+          markerFineScrollFrameRef.current = raf(tick);
         }
       };
-      markerFineScrollFrameRef.current = window.requestAnimationFrame(tick);
+      markerFineScrollFrameRef.current = raf(tick);
     };
     const controller: MessagesTimelineController = {
       scrollToMessage: (messageId) => {
@@ -760,11 +767,11 @@ export const MessagesTimeline = memo(function MessagesTimeline({
   const tailScrollTimeoutsRef = useRef<number[]>([]);
   const clearTailExpansionScrollTimers = useCallback(() => {
     if (tailScrollFrameRef.current !== null) {
-      window.cancelAnimationFrame(tailScrollFrameRef.current);
+      cancelRaf(tailScrollFrameRef.current);
       tailScrollFrameRef.current = null;
     }
     for (const timeoutId of tailScrollTimeoutsRef.current) {
-      window.clearTimeout(timeoutId);
+      clearTimeout(timeoutId);
     }
     tailScrollTimeoutsRef.current = [];
   }, []);
@@ -776,12 +783,12 @@ export const MessagesTimeline = memo(function MessagesTimeline({
     const scrollToEnd = () => {
       void resolvedListRef.current?.scrollToEnd?.({ animated: false });
     };
-    tailScrollFrameRef.current = window.requestAnimationFrame(() => {
+    tailScrollFrameRef.current = raf(() => {
       tailScrollFrameRef.current = null;
       scrollToEnd();
     });
     for (const delay of [80, 180, 260]) {
-      const timeoutId = window.setTimeout(scrollToEnd, delay);
+      const timeoutId = setTimeout(scrollToEnd, delay);
       tailScrollTimeoutsRef.current.push(timeoutId);
     }
   }, [clearTailExpansionScrollTimers, resolvedListRef]);
@@ -803,11 +810,11 @@ export const MessagesTimeline = memo(function MessagesTimeline({
       return;
     }
     onIsAtEndChange?.(true);
-    const frameId = window.requestAnimationFrame(() => {
+    const frameId = raf(() => {
       void resolvedListRef.current?.scrollToEnd?.({ animated: false });
     });
     return () => {
-      window.cancelAnimationFrame(frameId);
+      cancelRaf(frameId);
     };
   }, [onIsAtEndChange, resolvedListRef, rows.length]);
   // Sent-message anchors (id + position in the virtualized row list) for the
@@ -868,14 +875,14 @@ export const MessagesTimeline = memo(function MessagesTimeline({
     if (!onTrailHighlightsChange) {
       return;
     }
-    const frameId = window.requestAnimationFrame(() => {
+    const frameId = raf(() => {
       const state = resolvedListRef.current?.getState?.();
       if (state) {
         emitTrailHighlightsForViewport(state.start, state.end);
       }
     });
     return () => {
-      window.cancelAnimationFrame(frameId);
+      cancelRaf(frameId);
     };
   }, [emitTrailHighlightsForViewport, onTrailHighlightsChange, resolvedListRef, rows.length]);
   const toggleFileChangesExpanded = useCallback((turnId: TurnId) => {
@@ -1121,13 +1128,7 @@ export const MessagesTimeline = memo(function MessagesTimeline({
                   {...(onOpenThread ? { onOpenSourceThread: onOpenThread } : {})}
                 />
               ) : null}
-              <div className="flex w-full justify-end">
-                <div
-                  className={cn(
-                    "group flex flex-col items-end gap-px",
-                    isEditingThisMessage ? "w-full max-w-full" : "max-w-[80%]",
-                  )}
-                >
+              <MessageUserRowComposition fullWidth={isEditingThisMessage}>
                   {/* Keep user-message chrome outside the bubble so the message reads as one simple block. */}
                   {/* The cross-task origin label already attributes this turn to another Synara thread,
                       so suppress the dispatch chip here to avoid a duplicate "Sent by …" marker. */}
@@ -1197,15 +1198,7 @@ export const MessagesTimeline = memo(function MessagesTimeline({
                       onSubmit={(text) => void submitUserMessageEdit(row.message.id, text)}
                     />
                   ) : showUserText ? (
-                    <div
-                      className={cn(
-                        "w-max max-w-full min-w-0 self-end bg-[var(--app-user-message-background)]",
-                        USER_MESSAGE_BUBBLE_RADIUS_CLASS_NAME,
-                        bubbleIsChipOnly
-                          ? "py-0.5 px-3"
-                          : USER_MESSAGE_BUBBLE_SHELL_CHROME_CLASS_NAME,
-                      )}
-                    >
+                    <MessageUserBubbleComposition chipOnly={bubbleIsChipOnly}>
                       <UserMessageCollapsibleText
                         text={userMessageText}
                         expanded={userMessageExpanded}
@@ -1226,7 +1219,7 @@ export const MessagesTimeline = memo(function MessagesTimeline({
                           markdownCwd={markdownCwd}
                         />
                       </UserMessageCollapsibleText>
-                    </div>
+                    </MessageUserBubbleComposition>
                   ) : null}
                   {!isEditingThisMessage && (
                     <div
@@ -1274,8 +1267,7 @@ export const MessagesTimeline = memo(function MessagesTimeline({
                       </div>
                     </div>
                   )}
-                </div>
-              </div>
+              </MessageUserRowComposition>
             </div>
           );
         })()}
@@ -1660,7 +1652,7 @@ export const MessagesTimeline = memo(function MessagesTimeline({
                   <div className="h-px w-full bg-border" />
                 </div>
               )}
-              <div className="group min-w-0 py-0.5">
+              <MessageAssistantRowComposition>
                 {renderWorkDisplay(leadingWorkDisplay, "leading")}
                 {messageText !== null ? (
                   <div data-assistant-message-id={row.message.id}>
@@ -1928,10 +1920,19 @@ export const MessagesTimeline = memo(function MessagesTimeline({
                     </div>
                   );
                 })()}
-              </div>
+              </MessageAssistantRowComposition>
             </>
           );
         })()}
+
+      {row.kind === "message" && row.message.role === "system" && (
+        <TimelineStatusRowComposition
+          displayText={row.message.text || "System"}
+          fontSizePx={appTypographyScale.chatPx}
+          statusOnly
+          tone="info"
+        />
+      )}
 
       {row.kind === "proposed-plan" && (
         <div className="min-w-0 py-0.5">
@@ -1965,11 +1966,13 @@ export const MessagesTimeline = memo(function MessagesTimeline({
       )}
 
       {row.kind === "working" && (
-        <div
-          className="shimmer pt-0.5 text-muted-foreground/70 font-system-ui"
-          style={{ fontSize: `${appTypographyScale.chatPx}px` }}
-        >
-          Thinking
+        <div className="shimmer pt-0.5 font-system-ui">
+          <TimelineStatusRowComposition
+            displayText="Thinking"
+            fontSizePx={appTypographyScale.chatPx}
+            statusOnly
+            tone="thinking"
+          />
         </div>
       )}
 
@@ -2105,7 +2108,7 @@ function useMessageSendEnterAnimations(
   useEffect(
     () => () => {
       for (const timeoutId of cleanupTimeoutsRef.current) {
-        window.clearTimeout(timeoutId);
+        clearTimeout(timeoutId);
       }
       cleanupTimeoutsRef.current = [];
     },
@@ -2154,7 +2157,7 @@ function applyMessageSendEnterAnimation(params: {
     return next;
   });
 
-  const cleanupTimeout = window.setTimeout(() => {
+  const cleanupTimeout = setTimeout(() => {
     cleanupTimeoutsRef.current = cleanupTimeoutsRef.current.filter((id) => id !== cleanupTimeout);
     setEnteringRowIds((current) => {
       const next = new Set(current);
@@ -2184,11 +2187,11 @@ function useWorktreeSetupPresentation(
 
   const clearCloseTimers = useCallback(() => {
     if (closeFrameRef.current !== null) {
-      window.cancelAnimationFrame(closeFrameRef.current);
+      cancelRaf(closeFrameRef.current);
       closeFrameRef.current = null;
     }
     if (cleanupTimeoutRef.current !== null) {
-      window.clearTimeout(cleanupTimeoutRef.current);
+      clearTimeout(cleanupTimeoutRef.current);
       cleanupTimeoutRef.current = null;
     }
   }, []);
@@ -2241,10 +2244,10 @@ function reconcileWorktreeSetupPresentation(params: {
   if (!presented?.open || closeFrameRef.current !== null) {
     return;
   }
-  closeFrameRef.current = window.requestAnimationFrame(() => {
+  closeFrameRef.current = raf(() => {
     closeFrameRef.current = null;
     setPresented((current) => (current?.open ? { ...current, open: false } : current));
-    cleanupTimeoutRef.current = window.setTimeout(() => {
+    cleanupTimeoutRef.current = setTimeout(() => {
       cleanupTimeoutRef.current = null;
       setPresented(null);
     }, DISCLOSURE_TRANSITION_MS + DISCLOSURE_CLEANUP_BUFFER_MS);
@@ -2267,10 +2270,10 @@ function useSettledTurnCollapseTransitions(
       return;
     }
     if (timer.closeFrame !== null) {
-      window.cancelAnimationFrame(timer.closeFrame);
+      cancelRaf(timer.closeFrame);
     }
     if (timer.cleanupTimeout !== null) {
-      window.clearTimeout(timer.cleanupTimeout);
+      clearTimeout(timer.cleanupTimeout);
     }
     timersRef.current.delete(messageId);
   }, []);
@@ -2278,7 +2281,7 @@ function useSettledTurnCollapseTransitions(
   const scheduleTransitionClose = useCallback(
     (messageId: string) => {
       clearTransitionTimer(messageId);
-      const closeFrame = window.requestAnimationFrame(() => {
+      const closeFrame = raf(() => {
         const timer = timersRef.current.get(messageId);
         if (!timer) {
           return;
@@ -2295,7 +2298,7 @@ function useSettledTurnCollapseTransitions(
           };
         });
 
-        const cleanupTimeout = window.setTimeout(() => {
+        const cleanupTimeout = setTimeout(() => {
           timersRef.current.delete(messageId);
           setTransitions((current) => {
             if (!current[messageId]) {
@@ -2440,9 +2443,9 @@ function WorkingTimer({ createdAt }: { createdAt: string }) {
       }
     };
     updateText();
-    const id = window.setInterval(updateText, 1000);
+    const id = setInterval(updateText, 1000);
     return () => {
-      window.clearInterval(id);
+      clearInterval(id);
     };
   }, [createdAt]);
 
@@ -2681,7 +2684,7 @@ const UserMessageCollapsibleText = memo(function UserMessageCollapsibleText(prop
   children: ReactNode;
 }) {
   const contentRef = useRef<HTMLDivElement>(null);
-  const contentId = useId();
+  const contentId = useUniqueId();
   const [overflowing, setOverflowing] = useState(() => userMessageLikelyOverflows(props.text));
   const collapsed = !props.expanded;
 

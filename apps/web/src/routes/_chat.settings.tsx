@@ -27,6 +27,10 @@ import {
 import { APP_VERSION } from "../branding";
 import { AdvancedSettingsPanel } from "~/components/settings/AdvancedSettingsPanel";
 import {
+  SettingsBehaviorPanel,
+  type BehaviorSettingKey,
+} from "~/components/settings/SettingsBehaviorPanel";
+import {
   ArchivedSettingsPanel,
   WorktreesSettingsPanel,
 } from "~/components/settings/ConversationStorageSettingsPanels";
@@ -97,6 +101,8 @@ import {
   SETTINGS_SECTION_LABEL_CLASS_NAME,
 } from "../settingsPanelStyles";
 
+import { getNavigatorPlatform, scrollElementIntoViewById } from "~/platform/env";
+import { raf, cancelRaf } from "~/platform/frame";
 // ── Settings taxonomy ──────────────────────────────────────────────────────
 
 const UI_DENSITY_OPTIONS = [
@@ -197,7 +203,7 @@ function SettingsRouteView() {
   const [releaseHistoryOpen, setReleaseHistoryOpen] = useState(false);
   const [resetEpoch, setResetEpoch] = useState(0);
   const shouldShowFontSmoothing = isMacPlatform(
-    typeof navigator === "undefined" ? "" : navigator.platform,
+    getNavigatorPlatform(),
   );
   const visibleTerminalFontFamilySuggestions = useMemo(() => {
     const query = settings.terminalFontFamily.trim().toLowerCase();
@@ -215,12 +221,10 @@ function SettingsRouteView() {
   // Deep links and sidebar search targets all resolve to stable DOM ids in the active panel.
   useEffect(() => {
     if (!settingsTarget) return;
-    const frame = window.requestAnimationFrame(() => {
-      document
-        .getElementById(settingsTarget)
-        ?.scrollIntoView({ block: "start", behavior: "smooth" });
+    const frame = raf(() => {
+      scrollElementIntoViewById(settingsTarget, { block: "start", behavior: "smooth" });
     });
-    return () => window.cancelAnimationFrame(frame);
+    return () => cancelRaf(frame);
   }, [activeSection, settingsTarget]);
 
   const changedSettingLabels = [
@@ -920,55 +924,6 @@ function SettingsRouteView() {
     </div>
   );
 
-  const renderBehaviorPanel = () => (
-    <div className="space-y-6">
-      <SettingsSection title="Runtime behavior">
-        {renderBooleanSettingRow({
-          settingKey: "enableAssistantStreaming",
-          title: "Assistant output",
-          description: "Show token-by-token output while a response is in progress.",
-          resetLabel: "assistant output",
-          ariaLabel: "Stream assistant messages",
-        })}
-
-        {renderBooleanSettingRow({
-          settingKey: "diffWordWrap",
-          title: "Diff line wrapping",
-          description:
-            "Set the default wrap state when the diff panel opens. The in-panel wrap toggle only affects the current diff session.",
-          resetLabel: "diff line wrapping",
-          ariaLabel: "Wrap diff lines by default",
-        })}
-      </SettingsSection>
-
-      <SettingsSection title="Safety confirmations">
-        {renderBooleanSettingRow({
-          settingKey: "confirmThreadDelete",
-          title: "Delete confirmation",
-          description: "Ask before deleting a thread and its chat history.",
-          resetLabel: "delete confirmation",
-          ariaLabel: "Confirm thread deletion",
-        })}
-
-        {renderBooleanSettingRow({
-          settingKey: "confirmThreadArchive",
-          title: "Archive confirmation",
-          description: "Ask before archiving a thread.",
-          resetLabel: "archive confirmation",
-          ariaLabel: "Confirm thread archive",
-        })}
-
-        {renderBooleanSettingRow({
-          settingKey: "confirmTerminalTabClose",
-          title: "Terminal close confirmation",
-          description: "Ask before closing a terminal tab and clearing its history.",
-          resetLabel: "terminal close confirmation",
-          ariaLabel: "Confirm terminal tab close",
-        })}
-      </SettingsSection>
-    </div>
-  );
-
   const renderRouteOwnedPanel = () => {
     switch (activeSection) {
       case "general":
@@ -976,7 +931,25 @@ function SettingsRouteView() {
       case "appearance":
         return renderAppearancePanel();
       case "behavior":
-        return renderBehaviorPanel();
+        return (
+          <SettingsBehaviorPanel
+            settings={settings}
+            defaults={defaults}
+            updateSetting={(key: BehaviorSettingKey, value) =>
+              updateSettings({ [key]: value } as Pick<AppSettings, BehaviorSettingKey>)
+            }
+            renderResetAction={({ changed, label, onReset }) =>
+              changed ? <SettingResetButton label={label} onClick={onReset} /> : null
+            }
+            renderControl={({ checked, ariaLabel, onCheckedChange }) => (
+              <Switch
+                checked={checked}
+                onCheckedChange={(value) => onCheckedChange(Boolean(value))}
+                aria-label={ariaLabel}
+              />
+            )}
+          />
+        );
       case "shortcuts":
         return <KeyboardShortcutsSettingsPanel />;
       case "profile":

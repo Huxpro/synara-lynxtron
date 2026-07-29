@@ -17,6 +17,7 @@ import { Spinner } from "./ui/spinner";
 import { Textarea } from "./ui/textarea";
 import { toastManager } from "./ui/toast";
 
+import { raf, cancelRaf } from "~/platform/frame";
 export interface FeedbackDialogProps {
   open: boolean;
   context: FeedbackThreadContext;
@@ -80,8 +81,8 @@ function FeedbackDialogForm({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    const frame = window.requestAnimationFrame(() => textareaRef.current?.focus());
-    return () => window.cancelAnimationFrame(frame);
+    const frame = raf(() => textareaRef.current?.focus());
+    return () => cancelRaf(frame);
   }, []);
 
   const canSubmit = details.trim().length > 0 && !isSending;

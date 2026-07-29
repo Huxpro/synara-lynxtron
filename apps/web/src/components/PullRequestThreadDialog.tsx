@@ -22,6 +22,7 @@ import {
 import { Input } from "./ui/input";
 import { Spinner } from "./ui/spinner";
 
+import { raf, cancelRaf } from "~/platform/frame";
 interface PullRequestThreadDialogProps {
   open: boolean;
   cwd: string | null;
@@ -87,12 +88,12 @@ function PullRequestThreadDialogContent({
   );
 
   useEffect(() => {
-    const frame = window.requestAnimationFrame(() => {
+    const frame = raf(() => {
       referenceInputRef.current?.focus();
       referenceInputRef.current?.select();
     });
     return () => {
-      window.cancelAnimationFrame(frame);
+      cancelRaf(frame);
     };
   }, [open]);
 

@@ -3,7 +3,7 @@
 // Layer: Web settings UI
 // Exports: ThemePackEditor
 
-import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { Button } from "./ui/button";
 import {
@@ -23,7 +23,7 @@ import { Switch } from "./ui/switch";
 import { Textarea } from "./ui/textarea";
 import { toastManager } from "./ui/toast";
 import { SettingsSelectPopup } from "./settings/SettingsPanelPrimitives";
-import { copyTextToClipboard } from "../hooks/useCopyToClipboard";
+import { copyTextToClipboard } from "~/platform/clipboard";
 import { type ChromeTheme, type ThemeMode, type ThemeVariant, useTheme } from "../hooks/useTheme";
 import { cn } from "../lib/utils";
 import {
@@ -39,6 +39,7 @@ import {
   resolveThemePack,
 } from "../theme/theme.logic";
 
+import { useUniqueId } from "~/hooks/useUniqueId";
 type ThemePackEditorProps = {
   isActive?: boolean;
   mode?: ThemeMode;
@@ -317,7 +318,7 @@ function ColorPill({
     if (commitTimerRef.current === null) {
       return;
     }
-    window.clearTimeout(commitTimerRef.current);
+    clearTimeout(commitTimerRef.current);
     commitTimerRef.current = null;
   };
 
@@ -336,7 +337,7 @@ function ColorPill({
   const scheduleCommit = (next: string) => {
     pendingCommitRef.current = next;
     clearCommitTimer();
-    commitTimerRef.current = window.setTimeout(() => {
+    commitTimerRef.current = setTimeout(() => {
       commitColor(next);
     }, COLOR_PICKER_COMMIT_DELAY_MS);
   };
@@ -513,7 +514,7 @@ function ContrastSlider({
   onChange: (next: number) => void;
   ariaLabel: string;
 }) {
-  const id = useId();
+  const id = useUniqueId();
   const fillPct = Math.max(0, Math.min(100, value));
   return (
     <div className="flex items-center gap-3">

@@ -30,6 +30,7 @@ import { getThreadFromState } from "../../threadDerivation";
 import { toastManager } from "../ui/toast";
 import { isKanbanDraftOnlyCard, type KanbanCard } from "./kanban.logic";
 
+import { dialogs } from "~/platform/dialogs";
 interface RenameTarget {
   threadId: ThreadId;
   title: string;
@@ -190,7 +191,7 @@ export function useKanbanCardContextMenu(): KanbanCardContextMenuController {
       if (clicked === "archive") {
         if (!isThreadActionCard) return;
         if (settings.confirmThreadArchive) {
-          const confirmed = await api.dialogs.confirm(
+          const confirmed = await dialogs.confirm(
             [
               `Archive thread "${card.title}"?`,
               "Archived threads are hidden from the sidebar but can be restored later.",
@@ -203,7 +204,7 @@ export function useKanbanCardContextMenu(): KanbanCardContextMenuController {
       }
       if (clicked !== "delete") return;
       if (settings.confirmThreadDelete) {
-        const confirmed = await api.dialogs.confirm(
+        const confirmed = await dialogs.confirm(
           deletesOnlyDraft
             ? `Delete this draft? This removes its unsent prompt.`
             : [
