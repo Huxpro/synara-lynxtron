@@ -1,0 +1,45 @@
+{
+  "viewport": {
+    "innerWidth": 1280,
+    "innerHeight": 820,
+    "visualWidth": 1280,
+    "visualHeight": 820,
+    "dpr": 1
+  },
+  "theme": "",
+  "screen": "Settings-General",
+  "boxes": {
+    "sidebar": {
+      "x": 0,
+      "y": 48,
+      "width": 256,
+      "height": 602,
+      "fontSize": "16px"
+    },
+    "title": {
+      "x": 456,
+      "y": 32,
+      "width": 363.890625,
+      "height": 28,
+      "fontSize": "20px"
+    },
+    "description": {
+      "x": 456,
+      "y": 66,
+      "width": 363.890625,
+      "height": 22.75,
+      "fontSize": "14px"
+    },
+    "section": {
+      "x": 456,
+      "y": 120.75,
+      "width": 624,
+      "height": 155,
+      "fontSize": "16px"
+    }
+  },
+  "a11y": {
+    "nav": 1,
+    "switches": 13
+  }
+}

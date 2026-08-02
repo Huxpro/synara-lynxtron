@@ -1,0 +1,33 @@
+[warning] WebSocket RPC stream reconnect failed {reason: sB: An error occurred during Open
+    at WebSocket.p (http://localhost:63211/assets/providerMetadat…, _tag: "RpcClientError", ~effect/rpc/RpcClientError: "~effect/rpc/RpcClientError", stack: "Error
+    at http://localhost:63211/assets/provide…3211/assets/providerMetadata-CEmiuroj.js:14:6145)", Symbol(effect/Data/Error/plainArgs): Object}
+[warning] WebSocket RPC stream reconnect failed {reason: sB: An error occurred during Open
+    at WebSocket.p (http://localhost:63211/assets/providerMetadat…, _tag: "RpcClientError", ~effect/rpc/RpcClientError: "~effect/rpc/RpcClientError", stack: "Error
+    at http://localhost:63211/assets/provide…3211/assets/providerMetadata-CEmiuroj.js:14:6145)", Symbol(effect/Data/Error/plainArgs): Object}
+[warning] WebSocket RPC stream reconnect failed {reason: sB: An error occurred during Open
+    at WebSocket.p (http://localhost:63211/assets/providerMetadat…, _tag: "RpcClientError", ~effect/rpc/RpcClientError: "~effect/rpc/RpcClientError", stack: "Error
+    at http://localhost:63211/assets/provide…3211/assets/providerMetadata-CEmiuroj.js:14:6145)", Symbol(effect/Data/Error/plainArgs): Object}
+[warning] WebSocket RPC stream reconnect failed {reason: sB: An error occurred during Open
+    at WebSocket.p (http://localhost:63211/assets/providerMetadat…, _tag: "RpcClientError", ~effect/rpc/RpcClientError: "~effect/rpc/RpcClientError", stack: "Error
+    at http://localhost:63211/assets/provide…3211/assets/providerMetadata-CEmiuroj.js:14:6145)", Symbol(effect/Data/Error/plainArgs): Object}
+[warning] WebSocket RPC stream reconnect failed {reason: sB: An error occurred during Open
+    at WebSocket.p (http://localhost:63211/assets/providerMetadat…, _tag: "RpcClientError", ~effect/rpc/RpcClientError: "~effect/rpc/RpcClientError", stack: "Error
+    at http://localhost:63211/assets/provide…3211/assets/providerMetadata-CEmiuroj.js:14:6145)", Symbol(effect/Data/Error/plainArgs): Object}
+[warning] WebSocket RPC stream reconnect failed {reason: sB: An error occurred during Open
+    at WebSocket.p (http://localhost:63211/assets/providerMetadat…, _tag: "RpcClientError", ~effect/rpc/RpcClientError: "~effect/rpc/RpcClientError", stack: "Error
+    at http://localhost:63211/assets/provide…3211/assets/providerMetadata-CEmiuroj.js:14:6145)", Symbol(effect/Data/Error/plainArgs): Object}
+[warning] WebSocket RPC stream reconnect failed {reason: sB: An error occurred during Open
+    at WebSocket.p (http://localhost:63211/assets/providerMetadat…, _tag: "RpcClientError", ~effect/rpc/RpcClientError: "~effect/rpc/RpcClientError", stack: "Error
+    at http://localhost:63211/assets/provide…3211/assets/providerMetadata-CEmiuroj.js:14:6145)", Symbol(effect/Data/Error/plainArgs): Object}
+[warning] WebSocket RPC stream reconnect failed {reason: sB: An error occurred during Open
+    at WebSocket.p (http://localhost:63211/assets/providerMetadat…, _tag: "RpcClientError", ~effect/rpc/RpcClientError: "~effect/rpc/RpcClientError", stack: "Error
+    at http://localhost:63211/assets/provide…3211/assets/providerMetadata-CEmiuroj.js:14:6145)", Symbol(effect/Data/Error/plainArgs): Object}
+[warning] WebSocket RPC stream reconnect failed {reason: sB: An error occurred during Open
+    at WebSocket.p (http://localhost:63211/assets/providerMetadat…, _tag: "RpcClientError", ~effect/rpc/RpcClientError: "~effect/rpc/RpcClientError", stack: "Error
+    at http://localhost:63211/assets/provide…3211/assets/providerMetadata-CEmiuroj.js:14:6145)", Symbol(effect/Data/Error/plainArgs): Object}
+[warning] WebSocket RPC stream reconnect failed {reason: sB: An error occurred during Open
+    at WebSocket.p (http://localhost:63211/assets/providerMetadat…, _tag: "RpcClientError", ~effect/rpc/RpcClientError: "~effect/rpc/RpcClientError", stack: "Error
+    at http://localhost:63211/assets/provide…3211/assets/providerMetadata-CEmiuroj.js:14:6145)", Symbol(effect/Data/Error/plainArgs): Object}
+[warning] WebSocket RPC stream reconnect failed {reason: sB: An error occurred during Open
+    at WebSocket.p (http://localhost:63211/assets/providerMetadat…, _tag: "RpcClientError", ~effect/rpc/RpcClientError: "~effect/rpc/RpcClientError", stack: "Error
+    at http://localhost:63211/assets/provide…3211/assets/providerMetadata-CEmiuroj.js:14:6145)", Symbol(effect/Data/Error/plainArgs): Object}

@@ -1,0 +1,79 @@
+{
+  "viewport": {
+    "innerWidth": 1440,
+    "innerHeight": 900,
+    "visualWidth": 1440,
+    "visualHeight": 900,
+    "dpr": 1
+  },
+  "theme": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable",
+  "screen": "Settings-General",
+  "boxes": {
+    "sidebar": {
+      "x": 8,
+      "y": 8,
+      "width": 250,
+      "height": 900,
+      "fontSize": "16px"
+    },
+    "title": {
+      "x": 54,
+      "y": 135,
+      "width": 43.90625,
+      "height": 18,
+      "fontSize": "12px"
+    },
+    "description": {
+      "x": 541,
+      "y": 74,
+      "width": 363.890625,
+      "height": 20,
+      "fontSize": "14px"
+    },
+    "section": {
+      "x": 541,
+      "y": 126,
+      "width": 624,
+      "height": 156,
+      "fontSize": "16px"
+    }
+  },
+  "a11y": {
+    "named": [
+      "Back to app",
+      "General",
+      "Profile",
+      "Appearance",
+      "Notifications",
+      "Behavior",
+      "AppSnap",
+      "Keyboard Shortcuts",
+      "Worktrees",
+      "Archived",
+      "Models",
+      "Providers",
+      "Skills",
+      "Usage",
+      "Integrations",
+      "Advanced",
+      "Default provider",
+      "Default thread mode",
+      "Project sort order",
+      "Thread sort order",
+      "Show the Chats section in the sidebar",
+      "Show the Studio section in the sidebar",
+      "Show the Workspace section in the sidebar",
+      "Open the Environment panel by default on normal threads",
+      "Show the Usage section in the Environment panel",
+      "Show the Repository section in the Environment panel",
+      "Show the Pull request section in the Environment panel",
+      "Show the Editor section in the Environment panel",
+      "Show the Recap section in the Environment panel",
+      "Show the Pinned messages section in the Environment panel",
+      "Show the Text markers section in the Environment panel",
+      "Show the Project instructions section in the Environment panel",
+      "Show the Notepad section in the Environment panel",
+      "Preferences loaded"
+    ]
+  }
+}

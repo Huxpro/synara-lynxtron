@@ -4562,3 +4562,14 @@
   `shots/2026-08-03/p8-q2/threads-thread/notes.md`。
 - 本刀只完成 Fast Browser tier；P9-D1真实IME仍blocked，Native最终batch未开始，
   不进入P9-R1。
+
+## 2026-08-03 — P8-Q2 Settings Fast Browser matrix
+
+- Settings→General 完成 light/dark × 1280×820/1440×900，共4 paired Browser cells /
+  8 PNGs；主题与页面导航全部走rendered Settings controls。
+- 两尺寸双主题的description锚点为 Lynx `x +5px / y +8px`，width与14px字号精确；
+  首个section card为 `x +5px / y +5.25px`，宽度624px精确，高度仅1px差，满足门禁。
+- Lynx `General` 存在nav与panel title重复文本，初始title selector命中nav；retained比较改用
+  唯一description与first content card，不把selector noise记作产品差异。
+- 所有PNG尺寸、DPR/visual viewport与page-error gate通过。证据：
+  `shots/2026-08-03/p8-q2/settings/notes.md`。Native仍未开始，P9-D1真实IME保持blocked。

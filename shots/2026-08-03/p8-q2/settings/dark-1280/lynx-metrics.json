@@ -1,0 +1,27 @@
+{
+  "viewport": {
+    "innerWidth": 1280,
+    "innerHeight": 820,
+    "visualWidth": 1280,
+    "visualHeight": 820,
+    "dpr": 1
+  },
+  "theme": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable",
+  "screen": "Settings-General",
+  "boxes": {
+    "description": {
+      "x": 461,
+      "y": 74,
+      "width": 363.890625,
+      "height": 20,
+      "fontSize": "14px"
+    },
+    "section": {
+      "x": 461,
+      "y": 126,
+      "width": 624,
+      "height": 156,
+      "fontSize": "16px"
+    }
+  }
+}
