@@ -4431,3 +4431,23 @@
 - Web authoritative code block 当前无 line numbers，仅有 language/file metadata、wrap/copy 与
   横向滚动；Lynx 不虚构 Web 不存在的行号。证据：
   `shots/2026-08-02/harness/markdown-tokens/notes.md` 与 10 张 paired PNG。
+
+## 2026-08-02 — Lynx-for-Web goal final verification
+
+- focused tests：Lynx **7 files / 51 tests**、Web **3 files / 31 tests** 全通过；严格遵守
+  `bun run test -- ...`，未运行 `bun test`、fmt、lint 或 typecheck。
+- production builds：Desktop/Lynx **2398.2kB / 2527.1kB total**；Lynx-for-Web
+  **2497.6kB / 3443.6kB total**；Web original **8932 modules**。warning 仅为既有 Lynx
+  unsupported CSS、可选 `ws` native addons、Node deprecation 与 Web chunk-size 提示。
+- compile-time relay isolation 由 final artifacts 复核：Desktop bundle 只含
+  `0.5.5-lynx-slice`，不含 `0.5.5-lynx-web`、`synaraRpc`、`readTranscriptScroll` 或
+  `synara.lynx.`；Web bundle 含正式 web build id、relay handlers 与默认
+  `ws://127.0.0.1:58090`，不含认证端口 `62190`。
+- strict audits：thread reuse **38.67%**、style **98.07%**，write/check 均通过；生成报告
+  内容未变，仅 timestamp 被恢复，避免无意义 churn。
+- fresh browser sessions 复核 console：Web 仅 Vite debug，零 page errors；Lynx-for-Web
+  零 page errors，仅上游 initialization deprecation warning。Native final exact DevTool
+  error/warning 仍为空，8904 已释放，且没有 exact-owned Lynxtron process。
+- interrupted P9-D1 的两个 `/private/tmp/synara-p9-*` staging path 已不存在；无 owned
+  process 可清理。用户的其他 Lynxtron processes 始终未触碰。本 goal 至此闭环，不越序进入
+  P9-R1。
