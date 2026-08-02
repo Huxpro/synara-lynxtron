@@ -1,0 +1,34 @@
+{
+  "viewport": {
+    "innerWidth": 1280,
+    "innerHeight": 820,
+    "visualWidth": 1280,
+    "visualHeight": 820,
+    "dpr": 1
+  },
+  "theme": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable",
+  "screen": "Threads",
+  "boxes": {
+    "header": {
+      "x": 314,
+      "y": 23.5,
+      "width": 55.0625,
+      "height": 15,
+      "fontSize": "12px"
+    },
+    "hero": {
+      "x": 615.8125,
+      "y": 375,
+      "width": 320.359375,
+      "height": 35,
+      "fontSize": "30px"
+    },
+    "tray": {
+      "x": 408,
+      "y": 504,
+      "width": 736,
+      "height": 58,
+      "fontSize": "16px"
+    }
+  }
+}

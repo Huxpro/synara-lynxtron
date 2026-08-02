@@ -1,0 +1,49 @@
+{
+  "viewport": {
+    "innerWidth": 1440,
+    "innerHeight": 900,
+    "visualWidth": 1440,
+    "visualHeight": 900,
+    "dpr": 1
+  },
+  "theme": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable",
+  "screen": "Thread",
+  "scrollBox": {
+    "x": 488,
+    "y": 70,
+    "width": 736,
+    "height": 719
+  },
+  "scroll": {
+    "top": 28336,
+    "height": 29055,
+    "client": 719,
+    "distance": 0
+  },
+  "a11y": {
+    "named": [
+      "Synara",
+      "New thread",
+      "Search",
+      "Kanban",
+      "Pull requests",
+      "Automations",
+      "Collapse Lynx Web Spike",
+      "In Progress seed task",
+      "Draft seed task",
+      "Done seed task",
+      "Settings",
+      "Conversation transcript",
+      "Enable soft wrap",
+      "Copy code",
+      "Enable soft wrap",
+      "Copy code",
+      "Enable soft wrap",
+      "Copy code",
+      "Message composer",
+      "Composer extras",
+      "Full access — change permissions",
+      "Send message"
+    ]
+  }
+}

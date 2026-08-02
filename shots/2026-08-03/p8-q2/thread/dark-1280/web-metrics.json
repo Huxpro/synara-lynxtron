@@ -1,0 +1,45 @@
+{
+  "viewport": {
+    "innerWidth": 1280,
+    "innerHeight": 820,
+    "visualWidth": 1280,
+    "visualHeight": 820,
+    "dpr": 1
+  },
+  "theme": "dark",
+  "screen": "Thread",
+  "title": "/thread%3A1785617357970-wy83hd92",
+  "boxes": {
+    "header": {
+      "x": 298,
+      "y": 14,
+      "width": 86.515625,
+      "height": 18,
+      "fontSize": "12px"
+    },
+    "scroll": {
+      "x": 256,
+      "y": 46,
+      "width": 1024,
+      "height": 683,
+      "fontSize": "16px"
+    },
+    "composer": {
+      "x": 1284,
+      "y": 386,
+      "width": 256,
+      "height": 70,
+      "fontSize": "12px"
+    }
+  },
+  "scroll": {
+    "top": 15847,
+    "height": 16610,
+    "client": 683,
+    "distance": 80
+  },
+  "a11y": {
+    "buttons": 86,
+    "headings": 35
+  }
+}

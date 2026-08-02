@@ -4539,3 +4539,26 @@
   （六屏×双主题×双尺寸），不是48个paired cells。历史无 provenance PNG仍不得升级。
 - 证据：`shots/2026-08-03/p8-q2/preflight/`。本刀只刷新 harness preflight，不开始
   P8-Q2产品矩阵；P9-D1真实IME blocker仍存在，不进入P9-R1。
+
+## 2026-08-03 — P8-Q2 Threads / Thread Fast Browser matrix
+
+- 建立单一可信 browser origin：Web original 位于 `/`，Lynx-for-Web 位于 `/lynx/`，
+  共同由 `http://localhost:63211` 服务；server `devUrl` 同样指向该 origin。此前双 origin
+  会被正确 CSRF gate 拒绝，未放宽产品安全策略。
+- 共享真实 snapshot：
+  `/private/tmp/synara-lynx-web-harness.SUyxxH/synara-home/dev/state.sqlite`，
+  SHA-256 `7dfc4c8d755bb0656df7f4fba2ff4cebe3602189854605508ace4ae278147540`，
+  含 3 projects / 5 threads / 30 messages。
+- Threads 与 Thread 各完成 light/dark × 1280×820/1440×900，共 **8 paired Browser cells /
+  16 PNGs**。主题由 Settings→Appearance真实切换，路由由 `New thread` /
+  `Draft seed task` rendered controls切换；未写SQLite或注入隐藏route state。
+- Threads landing 的 hero/tray 两尺寸双主题均满足锚点≤8px、字号精确；tray `736×58`
+  完全一致。Web-only provider status failure banner通过其产品dismiss action清除，不复制到
+  Lynx。
+- Thread 使用真实长 transcript。1440两端均精确live edge；1280 light距底0/5px，
+  dark两端同为80px trailing-inset distance。Web full-main virtual timeline与Lynx 736px
+  native `<list>` 是已登记platform kernel，不记作未登记大色块差异。
+- 16 PNG尺寸精确、DPR1、全部page-error文件为空。证据与discarded harness attempts：
+  `shots/2026-08-03/p8-q2/threads-thread/notes.md`。
+- 本刀只完成 Fast Browser tier；P9-D1真实IME仍blocked，Native最终batch未开始，
+  不进入P9-R1。

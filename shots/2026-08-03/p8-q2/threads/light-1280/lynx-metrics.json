@@ -1,0 +1,82 @@
+{
+  "url": "http://localhost:63211/lynx/",
+  "viewport": {
+    "innerWidth": 1280,
+    "innerHeight": 820,
+    "visualWidth": 1280,
+    "visualHeight": 820,
+    "dpr": 1
+  },
+  "theme": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable",
+  "productState": {
+    "screen": "Threads",
+    "title": "New Chat",
+    "project": "Lynx Web Spike",
+    "offline": 0
+  },
+  "boxes": {
+    "sidebar": {
+      "x": 8,
+      "y": 8,
+      "width": 256,
+      "height": 820,
+      "fontSize": "16px"
+    },
+    "header": {
+      "x": 314,
+      "y": 23.5,
+      "width": 55.0625,
+      "height": 15,
+      "fontSize": "12px"
+    },
+    "landing": {
+      "x": 264,
+      "y": 319,
+      "width": 1024,
+      "height": 111,
+      "fontSize": "16px"
+    },
+    "hero": {
+      "x": 615.8125,
+      "y": 375,
+      "width": 320.359375,
+      "height": 35,
+      "fontSize": "30px"
+    },
+    "tray": {
+      "x": 408,
+      "y": 504,
+      "width": 736,
+      "height": 58,
+      "fontSize": "16px"
+    },
+    "project": {
+      "x": 47,
+      "y": 311.5,
+      "width": 193.1875,
+      "height": 15,
+      "fontSize": "16px"
+    }
+  },
+  "a11y": {
+    "named": [
+      "Synara",
+      "New thread",
+      "Search",
+      "Kanban",
+      "Pull requests",
+      "Automations",
+      "Collapse Lynx Web Spike",
+      "In Progress seed task",
+      "Draft seed task",
+      "Done seed task",
+      "Settings",
+      "Synara logo",
+      "Message composer",
+      "Composer extras",
+      "Full access — change permissions",
+      "Record voice note (unavailable in Lynx for Web)",
+      "Send message"
+    ]
+  }
+}

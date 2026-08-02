@@ -1,0 +1,34 @@
+{
+  "viewport": {
+    "innerWidth": 1280,
+    "innerHeight": 820,
+    "visualWidth": 1280,
+    "visualHeight": 820,
+    "dpr": 1
+  },
+  "theme": "dark",
+  "screen": "Threads",
+  "boxes": {
+    "header": {
+      "x": 298,
+      "y": 14,
+      "width": 55.0625,
+      "height": 18,
+      "fontSize": "12px"
+    },
+    "hero": {
+      "x": 607.8125,
+      "y": 367.25,
+      "width": 320.359375,
+      "height": 34.5,
+      "fontSize": "30px"
+    },
+    "tray": {
+      "x": 400,
+      "y": 496.75,
+      "width": 736,
+      "height": 58,
+      "fontSize": "16px"
+    }
+  }
+}

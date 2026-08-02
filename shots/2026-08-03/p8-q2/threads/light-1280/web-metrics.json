@@ -1,0 +1,65 @@
+{
+  "url": "http://localhost:63211/eaaea41e-6c3e-4a83-86bc-9bdb460a684a",
+  "viewport": {
+    "innerWidth": 1280,
+    "innerHeight": 820,
+    "visualWidth": 1280,
+    "visualHeight": 820,
+    "dpr": 1
+  },
+  "theme": "",
+  "productState": {
+    "screen": "Threads",
+    "title": "New Chat",
+    "project": "Lynx Web Spike",
+    "bannerDismissed": true
+  },
+  "boxes": {
+    "sidebar": {
+      "x": 0,
+      "y": 0,
+      "width": 256,
+      "height": 820,
+      "fontSize": "16px"
+    },
+    "header": {
+      "x": 298,
+      "y": 14,
+      "width": 55.0625,
+      "height": 18,
+      "fontSize": "12px"
+    },
+    "landing": {
+      "x": 400,
+      "y": 311.25,
+      "width": 736,
+      "height": 110.5,
+      "fontSize": "16px"
+    },
+    "hero": {
+      "x": 607.8125,
+      "y": 367.25,
+      "width": 320.359375,
+      "height": 34.5,
+      "fontSize": "30px"
+    },
+    "tray": {
+      "x": 400,
+      "y": 496.75,
+      "width": 736,
+      "height": 58,
+      "fontSize": "16px"
+    },
+    "project": {
+      "x": 6,
+      "y": 287.25,
+      "width": 244,
+      "height": 28,
+      "fontSize": "12px"
+    }
+  },
+  "a11y": {
+    "buttons": 48,
+    "headings": 2
+  }
+}

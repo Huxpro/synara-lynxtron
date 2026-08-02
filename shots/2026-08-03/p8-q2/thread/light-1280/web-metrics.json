@@ -1,0 +1,28 @@
+{
+  "viewport": {
+    "innerWidth": 1280,
+    "innerHeight": 820,
+    "visualWidth": 1280,
+    "visualHeight": 820,
+    "dpr": 1
+  },
+  "theme": "",
+  "screen": "Thread",
+  "path": "/thread%3A1785617357970-wy83hd92",
+  "scrollBox": {
+    "x": 256,
+    "y": 46,
+    "width": 1024,
+    "height": 683
+  },
+  "scroll": {
+    "top": 15927,
+    "height": 16610,
+    "client": 683,
+    "distance": 0
+  },
+  "a11y": {
+    "buttons": 86,
+    "headings": 35
+  }
+}
