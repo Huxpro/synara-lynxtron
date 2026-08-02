@@ -4617,3 +4617,26 @@
   默认Web bundle已恢复仅含`58090`。证据：
   `shots/2026-08-03/p8-q2/pull-requests/notes.md`。Fast Browser 24 paired cells已齐；
   Native最终batch仍未开始，P9-D1真实IME保持blocked。
+
+## 2026-08-03 — P8-Q2 Native final batch / completed
+
+- 完整production desktop build以`SYNARA_WS_URL=ws://127.0.0.1:62190`生成认证bundle，
+  SHA-256 `119b43ad13d836ac3d00887cbaacec26ab4ef9a780353040f069b7d64f3c7b32`；
+  exact session URL指向`apps/lynx/dist/desktop/main.lynx.bundle`。
+- exact-owned background Native只启动两次：PID 16313对应1280×820，PID 42620对应
+  1440×900；均使用isolated user-data、parallel-instance与showInactive，不Raise/activate，
+  未触碰用户owned 8901/8902 clients。
+- CoreGraphics outer bounds精确；24张DevTool LynxView frames中，1280格均为
+  2560×1576，1440格均为2880×1736。六屏×双主题×双尺寸共24/24 route assertions、
+  24/24 error/warning console gates通过。
+- 所有Native路由与theme切换走rendered controls：DOM search + box model +
+  `Input.emulateTouchFromMouseEvent`。未注入隐藏route state；project overview card以实测
+  main-content可见box center点击。
+- cleanup完成：owned app/server退出，8903与62190释放；用户window-state byte-identical，
+  shared SQLite SHA-256仍为
+  `7dfc4c8d755bb0656df7f4fba2ff4cebe3602189854605508ace4ae278147540`。
+  默认desktop bundle已重建且仅含`58090`。
+- **P8-Q2 completed**：24 paired Browser cells / 48 client frames + 24 Native frames，
+  未登记重大差异为零。证据：
+  `shots/2026-08-03/p8-q2/native/notes.md`。P9-D1真实macOS IME composition仍独立
+  blocked，不进入P9-R1。

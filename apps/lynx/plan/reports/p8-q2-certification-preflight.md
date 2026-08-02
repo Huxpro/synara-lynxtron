@@ -69,8 +69,15 @@ capture surface 现均可用，但仍必须使用同一 isolated snapshot/route/
 
 ## 后续认证顺序
 
-1. 对两个 Native 尺寸继续以 state-file + restart + CoreGraphics + DevTool 记录实际尺寸；
-2. 对 Threads、Thread、Settings、Projects overview、Project Kanban、Pull Requests 的 light/dark 组合采集同一 WS 数据下的 Web/Lynx 对；
-3. 为每组写 `notes.md`、记录 anchors/typography/tokens/allowed platform differences，并更新 compatibility matrix；
-4. 只有 24 个 paired cells（六屏 × 双主题 × 双尺寸）均有当前 Web/Lynx frame、可审计
-   provenance，且未登记重大差异为零时，才将 P8-Q2 标为 completed。
+2026-08-03 已按上述顺序完成：
+
+1. 两个 Native 尺寸均由 isolated state-file → restart → CoreGraphics → exact-client
+   DevTool 验证；
+2. 六屏 × light/dark × 1280×820/1440×900 已完成24 paired Browser cells /
+   48 client frames；
+3. 同一真实 snapshot 下另完成24 Native LynxView frames，全部 route assertion 与
+   error/warning console gate通过；
+4. Browser notes位于 `shots/2026-08-03/p8-q2/{threads-thread,settings,projects,kanban,pull-requests}/`，
+   Native provenance位于 `shots/2026-08-03/p8-q2/native/notes.md`；
+5. 未登记重大差异为零，P8-Q2 已 completed。P9-D1真实IME composition是独立host
+   blocker，保持blocked。

@@ -1,0 +1,2 @@
+1280: d9c6f3fd0c08c7affbd2db5c209ecebc8c4110d6656ce32033264fadf98911dd  {"version":1,"bounds":{"x":123,"y":168,"width":1280,"height":820},"maximized":false,"fullscreen":false}
+1440: bdee1a50d96bb7f52a4a7a109ce6f2498a015e08536e5c41e1bbeabcb7514087  {"version":1,"bounds":{"x":123,"y":168,"width":1440,"height":900},"maximized":false,"fullscreen":false}

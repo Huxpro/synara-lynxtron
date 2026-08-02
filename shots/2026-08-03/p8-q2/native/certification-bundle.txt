@@ -1,0 +1,1 @@
+119b43ad13d836ac3d00887cbaacec26ab4ef9a780353040f069b7d64f3c7b32  apps/lynx/dist/desktop/main.lynx.bundle (certification build, SYNARA_WS_URL=ws://127.0.0.1:62190)
