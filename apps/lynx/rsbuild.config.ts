@@ -7,6 +7,7 @@
 import { defineConfig } from '@rsbuild/core';
 import { pluginLynxtron } from '@lynx-js/lynxtron-dev-plugins/rsbuild';
 const rspeedyDevServer = 'http://localhost:5971';
+const buildHostInputProbe = process.env.SYNARA_HOST_INPUT_PROBE === '1';
 
 export default defineConfig({
   server: {
@@ -57,11 +58,18 @@ export default defineConfig({
     web: {
       source: {
         entry: {
-          'web-host': './src/main/web/web-host.ts',
-          'nodejs-adapter-web': {
-            import: './src/main/web/nodejs_adapter_web.ts',
-            html: false,
-          },
+          ...(buildHostInputProbe
+            ? {
+                'host-input-probe-host':
+                  './src/main/web/host-input-probe-host.ts',
+              }
+            : {
+                'web-host': './src/main/web/web-host.ts',
+                'nodejs-adapter-web': {
+                  import: './src/main/web/nodejs_adapter_web.ts',
+                  html: false,
+                },
+              }),
         },
       },
       output: {
@@ -74,14 +82,25 @@ export default defineConfig({
           html: 'index.html',
         },
         distPath: {
-          root: './dist/web',
+          root: buildHostInputProbe
+            ? './dist/probes/host-input/web'
+            : './dist/web',
           js: '',
           jsAsync: '',
         },
-        copy: [{ from: './output/bundle/web/', to: '.' }],
+        copy: [
+          {
+            from: buildHostInputProbe
+              ? './output/probes/host-input/web/'
+              : './output/bundle/web/',
+            to: '.',
+          },
+        ],
       },
       html: {
-        template: './src/main/web/index.html',
+        template: buildHostInputProbe
+          ? './src/main/web/host-input-probe.html'
+          : './src/main/web/index.html',
         inject: 'body',
       },
       splitChunks: false,

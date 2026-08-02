@@ -12,6 +12,7 @@
     "dev:web": "cross-env NODE_ENV=development concurrently -k --prefix node \"rspeedy dev --environment web\" \"dev-ready-rspeedy && rsbuild dev --environment web\"",
     "generate:icons": "node scripts/generate-lynx-icons.mjs",
     "build:web": "rspeedy build --environment web && rsbuild build --environment web",
+    "build:probe:host-input:web": "cross-env SYNARA_HOST_INPUT_PROBE=1 rspeedy build --environment web && cross-env SYNARA_HOST_INPUT_PROBE=1 rsbuild build --environment web",
     "start:web": "npm run build:web && npx serve dist/web",
     "test": "rstest",
     "pack": "bun run build && lynxtron-builder --publish never",

@@ -1,0 +1,2 @@
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:49321/d8a7e1d8-9934-4d56-9f16-74177e8fc806"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead

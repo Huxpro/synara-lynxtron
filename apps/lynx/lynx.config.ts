@@ -19,6 +19,7 @@ const __dirname = path.dirname(__filename);
 const requireFromApp = createRequire(import.meta.url);
 const rootPath = process.cwd();
 const configuredSynaraWsUrl = process.env.SYNARA_WS_URL?.trim() ?? '';
+const buildHostInputProbe = process.env.SYNARA_HOST_INPUT_PROBE === '1';
 console.log('rootPath: ', path.resolve(rootPath, './src/assets'));
 export default defineConfig({
   server: {
@@ -392,16 +393,22 @@ export default defineConfig({
       source: {
         define: {
           'process.env.SYNARA_WS_URL': JSON.stringify(configuredSynaraWsUrl),
-          'process.env.SYNARA_LYNX_WEB_RELAY': JSON.stringify('1'),
+          'process.env.SYNARA_LYNX_WEB_RELAY': JSON.stringify(
+            buildHostInputProbe ? '0' : '1'
+          ),
         },
         entry: {
-          main: './src/app/index.tsx',
+          main: buildHostInputProbe
+            ? './src/app/host-input-probe-index.tsx'
+            : './src/app/index.tsx',
         },
       },
       output: {
         target: 'web',
         distPath: {
-          root: './output/bundle/web',
+          root: buildHostInputProbe
+            ? './output/probes/host-input/web'
+            : './output/bundle/web',
         },
       },
     },

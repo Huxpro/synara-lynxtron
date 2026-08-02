@@ -4480,3 +4480,25 @@
     操作时间线和前后 report/DOM snapshot 存证。
 - 正式化提交 `254c93e0` 已在 `origin/huxcx/lynxtron-port-current-state`；本次为范围纠偏，
   不进入 P9-R1，也不扩大到 terminal/browser/PDF/voice。
+
+## 2026-08-03 — P9-D1 Lynx-for-Web input probe
+
+- 新增独立 host-input probe build，不进入产品 `index/App/router` 静态图：
+  `SYNARA_HOST_INPUT_PROBE=1` 仍使用标准 Rspeedy `web` environment（自定义 environment
+  不会注册 Lynx template encoder，首轮准确失败后已撤回），输出到
+  `output/dist/probes/host-input/web`。bundle 102.1 kB。
+- 纯逻辑 matrix 区分 binding existence、event arrival、call count、last detail，并把
+  IME composing/committed 分开；focused Rstest **1 file / 3 tests** 通过。
+- named `synara-p9-d1-probe-final` session 在 owned static server `127.0.0.1:49321`、
+  `1280×820`、DPR 1 下完成真实 browser input：
+  - 25/25 bindings 存在；
+  - 9/25 event categories 到达：textarea focus/blur、普通 committed input、view
+    mousedown/up/tap、host window focus/blur；
+  - view focus/key、textarea key、IME composing、mouseenter/leave、nested scroll wheel
+    未到达。Web custom-element 阴性不外推 Native。
+- 最终 PNG 精确 `1280×820`，page errors 为空，console 仅上游 initialization
+  deprecation。结构化 matrix、console、PNG/hash、无效尝试边界见
+  `shots/2026-08-03/p9-d1/web-probe/notes.md`。
+- 下一步：关闭 Web probe owned process/session 后，按 exact-owned Native protocol
+  复证 Tab/Shift+Tab、view keys、textarea keys、普通 input+真实 IME、window focus/blur
+  与 wheel/list；未完成前 P9-D1 仍 `in_progress`，禁止进入 P9-R1。
