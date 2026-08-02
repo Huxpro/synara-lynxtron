@@ -107,7 +107,39 @@ Reference usage: opening/closing a project and the sidebar sections in `apps/web
 
 Prove the harness before using it to judge the product. A screenshot does not prove a matrix cell unless its process, data source, viewport, theme, route, and output dimensions are recorded.
 
-### Preflight gate
+### Two-tier verification model
+
+Use the harness in two distinct modes. Do not pay final-certification costs on every UI edit, and do not treat the fast loop as Native certification.
+
+1. **Fast Lynx-for-Web loop** — the default for layout, composition, ordinary pointer/keyboard interaction, query state, transcript behavior, and rendered Markdown. Run Web original and Lynx-for-Web against one isolated server and one real snapshot. Iterate in named browser sessions, collect paired screenshots plus numeric geometry, and run focused tests. A complete production build is required at the validated slice boundary, not after every edit.
+2. **Native batch / certification loop** — required for platform semantics and release evidence. Batch several Web-proven slices into one exact-owned Lynxtron run, then verify Native input, focus, accessibility, host integration, persistence, restart, and DevTool console. The full route × theme × size matrix and packaged-app checks belong here.
+
+The fast loop has been validated end to end: Composer, transcript follow/switching, Markdown code actions, and structured mention/skill rendering developed through Lynx-for-Web all passed a later real Lynxtron batch, including canonical send, provider response, restart persistence, scroll, wrap, copy, and a clean exact-client console. Keep the evidence under `shots/2026-08-02/harness/` and `shots/2026-08-02/native-regression/` as the reference run.
+
+### Fast Lynx-for-Web loop
+
+- Keep the Web relay a compile-time Web-only capability. The Web bundle may contain `synaraRpc`, browser storage, and the `0.5.5-lynx-web` build id; the Desktop/Lynx bundle must compile with relay disabled and must not contain those Web-only markers. Never hardcode a certification port into product code.
+- Start one isolated Synara server with an empty inherited auth token and a temporary home. Point Web original and Lynx-for-Web at that server; use the same snapshot, route, theme, viewport, DPR, and product state.
+- Use separate named `agent-browser` sessions. A useful default cell is `1280×820`, DPR 1, light. Verify runtime dimensions before capture and PNG dimensions after capture.
+- Create required states through canonical product RPC/mutations. Never write fixtures directly into SQLite. Read SQLite only to verify projections such as structured skills, mentions, messages, or persistence.
+- Use Web original as the design and composition authority, not an infallible behavior oracle. If Web leaks state or violates the intended contract, preserve the correct product behavior in Lynx and record the intentional delta instead of copying the bug.
+- Measure before patching. Record relevant bounding boxes, font sizes, scrollTop/scrollHeight/clientHeight, accessible names, action order, and console output. Screenshots establish visual structure; numeric probes make iteration fast and falsifiable.
+- Exercise real rendered controls for retained evidence. Programmatic state changes are acceptable for setting up a precise scroll or fixture condition, but route changes, menu selections, sends, copy/wrap actions, and other claimed interactions must use the product path.
+- Keep fresh-console checks separate from long-lived development sessions, whose logs may contain expected reconnect noise from server-origin switches. A retained cell fails on page errors; known upstream initialization warnings must be named.
+- At each coherent slice boundary: save paired evidence and residuals, run focused tests, run Web/Lynx/Desktop production builds in proportion to the change, run relevant audits, then commit the slice independently.
+
+### What the fast loop cannot certify
+
+Always escalate these to the Native batch:
+
+- Native textarea behavior, IME, selection, paste, undo/redo, keyboard routing, and focus.
+- macOS Accessibility, system menus, secondary click/long press, clipboard/dialog semantics, deep links, application lock, window lifecycle, and background presentation.
+- Native `<list>` event shape, real wheel/gesture behavior, DevTool element/console identity, cold start, disk persistence, and packaged bundle loading.
+- CSS or element behavior whose Lynx-for-Web custom-element implementation can differ from the native Lynx engine.
+
+Use one exact-owned isolated app instance for the batch. Prefer Computer Use plus background `showInactive()` operation, do not `Raise` the app, keep the verified instance alive across states, and restart only for an explicit cold-start/persistence cell or a newly staged bundle. A Web pass plus a focused test is not permission to skip this Native boundary.
+
+### Certification preflight gate
 
 Do not retain matrix evidence until every preflight check passes:
 
