@@ -148,7 +148,7 @@ Phase 8 出口：普通 UI 的"移植完成"有源码复用和视觉证据；终
 
 | ID | 任务 | 退出标准 | 依赖 | 落地 | 状态 |
 |---|---|---|---|---|---|
-| P9-D1 | host/input-bridge 边界调查与闭环 | 见下方详细定义 | P7-I1, P7-I3 | `synara/apps/lynx` | blocked（2026-08-03 · Web 25/25 bindings、9/25 delivery；Native 25/25 bindings、11/25 delivery；真实 IME composition 受 background/no-Raise harness 阻塞，解阻条件见报告） |
+| P9-D1 | host/input-bridge 边界调查与闭环 | 见下方详细定义 | P7-I1, P7-I3 | `synara/apps/lynx` | completed（2026-08-03 · Web 25/25 bindings、9/25 delivery；Native retained runs合并为25/25 bindings、13/25 delivered。exact-owned probe经可用Computer Use真实点击激活，Doubao Pinyin产生8次`input:composing`，最后`value=zhong'wen;isComposing=true`；单次Space提交后`input:committed`为`value=中文;isComposing=false`。4 files / 15 focused tests、probe/default builds、strict audits、cleanup均通过。[报告](reports/p9-d1-host-input-bridge.md) · [IME evidence](../shots/2026-08-03/p9-d1/native-ime/notes.md)） |
 | P9-R1 | host/input-bridge 修复与补齐 | 按 D1 结论逐项修复已验证缺口；每项有 Native evidence | P9-D1 | `synara/apps/lynx` | pending（禁止在 D1 完成前进入） |
 
 ### P9-D1 详细定义
@@ -223,7 +223,8 @@ Phase 8 出口：普通 UI 的"移植完成"有源码复用和视觉证据；终
 
 2026-08-03 completion audit：上述 focused gate **4 files / 15 tests** 全通过；Web/Native
 probe builds、default Web/Desktop production builds、strict reuse/style audits 均通过，且
-default artifacts 重建后不含 probe markers。该自动化门禁已闭合，不改变下方真实 IME blocker。
+default artifacts 重建后不含 probe markers。该自动化门禁已闭合；真实IME由下方独立
+close-out补证。
 
 **Runtime evidence**（Native batch 产出）：
 
@@ -248,13 +249,13 @@ default artifacts 重建后不含 probe markers。该自动化门禁已闭合，
 **P9-R1 前置条件**：P9-D1 completed + 用户明确授权进入 R1。P9-R1 将按 D1 结论对已验证
 缺口逐项修复（可能包括宿主补丁、workaround、或接受 gap 并登记）。
 
-**当前 blocker（2026-08-03）**：`SYNARA_BACKGROUND_LAUNCH=1` 的 exact-owned 窗口可由
-DevTool 捕获，也可在未被用户窗口遮挡的区域接收 pointer/wheel；但真实 macOS IME 只向
-active/frontmost text client 发送 composition。遵守 no-Raise、不得移动/最小化用户窗口后，
-无法把 background textarea 变成真实 IME target。PID 定向 `CGEvent` 不经过 Text Input
-Manager，不能替代用户 IME 路径。解除 blocker 需用户明确授权一次受控窗口激活，或
-Computer Use 配置可用模型后精确操作已验证 owned app；完成 `isComposing=true → false`
-证据后才可把 P9-D1 标 completed。
+**IME close-out（2026-08-03）**：Computer Use visual model配置成功后，先断言exact-owned
+probe window与`Type here` textarea可见且未被遮挡，再以真实visual tap激活该textarea；没有
+Raise、`open -a`、AppleScript focus/show或用户进程控制。已选Doubao Pinyin下延迟输入
+`zhongwen`产生8次`input:composing`，最后detail为
+`value=zhong'wen;isComposing=true`；随后单次Space产生一次
+`input:committed`，detail为`value=中文;isComposing=false`。真实
+`isComposing=true → false`已闭环，P9-D1 completed。P9-R1仍需用户明确授权，不自动进入。
 
 ## 更新日志
 

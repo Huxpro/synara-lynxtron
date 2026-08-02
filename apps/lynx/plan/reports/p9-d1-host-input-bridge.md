@@ -1,6 +1,6 @@
 # P9-D1 — Host/Input-Bridge Investigation
 
-**Status: blocked on one real macOS IME composition cell**
+**Status: completed**
 
 ## Objective and boundary
 
@@ -54,18 +54,19 @@ markers.
 | view control | mouseenter / mouseleave | no | yes | Native host publishes hover boundary |
 | view control | mousedown / mouseup / tap | yes | yes | positive on both runtimes |
 | textarea | focus | yes | yes | positive on both runtimes |
-| textarea | blur | yes | not isolated | Native window blur did not blur the textarea during retained sequence |
+| textarea | blur | yes | yes | final activated IME sequence produced one textarea blur |
 | textarea | Enter / ArrowUp / ArrowDown / Escape | no | no | textarea kernel consumes keys before Lynx JS |
 | textarea | ordinary input | yes | yes | committed `bindinput` positive |
-| textarea | `isComposing=true` | not a real IME run | blocked | no valid user-path evidence |
-| textarea | committed input | yes | yes | Web 9 calls; Native 13 calls |
+| textarea | `isComposing=true` | not a real IME run | yes | real Doubao Pinyin; 8 calls, final `value=zhong'wen;isComposing=true` |
+| textarea | committed input | yes | yes | Web 9 calls; Native ordinary run 13 calls; final IME commit 1 call |
 | scroll-view | wheel → scroll | no | yes | Native 3 events; final `scrollTop=242` |
 | host | window focus / blur | yes | yes | explicit host global-event bridge works |
 
-The Native retained matrix is **25/25 bindings, 11/25 delivered categories**.
+Across the retained Native ordinary-input and IME runs, the matrix is
+**25/25 bindings, 13/25 delivered categories**.
 The Web retained matrix is **25/25 bindings, 9/25 delivered categories**.
-Undelivered categories are not all bugs: some are negative product conclusions,
-while real IME remains unverified because the harness could not deliver it.
+Undelivered categories are not all bugs: the remaining negatives are the
+documented view-focus/view-key and textarea-key host/kernel conclusions.
 
 ## Native evidence
 
@@ -88,32 +89,34 @@ Retained evidence: `shots/2026-08-03/p9-d1/native-probe/`.
   focus; pointer leave/enter also reached Lynx.
 - Exact DevTool error/warning console is empty.
 
-## IME blocker
+## IME close-out
 
-The installed Chinese input source was temporarily selected and always restored
-to `com.apple.keylayout.US`. No retained attempt changed the user's clipboard.
+Earlier background and PID-targeted attempts remain rejected evidence:
+programmatic Lynx focus did not make the textarea the macOS Text Input Manager
+client, and PID-targeted `CGEvent` keycodes did not traverse the real IME path.
 
-The first IME attempts were rejected from evidence because the owned
-`showInactive()` window was occluded or not frontmost. The isolated window was
-restarted at an alternate persisted bound without moving user windows. Its
-textarea could receive a Lynx focus event while remaining a background app, but
-global key events still went to the frontmost browser. PID-targeted `CGEvent`
-keycodes also did not pass through macOS Text Input Manager and generated no
-input/composition event.
+The retained close-out uses the documented Computer Use unblock path:
 
-Therefore:
+1. exact-owned PID `87477`, PID-derived DevTool `localhost:8903/session 1`,
+   isolated state, and 1280×820 outer bounds;
+2. visual assertion that the probe window and `Type here` textarea were visible
+   and unoccluded;
+3. real visual tap on only that textarea, with no Raise/open/AppleScript;
+4. delayed physical Pinyin keys `zhongwen` while Doubao Pinyin was already
+   selected;
+5. one physical Space commit.
 
-- `input:composing=false` is proven for ordinary committed input.
-- `input:composing=true → false` is **not proven and not disproven**.
-- P9-D1 cannot be marked completed under the current no-Raise/background
-  harness.
+Result:
 
-Unblock with one of:
+- generic input: 9 calls;
+- `input:composing`: 8 calls, final
+  `value=zhong'wen;isComposing=true`;
+- `input:committed`: 1 call,
+  `value=中文;isComposing=false`;
+- composing timestamp precedes committed timestamp;
+- exact DevTool error/warning consoles are empty.
 
-1. user authorization for one controlled activation of the exact-owned probe
-   window, followed by immediate IME input and restoration; or
-2. a configured Computer Use visual model capable of targeting the exact-owned
-   inactive window under the approved harness.
+Evidence: `shots/2026-08-03/p9-d1/native-ime/`.
 
 ## Gap and feasibility assessment
 
@@ -122,7 +125,7 @@ Unblock with one of:
 | Tab/view focus publication | Web and Native negative; P-110 history | likely Lynxtron host/upstream work; app helper changes cannot create missing host event |
 | view key publication | Web and Native negative | host/upstream investigation; menu accelerators remain separate fallback |
 | textarea Arrow/Enter/Escape | Web and Native negative | native textarea/custom element work or accepted kernel island |
-| real IME composition payload | harness blocked | finish one authorized active-window proof before deciding |
+| real IME composition payload | positive Computer Use + report chronology | closed; retain probe as regression evidence |
 | Web nested scroll wheel | Web negative, Native positive | Web custom-element/harness issue; not a Native product gap |
 | window focus/blur global event | positive | retained probe pattern is feasible if product needs this signal |
 
@@ -140,6 +143,6 @@ Unblock with one of:
 - Probe Web/Native builds, default Web/Desktop production builds, and strict
   reuse/style audits: complete. Default artifacts were rebuilt after the
   probe builds and contain no probe markers.
-- Real IME composition: **blocked**.
-- P9-D1 status: **blocked, not completed**.
+- Real IME composition: complete.
+- P9-D1 status: **completed**.
 - P9-R1: forbidden.

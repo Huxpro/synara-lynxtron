@@ -393,7 +393,7 @@ staging `git diff --check`；该结论仅证明单仓源码、依赖与审计链
 启动、deep-link 或单实例产品语义。Computer Use 仍必须用完整 `.app` 路径；不得因 bundle-id
 重复而降级到模糊目标。
 
-### D15 — host input 缺口以 delivery evidence 分层，IME 保持 blocked（2026-08-03，🟢）
+### D15 — host input 缺口以 delivery evidence 分层，真实 IME 已闭环（2026-08-03，🟢）
 
 P9-D1 的 Web/Native probe 证明 binding 存在与 runtime delivery 必须分开判定。当前结论：
 
@@ -403,8 +403,11 @@ P9-D1 的 Web/Native probe 证明 binding 存在与 runtime delivery 必须分�
    发布；Tab/view key 与 textarea Arrow/Enter/Escape 不发布到 Lynx JS，继续作为
    Lynxtron 0.0.7 host/kernel gap；
 3. 真实 macOS IME composition 只能由 active/frontmost text client 获得。
-   `SYNARA_BACKGROUND_LAUNCH=1` 的 exact-owned textarea 即使收到 Lynx focus，也不成为
-   Text Input Manager target；PID-targeted `CGEvent` 不经过 IME，不能作为替代；
-4. 因此 P9-D1 保持 blocked，不把 `isComposing` 未到达写成产品阴性。解阻需用户明确授权
-   一次 exact-owned window activation，或配置可用的 Computer Use visual model后按同一
-   owned PID/session 操作。完成该 cell 前禁止进入 P9-R1。
+   `SYNARA_BACKGROUND_LAUNCH=1` 的 exact-owned textarea即使收到programmatic focus，也不
+   成为Text Input Manager target；PID-targeted `CGEvent`不经过IME，不能作为替代；
+4. 配置可用Computer Use visual model后，先验证exact-owned window/textarea可见未遮挡，
+   再用真实visual tap激活。Doubao Pinyin延迟输入`zhongwen`得到8次
+   `input:composing`（最后`isComposing=true`），单次Space提交得到
+   `input:committed`（`中文`, `isComposing=false`）；该cell为真实阳性；
+5. P9-D1据此completed。Tab/view key与textarea Arrow/Enter/Escape仍是已登记host/kernel
+   gaps；P9-R1仍需用户明确授权，不能因D1完成自动进入。

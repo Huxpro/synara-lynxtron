@@ -1,0 +1,72 @@
+{
+  "summary": {
+    "total": 25,
+    "bound": 25,
+    "delivered": 6
+  },
+  "textarea": [
+    {
+      "eventName": "focus",
+      "eventArrived": true,
+      "handlerCallCount": 2,
+      "lastArrivalMs": 1785702851314,
+      "lastDetail": null
+    },
+    {
+      "eventName": "blur",
+      "eventArrived": true,
+      "handlerCallCount": 1,
+      "lastArrivalMs": 1785702851225,
+      "lastDetail": null
+    },
+    {
+      "eventName": "keydown:Enter",
+      "eventArrived": false,
+      "handlerCallCount": 0,
+      "lastArrivalMs": null,
+      "lastDetail": null
+    },
+    {
+      "eventName": "keydown:ArrowUp",
+      "eventArrived": false,
+      "handlerCallCount": 0,
+      "lastArrivalMs": null,
+      "lastDetail": null
+    },
+    {
+      "eventName": "keydown:ArrowDown",
+      "eventArrived": false,
+      "handlerCallCount": 0,
+      "lastArrivalMs": null,
+      "lastDetail": null
+    },
+    {
+      "eventName": "keydown:Escape",
+      "eventArrived": false,
+      "handlerCallCount": 0,
+      "lastArrivalMs": null,
+      "lastDetail": null
+    },
+    {
+      "eventName": "input",
+      "eventArrived": true,
+      "handlerCallCount": 9,
+      "lastArrivalMs": 1785703016210,
+      "lastDetail": "value=中文;isComposing=false"
+    },
+    {
+      "eventName": "input:composing",
+      "eventArrived": true,
+      "handlerCallCount": 8,
+      "lastArrivalMs": 1785702930504,
+      "lastDetail": "value=zhong'wen;isComposing=true"
+    },
+    {
+      "eventName": "input:committed",
+      "eventArrived": true,
+      "handlerCallCount": 1,
+      "lastArrivalMs": 1785703016211,
+      "lastDetail": "value=中文;isComposing=false"
+    }
+  ]
+}

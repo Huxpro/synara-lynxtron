@@ -4654,3 +4654,25 @@
 - 该补齐只关闭自动化 test/build/audit 缺口。真实macOS IME `isComposing=true→false` 仍因
   Computer Use model未配置且no-Raise/background窗口不是Text Input Manager client而blocked；
   P9-D1不改判completed，P9-R1继续禁止。
+
+## 2026-08-03 — P9-D1 real IME close-out / completed
+
+- 通过private local provider配置了ephemeral Computer Use visual model；credential仅在
+  `/private/tmp`短暂解码使用，未打印、未写repo，cleanup后删除。health check、screenshot与
+  visual assertion通过。
+- exact-owned probe PID 87477、PID-derived `localhost:8903/session 1`、isolated state、
+  1280×820 outer / 2560×1576 DevTool frame。先断言Host Input Probe与`Type here`
+  textarea可见未遮挡，再以真实visual tap激活；没有Raise、`open -a`、AppleScript
+  focus/show或用户进程控制。
+- 当前已选Doubao Pinyin保持不变。延迟输入`zhongwen`得到8次
+  `input:composing`，最后`value=zhong'wen;isComposing=true`；单次Space提交得到一次
+  `input:committed`，`value=中文;isComposing=false`。timestamp顺序证明真实
+  `true → false`边界。
+- baseline/focused/composing/committed四帧均2560×1576；exact-client baseline、
+  composing、final error/warning console均空；report与证据hash位于
+  `shots/2026-08-03/p9-d1/native-ime/`。
+- owned probe退出、8903释放，8901/8902未触碰；临时credential copy删除；default
+  Web/Desktop artifacts重建并仅含58090、无probe markers。
+- **P9-D1 completed**：Web 25/25 bound、9/25 delivered；Native retained runs合并为
+  25/25 bound、13/25 delivered；所有gap均已登记。P9-R1仍pending且需用户明确授权，
+  本轮不进入。
