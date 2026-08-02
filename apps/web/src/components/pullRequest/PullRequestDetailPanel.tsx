@@ -19,8 +19,6 @@ import {
   CHAT_HEADER_CONTROL_CLASS_NAME,
   CHAT_HEADER_ICON_CONTROL_CLASS_NAME,
   CHAT_HEADER_ICON_STRENGTH_CLASS_NAME,
-  CHAT_SURFACE_CHIP_CLASS_NAME,
-  CHAT_SURFACE_CONTROL_ACTIVE_CLASS_NAME,
 } from "~/components/chat/chatHeaderControls";
 import { ComposerPickerMenuPopup } from "~/components/chat/ComposerPickerMenuPopup";
 import {
@@ -62,7 +60,6 @@ import {
   HammerIcon,
   LoaderIcon,
   LinkIcon,
-  XIcon,
 } from "~/lib/icons";
 import { gitPreparePullRequestThreadMutationOptions } from "~/lib/gitReactQuery";
 import {
@@ -78,22 +75,14 @@ import { PullRequestSummaryTab } from "./PullRequestSummaryTab";
 import { PullRequestTimelineTab } from "./PullRequestTimelineTab";
 import { PullRequestsUnavailableState } from "./PullRequestsUnavailableState";
 import { PullRequestWarningNote } from "./PullRequestWarningNote";
+import {
+  PullRequestDetailTabsComposition,
+  type PullRequestDetailTab,
+} from "./PullRequestDetailTabsComposition";
+import { PullRequestDetailCloseComposition } from "./PullRequestDetailCloseComposition";
+import { PULL_REQUEST_ACTION_SUCCESS_LABELS } from "./pullRequestDetail.logic";
 
-type DetailTab = "summary" | "timeline" | "code";
-
-const ACTION_SUCCESS_LABELS: Record<PullRequestAction, string> = {
-  merge: "Pull request merged",
-  ready: "Marked ready for review",
-  draft: "Converted to draft",
-  close: "Pull request closed",
-  reopen: "Pull request reopened",
-};
-
-const TABS: ReadonlyArray<{ value: DetailTab; label: string }> = [
-  { value: "summary", label: "Summary" },
-  { value: "timeline", label: "Timeline" },
-  { value: "code", label: "Code" },
-];
+const AVAILABLE_DETAIL_TABS = ["summary", "timeline", "code"] as const;
 
 // Header icon controls follow the chat-header recipe (chrome variant + fixed 28px square +
 // full-strength glyph) so they sit level with the Merge pill and the dock chips.
@@ -134,7 +123,7 @@ export function PullRequestDetailPanel({
   pollingEnabled = true,
 }: {
   input: PullRequestDetailInput;
-  initialTab?: DetailTab;
+  initialTab?: PullRequestDetailTab;
   onClose?: () => void;
   pollingEnabled?: boolean;
 }) {
@@ -146,7 +135,7 @@ export function PullRequestDetailPanel({
   const panelKey = `${input.projectId}\u0000${input.repository}\u0000${input.number}\u0000${initialTab}`;
   const [panelState, setPanelState] = useState<{
     key: string;
-    tab: DetailTab;
+    tab: PullRequestDetailTab;
     mergeMethod: PullRequestMergeMethod;
     confirmAction: "merge" | "close" | null;
   } | null>(null);
@@ -155,7 +144,7 @@ export function PullRequestDetailPanel({
   const mergeMethod = isCurrentPanelState ? panelState.mergeMethod : "merge";
   const confirmAction = isCurrentPanelState ? panelState.confirmAction : null;
   const patchPanelState = (patch: {
-    tab?: DetailTab;
+    tab?: PullRequestDetailTab;
     mergeMethod?: PullRequestMergeMethod;
     confirmAction?: "merge" | "close" | null;
   }) =>
@@ -164,7 +153,7 @@ export function PullRequestDetailPanel({
         ? { ...current, ...patch }
         : { key: panelKey, tab: initialTab, mergeMethod: "merge", confirmAction: null, ...patch },
     );
-  const setTab = (next: DetailTab) => patchPanelState({ tab: next });
+  const setTab = (next: PullRequestDetailTab) => patchPanelState({ tab: next });
   const setMergeMethod = (next: PullRequestMergeMethod) => patchPanelState({ mergeMethod: next });
   const setConfirmAction = (next: "merge" | "close" | null) =>
     patchPanelState({ confirmAction: next });
@@ -196,7 +185,7 @@ export function PullRequestDetailPanel({
         ...(method ? { mergeMethod: method } : {}),
       })
       .then(() => {
-        toastManager.add({ type: "success", title: ACTION_SUCCESS_LABELS[action] });
+        toastManager.add({ type: "success", title: PULL_REQUEST_ACTION_SUCCESS_LABELS[action] });
       })
       .catch((error: unknown) => {
         toastManager.add({
@@ -320,25 +309,11 @@ export function PullRequestDetailPanel({
       <header className="flex min-h-12 shrink-0 items-center gap-2 px-2">
         {/* No state glyph here: the dock tab above already carries it, and the Summary tab
             spells the state out in words. A third copy in between was pure repetition. */}
-        <nav className="flex min-w-0 items-center gap-0.5" aria-label="Pull request detail tabs">
-          {TABS.map((item) => (
-            <button
-              key={item.value}
-              type="button"
-              aria-pressed={tab === item.value}
-              onClick={() => setTab(item.value)}
-              // Same chip skin as the dock tab strip ("PR #357") and the header diff toggle:
-              // one 28px rounded-lg family for every flat control in these header rows.
-              className={cn(
-                CHAT_SURFACE_CHIP_CLASS_NAME,
-                "inline-flex items-center px-2.5",
-                tab === item.value && CHAT_SURFACE_CONTROL_ACTIVE_CLASS_NAME,
-              )}
-            >
-              {item.label}
-            </button>
-          ))}
-        </nav>
+        <PullRequestDetailTabsComposition
+          activeTab={tab}
+          availableTabs={AVAILABLE_DETAIL_TABS}
+          onSelectTab={setTab}
+        />
         <div className="ml-auto flex shrink-0 items-center gap-1">
           {detail ? (
             <>
@@ -515,17 +490,7 @@ export function PullRequestDetailPanel({
               ) : null}
             </>
           ) : null}
-          {onClose ? (
-            <IconButton
-              variant="chrome"
-              label="Close pull request panel"
-              tooltip="Close"
-              className={PR_HEADER_ICON_BUTTON_CLASS_NAME}
-              onClick={onClose}
-            >
-              <XIcon />
-            </IconButton>
-          ) : null}
+          <PullRequestDetailCloseComposition onClose={onClose} />
         </div>
       </header>
 

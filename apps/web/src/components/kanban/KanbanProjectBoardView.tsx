@@ -18,16 +18,7 @@ import {
 } from "@dnd-kit/core";
 import { useRef, useState } from "react";
 
-import {
-  getProviderStartOptions,
-  resolveAssistantDeliveryMode,
-  useAppSettings,
-} from "~/appSettings";
 import { toastManager } from "~/components/ui/toast";
-import { useProviderStatusesForLocalConfig } from "~/hooks/useProviderStatusesForLocalConfig";
-import { useRefreshProviderStatusesNow } from "~/hooks/useProviderStatusRefresh";
-import { resolveProviderSendAvailabilityWithRefresh } from "~/lib/providerAvailability";
-import { dispatchKanbanDraftCard } from "../../lib/kanbanDispatch";
 import { KanbanCardView } from "./KanbanCardView";
 import { KanbanColumn, parseKanbanColumnDropId } from "./KanbanColumn";
 import {
@@ -37,6 +28,7 @@ import {
   type KanbanProjectBoard,
 } from "./kanban.logic";
 import { useKanbanUiStore } from "../../kanbanUiStore";
+import { useKanbanDraftStart } from "./useKanbanDraftStart";
 
 function resolveDropColumn(board: KanbanProjectBoard, overId: string): KanbanColumnKey | null {
   const columnDrop = parseKanbanColumnDropId(overId);
@@ -68,11 +60,6 @@ export function KanbanProjectBoardView({
   onNewTask: () => void;
   nowMs?: number;
 }) {
-  const { settings } = useAppSettings();
-  const assistantDeliveryMode = resolveAssistantDeliveryMode(settings);
-  const providerOptionsForDispatch = getProviderStartOptions(settings);
-  const providerStatuses = useProviderStatusesForLocalConfig();
-  const refreshProviderStatuses = useRefreshProviderStatusesNow();
   const setDraftOrder = useKanbanUiStore((state) => state.setDraftOrder);
   const [activeCard, setActiveCard] = useState<KanbanCard | null>(null);
   // A completed drag still emits a click on the source card; swallow exactly that one
@@ -90,66 +77,7 @@ export function KanbanProjectBoardView({
     }
     onOpenCard(card);
   };
-
-  const handleDispatchDrop = async (card: KanbanCard) => {
-    const targetProvider = card.provider ?? settings.defaultProvider;
-    const sendAvailability = await resolveProviderSendAvailabilityWithRefresh({
-      provider: targetProvider,
-      statuses: providerStatuses,
-      refreshStatuses: () => refreshProviderStatuses({ silent: true }),
-    });
-    if (!sendAvailability.usable) {
-      toastManager.add({
-        type: "error",
-        title: sendAvailability.unavailableReason,
-      });
-      return;
-    }
-    // The dispatch marks the optimistic overlay synchronously, so the card jumps
-    // to In Progress before any round-trip; failure results revert it.
-    const result = await dispatchKanbanDraftCard({
-      card,
-      defaultProvider: settings.defaultProvider,
-      assistantDeliveryMode,
-      providerOptions: providerOptionsForDispatch,
-    });
-    if (result.kind === "dispatched") {
-      toastManager.add({
-        type: "success",
-        title: "Draft sent",
-        description: card.title,
-      });
-      return;
-    }
-    if (result.kind === "open-thread") {
-      const description =
-        result.reason === "empty"
-          ? "Nothing to send yet — write the prompt in the composer."
-          : result.reason === "worktree-pending"
-            ? "Open the chat to create the worktree with the normal send flow."
-            : "Open the chat to continue this task.";
-      toastManager.add({
-        type: "info",
-        title: "Finish this draft in the chat",
-        description,
-      });
-      onOpenCard(card);
-      return;
-    }
-    if (result.kind === "unavailable") {
-      toastManager.add({
-        type: "error",
-        title: "Not connected",
-        description: "Reconnect to the server before sending drafts.",
-      });
-      return;
-    }
-    toastManager.add({
-      type: "error",
-      title: "Could not send draft",
-      description: result.message,
-    });
-  };
+  const startDraft = useKanbanDraftStart(onOpenCard);
 
   const handleDragStart = (event: DragStartEvent) => {
     const card = board.draft.find((candidate) => candidate.cardId === event.active.id) ?? null;
@@ -204,7 +132,7 @@ export function KanbanProjectBoardView({
       if (useKanbanUiStore.getState().optimisticDispatchByThreadId[card.threadId]) {
         return;
       }
-      void handleDispatchDrop(card);
+      void startDraft(card);
       return;
     }
     if (targetColumn === "done") {

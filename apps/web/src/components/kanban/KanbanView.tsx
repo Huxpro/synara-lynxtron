@@ -8,27 +8,14 @@ import type { ProjectId } from "@synara/contracts";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 
-import { SidebarHeaderNavigationControls } from "~/components/SidebarHeaderNavigationControls";
-import { Button } from "~/components/ui/button";
-import { Kbd, KbdGroup } from "~/components/ui/kbd";
 import { RouteInsetSurface } from "../RouteInsetSurface";
-import { Tooltip, TooltipPopup, TooltipTrigger } from "~/components/ui/tooltip";
 import {
   useDesktopTopBarTrafficLightGutterClassName,
   useDesktopTopBarWindowControlsGutterClassName,
 } from "~/hooks/useDesktopTopBarGutter";
 import { useNowMs } from "~/hooks/useNowMs";
 import { splitShortcutLabel } from "~/keybindings";
-import { ArrowLeftIcon, PlusIcon } from "~/lib/icons";
 import { cn, isMacPlatform } from "~/lib/utils";
-
-// Kanban-scoped "Create task" shortcut: ⌘⌥T on macOS, Ctrl+Alt+T elsewhere —
-// matching the app's mod convention (meta on mac, ctrl otherwise) and the ⌘⌥
-// "create new X" family. Matched on event.code so it survives Alt remapping the
-// produced character on some layouts.
-function getNavigatorPlatform(): string {
-  return getNavigatorPlatform();
-}
 
 const NEW_TASK_SHORTCUT_LABEL = isMacPlatform(getNavigatorPlatform()) ? "⌥⌘T" : "Ctrl+Alt+T";
 const NEW_TASK_SHORTCUT_PARTS = splitShortcutLabel(NEW_TASK_SHORTCUT_LABEL);
@@ -42,15 +29,11 @@ function isNewTaskShortcut(event: KeyboardEvent): boolean {
     : event.ctrlKey && !event.metaKey;
 }
 import { useStore } from "../../store";
-import {
-  CHAT_SURFACE_HEADER_DIVIDER_CLASS_NAME,
-  CHAT_SURFACE_HEADER_HEIGHT_CLASS,
-  CHAT_SURFACE_HEADER_PADDING_X_CLASS,
-} from "../chat/chatHeaderControls";
 import { CHAT_BACKGROUND_CLASS_NAME } from "../chat/composerPickerStyles";
 import { KanbanNewTaskDialog } from "./KanbanNewTaskDialog";
 import { KanbanOverview } from "./KanbanOverview";
 import { KanbanProjectBoardView } from "./KanbanProjectBoardView";
+import { KanbanRouteHeaderComposition } from "./KanbanRouteHeaderComposition";
 import { useKanbanBoard } from "./useKanbanBoard";
 import { useKanbanCardContextMenu } from "./useKanbanCardContextMenu";
 import type { KanbanCard } from "./kanban.logic";
@@ -140,7 +123,7 @@ export default function KanbanView({ projectId }: { projectId: string | null }) 
     void navigate({ to: "/$threadId", params: { threadId: card.threadId } });
   };
 
-  const { onCardContextMenu, renameDialog } = useKanbanCardContextMenu();
+  const { onCardContextMenu, renameDialog } = useKanbanCardContextMenu(handleOpenCard);
 
   const handleOpenProject = (targetProjectId: ProjectId) => {
     void navigate({ to: "/kanban/$projectId", params: { projectId: targetProjectId } });
@@ -158,63 +141,19 @@ export default function KanbanView({ projectId }: { projectId: string | null }) 
           CHAT_BACKGROUND_CLASS_NAME,
         )}
       >
-        <header
-          className={cn(
-            CHAT_SURFACE_HEADER_DIVIDER_CLASS_NAME,
-            CHAT_SURFACE_HEADER_PADDING_X_CLASS,
-            "drag-region",
+        <KanbanRouteHeaderComposition
+          title={projectBoard ? projectBoard.projectName : "Kanban"}
+          taskCount={projectBoard ? projectBoard.totalCount : board.totalCount}
+          backAvailable={projectBoard !== null}
+          onBack={handleBackToOverview}
+          newTaskDisabled={newTaskProjectOptions.length === 0}
+          newTaskShortcutParts={NEW_TASK_SHORTCUT_PARTS}
+          onNewTask={handleNewTaskInProjectBoard}
+          hostClassName={cn(
             desktopTopBarTrafficLightGutterClassName,
             desktopTopBarWindowControlsGutterClassName,
           )}
-        >
-          <div className={cn("flex items-center gap-2 sm:gap-3", CHAT_SURFACE_HEADER_HEIGHT_CLASS)}>
-            <SidebarHeaderNavigationControls />
-            <div className="flex min-w-0 flex-1 items-center gap-2 [-webkit-app-region:no-drag]">
-              {projectBoard ? (
-                <Button
-                  size="icon-xs"
-                  variant="ghost"
-                  onClick={handleBackToOverview}
-                  aria-label="Back to all projects"
-                >
-                  <ArrowLeftIcon className="size-3.5" />
-                </Button>
-              ) : null}
-              <h2 className="max-w-[clamp(16rem,50vw,40rem)] truncate text-sm font-medium text-foreground">
-                {projectBoard ? projectBoard.projectName : "Kanban"}
-              </h2>
-              <span className="shrink-0 text-xs text-muted-foreground/70">
-                {projectBoard ? projectBoard.totalCount : board.totalCount} tasks
-              </span>
-              <Tooltip>
-                <TooltipTrigger
-                  render={
-                    <Button
-                      size="sm"
-                      variant="chrome"
-                      className="ml-auto shrink-0 gap-1.5"
-                      disabled={newTaskProjectOptions.length === 0}
-                      onClick={handleNewTaskInProjectBoard}
-                    >
-                      <PlusIcon className="size-3.5" />
-                      New task
-                    </Button>
-                  }
-                />
-                <TooltipPopup side="bottom">
-                  <span className="flex items-center gap-2">
-                    New task
-                    <KbdGroup>
-                      {NEW_TASK_SHORTCUT_PARTS.map((part) => (
-                        <Kbd key={part}>{part}</Kbd>
-                      ))}
-                    </KbdGroup>
-                  </span>
-                </TooltipPopup>
-              </Tooltip>
-            </div>
-          </div>
-        </header>
+        />
 
         <div className="min-h-0 min-w-0 flex-1 pt-3">
           {projectBoard ? (

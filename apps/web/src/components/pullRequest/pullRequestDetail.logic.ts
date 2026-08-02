@@ -9,6 +9,7 @@
 //          buildPullRequestTimelineEvents
 
 import type {
+  PullRequestAction,
   PullRequestDetail,
   PullRequestDetailInput,
   PullRequestState,
@@ -56,6 +57,52 @@ export function describePullRequestState(state: PullRequestState, isDraft: boole
   if (state === "open") return "Ready for review";
   if (state === "merged") return "Merged";
   return "Closed";
+}
+
+export interface PullRequestPrimaryActionPresentation {
+  readonly action: Extract<PullRequestAction, "ready" | "draft" | "reopen">;
+  readonly label: string;
+  readonly pendingLabel: string;
+  readonly successLabel: string;
+}
+
+export const PULL_REQUEST_ACTION_SUCCESS_LABELS: Readonly<Record<PullRequestAction, string>> = {
+  merge: "Pull request merged",
+  ready: "Marked ready for review",
+  draft: "Converted to draft",
+  close: "Pull request closed",
+  reopen: "Pull request reopened",
+};
+
+/** The safe, reversible action exposed directly by compact PR surfaces. Merge and close stay
+ *  behind the Web panel's explicit confirmation flow rather than becoming one-tap actions. */
+export function resolvePullRequestPrimaryAction(
+  state: PullRequestState,
+  isDraft: boolean,
+): PullRequestPrimaryActionPresentation | null {
+  if (state === "merged") return null;
+  if (state === "closed") {
+    return {
+      action: "reopen",
+      label: "Reopen pull request",
+      pendingLabel: "Reopening…",
+      successLabel: PULL_REQUEST_ACTION_SUCCESS_LABELS.reopen,
+    };
+  }
+  if (isDraft) {
+    return {
+      action: "ready",
+      label: "Ready for review",
+      pendingLabel: "Marking ready…",
+      successLabel: PULL_REQUEST_ACTION_SUCCESS_LABELS.ready,
+    };
+  }
+  return {
+    action: "draft",
+    label: "Convert to draft",
+    pendingLabel: "Converting…",
+    successLabel: PULL_REQUEST_ACTION_SUCCESS_LABELS.draft,
+  };
 }
 
 // stripHtmlComments now lives with the rest of the markdown preprocessing.
@@ -107,5 +154,8 @@ export function buildPullRequestTimelineEvents(
       ? [{ id: "closed", at: detail.closedAt, title: "Pull request closed", body: null }]
       : []),
   ];
-  return events.toSorted((left, right) => left.at.localeCompare(right.at));
+  // PrimJS does not provide Array.prototype.toSorted. Preserve the input-free
+  // immutable contract with an explicit copy so the same helper runs on Web
+  // and the Lynx main thread.
+  return [...events].sort((left, right) => left.at.localeCompare(right.at));
 }

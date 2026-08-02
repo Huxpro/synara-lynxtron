@@ -13,12 +13,12 @@ import { DiffPanelPatchViewport } from "~/components/DiffPanelPatchViewport";
 import { DiffWorkerPoolProvider } from "~/components/DiffWorkerPoolProvider";
 import { DiffPanelLoadingState } from "~/components/DiffPanelShell";
 import { useTheme } from "~/hooks/useTheme";
-import { getRenderablePatch, sortFileDiffsByPath, summarizePatchTotals } from "~/lib/diffRendering";
 import { pullRequestDiffQueryOptions } from "~/lib/pullRequestReactQuery";
 import { cn } from "~/lib/utils";
 import { PullRequestDiffStat } from "./PullRequestDiffStat";
 import { PullRequestMetaLine } from "./PullRequestMetaLine";
 import { PR_META_TEXT_CLASS_NAME } from "./pullRequestText";
+import { buildPullRequestParsedCodeModel } from "./pullRequestCode.logic";
 import { PullRequestWarningNote } from "./PullRequestWarningNote";
 
 export function PullRequestCodeTab({
@@ -32,13 +32,10 @@ export function PullRequestCodeTab({
   const [collapsedFiles, setCollapsedFiles] = useState<Set<string>>(() => new Set());
   const diffQuery = useQuery(pullRequestDiffQueryOptions(input));
 
-  const renderablePatch = getRenderablePatch(
+  const { renderablePatch, renderableFiles, patchTotals } = buildPullRequestParsedCodeModel(
     diffQuery.data?.patch,
     `pull-request:${input.projectId}:${input.number}`,
   );
-  const renderableFiles =
-    renderablePatch?.kind === "files" ? sortFileDiffsByPath(renderablePatch.files) : [];
-  const patchTotals = summarizePatchTotals(diffQuery.data?.patch);
 
   return (
     <DiffWorkerPoolProvider>

@@ -29,6 +29,8 @@ import { isThreadRunningTurn } from "../../session-logic";
 import { getThreadFromState } from "../../threadDerivation";
 import { toastManager } from "../ui/toast";
 import { isKanbanDraftOnlyCard, type KanbanCard } from "./kanban.logic";
+import { resolveKanbanMutationActions } from "./kanbanMutation.logic";
+import { useKanbanDraftStart } from "./useKanbanDraftStart";
 
 import { dialogs } from "~/platform/dialogs";
 interface RenameTarget {
@@ -83,7 +85,9 @@ async function setThreadPinned(threadId: ThreadId, isPinned: boolean) {
   });
 }
 
-export function useKanbanCardContextMenu(): KanbanCardContextMenuController {
+export function useKanbanCardContextMenu(
+  onOpenCard: (card: KanbanCard) => void,
+): KanbanCardContextMenuController {
   const { settings } = useAppSettings();
   const queryClient = useQueryClient();
   const removeWorktreeMutation = useMutation(gitRemoveWorktreeMutationOptions({ queryClient }));
@@ -94,6 +98,7 @@ export function useKanbanCardContextMenu(): KanbanCardContextMenuController {
   );
   const clearTerminalState = useTerminalStateStore((state) => state.clearTerminalState);
   const [renameTarget, setRenameTarget] = useState<RenameTarget | null>(null);
+  const startDraft = useKanbanDraftStart(onOpenCard);
 
   const copyPathToClipboard = useCopyPathToClipboard();
   const copyThreadIdToClipboard = useCopyThreadIdToClipboard();
@@ -135,13 +140,24 @@ export function useKanbanCardContextMenu(): KanbanCardContextMenuController {
     const deletesOnlyDraft = !isThreadBacked || isDraftOnlyCard;
     const isThreadActionCard = isThreadBacked && !isDraftOnlyCard;
     const workspacePath = resolveCardWorkspacePath(card);
+    const mutationActions = resolveKanbanMutationActions(card, {
+      canSupplyStartPrompt: false,
+    });
 
     void (async () => {
       const clicked = await api.contextMenu.show(
         [
+          ...mutationActions
+            .filter((action) => action.id === "start")
+            .map((action) => ({ id: action.id, label: action.label })),
           ...(isThreadActionCard
             ? [
-                { id: "rename", label: "Rename thread" },
+                {
+                  id: "rename",
+                  label:
+                    mutationActions.find((action) => action.id === "rename")?.label ??
+                    "Rename task",
+                },
                 {
                   id: "toggle-pin",
                   label: pinActionLabel("thread", card.thread?.isPinned ?? false),
@@ -153,7 +169,14 @@ export function useKanbanCardContextMenu(): KanbanCardContextMenuController {
             : []),
           ...(isThreadBacked ? [{ id: "copy-thread-id", label: "Copy Thread ID" }] : []),
           ...(isThreadActionCard
-            ? [{ id: "archive", label: "Archive", separatorBefore: true }]
+            ? mutationActions
+                .filter((action) => action.id === "archive")
+                .map((action) => ({
+                  id: action.id,
+                  label: action.label,
+                  destructive: action.destructive,
+                  separatorBefore: true,
+                }))
             : []),
           {
             id: "delete",
@@ -164,6 +187,11 @@ export function useKanbanCardContextMenu(): KanbanCardContextMenuController {
         ],
         position,
       );
+
+      if (clicked === "start") {
+        await startDraft(card);
+        return;
+      }
 
       if (clicked === "rename" && isThreadActionCard && card.thread) {
         setRenameTarget({ threadId: card.threadId, title: card.thread.title });

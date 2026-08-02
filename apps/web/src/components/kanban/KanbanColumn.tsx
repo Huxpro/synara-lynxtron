@@ -13,6 +13,7 @@ import { Button } from "~/components/ui/button";
 import { PlusIcon } from "~/lib/icons";
 import { cn } from "~/lib/utils";
 import { KanbanCardView } from "./KanbanCardView";
+import { KanbanColumnComposition } from "./KanbanColumnComposition";
 import { KanbanStatusIcon } from "./KanbanStatusIcon";
 import {
   KANBAN_COLUMN_LABELS,
@@ -124,25 +125,41 @@ function KanbanColumnComponent({
     activeCard !== null &&
     resolveDraftDropAction(activeCard) === "dispatch";
 
-  const cardElements = cappedCards.map((card) =>
-    sortable ? (
-      <SortableKanbanCard
-        key={card.cardId}
-        card={card}
-        onOpen={onOpenCard}
-        onContextMenu={onCardContextMenu}
-        {...(nowMs !== undefined ? { nowMs } : {})}
-      />
-    ) : (
-      <li key={card.cardId} className="list-none">
-        <KanbanCardView
-          card={card}
-          onOpen={onOpenCard}
-          {...(onCardContextMenu ? { onContextMenu: onCardContextMenu } : {})}
+  // Read-only columns share their complete structure with the native client.
+  // The outer ref is the Web-only dnd-kit drop-target kernel.
+  if (!sortable) {
+    return (
+      <div
+        ref={setNodeRef}
+        className={cn(
+          "flex min-h-0 min-w-64 flex-1 rounded-xl transition-colors",
+          dispatchTarget && "bg-sky-500/5 ring-1 ring-sky-400/30",
+          dispatchTarget && isOver && "bg-sky-500/10 ring-sky-400/60",
+        )}
+      >
+        <KanbanColumnComposition
+          columnKey={columnKey}
+          cards={cards}
+          onOpenCard={onOpenCard}
+          {...(onCardContextMenu
+            ? { onCardContextMenu }
+            : {})}
+          {...(onNewCard ? { onNewCard } : {})}
+          showDispatchTarget={dispatchTarget}
           {...(nowMs !== undefined ? { nowMs } : {})}
         />
-      </li>
-    ),
+      </div>
+    );
+  }
+
+  const cardElements = cappedCards.map((card) =>
+    <SortableKanbanCard
+      key={card.cardId}
+      card={card}
+      onOpen={onOpenCard}
+      onContextMenu={onCardContextMenu}
+      {...(nowMs !== undefined ? { nowMs } : {})}
+    />,
   );
 
   return (
@@ -179,13 +196,9 @@ function KanbanColumnComponent({
           dispatchTarget && isOver && "bg-sky-500/10 ring-sky-400/60",
         )}
       >
-        {sortable ? (
-          <SortableContext items={sortableItems} strategy={verticalListSortingStrategy}>
-            {cardElements}
-          </SortableContext>
-        ) : (
-          cardElements
-        )}
+        <SortableContext items={sortableItems} strategy={verticalListSortingStrategy}>
+          {cardElements}
+        </SortableContext>
         {cards.length === 0 ? (
           <li className="list-none rounded-lg border border-dashed border-border/60 px-3 py-4 text-center text-xs text-muted-foreground/60">
             No cards

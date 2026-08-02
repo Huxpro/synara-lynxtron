@@ -14,6 +14,7 @@ import {
   pullRequestDetailInputFromPane,
   pullRequestDetailInputKey,
   pullRequestPaneTabLabel,
+  resolvePullRequestPrimaryAction,
   stripHtmlComments,
 } from "./pullRequestDetail.logic";
 
@@ -77,6 +78,24 @@ describe("describePullRequestState", () => {
     expect(describePullRequestState("open", false)).toBe("Ready for review");
     expect(describePullRequestState("merged", true)).toBe("Merged");
     expect(describePullRequestState("closed", false)).toBe("Closed");
+  });
+});
+
+describe("resolvePullRequestPrimaryAction", () => {
+  it("offers only the reversible state transition for each actionable state", () => {
+    expect(resolvePullRequestPrimaryAction("open", true)).toMatchObject({
+      action: "ready",
+      label: "Ready for review",
+    });
+    expect(resolvePullRequestPrimaryAction("open", false)).toMatchObject({
+      action: "draft",
+      label: "Convert to draft",
+    });
+    expect(resolvePullRequestPrimaryAction("closed", false)).toMatchObject({
+      action: "reopen",
+      label: "Reopen pull request",
+    });
+    expect(resolvePullRequestPrimaryAction("merged", false)).toBeNull();
   });
 });
 
