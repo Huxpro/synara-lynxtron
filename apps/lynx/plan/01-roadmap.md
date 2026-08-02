@@ -148,7 +148,7 @@ Phase 8 出口：普通 UI 的"移植完成"有源码复用和视觉证据；终
 
 | ID | 任务 | 退出标准 | 依赖 | 落地 | 状态 |
 |---|---|---|---|---|---|
-| P9-D1 | host/input-bridge 边界调查与闭环 | 见下方详细定义 | P8-Q2 | `synara/apps/lynx` | pending（2026-08-03 · 任务正式写入 roadmap，从 LOG/P-110/compat-matrix/textarea/focus 代码恢复定义） |
+| P9-D1 | host/input-bridge 边界调查与闭环 | 见下方详细定义 | P7-I1, P7-I3 | `synara/apps/lynx` | in_progress（2026-08-03 · 任务正式写入 roadmap，从 LOG/P-110/compat-matrix/textarea/focus 代码恢复定义；先于 P8-Q2 收口） |
 | P9-R1 | host/input-bridge 修复与补齐 | 按 D1 结论逐项修复已验证缺口；每项有 Native evidence | P9-D1 | `synara/apps/lynx` | pending（禁止在 D1 完成前进入） |
 
 ### P9-D1 详细定义
@@ -177,7 +177,8 @@ Phase 8 出口：普通 UI 的"移植完成"有源码复用和视觉证据；终
   - 键盘导航（Arrow keys）→ 在非 textarea context 中是否到达 Lynx JS
   - 键盘激活（Enter / Space）→ `bindkeydown` on focused non-textarea views
   - 物理 Escape → 是否到达 Lynx JS 层
-  - 文本输入（普通 keypress / IME）→ `bindinput` on `<textarea>` / `<input>`
+  - 文本输入（普通 keypress / IME composition）→ `bindinput` on `<textarea>` / `<input>`，
+    包括 `detail.isComposing` 的开始、更新、提交边界
   - 鼠标滚轮 / 触控板滚动 → `<scroll-view>` / `<list>` 的 scroll 事件语义
   - 宿主窗口焦点（window focus/blur）→ 是否发布到 Lynx global events
 - 把 P-110（focus bridge gap）、textarea kernel island（Arrow/Enter/Escape 不冒泡）、
@@ -191,7 +192,6 @@ Phase 8 出口：普通 UI 的"移植完成"有源码复用和视觉证据；终
 
 - 修改 Lynxtron 宿主编译产物或打补丁绕过 0.0.7 限制
 - 自研原生模块替换 textarea/input kernel
-- IME composition 事件的完整生命周期验证（只做 basic `bindinput` 到达性）
 - Accessibility（AX）树与 VoiceOver 交互
 - 全局快捷键的后台捕获（已知无 globalShortcut API）
 - 非 macOS 平台（iOS/Android/HarmonyOS）的输入行为
@@ -207,7 +207,8 @@ Phase 8 出口：普通 UI 的"移植完成"有源码复用和视觉证据；终
 
 - 真实 Tab 焦点移动与 `bindfocus` 到达性（P-110 已证阴性）
 - 真实物理 Escape 到达性
-- 原生 textarea 内的 Arrow/Enter/Escape 冒泡行为
+- 原生 textarea 内的 Arrow/Enter/Escape 冒泡行为，以及普通输入与 IME composition
+  的 `bindinput` payload/提交边界
 - 宿主窗口失焦/获焦事件
 - 真实触控板/鼠标滚轮驱动的 `<list>` scroll 事件
 
@@ -222,7 +223,9 @@ Phase 8 出口：普通 UI 的"移植完成"有源码复用和视觉证据；终
 
 **Runtime evidence**（Native batch 产出）：
 
-- 每类事件至少一个 DevTool-screenshot + console log + DOM attribute 的 triplet
+- 每类事件保存结构化 probe report 与 exact DevTool console；会引起可见状态或 DOM
+  attribute 变化的事件再保存 DevTool screenshot + DOM attribute。无视觉变化的阴性事件
+  不制造无信息截图，改以操作时间线、前后 report/DOM snapshot 和 console 证明未到达
 - 阴性结果（事件未到达）同样保留为证据，不静默删除
 - 所有证据写入 `shots/2026-08-03/p9-d1/`
 

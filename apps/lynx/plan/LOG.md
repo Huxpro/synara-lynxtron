@@ -4466,3 +4466,17 @@
   - P9-R1 设为 pending 并注明"禁止在 D1 完成前进入"。
   - 旧 `/private/tmp/synara-p9-*` staging path 不依赖，全部从源码与已有 plan 文档重建。
 - 下一步：开始 P9-D1 browser-harnessable 部分（Lynx-for-Web event probe 诊断工具）。
+
+## 2026-08-03 — P9-D1 正式定义复核
+
+- 完整复核 AGENTS harness、roadmap、compat matrix、decisions、LOG、P8-Q2 preflight、
+  Lynx `llms.txt`、官方 input/textarea/event 文档及现有 host/input 代码后，修正三处定义：
+  - P9-D1 是恢复后的当前优先任务，不依赖尚未完成的 P8-Q2；依赖改为已完成并提供历史
+    证据的 P7-I1/P7-I3，状态改为 `in_progress`。P8-Q2 在 P9-D1 闭环后继续。
+  - Native textarea IME composition 属本目标明确要求，不再排除；必须验证
+    `bindinput.detail.isComposing` 的开始、更新与提交边界。
+  - runtime evidence 不强迫无视觉变化事件生成无信息截图；每类事件必须有结构化 report
+    与 exact console，能改变可见状态/DOM 的事件再补 screenshot + attribute，阴性事件以
+    操作时间线和前后 report/DOM snapshot 存证。
+- 正式化提交 `254c93e0` 已在 `origin/huxcx/lynxtron-port-current-state`；本次为范围纠偏，
+  不进入 P9-R1，也不扩大到 terminal/browser/PDF/voice。
