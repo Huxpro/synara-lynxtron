@@ -4451,3 +4451,18 @@
 - interrupted P9-D1 的两个 `/private/tmp/synara-p9-*` staging path 已不存在；无 owned
   process 可清理。用户的其他 Lynxtron processes 始终未触碰。本 goal 至此闭环，不越序进入
   P9-R1。
+
+## 2026-08-03 — P9-D1 任务正式化
+
+- 按 goal 指令恢复并正式化 P9-D1（host/input-bridge 边界调查）：
+  - 从 LOG、02-compat-matrix（P-110、textarea kernel island、host focus bridge gap、
+    host physical Escape、`<list>` user-scroll publication）、04-lynx-patterns（P-110）、
+    代码（focus.lynx.ts、interactive-state.lynx.ts、Composer.lynx.tsx、main.ts preload.ts
+    hostServices.ts）恢复完整问题定义。
+  - 已写入 01-roadmap.md Phase 9，含：objective、in-scope（7 类事件路径测试）/
+    out-of-scope（IME 生命周期、AX、全局快捷键、非 macOS）、browser-harnessable 部分
+    （Lynx-for-Web event binding probe）、Native-only 部分（真实宿主 Tab/Escape/textarea/
+    window-focus/scroll）、focused tests、runtime evidence 目录、5 条 exit criteria。
+  - P9-R1 设为 pending 并注明"禁止在 D1 完成前进入"。
+  - 旧 `/private/tmp/synara-p9-*` staging path 不依赖，全部从源码与已有 plan 文档重建。
+- 下一步：开始 P9-D1 browser-harnessable 部分（Lynx-for-Web event probe 诊断工具）。

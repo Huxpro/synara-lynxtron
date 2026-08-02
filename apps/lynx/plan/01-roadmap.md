@@ -141,11 +141,110 @@ Phase 7 出口：高保真不仅覆盖静态截图，也覆盖桌面指针、键
 | P8-Q3 | packaged-app 回归 | unsigned arm64 DMG 重打；内置 bundle 启动、菜单/深链/update/真实数据及认证屏 smoke；checksum/记录更新 | P8-Q2, P4-X3 | `synara/apps/lynx` | pending |
 | P8-Q4 | 移植完成报告 | reuse/视觉/功能/平台岛四份总表；明确 terminal/browser/PDF 一期为 placeholder/hard island，不把普通 UI 完成冒充全功能等价 | P8-Q3 | `synara/apps/lynx` | pending |
 
-Phase 8 出口：普通 UI 的“移植完成”有源码复用和视觉证据；终端/PDF/浏览器等硬岛以明确
+Phase 8 出口：普通 UI 的"移植完成"有源码复用和视觉证据；终端/PDF/浏览器等硬岛以明确
 决策状态独立追踪；本地发行包与源码认证结果一致。
+
+## Phase 9 — 宿主输入桥接边界（host/input-bridge）
+
+| ID | 任务 | 退出标准 | 依赖 | 落地 | 状态 |
+|---|---|---|---|---|---|
+| P9-D1 | host/input-bridge 边界调查与闭环 | 见下方详细定义 | P8-Q2 | `synara/apps/lynx` | pending（2026-08-03 · 任务正式写入 roadmap，从 LOG/P-110/compat-matrix/textarea/focus 代码恢复定义） |
+| P9-R1 | host/input-bridge 修复与补齐 | 按 D1 结论逐项修复已验证缺口；每项有 Native evidence | P9-D1 | `synara/apps/lynx` | pending（禁止在 D1 完成前进入） |
+
+### P9-D1 详细定义
+
+**Objective**：系统调查 Lynxtron 宿主（main process / macOS）与 Lynx JavaScript 层之间的
+输入事件桥接边界，输出完整事件类型目录、路径举证、缺口清单与修复可行性评估。
+
+**Background**：Synara Lynxtron 应用的输入系统依赖三层机制把 macOS 原生事件传递到 Lynx UI：
+
+1. **Application Menu accelerators**（main.ts `installApplicationMenu`）：`Cmd+N/K/L/1-3/[/]`
+   由宿主 menu 框架拦截，通过 `sendGlobalEvent('shell:command', ...)` 或
+   `dispatchRoute(...)` 推入 Lynx 渲染进程。无需 Lynx view 持有焦点即可工作。
+2. **`-lynx-invoke` bridge**（main.ts `w.on('-lynx-invoke', ...)`）：Lynx UI 通过
+   `NativeModules.bridge.request({ method, params })` 调用主进程服务（storage、clipboard、
+   dialogs、shell、timerSleep 等）。这是 Lynx→宿主 单向请求通道，不承载宿主→Lynx 的
+   被动输入推送。
+3. **Lynx view built-in events**（`bindtap`、`bindmouseenter`、`bindfocus`、`bindblur`、
+   `bindkeydown`、`bindinput` 等）：Lynx 引擎把宿主输入翻译为 view 级事件。这些事件
+   的**可用性取决于 Lynxtron 0.0.7 宿主的实际发布行为**，而非类型系统或 ReactLynx
+   binding 的存在性。
+
+**In-scope**：
+
+- 逐项测试并记录以下输入路径在 Lynxtron 0.0.7 宿主的实际行为：
+  - 键盘焦点（Tab / Shift+Tab）→ `bindfocus`/`bindblur` on focusable views
+  - 键盘导航（Arrow keys）→ 在非 textarea context 中是否到达 Lynx JS
+  - 键盘激活（Enter / Space）→ `bindkeydown` on focused non-textarea views
+  - 物理 Escape → 是否到达 Lynx JS 层
+  - 文本输入（普通 keypress / IME）→ `bindinput` on `<textarea>` / `<input>`
+  - 鼠标滚轮 / 触控板滚动 → `<scroll-view>` / `<list>` 的 scroll 事件语义
+  - 宿主窗口焦点（window focus/blur）→ 是否发布到 Lynx global events
+- 把 P-110（focus bridge gap）、textarea kernel island（Arrow/Enter/Escape 不冒泡）、
+  host physical Escape 缺口统一编入本调查，形成单一真源。
+- 编写 browser-harnessable 诊断工具（Lynx-for-Web 可运行的 focus/key/scroll event probe），
+  输出每个事件类型的"binding 存在性、事件到达性、handler 执行性"三级矩阵。
+- 以 exact-owned Native Lynxtron 实例对 browser-harnessable 结论做 Native 复证
+  （DevTool console logs、DOM attribute mutation、Computer Use 输入）。
+
+**Out-of-scope**（不纳入 P9-D1，可留给 P9-R1 或后续）：
+
+- 修改 Lynxtron 宿主编译产物或打补丁绕过 0.0.7 限制
+- 自研原生模块替换 textarea/input kernel
+- IME composition 事件的完整生命周期验证（只做 basic `bindinput` 到达性）
+- Accessibility（AX）树与 VoiceOver 交互
+- 全局快捷键的后台捕获（已知无 globalShortcut API）
+- 非 macOS 平台（iOS/Android/HarmonyOS）的输入行为
+
+**Browser-harnessable 部分**：
+
+- Lynx-for-Web 可直接验证所有 `bind*` handler wiring 是否正确（事件 binding 存在性）。
+- focus/key/scroll event probe 页面可在 Web 浏览器中验证"handler 写了且可被程序化触发"。
+- 已知局限性：Lynx-for-Web 使用 Web 自定义元素，其 focus/keyboard/scroll 事件语义与
+  Lynxtron 原生宿主不同。Web probe 只能证明"binding 正确"，不能证明"宿主真实发布"。
+
+**Native-only 部分**（必须用 exact-owned Lynxtron + Computer Use + DevTool 认证）：
+
+- 真实 Tab 焦点移动与 `bindfocus` 到达性（P-110 已证阴性）
+- 真实物理 Escape 到达性
+- 原生 textarea 内的 Arrow/Enter/Escape 冒泡行为
+- 宿主窗口失焦/获焦事件
+- 真实触控板/鼠标滚轮驱动的 `<list>` scroll 事件
+
+**Focused tests**（`bun run test -- <files>`）：
+
+- `apps/lynx/src/components/ui/focus.lynx.test.ts`（若有）或新建 `focus.lynx.test.ts`：
+  `setFocus` / `focusLynxNode` / `focusLynxElementById` 的单元测试
+- `apps/lynx/src/components/ui/interactive-state.lynx.test.ts`（若有）或新建：
+  `useLynxInteractiveState` 的 hover/focus/pressed/disabled/key 状态机测试
+- `apps/lynx/src/app/transcriptFocus.logic.test.ts`：transcript focus 逻辑测试
+- 新建 `hostInputProbe.logic.test.ts`：事件 probe 的纯逻辑测试
+
+**Runtime evidence**（Native batch 产出）：
+
+- 每类事件至少一个 DevTool-screenshot + console log + DOM attribute 的 triplet
+- 阴性结果（事件未到达）同样保留为证据，不静默删除
+- 所有证据写入 `shots/2026-08-03/p9-d1/`
+
+**Exit criteria**：
+
+1. 01-roadmap.md 中 P9-D1 有完整 in/out/browser/Native/focused-tests/evidence 定义 ✅
+2. 02-compat-matrix.md 中 host input 相关条目与 P-110/textarea kernel island 合并为单一
+   host-input-bridge 节，四态判定有 runtime 证据支撑
+3. browser-harnessable probe 工具可以独立运行（Lynx-for-Web），输出结构化事件矩阵
+4. Native batch 对 browser 结论的每类事件有至少一次真实宿主输入证据（阳性或阴性）
+5. focused tests 全部通过
+6. 无未登记的宿主输入缺口（已知 gap 全部进入 02/03/04 并存证）
+7. 输出 P9-D1 闭环报告（`reports/p9-d1-host-input-bridge.md`），含事件目录、路径图、
+   缺口清单与修复可行性评估
+
+**P9-R1 前置条件**：P9-D1 completed + 用户明确授权进入 R1。P9-R1 将按 D1 结论对已验证
+缺口逐项修复（可能包括宿主补丁、workaround、或接受 gap 并登记）。
 
 ## 更新日志
 
 - 2026-07-27：初始版本（基于 Lynxtron 调研 + ReactLynx 4.0 文档 + synara 代码审计）
 - 2026-07-27：UI 复盘后新增 Phase 5–8；从 clean-room slice 校正为 compiler-driven
   component-tree port，并加入源码复用率与量化视觉门禁。
+- 2026-08-03：新增 Phase 9（host/input-bridge）；P9-D1 从 LOG/02/04/textarea/focus 代码
+  恢复定义并正式写入 roadmap。
