@@ -1,5 +1,15 @@
 import { Option, Schema, SchemaIssue, Struct } from "effect";
 import {
+  PROVIDER_SEND_TURN_MAX_ATTACHMENTS,
+  PROVIDER_SEND_TURN_MAX_FILE_BYTES,
+  PROVIDER_SEND_TURN_MAX_IMAGE_BYTES,
+} from "./attachmentLimits";
+export {
+  PROVIDER_SEND_TURN_MAX_ATTACHMENTS,
+  PROVIDER_SEND_TURN_MAX_FILE_BYTES,
+  PROVIDER_SEND_TURN_MAX_IMAGE_BYTES,
+} from "./attachmentLimits";
+import {
   AntigravityModelOptions,
   ClaudeModelOptions,
   CodexModelOptions,
@@ -32,6 +42,9 @@ import {
 export const ORCHESTRATION_WS_METHODS = {
   getSnapshot: "orchestration.getSnapshot",
   getShellSnapshot: "orchestration.getShellSnapshot",
+  getSidebarShellSnapshot: "orchestration.getSidebarShellSnapshot",
+  getSidebarSearchSnapshot: "orchestration.getSidebarSearchSnapshot",
+  getThreadDetailSnapshot: "orchestration.getThreadDetailSnapshot",
   dispatchCommand: "orchestration.dispatchCommand",
   importThread: "orchestration.importThread",
   repairState: "orchestration.repairState",
@@ -45,6 +58,18 @@ export const ORCHESTRATION_WS_METHODS = {
   subscribeThread: "orchestration.subscribeThread",
   unsubscribeThread: "orchestration.unsubscribeThread",
 } as const;
+
+export const ORCHESTRATION_SIDEBAR_SEARCH_LIMITS = Object.freeze({
+  debounceMs: 80,
+  shellThreadCount: 80,
+  messageThreadCount: 160,
+  messagesPerThread: 12,
+  messageCharsPerMessage: 1_200,
+  messageCharsTotal: 160_000,
+  projectResults: 6,
+  threadResults: 8,
+  recentThreadResults: 3,
+});
 
 export const ORCHESTRATION_WS_CHANNELS = {
   domainEvent: "orchestration.domainEvent",
@@ -276,9 +301,6 @@ export const OrchestrationMessageSource = Schema.Literals([
 export type OrchestrationMessageSource = typeof OrchestrationMessageSource.Type;
 
 export const PROVIDER_SEND_TURN_MAX_INPUT_CHARS = 120_000;
-export const PROVIDER_SEND_TURN_MAX_ATTACHMENTS = 8;
-export const PROVIDER_SEND_TURN_MAX_IMAGE_BYTES = 10 * 1024 * 1024;
-export const PROVIDER_SEND_TURN_MAX_FILE_BYTES = 25 * 1024 * 1024;
 export const MAX_PINNED_PROJECTS = 3;
 const CHAT_ATTACHMENT_ID_MAX_CHARS = 128;
 export const CHAT_ASSISTANT_SELECTION_TEXT_MAX_CHARS = 4_000;
@@ -2225,6 +2247,32 @@ export const OrchestrationThreadDetailSnapshot = Schema.Struct({
 });
 export type OrchestrationThreadDetailSnapshot = typeof OrchestrationThreadDetailSnapshot.Type;
 
+export const OrchestrationSidebarSearchMessage = Schema.Struct({
+  text: Schema.String.check(
+    Schema.isMaxLength(ORCHESTRATION_SIDEBAR_SEARCH_LIMITS.messageCharsPerMessage),
+  ),
+});
+export type OrchestrationSidebarSearchMessage =
+  typeof OrchestrationSidebarSearchMessage.Type;
+
+export const OrchestrationSidebarSearchThread = Schema.Struct({
+  threadId: ThreadId,
+  messages: Schema.Array(OrchestrationSidebarSearchMessage).check(
+    Schema.isMaxLength(ORCHESTRATION_SIDEBAR_SEARCH_LIMITS.messagesPerThread),
+  ),
+});
+export type OrchestrationSidebarSearchThread =
+  typeof OrchestrationSidebarSearchThread.Type;
+
+export const OrchestrationSidebarSearchSnapshot = Schema.Struct({
+  snapshotSequence: NonNegativeInt,
+  threads: Schema.Array(OrchestrationSidebarSearchThread).check(
+    Schema.isMaxLength(ORCHESTRATION_SIDEBAR_SEARCH_LIMITS.messageThreadCount),
+  ),
+});
+export type OrchestrationSidebarSearchSnapshot =
+  typeof OrchestrationSidebarSearchSnapshot.Type;
+
 export const OrchestrationThreadStreamItem = Schema.Union([
   Schema.Struct({
     kind: Schema.Literal("snapshot"),
@@ -2304,6 +2352,31 @@ export const OrchestrationGetShellSnapshotInput = Schema.Struct({});
 export type OrchestrationGetShellSnapshotInput = typeof OrchestrationGetShellSnapshotInput.Type;
 const OrchestrationGetShellSnapshotResult = OrchestrationShellSnapshot;
 export type OrchestrationGetShellSnapshotResult = typeof OrchestrationGetShellSnapshotResult.Type;
+
+export const OrchestrationGetSidebarShellSnapshotInput = Schema.Struct({});
+export type OrchestrationGetSidebarShellSnapshotInput =
+  typeof OrchestrationGetSidebarShellSnapshotInput.Type;
+const OrchestrationGetSidebarShellSnapshotResult = OrchestrationShellSnapshot;
+export type OrchestrationGetSidebarShellSnapshotResult =
+  typeof OrchestrationGetSidebarShellSnapshotResult.Type;
+
+export const OrchestrationGetSidebarSearchSnapshotInput = Schema.Struct({});
+export type OrchestrationGetSidebarSearchSnapshotInput =
+  typeof OrchestrationGetSidebarSearchSnapshotInput.Type;
+const OrchestrationGetSidebarSearchSnapshotResult = OrchestrationSidebarSearchSnapshot;
+export type OrchestrationGetSidebarSearchSnapshotResult =
+  typeof OrchestrationGetSidebarSearchSnapshotResult.Type;
+
+export const OrchestrationGetThreadDetailSnapshotInput = Schema.Struct({
+  threadId: ThreadId,
+});
+export type OrchestrationGetThreadDetailSnapshotInput =
+  typeof OrchestrationGetThreadDetailSnapshotInput.Type;
+const OrchestrationGetThreadDetailSnapshotResult = Schema.NullOr(
+  OrchestrationThreadDetailSnapshot,
+);
+export type OrchestrationGetThreadDetailSnapshotResult =
+  typeof OrchestrationGetThreadDetailSnapshotResult.Type;
 
 export const OrchestrationRepairStateInput = Schema.Struct({});
 export type OrchestrationRepairStateInput = typeof OrchestrationRepairStateInput.Type;
@@ -2434,6 +2507,18 @@ export const OrchestrationRpcSchemas = {
   getShellSnapshot: {
     input: OrchestrationGetShellSnapshotInput,
     output: OrchestrationGetShellSnapshotResult,
+  },
+  getSidebarShellSnapshot: {
+    input: OrchestrationGetSidebarShellSnapshotInput,
+    output: OrchestrationGetSidebarShellSnapshotResult,
+  },
+  getSidebarSearchSnapshot: {
+    input: OrchestrationGetSidebarSearchSnapshotInput,
+    output: OrchestrationGetSidebarSearchSnapshotResult,
+  },
+  getThreadDetailSnapshot: {
+    input: OrchestrationGetThreadDetailSnapshotInput,
+    output: OrchestrationGetThreadDetailSnapshotResult,
   },
   repairState: {
     input: OrchestrationRepairStateInput,

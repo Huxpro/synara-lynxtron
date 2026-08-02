@@ -29,6 +29,35 @@ it.effect("accepts getTurnDiff requests when fromTurnCount <= toTurnCount", () =
   }),
 );
 
+it.effect("accepts bounded sidebar-search and targeted thread-detail requests", () =>
+  Effect.gen(function* () {
+    const shell = yield* decode(WebSocketRequest, {
+      id: "req-shell",
+      body: { _tag: ORCHESTRATION_WS_METHODS.getSidebarShellSnapshot },
+    });
+    const search = yield* decode(WebSocketRequest, {
+      id: "req-search",
+      body: { _tag: ORCHESTRATION_WS_METHODS.getSidebarSearchSnapshot },
+    });
+    const detail = yield* decode(WebSocketRequest, {
+      id: "req-detail",
+      body: {
+        _tag: ORCHESTRATION_WS_METHODS.getThreadDetailSnapshot,
+        threadId: " thread-1 ",
+      },
+    });
+    assert.strictEqual(shell.body._tag, ORCHESTRATION_WS_METHODS.getSidebarShellSnapshot);
+    assert.strictEqual(
+      search.body._tag,
+      ORCHESTRATION_WS_METHODS.getSidebarSearchSnapshot,
+    );
+    assert.strictEqual(detail.body._tag, ORCHESTRATION_WS_METHODS.getThreadDetailSnapshot);
+    if (detail.body._tag === ORCHESTRATION_WS_METHODS.getThreadDetailSnapshot) {
+      assert.strictEqual(detail.body.threadId, "thread-1");
+    }
+  }),
+);
+
 it.effect("rejects getTurnDiff requests when fromTurnCount > toTurnCount", () =>
   Effect.gen(function* () {
     const result = yield* Effect.exit(

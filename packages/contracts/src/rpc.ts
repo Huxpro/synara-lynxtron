@@ -234,6 +234,33 @@ export const WsOrchestrationGetShellSnapshotRpc = Rpc.make(
   },
 );
 
+export const WsOrchestrationGetSidebarShellSnapshotRpc = Rpc.make(
+  ORCHESTRATION_WS_METHODS.getSidebarShellSnapshot,
+  {
+    payload: OrchestrationRpcSchemas.getSidebarShellSnapshot.input,
+    success: OrchestrationRpcSchemas.getSidebarShellSnapshot.output,
+    error: WsRpcError,
+  },
+);
+
+export const WsOrchestrationGetSidebarSearchSnapshotRpc = Rpc.make(
+  ORCHESTRATION_WS_METHODS.getSidebarSearchSnapshot,
+  {
+    payload: OrchestrationRpcSchemas.getSidebarSearchSnapshot.input,
+    success: OrchestrationRpcSchemas.getSidebarSearchSnapshot.output,
+    error: WsRpcError,
+  },
+);
+
+export const WsOrchestrationGetThreadDetailSnapshotRpc = Rpc.make(
+  ORCHESTRATION_WS_METHODS.getThreadDetailSnapshot,
+  {
+    payload: OrchestrationRpcSchemas.getThreadDetailSnapshot.input,
+    success: OrchestrationRpcSchemas.getThreadDetailSnapshot.output,
+    error: WsRpcError,
+  },
+);
+
 export const WsOrchestrationRepairStateRpc = Rpc.make(ORCHESTRATION_WS_METHODS.repairState, {
   payload: OrchestrationRpcSchemas.repairState.input,
   success: OrchestrationRpcSchemas.repairState.output,
@@ -952,6 +979,9 @@ export const WsFeatureRpcGroup = RpcGroup.make(
   WsOrchestrationImportThreadRpc,
   WsOrchestrationGetSnapshotRpc,
   WsOrchestrationGetShellSnapshotRpc,
+  WsOrchestrationGetSidebarShellSnapshotRpc,
+  WsOrchestrationGetSidebarSearchSnapshotRpc,
+  WsOrchestrationGetThreadDetailSnapshotRpc,
   WsOrchestrationRepairStateRpc,
   WsOrchestrationGetTurnDiffRpc,
   WsOrchestrationGetFullThreadDiffRpc,
