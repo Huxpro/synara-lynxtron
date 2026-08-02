@@ -4416,3 +4416,18 @@
   返回 A 又回 live edge。Lynx 不复制此跨 thread state leak；route/list identity 重置为正确性
   差异，不能冒充逐像素同构。
 - 证据：`shots/2026-08-02/harness/transcript-switch/notes.md` 与 8 张 paired PNG。
+
+## 2026-08-02 — Markdown skill/mention completion audit
+
+- 同一 isolated server/thread、`1280×820`、DPR 1、light 下，补齐 Web original 与
+  Lynx-for-Web 的 skill/mention 菜单、选中态和 persisted transcript 双端证据。
+- real `$polish` UI selection 持久化为 canonical `/polish …`，projection 含真实
+  `skills_json` path；real `Draft seed task` mention 持久化为 quoted canonical token，
+  projection 含 `thread://thread:…` `mentions_json`。双端输出均渲染实体 chip，不泄露 raw
+  syntax。
+- 明示残差：Web inline rich token vs Lynx platform textarea 的 chip + canonical text；长 thread
+  的 message-trail/scrollbar gutter 使 persisted row x anchor 为 `+12px`，未伪装成 ≤8px；结构化
+  payload、输出语义、宽度与顺序一致。
+- Web authoritative code block 当前无 line numbers，仅有 language/file metadata、wrap/copy 与
+  横向滚动；Lynx 不虚构 Web 不存在的行号。证据：
+  `shots/2026-08-02/harness/markdown-tokens/notes.md` 与 10 张 paired PNG。

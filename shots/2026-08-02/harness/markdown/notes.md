@@ -79,3 +79,11 @@ Evidence:
   Lynx currently renders semantically equivalent plain monospace code and a
   textual math fallback. Images remain an explicit text fallback. These are not
   represented as pixel-equivalent capabilities.
+
+## Completion-audit supplement
+
+Paired real input/output evidence now covers a selected provider skill and a
+real thread mention, including their canonical `skills_json` / `mentions_json`
+projections. The audit also records that Web original does not expose line
+numbers in the authoritative code-block state, so Lynx does not invent them.
+See `../markdown-tokens/notes.md` and its ten paired screenshots.
