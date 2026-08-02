@@ -1,0 +1,56 @@
+{
+  "url": "http://localhost:63211/lynx/",
+  "viewport": {
+    "innerWidth": 1440,
+    "innerHeight": 900,
+    "visualWidth": 1440,
+    "visualHeight": 900,
+    "dpr": 1
+  },
+  "theme": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable",
+  "screen": "Projects-overview",
+  "boxes": {
+    "title": {
+      "x": 284,
+      "y": 20,
+      "width": 50.8125,
+      "height": 20,
+      "fontSize": "14px"
+    },
+    "project": {
+      "x": 288,
+      "y": 70,
+      "width": 251.125,
+      "height": 16,
+      "fontSize": "13px"
+    },
+    "chats": {
+      "x": 592,
+      "y": 70,
+      "width": 251.40625,
+      "height": 16,
+      "fontSize": "13px"
+    }
+  },
+  "a11y": {
+    "named": [
+      "Synara",
+      "New thread",
+      "Search",
+      "Kanban",
+      "Pull requests",
+      "Automations",
+      "Collapse Lynx Web Spike",
+      "In Progress seed task",
+      "Draft seed task",
+      "Done seed task",
+      "Settings",
+      "New task",
+      "Draft seed task, Done",
+      "In Progress seed task, Done",
+      "Done seed task, Done",
+      "New chat, Done",
+      "New chat, Done"
+    ]
+  }
+}

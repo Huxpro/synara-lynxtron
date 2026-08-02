@@ -1,0 +1,75 @@
+{
+  "url": "http://localhost:63211/kanban",
+  "viewport": {
+    "innerWidth": 1440,
+    "innerHeight": 900,
+    "visualWidth": 1440,
+    "visualHeight": 900,
+    "dpr": 1
+  },
+  "theme": "dark",
+  "screen": "Projects-overview",
+  "boxes": {
+    "title": {
+      "x": 276,
+      "y": 13,
+      "width": 49.703125,
+      "height": 20,
+      "fontSize": "14px"
+    },
+    "project": {
+      "x": 280,
+      "y": 64,
+      "width": 98.890625,
+      "height": 19.5,
+      "fontSize": "13px"
+    },
+    "chats": {
+      "x": 584,
+      "y": 64,
+      "width": 36.9375,
+      "height": 19.5,
+      "fontSize": "13px"
+    }
+  },
+  "a11y": {
+    "named": [
+      "Toggle thread sidebar",
+      "New thread",
+      "Search",
+      "Kanban",
+      "Pull requests",
+      "Automations",
+      "Collapse all projects",
+      "Sort projects",
+      "Add project",
+      "Pin Lynx Web Spike",
+      "View pull requests for Lynx Web Spike",
+      "Create new terminal thread in Lynx Web Spike",
+      "Create new thread in Lynx Web Spike",
+      "Pin thread",
+      "Archive thread",
+      "Pin thread",
+      "Archive thread",
+      "Pin thread",
+      "Archive thread",
+      "Sort chats",
+      "Open new chat home",
+      "Resize Sidebar",
+      "New task in Lynx Web Spike",
+      "Draft seed task, Done",
+      "Actions for Draft seed task",
+      "In Progress seed task, Done",
+      "Actions for In Progress seed task",
+      "Done seed task, Done",
+      "Actions for Done seed task",
+      "New task in Chats",
+      "New chat, Done",
+      "Actions for New chat",
+      "New chat, Done",
+      "Actions for New chat",
+      "Notifications",
+      "Notifications"
+    ]
+  }
+}
