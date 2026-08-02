@@ -47,6 +47,11 @@ let relaySocketBaseUrl: string | null = null;
 let relayReady: Promise<WebSocket> | null = null;
 let relayReadyBaseUrl: string | null = null;
 let relaySequence = 0;
+// Browser clipboard permission is scoped to a same-realm trusted gesture. A
+// Lynx background-thread bridge call can arrive after that activation expires,
+// so preserve the last write as a harness-local fallback while still attempting
+// the real Clipboard API first.
+let relayClipboardText = '';
 const relayPending = new Map<string, PendingRelayRequest>();
 let transcriptScrollElement: HTMLElement | null = null;
 let transcriptPreviousScrollTop: number | null = null;
@@ -397,6 +402,37 @@ async function handleBridgeCall(
     }
     if (method === 'readTranscriptScroll') {
       return readTranscriptScroll();
+    }
+    if (method === 'clipboardWriteText') {
+      relayClipboardText = String(params.text ?? '');
+      try {
+        await globalThis.navigator.clipboard.writeText(relayClipboardText);
+      } catch {
+        // Native uses the real system clipboard. The fallback keeps only the
+        // isolated Lynx-for-Web harness interaction deterministic.
+      }
+      return null;
+    }
+    if (method === 'clipboardReadText') {
+      try {
+        return { text: await globalThis.navigator.clipboard.readText() };
+      } catch {
+        return { text: relayClipboardText };
+      }
+    }
+    if (method === 'shellOpenExternal') {
+      const url = String(params.url ?? '');
+      let parsed: URL;
+      try {
+        parsed = new URL(url);
+      } catch {
+        return { opened: false };
+      }
+      if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
+        return { opened: false };
+      }
+      globalThis.open(parsed.toString(), '_blank', 'noopener,noreferrer');
+      return { opened: true };
     }
     if (method === 'showDialog') {
       globalThis.alert(String(params.message ?? ''));

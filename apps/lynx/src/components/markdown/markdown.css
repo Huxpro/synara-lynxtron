@@ -1,32 +1,43 @@
 .MdRoot {
   display: flex;
   flex-direction: column;
+  min-width: 0;
   width: 100%;
   color: var(--foreground);
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .MdHeading {
   display: block;
   color: var(--foreground);
-  font-weight: 700;
-  margin-top: 14px;
-  margin-bottom: 6px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  margin-top: 15px;
+  margin-bottom: 5px;
 }
 
 .MdH1 {
-  font-size: 22px;
+  font-size: 24px;
 }
 
 .MdH2 {
-  font-size: 18px;
+  font-size: 22px;
 }
 
 .MdH3 {
-  font-size: 16px;
+  font-size: 19px;
 }
 
-.MdH4,
-.MdH5,
+.MdH4 {
+  font-size: 17px;
+}
+
+.MdH5 {
+  font-size: 15px;
+}
+
 .MdH6 {
   font-size: 14px;
 }
@@ -34,9 +45,16 @@
 .MdParagraph {
   display: block;
   color: var(--foreground);
-  font-size: 13px;
-  line-height: 20px;
-  margin-bottom: 8px;
+  font-size: 14px;
+  line-height: 21px;
+  margin-top: 9px;
+  margin-bottom: 9px;
+}
+
+.MdRoot--user .MdParagraph {
+  margin-top: 6px;
+  margin-bottom: 6px;
+  white-space: pre-wrap;
 }
 
 .MdStrong {
@@ -54,22 +72,32 @@
 
 .MdLink,
 .MdLinkTarget {
-  color: var(--primary);
-  font-weight: 600;
+  color: var(--color-token-text-link-foreground);
+  font-weight: 500;
+}
+
+.MdLink.ui-hover,
+.MdLink.ui-focus,
+.MdLink.ui-pressed {
+  color: var(--color-token-text-link-active-foreground);
+  text-decoration: underline;
 }
 
 .MdBlockquote {
   display: flex;
   flex-direction: column;
-  border-left: 3px solid var(--primary);
-  padding-left: 10px;
-  margin-bottom: 8px;
+  border-left: 2px solid var(--border);
+  padding-left: 13px;
+  margin-top: 9px;
+  margin-bottom: 9px;
+  color: var(--muted-foreground);
 }
 
 .MdList {
   display: flex;
   flex-direction: column;
-  margin-bottom: 8px;
+  margin-top: 9px;
+  margin-bottom: 9px;
 }
 
 .MdListItem {
@@ -79,10 +107,10 @@
 }
 
 .MdListMarker {
-  width: 18px;
+  width: 20px;
   color: var(--muted-foreground);
-  font-size: 13px;
-  line-height: 20px;
+  font-size: 14px;
+  line-height: 21px;
 }
 
 .MdListBody {
@@ -100,33 +128,125 @@
 }
 
 .MdCode {
-  font-family: var(--font-mono-family);
-  font-size: 12px;
+  font-family: var(--font-chat-code-family);
+  font-size: var(--app-font-size-chat-code, 11px);
 }
 
 .MdInlineCode {
   color: var(--foreground);
-  background-color: var(--muted);
+  background-color: var(--app-user-message-background);
+  border-radius: 6px;
+  padding: 1px 5px;
+}
+
+.MdCodeBlockShell {
+  width: 100%;
+  margin-top: 9px;
+  margin-bottom: 9px;
+  border-radius: 10px;
+  background-color: var(--app-chat-code-surface);
+  overflow: hidden;
+}
+
+.MdRoot--user .MdCodeBlockShell {
+  margin-top: 6px;
+  margin-bottom: 6px;
+  background-color: color-mix(in srgb, var(--foreground) 7%, transparent);
+}
+
+.MdCodeHeader {
+  width: 100%;
+  min-height: 28px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 1px 6px 1px 10px;
+}
+
+.MdCodeTitle {
+  min-width: 0;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+.MdCodeLanguage,
+.MdCodeMetadata {
+  min-width: 0;
+  color: var(--muted-foreground);
+  font-family: var(--font-chat-code-family);
+  font-size: 11px;
+  line-height: 15px;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.MdCodeLanguage {
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.MdCodeActions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2px;
+}
+
+.MdCodeAction {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  color: var(--muted-foreground);
+}
+
+.MdCodeAction.ui-hover,
+.MdCodeAction.ui-focus,
+.MdCodeAction--active {
+  color: var(--foreground);
+  background-color: color-mix(in srgb, var(--foreground) 7%, transparent);
+}
+
+.MdCodeAction.ui-focus {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.MdCodeAction.ui-pressed {
+  opacity: 0.72;
+  transform: scale(0.96);
 }
 
 .MdCodeScroller {
   width: 100%;
-  margin-bottom: 10px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  background-color: var(--muted);
 }
 
 .MdCodeBlock {
   min-width: 100%;
-  padding: 10px 12px;
+  padding: 8px 10px;
 }
 
 .MdCodeBlockText {
   display: block;
   color: var(--foreground);
-  line-height: 18px;
+  line-height: 16.5px;
   white-space: pre;
+}
+
+.MdCodeBlockShell--wrap .MdCodeBlock,
+.MdCodeBlockShell--wrap .MdCodeBlockText {
+  min-width: 0;
+  width: 100%;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .MdMath {
@@ -148,9 +268,9 @@
 
 .MdTableScroller {
   width: 100%;
-  margin-bottom: 10px;
+  margin-top: 9px;
+  margin-bottom: 9px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-md);
 }
 
 .MdTable {
@@ -174,7 +294,7 @@
 .MdTableHeaderCell,
 .MdTableCell {
   width: 153px;
-  padding: 7px 9px;
+  padding: 5px 7px;
   border-right: 1px solid var(--border);
 }
 
@@ -185,8 +305,8 @@
 .MdTableHeaderText,
 .MdTableCellText {
   color: var(--foreground);
-  font-size: 12px;
-  line-height: 17px;
+  font-size: 14px;
+  line-height: 20px;
 }
 
 .MdTableHeaderText {
@@ -197,8 +317,32 @@
   height: 1px;
   width: 100%;
   background-color: var(--border);
-  margin-top: 8px;
-  margin-bottom: 10px;
+  margin-top: 21px;
+  margin-bottom: 21px;
+}
+
+.MdInlineToken {
+  margin-left: 2px;
+  margin-right: 2px;
+  padding: 1px 4px;
+  border: 1px solid var(--color-border-light, var(--border));
+  border-radius: 4px;
+  background-color: var(--sidebar-accent-active, var(--muted));
+  color: var(--foreground);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 15px;
+}
+
+.MdInlineTokenGlyph {
+  margin-right: 3px;
+  color: var(--muted-foreground);
+  font-size: 10px;
+}
+
+.MdInlineToken.ui-hover,
+.MdInlineToken.ui-focus {
+  border-color: var(--ring);
 }
 
 .MdImageFallback {

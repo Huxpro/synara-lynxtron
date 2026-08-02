@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { MessageId, ThreadMarkerId, type ThreadMarker } from "@synara/contracts";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
+import { COMPOSER_INLINE_CHIP_ICON_LABEL_GAP_CLASS_NAME } from "./composerInlineChip";
 
 vi.mock("@pierre/diffs", () => ({
   getFiletypeFromFileName: (fileName: string) => (fileName.endsWith(".ts") ? "ts" : "text"),
@@ -94,7 +95,7 @@ describe("ChatMarkdown", () => {
       'class="inline font-medium text-[var(--info-foreground)] underline-offset-2 hover:underline"',
     );
     expect(markup).toContain(
-      "inline-block size-[1em] shrink-0 align-middle -translate-y-px mr-0.5",
+      `inline-block size-[1em] shrink-0 align-middle -translate-y-px ${COMPOSER_INLINE_CHIP_ICON_LABEL_GAP_CLASS_NAME}`,
     );
     expect(markup).toContain("OpenAI benchmark");
   });

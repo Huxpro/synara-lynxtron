@@ -35,6 +35,10 @@ import { TRANSCRIPT_KEYBOARD_LANDMARK_PROPS } from './transcriptFocus.logic';
 
 const BOTTOM_EPSILON = 30;
 const SCROLL_EVENT_SOURCE = 2;
+// Web's MessagesTimeline ends with a 64px footer inside a list that carries
+// 16px bottom padding at this desktop breakpoint. Keep that breathing room as
+// explicit list chrome so the final message-to-composer geometry matches.
+const TRANSCRIPT_BOTTOM_CONTENT_INSET_PX = 80;
 const IS_WEB_RELAY_MODE = process.env.SYNARA_LYNX_WEB_RELAY === '1';
 
 function statusIcon(tone: 'thinking' | 'tool' | 'info' | 'error'): string {
@@ -101,12 +105,16 @@ function TranscriptMessage({ row }: { row: MessageTranscriptRow }) {
     <view className="TranscriptMessageRow TranscriptMessageRowUser">
       <MessageUserRowComposition>
         <MessageUserBubbleComposition>
-          <text
+          <view
             className="TranscriptUserText"
             style={getChatTranscriptUserMessageTextStyle() as Record<string, string>}
           >
-            {message.text}
-          </text>
+            <ChatMarkdown
+              text={message.text}
+              variant="user"
+              mentionReferences={message.mentions ?? []}
+            />
+          </view>
         </MessageUserBubbleComposition>
       </MessageUserRowComposition>
     </view>
@@ -198,7 +206,7 @@ export function Transcript({ rows }: { readonly rows: readonly ThreadTranscriptR
 
   function scrollToBottom() {
     'background only';
-    const params = buildTranscriptScrollToBottomParams(rows.length);
+    const params = buildTranscriptScrollToBottomParams(rows.length, 1);
     if (!params) return;
     listRef.current
       ?.invoke({
@@ -327,6 +335,12 @@ export function Transcript({ rows }: { readonly rows: readonly ThreadTranscriptR
             <TranscriptRowContent row={row} />
           </list-item>
         ))}
+        <list-item
+          item-key="transcript-bottom-inset"
+          estimated-main-axis-size-px={TRANSCRIPT_BOTTOM_CONTENT_INSET_PX}
+        >
+          <view className="TranscriptBottomInset" />
+        </list-item>
       </list>
       {!pinned ? (
         <view

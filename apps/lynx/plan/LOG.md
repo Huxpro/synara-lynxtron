@@ -4356,3 +4356,29 @@
   **2380.8 kB Lynx / 2509.4 kB total**；`git diff --check` 通过。证据：
   `shots/2026-08-02/harness/transcript-scroll/notes.md`。
 - 未启动 Lynxtron/正式 App。下一组进入 Markdown fidelity，并在闭环后独立 commit + push。
+
+## 2026-08-02 — Lynx-for-Web Markdown paired fidelity
+
+- `ChatMarkdown.lynx` 现在以 Web code-fence grammar 和 composer token grammar 为共享
+  逻辑源：assistant/user 分离 processor，用户消息进入 Markdown + mention references；code
+  surface 补齐 language/file metadata、wrap/copy action、可访问名称、尾换行复制/几何语义。
+  Web host 仅补 harness 所需 clipboard/external-link platform handler，不复制业务 renderer。
+- transcript 增加与 Web 等价的 64px footer + 16px desktop list padding；吸底明确指向
+  trailing chrome row。thread composer bottom inset 同步后，paired light 最终代码块为 Web
+  `x399 y463.89 728×140.69`、Lynx `x407 y466 728×143`；composer 为 Web
+  `x400 y709 736×95`、Lynx `x408 y709 736×95`。全部关键锚点 ≤8px、字号差 0。
+- 后台真实 pointer 验证 Copy `Copy code→Copied`、Wrap
+  `Enable→Disable soft wrap→Enable`；同一 isolated sequence-174/thread、1280×820/DPR1
+  补 light/dark paired evidence，未启动或 Raise 正式 App。证据：
+  `shots/2026-08-02/harness/markdown/notes.md`。
+- gates：Lynx focused **2 files / 17 tests**（最终 presentation rerun **1 / 5**）；Web
+  focused **2 / 40**；Web production **8,932 modules**；Lynx/Desktop production
+  **2398.2kB / 2526.9kB total**；Lynx-for-Web **2497.6kB / 3443.7kB total**。
+  strict audit：thread **38.67%**、style **98.07%**，write/check 均通过。
+- 阴性/残差不冒充通过：direct component Rstest 因 unified Node `debug` 被错误打进 Lynx
+  test runtime 而生成非法代码，改由 dependency-free presentation tests + 双 production
+  compiler + runtime 覆盖；Web Shiki/KaTeX、Lynx plain code/textual math 与 image fallback
+  仍为已登记平台差异。
+- 下一步：按 goal 只做一次 Computer Use/background/exact-owned Native 批量回归，覆盖已重新
+  打开的 Search fidelity、empty landing initiate thread 与本轮 Composer/scroll/Markdown；
+  完成后再恢复 P9-D1，不越序进入 P9-R1。

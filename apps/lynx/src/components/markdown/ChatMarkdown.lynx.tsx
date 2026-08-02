@@ -1,20 +1,101 @@
 // P2-V5: unified/remark parses on the background thread; this module only
 // turns the serializable mdast subset into Lynx-native view/text elements.
 
-import { useEffect, useState } from '@lynx-js/react';
+import { useEffect, useRef, useState } from '@lynx-js/react';
+import type { ProviderMentionReference } from '@synara/contracts';
+import {
+  splitPromptIntoDisplaySegments,
+  type ComposerPromptSegment,
+} from '@synara-web/composer-editor-mentions';
 
-import { parseMarkdown, type MarkdownNode } from './markdownAst';
+import { useLynxInteractiveState } from '../ui/interactive-state.lynx';
+import { CheckIcon, CopyIcon, TextWrapIcon } from '../../lib/icons.lynx';
+import { clipboard } from '../../platform/clipboard';
+import { sleepOnHost } from '../../platform/timer';
+import { platformWindow } from '../../platform/window';
+import {
+  parseMarkdown,
+  type MarkdownNode,
+  type MarkdownVariant,
+} from './markdownAst';
+import {
+  resolveMarkdownCodeBlockPresentation,
+  resolveMarkdownInlineTokenPresentation,
+  toggleMarkdownCodeWrap,
+  type MarkdownInlineTokenSegment,
+} from './markdownPresentation.logic';
 
 export interface ChatMarkdownProps {
   readonly text: string;
   readonly className?: string;
+  readonly variant?: MarkdownVariant;
+  readonly mentionReferences?: ReadonlyArray<ProviderMentionReference>;
 }
 
-function renderInlineChildren(node: MarkdownNode, key: string): React.ReactNode {
-  return (node.children ?? []).map((child, index) => renderNode(child, `${key}.${index}`));
+interface MarkdownRenderContext {
+  readonly allowComposerChips: boolean;
+  readonly mentionReferences: ReadonlyArray<ProviderMentionReference>;
+  readonly variant: MarkdownVariant;
 }
 
-function renderTable(node: MarkdownNode, key: string) {
+function MarkdownInlineToken({
+  segment,
+}: {
+  readonly segment: MarkdownInlineTokenSegment;
+}) {
+  const presentation = resolveMarkdownInlineTokenPresentation(segment);
+  const target = presentation.openExternalUrl;
+  const activate = target
+    ? () => {
+        'background only';
+        void platformWindow.openExternal(target);
+      }
+    : undefined;
+  const interaction = useLynxInteractiveState({
+    baseClassName: `MdInlineToken MdInlineToken--${segment.type}`,
+    focusable: Boolean(activate),
+    onActivate: activate,
+    accessibilityTraits: activate ? 'link' : 'text',
+    accessibleLabel: activate ? `Open ${target}` : presentation.label,
+  });
+  return (
+    <text className={interaction.className} {...interaction.eventProps}>
+      <text className="MdInlineTokenGlyph">{presentation.glyph}</text>
+      {presentation.label}
+    </text>
+  );
+}
+
+function renderUserText(
+  value: string,
+  key: string,
+  mentionReferences: ReadonlyArray<ProviderMentionReference>
+): React.ReactNode {
+  return splitPromptIntoDisplaySegments(value, mentionReferences).map(
+    (segment, index) =>
+      segment.type === 'text' ? (
+        <text key={`${key}.text.${index}`}>{segment.text}</text>
+      ) : (
+        <MarkdownInlineToken key={`${key}.token.${index}`} segment={segment} />
+      )
+  );
+}
+
+function renderInlineChildren(
+  node: MarkdownNode,
+  key: string,
+  context: MarkdownRenderContext
+): React.ReactNode {
+  return (node.children ?? []).map((child, index) =>
+    renderNode(child, `${key}.${index}`, context)
+  );
+}
+
+function renderTable(
+  node: MarkdownNode,
+  key: string,
+  context: MarkdownRenderContext
+) {
   return (
     <scroll-view className="MdTableScroller" scroll-x key={key}>
       <view className="MdTable">
@@ -26,7 +107,11 @@ function renderTable(node: MarkdownNode, key: string) {
                 key={`${key}.cell.${rowIndex}.${cellIndex}`}
               >
                 <text className={rowIndex === 0 ? 'MdTableHeaderText' : 'MdTableCellText'}>
-                  {renderInlineChildren(cell, `${key}.inline.${rowIndex}.${cellIndex}`)}
+                  {renderInlineChildren(
+                    cell,
+                    `${key}.inline.${rowIndex}.${cellIndex}`,
+                    context
+                  )}
                 </text>
               </view>
             ))}
@@ -37,17 +122,154 @@ function renderTable(node: MarkdownNode, key: string) {
   );
 }
 
+function MarkdownLink({
+  node,
+  nodeKey,
+  context,
+}: {
+  readonly node: MarkdownNode;
+  readonly nodeKey: string;
+  readonly context: MarkdownRenderContext;
+}) {
+  const url = node.url ?? '';
+  const external = /^https?:\/\//i.test(url);
+  const activate = external
+    ? () => {
+        'background only';
+        void platformWindow.openExternal(url);
+      }
+    : undefined;
+  const interaction = useLynxInteractiveState({
+    baseClassName: 'MdLink',
+    disabled: !activate,
+    focusable: Boolean(activate),
+    onActivate: activate,
+    accessibilityTraits: external ? 'link' : 'text',
+    accessibleLabel: external ? `Open ${url}` : undefined,
+  });
+  return (
+    <text className={interaction.className} key={nodeKey} {...interaction.eventProps}>
+      {renderInlineChildren(node, nodeKey, {
+        ...context,
+        allowComposerChips: false,
+      })}
+      {external ? <text className="MdLinkTarget"> ↗</text> : null}
+    </text>
+  );
+}
+
+function MarkdownCodeAction({
+  active = false,
+  label,
+  onActivate,
+  children,
+}: {
+  readonly active?: boolean;
+  readonly label: string;
+  readonly onActivate: () => void;
+  readonly children: React.ReactNode;
+}) {
+  const interaction = useLynxInteractiveState({
+    baseClassName: `MdCodeAction${active ? ' MdCodeAction--active' : ''}`,
+    onActivate,
+    accessibleLabel: label,
+    accessibilityValue: active ? 'on' : 'off',
+  });
+  return (
+    <view className={interaction.className} aria-label={label} {...interaction.eventProps}>
+      {children}
+    </view>
+  );
+}
+
+function MarkdownCodeBlock({ node, nodeKey }: { readonly node: MarkdownNode; readonly nodeKey: string }) {
+  const [copied, setCopied] = useState(false);
+  const [wrap, setWrap] = useState(false);
+  const copyGenerationRef = useRef(0);
+  const presentation = resolveMarkdownCodeBlockPresentation({
+    code: node.value ?? '',
+    language: node.lang,
+  });
+
+  async function copyCode() {
+    'background only';
+    const generation = copyGenerationRef.current + 1;
+    copyGenerationRef.current = generation;
+    try {
+      await clipboard.writeText(presentation.code);
+      setCopied(true);
+      await sleepOnHost(1200);
+      if (copyGenerationRef.current === generation) setCopied(false);
+    } catch {
+      if (copyGenerationRef.current === generation) setCopied(false);
+    }
+  }
+
+  function toggleWrap() {
+    'background only';
+    setWrap(toggleMarkdownCodeWrap);
+  }
+
+  return (
+    <view
+      className={`MdCodeBlockShell${wrap ? ' MdCodeBlockShell--wrap' : ''}`}
+      key={nodeKey}
+    >
+      <view className="MdCodeHeader">
+        <view className="MdCodeTitle">
+          <text className="MdCodeLanguage">{presentation.title}</text>
+          {presentation.metadata ? (
+            <text className="MdCodeMetadata">{presentation.metadata}</text>
+          ) : null}
+        </view>
+        <view className="MdCodeActions">
+          <MarkdownCodeAction
+            active={wrap}
+            label={wrap ? 'Disable soft wrap' : 'Enable soft wrap'}
+            onActivate={toggleWrap}
+          >
+            <TextWrapIcon size={12} />
+          </MarkdownCodeAction>
+          <MarkdownCodeAction
+            active={copied}
+            label={copied ? 'Copied' : 'Copy code'}
+            onActivate={() => {
+              'background only';
+              void copyCode();
+            }}
+          >
+            {copied ? <CheckIcon size={12} /> : <CopyIcon size={12} />}
+          </MarkdownCodeAction>
+        </view>
+      </view>
+      <scroll-view className="MdCodeScroller" scroll-x={!wrap}>
+        <view className="MdCodeBlock">
+          <text
+            className="MdCode MdCodeBlockText"
+            style={{ minHeight: `${presentation.minimumTextHeightPx}px` }}
+          >
+            {presentation.code}
+          </text>
+        </view>
+      </scroll-view>
+    </view>
+  );
+}
+
 function renderNode(
   node: MarkdownNode,
   key: string,
+  context: MarkdownRenderContext,
   listContext?: { ordered: boolean; index: number }
 ): React.ReactNode {
-  const children = () => renderInlineChildren(node, key);
+  const children = () => renderInlineChildren(node, key, context);
   switch (node.type) {
     case 'root':
       return <view key={key}>{children()}</view>;
     case 'text':
-      return <text key={key}>{node.value ?? ''}</text>;
+      return context.variant === 'user' && context.allowComposerChips
+        ? renderUserText(node.value ?? '', key, context.mentionReferences)
+        : <text key={key}>{node.value ?? ''}</text>;
     case 'paragraph':
       return (
         <text className="MdParagraph" key={key}>
@@ -79,12 +301,7 @@ function renderNode(
         </text>
       );
     case 'link':
-      return (
-        <text className="MdLink" key={key}>
-          {children()}
-          {node.url ? <text className="MdLinkTarget"> ↗</text> : null}
-        </text>
-      );
+      return <MarkdownLink node={node} nodeKey={key} context={context} />;
     case 'image':
       return (
         <text className="MdImageFallback" key={key}>
@@ -101,7 +318,12 @@ function renderNode(
       return (
         <view className="MdList" key={key}>
           {(node.children ?? []).map((child, index) =>
-            renderNode(child, `${key}.${index}`, { ordered: node.ordered === true, index })
+            renderNode(
+              child,
+              `${key}.${index}`,
+              context,
+              { ordered: node.ordered === true, index }
+            )
           )}
         </view>
       );
@@ -124,16 +346,7 @@ function renderNode(
       );
     }
     case 'code':
-      return (
-        <scroll-view className="MdCodeScroller" scroll-x key={key}>
-          <view className="MdCodeBlock">
-            <text className="MdCode MdCodeBlockText">
-              {node.lang ? `${node.lang}\n` : ''}
-              {node.value ?? ''}
-            </text>
-          </view>
-        </scroll-view>
-      );
+      return <MarkdownCodeBlock node={node} nodeKey={key} />;
     case 'inlineCode':
       return (
         <text className="MdCode MdInlineCode" key={key}>
@@ -153,7 +366,7 @@ function renderNode(
         </text>
       );
     case 'table':
-      return renderTable(node, key);
+      return renderTable(node, key, context);
     case 'thematicBreak':
       return <view className="MdRule" key={key} />;
     case 'break':
@@ -169,22 +382,37 @@ function renderNode(
   }
 }
 
-export function ChatMarkdown({ text, className }: ChatMarkdownProps) {
+export function ChatMarkdown({
+  text,
+  className,
+  variant = 'assistant',
+  mentionReferences = [],
+}: ChatMarkdownProps) {
   const [tree, setTree] = useState<MarkdownNode | null>(null);
 
   useEffect(() => {
     'background only';
     try {
-      const parsed = parseMarkdown(text);
+      const parsed = parseMarkdown(text, variant);
       setTree(parsed);
     } catch (error) {
       console.error('[markdown] parse failed', String(error), error);
     }
-  }, [text]);
+  }, [text, variant]);
+
+  const context: MarkdownRenderContext = {
+    allowComposerChips: variant === 'user',
+    mentionReferences,
+    variant,
+  };
 
   return (
-    <view className={className ? `MdRoot ${className}` : 'MdRoot'}>
-      {tree ? renderNode(tree, 'root') : <text className="MdParagraph">{text}</text>}
+    <view
+      className={`${className ? `MdRoot ${className}` : 'MdRoot'}${
+        variant === 'user' ? ' MdRoot--user' : ''
+      }`}
+    >
+      {tree ? renderNode(tree, 'root', context) : <text className="MdParagraph">{text}</text>}
     </view>
   );
 }

@@ -20,6 +20,14 @@ describe('buildTranscriptScrollToBottomParams', () => {
       smooth: false,
     });
   });
+
+  it('includes explicit trailing list chrome in the target position', () => {
+    expect(buildTranscriptScrollToBottomParams(4, 1)).toEqual({
+      position: 4,
+      offset: 1_000_000,
+      smooth: false,
+    });
+  });
 });
 
 describe('resolveTranscriptPinnedFromScroll', () => {

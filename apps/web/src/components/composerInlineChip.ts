@@ -12,6 +12,10 @@ import {
   COMPOSER_EDITOR_LINE_HEIGHT_CLASS_NAME,
   COMPOSER_EDITOR_TEXT_CLASS_NAME,
 } from "./chat/composerPickerStyles";
+export {
+  formatComposerSkillChipLabel,
+  formatComposerSlashCommandChipLabel,
+} from "./composerInlineChip.logic";
 
 // ── Shared spacing ────────────────────────────────────────────────────
 // One gap token for block sides (vs plain text) and icon→label inside the block.
@@ -162,21 +166,3 @@ export const COMPOSER_ATTACHMENT_CHIP_CLASS_NAME =
 // ── Skill helpers ─────────────────────────────────────────────────────
 /** Central icon basename shared by every skill token (editor + timeline). */
 export const COMPOSER_INLINE_SKILL_CHIP_ICON_NAME = "building-blocks";
-
-function formatComposerInlineTokenLabel(name: string): string {
-  return name
-    .split(/[-_]/)
-    .map((segment) =>
-      segment.length > 0 ? segment.charAt(0).toUpperCase() + segment.slice(1) : segment,
-    )
-    .join(" ");
-}
-
-// Formats raw skill ids like `check-code` into the label used by inline skill chips.
-export function formatComposerSkillChipLabel(name: string): string {
-  return formatComposerInlineTokenLabel(name);
-}
-
-export function formatComposerSlashCommandChipLabel(command: string): string {
-  return formatComposerInlineTokenLabel(command);
-}

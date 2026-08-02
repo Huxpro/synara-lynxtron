@@ -17,10 +17,18 @@ export interface MarkdownNode {
   readonly children?: readonly MarkdownNode[];
 }
 
-const processor = unified()
+export type MarkdownVariant = 'assistant' | 'user';
+
+const assistantProcessor = unified()
   .use(remarkParse)
   .use(remarkGfm)
   .use(remarkMath, { singleDollarTextMath: true });
+
+// Sent prompts use GFM but intentionally skip math, matching Web: literal
+// `$50` and `$skill` tokens must survive for user-message chip rendering.
+const userProcessor = unified()
+  .use(remarkParse)
+  .use(remarkGfm);
 
 function toSerializableNode(node: Record<string, unknown>): MarkdownNode {
   const children = Array.isArray(node.children)
@@ -43,6 +51,10 @@ function toSerializableNode(node: Record<string, unknown>): MarkdownNode {
   };
 }
 
-export function parseMarkdown(text: string): MarkdownNode {
+export function parseMarkdown(
+  text: string,
+  variant: MarkdownVariant = 'assistant'
+): MarkdownNode {
+  const processor = variant === 'user' ? userProcessor : assistantProcessor;
   return toSerializableNode(processor.runSync(processor.parse(text)) as unknown as Record<string, unknown>);
 }

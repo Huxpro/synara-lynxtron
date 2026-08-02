@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-02T10:58:07.464Z",
+  "generatedAt": "2026-08-02T13:18:24.620Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -21,7 +21,7 @@
     "entries": [
       "src/app/index.tsx"
     ],
-    "modules": 477,
+    "modules": 481,
     "externalImports": [
       "@base-ui/react/autocomplete",
       "@base-ui/react/collapsible",
@@ -9193,8 +9193,8 @@
         "src/components/composer/Composer.tsx"
       ],
       "graph": {
-        "modules": 750,
-        "loc": 151502,
+        "modules": 752,
+        "loc": 151539,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -9321,8 +9321,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 647,
-          "loc": 135061
+          "modules": 649,
+          "loc": 135098
         },
         "PATCHED": {
           "modules": 1,
@@ -9338,15 +9338,15 @@
         }
       },
       "eligible": {
-        "modules": 722,
-        "loc": 143359
+        "modules": 724,
+        "loc": 143396
       },
       "currentReuse": {
-        "modules": 338,
-        "loc": 55421,
-        "modulePercent": 46.81,
-        "locPercent": 38.66,
-        "gatePercent": 38.66
+        "modules": 340,
+        "loc": 55458,
+        "modulePercent": 46.96,
+        "locPercent": 38.67,
+        "gatePercent": 38.67
       },
       "modules": [
         {
@@ -12421,13 +12421,22 @@
           "dependencies": []
         },
         {
+          "path": "apps/web/src/components/composerInlineChip.logic.ts",
+          "loc": 16,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
+        },
+        {
           "path": "apps/web/src/components/composerInlineChip.ts",
-          "loc": 114,
+          "loc": 104,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/composerPickerStyles.ts",
+            "apps/web/src/components/composerInlineChip.logic.ts",
             "apps/web/src/lib/utils.ts"
           ]
         },
@@ -16776,13 +16785,21 @@
         },
         {
           "path": "apps/web/src/lib/codeFence.ts",
-          "loc": 68,
+          "loc": 23,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
-            "apps/web/src/file-icons.ts"
+            "apps/web/src/lib/codeFenceCore.ts"
           ]
+        },
+        {
+          "path": "apps/web/src/lib/codeFenceCore.ts",
+          "loc": 76,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
         },
         {
           "path": "apps/web/src/lib/codexReasoningEffort.ts",
@@ -24842,8 +24859,8 @@
         "src/app/FeatureListsPage.tsx"
       ],
       "graph": {
-        "modules": 504,
-        "loc": 98800,
+        "modules": 505,
+        "loc": 98806,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -24945,8 +24962,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 433,
-          "loc": 88518
+          "modules": 434,
+          "loc": 88524
         },
         "PATCHED": {
           "modules": 1,
@@ -24962,15 +24979,15 @@
         }
       },
       "eligible": {
-        "modules": 493,
-        "loc": 95001
+        "modules": 494,
+        "loc": 95007
       },
       "currentReuse": {
-        "modules": 279,
-        "loc": 49794,
-        "modulePercent": 56.59,
-        "locPercent": 52.41,
-        "gatePercent": 52.41
+        "modules": 280,
+        "loc": 49800,
+        "modulePercent": 56.68,
+        "locPercent": 52.42,
+        "gatePercent": 52.42
       },
       "modules": [
         {
@@ -25900,13 +25917,22 @@
           ]
         },
         {
+          "path": "apps/web/src/components/composerInlineChip.logic.ts",
+          "loc": 16,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
+        },
+        {
           "path": "apps/web/src/components/composerInlineChip.ts",
-          "loc": 114,
+          "loc": 104,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/composerPickerStyles.ts",
+            "apps/web/src/components/composerInlineChip.logic.ts",
             "apps/web/src/lib/utils.ts"
           ]
         },
@@ -31186,8 +31212,8 @@
         "src/app/FeatureListsPage.tsx"
       ],
       "graph": {
-        "modules": 504,
-        "loc": 98801,
+        "modules": 505,
+        "loc": 98807,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -31289,8 +31315,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 433,
-          "loc": 88519
+          "modules": 434,
+          "loc": 88525
         },
         "PATCHED": {
           "modules": 1,
@@ -31306,15 +31332,15 @@
         }
       },
       "eligible": {
-        "modules": 493,
-        "loc": 95002
+        "modules": 494,
+        "loc": 95008
       },
       "currentReuse": {
-        "modules": 279,
-        "loc": 49794,
-        "modulePercent": 56.59,
-        "locPercent": 52.41,
-        "gatePercent": 52.41
+        "modules": 280,
+        "loc": 49800,
+        "modulePercent": 56.68,
+        "locPercent": 52.42,
+        "gatePercent": 52.42
       },
       "modules": [
         {
@@ -32244,13 +32270,22 @@
           ]
         },
         {
+          "path": "apps/web/src/components/composerInlineChip.logic.ts",
+          "loc": 16,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
+        },
+        {
           "path": "apps/web/src/components/composerInlineChip.ts",
-          "loc": 114,
+          "loc": 104,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/composerPickerStyles.ts",
+            "apps/web/src/components/composerInlineChip.logic.ts",
             "apps/web/src/lib/utils.ts"
           ]
         },
@@ -37530,8 +37565,8 @@
         "src/app/FeatureListsPage.tsx"
       ],
       "graph": {
-        "modules": 491,
-        "loc": 91531,
+        "modules": 493,
+        "loc": 91568,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -37630,8 +37665,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 418,
-          "loc": 82092
+          "modules": 420,
+          "loc": 82129
         },
         "PATCHED": {
           "modules": 1,
@@ -37647,15 +37682,15 @@
         }
       },
       "eligible": {
-        "modules": 482,
-        "loc": 89725
+        "modules": 484,
+        "loc": 89762
       },
       "currentReuse": {
-        "modules": 300,
-        "loc": 51555,
-        "modulePercent": 62.24,
-        "locPercent": 57.46,
-        "gatePercent": 57.46
+        "modules": 302,
+        "loc": 51592,
+        "modulePercent": 62.4,
+        "locPercent": 57.48,
+        "gatePercent": 57.48
       },
       "modules": [
         {
@@ -38304,13 +38339,22 @@
           ]
         },
         {
+          "path": "apps/web/src/components/composerInlineChip.logic.ts",
+          "loc": 16,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
+        },
+        {
           "path": "apps/web/src/components/composerInlineChip.ts",
-          "loc": 114,
+          "loc": 104,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/composerPickerStyles.ts",
+            "apps/web/src/components/composerInlineChip.logic.ts",
             "apps/web/src/lib/utils.ts"
           ]
         },
@@ -41788,13 +41832,21 @@
         },
         {
           "path": "apps/web/src/lib/codeFence.ts",
-          "loc": 68,
+          "loc": 23,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
-            "apps/web/src/file-icons.ts"
+            "apps/web/src/lib/codeFenceCore.ts"
           ]
+        },
+        {
+          "path": "apps/web/src/lib/codeFenceCore.ts",
+          "loc": 76,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
         },
         {
           "path": "apps/web/src/lib/codexReasoningEffort.ts",

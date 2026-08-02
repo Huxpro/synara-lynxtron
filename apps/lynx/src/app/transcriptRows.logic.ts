@@ -79,11 +79,13 @@ export function resolveTranscriptPinnedFromScroll(input: {
 }
 
 export function buildTranscriptScrollToBottomParams(
-  rowCount: number
+  rowCount: number,
+  trailingChromeRowCount = 0
 ): TranscriptScrollToPositionParams | null {
-  if (rowCount <= 0) return null;
+  const targetCount = rowCount + trailingChromeRowCount;
+  if (targetCount <= 0) return null;
   return {
-    position: rowCount - 1,
+    position: targetCount - 1,
     // `position` aligns the final row's start. A large positive offset lets
     // the platform clamp to the list's true end even when that row is taller
     // than the viewport (for example, a long streaming assistant response).
