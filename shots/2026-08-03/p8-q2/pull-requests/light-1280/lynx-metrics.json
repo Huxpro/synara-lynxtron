@@ -1,0 +1,52 @@
+{
+  "a11y": {
+    "named": [
+      "Synara",
+      "New thread",
+      "Search",
+      "Kanban",
+      "Pull requests",
+      "Automations",
+      "Collapse Lynx Web Spike",
+      "In Progress seed task",
+      "Draft seed task",
+      "Done seed task",
+      "Settings",
+      "Refresh pull requests",
+      "No pull requests found. Try another involvement, state, project, or search filter."
+    ]
+  },
+  "boxes": {
+    "empty": {
+      "fontSize": "16px",
+      "height": 148,
+      "width": 976,
+      "x": 288,
+      "y": 152
+    },
+    "filters": {
+      "fontSize": "16px",
+      "height": 66,
+      "width": 976,
+      "x": 288,
+      "y": 70
+    },
+    "title": {
+      "fontSize": "14px",
+      "height": 20,
+      "width": 88,
+      "x": 284,
+      "y": 21
+    }
+  },
+  "screen": "Pull-Requests-empty",
+  "theme": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable",
+  "url": "http://localhost:63211/lynx/",
+  "viewport": {
+    "dpr": 1,
+    "innerHeight": 820,
+    "innerWidth": 1280,
+    "visualHeight": 820,
+    "visualWidth": 1280
+  }
+}

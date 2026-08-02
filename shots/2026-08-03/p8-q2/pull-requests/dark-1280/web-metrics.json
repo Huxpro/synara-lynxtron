@@ -1,0 +1,67 @@
+{
+  "a11y": {
+    "named": [
+      "Toggle thread sidebar",
+      "New thread",
+      "Search",
+      "Kanban",
+      "Pull requests",
+      "Automations",
+      "Collapse all projects",
+      "Sort projects",
+      "Add project",
+      "Pin Lynx Web Spike",
+      "View pull requests for Lynx Web Spike",
+      "Create new terminal thread in Lynx Web Spike",
+      "Create new thread in Lynx Web Spike",
+      "Pin thread",
+      "Archive thread",
+      "Pin thread",
+      "Archive thread",
+      "Pin thread",
+      "Archive thread",
+      "Sort chats",
+      "Open new chat home",
+      "Resize Sidebar",
+      "Refresh pull requests",
+      "Filter pull requests by project: All projects",
+      "Collapse panel",
+      "Toggle Sidebar",
+      "Notifications",
+      "Notifications"
+    ]
+  },
+  "boxes": {
+    "empty": {
+      "fontSize": "16px",
+      "height": 148,
+      "width": 968,
+      "x": 284,
+      "y": 144
+    },
+    "filters": {
+      "fontSize": "16px",
+      "height": 66,
+      "width": 968,
+      "x": 284,
+      "y": 62
+    },
+    "title": {
+      "fontSize": "14px",
+      "height": 20,
+      "width": 85.75,
+      "x": 276,
+      "y": 13
+    }
+  },
+  "screen": "Pull-Requests-empty",
+  "theme": "dark",
+  "url": "http://localhost:63211/pull-requests?involvement=all&state=open",
+  "viewport": {
+    "dpr": 1,
+    "innerHeight": 820,
+    "innerWidth": 1280,
+    "visualHeight": 820,
+    "visualWidth": 1280
+  }
+}

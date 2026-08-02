@@ -4601,3 +4601,19 @@
   bundle已恢复仅含`58090`。
 - 证据：`shots/2026-08-03/p8-q2/kanban/notes.md`。本刀仍仅完成Fast Browser tier；
   Native未开始，P9-D1真实IME保持blocked。
+
+## 2026-08-03 — P8-Q2 Pull Requests Fast Browser matrix
+
+- Pull Requests完成 light/dark × 1280×820/1440×900，共4 paired Browser cells /
+  8 PNGs；共享真实snapshot在All + Open下无匹配PR，因此两端认证canonical filter + empty
+  state，不伪造PR fixture。
+- 首轮发现Lynx filter stack为68.5px、Web为66px，导致empty state `y +10.5px`；未保留。
+  Lynx adapter改为Web实测的12px/18px pill typography与28px search/project row后，
+  filter stack精确66px。
+- retained四格均为route title `x +8px / y +8px`、14px字号精确；filter与empty shell
+  `x +4px / y +8px`、高度精确，满足门禁。所有PNG尺寸、DPR/visual viewport与
+  page-error gate通过。
+- focused shared PR composition tests 2 files / 5 tests、strict reuse/style audits均green；
+  默认Web bundle已恢复仅含`58090`。证据：
+  `shots/2026-08-03/p8-q2/pull-requests/notes.md`。Fast Browser 24 paired cells已齐；
+  Native最终batch仍未开始，P9-D1真实IME保持blocked。
