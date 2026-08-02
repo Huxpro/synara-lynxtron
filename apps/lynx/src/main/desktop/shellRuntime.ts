@@ -161,6 +161,7 @@ export function dispatchRendererGlobalEvent(
 export interface ShellWindowPresentation {
   readonly showOnCreate: boolean;
   readonly showAfterSetup: boolean;
+  readonly showInactiveAfterSetup: boolean;
 }
 
 export function resolveShellWindowPresentation(
@@ -169,6 +170,7 @@ export function resolveShellWindowPresentation(
   return {
     showOnCreate: !backgroundLaunch,
     showAfterSetup: !backgroundLaunch,
+    showInactiveAfterSetup: backgroundLaunch,
   };
 }
 

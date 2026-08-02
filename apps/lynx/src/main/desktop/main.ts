@@ -416,7 +416,9 @@ app.whenReady().then(() => {
     }
   );
 
-  if (windowPresentation.showAfterSetup) {
+  if (windowPresentation.showInactiveAfterSetup) {
+    w.showInactive();
+  } else if (windowPresentation.showAfterSetup) {
     w.show();
   }
   if (savedState?.maximized) w.maximize();

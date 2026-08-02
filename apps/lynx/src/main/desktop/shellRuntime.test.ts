@@ -139,14 +139,16 @@ describe('shellRuntime', () => {
     expect(calls).toEqual([['shell:command', 'sidebar.search']]);
   });
 
-  it('keeps background verification windows hidden from construction onward', () => {
+  it('keeps background verification windows inactive while making them capturable', () => {
     expect(resolveShellWindowPresentation(true)).toEqual({
       showOnCreate: false,
       showAfterSetup: false,
+      showInactiveAfterSetup: true,
     });
     expect(resolveShellWindowPresentation(false)).toEqual({
       showOnCreate: true,
       showAfterSetup: true,
+      showInactiveAfterSetup: false,
     });
   });
 
