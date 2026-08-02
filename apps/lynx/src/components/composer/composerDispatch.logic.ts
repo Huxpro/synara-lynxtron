@@ -4,6 +4,7 @@ import type {
   ModelSelection,
   ProviderInteractionMode,
   ProviderMentionReference,
+  ProviderSkillReference,
   RuntimeMode,
 } from '@synara/contracts';
 
@@ -23,6 +24,7 @@ export function buildComposerTurnStartCommand(input: {
   readonly messageId: string;
   readonly modelSelection: ModelSelection;
   readonly mentions?: ReadonlyArray<ProviderMentionReference>;
+  readonly skills?: ReadonlyArray<ProviderSkillReference>;
   readonly runtimeMode: RuntimeMode;
   readonly text: string;
   readonly threadId: string;
@@ -38,6 +40,9 @@ export function buildComposerTurnStartCommand(input: {
       attachments: input.attachments ? [...input.attachments] : [],
       ...(input.mentions && input.mentions.length > 0
         ? { mentions: [...input.mentions] }
+        : {}),
+      ...(input.skills && input.skills.length > 0
+        ? { skills: [...input.skills] }
         : {}),
     },
     modelSelection: input.modelSelection,

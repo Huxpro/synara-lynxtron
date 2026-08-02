@@ -2,6 +2,7 @@ import { describe, expect, it } from '@rstest/core';
 
 import {
   buildLynxSlashCommandItems,
+  resolveLynxSkillSelection,
   resolveLynxSlashCommandSelection,
   resolveLynxThreadMentionSelection,
 } from './composerCommandMenu.logic';
@@ -92,6 +93,39 @@ describe('Lynx composer command menu bridge', () => {
       prompt: 'Compare @\"Release prep\" next',
       selectionStart: 24,
       selectionEnd: 24,
+    });
+  });
+
+  it('inserts the canonical provider skill token and returns its reference', () => {
+    expect(
+      resolveLynxSkillSelection({
+        item: {
+          id: 'skill:/workspace/.codex/skills/review/SKILL.md',
+          type: 'skill',
+          skill: {
+            name: 'review',
+            description: 'Review the current change',
+            path: '/workspace/.codex/skills/review/SKILL.md',
+            scope: 'codex',
+          },
+        },
+        prompt: 'Use $rev next',
+        provider: 'codex',
+        trigger: {
+          kind: 'skill',
+          query: 'rev',
+          rangeStart: 4,
+          rangeEnd: 8,
+        },
+      })
+    ).toEqual({
+      prompt: 'Use /review next',
+      selectionStart: 12,
+      selectionEnd: 12,
+      skill: {
+        name: 'review',
+        path: '/workspace/.codex/skills/review/SKILL.md',
+      },
     });
   });
 });

@@ -19,7 +19,13 @@ describe('Lynx composer draft attachment subset', () => {
     store.addPastedText('thread-1', pastedText);
     expect(
       useComposerDraftStore.getState().draftsByThreadId['thread-1']
-    ).toEqual({ files: [], mentions: [], prompt: '', pastedTexts: [pastedText] });
+    ).toEqual({
+      files: [],
+      mentions: [],
+      prompt: '',
+      pastedTexts: [pastedText],
+      skills: [],
+    });
 
     useComposerDraftStore.getState().removePastedText('thread-1', 'paste-1');
     expect(
@@ -61,6 +67,7 @@ describe('Lynx composer draft attachment subset', () => {
       mentions: [],
       prompt: '',
       pastedTexts: [],
+      skills: [],
       modelSelection: {
         provider: 'codex',
         model: 'gpt-5.6-sol',
@@ -127,6 +134,21 @@ describe('Lynx composer draft attachment subset', () => {
     useComposerDraftStore.getState().setPrompt('thread-1', 'No reference');
     expect(
       useComposerDraftStore.getState().draftsByThreadId['thread-1']?.mentions
+    ).toEqual([]);
+  });
+
+  it('keeps only structured skills whose canonical token remains in the prompt', () => {
+    const skill = { name: 'polish', path: '/skills/polish' };
+    const store = useComposerDraftStore.getState();
+    store.setPrompt('thread-1', '/polish ');
+    store.setSkills('thread-1', [skill]);
+    expect(
+      useComposerDraftStore.getState().draftsByThreadId['thread-1']?.skills
+    ).toEqual([skill]);
+
+    useComposerDraftStore.getState().setPrompt('thread-1', 'No skill');
+    expect(
+      useComposerDraftStore.getState().draftsByThreadId['thread-1']?.skills
     ).toEqual([]);
   });
 });

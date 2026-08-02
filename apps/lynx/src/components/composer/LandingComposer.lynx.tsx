@@ -1,8 +1,9 @@
-import { useMemo, useRef } from '@lynx-js/react';
+import { useMemo, useRef, useState } from '@lynx-js/react';
 import { useQuery } from '@tanstack/react-query';
 import type { ModelSelection } from '@synara/contracts';
 import { getDefaultModel } from '@synara/shared/model';
 import { PanelStateMessage } from '@synara-web/components/chat/PanelStateMessage';
+import { FolderIcon } from '@synara-web/lib/icons';
 
 import { queryClient } from '../../app/queries';
 import {
@@ -11,6 +12,7 @@ import {
   fetchSynaraSidebarShellSnapshot,
 } from '../../data/synaraClient.lynx';
 import { Button } from '../ui/button';
+import { Menu, MenuItem, MenuPopup, MenuTrigger } from '../ui/menu.lynx';
 import { Composer } from './Composer.lynx';
 import {
   ensureLandingThreadCreated,
@@ -31,7 +33,12 @@ async function loadLandingBootstrap() {
     fetchServerConfig(),
   ]);
   const existing = snapshot.projects.find((project) => project.kind === 'chat');
-  if (existing) return existing;
+  if (existing) {
+    return {
+      homeProject: existing,
+      projects: snapshot.projects.filter((project) => project.kind === 'project'),
+    };
+  }
 
   const workspaceRoot = config.homeDir?.trim();
   if (!workspaceRoot) {
@@ -48,16 +55,26 @@ async function loadLandingBootstrap() {
       workspaceRoot,
       createdAt: new Date().toISOString(),
     });
-    const created = (await fetchSynaraSidebarShellSnapshot()).projects.find(
+    const refreshed = await fetchSynaraSidebarShellSnapshot();
+    const created = refreshed.projects.find(
       (project) => project.id === projectId
     );
     if (!created) throw new Error('The new chat workspace was not persisted.');
-    return created;
+    return {
+      homeProject: created,
+      projects: refreshed.projects.filter((project) => project.kind === 'project'),
+    };
   } catch (error) {
-    const recovered = (await fetchSynaraSidebarShellSnapshot()).projects.find(
+    const refreshed = await fetchSynaraSidebarShellSnapshot();
+    const recovered = refreshed.projects.find(
       (project) => project.kind === 'chat'
     );
-    if (recovered) return recovered;
+    if (recovered) {
+      return {
+        homeProject: recovered,
+        projects: refreshed.projects.filter((project) => project.kind === 'project'),
+      };
+    }
     throw error;
   }
 }
@@ -70,18 +87,31 @@ export function LandingComposer(props: {
     created: false,
     inFlight: null,
   });
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
   const { data, error, isFetching, isPending, refetch } = useQuery({
     queryKey: ['landing-composer-bootstrap'],
     queryFn: loadLandingBootstrap,
     staleTime: 30_000,
   });
   const modelSelection = useMemo<ModelSelection>(() => {
-    if (data?.defaultModelSelection) return data.defaultModelSelection;
+    const selectedProject = data?.projects.find(
+      (project) => project.id === selectedProjectId
+    );
+    if (selectedProject?.defaultModelSelection) {
+      return selectedProject.defaultModelSelection;
+    }
+    if (data?.homeProject.defaultModelSelection) {
+      return data.homeProject.defaultModelSelection;
+    }
     return {
       provider: 'codex',
       model: getDefaultModel('codex'),
     };
-  }, [data?.defaultModelSelection]);
+  }, [data, selectedProjectId]);
+  const selectedProject = data?.projects.find(
+    (project) => project.id === selectedProjectId
+  );
+  const targetProject = selectedProject ?? data?.homeProject;
 
   async function ensureThread(input: {
     readonly interactionMode: 'default' | 'plan';
@@ -89,7 +119,7 @@ export function LandingComposer(props: {
     readonly runtimeMode: 'full-access' | 'approval-required';
   }): Promise<void> {
     'background only';
-    if (!data) throw new Error('The new chat workspace is not ready.');
+    if (!targetProject) throw new Error('The new chat workspace is not ready.');
     const threadId = threadIdRef.current;
     await ensureLandingThreadCreated({
       state: threadCreationRef.current,
@@ -98,7 +128,7 @@ export function LandingComposer(props: {
           type: 'thread.create',
           commandId: landingId('command'),
           threadId,
-          projectId: data.id,
+          projectId: targetProject.id,
           title: 'New chat',
           modelSelection: input.modelSelection,
           runtimeMode: input.runtimeMode,
@@ -167,7 +197,8 @@ export function LandingComposer(props: {
         interactionMode="default"
         sessionStatus={null}
         activeTurnId={null}
-        workspaceRoot={data.workspaceRoot}
+        workspaceRoot={targetProject.workspaceRoot}
+        emptyLanding={true}
         onBeforeSend={ensureThread}
         onSendSucceeded={() => {
           'background only';
@@ -179,6 +210,37 @@ export function LandingComposer(props: {
           ]);
         }}
       />
+      <view className="LandingComposerTray">
+        <Menu>
+          <MenuTrigger
+            className="LandingComposerProjectTrigger"
+            ariaLabel="Work in a project"
+          >
+            <FolderIcon className="LandingComposerProjectIcon" />
+            <text className="LandingComposerProjectLabel">
+              {selectedProject?.title ?? 'Work in a project'}
+            </text>
+          </MenuTrigger>
+          <MenuPopup
+            className="LandingComposerProjectPopup"
+            side="top"
+            align="start"
+            sideOffset={6}
+          >
+            <MenuItem onClick={() => setSelectedProjectId(null)}>
+              Work in a project
+            </MenuItem>
+            {data.projects.map((project) => (
+              <MenuItem
+                key={project.id}
+                onClick={() => setSelectedProjectId(project.id)}
+              >
+                {project.title}
+              </MenuItem>
+            ))}
+          </MenuPopup>
+        </Menu>
+      </view>
     </view>
   );
 }

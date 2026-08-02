@@ -4,7 +4,14 @@ import {
   ensureLeadingSpaceForReplacement,
   extendReplacementRangeForTrailingSpace,
 } from '@synara-web/composerTriggerInsertion';
-import { formatComposerMentionToken } from '@synara-web/lib/composerMentions';
+import {
+  formatComposerMentionToken,
+  skillMentionPrefix,
+} from '@synara-web/lib/composerMentions';
+import type {
+  ProviderKind,
+  ProviderSkillReference,
+} from '@synara/contracts';
 import {
   buildSubagentsPrompt,
   filterComposerSlashCommands,
@@ -45,6 +52,47 @@ export interface LynxThreadMentionTransition {
   readonly prompt: string;
   readonly selectionEnd: number;
   readonly selectionStart: number;
+}
+
+export interface LynxSkillTransition {
+  readonly prompt: string;
+  readonly selectionEnd: number;
+  readonly selectionStart: number;
+  readonly skill: ProviderSkillReference;
+}
+
+export function resolveLynxSkillSelection(input: {
+  readonly item: ComposerCommandItem;
+  readonly prompt: string;
+  readonly provider: ProviderKind;
+  readonly trigger: ComposerTrigger;
+}): LynxSkillTransition | null {
+  if (input.item.type !== 'skill' || input.trigger.kind !== 'skill') return null;
+  const replacement = ensureLeadingSpaceForReplacement(
+    input.prompt,
+    input.trigger.rangeStart,
+    `${skillMentionPrefix(input.provider)}${input.item.skill.name} `
+  );
+  const replacementRangeEnd = extendReplacementRangeForTrailingSpace(
+    input.prompt,
+    input.trigger.rangeEnd,
+    replacement
+  );
+  const next = replaceTextRange(
+    input.prompt,
+    input.trigger.rangeStart,
+    replacementRangeEnd,
+    replacement
+  );
+  return {
+    prompt: next.text,
+    selectionStart: next.cursor,
+    selectionEnd: next.cursor,
+    skill: {
+      name: input.item.skill.name,
+      path: input.item.skill.path,
+    },
+  };
 }
 
 export function resolveLynxSlashCommandSelection(input: {

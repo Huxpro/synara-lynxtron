@@ -4316,3 +4316,23 @@
 - 下一步：将同一 snapshot 的 Web original 切到同 route/light，建立 paired baseline；随后
   按 Composer → transcript scroll → Markdown 顺序优化，浏览器阶段不启动 Lynxtron，最后
   只做一次批量 Native 回归。
+
+## 2026-08-02 — Lynx-for-Web Composer paired fidelity
+
+- 同一 isolated snapshot、`1280×820`、DPR 1、light 下完成 Web original ↔ Lynx-for-Web
+  empty landing Composer 配对。surface/tray 的宽高与圆角精确一致，锚点差为
+  `x=+8 / y=+7.25`，满足 ≤8 px 契约；placeholder、project tray、model/effort split、
+  control density 与 Web authority 收敛。
+- landing project picker 现在消费真实 project，并决定首次 send 的 thread target；model 与
+  effort 分控，Access/Extras 菜单可交互。修复 Web harness 中 nested fixed overlay 的双重
+  offset：menu primitive 按 layer origin 归一化 global anchor，Native zero-origin 不变。
+- `$skill` 接入真实 `provider.listSkills`：filter → selection → provider canonical token →
+  structured draft reference/chip → canonical message payload 全链路完成，undo/redo 与清稿同步
+  保留 skill context。voice affordance 明确 disabled/unavailable，不冒充 browser voice 支持。
+- 已登记残差：Lynx textarea 是平台岛，当前同时显示独立 chip 与 canonical `/polish` text，
+  尚未达到 Web inline rich-token editor 的像素等价。
+- gates：focused **6 files / 28 tests**；Web production **2476.6 kB**；Desktop production
+  **2379.6 kB Lynx / 2508.3 kB total**；`git diff --check` 通过。证据：
+  `shots/2026-08-02/harness/composer/notes.md`。
+- 浏览器阶段继续遵守 no-Raise：未启动 Lynxtron/正式 App。下一组按 goal 进入 transcript
+  scroll fidelity，完成后独立 commit + push；随后 Markdown，再做一次批量 Native 回归。

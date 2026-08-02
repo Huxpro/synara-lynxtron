@@ -23,6 +23,7 @@ import type {
   PullRequestState,
   ProviderKind,
   ProviderListModelsResult,
+  ProviderListSkillsResult,
   ServerConfig,
   ServerSettingsPatch,
   ServerSettingsView,
@@ -368,6 +369,14 @@ export async function fetchProviderModels(input: {
     provider: input.provider,
     ...(input.cwd ? { cwd: input.cwd } : {}),
   });
+}
+
+export async function fetchProviderSkills(input: {
+  readonly provider: ProviderKind;
+  readonly cwd: string;
+  readonly threadId?: string;
+}): Promise<ProviderListSkillsResult> {
+  return transportRequest('provider.listSkills', input);
 }
 
 export async function fetchServerSettings(): Promise<ServerSettingsView> {

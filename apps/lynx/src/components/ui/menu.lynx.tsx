@@ -203,7 +203,7 @@ function clampMenuCoordinate(value: number, extent: number, limit: number): numb
   return Math.max(0, Math.min(value, Math.max(0, limit - extent)));
 }
 
-function resolveMenuCoordinates(input: {
+export function resolveMenuCoordinates(input: {
   readonly align: 'start' | 'center' | 'end';
   readonly anchor: MenuRect;
   readonly popup: MenuRect;
@@ -212,23 +212,25 @@ function resolveMenuCoordinates(input: {
   readonly viewport: MenuRect;
 }): { readonly left: number; readonly top: number } {
   const { align, anchor, popup, side, sideOffset, viewport } = input;
+  const anchorX = anchor.x - viewport.x;
+  const anchorY = anchor.y - viewport.y;
   let left =
     align === 'start'
-      ? anchor.x
+      ? anchorX
       : align === 'end'
-        ? anchor.x + anchor.width - popup.width
-        : anchor.x + (anchor.width - popup.width) / 2;
+        ? anchorX + anchor.width - popup.width
+        : anchorX + (anchor.width - popup.width) / 2;
   let top =
     align === 'start'
-      ? anchor.y
+      ? anchorY
       : align === 'end'
-        ? anchor.y + anchor.height - popup.height
-        : anchor.y + (anchor.height - popup.height) / 2;
+        ? anchorY + anchor.height - popup.height
+        : anchorY + (anchor.height - popup.height) / 2;
 
-  if (side === 'top') top = anchor.y - popup.height - sideOffset;
-  if (side === 'bottom') top = anchor.y + anchor.height + sideOffset;
-  if (side === 'left') left = anchor.x - popup.width - sideOffset;
-  if (side === 'right') left = anchor.x + anchor.width + sideOffset;
+  if (side === 'top') top = anchorY - popup.height - sideOffset;
+  if (side === 'bottom') top = anchorY + anchor.height + sideOffset;
+  if (side === 'left') left = anchorX - popup.width - sideOffset;
+  if (side === 'right') left = anchorX + anchor.width + sideOffset;
 
   return {
     left: clampMenuCoordinate(left, popup.width, viewport.width),
@@ -312,6 +314,7 @@ export function MenuPopupBase(props: {
   const menu = useContext(MenuContext);
   const [popupRect, setPopupRect] = useState<MenuRect>(EMPTY_MENU_RECT);
   const [viewportRect, setViewportRect] = useState<MenuRect>(EMPTY_MENU_RECT);
+  const [layerOrigin, setLayerOrigin] = useState<{ x: number; y: number } | null>(null);
   if (!menu.open) return null;
   const side = props.side ?? 'bottom';
   const align = props.align ?? 'center';
@@ -321,11 +324,16 @@ export function MenuPopupBase(props: {
     popup: popupRect,
     side,
     sideOffset: props.sideOffset ?? 4,
-    viewport: viewportRect,
+    viewport: layerOrigin
+      ? { ...viewportRect, x: 0, y: 0 }
+      : viewportRect,
   });
   const handleViewportLayout = (event: MenuLayoutEvent) => {
     'background only';
     const nextRect = menuRectFromLayout(event);
+    if (layerOrigin === null) {
+      setLayerOrigin({ x: nextRect.x, y: nextRect.y });
+    }
     if (!sameMenuRect(viewportRect, nextRect)) setViewportRect(nextRect);
   };
   const handlePopupLayout = (event: MenuLayoutEvent) => {
@@ -343,6 +351,14 @@ export function MenuPopupBase(props: {
       className="LxMenuLayer"
       bindlayoutchange={handleViewportLayout}
       event-through={false}
+      style={
+        layerOrigin
+          ? {
+              left: `${-Math.round(layerOrigin.x)}px`,
+              top: `${-Math.round(layerOrigin.y)}px`,
+            }
+          : undefined
+      }
     >
       <view
         className="LxMenuBackdrop"

@@ -10,6 +10,7 @@ import {
   MenuItem,
   MenuPopup,
   MenuTrigger,
+  resolveMenuCoordinates,
 } from './menu.lynx';
 
 function menuTrigger(): Element {
@@ -37,6 +38,29 @@ async function openMenu(): Promise<Element> {
 }
 
 describe('Lynx Menu overlay contract', () => {
+  it('normalizes global anchors into a nested Web layer viewport', () => {
+    expect(
+      resolveMenuCoordinates({
+        align: 'end',
+        anchor: { x: 993, y: 489, width: 70, height: 28 },
+        popup: { x: 0, y: 0, width: 260, height: 222 },
+        side: 'top',
+        sideOffset: 6,
+        viewport: { x: 408, y: 429, width: 1280, height: 820 },
+      })
+    ).toEqual({ left: 395, top: 0 });
+    expect(
+      resolveMenuCoordinates({
+        align: 'end',
+        anchor: { x: 993, y: 489, width: 70, height: 28 },
+        popup: { x: 0, y: 0, width: 260, height: 222 },
+        side: 'top',
+        sideOffset: 6,
+        viewport: { x: 0, y: 0, width: 1280, height: 820 },
+      })
+    ).toEqual({ left: 803, top: 261 });
+  });
+
   it('opens from its anchor and dismisses from item, backdrop, and Escape', async () => {
     const onAction = rs.fn();
     const onOpenChange = rs.fn();

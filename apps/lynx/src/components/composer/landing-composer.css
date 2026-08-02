@@ -3,6 +3,60 @@
   width: 100%;
   flex-direction: column;
   align-self: center;
+  transform: translateY(-1px);
+}
+
+.LandingComposerTray {
+  position: relative;
+  z-index: 0;
+  display: flex;
+  width: 100%;
+  min-height: 58px;
+  margin-top: -20px;
+  padding: 24px 8px 6px;
+  align-items: center;
+  border-bottom-left-radius: 19.2px;
+  border-bottom-right-radius: 19.2px;
+  background-color: var(--color-background-elevated-secondary);
+}
+
+.LandingComposerProjectTrigger {
+  min-height: 28px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+
+.LandingComposerProjectTrigger.ui-hover,
+.LandingComposerProjectTrigger.ui-pressed {
+  background-color: var(--accent);
+}
+
+.LandingComposerProjectTrigger.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.LandingComposerProjectIcon {
+  width: 14px;
+  height: 14px;
+  color: var(--muted-foreground);
+}
+
+.LandingComposerProjectLabel {
+  max-width: 260px;
+  overflow: hidden;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.LandingComposerProjectPopup.LxMenuPopup {
+  min-width: 220px;
+  max-height: 280px;
 }
 
 .LandingComposerState,

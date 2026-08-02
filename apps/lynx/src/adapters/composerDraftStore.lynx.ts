@@ -9,12 +9,15 @@ import { create } from 'zustand';
 import type {
   ModelSelection,
   ProviderMentionReference,
+  ProviderSkillReference,
 } from '@synara/contracts';
 
 import { updateComposerDraftPrompt } from '@synara-web/composerDraftPrompt.logic';
 import {
   filterPromptProviderMentionReferences,
+  filterPromptSkillReferences,
   providerMentionReferencesEqual,
+  providerSkillReferencesEqual,
 } from '@synara-web/lib/composerMentions';
 import type { PastedTextDraft } from '@synara-web/lib/composerPastedText';
 import type { NativeComposerFileAttachment } from '../components/composer/composerAttachments.lynx';
@@ -25,6 +28,7 @@ interface LynxComposerDraft {
   readonly modelSelection?: ModelSelection;
   readonly pastedTexts: ReadonlyArray<PastedTextDraft>;
   readonly prompt: string;
+  readonly skills: ReadonlyArray<ProviderSkillReference>;
 }
 
 interface LynxComposerDraftStoreState {
@@ -46,10 +50,14 @@ interface LynxComposerDraftStoreState {
     mentions: ReadonlyArray<ProviderMentionReference>
   ) => void;
   readonly setPrompt: (threadId: string, prompt: string) => void;
+  readonly setSkills: (
+    threadId: string,
+    skills: ReadonlyArray<ProviderSkillReference>
+  ) => void;
 }
 
 function emptyDraft(): LynxComposerDraft {
-  return { files: [], mentions: [], pastedTexts: [], prompt: '' };
+  return { files: [], mentions: [], pastedTexts: [], prompt: '', skills: [] };
 }
 
 function shouldRemoveDraft(draft: LynxComposerDraft): boolean {
@@ -58,6 +66,7 @@ function shouldRemoveDraft(draft: LynxComposerDraft): boolean {
     draft.files.length === 0 &&
     draft.mentions.length === 0 &&
     draft.pastedTexts.length === 0 &&
+    draft.skills.length === 0 &&
     draft.modelSelection === undefined
   );
 }
@@ -133,6 +142,7 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()(
             modelSelection: current.modelSelection,
             pastedTexts: [],
             prompt: '',
+            skills: [],
           };
         } else {
           delete draftsByThreadId[threadId];
@@ -214,15 +224,36 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()(
           prompt,
           nextDraft.mentions
         );
-        if (providerMentionReferencesEqual(nextDraft.mentions, mentions)) {
+        const skills = filterPromptSkillReferences(
+          prompt,
+          nextDraft.skills,
+          nextDraft.modelSelection?.provider ?? 'codex'
+        );
+        if (
+          providerMentionReferencesEqual(nextDraft.mentions, mentions) &&
+          providerSkillReferencesEqual(nextDraft.skills, skills)
+        ) {
           return { draftsByThreadId };
         }
         return {
           draftsByThreadId: {
             ...draftsByThreadId,
-            [threadId]: { ...nextDraft, mentions },
+            [threadId]: { ...nextDraft, mentions, skills },
           },
         };
+      }),
+    setSkills: (threadId, skills) =>
+      set((state) => {
+        const current = state.draftsByThreadId[threadId] ?? emptyDraft();
+        if (providerSkillReferencesEqual(current.skills, skills)) return state;
+        const nextDraft = { ...current, skills: [...skills] };
+        const draftsByThreadId = { ...state.draftsByThreadId };
+        if (shouldRemoveDraft(nextDraft)) {
+          delete draftsByThreadId[threadId];
+        } else {
+          draftsByThreadId[threadId] = nextDraft;
+        }
+        return { draftsByThreadId };
       }),
   })
 );

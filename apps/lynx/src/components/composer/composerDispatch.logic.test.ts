@@ -67,6 +67,12 @@ describe('composer dispatch logic', () => {
             path: 'thread://thread-2',
           },
         ],
+        skills: [
+          {
+            name: 'review',
+            path: '/workspace/.codex/skills/review/SKILL.md',
+          },
+        ],
         runtimeMode: 'full-access',
         text: 'Ship it',
         threadId: 'thread-1',
@@ -84,6 +90,12 @@ describe('composer dispatch logic', () => {
           {
             name: 'Release prep',
             path: 'thread://thread-2',
+          },
+        ],
+        skills: [
+          {
+            name: 'review',
+            path: '/workspace/.codex/skills/review/SKILL.md',
           },
         ],
       },

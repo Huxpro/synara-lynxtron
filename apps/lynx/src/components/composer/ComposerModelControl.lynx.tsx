@@ -82,8 +82,10 @@ export function ComposerModelControl(props: {
   readonly providers: ReadonlyArray<ServerProviderStatus>;
   readonly onCatalogProviderChange: (provider: ProviderKind) => void;
   readonly onModelSelectionChange: (selection: ModelSelection) => void;
+  readonly splitTraits?: boolean;
 }) {
-  const [open, setOpen] = useState(false);
+  const [modelOpen, setModelOpen] = useState(false);
+  const [traitsOpen, setTraitsOpen] = useState(false);
   const [panel, setPanel] =
     useState<ComposerModelPopupPanel>('providers');
   const activeProvider = props.modelSelection.provider;
@@ -241,7 +243,7 @@ export function ComposerModelControl(props: {
       setPanel('providers');
       props.onCatalogProviderChange(activeProvider);
     }
-    setOpen(next);
+    setModelOpen(next);
   }
 
   const providerBackInteraction = useLynxInteractiveState({
@@ -252,9 +254,50 @@ export function ComposerModelControl(props: {
     },
   });
 
+  function renderTraitSections(onSelectionComplete: () => void) {
+    return (
+      <>
+        {traitSelection.effortLevels.length > 0 && traitSelection.effort ? (
+          <ComposerTraitRadioSectionComposition
+            label={traitSectionLabel}
+            fastModeControl={
+              supportsFastModeControl
+                ? {
+                    enabled: traitSelection.fastModeEnabled,
+                    onToggle: () => setFastMode(!traitSelection.fastModeEnabled),
+                  }
+                : undefined
+            }
+            value={traitSelection.effort}
+            options={traitSelection.effortLevels.map((option) => ({
+              value: option.value,
+              label: option.label,
+              isDefault: option.value === traitSelection.defaultEffort,
+              description: option.description ?? null,
+            }))}
+            onValueChange={selectPrimaryTrait}
+            onSelectionComplete={onSelectionComplete}
+          />
+        ) : null}
+        {supportsFastModeControl && traitSelection.effortLevels.length === 0 ? (
+          <ComposerTraitRadioSectionComposition
+            label="Speed"
+            value={traitSelection.fastModeEnabled ? 'on' : 'off'}
+            options={[
+              { value: 'off', label: 'Default' },
+              { value: 'on', label: 'Fast' },
+            ]}
+            onValueChange={(value) => setFastMode(value === 'on')}
+            onSelectionComplete={onSelectionComplete}
+          />
+        ) : null}
+      </>
+    );
+  }
+
   return (
     <view className="ComposerModelControlLynx">
-      <Menu open={open} onOpenChange={setPopupOpen}>
+      <Menu open={modelOpen} onOpenChange={setPopupOpen}>
         <MenuTrigger
           className="ComposerModelTriggerLynx"
           ariaLabel="Choose model"
@@ -262,10 +305,10 @@ export function ComposerModelControl(props: {
           <ComposerModelTriggerComposition
             provider={activeProvider}
             modelLabel={modelLabel}
-            statusLabel={effortLabel}
-            showFastBadge={traitSelection.fastModeEnabled}
+            statusLabel={props.splitTraits ? null : effortLabel}
+            showFastBadge={!props.splitTraits && traitSelection.fastModeEnabled}
             hideModelLabel={false}
-            hideStatusLabel={false}
+            hideStatusLabel={props.splitTraits ?? false}
           />
         </MenuTrigger>
         <MenuPopup
@@ -279,44 +322,9 @@ export function ComposerModelControl(props: {
               className="ComposerProviderOptionListLynx"
               scroll-orientation="vertical"
             >
-              {traitSelection.effortLevels.length > 0 &&
-              traitSelection.effort ? (
-                <ComposerTraitRadioSectionComposition
-                  label={traitSectionLabel}
-                  fastModeControl={
-                    supportsFastModeControl
-                      ? {
-                          enabled: traitSelection.fastModeEnabled,
-                          onToggle: () =>
-                            setFastMode(!traitSelection.fastModeEnabled),
-                        }
-                      : undefined
-                  }
-                  value={traitSelection.effort}
-                  options={traitSelection.effortLevels.map((option) => ({
-                    value: option.value,
-                    label: option.label,
-                    isDefault:
-                      option.value === traitSelection.defaultEffort,
-                    description: option.description ?? null,
-                  }))}
-                  onValueChange={selectPrimaryTrait}
-                  onSelectionComplete={() => setOpen(false)}
-                />
-              ) : null}
-              {supportsFastModeControl &&
-              traitSelection.effortLevels.length === 0 ? (
-                <ComposerTraitRadioSectionComposition
-                  label="Speed"
-                  value={traitSelection.fastModeEnabled ? 'on' : 'off'}
-                  options={[
-                    { value: 'off', label: 'Default' },
-                    { value: 'on', label: 'Fast' },
-                  ]}
-                  onValueChange={(value) => setFastMode(value === 'on')}
-                  onSelectionComplete={() => setOpen(false)}
-                />
-              ) : null}
+              {props.splitTraits
+                ? null
+                : renderTraitSections(() => setModelOpen(false))}
               {providerItems.map((item) => (
                 <ComposerProviderOptionElement
                   key={item.provider}
@@ -384,7 +392,7 @@ export function ComposerModelControl(props: {
                           : undefined
                       )
                     );
-                    setOpen(false);
+                    setModelOpen(false);
                     setPanel('providers');
                   }}
                 />
@@ -393,6 +401,28 @@ export function ComposerModelControl(props: {
           )}
         </MenuPopup>
       </Menu>
+      {props.splitTraits && effortLabel ? (
+        <Menu open={traitsOpen} onOpenChange={setTraitsOpen}>
+          <MenuTrigger
+            className="ComposerTraitsTriggerLynx"
+            ariaLabel="Change effort, context, and speed"
+          >
+            <text className="ComposerTraitsTriggerLabelLynx">{effortLabel}</text>
+            {traitSelection.fastModeEnabled ? (
+              <text className="ComposerTraitsTriggerFastLynx">⚡</text>
+            ) : null}
+            <text className="ComposerTraitsTriggerChevronLynx">⌄</text>
+          </MenuTrigger>
+          <MenuPopup
+            className="ComposerTraitsPopupLynx"
+            side="top"
+            align="end"
+            sideOffset={6}
+          >
+            {renderTraitSections(() => setTraitsOpen(false))}
+          </MenuPopup>
+        </Menu>
+      ) : null}
     </view>
   );
 }

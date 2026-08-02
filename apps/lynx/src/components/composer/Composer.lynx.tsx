@@ -4,9 +4,11 @@ import type {
   ModelSelection,
   ProviderKind,
   ProviderMentionReference,
+  ProviderSkillReference,
 } from '@synara/contracts';
 
 import { useComposerDraftStore } from '../../adapters/composerDraftStore.lynx';
+import { MicIcon } from '@synara-web/lib/icons';
 import { dialogs } from '../../platform/dialogs';
 import { onGlobalEvent } from '../../platform/bridge';
 import { clipboard as clipboardPort } from '../../platform/clipboard';
@@ -59,6 +61,7 @@ import {
 import {
   dispatchSynaraCommand,
   fetchProviderModels,
+  fetchProviderSkills,
   fetchServerConfig,
 } from '../../data/synaraClient.lynx';
 import {
@@ -91,8 +94,10 @@ import {
   type NativeComposerFileAttachment,
 } from './composerAttachments.lynx';
 import { ComposerModelControl } from './ComposerModelControl.lynx';
+import { Button } from '../ui/button';
 import {
   buildLynxSlashCommandItems,
+  resolveLynxSkillSelection,
   resolveLynxSlashCommandSelection,
   resolveLynxThreadMentionSelection,
 } from './composerCommandMenu.logic';
@@ -105,10 +110,12 @@ const EMPTY_MENTIONS: ReadonlyArray<
 > = [];
 const EMPTY_PASTED_TEXTS: ReadonlyArray<PastedTextDraft> = [];
 const EMPTY_FILES: ReadonlyArray<NativeComposerFileAttachment> = [];
+const EMPTY_SKILLS: ReadonlyArray<ProviderSkillReference> = [];
 const EMPTY_NON_PERSISTED_IMAGE_IDS: ReadonlySet<string> = new Set();
 interface ComposerEditorHistoryContext {
   readonly mentions: ReadonlyArray<ProviderMentionReference>;
   readonly pastedTexts: ReadonlyArray<PastedTextDraft>;
+  readonly skills: ReadonlyArray<ProviderSkillReference>;
 }
 function segmentLabel(segment: ComposerTokenSegment): string {
   if (segment.type === 'mention') return segment.path.split(/[\\/]/).pop() || segment.path;
@@ -152,6 +159,7 @@ interface ComposerProps {
   readonly sessionStatus: string | null;
   readonly threadId: string;
   readonly workspaceRoot?: string | null;
+  readonly emptyLanding?: boolean;
   readonly onBeforeSend?: (input: {
     readonly interactionMode: 'default' | 'plan';
     readonly modelSelection: ModelSelection;
@@ -174,6 +182,7 @@ export function Composer({
   sessionStatus,
   threadId,
   workspaceRoot,
+  emptyLanding = false,
   onBeforeSend,
   onSendSucceeded,
 }: ComposerProps) {
@@ -194,6 +203,9 @@ export function Composer({
     (state) =>
       state.draftsByThreadId[brandedThreadId]?.mentions ?? EMPTY_MENTIONS
   );
+  const skills = useComposerDraftStore(
+    (state) => state.draftsByThreadId[brandedThreadId]?.skills ?? EMPTY_SKILLS
+  );
   const draftModelSelection = useComposerDraftStore(
     (state) =>
       state.draftsByThreadId[brandedThreadId]?.modelSelection
@@ -210,6 +222,7 @@ export function Composer({
     (state) => state.setModelSelection
   );
   const setMentions = useComposerDraftStore((state) => state.setMentions);
+  const setSkills = useComposerDraftStore((state) => state.setSkills);
   const [focused, setFocused] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const sendInFlightRef = useRef(false);
@@ -298,6 +311,33 @@ export function Composer({
     },
     staleTime: 30_000,
   });
+  const {
+    data: providerSkillsCatalog,
+    isPending: providerSkillsPending,
+  } = useQuery({
+    queryKey: [
+      'provider-skills',
+      activeProvider ?? null,
+      workspaceRoot ?? null,
+      threadId,
+    ],
+    queryFn: () => {
+      'background only';
+      if (!activeProvider || !workspaceRoot) {
+        throw new Error('Skill discovery requires a provider and workspace.');
+      }
+      return fetchProviderSkills({
+        provider: activeProvider,
+        cwd: workspaceRoot,
+        threadId,
+      });
+    },
+    enabled:
+      composerTrigger?.kind === 'skill' &&
+      Boolean(activeProvider) &&
+      Boolean(workspaceRoot),
+    staleTime: 30_000,
+  });
   const activeRuntimeModel = useMemo(
     () =>
       activeModelSelection
@@ -382,6 +422,24 @@ export function Composer({
         : [],
     [composerTrigger, mentionProjects, mentionThreads, threadId]
   );
+  const skillItems = useMemo<ComposerCommandItem[]>(() => {
+    if (composerTrigger?.kind !== 'skill') return [];
+    const query = composerTrigger.query.trim().toLowerCase();
+    return (providerSkillsCatalog?.skills ?? [])
+      .filter((skill) => {
+        if (!query) return true;
+        return [skill.name, skill.description, skill.scope]
+          .filter((value): value is string => typeof value === 'string')
+          .some((value) => value.toLowerCase().includes(query));
+      })
+      .map((skill) => ({
+        id: `skill:${skill.path}`,
+        type: 'skill' as const,
+        skill,
+        label: skill.name,
+        description: skill.description ?? skill.path,
+      }));
+  }, [composerTrigger, providerSkillsCatalog?.skills]);
 
   function setNativeValue(
     value: string,
@@ -485,6 +543,7 @@ export function Composer({
       context: {
         mentions: [...(current?.mentions ?? EMPTY_MENTIONS)],
         pastedTexts: [...(current?.pastedTexts ?? EMPTY_PASTED_TEXTS)],
+        skills: [...(current?.skills ?? EMPTY_SKILLS)],
       },
     };
   }
@@ -512,6 +571,7 @@ export function Composer({
       addPastedText(brandedThreadId, pastedText);
     }
     setMentions(brandedThreadId, snapshot.context.mentions);
+    setSkills(brandedThreadId, snapshot.context.skills);
     setPrompt(brandedThreadId, snapshot.value);
     setNativeValue(
       snapshot.value,
@@ -631,6 +691,37 @@ export function Composer({
     ];
     setPrompt(brandedThreadId, transition.prompt);
     setMentions(brandedThreadId, nextMentions);
+    setNativeValue(
+      transition.prompt,
+      transition.selectionStart,
+      transition.selectionEnd
+    );
+    setComposerTrigger(null);
+  }
+
+  function selectSkill(item: ComposerCommandItem) {
+    'background only';
+    if (!composerTrigger || !activeProvider) return;
+    const currentPrompt =
+      useComposerDraftStore.getState().draftsByThreadId[brandedThreadId]
+        ?.prompt ?? '';
+    const transition = resolveLynxSkillSelection({
+      item,
+      prompt: currentPrompt,
+      provider: activeProvider,
+      trigger: composerTrigger,
+    });
+    if (!transition) return;
+    recordEditorHistory();
+    const nextSkills = skills.some(
+      (skill) =>
+        skill.name === transition.skill.name &&
+        skill.path === transition.skill.path
+    )
+      ? skills
+      : [...skills, transition.skill];
+    setPrompt(brandedThreadId, transition.prompt);
+    setSkills(brandedThreadId, nextSkills);
     setNativeValue(
       transition.prompt,
       transition.selectionStart,
@@ -884,6 +975,7 @@ export function Composer({
             text: text || 'Review the attached file.',
             threadId,
             mentions,
+            skills,
           })
         )
       );
@@ -963,6 +1055,19 @@ export function Composer({
               selectSlashCommand(item);
             }}
           />
+        ) : composerTrigger?.kind === 'skill' ? (
+          <ComposerCommandMenuComposition
+            items={skillItems}
+            resolvedTheme="light"
+            isLoading={providerSkillsPending}
+            triggerKind="skill"
+            activeItemId={skillItems[0]?.id ?? null}
+            onHighlightedItemChange={() => undefined}
+            onSelect={(item) => {
+              'background only';
+              selectSkill(item);
+            }}
+          />
         ) : composerTrigger?.kind === 'mention' ? (
           <ComposerCommandMenuComposition
             items={threadMentionItems}
@@ -1018,7 +1123,11 @@ export function Composer({
           accessibility-label="Message composer"
           focusable={true}
           default-value={draft}
-          placeholder="Ask anything, @mention a path, or use $skill"
+          placeholder={
+            emptyLanding
+              ? 'Ask for follow-up changes or attach images'
+              : 'Ask anything, @mention a path, or use $skill'
+          }
           maxlength={8000}
           maxlines={6}
           enable-scroll-bar={true}
@@ -1160,6 +1269,7 @@ export function Composer({
                     (runtimeModelsFetching && !runtimeModelCatalog)
                   }
                   providers={serverConfig?.providers ?? []}
+                  splitTraits={emptyLanding}
                   onCatalogProviderChange={(provider) => {
                     'background only';
                     setModelCatalogProvider(provider);
@@ -1169,6 +1279,16 @@ export function Composer({
                     setModelSelection(brandedThreadId, nextModelSelection);
                     setModelCatalogProvider(null);
                   }}
+                />
+              ) : null}
+              {emptyLanding ? (
+                <Button
+                  className="ComposerVoiceButtonLynx"
+                  variant="ghost"
+                  size="icon-sm"
+                  disabled={true}
+                  aria-label="Record voice note (unavailable in Lynx for Web)"
+                  render={<MicIcon className="ComposerVoiceGlyphLynx" />}
                 />
               ) : null}
               <ComposerPrimaryActionComposition
