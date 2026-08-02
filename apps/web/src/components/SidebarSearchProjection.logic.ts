@@ -1,4 +1,5 @@
 import type { ProviderKind } from "@synara/contracts";
+import { projectBoundedSidebarSearchMessages } from "@synara/shared/sidebarSearch";
 
 import { basenameOfPath } from "../file-icons";
 import type {
@@ -61,6 +62,7 @@ export function projectSidebarSearchThreads(input: {
     : input.threads;
   const unknownProjectLabel = input.unknownProjectLabel ?? "Unknown project";
   const fallbackSpaceName = input.fallbackSpaceName ?? "Global";
+  const boundedMessagesByThreadId = projectBoundedSidebarSearchMessages(orderedThreads);
 
   return orderedThreads.map((thread) => {
     const project = projectById.get(thread.projectId);
@@ -74,7 +76,7 @@ export function projectSidebarSearchThreads(input: {
       provider: thread.provider,
       createdAt: thread.createdAt,
       updatedAt: thread.updatedAt,
-      messages: thread.messages ?? [],
+      messages: boundedMessagesByThreadId.get(thread.id) ?? [],
     };
   });
 }

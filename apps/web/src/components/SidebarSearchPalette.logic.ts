@@ -4,7 +4,10 @@
 import type { ReactNode } from "react";
 
 import type { ProviderKind } from "@synara/contracts";
+import { SIDEBAR_SEARCH_LIMITS } from "@synara/shared/sidebarSearch";
 import { basenameOfPath } from "../file-icons";
+
+export { SIDEBAR_SEARCH_LIMITS } from "@synara/shared/sidebarSearch";
 
 export interface SidebarSearchAction {
   id: string;
@@ -75,6 +78,9 @@ export interface SidebarSearchThreadMatch {
   messageMatchCount: number;
 }
 
+/** One bounded contract shared by Web projection, Native background projection,
+ * and the portable palette. Keep title/project candidates complete; only message
+ * bodies use the recent-thread scan window. */
 function normalizeText(value: string): string {
   return value.trim().replace(/\s+/g, " ").toLowerCase();
 }
@@ -295,7 +301,7 @@ export function matchSidebarSearchThemes(
 export function matchSidebarSearchProjects(
   projects: readonly SidebarSearchProject[],
   query: string,
-  limit = 6,
+  limit = SIDEBAR_SEARCH_LIMITS.projectResults,
 ): SidebarSearchProjectMatch[] {
   const normalizedQuery = normalizeText(query);
   if (!normalizedQuery) return [];
@@ -320,7 +326,7 @@ export function matchSidebarSearchProjects(
 export function matchSidebarSearchThreads(
   threads: readonly SidebarSearchThread[],
   query: string,
-  limit = 8,
+  limit = SIDEBAR_SEARCH_LIMITS.threadResults,
 ): SidebarSearchThreadMatch[] {
   const normalizedQuery = normalizeText(query);
   const queryTokens = tokenizeQuery(query);
@@ -336,7 +342,7 @@ export function matchSidebarSearchThreads(
         recency: Date.parse(thread.updatedAt ?? thread.createdAt) || 0,
       }))
       .sort((left, right) => right.recency - left.recency)
-      .slice(0, 3)
+      .slice(0, SIDEBAR_SEARCH_LIMITS.recentThreadResults)
       .map(({ id, matchKind, messageMatchCount, snippet, thread }) => ({
         id,
         thread,

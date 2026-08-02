@@ -46,15 +46,24 @@ export function SidebarProjectsSection<Row>(props: {
       </SidebarListSectionHeader>
       {list}
       {state === "loading" ? (
-        <SidebarProjectsStateElement>
+        <SidebarProjectsStateElement
+          intent="status"
+          announcement={props.loadingLabel ?? "Loading projects..."}
+        >
           {props.loadingLabel ?? "Loading projects..."}
         </SidebarProjectsStateElement>
       ) : state === "error" ? (
-        <SidebarProjectsStateElement>
+        <SidebarProjectsStateElement
+          intent="alert"
+          announcement={props.errorLabel ?? "Server unavailable"}
+        >
           {props.errorLabel ?? "Server unavailable"}
         </SidebarProjectsStateElement>
       ) : state === "empty" ? (
-        <SidebarProjectsStateElement>
+        <SidebarProjectsStateElement
+          intent="empty"
+          announcement={props.emptyLabel ?? "No projects yet"}
+        >
           {props.emptyLabel ?? "No projects yet"}
         </SidebarProjectsStateElement>
       ) : null}

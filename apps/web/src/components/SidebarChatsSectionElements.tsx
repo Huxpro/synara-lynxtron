@@ -5,6 +5,10 @@
 import type { ReactNode } from "react";
 
 import {
+  resolveSystemStateSemantics,
+  type SystemStateIntent,
+} from "./systemStateSemantics";
+import {
   SidebarGroup,
   SidebarMenu,
   SidebarMenuButton,
@@ -91,9 +95,17 @@ export function SidebarChatsSectionBodyElement(props: {
 
 export function SidebarChatsEmptyElement(props: {
   readonly children?: ReactNode;
+  readonly intent: Extract<SystemStateIntent, "empty">;
+  readonly announcement: string;
 }) {
+  const semantics = resolveSystemStateSemantics(props.intent);
   return (
-    <div className="px-2 py-2 text-[length:var(--app-font-size-ui,12px)] text-muted-foreground/48">
+    <div
+      role={semantics.role}
+      aria-live={semantics.live}
+      aria-atomic={semantics.atomic}
+      className="px-2 py-2 text-[length:var(--app-font-size-ui,12px)] text-muted-foreground/48"
+    >
       {props.children}
     </div>
   );

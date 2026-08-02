@@ -207,6 +207,14 @@
     "./threadMentions": {
       "types": "./src/threadMentions.ts",
       "import": "./src/threadMentions.ts"
+    },
+    "./sidebarSearch": {
+      "types": "./src/sidebarSearch.ts",
+      "import": "./src/sidebarSearch.ts"
+    },
+    "./commandNavigation": {
+      "types": "./src/commandNavigation.ts",
+      "import": "./src/commandNavigation.ts"
     }
   },
   "scripts": {

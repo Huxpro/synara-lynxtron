@@ -4,6 +4,10 @@
 
 import type { ReactNode } from "react";
 
+import {
+  resolveSystemStateSemantics,
+  type SystemStateIntent,
+} from "./systemStateSemantics";
 import { SidebarGroup, SidebarMenu } from "./ui/sidebar";
 
 export function SidebarProjectsSectionRootElement(props: {
@@ -20,9 +24,17 @@ export function SidebarProjectsListElement(props: {
 
 export function SidebarProjectsStateElement(props: {
   readonly children?: ReactNode;
+  readonly intent: Exclude<SystemStateIntent, "plain">;
+  readonly announcement: string;
 }) {
+  const semantics = resolveSystemStateSemantics(props.intent);
   return (
-    <div className="px-2 pt-4 text-center text-[length:var(--app-font-size-ui,12px)] text-muted-foreground/58">
+    <div
+      role={semantics.role}
+      aria-live={semantics.live}
+      aria-atomic={semantics.atomic}
+      className="px-2 pt-4 text-center text-[length:var(--app-font-size-ui,12px)] text-muted-foreground/58"
+    >
       {props.children}
     </div>
   );

@@ -20,6 +20,8 @@ export function SidebarPrimaryActionItemElement({ children }: ChildrenProps) {
 
 export function SidebarPrimaryActionButtonElement({
   active,
+  elementId,
+  accessibleLabel,
   disabled,
   onActivate,
   onMouseEnter,
@@ -27,6 +29,8 @@ export function SidebarPrimaryActionButtonElement({
   children,
 }: ChildrenProps & {
   readonly active: boolean;
+  readonly elementId?: string;
+  readonly accessibleLabel: string;
   readonly disabled: boolean;
   readonly onActivate?: (() => void) | undefined;
   readonly onMouseEnter?: (() => void) | undefined;
@@ -34,7 +38,9 @@ export function SidebarPrimaryActionButtonElement({
 }) {
   return (
     <SidebarMenuButton
+      id={elementId}
       size="sm"
+      aria-label={accessibleLabel}
       data-active={active}
       aria-current={active ? "page" : undefined}
       className={cn(

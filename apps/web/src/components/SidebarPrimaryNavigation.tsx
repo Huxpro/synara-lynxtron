@@ -13,6 +13,7 @@ import { SidebarPrimaryActionRow } from "~/components/SidebarPrimaryActionRow";
 export interface SidebarPrimaryNavigationItem {
   readonly id: string;
   readonly icon: ReactNode;
+  readonly elementId?: string;
   readonly label: string;
   readonly active?: boolean;
   readonly disabled?: boolean;
@@ -48,6 +49,7 @@ export function SidebarPrimaryNavigation({
           <SidebarPrimaryActionRow
             key={item.id}
             icon={item.icon}
+            elementId={item.elementId}
             label={item.label}
             active={item.active}
             disabled={item.disabled}

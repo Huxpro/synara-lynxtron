@@ -10,6 +10,7 @@ import {
 
 export interface SidebarPrimaryActionRowProps {
   readonly icon: ReactNode;
+  readonly elementId?: string;
   readonly label: string;
   readonly active?: boolean;
   readonly disabled?: boolean;
@@ -21,6 +22,7 @@ export interface SidebarPrimaryActionRowProps {
 
 export function SidebarPrimaryActionRow({
   icon,
+  elementId,
   label,
   active = false,
   disabled = false,
@@ -32,7 +34,9 @@ export function SidebarPrimaryActionRow({
   return (
     <SidebarPrimaryActionItemElement>
       <SidebarPrimaryActionButtonElement
+        elementId={elementId}
         active={active}
+        accessibleLabel={label}
         disabled={disabled}
         onActivate={onActivate}
         onMouseEnter={onMouseEnter}

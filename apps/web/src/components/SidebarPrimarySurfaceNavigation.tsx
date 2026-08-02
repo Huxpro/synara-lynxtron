@@ -19,6 +19,7 @@ type Icon = ComponentType<{ className?: string }>;
 
 function item(input: {
   icon: Icon;
+  elementId?: string;
   label: string;
   onActivate?: () => void;
   onMouseEnter?: () => void;
@@ -30,6 +31,7 @@ function item(input: {
 }): SidebarPrimaryNavigationItem {
   return {
     id: input.label,
+    elementId: input.elementId,
     icon: <SidebarGlyph icon={input.icon} variant="leading" />,
     label: input.label,
     active: input.active,
@@ -55,6 +57,7 @@ export function SidebarPrimarySurfaceNavigation(props: {
   automationsBadge?: Badge;
   newThreadShortcutLabel?: string | null;
   searchShortcutLabel?: string | null;
+  searchElementId?: string;
   onCreateWorkspace?: () => void;
   onCreateStudioChat?: () => void;
   onCreateThread?: () => void;
@@ -82,6 +85,7 @@ export function SidebarPrimarySurfaceNavigation(props: {
             }),
             item({
               icon: SearchIcon,
+              elementId: props.searchElementId,
               label: "Search",
               active: props.searchOpen,
               onActivate: props.onOpenSearch,
@@ -99,6 +103,7 @@ export function SidebarPrimarySurfaceNavigation(props: {
             }),
             item({
               icon: SearchIcon,
+              elementId: props.searchElementId,
               label: "Search",
               active: props.searchOpen,
               onActivate: props.onOpenSearch,

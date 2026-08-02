@@ -4,25 +4,10 @@
  * Keeps the sidebar search UX aligned with the shared command primitives so
  * keyboard navigation and shortcut labels behave like the rest of the app.
  */
-import {
-  BugIcon,
-  CheckIcon,
-  DeviceLaptopIcon,
-  MoonIcon,
-  NewThreadIcon,
-  SearchIcon,
-  SettingsIcon,
-  SunIcon,
-} from "~/lib/icons";
 import { type FilesystemBrowseResult, type ProviderKind } from "@synara/contracts";
 import { isGenericChatThreadTitle } from "@synara/shared/chatThreads";
-import { BsChat } from "react-icons/bs";
-import { HiOutlineFolderOpen } from "react-icons/hi2";
-import { LuArrowDownToLine, LuArrowLeft, LuCornerLeftUp, LuFolderPlus } from "react-icons/lu";
 import { type ComponentType, useEffect, useState, type KeyboardEvent } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { FolderClosed } from "./FolderClosed";
-import { ProviderIcon as SharedProviderIcon } from "./ProviderIcon";
 import { formatRelativeTime } from "~/lib/relativeTime";
 import { readNativeApi } from "~/nativeApi";
 import { isMacPlatform } from "~/lib/utils";
@@ -45,12 +30,15 @@ import {
   type SidebarSearchProject,
   type SidebarSearchTheme,
   type SidebarSearchThread,
+  SIDEBAR_SEARCH_LIMITS,
   matchSidebarSearchActions,
   matchSidebarSearchProjects,
   matchSidebarSearchThemes,
   matchSidebarSearchThreads,
 } from "./SidebarSearchPalette.logic";
 import {
+  SidebarSearchPaletteGlyph as PaletteGlyph,
+  type SidebarSearchPaletteGlyphKind,
   SidebarSearchPaletteMark as PaletteMark,
   SidebarSearchPaletteText as PaletteText,
   SidebarSearchPaletteView as PaletteView,
@@ -86,6 +74,9 @@ interface SidebarSearchPaletteProps {
   actions: readonly SidebarSearchAction[];
   projects: readonly SidebarSearchProject[];
   threads: readonly SidebarSearchThread[];
+  searchStatus?: "ready" | "loading" | "error";
+  searchErrorMessage?: string | null;
+  onRetrySearch?: () => void;
   onCreateChat: () => void;
   onCreateThread: () => void;
   onAddProjectPath: (path: string, options?: { createIfMissing?: boolean }) => Promise<void>;
@@ -131,14 +122,14 @@ function actionHandler(
 
 type IconComponent = ComponentType<{ className?: string }>;
 
-const ACTION_ICONS: Record<string, IconComponent> = {
-  "new-chat": BsChat,
-  "new-thread": NewThreadIcon,
-  "add-project": FolderClosed,
-  "import-thread": LuArrowDownToLine,
-  feedback: BugIcon,
-  settings: SettingsIcon,
-  "usage-settings": SettingsIcon,
+const ACTION_GLYPHS: Record<string, SidebarSearchPaletteGlyphKind> = {
+  "new-chat": "chat",
+  "new-thread": "new-thread",
+  "add-project": "folder-closed",
+  "import-thread": "arrow-down-to-line",
+  feedback: "bug",
+  settings: "settings",
+  "usage-settings": "settings",
 };
 
 const BROWSE_STALE_TIME_MS = 10_000;
@@ -277,16 +268,16 @@ function CodeThemeBadge(props: { accent: string; background: string; foreground:
   );
 }
 
-const THEME_MODE_ICONS: Record<"system" | "light" | "dark", IconComponent> = {
-  system: DeviceLaptopIcon,
-  light: SunIcon,
-  dark: MoonIcon,
+const THEME_MODE_GLYPHS: Record<"system" | "light" | "dark", SidebarSearchPaletteGlyphKind> = {
+  system: "device-laptop",
+  light: "sun",
+  dark: "moon",
 };
 
 function ProviderIcon(props: { provider: ProviderKind }) {
   return (
     <PaletteView className="flex size-5 shrink-0 items-center justify-center">
-      <SharedProviderIcon provider={props.provider} className="size-[15px]" />
+      <PaletteGlyph kind="provider" provider={props.provider} className="size-[15px]" />
     </PaletteView>
   );
 }
@@ -359,6 +350,7 @@ function HighlightedText(props: { text: string; query: string; className?: strin
 export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
   const { activeTheme, resolvedTheme, setCodeThemeId, setTheme, theme } = useTheme();
   const [query, setQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const [highlightedItemValue, setHighlightedItemValue] = useState<string | null>(null);
   const [importProviderState, setImportProvider] = useState<ImportProviderKind>(
     props.importProviders[0] ?? "codex",
@@ -393,6 +385,7 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
     // hidden), which keeps this component eligible for React Compiler.
     const timeoutId = setTimeout(() => {
       setQuery("");
+      setSearchQuery("");
       setHighlightedItemValue(null);
       setImportProvider(props.importProviders[0] ?? "codex");
       setImportId("");
@@ -411,6 +404,19 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
     props.filesystemBrowseEnabled !== false &&
     trimmedQuery.length > 0 &&
     isFilesystemBrowseQuery(trimmedQuery, platform);
+  useEffect(() => {
+    if (isBrowsing) {
+      setSearchQuery(query);
+      return;
+    }
+    const timeoutId = setTimeout(() => {
+      setSearchQuery(query);
+    }, SIDEBAR_SEARCH_LIMITS.debounceMs);
+    return () => clearTimeout(timeoutId);
+  }, [isBrowsing, query]);
+  const isSearchPending = !isBrowsing && searchQuery !== query;
+  const searchStatus = props.searchStatus ?? "ready";
+  const searchUnavailable = searchStatus !== "ready";
   const canBrowse = isBrowsing && !unsupportedWindowsPath;
   const browseDirectoryPath = canBrowse ? getBrowseDirectoryPath(query) : "";
   const leafSegment =
@@ -447,12 +453,15 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
   const browseParentPath = canBrowse ? getBrowseParentPath(query) : null;
   const canBrowseUp = canBrowse && canNavigateUp(query);
 
-  const matchedActions = isBrowsing ? [] : matchSidebarSearchActions(props.actions, query);
+  const matchedActions =
+    isBrowsing || isSearchPending || searchUnavailable
+      ? []
+      : matchSidebarSearchActions(props.actions, searchQuery);
   const themeCommandItems =
-    props.appearanceEnabled === false
+    props.appearanceEnabled === false || isBrowsing || isSearchPending || searchUnavailable
       ? []
       : buildThemeCommandItems({
-          query,
+          query: searchQuery,
           resolvedTheme,
           theme,
         });
@@ -470,15 +479,21 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
           isActive: activeTheme.codeThemeId === option.id,
         }));
   const matchedCurrentThemes =
-    isBrowsing || query.trim().length === 0
+    isBrowsing || isSearchPending || searchUnavailable || searchQuery.trim().length === 0
       ? []
-      : matchSidebarSearchThemes(currentCodeThemeItems, query);
+      : matchSidebarSearchThemes(currentCodeThemeItems, searchQuery);
   const showThemeSection =
     !isBrowsing &&
-    query.trim().length > 0 &&
+    searchQuery.trim().length > 0 &&
     (themeCommandItems.length > 0 || matchedCurrentThemes.length > 0);
-  const matchedProjects = isBrowsing ? [] : matchSidebarSearchProjects(props.projects, query);
-  const matchedThreads = isBrowsing ? [] : matchSidebarSearchThreads(props.threads, query);
+  const matchedProjects =
+    isBrowsing || isSearchPending || searchUnavailable
+      ? []
+      : matchSidebarSearchProjects(props.projects, searchQuery);
+  const matchedThreads =
+    isBrowsing || isSearchPending || searchUnavailable
+      ? []
+      : matchSidebarSearchThreads(props.threads, searchQuery);
   const hasSearchResults =
     matchedActions.length > 0 ||
     themeCommandItems.length > 0 ||
@@ -609,7 +624,7 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
 
   return (
     <CommandDialog open={props.open} onOpenChange={props.onOpenChange}>
-      <CommandDialogPopup className="max-w-2xl">
+      <CommandDialogPopup>
         {props.mode === "import" ? (
           <PaletteView className="flex flex-col overflow-hidden">
             <PaletteView className="border-b border-border/70 px-4 py-3">
@@ -623,7 +638,7 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
                     props.onModeChange("search");
                   }}
                 >
-                  <LuArrowLeft className="size-4" />
+                  <PaletteGlyph kind="arrow-left" className="size-4" />
                 </Button>
                 <PaletteView>
                   <PaletteText className="text-sm font-medium text-foreground">Import thread from provider</PaletteText>
@@ -745,9 +760,9 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
                     onKeyDown={handleBrowseInputKeyDown}
                     startAddon={
                       isBrowsing ? (
-                        <LuFolderPlus className="text-muted-foreground" />
+                        <PaletteGlyph kind="folder-plus" className="text-muted-foreground" />
                       ) : (
-                        <SearchIcon className="text-muted-foreground" />
+                        <PaletteGlyph kind="search" className="text-muted-foreground" />
                       )
                     }
                     className={
@@ -789,9 +804,9 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
                   {isBrowsing ? (
                     unsupportedWindowsPath ? (
                       <CommandEmpty className="py-10">
-                        <PaletteView className="text-center text-sm text-muted-foreground/79">
+                        <PaletteText className="text-center text-sm text-muted-foreground/79">
                           Windows paths are not supported on this platform.
-                        </PaletteView>
+                        </PaletteText>
                       </CommandEmpty>
                     ) : (
                       <>
@@ -809,7 +824,10 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
                                   if (browseParentPath) setQuery(browseParentPath);
                                 }}
                               >
-                                <LuCornerLeftUp className="size-3.5 text-muted-foreground/60" />
+                                <PaletteGlyph
+                                  kind="corner-left-up"
+                                  className="size-3.5 text-muted-foreground/60"
+                                />
                                 <PaletteText className="min-w-0 flex-1 truncate text-sm text-foreground">
                                   ..
                                 </PaletteText>
@@ -825,7 +843,10 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
                                 }}
                                 onClick={() => setQuery(appendBrowsePathSegment(query, entry.name))}
                               >
-                                <FolderClosed className="size-3.5 text-muted-foreground/60" />
+                                <PaletteGlyph
+                                  kind="folder-closed"
+                                  className="size-3.5 text-muted-foreground/60"
+                                />
                                 <PaletteText className="min-w-0 flex-1 truncate text-sm text-foreground">
                                   {entry.name}
                                 </PaletteText>
@@ -833,21 +854,21 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
                             ))}
                           </CommandGroup>
                         ) : !isBrowseFetching ? (
-                          <PaletteView className="px-3 py-2 text-sm text-muted-foreground">
+                          <PaletteText className="px-3 py-2 text-sm text-muted-foreground">
                             No matching folders.
-                          </PaletteView>
+                          </PaletteText>
                         ) : null}
                         {willCreateMissingFolder ? (
-                          <PaletteView className="mx-1.5 mt-2 rounded-md border border-dashed border-[color:var(--color-border)] px-3 py-2 text-sm text-muted-foreground">
+                          <PaletteText className="mx-1.5 mt-2 rounded-md border border-dashed border-[color:var(--color-border)] px-3 py-2 text-sm text-muted-foreground">
                             Press Enter to create{" "}
                             <PaletteText className="text-foreground">{trimmedQuery}</PaletteText> and add it as a
                             project.
-                          </PaletteView>
+                          </PaletteText>
                         ) : null}
                         {addProjectError ? (
-                          <PaletteView className="mx-1.5 mt-2 rounded-md border border-destructive/20 bg-destructive/5 px-3 py-2 text-sm text-destructive">
+                          <PaletteText className="mx-1.5 mt-2 rounded-md border border-destructive/20 bg-destructive/5 px-3 py-2 text-sm text-destructive">
                             {addProjectError}
-                          </PaletteView>
+                          </PaletteText>
                         ) : null}
                       </>
                     )
@@ -858,7 +879,8 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
                       <CommandGroupLabel className="pt-0 pb-1.5 pl-3">Suggested</CommandGroupLabel>
                       {matchedActions.map((action) => {
                         const onSelect = action.run ?? actionHandler(action.id, props);
-                        const Icon = action.icon ?? ACTION_ICONS[action.id];
+                        const Icon = action.icon;
+                        const glyph = ACTION_GLYPHS[action.id];
                         return (
                           <CommandItem
                             key={action.id}
@@ -880,7 +902,13 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
                               onSelect();
                             }}
                           >
-                            {Icon ? <PaletteIcon icon={Icon} /> : null}
+                            {Icon ? (
+                              <PaletteIcon icon={Icon} />
+                            ) : glyph ? (
+                              <PaletteView className="flex size-5 shrink-0 items-center justify-center text-muted-foreground">
+                                <PaletteGlyph kind={glyph} className="size-[15px]" />
+                              </PaletteView>
+                            ) : null}
                             <PaletteText className="min-w-0 flex-1 truncate text-sm text-foreground">
                               {action.label}
                             </PaletteText>
@@ -905,7 +933,7 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
                   {!isBrowsing && matchedThreads.length > 0 ? (
                     <CommandGroup>
                       <CommandGroupLabel className="py-1.5 pl-3">
-                        {query ? "Threads" : "Recent"}
+                        {searchQuery ? "Threads" : "Recent"}
                       </CommandGroupLabel>
                       {matchedThreads.map(
                         ({ id, matchKind, messageMatchCount, snippet, thread }) => (
@@ -929,7 +957,7 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
                                 <PaletteView className="min-w-0 flex-1 truncate text-[length:var(--app-font-size-ui,12px)] text-foreground">
                                   <HighlightedText
                                     text={thread.title || "Untitled thread"}
-                                    query={query}
+                                    query={searchQuery}
                                   />
                                 </PaletteView>
                                 {/* Project only, not "project · space": this column is
@@ -950,7 +978,7 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
                               {snippet ? (
                                 <PaletteView className="mt-0.5 flex items-start gap-3">
                                   <PaletteView className="min-w-0 flex-1 line-clamp-1 text-[length:var(--app-font-size-ui-meta,10px)] leading-5 text-muted-foreground/78">
-                                    <HighlightedText text={snippet} query={query} />
+                                    <HighlightedText text={snippet} query={searchQuery} />
                                   </PaletteView>
                                   <PaletteView className="flex w-[8.5rem] shrink-0 justify-end">
                                     {threadMatchLabel({ matchKind, messageMatchCount }) ? (
@@ -961,9 +989,9 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
                                   </PaletteView>
                                 </PaletteView>
                               ) : threadMatchLabel({ matchKind, messageMatchCount }) ? (
-                                <PaletteView className="mt-0.5 text-[length:var(--app-font-size-ui-meta,10px)] text-muted-foreground/58">
+                                <PaletteText className="mt-0.5 text-[length:var(--app-font-size-ui-meta,10px)] text-muted-foreground/58">
                                   {threadMatchLabel({ matchKind, messageMatchCount })}
-                                </PaletteView>
+                                </PaletteText>
                               ) : null}
                             </PaletteView>
                           </CommandItem>
@@ -994,12 +1022,14 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
                             props.onOpenProject(project.id);
                           }}
                         >
-                          <PaletteIcon icon={HiOutlineFolderOpen} />
+                          <PaletteView className="flex size-5 shrink-0 items-center justify-center text-muted-foreground">
+                            <PaletteGlyph kind="folder-open" className="size-[15px]" />
+                          </PaletteView>
                           <PaletteView className="min-w-0 flex-1">
                             <PaletteView className="flex items-baseline gap-3">
-                              <PaletteView className="min-w-0 flex-1 truncate text-[length:var(--app-font-size-ui,12px)] text-foreground">
+                              <PaletteText className="min-w-0 flex-1 truncate text-[length:var(--app-font-size-ui,12px)] text-foreground">
                                 {project.name || "Untitled project"}
-                              </PaletteView>
+                              </PaletteText>
                               {/* Opening a project from here can switch Space, so the
                                   destination is worth naming. It rides in the same right-hand
                                   column the thread rows use for their parent, rather than
@@ -1008,11 +1038,11 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
                                 {project.spaceName}
                               </PaletteText>
                             </PaletteView>
-                            <PaletteView className="truncate text-[length:var(--app-font-size-ui-meta,10px)] text-muted-foreground/79">
+                            <PaletteText className="truncate text-[length:var(--app-font-size-ui-meta,10px)] text-muted-foreground/79">
                               {project.localName
                                 ? `${project.folderName} · ${project.cwd}`
                                 : project.cwd}
-                            </PaletteView>
+                            </PaletteText>
                           </PaletteView>
                         </CommandItem>
                       ))}
@@ -1040,7 +1070,12 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
                                 setTheme(themeCommandItem.mode);
                               }}
                             >
-                              <PaletteIcon icon={THEME_MODE_ICONS[themeCommandItem.mode]} />
+                          <PaletteView className="flex size-5 shrink-0 items-center justify-center text-muted-foreground">
+                            <PaletteGlyph
+                              kind={THEME_MODE_GLYPHS[themeCommandItem.mode]}
+                              className="size-[15px]"
+                            />
+                          </PaletteView>
                               <PaletteText className="min-w-0 flex-1 truncate text-[length:var(--app-font-size-ui,12px)] text-foreground">
                                 {themeCommandItem.label}
                               </PaletteText>
@@ -1049,7 +1084,10 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
                                 aria-hidden={!themeCommandItem.isActive}
                               >
                                 {themeCommandItem.isActive ? (
-                                  <CheckIcon className="size-3.5 text-muted-foreground/79" />
+                                  <PaletteGlyph
+                                    kind="check"
+                                    className="size-3.5 text-muted-foreground/79"
+                                  />
                                 ) : null}
                               </PaletteText>
                             </CommandItem>
@@ -1100,7 +1138,10 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
                                   aria-hidden={!themeItem.isActive}
                                 >
                                   {themeItem.isActive ? (
-                                    <CheckIcon className="size-3.5 text-muted-foreground/79" />
+                                    <PaletteGlyph
+                                      kind="check"
+                                      className="size-3.5 text-muted-foreground/79"
+                                    />
                                   ) : null}
                                 </PaletteText>
                               </CommandItem>
@@ -1111,11 +1152,46 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
                     </>
                   ) : null}
 
-                  {!isBrowsing && !hasSearchResults ? (
+                  {!isBrowsing && isSearchPending ? (
                     <CommandEmpty className="py-10">
                       <PaletteView className="flex flex-col items-center justify-center gap-2 text-center text-sm text-muted-foreground/79">
-                        <SearchIcon className="size-4 opacity-70" />
-                        <PaletteView>No matches.</PaletteView>
+                        <PaletteGlyph kind="search" className="size-4 opacity-70" />
+                        <PaletteText>Searching…</PaletteText>
+                      </PaletteView>
+                    </CommandEmpty>
+                  ) : null}
+
+                  {!isBrowsing && !isSearchPending && searchStatus === "loading" ? (
+                    <CommandEmpty className="py-10">
+                      <PaletteText className="text-center text-sm text-muted-foreground/79">
+                        Loading search sources…
+                      </PaletteText>
+                    </CommandEmpty>
+                  ) : null}
+
+                  {!isBrowsing && !isSearchPending && searchStatus === "error" ? (
+                    <CommandEmpty className="py-10">
+                      <PaletteView className="flex flex-col items-center justify-center gap-2 text-center text-sm text-muted-foreground/79">
+                        <PaletteText>Search sources are unavailable.</PaletteText>
+                        {props.searchErrorMessage ? (
+                          <PaletteText className="text-[length:var(--app-font-size-ui-meta,10px)]">
+                            {props.searchErrorMessage}
+                          </PaletteText>
+                        ) : null}
+                        {props.onRetrySearch ? (
+                          <Button size="xs" variant="outline" onClick={props.onRetrySearch}>
+                            Retry
+                          </Button>
+                        ) : null}
+                      </PaletteView>
+                    </CommandEmpty>
+                  ) : null}
+
+                  {!isBrowsing && !isSearchPending && !searchUnavailable && !hasSearchResults ? (
+                    <CommandEmpty className="py-10">
+                      <PaletteView className="flex flex-col items-center justify-center gap-2 text-center text-sm text-muted-foreground/79">
+                        <PaletteGlyph kind="search" className="size-4 opacity-70" />
+                        <PaletteText>No matches.</PaletteText>
                       </PaletteView>
                     </CommandEmpty>
                   ) : null}

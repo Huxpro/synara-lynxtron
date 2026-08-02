@@ -38,7 +38,10 @@ export function SidebarChatsSection<Row>(props: {
         {props.rows.length > 0 ? (
           props.rows.map((row) => props.renderRow(row))
         ) : (
-          <SidebarChatsEmptyElement>
+          <SidebarChatsEmptyElement
+            intent="empty"
+            announcement={props.emptyLabel ?? "No chats yet"}
+          >
             {props.emptyLabel ?? "No chats yet"}
           </SidebarChatsEmptyElement>
         )}

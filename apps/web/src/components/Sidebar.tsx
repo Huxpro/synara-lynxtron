@@ -195,6 +195,7 @@ import {
   SidebarThreadRowContent,
   type SidebarThreadTerminalStatus,
 } from "./SidebarThreadRowContent";
+import { SidebarThreadStatusIndicator } from "./SidebarThreadStatusIndicator";
 import { SidebarThreadTrailingCluster } from "./SidebarThreadTrailingCluster";
 import { RenameDialog } from "./RenameDialog";
 import { RenameThreadDialog } from "./RenameThreadDialog";
@@ -360,6 +361,7 @@ import {
   useSidebarProjectRunController,
 } from "../hooks/useSidebarProjectRunController";
 import { useSidebarThreadActions } from "../hooks/useSidebarThreadActions";
+import { buildThreadContextMenuItems } from "./ThreadContextMenuItems.logic";
 import { usePinnedProjectsStore } from "../pinnedProjectsStore";
 import { reconcileOptimisticPinState } from "../pinning.logic";
 import { useThreadDetailPrewarm } from "../threadDetailPrewarm";
@@ -2625,23 +2627,14 @@ export default function Sidebar() {
         worktreePath: thread.worktreePath,
       });
       const clicked = await api.contextMenu.show(
-        [
-          { id: "rename", label: "Rename thread" },
-          { id: "toggle-pin", label: pinActionLabel("thread", isPinned) },
-          ...(threadStatus?.dismissible
-            ? [{ id: "clear-notification", label: "Clear notification" }]
-            : []),
-          { id: "mark-unread", label: "Mark unread" },
-          ...handoffItems,
-          { id: "copy-path", label: "Copy Path", separatorBefore: true },
-          ...(threadWorkspacePath
-            ? [{ id: "open-path-in-terminal", label: "Open Path in Terminal" }]
-            : []),
-          { id: "copy-thread-id", label: "Copy Thread ID" },
-          ...(options?.extraItems ?? []),
-          { id: "archive", label: "Archive", separatorBefore: true },
-          { id: "delete", label: "Delete", destructive: true },
-        ],
+        buildThreadContextMenuItems({
+          isPinned,
+          clearNotificationAvailable: threadStatus?.dismissible === true,
+          middleItems: handoffItems,
+          copyPathAvailable: true,
+          openPathInTerminalAvailable: Boolean(threadWorkspacePath),
+          extraItems: options?.extraItems,
+        }),
         position,
       );
 
@@ -4346,7 +4339,7 @@ export default function Sidebar() {
                 >
                   {isProjectRunning ? <ProjectRunIndicatorDot /> : null}
                   {collapsedProjectStatus ? (
-                    <SidebarStatusTrailingGlyph status={collapsedProjectStatus} />
+                    <SidebarThreadStatusIndicator status={collapsedProjectStatus} />
                   ) : null}
                 </span>
               ) : null}
@@ -6090,7 +6083,9 @@ function SidebarSearchPaletteController(props: {
           provider: thread.modelSelection.provider,
           createdAt: thread.createdAt,
           updatedAt: thread.updatedAt,
-          messages: thread.messages.map((message) => ({ text: message.text })),
+          // The shared projector reads only the bounded recent-message window;
+          // keep the source array by reference so this UI path never maps full history.
+          messages: thread.messages,
         })),
       }),
     [props.projects, sidebarDisplayThreads, threads],
