@@ -7,6 +7,7 @@ node_modules
 apps/*/dist
 apps/lynx/.tmp
 apps/lynx/output
+apps/lynx/plan/shots/**/_scratch/
 .astro
 packages/*/dist
 .env

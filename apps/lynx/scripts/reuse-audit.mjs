@@ -472,7 +472,6 @@ const markdown = [
     'Current reuse is based only on physical source identity or declared deterministic PATCHED sources.',
     'Conceptual counterparts and same-name copies remain UNMAPPED.',
   ]).map((line) => `- ${line}`),
-  '',
 ].join('\n');
 
 const markdownPath = path.resolve(workspaceRoot, config.outputMarkdown);

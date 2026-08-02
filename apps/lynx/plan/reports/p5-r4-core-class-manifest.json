@@ -12,14 +12,14 @@
   "summary": {
     "classes": 2255,
     "customClasses": 77,
-    "surfaceWeighted": 14149,
-    "totalWeighted": 13220,
-    "coveredWeighted": 12964,
-    "coveragePercent": 98.06,
+    "surfaceWeighted": 14169,
+    "totalWeighted": 13240,
+    "coveredWeighted": 12984,
+    "coveragePercent": 98.07,
     "status": {
       "GENERATED": {
         "classes": 1088,
-        "weighted": 11028
+        "weighted": 11048
       },
       "PATCHED": {
         "classes": 574,
@@ -39,14 +39,14 @@
       }
     },
     "runtime": {
-      "classes": 1366,
-      "weighted": 12821
+      "classes": 1365,
+      "weighted": 12840
     }
   },
   "classes": [
     {
       "token": "flex",
-      "occurrences": 729,
+      "occurrences": 732,
       "files": [
         "apps/web/src/components/AppNavigationButtons.tsx",
         "apps/web/src/components/AppSnapWelcomeDialog.tsx",
@@ -265,7 +265,7 @@
     },
     {
       "token": "items-center",
-      "occurrences": 577,
+      "occurrences": 580,
       "files": [
         "apps/web/src/components/AppNavigationButtons.tsx",
         "apps/web/src/components/AppSnapWelcomeDialog.tsx",
@@ -474,7 +474,7 @@
     },
     {
       "token": "shrink-0",
-      "occurrences": 478,
+      "occurrences": 481,
       "files": [
         "apps/web/src/components/AppNavigationButtons.tsx",
         "apps/web/src/components/AppSnapWelcomeDialog.tsx",
@@ -810,7 +810,7 @@
     },
     {
       "token": "text-muted-foreground",
-      "occurrences": 268,
+      "occurrences": 271,
       "files": [
         "apps/web/src/components/BranchToolbar.tsx",
         "apps/web/src/components/BranchToolbarBranchSelector.tsx",
@@ -1844,6 +1844,113 @@
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
     {
+      "token": "justify-center",
+      "occurrences": 148,
+      "files": [
+        "apps/web/src/components/AppSnapWelcomeDialog.tsx",
+        "apps/web/src/components/CenteredEmptyLandingStackElements.tsx",
+        "apps/web/src/components/ChatView.tsx",
+        "apps/web/src/components/DesktopWindowControls.tsx",
+        "apps/web/src/components/DiffPanelFileJumpMenu.tsx",
+        "apps/web/src/components/DiffPanelToolbar.tsx",
+        "apps/web/src/components/PlanSidebar.tsx",
+        "apps/web/src/components/RecentViewSwitcher.tsx",
+        "apps/web/src/components/Sidebar.tsx",
+        "apps/web/src/components/SidebarLeadingIcon.tsx",
+        "apps/web/src/components/SidebarMetaChip.tsx",
+        "apps/web/src/components/SidebarPrimaryNavigationElements.tsx",
+        "apps/web/src/components/SidebarSearchPalette.tsx",
+        "apps/web/src/components/SidebarThreadProviderIdentityElements.tsx",
+        "apps/web/src/components/SidebarThreadRowContent.tsx",
+        "apps/web/src/components/SpaceEditorDialog.tsx",
+        "apps/web/src/components/SpaceProjectPickerDialog.tsx",
+        "apps/web/src/components/SpaceSwitcher.tsx",
+        "apps/web/src/components/SplashScreen.tsx",
+        "apps/web/src/components/ThreadHoverCardContent.tsx",
+        "apps/web/src/components/UsageProgressTrack.tsx",
+        "apps/web/src/components/chat/ActiveTaskListCard.tsx",
+        "apps/web/src/components/chat/AgentActivityDetailView.tsx",
+        "apps/web/src/components/chat/AttachmentCard.tsx",
+        "apps/web/src/components/chat/AttachmentRemoveButton.tsx",
+        "apps/web/src/components/chat/AutomationCreatedCard.tsx",
+        "apps/web/src/components/chat/ChatHeader.tsx",
+        "apps/web/src/components/chat/ChatSurfaceHeaderIdentityElements.tsx",
+        "apps/web/src/components/chat/ChatTranscriptPane.tsx",
+        "apps/web/src/components/chat/ComposerChoiceRow.tsx",
+        "apps/web/src/components/chat/ComposerCommandMenuCompositionElements.tsx",
+        "apps/web/src/components/chat/ComposerImageAttachmentChip.tsx",
+        "apps/web/src/components/chat/ComposerLocalDirectoryMenu.tsx",
+        "apps/web/src/components/chat/ComposerPendingUserInputPanel.tsx",
+        "apps/web/src/components/chat/ComposerTraitRadioSectionCompositionElements.tsx",
+        "apps/web/src/components/chat/ComposerVoiceRecorderBar.tsx",
+        "apps/web/src/components/chat/ContextWindowMeter.tsx",
+        "apps/web/src/components/chat/CrossTaskOriginLabel.tsx",
+        "apps/web/src/components/chat/DraftAttachmentWarning.tsx",
+        "apps/web/src/components/chat/ExpandedImageOverlay.tsx",
+        "apps/web/src/components/chat/FileDiffHeader.tsx",
+        "apps/web/src/components/chat/MessageTrail.tsx",
+        "apps/web/src/components/chat/MessagesTimeline.tsx",
+        "apps/web/src/components/chat/PanelStateMessageElements.tsx",
+        "apps/web/src/components/chat/PickerTriggerButton.tsx",
+        "apps/web/src/components/chat/ProposedPlanCard.tsx",
+        "apps/web/src/components/chat/ProviderModelOptionGroupListCompositionElements.tsx",
+        "apps/web/src/components/chat/SynaraThreadCreationCard.tsx",
+        "apps/web/src/components/chat/TimelineStatusRowCompositionElements.tsx",
+        "apps/web/src/components/chat/TimelineWorkEntryRow.tsx",
+        "apps/web/src/components/chat/ToolCallGroupSummaryRow.tsx",
+        "apps/web/src/components/chat/chatHeaderControls.tsx",
+        "apps/web/src/components/chat/environment/EnvironmentLocalServersSection.tsx",
+        "apps/web/src/components/chat/environment/EnvironmentRow.tsx",
+        "apps/web/src/components/chat/workspaceExplorer.tsx",
+        "apps/web/src/components/kanban/KanbanOverviewCompositionElements.tsx",
+        "apps/web/src/components/profile/EditProfileDialog.tsx",
+        "apps/web/src/components/profile/ProfileAvatar.tsx",
+        "apps/web/src/components/profile/ShareCard.tsx",
+        "apps/web/src/components/profile/ShareDialog.tsx",
+        "apps/web/src/components/pullRequest/PullRequestAvatar.tsx",
+        "apps/web/src/components/pullRequest/PullRequestCheckStatusIcon.tsx",
+        "apps/web/src/components/pullRequest/PullRequestCommentComposer.tsx",
+        "apps/web/src/components/pullRequest/PullRequestRowCompositionElements.tsx",
+        "apps/web/src/components/pullRequest/PullRequestStateGlyph.tsx",
+        "apps/web/src/components/settings/ConversationStorageSettingsPanels.tsx",
+        "apps/web/src/components/settings/DesktopSettingsPanels.tsx",
+        "apps/web/src/components/settings/ProfileSettingsPanel.tsx",
+        "apps/web/src/components/settings/ProviderUsageSettingsPanel.tsx",
+        "apps/web/src/components/settings/SettingsProviderPickerCompositionElements.tsx",
+        "apps/web/src/components/settings/SettingsRow.tsx",
+        "apps/web/src/components/settings/SkillsSettingsPanel.tsx",
+        "apps/web/src/components/settings/ThemePackEditorCompositionElements.tsx",
+        "apps/web/src/components/sidebarContextMenuStyles.tsx",
+        "apps/web/src/components/ui/autocomplete.tsx",
+        "apps/web/src/components/ui/badge.tsx",
+        "apps/web/src/components/ui/checkbox.tsx",
+        "apps/web/src/components/ui/combobox.tsx",
+        "apps/web/src/components/ui/command.tsx",
+        "apps/web/src/components/ui/empty.tsx",
+        "apps/web/src/components/ui/input-group.tsx",
+        "apps/web/src/components/ui/kbd.tsx",
+        "apps/web/src/components/ui/select.tsx",
+        "apps/web/src/components/ui/sidebar.tsx",
+        "apps/web/src/components/ui/time-picker.tsx",
+        "apps/web/src/components/ui/toast.tsx",
+        "apps/web/src/routes/-automations.shared.tsx",
+        "apps/web/src/routes/__root.tsx",
+        "apps/web/src/whatsNew/WhatsNewPopoutCard.tsx"
+      ],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
       "token": "gap-1.5",
       "occurrences": 146,
       "files": [
@@ -1936,113 +2043,6 @@
         "apps/web/src/routes/-automations.shared.tsx",
         "apps/web/src/settingsPanelStyles.ts",
         "apps/web/src/whatsNew/FeatureSection.tsx"
-      ],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "justify-center",
-      "occurrences": 145,
-      "files": [
-        "apps/web/src/components/AppSnapWelcomeDialog.tsx",
-        "apps/web/src/components/CenteredEmptyLandingStackElements.tsx",
-        "apps/web/src/components/ChatView.tsx",
-        "apps/web/src/components/DesktopWindowControls.tsx",
-        "apps/web/src/components/DiffPanelFileJumpMenu.tsx",
-        "apps/web/src/components/DiffPanelToolbar.tsx",
-        "apps/web/src/components/PlanSidebar.tsx",
-        "apps/web/src/components/RecentViewSwitcher.tsx",
-        "apps/web/src/components/Sidebar.tsx",
-        "apps/web/src/components/SidebarLeadingIcon.tsx",
-        "apps/web/src/components/SidebarMetaChip.tsx",
-        "apps/web/src/components/SidebarPrimaryNavigationElements.tsx",
-        "apps/web/src/components/SidebarSearchPalette.tsx",
-        "apps/web/src/components/SidebarThreadProviderIdentityElements.tsx",
-        "apps/web/src/components/SidebarThreadRowContent.tsx",
-        "apps/web/src/components/SpaceEditorDialog.tsx",
-        "apps/web/src/components/SpaceProjectPickerDialog.tsx",
-        "apps/web/src/components/SpaceSwitcher.tsx",
-        "apps/web/src/components/SplashScreen.tsx",
-        "apps/web/src/components/ThreadHoverCardContent.tsx",
-        "apps/web/src/components/UsageProgressTrack.tsx",
-        "apps/web/src/components/chat/ActiveTaskListCard.tsx",
-        "apps/web/src/components/chat/AgentActivityDetailView.tsx",
-        "apps/web/src/components/chat/AttachmentCard.tsx",
-        "apps/web/src/components/chat/AttachmentRemoveButton.tsx",
-        "apps/web/src/components/chat/AutomationCreatedCard.tsx",
-        "apps/web/src/components/chat/ChatHeader.tsx",
-        "apps/web/src/components/chat/ChatSurfaceHeaderIdentityElements.tsx",
-        "apps/web/src/components/chat/ChatTranscriptPane.tsx",
-        "apps/web/src/components/chat/ComposerChoiceRow.tsx",
-        "apps/web/src/components/chat/ComposerCommandMenuCompositionElements.tsx",
-        "apps/web/src/components/chat/ComposerImageAttachmentChip.tsx",
-        "apps/web/src/components/chat/ComposerLocalDirectoryMenu.tsx",
-        "apps/web/src/components/chat/ComposerPendingUserInputPanel.tsx",
-        "apps/web/src/components/chat/ComposerTraitRadioSectionCompositionElements.tsx",
-        "apps/web/src/components/chat/ComposerVoiceRecorderBar.tsx",
-        "apps/web/src/components/chat/ContextWindowMeter.tsx",
-        "apps/web/src/components/chat/CrossTaskOriginLabel.tsx",
-        "apps/web/src/components/chat/DraftAttachmentWarning.tsx",
-        "apps/web/src/components/chat/ExpandedImageOverlay.tsx",
-        "apps/web/src/components/chat/FileDiffHeader.tsx",
-        "apps/web/src/components/chat/MessageTrail.tsx",
-        "apps/web/src/components/chat/MessagesTimeline.tsx",
-        "apps/web/src/components/chat/PanelStateMessageElements.tsx",
-        "apps/web/src/components/chat/PickerTriggerButton.tsx",
-        "apps/web/src/components/chat/ProposedPlanCard.tsx",
-        "apps/web/src/components/chat/ProviderModelOptionGroupListCompositionElements.tsx",
-        "apps/web/src/components/chat/SynaraThreadCreationCard.tsx",
-        "apps/web/src/components/chat/TimelineStatusRowCompositionElements.tsx",
-        "apps/web/src/components/chat/TimelineWorkEntryRow.tsx",
-        "apps/web/src/components/chat/ToolCallGroupSummaryRow.tsx",
-        "apps/web/src/components/chat/chatHeaderControls.tsx",
-        "apps/web/src/components/chat/environment/EnvironmentLocalServersSection.tsx",
-        "apps/web/src/components/chat/environment/EnvironmentRow.tsx",
-        "apps/web/src/components/chat/workspaceExplorer.tsx",
-        "apps/web/src/components/kanban/KanbanOverviewCompositionElements.tsx",
-        "apps/web/src/components/profile/EditProfileDialog.tsx",
-        "apps/web/src/components/profile/ProfileAvatar.tsx",
-        "apps/web/src/components/profile/ShareCard.tsx",
-        "apps/web/src/components/profile/ShareDialog.tsx",
-        "apps/web/src/components/pullRequest/PullRequestAvatar.tsx",
-        "apps/web/src/components/pullRequest/PullRequestCheckStatusIcon.tsx",
-        "apps/web/src/components/pullRequest/PullRequestCommentComposer.tsx",
-        "apps/web/src/components/pullRequest/PullRequestRowCompositionElements.tsx",
-        "apps/web/src/components/pullRequest/PullRequestStateGlyph.tsx",
-        "apps/web/src/components/settings/ConversationStorageSettingsPanels.tsx",
-        "apps/web/src/components/settings/DesktopSettingsPanels.tsx",
-        "apps/web/src/components/settings/ProfileSettingsPanel.tsx",
-        "apps/web/src/components/settings/ProviderUsageSettingsPanel.tsx",
-        "apps/web/src/components/settings/SettingsProviderPickerCompositionElements.tsx",
-        "apps/web/src/components/settings/SettingsRow.tsx",
-        "apps/web/src/components/settings/SkillsSettingsPanel.tsx",
-        "apps/web/src/components/settings/ThemePackEditorCompositionElements.tsx",
-        "apps/web/src/components/sidebarContextMenuStyles.tsx",
-        "apps/web/src/components/ui/autocomplete.tsx",
-        "apps/web/src/components/ui/badge.tsx",
-        "apps/web/src/components/ui/checkbox.tsx",
-        "apps/web/src/components/ui/combobox.tsx",
-        "apps/web/src/components/ui/command.tsx",
-        "apps/web/src/components/ui/empty.tsx",
-        "apps/web/src/components/ui/input-group.tsx",
-        "apps/web/src/components/ui/kbd.tsx",
-        "apps/web/src/components/ui/select.tsx",
-        "apps/web/src/components/ui/sidebar.tsx",
-        "apps/web/src/components/ui/time-picker.tsx",
-        "apps/web/src/components/ui/toast.tsx",
-        "apps/web/src/routes/-automations.shared.tsx",
-        "apps/web/src/routes/__root.tsx",
-        "apps/web/src/whatsNew/WhatsNewPopoutCard.tsx"
       ],
       "screens": [
         "kanban",
@@ -4167,6 +4167,54 @@
       "reason": "state/responsive adapter over text-foreground"
     },
     {
+      "token": "size-5",
+      "occurrences": 50,
+      "files": [
+        "apps/web/src/components/EditorWorkspaceView.tsx",
+        "apps/web/src/components/PlanSidebar.tsx",
+        "apps/web/src/components/Sidebar.tsx",
+        "apps/web/src/components/SidebarSearchPalette.tsx",
+        "apps/web/src/components/ThreadPinToggleButton.tsx",
+        "apps/web/src/components/chat/AutomationCreatedCard.tsx",
+        "apps/web/src/components/chat/ChatHeader.tsx",
+        "apps/web/src/components/chat/ChatThreadSurfacePrimitives.tsx",
+        "apps/web/src/components/chat/ComposerImageAttachmentChip.tsx",
+        "apps/web/src/components/chat/ComposerInputCompositionElements.tsx",
+        "apps/web/src/components/chat/ComposerLocalDirectoryMenu.tsx",
+        "apps/web/src/components/chat/ComposerPendingUserInputPanel.tsx",
+        "apps/web/src/components/chat/ComposerTraitRadioSectionCompositionElements.tsx",
+        "apps/web/src/components/chat/DraftAttachmentWarning.tsx",
+        "apps/web/src/components/chat/ExpandedImageOverlay.tsx",
+        "apps/web/src/components/chat/FileAttachmentChip.tsx",
+        "apps/web/src/components/chat/ProviderModelOptionGroupListCompositionElements.tsx",
+        "apps/web/src/components/chat/TimelineStatusRowCompositionElements.tsx",
+        "apps/web/src/components/chat/TimelineWorkEntryRow.tsx",
+        "apps/web/src/components/chat/composerStackedPanelStyles.ts",
+        "apps/web/src/components/chat/environment/EnvironmentLocalServersSection.tsx",
+        "apps/web/src/components/profile/EditProfileDialog.tsx",
+        "apps/web/src/components/profile/ShareDialog.tsx",
+        "apps/web/src/components/pullRequest/PullRequestAvatar.tsx",
+        "apps/web/src/components/pullRequest/PullRequestCommentComposer.tsx",
+        "apps/web/src/components/settings/ConversationStorageSettingsPanels.tsx",
+        "apps/web/src/components/settings/ProfileSettingsPanel.tsx",
+        "apps/web/src/components/settings/SettingControls.tsx",
+        "apps/web/src/components/settings/ThemePackEditorCompositionElements.tsx",
+        "apps/web/src/components/ui/toast.tsx"
+      ],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
       "token": "text-center",
       "occurrences": 48,
       "files": [
@@ -4202,54 +4250,6 @@
         "apps/web/src/components/ui/autocomplete.tsx",
         "apps/web/src/components/ui/combobox.tsx",
         "apps/web/src/components/ui/empty.tsx"
-      ],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "size-5",
-      "occurrences": 47,
-      "files": [
-        "apps/web/src/components/EditorWorkspaceView.tsx",
-        "apps/web/src/components/PlanSidebar.tsx",
-        "apps/web/src/components/Sidebar.tsx",
-        "apps/web/src/components/SidebarSearchPalette.tsx",
-        "apps/web/src/components/ThreadPinToggleButton.tsx",
-        "apps/web/src/components/chat/AutomationCreatedCard.tsx",
-        "apps/web/src/components/chat/ChatHeader.tsx",
-        "apps/web/src/components/chat/ChatThreadSurfacePrimitives.tsx",
-        "apps/web/src/components/chat/ComposerImageAttachmentChip.tsx",
-        "apps/web/src/components/chat/ComposerInputCompositionElements.tsx",
-        "apps/web/src/components/chat/ComposerLocalDirectoryMenu.tsx",
-        "apps/web/src/components/chat/ComposerPendingUserInputPanel.tsx",
-        "apps/web/src/components/chat/ComposerTraitRadioSectionCompositionElements.tsx",
-        "apps/web/src/components/chat/DraftAttachmentWarning.tsx",
-        "apps/web/src/components/chat/ExpandedImageOverlay.tsx",
-        "apps/web/src/components/chat/FileAttachmentChip.tsx",
-        "apps/web/src/components/chat/ProviderModelOptionGroupListCompositionElements.tsx",
-        "apps/web/src/components/chat/TimelineStatusRowCompositionElements.tsx",
-        "apps/web/src/components/chat/TimelineWorkEntryRow.tsx",
-        "apps/web/src/components/chat/composerStackedPanelStyles.ts",
-        "apps/web/src/components/chat/environment/EnvironmentLocalServersSection.tsx",
-        "apps/web/src/components/profile/EditProfileDialog.tsx",
-        "apps/web/src/components/profile/ShareDialog.tsx",
-        "apps/web/src/components/pullRequest/PullRequestAvatar.tsx",
-        "apps/web/src/components/pullRequest/PullRequestCommentComposer.tsx",
-        "apps/web/src/components/settings/ConversationStorageSettingsPanels.tsx",
-        "apps/web/src/components/settings/ProfileSettingsPanel.tsx",
-        "apps/web/src/components/settings/SettingControls.tsx",
-        "apps/web/src/components/settings/ThemePackEditorCompositionElements.tsx",
-        "apps/web/src/components/ui/toast.tsx"
       ],
       "screens": [
         "kanban",
@@ -10126,6 +10126,28 @@
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
     {
+      "token": "size-[15px]",
+      "occurrences": 8,
+      "files": [
+        "apps/web/src/components/DebugFeatureFlagsMenu.tsx",
+        "apps/web/src/components/SidebarMetaChip.tsx",
+        "apps/web/src/components/SidebarSearchPalette.tsx",
+        "apps/web/src/components/sidebarGlyphs.tsx"
+      ],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
       "token": "sm:text-[length:var(--app-font-size-ui,12px)]",
       "occurrences": 8,
       "files": [
@@ -12894,28 +12916,6 @@
       "runtime": true,
       "status": "PATCHED",
       "reason": "box-shadow:0 0 0 1px rgba(163,163,163,0.6)"
-    },
-    {
-      "token": "size-[15px]",
-      "occurrences": 5,
-      "files": [
-        "apps/web/src/components/DebugFeatureFlagsMenu.tsx",
-        "apps/web/src/components/SidebarMetaChip.tsx",
-        "apps/web/src/components/SidebarSearchPalette.tsx",
-        "apps/web/src/components/sidebarGlyphs.tsx"
-      ],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
     {
       "token": "size-16",
@@ -21274,26 +21274,6 @@
       "files": [
         "apps/web/src/components/ui/notificationSurface.ts",
         "apps/web/src/components/ui/toast.tsx"
-      ],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "max-w-2xl",
-      "occurrences": 2,
-      "files": [
-        "apps/web/src/components/SidebarSearchPalette.tsx",
-        "apps/web/src/routes/_chat.settings.tsx"
       ],
       "screens": [
         "kanban",
@@ -38961,6 +38941,19 @@
       ],
       "screens": [
         "thread"
+      ],
+      "runtime": false,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
+      "token": "max-w-2xl",
+      "occurrences": 1,
+      "files": [
+        "apps/web/src/routes/_chat.settings.tsx"
+      ],
+      "screens": [
+        "settings"
       ],
       "runtime": false,
       "status": "GENERATED",
