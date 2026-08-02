@@ -1,0 +1,127 @@
+.SharedSettingsProviderPickerSection,
+.SharedSettingsProviderPickerCard,
+.SharedSettingsProviderPickerHeaderCopy,
+.SharedSettingsProviderPickerList {
+  display: flex;
+  flex-direction: column;
+}
+
+.SharedSettingsProviderPickerSection {
+  margin-top: 24px;
+  gap: 6px;
+}
+
+.SharedSettingsProviderPickerSectionTitle {
+  padding: 4px 8px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.SharedSettingsProviderPickerCard {
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.SharedSettingsProviderPickerHeader {
+  display: flex;
+  padding: 12px;
+}
+
+.SharedSettingsProviderPickerHeaderCopy {
+  flex: 1;
+}
+
+.SharedSettingsProviderPickerTitleLine,
+.SharedSettingsProviderPickerItem,
+.SharedSettingsProviderPickerItemActions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.SharedSettingsProviderPickerTitle {
+  color: var(--foreground);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.SharedSettingsProviderPickerReset {
+  margin-left: 6px;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.SharedSettingsProviderPickerDescription,
+.SharedSettingsProviderPickerStatus {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 17px;
+}
+
+.SharedSettingsProviderPickerDescription {
+  margin-top: 2px;
+}
+
+.SharedSettingsProviderPickerStatus {
+  margin-top: 6px;
+}
+
+.SharedSettingsProviderPickerList {
+  padding: 0 12px 12px;
+  gap: 8px;
+}
+
+.SharedSettingsProviderPickerItem {
+  justify-content: space-between;
+  min-height: 42px;
+  padding: 6px 10px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--border);
+  border-radius: 8px;
+}
+
+.SharedSettingsProviderPickerItemTitle {
+  flex: 1;
+  color: var(--foreground);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.SharedSettingsProviderPickerItemActions {
+  flex-shrink: 0;
+  gap: 4px;
+}
+
+.SharedSettingsProviderPickerSwitch {
+  width: 32px;
+  height: 18px;
+  margin-left: 4px;
+  padding: 2px;
+  border-radius: 9px;
+  background-color: var(--muted);
+}
+
+.SharedSettingsProviderPickerSwitch--on {
+  background-color: var(--color-text-accent);
+}
+
+.SharedSettingsProviderPickerSwitchThumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 7px;
+  background-color: var(--background);
+  transform: translateX(0);
+}
+
+.SharedSettingsProviderPickerSwitch--on
+  .SharedSettingsProviderPickerSwitchThumb {
+  transform: translateX(14px);
+}

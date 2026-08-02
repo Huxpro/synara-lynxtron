@@ -1,0 +1,67 @@
+/*
+ * Native counterpart of Web platform/motion. Lynx cannot interpolate the
+ * grid-row shell, so the platform contract keeps the same 220ms state timing
+ * while limiting animation to transform and opacity.
+ */
+@keyframes LynxDisclosureEnter {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes LynxDisclosureExit {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.LynxDisclosureMotion {
+  animation-duration: 220ms;
+  animation-timing-function: ease-out;
+  animation-fill-mode: both;
+}
+
+.LynxDisclosureMotion--open {
+  animation-name: LynxDisclosureEnter;
+}
+
+.LynxDisclosureMotion--closed {
+  animation-name: LynxDisclosureExit;
+  pointer-events: none;
+}
+
+.LynxDisclosureChevron {
+  transform: rotate(0deg);
+  transition-property: transform;
+  transition-duration: 220ms;
+  transition-timing-function: ease-out;
+}
+
+.LynxDisclosureChevron--open {
+  transform: rotate(90deg);
+}
+
+.LynxDisclosureInner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .LynxDisclosureMotion {
+    animation-duration: 0.01ms;
+  }
+
+  .LynxDisclosureChevron {
+    transition-duration: 0.01ms;
+  }
+}

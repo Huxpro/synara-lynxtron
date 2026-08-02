@@ -1,0 +1,42 @@
+.SharedKanbanState {
+  display: flex;
+  color: var(--muted-foreground);
+}
+
+.SharedKanbanState--page {
+  min-height: 280px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.SharedKanbanState--inline {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.SharedKanbanStateCopy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.SharedKanbanStateTitle {
+  color: var(--foreground);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 18px;
+}
+
+.SharedKanbanStateDescription {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 18px;
+}

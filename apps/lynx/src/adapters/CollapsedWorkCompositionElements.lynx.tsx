@@ -1,0 +1,82 @@
+import type { ReactNode } from '@lynx-js/react';
+
+import './collapsed-work-composition-elements.css';
+import {
+  disclosureChevronClassName,
+  disclosureContentClassName,
+  useLynxDisclosurePresence,
+} from '../platform/motion.lynx';
+import { useLynxInteractiveState } from './useLynxInteractiveState';
+
+type ChildrenProps = { readonly children?: ReactNode };
+
+export function CollapsedWorkRootElement(props: ChildrenProps) {
+  return <view className="SharedCollapsedWork">{props.children}</view>;
+}
+
+export function CollapsedWorkDisclosureElement(props: ChildrenProps) {
+  return <view>{props.children}</view>;
+}
+
+export function CollapsedWorkTriggerElement(
+  props: ChildrenProps & {
+    readonly accessibleLabel: string;
+    readonly open: boolean;
+    readonly onActivate: () => void;
+  }
+) {
+  const interaction = useLynxInteractiveState({
+    baseClassName: 'SharedCollapsedWorkTrigger',
+    onActivate: props.onActivate,
+  });
+  return (
+    <view
+      className={interaction.className}
+      aria-label={props.accessibleLabel}
+      aria-expanded={props.open}
+      {...interaction.eventProps}
+    >
+      {props.children}
+    </view>
+  );
+}
+
+export function CollapsedWorkLabelElement(props: ChildrenProps) {
+  return <text className="SharedCollapsedWorkLabel">{props.children}</text>;
+}
+
+export function CollapsedWorkChevronElement(props: { readonly open: boolean }) {
+  return (
+    <text
+      className={disclosureChevronClassName(
+        props.open,
+        'SharedCollapsedWorkChevron'
+      )}
+    >
+      ›
+    </text>
+  );
+}
+
+export function CollapsedWorkPanelElement(
+  props: ChildrenProps & { readonly open: boolean }
+) {
+  const present = useLynxDisclosurePresence(props.open, {
+    preserveOnClose: false,
+  });
+  if (!present) return null;
+  return (
+    <view
+      className={disclosureContentClassName(
+        props.open,
+        'SharedCollapsedWorkPanel'
+      )}
+    >
+      {props.children}
+    </view>
+  );
+}
+
+export function CollapsedWorkDividerElement() {
+  return <view className="SharedCollapsedWorkDivider" />;
+}

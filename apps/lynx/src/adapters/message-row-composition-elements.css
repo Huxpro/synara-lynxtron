@@ -1,0 +1,38 @@
+.SharedMessageUserRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.SharedMessageUserColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  max-width: 80%;
+}
+
+.SharedMessageUserColumn--full {
+  width: 100%;
+  max-width: 100%;
+}
+
+.SharedMessageUserBubble {
+  align-self: flex-end;
+  max-width: 100%;
+  min-width: 0;
+  padding: 6px 12px;
+  border-radius: var(--radius-user-message);
+  background-color: var(--app-user-message-background);
+}
+
+.SharedMessageUserBubble--chip-only {
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.SharedMessageAssistantRow {
+  min-width: 0;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}

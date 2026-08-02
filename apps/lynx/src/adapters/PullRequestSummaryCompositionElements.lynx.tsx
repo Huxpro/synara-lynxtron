@@ -1,0 +1,226 @@
+import type {
+  PullRequestActor,
+  PullRequestCheck,
+  PullRequestDetail,
+} from '@synara/contracts';
+import { useState, type ReactNode } from '@lynx-js/react';
+
+import { ChatMarkdown } from '../components/markdown/ChatMarkdown.lynx';
+import { PULL_REQUEST_CHECK_STATUS_LABELS } from '@synara-web/components/pullRequest/pullRequestSummary.logic';
+import { useLynxInteractiveState } from './useLynxInteractiveState';
+import './pull-request-summary-composition-elements.css';
+
+type ChildrenProps = { readonly children?: ReactNode };
+
+export function PullRequestSummaryRootElement(props: ChildrenProps) {
+  return <view className="SharedPrSummary">{props.children}</view>;
+}
+
+export function PullRequestSummaryOverviewElement(props: ChildrenProps) {
+  return <view className="SharedPrSummaryOverview">{props.children}</view>;
+}
+
+export function PullRequestSummaryIntroElement(props: {
+  readonly title: string;
+  readonly author: PullRequestActor | null;
+  readonly updatedAtLabel: string;
+  readonly stateLabel: string;
+}) {
+  return (
+    <view className="SharedPrSummaryIntro">
+      <text className="SharedPrSummaryTitle">{props.title}</text>
+      <view className="SharedPrSummaryByline">
+        <text className="SharedPrSummaryBylineStrong">
+          {props.author?.login ?? 'ghost'}
+        </text>
+        <text className="SharedPrSummaryBylineText">·</text>
+        <text className="SharedPrSummaryBylineText">
+          {props.updatedAtLabel}
+        </text>
+        <text className="SharedPrSummaryBylineText">·</text>
+        <text className="SharedPrSummaryBylineText">{props.stateLabel}</text>
+      </view>
+    </view>
+  );
+}
+
+export function PullRequestSummaryMetaRowsElement(props: ChildrenProps) {
+  return <view className="SharedPrSummaryMetaRows">{props.children}</view>;
+}
+
+type PullRequestSummaryMetaRowProps =
+  | {
+      readonly kind: 'branch';
+      readonly label: string;
+      readonly headBranch: string;
+      readonly baseBranch: string;
+      readonly additions: number;
+      readonly deletions: number;
+    }
+  | {
+      readonly kind: 'merge' | 'comments';
+      readonly label: string;
+      readonly value: string;
+    }
+  | {
+      readonly kind: 'reviewers';
+      readonly label: string;
+      readonly reviewers: ReadonlyArray<PullRequestActor>;
+    }
+  | {
+      readonly kind: 'checks';
+      readonly label: string;
+      readonly value: string;
+      readonly checks: ReadonlyArray<PullRequestCheck>;
+    };
+
+function metaValue(props: PullRequestSummaryMetaRowProps): string {
+  if (props.kind === 'branch') {
+    return `${props.headBranch} › ${props.baseBranch}  +${props.additions.toLocaleString(
+      'en-US'
+    )} -${props.deletions.toLocaleString('en-US')}`;
+  }
+  if (props.kind === 'reviewers') {
+    return props.reviewers.length
+      ? props.reviewers.map((actor) => actor.login).join(', ')
+      : 'None';
+  }
+  return props.value;
+}
+
+export function PullRequestSummaryMetaRowElement(
+  props: PullRequestSummaryMetaRowProps
+) {
+  return (
+    <view className="SharedPrSummaryMetaRow">
+      <text className="SharedPrSummaryMetaLabel">{props.label}</text>
+      <text
+        className={`SharedPrSummaryMetaValue${
+          props.kind === 'merge' ? ' SharedPrSummaryMetaValue--warning' : ''
+        }`}
+      >
+        {metaValue(props)}
+      </text>
+    </view>
+  );
+}
+
+export function PullRequestSummarySectionElement(
+  props: ChildrenProps & {
+    readonly label: string;
+    readonly count?: number | undefined;
+    readonly defaultOpen: boolean;
+  }
+) {
+  const [open, setOpen] = useState(props.defaultOpen);
+  const toggle = () => {
+    'background only';
+    setOpen((value) => !value);
+  };
+  const interaction = useLynxInteractiveState({
+    baseClassName: 'SharedPrSummarySectionHeader',
+    onActivate: toggle,
+  });
+  return (
+    <view className="SharedPrSummarySection">
+      <view
+        className={interaction.className}
+        aria-expanded={open}
+        aria-label={`${props.label}, ${open ? 'expanded' : 'collapsed'}`}
+        {...interaction.eventProps}
+      >
+        <text className="SharedPrSummarySectionTitle">{props.label}</text>
+        <text className="SharedPrSummarySectionChevron">
+          {open ? '⌄' : '›'}
+        </text>
+        {props.count === undefined ? null : (
+          <text className="SharedPrSummarySectionCount">{props.count}</text>
+        )}
+      </view>
+      {open ? (
+        <view className="SharedPrSummarySectionBody">{props.children}</view>
+      ) : null}
+    </view>
+  );
+}
+
+export function PullRequestSummaryDescriptionElement(props: {
+  readonly detail: PullRequestDetail;
+}) {
+  return (
+    <ChatMarkdown
+      text={
+        props.detail.body.trim()
+          ? props.detail.body
+          : '_No description provided._'
+      }
+    />
+  );
+}
+
+export function PullRequestSummaryChecksElement(props: {
+  readonly checks: ReadonlyArray<PullRequestCheck>;
+}) {
+  return (
+    <view className="SharedPrSummaryChecks">
+      {props.checks.length === 0 ? (
+        <text className="SharedPrSummaryMuted">No checks reported.</text>
+      ) : (
+        props.checks.map((check, index) => (
+          <view
+            className="SharedPrSummaryCheckRow"
+            key={`${check.name}:${check.url ?? ''}:${index}`}
+          >
+            <text className="SharedPrSummaryCheckName">{check.name}</text>
+            <text className="SharedPrSummaryCheckStatus">
+              {PULL_REQUEST_CHECK_STATUS_LABELS[check.status]}
+            </text>
+          </view>
+        ))
+      )}
+    </view>
+  );
+}
+
+export function PullRequestSummaryCommentsElement(props: {
+  readonly detail: PullRequestDetail;
+  readonly commentingAvailable: boolean;
+}) {
+  return (
+    <view className="SharedPrSummaryComments">
+      {props.detail.commentsIncomplete || props.detail.commentsTruncated ? (
+        <text className="SharedPrSummaryWarning">
+          {props.detail.commentsIncomplete
+            ? 'Some unresolved review comments could not be loaded. Check GitHub for the complete review.'
+            : 'More unresolved review comments may be available on GitHub.'}
+        </text>
+      ) : null}
+      {props.detail.comments.length === 0 ? (
+        <text className="SharedPrSummaryMuted SharedPrSummaryEmptyComments">
+          No comments
+        </text>
+      ) : (
+        props.detail.comments.map((comment) => (
+          <view className="SharedPrSummaryComment" key={comment.id}>
+            <view className="SharedPrSummaryCommentHeader">
+              <text className="SharedPrSummaryCommentAuthor">
+                {comment.author?.login ?? 'ghost'}
+              </text>
+              {comment.path ? (
+                <text className="SharedPrSummaryCommentPath">
+                  {comment.path}
+                </text>
+              ) : null}
+            </view>
+            <ChatMarkdown text={comment.body || '_No review body._'} />
+          </view>
+        ))
+      )}
+      {props.commentingAvailable ? null : (
+        <text className="SharedPrSummaryCapability">
+          Commenting is unavailable in this runtime.
+        </text>
+      )}
+    </view>
+  );
+}

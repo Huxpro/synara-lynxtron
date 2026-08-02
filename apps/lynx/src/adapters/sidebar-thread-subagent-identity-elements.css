@@ -1,0 +1,58 @@
+.SharedSidebarSubagentConnector {
+  position: relative;
+  width: 18px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.SharedSidebarSubagentConnectorStem {
+  position: absolute;
+  left: 6px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  border-radius: 999px;
+  background-color: var(--border);
+  opacity: 0.35;
+}
+
+.SharedSidebarSubagentConnectorArm {
+  position: absolute;
+  left: 6px;
+  top: 7px;
+  width: 10px;
+  height: 1px;
+  background-color: var(--border);
+  opacity: 0.35;
+}
+
+.SharedSidebarSubagentConnectorDot {
+  position: absolute;
+  left: 4px;
+  top: 5px;
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+}
+
+.SharedSidebarSubagentCopy {
+  min-width: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  overflow: hidden;
+}
+
+.SharedSidebarSubagentPrimary {
+  flex-shrink: 1;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.SharedSidebarSubagentSupporting {
+  margin-left: 4px;
+  flex-shrink: 1;
+  color: var(--muted-foreground);
+  opacity: 0.48;
+  white-space: nowrap;
+}

@@ -1,0 +1,14 @@
+.ComposerColumnFrameSurfaceLynx.ComposerColumnFrameSurfaceLynx {
+  display: flex;
+  width: 100%;
+  max-width: 736px;
+  align-self: center;
+  flex-direction: column;
+}
+
+@media (max-width: 736px) {
+  .ComposerColumnFrameSurfaceLynx.ComposerColumnFrameSurfaceLynx {
+    width: 100%;
+    max-width: 100%;
+  }
+}

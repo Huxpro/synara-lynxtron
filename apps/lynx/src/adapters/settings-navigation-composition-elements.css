@@ -1,0 +1,64 @@
+.SharedSettingsNavigation,
+.SharedSettingsNavigationGroup,
+.SharedSettingsNavigationList {
+  display: flex;
+  flex-direction: column;
+}
+
+.SharedSettingsNavigationGroup--following {
+  margin-top: 12px;
+}
+
+.SharedSettingsNavigationGroupLabel {
+  color: var(--muted-foreground);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 16px;
+  padding: 4px 8px;
+}
+
+.SharedSettingsNavigationList {
+  gap: 2px;
+}
+
+.SharedSettingsNavigationButton {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-height: 28px;
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+
+.SharedSettingsNavigationButton--active {
+  background-color: var(--sidebar-accent);
+}
+
+.SharedSettingsNavigationButton.ui-hover,
+.SharedSettingsNavigationButton.ui-pressed {
+  background-color: var(--sidebar-accent);
+}
+
+.SharedSettingsNavigationButton.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.SharedSettingsNavigationButton.ui-pressed {
+  opacity: 0.8;
+}
+
+.SharedSettingsNavigationButton--disabled {
+  opacity: 0.45;
+}
+
+.SharedSettingsNavigationIcon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+}
+
+.SharedSettingsNavigationItemLabel {
+  color: var(--foreground);
+  font-size: 12px;
+  line-height: 18px;
+}

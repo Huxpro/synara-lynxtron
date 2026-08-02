@@ -1,0 +1,152 @@
+.SharedKanbanOverviewEmptyRoot {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.SharedKanbanOverviewEmptyCopy {
+  width: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.SharedKanbanOverviewEmptyTitle {
+  color: var(--foreground);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.SharedKanbanOverviewEmptyBody {
+  margin-top: 4px;
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+}
+
+.SharedKanbanOverviewScroller {
+  width: 100%;
+  height: 100%;
+}
+
+.SharedKanbanOverviewProjects {
+  min-width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  padding: 0 16px 16px;
+}
+
+.SharedKanbanOverviewProjectColumn {
+  width: 288px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-right: 16px;
+}
+
+.SharedKanbanOverviewProjectHeaderRoot,
+.SharedKanbanOverviewProjectHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.SharedKanbanOverviewProjectHeaderRoot {
+  flex-shrink: 0;
+}
+
+.SharedKanbanOverviewProjectHeader {
+  flex: 1;
+  min-width: 0;
+  padding: 6px 8px;
+  border-radius: 8px;
+}
+
+.SharedKanbanOverviewProjectHeader.ui-hover,
+.SharedKanbanOverviewProjectHeader.ui-pressed,
+.SharedKanbanOverviewNewTask.ui-hover,
+.SharedKanbanOverviewNewTask.ui-pressed,
+.SharedKanbanOverviewShowMore.ui-hover,
+.SharedKanbanOverviewShowMore.ui-pressed {
+  background-color: var(--sidebar-accent);
+}
+
+.SharedKanbanOverviewProjectHeader.ui-focus,
+.SharedKanbanOverviewNewTask.ui-focus,
+.SharedKanbanOverviewShowMore.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.SharedKanbanOverviewProjectHeader.ui-pressed,
+.SharedKanbanOverviewNewTask.ui-pressed,
+.SharedKanbanOverviewShowMore.ui-pressed {
+  opacity: 0.8;
+}
+
+.SharedKanbanOverviewProjectTitle {
+  flex: 1;
+  min-width: 0;
+  color: var(--foreground);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.SharedKanbanOverviewProjectCount,
+.SharedKanbanOverviewProjectChevron {
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+
+.SharedKanbanOverviewProjectCount {
+  margin-left: 8px;
+}
+
+.SharedKanbanOverviewProjectChevron {
+  margin-left: auto;
+}
+
+.SharedKanbanOverviewNewTask {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+}
+
+.SharedKanbanOverviewNewTaskLabel {
+  color: var(--muted-foreground);
+  font-size: 14px;
+}
+
+.SharedKanbanOverviewCardScroller {
+  flex: 1;
+  min-height: 0;
+}
+
+.SharedKanbanOverviewCardList {
+  padding: 4px;
+}
+
+.SharedKanbanOverviewCardItem {
+  margin-bottom: 8px;
+}
+
+.SharedKanbanOverviewShowMore {
+  width: 100%;
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+
+.SharedKanbanOverviewShowMoreLabel {
+  width: 100%;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  text-align: center;
+}

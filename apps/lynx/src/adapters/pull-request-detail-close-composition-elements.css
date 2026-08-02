@@ -1,0 +1,22 @@
+.SharedPrDetailCloseButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  margin-left: auto;
+  border-radius: 8px;
+}
+
+.SharedPrDetailCloseButton.ui-hover,
+.SharedPrDetailCloseButton.ui-pressed {
+  background-color: var(--muted);
+}
+
+.SharedPrDetailCloseButton.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.SharedPrDetailCloseButton.ui-pressed {
+  opacity: 0.72;
+}

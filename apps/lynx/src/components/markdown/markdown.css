@@ -1,0 +1,213 @@
+.MdRoot {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  color: var(--foreground);
+}
+
+.MdHeading {
+  display: block;
+  color: var(--foreground);
+  font-weight: 700;
+  margin-top: 14px;
+  margin-bottom: 6px;
+}
+
+.MdH1 {
+  font-size: 22px;
+}
+
+.MdH2 {
+  font-size: 18px;
+}
+
+.MdH3 {
+  font-size: 16px;
+}
+
+.MdH4,
+.MdH5,
+.MdH6 {
+  font-size: 14px;
+}
+
+.MdParagraph {
+  display: block;
+  color: var(--foreground);
+  font-size: 13px;
+  line-height: 20px;
+  margin-bottom: 8px;
+}
+
+.MdStrong {
+  font-weight: 700;
+}
+
+.MdEmphasis {
+  font-style: italic;
+}
+
+.MdDeleted {
+  text-decoration: line-through;
+  color: var(--muted-foreground);
+}
+
+.MdLink,
+.MdLinkTarget {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.MdBlockquote {
+  display: flex;
+  flex-direction: column;
+  border-left: 3px solid var(--primary);
+  padding-left: 10px;
+  margin-bottom: 8px;
+}
+
+.MdList {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+}
+
+.MdListItem {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.MdListMarker {
+  width: 18px;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.MdListBody {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.MdCheckbox {
+  color: var(--muted-foreground);
+}
+
+.MdCheckboxChecked {
+  color: var(--primary);
+}
+
+.MdCode {
+  font-family: var(--font-mono-family);
+  font-size: 12px;
+}
+
+.MdInlineCode {
+  color: var(--foreground);
+  background-color: var(--muted);
+}
+
+.MdCodeScroller {
+  width: 100%;
+  margin-bottom: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background-color: var(--muted);
+}
+
+.MdCodeBlock {
+  min-width: 100%;
+  padding: 10px 12px;
+}
+
+.MdCodeBlockText {
+  display: block;
+  color: var(--foreground);
+  line-height: 18px;
+  white-space: pre;
+}
+
+.MdMath {
+  color: var(--primary);
+  font-style: italic;
+}
+
+.MdMathBlock {
+  font-size: 13px;
+}
+
+.MdMathBlockShell {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  border-left: 3px solid var(--primary);
+  background-color: var(--muted);
+}
+
+.MdTableScroller {
+  width: 100%;
+  margin-bottom: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.MdTable {
+  display: flex;
+  flex-direction: column;
+  min-width: 460px;
+}
+
+.MdTableHead,
+.MdTableBody {
+  display: flex;
+  flex-direction: column;
+}
+
+.MdTableRow {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid var(--border);
+}
+
+.MdTableHeaderCell,
+.MdTableCell {
+  width: 153px;
+  padding: 7px 9px;
+  border-right: 1px solid var(--border);
+}
+
+.MdTableHeaderCell {
+  background-color: var(--muted);
+}
+
+.MdTableHeaderText,
+.MdTableCellText {
+  color: var(--foreground);
+  font-size: 12px;
+  line-height: 17px;
+}
+
+.MdTableHeaderText {
+  font-weight: 700;
+}
+
+.MdRule {
+  height: 1px;
+  width: 100%;
+  background-color: var(--border);
+  margin-top: 8px;
+  margin-bottom: 10px;
+}
+
+.MdImageFallback {
+  color: var(--muted-foreground);
+  font-style: italic;
+}
+
+.MdHtmlFallback {
+  color: var(--muted-foreground);
+  font-family: var(--font-mono-family);
+  font-size: 11px;
+}

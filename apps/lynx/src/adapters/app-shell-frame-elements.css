@@ -1,0 +1,7 @@
+.SharedAppShellFrame {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  background-color: var(--app-shell-background, var(--background));
+}

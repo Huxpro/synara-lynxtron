@@ -1,0 +1,134 @@
+.SharedThemePackRoot {
+  display: flex;
+  flex-direction: column;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.SharedThemePackHeader,
+.SharedThemePackTitleLine,
+.SharedThemePackRow,
+.SharedThemePackRowControl,
+.SharedThemePackColorLine,
+.SharedThemePackContrast {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.SharedThemePackHeader {
+  min-height: 48px;
+  padding: 8px 12px;
+  gap: 4px;
+}
+
+.SharedThemePackTitleLine {
+  flex: 1;
+  gap: 5px;
+}
+
+.SharedThemePackTitle,
+.SharedThemePackRowLabel {
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.SharedThemePackContext {
+  padding: 0 12px 10px;
+  color: var(--muted-foreground);
+  font-size: 10px;
+}
+
+.SharedThemePackRow {
+  min-height: 52px;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: var(--border);
+}
+
+.SharedThemePackRowControl {
+  width: 280px;
+  justify-content: flex-end;
+}
+
+.SharedThemePackColorLine {
+  width: 280px;
+  gap: 6px;
+}
+
+.SharedThemePackColorLine .LxInputControl,
+.SharedThemePackRowControl > .LxInputControl {
+  width: 190px;
+}
+
+.SharedThemePackSwatch {
+  width: 30px;
+  height: 26px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--border);
+  border-radius: 7px;
+}
+
+.SharedThemePackCodeSelect {
+  min-width: 150px;
+}
+
+.SharedThemePackCodePopup {
+  width: 220px;
+}
+
+.SharedThemePackSwitch {
+  width: 32px;
+  height: 18px;
+  padding: 2px;
+  border-radius: 9px;
+  background-color: var(--muted);
+}
+
+.SharedThemePackSwitch--on {
+  background-color: var(--color-text-accent);
+}
+
+.SharedThemePackSwitch.ui-hover {
+  opacity: 0.88;
+}
+
+.SharedThemePackSwitch.ui-focus {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.SharedThemePackSwitch.ui-pressed {
+  opacity: 0.64;
+}
+
+.SharedThemePackSwitchThumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 7px;
+  background-color: var(--background);
+}
+
+.SharedThemePackSwitch--on .SharedThemePackSwitchThumb {
+  transform: translateX(14px);
+}
+
+.SharedThemePackContrast {
+  width: 210px;
+}
+
+.SharedThemePackContrast .LxInputControl {
+  flex: 1;
+}
+
+.SharedThemePackContrastSuffix {
+  margin-left: 8px;
+  color: var(--muted-foreground);
+  font-size: 10px;
+}

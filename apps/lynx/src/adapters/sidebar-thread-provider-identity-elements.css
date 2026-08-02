@@ -1,0 +1,55 @@
+.SharedSidebarProviderIdentity {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.SharedSidebarProviderIdentity--handoff {
+  width: 18px;
+}
+
+.SharedSidebarProviderIcon {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+}
+
+.SharedSidebarProviderIcon--source,
+.SharedSidebarProviderIcon--target {
+  position: absolute;
+  top: 0;
+  background-color: var(--sidebar);
+}
+
+.SharedSidebarProviderIcon--source {
+  left: 0;
+}
+
+.SharedSidebarProviderIcon--target {
+  right: 0;
+}
+
+.SharedSidebarProviderIconSvg {
+  width: 10px;
+  height: 10px;
+  color: var(--foreground);
+}
+
+.SharedSidebarProviderIcon--single .SharedSidebarProviderIconSvg {
+  width: 12px;
+  height: 12px;
+}
+
+.SharedSidebarProviderIconFallback {
+  font-size: 8px;
+  line-height: 10px;
+  color: var(--muted-foreground);
+}

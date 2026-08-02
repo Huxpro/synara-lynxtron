@@ -65,6 +65,7 @@
     "@types/node": "catalog:",
     "oxfmt": "^0.40.0",
     "oxlint": "^1.55.0",
+    "preact": "npm:@lynx-js/internal-preact@10.29.1-20260519060144-e6da44c",
     "turbo": "^2.9.14",
     "vitest": "catalog:",
     "postcss": "^8.5.19"

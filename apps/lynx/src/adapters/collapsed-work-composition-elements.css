@@ -1,0 +1,52 @@
+.SharedCollapsedWork {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 7px;
+}
+
+.SharedCollapsedWorkTrigger {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  align-self: flex-start;
+  margin-left: -7px;
+  padding-top: 2px;
+  padding-bottom: 13px;
+}
+
+.SharedCollapsedWorkTrigger.ui-hover {
+  background-color: var(--muted);
+}
+
+.SharedCollapsedWorkTrigger.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.SharedCollapsedWorkTrigger.ui-pressed {
+  background-color: var(--muted);
+  opacity: 0.72;
+}
+
+.SharedCollapsedWorkLabel,
+.SharedCollapsedWorkChevron {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.SharedCollapsedWorkChevron {
+  opacity: 0.72;
+}
+
+.SharedCollapsedWorkPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 8px;
+}
+
+.SharedCollapsedWorkDivider {
+  height: 1px;
+  background-color: var(--border);
+}

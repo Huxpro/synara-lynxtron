@@ -1,0 +1,157 @@
+.SharedSettingsAppearanceRoot,
+.SharedSettingsAppearanceSection,
+.SharedSettingsAppearanceCard,
+.SharedSettingsAppearanceRowCopy,
+.SharedSettingsAppearanceThemePacks {
+  display: flex;
+  flex-direction: column;
+}
+
+.SharedSettingsAppearanceRoot,
+.SharedSettingsAppearanceSection {
+  gap: 24px;
+}
+
+.SharedSettingsAppearanceSectionTitle {
+  padding: 0 12px 8px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+.SharedSettingsAppearanceCard {
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.SharedSettingsAppearanceRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 72px;
+  padding: var(--app-density-settings-row-padding-y, 0.625rem) 16px;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: var(--border);
+}
+
+.SharedSettingsAppearanceRowCopy {
+  flex: 1;
+  min-width: 0;
+  padding-right: 16px;
+}
+
+.SharedSettingsAppearanceTitleLine,
+.SharedSettingsAppearanceSegments,
+.SharedSettingsAppearanceInputLine {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.SharedSettingsAppearanceRowTitle {
+  color: var(--foreground);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.SharedSettingsAppearanceRowDescription,
+.SharedSettingsAppearanceSuffix {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 17px;
+}
+
+.SharedSettingsAppearanceRowDescription {
+  margin-top: 2px;
+}
+
+.SharedSettingsAppearanceReset {
+  margin-left: 6px;
+  color: var(--muted-foreground);
+}
+
+.SharedSettingsAppearanceReset.ui-hover {
+  color: var(--foreground);
+}
+
+.SharedSettingsAppearanceReset.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.SharedSettingsAppearanceReset.ui-pressed {
+  opacity: 0.7;
+}
+
+.SharedSettingsAppearanceControl {
+  flex-shrink: 0;
+}
+
+.SharedSettingsAppearanceSegments {
+  gap: 4px;
+}
+
+.SharedSettingsAppearanceSwitch {
+  width: 32px;
+  height: 18px;
+  padding: 2px;
+  border-radius: 9px;
+  background-color: var(--muted);
+}
+
+.SharedSettingsAppearanceSwitch--on {
+  background-color: var(--color-text-accent);
+}
+
+.SharedSettingsAppearanceSwitch.ui-hover {
+  box-shadow: 0 0 0 1px var(--border);
+}
+
+.SharedSettingsAppearanceSwitch.ui-focus {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.SharedSettingsAppearanceSwitch.ui-pressed {
+  opacity: 0.8;
+}
+
+.SharedSettingsAppearanceSwitchThumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 7px;
+  background-color: var(--background);
+}
+
+.SharedSettingsAppearanceSwitch--on .SharedSettingsAppearanceSwitchThumb {
+  transform: translateX(14px);
+}
+
+.SharedSettingsAppearanceInputLine {
+  width: 170px;
+}
+
+.SharedSettingsAppearanceInputLine .LxInputControl {
+  flex: 1;
+}
+
+.SharedSettingsAppearanceSuffix {
+  margin-left: 8px;
+}
+
+.SharedSettingsAppearanceSelect {
+  min-width: 144px;
+}
+
+.SharedSettingsAppearanceSelectPopup {
+  width: 190px;
+}
+
+.SharedSettingsAppearanceThemePacks {
+  gap: 12px;
+}

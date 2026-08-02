@@ -1,0 +1,137 @@
+.SharedSettingsGeneralRoot,
+.SharedSettingsGeneralSection,
+.SharedSettingsGeneralCard,
+.SharedSettingsGeneralRowCopy {
+  display: flex;
+  flex-direction: column;
+}
+
+.SharedSettingsGeneralRoot {
+  gap: 24px;
+}
+
+.SharedSettingsGeneralSection {
+  gap: 6px;
+}
+
+.SharedSettingsGeneralSectionTitle {
+  padding: 4px 8px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.SharedSettingsGeneralCard {
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.SharedSettingsGeneralRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 61px;
+  padding: var(--app-density-settings-row-padding-y, 0.625rem) 12px;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: var(--border);
+}
+
+.SharedSettingsGeneralRowCopy {
+  flex: 1;
+  min-width: 0;
+  padding-right: 16px;
+}
+
+.SharedSettingsGeneralRowTitleLine {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.SharedSettingsGeneralRowTitle {
+  color: var(--foreground);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.SharedSettingsGeneralRowDescription {
+  margin-top: 2px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 17px;
+}
+
+.SharedSettingsGeneralReset {
+  margin-left: 6px;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.SharedSettingsGeneralReset.ui-hover {
+  color: var(--foreground);
+}
+
+.SharedSettingsGeneralReset.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.SharedSettingsGeneralReset.ui-pressed {
+  opacity: 0.7;
+}
+
+.SharedSettingsGeneralRowControl {
+  flex-shrink: 0;
+}
+
+.SharedSettingsGeneralSwitch {
+  width: 32px;
+  height: 18px;
+  padding: 2px;
+  border-radius: 9px;
+  background-color: var(--muted);
+}
+
+.SharedSettingsGeneralSwitch--on {
+  background-color: var(--color-text-accent);
+}
+
+.SharedSettingsGeneralSwitch.ui-hover {
+  box-shadow: 0 0 0 1px var(--border);
+}
+
+.SharedSettingsGeneralSwitch.ui-focus {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.SharedSettingsGeneralSwitch.ui-pressed {
+  opacity: 0.8;
+}
+
+.SharedSettingsGeneralSwitchThumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 7px;
+  background-color: var(--background);
+  transform: translateX(0);
+}
+
+.SharedSettingsGeneralSwitch--on .SharedSettingsGeneralSwitchThumb {
+  transform: translateX(14px);
+}
+
+.SharedSettingsGeneralSelectTrigger {
+  min-width: 144px;
+  justify-content: flex-start;
+}
+
+.SharedSettingsGeneralSelectPopup {
+  width: 220px;
+}

@@ -1,0 +1,56 @@
+.SharedPrList,
+.SharedPrLoading {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.SharedPrList > * + *,
+.SharedPrLoading > * + * {
+  margin-top: 2px;
+}
+
+.SharedPrGroupTitle {
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-sm);
+  font-weight: 500;
+  opacity: 0.7;
+  padding-bottom: 2px;
+}
+
+.SharedPrGroupTitle--separated {
+  padding-top: 10px;
+}
+
+.SharedPrLoadingRow {
+  width: 100%;
+  height: 52px;
+  border-radius: 8px;
+  background-color: var(--muted);
+  opacity: 0.75;
+}
+
+.SharedPrEmpty {
+  min-height: 148px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.SharedPrEmptyTitle {
+  color: var(--foreground);
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+}
+
+.SharedPrEmptyDescription {
+  max-width: 430px;
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  margin-top: 4px;
+}

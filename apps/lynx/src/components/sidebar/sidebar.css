@@ -1,0 +1,363 @@
+.AppSidebar {
+  width: 256px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  background-color: var(--sidebar);
+  border-right: 1px solid var(--sidebar-border);
+}
+
+.AppSidebarTitlebar {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 14px;
+}
+
+.AppSidebarTitlebarLogo {
+  width: 14px;
+  height: 15px;
+  opacity: 0.8;
+}
+
+.SharedSidebarDesktopLogo {
+  width: 14px;
+  height: 14px;
+  margin-left: auto;
+  opacity: 0.8;
+}
+
+.AppSidebarNavRow,
+.AppSidebarProjectHeader,
+.AppSidebarThread {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.AppSidebarShortcut {
+  color: var(--muted-foreground);
+  font-size: 10px;
+}
+
+.SharedSidebarPrimaryNavigationBadge {
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 6px;
+  color: var(--muted-foreground);
+  background-color: var(--muted);
+  font-size: 10px;
+  text-align: center;
+}
+
+.AppSidebarPrimaryNav {
+  padding: 0 6px 9px;
+  /* Owns the gap that used to come from the scroll container's top padding,
+     now that the picker/navigation live inside the shared content frame. */
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--sidebar-border);
+}
+
+.AppSidebarNavRow {
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 8px;
+  margin-bottom: 2px;
+}
+
+.AppSidebarNavRow--active {
+  background-color: var(--sidebar-accent);
+}
+
+.AppSidebarNavGlyph {
+  width: 16px;
+  color: var(--muted-foreground);
+  font-size: 15px;
+}
+
+.AppSidebarNavText {
+  margin-left: 9px;
+  color: var(--sidebar-foreground);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.AppSidebarScroll {
+  flex: 1;
+  min-height: 0;
+}
+
+.AppSidebarScrollInner {
+  /* Horizontal insets moved onto the individual section roots so the shared
+     picker/navigation keep their own full-bleed frame. */
+  padding: 0 0 18px;
+}
+
+.AppSidebarPinned {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.AppSidebarPinnedList {
+  display: flex;
+  flex-direction: column;
+}
+
+.AppSidebarPinnedThread {
+  margin-left: 0;
+}
+
+.AppSidebarState {
+  margin: 8px 10px;
+  color: var(--muted-foreground);
+  font-size: 11px;
+}
+
+.AppSidebarProject {
+  margin-bottom: 8px;
+}
+
+.SharedSidebarProjectsRoot,
+.SharedSidebarProjectsList,
+.SharedSidebarStudioRoot,
+.SharedSidebarStudioList {
+  display: flex;
+  flex-direction: column;
+}
+
+.SharedSidebarProjectsRoot,
+.SharedSidebarStudioRoot {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.SharedSidebarPinnedRoot {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.SharedSidebarPinnedList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.SharedSidebarProjectsState {
+  width: 100%;
+  margin-top: 18px;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  text-align: center;
+}
+
+.AppSidebarProjectHeader {
+  height: var(--app-density-row-height, 1.75rem);
+  padding: 0 7px;
+}
+
+.AppSidebarProjectHeader.ui-hover,
+.AppSidebarProjectHeader.ui-pressed,
+.AppSidebarThread.ui-hover,
+.AppSidebarThread.ui-pressed,
+.SharedSidebarChatsHeaderButton.ui-hover,
+.SharedSidebarChatsHeaderButton.ui-pressed {
+  background-color: var(--sidebar-accent);
+}
+
+.AppSidebarProjectHeader.ui-focus,
+.AppSidebarThread.ui-focus,
+.SharedSidebarChatsHeaderButton.ui-focus,
+.SharedSidebarChatsPaginationAction.ui-focus {
+  border: 1px solid var(--ring);
+}
+
+.AppSidebarCount {
+  color: var(--muted-foreground);
+  font-size: 9px;
+}
+
+.AppSidebarThread {
+  height: var(--app-density-row-height, 1.75rem);
+  margin: 1px 0 1px 18px;
+  padding: 0 8px;
+  border-radius: 8px;
+}
+
+.AppSidebarChatThread {
+  margin-left: 0;
+}
+
+.SidebarSearchPopup {
+  width: 520px;
+  max-height: 620px;
+}
+
+.SidebarSearchInput {
+  margin-top: 16px;
+}
+
+.SidebarSearchResults {
+  min-height: 120px;
+  max-height: 390px;
+  margin-top: 10px;
+}
+
+.SidebarSearchGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.SidebarSearchGroupLabel {
+  padding: 7px 8px 5px;
+  color: var(--muted-foreground);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.SidebarSearchResult {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.SidebarSearchResult:active {
+  background-color: var(--accent);
+}
+
+.SidebarSearchResultTitle {
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.SidebarSearchResultMeta {
+  margin-top: 2px;
+  color: var(--muted-foreground);
+  font-size: 10px;
+}
+
+.SidebarSearchEmpty {
+  padding: 28px 8px;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  text-align: center;
+}
+
+.SharedSidebarChatsRoot {
+  margin-top: 8px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.SharedSidebarChatsHeader,
+.SharedSidebarChatsHeaderButton {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.SharedSidebarChatsHeader {
+  height: var(--app-density-row-height, 1.75rem);
+}
+
+.SharedSidebarChatsHeaderButton {
+  flex: 1;
+  min-width: 0;
+  height: var(--app-density-row-height, 1.75rem);
+  padding-left: 4px;
+}
+
+.SharedSidebarChatsLabel {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.SharedSidebarChatsChevron {
+  margin-left: 4px;
+  color: var(--muted-foreground);
+  font-size: 13px;
+}
+
+.SharedSidebarChatsBody {
+  padding-top: 4px;
+}
+
+.SharedSidebarChatsPagination {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-height: var(--app-density-row-height, 1.75rem);
+  padding-left: 32px;
+}
+
+.SharedSidebarChatsPaginationAction {
+  min-height: var(--app-density-row-height, 1.75rem);
+  display: flex;
+  align-items: center;
+  margin-right: 12px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+
+.SharedSidebarChatsPaginationAction.ui-hover,
+.SharedSidebarChatsPaginationAction.ui-pressed {
+  color: var(--foreground);
+}
+
+.AppSidebarThread--active {
+  background-color: var(--sidebar-accent);
+}
+
+.AppSidebarThreadTrailing {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  margin-left: 5px;
+}
+
+.AppSidebarThreadMeta {
+  color: var(--muted-foreground);
+  font-size: 11px;
+  line-height: 14px;
+}
+
+.AppSidebarThreadMeta--fork {
+  color: #059669;
+}
+
+.AppSidebarFooter {
+  padding: 8px 10px 12px;
+  border-top: 1px solid var(--sidebar-border);
+}
+
+/* Mirrors the Web footer stack (flex-col gap-1) beneath the shared composition. */
+.AppSidebarFooterStack {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Mirrors the Web footer row (flex items-center gap-2). */
+.AppSidebarFooterRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Mirrors the Web keyed surface transition wrapper. */
+.AppSidebarSurfaceEnter {
+  display: flex;
+  flex-direction: column;
+}

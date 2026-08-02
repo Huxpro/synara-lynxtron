@@ -1,0 +1,562 @@
+.LxButton {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  padding: 7px 12px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  border-radius: 8px;
+  background-color: var(--primary);
+}
+
+.LxButton.ui-active {
+  opacity: 0.82;
+  transform: scale(0.98);
+}
+
+.LxButton.ui-disabled {
+  opacity: 0.48;
+}
+
+.LxButton__text {
+  color: var(--primary-foreground);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.LxButton--secondary,
+.LxButton--subtle {
+  background-color: var(--secondary);
+}
+
+.LxButton--secondary .LxButton__text,
+.LxButton--subtle .LxButton__text {
+  color: var(--secondary-foreground);
+}
+
+.LxButton--outline,
+.LxButton--primary-outline,
+.LxButton--secondary-outline,
+.LxButton--destructive-outline,
+.LxButton--chrome-outline {
+  border-color: var(--border);
+  background-color: transparent;
+}
+
+.LxButton--outline .LxButton__text,
+.LxButton--secondary-outline .LxButton__text,
+.LxButton--chrome-outline .LxButton__text {
+  color: var(--foreground);
+}
+
+.LxButton--primary-outline .LxButton__text {
+  color: var(--primary);
+}
+
+.LxButton--destructive {
+  background-color: var(--destructive);
+}
+
+.LxButton--destructive .LxButton__text {
+  color: var(--destructive-foreground);
+}
+
+.LxButton--destructive-outline .LxButton__text {
+  color: var(--destructive);
+}
+
+.LxButton--ghost,
+.LxButton--chrome,
+.LxButton--link {
+  background-color: transparent;
+}
+
+.LxButton--ghost .LxButton__text,
+.LxButton--chrome .LxButton__text,
+.LxButton--link .LxButton__text {
+  color: var(--foreground);
+}
+
+.LxButton--capsule {
+  border-radius: 999px;
+}
+
+.LxButton--xs,
+.LxButton--icon-xs {
+  min-height: 24px;
+  padding: 4px 8px;
+}
+
+.LxButton--sm,
+.LxButton--icon-sm {
+  min-height: 28px;
+  padding: 5px 10px;
+}
+
+.LxButton--lg,
+.LxButton--icon-lg {
+  min-height: 36px;
+}
+
+.LxButton--xl,
+.LxButton--icon-xl {
+  min-height: 40px;
+}
+
+.LxButton--icon,
+.LxButton--icon-sm,
+.LxButton--icon-xs,
+.LxButton--icon-lg,
+.LxButton--icon-xl,
+.LxButton--icon-chip {
+  min-width: 32px;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.LxInputControl {
+  display: flex;
+  min-height: 32px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--border);
+  border-radius: 8px;
+  background-color: var(--background);
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.LxInputControl--soft {
+  background-color: var(--secondary);
+}
+
+.LxInputControl--sm {
+  min-height: 28px;
+}
+
+.LxInputControl--lg {
+  min-height: 36px;
+}
+
+.LxInputControl--disabled {
+  opacity: 0.55;
+}
+
+.LxInputControl--invalid {
+  border-color: var(--destructive);
+}
+
+.LxInput {
+  width: 100%;
+  height: 100%;
+  color: var(--foreground);
+  font-size: 12px;
+  background-color: transparent;
+}
+
+.LxKbdGroup {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.LxKbd {
+  min-width: 20px;
+  height: 20px;
+  padding-left: 4px;
+  padding-right: 4px;
+  border-radius: 4px;
+  background-color: var(--muted);
+  align-items: center;
+  justify-content: center;
+}
+
+.LxKbd__text {
+  color: var(--muted-foreground);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.LxDialogPopup.LxCommandDialogPopup {
+  width: 576px;
+  max-height: 420px;
+  border-color: var(--color-border-light, var(--border));
+  border-radius: 16px;
+  background-color: var(--color-background-surface-under, var(--popover));
+  padding: 0;
+  overflow: hidden;
+}
+
+.LxCommand {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background-color: var(--color-background-elevated-secondary, var(--popover));
+}
+
+.LxCommandPanel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  margin-left: -1px;
+  margin-right: -1px;
+  border-width: 1px;
+  border-bottom-width: 0;
+  border-style: solid;
+  border-color: var(--color-border-light, var(--border));
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  background-color: var(--color-background-surface-under, var(--popover));
+}
+
+.LxCommandInput {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 6px 10px;
+}
+
+.LxCommandTextarea {
+  flex: 1;
+  min-width: 0;
+  height: 36px;
+  padding-left: 0;
+  padding-right: 0;
+  border-width: 0;
+  border-radius: 0;
+  background-color: transparent;
+  color: var(--foreground);
+  font-size: 12px;
+}
+
+.LxCommandList {
+  max-height: 384px;
+  padding-left: 6px;
+  padding-right: 6px;
+  padding-bottom: 6px;
+}
+
+.LxCommandGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.LxCommandGroupLabel {
+  padding: 6px 12px;
+}
+
+.LxCommandGroupLabel__text {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.LxCommandItem {
+  min-height: 28px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+.LxCommandItem.ui-hover,
+.LxCommandItem--highlighted,
+.LxCommandItem.ui-pressed {
+  background-color: var(--accent);
+}
+
+.LxCommandItem.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.LxCommandItem.ui-pressed {
+  opacity: 0.82;
+}
+
+.LxCommandItem--disabled {
+  opacity: 0.48;
+}
+
+.LxCommandSeparator {
+  height: 1px;
+  margin: 8px;
+  background-color: var(--border);
+}
+
+.LxCommandFooter {
+  min-height: 41px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 20px;
+  border-top-width: 1px;
+  border-top-color: var(--border);
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.LxCommandFooter > text {
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+
+.LxDialogViewport {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.LxDialogBackdrop {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.LxDialogBackdrop.ui-entering,
+.LxDialogBackdrop.ui-leaving {
+  opacity: 0;
+}
+
+.LxDialogPopup {
+  position: relative;
+  width: 420px;
+  max-width: 90%;
+  max-height: 80%;
+  display: flex;
+  flex-direction: column;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--border);
+  border-radius: 24px;
+  background-color: var(--popover);
+  color: var(--popover-foreground);
+  padding: 16px;
+}
+
+.LxDialogPopup.ui-entering,
+.LxDialogPopup.ui-leaving {
+  opacity: 0;
+  transform: scale(0.98);
+}
+
+.LxDialogClose {
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  padding: 6px;
+}
+
+.LxDialogClose__text,
+.LxDialogClose__icon {
+  color: var(--muted-foreground);
+  font-size: 20px;
+}
+
+.LxDialogHeader {
+  display: flex;
+  flex-direction: column;
+  padding-right: 24px;
+  margin-bottom: 10px;
+}
+
+.LxDialogTitle {
+  color: var(--foreground);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.LxDialogDescription {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.LxDialogPanel {
+  max-height: 420px;
+}
+
+.LxDialogFooter {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-top: 14px;
+}
+
+.LxMenuRoot,
+.LxTooltipRoot {
+  position: relative;
+}
+
+.LxMenuLayer {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 60;
+  width: 100vw;
+  height: 100vh;
+}
+
+.LxMenuBackdrop {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+}
+
+.LxMenuTrigger,
+.LxTooltipTrigger {
+  display: flex;
+}
+
+.LxMenuTrigger.ui-hover {
+  opacity: 0.9;
+}
+
+.LxMenuTrigger.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.LxMenuTrigger.ui-pressed {
+  opacity: 0.72;
+}
+
+.LxMenuTrigger--disabled {
+  opacity: 0.48;
+}
+
+.LxMenuPopup {
+  position: absolute;
+  z-index: 1;
+  width: 180px;
+  min-height: 116px;
+  display: flex;
+  flex-direction: column;
+  padding: 6px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--border);
+  border-radius: 10px;
+  background-color: var(--popover);
+}
+
+.LxMenuSubPopup {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  padding-left: 6px;
+  border-left-width: 1px;
+  border-left-style: solid;
+  border-left-color: var(--border);
+}
+
+.LxTooltipPopup.ui-entering,
+.LxTooltipPopup.ui-leaving {
+  opacity: 0;
+  transform: scale(0.98);
+}
+
+.LxMenuItem {
+  width: 100%;
+  min-height: 32px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 7px 10px;
+  border-radius: 6px;
+  background-color: transparent;
+}
+
+.LxMenuItem.ui-hover,
+.LxMenuItem.ui-focus {
+  background-color: var(--accent);
+}
+
+.LxMenuItem.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.LxMenuItem.ui-pressed {
+  background-color: var(--accent);
+  opacity: 0.72;
+}
+
+.LxMenuItem--disabled {
+  opacity: 0.48;
+}
+
+.LxMenuItem__row {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.LxMenuItem__text {
+  color: var(--foreground);
+  font-size: 12px;
+}
+
+.LxMenuIndicator {
+  color: var(--foreground);
+  font-size: 12px;
+}
+
+.LxMenuSeparator {
+  height: 1px;
+  background-color: var(--border);
+  margin: 4px 6px;
+}
+
+.LxMenuGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.LxMenuGroupLabel,
+.LxMenuShortcut {
+  color: var(--muted-foreground);
+  font-size: 10px;
+}
+
+.LxTooltipPopup {
+  position: absolute;
+  left: 0;
+  bottom: 100%;
+  z-index: 60;
+  width: 220px;
+  max-width: 260px;
+  padding: 6px 9px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--border);
+  border-radius: 8px;
+  background-color: var(--popover);
+}
+
+.LxTooltipText {
+  color: var(--popover-foreground);
+  font-size: 11px;
+}

@@ -1,0 +1,36 @@
+.SharedSidebarThreadIdentityCopy {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 6px;
+}
+
+.SharedSidebarThreadIdentityCopy--subagent {
+  margin-left: 5px;
+}
+
+.SharedSidebarThreadIdentityTitle {
+  flex: 1;
+  min-width: 0;
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui, 12px);
+  line-height: 20px;
+}
+
+.SharedSidebarThreadIdentityTitle--active {
+  color: var(--foreground);
+}
+
+.SharedSidebarThreadIdentityTitle--subagent {
+  color: var(--foreground);
+  line-height: 18px;
+  opacity: 0.8;
+}
+
+.SharedSidebarThreadIdentityPending {
+  color: var(--warning-foreground, #a16207);
+  font-size: 10px;
+  font-weight: 500;
+}

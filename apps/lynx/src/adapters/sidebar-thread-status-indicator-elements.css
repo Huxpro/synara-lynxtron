@@ -1,0 +1,34 @@
+.LynxSidebarThreadStatus {
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background-color: color-mix(in srgb, var(--muted-foreground) 42%, transparent);
+}
+
+.LynxSidebarThreadStatus--running {
+  background-color: #0ea5e9;
+}
+
+.LynxSidebarThreadStatus--attention {
+  background-color: #f59e0b;
+}
+
+.LynxSidebarThreadStatus--decision {
+  background-color: #8b5cf6;
+}
+
+.LynxSidebarThreadStatus--completed {
+  width: 13px;
+  height: 13px;
+  align-items: center;
+  justify-content: center;
+  background-color: #10b981;
+}
+
+.LynxSidebarThreadStatusCheck {
+  color: #ffffff;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 11px;
+}

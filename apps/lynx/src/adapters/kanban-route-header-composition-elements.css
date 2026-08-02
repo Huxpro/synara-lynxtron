@@ -1,0 +1,88 @@
+.SharedKanbanRouteHeader {
+  width: 100%;
+  height: 44px;
+  flex-shrink: 0;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.SharedKanbanRouteHeaderRow {
+  width: 100%;
+  height: 44px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.SharedKanbanRouteBack {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+}
+
+.SharedKanbanRouteBack.ui-hover,
+.SharedKanbanRouteBack.ui-pressed,
+.SharedKanbanRouteNewTask.ui-hover,
+.SharedKanbanRouteNewTask.ui-pressed {
+  background-color: var(--sidebar-accent);
+}
+
+.SharedKanbanRouteBack.ui-focus,
+.SharedKanbanRouteNewTask.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.SharedKanbanRouteBack.ui-pressed,
+.SharedKanbanRouteNewTask.ui-pressed {
+  opacity: 0.8;
+}
+
+.SharedKanbanRouteBackGlyph {
+  color: var(--muted-foreground);
+  font-size: 20px;
+  line-height: 22px;
+}
+
+.SharedKanbanRouteTitle {
+  max-width: 640px;
+  color: var(--foreground);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+.SharedKanbanRouteCount {
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 18px;
+  opacity: 0.7;
+}
+
+.SharedKanbanRouteSpacer {
+  min-width: 0;
+  flex: 1;
+}
+
+.SharedKanbanRouteNewTask {
+  height: 28px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  border-radius: 8px;
+}
+
+.SharedKanbanRouteNewTask--disabled {
+  opacity: 0.45;
+}
+
+.SharedKanbanRouteNewTaskText {
+  color: var(--foreground);
+  font-size: 12px;
+  line-height: 18px;
+}

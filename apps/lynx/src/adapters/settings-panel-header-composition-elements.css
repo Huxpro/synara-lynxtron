@@ -1,0 +1,27 @@
+.SharedSettingsPanelHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.SharedSettingsPanelHeaderCopy {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.SharedSettingsPanelHeaderTitle {
+  color: var(--foreground);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 28px;
+}
+
+.SharedSettingsPanelHeaderDescription {
+  margin-top: 6px;
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 20px;
+}

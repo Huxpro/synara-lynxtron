@@ -1,0 +1,93 @@
+import type { ReactNode } from '@lynx-js/react';
+
+import { ArrowLeftIcon, SearchIcon } from '../lib/icons.lynx';
+import './settings-sidebar-chrome-composition-elements.css';
+import { useLynxInteractiveState } from './useLynxInteractiveState';
+
+type ChildrenProps = { readonly children?: ReactNode };
+
+export function SettingsSidebarChromeRootElement(props: ChildrenProps) {
+  return <view className="SharedSettingsSidebarChrome">{props.children}</view>;
+}
+
+export function SettingsSidebarBackRegionElement(props: ChildrenProps) {
+  return <view className="SharedSettingsSidebarBackRegion">{props.children}</view>;
+}
+
+export function SettingsSidebarBackButtonElement(
+  props: ChildrenProps & { readonly onActivate: () => void }
+) {
+  const interaction = useLynxInteractiveState({
+    baseClassName: 'SharedSettingsSidebarBackButton',
+    accessibleLabel: 'Back to app',
+    onActivate: props.onActivate,
+  });
+  return (
+    <view
+      className={interaction.className}
+      aria-label="Back to app"
+      {...interaction.eventProps}
+    >
+      {props.children}
+    </view>
+  );
+}
+
+export function SettingsSidebarBackIconElement() {
+  return (
+    <view className="SharedSettingsSidebarBackIcon">
+      <ArrowLeftIcon size={16} color="var(--foreground)" />
+    </view>
+  );
+}
+
+export function SettingsSidebarBackLabelElement(props: ChildrenProps) {
+  return <text className="SharedSettingsSidebarBackLabel">{props.children}</text>;
+}
+
+export function SettingsSidebarSearchRegionElement(props: ChildrenProps) {
+  return <view className="SharedSettingsSidebarSearchRegion">{props.children}</view>;
+}
+
+export function SettingsSidebarSearchElement(props: {
+  readonly value: string;
+  readonly placeholder: string;
+  readonly accessibleLabel: string;
+  readonly onValueChange?: (value: string) => void;
+  readonly onSubmit?: () => void;
+  readonly onEscape?: () => void;
+}) {
+  return (
+    <view
+      className="SharedSettingsSidebarSearchUnavailable"
+      aria-label={props.accessibleLabel}
+      aria-disabled="true"
+      focusable={false}
+    >
+      <view className="SharedSettingsSidebarSearchIcon">
+        <SearchIcon size={14} color="var(--muted-foreground)" />
+      </view>
+      <text className="SharedSettingsSidebarSearchUnavailableText">
+        Search unavailable in this runtime
+      </text>
+    </view>
+  );
+}
+
+export function SettingsSidebarSearchUnavailableElement(props: ChildrenProps) {
+  return (
+    <view
+      className="SharedSettingsSidebarSearchUnavailable"
+      aria-label="Search settings unavailable"
+      aria-disabled="true"
+      focusable={false}
+    >
+      <view className="SharedSettingsSidebarSearchIcon">
+        <SearchIcon size={14} color="var(--muted-foreground)" />
+      </view>
+      <text className="SharedSettingsSidebarSearchUnavailableText">
+        {props.children}
+      </text>
+    </view>
+  );
+}

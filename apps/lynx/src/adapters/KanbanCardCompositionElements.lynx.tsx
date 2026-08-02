@@ -1,0 +1,250 @@
+import type { ProviderKind } from '@synara/contracts';
+import { useRef, type ReactNode } from '@lynx-js/react';
+import { getRectByRef } from '@lynx-js/lynx-ui';
+import type { NodesRef } from '@lynx-js/types';
+
+import type { PrStatePresentation } from '@synara-web/components/pullRequest/pullRequestStatePresentation';
+import type { SidebarStatusPresentation } from '@synara-web/components/SidebarStatus.logic';
+import type { KanbanColumnKey } from '@synara-web/components/kanban/kanban.logic';
+import type { KanbanDragPoint } from '@synara-web/components/kanban/kanbanDnd.logic';
+import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
+import {
+  isNativeKanbanPrimaryPointer,
+  readNativeKanbanPointer,
+  type NativeKanbanPointerEvent,
+} from '../app/kanbanDnd.logic';
+
+import './kanban-card-composition-elements.css';
+import {
+  lynxNestedInteractiveEventProps,
+  useLynxInteractiveState,
+} from './useLynxInteractiveState';
+import { resolveSecondaryPointerOffset } from '../components/sidebar/threadContextActions.logic';
+
+type ChildrenProps = { readonly children?: ReactNode };
+
+export function KanbanCardRootElement(props: ChildrenProps & {
+  readonly accessibleLabel: string;
+  readonly isOverlay: boolean;
+  readonly isDragSource: boolean;
+  readonly onActivate?: () => void;
+  readonly onContextMenu?: (event: React.MouseEvent) => void;
+  readonly onDragPointerStart?: (point: KanbanDragPoint) => void;
+}) {
+  const rootRef = useRef<NodesRef>(null);
+  const interaction = useLynxInteractiveState({
+    baseClassName: `SharedKanbanCard${
+      props.isOverlay ? ' SharedKanbanCard--overlay' : ''
+    }${props.isDragSource ? ' SharedKanbanCard--drag-source' : ''}`,
+    accessibleLabel: props.accessibleLabel,
+    onActivate: props.onActivate,
+  });
+  const openContextMenu = (offset: { readonly x: number; readonly y: number }) => {
+    'background only';
+    if (!props.onContextMenu) return;
+    void getRectByRef(rootRef, true)
+      .then((rect) => {
+        props.onContextMenu?.({
+          clientX: rect.left + offset.x,
+          clientY: rect.top + offset.y,
+          preventDefault() {},
+          stopPropagation() {},
+        } as React.MouseEvent);
+      })
+      .catch(() => {
+        // A menu at invented coordinates is worse than no menu.
+      });
+  };
+  return (
+    <view
+      ref={rootRef}
+      className={interaction.className}
+      {...interaction.eventProps}
+      bindmousedown={(event: {
+        readonly button?: number;
+        readonly buttons?: number;
+        readonly clientX?: number;
+        readonly clientY?: number;
+        readonly detail?: NativeKanbanPointerEvent['detail'];
+        readonly pageX?: number;
+        readonly pageY?: number;
+        readonly x?: number;
+        readonly y?: number;
+      }) => {
+        interaction.eventProps.bindmousedown?.();
+        const offset = resolveSecondaryPointerOffset(event);
+        if (offset) {
+          openContextMenu(offset);
+          return;
+        }
+        if (!props.onDragPointerStart || !isNativeKanbanPrimaryPointer(event)) return;
+        const point = readNativeKanbanPointer(event);
+        if (point) props.onDragPointerStart(point);
+      }}
+      bindtouchstart={(event: NativeKanbanPointerEvent) => {
+        interaction.eventProps.bindtouchstart?.();
+        if (!props.onDragPointerStart) return;
+        const point = readNativeKanbanPointer(event);
+        if (point) props.onDragPointerStart(point);
+      }}
+      bindlongpress={(event: { readonly x?: number; readonly y?: number }) => {
+        openContextMenu({
+          x: Number.isFinite(event.x) ? event.x! : 12,
+          y: Number.isFinite(event.y) ? event.y! : 12,
+        });
+      }}
+    >
+      {props.children}
+    </view>
+  );
+}
+
+export function KanbanCardTitleRowElement(props: ChildrenProps) {
+  return <view className="SharedKanbanCardTitleRow">{props.children}</view>;
+}
+
+export function KanbanCardActionsElement(props: {
+  readonly label: string;
+  readonly onActivate: (event: React.MouseEvent) => void;
+}) {
+  const interaction = useLynxInteractiveState({
+    baseClassName: 'SharedKanbanCardActions',
+    accessibleLabel: props.label,
+    onActivate: () =>
+      props.onActivate({
+        clientX: 0,
+        clientY: 0,
+        preventDefault() {},
+        stopPropagation() {},
+      } as React.MouseEvent),
+  });
+  return (
+    <view
+      className={interaction.className}
+      {...lynxNestedInteractiveEventProps(interaction.eventProps)}
+    >
+      <text className="SharedKanbanCardActionsText">•••</text>
+    </view>
+  );
+}
+
+export function KanbanCardTitleElement(props: ChildrenProps) {
+  return (
+    <text className="SharedKanbanCardTitle" maxlines={2}>
+      {props.children}
+    </text>
+  );
+}
+
+export function KanbanCardPinElement() {
+  return <view className="SharedKanbanCardPin" />;
+}
+
+export function KanbanCardDraftPreviewElement(props: ChildrenProps) {
+  return (
+    <text className="SharedKanbanCardDraftPreview" maxlines={2}>
+      {props.children}
+    </text>
+  );
+}
+
+export function KanbanCardMetaRowElement(props: ChildrenProps) {
+  return <view className="SharedKanbanCardMetaRow">{props.children}</view>;
+}
+
+export function KanbanCardProviderElement(props: {
+  readonly provider: ProviderKind | null;
+}) {
+  return (
+    <view className="SharedKanbanCardProvider">
+      <OpenAIProviderIcon provider={props.provider ?? 'codex'} />
+    </view>
+  );
+}
+
+export function KanbanCardBranchElement(props: { readonly label: string }) {
+  return (
+    <text className="SharedKanbanCardMetaText" maxlines={1}>
+      {props.label}
+    </text>
+  );
+}
+
+export function KanbanCardWorktreeElement(_props: { readonly label: string }) {
+  return <text className="SharedKanbanCardMetaIcon">W</text>;
+}
+
+export function KanbanCardForkElement() {
+  return <text className="SharedKanbanCardMetaIcon">⑂</text>;
+}
+
+export function KanbanCardPullRequestElement(props: {
+  readonly number: number;
+  readonly title: string;
+  readonly presentation: PrStatePresentation;
+}) {
+  return (
+    <text className={`SharedKanbanCardPr SharedKanbanCardPr--${props.presentation.iconKind}`}>
+      #{props.number}
+    </text>
+  );
+}
+
+export function KanbanCardAttachmentElement() {
+  return <text className="SharedKanbanCardMetaIcon">＋</text>;
+}
+
+export function KanbanCardTrailingElement(props: ChildrenProps) {
+  return <view className="SharedKanbanCardTrailing">{props.children}</view>;
+}
+
+export function KanbanCardOptimisticStatusElement(props: {
+  readonly elapsed: string | null;
+}) {
+  return (
+    <view className="SharedKanbanCardInlineStatus">
+      <view className="SharedKanbanCardStatusDot SharedKanbanCardStatusDot--working" />
+      <text className="SharedKanbanCardWorking">
+        {props.elapsed ? `Worked for ${props.elapsed}` : 'Starting…'}
+      </text>
+    </view>
+  );
+}
+
+export function KanbanCardStatusPillElement(props: {
+  readonly pill: SidebarStatusPresentation;
+}) {
+  return (
+    <view className="SharedKanbanCardInlineStatus">
+      <view
+        className={`SharedKanbanCardStatusDot${
+          props.pill.pulse ? ' SharedKanbanCardStatusDot--working' : ''
+        }`}
+      />
+      <text className="SharedKanbanCardStatusText" maxlines={1}>
+        {props.pill.label}
+      </text>
+    </view>
+  );
+}
+
+export function KanbanCardTimestampElement(props: { readonly label: string }) {
+  return <text className="SharedKanbanCardTimestamp">{props.label}</text>;
+}
+
+export function KanbanCardColumnStatusElement(props: {
+  readonly column: KanbanColumnKey;
+  readonly label: string;
+  readonly isTerminal: boolean;
+}) {
+  return (
+    <view className="SharedKanbanCardColumnStatus">
+      <view
+        className={`SharedKanbanCardColumnDot SharedKanbanCardColumnDot--${
+          props.isTerminal ? 'terminal' : props.column
+        }`}
+      />
+      <text className="SharedKanbanCardColumnLabel">{props.label}</text>
+    </view>
+  );
+}

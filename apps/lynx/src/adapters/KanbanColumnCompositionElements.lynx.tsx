@@ -1,0 +1,103 @@
+import type { ReactNode } from '@lynx-js/react';
+
+import type { KanbanColumnKey } from '@synara-web/components/kanban/kanban.logic';
+
+import './kanban-column-composition-elements.css';
+import { useLynxInteractiveState } from './useLynxInteractiveState';
+
+type ChildrenProps = { readonly children?: ReactNode };
+
+export function KanbanColumnRootElement(props: ChildrenProps) {
+  return <view className="SharedKanbanColumnRoot">{props.children}</view>;
+}
+
+export function KanbanColumnHeaderElement(props: ChildrenProps) {
+  return <view className="SharedKanbanColumnHeader">{props.children}</view>;
+}
+
+export function KanbanColumnTitleElement(props: ChildrenProps) {
+  return <text className="SharedKanbanColumnTitle">{props.children}</text>;
+}
+
+export function KanbanColumnCountElement(props: ChildrenProps) {
+  return <text className="SharedKanbanColumnCount">{props.children}</text>;
+}
+
+export function KanbanColumnHeaderActionsElement(props: ChildrenProps) {
+  return <view className="SharedKanbanColumnHeaderActions">{props.children}</view>;
+}
+
+export function KanbanColumnDispatchTargetElement(props: ChildrenProps) {
+  return <text className="SharedKanbanColumnDispatchTarget">{props.children}</text>;
+}
+
+export function KanbanColumnNewCardElement(props: {
+  readonly label: string;
+  readonly onActivate: () => void;
+}) {
+  const interaction = useLynxInteractiveState({
+    baseClassName: 'SharedKanbanColumnNewCard',
+    onActivate: props.onActivate,
+  });
+  return (
+    <view
+      className={interaction.className}
+      aria-label={props.label}
+      {...interaction.eventProps}
+    >
+      <text className="SharedKanbanColumnNewCardLabel">＋</text>
+    </view>
+  );
+}
+
+export function KanbanColumnStatusElement(props: {
+  readonly column: KanbanColumnKey;
+}) {
+  return (
+    <view
+      className={`SharedKanbanColumnStatus SharedKanbanColumnStatus--${props.column}`}
+    >
+      <text className="SharedKanbanColumnStatusGlyph">
+        {props.column === 'done' ? '✓' : props.column === 'inProgress' ? '◐' : '◌'}
+      </text>
+    </view>
+  );
+}
+
+export function KanbanColumnCardListElement(props: ChildrenProps) {
+  return (
+    <scroll-view
+      className="SharedKanbanColumnScroller"
+      scroll-orientation="vertical"
+    >
+      <view className="SharedKanbanColumnCardList">{props.children}</view>
+    </scroll-view>
+  );
+}
+
+export function KanbanColumnCardItemElement(props: ChildrenProps) {
+  return <view className="SharedKanbanColumnCardItem">{props.children}</view>;
+}
+
+export function KanbanColumnEmptyElement(props: ChildrenProps) {
+  return (
+    <view className="SharedKanbanColumnEmpty">
+      <text className="SharedKanbanColumnEmptyText">{props.children}</text>
+    </view>
+  );
+}
+
+export function KanbanColumnShowMoreElement(props: {
+  readonly label: string;
+  readonly onActivate: () => void;
+}) {
+  const interaction = useLynxInteractiveState({
+    baseClassName: 'SharedKanbanColumnShowMore',
+    onActivate: props.onActivate,
+  });
+  return (
+    <view className={interaction.className} {...interaction.eventProps}>
+      <text className="SharedKanbanColumnShowMoreLabel">{props.label}</text>
+    </view>
+  );
+}

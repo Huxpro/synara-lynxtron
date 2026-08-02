@@ -1,0 +1,193 @@
+.SharedPrRow {
+  width: calc(100% + 24px);
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  border-radius: 8px;
+  margin-left: -12px;
+}
+
+.SharedPrRow--selected {
+  background-color: var(--muted);
+}
+
+.SharedPrRow.ui-hover,
+.SharedPrRow.ui-pressed {
+  background-color: var(--color-background-elevated-secondary);
+}
+
+.SharedPrRow--selected.ui-hover,
+.SharedPrRow--selected.ui-pressed {
+  background-color: var(--muted);
+}
+
+.SharedPrRowAction {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 6px 4px 6px 12px;
+}
+
+.SharedPrRowAction.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.SharedPrState {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}
+
+.SharedPrStateGlyph {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.SharedPrState--open .SharedPrStateGlyph {
+  color: var(--success);
+}
+
+.SharedPrState--draft .SharedPrStateGlyph,
+.SharedPrState--closed .SharedPrStateGlyph {
+  color: var(--muted-foreground);
+}
+
+.SharedPrState--merged .SharedPrStateGlyph {
+  color: var(--accent-foreground);
+}
+
+.SharedPrState--conflicting .SharedPrStateGlyph {
+  color: var(--destructive);
+}
+
+.SharedPrCopy {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.SharedPrTitleLine {
+  min-width: 0;
+}
+
+.SharedPrTitle {
+  color: var(--foreground);
+  font-size: var(--app-font-size-ui-lg);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.SharedPrMeta {
+  min-width: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 2px;
+}
+
+.SharedPrAvatar {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background-color: var(--muted);
+  margin-right: 6px;
+}
+
+.SharedPrAvatarText {
+  color: var(--muted-foreground);
+  font-size: 8px;
+  font-weight: 600;
+}
+
+.SharedPrMetaSegments {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.SharedPrMetaSegment {
+  min-width: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.SharedPrMetaSeparator {
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-sm);
+  margin: 0 6px;
+  opacity: 0.7;
+}
+
+.SharedPrMetaSegmentText {
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-sm);
+  opacity: 0.7;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.SharedPrTrailing {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-left: 12px;
+}
+
+.SharedPrTime,
+.SharedPrDiffText {
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-sm);
+  opacity: 0.7;
+}
+
+.SharedPrDiff {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 2px;
+}
+
+.SharedPrDiffText + .SharedPrDiffText {
+  margin-left: 4px;
+}
+
+.SharedPrPin {
+  width: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+}
+
+.SharedPrPin.ui-hover,
+.SharedPrPin.ui-pressed {
+  background-color: var(--muted);
+}
+
+.SharedPrPin.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.SharedPrPinGlyph {
+  color: var(--muted-foreground);
+  font-size: 12px;
+}

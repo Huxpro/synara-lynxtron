@@ -1,0 +1,177 @@
+.SharedKanbanCard {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background-color: color-mix(in srgb, var(--card) 70%, transparent);
+}
+
+.SharedKanbanCard--overlay {
+  background-color: var(--card);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--foreground) 14%, transparent);
+}
+
+.SharedKanbanCard--drag-source {
+  opacity: 0.4;
+}
+
+.SharedKanbanCard.ui-hover {
+  background-color: var(--card);
+  border-color: var(--ring);
+}
+
+.SharedKanbanCard.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.SharedKanbanCard.ui-pressed {
+  opacity: 0.8;
+}
+
+.SharedKanbanCardTitleRow,
+.SharedKanbanCardMetaRow,
+.SharedKanbanCardTrailing,
+.SharedKanbanCardInlineStatus,
+.SharedKanbanCardColumnStatus {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.SharedKanbanCardTitleRow {
+  align-items: flex-start;
+}
+
+.SharedKanbanCardActions {
+  flex-shrink: 0;
+  padding: 1px 4px;
+  border-radius: 5px;
+}
+
+.SharedKanbanCardActions--hover,
+.SharedKanbanCardActions--pressed,
+.SharedKanbanCardActions--focus-visible {
+  background-color: var(--muted);
+}
+
+.SharedKanbanCardActionsText {
+  color: var(--muted-foreground);
+  font-size: 11px;
+  line-height: 16px;
+}
+
+.SharedKanbanCardTitle {
+  flex: 1;
+  min-width: 0;
+  color: var(--foreground);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 17px;
+}
+
+.SharedKanbanCardPin {
+  width: 6px;
+  height: 6px;
+  margin-top: 4px;
+  margin-left: 6px;
+  border-radius: 3px;
+  background-color: var(--muted-foreground);
+}
+
+.SharedKanbanCardDraftPreview {
+  margin-top: 6px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.SharedKanbanCardMetaRow {
+  min-width: 0;
+  margin-top: 7px;
+}
+
+.SharedKanbanCardProvider {
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
+  opacity: 0.8;
+}
+
+.SharedKanbanCardProvider .OpenAIProviderIcon {
+  width: 14px;
+  height: 14px;
+}
+
+.SharedKanbanCardMetaText,
+.SharedKanbanCardMetaIcon,
+.SharedKanbanCardPr,
+.SharedKanbanCardTimestamp,
+.SharedKanbanCardStatusText,
+.SharedKanbanCardColumnLabel,
+.SharedKanbanCardWorking {
+  color: var(--muted-foreground);
+  font-size: 11px;
+}
+
+.SharedKanbanCardMetaText {
+  max-width: 128px;
+  margin-right: 8px;
+}
+
+.SharedKanbanCardMetaIcon,
+.SharedKanbanCardPr {
+  margin-right: 8px;
+}
+
+.SharedKanbanCardPr--pull-request,
+.SharedKanbanCardPr--merged-simple {
+  color: var(--status-open, #22a06b);
+}
+
+.SharedKanbanCardPr--merge-conflict {
+  color: var(--destructive);
+}
+
+.SharedKanbanCardTrailing {
+  min-width: 0;
+  margin-left: auto;
+}
+
+.SharedKanbanCardInlineStatus {
+  min-width: 0;
+  margin-right: 8px;
+}
+
+.SharedKanbanCardStatusDot,
+.SharedKanbanCardColumnDot {
+  width: 6px;
+  height: 6px;
+  margin-right: 5px;
+  border-radius: 3px;
+  background-color: var(--muted-foreground);
+}
+
+.SharedKanbanCardStatusDot--working,
+.SharedKanbanCardColumnDot--inProgress {
+  background-color: var(--primary);
+}
+
+.SharedKanbanCardColumnDot--done {
+  background-color: var(--status-open, #22a06b);
+}
+
+.SharedKanbanCardColumnDot--terminal {
+  border: 1px solid var(--muted-foreground);
+  background-color: transparent;
+}
+
+.SharedKanbanCardTimestamp {
+  margin-right: 8px;
+  white-space: nowrap;
+}
+
+.SharedKanbanCardColumnStatus {
+  flex-shrink: 0;
+}

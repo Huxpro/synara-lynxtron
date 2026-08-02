@@ -1,0 +1,31 @@
+.SharedSidebarListSectionHeader {
+  position: relative;
+  height: var(--app-density-row-height, 1.75rem);
+  margin: 4px 0;
+}
+
+.SharedSidebarListSectionHeaderLabel {
+  width: 100%;
+  min-width: 0;
+  height: var(--app-density-row-height, 1.75rem);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--app-density-row-padding-y, 0.125rem) 76px
+    var(--app-density-row-padding-y, 0.125rem) 8px;
+}
+
+.SharedSidebarListSectionHeaderText {
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-xs, 10px);
+  font-weight: 600;
+}
+
+.SharedSidebarListSectionHeaderToolbar {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

@@ -1,0 +1,358 @@
+export interface RpcTransportSocket {
+  send(data: string): void;
+  close(): void;
+  addEventListener(type: string, listener: (event: any) => void): void;
+}
+
+export type RpcTransportState =
+  | 'idle'
+  | 'connecting'
+  | 'connected'
+  | 'reconnecting'
+  | 'offline';
+
+export type StartRpcTimeout = (
+  milliseconds: number,
+  onTimeout: () => void
+) => () => void;
+
+interface RpcExit {
+  readonly _tag: 'Exit';
+  readonly requestId: string;
+  readonly exit:
+    | { readonly _tag: 'Success'; readonly value: unknown }
+    | { readonly _tag: 'Failure'; readonly cause?: unknown };
+}
+
+interface PendingRpc {
+  readonly tag: string;
+  readonly cancelTimeout: () => void;
+  readonly resolve: (value: unknown) => void;
+  readonly reject: (error: Error) => void;
+}
+
+interface RpcSocketContext {
+  failed: boolean;
+  readonly pending: Map<string, PendingRpc>;
+}
+
+export class RpcTransportError extends Error {
+  readonly name = 'RpcTransportError';
+}
+
+export function isRpcTransportError(error: unknown): boolean {
+  return (
+    error instanceof RpcTransportError ||
+    (error instanceof Error && error.name === 'RpcTransportError')
+  );
+}
+
+function describeError(value: unknown): string {
+  if (value instanceof Error) return value.message;
+  if (value && typeof value === 'object' && 'message' in value) {
+    return String((value as { message?: unknown }).message);
+  }
+  return String(value);
+}
+
+function safeClose(socket: RpcTransportSocket): void {
+  try {
+    socket.close();
+  } catch {
+    // A failed transport is already unusable.
+  }
+}
+
+export function openRpcSocketWithTimeout(input: {
+  readonly createSocket: () => RpcTransportSocket;
+  readonly timeoutMs: number;
+  readonly startTimeout: StartRpcTimeout;
+}): Promise<RpcTransportSocket> {
+  return new Promise((resolve, reject) => {
+    let settled = false;
+    let cancelTimeout = () => undefined;
+    const socket = input.createSocket();
+    const finishFailure = (error: Error) => {
+      if (settled) return;
+      settled = true;
+      cancelTimeout();
+      safeClose(socket);
+      reject(error);
+    };
+    cancelTimeout = input.startTimeout(input.timeoutMs, () => {
+      finishFailure(
+        new RpcTransportError(
+          `WebSocket open timed out after ${input.timeoutMs}ms`
+        )
+      );
+    });
+    socket.addEventListener('open', () => {
+      if (settled) return;
+      settled = true;
+      cancelTimeout();
+      resolve(socket);
+    });
+    socket.addEventListener('error', (event: unknown) => {
+      finishFailure(
+        new RpcTransportError(
+          `WebSocket open failed: ${describeError(event)}`
+        )
+      );
+    });
+    socket.addEventListener('close', () => {
+      finishFailure(new RpcTransportError('WebSocket closed before open'));
+    });
+  });
+}
+
+function attachRpcSocketContext(
+  socket: RpcTransportSocket,
+  onTransportFailure: (socket: RpcTransportSocket, error: Error) => void
+): RpcSocketContext {
+  const context: RpcSocketContext = { failed: false, pending: new Map() };
+  const failAll = (error: Error) => {
+    if (context.failed) return;
+    context.failed = true;
+    for (const request of context.pending.values()) {
+      request.cancelTimeout();
+      request.reject(error);
+    }
+    context.pending.clear();
+    onTransportFailure(socket, error);
+  };
+  socket.addEventListener('error', (event: unknown) => {
+    failAll(
+      new RpcTransportError(`socket error: ${describeError(event)}`)
+    );
+  });
+  socket.addEventListener('close', () => {
+    failAll(new RpcTransportError('socket closed'));
+  });
+  return context;
+}
+
+export function createRpcSocketManager(input: {
+  readonly connect: () => Promise<RpcTransportSocket>;
+  readonly sleep: (milliseconds: number) => Promise<void>;
+  readonly startTimeout: StartRpcTimeout;
+  readonly nextRequestId: () => string;
+  readonly requestTimeoutMs: number;
+  readonly maxReconnectAttempts: number;
+  readonly initialReconnectDelayMs: number;
+  readonly maxReconnectDelayMs: number;
+  readonly offlineRetryDelayMs?: number;
+  readonly now?: () => number;
+  readonly closeWhenIdle?: boolean;
+}) {
+  let activeSocket: RpcTransportSocket | null = null;
+  let connectionPromise: Promise<RpcTransportSocket> | null = null;
+  let disposed = false;
+  let everConnected = false;
+  let offlineUntilMs = 0;
+  let state: RpcTransportState = 'idle';
+  const listeners = new Set<(state: RpcTransportState) => void>();
+  const contexts = new WeakMap<RpcTransportSocket, RpcSocketContext>();
+
+  const publishState = (next: RpcTransportState) => {
+    if (state === next) return;
+    state = next;
+    for (const listener of listeners) listener(state);
+  };
+
+  const invalidate = (socket: RpcTransportSocket, error: Error) => {
+    if (activeSocket !== socket) return;
+    activeSocket = null;
+    connectionPromise = null;
+    // A closed socket is invalid, but no reconnect attempt exists until the
+    // next caller asks for data. Keep that idle gap distinct from an active,
+    // bounded reconnect attempt so the UI does not flicker between polls.
+    publishState('idle');
+    safeClose(socket);
+  };
+
+  const contextFor = (socket: RpcTransportSocket) => {
+    const existing = contexts.get(socket);
+    if (existing) return existing;
+    const context = attachRpcSocketContext(socket, invalidate);
+    contexts.set(socket, context);
+    return context;
+  };
+
+  const connectWithBackoff = async (): Promise<RpcTransportSocket> => {
+    let lastError: Error | null = null;
+    for (let attempt = 0; attempt <= input.maxReconnectAttempts; attempt += 1) {
+      if (disposed) throw new RpcTransportError('client disposed');
+      publishState(everConnected || attempt > 0 ? 'reconnecting' : 'connecting');
+      try {
+        const socket = await input.connect();
+        if (disposed) {
+          safeClose(socket);
+          throw new RpcTransportError('client disposed');
+        }
+        activeSocket = socket;
+        everConnected = true;
+        offlineUntilMs = 0;
+        contextFor(socket);
+        publishState('connected');
+        return socket;
+      } catch (error) {
+        lastError =
+          error instanceof Error ? error : new RpcTransportError(String(error));
+        if (attempt >= input.maxReconnectAttempts) break;
+        const delay = Math.min(
+          input.initialReconnectDelayMs * 2 ** attempt,
+          input.maxReconnectDelayMs
+        );
+        await input.sleep(delay);
+      }
+    }
+    offlineUntilMs =
+      (input.now?.() ?? Date.now()) + (input.offlineRetryDelayMs ?? 0);
+    publishState('offline');
+    throw lastError ?? new RpcTransportError('connection failed');
+  };
+
+  const getSocket = (): Promise<RpcTransportSocket> => {
+    if (activeSocket) return Promise.resolve(activeSocket);
+    if (connectionPromise) return connectionPromise;
+    if (state === 'offline' && (input.now?.() ?? Date.now()) < offlineUntilMs) {
+      return Promise.reject(
+        new RpcTransportError('Synara is offline; reconnect cooling down')
+      );
+    }
+    const pending = connectWithBackoff();
+    connectionPromise = pending;
+    void pending.finally(() => {
+      if (connectionPromise === pending && activeSocket === null) {
+        connectionPromise = null;
+      }
+    }).catch(() => {
+      // The caller observes the original pending promise.
+    });
+    return pending;
+  };
+
+  const requestOnSocket = <A,>(
+    socket: RpcTransportSocket,
+    tag: string,
+    payload: unknown
+  ): Promise<A> => {
+    const context = contextFor(socket);
+    if (context.failed) {
+      return Promise.reject(new RpcTransportError('socket unavailable'));
+    }
+    const id = input.nextRequestId();
+    return new Promise((resolve, reject) => {
+      const failTransport = (error: Error) => {
+        if (context.failed) return;
+        context.failed = true;
+        for (const pending of context.pending.values()) {
+          pending.cancelTimeout();
+          pending.reject(error);
+        }
+        context.pending.clear();
+        invalidate(socket, error);
+      };
+      const cancelTimeout = input.startTimeout(input.requestTimeoutMs, () => {
+        failTransport(
+          new RpcTransportError(
+            `Synara RPC ${tag} timed out after ${input.requestTimeoutMs}ms`
+          )
+        );
+      });
+      context.pending.set(id, {
+        tag,
+        cancelTimeout,
+        resolve: (value) => resolve(value as A),
+        reject,
+      });
+      try {
+        socket.send(
+          JSON.stringify({
+            _tag: 'Request',
+            id,
+            tag,
+            payload,
+            headers: [],
+          })
+        );
+      } catch (error) {
+        failTransport(
+          new RpcTransportError(
+            `Synara RPC ${tag} send failed: ${describeError(error)}`
+          )
+        );
+      }
+    });
+  };
+
+  const attachResponseListener = (socket: RpcTransportSocket) => {
+    socket.addEventListener('message', (event: { data?: unknown }) => {
+      if (typeof event.data !== 'string') return;
+      let response: RpcExit;
+      try {
+        response = JSON.parse(event.data) as RpcExit;
+      } catch {
+        return;
+      }
+      if (response._tag !== 'Exit') return;
+      const context = contexts.get(socket);
+      const pending = context?.pending.get(response.requestId);
+      if (!pending) return;
+      context?.pending.delete(response.requestId);
+      pending.cancelTimeout();
+      if (response.exit._tag === 'Success') {
+        pending.resolve(response.exit.value);
+      } else {
+        pending.reject(
+          new Error(
+            `Synara RPC ${pending.tag} failed: ${JSON.stringify(
+              response.exit.cause
+            )}`
+          )
+        );
+      }
+      if (input.closeWhenIdle && context && context.pending.size === 0) {
+        // Lynxtron 0.0.7 can leave remotely-closed native sockets in
+        // CLOSE_WAIT. Retire the raw facade socket from the client side as
+        // soon as its final response settles so the host releases the FD.
+        context.failed = true;
+        invalidate(socket, new RpcTransportError('socket retired after response'));
+      }
+    });
+  };
+
+  const originalContextFor = contextFor;
+  const socketsWithResponseListener = new WeakSet<RpcTransportSocket>();
+  const ensureResponseListener = (socket: RpcTransportSocket) => {
+    const context = originalContextFor(socket);
+    if (!socketsWithResponseListener.has(socket)) {
+      socketsWithResponseListener.add(socket);
+      attachResponseListener(socket);
+    }
+    return context;
+  };
+
+  return {
+    async request<A>(tag: string, payload: unknown): Promise<A> {
+      const socket = await getSocket();
+      ensureResponseListener(socket);
+      return requestOnSocket<A>(socket, tag, payload);
+    },
+    getState(): RpcTransportState {
+      return state;
+    },
+    subscribe(listener: (state: RpcTransportState) => void): () => void {
+      listeners.add(listener);
+      return () => listeners.delete(listener);
+    },
+    dispose(): void {
+      disposed = true;
+      const socket = activeSocket;
+      activeSocket = null;
+      connectionPromise = null;
+      publishState('idle');
+      if (socket) safeClose(socket);
+    },
+  };
+}

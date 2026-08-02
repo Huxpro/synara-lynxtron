@@ -1,0 +1,14 @@
+.SharedEmptyLandingViewport {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.SharedEmptyLandingStack {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+}

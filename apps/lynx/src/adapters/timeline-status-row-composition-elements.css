@@ -1,0 +1,36 @@
+.SharedTimelineStatusRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  gap: 8px;
+}
+
+.SharedTimelineStatusRow--compact {
+  gap: 6px;
+}
+
+.SharedTimelineStatusRowIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+
+.SharedTimelineStatusRowLabel {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-text-status-neutral);
+  line-height: 24px;
+}
+
+.SharedTimelineStatusRow--error,
+.SharedTimelineStatusRowLabel.SharedTimelineStatusRow--error {
+  color: var(--color-text-status-error);
+}

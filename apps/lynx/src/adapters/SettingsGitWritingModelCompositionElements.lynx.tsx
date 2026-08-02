@@ -1,0 +1,106 @@
+import type { ReactNode } from '@lynx-js/react';
+import type { SettingsGitWritingModelOption } from '@synara-web/components/settings/SettingsGitWritingModelComposition.logic';
+
+import { Button } from '../components/ui/button';
+import {
+  Menu,
+  MenuPopup,
+  MenuRadioGroup,
+  MenuRadioItem,
+  MenuTrigger,
+} from '../components/ui/menu';
+import { useLynxInteractiveState } from './useLynxInteractiveState';
+
+export function SettingsGitWritingModelRootElement(props: {
+  readonly children?: ReactNode;
+}) {
+  return <view className="SharedSettingsGeneralRoot">{props.children}</view>;
+}
+
+export function SettingsGitWritingModelSectionElement(props: {
+  readonly title: string;
+  readonly children?: ReactNode;
+}) {
+  return (
+    <view className="SharedSettingsGeneralSection">
+      <text className="SharedSettingsGeneralSectionTitle">{props.title}</text>
+      <view className="SharedSettingsGeneralCard">{props.children}</view>
+    </view>
+  );
+}
+
+export function SettingsGitWritingModelRowElement(props: {
+  readonly title: string;
+  readonly description: string;
+  readonly changed: boolean;
+  readonly onReset: () => void;
+  readonly children?: ReactNode;
+}) {
+  const resetInteraction = useLynxInteractiveState({
+    baseClassName: 'SharedSettingsGeneralReset',
+    accessibleLabel: 'Reset git writing model to default',
+    onActivate: props.onReset,
+  });
+  return (
+    <view className="SharedSettingsGeneralRow">
+      <view className="SharedSettingsGeneralRowCopy">
+        <view className="SharedSettingsGeneralRowTitleLine">
+          <text className="SharedSettingsGeneralRowTitle">{props.title}</text>
+          {props.changed ? (
+            <text
+              className={resetInteraction.className}
+              aria-label="Reset git writing model to default"
+              {...resetInteraction.eventProps}
+            >
+              ↶
+            </text>
+          ) : null}
+        </view>
+        <text className="SharedSettingsGeneralRowDescription">
+          {props.description}
+        </text>
+      </view>
+      <view className="SharedSettingsGeneralRowControl">{props.children}</view>
+    </view>
+  );
+}
+
+export function SettingsGitWritingModelSelectElement(props: {
+  readonly value: string;
+  readonly ariaLabel: string;
+  readonly options: readonly SettingsGitWritingModelOption[];
+  readonly onChange: (value: string) => void;
+}) {
+  const selected = props.options.find(
+    (option) => `${option.provider}:${option.model}` === props.value
+  );
+  return (
+    <Menu>
+      <MenuTrigger>
+        <Button
+          variant="outline"
+          className="SharedSettingsGeneralSelectTrigger"
+          aria-label={props.ariaLabel}
+        >
+          {selected?.label ?? props.value}
+        </Button>
+      </MenuTrigger>
+      <MenuPopup
+        side="bottom"
+        align="end"
+        className="SharedSettingsGeneralSelectPopup"
+      >
+        <MenuRadioGroup value={props.value} onValueChange={props.onChange}>
+          {props.options.map((option) => {
+            const value = `${option.provider}:${option.model}`;
+            return (
+              <MenuRadioItem key={value} value={value}>
+                {option.label}
+              </MenuRadioItem>
+            );
+          })}
+        </MenuRadioGroup>
+      </MenuPopup>
+    </Menu>
+  );
+}

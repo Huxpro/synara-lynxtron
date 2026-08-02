@@ -1,0 +1,733 @@
+/* P2-V1: shared design tokens come straight from the synara repo (P1-F4
+   artifact) — single source of truth for both render targets. Lynx consumes
+   the plain CSS custom properties; the Tailwind-only `@variant dark` block is
+   inert here (light tokens), dark handling lands with the strip pipeline
+   (plan 00 §0.5 step 2). */
+@import "../../../web/src/tokens.css";
+@import "./lynx-overrides.css";
+@import "../generated/native-theme-variables.css";
+@import "../generated/core-utilities.css";
+@import "../components/markdown/markdown.css";
+@import "../adapters/settings-navigation-composition-elements.css";
+@import "../adapters/settings-panel-header-composition-elements.css";
+@import "../adapters/settings-general-composition-elements.css";
+@import "../adapters/settings-provider-picker-composition-elements.css";
+@import "../adapters/settings-appearance-composition-elements.css";
+
+.SliceRoot {
+  width: 100%;
+  height: 100%;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-ui-family);
+}
+
+/*
+ * Lynxtron 0.0.7 does not reliably apply runtime custom-property mutations.
+ * The root therefore switches stable classes while keeping the variable names
+ * and values aligned with Web's physical-shared lib/appDensity.ts contract.
+ */
+.SliceRoot--density-compact {
+  --density-scale: 0.85;
+  --app-density-row-height: 23.8px;
+  --app-density-row-padding-y: 1.7px;
+  --app-density-row-gap: 6.8px;
+  --app-density-settings-row-padding-y: 8.5px;
+  --app-density-chat-gutter-x: 10.2px;
+  --app-density-chat-gutter-x-lg: 17px;
+  --app-density-composer-editor-min-height: 33.15px;
+  --app-density-composer-editor-padding-top: 10.2px;
+  --app-density-composer-editor-padding-bottom: 6.8px;
+  --app-density-composer-editor-padding-x: 10.2px;
+  --app-density-composer-editor-padding-x-end: 11.9px;
+  --app-density-composer-footer-padding: 5.1px;
+  --app-density-composer-footer-padding-end: 6.8px;
+}
+
+.SliceRoot--density-comfortable {
+  --density-scale: 1;
+  --app-density-row-height: 28px;
+  --app-density-row-padding-y: 2px;
+  --app-density-row-gap: 8px;
+  --app-density-settings-row-padding-y: 10px;
+  --app-density-chat-gutter-x: 12px;
+  --app-density-chat-gutter-x-lg: 20px;
+  --app-density-composer-editor-min-height: 39px;
+  --app-density-composer-editor-padding-top: 12px;
+  --app-density-composer-editor-padding-bottom: 8px;
+  --app-density-composer-editor-padding-x: 12px;
+  --app-density-composer-editor-padding-x-end: 14px;
+  --app-density-composer-footer-padding: 6px;
+  --app-density-composer-footer-padding-end: 8px;
+}
+
+.SliceRoot--density-spacious {
+  --density-scale: 1.15;
+  --app-density-row-height: 32.2px;
+  --app-density-row-padding-y: 2.3px;
+  --app-density-row-gap: 9.2px;
+  --app-density-settings-row-padding-y: 11.5px;
+  --app-density-chat-gutter-x: 13.8px;
+  --app-density-chat-gutter-x-lg: 23px;
+  --app-density-composer-editor-min-height: 44.85px;
+  --app-density-composer-editor-padding-top: 13.8px;
+  --app-density-composer-editor-padding-bottom: 9.2px;
+  --app-density-composer-editor-padding-x: 13.8px;
+  --app-density-composer-editor-padding-x-end: 16.1px;
+  --app-density-composer-footer-padding: 6.9px;
+  --app-density-composer-footer-padding-end: 9.2px;
+}
+
+.AppMain {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  background-color: var(--background);
+}
+
+.TransportStatusNotice {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  z-index: 1000;
+  min-height: 28px;
+  padding: 4px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: var(--color-background-elevated-primary);
+}
+
+.TransportStatusNotice--offline {
+  border-color: var(--color-text-status-error);
+}
+
+.TransportStatusNoticeText {
+  color: var(--color-text-status-neutral);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.TransportStatusNotice--offline .TransportStatusNoticeText {
+  color: var(--color-text-status-error);
+}
+
+.TransportStatusRetry {
+  min-height: 20px;
+  padding: 1px 6px;
+  color: var(--color-text-status-error);
+  font-size: 11px;
+}
+
+.ThreadsLanding {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.ThreadsLandingBody {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.ThreadsLandingHeaderIdentity {
+  margin-left: 8px;
+}
+
+.SharedChatHeaderIdentity {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-width: 0;
+}
+
+.SharedChatHeaderIdentityIcon {
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
+}
+
+.SharedChatHeaderIdentityTitle {
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.OpenAIProviderIcon {
+  width: 14px;
+  height: 14px;
+  color: var(--muted-foreground);
+}
+
+/* Same layout-neutral divider recipe used by the Web chat surface. */
+.chat-surface-divider {
+  background-image: linear-gradient(
+    var(--app-surface-divider),
+    var(--app-surface-divider)
+  );
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: 100% 1px;
+}
+
+.Page {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+}
+
+.ThreadPage {
+  padding: 0 0 12px;
+}
+
+.ThreadTranscriptColumn {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+  padding-top: 16px;
+}
+
+.ThreadTranscriptState {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.FeaturePage {
+  width: 100%;
+  height: 100%;
+}
+
+.FeaturePage--fixed {
+  display: flex;
+  flex-direction: column;
+}
+
+.FeaturePage--overview {
+  display: flex;
+  flex-direction: column;
+}
+
+.FeatureOverviewBody {
+  flex: 1;
+  min-height: 0;
+  padding-top: 12px;
+}
+
+.FeaturePageInner {
+  padding: 30px 34px 44px;
+}
+
+.FeaturePageInner--pullRequests {
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 16px 24px 48px;
+}
+
+.SharedPrRoutePage {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.SharedPrRouteBody {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: row;
+}
+
+.SharedPrRouteScroller {
+  flex: 1;
+  min-height: 0;
+}
+
+.SharedPrDetailDock {
+  width: 50%;
+  min-width: 360px;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  color: var(--foreground);
+  background-color: var(--color-background-surface);
+  border-left: 1px solid var(--border);
+}
+
+.SharedPrDetailDockHeader {
+  width: 100%;
+  min-height: 48px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 8px;
+}
+
+.SharedPrDetailDockScroller {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+}
+
+.SharedPrMutationError {
+  color: var(--muted-foreground);
+  font-size: 10px;
+  line-height: 14px;
+  margin-bottom: 10px;
+}
+
+.SharedPrActionBar {
+  width: 100%;
+  padding: 8px 20px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.SharedPrActionRecovery {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.SharedPrActionError {
+  min-width: 0;
+  flex: 1;
+  color: var(--destructive);
+  font-size: var(--app-font-size-ui-sm);
+  line-height: 18px;
+}
+
+.FeatureEyebrow {
+  color: var(--primary);
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: 1.4px;
+  margin-bottom: 7px;
+}
+
+.FeatureState {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  margin-top: 12px;
+}
+
+.KanbanScroller {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  padding-top: 12px;
+}
+
+.KanbanColumns {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  padding: 0 16px 16px;
+}
+
+.KanbanColumnHost {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+}
+
+.KanbanColumnHost--drag-valid {
+  background-color: color-mix(in srgb, var(--primary) 5%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--primary) 28%, transparent);
+}
+
+.KanbanColumnHost--drag-invalid {
+  background-color: color-mix(in srgb, var(--destructive) 4%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--destructive) 20%, transparent);
+}
+
+.KanbanColumnHost--drag-hover.KanbanColumnHost--drag-valid {
+  background-color: color-mix(in srgb, var(--primary) 12%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 60%, transparent);
+}
+
+.KanbanColumnHost--drag-hover.KanbanColumnHost--drag-invalid {
+  background-color: color-mix(in srgb, var(--destructive) 10%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--destructive) 55%, transparent);
+}
+
+.KanbanDragOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 120;
+  background-color: rgba(128, 128, 128, 0.02);
+}
+
+.KanbanDragGhost {
+  position: absolute;
+  width: 260px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background-color: var(--card);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--foreground) 14%, transparent);
+}
+
+.KanbanDragGhost--dispatch,
+.KanbanDragGhost--prompt-required {
+  border-color: color-mix(in srgb, var(--primary) 65%, var(--border));
+}
+
+.KanbanDragGhost--invalid {
+  border-color: color-mix(in srgb, var(--destructive) 65%, var(--border));
+}
+
+.KanbanDragGhostTitle {
+  color: var(--foreground);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.KanbanDragGhostStatus {
+  color: var(--muted-foreground);
+  font-size: 11px;
+  line-height: 15px;
+}
+
+.KanbanMutationPanel {
+  width: calc(100% - 32px);
+  margin: 10px 16px 0;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background-color: var(--card);
+}
+
+.KanbanMutationNotice {
+  width: calc(100% - 32px);
+  margin: 8px 16px 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background-color: color-mix(in srgb, var(--primary) 12%, transparent);
+}
+
+.KanbanMutationNoticeText {
+  color: var(--foreground);
+  font-size: var(--app-font-size-ui-sm);
+}
+
+.KanbanMutationPanelHeader {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.KanbanMutationPanelTitle {
+  color: var(--foreground);
+  font-size: var(--app-font-size-ui);
+  font-weight: 650;
+}
+
+.KanbanMutationPanelTask {
+  min-width: 0;
+  flex: 1;
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-sm);
+}
+
+.KanbanMutationError {
+  color: var(--destructive);
+  font-size: var(--app-font-size-ui-sm);
+  line-height: 18px;
+}
+
+.KanbanMutationTextarea {
+  width: 100%;
+  min-height: 38px;
+  padding: 9px 10px;
+  border: 1px solid var(--input);
+  border-radius: 8px;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-size: var(--app-font-size-ui);
+  line-height: 20px;
+}
+
+.KanbanMutationTextarea--invalid {
+  border-color: var(--destructive);
+}
+
+.KanbanMutationActions {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.KanbanMutationActions--chooser {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.UpdatePage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 36px;
+}
+
+.UpdateCard {
+  width: 560px;
+  padding: 34px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background-color: var(--card);
+}
+
+.UpdateMark {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background-color: var(--primary);
+}
+
+.UpdateMarkText {
+  color: var(--primary-foreground);
+  font-size: 23px;
+  font-weight: 750;
+}
+
+.UpdateTitle {
+  color: var(--foreground);
+  font-size: 25px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.UpdateDescription {
+  max-width: 440px;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  text-align: center;
+}
+
+.UpdateVersionPanel {
+  width: 100%;
+  margin-top: 24px;
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background-color: var(--muted);
+}
+
+.UpdateVersionRow {
+  height: 36px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.UpdateVersionLabel {
+  color: var(--muted-foreground);
+  font-size: 10px;
+}
+
+.UpdateVersionValue {
+  color: var(--foreground);
+  font-family: var(--font-mono-family);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.UpdateStatus {
+  margin-top: 18px;
+  color: var(--foreground);
+  font-size: 10px;
+  text-align: center;
+}
+
+.UpdateStatus--error {
+  color: #ba3434;
+}
+
+.UpdateActions {
+  margin-top: 22px;
+  display: flex;
+  flex-direction: row;
+  gap: 9px;
+}
+
+.TranscriptShell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.TranscriptList {
+  width: 100%;
+  height: 100%;
+}
+
+.TranscriptMessageRow {
+  width: 100%;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.TranscriptMessageRowUser {
+  padding-bottom: 32px;
+}
+
+.TranscriptMessageRowAssistant {
+  padding-bottom: 8px;
+}
+
+.TranscriptMessageRowStatus {
+  padding-bottom: 6px;
+}
+
+.TranscriptStatusIcon {
+  color: var(--muted-foreground);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.TranscriptWorkEntries {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 6px 0;
+}
+
+.TranscriptCollapsedNarration {
+  color: var(--muted-foreground);
+}
+
+.TranscriptUserText {
+  color: var(--foreground);
+}
+
+.TranscriptJump {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  padding: 7px 11px;
+  border-radius: var(--radius-md);
+  background-color: var(--foreground);
+}
+
+.TranscriptJump.ui-hover {
+  opacity: 0.9;
+}
+
+.TranscriptJump.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.TranscriptJump.ui-pressed {
+  opacity: 0.72;
+}
+
+.TranscriptJumpText {
+  color: var(--background);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.SettingsPage {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  background-color: var(--app-settings-surface);
+}
+
+.SettingsSidebar {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  height: 100%;
+  padding: 18px 14px;
+  border-right: 1px solid var(--border);
+  background-color: var(--app-settings-surface);
+}
+
+.SettingsContent {
+  flex: 1;
+  height: 100%;
+  background-color: var(--app-settings-surface);
+}
+
+.SettingsContentInner {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 672px;
+  margin: 0 auto;
+  padding: 32px 24px 48px;
+}
+
+.SharedPanelStateMessage.SettingsSavedState {
+  flex: none;
+  height: auto;
+  padding: 8px 0 0;
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.SettingsSavedState .SharedPanelStateMessageText {
+  color: var(--color-text-status-neutral);
+  font-family: var(--font-mono-family);
+  font-size: 11px;
+  line-height: 16px;
+  opacity: 1;
+}
+
+.SettingsHydrationState {
+  display: flex;
+  flex: 1;
+  min-height: 280px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}

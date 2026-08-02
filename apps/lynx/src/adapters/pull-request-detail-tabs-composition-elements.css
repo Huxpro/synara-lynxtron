@@ -1,0 +1,54 @@
+.SharedPrDetailTabs {
+  min-width: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2px;
+}
+
+.SharedPrDetailTab {
+  height: 28px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 10px;
+  border-radius: 8px;
+}
+
+.SharedPrDetailTab--active {
+  background-color: var(--muted);
+}
+
+.SharedPrDetailTab.ui-hover,
+.SharedPrDetailTab.ui-pressed {
+  background-color: var(--muted);
+}
+
+.SharedPrDetailTab.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.SharedPrDetailTab--unavailable {
+  opacity: 0.5;
+}
+
+.SharedPrDetailTabText {
+  color: var(--foreground);
+  font-size: var(--app-font-size-ui);
+  line-height: 18px;
+}
+
+.SharedPrDetailTabText--unavailable {
+  color: var(--muted-foreground);
+}
+
+.SharedPrDetailCapability {
+  width: 100%;
+  padding: 0 18px 10px;
+}
+
+.SharedPrDetailCapabilityText {
+  color: var(--muted-foreground);
+  font-size: 10px;
+  line-height: 14px;
+}

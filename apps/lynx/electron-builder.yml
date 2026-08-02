@@ -1,0 +1,56 @@
+productName: "Synara Lynx"
+appId: com.synara.lynx
+directories:
+  buildResources: resources
+  output: dist
+  app: dist/desktop
+files:
+  - index.js
+  - '**/*.lynx.bundle'
+  - '**/*.js'
+  - '**/*.css'
+  - '**/*.html'
+  - '**/*.json'
+  - '**/*.jsn'
+  - '**/*.png'
+  - '**/*.exe'
+asar: true
+afterExtract: scripts/lynxtron-macos-helper-hook.mjs
+afterPack: scripts/lynxtron-macos-helper-hook.mjs
+asarUnpack:
+  - statics/
+npmRebuild: false
+extraResources:
+  - from: src/assets
+    to: assets
+  - from: dist/desktop
+    to: resources/app
+icon: lynxtron.png
+electronBranding:
+  projectName: lynxtron
+  productName: Lynxtron
+mac:
+  target:
+    - target: dmg
+      arch:
+        - arm64
+  category: public.app-category.developer-tools
+  artifactName: Synara-Lynx-v${version}-darwin-${arch}.${ext}
+  extendInfo:
+    CFBundleURLTypes:
+      - CFBundleURLName: com.synara.lynx
+        CFBundleURLSchemes:
+          - synara
+  identity: null
+win:
+  target:
+    - target: nsis
+      arch: x64
+  artifactName: Slice-v${version}-win-x64.${ext}
+nsis:
+  artifactName: Slice-v${version}-win-x64-Setup.${ext}
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  perMachine: false
+  createDesktopShortcut: true
+  createStartMenuShortcut: true

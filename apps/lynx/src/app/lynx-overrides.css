@@ -1,0 +1,79 @@
+/* P2-V3: tokens.css contains semantic aliases to Tailwind v4 base palette
+   variables. The web build generates those variables; Lynx does not run the
+   web Tailwind pipeline, so supply only the referenced base palette here. */
+:root {
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-neutral-100: #f5f5f5;
+  --color-neutral-400: #a3a3a3;
+  --color-neutral-500: #737373;
+  --color-neutral-800: #262626;
+  --color-neutral-900: #171717;
+  --color-red-400: #f87171;
+  --color-red-500: #ef4444;
+  --color-red-700: #b91c1c;
+  --color-amber-400: #fbbf24;
+  --color-amber-500: #f59e0b;
+  --color-amber-700: #b45309;
+  --color-emerald-400: #34d399;
+  --color-emerald-500: #10b981;
+  --color-emerald-700: #047857;
+  --color-indigo-500: #6366f1;
+  --color-zinc-500: #71717a;
+
+  /* Lynx 4.1 desktop currently drops semantic custom properties whose value
+     is another custom property from an imported sheet. Restate the small
+     first-slice semantic set as concrete values. */
+  --background: #fcfcfc;
+  --foreground: #262626;
+  --card: #ffffff;
+  --card-foreground: #262626;
+  --popover: #ffffff;
+  --popover-foreground: #262626;
+  --primary: #171717;
+  --primary-foreground: #ffffff;
+  --secondary: rgba(0, 0, 0, 0.04);
+  --secondary-foreground: #262626;
+  --muted: rgba(0, 0, 0, 0.04);
+  --muted-foreground: #737373;
+  --accent: rgba(0, 0, 0, 0.04);
+  --accent-foreground: #262626;
+  --border: rgba(0, 0, 0, 0.08);
+  --input: rgba(0, 0, 0, 0.1);
+  --ring: #a3a3a3;
+  --chart-4: #525252;
+  --destructive: #ef4444;
+  --destructive-foreground: #b91c1c;
+  --success: #10b981;
+  --success-foreground: #047857;
+  --warning: #f59e0b;
+  --warning-foreground: #b45309;
+  --info: #526fff;
+  --info-foreground: #526fff;
+  --color-text-status-error: #b91c1c;
+  --color-text-status-neutral: #737373;
+  --color-text-status-success: #047857;
+  --color-text-status-warning: #b45309;
+
+  /* App-level semantic aliases used by the current physically shared
+     settings/sidebar sources. Keep concrete values here until Lynx Desktop
+     preserves imported var-to-var aliases. */
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-text-foreground: #262626;
+  --color-text-foreground-secondary: #737373;
+  --color-text-accent: #0169cc;
+  --color-background-surface: #fcfcfc;
+  --color-background-elevated-primary: #ffffff;
+  --color-background-elevated-secondary: rgba(0, 0, 0, 0.04);
+  --color-background-button-secondary-hover: rgba(0, 0, 0, 0.06);
+  --app-user-message-background: rgba(13, 13, 13, 0.04);
+  --sidebar: #ffffff;
+  --sidebar-foreground: #262626;
+  --sidebar-primary: #171717;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: rgba(0, 0, 0, 0.04);
+  --sidebar-accent-active: rgba(0, 0, 0, 0.06);
+  --sidebar-accent-foreground: #262626;
+  --sidebar-border: rgba(0, 0, 0, 0.08);
+  --sidebar-ring: #a3a3a3;
+}

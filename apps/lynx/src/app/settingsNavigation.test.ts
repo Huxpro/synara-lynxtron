@@ -1,0 +1,177 @@
+import { describe, expect, it } from '@rstest/core';
+
+import { resolveSettingsNavigationCompositionGroups } from '@synara-web/components/SettingsNavigationComposition.logic';
+import { resolveSettingsPanelHeader } from '@synara-web/components/settings/SettingsPanelHeaderComposition.logic';
+import { resolveThemePackEditorModel } from '@synara-web/components/settings/ThemePackEditorComposition.logic';
+import {
+  APP_SETTINGS_STORAGE_KEY,
+  DEFAULT_SETTINGS_APPEARANCE_VALUES,
+  DEFAULT_SETTINGS_GENERAL_VALUES,
+  THEME_STORAGE_KEY,
+  readSettingsAppearanceProjection,
+  readSettingsGeneralProjection,
+  readSettingsProviderPickerProjection,
+  writeSettingsAppearanceProjection,
+  writeSettingsGeneralProjection,
+  writeSettingsProviderPickerProjection,
+} from '@synara-web/appSettingsStorageProjection.logic';
+import {
+  DEFAULT_SETTINGS_GIT_WRITING_MODEL_VALUES,
+  buildSettingsGitWritingModelOptions,
+  readSettingsGitWritingModelValues,
+} from '@synara-web/components/settings/SettingsGitWritingModelComposition.logic';
+import {
+  DEFAULT_SETTINGS_PROVIDER_UPDATE_CHECKS_VALUES,
+  readSettingsProviderUpdateChecksValues,
+} from '@synara-web/components/settings/SettingsProviderUpdateChecksComposition.logic';
+import {
+  DEFAULT_SETTINGS_PROVIDER_PICKER_VALUES,
+  moveSettingsProvider,
+} from '@synara-web/components/settings/SettingsProviderPickerComposition.logic';
+import {
+  DEFAULT_THEME_STATE,
+  resolveThemePack,
+  updateChromeTheme,
+} from '@synara-web/theme/theme.logic';
+
+describe('shared settings navigation projection', () => {
+  it('keeps the full canonical taxonomy and enables only implemented native panels', () => {
+    const groups = resolveSettingsNavigationCompositionGroups({
+      activeSection: 'appearance',
+      availableSections: ['general', 'appearance', 'models', 'providers'],
+    });
+
+    expect(groups.map((group) => group.label)).toEqual(['App', 'Synara']);
+    expect(groups.flatMap((group) => group.items).find((item) => item.id === 'appearance')).toMatchObject({
+      active: true,
+      available: true,
+    });
+    expect(groups.flatMap((group) => group.items).find((item) => item.id === 'providers')).toMatchObject({
+      active: false,
+      available: true,
+    });
+    expect(groups.flatMap((group) => group.items).find((item) => item.id === 'models')).toMatchObject({
+      active: false,
+      available: true,
+    });
+  });
+
+  it('projects the real server provider update-check preference', () => {
+    expect(readSettingsProviderUpdateChecksValues(null)).toEqual(
+      DEFAULT_SETTINGS_PROVIDER_UPDATE_CHECKS_VALUES
+    );
+    expect(
+      readSettingsProviderUpdateChecksValues({
+        enableProviderUpdateChecks: false,
+      } as never)
+    ).toEqual({ enableProviderUpdateChecks: false });
+  });
+
+  it('round-trips local Provider picker visibility/order without server availability flags', () => {
+    const moved = moveSettingsProvider(
+      DEFAULT_SETTINGS_PROVIDER_PICKER_VALUES,
+      'kilo',
+      'up'
+    );
+    const raw = writeSettingsProviderPickerProjection(
+      JSON.stringify({ defaultProvider: 'codex' }),
+      { ...moved, hiddenProviders: ['kilo'] }
+    );
+    expect(readSettingsProviderPickerProjection(raw)).toMatchObject({
+      hiddenProviders: ['kilo'],
+      providerOrder: moved.providerOrder,
+    });
+    expect(JSON.parse(raw)).not.toHaveProperty('providers');
+  });
+
+  it('projects real server Git writing model settings and configured models', () => {
+    const selected = readSettingsGitWritingModelValues({
+      textGenerationModelSelection: {
+        provider: 'kilo',
+        model: 'openrouter/custom-model',
+      },
+    });
+    const options = buildSettingsGitWritingModelOptions({
+      selected,
+      settings: {
+        providers: {
+          codex: { customModels: [] },
+          kilo: { customModels: ['openrouter/custom-model'] },
+          opencode: { customModels: [] },
+        },
+      } as never,
+    });
+    expect(DEFAULT_SETTINGS_GIT_WRITING_MODEL_VALUES.provider).toBe('codex');
+    expect(options).toContainEqual({
+      provider: 'kilo',
+      model: 'openrouter/custom-model',
+      label: 'Kilo / openrouter/custom-model',
+    });
+  });
+
+  it('uses the canonical route copy for the native panel header', () => {
+    expect(resolveSettingsPanelHeader('general')).toEqual({
+      title: 'General',
+      description: 'Default provider, thread mode, and sidebar organization.',
+    });
+    expect(resolveSettingsPanelHeader('appearance').description).toBe(
+      'Theme, typography, and timestamp formatting.'
+    );
+  });
+
+  it('uses the canonical app-settings key and preserves non-General fields', () => {
+    const raw = writeSettingsGeneralProjection(
+      JSON.stringify({ chatFontSizePx: 18 }),
+      { ...DEFAULT_SETTINGS_GENERAL_VALUES, showWorkspaceSection: true }
+    );
+    expect(APP_SETTINGS_STORAGE_KEY).toBe('synara:app-settings:v1');
+    expect(JSON.parse(raw)).toMatchObject({
+      chatFontSizePx: 18,
+      showWorkspaceSection: true,
+    });
+    expect(readSettingsGeneralProjection(raw, 'worktree')).toMatchObject({
+      defaultThreadEnvMode: 'worktree',
+      showWorkspaceSection: true,
+    });
+  });
+
+  it('round-trips Appearance through canonical app/theme storage', () => {
+    const written = writeSettingsAppearanceProjection(
+      JSON.stringify({ defaultProvider: 'codex' }),
+      null,
+      {
+        ...DEFAULT_SETTINGS_APPEARANCE_VALUES,
+        themeMode: 'dark',
+        timestampFormat: '24-hour',
+      }
+    );
+    expect(THEME_STORAGE_KEY).toBe('synara:theme');
+    expect(
+      readSettingsAppearanceProjection(
+        written.appSettingsRaw,
+        written.themeRaw
+      )
+    ).toMatchObject({
+      themeMode: 'dark',
+      timestampFormat: '24-hour',
+    });
+  });
+
+  it('uses the shared editable theme-pack model and pure state mutation', () => {
+    const next = updateChromeTheme(DEFAULT_THEME_STATE, 'dark', {
+      accent: '#123456',
+    });
+    const pack = resolveThemePack(next, 'dark');
+    const model = resolveThemePackEditorModel({
+      variant: 'dark',
+      isActive: true,
+      mode: 'dark',
+      pack,
+    });
+
+    expect(pack.theme.accent).toBe('#123456');
+    expect(model.titleLabel).toBe('Dark theme');
+    expect(model.contextLabel).toBe('This is the active theme right now.');
+    expect(model.codeThemes.length).toBeGreaterThan(10);
+  });
+});

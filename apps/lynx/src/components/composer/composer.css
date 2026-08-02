@@ -1,0 +1,862 @@
+.ComposerInputShellLynx {
+  flex-shrink: 0;
+  margin-top: 8px;
+}
+
+.ComposerInputSurfaceLynx {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  background-color: var(--card);
+}
+
+.ComposerInputSurfaceLynx--focused {
+  border-color: var(--primary);
+}
+
+.ComposerEditorRegionLynx {
+  position: relative;
+  padding-top: var(--app-density-composer-editor-padding-top, 0.75rem);
+  padding-right: var(--app-density-composer-editor-padding-x-end, 0.875rem);
+  padding-bottom: var(--app-density-composer-editor-padding-bottom, 0.5rem);
+  padding-left: var(--app-density-composer-editor-padding-x, 0.75rem);
+}
+
+.ComposerCommandMenuLynx {
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  bottom: 100%;
+  max-height: 288px;
+  margin-bottom: 8px;
+  padding: 4px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background-color: var(--popover);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+  z-index: 20;
+}
+
+.ComposerCommandMenuListLynx {
+  width: 100%;
+  max-height: 278px;
+}
+
+.ComposerCommandGroupLynx,
+.ComposerCommandFilesFooterLynx {
+  display: flex;
+  flex-direction: column;
+}
+
+.ComposerCommandGroupLabelLynx,
+.ComposerCommandMenuEmptyLynx {
+  padding: 5px 8px 4px;
+  color: var(--muted-foreground);
+  font-size: 10px;
+}
+
+.ComposerCommandSeparatorLynx {
+  height: 1px;
+  margin: 3px 5px;
+  background-color: var(--border);
+}
+
+.ComposerCommandRowLynx {
+  min-height: 34px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 5px 8px;
+  border-radius: 7px;
+}
+
+.ComposerCommandRowLynx--active {
+  background-color: var(--accent);
+}
+
+.ComposerCommandRowLynx.ui-hover,
+.ComposerCommandRowLynx.ui-pressed {
+  background-color: var(--accent);
+}
+
+.ComposerCommandRowLynx.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.ComposerCommandRowLynx.ui-pressed {
+  opacity: 0.72;
+}
+
+.ComposerCommandGlyphLynx {
+  width: 18px;
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  font-family: var(--font-mono-family);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.ComposerCommandCopyLynx {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.ComposerCommandTitleLynx {
+  flex-shrink: 0;
+  color: var(--foreground);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.ComposerCommandSecondaryLynx,
+.ComposerCommandMetaLynx {
+  color: var(--muted-foreground);
+  font-size: 10px;
+}
+
+.ComposerCommandSecondaryLynx {
+  margin-left: 7px;
+}
+
+.ComposerCommandMetaLynx {
+  flex-shrink: 0;
+  margin-left: auto;
+  padding-left: 8px;
+}
+
+.ComposerTextarea {
+  width: 100%;
+  height: var(--app-density-composer-editor-min-height, 2lh);
+  color: var(--foreground);
+  background-color: transparent;
+  font-family: var(--font-ui-family);
+  font-size: 12px;
+  line-height: 19.5px;
+}
+
+.ComposerTokenPreview {
+  width: 100%;
+}
+
+.ComposerTokenPreview {
+  height: 32px;
+  margin-bottom: 6px;
+}
+
+.ComposerTokenRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.ComposerChip {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-shrink: 0;
+  margin-right: 6px;
+  border-radius: var(--radius-md);
+}
+
+.ComposerChip {
+  padding: 5px 8px;
+  background-color: var(--accent);
+}
+
+.ComposerChip--slash-command {
+  background-color: var(--primary);
+}
+
+.ComposerChipGlyph {
+  color: var(--primary);
+  font-family: var(--font-mono-family);
+  font-size: 10px;
+  font-weight: 700;
+  margin-right: 4px;
+}
+
+.ComposerChip--slash-command .ComposerChipGlyph,
+.ComposerChip--slash-command .ComposerChipLabel {
+  color: var(--primary-foreground);
+}
+
+.ComposerChipLabel {
+  color: var(--foreground);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.ComposerFooterRowLynx {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0
+    var(--app-density-composer-footer-padding-end, 0.5rem)
+    var(--app-density-composer-footer-padding, 0.375rem)
+    var(--app-density-composer-footer-padding, 0.375rem);
+}
+
+.ComposerFooterLeadingLynx,
+.ComposerFooterActionsLynx {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.ComposerFooterActionsLynx {
+  margin-left: auto;
+  gap: 6px;
+}
+
+.ComposerModelControlLynx {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.ComposerModelTriggerLynx {
+  min-height: 28px;
+  max-width: 190px;
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background-color: var(--color-background-button-secondary);
+}
+
+.ComposerModelTriggerLynx.ui-hover {
+  background-color: var(--accent);
+}
+
+.ComposerModelTriggerLynx.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.ComposerModelTriggerLynx.ui-pressed {
+  background-color: var(--accent);
+  opacity: 0.72;
+}
+
+.ComposerModelTriggerContentLynx {
+  min-width: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+.ComposerModelProviderIconLynx {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.ComposerModelTriggerLabelLynx {
+  max-width: 132px;
+  overflow: hidden;
+  color: var(--foreground);
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ComposerModelTriggerMetaLynx,
+.ComposerModelTriggerChevronLynx {
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  font-size: 10px;
+}
+
+.ComposerModelPopupLynx {
+  width: 260px;
+  max-height: 310px;
+  padding: 5px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+}
+
+.ComposerProviderOptionListLynx {
+  width: 100%;
+  max-height: 298px;
+}
+
+.ComposerProviderOptionLynx {
+  min-height: 32px;
+  padding: 4px 7px;
+  border-radius: 7px;
+}
+
+.ComposerProviderOptionLynx--disabled {
+  opacity: 0.52;
+}
+
+.ComposerProviderOptionLynx.ui-hover,
+.ComposerProviderOptionLynx.ui-pressed {
+  background-color: var(--accent);
+}
+
+.ComposerProviderOptionLynx.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.ComposerProviderOptionLynx.ui-pressed {
+  opacity: 0.72;
+}
+
+.ComposerTraitSectionLynx {
+  display: flex;
+  flex-direction: column;
+  padding: 6px 4px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.ComposerTraitSectionHeaderLynx {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 24px;
+  padding: 0 8px 3px;
+}
+
+.ComposerTraitSectionLabelLynx {
+  color: var(--muted-foreground);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.ComposerTraitFastModeToggleLynx {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background-color: transparent;
+}
+
+.ComposerTraitFastModeToggleLynx--active {
+  background-color: var(--accent);
+}
+
+.ComposerTraitFastModeToggleLynx.ui-hover,
+.ComposerTraitFastModeToggleLynx.ui-pressed {
+  background-color: var(--accent);
+}
+
+.ComposerTraitFastModeToggleLynx.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.ComposerTraitFastModeToggleLynx.ui-pressed {
+  opacity: 0.72;
+}
+
+.ComposerTraitFastModeToggleGlyphLynx {
+  color: var(--muted-foreground);
+  font-size: 14px;
+}
+
+.ComposerTraitFastModeToggleGlyphLynx--active {
+  color: var(--chart-4);
+}
+
+.ComposerTraitOptionListLynx {
+  display: flex;
+  flex-direction: column;
+}
+
+.ComposerTraitOptionLynx {
+  display: flex;
+  min-height: 34px;
+  align-items: center;
+  padding: 5px 8px;
+  border-radius: 7px;
+}
+
+.ComposerTraitOptionLynx--active {
+  background-color: var(--accent);
+}
+
+.ComposerTraitOptionLynx.ui-hover,
+.ComposerTraitOptionLynx.ui-pressed {
+  background-color: var(--accent);
+}
+
+.ComposerTraitOptionLynx.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.ComposerTraitOptionLynx.ui-pressed {
+  opacity: 0.72;
+}
+
+.ComposerTraitOptionLynx--disabled {
+  opacity: 0.48;
+}
+
+.ComposerTraitOptionCheckLynx {
+  width: 18px;
+  color: var(--foreground);
+  font-size: 11px;
+}
+
+.ComposerTraitOptionCopyLynx {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.ComposerTraitOptionLabelLynx {
+  color: var(--foreground);
+  font-size: 12px;
+}
+
+.ComposerTraitOptionDescriptionLynx {
+  margin-top: 1px;
+  color: var(--muted-foreground);
+  font-size: 9px;
+}
+
+.ComposerProviderBackLynx {
+  min-height: 30px;
+  padding: 5px 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.ComposerProviderBackLynx.ui-hover,
+.ComposerProviderBackLynx.ui-pressed {
+  background-color: var(--accent);
+}
+
+.ComposerProviderBackLynx.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.ComposerProviderBackLynx.ui-pressed {
+  opacity: 0.72;
+}
+
+.ComposerProviderBackGlyphLynx {
+  width: 18px;
+  color: var(--muted-foreground);
+  font-size: 16px;
+}
+
+.ComposerProviderBackLabelLynx {
+  color: var(--foreground);
+  font-size: 11px;
+}
+
+.ComposerModelLoadingLynx {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  gap: 8px;
+}
+
+.ComposerModelLoadingRowLynx {
+  min-height: 24px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 6px;
+}
+
+.ComposerModelLoadingDotLynx {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  border-radius: 7px;
+  background-color: var(--muted);
+}
+
+.ComposerModelLoadingLineLynx {
+  width: 128px;
+  height: 14px;
+  border-radius: 7px;
+  background-color: var(--muted);
+}
+
+.ComposerModelLoadingLineLynx--short {
+  width: 96px;
+}
+
+.ComposerModelOptionListLynx {
+  width: 100%;
+  max-height: 298px;
+}
+
+.ComposerModelGroupLynx {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.ComposerModelGroupHeaderLynx,
+.ComposerModelOptionLynx {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.ComposerModelGroupHeaderLynx {
+  min-height: 26px;
+  padding: 4px 7px;
+}
+
+.ComposerModelGroupHeaderLynx.ui-hover,
+.ComposerModelGroupHeaderLynx.ui-pressed {
+  background-color: var(--accent);
+}
+
+.ComposerModelGroupHeaderLynx.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.ComposerModelGroupHeaderLynx.ui-pressed {
+  opacity: 0.72;
+}
+
+.ComposerModelGroupChevronLynx,
+.ComposerModelGroupCountLynx,
+.ComposerModelGroupLabelLynx {
+  color: var(--muted-foreground);
+  font-size: 10px;
+}
+
+.ComposerModelGroupChevronLynx {
+  width: 14px;
+}
+
+.ComposerModelGroupCountLynx {
+  margin-left: auto;
+}
+
+.ComposerModelOptionLynx {
+  min-height: 30px;
+  padding: 5px 8px;
+  border-radius: 7px;
+}
+
+.ComposerModelOptionLynx--active {
+  background-color: var(--accent);
+}
+
+.ComposerModelOptionLynx.ui-hover,
+.ComposerModelOptionLynx.ui-pressed {
+  background-color: var(--accent);
+}
+
+.ComposerModelOptionLynx.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.ComposerModelOptionLynx.ui-pressed {
+  opacity: 0.72;
+}
+
+.ComposerModelOptionCheckLynx {
+  width: 16px;
+  color: var(--foreground);
+  font-size: 11px;
+}
+
+.ComposerModelOptionNameLynx {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  color: var(--foreground);
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ComposerModelOptionMetaLynx {
+  margin-left: 8px;
+  color: var(--muted-foreground);
+  font-size: 10px;
+}
+
+.ComposerModelOptionFavoriteLynx {
+  width: 24px;
+  height: 24px;
+  margin-left: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+}
+
+.ComposerModelOptionFavoriteLynx--active {
+  background-color: rgba(245, 158, 11, 0.1);
+}
+
+.ComposerModelOptionFavoriteLynx.ui-hover,
+.ComposerModelOptionFavoriteLynx.ui-pressed {
+  background-color: var(--accent);
+}
+
+.ComposerModelOptionFavoriteLynx.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.ComposerModelOptionFavoriteLynx.ui-pressed {
+  opacity: 0.72;
+}
+
+.ComposerModelOptionFavoriteGlyphLynx {
+  color: var(--muted-foreground);
+  font-size: 13px;
+}
+
+.ComposerModelOptionFavoriteGlyphLynx--active {
+  color: var(--warning);
+}
+
+.ComposerExtrasTriggerLynx {
+  flex-shrink: 0;
+}
+
+.ComposerExtrasPopupLynx.LxMenuPopup,
+.ComposerRuntimePopupLynx.LxMenuPopup {
+  min-width: 188px;
+}
+
+.ComposerRuntimeTriggerLynx {
+  flex-shrink: 0;
+  margin-left: 4px;
+}
+
+.ComposerSendError {
+  margin-left: 6px;
+  color: var(--color-text-status-error);
+  font-size: 11px;
+  line-height: 14px;
+}
+
+.ComposerPrimaryActionLynx {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background-color: var(--primary);
+}
+
+.ComposerPrimaryActionLynx--disabled {
+  opacity: 0.42;
+}
+
+.ComposerPrimaryActionLynx.ui-hover {
+  opacity: 0.9;
+}
+
+.ComposerPrimaryActionLynx.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.ComposerPrimaryActionLynx.ui-pressed {
+  opacity: 0.72;
+}
+
+.ComposerPrimaryActionGlyphLynx {
+  color: var(--primary-foreground);
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.ComposerPrimaryActionLynx--sending .ComposerPrimaryActionGlyphLynx {
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+
+.ComposerPrimaryActionStopGlyphLynx {
+  width: 8px;
+  height: 8px;
+  border-radius: 1px;
+  background-color: var(--primary-foreground);
+}
+
+.ComposerReferenceAttachmentsLynx {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 6px;
+  margin: -4px -6px 8px;
+}
+
+.ComposerReferenceSummaryLynx,
+.ComposerReferenceCardLynx {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 1px solid var(--border);
+  background-color: var(--composer-surface);
+}
+
+.ComposerReferenceSummaryLynx {
+  min-height: 24px;
+  padding: 3px 25px 3px 8px;
+  border-radius: 12px;
+  gap: 4px;
+}
+
+.ComposerReferenceGlyphLynx,
+.ComposerReferenceLabelLynx,
+.ComposerReferenceCardMetaLynx,
+.ComposerReferenceCardActionTextLynx {
+  color: var(--muted-foreground);
+  font-size: 11px;
+}
+
+.ComposerReferenceCardLynx {
+  width: 240px;
+  min-height: 56px;
+  padding: 7px 28px 7px 8px;
+  border-radius: 12px;
+  gap: 10px;
+}
+
+.ComposerReferencePastedTextLynx {
+  width: 256px;
+}
+
+.ComposerReferenceTileLynx {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background-color: var(--muted);
+}
+
+.ComposerReferenceTileGlyphLynx {
+  color: var(--muted-foreground);
+  font-size: 16px;
+}
+
+.ComposerReferenceCardCopyLynx {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+}
+
+.ComposerReferenceCardTitleLynx {
+  overflow: hidden;
+  color: var(--foreground);
+  font-size: 13px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ComposerReferenceCardActionLynx {
+  padding: 1px 0;
+  border-radius: 3px;
+}
+
+.ComposerReferenceCardActionLynx.ui-hover .ComposerReferenceCardActionTextLynx {
+  color: var(--foreground);
+}
+
+.ComposerReferenceCardActionLynx.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.ComposerReferenceCardActionLynx.ui-pressed {
+  opacity: 0.68;
+}
+
+.ComposerReferenceRemoveLynx {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  display: flex;
+  width: 18px;
+  height: 18px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  background-color: var(--foreground);
+}
+
+.ComposerReferenceRemoveLynx.ui-hover {
+  opacity: 0.88;
+}
+
+.ComposerReferenceRemoveLynx.ui-focus {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.ComposerReferenceRemoveLynx.ui-pressed {
+  opacity: 0.64;
+}
+
+.ComposerReferenceRemoveGlyphLynx {
+  color: var(--background);
+  font-size: 13px;
+}
+
+.ComposerReferenceImageLynx {
+  position: relative;
+  display: flex;
+  width: 64px;
+  height: 64px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background-color: var(--muted);
+}
+
+.ComposerReferenceImageLynx.ui-hover {
+  border-color: var(--foreground);
+}
+
+.ComposerReferenceImageLynx.ui-focus {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.ComposerReferenceImageLynx.ui-pressed {
+  opacity: 0.72;
+}
+
+.ComposerReferenceImagePreviewLynx {
+  width: 64px;
+  height: 64px;
+}
+
+.ComposerReferenceImageFallbackLynx {
+  color: var(--muted-foreground);
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.ComposerReferenceImageWarningLynx {
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+  color: var(--foreground);
+  font-size: 11px;
+  font-weight: 700;
+}

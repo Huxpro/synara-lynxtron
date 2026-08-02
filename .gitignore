@@ -5,6 +5,8 @@ node_modules
 *.log
 *.tsbuildinfo
 apps/*/dist
+apps/lynx/.tmp
+apps/lynx/output
 .astro
 packages/*/dist
 .env

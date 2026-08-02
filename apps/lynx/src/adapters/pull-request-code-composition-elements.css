@@ -1,0 +1,190 @@
+.SharedPrCodeRoot {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+}
+
+.SharedPrCodeNotice {
+  color: var(--muted-foreground);
+  font-size: 11px;
+  line-height: 16px;
+}
+
+.SharedPrCodeNotice--warning {
+  color: var(--color-text-status-warning);
+}
+
+.SharedPrCodeStats {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.SharedPrCodeStatsText,
+.SharedPrCodeStatsAddition,
+.SharedPrCodeStatsDeletion {
+  font-size: 10px;
+  line-height: 14px;
+}
+
+.SharedPrCodeStatsText {
+  color: var(--muted-foreground);
+}
+
+.SharedPrCodeStatsAddition {
+  color: var(--success);
+}
+
+.SharedPrCodeStatsDeletion {
+  color: var(--destructive);
+}
+
+.SharedPrCodeFile {
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background-color: var(--background);
+}
+
+.SharedPrCodeFileHeader {
+  width: 100%;
+  min-height: 34px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 9px;
+  background-color: var(--muted);
+}
+
+.SharedPrCodeFileHeader.ui-hover,
+.SharedPrCodeFileHeader.ui-pressed {
+  background-color: var(--accent);
+}
+
+.SharedPrCodeFileHeader.ui-focus {
+  border-color: var(--ring);
+}
+
+.SharedPrCodeFileChevron {
+  width: 10px;
+  color: var(--muted-foreground);
+  font-size: 10px;
+}
+
+.SharedPrCodeFilePath {
+  flex: 1;
+  min-width: 0;
+  color: var(--foreground);
+  font-family: var(--font-chat-code-family);
+  font-size: var(--app-font-size-chat-code, 11px);
+  line-height: 16px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.SharedPrCodeFilePrevious {
+  max-width: 120px;
+  color: var(--muted-foreground);
+  font-size: 9px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.SharedPrCodeLines {
+  width: 100%;
+  background-color: var(--background);
+}
+
+.SharedPrCodeLine {
+  width: 100%;
+  min-height: 18px;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  border-left: 2px solid transparent;
+}
+
+.SharedPrCodeLine--addition {
+  border-left-color: var(--success);
+}
+
+.SharedPrCodeLine--deletion {
+  border-left-color: var(--destructive);
+}
+
+.SharedPrCodeLine--hunk {
+  background-color: var(--muted);
+}
+
+.SharedPrCodeLineNumber {
+  width: 34px;
+  flex-shrink: 0;
+  padding: 1px 4px;
+  color: var(--muted-foreground);
+  font-family: var(--font-ui-family);
+  font-size: 9px;
+  line-height: 16px;
+  text-align: right;
+}
+
+.SharedPrCodeLinePrefix {
+  width: 15px;
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  font-family: var(--font-chat-code-family);
+  font-size: var(--app-font-size-chat-code, 11px);
+  line-height: 16px;
+  text-align: center;
+}
+
+.SharedPrCodeLine--addition .SharedPrCodeLinePrefix {
+  color: var(--success);
+}
+
+.SharedPrCodeLine--deletion .SharedPrCodeLinePrefix {
+  color: var(--destructive);
+}
+
+.SharedPrCodeLineText {
+  flex: 1;
+  min-width: 0;
+  padding: 1px 8px 1px 2px;
+  color: var(--foreground);
+  font-family: var(--font-chat-code-family);
+  font-size: var(--app-font-size-chat-code, 11px);
+  line-height: 16px;
+  white-space: pre;
+}
+
+.SharedPrCodeLine--hunk .SharedPrCodeLineText,
+.SharedPrCodeLine--hunk .SharedPrCodeLinePrefix {
+  color: var(--muted-foreground);
+}
+
+.SharedPrCodeMore {
+  width: 100%;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 10px;
+  border-top: 1px solid var(--border);
+}
+
+.SharedPrCodeMore.ui-hover,
+.SharedPrCodeMore.ui-pressed {
+  background-color: var(--accent);
+}
+
+.SharedPrCodeMoreText {
+  color: var(--muted-foreground);
+  font-size: 10px;
+  line-height: 14px;
+}

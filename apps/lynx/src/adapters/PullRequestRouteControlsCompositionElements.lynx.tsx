@@ -1,0 +1,186 @@
+import type { ProjectId } from '@synara/contracts';
+import type { ReactNode } from '@lynx-js/react';
+
+import { Button } from '../components/ui/button';
+import {
+  Menu,
+  MenuPopup,
+  MenuRadioGroup,
+  MenuRadioItem,
+  MenuTrigger,
+} from '../components/ui/menu';
+import './pull-request-route-controls-composition-elements.css';
+import { useLynxInteractiveState } from './useLynxInteractiveState';
+
+type ChildrenProps = { readonly children?: ReactNode };
+
+export function PullRequestRouteHeaderRootElement(
+  props: ChildrenProps & { readonly hostClassName?: string | undefined }
+) {
+  return <view className="SharedPrRouteHeader">{props.children}</view>;
+}
+
+export function PullRequestRouteHeaderRowElement(props: ChildrenProps) {
+  return <view className="SharedPrRouteHeaderRow">{props.children}</view>;
+}
+
+export function PullRequestRouteHeaderNavigationElement() {
+  return null;
+}
+
+export function PullRequestRouteHeaderTitleElement(props: ChildrenProps) {
+  return <text className="SharedPrRouteHeaderTitle">{props.children}</text>;
+}
+
+export function PullRequestRouteHeaderScopeElement(props: ChildrenProps) {
+  return (
+    <view className="SharedPrRouteHeaderScope">
+      <text className="SharedPrRouteHeaderScopeSeparator">·</text>
+      <text className="SharedPrRouteHeaderScopeText">{props.children}</text>
+    </view>
+  );
+}
+
+export function PullRequestRouteHeaderSpacerElement() {
+  return <view className="SharedPrRouteHeaderSpacer" />;
+}
+
+export function PullRequestRouteHeaderRefreshElement(props: {
+  readonly disabled: boolean;
+  readonly refreshing: boolean;
+  readonly title: string;
+  readonly onActivate: () => void;
+}) {
+  return (
+    <Button
+      size="icon-sm"
+      variant="ghost"
+      disabled={props.disabled}
+      aria-label="Refresh pull requests"
+      className="SharedPrRouteRefresh"
+      onClick={props.onActivate}
+    >
+      {props.refreshing ? '…' : '↻'}
+    </Button>
+  );
+}
+
+export function PullRequestFiltersRootElement(props: ChildrenProps) {
+  return <view className="SharedPrFilters">{props.children}</view>;
+}
+
+export function PullRequestFiltersPillRowElement(props: ChildrenProps) {
+  return <view className="SharedPrFilterPillRow">{props.children}</view>;
+}
+
+export function PullRequestFilterPillGroupElement<T extends string>(props: {
+  readonly value: T;
+  readonly options: ReadonlyArray<{ readonly value: T; readonly label: string }>;
+  readonly onChange: (value: T) => void;
+  readonly onIntent?: ((value: T) => void) | undefined;
+}) {
+  return (
+    <view className="SharedPrFilterPillGroup">
+      {props.options.map((option) => (
+        <PullRequestFilterPillElement
+          key={option.value}
+          active={option.value === props.value}
+          label={option.label}
+          onActivate={() => props.onChange(option.value)}
+        />
+      ))}
+    </view>
+  );
+}
+
+function PullRequestFilterPillElement(props: {
+  readonly active: boolean;
+  readonly label: string;
+  readonly onActivate: () => void;
+}) {
+  const interaction = useLynxInteractiveState({
+    baseClassName: `SharedPrFilterPill${
+      props.active ? ' SharedPrFilterPill--active' : ''
+    }`,
+    onActivate: props.onActivate,
+  });
+  return (
+    <view className={interaction.className} {...interaction.eventProps}>
+      <text
+        className={`SharedPrFilterPillText${
+          props.active ? ' SharedPrFilterPillText--active' : ''
+        }`}
+      >
+        {props.label}
+      </text>
+    </view>
+  );
+}
+
+export function PullRequestFiltersSearchRowElement(props: ChildrenProps) {
+  return <view className="SharedPrFilterSearchRow">{props.children}</view>;
+}
+
+export function PullRequestSearchElement(props: {
+  readonly value: string;
+  readonly placeholder: string;
+  readonly onChange: (value: string) => void;
+}) {
+  return (
+    <view className="SharedPrSearchUnavailable">
+      <text className="SharedPrSearchUnavailableText">
+        Search unavailable in this runtime
+      </text>
+    </view>
+  );
+}
+
+export function PullRequestSearchUnavailableElement(props: ChildrenProps) {
+  return (
+    <view className="SharedPrSearchUnavailable">
+      <text className="SharedPrSearchUnavailableText">{props.children}</text>
+    </view>
+  );
+}
+
+export function PullRequestProjectFilterElement(props: {
+  readonly projects: ReadonlyArray<readonly [ProjectId, string]>;
+  readonly value: ProjectId | undefined;
+  readonly onChange: (value: ProjectId | undefined) => void;
+}) {
+  const selectedName =
+    props.projects.find(([projectId]) => projectId === props.value)?.[1] ??
+    'All projects';
+  return (
+    <Menu>
+      <MenuTrigger>
+        <Button
+          variant="outline"
+          size="sm"
+          className="SharedPrProjectFilterTrigger"
+        >
+          {selectedName}
+        </Button>
+      </MenuTrigger>
+      <MenuPopup
+        side="bottom"
+        align="end"
+        className="SharedPrProjectFilterPopup"
+      >
+        <MenuRadioGroup
+          value={props.value ?? ''}
+          onValueChange={(value) =>
+            props.onChange(value ? (value as ProjectId) : undefined)
+          }
+        >
+          <MenuRadioItem value="">All projects</MenuRadioItem>
+          {props.projects.map(([projectId, title]) => (
+            <MenuRadioItem key={projectId} value={projectId}>
+              {title}
+            </MenuRadioItem>
+          ))}
+        </MenuRadioGroup>
+      </MenuPopup>
+    </Menu>
+  );
+}

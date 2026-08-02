@@ -1,0 +1,35 @@
+.SharedPanelStateMessage {
+  display: flex;
+  width: 100%;
+  min-height: 0;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.SharedPanelStateMessage--full {
+  height: 100%;
+}
+
+.SharedPanelStateMessage--flex {
+  flex: 1;
+}
+
+.SharedPanelStateMessage--comfortable {
+  padding: 24px;
+}
+
+.SharedPanelStateMessage--compact {
+  padding: 0 20px;
+}
+
+.SharedPanelStateMessageText {
+  color: var(--color-text-status-neutral);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.SharedPanelStateMessage--compact .SharedPanelStateMessageText {
+  font-size: 12px;
+  line-height: 18px;
+}

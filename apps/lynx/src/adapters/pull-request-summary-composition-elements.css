@@ -1,0 +1,213 @@
+.SharedPrSummary {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.SharedPrSummaryOverview {
+  width: 100%;
+  padding: 20px;
+}
+
+.SharedPrSummaryIntro {
+  min-width: 0;
+}
+
+.SharedPrSummaryTitle {
+  color: var(--foreground);
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 600;
+}
+
+.SharedPrSummaryByline {
+  min-width: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.SharedPrSummaryBylineStrong,
+.SharedPrSummaryBylineText {
+  font-size: var(--app-font-size-ui-sm);
+  line-height: 18px;
+}
+
+.SharedPrSummaryBylineStrong {
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.SharedPrSummaryBylineText {
+  color: var(--muted-foreground);
+}
+
+.SharedPrSummaryMetaRows {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.SharedPrSummaryMetaRow {
+  min-width: 0;
+  min-height: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.SharedPrSummaryMetaLabel,
+.SharedPrSummaryMetaValue {
+  font-size: var(--app-font-size-ui-sm);
+  line-height: 18px;
+}
+
+.SharedPrSummaryMetaLabel {
+  width: 96px;
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+}
+
+.SharedPrSummaryMetaValue {
+  min-width: 0;
+  flex: 1;
+  color: var(--foreground);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.SharedPrSummaryMetaValue--warning {
+  color: var(--destructive);
+}
+
+.SharedPrSummarySection {
+  width: 100%;
+  border-top: 1px solid var(--border);
+}
+
+.SharedPrSummarySectionHeader {
+  width: 100%;
+  height: 44px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.SharedPrSummarySectionHeader.ui-hover,
+.SharedPrSummarySectionHeader.ui-pressed {
+  background-color: var(--accent);
+}
+
+.SharedPrSummarySectionHeader.ui-focus {
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.SharedPrSummarySectionHeader.ui-pressed {
+  opacity: 0.82;
+}
+
+.SharedPrSummarySectionTitle {
+  color: var(--foreground);
+  font-size: var(--app-font-size-ui);
+  font-weight: 500;
+}
+
+.SharedPrSummarySectionChevron,
+.SharedPrSummarySectionCount {
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-sm);
+  margin-left: 6px;
+}
+
+.SharedPrSummarySectionBody {
+  width: 100%;
+  padding: 0 20px 16px;
+}
+
+.SharedPrSummaryChecks,
+.SharedPrSummaryComments {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.SharedPrSummaryCheckRow {
+  min-height: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 8px;
+}
+
+.SharedPrSummaryCheckName,
+.SharedPrSummaryCheckStatus,
+.SharedPrSummaryMuted,
+.SharedPrSummaryWarning,
+.SharedPrSummaryCapability,
+.SharedPrSummaryCommentAuthor,
+.SharedPrSummaryCommentPath {
+  font-size: var(--app-font-size-ui-sm);
+  line-height: 18px;
+}
+
+.SharedPrSummaryCheckName {
+  min-width: 0;
+  flex: 1;
+  color: var(--foreground);
+}
+
+.SharedPrSummaryCheckStatus,
+.SharedPrSummaryMuted,
+.SharedPrSummaryCommentPath {
+  color: var(--muted-foreground);
+}
+
+.SharedPrSummaryWarning {
+  color: var(--color-text-status-warning);
+  margin-bottom: 10px;
+}
+
+.SharedPrSummaryEmptyComments {
+  padding: 16px 0;
+  text-align: center;
+}
+
+.SharedPrSummaryComment {
+  width: 100%;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.SharedPrSummaryCommentHeader {
+  min-width: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.SharedPrSummaryCommentAuthor {
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.SharedPrSummaryCommentPath {
+  min-width: 0;
+  flex: 1;
+  margin-left: 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.SharedPrSummaryCapability {
+  color: var(--muted-foreground);
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-top: 10px;
+  text-align: center;
+}

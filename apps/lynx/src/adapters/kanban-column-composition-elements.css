@@ -1,0 +1,134 @@
+.SharedKanbanColumnRoot {
+  flex: 1;
+  min-width: 256px;
+  min-height: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.SharedKanbanColumnHeader {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 4px 6px 12px;
+}
+
+.SharedKanbanColumnTitle {
+  color: var(--foreground);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.SharedKanbanColumnCount {
+  margin-left: 8px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+
+.SharedKanbanColumnHeaderActions {
+  margin-left: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.SharedKanbanColumnDispatchTarget {
+  margin-right: 6px;
+  color: #0284c7;
+  font-size: 11px;
+}
+
+.SharedKanbanColumnNewCard {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+}
+
+.SharedKanbanColumnNewCard.ui-hover,
+.SharedKanbanColumnNewCard.ui-pressed,
+.SharedKanbanColumnShowMore.ui-hover,
+.SharedKanbanColumnShowMore.ui-pressed {
+  background-color: var(--sidebar-accent);
+}
+
+.SharedKanbanColumnNewCard.ui-focus,
+.SharedKanbanColumnShowMore.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.SharedKanbanColumnNewCard.ui-pressed,
+.SharedKanbanColumnShowMore.ui-pressed {
+  opacity: 0.8;
+}
+
+.SharedKanbanColumnNewCardLabel {
+  color: var(--muted-foreground);
+  font-size: 14px;
+}
+
+.SharedKanbanColumnStatus {
+  width: 14px;
+  height: 14px;
+  margin-left: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+}
+
+.SharedKanbanColumnStatusGlyph {
+  font-size: 12px;
+  line-height: 14px;
+  color: var(--muted-foreground);
+}
+
+.SharedKanbanColumnStatus--inProgress .SharedKanbanColumnStatusGlyph {
+  color: #d6a800;
+}
+
+.SharedKanbanColumnStatus--done {
+  background-color: #5e6ad2;
+}
+
+.SharedKanbanColumnStatus--done .SharedKanbanColumnStatusGlyph {
+  color: #ffffff;
+  font-size: 10px;
+}
+
+.SharedKanbanColumnScroller {
+  flex: 1;
+  min-height: 96px;
+}
+
+.SharedKanbanColumnCardList {
+  padding: 4px;
+}
+
+.SharedKanbanColumnCardItem {
+  margin-bottom: 8px;
+}
+
+.SharedKanbanColumnEmpty {
+  padding: 16px 12px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+}
+
+.SharedKanbanColumnEmptyText,
+.SharedKanbanColumnShowMoreLabel {
+  width: 100%;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  text-align: center;
+}
+
+.SharedKanbanColumnShowMore {
+  width: 100%;
+  padding: 6px 12px;
+  border-radius: 8px;
+}
