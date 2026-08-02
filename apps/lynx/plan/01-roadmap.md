@@ -214,12 +214,16 @@ Phase 8 出口：普通 UI 的"移植完成"有源码复用和视觉证据；终
 
 **Focused tests**（`bun run test -- <files>`）：
 
-- `apps/lynx/src/components/ui/focus.lynx.test.ts`（若有）或新建 `focus.lynx.test.ts`：
+- `apps/lynx/src/components/ui/focus.lynx.test.ts`：
   `setFocus` / `focusLynxNode` / `focusLynxElementById` 的单元测试
-- `apps/lynx/src/components/ui/interactive-state.lynx.test.ts`（若有）或新建：
-  `useLynxInteractiveState` 的 hover/focus/pressed/disabled/key 状态机测试
+- `apps/lynx/src/adapters/useLynxInteractiveState.test.ts`：
+  interactive helper 的 activation/accessibility/class/nested-pointer contract 测试
 - `apps/lynx/src/app/transcriptFocus.logic.test.ts`：transcript focus 逻辑测试
-- 新建 `hostInputProbe.logic.test.ts`：事件 probe 的纯逻辑测试
+- `apps/lynx/src/app/HostInputProbe.logic.test.ts`：事件 probe 的纯逻辑测试
+
+2026-08-03 completion audit：上述 focused gate **4 files / 15 tests** 全通过；Web/Native
+probe builds、default Web/Desktop production builds、strict reuse/style audits 均通过，且
+default artifacts 重建后不含 probe markers。该自动化门禁已闭合，不改变下方真实 IME blocker。
 
 **Runtime evidence**（Native batch 产出）：
 

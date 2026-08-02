@@ -4640,3 +4640,17 @@
   未登记重大差异为零。证据：
   `shots/2026-08-03/p8-q2/native/notes.md`。P9-D1真实macOS IME composition仍独立
   blocked，不进入P9-R1。
+
+## 2026-08-03 — P9-D1 completion audit：focused gate补齐
+
+- 逐项对照 P9-D1 roadmap 后发现 `focusLynxNode` / `focusLynxElementById` 的建议 focused
+  test 尚无直接 owner；新增 dependency-free `components/ui/focus.lynx.test.ts`，覆盖
+  ref node `setFocus`、selector/id chain、missing node、native command failure与blank selector。
+- P9-D1 focused gate现为 **4 files / 15 tests**：focus helper、interactive-state adapter、
+  transcript keyboard landmark、25-event host-input matrix，全部通过。
+- 同一逻辑切片完成 Web probe、Native probe、default Web、default Desktop 四次build；
+  probe build后默认 artifacts已重建，Web/Desktop bundle均只含`58090`且无probe markers。
+  strict reuse/style audits与`git diff --check`通过。
+- 该补齐只关闭自动化 test/build/audit 缺口。真实macOS IME `isComposing=true→false` 仍因
+  Computer Use model未配置且no-Raise/background窗口不是Text Input Manager client而blocked；
+  P9-D1不改判completed，P9-R1继续禁止。

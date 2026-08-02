@@ -133,7 +133,13 @@ Unblock with one of:
 - Independent Lynx-for-Web probe: complete.
 - Native proof for pointer, ordinary input, focus/key negatives, wheel, and
   window focus: complete.
-- Focused tests/builds/audits: complete for the retained slice.
+- Focused tests: complete. The four-file gate covers native `setFocus`
+  helpers, interactive hover/focus/pressed/disabled/activation policy,
+  transcript keyboard landmark semantics, and the 25-event probe matrix
+  (**4 files / 15 tests**).
+- Probe Web/Native builds, default Web/Desktop production builds, and strict
+  reuse/style audits: complete. Default artifacts were rebuilt after the
+  probe builds and contain no probe markers.
 - Real IME composition: **blocked**.
 - P9-D1 status: **blocked, not completed**.
 - P9-R1: forbidden.
