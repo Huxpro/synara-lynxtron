@@ -172,6 +172,12 @@ export function resolveShellWindowPresentation(
   };
 }
 
+export function shouldAcquireShellSingleInstanceLock(
+  allowParallelInstance: string | undefined
+): boolean {
+  return allowParallelInstance !== '1';
+}
+
 export function resolveShellPaths(userDataDir: string): ShellPaths {
   const stateDir = path.join(userDataDir, 'synara-lynx-slice');
   return {

@@ -12,6 +12,7 @@ import {
   resolveRestoredBounds,
   resolveShellUserDataDir,
   resolveShellWindowPresentation,
+  shouldAcquireShellSingleInstanceLock,
 } from './shellRuntime';
 
 describe('shellRuntime', () => {
@@ -147,6 +148,12 @@ describe('shellRuntime', () => {
       showOnCreate: true,
       showAfterSetup: true,
     });
+  });
+
+  it('only bypasses the application lock for the explicit validation override', () => {
+    expect(shouldAcquireShellSingleInstanceLock(undefined)).toBe(true);
+    expect(shouldAcquireShellSingleInstanceLock('0')).toBe(true);
+    expect(shouldAcquireShellSingleInstanceLock('1')).toBe(false);
   });
 
   it('maps the complete Search navigation set to native menu accelerators', () => {

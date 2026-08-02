@@ -36,6 +36,7 @@ import {
   resolveShellPaths,
   resolveShellUserDataDir,
   resolveShellWindowPresentation,
+  shouldAcquireShellSingleInstanceLock,
   type ShellRouteDeliveryState,
   type ShellWindowState,
   writeJsonAtomic,
@@ -269,7 +270,11 @@ function emitWindowState(w: LynxWindow): void {
   });
 }
 
-const hasSingleInstanceLock = app.requestSingleInstanceLock();
+const acquireSingleInstanceLock = shouldAcquireShellSingleInstanceLock(
+  process.env.SYNARA_ALLOW_PARALLEL_INSTANCE
+);
+const hasSingleInstanceLock =
+  !acquireSingleInstanceLock || app.requestSingleInstanceLock();
 if (!hasSingleInstanceLock) {
   app.quit();
 } else {
@@ -296,7 +301,7 @@ app.whenReady().then(() => {
     shellPaths.logFile,
     `startup version=${app.getVersion()} migrated=${migrated.join(',') || 'none'}`
   );
-  if (!isDev) {
+  if (!isDev && acquireSingleInstanceLock) {
     app.setAsDefaultProtocolClient('synara');
   }
   const savedState = readWindowState(shellPaths.windowState);
