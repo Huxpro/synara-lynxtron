@@ -1,6 +1,7 @@
 # P8-Q2 — 最终视觉认证矩阵预检
 
-**状态：in progress — 已恢复可审计的 Web 位图 capture surface，待完成 48 个 Web/Lynx 配对认证单元**（2026-08-01）
+**状态：ready — Web 与 Native capture surface 均已恢复，待完成 24 个 paired cells
+（48 张 client frames）**（2026-08-03）
 
 ## 已验证的认证前提
 
@@ -39,32 +40,37 @@ shared browser preview 的 screenshot exporter 与页面 viewport 不一致：�
 `1280×820`、DPR 1，但导出 PNG 是 `1846×1952` 或 `1590×1952`。该 preview export 不用于
 认证位图。
 
-复核结果表明此机器**当前没有**可用的独立 Chromium/Puppeteer capture surface：
+旧结论“当前没有独立 Chromium/Puppeteer capture surface”已失效。当前使用
+`agent-browser` 的独立 named session；它启动自己的 Chromium，不连接用户 Chrome，也不
+依赖 shared preview exporter、系统 Chrome CDP、Midscene Bridge 或 workspace Playwright
+binary。
 
-- 当前 shared preview 页面运行时实际报告 `innerWidth=1280`、`innerHeight=820`、DPR 1，
-  但 preview exporter 导出的 PNG 仍为不对应 viewport 的位图；不能作为认证位图。
-- 系统 Chrome 未开放 remote-debugging/CDP endpoint；Midscene Bridge 也未监听，不能作为
-  受控证据来源。
-- workspace 虽安装 `playwright@1.58.2`，其对应 Chromium executable 不在
-  `~/Library/Caches/ms-playwright/chromium-1208/`，因此无法启动受控 browser。
-- 既有 `settings/light-1280/web.png`（`1590×1952`）、
-  `thread/light-1280/web.png`（`2560×1640`）及 `_scratch/web-1440.png`
-  （`2560×1600`）均仅为诊断产物，缺乏与 capture path 一致的可审计
-  viewport/DPR provenance，不能升级为认证证据。
+2026-08-03 以 `synara-p8-q2-preflight` session 实测：
 
-因此 P8-Q2 在 Web 位图证据上仍然 blocked。可接受的解除方式仅有：
+- `set viewport 1280 820 1` 后，页面运行时为
+  `innerWidth=1280`、`innerHeight=820`、`visualViewport=1280×820`、DPR 1；
+  PNG 为精确 `1280×820`，SHA-256
+  `a3149b631c3ba96aadd12a97e77628ce3af69bf990bf619fbfc10e0495e81697`。
+- `set viewport 1440 900 1` 后，页面运行时为
+  `innerWidth=1440`、`innerHeight=900`、`visualViewport=1440×900`、DPR 1；
+  PNG 为精确 `1440×900`，SHA-256
+  `b2d69b41649556c437200146d2434db09a4d89c751d7b3f17046006b62390424`。
+- page errors 与 console 均为空；named session 已关闭。
+- 证据位于 `shots/2026-08-03/p8-q2/preflight/`。
 
-1. 恢复/提供 Playwright Chromium binary，以明确 `viewport: 1280×820` 或 `1440×900`、
-   `deviceScaleFactor: 1` 和 capture 前运行时检查输出 PNG；或
-2. 提供可连接、可控的 Chromium CDP endpoint，以同等配置 capture。
+因此 Web 位图 capture blocker 已解除。既有不具 provenance 的历史 PNG 仍只作诊断，
+不得升级为矩阵证据；所有 retained cells 必须在同一个 named session 中先记录 runtime
+viewport/visualViewport/DPR，再捕获并核验 PNG 尺寸。
 
 Native 的 `1280×820` window 同时由 CoreGraphics 验证，且 DevTool 截图稳定为
-`2560×1576` physical pixels，能精确映射既有 32px titlebar 差值；但这不能替代 paired
-Web evidence。
+`2560×1576` physical pixels，能精确映射既有 32px titlebar 差值。Web 与 Native 两条
+capture surface 现均可用，但仍必须使用同一 isolated snapshot/route/theme/product state；
+任一单端 frame 都不能替代 paired evidence。
 
 ## 后续认证顺序
 
 1. 对两个 Native 尺寸继续以 state-file + restart + CoreGraphics + DevTool 记录实际尺寸；
 2. 对 Threads、Thread、Settings、Projects overview、Project Kanban、Pull Requests 的 light/dark 组合采集同一 WS 数据下的 Web/Lynx 对；
 3. 为每组写 `notes.md`、记录 anchors/typography/tokens/allowed platform differences，并更新 compatibility matrix；
-4. 只有所有 48 个 Web/Lynx 组合均有当前证据且未登记重大差异为零时，才将 P8-Q2 标为 completed。
+4. 只有 24 个 paired cells（六屏 × 双主题 × 双尺寸）均有当前 Web/Lynx frame、可审计
+   provenance，且未登记重大差异为零时，才将 P8-Q2 标为 completed。

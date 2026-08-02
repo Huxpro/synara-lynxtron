@@ -4525,3 +4525,17 @@
   model。报告：`reports/p9-d1-host-input-bridge.md`；证据：
   `shots/2026-08-03/p9-d1/native-probe/notes.md`。
 - 不进入 P9-R1；按用户优先级，P9-D1 未 completed 前也不越序进入 P8-Q2。
+
+## 2026-08-03 — P8-Q2 preflight Web capture blocker解除
+
+- 旧 preflight 的“当前没有独立 Chromium/Puppeteer capture surface”已过时：
+  `agent-browser` 可用独立 named Chromium session，不连接用户 Chrome，也不依赖 shared
+  preview exporter、系统 Chrome CDP、Midscene Bridge或 workspace Playwright binary。
+- `synara-p8-q2-preflight` session 两尺寸实测：
+  - 1280×820 / DPR1：inner/visual viewport均精确，PNG `1280×820`；
+  - 1440×900 / DPR1：inner/visual viewport均精确，PNG `1440×900`；
+  - page errors/console为空，session已关闭。
+- preflight 状态改为 ready；同时修正矩阵计数为 **24 paired cells / 48 client frames**
+  （六屏×双主题×双尺寸），不是48个paired cells。历史无 provenance PNG仍不得升级。
+- 证据：`shots/2026-08-03/p8-q2/preflight/`。本刀只刷新 harness preflight，不开始
+  P8-Q2产品矩阵；P9-D1真实IME blocker仍存在，不进入P9-R1。

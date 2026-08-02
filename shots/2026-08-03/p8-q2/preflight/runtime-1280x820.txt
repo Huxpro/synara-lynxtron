@@ -1,0 +1,1 @@
+"{\"innerWidth\":1280,\"innerHeight\":820,\"visualWidth\":1280,\"visualHeight\":820,\"dpr\":1}"
