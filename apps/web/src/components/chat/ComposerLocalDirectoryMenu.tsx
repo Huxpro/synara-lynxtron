@@ -494,7 +494,9 @@ export function ComposerLocalDirectoryMenu(props: {
         ) : isLoading && visibleCount === 0 ? (
           <p className="px-2 py-1.5 text-muted-foreground/50 text-[11px]">Loading local files…</p>
         ) : errorMessage ? (
-          <p className="px-2 py-1.5 text-destructive/80 text-[11px]">{errorMessage}</p>
+          <p className="px-2 py-1.5 text-[var(--color-text-status-error)] text-[11px]">
+            {errorMessage}
+          </p>
         ) : isSearchPending ? (
           <p className="px-2 py-1.5 text-muted-foreground/50 text-[11px]">
             Searching nested files…

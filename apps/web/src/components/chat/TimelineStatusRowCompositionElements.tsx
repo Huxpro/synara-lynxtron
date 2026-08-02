@@ -7,10 +7,10 @@ import { cn } from "~/lib/utils";
 import type { TimelineStatusTone } from "./TimelineStatusRowComposition";
 
 const TONE_CLASS: Record<TimelineStatusTone, string> = {
-  thinking: "text-muted-foreground/45",
-  tool: "text-muted-foreground/55",
-  info: "text-muted-foreground/60",
-  error: "text-destructive/80",
+  thinking: "text-[var(--color-text-status-neutral)]",
+  tool: "text-[var(--color-text-status-neutral)]",
+  info: "text-[var(--color-text-status-neutral)]",
+  error: "text-[var(--color-text-status-error)]",
 };
 
 export function TimelineStatusRowRootElement(props: {

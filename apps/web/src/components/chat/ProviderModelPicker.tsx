@@ -7,9 +7,8 @@ import { type ModelSlug, type ProviderKind, type ServerProviderStatus } from "@s
 import { resolveSelectableModel } from "@synara/shared/model";
 import * as Schema from "effect/Schema";
 import { useEffect, useRef, useState } from "react";
-import { type ProviderPickerKind, PROVIDER_OPTIONS } from "../../session-logic";
+import { type ProviderPickerKind } from "../../session-logic";
 import { formatProviderModelOptionName } from "../../providerModelOptions";
-import { compareProvidersByOrder } from "../../providerOrdering";
 import {
   Menu,
   MenuItem,
@@ -42,70 +41,17 @@ import { useLocalStorage } from "../../hooks/useLocalStorage";
 import {
   FAVORITE_MODEL_STORAGE_KEYS,
   supportsModelFavorites,
+  toggleFavoriteModelSlug,
   type FavoriteModelProvider,
 } from "../../lib/modelFavorites";
 import { Skeleton } from "../ui/skeleton";
 
 import { useDebouncedValue } from "@tanstack/react-pacer";
-function isAvailableProviderOption(option: (typeof PROVIDER_OPTIONS)[number]): option is {
-  value: ProviderKind;
-  label: string;
-  available: true;
-} {
-  return option.available;
-}
-
-function resolveLiveProviderAvailability(provider: ServerProviderStatus | undefined): {
-  disabled: boolean;
-  label: string | null;
-} {
-  if (!provider) {
-    return {
-      disabled: true,
-      label: "Checking",
-    };
-  }
-
-  if (!provider.available) {
-    return {
-      disabled: true,
-      label: provider.authStatus === "unauthenticated" ? "Sign in" : "Unavailable",
-    };
-  }
-
-  if (provider.authStatus === "unauthenticated") {
-    return {
-      disabled: true,
-      label: "Sign in",
-    };
-  }
-
-  return {
-    disabled: false,
-    label: null,
-  };
-}
-
-export const AVAILABLE_PROVIDER_OPTIONS = PROVIDER_OPTIONS.filter(isAvailableProviderOption);
-const UNAVAILABLE_PROVIDER_OPTIONS = PROVIDER_OPTIONS.filter((option) => !option.available);
-
-// Removes user-hidden providers from a provider option list while always
-// preserving any providers the caller marks as protected (the active and
-// locked provider for the current thread). Without that carve-out, hiding the
-// provider you're already using would erase the entry that lets you switch
-// away from it.
-function filterProviderOptionsByVisibility<T extends { value: ProviderKind }>(
-  options: ReadonlyArray<T>,
-  hiddenProviders: ReadonlySet<ProviderKind>,
-  protectedProviders: ReadonlySet<ProviderKind>,
-): ReadonlyArray<T> {
-  if (hiddenProviders.size === 0) {
-    return options;
-  }
-  return options.filter(
-    (option) => protectedProviders.has(option.value) || !hiddenProviders.has(option.value),
-  );
-}
+import {
+  AVAILABLE_PROVIDER_OPTIONS,
+  buildComposerProviderPickerItems,
+} from "./ComposerProviderPickerItems";
+export { AVAILABLE_PROVIDER_OPTIONS } from "./ComposerProviderPickerItems";
 
 function providerIconClassName(
   provider: ProviderKind | ProviderPickerKind,
@@ -119,14 +65,6 @@ function providerIconClassName(
 const SEARCHABLE_MODEL_PICKER_THRESHOLD = 15;
 const FavoriteModelSlugs = Schema.Array(Schema.String);
 const EMPTY_FAVORITE_MODEL_SLUGS: ReadonlyArray<string> = [];
-
-// Keeps persisted favorite slugs compact and stable while preserving the user's order.
-function toggleFavoriteModelSlug(current: ReadonlyArray<string>, slug: string): string[] {
-  const normalizedCurrent = Array.from(new Set(current.filter((entry) => entry.trim().length > 0)));
-  return normalizedCurrent.includes(slug)
-    ? normalizedCurrent.filter((entry) => entry !== slug)
-    : [...normalizedCurrent, slug];
-}
 
 function stripParameterizedModelSuffix(model: string): string {
   return model.trim().replace(/\[[^\]]*\]$/u, "");
@@ -217,24 +155,20 @@ export const ProviderModelMenuItems = function ProviderModelMenuItems(
   const activeProvider = props.lockedProvider ?? props.provider;
   const hiddenProviders = props.hiddenProviders;
   const providerOrder = props.providerOrder;
-  const hiddenProviderSet = new Set<ProviderKind>(hiddenProviders ?? []);
-  const protectedProviderSet = new Set<ProviderKind>([props.provider]);
-  if (props.lockedProvider !== null) {
-    protectedProviderSet.add(props.lockedProvider);
-  }
-  const visibleAvailableProviderOptions = filterProviderOptionsByVisibility(
-    AVAILABLE_PROVIDER_OPTIONS.toSorted((left, right) =>
-      compareProvidersByOrder(providerOrder ?? [], left.value, right.value),
-    ),
-    hiddenProviderSet,
-    protectedProviderSet,
+  const providerItems = buildComposerProviderPickerItems({
+    ...(props.providers ? { providers: props.providers } : {}),
+    ...(hiddenProviders ? { hiddenProviders } : {}),
+    ...(providerOrder ? { providerOrder } : {}),
+    protectedProviders:
+      props.lockedProvider === null
+        ? [props.provider]
+        : [props.provider, props.lockedProvider],
+  });
+  const visibleAvailableProviderOptions = providerItems.filter(
+    (item) => item.kind === "available",
   );
-  const visibleUnavailableProviderOptions = filterProviderOptionsByVisibility(
-    UNAVAILABLE_PROVIDER_OPTIONS.toSorted((left, right) =>
-      compareProvidersByOrder(providerOrder ?? [], left.value, right.value),
-    ),
-    hiddenProviderSet,
-    protectedProviderSet,
+  const visibleUnavailableProviderOptions = providerItems.filter(
+    (item) => item.kind === "coming-soon",
   );
   const kiloFavoriteModelSlugSet = new Set(kiloFavoriteModelSlugs);
   const openCodeFavoriteModelSlugSet = new Set(openCodeFavoriteModelSlugs);
@@ -323,6 +257,7 @@ export const ProviderModelMenuItems = function ProviderModelMenuItems(
             favoriteProvider={favoriteProvider}
             favoriteModelSlugSet={favoriteModelSlugSet}
             onToggleFavorite={toggleFavoriteModel}
+            onSelectModel={(model) => handleModelChange(provider, model)}
             {...(onAfterSelection ? { onAfterSelection } : {})}
           />
         </MenuRadioGroup>
@@ -377,34 +312,32 @@ export const ProviderModelMenuItems = function ProviderModelMenuItems(
   return (
     <>
       {visibleAvailableProviderOptions.map((option) => {
-        const OptionIcon = PROVIDER_ICON_COMPONENT_BY_PROVIDER[option.value];
-        const liveProvider = props.providers?.find((entry) => entry.provider === option.value);
-        const availability = resolveLiveProviderAvailability(liveProvider);
-        if (availability.disabled) {
+        const OptionIcon = PROVIDER_ICON_COMPONENT_BY_PROVIDER[option.provider];
+        if (option.disabled) {
           return (
-            <MenuItem key={option.value} disabled>
+            <MenuItem key={option.provider} disabled>
               <OptionIcon
                 aria-hidden="true"
                 className={cn(
                   "size-3 shrink-0 opacity-80",
-                  providerIconClassName(option.value, "text-muted-foreground/85"),
+                  providerIconClassName(option.provider, "text-muted-foreground/85"),
                 )}
               />
               <span>{option.label}</span>
               <span className="ms-auto text-[11px] text-muted-foreground/80">
-                {availability.label}
+                {option.statusLabel}
               </span>
             </MenuItem>
           );
         }
         return (
-          <MenuSub key={option.value}>
+          <MenuSub key={option.provider}>
             <MenuSubTrigger>
               <OptionIcon
                 aria-hidden="true"
                 className={cn(
                   "size-3 shrink-0",
-                  providerIconClassName(option.value, "text-muted-foreground/85"),
+                  providerIconClassName(option.provider, "text-muted-foreground/85"),
                 )}
               />
               {option.label}
@@ -413,22 +346,24 @@ export const ProviderModelMenuItems = function ProviderModelMenuItems(
               fixedWidth
               className={COMPOSER_PICKER_MODEL_SUBMENU_HEIGHT_CLASS_NAME}
             >
-              {renderModelRadioGroup(option.value)}
+              {renderModelRadioGroup(option.provider)}
             </ComposerPickerMenuSubPopup>
           </MenuSub>
         );
       })}
       {visibleUnavailableProviderOptions.length > 0 && <MenuSeparator />}
       {visibleUnavailableProviderOptions.map((option) => {
-        const OptionIcon = PROVIDER_ICON_COMPONENT_BY_PROVIDER[option.value];
+        const OptionIcon = PROVIDER_ICON_COMPONENT_BY_PROVIDER[option.provider];
         return (
-          <MenuItem key={option.value} disabled>
+          <MenuItem key={option.provider} disabled>
             <OptionIcon
               aria-hidden="true"
               className="size-3 shrink-0 text-muted-foreground/85 opacity-80"
             />
             <span>{option.label}</span>
-            <span className="ms-auto text-[11px] text-muted-foreground/80">Coming soon</span>
+            <span className="ms-auto text-[11px] text-muted-foreground/80">
+              {option.statusLabel}
+            </span>
           </MenuItem>
         );
       })}

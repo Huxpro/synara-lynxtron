@@ -284,7 +284,6 @@ import TerminalWorkspaceTabs from "./TerminalWorkspaceTabs";
 import ThreadTerminalDrawer from "./ThreadTerminalDrawer";
 import {
   ChevronDownIcon,
-  ComposerSendArrowIcon,
   LayoutSidebarIcon,
   RefreshCwIcon,
   TemporaryThreadIcon,
@@ -355,6 +354,7 @@ import {
   type TerminalContextSelection,
 } from "../lib/terminalContext";
 import {
+  appendPastedTextToEditablePrompt,
   appendPastedTextsToPrompt,
   createPastedTextDraft,
   pastedTextTitle,
@@ -482,6 +482,14 @@ import {
   type WorkflowSubagentThreadRef,
 } from "./chat/WorkflowRunCard.logic";
 import { ComposerColumnFrame } from "./chat/ComposerColumnFrame";
+import {
+  ComposerEditorRegionComposition,
+  ComposerFooterContentComposition,
+  ComposerFooterRowComposition,
+  ComposerInputSurfaceComposition,
+  ComposerPrimaryActionComposition,
+} from "./chat/ComposerInputComposition";
+import { ComposerLifecycleStatus } from "./chat/ComposerLifecycleStatus";
 import { useTranscriptAssistantSelectionAction } from "./chat/useTranscriptAssistantSelectionAction";
 import { resolveTranscriptMarkerRange } from "./chat/chatSelectionActions";
 import {
@@ -493,11 +501,8 @@ import {
 import { getComposerProviderState } from "./chat/composerProviderRegistry";
 import {
   COMPOSER_COMMAND_MENU_FLOATING_WRAPPER_CLASS_NAME,
-  COMPOSER_INPUT_SHELL_CLASS_NAME,
   COMPOSER_INPUT_SURFACE_CLASS_NAME,
   COMPOSER_COLUMN_FRAME_CLASS_NAME,
-  COMPOSER_EDITOR_PADDING_CLASS_NAME,
-  COMPOSER_FOOTER_ROW_CLASS_NAME,
   COMPOSER_MUTED_ACCENT_TEXT_CLASS_NAME,
   CHAT_BACKGROUND_CLASS_NAME,
   CHAT_COLUMN_FRAME_CLASS_NAME,
@@ -1642,8 +1647,7 @@ export default function ChatView({
       }
       discardPromptHistoryNavigationForComposerMutation();
       const current = promptRef.current;
-      const separator = current.length > 0 && !current.endsWith("\n") ? "\n" : "";
-      const nextPrompt = `${current}${separator}${pasted.text}`;
+      const nextPrompt = appendPastedTextToEditablePrompt(current, pasted.text);
       promptRef.current = nextPrompt;
       setPrompt(nextPrompt);
       removeComposerDraftPastedText(threadId, pastedTextId);
@@ -10154,20 +10158,11 @@ export default function ChatView({
                 </div>
               ) : null}
             </div>
-            <div
-              className={cn(
-                COMPOSER_INPUT_SHELL_CLASS_NAME,
-                composerProviderState.composerFrameClassName,
-                composerMenuOpen && !isComposerApprovalState && "overflow-visible",
-              )}
+            <ComposerInputSurfaceComposition
+              providerFrameClassName={composerProviderState.composerFrameClassName}
+              providerSurfaceClassName={composerProviderState.composerSurfaceClassName}
+              overflowVisible={composerMenuOpen && !isComposerApprovalState}
             >
-              <div
-                className={cn(
-                  COMPOSER_INPUT_SURFACE_CLASS_NAME,
-                  composerProviderState.composerSurfaceClassName,
-                  composerMenuOpen && !isComposerApprovalState && "overflow-visible",
-                )}
-              >
                 <ComposerInputBanners
                   roundedTopReset={false}
                   planFollowUp={
@@ -10190,11 +10185,8 @@ export default function ChatView({
                       : null
                   }
                 />
-                <div
-                  className={cn(
-                    COMPOSER_EDITOR_PADDING_CLASS_NAME,
-                    composerMenuOpen && !isComposerApprovalState && "overflow-visible",
-                  )}
+                <ComposerEditorRegionComposition
+                  overflowVisible={composerMenuOpen && !isComposerApprovalState}
                 >
                   {composerMenuOpen && !isComposerApprovalState ? (
                     <div className={COMPOSER_COMMAND_MENU_FLOATING_WRAPPER_CLASS_NAME}>
@@ -10291,79 +10283,59 @@ export default function ChatView({
                     }
                     disabled={isComposerEditorDisabled}
                   />
-                </div>
+                </ComposerEditorRegionComposition>
                 {/* Bottom toolbar — hidden while an approval takes over the composer,
                     since the approve/decline actions live in the detached approval card
                     floating above (see ComposerPendingApprovalPanel). */}
                 {activePendingApproval ? null : (
-                  <div
-                    data-chat-composer-footer="true"
-                    className={cn(
-                      "@container",
-                      COMPOSER_FOOTER_ROW_CLASS_NAME,
-                      isComposerFooterCompact
-                        ? "gap-1.5"
-                        : "flex-wrap gap-1.5 sm:flex-nowrap sm:gap-0",
-                    )}
-                  >
-                    <div
-                      data-chat-composer-leading="true"
-                      className={cn(
-                        "flex items-center",
-                        isVoiceRecording || isVoiceTranscribing
-                          ? "min-w-0 shrink-0 gap-1"
-                          : isComposerFooterCompact
-                            ? "min-w-0 flex-1 gap-1 overflow-hidden"
-                            : "min-w-0 flex-1 gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:min-w-max sm:overflow-visible",
-                      )}
-                    >
-                      {relocateComposerLeadingControls
-                        ? null
-                        : renderComposerLeadingControls({ iconOnly: false })}
-
-                      {!isVoiceRecording && !isVoiceTranscribing ? (
+                  <ComposerFooterRowComposition compact={isComposerFooterCompact}>
+                    <ComposerFooterContentComposition
+                      compact={isComposerFooterCompact}
+                      voiceBusy={isVoiceRecording || isVoiceTranscribing}
+                      leading={
                         <>
-                          {interactionMode === "plan" ? (
-                            <Button
-                              variant="ghost"
-                              className="shrink-0 whitespace-nowrap px-2 text-[length:var(--app-font-size-ui-sm,11px)] sm:text-[length:var(--app-font-size-ui-sm,11px)] font-normal text-[var(--color-text-foreground-secondary)] hover:bg-[var(--color-background-button-secondary-hover)] hover:text-[var(--color-text-foreground)] sm:px-3"
-                              size="sm"
-                              type="button"
-                              onClick={toggleInteractionMode}
-                              title="Plan mode — click to return to normal build mode"
-                            >
-                              <GoTasklist className="size-3.5" />
-                              <span className="sr-only sm:not-sr-only">Plan</span>
-                            </Button>
-                          ) : null}
+                          {relocateComposerLeadingControls
+                            ? null
+                            : renderComposerLeadingControls({ iconOnly: false })}
 
-                          {activeTaskList || sidebarProposedPlan || planSidebarOpen ? (
-                            <Button
-                              variant="ghost"
-                              className="shrink-0 whitespace-nowrap px-2 text-[length:var(--app-font-size-ui-sm,11px)] sm:text-[length:var(--app-font-size-ui-sm,11px)] font-normal sm:px-3"
-                              size="sm"
-                              type="button"
-                              onClick={togglePlanSidebar}
-                              title={planSidebarToggleTitle}
-                              aria-label={planSidebarToggleTitle}
-                            >
-                              <LayoutSidebarIcon className="size-3.5" />
-                              <span className="sr-only sm:not-sr-only">
-                                {planSidebarToggleLabel}
-                              </span>
-                            </Button>
+                          {!isVoiceRecording && !isVoiceTranscribing ? (
+                            <>
+                              {interactionMode === "plan" ? (
+                                <Button
+                                  variant="ghost"
+                                  className="shrink-0 whitespace-nowrap px-2 text-[length:var(--app-font-size-ui-sm,11px)] sm:text-[length:var(--app-font-size-ui-sm,11px)] font-normal text-[var(--color-text-foreground-secondary)] hover:bg-[var(--color-background-button-secondary-hover)] hover:text-[var(--color-text-foreground)] sm:px-3"
+                                  size="sm"
+                                  type="button"
+                                  onClick={toggleInteractionMode}
+                                  title="Plan mode — click to return to normal build mode"
+                                >
+                                  <GoTasklist className="size-3.5" />
+                                  <span className="sr-only sm:not-sr-only">Plan</span>
+                                </Button>
+                              ) : null}
+
+                              {activeTaskList || sidebarProposedPlan || planSidebarOpen ? (
+                                <Button
+                                  variant="ghost"
+                                  className="shrink-0 whitespace-nowrap px-2 text-[length:var(--app-font-size-ui-sm,11px)] sm:text-[length:var(--app-font-size-ui-sm,11px)] font-normal sm:px-3"
+                                  size="sm"
+                                  type="button"
+                                  onClick={togglePlanSidebar}
+                                  title={planSidebarToggleTitle}
+                                  aria-label={planSidebarToggleTitle}
+                                >
+                                  <LayoutSidebarIcon className="size-3.5" />
+                                  <span className="sr-only sm:not-sr-only">
+                                    {planSidebarToggleLabel}
+                                  </span>
+                                </Button>
+                              ) : null}
+                            </>
                           ) : null}
                         </>
-                      ) : null}
-                    </div>
-
-                    <div
-                      data-chat-composer-actions="right"
-                      className={cn(
-                        "flex items-center gap-2",
-                        isVoiceRecording || isVoiceTranscribing ? "min-w-0 flex-1" : "shrink-0",
-                      )}
-                    >
+                      }
+                      actions={
+                        <>
                       {!isVoiceRecording &&
                       !isVoiceTranscribing &&
                       runtimeUsageContextWindow &&
@@ -10425,20 +10397,10 @@ export default function ChatView({
                               : "Next question"}
                         </Button>
                       ) : phase === "running" ? (
-                        <Button
-                          type="button"
-                          variant="prominent"
-                          size="icon-xs"
-                          className="sm:size-[26px]"
-                          onClick={() => void onInterrupt()}
-                          aria-label="Stop generation"
-                          title="Stop the current response. On Mac, press Ctrl+C to interrupt."
-                        >
-                          <span
-                            aria-hidden="true"
-                            className="block size-2 rounded-[1px] bg-current"
-                          />
-                        </Button>
+                        <ComposerPrimaryActionComposition
+                          mode="stop"
+                          onActivate={() => void onInterrupt()}
+                        />
                       ) : pendingUserInputs.length === 0 &&
                         !isVoiceRecording &&
                         !isVoiceTranscribing ? (
@@ -10498,18 +10460,15 @@ export default function ChatView({
                                 onClick={toggleComposerVoiceRecording}
                               />
                             ) : null}
-                            <Button
-                              type="submit"
-                              variant="prominent"
-                              size="icon-xs"
-                              className="size-7 rounded-full sm:size-7"
+                            <ComposerPrimaryActionComposition
+                              mode={isConnecting || isSendBusy ? "sending" : "send"}
                               disabled={
                                 isSendBusy ||
                                 isConnecting ||
                                 isVoiceTranscribing ||
                                 !composerSendState.hasSendableContent
                               }
-                              aria-label={
+                              accessibleLabel={
                                 isConnecting
                                   ? "Connecting"
                                   : isVoiceTranscribing
@@ -10520,41 +10479,22 @@ export default function ChatView({
                                         ? "Sending"
                                         : "Send message"
                               }
-                            >
-                              {isConnecting || isSendBusy ? (
-                                <svg
-                                  width="12"
-                                  height="12"
-                                  viewBox="0 0 14 14"
-                                  fill="none"
-                                  className="animate-spin"
-                                  aria-hidden="true"
-                                >
-                                  <circle
-                                    cx="7"
-                                    cy="7"
-                                    r="5.5"
-                                    stroke="currentColor"
-                                    strokeWidth="1.5"
-                                    strokeLinecap="round"
-                                    strokeDasharray="20 12"
-                                  />
-                                </svg>
-                              ) : (
-                                <ComposerSendArrowIcon
-                                  aria-hidden="true"
-                                  className="size-5 shrink-0"
-                                />
-                              )}
-                            </Button>
+                              onActivate={() => undefined}
+                            />
                           </>
                         )
                       ) : null}
-                    </div>
-                  </div>
+                        </>
+                      }
+                    />
+                  </ComposerFooterRowComposition>
                 )}
-              </div>
-            </div>
+                <ComposerLifecycleStatus
+                  includeFailure={false}
+                  operation={isSendBusy ? "sending" : "idle"}
+                  sessionStatus={activeThread?.session?.orchestrationStatus ?? null}
+                />
+            </ComposerInputSurfaceComposition>
           </ComposerColumnFrame>
         </form>
         {emptyLandingControls}

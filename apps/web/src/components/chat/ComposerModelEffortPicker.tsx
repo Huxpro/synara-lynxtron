@@ -15,7 +15,6 @@ import {
 } from "@synara/contracts";
 import { useState } from "react";
 
-import { ChevronDownIcon, FastModeIcon, SettingsIcon } from "~/lib/icons";
 import { cn } from "~/lib/utils";
 import { type ProviderModelOption } from "../../providerModelOptions";
 import { Button } from "../ui/button";
@@ -24,10 +23,10 @@ import { ShortcutKbd } from "../ui/shortcut-kbd";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "../ui/tooltip";
 import { PROVIDER_ICON_COMPONENT_BY_PROVIDER } from "../ProviderIcon";
 import {
-  COMPOSER_MUTED_ACCENT_TEXT_CLASS_NAME,
   COMPOSER_PICKER_MODEL_SUBMENU_HEIGHT_CLASS_NAME,
   COMPOSER_PICKER_TRIGGER_TEXT_CLASS_NAME,
 } from "./composerPickerStyles";
+import { ComposerModelTriggerComposition } from "./ComposerModelTriggerComposition";
 import { ComposerPickerMenuPopup, ComposerPickerMenuSubPopup } from "./ComposerPickerMenuPopup";
 import { getComposerTraitSelection, hasVisibleComposerTraitControls } from "./composerTraits";
 import {
@@ -161,44 +160,14 @@ export function ComposerModelEffortPicker(props: ComposerModelEffortPickerProps)
   );
 
   const triggerContent = (
-    <span className="flex min-w-0 items-center gap-1.5 overflow-hidden">
-      <ProviderIcon
-        aria-hidden="true"
-        className={cn(
-          // opacity-100 opts out of the Button base's [&_svg]:opacity-80 dimming.
-          "size-3.5 shrink-0 opacity-100",
-          getProviderIconClassName(activeProvider, "text-[var(--color-text-foreground)]"),
-        )}
-      />
-      {props.hideModelLabel ? (
-        <span className="sr-only">{modelLabel}</span>
-      ) : (
-        <span className="min-w-0 truncate text-[var(--color-text-foreground)]">{modelLabel}</span>
-      )}
-      {showsFastBadge ? (
-        <FastModeIcon
-          aria-hidden="true"
-          className={cn("size-3.5 shrink-0", COMPOSER_MUTED_ACCENT_TEXT_CLASS_NAME)}
-        />
-      ) : null}
-      {triggerStatusLabel ? (
-        props.hideStatusLabel ? (
-          <>
-            <SettingsIcon
-              aria-hidden="true"
-              data-slot="composer-traits-status-icon"
-              className={cn("size-3.5 shrink-0", COMPOSER_MUTED_ACCENT_TEXT_CLASS_NAME)}
-            />
-            <span className="sr-only">{triggerStatusLabel}</span>
-          </>
-        ) : (
-          <span className={cn("shrink-0", COMPOSER_MUTED_ACCENT_TEXT_CLASS_NAME)}>
-            {triggerStatusLabel}
-          </span>
-        )
-      ) : null}
-      <ChevronDownIcon aria-hidden="true" className="ms-0.5 size-3 shrink-0 opacity-60" />
-    </span>
+    <ComposerModelTriggerComposition
+      provider={activeProvider}
+      modelLabel={modelLabel}
+      statusLabel={triggerStatusLabel}
+      showFastBadge={showsFastBadge}
+      hideModelLabel={props.hideModelLabel ?? false}
+      hideStatusLabel={props.hideStatusLabel ?? false}
+    />
   );
 
   return (

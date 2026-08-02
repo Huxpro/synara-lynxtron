@@ -237,7 +237,7 @@ function WorkspaceDirectory(props: {
 
   if (query.error) {
     return (
-      <p className="px-3 py-2 text-[11px] text-destructive/80">
+      <p className="px-3 py-2 text-[11px] text-[var(--color-text-status-error)]">
         {query.error instanceof Error ? query.error.message : "Could not load directory."}
       </p>
     );

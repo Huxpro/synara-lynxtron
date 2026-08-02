@@ -11,16 +11,11 @@ import {
   type ThreadId,
 } from "@synara/contracts";
 import { applyClaudePromptEffortPrefix } from "@synara/shared/model";
-import { memo, useCallback, useEffect, useRef, useState, type ReactNode } from "react";
-import { ChevronDownIcon, FastModeIcon, FastModeOutlineIcon, SettingsIcon } from "~/lib/icons";
-import { cn } from "~/lib/utils";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
+import { ChevronDownIcon, SettingsIcon } from "~/lib/icons";
 import { Button } from "../ui/button";
 import {
   Menu,
-  MenuGroup,
-  MenuGroupLabel,
-  MenuRadioGroup,
-  MenuRadioItem,
   MenuSeparator as MenuDivider,
   MenuTrigger,
 } from "../ui/menu";
@@ -32,6 +27,7 @@ import {
 } from "../../providerModelOptions";
 import { COMPOSER_PICKER_TRIGGER_TEXT_CLASS_NAME } from "./composerPickerStyles";
 import { ComposerPickerMenuPopup } from "./ComposerPickerMenuPopup";
+import { ComposerTraitRadioSectionComposition } from "./ComposerTraitRadioSectionComposition";
 import { getComposerTraitSelection, hasVisibleComposerTraitControls } from "./composerTraits";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "../ui/tooltip";
 import { ShortcutKbd } from "../ui/shortcut-kbd";
@@ -148,115 +144,6 @@ export function resolveTraitsTriggerSummary(options: {
     showsFastBadge,
     summaryText,
   };
-}
-
-// Compact icon toggle for fast mode, docked at the far right of the Effort
-// section header. Outline zap (Central reversed set) = default speed, filled
-// zap (Central fill set) = fast mode on. Toggling keeps the menu open so the
-// state flip is visible in place.
-function FastModeToggle({ enabled, onToggle }: { enabled: boolean; onToggle: () => void }) {
-  const Icon = enabled ? FastModeIcon : FastModeOutlineIcon;
-  return (
-    <Tooltip>
-      <TooltipTrigger
-        render={
-          <button
-            type="button"
-            aria-label="Fast mode"
-            aria-pressed={enabled}
-            className="-my-1 flex size-5 shrink-0 cursor-pointer items-center justify-center rounded-md transition-colors hover:bg-[color-mix(in_srgb,var(--foreground)_6%,transparent)]"
-            onClick={onToggle}
-          />
-        }
-      >
-        <Icon
-          aria-hidden="true"
-          className={cn(
-            "size-3.5",
-            enabled ? "text-[hsl(var(--chart-4))]" : "text-muted-foreground/70",
-          )}
-        />
-      </TooltipTrigger>
-      <TooltipPopup side="top" variant="picker">
-        {enabled ? "Fast mode on" : "Fast mode off"}
-      </TooltipPopup>
-    </Tooltip>
-  );
-}
-
-interface TraitRadioOption {
-  value: string;
-  label: string;
-  isDefault?: boolean;
-  description?: string | null;
-}
-
-// Shared layout for one composer trait section: a labeled radio group whose rows
-// optionally show a "(default)" suffix and a right-side description tooltip.
-// `onSelectionComplete` runs on every row click (not just on value change) so
-// re-selecting the already-active option still closes the menu — a radio group's
-// `onValueChange` does not fire when the value is unchanged.
-function TraitRadioSection({
-  label,
-  labelTrailing,
-  note,
-  value,
-  options,
-  disabled,
-  onValueChange,
-  onSelectionComplete,
-}: {
-  label: string;
-  labelTrailing?: ReactNode;
-  note?: ReactNode;
-  value: string;
-  options: ReadonlyArray<TraitRadioOption>;
-  disabled?: boolean;
-  onValueChange: (value: string) => void;
-  onSelectionComplete?: (() => void) | undefined;
-}) {
-  return (
-    <MenuGroup>
-      {labelTrailing ? (
-        <MenuGroupLabel className="flex items-center justify-between gap-2">
-          {label}
-          {labelTrailing}
-        </MenuGroupLabel>
-      ) : (
-        <MenuGroupLabel>{label}</MenuGroupLabel>
-      )}
-      {note}
-      <MenuRadioGroup value={value} onValueChange={onValueChange}>
-        {options.map((option) => {
-          const item = (
-            <MenuRadioItem
-              key={option.value}
-              value={option.value}
-              {...(disabled ? { disabled: true } : {})}
-              onClick={() => onSelectionComplete?.()}
-            >
-              {option.label}
-              {option.isDefault ? " (default)" : ""}
-            </MenuRadioItem>
-          );
-          return option.description ? (
-            <Tooltip key={option.value}>
-              <TooltipTrigger render={item} />
-              <TooltipPopup
-                side="right"
-                variant="picker"
-                className="max-w-80 whitespace-normal leading-tight"
-              >
-                {option.description}
-              </TooltipPopup>
-            </Tooltip>
-          ) : (
-            item
-          );
-        })}
-      </MenuRadioGroup>
-    </MenuGroup>
-  );
 }
 
 export interface TraitsMenuContentProps {
@@ -386,7 +273,7 @@ export const TraitsMenuContent = memo(function TraitsMenuContentImpl({
   return (
     <>
       {thinkingEnabled !== null ? (
-        <TraitRadioSection
+        <ComposerTraitRadioSectionComposition
           label="Thinking"
           value={thinkingEnabled ? "on" : "off"}
           options={[
@@ -400,7 +287,7 @@ export const TraitsMenuContent = memo(function TraitsMenuContentImpl({
       {contextWindowOptions.length > 1 ? (
         <>
           {hasPriorContextWindowSection ? <MenuDivider /> : null}
-          <TraitRadioSection
+          <ComposerTraitRadioSectionComposition
             label={contextWindowDescriptor?.label ?? "Context"}
             value={contextWindow ?? defaultContextWindow ?? ""}
             options={contextWindowOptions.map((option) => ({
@@ -418,17 +305,16 @@ export const TraitsMenuContent = memo(function TraitsMenuContentImpl({
       {effortLevels.length > 0 ? (
         <>
           {hasPriorEffortSection ? <MenuDivider /> : null}
-          <TraitRadioSection
+          <ComposerTraitRadioSectionComposition
             label={provider === "kilo" || provider === "opencode" ? "Variant" : "Effort"}
-            labelTrailing={
-              showsFastModeEffortToggle ? (
-                <FastModeToggle
-                  enabled={fastModeEnabled}
-                  onToggle={() =>
-                    commitTrait({ fastMode: !fastModeEnabled }, { keepMenuOpen: true })
+            fastModeControl={
+              showsFastModeEffortToggle
+                ? {
+                    enabled: fastModeEnabled,
+                    onToggle: () =>
+                      commitTrait({ fastMode: !fastModeEnabled }, { keepMenuOpen: true }),
                   }
-                />
-              ) : undefined
+                : undefined
             }
             note={
               ultrathinkPromptControlled ? (
@@ -453,7 +339,7 @@ export const TraitsMenuContent = memo(function TraitsMenuContentImpl({
       {includeFastMode && supportsFastModeControl && !showsFastModeEffortToggle ? (
         <>
           {hasPriorFastModeSection ? <MenuDivider /> : null}
-          <TraitRadioSection
+          <ComposerTraitRadioSectionComposition
             label="Speed"
             value={fastModeEnabled ? "on" : "off"}
             options={[
@@ -468,7 +354,7 @@ export const TraitsMenuContent = memo(function TraitsMenuContentImpl({
       {hasAgentControls ? (
         <>
           {hasVisibleControls ? <MenuDivider /> : null}
-          <TraitRadioSection
+          <ComposerTraitRadioSectionComposition
             label={provider === "kilo" ? "Mode" : "Agent"}
             value={selectedAgent ?? defaultAgent ?? ""}
             options={agentOptions.map((agent) => ({

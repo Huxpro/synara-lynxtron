@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  appendPastedTextToEditablePrompt,
   appendPastedTextsToPrompt,
   createPastedTextDraft,
   extractTrailingPastedTexts,
@@ -91,5 +92,13 @@ describe("appendPastedTextsToPrompt / extractTrailingPastedTexts", () => {
     const extracted = extractTrailingPastedTexts("nothing to see here");
     expect(extracted.promptText).toBe("nothing to see here");
     expect(extracted.pastedTexts).toEqual([]);
+  });
+});
+
+describe("appendPastedTextToEditablePrompt", () => {
+  it("uses the same newline boundary for Web and platform editor kernels", () => {
+    expect(appendPastedTextToEditablePrompt("before", "after")).toBe("before\nafter");
+    expect(appendPastedTextToEditablePrompt("before\n", "after")).toBe("before\nafter");
+    expect(appendPastedTextToEditablePrompt("", "after")).toBe("after");
   });
 });

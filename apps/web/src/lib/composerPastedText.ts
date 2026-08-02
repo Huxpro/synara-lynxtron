@@ -134,6 +134,11 @@ export function appendPastedTextsToPrompt(
   return trimmed.length > 0 ? `${trimmed}\n\n${block}` : block;
 }
 
+export function appendPastedTextToEditablePrompt(prompt: string, pastedText: string): string {
+  const separator = prompt.length > 0 && !prompt.endsWith("\n") ? "\n" : "";
+  return `${prompt}${separator}${pastedText}`;
+}
+
 // --- Display-time extraction (trailing block -> cards)
 
 function buildParsedPastedTextEntry(index: number, text: string): ParsedPastedTextEntry {

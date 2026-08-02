@@ -75,6 +75,7 @@ import {
   MessageUserBubbleComposition,
   MessageUserRowComposition,
 } from "./MessageRowComposition";
+import { CollapsedWorkComposition } from "./CollapsedWorkComposition";
 import { TimelineStatusRowComposition } from "./TimelineStatusRowComposition";
 import { AssistantSelectionsSummaryChip } from "./AssistantSelectionsSummaryChip";
 import { FileAttachmentChip } from "./FileAttachmentChip";
@@ -138,7 +139,6 @@ import {
 } from "./chatTypography";
 import { DisclosureChevron } from "../ui/DisclosureChevron";
 import { DisclosureRegion } from "../ui/DisclosureRegion";
-import { Collapsible, CollapsiblePanel, CollapsibleTrigger } from "../ui/collapsible";
 import {
   DISCLOSURE_CLEANUP_BUFFER_MS,
   DISCLOSURE_TRANSITION_MS,
@@ -1609,47 +1609,18 @@ export const MessagesTimeline = memo(function MessagesTimeline({
                 </div>
               )}
               {hasCollapsedWork && (
-                <div className="mb-3">
-                  <Collapsible
-                    className="group/collapsed-work"
+                <div style={{ fontSize: chatTypographyStyle.fontSize }}>
+                  <CollapsedWorkComposition
+                    elapsed={row.collapsedWorkElapsed}
                     open={isCollapsedWorkExpanded}
                     onOpenChange={(open) => {
                       setCollapsedWorkExpanded(row.message.id, open);
                     }}
                   >
-                    <CollapsibleTrigger
-                      // ChatView's click anchor preserves this trigger's screen position
-                      // while the disclosure height animates, so opening it should not tail-scroll.
-                      // -ml-0.5 optically aligns the leading "W" with the reply
-                      // text below: the box is already flush, but the W glyph
-                      // carries a left side-bearing that reads as an inset.
-                      className="-ml-0.5 inline-flex items-center gap-1 pb-2 text-left text-muted-foreground/70 transition-colors duration-200 hover:text-muted-foreground/90"
-                      style={{ fontSize: chatTypographyStyle.fontSize }}
-                    >
-                      <span>
-                        {row.collapsedWorkElapsed
-                          ? `Worked for ${row.collapsedWorkElapsed}`
-                          : "Details"}
-                      </span>
-                      <DisclosureChevron
-                        open={isCollapsedWorkExpanded}
-                        className="text-muted-foreground/55"
-                      />
-                    </CollapsibleTrigger>
-                    <CollapsiblePanel>
-                      <div
-                        className={disclosureContentClassName(
-                          isCollapsedWorkExpanded,
-                          "mb-2.5 space-y-1.5",
-                        )}
-                      >
-                        {chunkCollapsedTurnItems(collapsedTurnItems!).map((chunk) =>
-                          renderCollapsedTurnChunk(chunk, "collapsed-panel"),
-                        )}
-                      </div>
-                    </CollapsiblePanel>
-                  </Collapsible>
-                  <div className="h-px w-full bg-border" />
+                    {chunkCollapsedTurnItems(collapsedTurnItems!).map((chunk) =>
+                      renderCollapsedTurnChunk(chunk, "collapsed-panel"),
+                    )}
+                  </CollapsedWorkComposition>
                 </div>
               )}
               <MessageAssistantRowComposition>
