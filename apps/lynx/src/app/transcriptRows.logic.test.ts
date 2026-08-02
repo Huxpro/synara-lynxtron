@@ -2,11 +2,113 @@ import { describe, expect, it } from '@rstest/core';
 
 import type { ThreadTranscriptRow } from './queries';
 import {
+  buildTranscriptScrollToBottomParams,
   estimateTranscriptRowMainAxisSize,
+  resolveTranscriptPinnedFromScroll,
+  resolveTranscriptPinnedFromSample,
   resolveMessageWorkPlacement,
   transcriptRowVersion,
   type MessageTranscriptRow,
 } from './transcriptRows.logic';
+
+describe('buildTranscriptScrollToBottomParams', () => {
+  it('uses the Lynx list position contract and targets the final row', () => {
+    expect(buildTranscriptScrollToBottomParams(0)).toBeNull();
+    expect(buildTranscriptScrollToBottomParams(4)).toEqual({
+      position: 3,
+      offset: 1_000_000,
+      smooth: false,
+    });
+  });
+});
+
+describe('resolveTranscriptPinnedFromScroll', () => {
+  const base = {
+    currentPinned: true,
+    nativeUserEventSource: 2,
+    bottomEpsilon: 30,
+  } as const;
+
+  it('keeps the Native event-source gate and derives the live edge', () => {
+    expect(
+      resolveTranscriptPinnedFromScroll({
+        ...base,
+        isWebRelayMode: false,
+        detail: {
+          eventSource: 2,
+          scrollTop: 100,
+          scrollHeight: 500,
+          listHeight: 300,
+        },
+      })
+    ).toBe(false);
+    expect(
+      resolveTranscriptPinnedFromScroll({
+        ...base,
+        isWebRelayMode: false,
+        detail: {
+          eventSource: 0,
+          scrollTop: 0,
+          scrollHeight: 500,
+          listHeight: 300,
+        },
+      })
+    ).toBe(true);
+  });
+
+  it('uses Lynx-for-Web delta only to detach from the live edge', () => {
+    expect(
+      resolveTranscriptPinnedFromScroll({
+        ...base,
+        isWebRelayMode: true,
+        detail: { deltaY: -24, scrollTop: 80, scrollHeight: 500 },
+      })
+    ).toBe(false);
+    expect(
+      resolveTranscriptPinnedFromScroll({
+        ...base,
+        currentPinned: false,
+        isWebRelayMode: true,
+        detail: { deltaY: 24, scrollTop: 104, scrollHeight: 500 },
+      })
+    ).toBe(false);
+  });
+});
+
+describe('resolveTranscriptPinnedFromSample', () => {
+  const base = {
+    currentPinned: true,
+    previousScrollTop: 124,
+    scrollHeight: 775,
+    listHeight: 651,
+    bottomEpsilon: 30,
+  } as const;
+
+  it('detaches only when the viewport moves upward', () => {
+    expect(
+      resolveTranscriptPinnedFromSample({ ...base, scrollTop: 40 })
+    ).toBe(false);
+    expect(
+      resolveTranscriptPinnedFromSample({
+        ...base,
+        previousScrollTop: null,
+        scrollTop: 0,
+        scrollHeight: 900,
+      })
+    ).toBe(true);
+  });
+
+  it('reattaches at the live edge', () => {
+    expect(
+      resolveTranscriptPinnedFromSample({
+        ...base,
+        currentPinned: false,
+        previousScrollTop: 40,
+        scrollTop: 124,
+      })
+    ).toBe(true);
+  });
+});
 
 function entry(id: string, toolStatus = 'completed') {
   return {

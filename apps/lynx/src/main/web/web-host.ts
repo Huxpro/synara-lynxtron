@@ -48,6 +48,8 @@ let relayReady: Promise<WebSocket> | null = null;
 let relayReadyBaseUrl: string | null = null;
 let relaySequence = 0;
 const relayPending = new Map<string, PendingRelayRequest>();
+let transcriptScrollElement: HTMLElement | null = null;
+let transcriptPreviousScrollTop: number | null = null;
 
 function normalizeSynaraWsUrl(value: unknown): string {
   const candidate = String(value ?? '').trim() || DEFAULT_SYNARA_WS_URL;
@@ -331,6 +333,33 @@ function clearStorageEntries(): void {
   for (const key of keys) storage.removeItem(key);
 }
 
+function readTranscriptScroll(): {
+  readonly scrollTop: number;
+  readonly scrollHeight: number;
+  readonly listHeight: number;
+  readonly previousScrollTop: number | null;
+} | null {
+  const lynxRoot = (
+    webDocument.getElementById('root-view') as HTMLElement | null
+  )?.shadowRoot;
+  const list = lynxRoot?.querySelector<HTMLElement>('.TranscriptList');
+  if (!list) {
+    transcriptScrollElement = null;
+    transcriptPreviousScrollTop = null;
+    return null;
+  }
+  const previousScrollTop =
+    transcriptScrollElement === list ? transcriptPreviousScrollTop : null;
+  transcriptScrollElement = list;
+  transcriptPreviousScrollTop = list.scrollTop;
+  return {
+    scrollTop: list.scrollTop,
+    scrollHeight: list.scrollHeight,
+    listHeight: list.clientHeight,
+    previousScrollTop,
+  };
+}
+
 async function handleBridgeCall(
   method: string,
   params: Record<string, unknown> = {}
@@ -365,6 +394,9 @@ async function handleBridgeCall(
     if (method === 'storageClear') {
       clearStorageEntries();
       return null;
+    }
+    if (method === 'readTranscriptScroll') {
+      return readTranscriptScroll();
     }
     if (method === 'showDialog') {
       globalThis.alert(String(params.message ?? ''));

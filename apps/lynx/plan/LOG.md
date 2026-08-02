@@ -4336,3 +4336,23 @@
   `shots/2026-08-02/harness/composer/notes.md`。
 - 浏览器阶段继续遵守 no-Raise：未启动 Lynxtron/正式 App。下一组按 goal 进入 transcript
   scroll fidelity，完成后独立 commit + push；随后 Markdown，再做一次批量 Native 回归。
+
+## 2026-08-02 — Lynx-for-Web transcript scroll fidelity
+
+- 修复 `<list>.scrollToPosition` 错用 `{index, alignTo}` 的静默失效，改为真实
+  `{position, offset, smooth}` contract；长 assistant row 追加 end-clamp offset，既覆盖短尾行，
+  也覆盖高于 viewport 的 streaming 长尾行。
+- Native 保留 `eventSource=2` 用户滚动门；Lynx-for-Web 缺同构 scroll event shape，Web host
+  新增只读、bounded transcript metrics bridge，并按 list identity 保留 previous scrollTop。
+  background pure reducer 只在 upward movement 脱离、到 live edge 重吸附，route 切换不继承旧
+  list 位置。
+- paired authority：Web Scroll-to-bottom `x=752 y=669 32×32`，Lynx-for-Web
+  `x=760 y=669 32×32`，只剩 `+8px` 横向差，纵向/尺寸/accessible name 精确一致。
+- final-code real provider proof：初始 long transcript `557/557`；PageUp `0/557` + affordance；
+  activate 后 `557/557`。真实 `FINAL-SCROLL-OK` turn 在 Response started 时
+  `681/681`，完成时 `1083/1083`，全程无 Jump。旧 imported seed thread 的 quarantined skip
+  明确保留为阴性，不计 streaming pass；改由 canonical new thread 完成真实 700/300-word turn。
+- gates：focused **1 file / 11 tests**；Web production **2478.3 kB**；Desktop production
+  **2380.8 kB Lynx / 2509.4 kB total**；`git diff --check` 通过。证据：
+  `shots/2026-08-02/harness/transcript-scroll/notes.md`。
+- 未启动 Lynxtron/正式 App。下一组进入 Markdown fidelity，并在闭环后独立 commit + push。

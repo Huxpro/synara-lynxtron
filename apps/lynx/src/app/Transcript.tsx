@@ -8,6 +8,7 @@ import {
   getChatTranscriptTextStyle,
   getChatTranscriptUserMessageTextStyle,
 } from '@synara-web/components/chat/chatTypography';
+import { ArrowDownIcon } from '@synara-web/lib/icons';
 import {
   MessageAssistantRowComposition,
   MessageUserBubbleComposition,
@@ -18,9 +19,13 @@ import { TimelineStatusRowComposition } from '@synara-web/components/chat/Timeli
 
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { ChatMarkdown } from '../components/markdown/ChatMarkdown';
+import { bridgeCall } from '../platform/bridge';
 import type { ThreadTranscriptRow } from './queries';
 import {
+  buildTranscriptScrollToBottomParams,
   estimateTranscriptRowMainAxisSize,
+  resolveTranscriptPinnedFromScroll,
+  resolveTranscriptPinnedFromSample,
   resolveMessageWorkPlacement,
   transcriptRowVersion,
   type MessageTranscriptRow,
@@ -30,6 +35,7 @@ import { TRANSCRIPT_KEYBOARD_LANDMARK_PROPS } from './transcriptFocus.logic';
 
 const BOTTOM_EPSILON = 30;
 const SCROLL_EVENT_SOURCE = 2;
+const IS_WEB_RELAY_MODE = process.env.SYNARA_LYNX_WEB_RELAY === '1';
 
 function statusIcon(tone: 'thinking' | 'tool' | 'info' | 'error'): string {
   if (tone === 'error') return '!';
@@ -192,45 +198,100 @@ export function Transcript({ rows }: { readonly rows: readonly ThreadTranscriptR
 
   function scrollToBottom() {
     'background only';
-    if (rows.length === 0) return;
+    const params = buildTranscriptScrollToBottomParams(rows.length);
+    if (!params) return;
     listRef.current
       ?.invoke({
         method: 'scrollToPosition',
-        params: { index: rows.length - 1, alignTo: 'bottom', smooth: false },
+        params,
       })
       .exec();
   }
 
-  function handleScroll(event: {
-    detail?: {
-      scrollTop?: number;
-      scrollHeight?: number;
-      listHeight?: number;
-      eventSource?: number;
-    };
+  function handleScrollDetail(detail?: {
+    deltaY?: number;
+    scrollTop?: number;
+    scrollHeight?: number;
+    listHeight?: number;
+    eventSource?: number;
   }) {
     'background only';
-    const detail = event.detail;
-    if (
-      detail?.eventSource !== SCROLL_EVENT_SOURCE ||
-      detail.scrollTop === undefined ||
-      detail.scrollHeight === undefined ||
-      detail.listHeight === undefined
-    ) {
-      return;
+    const nextPinned = resolveTranscriptPinnedFromScroll({
+      currentPinned: pinnedRef.current,
+      detail,
+      isWebRelayMode: IS_WEB_RELAY_MODE,
+      nativeUserEventSource: SCROLL_EVENT_SOURCE,
+      bottomEpsilon: BOTTOM_EPSILON,
+    });
+    if (nextPinned !== pinnedRef.current) {
+      pinnedRef.current = nextPinned;
+      setPinned(nextPinned);
     }
-    const atBottom =
-      detail.scrollTop + detail.listHeight >= detail.scrollHeight - BOTTOM_EPSILON;
-    if (atBottom !== pinnedRef.current) {
-      pinnedRef.current = atBottom;
-      setPinned(atBottom);
-    }
+  }
+
+  function handleScroll(event: {
+    detail?: Parameters<typeof handleScrollDetail>[0];
+  }) {
+    'background only';
+    handleScrollDetail(event.detail);
+  }
+
+  function handleScrollToLower() {
+    'background only';
+    if (IS_WEB_RELAY_MODE) return;
+    if (pinnedRef.current) return;
+    pinnedRef.current = true;
+    setPinned(true);
   }
 
   useEffect(() => {
     'background only';
     if (pinnedRef.current) scrollToBottom();
   }, [rows.length, transcriptRowVersion(rows[rows.length - 1])]);
+
+  useEffect(() => {
+    'background only';
+    if (!IS_WEB_RELAY_MODE) return;
+    let cancelled = false;
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+    async function sampleWebTranscriptScroll() {
+      'background only';
+      try {
+        const info = await bridgeCall<{
+          readonly listHeight: number;
+          readonly previousScrollTop: number | null;
+          readonly scrollHeight: number;
+          readonly scrollTop: number;
+        } | null>('readTranscriptScroll');
+        if (!cancelled && info) {
+          const nextPinned = resolveTranscriptPinnedFromSample({
+            currentPinned: pinnedRef.current,
+            previousScrollTop: info.previousScrollTop,
+            scrollTop: info.scrollTop,
+            scrollHeight: info.scrollHeight,
+            listHeight: info.listHeight,
+            bottomEpsilon: BOTTOM_EPSILON,
+          });
+          if (nextPinned !== pinnedRef.current) {
+            pinnedRef.current = nextPinned;
+            setPinned(nextPinned);
+          }
+        }
+      } catch {
+        // The host can be between routes or shutting down. Keep the last-known
+        // pin state and sample again while this transcript remains mounted.
+      } finally {
+        if (!cancelled) timeoutId = setTimeout(sampleWebTranscriptScroll, 120);
+      }
+    }
+
+    timeoutId = setTimeout(sampleWebTranscriptScroll, 120);
+    return () => {
+      cancelled = true;
+      if (timeoutId !== null) clearTimeout(timeoutId);
+    };
+  }, []);
 
   function jumpToLatest() {
     'background only';
@@ -254,6 +315,8 @@ export function Transcript({ rows }: { readonly rows: readonly ThreadTranscriptR
         need-visible-item-info={true}
         scroll-event-throttle={24}
         bindscroll={handleScroll}
+        lower-threshold={BOTTOM_EPSILON}
+        bindscrolltolower={handleScrollToLower}
       >
         {rows.map((row) => (
           <list-item
@@ -268,10 +331,10 @@ export function Transcript({ rows }: { readonly rows: readonly ThreadTranscriptR
       {!pinned ? (
         <view
           className={jumpInteraction.className}
-          aria-label="Jump to latest"
+          aria-label="Scroll to bottom"
           {...jumpInteraction.eventProps}
         >
-          <text className="TranscriptJumpText">Jump to latest ↓</text>
+          <ArrowDownIcon className="TranscriptJumpIcon" />
         </view>
       ) : null}
     </view>
