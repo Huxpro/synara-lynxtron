@@ -721,6 +721,11 @@ export function buildThemeCssVariables(
     variant,
     resolvedTokens.computed.panel,
   );
+  const informativeForeground = ensureReadableTextColor(
+    mixHex(pack.theme.surface, pack.theme.ink, 0.65),
+    pack.theme.surface,
+    pack.theme.ink,
+  );
   // Shared surface for the user message bubble and fenced code blocks so both
   // read as the same "input/source" affordance inside the transcript. Sourced
   // from the user-message token so code blocks pick up the bubble's color.
@@ -777,6 +782,22 @@ export function buildThemeCssVariables(
     // Keep legacy app-level "info" consumers on Codex's accent-text path so
     // links, file labels, and similar affordances inherit the real light/dark logic.
     "--info-foreground": readCodexVariable("--color-text-accent"),
+    "--color-text-status-error": ensureReadableTextColor(
+      pack.theme.semanticColors.diffRemoved,
+      pack.theme.surface,
+      pack.theme.ink,
+    ),
+    "--color-text-status-neutral": informativeForeground,
+    "--color-text-status-success": ensureReadableTextColor(
+      pack.theme.semanticColors.diffAdded,
+      pack.theme.surface,
+      pack.theme.ink,
+    ),
+    "--color-text-status-warning": ensureReadableTextColor(
+      warningColor,
+      pack.theme.surface,
+      pack.theme.ink,
+    ),
     "--input": readCodexVariable("--color-background-control-opaque"),
     "--muted": readCodexVariable("--color-background-elevated-secondary"),
     "--muted-foreground": readCodexVariable("--color-text-foreground-secondary"),
@@ -1379,6 +1400,57 @@ function mixRgb(from: RgbColor, to: RgbColor, amount: number): RgbColor {
 
 function mixChannel(from: number, to: number, amount: number): number {
   return Math.round(from + (to - from) * amount);
+}
+
+function relativeLuminance(color: RgbColor): number {
+  const channel = (value: number) => {
+    const normalized = value / 255;
+    return normalized <= 0.04045
+      ? normalized / 12.92
+      : ((normalized + 0.055) / 1.055) ** 2.4;
+  };
+  return (
+    0.2126 * channel(color.red) +
+    0.7152 * channel(color.green) +
+    0.0722 * channel(color.blue)
+  );
+}
+
+function contrastRatio(left: RgbColor, right: RgbColor): number {
+  const leftLuminance = relativeLuminance(left);
+  const rightLuminance = relativeLuminance(right);
+  return (
+    (Math.max(leftLuminance, rightLuminance) + 0.05) /
+    (Math.min(leftLuminance, rightLuminance) + 0.05)
+  );
+}
+
+function ensureReadableTextColor(
+  preferred: string,
+  surface: string,
+  ink: string,
+): string {
+  const preferredColor = parseHexColor(preferred);
+  const surfaceColor = parseHexColor(surface);
+  if (contrastRatio(preferredColor, surfaceColor) >= 4.5) {
+    return formatHex(preferredColor);
+  }
+
+  const inkColor = parseHexColor(ink);
+  for (let step = 1; step <= 20; step += 1) {
+    const candidate = mixRgb(preferredColor, inkColor, step / 20);
+    if (contrastRatio(candidate, surfaceColor) >= 4.5) {
+      return formatHex(candidate);
+    }
+  }
+
+  const black = parseHexColor("#000000");
+  const white = parseHexColor("#ffffff");
+  return formatHex(
+    contrastRatio(black, surfaceColor) >= contrastRatio(white, surfaceColor)
+      ? black
+      : white,
+  );
 }
 
 function formatHex(color: RgbColor): string {

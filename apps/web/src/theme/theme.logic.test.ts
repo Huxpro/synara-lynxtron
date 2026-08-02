@@ -26,6 +26,24 @@ import { DEFAULT_MONOSPACE_FONT_FAMILY_STACK } from "../lib/fontFamily";
 const PROVIDED_THEME_STRING =
   'codex-theme-v1:{"codeThemeId":"linear","theme":{"accent":"#606acc","contrast":30,"fonts":{"code":"\\"Jetbrains Mono\\"","ui":"Inter"},"ink":"#e3e4e6","opaqueWindows":true,"semanticColors":{"diffAdded":"#69c967","diffRemoved":"#ff7e78","skill":"#c2a1ff"},"surface":"#0f0f11"},"variant":"dark"}';
 
+function contrastRatio(left: string, right: string): number {
+  const luminance = (hex: string) => {
+    const channels = [1, 3, 5].map((offset) => {
+      const value = Number.parseInt(hex.slice(offset, offset + 2), 16) / 255;
+      return value <= 0.04045
+        ? value / 12.92
+        : ((value + 0.055) / 1.055) ** 2.4;
+    });
+    return 0.2126 * channels[0]! + 0.7152 * channels[1]! + 0.0722 * channels[2]!;
+  };
+  const leftLuminance = luminance(left);
+  const rightLuminance = luminance(right);
+  return (
+    (Math.max(leftLuminance, rightLuminance) + 0.05) /
+    (Math.min(leftLuminance, rightLuminance) + 0.05)
+  );
+}
+
 describe("parseStoredThemeState", () => {
   it("migrates the legacy mode-only value into the new theme store", () => {
     expect(parseStoredThemeState("dark")).toEqual({
@@ -318,6 +336,24 @@ describe("code theme seeds", () => {
 });
 
 describe("buildThemeCssVariables", () => {
+  it("keeps informative status text at normal-text contrast in both variants", () => {
+    for (const variant of ["light", "dark"] as const) {
+      const theme = DEFAULT_THEME_STATE.chromeThemes[variant];
+      const variables = buildThemeCssVariables(
+        { codeThemeId: "codex", theme },
+        variant,
+      ).variables;
+      for (const name of [
+        "--color-text-status-neutral",
+        "--color-text-status-error",
+        "--color-text-status-success",
+        "--color-text-status-warning",
+      ]) {
+        expect(contrastRatio(variables[name]!, theme.surface)).toBeGreaterThanOrEqual(4.5);
+      }
+    }
+  });
+
   it("derives the renderer token map from the imported theme pack", () => {
     const importedTheme = parseThemeShareString(PROVIDED_THEME_STRING);
     const cssVariables = buildThemeCssVariables(

@@ -5,17 +5,17 @@
 // Layer: UI component
 // Exports: SettingsSidebarNav
 
-import { type KeyboardEvent as ReactKeyboardEvent, useState } from "react";
+import { useState } from "react";
 
 import { CentralIcon } from "~/lib/central-icons";
 import { cn } from "~/lib/utils";
-import { SearchInput } from "./ui/search-input";
 import { SidebarLeadingIcon } from "./SidebarLeadingIcon";
 import {
-  SETTINGS_NAV_GROUPS,
   SETTINGS_NAV_ITEMS,
   type SettingsSectionId,
 } from "../settingsNavigation";
+import { SettingsNavigationComposition } from "./SettingsNavigationComposition";
+import { SettingsSidebarChromeComposition } from "./settings/SettingsSidebarChromeComposition";
 import {
   rankSettingsSearchEntries,
   settingsSearchEntryTarget,
@@ -32,9 +32,7 @@ import {
   SETTINGS_SIDEBAR_ITEM_CLASS_NAME,
   SETTINGS_SIDEBAR_ITEM_LABEL_CLASS_NAME,
   SETTINGS_SIDEBAR_LIST_GAP_CLASS_NAME,
-  SETTINGS_SIDEBAR_ROW_FILL_ACTIVE_CLASS_NAME,
   SETTINGS_SIDEBAR_ROW_FILL_HOVER_CLASS_NAME,
-  SETTINGS_SIDEBAR_SECTION_CLASS_NAME,
   SETTINGS_SIDEBAR_SECTION_LABEL_CLASS_NAME,
 } from "../settingsSidebarNavStyles";
 
@@ -100,51 +98,21 @@ export function SettingsSidebarNav(props: {
     setQuery("");
   };
 
-  const handleSearchKeyDown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      const topMatch = results[0];
-      if (topMatch) {
-        handleSelectResult(topMatch);
-      }
-      return;
-    }
-    if (event.key === "Escape" && query.length > 0) {
-      event.stopPropagation();
-      setQuery("");
-    }
-  };
-
   return (
     <div className="px-1.5 py-1.5">
-      <div className="mb-3">
-        <button
-          type="button"
-          className={cn(
-            SETTINGS_SIDEBAR_ITEM_CLASS_NAME,
-            SETTINGS_SIDEBAR_ROW_FILL_HOVER_CLASS_NAME,
-          )}
-          onClick={props.onBack}
-        >
-          <SidebarLeadingIcon size="sm" tone="text-inherit">
-            <CentralIcon name="arrow-left" className={SETTINGS_SIDEBAR_ICON_CLASS_NAME} />
-          </SidebarLeadingIcon>
-          <span className={SETTINGS_SIDEBAR_ITEM_LABEL_CLASS_NAME}>Back to app</span>
-        </button>
-      </div>
-
-      <div className="mb-3 px-1">
-        <SearchInput
-          value={query}
-          spellCheck={false}
-          autoCorrect="off"
-          autoCapitalize="off"
-          placeholder="Search settings..."
-          aria-label="Search settings"
-          onChange={(event) => setQuery(event.target.value)}
-          onKeyDown={handleSearchKeyDown}
-        />
-      </div>
+      <SettingsSidebarChromeComposition
+        onBack={props.onBack}
+        searchCapability="available"
+        searchValue={query}
+        onSearchValueChange={setQuery}
+        onSubmitSearch={() => {
+          const topMatch = results[0];
+          if (topMatch) handleSelectResult(topMatch);
+        }}
+        onEscapeSearch={() => {
+          if (query.length > 0) setQuery("");
+        }}
+      />
 
       {isSearching ? (
         results.length === 0 ? (
@@ -160,59 +128,10 @@ export function SettingsSidebarNav(props: {
           </ul>
         )
       ) : (
-        <nav aria-label="Settings sections" className="flex flex-col">
-          {SETTINGS_NAV_GROUPS.map((group) => {
-            const items = SETTINGS_NAV_ITEMS.filter((item) => item.group === group.id);
-            if (items.length === 0) {
-              return null;
-            }
-
-            return (
-              <section
-                key={group.id}
-                aria-labelledby={`settings-nav-${group.id}`}
-                className={SETTINGS_SIDEBAR_SECTION_CLASS_NAME}
-              >
-                <h2
-                  id={`settings-nav-${group.id}`}
-                  className={SETTINGS_SIDEBAR_SECTION_LABEL_CLASS_NAME}
-                >
-                  {group.label}
-                </h2>
-                <ul className={cn("flex flex-col", SETTINGS_SIDEBAR_LIST_GAP_CLASS_NAME)}>
-                  {items.map((item) => {
-                    const isActive = item.id === props.activeSection;
-                    return (
-                      <li key={item.id}>
-                        <button
-                          type="button"
-                          aria-current={isActive ? "page" : undefined}
-                          className={cn(
-                            SETTINGS_SIDEBAR_ITEM_CLASS_NAME,
-                            isActive
-                              ? SETTINGS_SIDEBAR_ROW_FILL_ACTIVE_CLASS_NAME
-                              : SETTINGS_SIDEBAR_ROW_FILL_HOVER_CLASS_NAME,
-                          )}
-                          onClick={() => props.onSelectSection(item.id)}
-                        >
-                          <SidebarLeadingIcon size="sm" tone="text-inherit">
-                            <CentralIcon
-                              name={item.icon}
-                              className={SETTINGS_SIDEBAR_ICON_CLASS_NAME}
-                            />
-                          </SidebarLeadingIcon>
-                          <span className={SETTINGS_SIDEBAR_ITEM_LABEL_CLASS_NAME}>
-                            {item.label}
-                          </span>
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </section>
-            );
-          })}
-        </nav>
+        <SettingsNavigationComposition
+          activeSection={props.activeSection}
+          onSelectSection={props.onSelectSection}
+        />
       )}
     </div>
   );

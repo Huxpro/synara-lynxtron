@@ -8,29 +8,11 @@ import {
   type ServerProviderStatus,
   type ServerSettings,
 } from "@synara/contracts";
-import { PROVIDER_DESCRIPTORS } from "@synara/shared/providerMetadata";
 import { pluralize } from "@synara/shared/text";
-import {
-  closestCenter,
-  DndContext,
-  PointerSensor,
-  type DragEndEvent,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
-import {
-  arrayMove,
-  SortableContext,
-  useSortable,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { type MouseEvent, type ReactNode, useCallback, useMemo, useState } from "react";
 
 import type { AppSettings, AppSettingsBinding } from "~/appSettings";
-import { CentralIcon } from "~/lib/central-icons";
 import { DownloadIcon, ExternalLinkIcon, Loader2Icon } from "~/lib/icons";
 import {
   serverConfigQueryOptions,
@@ -39,7 +21,6 @@ import {
 } from "~/lib/serverReactQuery";
 import { cn } from "~/lib/utils";
 import { ensureNativeApi } from "~/nativeApi";
-import { sameProviderOrder } from "~/providerOrdering";
 import {
   getVisibleProviderUpdateStatuses,
   isProviderUpdateActive,
@@ -58,6 +39,8 @@ import { toastManager } from "../ui/toast";
 import { DebouncedSettingTextInput } from "./DebouncedSettingTextInput";
 import { SettingResetButton, useSettingsRestoreSignal } from "./SettingControls";
 import { SettingsListRow, SettingsRow, SettingsSection } from "./SettingsPanelPrimitives";
+import { SettingsProviderUpdateChecksRowComposition } from "./SettingsProviderUpdateChecksComposition";
+import { SettingsProviderPickerComposition } from "./SettingsProviderPickerComposition";
 
 type ProviderInstallTextKey =
   | "claudeBinaryPath"
@@ -110,12 +93,6 @@ type ProviderInstallSettings = {
   readonly docs: ReadonlyArray<{ readonly label: string; readonly href: string }>;
   readonly fields: readonly ProviderInstallField[];
 };
-
-const PROVIDER_VISIBILITY_OPTIONS: ReadonlyArray<{ provider: ProviderKind; title: string }> =
-  PROVIDER_DESCRIPTORS.map((descriptor) => ({
-    provider: descriptor.kind,
-    title: descriptor.displayName,
-  }));
 
 const PROVIDER_INSTALL_SETTINGS: readonly ProviderInstallSettings[] = [
   {
@@ -425,64 +402,6 @@ export function createProviderInstallResetPatch(defaults: AppSettings): Partial<
   ) as Partial<AppSettings>;
 }
 
-function setProviderHidden(
-  current: ReadonlyArray<ProviderKind>,
-  provider: ProviderKind,
-  hidden: boolean,
-): ProviderKind[] {
-  const withoutTarget = current.filter((entry) => entry !== provider);
-  return hidden ? [...withoutTarget, provider] : withoutTarget;
-}
-
-function SortableProviderVisibilityRow(props: {
-  option: { provider: ProviderKind; title: string };
-  isHidden: boolean;
-  onHiddenChange: (hidden: boolean) => void;
-}) {
-  const {
-    attributes,
-    listeners,
-    setActivatorNodeRef,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: props.option.provider });
-
-  return (
-    <div
-      ref={setNodeRef}
-      style={{ transform: CSS.Translate.toString(transform), transition }}
-      className={cn(
-        `flex items-center justify-between gap-3 ${SETTINGS_RADIUS_CLASS_NAME} border border-[color:var(--color-border)] bg-transparent px-3 py-2.5`,
-        isDragging && "z-10 opacity-80 shadow-lg",
-      )}
-    >
-      <div className="flex min-w-0 items-center gap-2.5">
-        <button
-          type="button"
-          ref={setActivatorNodeRef}
-          className={cn(
-            "inline-flex size-6 shrink-0 cursor-grab touch-none items-center justify-center text-muted-foreground transition-colors hover:bg-[var(--color-background-elevated-secondary)] hover:text-foreground active:cursor-grabbing",
-            SETTINGS_RADIUS_CLASS_NAME,
-          )}
-          aria-label={`Reorder ${props.option.title}`}
-          {...attributes}
-          {...listeners}
-        >
-          <CentralIcon name="dot-grid-2x3" className="size-4" />
-        </button>
-        <span className="min-w-0 text-sm text-foreground">{props.option.title}</span>
-      </div>
-      <Switch
-        checked={!props.isHidden}
-        onCheckedChange={(checked) => props.onHiddenChange(!Boolean(checked))}
-        aria-label={`Show ${props.option.title} in the provider picker`}
-      />
-    </div>
-  );
-}
-
 function ProviderDocsLinks({ docs }: { docs: ProviderInstallSettings["docs"] }) {
   return (
     <div className={cn(SETTINGS_INSET_LIST_CLASS_NAME, "px-3 py-2.5")}>
@@ -766,23 +685,6 @@ export function ProvidersSettingsPanel({
     () => new Set<ProviderKind>(settings.hiddenProviders),
     [settings.hiddenProviders],
   );
-  const hiddenProviderCount = hiddenProviderSet.size;
-  const providerVisibilityOptionsByProvider = useMemo(
-    () => new Map(PROVIDER_VISIBILITY_OPTIONS.map((option) => [option.provider, option])),
-    [],
-  );
-  const orderedProviderVisibilityOptions = useMemo(
-    () =>
-      settings.providerOrder.flatMap((provider) => {
-        const option = providerVisibilityOptionsByProvider.get(provider);
-        return option ? [option] : [];
-      }),
-    [providerVisibilityOptionsByProvider, settings.providerOrder],
-  );
-  const providerVisibilitySensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
-  );
-  const isProviderOrderDirty = !sameProviderOrder(settings.providerOrder, defaults.providerOrder);
   const providerStatusByProvider = useMemo(
     () =>
       new Map((serverConfigQuery.data?.providers ?? []).map((status) => [status.provider, status])),
@@ -813,18 +715,6 @@ export function ProvidersSettingsPanel({
   useSettingsRestoreSignal(resetEpoch, () => {
     setOpenInstallProviders(createClosedProviderInstallDisclosureState());
   });
-
-  const handleProviderOrderDragEnd = useCallback(
-    (event: DragEndEvent) => {
-      const { active, over } = event;
-      if (!over || active.id === over.id) return;
-      const fromIndex = settings.providerOrder.indexOf(active.id as ProviderKind);
-      const toIndex = settings.providerOrder.indexOf(over.id as ProviderKind);
-      if (fromIndex < 0 || toIndex < 0) return;
-      updateSettings({ providerOrder: arrayMove([...settings.providerOrder], fromIndex, toIndex) });
-    },
-    [settings.providerOrder, updateSettings],
-  );
 
   const runProviderUpdate = useCallback(
     async (provider: ProviderKind) => {
@@ -882,30 +772,14 @@ export function ProvidersSettingsPanel({
     <div className="space-y-6">
       <div id={SETTINGS_TARGETS.providerUpdates}>
         <SettingsSection title="Updates">
-          <SettingsRow
-            title="Automatic CLI update checks"
-            description="Check Codex, Claude, and other provider CLIs for newer versions in the background."
-            resetAction={
-              settings.enableProviderUpdateChecks !== defaults.enableProviderUpdateChecks ? (
-                <SettingResetButton
-                  label="CLI update checks"
-                  onClick={() =>
-                    updateSettings({
-                      enableProviderUpdateChecks: defaults.enableProviderUpdateChecks,
-                    })
-                  }
-                />
-              ) : null
-            }
-            control={
-              <Switch
-                checked={settings.enableProviderUpdateChecks}
-                onCheckedChange={(checked) =>
-                  updateSettings({ enableProviderUpdateChecks: Boolean(checked) })
-                }
-                aria-label="Automatic CLI update checks"
-              />
-            }
+          <SettingsProviderUpdateChecksRowComposition
+            values={{
+              enableProviderUpdateChecks: settings.enableProviderUpdateChecks,
+            }}
+            defaults={{
+              enableProviderUpdateChecks: defaults.enableProviderUpdateChecks,
+            }}
+            onChange={(values) => updateSettings(values)}
           />
 
           <SettingsRow
@@ -958,63 +832,17 @@ export function ProvidersSettingsPanel({
         </SettingsSection>
       </div>
 
-      <SettingsSection title="Provider picker">
-        <SettingsRow
-          title="Visible providers"
-          description="Drag providers into your preferred picker order and hide the ones you don't use. The provider you're currently using on a thread always stays visible."
-          status={
-            hiddenProviderCount > 0
-              ? `${hiddenProviderCount} ${pluralize(hiddenProviderCount, "provider")} hidden`
-              : isProviderOrderDirty
-                ? "Custom order"
-                : "All providers visible"
-          }
-          resetAction={
-            hiddenProviderCount > 0 || isProviderOrderDirty ? (
-              <SettingResetButton
-                label="provider picker"
-                onClick={() =>
-                  updateSettings({
-                    hiddenProviders: defaults.hiddenProviders,
-                    providerOrder: defaults.providerOrder,
-                  })
-                }
-              />
-            ) : null
-          }
-        >
-          <DndContext
-            sensors={providerVisibilitySensors}
-            collisionDetection={closestCenter}
-            modifiers={[restrictToVerticalAxis]}
-            onDragEnd={handleProviderOrderDragEnd}
-          >
-            <SortableContext
-              items={orderedProviderVisibilityOptions.map((option) => option.provider)}
-              strategy={verticalListSortingStrategy}
-            >
-              <div className="mt-4 space-y-2">
-                {orderedProviderVisibilityOptions.map((option) => (
-                  <SortableProviderVisibilityRow
-                    key={option.provider}
-                    option={option}
-                    isHidden={hiddenProviderSet.has(option.provider)}
-                    onHiddenChange={(hidden) =>
-                      updateSettings({
-                        hiddenProviders: setProviderHidden(
-                          settings.hiddenProviders,
-                          option.provider,
-                          hidden,
-                        ),
-                      })
-                    }
-                  />
-                ))}
-              </div>
-            </SortableContext>
-          </DndContext>
-        </SettingsRow>
-      </SettingsSection>
+      <SettingsProviderPickerComposition
+        values={{
+          hiddenProviders: settings.hiddenProviders,
+          providerOrder: settings.providerOrder,
+        }}
+        defaults={{
+          hiddenProviders: defaults.hiddenProviders,
+          providerOrder: defaults.providerOrder,
+        }}
+        onChange={(values) => updateSettings(values)}
+      />
 
       <div>
         <SettingsSection title="Provider tools">

@@ -30,6 +30,7 @@ import {
 } from "../theme/theme.logic";
 
 import { webStorage } from "~/platform/storage";
+import { THEME_STORAGE_KEY } from "../appSettingsStorageProjection.logic";
 import { getNavigatorPlatform, isBrowser, matchMediaSafe, getDocumentElement } from "~/platform/env";
 import { getDesktopBridge } from "~/platform/desktopBridge";
 import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
@@ -38,7 +39,6 @@ type ThemeSnapshot = {
   systemDark: boolean;
 };
 
-const STORAGE_KEY = "synara:theme";
 const MEDIA_QUERY = "(prefers-color-scheme: dark)";
 
 let listeners: Array<() => void> = [];
@@ -68,7 +68,7 @@ function readStoredThemeState(): ThemeState {
   }
 
   try {
-    return parseStoredThemeState(webStorage.getItem(STORAGE_KEY));
+    return parseStoredThemeState(webStorage.getItem(THEME_STORAGE_KEY));
   } catch {
     return DEFAULT_THEME_STATE;
   }
@@ -79,7 +79,7 @@ function writeStoredThemeState(state: ThemeState) {
     return;
   }
 
-  webStorage.setItem(STORAGE_KEY, serializeThemeState(state));
+  webStorage.setItem(THEME_STORAGE_KEY, serializeThemeState(state));
 }
 
 function getSnapshot(): ThemeSnapshot {
@@ -119,7 +119,7 @@ function subscribe(listener: () => void): () => void {
     emitChange();
   };
   const handleStorage = (event: StorageEvent) => {
-    if (event.key !== STORAGE_KEY) {
+    if (event.key !== THEME_STORAGE_KEY) {
       return;
     }
     applyThemeState(readStoredThemeState(), true);
@@ -230,6 +230,10 @@ function setSystemUiFont(enabled: boolean) {
   }));
 }
 
+function setThemeState(nextState: ThemeState) {
+  updateStoredThemeState(() => nextState);
+}
+
 function resetThemeVariant(variant: ThemeVariant) {
   updateStoredThemeState((state) => resetThemeVariantState(state, variant));
 }
@@ -293,6 +297,7 @@ export function useTheme() {
     canImportThemeString,
     systemUiFont: snapshot.state.systemUiFont,
     setSystemUiFont,
+    setThemeState,
     darkTheme,
     defaultActiveTheme,
     exportThemeString,

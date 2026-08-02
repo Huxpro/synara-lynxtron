@@ -3,25 +3,14 @@
 // Layer: Route screen
 // Exports: Settings route component for `/settings`
 
-import { PROVIDER_DISPLAY_NAMES, type ProviderKind } from "@synara/contracts";
-import { PROVIDER_DESCRIPTORS } from "@synara/shared/providerMetadata";
 import { sameAppSnapShortcut } from "@synara/shared/appSnapShortcut";
 import { createFileRoute, useSearch } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   type AppSettings,
-  DEFAULT_UI_DENSITY,
-  type UiDensity,
-  MAX_CHAT_FONT_SIZE_PX,
-  MAX_TERMINAL_FONT_SIZE_PX,
-  MIN_CHAT_FONT_SIZE_PX,
-  MIN_TERMINAL_FONT_SIZE_PX,
-  normalizeChatFontSizePx,
   normalizeTerminalFontFamily,
-  normalizeTerminalFontSizePx,
   isGitTextGenerationSettingsDirty,
-  TERMINAL_FONT_FAMILY_SUGGESTIONS,
   useAppSettings,
 } from "../appSettings";
 import { APP_VERSION } from "../branding";
@@ -43,7 +32,6 @@ import {
   isProviderInstallSettingsDirty,
   ProvidersSettingsPanel,
 } from "~/components/settings/ProvidersSettingsPanel";
-import { ProviderOptionLabel } from "../components/ProviderIcon";
 import ReleaseHistoryDialog from "../components/ReleaseHistoryDialog";
 import { KeyboardShortcutsSettingsPanel } from "../components/settings/KeyboardShortcutsSettingsPanel";
 import { ProfileSettingsPanel } from "../components/settings/ProfileSettingsPanel";
@@ -51,16 +39,11 @@ import { ProviderUsageSettingsPanel } from "../components/settings/ProviderUsage
 import { ExternalMcpSettingsPanel } from "../components/settings/ExternalMcpSettingsPanel";
 import {
   SettingResetButton,
-  SettingsSegmentedControl,
-  SettingsSelectControl,
 } from "../components/settings/SettingControls";
-import {
-  SettingsCard,
-  SettingsRow,
-  SettingsSection,
-} from "../components/settings/SettingsPanelPrimitives";
 import { SkillsSettingsPanel } from "../components/settings/SkillsSettingsPanel";
-import { ThemePackEditor } from "../components/ThemePackEditor";
+import { SettingsAppearanceComposition } from "../components/settings/SettingsAppearanceComposition";
+import { SettingsGeneralComposition } from "../components/settings/SettingsGeneralComposition";
+import { SettingsPanelHeaderComposition } from "../components/settings/SettingsPanelHeaderComposition";
 import {
   CHAT_CONTENT_CARD_CLASS_NAME,
   CHAT_MAIN_VIEWPORT_SHELL_CLASS_NAME,
@@ -69,125 +52,28 @@ import {
   CHAT_SURFACE_HEADER_HEIGHT_CLASS,
   CHAT_SURFACE_HEADER_PADDING_X_CLASS,
 } from "../components/chat/chatHeaderControls";
-import {
-  Autocomplete,
-  AutocompleteEmpty,
-  AutocompleteInput,
-  AutocompleteItem,
-  AutocompleteList,
-  AutocompletePopup,
-} from "../components/ui/autocomplete";
 import { Button } from "../components/ui/button";
-import { Input } from "../components/ui/input";
-import { SelectItem } from "../components/ui/select";
 import { Switch } from "../components/ui/switch";
 import { RouteInsetSurface } from "../components/RouteInsetSurface";
 import { SidebarHeaderNavigationControls } from "../components/SidebarHeaderNavigationControls";
 import { useDesktopTopBarTrafficLightGutterClassName } from "../hooks/useDesktopTopBarGutter";
 import { useTheme } from "../hooks/useTheme";
-import { isUiDensity } from "../lib/appDensity";
-import { DeviceLaptopIcon, MoonIcon, RotateCcwIcon, SunIcon } from "../lib/icons";
 import { cn, isMacPlatform } from "../lib/utils";
 import { ensureNativeApi, readNativeApi } from "../nativeApi";
 import { sameProviderOrder } from "../providerOrdering";
 import {
   normalizeSettingsSection,
-  SETTINGS_NAV_ITEMS,
-  SETTINGS_TARGETS,
 } from "../settingsNavigation";
-import {
-  SETTINGS_PAGE_BACKGROUND_CLASS_NAME,
-  SETTINGS_PANEL_SECTION_CLASS_NAME,
-  SETTINGS_SECTION_LABEL_CLASS_NAME,
-} from "../settingsPanelStyles";
+import { SETTINGS_PAGE_BACKGROUND_CLASS_NAME } from "../settingsPanelStyles";
 
 import { getNavigatorPlatform, scrollElementIntoViewById } from "~/platform/env";
 import { raf, cancelRaf } from "~/platform/frame";
-// ── Settings taxonomy ──────────────────────────────────────────────────────
-
-const UI_DENSITY_OPTIONS = [
-  {
-    value: "compact",
-    label: "Compact",
-    description: "Tighter spacing in the sidebar, composer, and settings rows.",
-  },
-  {
-    value: "comfortable",
-    label: "Comfortable",
-    description: "Balanced spacing for everyday use.",
-  },
-  {
-    value: "spacious",
-    label: "Spacious",
-    description: "More breathing room across the main workspace surfaces.",
-  },
-] as const satisfies ReadonlyArray<{
-  value: UiDensity;
-  label: string;
-  description: string;
-}>;
-
-const THEME_OPTIONS = [
-  {
-    value: "light",
-    label: "Light",
-    description: "Always use the light theme.",
-    icon: <SunIcon />,
-  },
-  {
-    value: "dark",
-    label: "Dark",
-    description: "Always use the dark theme.",
-    icon: <MoonIcon />,
-  },
-  {
-    value: "system",
-    label: "System",
-    description: "Match your OS appearance setting.",
-    icon: <DeviceLaptopIcon />,
-  },
-] as const;
-
-const PROVIDER_SELECT_OPTIONS = PROVIDER_DESCRIPTORS.map((descriptor) => descriptor.kind);
-
-const TIMESTAMP_FORMAT_LABELS = {
-  locale: "System default",
-  "12-hour": "12-hour",
-  "24-hour": "24-hour",
-} as const;
-
-const SIDEBAR_PROJECT_SORT_ORDER_LABELS = {
-  updated_at: "Recently active",
-  created_at: "Recently added",
-  manual: "Manual order",
-} as const;
-
-const SIDEBAR_THREAD_SORT_ORDER_LABELS = {
-  updated_at: "Recently active",
-  created_at: "Newest first",
-} as const;
-
-// ── Settings UI primitives ────────────────────────────────────────────────
-
-// Shared settings controls live in ~/components/settings/SettingControls.
-
-function isProviderSelectOption(value: string): value is ProviderKind {
-  return PROVIDER_SELECT_OPTIONS.includes(value as ProviderKind);
-}
-
-// Keys of AppSettings whose value is a plain boolean — the only ones that can be
-// driven by the shared on/off toggle row below.
-type BooleanSettingKey = {
-  [Key in keyof AppSettings]-?: AppSettings[Key] extends boolean ? Key : never;
-}[keyof AppSettings];
-
 // ── Route screen ───────────────────────────────────────────────────────────
 
 function SettingsRouteView() {
   const routeSearch = useSearch({ strict: false }) as Record<string, unknown>;
   const activeSection = normalizeSettingsSection(routeSearch.section);
   const settingsTarget = typeof routeSearch.target === "string" ? routeSearch.target : null;
-  const activeSectionItem = SETTINGS_NAV_ITEMS.find((item) => item.id === activeSection)!;
 
   const {
     isDefaultActiveTheme,
@@ -195,8 +81,10 @@ function SettingsRouteView() {
     resolvedTheme,
     theme,
     setTheme,
+    setThemeState,
     systemUiFont,
     setSystemUiFont,
+    themeState,
   } = useTheme();
   const { settings, defaults, updateSettings, resetSettings } = useAppSettings();
   const desktopTopBarTrafficLightGutterClassName = useDesktopTopBarTrafficLightGutterClassName();
@@ -205,14 +93,6 @@ function SettingsRouteView() {
   const shouldShowFontSmoothing = isMacPlatform(
     getNavigatorPlatform(),
   );
-  const visibleTerminalFontFamilySuggestions = useMemo(() => {
-    const query = settings.terminalFontFamily.trim().toLowerCase();
-    if (!query) return TERMINAL_FONT_FAMILY_SUGGESTIONS;
-    return TERMINAL_FONT_FAMILY_SUGGESTIONS.filter((suggestion) =>
-      suggestion.toLowerCase().includes(query),
-    );
-  }, [settings.terminalFontFamily]);
-
   const isGitTextGenerationModelDirty = isGitTextGenerationSettingsDirty(settings, defaults);
   const isInstallSettingsDirty = isProviderInstallSettingsDirty(settings, defaults);
   const hiddenProviderCount = new Set(settings.hiddenProviders).size;
@@ -314,614 +194,57 @@ function SettingsRouteView() {
     setResetEpoch((current) => current + 1);
   }
 
-  // Shared on/off settings row: a labelled Switch bound to a boolean AppSettings
-  // key, with the standard "reset to default" affordance shown only when changed.
-  // Rows with bespoke controls (e.g. the desktop-notifications Test button) keep
-  // their own markup instead of using this helper.
-  const renderBooleanSettingRow = (config: {
-    settingKey: BooleanSettingKey;
-    title: string;
-    description: string;
-    resetLabel: string;
-    ariaLabel: string;
-  }) => {
-    const { settingKey, title, description, resetLabel, ariaLabel } = config;
-    const isChanged = settings[settingKey] !== defaults[settingKey];
-    return (
-      <SettingsRow
-        title={title}
-        description={description}
-        resetAction={
-          isChanged ? (
-            <SettingResetButton
-              label={resetLabel}
-              onClick={() =>
-                updateSettings({ [settingKey]: defaults[settingKey] } as Partial<AppSettings>)
-              }
-            />
-          ) : null
-        }
-        control={
-          <Switch
-            checked={settings[settingKey]}
-            onCheckedChange={(checked) =>
-              updateSettings({ [settingKey]: Boolean(checked) } as Partial<AppSettings>)
-            }
-            aria-label={ariaLabel}
-          />
-        }
-      />
-    );
-  };
-
   const renderGeneralPanel = () => (
-    <div className="space-y-6">
-      <SettingsSection title="Core defaults">
-        <SettingsRow
-          title="Default provider"
-          description="Choose the provider used for new chats."
-          resetAction={
-            settings.defaultProvider !== defaults.defaultProvider ? (
-              <SettingResetButton
-                label="default provider"
-                onClick={() => updateSettings({ defaultProvider: defaults.defaultProvider })}
-              />
-            ) : null
-          }
-          control={
-            <SettingsSelectControl
-              value={settings.defaultProvider}
-              onValueChange={(value) => {
-                if (!isProviderSelectOption(value)) return;
-                updateSettings({ defaultProvider: value });
-              }}
-              ariaLabel="Default provider"
-              valueContent={
-                <ProviderOptionLabel
-                  provider={settings.defaultProvider}
-                  label={PROVIDER_DISPLAY_NAMES[settings.defaultProvider]}
-                />
-              }
-            >
-              {PROVIDER_SELECT_OPTIONS.map((provider) => (
-                <SelectItem hideIndicator key={provider} value={provider}>
-                  <ProviderOptionLabel
-                    provider={provider}
-                    label={PROVIDER_DISPLAY_NAMES[provider]}
-                  />
-                </SelectItem>
-              ))}
-            </SettingsSelectControl>
-          }
-        />
-
-        <SettingsRow
-          title="New threads"
-          description="Pick the default workspace mode for newly created draft threads."
-          resetAction={
-            settings.defaultThreadEnvMode !== defaults.defaultThreadEnvMode ? (
-              <SettingResetButton
-                label="new threads"
-                onClick={() =>
-                  updateSettings({
-                    defaultThreadEnvMode: defaults.defaultThreadEnvMode,
-                  })
-                }
-              />
-            ) : null
-          }
-          control={
-            <SettingsSelectControl
-              value={settings.defaultThreadEnvMode}
-              onValueChange={(value) => {
-                if (value !== "local" && value !== "worktree") return;
-                updateSettings({
-                  defaultThreadEnvMode: value,
-                });
-              }}
-              ariaLabel="Default thread mode"
-              valueContent={settings.defaultThreadEnvMode === "worktree" ? "New worktree" : "Local"}
-            >
-              <SelectItem hideIndicator value="local">
-                Local
-              </SelectItem>
-              <SelectItem hideIndicator value="worktree">
-                New worktree
-              </SelectItem>
-            </SettingsSelectControl>
-          }
-        />
-      </SettingsSection>
-
-      <SettingsSection title="Sidebar organization">
-        <SettingsRow
-          title="Project order"
-          description="Controls how projects are arranged in the main sidebar."
-          resetAction={
-            settings.sidebarProjectSortOrder !== defaults.sidebarProjectSortOrder ? (
-              <SettingResetButton
-                label="project order"
-                onClick={() =>
-                  updateSettings({
-                    sidebarProjectSortOrder: defaults.sidebarProjectSortOrder,
-                  })
-                }
-              />
-            ) : null
-          }
-          control={
-            <SettingsSelectControl
-              value={settings.sidebarProjectSortOrder}
-              onValueChange={(value) => {
-                if (value !== "updated_at" && value !== "created_at" && value !== "manual") {
-                  return;
-                }
-                updateSettings({ sidebarProjectSortOrder: value });
-              }}
-              ariaLabel="Project sort order"
-              valueContent={SIDEBAR_PROJECT_SORT_ORDER_LABELS[settings.sidebarProjectSortOrder]}
-            >
-              <SelectItem hideIndicator value="updated_at">
-                {SIDEBAR_PROJECT_SORT_ORDER_LABELS.updated_at}
-              </SelectItem>
-              <SelectItem hideIndicator value="created_at">
-                {SIDEBAR_PROJECT_SORT_ORDER_LABELS.created_at}
-              </SelectItem>
-              <SelectItem hideIndicator value="manual">
-                {SIDEBAR_PROJECT_SORT_ORDER_LABELS.manual}
-              </SelectItem>
-            </SettingsSelectControl>
-          }
-        />
-
-        <SettingsRow
-          title="Thread order"
-          description="Controls how threads are arranged inside each project in the main sidebar."
-          resetAction={
-            settings.sidebarThreadSortOrder !== defaults.sidebarThreadSortOrder ? (
-              <SettingResetButton
-                label="thread order"
-                onClick={() =>
-                  updateSettings({
-                    sidebarThreadSortOrder: defaults.sidebarThreadSortOrder,
-                  })
-                }
-              />
-            ) : null
-          }
-          control={
-            <SettingsSelectControl
-              value={settings.sidebarThreadSortOrder}
-              onValueChange={(value) => {
-                if (value !== "updated_at" && value !== "created_at") {
-                  return;
-                }
-                updateSettings({ sidebarThreadSortOrder: value });
-              }}
-              ariaLabel="Thread sort order"
-              valueContent={SIDEBAR_THREAD_SORT_ORDER_LABELS[settings.sidebarThreadSortOrder]}
-            >
-              <SelectItem hideIndicator value="updated_at">
-                {SIDEBAR_THREAD_SORT_ORDER_LABELS.updated_at}
-              </SelectItem>
-              <SelectItem hideIndicator value="created_at">
-                {SIDEBAR_THREAD_SORT_ORDER_LABELS.created_at}
-              </SelectItem>
-            </SettingsSelectControl>
-          }
-        />
-      </SettingsSection>
-
-      <SettingsSection title="Sidebar sections">
-        {renderBooleanSettingRow({
-          settingKey: "showChatsSection",
-          title: "Chats",
-          description:
-            "Show the standalone Chats list in the sidebar footer (chats not tied to a project).",
-          resetLabel: "chats section",
-          ariaLabel: "Show the Chats section in the sidebar",
-        })}
-
-        {renderBooleanSettingRow({
-          settingKey: "showStudioSection",
-          title: "Studio",
-          description: "Show the Studio tab in the sidebar switcher.",
-          resetLabel: "studio section",
-          ariaLabel: "Show the Studio section in the sidebar",
-        })}
-
-        {renderBooleanSettingRow({
-          settingKey: "showWorkspaceSection",
-          title: "Workspace",
-          description:
-            "Show the Workspace tab in the sidebar switcher. The Threads tab always stays visible.",
-          resetLabel: "workspace section",
-          ariaLabel: "Show the Workspace section in the sidebar",
-        })}
-      </SettingsSection>
-
-      <div id={SETTINGS_TARGETS.environmentPanel}>
-        <SettingsSection title="Environment panel">
-          {renderBooleanSettingRow({
-            settingKey: "environmentPanelDefaultOpen",
-            title: "Open by default",
-            description:
-              "Open the chat Environment panel automatically on normal threads. When off, the panel stays closed until you open it. Your last open/close also updates this preference.",
-            resetLabel: "environment panel default open",
-            ariaLabel: "Open the Environment panel by default on normal threads",
-          })}
-
-          {renderBooleanSettingRow({
-            settingKey: "showEnvironmentUsage",
-            title: "Usage",
-            description: "Show the provider usage row in the chat Environment panel.",
-            resetLabel: "usage section",
-            ariaLabel: "Show the Usage section in the Environment panel",
-          })}
-
-          {renderBooleanSettingRow({
-            settingKey: "showEnvironmentRepository",
-            title: "Repository",
-            description:
-              "Show the GitHub repository link in the chat Environment panel. The git block (Changes, Worktree, branch, Commit and Push) always stays visible.",
-            resetLabel: "repository section",
-            ariaLabel: "Show the Repository section in the Environment panel",
-          })}
-
-          {renderBooleanSettingRow({
-            settingKey: "showEnvironmentPullRequest",
-            title: "Pull request",
-            description:
-              "Show the open pull request (CI checks and review comments) for the current branch in the chat Environment panel.",
-            resetLabel: "pull request section",
-            ariaLabel: "Show the Pull request section in the Environment panel",
-          })}
-
-          {renderBooleanSettingRow({
-            settingKey: "showEnvironmentEditor",
-            title: "Editor",
-            description:
-              "Show the Editor section (in-app editor view and Open in editor picker) in the chat Environment panel.",
-            resetLabel: "editor section",
-            ariaLabel: "Show the Editor section in the Environment panel",
-          })}
-
-          {renderBooleanSettingRow({
-            settingKey: "showEnvironmentRecap",
-            title: "Recap",
-            description: "Show the auto-generated chat recap in the Environment panel.",
-            resetLabel: "recap section",
-            ariaLabel: "Show the Recap section in the Environment panel",
-          })}
-
-          {renderBooleanSettingRow({
-            settingKey: "showEnvironmentPinned",
-            title: "Pinned messages",
-            description: "Show the pinned-messages checklist in the Environment panel.",
-            resetLabel: "pinned messages section",
-            ariaLabel: "Show the Pinned messages section in the Environment panel",
-          })}
-
-          {renderBooleanSettingRow({
-            settingKey: "showEnvironmentMarkers",
-            title: "Text markers",
-            description:
-              "Show highlighted and underlined transcript text in the Environment panel.",
-            resetLabel: "text markers section",
-            ariaLabel: "Show the Text markers section in the Environment panel",
-          })}
-
-          {renderBooleanSettingRow({
-            settingKey: "showEnvironmentInstructions",
-            title: "Project instructions",
-            description: "Show project-level instructions in the Environment panel.",
-            resetLabel: "project instructions section",
-            ariaLabel: "Show the Project instructions section in the Environment panel",
-          })}
-
-          {renderBooleanSettingRow({
-            settingKey: "showEnvironmentNotepad",
-            title: "Notepad",
-            description: "Show the per-thread notepad in the Environment panel.",
-            resetLabel: "notepad section",
-            ariaLabel: "Show the Notepad section in the Environment panel",
-          })}
-        </SettingsSection>
-      </div>
-    </div>
+    <SettingsGeneralComposition
+      values={settings}
+      defaults={defaults}
+      onChange={(key, value) => updateSettings({ [key]: value })}
+    />
   );
 
   const renderAppearancePanel = () => (
-    <div className="space-y-6">
-      <section className={SETTINGS_PANEL_SECTION_CLASS_NAME}>
-        <h2 className={SETTINGS_SECTION_LABEL_CLASS_NAME}>Theme and typography</h2>
-        <SettingsCard>
-          <SettingsRow
-            title="Theme"
-            description="Choose how Synara looks across the app."
-            resetAction={
-              theme !== "system" ? (
-                <SettingResetButton label="theme" onClick={() => setTheme("system")} />
-              ) : null
-            }
-            control={
-              <SettingsSegmentedControl
-                value={theme}
-                onValueChange={(value) => {
-                  if (value !== "system" && value !== "light" && value !== "dark") return;
-                  setTheme(value);
-                }}
-                ariaLabel="Theme preference"
-                options={THEME_OPTIONS}
-              />
-            }
-          />
-          <SettingsRow
-            title="Use system UI font"
-            description="Ignore the theme's custom UI font and render the interface with the native system font (SF Pro on macOS)."
-            resetAction={
-              !systemUiFont ? (
-                <SettingResetButton label="system UI font" onClick={() => setSystemUiFont(true)} />
-              ) : null
-            }
-            control={
-              <Switch
-                checked={systemUiFont}
-                onCheckedChange={(checked) => setSystemUiFont(Boolean(checked))}
-                aria-label="Use system UI font"
-              />
-            }
-          />
-        </SettingsCard>
-
-        <div className="space-y-3">
-          {(resolvedTheme === "dark"
-            ? (["dark", "light"] as const)
-            : (["light", "dark"] as const)
-          ).map((variant) => (
-            <ThemePackEditor
-              key={variant}
-              variant={variant}
-              isActive={resolvedTheme === variant}
-              mode={theme}
-            />
-          ))}
-        </div>
-
-        <SettingsCard>
-          <SettingsRow
-            title="UI density"
-            description="Control spacing in the sidebar, composer, chat gutters, and settings rows without changing font size."
-            resetAction={
-              settings.uiDensity !== defaults.uiDensity ? (
-                <SettingResetButton
-                  label="UI density"
-                  onClick={() =>
-                    updateSettings({
-                      uiDensity: DEFAULT_UI_DENSITY,
-                    })
-                  }
-                />
-              ) : null
-            }
-            control={
-              <SettingsSegmentedControl
-                value={settings.uiDensity}
-                onValueChange={(value) => {
-                  if (!isUiDensity(value)) {
-                    return;
-                  }
-                  updateSettings({ uiDensity: value });
-                }}
-                ariaLabel="UI density"
-                options={UI_DENSITY_OPTIONS}
-              />
-            }
-          />
-
-          <SettingsRow
-            title="Base font size"
-            description="Adjust the app text base in pixels. Chat and UI typography scale proportionally from this value."
-            resetAction={
-              settings.chatFontSizePx !== defaults.chatFontSizePx ? (
-                <SettingResetButton
-                  label="base font size"
-                  onClick={() =>
-                    updateSettings({
-                      chatFontSizePx: defaults.chatFontSizePx,
-                    })
-                  }
-                />
-              ) : null
-            }
-            control={
-              <div className="flex w-full items-center justify-end gap-2 sm:w-auto">
-                <Input
-                  type="number"
-                  size="sm"
-                  min={MIN_CHAT_FONT_SIZE_PX}
-                  max={MAX_CHAT_FONT_SIZE_PX}
-                  step={1}
-                  inputMode="numeric"
-                  variant="soft"
-                  className="w-full text-right sm:w-20"
-                  value={String(settings.chatFontSizePx)}
-                  onChange={(event) => {
-                    const nextValue = event.target.value.trim();
-                    if (nextValue.length === 0) return;
-                    updateSettings({
-                      chatFontSizePx: normalizeChatFontSizePx(Number(nextValue)),
-                    });
-                  }}
-                  aria-label="Base font size in pixels"
-                />
-                <span className="text-xs text-muted-foreground">px</span>
-              </div>
-            }
-          />
-
-          <SettingsRow
-            title="Terminal font size"
-            description="Adjust terminal text independently from the app and chat font size."
-            resetAction={
-              settings.terminalFontSizePx !== defaults.terminalFontSizePx ? (
-                <SettingResetButton
-                  label="terminal font size"
-                  onClick={() =>
-                    updateSettings({
-                      terminalFontSizePx: defaults.terminalFontSizePx,
-                    })
-                  }
-                />
-              ) : null
-            }
-            control={
-              <div className="flex w-full items-center justify-end gap-2 sm:w-auto">
-                <Input
-                  type="number"
-                  size="sm"
-                  min={MIN_TERMINAL_FONT_SIZE_PX}
-                  max={MAX_TERMINAL_FONT_SIZE_PX}
-                  step={1}
-                  inputMode="numeric"
-                  variant="soft"
-                  className="w-full text-right sm:w-20"
-                  value={String(settings.terminalFontSizePx)}
-                  onChange={(event) => {
-                    const nextValue = event.target.value.trim();
-                    if (nextValue.length === 0) return;
-                    updateSettings({
-                      terminalFontSizePx: normalizeTerminalFontSizePx(Number(nextValue)),
-                    });
-                  }}
-                  aria-label="Terminal font size in pixels"
-                />
-                <span className="text-xs text-muted-foreground">px</span>
-              </div>
-            }
-          />
-
-          <SettingsRow
-            title="Terminal font"
-            description="Type any monospace font installed on this device (e.g. Fira Code). Leave empty for the default. Fonts that aren't installed fall back to the system monospace."
-            resetAction={
-              settings.terminalFontFamily !== defaults.terminalFontFamily ? (
-                <SettingResetButton
-                  label="terminal font"
-                  onClick={() =>
-                    updateSettings({
-                      terminalFontFamily: defaults.terminalFontFamily,
-                    })
-                  }
-                />
-              ) : null
-            }
-            control={
-              <div className="flex w-full items-center justify-end sm:w-auto">
-                <Autocomplete
-                  items={visibleTerminalFontFamilySuggestions}
-                  mode="none"
-                  openOnInputClick
-                  value={settings.terminalFontFamily}
-                  onValueChange={(value) => {
-                    updateSettings({
-                      terminalFontFamily: normalizeTerminalFontFamily(value),
-                    });
-                  }}
-                >
-                  <AutocompleteInput
-                    size="sm"
-                    variant="soft"
-                    showTrigger
-                    showClear={settings.terminalFontFamily.length > 0}
-                    spellCheck={false}
-                    autoComplete="off"
-                    placeholder="Default (JetBrains Mono)"
-                    className="w-full sm:w-56"
-                    aria-label="Terminal font family"
-                  />
-                  <AutocompletePopup className="w-56 min-w-56 font-system-ui">
-                    <AutocompleteList>
-                      {visibleTerminalFontFamilySuggestions.map((suggestion, index) => (
-                        <AutocompleteItem
-                          key={suggestion}
-                          index={index}
-                          value={suggestion}
-                          className="font-normal text-[var(--color-text-foreground)]"
-                          onClick={() => {
-                            updateSettings({
-                              terminalFontFamily: normalizeTerminalFontFamily(suggestion),
-                            });
-                          }}
-                        >
-                          {suggestion}
-                        </AutocompleteItem>
-                      ))}
-                      <AutocompleteEmpty>No matching suggested fonts.</AutocompleteEmpty>
-                    </AutocompleteList>
-                  </AutocompletePopup>
-                </Autocomplete>
-              </div>
-            }
-          />
-
-          {shouldShowFontSmoothing
-            ? renderBooleanSettingRow({
-                settingKey: "enableNativeFontSmoothing",
-                title: "Font smoothing",
-                description: "Use macOS-style antialiasing for lighter, crisper text rendering.",
-                resetLabel: "font smoothing",
-                ariaLabel: "Enable font smoothing",
-              })
-            : null}
-        </SettingsCard>
-      </section>
-
-      <SettingsSection title="Time and reading">
-        <SettingsRow
-          title="Time format"
-          description="System default follows your browser or OS clock preference."
-          resetAction={
-            settings.timestampFormat !== defaults.timestampFormat ? (
-              <SettingResetButton
-                label="time format"
-                onClick={() =>
-                  updateSettings({
-                    timestampFormat: defaults.timestampFormat,
-                  })
-                }
-              />
-            ) : null
-          }
-          control={
-            <SettingsSelectControl
-              value={settings.timestampFormat}
-              onValueChange={(value) => {
-                if (value !== "locale" && value !== "12-hour" && value !== "24-hour") {
-                  return;
-                }
-                updateSettings({
-                  timestampFormat: value,
-                });
-              }}
-              ariaLabel="Timestamp format"
-              triggerClassName="w-full sm:w-40"
-              valueContent={TIMESTAMP_FORMAT_LABELS[settings.timestampFormat]}
-            >
-              <SelectItem hideIndicator value="locale">
-                {TIMESTAMP_FORMAT_LABELS.locale}
-              </SelectItem>
-              <SelectItem hideIndicator value="12-hour">
-                {TIMESTAMP_FORMAT_LABELS["12-hour"]}
-              </SelectItem>
-              <SelectItem hideIndicator value="24-hour">
-                {TIMESTAMP_FORMAT_LABELS["24-hour"]}
-              </SelectItem>
-            </SettingsSelectControl>
-          }
-        />
-      </SettingsSection>
-    </div>
+    <SettingsAppearanceComposition
+      values={{
+        themeMode: theme,
+        systemUiFont,
+        uiDensity: settings.uiDensity,
+        chatFontSizePx: settings.chatFontSizePx,
+        terminalFontSizePx: settings.terminalFontSizePx,
+        terminalFontFamily: settings.terminalFontFamily,
+        enableNativeFontSmoothing: settings.enableNativeFontSmoothing,
+        timestampFormat: settings.timestampFormat,
+      }}
+      defaults={{
+        themeMode: "system",
+        systemUiFont: true,
+        uiDensity: defaults.uiDensity,
+        chatFontSizePx: defaults.chatFontSizePx,
+        terminalFontSizePx: defaults.terminalFontSizePx,
+        terminalFontFamily: defaults.terminalFontFamily,
+        enableNativeFontSmoothing: defaults.enableNativeFontSmoothing,
+        timestampFormat: defaults.timestampFormat,
+      }}
+      resolvedTheme={resolvedTheme}
+      showFontSmoothing={shouldShowFontSmoothing}
+      themeState={themeState}
+      onThemeStateChange={setThemeState}
+      onChange={(key, value) => {
+        if (key === "themeMode") {
+          setTheme(value as "light" | "dark" | "system");
+          return;
+        }
+        if (key === "systemUiFont") {
+          setSystemUiFont(Boolean(value));
+          return;
+        }
+        updateSettings({
+          [key]:
+            key === "terminalFontFamily"
+              ? normalizeTerminalFontFamily(String(value))
+              : value,
+        });
+      }}
+    />
   );
 
   const renderRouteOwnedPanel = () => {
@@ -1003,26 +326,11 @@ function SettingsRouteView() {
               )}
             >
               {activeSection !== "profile" ? (
-                <div className="mb-8 flex items-start justify-between gap-4">
-                  <div className="min-w-0">
-                    <h1 className="text-xl font-medium tracking-tight text-foreground">
-                      {activeSectionItem.label}
-                    </h1>
-                    <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-                      {activeSectionItem.description}
-                    </p>
-                  </div>
-                  <Button
-                    size="xs"
-                    variant="outline"
-                    className="shrink-0"
-                    disabled={changedSettingLabels.length === 0}
-                    onClick={() => void restoreDefaults()}
-                  >
-                    <RotateCcwIcon className="size-3.5" />
-                    Restore defaults
-                  </Button>
-                </div>
+                <SettingsPanelHeaderComposition
+                  section={activeSection}
+                  restoreDisabled={changedSettingLabels.length === 0}
+                  onRestore={() => void restoreDefaults()}
+                />
               ) : null}
 
               {renderRouteOwnedPanel()}

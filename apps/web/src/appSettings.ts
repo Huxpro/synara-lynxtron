@@ -59,34 +59,25 @@ import {
   normalizeChatFontSizePx,
 } from "./chatFontSize";
 import { webStorage } from "~/platform/storage";
-const APP_SETTINGS_STORAGE_KEY = "synara:app-settings:v1";
+import { APP_SETTINGS_STORAGE_KEY } from "./appSettingsStorageProjection.logic";
+import {
+  DEFAULT_TERMINAL_FONT_FAMILY,
+  DEFAULT_TERMINAL_FONT_SIZE_PX,
+  MAX_TERMINAL_FONT_SIZE_PX,
+  MIN_TERMINAL_FONT_SIZE_PX,
+  TERMINAL_FONT_FAMILY_SUGGESTIONS,
+} from "./components/settings/SettingsAppearanceComposition.logic";
 const SERVER_SETTINGS_MIGRATION_STORAGE_KEY = "synara:server-settings-migrated:v1";
 const MAX_CUSTOM_MODEL_COUNT = 32;
 export const MAX_CUSTOM_MODEL_LENGTH = 256;
 export { MIN_CHAT_FONT_SIZE_PX, MAX_CHAT_FONT_SIZE_PX, DEFAULT_CHAT_FONT_SIZE_PX };
-export const MIN_TERMINAL_FONT_SIZE_PX = 10;
-export const MAX_TERMINAL_FONT_SIZE_PX = 22;
-export const DEFAULT_TERMINAL_FONT_SIZE_PX = 12;
-
-// Terminal font is a free-form font-family value: the user can type any font
-// installed on their machine. An empty value keeps the bundled default stack
-// (defined in index.css). The list below is only autocomplete inspiration shown
-// in the settings input — it does NOT restrict what can be entered.
-export const DEFAULT_TERMINAL_FONT_FAMILY = "";
-
-export const TERMINAL_FONT_FAMILY_SUGGESTIONS: ReadonlyArray<string> = [
-  "JetBrains Mono",
-  "Fira Code",
-  "Cascadia Code",
-  "SF Mono",
-  "Menlo",
-  "Source Code Pro",
-  "IBM Plex Mono",
-  "Hack",
-  "Roboto Mono",
-  "Ubuntu Mono",
-  "Consolas",
-];
+export {
+  DEFAULT_TERMINAL_FONT_FAMILY,
+  DEFAULT_TERMINAL_FONT_SIZE_PX,
+  MAX_TERMINAL_FONT_SIZE_PX,
+  MIN_TERMINAL_FONT_SIZE_PX,
+  TERMINAL_FONT_FAMILY_SUGGESTIONS,
+};
 
 export const TimestampFormat = Schema.Literals(["locale", "12-hour", "24-hour"]);
 export type TimestampFormat = typeof TimestampFormat.Type;
