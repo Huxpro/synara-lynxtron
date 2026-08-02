@@ -1666,6 +1666,27 @@ mouse/touch/focus/key bindings，但焦点与键盘仍受宿主窗口状态和�
 
 证据见 `shots/2026-07-30/port/p7-i1/pr-interactions/notes.md` 与
 `shots/2026-07-30/port/p7-i1/settings-interactions/notes.md`、
+
+### P-127 输入桥调查必须分离 binding、delivery 与 harness 可达性 ✅（P9-D1）
+
+host input probe 不应把类型/DOM handler 当作 runtime pass，也不应把 automation 无法施加的
+输入当作产品阴性：
+
+1. matrix 为每个 source/event 分别记录 `bindingExists`、`eventArrived`、call count 与
+   last detail；Web 与 Native 使用同一纯逻辑 catalog；
+2. probe 必须是 compile-time 独立 entry，默认 product bundle 不含 probe marker，避免诊断
+   route污染六屏 graph；
+3. Native report 通过显式 owned path 写出，DevTool client 必须从 owned PID 动态解析；
+4. 被前台用户窗口遮挡的 click、未配置 visual model 的 Computer Use、错误 target 的全局
+   key input都属于 harness failure，不进入 event matrix；
+5. real pointer/wheel/text input必须由真实 OS input产生；`dispatchEvent`、`scrollTop=...`、
+   fulfilled `setFocus`或 PID-targeted keycode不能替代真实 host/IME delivery；
+6. background textarea可收到 Lynx focus但不是 macOS Text Input Manager client时，IME cell
+   应标 blocked，不应推断 `isComposing` unsupported；
+7. 阴性 event 以操作时间线 + 前后 matrix/DOM/console存证；无视觉变化时不制造无信息截图。
+
+证据见 `shots/2026-08-03/p9-d1/{web-probe,native-probe}/notes.md`，完整判定见
+`reports/p9-d1-host-input-bridge.md`。
 `shots/2026-07-30/port/p7-i1/sidebar-kanban-interactions/notes.md`、
 `shots/2026-07-30/port/p7-i1/transcript-interactions/notes.md`、
 `shots/2026-07-30/port/p7-i1/composer-interactions/notes.md`、

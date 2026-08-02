@@ -148,7 +148,7 @@ Phase 8 出口：普通 UI 的"移植完成"有源码复用和视觉证据；终
 
 | ID | 任务 | 退出标准 | 依赖 | 落地 | 状态 |
 |---|---|---|---|---|---|
-| P9-D1 | host/input-bridge 边界调查与闭环 | 见下方详细定义 | P7-I1, P7-I3 | `synara/apps/lynx` | in_progress（2026-08-03 · 任务正式写入 roadmap，从 LOG/P-110/compat-matrix/textarea/focus 代码恢复定义；先于 P8-Q2 收口） |
+| P9-D1 | host/input-bridge 边界调查与闭环 | 见下方详细定义 | P7-I1, P7-I3 | `synara/apps/lynx` | blocked（2026-08-03 · Web 25/25 bindings、9/25 delivery；Native 25/25 bindings、11/25 delivery；真实 IME composition 受 background/no-Raise harness 阻塞，解阻条件见报告） |
 | P9-R1 | host/input-bridge 修复与补齐 | 按 D1 结论逐项修复已验证缺口；每项有 Native evidence | P9-D1 | `synara/apps/lynx` | pending（禁止在 D1 完成前进入） |
 
 ### P9-D1 详细定义
@@ -243,6 +243,14 @@ Phase 8 出口：普通 UI 的"移植完成"有源码复用和视觉证据；终
 
 **P9-R1 前置条件**：P9-D1 completed + 用户明确授权进入 R1。P9-R1 将按 D1 结论对已验证
 缺口逐项修复（可能包括宿主补丁、workaround、或接受 gap 并登记）。
+
+**当前 blocker（2026-08-03）**：`SYNARA_BACKGROUND_LAUNCH=1` 的 exact-owned 窗口可由
+DevTool 捕获，也可在未被用户窗口遮挡的区域接收 pointer/wheel；但真实 macOS IME 只向
+active/frontmost text client 发送 composition。遵守 no-Raise、不得移动/最小化用户窗口后，
+无法把 background textarea 变成真实 IME target。PID 定向 `CGEvent` 不经过 Text Input
+Manager，不能替代用户 IME 路径。解除 blocker 需用户明确授权一次受控窗口激活，或
+Computer Use 配置可用模型后精确操作已验证 owned app；完成 `isComposing=true → false`
+证据后才可把 P9-D1 标 completed。
 
 ## 更新日志
 

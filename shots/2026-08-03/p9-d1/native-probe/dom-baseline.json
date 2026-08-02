@@ -1,0 +1,185 @@
+{
+  "compress": false,
+  "root": {
+    "attributes": [],
+    "backendNodeId": 11,
+    "childNodeCount": 1,
+    "children": [
+      {
+        "attributes": [],
+        "backendNodeId": 10,
+        "childNodeCount": 1,
+        "children": [
+          {
+            "attributes": [
+              "class",
+              "HostInputProbeRoot"
+            ],
+            "backendNodeId": 13,
+            "childNodeCount": 6,
+            "children": [
+              {
+                "attributes": [
+                  "text",
+                  "P9-D1 Host Input Probe",
+                  "class",
+                  "HostInputProbeTitle"
+                ],
+                "backendNodeId": 14,
+                "childNodeCount": 0,
+                "localName": "text",
+                "nodeId": 14,
+                "nodeName": "TEXT",
+                "nodeType": 1,
+                "nodeValue": "",
+                "parentId": 13
+              },
+              {
+                "attributes": [
+                  "idSelector",
+                  "host-input-probe-summary",
+                  "class",
+                  "HostInputProbeSummary"
+                ],
+                "backendNodeId": 15,
+                "childNodeCount": 1,
+                "localName": "text",
+                "nodeId": 15,
+                "nodeName": "TEXT",
+                "nodeType": 1,
+                "nodeValue": "",
+                "parentId": 13
+              },
+              {
+                "attributes": [
+                  "idSelector",
+                  "host-input-probe-view-control",
+                  "focusable",
+                  "true",
+                  "accessibility-element",
+                  "true",
+                  "accessibility-label",
+                  "Host input probe control",
+                  "bindfocus",
+                  "-27:0:",
+                  "bindmouseleave",
+                  "-27:4:",
+                  "bindkeydown",
+                  "-27:2:",
+                  "bindtap",
+                  "-27:7:",
+                  "bindmouseenter",
+                  "-27:3:",
+                  "bindblur",
+                  "-27:1:",
+                  "bindmousedown",
+                  "-27:5:",
+                  "bindmouseup",
+                  "-27:6:",
+                  "class",
+                  "HostInputProbeControl"
+                ],
+                "backendNodeId": 16,
+                "childNodeCount": 1,
+                "localName": "view",
+                "nodeId": 16,
+                "nodeName": "VIEW",
+                "nodeType": 1,
+                "nodeValue": "",
+                "parentId": 13
+              },
+              {
+                "attributes": [
+                  "idSelector",
+                  "host-input-probe-textarea",
+                  "accessibility-element",
+                  "true",
+                  "accessibility-label",
+                  "Host input probe textarea",
+                  "focusable",
+                  "true",
+                  "placeholder",
+                  "Type text or use IME",
+                  "maxlines",
+                  "3",
+                  "send-composing-input",
+                  "true",
+                  "bindfocus",
+                  "-27:8:",
+                  "bindblur",
+                  "-27:9:",
+                  "bindinput",
+                  "-27:11:",
+                  "catchkeydown",
+                  "-27:10:",
+                  "class",
+                  "HostInputProbeTextarea"
+                ],
+                "backendNodeId": 18,
+                "childNodeCount": 0,
+                "localName": "textarea",
+                "nodeId": 18,
+                "nodeName": "TEXTAREA",
+                "nodeType": 1,
+                "nodeValue": "",
+                "parentId": 13
+              },
+              {
+                "attributes": [
+                  "idSelector",
+                  "host-input-probe-scroll",
+                  "scroll-orientation",
+                  "vertical",
+                  "scroll-y",
+                  "true",
+                  "bindscroll",
+                  "-27:12:",
+                  "class",
+                  "HostInputProbeScroll"
+                ],
+                "backendNodeId": 19,
+                "childNodeCount": 1,
+                "localName": "scroll-view",
+                "nodeId": 19,
+                "nodeName": "SCROLL-VIEW",
+                "nodeType": 1,
+                "nodeValue": "",
+                "parentId": 13
+              },
+              {
+                "attributes": [
+                  "class",
+                  "HostInputProbeMatrix"
+                ],
+                "backendNodeId": 26,
+                "childNodeCount": 25,
+                "localName": "view",
+                "nodeId": 26,
+                "nodeName": "VIEW",
+                "nodeType": 1,
+                "nodeValue": "",
+                "parentId": 13
+              }
+            ],
+            "localName": "view",
+            "nodeId": 13,
+            "nodeName": "VIEW",
+            "nodeType": 1,
+            "nodeValue": "",
+            "parentId": 10
+          }
+        ],
+        "localName": "page",
+        "nodeId": 10,
+        "nodeName": "PAGE",
+        "nodeType": 1,
+        "nodeValue": ""
+      }
+    ],
+    "localName": "",
+    "nodeId": 11,
+    "nodeName": "#document",
+    "nodeType": 9,
+    "nodeValue": ""
+  }
+}

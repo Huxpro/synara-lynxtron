@@ -396,6 +396,9 @@ export default defineConfig({
           'process.env.SYNARA_LYNX_WEB_RELAY': JSON.stringify(
             buildHostInputProbe ? '0' : '1'
           ),
+          'process.env.SYNARA_HOST_INPUT_PROBE_RUNTIME': JSON.stringify(
+            buildHostInputProbe ? 'Lynx-for-Web' : ''
+          ),
         },
         entry: {
           main: buildHostInputProbe
@@ -421,9 +424,14 @@ export default defineConfig({
         define: {
           'process.env.SYNARA_WS_URL': JSON.stringify(configuredSynaraWsUrl),
           'process.env.SYNARA_LYNX_WEB_RELAY': JSON.stringify('0'),
+          'process.env.SYNARA_HOST_INPUT_PROBE_RUNTIME': JSON.stringify(
+            buildHostInputProbe ? 'Lynxtron Native' : ''
+          ),
         },
         entry: {
-          main: './src/app/index.tsx',
+          main: buildHostInputProbe
+            ? './src/app/host-input-probe-index.tsx'
+            : './src/app/index.tsx',
         },
       },
       output: {

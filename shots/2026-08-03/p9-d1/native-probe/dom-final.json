@@ -1,0 +1,1661 @@
+{
+  "compress": false,
+  "root": {
+    "attributes": [],
+    "backendNodeId": 11,
+    "childNodeCount": 1,
+    "children": [
+      {
+        "attributes": [],
+        "backendNodeId": 10,
+        "childNodeCount": 1,
+        "children": [
+          {
+            "attributes": [
+              "class",
+              "HostInputProbeRoot"
+            ],
+            "backendNodeId": 13,
+            "childNodeCount": 6,
+            "children": [
+              {
+                "attributes": [
+                  "text",
+                  "P9-D1 Host Input Probe",
+                  "class",
+                  "HostInputProbeTitle"
+                ],
+                "backendNodeId": 14,
+                "childNodeCount": 0,
+                "children": [],
+                "localName": "text",
+                "nodeId": 14,
+                "nodeName": "TEXT",
+                "nodeType": 1,
+                "nodeValue": "",
+                "parentId": 13
+              },
+              {
+                "attributes": [
+                  "idSelector",
+                  "host-input-probe-summary",
+                  "class",
+                  "HostInputProbeSummary"
+                ],
+                "backendNodeId": 15,
+                "childNodeCount": 1,
+                "children": [
+                  {
+                    "attributes": [
+                      "text",
+                      "bound=25/25 delivered=1/25"
+                    ],
+                    "backendNodeId": 27,
+                    "childNodeCount": 0,
+                    "children": [],
+                    "localName": "raw-text",
+                    "nodeId": 27,
+                    "nodeName": "RAW-TEXT",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 15
+                  }
+                ],
+                "localName": "text",
+                "nodeId": 15,
+                "nodeName": "TEXT",
+                "nodeType": 1,
+                "nodeValue": "",
+                "parentId": 13
+              },
+              {
+                "attributes": [
+                  "idSelector",
+                  "host-input-probe-view-control",
+                  "focusable",
+                  "true",
+                  "accessibility-element",
+                  "true",
+                  "accessibility-label",
+                  "Host input probe control",
+                  "bindfocus",
+                  "-27:0:",
+                  "bindmouseleave",
+                  "-27:4:",
+                  "bindkeydown",
+                  "-27:2:",
+                  "bindtap",
+                  "-27:7:",
+                  "bindmouseenter",
+                  "-27:3:",
+                  "bindblur",
+                  "-27:1:",
+                  "bindmousedown",
+                  "-27:5:",
+                  "bindmouseup",
+                  "-27:6:",
+                  "class",
+                  "HostInputProbeControl"
+                ],
+                "backendNodeId": 16,
+                "childNodeCount": 1,
+                "children": [
+                  {
+                    "attributes": [
+                      "text",
+                      "Focusable view control"
+                    ],
+                    "backendNodeId": 17,
+                    "childNodeCount": 0,
+                    "children": [],
+                    "localName": "text",
+                    "nodeId": 17,
+                    "nodeName": "TEXT",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 16
+                  }
+                ],
+                "localName": "view",
+                "nodeId": 16,
+                "nodeName": "VIEW",
+                "nodeType": 1,
+                "nodeValue": "",
+                "parentId": 13
+              },
+              {
+                "attributes": [
+                  "idSelector",
+                  "host-input-probe-textarea",
+                  "accessibility-element",
+                  "true",
+                  "accessibility-label",
+                  "Host input probe textarea",
+                  "focusable",
+                  "true",
+                  "placeholder",
+                  "Type text or use IME",
+                  "maxlines",
+                  "3",
+                  "send-composing-input",
+                  "true",
+                  "bindfocus",
+                  "-27:8:",
+                  "bindblur",
+                  "-27:9:",
+                  "bindinput",
+                  "-27:11:",
+                  "catchkeydown",
+                  "-27:10:",
+                  "class",
+                  "HostInputProbeTextarea"
+                ],
+                "backendNodeId": 18,
+                "childNodeCount": 0,
+                "children": [],
+                "localName": "textarea",
+                "nodeId": 18,
+                "nodeName": "TEXTAREA",
+                "nodeType": 1,
+                "nodeValue": "",
+                "parentId": 13
+              },
+              {
+                "attributes": [
+                  "idSelector",
+                  "host-input-probe-scroll",
+                  "scroll-orientation",
+                  "vertical",
+                  "scroll-y",
+                  "true",
+                  "bindscroll",
+                  "-27:12:",
+                  "class",
+                  "HostInputProbeScroll"
+                ],
+                "backendNodeId": 19,
+                "childNodeCount": 1,
+                "children": [
+                  {
+                    "attributes": [
+                      "class",
+                      "HostInputProbeScrollContent"
+                    ],
+                    "backendNodeId": 20,
+                    "childNodeCount": 5,
+                    "children": [
+                      {
+                        "attributes": [
+                          "text",
+                          "Scroll start"
+                        ],
+                        "backendNodeId": 21,
+                        "childNodeCount": 0,
+                        "localName": "text",
+                        "nodeId": 21,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 20
+                      },
+                      {
+                        "attributes": [
+                          "text",
+                          "Spacer one"
+                        ],
+                        "backendNodeId": 22,
+                        "childNodeCount": 0,
+                        "localName": "text",
+                        "nodeId": 22,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 20
+                      },
+                      {
+                        "attributes": [
+                          "text",
+                          "Spacer two"
+                        ],
+                        "backendNodeId": 23,
+                        "childNodeCount": 0,
+                        "localName": "text",
+                        "nodeId": 23,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 20
+                      },
+                      {
+                        "attributes": [
+                          "text",
+                          "Spacer three"
+                        ],
+                        "backendNodeId": 24,
+                        "childNodeCount": 0,
+                        "localName": "text",
+                        "nodeId": 24,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 20
+                      },
+                      {
+                        "attributes": [
+                          "text",
+                          "Scroll end"
+                        ],
+                        "backendNodeId": 25,
+                        "childNodeCount": 0,
+                        "localName": "text",
+                        "nodeId": 25,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 20
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 20,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 19
+                  }
+                ],
+                "localName": "scroll-view",
+                "nodeId": 19,
+                "nodeName": "SCROLL-VIEW",
+                "nodeType": 1,
+                "nodeValue": "",
+                "parentId": 13
+              },
+              {
+                "attributes": [
+                  "class",
+                  "HostInputProbeMatrix"
+                ],
+                "backendNodeId": 26,
+                "childNodeCount": 25,
+                "children": [
+                  {
+                    "attributes": [
+                      "class",
+                      "HostInputProbeRow"
+                    ],
+                    "backendNodeId": 28,
+                    "childNodeCount": 2,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "HostInputProbeEvent"
+                        ],
+                        "backendNodeId": 29,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 29,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 28
+                      },
+                      {
+                        "attributes": [
+                          "data-event-name",
+                          "focus",
+                          "data-arrived",
+                          "no",
+                          "data-source-name",
+                          "view-control",
+                          "data-calls",
+                          "0",
+                          "data-binding",
+                          "yes",
+                          "class",
+                          "HostInputProbeResult"
+                        ],
+                        "backendNodeId": 30,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 30,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 28
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 28,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 26
+                  },
+                  {
+                    "attributes": [
+                      "class",
+                      "HostInputProbeRow"
+                    ],
+                    "backendNodeId": 33,
+                    "childNodeCount": 2,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "HostInputProbeEvent"
+                        ],
+                        "backendNodeId": 34,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 34,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 33
+                      },
+                      {
+                        "attributes": [
+                          "data-event-name",
+                          "blur",
+                          "data-arrived",
+                          "no",
+                          "data-source-name",
+                          "view-control",
+                          "data-calls",
+                          "0",
+                          "data-binding",
+                          "yes",
+                          "class",
+                          "HostInputProbeResult"
+                        ],
+                        "backendNodeId": 35,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 35,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 33
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 33,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 26
+                  },
+                  {
+                    "attributes": [
+                      "class",
+                      "HostInputProbeRow"
+                    ],
+                    "backendNodeId": 38,
+                    "childNodeCount": 2,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "HostInputProbeEvent"
+                        ],
+                        "backendNodeId": 39,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 39,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 38
+                      },
+                      {
+                        "attributes": [
+                          "data-event-name",
+                          "focus",
+                          "data-arrived",
+                          "yes",
+                          "data-source-name",
+                          "textarea",
+                          "data-calls",
+                          "1",
+                          "data-binding",
+                          "yes",
+                          "class",
+                          "HostInputProbeResult"
+                        ],
+                        "backendNodeId": 40,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 40,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 38
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 38,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 26
+                  },
+                  {
+                    "attributes": [
+                      "class",
+                      "HostInputProbeRow"
+                    ],
+                    "backendNodeId": 43,
+                    "childNodeCount": 2,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "HostInputProbeEvent"
+                        ],
+                        "backendNodeId": 44,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 44,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 43
+                      },
+                      {
+                        "attributes": [
+                          "data-event-name",
+                          "blur",
+                          "data-arrived",
+                          "no",
+                          "data-source-name",
+                          "textarea",
+                          "data-calls",
+                          "0",
+                          "data-binding",
+                          "yes",
+                          "class",
+                          "HostInputProbeResult"
+                        ],
+                        "backendNodeId": 45,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 45,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 43
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 43,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 26
+                  },
+                  {
+                    "attributes": [
+                      "class",
+                      "HostInputProbeRow"
+                    ],
+                    "backendNodeId": 48,
+                    "childNodeCount": 2,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "HostInputProbeEvent"
+                        ],
+                        "backendNodeId": 49,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 49,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 48
+                      },
+                      {
+                        "attributes": [
+                          "data-event-name",
+                          "keydown:Enter",
+                          "data-arrived",
+                          "no",
+                          "data-source-name",
+                          "view-control",
+                          "data-calls",
+                          "0",
+                          "data-binding",
+                          "yes",
+                          "class",
+                          "HostInputProbeResult"
+                        ],
+                        "backendNodeId": 50,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 50,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 48
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 48,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 26
+                  },
+                  {
+                    "attributes": [
+                      "class",
+                      "HostInputProbeRow"
+                    ],
+                    "backendNodeId": 53,
+                    "childNodeCount": 2,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "HostInputProbeEvent"
+                        ],
+                        "backendNodeId": 54,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 54,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 53
+                      },
+                      {
+                        "attributes": [
+                          "data-event-name",
+                          "keydown:Space",
+                          "data-arrived",
+                          "no",
+                          "data-source-name",
+                          "view-control",
+                          "data-calls",
+                          "0",
+                          "data-binding",
+                          "yes",
+                          "class",
+                          "HostInputProbeResult"
+                        ],
+                        "backendNodeId": 55,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 55,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 53
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 53,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 26
+                  },
+                  {
+                    "attributes": [
+                      "class",
+                      "HostInputProbeRow"
+                    ],
+                    "backendNodeId": 58,
+                    "childNodeCount": 2,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "HostInputProbeEvent"
+                        ],
+                        "backendNodeId": 59,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 59,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 58
+                      },
+                      {
+                        "attributes": [
+                          "data-event-name",
+                          "keydown:ArrowDown",
+                          "data-arrived",
+                          "no",
+                          "data-source-name",
+                          "view-control",
+                          "data-calls",
+                          "0",
+                          "data-binding",
+                          "yes",
+                          "class",
+                          "HostInputProbeResult"
+                        ],
+                        "backendNodeId": 60,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 60,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 58
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 58,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 26
+                  },
+                  {
+                    "attributes": [
+                      "class",
+                      "HostInputProbeRow"
+                    ],
+                    "backendNodeId": 63,
+                    "childNodeCount": 2,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "HostInputProbeEvent"
+                        ],
+                        "backendNodeId": 64,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 64,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 63
+                      },
+                      {
+                        "attributes": [
+                          "data-event-name",
+                          "keydown:ArrowUp",
+                          "data-arrived",
+                          "no",
+                          "data-source-name",
+                          "view-control",
+                          "data-calls",
+                          "0",
+                          "data-binding",
+                          "yes",
+                          "class",
+                          "HostInputProbeResult"
+                        ],
+                        "backendNodeId": 65,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 65,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 63
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 63,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 26
+                  },
+                  {
+                    "attributes": [
+                      "class",
+                      "HostInputProbeRow"
+                    ],
+                    "backendNodeId": 68,
+                    "childNodeCount": 2,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "HostInputProbeEvent"
+                        ],
+                        "backendNodeId": 69,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 69,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 68
+                      },
+                      {
+                        "attributes": [
+                          "data-event-name",
+                          "keydown:Escape",
+                          "data-arrived",
+                          "no",
+                          "data-source-name",
+                          "view-control",
+                          "data-calls",
+                          "0",
+                          "data-binding",
+                          "yes",
+                          "class",
+                          "HostInputProbeResult"
+                        ],
+                        "backendNodeId": 70,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 70,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 68
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 68,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 26
+                  },
+                  {
+                    "attributes": [
+                      "class",
+                      "HostInputProbeRow"
+                    ],
+                    "backendNodeId": 73,
+                    "childNodeCount": 2,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "HostInputProbeEvent"
+                        ],
+                        "backendNodeId": 74,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 74,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 73
+                      },
+                      {
+                        "attributes": [
+                          "data-event-name",
+                          "keydown:Tab",
+                          "data-arrived",
+                          "no",
+                          "data-source-name",
+                          "view-control",
+                          "data-calls",
+                          "0",
+                          "data-binding",
+                          "yes",
+                          "class",
+                          "HostInputProbeResult"
+                        ],
+                        "backendNodeId": 75,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 75,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 73
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 73,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 26
+                  },
+                  {
+                    "attributes": [
+                      "class",
+                      "HostInputProbeRow"
+                    ],
+                    "backendNodeId": 78,
+                    "childNodeCount": 2,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "HostInputProbeEvent"
+                        ],
+                        "backendNodeId": 79,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 79,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 78
+                      },
+                      {
+                        "attributes": [
+                          "data-event-name",
+                          "keydown:Enter",
+                          "data-arrived",
+                          "no",
+                          "data-source-name",
+                          "textarea",
+                          "data-calls",
+                          "0",
+                          "data-binding",
+                          "yes",
+                          "class",
+                          "HostInputProbeResult"
+                        ],
+                        "backendNodeId": 80,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 80,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 78
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 78,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 26
+                  },
+                  {
+                    "attributes": [
+                      "class",
+                      "HostInputProbeRow"
+                    ],
+                    "backendNodeId": 83,
+                    "childNodeCount": 2,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "HostInputProbeEvent"
+                        ],
+                        "backendNodeId": 84,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 84,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 83
+                      },
+                      {
+                        "attributes": [
+                          "data-event-name",
+                          "keydown:ArrowUp",
+                          "data-arrived",
+                          "no",
+                          "data-source-name",
+                          "textarea",
+                          "data-calls",
+                          "0",
+                          "data-binding",
+                          "yes",
+                          "class",
+                          "HostInputProbeResult"
+                        ],
+                        "backendNodeId": 85,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 85,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 83
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 83,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 26
+                  },
+                  {
+                    "attributes": [
+                      "class",
+                      "HostInputProbeRow"
+                    ],
+                    "backendNodeId": 88,
+                    "childNodeCount": 2,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "HostInputProbeEvent"
+                        ],
+                        "backendNodeId": 89,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 89,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 88
+                      },
+                      {
+                        "attributes": [
+                          "data-event-name",
+                          "keydown:ArrowDown",
+                          "data-arrived",
+                          "no",
+                          "data-source-name",
+                          "textarea",
+                          "data-calls",
+                          "0",
+                          "data-binding",
+                          "yes",
+                          "class",
+                          "HostInputProbeResult"
+                        ],
+                        "backendNodeId": 90,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 90,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 88
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 88,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 26
+                  },
+                  {
+                    "attributes": [
+                      "class",
+                      "HostInputProbeRow"
+                    ],
+                    "backendNodeId": 93,
+                    "childNodeCount": 2,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "HostInputProbeEvent"
+                        ],
+                        "backendNodeId": 94,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 94,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 93
+                      },
+                      {
+                        "attributes": [
+                          "data-event-name",
+                          "keydown:Escape",
+                          "data-arrived",
+                          "no",
+                          "data-source-name",
+                          "textarea",
+                          "data-calls",
+                          "0",
+                          "data-binding",
+                          "yes",
+                          "class",
+                          "HostInputProbeResult"
+                        ],
+                        "backendNodeId": 95,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 95,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 93
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 93,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 26
+                  },
+                  {
+                    "attributes": [
+                      "class",
+                      "HostInputProbeRow"
+                    ],
+                    "backendNodeId": 98,
+                    "childNodeCount": 2,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "HostInputProbeEvent"
+                        ],
+                        "backendNodeId": 99,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 99,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 98
+                      },
+                      {
+                        "attributes": [
+                          "data-event-name",
+                          "mouseenter",
+                          "data-arrived",
+                          "no",
+                          "data-source-name",
+                          "view-control",
+                          "data-calls",
+                          "0",
+                          "data-binding",
+                          "yes",
+                          "class",
+                          "HostInputProbeResult"
+                        ],
+                        "backendNodeId": 100,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 100,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 98
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 98,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 26
+                  },
+                  {
+                    "attributes": [
+                      "class",
+                      "HostInputProbeRow"
+                    ],
+                    "backendNodeId": 103,
+                    "childNodeCount": 2,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "HostInputProbeEvent"
+                        ],
+                        "backendNodeId": 104,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 104,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 103
+                      },
+                      {
+                        "attributes": [
+                          "data-event-name",
+                          "mouseleave",
+                          "data-arrived",
+                          "no",
+                          "data-source-name",
+                          "view-control",
+                          "data-calls",
+                          "0",
+                          "data-binding",
+                          "yes",
+                          "class",
+                          "HostInputProbeResult"
+                        ],
+                        "backendNodeId": 105,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 105,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 103
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 103,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 26
+                  },
+                  {
+                    "attributes": [
+                      "class",
+                      "HostInputProbeRow"
+                    ],
+                    "backendNodeId": 108,
+                    "childNodeCount": 2,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "HostInputProbeEvent"
+                        ],
+                        "backendNodeId": 109,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 109,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 108
+                      },
+                      {
+                        "attributes": [
+                          "data-event-name",
+                          "mousedown",
+                          "data-arrived",
+                          "no",
+                          "data-source-name",
+                          "view-control",
+                          "data-calls",
+                          "0",
+                          "data-binding",
+                          "yes",
+                          "class",
+                          "HostInputProbeResult"
+                        ],
+                        "backendNodeId": 110,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 110,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 108
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 108,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 26
+                  },
+                  {
+                    "attributes": [
+                      "class",
+                      "HostInputProbeRow"
+                    ],
+                    "backendNodeId": 113,
+                    "childNodeCount": 2,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "HostInputProbeEvent"
+                        ],
+                        "backendNodeId": 114,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 114,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 113
+                      },
+                      {
+                        "attributes": [
+                          "data-event-name",
+                          "mouseup",
+                          "data-arrived",
+                          "no",
+                          "data-source-name",
+                          "view-control",
+                          "data-calls",
+                          "0",
+                          "data-binding",
+                          "yes",
+                          "class",
+                          "HostInputProbeResult"
+                        ],
+                        "backendNodeId": 115,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 115,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 113
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 113,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 26
+                  },
+                  {
+                    "attributes": [
+                      "class",
+                      "HostInputProbeRow"
+                    ],
+                    "backendNodeId": 118,
+                    "childNodeCount": 2,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "HostInputProbeEvent"
+                        ],
+                        "backendNodeId": 119,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 119,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 118
+                      },
+                      {
+                        "attributes": [
+                          "data-event-name",
+                          "tap",
+                          "data-arrived",
+                          "no",
+                          "data-source-name",
+                          "view-control",
+                          "data-calls",
+                          "0",
+                          "data-binding",
+                          "yes",
+                          "class",
+                          "HostInputProbeResult"
+                        ],
+                        "backendNodeId": 120,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 120,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 118
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 118,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 26
+                  },
+                  {
+                    "attributes": [
+                      "class",
+                      "HostInputProbeRow"
+                    ],
+                    "backendNodeId": 123,
+                    "childNodeCount": 2,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "HostInputProbeEvent"
+                        ],
+                        "backendNodeId": 124,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 124,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 123
+                      },
+                      {
+                        "attributes": [
+                          "data-event-name",
+                          "scroll",
+                          "data-arrived",
+                          "no",
+                          "data-source-name",
+                          "scroll-view",
+                          "data-calls",
+                          "0",
+                          "data-binding",
+                          "yes",
+                          "class",
+                          "HostInputProbeResult"
+                        ],
+                        "backendNodeId": 125,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 125,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 123
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 123,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 26
+                  },
+                  {
+                    "attributes": [
+                      "class",
+                      "HostInputProbeRow"
+                    ],
+                    "backendNodeId": 128,
+                    "childNodeCount": 2,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "HostInputProbeEvent"
+                        ],
+                        "backendNodeId": 129,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 129,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 128
+                      },
+                      {
+                        "attributes": [
+                          "data-event-name",
+                          "input",
+                          "data-arrived",
+                          "no",
+                          "data-source-name",
+                          "textarea",
+                          "data-calls",
+                          "0",
+                          "data-binding",
+                          "yes",
+                          "class",
+                          "HostInputProbeResult"
+                        ],
+                        "backendNodeId": 130,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 130,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 128
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 128,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 26
+                  },
+                  {
+                    "attributes": [
+                      "class",
+                      "HostInputProbeRow"
+                    ],
+                    "backendNodeId": 133,
+                    "childNodeCount": 2,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "HostInputProbeEvent"
+                        ],
+                        "backendNodeId": 134,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 134,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 133
+                      },
+                      {
+                        "attributes": [
+                          "data-event-name",
+                          "input:composing",
+                          "data-arrived",
+                          "no",
+                          "data-source-name",
+                          "textarea",
+                          "data-calls",
+                          "0",
+                          "data-binding",
+                          "yes",
+                          "class",
+                          "HostInputProbeResult"
+                        ],
+                        "backendNodeId": 135,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 135,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 133
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 133,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 26
+                  },
+                  {
+                    "attributes": [
+                      "class",
+                      "HostInputProbeRow"
+                    ],
+                    "backendNodeId": 138,
+                    "childNodeCount": 2,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "HostInputProbeEvent"
+                        ],
+                        "backendNodeId": 139,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 139,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 138
+                      },
+                      {
+                        "attributes": [
+                          "data-event-name",
+                          "input:committed",
+                          "data-arrived",
+                          "no",
+                          "data-source-name",
+                          "textarea",
+                          "data-calls",
+                          "0",
+                          "data-binding",
+                          "yes",
+                          "class",
+                          "HostInputProbeResult"
+                        ],
+                        "backendNodeId": 140,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 140,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 138
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 138,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 26
+                  },
+                  {
+                    "attributes": [
+                      "class",
+                      "HostInputProbeRow"
+                    ],
+                    "backendNodeId": 143,
+                    "childNodeCount": 2,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "HostInputProbeEvent"
+                        ],
+                        "backendNodeId": 144,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 144,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 143
+                      },
+                      {
+                        "attributes": [
+                          "data-event-name",
+                          "global:window-focus",
+                          "data-arrived",
+                          "no",
+                          "data-source-name",
+                          "host",
+                          "data-calls",
+                          "0",
+                          "data-binding",
+                          "yes",
+                          "class",
+                          "HostInputProbeResult"
+                        ],
+                        "backendNodeId": 145,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 145,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 143
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 143,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 26
+                  },
+                  {
+                    "attributes": [
+                      "class",
+                      "HostInputProbeRow"
+                    ],
+                    "backendNodeId": 148,
+                    "childNodeCount": 2,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "HostInputProbeEvent"
+                        ],
+                        "backendNodeId": 149,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 149,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 148
+                      },
+                      {
+                        "attributes": [
+                          "data-event-name",
+                          "global:window-blur",
+                          "data-arrived",
+                          "no",
+                          "data-source-name",
+                          "host",
+                          "data-calls",
+                          "0",
+                          "data-binding",
+                          "yes",
+                          "class",
+                          "HostInputProbeResult"
+                        ],
+                        "backendNodeId": 150,
+                        "childNodeCount": 1,
+                        "localName": "text",
+                        "nodeId": 150,
+                        "nodeName": "TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 148
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 148,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 26
+                  }
+                ],
+                "localName": "view",
+                "nodeId": 26,
+                "nodeName": "VIEW",
+                "nodeType": 1,
+                "nodeValue": "",
+                "parentId": 13
+              }
+            ],
+            "localName": "view",
+            "nodeId": 13,
+            "nodeName": "VIEW",
+            "nodeType": 1,
+            "nodeValue": "",
+            "parentId": 10
+          }
+        ],
+        "localName": "page",
+        "nodeId": 10,
+        "nodeName": "PAGE",
+        "nodeType": 1,
+        "nodeValue": ""
+      }
+    ],
+    "localName": "",
+    "nodeId": 11,
+    "nodeName": "#document",
+    "nodeType": 9,
+    "nodeValue": ""
+  }
+}

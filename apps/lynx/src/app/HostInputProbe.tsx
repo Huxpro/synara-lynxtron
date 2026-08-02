@@ -51,7 +51,9 @@ function createBoundMatrix(): HostInputProbeMatrix {
   return BINDINGS.reduce(
     (matrix, [eventName, sourceName]) =>
       recordHostEventBinding(matrix, eventName, sourceName),
-    createHostInputProbeMatrix('Lynx-for-Web')
+    createHostInputProbeMatrix(
+      process.env.SYNARA_HOST_INPUT_PROBE_RUNTIME || 'Unknown runtime'
+    )
   );
 }
 

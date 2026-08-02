@@ -41,6 +41,7 @@ import {
   type ShellWindowState,
   writeJsonAtomic,
 } from './shellRuntime';
+import fs from 'node:fs';
 import type { KeybindingCommand } from '@synara/contracts';
 import { handleUpdater } from './updateService';
 const isDev = process.env.NODE_ENV === 'development';
@@ -48,6 +49,8 @@ const isDevtoolEnabled =
   isDev || process.env.SYNARA_ENABLE_DEVTOOL === '1';
 const isBackgroundLaunch =
   process.env.SYNARA_BACKGROUND_LAUNCH === '1';
+const hostInputProbeReportPath =
+  process.env.SYNARA_HOST_INPUT_PROBE_REPORT?.trim() || null;
 
 let mainWindow: LynxWindow | null = null;
 let searchNavigationEnabled = false;
@@ -335,6 +338,14 @@ app.whenReady().then(() => {
     w.on(event, () => emitWindowState(w));
   }
   installApplicationMenu(w);
+  if (hostInputProbeReportPath) {
+    w.on('focus', () => {
+      w.sendGlobalEvent('host-input-probe:window-focus');
+    });
+    w.on('blur', () => {
+      w.sendGlobalEvent('host-input-probe:window-blur');
+    });
+  }
 
   // Handle bridge calls from Lynx UI
   // @ts-ignore
@@ -393,6 +404,15 @@ app.whenReady().then(() => {
             shellPaths.logFile,
             `search navigation handled key=${String(data?.key)} shift=${data?.shiftKey === true} handled=${data?.handled === true}`
           );
+          callback.sendReply(JSON.stringify({ ok: true }));
+        } else if (
+          name === 'hostInputProbePublish' &&
+          hostInputProbeReportPath
+        ) {
+          fs.mkdirSync(path.dirname(hostInputProbeReportPath), {
+            recursive: true,
+          });
+          writeJsonAtomic(hostInputProbeReportPath, data?.matrix ?? null);
           callback.sendReply(JSON.stringify({ ok: true }));
         } else if (name.startsWith('window') || name.startsWith('shell')) {
           callback.sendReply(await handleShell(w, name, data));

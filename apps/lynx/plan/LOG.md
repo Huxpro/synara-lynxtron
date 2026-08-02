@@ -4502,3 +4502,26 @@
 - 下一步：关闭 Web probe owned process/session 后，按 exact-owned Native protocol
   复证 Tab/Shift+Tab、view keys、textarea keys、普通 input+真实 IME、window focus/blur
   与 wheel/list；未完成前 P9-D1 仍 `in_progress`，禁止进入 P9-R1。
+
+## 2026-08-03 — P9-D1 Native proof（IME blocked）
+
+- 同一 probe 以 `SYNARA_HOST_INPUT_PROBE=1` 进入标准 Lynx/Desktop production build，
+  bundle **101.6 kB**，SHA-256
+  `05138a65af9bcdc1ff3309999aa0520fd6112f2ef9da01b9cc378289b9857629`；
+  host report seam 只有显式 `SYNARA_HOST_INPUT_PROBE_REPORT` 才启用。
+- exact-owned instances 均使用 isolated state、parallel/background flags；
+  PID→DevTool 动态解析为 `localhost:8903/session 1`，未触碰现有 `8901` Fiddle 与
+  `8902` iOS client。初始 1280×820 outer 对应 2560×1576 DevTool frame。
+- Native retained matrix **25/25 bound、11/25 delivered**：
+  - 正向：view mouseenter/leave/down/up/tap；textarea focus、普通 input/committed；
+    scroll-view 真实 wheel（3 calls，最终 scrollTop 242）；host window focus/blur。
+  - 阴性：真实 Tab/Shift+Tab 不发布 view focus；view Enter/Space/Arrow/Escape 与
+    textarea Enter/Arrow/Escape 不到达 Lynx JS，复现 P-110/textarea kernel island。
+- 真实 IME 未完成：Computer Use health check通过但 visual model 未配置；background
+  `showInactive()` textarea 可获得 Lynx focus但不是 macOS frontmost text client；
+  PID-targeted keycodes不经过 Text Input Manager。豆包拼音尝试均安全恢复 U.S. input source，
+  不把未到达记作产品阴性。P9-D1 因 `isComposing=true→false` 缺口标
+  **blocked**，解阻需一次用户授权的 exact-owned window activation或可用 Computer Use
+  model。报告：`reports/p9-d1-host-input-bridge.md`；证据：
+  `shots/2026-08-03/p9-d1/native-probe/notes.md`。
+- 不进入 P9-R1；按用户优先级，P9-D1 未 completed 前也不越序进入 P8-Q2。
