@@ -4404,3 +4404,15 @@
   证据：`shots/2026-08-02/native-regression/notes.md`。
 - 两项高优验收回归与 browser-harness 三项闭环后，**P9-D1 恢复 in_progress**；不进入
   P9-R1。后续继续 host/input-bridge 边界调查，仍禁止反复启动/Raise 正式 App。
+
+## 2026-08-02 — transcript A→B→A completion audit
+
+- 对同一 isolated server/state 补做明确 `A -> B -> A` route-switch 证据，双端均为
+  `1280×820`、DPR 1、light；所有 thread 切换由 rendered sidebar row 的真实 pointer
+  activation 完成。
+- Lynx-for-Web：长 A 从 live edge 人为脱离 2400 px 后，B 独立落在自身 live edge；返回 A
+  时距底 15 px（30 px pinned tolerance 内）且无 `Scroll to bottom`，未继承 A/B 的旧偏移。
+- Web original 对照暴露既有 cross-thread `isAtEnd` 残差：离开 detached A 后 B 首帧停在顶部，
+  返回 A 又回 live edge。Lynx 不复制此跨 thread state leak；route/list identity 重置为正确性
+  差异，不能冒充逐像素同构。
+- 证据：`shots/2026-08-02/harness/transcript-switch/notes.md` 与 8 张 paired PNG。

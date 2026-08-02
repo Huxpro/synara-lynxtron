@@ -63,6 +63,13 @@ viewport rectangles are identical: Web owns a full-width `1024×683` viewport,
 while the current Lynx platform list is the centered `736×651` content column.
 That structural shell residual remains separate from the live-edge contract.
 
+An explicit same-state `A -> B -> A` route-switch audit was added after this
+slice. Lynx resets list identity and brings B and the reopened A to their own
+live edges without leaking A's detached offset. Web original exposes a
+cross-thread `isAtEnd` residual when leaving detached A, which is documented
+instead of being copied. See `../transcript-switch/notes.md` and its eight
+paired screenshots.
+
 ## Gates
 
 - Focused tests: 1 file / 11 tests passed.
