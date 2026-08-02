@@ -377,3 +377,18 @@ staging `git diff --check`；该结论仅证明单仓源码、依赖与审计链
 
 本次不将“移入主仓”误记为发行完成：D8 的 Developer ID 签名、公证、stapling 与 CI
 凭证仍待发行所有者提供，且不阻塞源代码、审计或 P8-Q2 视觉认证。
+
+### D14 — exact-owned 后台 Native 验证实例（2026-08-02，🟢）
+
+同 bundle-id 的用户 Lynxtron 已运行时，0.0.7 的 single-instance lock 会让本仓验证实例在
+创建窗口前退出；仅靠 `--user-data-dir` 无法可靠分离。为满足 no-Raise、不得触碰用户进程的
+验收约束，主进程新增两个默认关闭的显式开关：
+
+1. `SYNARA_ALLOW_PARALLEL_INSTANCE=1` 跳过应用锁，并同时禁止该验证实例注册系统
+   `synara://` handler；默认产品仍获取 single-instance lock。
+2. `SYNARA_BACKGROUND_LAUNCH=1` 在创建时保持 hidden，setup 完成后只调用
+   `showInactive()`，使 Computer Use 可捕获/操作而不 activate/focus/Raise。
+
+这两个开关只用于 exact repository app + isolated user data/server 的自动验收，不改变普通
+启动、deep-link 或单实例产品语义。Computer Use 仍必须用完整 `.app` 路径；不得因 bundle-id
+重复而降级到模糊目标。

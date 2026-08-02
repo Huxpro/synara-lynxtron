@@ -137,7 +137,7 @@ Phase 7 出口：高保真不仅覆盖静态截图，也覆盖桌面指针、键
 | ID | 任务 | 退出标准 | 依赖 | 落地 | 状态 |
 |---|---|---|---|---|---|
 | P8-Q1 | 删除切片脚手架与重复 renderer | ports/ui/markdown 等诊断入口不进入产品导航；废弃页面/fixture/重复样式删除；开发诊断改显式 dev-only；主仓 build 与两仓 `git diff --check` 完成后方可收口 | P7-I5 | `synara/apps/lynx` | completed（2026-07-31 · 应用、审计控制面与历史证据已迁入主仓；五个未接入诊断页/样式/scaffold 测试/九个 `.js` 镜像删除，`/projects` alias 删除并统一 `/kanban`；`bun install`、Web/Lynx/desktop production build、reuse/style write/check 及 main/recoverable staging `git diff --check` 均通过，见 [报告](reports/p8-q1-control-plane-migration.md)） |
-| P8-Q2 | 最终视觉认证矩阵 | 六核心屏 × light/dark × 1280×820/1440×900；同一 WS 数据；每组 notes+指标；零未登记重大差异 | P8-Q1 | `synara/apps/lynx` | blocked（2026-07-31 · Native 已可通过 persisted state → restart → CoreGraphics 核验两个窗口尺寸并经 DevTool capture；当前缺少可审计的精确 Web 位图 capture surface。preview exporter 的 PNG 与实际 viewport 不一致，且没有可控 Chromium/CDP 或可运行的 Playwright Chromium。未用历史/诊断证据冒充认证，见 [预检报告](reports/p8-q2-certification-preflight.md)） |
+| P8-Q2 | 最终视觉认证矩阵 | 六核心屏 × light/dark × 1280×820/1440×900；同一 WS 数据；每组 notes+指标；零未登记重大差异 | P8-Q1 | `synara/apps/lynx` | in_progress（2026-08-02 · named `agent-browser` sessions 已恢复精确 1280×820/DPR1 Web↔Lynx capture surface；Composer、transcript scroll、Markdown 已完成同源 paired cuts，并由一次 exact-owned Computer Use Native batch 回归。原 capture blocker 已解除，但六屏×双主题×双尺寸完整矩阵仍未执行，不冒充 completed） |
 | P8-Q3 | packaged-app 回归 | unsigned arm64 DMG 重打；内置 bundle 启动、菜单/深链/update/真实数据及认证屏 smoke；checksum/记录更新 | P8-Q2, P4-X3 | `synara/apps/lynx` | pending |
 | P8-Q4 | 移植完成报告 | reuse/视觉/功能/平台岛四份总表；明确 terminal/browser/PDF 一期为 placeholder/hard island，不把普通 UI 完成冒充全功能等价 | P8-Q3 | `synara/apps/lynx` | pending |
 

@@ -4382,3 +4382,25 @@
 - 下一步：按 goal 只做一次 Computer Use/background/exact-owned Native 批量回归，覆盖已重新
   打开的 Search fidelity、empty landing initiate thread 与本轮 Composer/scroll/Markdown；
   完成后再恢复 P9-D1，不越序进入 P9-R1。
+
+## 2026-08-02 — P0-A/P0-B + Composer/scroll/Markdown Native 批量回归
+
+- 按用户 no-Raise 要求使用 `computer-use`；当前另有用户 Lynxtron 0.0.8，同 bundle lock
+  使首次本仓 hidden launch 在 window/state 前退出，未触碰用户进程。新增 D14 默认关闭的
+  `SYNARA_ALLOW_PARALLEL_INSTANCE=1` + background `showInactive()` contract，且 parallel
+  验证实例不注册系统 deep-link handler。两刀已分别提交/push：`d853e555`、`0293ef87`；
+  shell focused **12/12**、production **2398.3kB / 2527.1kB total**。
+- P0-A：Computer Use 打开 Search、真实输入 `Draft`，结果收敛为 real Draft thread，Enter
+  导航成功；popup/input/icons/highlight/footer anatomy 与 Web authority 收敛。P0-A 验收回归闭环。
+- P0-B：empty landing 真实 focus/type/send，创建
+  `lynx-landing-thread-1785677631901-324479cc461478`，收到真实
+  `NATIVE-LANDING-PERSIST-OK`，Chats 回显；唯一一次 owned restart 后 route/messages/rows
+  恢复。P0-B 验收回归闭环。
+- 同一实例滚动长 Draft transcript 到 final Markdown code；language header、wrap/copy、用户
+  bubble 与 trailing inset 均真实绘制。Native Copy 后 `pbpaste` 匹配 canonical fenced code；
+  clipboard 旧值未预备份，无法恢复，已在 notes 明示。
+- exact DevTool `localhost:8904/session 1`，error/warning 为空。owned PID 1510 仅为 persistence
+  restart 停止，final PID 6743/root 6739 已停止、8904 释放；用户 0.0.8 processes 未触碰。
+  证据：`shots/2026-08-02/native-regression/notes.md`。
+- 两项高优验收回归与 browser-harness 三项闭环后，**P9-D1 恢复 in_progress**；不进入
+  P9-R1。后续继续 host/input-bridge 边界调查，仍禁止反复启动/Raise 正式 App。
