@@ -1,0 +1,217 @@
+{
+  "webRoot": "../..",
+  "lynxRoot": ".",
+  "outputJson": "plan/reports/p5-r1-reuse-baseline.json",
+  "outputMarkdown": "plan/reports/p5-r1-reuse-baseline.md",
+  "screenSet": [
+    "threads",
+    "thread",
+    "settings",
+    "projects",
+    "kanban",
+    "pull-requests"
+  ],
+  "lynxEntries": [
+    "src/app/index.tsx"
+  ],
+  "patchedSources": [],
+  "hardIslandPackages": [
+    "@lexical/react",
+    "lexical",
+    "@xterm/xterm",
+    "@xterm/addon-fit",
+    "@xterm/addon-search",
+    "@xterm/addon-serialize",
+    "@xterm/addon-unicode11",
+    "@xterm/addon-web-links",
+    "@xterm/addon-webgl",
+    "pdfjs-dist"
+  ],
+  "classificationRules": [
+    {
+      "prefix": "apps/web/src/components/terminal/",
+      "classification": "EXCLUSIVE",
+      "reason": "xterm/canvas terminal hard island"
+    },
+    {
+      "regex": "^apps/web/src/components/(ThreadTerminalDrawer|TerminalSearch|TerminalScrollToBottom|TerminalWorkspaceTabs)\\.",
+      "classification": "EXCLUSIVE",
+      "reason": "terminal renderer/chrome hard island"
+    },
+    {
+      "prefix": "apps/web/src/components/pdf/",
+      "classification": "EXCLUSIVE",
+      "reason": "PDF canvas renderer hard island"
+    },
+    {
+      "regex": "^apps/web/src/components/(PdfFilePreview|PdfResourceLifecycle)\\.",
+      "classification": "EXCLUSIVE",
+      "reason": "PDF renderer/lifecycle hard island"
+    },
+    {
+      "regex": "^apps/web/src/components/(BrowserPanel|ComposerPromptEditor)\\.",
+      "classification": "EXCLUSIVE",
+      "reason": "webview/contentEditable hard island"
+    },
+    {
+      "prefix": "apps/web/src/components/composer-nodes/",
+      "classification": "EXCLUSIVE",
+      "reason": "Lexical editing-core hard island"
+    },
+    {
+      "prefix": "apps/web/src/platform/",
+      "classification": "SPLIT",
+      "reason": "L1 platform implementation behind a shared port"
+    },
+    {
+      "prefix": "apps/web/src/components/ui/",
+      "classification": "SPLIT",
+      "reason": "L2 primitive keeps the call-site contract and uses a platform renderer"
+    },
+    {
+      "exact": "apps/web/src/components/settings/SettingsSectionElements.tsx",
+      "classification": "SPLIT",
+      "reason": "platform element adapter beneath shared SettingsSection composition"
+    },
+    {
+      "exact": "apps/web/src/components/settings/SettingsRowElements.tsx",
+      "classification": "SPLIT",
+      "reason": "platform element adapter beneath shared SettingsRow composition"
+    },
+    {
+      "regex": "^apps/web/src/components/(AppShellFrameElements|SidebarPrimaryActionElements|SidebarPrimaryNavigationElements|CenteredEmptyLandingElements|CenteredEmptyLandingStackElements|SidebarSegmentedPickerElements|SidebarListSectionHeaderElements|SidebarProjectSummaryElements|SidebarThreadIdentityElements|SidebarThreadSubagentIdentityElements|SidebarThreadProviderIdentityElements|SidebarThreadStatusIndicatorElements|SidebarSearchPaletteElements|SidebarChatsSectionElements|SidebarProjectsSectionElements|chat/ChatSurfaceHeader(Frame|Identity)Elements)\\.tsx$",
+      "classification": "SPLIT",
+      "reason": "platform host-element adapter beneath shared shell/sidebar composition"
+    },
+    {
+      "exact": "apps/web/src/hooks/useTheme.ts",
+      "classification": "SPLIT",
+      "reason": "theme state contract with DOM versus static Lynx token projection"
+    },
+    {
+      "exact": "apps/web/src/nativeApi.ts",
+      "classification": "SPLIT",
+      "reason": "desktop host capability adapter"
+    },
+    {
+      "exact": "apps/web/src/components/SynaraLogo.tsx",
+      "classification": "SPLIT",
+      "reason": "same branding asset path data with a platform SVG host renderer"
+    },
+    {
+      "regex": "\\.browser\\.(ts|tsx)$",
+      "classification": "SPLIT",
+      "reason": "existing platform-specific browser implementation"
+    },
+    {
+      "exact": "apps/web/src/lib/icons.tsx",
+      "classification": "PATCHED",
+      "reason": "icon API is generated deterministically for Lynx"
+    },
+    {
+      "regex": "^apps/web/src/components/(ChatMarkdown|MessagesTimeline)\\.tsx$",
+      "classification": "SPLIT",
+      "reason": "same feature contract with Lynx list/markdown renderer island"
+    }
+  ],
+  "screens": [
+    {
+      "id": "threads",
+      "label": "Threads",
+      "route": "/",
+      "reference": "app shell + Sidebar + fresh/restore chat landing",
+      "webEntries": [
+        "apps/web/src/routes/__root.tsx",
+        "apps/web/src/routes/_chat.tsx",
+        "apps/web/src/routes/_chat.index.tsx"
+      ],
+      "lynxConceptualEntries": [
+        "src/app/router.tsx",
+        "src/components/sidebar/Sidebar.lynx.tsx"
+      ]
+    },
+    {
+      "id": "threads-shell",
+      "label": "Threads shell + Sidebar (P6-C1 own subgraph)",
+      "route": "/",
+      "reference": "D12: P6-C1's own gate. Sidebar entry only; composer / ChatView / terminal / transport belong to P6-C2/C3 and are measured by the full `threads` route screen.",
+      "webEntries": [
+        "apps/web/src/components/Sidebar.tsx"
+      ],
+      "lynxConceptualEntries": [
+        "src/components/sidebar/Sidebar.lynx.tsx"
+      ]
+    },
+    {
+      "id": "thread",
+      "label": "Thread",
+      "route": "/$threadId",
+      "reference": "single chat surface + transcript + composer chrome",
+      "webEntries": [
+        "apps/web/src/routes/__root.tsx",
+        "apps/web/src/routes/_chat.tsx",
+        "apps/web/src/routes/_chat.$threadId.tsx"
+      ],
+      "lynxConceptualEntries": [
+        "src/app/Transcript.tsx",
+        "src/components/composer/Composer.tsx"
+      ]
+    },
+    {
+      "id": "settings",
+      "label": "Settings",
+      "route": "/settings",
+      "reference": "settings navigation and panel surface",
+      "webEntries": [
+        "apps/web/src/routes/__root.tsx",
+        "apps/web/src/routes/_chat.tsx",
+        "apps/web/src/routes/_chat.settings.tsx"
+      ],
+      "lynxConceptualEntries": [
+        "src/app/SettingsPage.tsx"
+      ]
+    },
+    {
+      "id": "projects",
+      "label": "Projects overview",
+      "route": "/kanban/",
+      "reference": "Web KanbanView project overview; Lynx uses the same canonical /kanban route",
+      "webEntries": [
+        "apps/web/src/routes/__root.tsx",
+        "apps/web/src/routes/_chat.tsx",
+        "apps/web/src/routes/_chat.kanban.index.tsx"
+      ],
+      "lynxConceptualEntries": [
+        "src/app/FeatureListsPage.tsx"
+      ]
+    },
+    {
+      "id": "kanban",
+      "label": "Project Kanban",
+      "route": "/kanban/$projectId",
+      "reference": "project-scoped KanbanView",
+      "webEntries": [
+        "apps/web/src/routes/__root.tsx",
+        "apps/web/src/routes/_chat.tsx",
+        "apps/web/src/routes/_chat.kanban.$projectId.tsx"
+      ],
+      "lynxConceptualEntries": [
+        "src/app/FeatureListsPage.tsx"
+      ]
+    },
+    {
+      "id": "pull-requests",
+      "label": "Pull Requests",
+      "route": "/pull-requests/",
+      "reference": "pull-request list route and detail dock shell",
+      "webEntries": [
+        "apps/web/src/routes/__root.tsx",
+        "apps/web/src/routes/_chat.tsx",
+        "apps/web/src/routes/_chat.pull-requests.index.tsx"
+      ],
+      "lynxConceptualEntries": [
+        "src/app/FeatureListsPage.tsx"
+      ]
+    }
+  ]
+}

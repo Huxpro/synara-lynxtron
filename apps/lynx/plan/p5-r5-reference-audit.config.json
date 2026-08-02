@@ -1,0 +1,48 @@
+{
+  "webRoot": "../..",
+  "lynxRoot": ".",
+  "outputJson": "plan/reports/p5-r5-reference-reuse.json",
+  "outputMarkdown": "plan/reports/p5-r5-reference-reuse.md",
+  "reportTitle": "P5-R5 Settings Behavior reference source reuse",
+  "targetPercent": 70,
+  "enforceTarget": true,
+  "interpretation": [
+    "The reference is the real Settings > Behavior route-owned panel, extracted from the Web route and still rendered there.",
+    "The same physical SettingsBehaviorPanel, SettingsRow, SettingsSection, taxonomy, and class-token sources are compiled by Lynx.",
+    "Only browser/native host elements are SPLIT below the shared composition; no copied JSX counts as reuse."
+  ],
+  "screenSet": [
+    "settings-behavior-reference"
+  ],
+  "lynxEntries": [
+    "src/app/FidelityReferencePage.tsx"
+  ],
+  "patchedSources": [],
+  "hardIslandPackages": [],
+  "classificationRules": [
+    {
+      "exact": "apps/web/src/components/settings/SettingsSectionElements.tsx",
+      "classification": "SPLIT",
+      "reason": "platform element adapter beneath shared SettingsSection composition"
+    },
+    {
+      "exact": "apps/web/src/components/settings/SettingsRowElements.tsx",
+      "classification": "SPLIT",
+      "reason": "platform element adapter beneath shared SettingsRow composition"
+    }
+  ],
+  "screens": [
+    {
+      "id": "settings-behavior-reference",
+      "label": "Settings > Behavior reference",
+      "route": "/settings?section=behavior",
+      "reference": "route-owned Runtime behavior + Safety confirmations panel",
+      "webEntries": [
+        "apps/web/src/components/settings/SettingsBehaviorPanel.tsx"
+      ],
+      "lynxConceptualEntries": [
+        "src/app/FidelityReferencePage.tsx"
+      ]
+    }
+  ]
+}

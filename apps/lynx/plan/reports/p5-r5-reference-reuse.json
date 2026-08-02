@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-27T18:37:07.249Z",
+  "config": "plan/p5-r5-reference-audit.config.json",
+  "metric": {
+    "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
+    "numerator": "same physical source modules plus declared deterministic PATCHED sources",
+    "denominator": "all reachable modules except approved EXCLUSIVE hard islands",
+    "gate": "minimum(module reuse %, LOC reuse %)",
+    "targetPercent": 70
+  },
+  "screenSet": [
+    "settings-behavior-reference"
+  ],
+  "lynxGraph": {
+    "entries": [
+      "src/app/FidelityReferencePage.tsx"
+    ],
+    "modules": 12,
+    "externalImports": [
+      "@lynx-js/lynx-ui",
+      "@lynx-js/react",
+      "@lynx-js/types",
+      "react"
+    ],
+    "unresolvedImports": []
+  },
+  "screens": [
+    {
+      "id": "settings-behavior-reference",
+      "label": "Settings > Behavior reference",
+      "route": "/settings?section=behavior",
+      "reference": "route-owned Runtime behavior + Safety confirmations panel",
+      "webEntries": [
+        "apps/web/src/components/settings/SettingsBehaviorPanel.tsx"
+      ],
+      "lynxConceptualEntries": [
+        "src/app/FidelityReferencePage.tsx"
+      ],
+      "graph": {
+        "modules": 8,
+        "loc": 524,
+        "externalImports": [
+          "react"
+        ],
+        "unresolvedImports": []
+      },
+      "targetClassification": {
+        "SHARED": {
+          "modules": 6,
+          "loc": 468
+        },
+        "PATCHED": {
+          "modules": 0,
+          "loc": 0
+        },
+        "SPLIT": {
+          "modules": 2,
+          "loc": 56
+        },
+        "EXCLUSIVE": {
+          "modules": 0,
+          "loc": 0
+        }
+      },
+      "eligible": {
+        "modules": 8,
+        "loc": 524
+      },
+      "currentReuse": {
+        "modules": 6,
+        "loc": 468,
+        "modulePercent": 75,
+        "locPercent": 89.31,
+        "gatePercent": 75
+      },
+      "modules": [
+        {
+          "path": "apps/web/src/components/settings/SettingsBehaviorPanel.tsx",
+          "loc": 107,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": [
+            "apps/web/src/components/settings/SettingsRow.tsx",
+            "apps/web/src/components/settings/SettingsSection.tsx",
+            "apps/web/src/components/settings/SettingsSectionElements.tsx"
+          ]
+        },
+        {
+          "path": "apps/web/src/components/settings/SettingsRow.tsx",
+          "loc": 72,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": [
+            "apps/web/src/components/settings/SettingsRowElements.tsx",
+            "apps/web/src/settingsNavigation.ts",
+            "apps/web/src/settingsPanelStyles.ts"
+          ]
+        },
+        {
+          "path": "apps/web/src/components/settings/SettingsRowElements.tsx",
+          "loc": 39,
+          "classification": "SPLIT",
+          "reason": "platform element adapter beneath shared SettingsRow composition",
+          "currentReuse": "UNMAPPED",
+          "dependencies": []
+        },
+        {
+          "path": "apps/web/src/components/settings/SettingsSection.tsx",
+          "loc": 27,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": [
+            "apps/web/src/components/settings/SettingsSectionElements.tsx",
+            "apps/web/src/settingsPanelStyles.ts"
+          ]
+        },
+        {
+          "path": "apps/web/src/components/settings/SettingsSectionElements.tsx",
+          "loc": 17,
+          "classification": "SPLIT",
+          "reason": "platform element adapter beneath shared SettingsSection composition",
+          "currentReuse": "UNMAPPED",
+          "dependencies": []
+        },
+        {
+          "path": "apps/web/src/settingsNavigation.ts",
+          "loc": 174,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
+        },
+        {
+          "path": "apps/web/src/settingsPanelStyles.ts",
+          "loc": 43,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": [
+            "apps/web/src/sidebarRowStyles.ts"
+          ]
+        },
+        {
+          "path": "apps/web/src/sidebarRowStyles.ts",
+          "loc": 45,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
+        }
+      ]
+    }
+  ]
+}

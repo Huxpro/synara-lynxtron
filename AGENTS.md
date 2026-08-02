@@ -103,6 +103,88 @@ Reference usage: opening/closing a project and the sidebar sections in `apps/web
 - Check both server and web ports with `lsof -nP -iTCP:<port> -sTCP:LISTEN`. A desktop app can bind `127.0.0.1:<port>` while the dev server binds IPv6 `*:<port>`, and `localhost` may still hit the wrong process.
 - If the UI shows no threads, verify the server path before changing SQL: inspect the isolated `state.sqlite`, then probe `orchestration.getSnapshot` over WebSocket. A healthy snapshot with projects/threads means the issue is client connection/hydration, not empty history.
 
+## Web and Lynx verification harness
+
+Prove the harness before using it to judge the product. A screenshot does not prove a matrix cell unless its process, data source, viewport, theme, route, and output dimensions are recorded.
+
+### Preflight gate
+
+Do not retain matrix evidence until every preflight check passes:
+
+- Run the complete production build. Record the staged bundle path and hash.
+- Dry-run the isolated server. Record the state directory, ports, and owned PIDs.
+- Prepare one complete snapshot for both clients. Create missing project or thread data through the real product API.
+- Start one named browser session. Verify its viewport, visual viewport, device pixel ratio, and PNG dimensions.
+- Verify the Native process, workspace executable, staged bundle, root theme class, and PID-derived DevTool client.
+- Save the original bytes and hashes for every persisted state file that the run will change.
+
+If preflight fails, fix the harness before collecting product evidence. Do not accumulate diagnostic screenshots in the certification matrix.
+
+### Separate harness failures from product failures
+
+Invalidate the evidence when the harness has any of these failures:
+
+- The exported image dimensions differ from the requested viewport.
+- DevTool connects to the wrong client or a remembered port.
+- Lynxtron loads a stale bundle or requests a development asset server.
+- Web and Native use different snapshots, routes, themes, or product states.
+- A persisted state file changes outside the owned run.
+- Runtime errors appear during capture.
+
+Classify rendering, content, layout, token, and interaction differences as product failures only after preflight passes. Never report a harness failure as a product regression.
+
+### Shared data and process ownership
+
+- Connect Web and Lynx to the same isolated Synara server, snapshot, route, and product state. Record the server PID, Web PID, Lynxtron PID, ports, and state directory before capture.
+- Check every port with `lsof` before launch. Stop only PIDs created for the current verification run.
+- Do not hardcode renderer data. If an isolated snapshot lacks a required project or thread, create temporary records through the real workspace RPC or product API. Use the resulting server snapshot on both clients. Back up the snapshot first and remove or restore the temporary clone after capture.
+- Treat a missing data state as incomplete only when the harness cannot create it through the real product path. Never use historical screenshots or an empty state to certify a populated screen.
+
+### Web capture
+
+- Use a named, isolated `agent-browser` session. Do not attach to the user's Chrome profile or rely on a shared preview screenshot exporter.
+- Set the viewport and scale explicitly for each cell, such as `agent-browser --session p8q2-web-evidence set viewport 1280 820 1`.
+- Before capture, read `innerWidth`, `innerHeight`, `visualViewport.width`, `visualViewport.height`, and `devicePixelRatio` from that same session. After capture, inspect the PNG pixel dimensions. Reject the image if either check differs from the requested matrix cell.
+- Reuse the same named session for navigation and capture, then close that session explicitly. Do not close unrelated browser sessions.
+
+### Native production capture
+
+- Prefer Computer Use when it is available. Inspect and operate the already-running owned Synara app through Computer Use instead of restarting or activating it from the shell.
+- Verify the existing process and bundle identity before reuse. Computer Use cannot supply the `dist/desktop` argument required to launch the workspace build, so do not let an implicit background launch select an installed or stale app with the same display name.
+- Keep one verified production instance alive across route, theme, scroll, and interaction cells. Use Computer Use for those state changes, and use DevTool for exact LynxView screenshots, component inspection, and console capture.
+- Do not call `open -a`, AppleScript activation, menu commands that call `show()` or `focus()`, or deep links only to drive the harness. These paths can raise the app over the user's windows.
+- Restart only when a matrix cell explicitly tests cold start, a new bundle must be staged, persisted window bounds must change, or the owned process has exited. Batch all work that needs the same size and bundle into one launch.
+- If the owned app exits twice with the same error, stop the restart loop and diagnose the runtime. Do not keep reopening a window over the user's desktop.
+- Run the complete app build before production capture. `rspeedy build` updates `output/bundle` but does not stage the Lynx bundle in `dist/desktop`; `bun run build` stages both Lynx and desktop assets.
+- Launch with `NODE_ENV=production` and `SYNARA_ENABLE_DEVTOOL=1`. Verify that the process belongs to `apps/lynx`, loads `apps/lynx/dist/desktop/main.lynx.bundle`, and renders the expected `SliceRoot--theme-*` class before collecting evidence.
+- Treat any production request to `127.0.0.1:3000`, `localhost:5971`, or another dev asset server as a harness failure. Do not start an arbitrary server to mask it. Stop the owned process, check `NODE_ENV`, process arguments, staged bundle contents, and the active Lynxtron executable, then rebuild.
+- Resolve the DevTool client from the owned Lynxtron PID with `lsof`. Never select a client by a remembered port or by list order. Other Lynxtron and Fiddle clients may reuse adjacent ports.
+- Use a capture helper only when its executable identity gate points to `apps/lynx`. A helper that still references the retired `synara-lynx/slice` staging tree is invalid after the workspace migration.
+
+### Native window size and persisted state
+
+- Close the owned Lynxtron process before changing its persisted `window-state.json`. Save the original bytes and hash, then record the exact temporary bytes and hash written for the target size.
+- Restart the owned app after each size change. Verify the outer bounds with CoreGraphics and the content frame with DevTool. A `1280×820` macOS window maps to `1280×788` logical content, or `2560×1576` physical pixels at device pixel ratio 2, because the native title bar consumes 32 logical pixels.
+- Do not request Accessibility permission only to resize a window. Persisted state plus restart and CoreGraphics provide an auditable path without controlling the user's desktop.
+- Restore the original file only after the owned app exits and the current file still matches the temporary bytes written by this run. If the file changed unexpectedly, do not overwrite it. Preserve the backup and report both hashes and the possible competing writer.
+
+### Execute the matrix by restart cost
+
+Put the most expensive state change in the outer loop:
+
+1. Build once and prepare one shared snapshot.
+2. Start Native at `1280×820`. Capture all routes in light and dark mode.
+3. Restart Native at `1440×900`. Capture all routes in light and dark mode.
+4. Reuse one named Web session. Change its viewport without restarting the browser.
+
+Use Computer Use to change routes, themes, scroll positions, and interaction states. Do not restart Native for those changes. A full two-size matrix should need two normal Native launches unless it includes an explicit cold-start cell or the app crashes.
+
+### Evidence and cleanup gate
+
+- Capture DevTool errors and warnings with every retained Native frame. A successful screenshot with runtime errors is not passing evidence.
+- Record the Web geometry, PNG dimensions, Native outer/content dimensions, bundle path, client port, server snapshot identity, theme, route, and cleanup result in the cell's `notes.md`.
+- Close the named browser session and stop owned Web, server, Lynxtron, and DevTool processes. Confirm owned ports are free and byte-exact state restoration succeeded before declaring the harness clean.
+
 ## Codex App Server (Important)
 
 Synara is currently Codex-first. The server starts `codex app-server` (JSON-RPC over stdio) per provider session, then streams structured events to the browser through WebSocket push messages.
