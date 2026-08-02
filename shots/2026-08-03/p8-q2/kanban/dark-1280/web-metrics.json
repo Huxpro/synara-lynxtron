@@ -1,0 +1,80 @@
+{
+  "a11y": {
+    "named": [
+      "Toggle thread sidebar",
+      "New thread",
+      "Search",
+      "Kanban",
+      "Pull requests",
+      "Automations",
+      "Collapse all projects",
+      "Sort projects",
+      "Add project",
+      "Pin Lynx Web Spike",
+      "View pull requests for Lynx Web Spike",
+      "Create new terminal thread in Lynx Web Spike",
+      "Create new thread in Lynx Web Spike",
+      "Pin thread",
+      "Archive thread",
+      "Pin thread",
+      "Archive thread",
+      "Pin thread",
+      "Archive thread",
+      "Sort chats",
+      "Open new chat home",
+      "Resize Sidebar",
+      "Back to all projects",
+      "New task",
+      "Draft seed task, Done",
+      "Actions for Draft seed task",
+      "In Progress seed task, Done",
+      "Actions for In Progress seed task",
+      "Done seed task, Done",
+      "Actions for Done seed task",
+      "Notifications",
+      "Notifications"
+    ]
+  },
+  "boxes": {
+    "columns": [
+      {
+        "fontSize": "16px",
+        "height": 746,
+        "width": 322.65625,
+        "x": 272,
+        "y": 58
+      },
+      {
+        "fontSize": "16px",
+        "height": 746,
+        "width": 322.671875,
+        "x": 606.65625,
+        "y": 58
+      },
+      {
+        "fontSize": "16px",
+        "height": 746,
+        "width": 322.671875,
+        "x": 941.328125,
+        "y": 58
+      }
+    ],
+    "title": {
+      "fontSize": "14px",
+      "height": 20,
+      "width": 103.515625,
+      "x": 312,
+      "y": 13
+    }
+  },
+  "screen": "Project-Kanban",
+  "theme": "dark",
+  "url": "http://localhost:63211/kanban/project%3A1785617357887-249j0yx5",
+  "viewport": {
+    "dpr": 1,
+    "innerHeight": 820,
+    "innerWidth": 1280,
+    "visualHeight": 820,
+    "visualWidth": 1280
+  }
+}

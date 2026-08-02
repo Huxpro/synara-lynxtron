@@ -4586,3 +4586,18 @@
 - 所有PNG尺寸、DPR/visual viewport与page-error gate通过；focused Kanban tests
   4 files / 9 tests、strict reuse/style audits均green。证据：
   `shots/2026-08-03/p8-q2/projects/notes.md`。Native仍未开始，P9-D1真实IME保持blocked。
+
+## 2026-08-03 — P8-Q2 Project Kanban Fast Browser matrix
+
+- Project Kanban完成 light/dark × 1280×820/1440×900，共4 paired Browser cells /
+  8 PNGs；由可见 `Kanban` row与 `Lynx Web Spike` overview card进入，主题走
+  Settings→Appearance rendered controls。
+- 首轮测量发现Lynx bespoke `16px` column gap相对Web canonical `12px`产生累积漂移，
+  第三列超过10px；未保留该帧。`App.css`改为12px后，三列两尺寸双主题均统一
+  `x +8px / y +6px`，宽度精确、高度仅2px差；route title为 `x +4px / y +7px`、
+  14px字号精确。
+- 所有PNG尺寸、DPR/visual viewport与page-error gate通过；focused Kanban
+  board/route/DnD tests 5 files / 14 tests、strict reuse/style audits均green；默认Web
+  bundle已恢复仅含`58090`。
+- 证据：`shots/2026-08-03/p8-q2/kanban/notes.md`。本刀仍仅完成Fast Browser tier；
+  Native未开始，P9-D1真实IME保持blocked。

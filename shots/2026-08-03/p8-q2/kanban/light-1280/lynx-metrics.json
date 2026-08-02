@@ -1,0 +1,67 @@
+{
+  "a11y": {
+    "named": [
+      "Synara",
+      "New thread",
+      "Search",
+      "Kanban",
+      "Pull requests",
+      "Automations",
+      "Collapse Lynx Web Spike",
+      "In Progress seed task",
+      "Draft seed task",
+      "Done seed task",
+      "Settings",
+      "Back to Kanban",
+      "New task",
+      "Draft seed task, Done",
+      "Actions for Draft seed task",
+      "In Progress seed task, Done",
+      "Actions for In Progress seed task",
+      "Done seed task, Done",
+      "Actions for Done seed task"
+    ]
+  },
+  "boxes": {
+    "columns": [
+      {
+        "fontSize": "16px",
+        "height": 748,
+        "width": 322.65625,
+        "x": 280,
+        "y": 64
+      },
+      {
+        "fontSize": "16px",
+        "height": 748,
+        "width": 322.671875,
+        "x": 614.65625,
+        "y": 64
+      },
+      {
+        "fontSize": "16px",
+        "height": 748,
+        "width": 322.671875,
+        "x": 949.328125,
+        "y": 64
+      }
+    ],
+    "title": {
+      "fontSize": "14px",
+      "height": 20,
+      "width": 105.53125,
+      "x": 316,
+      "y": 20
+    }
+  },
+  "screen": "Project-Kanban",
+  "theme": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable",
+  "url": "http://localhost:63211/lynx/",
+  "viewport": {
+    "dpr": 1,
+    "innerHeight": 820,
+    "innerWidth": 1280,
+    "visualHeight": 820,
+    "visualWidth": 1280
+  }
+}
