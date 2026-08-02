@@ -32,6 +32,7 @@ import { sleepOnHost } from '../platform/timer';
 import {
   createRpcSocketManager,
   openRpcSocketWithTimeout,
+  RpcTransportError,
   type RpcTransportState,
   type StartRpcTimeout,
 } from './rpcTransport.logic';
@@ -93,7 +94,10 @@ const PROTOCOL = {
   bootstrapPath: '/ws/bootstrap',
   featurePath: '/ws',
 } as const;
-const CLIENT_BUILD = '0.5.5-lynx-slice';
+const IS_WEB_RELAY_MODE = process.env.SYNARA_LYNX_WEB_RELAY === '1';
+const CLIENT_BUILD = IS_WEB_RELAY_MODE
+  ? '0.5.5-lynx-web'
+  : '0.5.5-lynx-slice';
 const TRUSTED_APP_ORIGIN = 'synara://app';
 const SOCKET_OPEN_TIMEOUT_MS = 8_000;
 // Keep parity with Web's transport. Discovery and pull-request requests can
@@ -204,36 +208,134 @@ async function openFeatureSocket(): Promise<WebSocketLike> {
 
 const featureManager = createManager(openFeatureSocket);
 
+let relayState: RpcTransportState = 'idle';
+let relayEverConnected = false;
+let relayOfflineUntilMs = 0;
+const relayStateListeners = new Set<(state: RpcTransportState) => void>();
+
+function setRelayState(state: RpcTransportState): void {
+  if (relayState === state) return;
+  relayState = state;
+  for (const listener of relayStateListeners) listener(state);
+}
+
+function describeRelayError(error: unknown): string {
+  if (error instanceof Error) return error.message;
+  return String(error);
+}
+
+interface RelayBridgeError extends Error {
+  readonly name: 'SynaraRpcResponseError' | 'RpcTransportError';
+}
+
+function relayBridgeRequest<A>(
+  tag: string,
+  payload: unknown
+): Promise<A> {
+  return new Promise((resolve, reject) => {
+    try {
+      NativeModules.bridge.call(
+        'synaraRpc',
+        {
+          tag,
+          payload,
+          baseUrl: resolveDefaultSocketUrl(null),
+        },
+        (reply: unknown) => {
+          try {
+            const parsed =
+              typeof reply === 'string' ? JSON.parse(reply) : reply;
+            if (
+              parsed &&
+              typeof parsed === 'object' &&
+              'error' in parsed &&
+              parsed.error
+            ) {
+              const error = new Error(String(parsed.error)) as RelayBridgeError;
+              error.name =
+                'errorKind' in parsed && parsed.errorKind === 'rpc'
+                  ? 'SynaraRpcResponseError'
+                  : 'RpcTransportError';
+              reject(error);
+              return;
+            }
+            resolve(parsed as A);
+          } catch (error) {
+            reject(error);
+          }
+        }
+      );
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+async function relayRequest<A>(tag: string, payload: unknown): Promise<A> {
+  if (relayState === 'offline' && Date.now() < relayOfflineUntilMs) {
+    throw new RpcTransportError('Synara is offline; reconnect cooling down');
+  }
+
+  setRelayState(relayEverConnected ? 'reconnecting' : 'connecting');
+  try {
+    const result = await relayBridgeRequest<A>(tag, payload);
+    relayEverConnected = true;
+    relayOfflineUntilMs = 0;
+    setRelayState('connected');
+    return result;
+  } catch (error) {
+    if (error instanceof Error && error.name === 'SynaraRpcResponseError') {
+      relayEverConnected = true;
+      relayOfflineUntilMs = 0;
+      setRelayState('connected');
+      throw error;
+    }
+    relayOfflineUntilMs = Date.now() + OFFLINE_RETRY_DELAY_MS;
+    setRelayState('offline');
+    throw new RpcTransportError(
+      `Synara RPC ${tag} failed: ${describeRelayError(error)}`
+    );
+  }
+}
+
+function transportRequest<A>(tag: string, payload: unknown): Promise<A> {
+  if (IS_WEB_RELAY_MODE) return relayRequest<A>(tag, payload);
+  return featureManager.request<A>(tag, payload);
+}
+
 export function getSynaraTransportState(): RpcTransportState {
-  return featureManager.getState();
+  return IS_WEB_RELAY_MODE ? relayState : featureManager.getState();
 }
 
 export function subscribeSynaraTransportState(
   listener: (state: RpcTransportState) => void
 ): () => void {
-  return featureManager.subscribe(listener);
+  if (!IS_WEB_RELAY_MODE) return featureManager.subscribe(listener);
+  relayStateListeners.add(listener);
+  listener(relayState);
+  return () => relayStateListeners.delete(listener);
 }
 
 export async function fetchSynaraSnapshot(): Promise<SynaraSnapshot> {
-  return featureManager.request<SynaraSnapshot>('orchestration.getSnapshot', {});
+  return transportRequest<SynaraSnapshot>('orchestration.getSnapshot', {});
 }
 
 export async function fetchSynaraShellSnapshot(): Promise<OrchestrationShellSnapshot> {
-  return featureManager.request<OrchestrationShellSnapshot>(
+  return transportRequest<OrchestrationShellSnapshot>(
     'orchestration.getShellSnapshot',
     {}
   );
 }
 
 export async function fetchSynaraSidebarShellSnapshot(): Promise<OrchestrationShellSnapshot> {
-  return featureManager.request<OrchestrationShellSnapshot>(
+  return transportRequest<OrchestrationShellSnapshot>(
     'orchestration.getSidebarShellSnapshot',
     {}
   );
 }
 
 export async function fetchSynaraSidebarSearchSnapshot(): Promise<OrchestrationSidebarSearchSnapshot> {
-  return featureManager.request<OrchestrationSidebarSearchSnapshot>(
+  return transportRequest<OrchestrationSidebarSearchSnapshot>(
     'orchestration.getSidebarSearchSnapshot',
     {}
   );
@@ -242,7 +344,7 @@ export async function fetchSynaraSidebarSearchSnapshot(): Promise<OrchestrationS
 export async function fetchSynaraThreadDetailSnapshot(
   threadId: string
 ): Promise<OrchestrationThreadDetailSnapshot | null> {
-  return featureManager.request<OrchestrationThreadDetailSnapshot | null>(
+  return transportRequest<OrchestrationThreadDetailSnapshot | null>(
     'orchestration.getThreadDetailSnapshot',
     { threadId }
   );
@@ -255,38 +357,38 @@ export async function dispatchSynaraCommand(
   // a local `{ command }` transport wrapper and unwraps it before the RPC call;
   // this raw Lynx client talks to Effect-RPC directly and must not reproduce
   // that browser-only wrapper.
-  return featureManager.request('orchestration.dispatchCommand', command);
+  return transportRequest('orchestration.dispatchCommand', command);
 }
 
 export async function fetchProviderModels(input: {
   readonly provider: ProviderKind;
   readonly cwd?: string | null;
 }): Promise<ProviderListModelsResult> {
-  return featureManager.request('provider.listModels', {
+  return transportRequest('provider.listModels', {
     provider: input.provider,
     ...(input.cwd ? { cwd: input.cwd } : {}),
   });
 }
 
 export async function fetchServerSettings(): Promise<ServerSettingsView> {
-  return featureManager.request<ServerSettingsView>('server.getSettings', {});
+  return transportRequest<ServerSettingsView>('server.getSettings', {});
 }
 
 export async function updateServerSettings(
   patch: ServerSettingsPatch
 ): Promise<ServerSettingsView> {
-  return featureManager.request<ServerSettingsView>('server.updateSettings', patch);
+  return transportRequest<ServerSettingsView>('server.updateSettings', patch);
 }
 
 export async function fetchServerConfig(): Promise<ServerConfig> {
-  return featureManager.request('server.getConfig', {});
+  return transportRequest('server.getConfig', {});
 }
 
 export async function fetchSynaraPullRequests(input: {
   readonly state: PullRequestState;
   readonly projectId: ProjectId | null;
 }): Promise<SynaraPullRequestListResult> {
-  return featureManager.request<SynaraPullRequestListResult>('pullRequests.list', {
+  return transportRequest<SynaraPullRequestListResult>('pullRequests.list', {
     involvement: 'all',
     state: input.state,
     projectId: input.projectId,
@@ -296,30 +398,36 @@ export async function fetchSynaraPullRequests(input: {
 export async function fetchSynaraPullRequestDetail(
   input: PullRequestDetailInput
 ): Promise<PullRequestDetail> {
-  return featureManager.request<PullRequestDetail>('pullRequests.detail', input);
+  return transportRequest<PullRequestDetail>('pullRequests.detail', input);
 }
 
 export async function fetchSynaraPullRequestDiff(
   input: PullRequestDetailInput
 ): Promise<PullRequestDiffResult> {
-  return featureManager.request<PullRequestDiffResult>('pullRequests.diff', input);
+  return transportRequest<PullRequestDiffResult>('pullRequests.diff', input);
 }
 
 export async function performSynaraPullRequestAction(
   input: PullRequestActionInput
 ): Promise<PullRequestActionResult> {
-  return featureManager.request<PullRequestActionResult>('pullRequests.action', input);
+  return transportRequest<PullRequestActionResult>('pullRequests.action', input);
 }
 
 export async function setSynaraPullRequestPinned(
   input: PullRequestSetPinnedInput
 ): Promise<PullRequestSetPinnedResult> {
-  return featureManager.request<PullRequestSetPinnedResult>(
+  return transportRequest<PullRequestSetPinnedResult>(
     'pullRequests.setPinned',
     input
   );
 }
 
 export async function disposeSynaraClient(): Promise<void> {
+  if (IS_WEB_RELAY_MODE) {
+    relayStateListeners.clear();
+    relayOfflineUntilMs = 0;
+    setRelayState('idle');
+    return;
+  }
   featureManager.dispose();
 }

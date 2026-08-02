@@ -390,6 +390,10 @@ export default defineConfig({
   environments: {
     web: {
       source: {
+        define: {
+          'process.env.SYNARA_WS_URL': JSON.stringify(configuredSynaraWsUrl),
+          'process.env.SYNARA_LYNX_WEB_RELAY': JSON.stringify('1'),
+        },
         entry: {
           main: './src/app/index.tsx',
         },
@@ -409,6 +413,7 @@ export default defineConfig({
         // product default in runtimeEndpoint.logic.
         define: {
           'process.env.SYNARA_WS_URL': JSON.stringify(configuredSynaraWsUrl),
+          'process.env.SYNARA_LYNX_WEB_RELAY': JSON.stringify('0'),
         },
         entry: {
           main: './src/app/index.tsx',

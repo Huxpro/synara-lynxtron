@@ -4291,3 +4291,28 @@
 - 复核系统 Chrome、常见 CDP ports 与 Midscene Bridge：没有可连接的 remote-debugging/CDP endpoint。workspace 的 `playwright@1.58.2` 依赖仍在，但其 Chromium executable 不在 `~/Library/Caches/ms-playwright/chromium-1208/`，故不可启动受控浏览器。
 - 修订 `reports/p8-q2-certification-preflight.md`：移除与当前机器状态不符的“可控 Puppeteer 已恢复”表述，明确既有 Web PNG 全是诊断产物，不升级为证据；同时修正 DevTool client port 的历史误述（Synara 应动态发现，最近为 `8903`，`8901`/`8902` 是用户 Fiddle）。
 - **P8-Q2 继续 blocked**：必须提供/恢复可验证的 Playwright Chromium（明确 viewport、DPR 与运行时检查）或可控的 Chromium CDP endpoint，才能采集六屏 × 双主题 × 双尺寸的 48 张 Web/Lynx 配对证据。未制造剩余证据，未碰用户数据、用户拥有的浏览器/Lynxtron 进程或 recoverable staging。
+
+## 2026-08-02 — Lynx-for-Web relay 产品化与 browser harness 预检
+
+- 按新 goal 只合入 spike 的三个产品边界：`web-host.ts` 主线程 WS RPC relay 与
+  storage/timer/dialog handlers、`synaraClient.lynx.ts` 显式 relay transport、
+  `lynx.config.ts` Web-only endpoint/relay define。未合 browser background WebSocket
+  fallback、trusted-origin 放宽、`buildCache: false` 或 spike diagnostics。
+- endpoint 由构建期 `SYNARA_WS_URL` 注入，缺省仍为 `ws://127.0.0.1:58090`；Web build
+  使用正式 `0.5.5-lynx-web` build id，Desktop build 显式关闭 relay。host 采用数字字符串
+  request id、8s open / 60s RPC timeout、6 次 250ms→2s 指数重连；storage 以
+  `synara.lynx.` 前缀隔离到 localStorage，并保留既有 dialog 语义。
+- 首轮真实 snapshot 加载暴露 `pullRequests.list` semantic schema failure；旧 bridge 包装会把
+  它误判为 transport offline。relay 现区分 `rpc` 与 `transport` error kind：业务 RPC
+  failure 保持 connected，连接/超时 failure 才进入 5s offline cooldown。移除全部临时
+  memory diagnostics 后重建。
+- focused tests **2 files / 9 tests**；Web production **2460.2 kB**、Desktop Lynx
+  **2364.3 kB**，`git diff --check` 均通过。保留 warning 仅为 Lynx `color-scheme`、可选
+  `ws` native addons 与上游 Web initialization deprecation。
+- named `synara-harness-lynx` session 在 isolated `62190` server、同一 snapshot、
+  1280×820 / DPR 1 / light 下渲染真实 project + 3 threads，无 offline banner、无 runtime
+  error。证据：`shots/2026-08-02/harness/relay/notes.md`。这只是 relay/harness preflight，
+  不冒充 UI paired pass。
+- 下一步：将同一 snapshot 的 Web original 切到同 route/light，建立 paired baseline；随后
+  按 Composer → transcript scroll → Markdown 顺序优化，浏览器阶段不启动 Lynxtron，最后
+  只做一次批量 Native 回归。
