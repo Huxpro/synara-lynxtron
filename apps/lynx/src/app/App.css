@@ -696,7 +696,7 @@
 .SettingsSidebar {
   display: flex;
   flex-direction: column;
-  width: 250px;
+  width: 256px;
   height: 100%;
   padding: 18px 14px;
   border-right: 1px solid var(--border);

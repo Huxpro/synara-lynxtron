@@ -53,8 +53,12 @@
   --type-picker-meta-line-height: 15px;
   --type-settings-header-title-size: 20px;
   --type-settings-header-title-line-height: 28px;
+  --type-settings-header-title-letter-spacing: -0.5px;
   --type-settings-header-description-size: 14px;
   --type-settings-header-description-line-height: 20px;
+  --type-settings-section-label-size: var(--app-font-size-ui, 12px);
+  --type-settings-section-label-line-height: 18px;
+  --type-settings-section-label-opacity: 0.58;
   --type-settings-row-title-size: var(--app-font-size-ui, 12px);
   --type-settings-row-title-line-height: 18px;
   --type-settings-row-description-size: var(--app-font-size-ui, 12px);

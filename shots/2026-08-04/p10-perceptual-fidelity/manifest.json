@@ -467,6 +467,7 @@
       "theme": "light",
       "density": "comfortable",
       "interactionState": "default",
+      "snapshotSha256": "c83ec3f6d45b242a5c58c875034fc621d62f9869dfffb78b6a49c43c275cff86",
       "viewport": {
         "width": 1280,
         "height": 820,
@@ -477,15 +478,132 @@
         "lynx",
         "native"
       ],
-      "residuals": [],
+      "residuals": [
+        {
+          "id": "settings-general-row-type-scale",
+          "category": "TYPOGRAPHY",
+          "severity": "P1",
+          "status": "fixed",
+          "owner": "apps/lynx/src/adapters/settings-general-composition-elements.css",
+          "summary": "Lynx General row titles used 13px while Web used the canonical 12px settings-row role.",
+          "impact": "The denser Lynx labels made every settings card read heavier than the Web authority.",
+          "recommendation": "Consume the shared settings row title and description roles in every General composition adapter.",
+          "evidence": "browser/settings-general/lynx/geometry.json",
+          "reason": "Post-fix paired geometry resolves both row title and description to the same size, weight, and line box."
+        },
+        {
+          "id": "settings-general-header-tracking",
+          "category": "TYPOGRAPHY",
+          "severity": "P2",
+          "status": "fixed",
+          "owner": "shared settings header typography role",
+          "summary": "Lynx omitted the Web header title's -0.5px tracking.",
+          "impact": "The page title looked wider and less deliberate despite matching font size and weight.",
+          "recommendation": "Keep title letter spacing in the semantic role rather than a Web-only utility.",
+          "evidence": "browser/settings-general/lynx/styles.json",
+          "reason": "Both clients now resolve the header title to 20px/500/28px with -0.5px letter spacing."
+        },
+        {
+          "id": "settings-general-section-label-density",
+          "category": "TYPOGRAPHY",
+          "severity": "P2",
+          "status": "fixed",
+          "owner": "shared settings section-label typography role",
+          "summary": "Lynx section labels used weight 500 and full muted color while Web used weight 400 at 58% opacity.",
+          "impact": "Section labels competed with row titles and flattened the intended hierarchy.",
+          "recommendation": "Centralize section-label size, line height, weight, and opacity.",
+          "evidence": "browser/settings-general/lynx/styles.json",
+          "reason": "Post-fix section labels resolve to 12px/400/18px with 0.58 opacity."
+        },
+        {
+          "id": "settings-general-sidebar-width",
+          "category": "GEOMETRY",
+          "severity": "P1",
+          "status": "fixed",
+          "owner": "apps/lynx/src/app/App.css SettingsSidebar",
+          "summary": "The Lynx Settings sidebar was 250px instead of the Web shell's 256px.",
+          "impact": "The centered 624px content rail shifted 3px left, making every settings anchor subtly wrong.",
+          "recommendation": "Use the canonical 256px shell width instead of an independent Settings width.",
+          "evidence": "browser/settings-general/lynx/geometry.json",
+          "reason": "Sidebar, header, section, card, row, and title anchors now match Web exactly."
+        },
+        {
+          "id": "settings-general-select-control-optics",
+          "category": "MATERIAL",
+          "severity": "P1",
+          "status": "open",
+          "owner": "SharedSettingsGeneralSelectTrigger / shared select primitive",
+          "summary": "The Lynx select trigger is 144px wide with an 8px transparent shell while Web is 176px wide with a 10px opaque white shell.",
+          "impact": "The highest-frequency control in General settings still has a visibly different visual weight and right-edge rhythm.",
+          "recommendation": "Calibrate the shared settings select specimen in the material and optical-control phases.",
+          "evidence": "browser/settings-general/lynx/geometry.json",
+          "reason": "Current-build paired resolved geometry and material sampling."
+        },
+        {
+          "id": "settings-general-card-terminal-divider",
+          "category": "ENGINE_CORRECTION",
+          "severity": "P2",
+          "status": "open",
+          "owner": "SharedSettingsGeneralCard row separator contract",
+          "summary": "Lynx draws a bottom divider on the last row, making the two-row card one pixel taller than Web.",
+          "impact": "Repeated cards accumulate a small vertical rhythm drift.",
+          "recommendation": "Encode terminal-row separator ownership explicitly without relying on unsupported structural selectors.",
+          "evidence": "browser/settings-general/lynx/geometry.json",
+          "reason": "The first row matches exactly; only the card outer height differs by one pixel."
+        }
+      ],
       "evidence": {
         "web": {
-          "status": "pending",
-          "reason": "Current-build P10 Web capture has not been retained."
+          "status": "retained",
+          "path": "browser/settings-general/web/raw.png",
+          "comparisonPath": "browser/settings-general/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "e8ee84e5973c1c4ad1a2c77d3282fa25b9db525506f65e56171d252c77f50c11",
+          "snapshotSha256": "c83ec3f6d45b242a5c58c875034fc621d62f9869dfffb78b6a49c43c275cff86",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "browser/settings-general/web/geometry.json",
+          "styles": "browser/settings-general/web/styles.json",
+          "console": "browser/settings-general/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "settings-general",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
         },
         "lynx": {
-          "status": "pending",
-          "reason": "Current-build P10 Lynx-for-Web capture has not been retained."
+          "status": "retained",
+          "path": "browser/settings-general/lynx/raw.png",
+          "comparisonPath": "browser/settings-general/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "3f3920f9a70af1c44c55adbed5d2a4c14cca00ca238913e25f6d178157298fb4",
+          "snapshotSha256": "c83ec3f6d45b242a5c58c875034fc621d62f9869dfffb78b6a49c43c275cff86",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "browser/settings-general/lynx/geometry.json",
+          "styles": "browser/settings-general/lynx/styles.json",
+          "console": "browser/settings-general/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "settings-general",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
         },
         "native": {
           "status": "pending",

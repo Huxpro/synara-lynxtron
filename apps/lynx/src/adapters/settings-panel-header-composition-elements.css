@@ -16,6 +16,7 @@
   color: var(--foreground);
   font-size: var(--type-settings-header-title-size);
   font-weight: 500;
+  letter-spacing: var(--type-settings-header-title-letter-spacing);
   line-height: var(--type-settings-header-title-line-height);
 }
 

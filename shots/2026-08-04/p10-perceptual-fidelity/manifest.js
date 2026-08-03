@@ -2774,18 +2774,513 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
         "width": 1280,
         "height": 788
       },
-      "residuals": [],
+      "residuals": [
+        {
+          "id": "settings-general-row-type-scale",
+          "category": "TYPOGRAPHY",
+          "severity": "P1",
+          "status": "fixed",
+          "owner": "apps/lynx/src/adapters/settings-general-composition-elements.css",
+          "summary": "Lynx General row titles used 13px while Web used the canonical 12px settings-row role.",
+          "impact": "The denser Lynx labels made every settings card read heavier than the Web authority.",
+          "recommendation": "Consume the shared settings row title and description roles in every General composition adapter.",
+          "evidence": "browser/settings-general/lynx/geometry.json",
+          "reason": "Post-fix paired geometry resolves both row title and description to the same size, weight, and line box."
+        },
+        {
+          "id": "settings-general-header-tracking",
+          "category": "TYPOGRAPHY",
+          "severity": "P2",
+          "status": "fixed",
+          "owner": "shared settings header typography role",
+          "summary": "Lynx omitted the Web header title's -0.5px tracking.",
+          "impact": "The page title looked wider and less deliberate despite matching font size and weight.",
+          "recommendation": "Keep title letter spacing in the semantic role rather than a Web-only utility.",
+          "evidence": "browser/settings-general/lynx/styles.json",
+          "reason": "Both clients now resolve the header title to 20px/500/28px with -0.5px letter spacing."
+        },
+        {
+          "id": "settings-general-section-label-density",
+          "category": "TYPOGRAPHY",
+          "severity": "P2",
+          "status": "fixed",
+          "owner": "shared settings section-label typography role",
+          "summary": "Lynx section labels used weight 500 and full muted color while Web used weight 400 at 58% opacity.",
+          "impact": "Section labels competed with row titles and flattened the intended hierarchy.",
+          "recommendation": "Centralize section-label size, line height, weight, and opacity.",
+          "evidence": "browser/settings-general/lynx/styles.json",
+          "reason": "Post-fix section labels resolve to 12px/400/18px with 0.58 opacity."
+        },
+        {
+          "id": "settings-general-sidebar-width",
+          "category": "GEOMETRY",
+          "severity": "P1",
+          "status": "fixed",
+          "owner": "apps/lynx/src/app/App.css SettingsSidebar",
+          "summary": "The Lynx Settings sidebar was 250px instead of the Web shell's 256px.",
+          "impact": "The centered 624px content rail shifted 3px left, making every settings anchor subtly wrong.",
+          "recommendation": "Use the canonical 256px shell width instead of an independent Settings width.",
+          "evidence": "browser/settings-general/lynx/geometry.json",
+          "reason": "Sidebar, header, section, card, row, and title anchors now match Web exactly."
+        },
+        {
+          "id": "settings-general-select-control-optics",
+          "category": "MATERIAL",
+          "severity": "P1",
+          "status": "open",
+          "owner": "SharedSettingsGeneralSelectTrigger / shared select primitive",
+          "summary": "The Lynx select trigger is 144px wide with an 8px transparent shell while Web is 176px wide with a 10px opaque white shell.",
+          "impact": "The highest-frequency control in General settings still has a visibly different visual weight and right-edge rhythm.",
+          "recommendation": "Calibrate the shared settings select specimen in the material and optical-control phases.",
+          "evidence": "browser/settings-general/lynx/geometry.json",
+          "reason": "Current-build paired resolved geometry and material sampling."
+        },
+        {
+          "id": "settings-general-card-terminal-divider",
+          "category": "ENGINE_CORRECTION",
+          "severity": "P2",
+          "status": "open",
+          "owner": "SharedSettingsGeneralCard row separator contract",
+          "summary": "Lynx draws a bottom divider on the last row, making the two-row card one pixel taller than Web.",
+          "impact": "Repeated cards accumulate a small vertical rhythm drift.",
+          "recommendation": "Encode terminal-row separator ownership explicitly without relying on unsupported structural selectors.",
+          "evidence": "browser/settings-general/lynx/geometry.json",
+          "reason": "The first row matches exactly; only the card outer height differs by one pixel."
+        }
+      ],
       "evidence": {
         "web": {
-          "status": "pending",
-          "reason": "Current-build P10 Web capture has not been retained.",
-          "path": null,
-          "comparisonPath": null,
-          "geometry": null,
-          "geometryData": null,
-          "styles": null,
-          "stylesData": null,
-          "console": null,
+          "status": "retained",
+          "reason": null,
+          "path": "browser/settings-general/web/raw.png",
+          "comparisonPath": "browser/settings-general/web/comparison.png",
+          "geometry": "browser/settings-general/web/geometry.json",
+          "geometryData": {
+            "client": "web",
+            "stateId": "settings-general",
+            "viewport": {
+              "width": 1280,
+              "height": 820,
+              "dpr": 1,
+              "visualWidth": 1280,
+              "visualHeight": 820
+            },
+            "roles": {
+              "settingsSidebar": {
+                "tag": "DIV",
+                "className": "relative z-0 flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow-sm/5 app-sidebar-surface",
+                "text": "Toggle SidebarToggle SidebarBack to appAppGeneralProfileAppearanceNotificationsBehaviorAppSnapKeyboard ShortcutsWorktreesArchivedSynaraModelsProvidersSkillsUsageIntegrationsAdvance",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 256,
+                  "height": 820
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "rgba(0, 0, 0, 0.03) 0px 1px 0px 0px inset",
+                  "opacity": "1"
+                }
+              },
+              "headerTitle": {
+                "tag": "H1",
+                "className": "text-[length:var(--type-settings-header-title-size)] leading-[var(--type-settings-header-title-line-height)] tracking-[var(--type-settings-header-title-letter-spacing)] font-medium text-foreground",
+                "text": "General",
+                "box": {
+                  "x": 456,
+                  "y": 32,
+                  "width": 363.890625,
+                  "height": 28
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "20px",
+                  "weight": "500",
+                  "lineHeight": "28px",
+                  "letterSpacing": "-0.5px"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "headerDescription": {
+                "tag": "P",
+                "className": "mt-1.5 text-[length:var(--type-settings-header-description-size)] leading-[var(--type-settings-header-description-line-height)] text-muted-foreground",
+                "text": "Default provider, thread mode, and sidebar organization.",
+                "box": {
+                  "x": 456,
+                  "y": 66,
+                  "width": 363.890625,
+                  "height": 20
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgba(13, 13, 13, 0.596)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "sectionTitle": {
+                "tag": "H2",
+                "className": "px-2 py-1 text-[length:var(--app-font-size-ui,12px)] font-normal text-muted-foreground/58",
+                "text": "Core defaults",
+                "box": {
+                  "x": 456,
+                  "y": 118,
+                  "width": 624,
+                  "height": 26
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.345726)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "card": {
+                "tag": "DIV",
+                "className": "overflow-hidden bg-transparent border border-[color:var(--color-border)] rounded-lg divide-y divide-[color:var(--color-border)]",
+                "text": "Default providerChoose the provider used for new chats.CodexNew threadsPick the default workspace mode for newly created draft threads.Local",
+                "box": {
+                  "x": 456,
+                  "y": 150,
+                  "width": 624,
+                  "height": 123
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "DIV",
+                "className": "px-3 py-[var(--app-density-settings-row-padding-y,0.625rem)] scroll-mt-24",
+                "text": "Default providerChoose the provider used for new chats.Codex",
+                "box": {
+                  "x": 457,
+                  "y": 151,
+                  "width": 622,
+                  "height": 61
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px 0px 1px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "rowTitle": {
+                "tag": "H3",
+                "className": "text-[length:var(--type-settings-row-title-size)] leading-[var(--type-settings-row-title-line-height)] font-medium text-foreground",
+                "text": "Default provider",
+                "box": {
+                  "x": 469,
+                  "y": 162,
+                  "width": 93.25,
+                  "height": 18
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "500",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "rowDescription": {
+                "tag": "P",
+                "className": "text-[length:var(--type-settings-row-description-size)] leading-[var(--type-settings-row-description-line-height)] text-muted-foreground",
+                "text": "Choose the provider used for new chats.",
+                "box": {
+                  "x": 469,
+                  "y": 183,
+                  "width": 412,
+                  "height": 18
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgba(13, 13, 13, 0.596)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "control": {
+                "tag": "BUTTON",
+                "className": "relative inline-flex cursor-pointer select-none items-center justify-between gap-2 border rounded-md text-left text-[length:var(--app-font-size-ui,12px)] outline-none transition-[color,background-color] data-disabled:pointer-events-none data-disabled:opacity-64 sm:text-[length:var(--app-font-size-ui,12px)] [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 min-w-36 border-[color:var(--color-border)] bg-[var(--color-background-control-opaque)] text-[var(--color-text-foreground)] ring-[color:var(--color-border-focus)]/16 pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 focus-visible:border-[color:var(--color-border-focus)] focus-visible:ring-2 aria-invalid:border-destructive/30 focus-visible:aria-invalid:border-destructive/50 focus-visible:aria-invalid:ring-destructive/12 dark:aria-invalid:ring-destructive/20 [&_svg:not([class*='opacity-'])]:opacity-80 min-h-9 px-[calc(--spacing(3)-1px)] sm:min-h-8 !rounded-lg w-full sm:w-44",
+                "text": "Codex",
+                "box": {
+                  "x": 891,
+                  "y": 165,
+                  "width": 176,
+                  "height": 32
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "browser/settings-general/web/styles.json",
+          "stylesData": {
+            "client": "web",
+            "stateId": "settings-general",
+            "roles": {
+              "settingsSidebar": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "rgba(0, 0, 0, 0.03) 0px 1px 0px 0px inset",
+                  "opacity": "1"
+                }
+              },
+              "headerTitle": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "20px",
+                  "weight": "500",
+                  "lineHeight": "28px",
+                  "letterSpacing": "-0.5px"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "headerDescription": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgba(13, 13, 13, 0.596)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "sectionTitle": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.345726)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "card": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px 0px 1px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "rowTitle": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "500",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "rowDescription": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgba(13, 13, 13, 0.596)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "control": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "browser/settings-general/web/console.txt",
           "alignment": {
             "x": 0,
             "y": 0,
@@ -2793,15 +3288,437 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
           }
         },
         "lynx": {
-          "status": "pending",
-          "reason": "Current-build P10 Lynx-for-Web capture has not been retained.",
-          "path": null,
-          "comparisonPath": null,
-          "geometry": null,
-          "geometryData": null,
-          "styles": null,
-          "stylesData": null,
-          "console": null,
+          "status": "retained",
+          "reason": null,
+          "path": "browser/settings-general/lynx/raw.png",
+          "comparisonPath": "browser/settings-general/lynx/comparison.png",
+          "geometry": "browser/settings-general/lynx/geometry.json",
+          "geometryData": {
+            "client": "lynx",
+            "stateId": "settings-general",
+            "viewport": {
+              "width": 1280,
+              "height": 820,
+              "dpr": 1,
+              "visualWidth": 1280,
+              "visualHeight": 820
+            },
+            "roles": {
+              "settingsSidebar": {
+                "tag": "X-VIEW",
+                "className": "SettingsSidebar",
+                "text": "Back to appSearch unavailable in this runtimeAppGeneralProfileAppearanceNotificationsBehaviorAppSnapKeyboard ShortcutsWorktreesArchivedSynaraModelsProvidersSkillsUsageIntegrationsA",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 256,
+                  "height": 820
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgb(13, 13, 13) rgba(13, 13, 13, 0.07) rgb(13, 13, 13) rgb(13, 13, 13)",
+                  "borderWidth": "0px 1px 0px 0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "headerTitle": {
+                "tag": "X-TEXT",
+                "className": "SharedSettingsPanelHeaderTitle",
+                "text": "General",
+                "box": {
+                  "x": 456,
+                  "y": 32,
+                  "width": 363.890625,
+                  "height": 28
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "20px",
+                  "weight": "500",
+                  "lineHeight": "28px",
+                  "letterSpacing": "-0.5px"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "headerDescription": {
+                "tag": "X-TEXT",
+                "className": "SharedSettingsPanelHeaderDescription",
+                "text": "Default provider, thread mode, and sidebar organization.",
+                "box": {
+                  "x": 456,
+                  "y": 66,
+                  "width": 363.890625,
+                  "height": 20
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgba(13, 13, 13, 0.596)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.596)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "sectionTitle": {
+                "tag": "X-TEXT",
+                "className": "SharedSettingsGeneralSectionTitle",
+                "text": "Core defaults",
+                "box": {
+                  "x": 456,
+                  "y": 118,
+                  "width": 624,
+                  "height": 26
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgba(13, 13, 13, 0.596)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.596)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.58"
+                }
+              },
+              "card": {
+                "tag": "X-VIEW",
+                "className": "SharedSettingsGeneralCard",
+                "text": "Default providerChoose the provider used for new chats.CodexNew threadsPick the default workspace mode for newly created draft threads.Local",
+                "box": {
+                  "x": 456,
+                  "y": 150,
+                  "width": 624,
+                  "height": 124
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "X-VIEW",
+                "className": "SharedSettingsGeneralRow",
+                "text": "Default providerChoose the provider used for new chats.Codex",
+                "box": {
+                  "x": 457,
+                  "y": 151,
+                  "width": 622,
+                  "height": 61
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13) rgb(13, 13, 13) rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px 0px 1px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "rowTitle": {
+                "tag": "X-TEXT",
+                "className": "SharedSettingsGeneralRowTitle",
+                "text": "Default provider",
+                "box": {
+                  "x": 469,
+                  "y": 162,
+                  "width": 93.25,
+                  "height": 18
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "500",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "rowDescription": {
+                "tag": "X-TEXT",
+                "className": "SharedSettingsGeneralRowDescription",
+                "text": "Choose the provider used for new chats.",
+                "box": {
+                  "x": 469,
+                  "y": 182,
+                  "width": 438,
+                  "height": 18
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgba(13, 13, 13, 0.596)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.596)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "control": {
+                "tag": "X-VIEW",
+                "className": "LxButton LxButton--outline LxButton--default SharedSettingsGeneralSelectTrigger",
+                "text": "Codex",
+                "box": {
+                  "x": 923,
+                  "y": 165,
+                  "width": 144,
+                  "height": 32
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "browser/settings-general/lynx/styles.json",
+          "stylesData": {
+            "client": "lynx",
+            "stateId": "settings-general",
+            "roles": {
+              "settingsSidebar": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgb(13, 13, 13) rgba(13, 13, 13, 0.07) rgb(13, 13, 13) rgb(13, 13, 13)",
+                  "borderWidth": "0px 1px 0px 0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "headerTitle": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "20px",
+                  "weight": "500",
+                  "lineHeight": "28px",
+                  "letterSpacing": "-0.5px"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "headerDescription": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgba(13, 13, 13, 0.596)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.596)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "sectionTitle": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgba(13, 13, 13, 0.596)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.596)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.58"
+                }
+              },
+              "card": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13) rgb(13, 13, 13) rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px 0px 1px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "rowTitle": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "500",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "rowDescription": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgba(13, 13, 13, 0.596)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.596)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "control": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "browser/settings-general/lynx/console.txt",
           "alignment": {
             "x": 0,
             "y": 0,

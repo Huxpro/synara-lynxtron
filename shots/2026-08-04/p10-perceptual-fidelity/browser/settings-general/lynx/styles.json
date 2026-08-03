@@ -1,0 +1,168 @@
+{
+  "client": "lynx",
+  "stateId": "settings-general",
+  "roles": {
+    "settingsSidebar": {
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgb(255, 255, 255)",
+        "borderColor": "rgb(13, 13, 13) rgba(13, 13, 13, 0.07) rgb(13, 13, 13) rgb(13, 13, 13)",
+        "borderWidth": "0px 1px 0px 0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "headerTitle": {
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "20px",
+        "weight": "500",
+        "lineHeight": "28px",
+        "letterSpacing": "-0.5px"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(13, 13, 13)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "headerDescription": {
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "14px",
+        "weight": "400",
+        "lineHeight": "20px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgba(13, 13, 13, 0.596)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgba(13, 13, 13, 0.596)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "sectionTitle": {
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "12px",
+        "weight": "400",
+        "lineHeight": "18px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgba(13, 13, 13, 0.596)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgba(13, 13, 13, 0.596)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "0.58"
+      }
+    },
+    "card": {
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgba(13, 13, 13, 0.07)",
+        "borderWidth": "1px",
+        "radius": "10px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "row": {
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(13, 13, 13) rgb(13, 13, 13) rgba(13, 13, 13, 0.07)",
+        "borderWidth": "0px 0px 1px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "rowTitle": {
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "12px",
+        "weight": "500",
+        "lineHeight": "18px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(13, 13, 13)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "rowDescription": {
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "12px",
+        "weight": "400",
+        "lineHeight": "18px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgba(13, 13, 13, 0.596)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgba(13, 13, 13, 0.596)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "control": {
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgba(13, 13, 13, 0.07)",
+        "borderWidth": "1px",
+        "radius": "8px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    }
+  }
+}

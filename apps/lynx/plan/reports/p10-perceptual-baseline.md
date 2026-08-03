@@ -1,6 +1,6 @@
 # P10 perceptual fidelity baseline
 
-Status: Phase 0 complete; Phase 1 typography calibration started
+Status: Phase 0 complete; Phase 1 typography calibration in progress
 
 Updated: 2026-08-04
 
@@ -13,8 +13,9 @@ canonical Browser states:
 - Sidebar project navigation;
 - default Composer.
 
-Project Picker open, filtered skill menu, Settings General, and every required
-Native cell remain explicitly incomplete.
+Project Picker open, filtered skill menu, and every required Native cell remain
+explicitly incomplete. Settings General now has retained Web and Lynx-for-Web
+evidence in `p10-typography-calibration.md`.
 
 ## Harness
 
@@ -139,14 +140,14 @@ therefore remain red. No user state was touched.
 ## Current strict status
 
 - 6 canonical states.
-- 12 incomplete required client cells.
-- 0 open P0/P1 residuals in the three measured Browser states.
+- 10 incomplete required client cells.
+- 1 open P1 residual: Settings General select-control material/optics.
 - Strict verifier exits `2` as designed.
 
 ## Next
 
 1. Project Picker open and filtered skill menu Browser baselines.
-2. Settings General Browser baseline.
-3. Typography role contract across these surfaces.
+2. Typography role contract across overlays, transcript, buttons, and chips.
+3. Settings select material/optical calibration.
 4. A PID-gated Native capture helper that completes DOM/style/screenshot
    collection before the transient DevTool endpoint is released.

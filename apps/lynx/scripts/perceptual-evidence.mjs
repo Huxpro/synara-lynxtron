@@ -140,8 +140,10 @@ function validateEvidence(errors, incomplete, manifest, manifestPath, state, cli
   ]) {
     if (!evidence[key]) errors.push(`${prefix}: retained evidence requires ${key}`);
   }
-  if (evidence.snapshotSha256 !== manifest.defaults.snapshotSha256) {
-    errors.push(`${prefix}: snapshot hash does not match manifest defaults`);
+  const expectedSnapshotSha256 =
+    state.snapshotSha256 ?? manifest.defaults.snapshotSha256;
+  if (evidence.snapshotSha256 !== expectedSnapshotSha256) {
+    errors.push(`${prefix}: snapshot hash does not match state snapshot`);
   }
 
   const imagePath = validateLinkedFile(errors, prefix, manifestPath, evidence.path, "image");

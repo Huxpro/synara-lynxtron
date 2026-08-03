@@ -17,9 +17,10 @@
 .SharedSettingsGeneralSectionTitle {
   padding: 4px 8px;
   color: var(--muted-foreground);
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 18px;
+  font-size: var(--type-settings-section-label-size);
+  font-weight: 400;
+  line-height: var(--type-settings-section-label-line-height);
+  opacity: var(--type-settings-section-label-opacity);
 }
 
 .SharedSettingsGeneralCard {
@@ -56,23 +57,23 @@
 
 .SharedSettingsGeneralRowTitle {
   color: var(--foreground);
-  font-size: 13px;
+  font-size: var(--type-settings-row-title-size);
   font-weight: 500;
-  line-height: 18px;
+  line-height: var(--type-settings-row-title-line-height);
 }
 
 .SharedSettingsGeneralRowDescription {
   margin-top: 2px;
   color: var(--muted-foreground);
-  font-size: 12px;
-  line-height: 17px;
+  font-size: var(--type-settings-row-description-size);
+  line-height: var(--type-settings-row-description-line-height);
 }
 
 .SharedSettingsGeneralReset {
   margin-left: 6px;
   color: var(--muted-foreground);
-  font-size: 13px;
-  line-height: 18px;
+  font-size: var(--type-ui-row-size);
+  line-height: var(--type-ui-row-line-height);
 }
 
 .SharedSettingsGeneralReset.ui-hover {

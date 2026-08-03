@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-03T19:23:22.536Z",
+  "generatedAt": "2026-08-03T20:01:05.988Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -136,7 +136,7 @@
       ],
       "graph": {
         "modules": 401,
-        "loc": 80898,
+        "loc": 80900,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -223,7 +223,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 333,
-          "loc": 72910
+          "loc": 72912
         },
         "PATCHED": {
           "modules": 1,
@@ -240,11 +240,11 @@
       },
       "eligible": {
         "modules": 392,
-        "loc": 79090
+        "loc": 79092
       },
       "currentReuse": {
         "modules": 236,
-        "loc": 44402,
+        "loc": 44404,
         "modulePercent": 60.2,
         "locPercent": 56.14,
         "gatePercent": 56.14
@@ -489,7 +489,7 @@
         },
         {
           "path": "apps/web/src/components/chat/composerPickerStyles.ts",
-          "loc": 247,
+          "loc": 249,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -5050,7 +5050,7 @@
       ],
       "graph": {
         "modules": 347,
-        "loc": 70385,
+        "loc": 70387,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -5137,7 +5137,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 282,
-          "loc": 62441
+          "loc": 62443
         },
         "PATCHED": {
           "modules": 1,
@@ -5154,11 +5154,11 @@
       },
       "eligible": {
         "modules": 339,
-        "loc": 68600
+        "loc": 68602
       },
       "currentReuse": {
         "modules": 233,
-        "loc": 43834,
+        "loc": 43836,
         "modulePercent": 68.73,
         "locPercent": 63.9,
         "gatePercent": 63.9
@@ -5323,7 +5323,7 @@
         },
         {
           "path": "apps/web/src/components/chat/composerPickerStyles.ts",
-          "loc": 247,
+          "loc": 249,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -9231,7 +9231,7 @@
       ],
       "graph": {
         "modules": 757,
-        "loc": 152078,
+        "loc": 152080,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -9359,7 +9359,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 654,
-          "loc": 135582
+          "loc": 135584
         },
         "PATCHED": {
           "modules": 1,
@@ -9376,11 +9376,11 @@
       },
       "eligible": {
         "modules": 729,
-        "loc": 143933
+        "loc": 143935
       },
       "currentReuse": {
         "modules": 349,
-        "loc": 56762,
+        "loc": 56764,
         "modulePercent": 47.87,
         "locPercent": 39.44,
         "gatePercent": 39.44
@@ -10427,7 +10427,7 @@
         },
         {
           "path": "apps/web/src/components/chat/composerPickerStyles.ts",
-          "loc": 247,
+          "loc": 249,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -19113,7 +19113,7 @@
       ],
       "graph": {
         "modules": 473,
-        "loc": 91125,
+        "loc": 91127,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -19205,7 +19205,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 400,
-          "loc": 82944
+          "loc": 82946
         },
         "PATCHED": {
           "modules": 1,
@@ -19222,11 +19222,11 @@
       },
       "eligible": {
         "modules": 464,
-        "loc": 89317
+        "loc": 89319
       },
       "currentReuse": {
         "modules": 264,
-        "loc": 47241,
+        "loc": 47243,
         "modulePercent": 56.9,
         "locPercent": 52.89,
         "gatePercent": 52.89
@@ -19502,7 +19502,7 @@
         },
         {
           "path": "apps/web/src/components/chat/composerPickerStyles.ts",
-          "loc": 247,
+          "loc": 249,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -24998,7 +24998,7 @@
       ],
       "graph": {
         "modules": 507,
-        "loc": 98996,
+        "loc": 98998,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -25101,7 +25101,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 436,
-          "loc": 88659
+          "loc": 88661
         },
         "PATCHED": {
           "modules": 1,
@@ -25118,11 +25118,11 @@
       },
       "eligible": {
         "modules": 496,
-        "loc": 95195
+        "loc": 95197
       },
       "currentReuse": {
         "modules": 286,
-        "loc": 50627,
+        "loc": 50629,
         "modulePercent": 57.66,
         "locPercent": 53.18,
         "gatePercent": 53.18
@@ -25565,7 +25565,7 @@
         },
         {
           "path": "apps/web/src/components/chat/composerPickerStyles.ts",
-          "loc": 247,
+          "loc": 249,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -31369,7 +31369,7 @@
       ],
       "graph": {
         "modules": 507,
-        "loc": 98997,
+        "loc": 98999,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -31472,7 +31472,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 436,
-          "loc": 88660
+          "loc": 88662
         },
         "PATCHED": {
           "modules": 1,
@@ -31489,11 +31489,11 @@
       },
       "eligible": {
         "modules": 496,
-        "loc": 95196
+        "loc": 95198
       },
       "currentReuse": {
         "modules": 286,
-        "loc": 50627,
+        "loc": 50629,
         "modulePercent": 57.66,
         "locPercent": 53.18,
         "gatePercent": 53.18
@@ -31936,7 +31936,7 @@
         },
         {
           "path": "apps/web/src/components/chat/composerPickerStyles.ts",
-          "loc": 247,
+          "loc": 249,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -37740,7 +37740,7 @@
       ],
       "graph": {
         "modules": 495,
-        "loc": 91751,
+        "loc": 91753,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -37840,7 +37840,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 422,
-          "loc": 82257
+          "loc": 82259
         },
         "PATCHED": {
           "modules": 1,
@@ -37857,11 +37857,11 @@
       },
       "eligible": {
         "modules": 486,
-        "loc": 89943
+        "loc": 89945
       },
       "currentReuse": {
         "modules": 308,
-        "loc": 52413,
+        "loc": 52415,
         "modulePercent": 63.37,
         "locPercent": 58.27,
         "gatePercent": 58.27
@@ -38119,7 +38119,7 @@
         },
         {
           "path": "apps/web/src/components/chat/composerPickerStyles.ts",
-          "loc": 247,
+          "loc": 249,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",

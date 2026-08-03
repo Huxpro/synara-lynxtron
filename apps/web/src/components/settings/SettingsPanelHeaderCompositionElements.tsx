@@ -24,7 +24,7 @@ export function SettingsPanelHeaderCopyElement(props: ChildrenProps) {
 
 export function SettingsPanelHeaderTitleElement(props: ChildrenProps) {
   return (
-    <h1 className="text-[length:var(--type-settings-header-title-size)] leading-[var(--type-settings-header-title-line-height)] font-medium tracking-tight text-foreground">
+    <h1 className="text-[length:var(--type-settings-header-title-size)] leading-[var(--type-settings-header-title-line-height)] tracking-[var(--type-settings-header-title-letter-spacing)] font-medium text-foreground">
       {props.children}
     </h1>
   );

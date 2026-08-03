@@ -203,6 +203,34 @@ test("rejects state echo drift", () => {
   assert.match(result.stderr, /stateEcho\.theme="dark" does not match "light"/);
 });
 
+test("accepts a state-specific snapshot shared by every retained client", () => {
+  const fixture = writeFixture();
+  const manifest = JSON.parse(fs.readFileSync(fixture.manifestPath, "utf8"));
+  manifest.states[0].snapshotSha256 = "later-snapshot";
+  for (const client of ["web", "lynx", "native"]) {
+    manifest.states[0].evidence[client].snapshotSha256 = "later-snapshot";
+  }
+  fs.writeFileSync(fixture.manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+
+  const result = run(fixture);
+  assert.equal(result.status, 0, result.stderr);
+});
+
+test("rejects client snapshot drift within a state-specific capture", () => {
+  const fixture = writeFixture();
+  const manifest = JSON.parse(fs.readFileSync(fixture.manifestPath, "utf8"));
+  manifest.states[0].snapshotSha256 = "later-snapshot";
+  for (const client of ["web", "lynx", "native"]) {
+    manifest.states[0].evidence[client].snapshotSha256 = "later-snapshot";
+  }
+  manifest.states[0].evidence.lynx.snapshotSha256 = "other-snapshot";
+  fs.writeFileSync(fixture.manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+
+  const result = run(fixture, "--allow-incomplete");
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /snapshot hash does not match state snapshot/);
+});
+
 test("rejects geometry artifacts for another state", () => {
   const fixture = writeFixture();
   const geometryPath = path.join(fixture.directory, "web-geometry.json");

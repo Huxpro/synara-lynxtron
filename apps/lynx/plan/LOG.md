@@ -4936,3 +4936,23 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   route/geometry复验前释放，故Native required cells仍red；未触碰用户state。当前 strict：
   **6 states / 12 incomplete / 0 measured Browser P0/P1**。证据：
   `shots/2026-08-04/p10-perceptual-fidelity/`。
+
+## 2026-08-04 — P10 Phase 1 Settings typography calibration
+
+- 建立跨端semantic typography roles：UI row/supporting/meta、Composer editor、
+  picker group/title/description/meta、Settings header/section/row；Web与Lynx显式共享
+  size/line-height/letter-spacing，不依赖engine `normal`。
+- current-build Settings General paired measurement发现另一套General adapter未消费role：
+  Lynx title `13px` vs Web `12px`、description `17px` line box vs `18px`、section label
+  weight `500` vs `400`，header缺`-0.5px` tracking。全部在token/adapter owner关闭，无局部
+  text margin hack。
+- Settings shell独立`250px` sidebar使全部content rail左偏3px；收敛到canonical
+  `256px`后，header/section/card/row/title anchors与Web exact。两端header
+  `20/500/28/-0.5px`，row title `12/500/18`，description `12/400/18`。
+- retained Settings cell使用真实Settings/Appearance UI、1280×820 DPR1 light/comfortable；
+  snapshot `c83ec3f6…` capture前后online backup一致；Web build `e8ee84e5…`、Lynx Web
+  `3f3920f9…`，两端fresh page errors空。
+- verifier支持state-specific snapshot identity，但仍强制同一state所有retained clients
+  使用同hash；新增正反regressions，verifier **9/9**。
+- atlas strict由**12→10 incomplete**；如实登记Settings select material/optics open P1和
+  terminal divider open P2，strict继续exit 2，不以typography parity掩盖后续phase差距。
