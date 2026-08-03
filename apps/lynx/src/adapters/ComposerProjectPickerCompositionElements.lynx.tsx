@@ -163,7 +163,6 @@ export function ComposerProjectPickerOptionElement(props: {
       className={`ComposerProjectPickerOptionLynx${
         props.selected ? ' ComposerProjectPickerOptionLynx--selected' : ''
       }`}
-      ariaSelected={props.selected}
       onClick={props.onSelect}
     >
       <view className="ComposerProjectPickerOptionContentLynx">

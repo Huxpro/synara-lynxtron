@@ -396,7 +396,6 @@ export function MenuItem(props: {
   children?: ReactNode;
   className?: string;
   disabled?: boolean;
-  ariaSelected?: boolean;
   onClick?: () => void;
   trailing?: ReactNode;
   inset?: boolean;
@@ -446,7 +445,6 @@ export function MenuItem(props: {
       className={interaction.className}
       {...interaction.eventProps}
       aria-disabled={props.disabled}
-      aria-selected={props.ariaSelected}
       role="menuitem"
       bindfocus={
         props.disabled
