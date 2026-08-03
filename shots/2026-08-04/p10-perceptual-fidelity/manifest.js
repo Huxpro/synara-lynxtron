@@ -2638,18 +2638,595 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
         "width": 1280,
         "height": 788
       },
-      "residuals": [],
+      "residuals": [
+        {
+          "id": "project-picker-popup-direction",
+          "category": "GEOMETRY",
+          "severity": "P1",
+          "status": "fixed",
+          "owner": "LandingComposer project picker composition",
+          "summary": "Lynx omitted the Web landing picker's explicit top placement and opened below the trigger against the viewport edge.",
+          "impact": "The overlay occupied a different visual region and made the same composition read as a different interaction.",
+          "recommendation": "Keep landing overlay side and offset explicit at the shared composition call site.",
+          "evidence": "browser/project-picker-open/lynx/geometry.json",
+          "reason": "The 288x258 popup now matches Web exactly at x=408, y=259."
+        },
+        {
+          "id": "project-picker-inner-rails",
+          "category": "GEOMETRY",
+          "severity": "P1",
+          "status": "fixed",
+          "owner": "ComposerProjectPickerPanelLynx",
+          "summary": "Lynx filled the 286px popup interior while Web uses a 278px inset panel shell.",
+          "impact": "Search, rows, footer, and action controls all missed the authority rail by four pixels per side.",
+          "recommendation": "Own the 278px panel rail once in the Project Picker adapter.",
+          "evidence": "browser/project-picker-open/lynx/geometry.json",
+          "reason": "Panel, search, group, option, footer, and action boxes now match Web exactly."
+        },
+        {
+          "id": "project-picker-text-and-icon-metrics",
+          "category": "TYPOGRAPHY",
+          "severity": "P1",
+          "status": "fixed",
+          "owner": "Project Picker semantic rows and generated Lynx icon sizing",
+          "summary": "Lynx options rendered at 11px with implicit 13px line boxes and generated SVGs ignored CSS width in favor of their 16px inline size.",
+          "impact": "Repeated rows accumulated a visibly denser rhythm and shifted text rails.",
+          "recommendation": "Use explicit semantic line boxes and pass optical icon size through the generated icon API.",
+          "evidence": "browser/project-picker-open/lynx/geometry.json",
+          "reason": "Option titles are 12px/18px, icons are explicit 14px, and the text baseline rail is within one pixel."
+        },
+        {
+          "id": "project-picker-default-highlight",
+          "category": "INTERACTION",
+          "severity": "P1",
+          "status": "fixed",
+          "owner": "shared Lynx MenuItem navigation primitive",
+          "summary": "Web auto-highlighted the first enabled option on open while Lynx Project Picker rows bypassed Menu registration.",
+          "impact": "Keyboard readiness and the immediate selected visual feedback differed at the moment the overlay opened.",
+          "recommendation": "Render Project Picker options through the shared MenuItem registration and highlighted-state contract.",
+          "evidence": "browser/project-picker-open/lynx/styles.json",
+          "reason": "The first option now carries LxMenuItem--highlighted and the same accent fill as Web."
+        },
+        {
+          "id": "project-picker-web-input-box",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Lynx-for-Web x-input host element",
+          "summary": "The custom element reports a zero-sized inner x-input while its visible 266x28 control shell is measurable.",
+          "impact": "Browser harness cannot use the inner node as a text baseline box, but the rendered search control remains visible and aligned.",
+          "recommendation": "Use the search shell for Browser geometry and certify native input metrics in the Native batch.",
+          "evidence": "browser/project-picker-open/lynx/geometry.json",
+          "reason": "This is a Lynx-for-Web custom-element measurement boundary; no content or control chrome is hidden."
+        }
+      ],
       "evidence": {
         "web": {
-          "status": "pending",
-          "reason": "Current-build P10 Web capture has not been retained.",
-          "path": null,
-          "comparisonPath": null,
-          "geometry": null,
-          "geometryData": null,
-          "styles": null,
-          "stylesData": null,
-          "console": null,
+          "status": "retained",
+          "reason": null,
+          "path": "browser/project-picker-open/web/raw.png",
+          "comparisonPath": "browser/project-picker-open/web/comparison.png",
+          "geometry": "browser/project-picker-open/web/geometry.json",
+          "geometryData": {
+            "client": "web",
+            "stateId": "project-picker-open",
+            "viewport": {
+              "width": 1280,
+              "height": 820,
+              "dpr": 1,
+              "visualWidth": 1280,
+              "visualHeight": 820
+            },
+            "roles": {
+              "trigger": {
+                "tag": "BUTTON",
+                "className": "[&_svg,&_[data-slot=central-icon]]:-mx-0.5 relative inline-flex cursor-pointer items-center rounded-lg border outline-none pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 focus-visible:ring-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 [&_svg:not([class*='opacity-'])]:opacity-80 [&_[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4.5 [&_[data-slot=central-icon]:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 sm:[&_[data-slot=central-icon]:not([class*='size-'])]:size-4 [&_svg,&_[data-slot=central-icon]]:pointer-events-none [&_svg,&_[data-slot=central-icon]]:shrink-0 gap-1.5 sm:h-7 border-transparent bg-transparent focus-visible:ring-[color:var(--color-border-focus)]/60 focus-visible:ring-offset-0 [:hover,[data-pressed]]:bg-[var(--color-background-elevated-secondary)] [:hover,[data-pressed]]:text-[var(--color-text-foreground)] data-pressed:bg-[var(--color-background-elevated-secondary)] min-w-0 justify-start overflow-hidden whitespace-nowrap px-1.5 [&_svg]:mx-0 text-[length:var(--app-font-size-ui-sm,11px)] text-[var(--color-text-foreground-secondary)] sm:text-[length:var(--app-font-size-ui-sm,11px)] font-normal hover:text-[var(--color-text-foreground)] data-pressed:text-[var(--color-text-foreground)] max-w-56 shrink sm:max-w-64 sm:px-1.5 h-7 py-1",
+                "text": "Work in a project",
+                "box": {
+                  "x": 408,
+                  "y": 520.75,
+                  "width": 122.859375,
+                  "height": 28
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(13, 13, 13, 0.04)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "popup": {
+                "tag": "DIV",
+                "className": "flex origin-(--transform-origin) outline-none focus:outline-none max-w-[92vw] composer-picker-menu composer-picker-menu--normal min-w-72 relative overflow-hidden bg-popover/70 text-popover-foreground before:pointer-events-none before:absolute before:inset-0 before:-z-1 before:rounded-[inherit] before:backdrop-blur-2xl before:backdrop-saturate-150 border border-border rounded-[0.65rem] shadow-[0_4px_18px_-6px_color-mix(in_srgb,var(--foreground)_7%,transparent)] dark:shadow-[0_6px_24px_-10px_rgba(0,0,0,0.30)]",
+                "text": "Folders on this Mac_pf_partsai_completionantigravity-claude-proxyApplicationsbinbytedconductorDesktopdim-agentDocumentsD",
+                "box": {
+                  "x": 408,
+                  "y": 259,
+                  "width": 288,
+                  "height": 258
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "oklab(0.999994 0.0000455677 0.0000200868 / 0.7)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10.4px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, color(srgb 0.0509804 0.0509804 0.0509804 / 0.07) 0px 4px 18px -6px",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "tag": "DIV",
+                "className": "flex min-h-0 flex-col w-full max-h-64 -m-1 overflow-clip rounded-[0.65rem]",
+                "text": "Folders on this Mac_pf_partsai_completionantigravity-claude-proxyApplicationsbinbytedconductorDesktopdim-agentDocumentsD",
+                "box": {
+                  "x": 409,
+                  "y": 260,
+                  "width": 278,
+                  "height": 256
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "10.4px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "search": {
+                "tag": "DIV",
+                "className": "sticky z-20 shrink-0 border-b border-[color:color-mix(in_srgb,var(--foreground)_6%,transparent)] bg-transparent px-1.5 pb-1.5 -top-1 pt-2",
+                "text": "",
+                "box": {
+                  "x": 409,
+                  "y": 260,
+                  "width": 278,
+                  "height": 43
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "color(srgb 0.0509804 0.0509804 0.0509804 / 0.06)",
+                  "borderWidth": "0px 0px 1px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "searchInput": {
+                "tag": "INPUT",
+                "className": "font-system-ui h-full w-full min-w-0 rounded-[inherit] border-0 bg-transparent outline-none placeholder:text-muted-foreground/72 [transition:background-color_5000000s_ease-in-out_0s] px-2.5 py-1 text-[length:var(--app-font-size-ui-sm,11px)] sm:text-[length:var(--app-font-size-ui-sm,11px)] [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-results-button]:appearance-none [&::-webkit-search-results-decoration]:appearance-none",
+                "text": "",
+                "box": {
+                  "x": 416,
+                  "y": 271.5,
+                  "width": 264,
+                  "height": 21
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "groupLabel": {
+                "tag": "DIV",
+                "className": "px-2 py-1.5 font-normal text-xs text-muted-foreground/45 data-inset:ps-9 sm:data-inset:ps-8 flex items-center gap-1.5",
+                "text": "Folders on this Mac",
+                "box": {
+                  "x": 409,
+                  "y": 305,
+                  "width": 278,
+                  "height": 28
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.268235)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "groupIcon": null,
+              "option": {
+                "tag": "DIV",
+                "className": "[&>svg,&>[data-slot=central-icon]]:-mx-0.5 flex cursor-default select-none items-center rounded-[0.5rem] text-[length:var(--type-ui-row-size)] leading-[var(--type-ui-row-line-height)] text-[var(--color-text-foreground)] outline-none data-disabled:pointer-events-none data-highlighted:bg-[var(--color-background-button-secondary-hover)] data-highlighted:text-[var(--color-text-foreground)] data-disabled:opacity-64 [&>svg:not([class*='opacity-']),&>[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&>svg,&>[data-slot=central-icon]]:pointer-events-none [&>svg,&>[data-slot=central-icon]]:shrink-0 data-inset:ps-8 data-[variant=destructive]:text-destructive",
+                "text": "_pf_parts",
+                "box": {
+                  "x": 409,
+                  "y": 333,
+                  "width": 278,
+                  "height": 26
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "optionIcon": null,
+              "optionTitle": {
+                "tag": "SPAN",
+                "className": "min-w-0 truncate",
+                "text": "_pf_parts",
+                "box": {
+                  "x": 439,
+                  "y": 337,
+                  "width": 54.828125,
+                  "height": 18
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "footer": {
+                "tag": "DIV",
+                "className": "border-t p-1",
+                "text": "New projectDon't work in a project",
+                "box": {
+                  "x": 409,
+                  "y": 451,
+                  "width": 278,
+                  "height": 65
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px 0px 0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "action": {
+                "tag": "BUTTON",
+                "className": "flex w-full items-center gap-2 rounded-md px-2 py-1 text-left text-sm transition-colors hover:bg-[var(--color-background-elevated-secondary)] hover:text-[var(--color-text-foreground)] disabled:cursor-not-allowed disabled:opacity-60",
+                "text": "New project",
+                "box": {
+                  "x": 413,
+                  "y": 456,
+                  "width": 270,
+                  "height": 28
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "actionIcon": {
+                "tag": "svg",
+                "className": "[object SVGAnimatedString]",
+                "text": "",
+                "box": {
+                  "x": 421,
+                  "y": 463,
+                  "width": 14,
+                  "height": 14
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.417255)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "browser/project-picker-open/web/styles.json",
+          "stylesData": {
+            "client": "web",
+            "stateId": "project-picker-open",
+            "roles": {
+              "trigger": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(13, 13, 13, 0.04)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "popup": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "oklab(0.999994 0.0000455677 0.0000200868 / 0.7)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10.4px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, color(srgb 0.0509804 0.0509804 0.0509804 / 0.07) 0px 4px 18px -6px",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "10.4px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "search": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "color(srgb 0.0509804 0.0509804 0.0509804 / 0.06)",
+                  "borderWidth": "0px 0px 1px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "searchInput": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "groupLabel": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.268235)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "groupIcon": null,
+              "option": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "optionIcon": null,
+              "optionTitle": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "footer": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px 0px 0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "action": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "actionIcon": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.417255)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "browser/project-picker-open/web/console.txt",
           "alignment": {
             "x": 0,
             "y": 0,
@@ -2657,15 +3234,617 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
           }
         },
         "lynx": {
-          "status": "pending",
-          "reason": "Current-build P10 Lynx-for-Web capture has not been retained.",
-          "path": null,
-          "comparisonPath": null,
-          "geometry": null,
-          "geometryData": null,
-          "styles": null,
-          "stylesData": null,
-          "console": null,
+          "status": "retained",
+          "reason": null,
+          "path": "browser/project-picker-open/lynx/raw.png",
+          "comparisonPath": "browser/project-picker-open/lynx/comparison.png",
+          "geometry": "browser/project-picker-open/lynx/geometry.json",
+          "geometryData": {
+            "client": "lynx",
+            "stateId": "project-picker-open",
+            "viewport": {
+              "width": 1280,
+              "height": 820,
+              "dpr": 1,
+              "visualWidth": 1280,
+              "visualHeight": 820
+            },
+            "roles": {
+              "trigger": {
+                "tag": "X-VIEW",
+                "className": "LxMenuTrigger LandingComposerProjectTrigger ComposerProjectPickerTriggerLynx ComposerProjectPickerTriggerLynx--open",
+                "text": "Work in a project",
+                "box": {
+                  "x": 408,
+                  "y": 520,
+                  "width": 122.859375,
+                  "height": 28
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(232, 242, 250)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "popup": {
+                "tag": "X-VIEW",
+                "className": "LxMenuPopup ComposerProjectPickerPopupLynx",
+                "text": "Folders on this Mac_pf_partsai_completionantigravity-claude-proxyApplicationsbinbytedconductorDesktopdim-agentDocumentsD",
+                "box": {
+                  "x": 408,
+                  "y": 259,
+                  "width": 288,
+                  "height": 258
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(255, 255, 255, 0.7)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10.4px",
+                  "shadow": "rgba(13, 13, 13, 0.07) 0px 4px 18px -6px",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "tag": "X-VIEW",
+                "className": "ComposerProjectPickerPanelLynx",
+                "text": "Folders on this Mac_pf_partsai_completionantigravity-claude-proxyApplicationsbinbytedconductorDesktopdim-agentDocumentsD",
+                "box": {
+                  "x": 409,
+                  "y": 260,
+                  "width": 278,
+                  "height": 256
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "search": {
+                "tag": "X-VIEW",
+                "className": "ComposerProjectPickerSearchLynx",
+                "text": "",
+                "box": {
+                  "x": 409,
+                  "y": 260,
+                  "width": 278,
+                  "height": 43
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13) rgb(13, 13, 13) rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px 0px 1px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "searchInput": {
+                "tag": "X-INPUT",
+                "className": "LxInput",
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "groupLabel": {
+                "tag": "X-VIEW",
+                "className": "ComposerProjectPickerGroupLabelLynx",
+                "text": "Folders on this Mac",
+                "box": {
+                  "x": 409,
+                  "y": 305,
+                  "width": 278,
+                  "height": 28
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "groupIcon": {
+                "tag": "X-SVG",
+                "className": "ComposerProjectPickerSpaceIconLynx",
+                "text": "",
+                "box": {
+                  "x": 417,
+                  "y": 313,
+                  "width": 12,
+                  "height": 12
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgba(13, 13, 13, 0.596)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.596)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.45"
+                }
+              },
+              "option": {
+                "tag": "X-VIEW",
+                "className": "LxButton LxButton--ghost LxButton--default LxMenuItem ComposerProjectPickerOptionLynx LxMenuItem--highlighted",
+                "text": "_pf_parts",
+                "box": {
+                  "x": 409,
+                  "y": 333,
+                  "width": 278,
+                  "height": 26
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(232, 242, 250)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "optionIcon": {
+                "tag": "X-SVG",
+                "className": "ComposerProjectPickerOptionIconLynx",
+                "text": "",
+                "box": {
+                  "x": 418,
+                  "y": 339,
+                  "width": 14,
+                  "height": 14
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgba(13, 13, 13, 0.596)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.596)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.7"
+                }
+              },
+              "optionTitle": {
+                "tag": "X-TEXT",
+                "className": "ComposerProjectPickerOptionTitleLynx",
+                "text": "_pf_parts",
+                "box": {
+                  "x": 440,
+                  "y": 337,
+                  "width": 54.828125,
+                  "height": 18
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "footer": {
+                "tag": "X-VIEW",
+                "className": "ComposerProjectPickerFooterLynx",
+                "text": "New projectDon't work in a project",
+                "box": {
+                  "x": 409,
+                  "y": 451,
+                  "width": 278,
+                  "height": 65
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07) rgb(13, 13, 13) rgb(13, 13, 13)",
+                  "borderWidth": "1px 0px 0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "action": {
+                "tag": "X-VIEW",
+                "className": "ComposerProjectPickerActionLynx",
+                "text": "New project",
+                "box": {
+                  "x": 413,
+                  "y": 456,
+                  "width": 270,
+                  "height": 28
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "actionIcon": {
+                "tag": "X-SVG",
+                "className": "ComposerProjectPickerActionIconLynx",
+                "text": "",
+                "box": {
+                  "x": 421,
+                  "y": 463,
+                  "width": 14,
+                  "height": 14
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgba(13, 13, 13, 0.596)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.596)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.7"
+                }
+              }
+            }
+          },
+          "styles": "browser/project-picker-open/lynx/styles.json",
+          "stylesData": {
+            "client": "lynx",
+            "stateId": "project-picker-open",
+            "roles": {
+              "trigger": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(232, 242, 250)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "popup": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(255, 255, 255, 0.7)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10.4px",
+                  "shadow": "rgba(13, 13, 13, 0.07) 0px 4px 18px -6px",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "search": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13) rgb(13, 13, 13) rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px 0px 1px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "searchInput": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "groupLabel": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "groupIcon": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgba(13, 13, 13, 0.596)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.596)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.45"
+                }
+              },
+              "option": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(232, 242, 250)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "optionIcon": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgba(13, 13, 13, 0.596)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.596)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.7"
+                }
+              },
+              "optionTitle": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "footer": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07) rgb(13, 13, 13) rgb(13, 13, 13)",
+                  "borderWidth": "1px 0px 0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "action": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "actionIcon": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgba(13, 13, 13, 0.596)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.596)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.7"
+                }
+              }
+            }
+          },
+          "console": "browser/project-picker-open/lynx/console.txt",
           "alignment": {
             "x": 0,
             "y": 0,

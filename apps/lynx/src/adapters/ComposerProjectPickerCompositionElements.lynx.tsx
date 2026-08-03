@@ -13,6 +13,7 @@ import {
 } from '../lib/icons.lynx';
 import { Input } from '../components/ui/input.lynx';
 import {
+  MenuItem,
   Menu,
   MenuPopupBase,
   MenuTrigger,
@@ -26,7 +27,7 @@ function ComposerProjectPickerTriggerElement(props: {
 }) {
   return (
     <view className="ComposerProjectPickerTriggerContentLynx">
-      <FolderIcon className="ComposerProjectPickerTriggerIconLynx" />
+      <FolderIcon className="ComposerProjectPickerTriggerIconLynx" size={14} />
       <view className="ComposerProjectPickerTriggerCopyLynx">
         <text className="ComposerProjectPickerTriggerLabelLynx">
           {props.primaryLabel}
@@ -56,7 +57,9 @@ export function ComposerProjectPickerFrameElement(props: {
   return (
     <Menu open={props.open} onOpenChange={props.onOpenChange}>
       <MenuTrigger
-        className="LandingComposerProjectTrigger ComposerProjectPickerTriggerLynx"
+        className={`LandingComposerProjectTrigger ComposerProjectPickerTriggerLynx${
+          props.open ? ' ComposerProjectPickerTriggerLynx--open' : ''
+        }`}
         ariaLabel={props.triggerLabel}
       >
         <ComposerProjectPickerTriggerElement
@@ -69,7 +72,7 @@ export function ComposerProjectPickerFrameElement(props: {
         className="ComposerProjectPickerPopupLynx"
         side={props.side}
         align={props.align}
-        sideOffset={6}
+        sideOffset={3}
       >
         {props.children}
       </MenuPopupBase>
@@ -141,7 +144,7 @@ export function ComposerProjectPickerGroupLabelElement(props: {
             : FolderIcon;
   return (
     <view className="ComposerProjectPickerGroupLabelLynx">
-      <Icon className="ComposerProjectPickerSpaceIconLynx" />
+      <Icon className="ComposerProjectPickerSpaceIconLynx" size={12} />
       <text className="ComposerProjectPickerGroupLabelTextLynx">
         {props.children}
       </text>
@@ -155,34 +158,31 @@ export function ComposerProjectPickerOptionElement(props: {
   readonly selected: boolean;
   readonly onSelect: () => void;
 }) {
-  const interaction = useLynxInteractiveState({
-    baseClassName: `ComposerProjectPickerOptionLynx${
-      props.selected ? ' ComposerProjectPickerOptionLynx--selected' : ''
-    }`,
-    accessibleLabel: props.primaryLabel,
-    onActivate: props.onSelect,
-  });
   return (
-    <view
-      className={interaction.className}
-      aria-selected={props.selected}
-      {...interaction.eventProps}
+    <MenuItem
+      className={`ComposerProjectPickerOptionLynx${
+        props.selected ? ' ComposerProjectPickerOptionLynx--selected' : ''
+      }`}
+      ariaSelected={props.selected}
+      onClick={props.onSelect}
     >
-      <FolderIcon className="ComposerProjectPickerOptionIconLynx" />
-      <view className="ComposerProjectPickerOptionCopyLynx">
-        <text className="ComposerProjectPickerOptionTitleLynx">
-          {props.primaryLabel}
-        </text>
-        {props.secondaryLabel ? (
-          <text className="ComposerProjectPickerOptionSecondaryLynx">
-            {props.secondaryLabel}
+      <view className="ComposerProjectPickerOptionContentLynx">
+        <FolderIcon className="ComposerProjectPickerOptionIconLynx" size={14} />
+        <view className="ComposerProjectPickerOptionCopyLynx">
+          <text className="ComposerProjectPickerOptionTitleLynx">
+            {props.primaryLabel}
           </text>
-        ) : null}
+          {props.secondaryLabel ? (
+            <text className="ComposerProjectPickerOptionSecondaryLynx">
+              {props.secondaryLabel}
+            </text>
+          ) : null}
+        </view>
+        <text className="ComposerProjectPickerCheckLynx">
+          {props.selected ? '✓' : ''}
+        </text>
       </view>
-      <text className="ComposerProjectPickerCheckLynx">
-        {props.selected ? '✓' : ''}
-      </text>
-    </view>
+    </MenuItem>
   );
 }
 
@@ -235,7 +235,7 @@ export function ComposerProjectPickerActionElement(props: {
         : RefreshCwIcon;
   return (
     <view className={interaction.className} {...interaction.eventProps}>
-      <Icon className="ComposerProjectPickerActionIconLynx" />
+      <Icon className="ComposerProjectPickerActionIconLynx" size={14} />
       <text className="ComposerProjectPickerActionTextLynx">
         {props.children}
       </text>

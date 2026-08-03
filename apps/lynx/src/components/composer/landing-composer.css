@@ -12,7 +12,7 @@
   width: 100%;
   min-height: 58px;
   margin-top: -20px;
-  padding: 24px 0 6px;
+  padding: 24px 8px 6px;
   align-items: center;
   border-bottom-left-radius: 19.2px;
   border-bottom-right-radius: 19.2px;
@@ -24,13 +24,15 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 7px;
-  padding: 4px 8px;
-  border-radius: 8px;
+  gap: 6px;
+  padding: 4px 6px;
+  border: 1px solid transparent;
+  border-radius: 10px;
 }
 
 .ComposerProjectPickerTriggerLynx.ui-hover,
-.ComposerProjectPickerTriggerLynx.ui-pressed {
+.ComposerProjectPickerTriggerLynx.ui-pressed,
+.ComposerProjectPickerTriggerLynx--open {
   background-color: var(--accent);
 }
 
@@ -43,7 +45,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 7px;
+  gap: 6px;
 }
 
 .ComposerProjectPickerTriggerIconLynx {
@@ -65,6 +67,7 @@
   max-width: 260px;
   overflow: hidden;
   font-size: 11px;
+  line-height: 16.5px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -83,25 +86,39 @@
   max-height: 258px;
   padding: 0;
   overflow: hidden;
+  border-radius: 10.4px;
+  background-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 4px 18px -6px rgba(13, 13, 13, 0.07);
+}
+
+.SliceRoot--theme-dark .ComposerProjectPickerPopupLynx.LxMenuPopup {
+  background-color: rgba(23, 23, 23, 0.7);
+  box-shadow: 0 6px 24px -10px rgba(0, 0, 0, 0.3);
 }
 
 .ComposerProjectPickerPanelLynx {
   display: flex;
   flex-direction: column;
+  width: 278px;
   min-height: 0;
 }
 
 .ComposerProjectPickerSearchLynx {
   flex-shrink: 0;
-  padding: 5px 6px;
+  padding: 8px 6px 6px;
   border-bottom: 1px solid var(--border);
-  background-color: var(--composer-surface);
+  background-color: transparent;
+}
+
+.ComposerProjectPickerSearchLynx .LxInput {
+  font-size: 11px;
+  line-height: 16.5px;
 }
 
 .ComposerProjectPickerListLynx {
   width: 100%;
   max-height: 256px;
-  padding: 4px;
+  padding: 2px 0;
 }
 
 .ComposerProjectPickerGroupLynx {
@@ -126,7 +143,10 @@
 
 .ComposerProjectPickerGroupLabelTextLynx {
   color: var(--muted-foreground);
-  font-size: 10px;
+  font-size: var(--type-ui-row-size);
+  font-weight: 400;
+  line-height: 16px;
+  opacity: 0.45;
 }
 
 .ComposerProjectPickerSpaceIconLynx {
@@ -134,16 +154,22 @@
   height: 12px;
   flex-shrink: 0;
   color: var(--muted-foreground);
+  opacity: 0.45;
 }
 
-.ComposerProjectPickerOptionLynx {
+.ComposerProjectPickerOptionLynx.LxMenuItem {
   min-height: 26px;
+  padding: 3px 8px;
+  border-radius: 8px;
+}
+
+.ComposerProjectPickerOptionContentLynx {
   display: flex;
+  width: 100%;
+  min-width: 0;
   flex-direction: row;
   align-items: center;
   gap: 8px;
-  padding: 3px 8px;
-  border-radius: 6px;
 }
 
 .ComposerProjectPickerOptionLynx--selected,
@@ -162,6 +188,7 @@
   height: 14px;
   flex-shrink: 0;
   color: var(--muted-foreground);
+  opacity: 0.7;
 }
 
 .ComposerProjectPickerOptionCopyLynx {
@@ -176,7 +203,8 @@
 .ComposerProjectPickerOptionTitleLynx,
 .ComposerProjectPickerOptionSecondaryLynx {
   overflow: hidden;
-  font-size: 11px;
+  font-size: var(--type-ui-row-size);
+  line-height: var(--type-ui-row-line-height);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -187,6 +215,7 @@
 
 .ComposerProjectPickerOptionSecondaryLynx {
   color: var(--muted-foreground);
+  opacity: 0.6;
 }
 
 .ComposerProjectPickerCheckLynx {
@@ -208,8 +237,8 @@
   flex-direction: row;
   align-items: center;
   gap: 8px;
-  padding: 5px 8px;
-  border-radius: 6px;
+  padding: 4px 8px;
+  border-radius: 8px;
 }
 
 .ComposerProjectPickerActionLynx.ui-hover,
@@ -219,7 +248,8 @@
 
 .ComposerProjectPickerActionTextLynx {
   color: var(--foreground);
-  font-size: 11px;
+  font-size: 14px;
+  line-height: 20px;
 }
 
 .ComposerProjectPickerEmptyLynx {

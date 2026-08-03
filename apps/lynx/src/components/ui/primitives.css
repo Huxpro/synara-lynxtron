@@ -536,7 +536,8 @@
 }
 
 .LxMenuItem.ui-hover,
-.LxMenuItem.ui-focus {
+.LxMenuItem.ui-focus,
+.LxMenuItem--highlighted {
   background-color: var(--accent);
 }
 

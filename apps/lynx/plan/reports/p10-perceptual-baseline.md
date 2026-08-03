@@ -140,13 +140,13 @@ therefore remain red. No user state was touched.
 ## Current strict status
 
 - 6 canonical states.
-- 10 incomplete required client cells.
+- 8 incomplete required client cells.
 - 0 open P0/P1 residuals in measured Browser states.
 - Strict verifier exits `2` as designed.
 
 ## Next
 
-1. Project Picker open and filtered skill menu Browser baselines.
+1. Filtered skill menu Browser baseline.
 2. Typography role contract across overlays, transcript, buttons, and chips.
 3. A PID-gated Native capture helper that completes DOM/style/screenshot
    collection before the transient DevTool endpoint is released.

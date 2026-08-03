@@ -401,6 +401,7 @@
       "theme": "light",
       "density": "comfortable",
       "interactionState": "project-picker-open",
+      "snapshotSha256": "391f0871debfa1bc5493fd40d22f792036f219ef7e86db7c28a613727c1c7469",
       "viewport": {
         "width": 1280,
         "height": 820,
@@ -411,15 +412,120 @@
         "lynx",
         "native"
       ],
-      "residuals": [],
+      "residuals": [
+        {
+          "id": "project-picker-popup-direction",
+          "category": "GEOMETRY",
+          "severity": "P1",
+          "status": "fixed",
+          "owner": "LandingComposer project picker composition",
+          "summary": "Lynx omitted the Web landing picker's explicit top placement and opened below the trigger against the viewport edge.",
+          "impact": "The overlay occupied a different visual region and made the same composition read as a different interaction.",
+          "recommendation": "Keep landing overlay side and offset explicit at the shared composition call site.",
+          "evidence": "browser/project-picker-open/lynx/geometry.json",
+          "reason": "The 288x258 popup now matches Web exactly at x=408, y=259."
+        },
+        {
+          "id": "project-picker-inner-rails",
+          "category": "GEOMETRY",
+          "severity": "P1",
+          "status": "fixed",
+          "owner": "ComposerProjectPickerPanelLynx",
+          "summary": "Lynx filled the 286px popup interior while Web uses a 278px inset panel shell.",
+          "impact": "Search, rows, footer, and action controls all missed the authority rail by four pixels per side.",
+          "recommendation": "Own the 278px panel rail once in the Project Picker adapter.",
+          "evidence": "browser/project-picker-open/lynx/geometry.json",
+          "reason": "Panel, search, group, option, footer, and action boxes now match Web exactly."
+        },
+        {
+          "id": "project-picker-text-and-icon-metrics",
+          "category": "TYPOGRAPHY",
+          "severity": "P1",
+          "status": "fixed",
+          "owner": "Project Picker semantic rows and generated Lynx icon sizing",
+          "summary": "Lynx options rendered at 11px with implicit 13px line boxes and generated SVGs ignored CSS width in favor of their 16px inline size.",
+          "impact": "Repeated rows accumulated a visibly denser rhythm and shifted text rails.",
+          "recommendation": "Use explicit semantic line boxes and pass optical icon size through the generated icon API.",
+          "evidence": "browser/project-picker-open/lynx/geometry.json",
+          "reason": "Option titles are 12px/18px, icons are explicit 14px, and the text baseline rail is within one pixel."
+        },
+        {
+          "id": "project-picker-default-highlight",
+          "category": "INTERACTION",
+          "severity": "P1",
+          "status": "fixed",
+          "owner": "shared Lynx MenuItem navigation primitive",
+          "summary": "Web auto-highlighted the first enabled option on open while Lynx Project Picker rows bypassed Menu registration.",
+          "impact": "Keyboard readiness and the immediate selected visual feedback differed at the moment the overlay opened.",
+          "recommendation": "Render Project Picker options through the shared MenuItem registration and highlighted-state contract.",
+          "evidence": "browser/project-picker-open/lynx/styles.json",
+          "reason": "The first option now carries LxMenuItem--highlighted and the same accent fill as Web."
+        },
+        {
+          "id": "project-picker-web-input-box",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Lynx-for-Web x-input host element",
+          "summary": "The custom element reports a zero-sized inner x-input while its visible 266x28 control shell is measurable.",
+          "impact": "Browser harness cannot use the inner node as a text baseline box, but the rendered search control remains visible and aligned.",
+          "recommendation": "Use the search shell for Browser geometry and certify native input metrics in the Native batch.",
+          "evidence": "browser/project-picker-open/lynx/geometry.json",
+          "reason": "This is a Lynx-for-Web custom-element measurement boundary; no content or control chrome is hidden."
+        }
+      ],
       "evidence": {
         "web": {
-          "status": "pending",
-          "reason": "Current-build P10 Web capture has not been retained."
+          "status": "retained",
+          "path": "browser/project-picker-open/web/raw.png",
+          "comparisonPath": "browser/project-picker-open/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "b502e31feff3d4b6f9bca3324f8b806c547741c56efd37dc78839647a9daf549",
+          "snapshotSha256": "391f0871debfa1bc5493fd40d22f792036f219ef7e86db7c28a613727c1c7469",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "browser/project-picker-open/web/geometry.json",
+          "styles": "browser/project-picker-open/web/styles.json",
+          "console": "browser/project-picker-open/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "project-picker-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
         },
         "lynx": {
-          "status": "pending",
-          "reason": "Current-build P10 Lynx-for-Web capture has not been retained."
+          "status": "retained",
+          "path": "browser/project-picker-open/lynx/raw.png",
+          "comparisonPath": "browser/project-picker-open/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "657f68b42dbb48c9df0b177b47b43cb7dbd7de8d42cfa3a5a1dcdfbc11657ff7",
+          "snapshotSha256": "391f0871debfa1bc5493fd40d22f792036f219ef7e86db7c28a613727c1c7469",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "browser/project-picker-open/lynx/geometry.json",
+          "styles": "browser/project-picker-open/lynx/styles.json",
+          "console": "browser/project-picker-open/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "project-picker-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
         },
         "native": {
           "status": "pending",

@@ -92,10 +92,37 @@ tests cover both a valid later capture and client drift within that capture.
 
 Phase 1 is not complete until:
 
-- Project Picker and filtered skill-menu typography are retained from
-  like-for-like states;
+- filtered skill-menu typography is retained from a like-for-like state;
 - route/thread/transcript/status/button/chip roles are measured;
 - light/dark and both target sizes are covered;
 - Native font fallback, weight mapping, baseline, wrapping, and truncation are
   certified;
 - no open P0/P1 typography residual remains.
+
+## Project Picker measurement
+
+The unselected New Chat Project Picker now has retained Web and Lynx-for-Web
+evidence at light/comfortable `1280×820`, DPR 1. The capture uses the same
+directory list, open state, and online-backup snapshot
+`391f0871debfa1bc5493fd40d22f792036f219ef7e86db7c28a613727c1c7469`.
+
+Closed root causes:
+
+- Landing Lynx omitted the explicit top placement used by Web.
+- The Lynx tray omitted the Web 8px content inset.
+- The Lynx panel filled the 286px popup interior instead of the 278px inset
+  panel rail.
+- Option text used an implicit 11px/13px line box instead of 12px/18px.
+- Generated SVG inline size kept icons at 16px despite smaller CSS boxes.
+- Project options bypassed shared Menu registration, so the first enabled item
+  did not receive the default keyboard highlight.
+
+Post-fix popup, panel, search, group, option, footer, and action geometry is
+exact. The option title rail differs by 1px, within the baseline contract.
+Project options now reuse `MenuItem`, preserving visual order, default
+highlight, activation, and Escape behavior without entering Native shortcut or
+general keyboard repair.
+
+The Browser custom-element inner `x-input` still reports a zero-sized box. Its
+visible search shell is measurable and aligned; actual input metrics remain a
+Native certification item.

@@ -386,6 +386,8 @@ export function LandingComposer(props: {
         <ComposerProjectPickerComposition
           model={projectPickerModel}
           open={projectPickerOpen}
+          align="start"
+          side="top"
           onOpenChange={handleProjectPickerOpenChange}
           onQueryChange={setProjectQuery}
           onSelectOption={(option) => {

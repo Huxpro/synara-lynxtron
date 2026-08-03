@@ -4971,3 +4971,20 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   `cbbbc86e…` capture前后online backup一致；Web build `47343fc6…`、Lynx Web
   `7790c088…`，fresh page errors均空。measured Browser open P0/P1回到0；strict仍因
   10个Native/overlay required cells incomplete而exit 2。
+
+## 2026-08-04 — P10 Project Picker Browser convergence
+
+- 用全新Web/Lynx session建立同一unselected New Chat、light/comfortable、1280×820、
+  DPR1 state；两端目录内容一致，snapshot `391f0871…` capture前后online backup一致，
+  fresh page errors空。
+- 关闭4个root-cause residual：Landing Lynx遗漏Web显式top placement；tray遗漏8px
+  content inset；panel错误填满286px interior而非278px inset rail；option仍用11px/13px
+  implicit line box且generated SVG inline size把icons撑回16px。
+- popup/panel/search/group/option/footer/action geometry全部与Web exact；option title rail仅
+  +1px。trigger保留既有landing Y -0.75px，处于≤1px optical gate。
+- Project Picker option从私有interactive wrapper迁移到shared `MenuItem`注册，补齐首个
+  enabled item默认highlight、visual-order navigation、activation与Escape；未进入Native
+  shortcut/general keyboard repair。
+- Lynx-for-Web inner `x-input`仍报告0×0，登记P3 host measurement delta；visible search
+  shell exact，真实input metrics留Native认证。atlas strict **10→8 incomplete / 0
+  blocking**。
