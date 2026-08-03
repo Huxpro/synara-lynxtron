@@ -259,6 +259,28 @@
         font-size: 11px;
       }
 
+      .frame-status {
+        margin-left: 8px;
+        padding: 2px 6px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--muted);
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .frame-status[data-status="retained"] {
+        border-color: color-mix(in srgb, var(--good) 45%, var(--line));
+        color: var(--good);
+      }
+
+      .frame-status[data-status="diagnostic"] {
+        border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
+        color: var(--accent);
+      }
+
       .image-button {
         display: block;
         width: 100%;
@@ -482,10 +504,10 @@
           </p>
         </div>
         <div class="summary" aria-label="Evidence summary">
-          <div><strong>26</strong><span>页面与细节状态</span></div>
+          <div><strong id="screenCount">26</strong><span>页面与细节状态</span></div>
           <div><strong>4</strong><span>主题 × 尺寸组合</span></div>
-          <div><strong>87</strong><span>Browser client frames</span></div>
-          <div><strong>31</strong><span>画廊 Native frames</span></div>
+          <div><strong id="browserFrameCount">87</strong><span>Browser client frames</span></div>
+          <div><strong id="nativeFrameCount">31</strong><span>画廊 Native frames</span></div>
         </div>
       </header>
 
@@ -532,7 +554,12 @@
       </div>
     </dialog>
 
+    <script src="../p9-u5-composer/manifest.js"></script>
     <script>
+      const composerEvidence = globalThis.__SYNARA_COMPOSER_EVIDENCE__ ?? {
+        screens: [],
+        cases: [],
+      };
       const coreScreens = [
         { id: "threads", label: "Threads", note: "threads-thread/notes.md" },
         { id: "thread", label: "Thread transcript", note: "threads-thread/notes.md" },
@@ -541,7 +568,7 @@
         { id: "kanban", label: "Project Kanban", note: "kanban/notes.md" },
         { id: "pull-requests", label: "Pull Requests", note: "pull-requests/notes.md" },
       ];
-      const screens = [
+      const legacyScreens = [
         ...coreScreens,
         {
           id: "settings-behavior",
@@ -574,36 +601,6 @@
           note: "../command-k/checklist.md",
         },
         {
-          id: "composer-extras",
-          label: "Composer · Extras menu",
-          note: "../composer-details/notes.md",
-        },
-        {
-          id: "composer-project-picker",
-          label: "Composer · Project picker",
-          note: "../composer-details/notes.md",
-        },
-        {
-          id: "composer-skill-menu",
-          label: "Composer · Skill results",
-          note: "../composer-details/notes.md",
-        },
-        {
-          id: "composer-skill-selected",
-          label: "Composer · Selected skill",
-          note: "../composer-details/notes.md",
-        },
-        {
-          id: "composer-mention-menu",
-          label: "Composer · Mention results",
-          note: "../composer-details/notes.md",
-        },
-        {
-          id: "composer-mention-selected",
-          label: "Composer · Selected mention",
-          note: "../composer-details/notes.md",
-        },
-        {
           id: "command-k-add-project",
           label: "Command K · Add project",
           note: "../p9-u4-browser/notes.md",
@@ -623,26 +620,10 @@
           label: "Command K · Error and retry",
           note: "../p9-u4-browser/notes.md",
         },
-        {
-          id: "composer-plan-on",
-          label: "Composer · Plan mode on",
-          note: "../p9-u4-browser/notes.md",
-        },
-        {
-          id: "composer-fast-on",
-          label: "Composer · Fast mode on",
-          note: "../p9-u4-browser/notes.md",
-        },
-        {
-          id: "composer-project-reset",
-          label: "Composer · Project reset",
-          note: "../p9-u4-browser/notes.md",
-        },
-        {
-          id: "composer-tokens-cleared",
-          label: "Composer · Tokens cleared",
-          note: "../p9-u4-browser/notes.md",
-        },
+      ];
+      const screens = [
+        ...legacyScreens,
+        ...composerEvidence.screens,
       ];
 
       const variants = [
@@ -665,7 +646,7 @@
           lynxMetrics: `${screen.id}/${variant.theme}-${variant.size}/lynx-metrics.json`,
         }))
       );
-      const cases = [
+      const legacyCases = [
         ...coreCases,
         {
           id: "settings-behavior",
@@ -812,102 +793,6 @@
           lynxMetrics: null,
         },
         {
-          id: "composer-extras",
-          label: "Composer · Extras menu",
-          note: "../composer-details/notes.md",
-          theme: "light",
-          size: "1280",
-          browserSize: "1280 × 820",
-          nativeSize: "Native batch pending",
-          key: "composer-extras-light-1280",
-          state: "light-1280",
-          web: "../composer-details/browser/extras-default-1280/web-menu.png",
-          lynx: "../composer-details/browser/extras-default-1280/lynx-menu.png",
-          native: null,
-          webMetrics: null,
-          lynxMetrics: null,
-        },
-        {
-          id: "composer-project-picker",
-          label: "Composer · Project picker",
-          note: "../composer-details/notes.md",
-          theme: "light",
-          size: "1280",
-          browserSize: "1280 × 820",
-          nativeSize: "Native batch pending",
-          key: "composer-project-picker-light-1280",
-          state: "light-1280",
-          web: "../composer-details/browser/project-picker-1280/web-open.png",
-          lynx: "../composer-details/browser/project-picker-1280/lynx-open.png",
-          native: null,
-          webMetrics: null,
-          lynxMetrics: null,
-        },
-        {
-          id: "composer-skill-menu",
-          label: "Composer · Skill results",
-          note: "../composer-details/notes.md",
-          theme: "light",
-          size: "1280",
-          browserSize: "1280 × 820",
-          nativeSize: "Native batch pending",
-          key: "composer-skill-menu-light-1280",
-          state: "light-1280",
-          web: "../composer-details/browser/skills-mentions-1280/web-skill-menu.png",
-          lynx: "../composer-details/browser/skills-mentions-1280/lynx-skill-menu.png",
-          native: null,
-          webMetrics: null,
-          lynxMetrics: null,
-        },
-        {
-          id: "composer-skill-selected",
-          label: "Composer · Selected skill",
-          note: "../composer-details/notes.md",
-          theme: "light",
-          size: "1280",
-          browserSize: "1280 × 820",
-          nativeSize: "Native batch pending",
-          key: "composer-skill-selected-light-1280",
-          state: "light-1280",
-          web: "../composer-details/browser/skills-mentions-1280/web-skill-selected.png",
-          lynx: "../composer-details/browser/skills-mentions-1280/lynx-skill-selected.png",
-          native: null,
-          webMetrics: null,
-          lynxMetrics: null,
-        },
-        {
-          id: "composer-mention-menu",
-          label: "Composer · Mention results",
-          note: "../composer-details/notes.md",
-          theme: "light",
-          size: "1280",
-          browserSize: "1280 × 820",
-          nativeSize: "Native batch pending",
-          key: "composer-mention-menu-light-1280",
-          state: "light-1280",
-          web: "../composer-details/browser/skills-mentions-1280/web-mention-menu.png",
-          lynx: "../composer-details/browser/skills-mentions-1280/lynx-mention-menu.png",
-          native: null,
-          webMetrics: null,
-          lynxMetrics: null,
-        },
-        {
-          id: "composer-mention-selected",
-          label: "Composer · Selected mention",
-          note: "../composer-details/notes.md",
-          theme: "light",
-          size: "1280",
-          browserSize: "1280 × 820",
-          nativeSize: "Native batch pending",
-          key: "composer-mention-selected-light-1280",
-          state: "light-1280",
-          web: "../composer-details/browser/skills-mentions-1280/web-mention-selected.png",
-          lynx: "../composer-details/browser/skills-mentions-1280/lynx-mention-selected.png",
-          native: null,
-          webMetrics: null,
-          lynxMetrics: null,
-        },
-        {
           id: "command-k-add-project",
           label: "Command K · Add project",
           note: "../p9-u4-browser/notes.md",
@@ -971,70 +856,10 @@
           webMetrics: null,
           lynxMetrics: null,
         },
-        {
-          id: "composer-plan-on",
-          label: "Composer · Plan mode on",
-          note: "../p9-u4-browser/notes.md",
-          theme: "light",
-          size: "1280",
-          browserSize: "1280 × 820",
-          nativeSize: "2560 × 1576",
-          key: "composer-plan-on-light-1280",
-          state: "light-1280",
-          web: "../p9-u4-browser/composer/web-plan-on.png",
-          lynx: "../composer-details/browser/extras-default-1280/lynx-plan-menu.png",
-          native: "../p9-u4-native/composer/plan-on-menu.png",
-          webMetrics: null,
-          lynxMetrics: null,
-        },
-        {
-          id: "composer-fast-on",
-          label: "Composer · Fast mode on",
-          note: "../p9-u4-browser/notes.md",
-          theme: "light",
-          size: "1280",
-          browserSize: "1280 × 820",
-          nativeSize: "2560 × 1576",
-          key: "composer-fast-on-light-1280",
-          state: "light-1280",
-          web: "../p9-u4-browser/composer/web-fast-on-clean.png",
-          lynx: null,
-          native: "../p9-u4-native/composer/plan-on-menu.png",
-          webMetrics: null,
-          lynxMetrics: null,
-        },
-        {
-          id: "composer-project-reset",
-          label: "Composer · Project reset",
-          note: "../p9-u4-browser/notes.md",
-          theme: "light",
-          size: "1280",
-          browserSize: "1280 × 820",
-          nativeSize: "2560 × 1576",
-          key: "composer-project-reset-light-1280",
-          state: "light-1280",
-          web: "../p9-u4-browser/composer/web-project-reset.png",
-          lynx: null,
-          native: "../p9-u4-native/composer/project-reset.png",
-          webMetrics: null,
-          lynxMetrics: null,
-        },
-        {
-          id: "composer-tokens-cleared",
-          label: "Composer · Tokens cleared",
-          note: "../p9-u4-browser/notes.md",
-          theme: "light",
-          size: "1280",
-          browserSize: "1280 × 820",
-          nativeSize: "Native text input deferred",
-          key: "composer-tokens-cleared-light-1280",
-          state: "light-1280",
-          web: "../p9-u4-browser/composer/web-mention-cleared.png",
-          lynx: null,
-          native: null,
-          webMetrics: null,
-          lynxMetrics: null,
-        },
+      ];
+      const cases = [
+        ...legacyCases,
+        ...composerEvidence.cases,
       ];
 
       const filters = { theme: "all", size: "all", screen: "all" };
@@ -1054,18 +879,21 @@
         screenFilter.append(option);
       });
 
-      function frame(label, state, src, alt, ratio) {
+      function frame(label, state, src, alt, ratio, status = "retained", missingReason = null) {
         if (!src) {
           return `
             <article class="frame">
               <div class="frame-head">
                 <span class="frame-label">${label}</span>
-                <span class="frame-state">${state}</span>
+                <span>
+                  <span class="frame-state">${state}</span>
+                  <span class="frame-status" data-status="${status}">${status}</span>
+                </span>
               </div>
               <div class="frame-missing">
                 <span>
                   <strong>未保留该 ${label} cell</strong>
-                  该状态由其余运行表面或 capability evidence 完成验证。
+                  ${missingReason ?? "该状态尚未完成有效证据采集。"}
                 </span>
               </div>
             </article>
@@ -1075,7 +903,10 @@
           <article class="frame">
             <div class="frame-head">
               <span class="frame-label">${label}</span>
-              <span class="frame-state">${state}</span>
+              <span>
+                <span class="frame-state">${state}</span>
+                <span class="frame-status" data-status="${status}">${status}</span>
+              </span>
             </div>
             <button class="image-button" type="button" data-image="${src}" data-title="${alt}">
               <img src="${src}" alt="${alt}" loading="lazy" style="--image-ratio:${ratio}" />
@@ -1104,9 +935,9 @@
                       <span class="case-meta">${item.theme.toUpperCase()} · ${item.browserSize}</span>
                     </header>
                     <div class="frames">
-                      ${frame("Web authority", item.browserSize, item.web, `${item.label} · Web · ${item.theme} ${item.browserSize}`, "1280 / 820")}
-                      ${frame("Lynx-for-Web", item.browserSize, item.lynx, `${item.label} · Lynx Web · ${item.theme} ${item.browserSize}`, "1280 / 820")}
-                      ${frame("Lynxtron Native", item.nativeSize, item.native, `${item.label} · Native · ${item.theme} ${item.browserSize}`, item.size === "1280" ? "2560 / 1576" : "2880 / 1736")}
+                      ${frame("Web authority", item.browserSize, item.web, `${item.label} · Web · ${item.theme} ${item.browserSize}`, "1280 / 820", item.webStatus, item.webMissingReason)}
+                      ${frame("Lynx-for-Web", item.browserSize, item.lynx, `${item.label} · Lynx Web · ${item.theme} ${item.browserSize}`, "1280 / 820", item.lynxStatus, item.lynxMissingReason)}
+                      ${frame("Lynxtron Native", item.nativeSize, item.native, `${item.label} · Native · ${item.theme} ${item.browserSize}`, item.size === "1280" ? "2560 / 1576" : "2880 / 1736", item.nativeStatus, item.nativeMissingReason)}
                     </div>
                     <div class="case-links">
                       <a href="${item.note}">阅读该界面 notes</a>
@@ -1170,6 +1001,14 @@
         if (event.key === "ArrowLeft") stepLightbox(-1);
         if (event.key === "ArrowRight") stepLightbox(1);
       });
+
+      document.querySelector("#screenCount").textContent = String(screens.length);
+      document.querySelector("#browserFrameCount").textContent = String(
+        cases.reduce((count, item) => count + (item.web ? 1 : 0) + (item.lynx ? 1 : 0), 0)
+      );
+      document.querySelector("#nativeFrameCount").textContent = String(
+        cases.reduce((count, item) => count + (item.native ? 1 : 0), 0)
+      );
 
       render();
     </script>

@@ -20,7 +20,10 @@
     "audit:reuse": "node scripts/reuse-audit.mjs",
     "audit:reuse:check": "node scripts/reuse-audit.mjs --check",
     "audit:style": "node scripts/style-audit.mjs",
-    "audit:style:check": "node scripts/style-audit.mjs --check"
+    "audit:style:check": "node scripts/style-audit.mjs --check",
+    "evidence:composer": "node scripts/composer-evidence.mjs",
+    "evidence:composer:write": "node scripts/composer-evidence.mjs --allow-incomplete --write",
+    "test:evidence:composer": "node --test scripts/composer-evidence.test.mjs"
   },
   "private": true,
   "devDependencies": {

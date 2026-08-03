@@ -1,0 +1,787 @@
+{
+  "version": 1,
+  "id": "p9-u5-composer",
+  "label": "Composer fidelity",
+  "note": "../p9-u5-composer/notes.md",
+  "defaults": {
+    "route": "/",
+    "theme": "light",
+    "viewport": {
+      "width": 1280,
+      "height": 820,
+      "devicePixelRatio": 1
+    },
+    "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+    "selectedProject": null,
+    "workspaceRoot": null,
+    "interactionMode": "default",
+    "fastMode": false,
+    "draft": "",
+    "caret": {
+      "start": 0,
+      "end": 0
+    },
+    "tokenKind": null,
+    "tokenState": "none",
+    "skills": [],
+    "mentions": []
+  },
+  "states": [
+    {
+      "id": "composer-default",
+      "label": "Composer · Default landing",
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "state": {},
+      "evidence": {
+        "web": {
+          "status": "diagnostic",
+          "path": "../composer-details/browser/extras-default-1280/web.png",
+          "reason": "Legacy capture lacks a recorded production build hash and exact state assertion."
+        },
+        "lynx": {
+          "status": "diagnostic",
+          "path": "../composer-details/browser/extras-default-1280/lynx-before.png",
+          "reason": "Legacy capture lacks a recorded production build hash and exact state assertion."
+        },
+        "native": {
+          "status": "pending",
+          "reason": "No dedicated default-state Native frame with exact assertions is retained."
+        }
+      }
+    },
+    {
+      "id": "composer-extras-default",
+      "label": "Composer · Extras open · Plan off · Fast default",
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "state": {
+        "overlay": "extras"
+      },
+      "evidence": {
+        "web": {
+          "status": "diagnostic",
+          "path": "../composer-details/browser/extras-default-1280/web-menu.png",
+          "reason": "Legacy capture lacks a recorded production build hash."
+        },
+        "lynx": {
+          "status": "diagnostic",
+          "path": "../composer-details/browser/extras-default-1280/lynx-menu.png",
+          "reason": "Legacy capture lacks a recorded production build hash."
+        },
+        "native": {
+          "status": "pending",
+          "reason": "Existing Native extras frame was not asserted as Plan off and Fast default."
+        }
+      }
+    },
+    {
+      "id": "composer-plan-on",
+      "label": "Composer · Plan on · Fast default",
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "state": {
+        "overlay": "extras",
+        "interactionMode": "plan"
+      },
+      "evidence": {
+        "web": {
+          "status": "diagnostic",
+          "path": "../p9-u4-browser/composer/web-plan-on.png",
+          "reason": "Legacy capture lacks a recorded production build hash."
+        },
+        "lynx": {
+          "status": "diagnostic",
+          "path": "../composer-details/browser/extras-default-1280/lynx-plan-menu.png",
+          "reason": "Legacy capture lacks a recorded production build hash."
+        },
+        "native": {
+          "status": "pending",
+          "reason": "Existing Native frame has both Plan and Fast selected and is rejected for this Plan-only state."
+        }
+      }
+    },
+    {
+      "id": "composer-fast-on",
+      "label": "Composer · Plan off · Fast on",
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "state": {
+        "overlay": "extras",
+        "fastMode": true
+      },
+      "evidence": {
+        "web": {
+          "status": "diagnostic",
+          "path": "../p9-u4-browser/composer/web-fast-on-clean.png",
+          "reason": "Legacy capture lacks a recorded production build hash."
+        },
+        "lynx": {
+          "status": "pending",
+          "reason": "A dedicated Lynx-for-Web Fast-only frame was never retained."
+        },
+        "native": {
+          "status": "pending",
+          "reason": "Existing Native frame has both Plan and Fast selected and is rejected for this Fast-only state."
+        }
+      }
+    },
+    {
+      "id": "composer-plan-fast-on",
+      "label": "Composer · Plan on · Fast on",
+      "requiredClients": [
+        "web",
+        "lynx"
+      ],
+      "optionalClients": [
+        "native"
+      ],
+      "state": {
+        "overlay": "extras",
+        "interactionMode": "plan",
+        "fastMode": true
+      },
+      "evidence": {
+        "web": {
+          "status": "pending",
+          "reason": "No dedicated combined-state Web frame was retained."
+        },
+        "lynx": {
+          "status": "pending",
+          "reason": "No dedicated combined-state Lynx-for-Web frame was retained."
+        },
+        "native": {
+          "status": "retained",
+          "path": "native/normalized/plan-on-menu.png",
+          "captureTier": "native",
+          "buildSha256": "512d81535eeb5f679da5e75c6238fb6879f7427d23059c8ac1ebfb6a29f45239",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "assertions": "../p9-u4-native/composer/assertions.json",
+          "console": "../p9-u4-native/composer/console.txt",
+          "stateEcho": {
+            "interactionMode": "plan",
+            "fastMode": true,
+            "selectedProject": null,
+            "tokenKind": null,
+            "tokenState": "none"
+          }
+        }
+      }
+    },
+    {
+      "id": "composer-attachment-action",
+      "label": "Composer · Attachment action",
+      "requiredClients": [
+        "web",
+        "native"
+      ],
+      "optionalClients": [
+        "lynx"
+      ],
+      "state": {
+        "overlay": "extras",
+        "attachmentAction": "visible"
+      },
+      "evidence": {
+        "web": {
+          "status": "pending",
+          "reason": "The existing menu frame does not prove the image picker action."
+        },
+        "lynx": {
+          "status": "pending",
+          "reason": "Lynx-for-Web cannot certify the Native host file picker."
+        },
+        "native": {
+          "status": "pending",
+          "reason": "The host Add files action was visible but the dialog was intentionally not opened over the user desktop."
+        }
+      }
+    },
+    {
+      "id": "composer-project-empty",
+      "label": "Composer · Project empty",
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "state": {
+        "projectPicker": "closed"
+      },
+      "evidence": {
+        "web": {
+          "status": "diagnostic",
+          "path": "../p9-u4-browser/composer/web-project-reset.png",
+          "reason": "Legacy capture lacks a recorded production build hash."
+        },
+        "lynx": {
+          "status": "diagnostic",
+          "path": "../composer-details/browser/project-picker-1280/lynx-default.png",
+          "reason": "Legacy capture lacks a recorded production build hash."
+        },
+        "native": {
+          "status": "retained",
+          "path": "native/normalized/project-reset.png",
+          "captureTier": "native",
+          "buildSha256": "512d81535eeb5f679da5e75c6238fb6879f7427d23059c8ac1ebfb6a29f45239",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "assertions": "../p9-u4-native/composer/assertions.json",
+          "console": "../p9-u4-native/composer/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": null,
+            "tokenState": "none"
+          }
+        }
+      }
+    },
+    {
+      "id": "composer-project-open",
+      "label": "Composer · Project picker open",
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "state": {
+        "projectPicker": "open"
+      },
+      "evidence": {
+        "web": {
+          "status": "diagnostic",
+          "path": "../composer-details/browser/project-picker-1280/web-open.png",
+          "reason": "Legacy capture lacks a recorded production build hash."
+        },
+        "lynx": {
+          "status": "diagnostic",
+          "path": "../composer-details/browser/project-picker-1280/lynx-open.png",
+          "reason": "Legacy capture documents the simplified menu that this goal replaces."
+        },
+        "native": {
+          "status": "retained",
+          "path": "native/normalized/project-open.png",
+          "captureTier": "native",
+          "buildSha256": "512d81535eeb5f679da5e75c6238fb6879f7427d23059c8ac1ebfb6a29f45239",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "assertions": "../p9-u4-native/composer/assertions.json",
+          "console": "../p9-u4-native/composer/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": null,
+            "tokenState": "none"
+          }
+        }
+      }
+    },
+    {
+      "id": "composer-project-search",
+      "label": "Composer · Project search",
+      "requiredClients": [
+        "web",
+        "lynx"
+      ],
+      "state": {
+        "projectPicker": "open",
+        "inputValue": "spike"
+      },
+      "evidence": {
+        "web": {
+          "status": "pending",
+          "reason": "The filtered state was exercised but no dedicated frame and assertions were retained."
+        },
+        "lynx": {
+          "status": "pending",
+          "reason": "The current simplified Lynx picker has no search field."
+        },
+        "native": {
+          "status": "not-applicable",
+          "reason": "Native capture is required only if picker input semantics change."
+        }
+      }
+    },
+    {
+      "id": "composer-project-selected",
+      "label": "Composer · Project selected",
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "state": {
+        "selectedProject": "Lynx Web Spike",
+        "workspaceRoot": "/private/tmp/synara-lynx-web-spike.93a7baf3/spike-workspace"
+      },
+      "evidence": {
+        "web": {
+          "status": "diagnostic",
+          "path": "../p9-u4-browser/composer/web-project-selected.png",
+          "reason": "Legacy capture lacks a recorded production build hash."
+        },
+        "lynx": {
+          "status": "diagnostic",
+          "path": "../composer-details/browser/project-picker-1280/lynx-selected.png",
+          "reason": "Legacy capture lacks a recorded production build hash."
+        },
+        "native": {
+          "status": "retained",
+          "path": "native/normalized/project-selected.png",
+          "captureTier": "native",
+          "buildSha256": "512d81535eeb5f679da5e75c6238fb6879f7427d23059c8ac1ebfb6a29f45239",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "assertions": "../p9-u4-native/composer/assertions.json",
+          "console": "../p9-u4-native/composer/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": "Lynx Web Spike",
+            "tokenKind": null,
+            "tokenState": "none"
+          }
+        }
+      }
+    },
+    {
+      "id": "composer-project-selected-open",
+      "label": "Composer · Selected project menu open",
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "state": {
+        "projectPicker": "open",
+        "selectedProject": "Lynx Web Spike",
+        "workspaceRoot": "/private/tmp/synara-lynx-web-spike.93a7baf3/spike-workspace"
+      },
+      "evidence": {
+        "web": {
+          "status": "diagnostic",
+          "path": "../p9-u4-browser/composer/web-project-selected-menu.png",
+          "reason": "Legacy capture lacks a recorded production build hash."
+        },
+        "lynx": {
+          "status": "pending",
+          "reason": "No dedicated selected-menu frame was retained."
+        },
+        "native": {
+          "status": "pending",
+          "reason": "No dedicated selected-menu Native frame was retained."
+        }
+      }
+    },
+    {
+      "id": "composer-project-reset",
+      "label": "Composer · Project reset",
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "state": {
+        "projectPicker": "closed"
+      },
+      "evidence": {
+        "web": {
+          "status": "diagnostic",
+          "path": "../p9-u4-browser/composer/web-project-reset.png",
+          "reason": "Legacy capture lacks a recorded production build hash."
+        },
+        "lynx": {
+          "status": "diagnostic",
+          "path": "../composer-details/browser/project-picker-1280/lynx-reset-keyboard.png",
+          "reason": "Legacy capture lacks a recorded production build hash and was produced through the old menu."
+        },
+        "native": {
+          "status": "retained",
+          "path": "native/normalized/project-reset.png",
+          "captureTier": "native",
+          "buildSha256": "512d81535eeb5f679da5e75c6238fb6879f7427d23059c8ac1ebfb6a29f45239",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "assertions": "../p9-u4-native/composer/assertions.json",
+          "console": "../p9-u4-native/composer/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": null,
+            "tokenState": "none"
+          }
+        }
+      }
+    },
+    {
+      "id": "composer-project-loading",
+      "label": "Composer · Project picker loading",
+      "requiredClients": [
+        "web",
+        "lynx"
+      ],
+      "state": {
+        "projectPicker": "loading"
+      },
+      "evidence": {
+        "web": {
+          "status": "pending",
+          "reason": "No deterministic product frame is retained."
+        },
+        "lynx": {
+          "status": "pending",
+          "reason": "The simplified picker does not expose the shared loading state."
+        },
+        "native": {
+          "status": "not-applicable",
+          "reason": "A focused deterministic product test is acceptable for this transient state."
+        }
+      }
+    },
+    {
+      "id": "composer-project-empty-result",
+      "label": "Composer · Project picker no matches",
+      "requiredClients": [
+        "web",
+        "lynx"
+      ],
+      "state": {
+        "projectPicker": "empty",
+        "inputValue": "no-such-project"
+      },
+      "evidence": {
+        "web": {
+          "status": "pending",
+          "reason": "No dedicated no-match frame is retained."
+        },
+        "lynx": {
+          "status": "pending",
+          "reason": "The simplified picker has no search or no-match state."
+        },
+        "native": {
+          "status": "not-applicable",
+          "reason": "Browser tier is sufficient for this state."
+        }
+      }
+    },
+    {
+      "id": "composer-project-error",
+      "label": "Composer · Project picker error",
+      "requiredClients": [
+        "web",
+        "lynx"
+      ],
+      "state": {
+        "projectPicker": "error"
+      },
+      "evidence": {
+        "web": {
+          "status": "pending",
+          "reason": "No dedicated picker error and recovery frame is retained."
+        },
+        "lynx": {
+          "status": "pending",
+          "reason": "The simplified picker has no shared error state."
+        },
+        "native": {
+          "status": "not-applicable",
+          "reason": "Native is required only if the failure comes from the host folder picker."
+        }
+      }
+    },
+    {
+      "id": "composer-skill-trigger",
+      "label": "Composer · Skill trigger",
+      "requiredClients": [
+        "web",
+        "lynx"
+      ],
+      "state": {
+        "draft": "$",
+        "caret": {
+          "start": 1,
+          "end": 1
+        },
+        "tokenKind": "skill",
+        "tokenState": "query"
+      },
+      "evidence": {
+        "web": {
+          "status": "pending",
+          "reason": "Only a filtered `$pol` frame was retained."
+        },
+        "lynx": {
+          "status": "pending",
+          "reason": "Only a filtered `$pol` frame was retained."
+        },
+        "native": {
+          "status": "not-applicable",
+          "reason": "Native capture is required only after token architecture changes."
+        }
+      }
+    },
+    {
+      "id": "composer-skill-filtered",
+      "label": "Composer · Skill filtered",
+      "requiredClients": [
+        "web",
+        "lynx"
+      ],
+      "optionalClients": [
+        "native"
+      ],
+      "state": {
+        "draft": "$pol",
+        "caret": {
+          "start": 4,
+          "end": 4
+        },
+        "tokenKind": "skill",
+        "tokenState": "query"
+      },
+      "evidence": {
+        "web": {
+          "status": "diagnostic",
+          "path": "../composer-details/browser/skills-mentions-1280/web-skill-menu.png",
+          "reason": "Legacy capture lacks a recorded production build hash."
+        },
+        "lynx": {
+          "status": "diagnostic",
+          "path": "../composer-details/browser/skills-mentions-1280/lynx-skill-menu.png",
+          "reason": "Legacy capture documents the text-glyph adapter that this goal replaces."
+        },
+        "native": {
+          "status": "pending",
+          "reason": "Native filtered-menu capture is deferred until menu visuals converge."
+        }
+      }
+    },
+    {
+      "id": "composer-skill-selected",
+      "label": "Composer · Skill selected",
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "state": {
+        "draft": "",
+        "tokenKind": "skill",
+        "tokenState": "selected",
+        "skills": [
+          {
+            "name": "polish",
+            "path": "/Users/bytedance/.agents/skills/polish/SKILL.md"
+          }
+        ]
+      },
+      "evidence": {
+        "web": {
+          "status": "diagnostic",
+          "path": "../p9-u4-browser/composer/web-skill-selected.png",
+          "reason": "Legacy capture lacks a recorded production build hash."
+        },
+        "lynx": {
+          "status": "diagnostic",
+          "path": "../composer-details/browser/skills-mentions-1280/lynx-skill-selected.png",
+          "reason": "Legacy capture exposes duplicate chip plus canonical text and is intentionally not accepted."
+        },
+        "native": {
+          "status": "pending",
+          "reason": "Native selected-token capture is required after token projection convergence."
+        }
+      }
+    },
+    {
+      "id": "composer-skill-cleared",
+      "label": "Composer · Skill cleared",
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "state": {
+        "tokenKind": "skill",
+        "tokenState": "cleared"
+      },
+      "evidence": {
+        "web": {
+          "status": "diagnostic",
+          "path": "../p9-u4-browser/composer/web-skill-cleared.png",
+          "reason": "Legacy capture lacks a recorded production build hash and structured-draft assertion."
+        },
+        "lynx": {
+          "status": "pending",
+          "reason": "No dedicated Lynx skill-cleared frame and structured assertion are retained."
+        },
+        "native": {
+          "status": "pending",
+          "reason": "Native clear semantics are required after token projection convergence."
+        }
+      }
+    },
+    {
+      "id": "composer-mention-trigger",
+      "label": "Composer · Mention trigger",
+      "requiredClients": [
+        "web",
+        "lynx"
+      ],
+      "state": {
+        "draft": "@",
+        "caret": {
+          "start": 1,
+          "end": 1
+        },
+        "tokenKind": "mention",
+        "tokenState": "query"
+      },
+      "evidence": {
+        "web": {
+          "status": "pending",
+          "reason": "Only a filtered `@Draft` frame was retained."
+        },
+        "lynx": {
+          "status": "pending",
+          "reason": "Only a filtered `@Draft` frame was retained."
+        },
+        "native": {
+          "status": "not-applicable",
+          "reason": "Native capture is required only after token architecture changes."
+        }
+      }
+    },
+    {
+      "id": "composer-mention-filtered",
+      "label": "Composer · Mention filtered",
+      "requiredClients": [
+        "web",
+        "lynx"
+      ],
+      "optionalClients": [
+        "native"
+      ],
+      "state": {
+        "draft": "@Draft",
+        "caret": {
+          "start": 6,
+          "end": 6
+        },
+        "tokenKind": "mention",
+        "tokenState": "query"
+      },
+      "evidence": {
+        "web": {
+          "status": "diagnostic",
+          "path": "../composer-details/browser/skills-mentions-1280/web-mention-menu.png",
+          "reason": "Legacy capture lacks a recorded production build hash."
+        },
+        "lynx": {
+          "status": "diagnostic",
+          "path": "../composer-details/browser/skills-mentions-1280/lynx-mention-menu.png",
+          "reason": "Legacy capture documents the text-glyph adapter that this goal replaces."
+        },
+        "native": {
+          "status": "pending",
+          "reason": "Native filtered-menu capture is deferred until menu visuals converge."
+        }
+      }
+    },
+    {
+      "id": "composer-mention-selected",
+      "label": "Composer · Mention selected",
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "state": {
+        "draft": "",
+        "tokenKind": "mention",
+        "tokenState": "selected",
+        "mentions": [
+          {
+            "name": "Draft seed task",
+            "path": "thread://thread:1785617357970-wy83hd92"
+          }
+        ]
+      },
+      "evidence": {
+        "web": {
+          "status": "diagnostic",
+          "path": "../p9-u4-browser/composer/web-mention-selected.png",
+          "reason": "Legacy capture lacks a recorded production build hash."
+        },
+        "lynx": {
+          "status": "diagnostic",
+          "path": "../composer-details/browser/skills-mentions-1280/lynx-mention-selected.png",
+          "reason": "Legacy capture exposes duplicate chip plus canonical text and is intentionally not accepted."
+        },
+        "native": {
+          "status": "pending",
+          "reason": "Native selected-token capture is required after token projection convergence."
+        }
+      }
+    },
+    {
+      "id": "composer-mention-cleared",
+      "label": "Composer · Mention cleared",
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "state": {
+        "tokenKind": "mention",
+        "tokenState": "cleared"
+      },
+      "evidence": {
+        "web": {
+          "status": "diagnostic",
+          "path": "../p9-u4-browser/composer/web-mention-cleared.png",
+          "reason": "Legacy capture lacks a recorded production build hash and structured-draft assertion."
+        },
+        "lynx": {
+          "status": "pending",
+          "reason": "No dedicated Lynx mention-cleared frame and structured assertion are retained."
+        },
+        "native": {
+          "status": "pending",
+          "reason": "Native clear semantics are required after token projection convergence."
+        }
+      }
+    }
+  ]
+}

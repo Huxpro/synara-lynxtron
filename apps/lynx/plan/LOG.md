@@ -4746,3 +4746,29 @@
   Lynx-for-Web/Desktop production green；strict reuse write/check后Settings 52.73%，
   style 98.07%。evidence：
   `shots/2026-08-03/settings-notifications/notes.md`；未进入P8-Q3/Q4、P9-R1或hard islands。
+
+## 2026-08-03 — P9-U5 Phase 0 strict Composer evidence contract
+
+- Started `P9-U5` from
+  `plan/reports/p9-u5-composer-fidelity-plan.md`; Phase 0 is complete.
+- Added a 23-state Composer manifest under
+  `shots/2026-08-03/p9-u5-composer/manifest.json`. Every state declares route,
+  theme, viewport/DPR, project/workspace, Plan/Fast, draft/caret, token state,
+  structured refs, client applicability and evidence status.
+- Added `scripts/composer-evidence.mjs` plus three Node regression tests.
+  Retained evidence requires build/snapshot hashes, assertions, console,
+  dimensions and a state echo; strict mode rejects required diagnostic/pending
+  cells and combined Plan/Fast evidence reused for single-mode states.
+- Existing DevTool captures were JPEG bytes with `.png` names. The valid exact
+  Native project and combined Plan/Fast frames were normalized to real PNG
+  files before being admitted by the manifest; original evidence was not
+  modified.
+- Removed all hand-written Composer cases from the repository comparison page.
+  It now consumes generated offline `manifest.js`, displays
+  retained/diagnostic/pending status badges, and names every missing reason.
+- Phase 0 baseline intentionally remains red: 55 required client cells are
+  incomplete. This is the truthful starting point for Project picker, Extras,
+  command-menu and token convergence; no keyboard-shortcut work was added.
+- Gates: evidence tests **3/3**; diagnostic generation green; strict verifier
+  exits **2** as designed; comparison HTTP check shows 23 Composer states and
+  no legacy Composer ids; `git diff --check` green.
