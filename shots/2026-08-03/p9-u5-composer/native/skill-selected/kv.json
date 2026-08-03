@@ -1,0 +1,12 @@
+{
+  "lynx-landing-draft": {
+    "files": [],
+    "mentions": [],
+    "modelSelection": { "provider": "codex", "model": "gpt-5.5", "options": { "fastMode": false } },
+    "pastedTexts": [],
+    "prompt": "/review-agent ",
+    "skills": [
+      { "name": "review-agent", "path": "/Users/bytedance/.agents/skills/review-agent/SKILL.md" }
+    ]
+  }
+}

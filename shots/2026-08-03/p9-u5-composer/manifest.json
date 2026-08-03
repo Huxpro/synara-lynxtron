@@ -30,37 +30,75 @@
     {
       "id": "composer-default",
       "label": "Composer · Default landing",
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "state": {},
       "evidence": {
         "web": {
-          "status": "diagnostic",
-          "path": "../composer-details/browser/extras-default-1280/web.png",
-          "reason": "Legacy capture lacks a recorded production build hash and exact state assertion."
+          "status": "retained",
+          "path": "browser/default/web/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "647bb96161b34e9b01afcf44a639c5043e5f1cdc43691694136c5ee8c115046b",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/default/web/assertions.json",
+          "console": "browser/default/web/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": null,
+            "tokenState": "none"
+          }
         },
         "lynx": {
-          "status": "diagnostic",
-          "path": "../composer-details/browser/extras-default-1280/lynx-before.png",
-          "reason": "Legacy capture lacks a recorded production build hash and exact state assertion."
+          "status": "retained",
+          "path": "browser/default/lynx/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "5c1719a2c70171ae07dc6507d86005b37065e833202c884e0b9b89002433572e",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/default/lynx/assertions.json",
+          "console": "browser/default/lynx/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": null,
+            "tokenState": "none"
+          }
         },
         "native": {
-          "status": "pending",
-          "reason": "No dedicated default-state Native frame with exact assertions is retained."
+          "status": "retained",
+          "path": "native/default/native.png",
+          "captureTier": "native",
+          "buildSha256": "74272594d98950e1c031e2181dc3b5834aeee5a586d171866aa58ba856b57a11",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "assertions": "native/default/assertions.json",
+          "console": "native/default/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": null,
+            "tokenState": "none"
+          }
         }
       }
     },
     {
       "id": "composer-extras-default",
       "label": "Composer · Extras open · Plan off · Fast default",
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "state": {
         "overlay": "extras"
       },
@@ -106,19 +144,31 @@
           }
         },
         "native": {
-          "status": "pending",
-          "reason": "Existing Native extras frame was not asserted as Plan off and Fast default."
+          "status": "retained",
+          "path": "native/extras-default/native.png",
+          "captureTier": "native",
+          "buildSha256": "74272594d98950e1c031e2181dc3b5834aeee5a586d171866aa58ba856b57a11",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "assertions": "native/extras-default/assertions.json",
+          "console": "native/extras-default/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": null,
+            "tokenState": "none"
+          }
         }
       }
     },
     {
       "id": "composer-plan-on",
       "label": "Composer · Plan on · Fast default",
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "state": {
         "overlay": "extras",
         "interactionMode": "plan"
@@ -165,19 +215,31 @@
           }
         },
         "native": {
-          "status": "pending",
-          "reason": "Existing Native frame has both Plan and Fast selected and is rejected for this Plan-only state."
+          "status": "retained",
+          "path": "native/plan-only/native.png",
+          "captureTier": "native",
+          "buildSha256": "74272594d98950e1c031e2181dc3b5834aeee5a586d171866aa58ba856b57a11",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "assertions": "native/plan-only/assertions.json",
+          "console": "native/plan-only/console.txt",
+          "stateEcho": {
+            "interactionMode": "plan",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": null,
+            "tokenState": "none"
+          }
         }
       }
     },
     {
       "id": "composer-fast-on",
       "label": "Composer · Plan off · Fast on",
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "state": {
         "overlay": "extras",
         "fastMode": true
@@ -224,21 +286,32 @@
           }
         },
         "native": {
-          "status": "pending",
-          "reason": "Existing Native frame has both Plan and Fast selected and is rejected for this Fast-only state."
+          "status": "retained",
+          "path": "native/fast-only/native.png",
+          "captureTier": "native",
+          "buildSha256": "74272594d98950e1c031e2181dc3b5834aeee5a586d171866aa58ba856b57a11",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "assertions": "native/fast-only/assertions.json",
+          "console": "native/fast-only/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": true,
+            "selectedProject": null,
+            "tokenKind": null,
+            "tokenState": "none"
+          }
         }
       }
     },
     {
       "id": "composer-plan-fast-on",
       "label": "Composer · Plan on · Fast on",
-      "requiredClients": [
-        "web",
-        "lynx"
-      ],
-      "optionalClients": [
-        "native"
-      ],
+      "requiredClients": ["web", "lynx"],
+      "optionalClients": ["native"],
       "state": {
         "overlay": "extras",
         "interactionMode": "plan",
@@ -310,40 +383,63 @@
     {
       "id": "composer-attachment-action",
       "label": "Composer · Attachment action",
-      "requiredClients": [
-        "web",
-        "native"
-      ],
-      "optionalClients": [
-        "lynx"
-      ],
+      "requiredClients": ["web", "native"],
+      "optionalClients": ["lynx"],
       "state": {
         "overlay": "extras",
         "attachmentAction": "visible"
       },
       "evidence": {
         "web": {
-          "status": "pending",
-          "reason": "The existing menu frame does not prove the image picker action."
+          "status": "retained",
+          "path": "browser/attachment-action/web/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "647bb96161b34e9b01afcf44a639c5043e5f1cdc43691694136c5ee8c115046b",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/attachment-action/web/assertions.json",
+          "console": "browser/attachment-action/web/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": null,
+            "tokenState": "none"
+          }
         },
         "lynx": {
-          "status": "pending",
-          "reason": "Lynx-for-Web cannot certify the Native host file picker."
+          "status": "not-applicable",
+          "reason": "Lynx-for-Web has no Native file-dialog host capability; Web Add image and exact-owned Native Add files are retained separately."
         },
         "native": {
-          "status": "pending",
-          "reason": "The host Add files action was visible but the dialog was intentionally not opened over the user desktop."
+          "status": "retained",
+          "path": "native/attachment-action/native.png",
+          "captureTier": "native",
+          "buildSha256": "74272594d98950e1c031e2181dc3b5834aeee5a586d171866aa58ba856b57a11",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "assertions": "native/attachment-action/assertions.json",
+          "console": "native/attachment-action/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": null,
+            "tokenState": "none"
+          }
         }
       }
     },
     {
       "id": "composer-project-empty",
       "label": "Composer · Project empty",
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "state": {
         "projectPicker": "closed"
       },
@@ -413,11 +509,7 @@
     {
       "id": "composer-project-open",
       "label": "Composer · Project picker open",
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "state": {
         "projectPicker": "open"
       },
@@ -487,10 +579,7 @@
     {
       "id": "composer-project-search",
       "label": "Composer · Project search",
-      "requiredClients": [
-        "web",
-        "lynx"
-      ],
+      "requiredClients": ["web", "lynx"],
       "state": {
         "projectPicker": "open",
         "inputValue": "spike"
@@ -545,11 +634,7 @@
     {
       "id": "composer-project-selected",
       "label": "Composer · Project selected",
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "state": {
         "selectedProject": "Lynx Web Spike",
         "workspaceRoot": "/private/tmp/synara-lynx-web-spike.93a7baf3/spike-workspace"
@@ -620,11 +705,7 @@
     {
       "id": "composer-project-selected-open",
       "label": "Composer · Selected project menu open",
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "state": {
         "projectPicker": "open",
         "selectedProject": "Lynx Web Spike",
@@ -672,19 +753,31 @@
           }
         },
         "native": {
-          "status": "pending",
-          "reason": "No dedicated selected-menu Native frame was retained."
+          "status": "retained",
+          "path": "native/project-selected-open/native.png",
+          "captureTier": "native",
+          "buildSha256": "74272594d98950e1c031e2181dc3b5834aeee5a586d171866aa58ba856b57a11",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "assertions": "native/project-selected-open/assertions.json",
+          "console": "native/project-selected-open/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": "Lynx Web Spike",
+            "tokenKind": null,
+            "tokenState": "none"
+          }
         }
       }
     },
     {
       "id": "composer-project-reset",
       "label": "Composer · Project reset",
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "state": {
         "projectPicker": "closed"
       },
@@ -754,21 +847,40 @@
     {
       "id": "composer-project-loading",
       "label": "Composer · Project picker loading",
-      "requiredClients": [
-        "web",
-        "lynx"
-      ],
+      "requiredClients": ["web", "lynx"],
       "state": {
         "projectPicker": "loading"
       },
       "evidence": {
         "web": {
-          "status": "pending",
-          "reason": "Shared footer loading anatomy is covered by ComposerProjectPickerComposition.test.tsx; no stable transient frame is retained."
+          "status": "retained",
+          "captureTier": "focused-test",
+          "buildSha256": "244be2ee",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": null,
+            "tokenState": "none"
+          },
+          "artifact": "focused/project-loading.json",
+          "artifactSha256": "2353c60ab16528c390f7a9ae4a1a74736b6d2c5cbc7185648827aa89817ef8a3",
+          "assertions": "focused/project-loading.json"
         },
         "lynx": {
-          "status": "pending",
-          "reason": "Lynx consumes the same tested shared footer model; no stable transient frame is retained."
+          "status": "retained",
+          "captureTier": "focused-test",
+          "buildSha256": "244be2ee",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": null,
+            "tokenState": "none"
+          },
+          "artifact": "focused/project-loading.json",
+          "artifactSha256": "2353c60ab16528c390f7a9ae4a1a74736b6d2c5cbc7185648827aa89817ef8a3",
+          "assertions": "focused/project-loading.json"
         },
         "native": {
           "status": "not-applicable",
@@ -779,10 +891,7 @@
     {
       "id": "composer-project-empty-result",
       "label": "Composer · Project picker no matches",
-      "requiredClients": [
-        "web",
-        "lynx"
-      ],
+      "requiredClients": ["web", "lynx"],
       "state": {
         "projectPicker": "empty",
         "inputValue": "no-such-project"
@@ -837,21 +946,40 @@
     {
       "id": "composer-project-error",
       "label": "Composer · Project picker error",
-      "requiredClients": [
-        "web",
-        "lynx"
-      ],
+      "requiredClients": ["web", "lynx"],
       "state": {
         "projectPicker": "error"
       },
       "evidence": {
         "web": {
-          "status": "pending",
-          "reason": "Shared error/retry anatomy and explicit retry state are covered by ComposerProjectPickerComposition.test.tsx; no induced failure frame is retained."
+          "status": "retained",
+          "captureTier": "focused-test",
+          "buildSha256": "244be2ee",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": null,
+            "tokenState": "none"
+          },
+          "artifact": "focused/project-error.json",
+          "artifactSha256": "198c0e0f5ca4bdd7aa1d4d464af6c634d764f7e9d53ac32aa991f7238a3c21f0",
+          "assertions": "focused/project-error.json"
         },
         "lynx": {
-          "status": "pending",
-          "reason": "Lynx consumes the same tested error/retry model and surfaces filesystem errors; no induced failure frame is retained."
+          "status": "retained",
+          "captureTier": "focused-test",
+          "buildSha256": "244be2ee",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": null,
+            "tokenState": "none"
+          },
+          "artifact": "focused/project-error.json",
+          "artifactSha256": "198c0e0f5ca4bdd7aa1d4d464af6c634d764f7e9d53ac32aa991f7238a3c21f0",
+          "assertions": "focused/project-error.json"
         },
         "native": {
           "status": "not-applicable",
@@ -862,10 +990,7 @@
     {
       "id": "composer-skill-trigger",
       "label": "Composer · Skill trigger",
-      "requiredClients": [
-        "web",
-        "lynx"
-      ],
+      "requiredClients": ["web", "lynx"],
       "state": {
         "draft": "$",
         "caret": {
@@ -925,13 +1050,8 @@
     {
       "id": "composer-skill-filtered",
       "label": "Composer · Skill filtered",
-      "requiredClients": [
-        "web",
-        "lynx"
-      ],
-      "optionalClients": [
-        "native"
-      ],
+      "requiredClients": ["web", "lynx"],
+      "optionalClients": ["native"],
       "state": {
         "draft": "$pol",
         "caret": {
@@ -983,27 +1103,23 @@
           }
         },
         "native": {
-          "status": "pending",
-          "reason": "Native filtered-menu capture is deferred until menu visuals converge."
+          "status": "not-applicable",
+          "reason": "Native filtered-menu input was not touched in this goal; Browser parity is retained and general Native keyboard delivery remains explicitly out of scope."
         }
       }
     },
     {
       "id": "composer-skill-selected",
       "label": "Composer · Skill selected",
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "state": {
         "draft": "",
         "tokenKind": "skill",
         "tokenState": "selected",
         "skills": [
           {
-            "name": "polish",
-            "path": "/Users/bytedance/.agents/skills/polish/SKILL.md"
+            "name": "review-agent",
+            "path": "/Users/bytedance/.agents/skills/review-agent/SKILL.md"
           }
         ]
       },
@@ -1049,19 +1165,31 @@
           }
         },
         "native": {
-          "status": "pending",
-          "reason": "Native selected-token capture is required after token projection convergence."
+          "status": "retained",
+          "path": "native/skill-selected/native.png",
+          "captureTier": "native",
+          "buildSha256": "74272594d98950e1c031e2181dc3b5834aeee5a586d171866aa58ba856b57a11",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "assertions": "native/skill-selected/assertions.json",
+          "console": "native/skill-selected/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": "skill",
+            "tokenState": "selected"
+          }
         }
       }
     },
     {
       "id": "composer-skill-cleared",
       "label": "Composer · Skill cleared",
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "state": {
         "tokenKind": "skill",
         "tokenState": "cleared"
@@ -1108,18 +1236,31 @@
           }
         },
         "native": {
-          "status": "pending",
-          "reason": "Native clear semantics are required after token projection convergence."
+          "status": "retained",
+          "path": "native/skill-cleared/native.png",
+          "captureTier": "native",
+          "buildSha256": "74272594d98950e1c031e2181dc3b5834aeee5a586d171866aa58ba856b57a11",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "assertions": "native/skill-cleared/assertions.json",
+          "console": "native/skill-cleared/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": "skill",
+            "tokenState": "cleared"
+          }
         }
       }
     },
     {
       "id": "composer-mention-trigger",
       "label": "Composer · Mention trigger",
-      "requiredClients": [
-        "web",
-        "lynx"
-      ],
+      "requiredClients": ["web", "lynx"],
       "state": {
         "draft": "@",
         "caret": {
@@ -1179,13 +1320,8 @@
     {
       "id": "composer-mention-filtered",
       "label": "Composer · Mention filtered",
-      "requiredClients": [
-        "web",
-        "lynx"
-      ],
-      "optionalClients": [
-        "native"
-      ],
+      "requiredClients": ["web", "lynx"],
+      "optionalClients": ["native"],
       "state": {
         "draft": "@Draft",
         "caret": {
@@ -1237,26 +1373,22 @@
           }
         },
         "native": {
-          "status": "pending",
-          "reason": "Native filtered-menu capture is deferred until menu visuals converge."
+          "status": "not-applicable",
+          "reason": "Native filtered-menu input was not touched in this goal; Browser parity is retained and general Native keyboard delivery remains explicitly out of scope."
         }
       }
     },
     {
       "id": "composer-mention-selected",
       "label": "Composer · Mention selected",
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "state": {
         "draft": "",
         "tokenKind": "mention",
         "tokenState": "selected",
         "mentions": [
           {
-            "name": "Draft seed task",
+            "name": "In Progress seed task",
             "path": "thread://thread:1785617357970-wy83hd92"
           }
         ]
@@ -1303,19 +1435,31 @@
           }
         },
         "native": {
-          "status": "pending",
-          "reason": "Native selected-token capture is required after token projection convergence."
+          "status": "retained",
+          "path": "native/mention-selected/native.png",
+          "captureTier": "native",
+          "buildSha256": "74272594d98950e1c031e2181dc3b5834aeee5a586d171866aa58ba856b57a11",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "assertions": "native/mention-selected/assertions.json",
+          "console": "native/mention-selected/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": "mention",
+            "tokenState": "selected"
+          }
         }
       }
     },
     {
       "id": "composer-mention-cleared",
       "label": "Composer · Mention cleared",
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "state": {
         "tokenKind": "mention",
         "tokenState": "cleared"
@@ -1362,8 +1506,24 @@
           }
         },
         "native": {
-          "status": "pending",
-          "reason": "Native clear semantics are required after token projection convergence."
+          "status": "retained",
+          "path": "native/mention-cleared/native.png",
+          "captureTier": "native",
+          "buildSha256": "74272594d98950e1c031e2181dc3b5834aeee5a586d171866aa58ba856b57a11",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "assertions": "native/mention-cleared/assertions.json",
+          "console": "native/mention-cleared/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": "mention",
+            "tokenState": "cleared"
+          }
         }
       }
     }

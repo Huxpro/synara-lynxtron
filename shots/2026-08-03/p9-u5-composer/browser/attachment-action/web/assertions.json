@@ -1,0 +1,51 @@
+{
+  "client": "web",
+  "captureTier": "browser",
+  "buildSha256": "647bb96161b34e9b01afcf44a639c5043e5f1cdc43691694136c5ee8c115046b",
+  "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+  "semanticRoute": "new-chat",
+  "actualRoute": "/bcb72b83-446a-47ad-939e-8bf017496769",
+  "theme": "light",
+  "viewport": {
+    "width": 1280,
+    "height": 820,
+    "devicePixelRatio": 1
+  },
+  "productPath": [
+    "Opened Composer extras through the rendered button.",
+    "Activated the real image file input exposed by Add image.",
+    "Uploaded /private/tmp/p9-u5-attachment.png.",
+    "Observed the rendered preview and remove controls.",
+    "Removed the attachment through the rendered remove control and closed Extras."
+  ],
+  "attachment": {
+    "name": "p9-u5-attachment.png",
+    "type": "image/png",
+    "previewAccessibleName": "Preview p9-u5-attachment.png",
+    "removeAccessibleName": "Remove p9-u5-attachment.png",
+    "previewBox": {
+      "x": 407,
+      "y": 396.75,
+      "width": 64,
+      "height": 64
+    },
+    "removeBox": {
+      "x": 447,
+      "y": 400.75,
+      "width": 20,
+      "height": 20
+    }
+  },
+  "extras": {
+    "expanded": true,
+    "items": ["Add image", "Plan mode", "Fast"],
+    "plan": false,
+    "fast": false
+  },
+  "draft": "",
+  "cleanup": {
+    "attachmentRemoved": true,
+    "extrasClosed": true
+  },
+  "pageErrors": 0
+}

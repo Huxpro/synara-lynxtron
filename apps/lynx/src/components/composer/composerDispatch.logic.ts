@@ -16,6 +16,18 @@ export function isConnectingComposerSession(status: string | null): boolean {
   return status === 'starting';
 }
 
+export async function runComposerSendTransaction(input: {
+  readonly clearDraft: () => void;
+  readonly dispatch: () => Promise<void>;
+  readonly onSucceeded?: () => void | Promise<void>;
+  readonly prepare?: () => void | Promise<void>;
+}): Promise<void> {
+  await input.prepare?.();
+  await input.dispatch();
+  input.clearDraft();
+  await input.onSucceeded?.();
+}
+
 export function buildComposerTurnStartCommand(input: {
   readonly attachments?: ReadonlyArray<ChatFileAttachment>;
   readonly commandId: string;

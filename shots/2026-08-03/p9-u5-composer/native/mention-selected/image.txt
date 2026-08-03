@@ -1,0 +1,4 @@
+/Users/bytedance/github/synara/shots/2026-08-03/p9-u5-composer/native/mention-selected/native.png: PNG image data, 2560 x 1576, 8-bit/color RGB, non-interlaced
+/Users/bytedance/github/synara/shots/2026-08-03/p9-u5-composer/native/mention-selected/native.png
+  pixelWidth: 2560
+  pixelHeight: 1576

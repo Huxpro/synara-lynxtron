@@ -1,0 +1,35 @@
+{
+  "client": "native",
+  "captureTier": "native",
+  "buildSha256": "74272594d98950e1c031e2181dc3b5834aeee5a586d171866aa58ba856b57a11",
+  "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+  "bundle": "file:///Users/bytedance/github/synara/apps/lynx/dist/desktop/main.lynx.bundle",
+  "runtime": "@lynx-js/lynxtron 0.0.7",
+  "devtoolClient": "localhost:8904",
+  "devtoolSession": 1,
+  "outerBounds": {
+    "x": 224,
+    "y": 165,
+    "width": 1280,
+    "height": 820
+  },
+  "contentPixels": {
+    "width": 2560,
+    "height": 1576
+  },
+  "theme": "light",
+  "console": {
+    "errors": 0,
+    "warnings": 0
+  },
+  "pids": [13828],
+  "assertions": [
+    "Rendered Add files menu item delivered bridge.dialogsPickFiles.",
+    "PID-owned AXSheet has description add files.",
+    "PID-owned sheet exposes Cancel and Open buttons.",
+    "dialog.png was captured from CGWindowID 54886 only.",
+    "Cancel was delivered with PID-scoped AXPress and the sheet disappeared."
+  ],
+  "supplemental": ["dialog.png", "ax.txt"],
+  "state": "attachment-action"
+}

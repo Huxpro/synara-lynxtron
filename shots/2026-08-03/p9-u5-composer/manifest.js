@@ -7,7 +7,7 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       "theme": "light",
       "size": "1280",
       "browserSize": "1280 × 820",
-      "nativeSize": "No dedicated default-state Native frame with exact assertions is retained.",
+      "nativeSize": "2560 × 1576",
       "key": "composer-default-light-1280",
       "state": {
         "route": "/",
@@ -23,17 +23,17 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
         "tokenKind": null,
         "tokenState": "none"
       },
-      "web": "../composer-details/browser/extras-default-1280/web.png",
-      "lynx": "../composer-details/browser/extras-default-1280/lynx-before.png",
-      "native": null,
-      "webStatus": "diagnostic",
-      "lynxStatus": "diagnostic",
-      "nativeStatus": "pending",
-      "webMissingReason": "Legacy capture lacks a recorded production build hash and exact state assertion.",
-      "lynxMissingReason": "Legacy capture lacks a recorded production build hash and exact state assertion.",
-      "nativeMissingReason": "No dedicated default-state Native frame with exact assertions is retained.",
-      "webMetrics": null,
-      "lynxMetrics": null
+      "web": "../p9-u5-composer/browser/default/web/screenshot.png",
+      "lynx": "../p9-u5-composer/browser/default/lynx/screenshot.png",
+      "native": "../p9-u5-composer/native/default/native.png",
+      "webStatus": "retained",
+      "lynxStatus": "retained",
+      "nativeStatus": "retained",
+      "webMissingReason": null,
+      "lynxMissingReason": null,
+      "nativeMissingReason": null,
+      "lynxMetrics": null,
+      "webMetrics": null
     },
     {
       "id": "composer-extras-default",
@@ -42,7 +42,7 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       "theme": "light",
       "size": "1280",
       "browserSize": "1280 × 820",
-      "nativeSize": "Existing Native extras frame was not asserted as Plan off and Fast default.",
+      "nativeSize": "2560 × 1576",
       "key": "composer-extras-default-light-1280",
       "state": {
         "route": "/",
@@ -60,15 +60,15 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       },
       "web": "../p9-u5-composer/browser/extras/default/web/screenshot.png",
       "lynx": "../p9-u5-composer/browser/extras/default/lynx/screenshot.png",
-      "native": null,
+      "native": "../p9-u5-composer/native/extras-default/native.png",
       "webStatus": "retained",
       "lynxStatus": "retained",
-      "nativeStatus": "pending",
+      "nativeStatus": "retained",
       "webMissingReason": null,
       "lynxMissingReason": null,
-      "nativeMissingReason": "Existing Native extras frame was not asserted as Plan off and Fast default.",
-      "webMetrics": null,
-      "lynxMetrics": null
+      "nativeMissingReason": null,
+      "lynxMetrics": null,
+      "webMetrics": null
     },
     {
       "id": "composer-plan-on",
@@ -77,7 +77,7 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       "theme": "light",
       "size": "1280",
       "browserSize": "1280 × 820",
-      "nativeSize": "Existing Native frame has both Plan and Fast selected and is rejected for this Plan-only state.",
+      "nativeSize": "2560 × 1576",
       "key": "composer-plan-on-light-1280",
       "state": {
         "route": "/",
@@ -95,15 +95,15 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       },
       "web": "../p9-u5-composer/browser/extras/plan-only/web/screenshot.png",
       "lynx": "../p9-u5-composer/browser/extras/plan-only/lynx/screenshot.png",
-      "native": null,
+      "native": "../p9-u5-composer/native/plan-only/native.png",
       "webStatus": "retained",
       "lynxStatus": "retained",
-      "nativeStatus": "pending",
+      "nativeStatus": "retained",
       "webMissingReason": null,
       "lynxMissingReason": null,
-      "nativeMissingReason": "Existing Native frame has both Plan and Fast selected and is rejected for this Plan-only state.",
-      "webMetrics": null,
-      "lynxMetrics": null
+      "nativeMissingReason": null,
+      "lynxMetrics": null,
+      "webMetrics": null
     },
     {
       "id": "composer-fast-on",
@@ -112,7 +112,7 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       "theme": "light",
       "size": "1280",
       "browserSize": "1280 × 820",
-      "nativeSize": "Existing Native frame has both Plan and Fast selected and is rejected for this Fast-only state.",
+      "nativeSize": "2560 × 1576",
       "key": "composer-fast-on-light-1280",
       "state": {
         "route": "/",
@@ -130,15 +130,15 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       },
       "web": "../p9-u5-composer/browser/extras/fast-only/web/screenshot.png",
       "lynx": "../p9-u5-composer/browser/extras/fast-only/lynx/screenshot.png",
-      "native": null,
+      "native": "../p9-u5-composer/native/fast-only/native.png",
       "webStatus": "retained",
       "lynxStatus": "retained",
-      "nativeStatus": "pending",
+      "nativeStatus": "retained",
       "webMissingReason": null,
       "lynxMissingReason": null,
-      "nativeMissingReason": "Existing Native frame has both Plan and Fast selected and is rejected for this Fast-only state.",
-      "webMetrics": null,
-      "lynxMetrics": null
+      "nativeMissingReason": null,
+      "lynxMetrics": null,
+      "webMetrics": null
     },
     {
       "id": "composer-plan-fast-on",
@@ -172,8 +172,8 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       "webMissingReason": null,
       "lynxMissingReason": null,
       "nativeMissingReason": null,
-      "webMetrics": null,
-      "lynxMetrics": null
+      "lynxMetrics": null,
+      "webMetrics": null
     },
     {
       "id": "composer-attachment-action",
@@ -182,7 +182,7 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       "theme": "light",
       "size": "1280",
       "browserSize": "1280 × 820",
-      "nativeSize": "The host Add files action was visible but the dialog was intentionally not opened over the user desktop.",
+      "nativeSize": "2560 × 1576",
       "key": "composer-attachment-action-light-1280",
       "state": {
         "route": "/",
@@ -198,17 +198,17 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
         "tokenKind": null,
         "tokenState": "none"
       },
-      "web": null,
+      "web": "../p9-u5-composer/browser/attachment-action/web/screenshot.png",
       "lynx": null,
-      "native": null,
-      "webStatus": "pending",
-      "lynxStatus": "pending",
-      "nativeStatus": "pending",
-      "webMissingReason": "The existing menu frame does not prove the image picker action.",
-      "lynxMissingReason": "Lynx-for-Web cannot certify the Native host file picker.",
-      "nativeMissingReason": "The host Add files action was visible but the dialog was intentionally not opened over the user desktop.",
-      "webMetrics": null,
-      "lynxMetrics": null
+      "native": "../p9-u5-composer/native/attachment-action/native.png",
+      "webStatus": "retained",
+      "lynxStatus": "not-applicable",
+      "nativeStatus": "retained",
+      "webMissingReason": null,
+      "lynxMissingReason": "Lynx-for-Web has no Native file-dialog host capability; Web Add image and exact-owned Native Add files are retained separately.",
+      "nativeMissingReason": null,
+      "lynxMetrics": null,
+      "webMetrics": null
     },
     {
       "id": "composer-project-empty",
@@ -242,8 +242,8 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       "webMissingReason": null,
       "lynxMissingReason": null,
       "nativeMissingReason": null,
-      "webMetrics": null,
-      "lynxMetrics": null
+      "lynxMetrics": null,
+      "webMetrics": null
     },
     {
       "id": "composer-project-open",
@@ -277,8 +277,8 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       "webMissingReason": null,
       "lynxMissingReason": null,
       "nativeMissingReason": null,
-      "webMetrics": null,
-      "lynxMetrics": null
+      "lynxMetrics": null,
+      "webMetrics": null
     },
     {
       "id": "composer-project-search",
@@ -312,8 +312,8 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       "webMissingReason": null,
       "lynxMissingReason": null,
       "nativeMissingReason": "Native capture is required only if picker input semantics change.",
-      "webMetrics": null,
-      "lynxMetrics": null
+      "lynxMetrics": null,
+      "webMetrics": null
     },
     {
       "id": "composer-project-selected",
@@ -347,8 +347,8 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       "webMissingReason": null,
       "lynxMissingReason": null,
       "nativeMissingReason": null,
-      "webMetrics": null,
-      "lynxMetrics": null
+      "lynxMetrics": null,
+      "webMetrics": null
     },
     {
       "id": "composer-project-selected-open",
@@ -357,7 +357,7 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       "theme": "light",
       "size": "1280",
       "browserSize": "1280 × 820",
-      "nativeSize": "No dedicated selected-menu Native frame was retained.",
+      "nativeSize": "2560 × 1576",
       "key": "composer-project-selected-open-light-1280",
       "state": {
         "route": "/",
@@ -375,15 +375,15 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       },
       "web": "../p9-u5-composer/browser/project-picker/selected-open/web/screenshot.png",
       "lynx": "../p9-u5-composer/browser/project-picker/selected-open/lynx/screenshot.png",
-      "native": null,
+      "native": "../p9-u5-composer/native/project-selected-open/native.png",
       "webStatus": "retained",
       "lynxStatus": "retained",
-      "nativeStatus": "pending",
+      "nativeStatus": "retained",
       "webMissingReason": null,
       "lynxMissingReason": null,
-      "nativeMissingReason": "No dedicated selected-menu Native frame was retained.",
-      "webMetrics": null,
-      "lynxMetrics": null
+      "nativeMissingReason": null,
+      "lynxMetrics": null,
+      "webMetrics": null
     },
     {
       "id": "composer-project-reset",
@@ -417,8 +417,8 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       "webMissingReason": null,
       "lynxMissingReason": null,
       "nativeMissingReason": null,
-      "webMetrics": null,
-      "lynxMetrics": null
+      "lynxMetrics": null,
+      "webMetrics": null
     },
     {
       "id": "composer-project-loading",
@@ -446,14 +446,14 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       "web": null,
       "lynx": null,
       "native": null,
-      "webStatus": "pending",
-      "lynxStatus": "pending",
+      "webStatus": "retained",
+      "lynxStatus": "retained",
       "nativeStatus": "not-applicable",
-      "webMissingReason": "Shared footer loading anatomy is covered by ComposerProjectPickerComposition.test.tsx; no stable transient frame is retained.",
-      "lynxMissingReason": "Lynx consumes the same tested shared footer model; no stable transient frame is retained.",
+      "webMissingReason": null,
+      "lynxMissingReason": null,
       "nativeMissingReason": "A focused deterministic product test is acceptable for this transient state.",
-      "webMetrics": null,
-      "lynxMetrics": null
+      "lynxMetrics": "../p9-u5-composer/focused/project-loading.json",
+      "webMetrics": "../p9-u5-composer/focused/project-loading.json"
     },
     {
       "id": "composer-project-empty-result",
@@ -487,8 +487,8 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       "webMissingReason": null,
       "lynxMissingReason": null,
       "nativeMissingReason": "Browser tier is sufficient for this state.",
-      "webMetrics": null,
-      "lynxMetrics": null
+      "lynxMetrics": null,
+      "webMetrics": null
     },
     {
       "id": "composer-project-error",
@@ -516,14 +516,14 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       "web": null,
       "lynx": null,
       "native": null,
-      "webStatus": "pending",
-      "lynxStatus": "pending",
+      "webStatus": "retained",
+      "lynxStatus": "retained",
       "nativeStatus": "not-applicable",
-      "webMissingReason": "Shared error/retry anatomy and explicit retry state are covered by ComposerProjectPickerComposition.test.tsx; no induced failure frame is retained.",
-      "lynxMissingReason": "Lynx consumes the same tested error/retry model and surfaces filesystem errors; no induced failure frame is retained.",
+      "webMissingReason": null,
+      "lynxMissingReason": null,
       "nativeMissingReason": "Native is required only if the failure comes from the host folder picker.",
-      "webMetrics": null,
-      "lynxMetrics": null
+      "lynxMetrics": "../p9-u5-composer/focused/project-error.json",
+      "webMetrics": "../p9-u5-composer/focused/project-error.json"
     },
     {
       "id": "composer-skill-trigger",
@@ -557,8 +557,8 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       "webMissingReason": null,
       "lynxMissingReason": null,
       "nativeMissingReason": "Native capture is required only after token architecture changes.",
-      "webMetrics": null,
-      "lynxMetrics": null
+      "lynxMetrics": null,
+      "webMetrics": null
     },
     {
       "id": "composer-skill-filtered",
@@ -567,7 +567,7 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       "theme": "light",
       "size": "1280",
       "browserSize": "1280 × 820",
-      "nativeSize": "Native filtered-menu capture is deferred until menu visuals converge.",
+      "nativeSize": "Native filtered-menu input was not touched in this goal; Browser parity is retained and general Native keyboard delivery remains explicitly out of scope.",
       "key": "composer-skill-filtered-light-1280",
       "state": {
         "route": "/",
@@ -588,12 +588,12 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       "native": null,
       "webStatus": "retained",
       "lynxStatus": "retained",
-      "nativeStatus": "pending",
+      "nativeStatus": "not-applicable",
       "webMissingReason": null,
       "lynxMissingReason": null,
-      "nativeMissingReason": "Native filtered-menu capture is deferred until menu visuals converge.",
-      "webMetrics": null,
-      "lynxMetrics": null
+      "nativeMissingReason": "Native filtered-menu input was not touched in this goal; Browser parity is retained and general Native keyboard delivery remains explicitly out of scope.",
+      "lynxMetrics": null,
+      "webMetrics": null
     },
     {
       "id": "composer-skill-selected",
@@ -602,7 +602,7 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       "theme": "light",
       "size": "1280",
       "browserSize": "1280 × 820",
-      "nativeSize": "Native selected-token capture is required after token projection convergence.",
+      "nativeSize": "2560 × 1576",
       "key": "composer-skill-selected-light-1280",
       "state": {
         "route": "/",
@@ -620,15 +620,15 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       },
       "web": "../p9-u5-composer/browser/tokens/skill-selected/web/screenshot.png",
       "lynx": "../p9-u5-composer/browser/tokens/skill-selected/lynx/screenshot.png",
-      "native": null,
+      "native": "../p9-u5-composer/native/skill-selected/native.png",
       "webStatus": "retained",
       "lynxStatus": "retained",
-      "nativeStatus": "pending",
+      "nativeStatus": "retained",
       "webMissingReason": null,
       "lynxMissingReason": null,
-      "nativeMissingReason": "Native selected-token capture is required after token projection convergence.",
-      "webMetrics": null,
-      "lynxMetrics": null
+      "nativeMissingReason": null,
+      "lynxMetrics": null,
+      "webMetrics": null
     },
     {
       "id": "composer-skill-cleared",
@@ -637,7 +637,7 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       "theme": "light",
       "size": "1280",
       "browserSize": "1280 × 820",
-      "nativeSize": "Native clear semantics are required after token projection convergence.",
+      "nativeSize": "2560 × 1576",
       "key": "composer-skill-cleared-light-1280",
       "state": {
         "route": "/",
@@ -655,15 +655,15 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       },
       "web": "../p9-u5-composer/browser/tokens/skill-cleared/web/screenshot.png",
       "lynx": "../p9-u5-composer/browser/tokens/skill-cleared/lynx/screenshot.png",
-      "native": null,
+      "native": "../p9-u5-composer/native/skill-cleared/native.png",
       "webStatus": "retained",
       "lynxStatus": "retained",
-      "nativeStatus": "pending",
+      "nativeStatus": "retained",
       "webMissingReason": null,
       "lynxMissingReason": null,
-      "nativeMissingReason": "Native clear semantics are required after token projection convergence.",
-      "webMetrics": null,
-      "lynxMetrics": null
+      "nativeMissingReason": null,
+      "lynxMetrics": null,
+      "webMetrics": null
     },
     {
       "id": "composer-mention-trigger",
@@ -697,8 +697,8 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       "webMissingReason": null,
       "lynxMissingReason": null,
       "nativeMissingReason": "Native capture is required only after token architecture changes.",
-      "webMetrics": null,
-      "lynxMetrics": null
+      "lynxMetrics": null,
+      "webMetrics": null
     },
     {
       "id": "composer-mention-filtered",
@@ -707,7 +707,7 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       "theme": "light",
       "size": "1280",
       "browserSize": "1280 × 820",
-      "nativeSize": "Native filtered-menu capture is deferred until menu visuals converge.",
+      "nativeSize": "Native filtered-menu input was not touched in this goal; Browser parity is retained and general Native keyboard delivery remains explicitly out of scope.",
       "key": "composer-mention-filtered-light-1280",
       "state": {
         "route": "/",
@@ -728,12 +728,12 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       "native": null,
       "webStatus": "retained",
       "lynxStatus": "retained",
-      "nativeStatus": "pending",
+      "nativeStatus": "not-applicable",
       "webMissingReason": null,
       "lynxMissingReason": null,
-      "nativeMissingReason": "Native filtered-menu capture is deferred until menu visuals converge.",
-      "webMetrics": null,
-      "lynxMetrics": null
+      "nativeMissingReason": "Native filtered-menu input was not touched in this goal; Browser parity is retained and general Native keyboard delivery remains explicitly out of scope.",
+      "lynxMetrics": null,
+      "webMetrics": null
     },
     {
       "id": "composer-mention-selected",
@@ -742,7 +742,7 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       "theme": "light",
       "size": "1280",
       "browserSize": "1280 × 820",
-      "nativeSize": "Native selected-token capture is required after token projection convergence.",
+      "nativeSize": "2560 × 1576",
       "key": "composer-mention-selected-light-1280",
       "state": {
         "route": "/",
@@ -760,15 +760,15 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       },
       "web": "../p9-u5-composer/browser/tokens/mention-selected/web/screenshot.png",
       "lynx": "../p9-u5-composer/browser/tokens/mention-selected/lynx/screenshot.png",
-      "native": null,
+      "native": "../p9-u5-composer/native/mention-selected/native.png",
       "webStatus": "retained",
       "lynxStatus": "retained",
-      "nativeStatus": "pending",
+      "nativeStatus": "retained",
       "webMissingReason": null,
       "lynxMissingReason": null,
-      "nativeMissingReason": "Native selected-token capture is required after token projection convergence.",
-      "webMetrics": null,
-      "lynxMetrics": null
+      "nativeMissingReason": null,
+      "lynxMetrics": null,
+      "webMetrics": null
     },
     {
       "id": "composer-mention-cleared",
@@ -777,7 +777,7 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       "theme": "light",
       "size": "1280",
       "browserSize": "1280 × 820",
-      "nativeSize": "Native clear semantics are required after token projection convergence.",
+      "nativeSize": "2560 × 1576",
       "key": "composer-mention-cleared-light-1280",
       "state": {
         "route": "/",
@@ -795,15 +795,15 @@ globalThis.__SYNARA_COMPOSER_EVIDENCE__ = {
       },
       "web": "../p9-u5-composer/browser/tokens/mention-cleared/web/screenshot.png",
       "lynx": "../p9-u5-composer/browser/tokens/mention-cleared/lynx/screenshot.png",
-      "native": null,
+      "native": "../p9-u5-composer/native/mention-cleared/native.png",
       "webStatus": "retained",
       "lynxStatus": "retained",
-      "nativeStatus": "pending",
+      "nativeStatus": "retained",
       "webMissingReason": null,
       "lynxMissingReason": null,
-      "nativeMissingReason": "Native clear semantics are required after token projection convergence.",
-      "webMetrics": null,
-      "lynxMetrics": null
+      "nativeMissingReason": null,
+      "lynxMetrics": null,
+      "webMetrics": null
     }
   ],
   "screens": [

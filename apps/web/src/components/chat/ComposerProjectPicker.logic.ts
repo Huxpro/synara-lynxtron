@@ -79,7 +79,7 @@ export function buildComposerProjectPickerModel(input: {
     string,
     {
       label: string;
-      icon: SpaceIconName;
+      icon: SpaceIconName | "black-hole";
       sortOrder: number;
       options: ComposerProjectPickerOption[];
     }
@@ -92,7 +92,7 @@ export function buildComposerProjectPickerModel(input: {
       label: project.spaceName?.trim() || VOID_GROUP_LABEL,
       icon: project.spaceIcon ?? VOID_GROUP_ICON,
       sortOrder: project.spaceSortOrder ?? VOID_GROUP_SORT_ORDER,
-      options: [],
+      options: [] as ComposerProjectPickerOption[],
     };
     group.options.push({
       id: project.id,

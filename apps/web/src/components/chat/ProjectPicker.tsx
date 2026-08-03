@@ -343,7 +343,9 @@ export const ProjectPicker = memo(function ProjectPicker({
       buildComposerProjectPickerModel({
         projects: [
           ...activeFolderOptions.flatMap((folder) => [
-            {
+            (() => {
+              const space = spaces.find((candidate) => candidate.id === folder.spaceId);
+              return {
               id: folder.projectId ? `project:${folder.projectId}` : `folder:${folder.cwd}`,
               kind: folder.projectId ? ("project" as const) : ("folder" as const),
               projectId: folder.projectId,
@@ -352,11 +354,12 @@ export const ProjectPicker = memo(function ProjectPicker({
               secondaryLabel: folder.secondaryLabel,
               spaceId: folder.spaceId,
               spaceName: folder.spaceName,
-              spaceIcon:
-                spaces.find((space) => space.id === folder.spaceId)?.icon ?? null,
-              spaceSortOrder:
-                spaces.find((space) => space.id === folder.spaceId)?.sortOrder,
-            },
+              spaceIcon: space?.icon ?? null,
+              ...(space?.sortOrder === undefined
+                ? {}
+                : { spaceSortOrder: space.sortOrder }),
+              };
+            })(),
           ]),
           ...localFolderOptions.map(({ absolutePath, entry }) => ({
             id: `folder:${absolutePath}`,
@@ -435,17 +438,17 @@ export const ProjectPicker = memo(function ProjectPicker({
       }
       retryActionLabel={isLoadingDirectories ? "Retrying…" : "Retry"}
       retryActionBusy={isLoadingDirectories}
-      onRetry={
-        directoryErrorMessage
-          ? () => {
+      {...(directoryErrorMessage
+        ? {
+            onRetry: () => {
               setDirectoryErrorMessage(null);
               setRequestedDirectoryRoot(null);
-            }
-          : undefined
-      }
+            },
+          }
+        : {})}
       onAddProject={() => void handleAddNewProject()}
       onReset={handleResetToHome}
-      triggerClassName={triggerClassName}
+      {...(triggerClassName === undefined ? {} : { triggerClassName })}
       triggerTestId={
         isProjectSelectionMode ? "project-picker-trigger" : "workspace-picker-trigger"
       }

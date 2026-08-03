@@ -1,0 +1,12 @@
+{
+  "lynx-landing-draft": {
+    "files": [],
+    "mentions": [
+      { "name": "In Progress seed task", "path": "thread://thread:1785617357970-wy83hd92" }
+    ],
+    "modelSelection": { "provider": "codex", "model": "gpt-5.5", "options": { "fastMode": false } },
+    "pastedTexts": [],
+    "prompt": "@\"In Progress seed task\" ",
+    "skills": []
+  }
+}

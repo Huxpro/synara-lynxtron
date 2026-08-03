@@ -1,0 +1,48 @@
+{
+  "client": "lynx",
+  "captureTier": "browser",
+  "buildSha256": "5c1719a2c70171ae07dc6507d86005b37065e833202c884e0b9b89002433572e",
+  "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+  "semanticRoute": "new-chat",
+  "actualRoute": "/lynx/",
+  "theme": "light",
+  "themeClass": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable",
+  "viewport": {
+    "width": 1280,
+    "height": 820,
+    "devicePixelRatio": 1,
+    "visualWidth": 1280,
+    "visualHeight": 820
+  },
+  "composer": {
+    "element": "x-textarea",
+    "accessibleName": "Message composer",
+    "placeholder": "Ask for follow-up changes or attach images",
+    "value": "",
+    "visibleProjectedTokens": 0
+  },
+  "projectTrigger": {
+    "label": "Work in a project",
+    "box": {
+      "x": 408,
+      "y": 528,
+      "width": 127.859375,
+      "height": 28
+    }
+  },
+  "extras": {
+    "open": false,
+    "box": {
+      "x": 415,
+      "y": 489,
+      "width": 32,
+      "height": 28
+    }
+  },
+  "selectedProject": null,
+  "interactionMode": "default",
+  "fastMode": false,
+  "skills": [],
+  "mentions": [],
+  "pageErrors": 0
+}

@@ -76,6 +76,7 @@ import {
   buildComposerTurnStartCommand,
   isConnectingComposerSession,
   isRunningComposerSession,
+  runComposerSendTransaction,
 } from './composerDispatch.logic';
 import { resolveComposerInputTransition } from './composerPastedTextInput.logic';
 import {
@@ -1133,35 +1134,43 @@ export function Composer({
     setIsSending(true);
     setSendError(null);
     try {
-      await onBeforeSend?.({
-        interactionMode,
-        modelSelection: activeModelSelection,
-        runtimeMode,
-        text: text || 'Review the attached file.',
-      });
-      const stagedFiles = await stageNativeComposerFiles({ files, threadId });
-      await stagedFiles.runWithDispatch((attachments) =>
-        dispatchSynaraCommand(
-          buildComposerTurnStartCommand({
-            attachments,
-            commandId: createComposerDispatchId('command'),
-            createdAt: new Date().toISOString(),
+      await runComposerSendTransaction({
+        prepare: () =>
+          onBeforeSend?.({
             interactionMode,
-            messageId: createComposerDispatchId('message'),
-            modelSelection: activeModelSelection as never,
+            modelSelection: activeModelSelection,
             runtimeMode,
             text: text || 'Review the attached file.',
+          }),
+        dispatch: async () => {
+          const stagedFiles = await stageNativeComposerFiles({
+            files,
             threadId,
-            mentions: projectedEditor.mentions,
-            skills: projectedEditor.skills,
-          })
-        )
-      );
-      await Promise.all(
-        files.map((file) => releasePickedComposerFile(file.token))
-      );
-      clearDraftAfterSend();
-      await onSendSucceeded?.();
+          });
+          await stagedFiles.runWithDispatch((attachments) =>
+            dispatchSynaraCommand(
+              buildComposerTurnStartCommand({
+                attachments,
+                commandId: createComposerDispatchId('command'),
+                createdAt: new Date().toISOString(),
+                interactionMode,
+                messageId: createComposerDispatchId('message'),
+                modelSelection: activeModelSelection as never,
+                runtimeMode,
+                text: text || 'Review the attached file.',
+                threadId,
+                mentions: projectedEditor.mentions,
+                skills: projectedEditor.skills,
+              })
+            )
+          );
+          await Promise.all(
+            files.map((file) => releasePickedComposerFile(file.token))
+          );
+        },
+        clearDraft: clearDraftAfterSend,
+        onSucceeded: onSendSucceeded,
+      });
     } catch (error) {
       console.error('[slice] failed to send composer turn', error);
       setSendError('Unable to send. Your draft is still here.');

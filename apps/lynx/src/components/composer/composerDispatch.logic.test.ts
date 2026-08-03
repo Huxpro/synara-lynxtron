@@ -7,6 +7,7 @@ import {
   buildComposerTurnStartCommand,
   isConnectingComposerSession,
   isRunningComposerSession,
+  runComposerSendTransaction,
 } from './composerDispatch.logic';
 
 describe('composer dispatch logic', () => {
@@ -181,5 +182,48 @@ describe('composer dispatch logic', () => {
     expect(
       buildComposerTurnInterruptCommand({ ...base, activeTurnId: null })
     ).not.toHaveProperty('turnId');
+  });
+
+  it('clears the draft only after a successful dispatch', async () => {
+    const calls: string[] = [];
+
+    await runComposerSendTransaction({
+      prepare: () => {
+        calls.push('prepare');
+      },
+      dispatch: async () => {
+        calls.push('dispatch');
+      },
+      clearDraft: () => {
+        calls.push('clear');
+      },
+      onSucceeded: () => {
+        calls.push('succeeded');
+      },
+    });
+
+    expect(calls).toEqual(['prepare', 'dispatch', 'clear', 'succeeded']);
+  });
+
+  it('retains the draft and structured context when dispatch fails', async () => {
+    const calls: string[] = [];
+    const error = new Error('dispatch failed');
+
+    await expect(
+      runComposerSendTransaction({
+        dispatch: async () => {
+          calls.push('dispatch');
+          throw error;
+        },
+        clearDraft: () => {
+          calls.push('clear');
+        },
+        onSucceeded: () => {
+          calls.push('succeeded');
+        },
+      })
+    ).rejects.toBe(error);
+
+    expect(calls).toEqual(['dispatch']);
   });
 });

@@ -1,6 +1,6 @@
 # P9-U5 Composer fidelity convergence plan
 
-Status: in progress — Phases 0–1 completed
+Status: implementation and certification complete; final workspace typecheck blocked
 
 ## Goal prompt
 
@@ -129,52 +129,52 @@ Every retained state must record:
 
 ### Baseline and extras
 
-| State | Web | Lynx Web | Native | Required assertion |
-|---|---:|---:|---:|---|
-| Empty landing default | yes | yes | batch | no popup; empty draft |
-| Extras open, Plan off, Fast default | yes | yes | yes | exact menu items and selected states |
-| Plan on, Fast default | yes | yes | yes | Plan checked only |
-| Plan off, Fast on | yes | yes | yes | Fast selected only |
-| Plan on, Fast on | yes | yes | optional diagnostic | both selected; never substitute for either single-mode cell |
-| Attachment action | yes | capability-specific | yes | Web image picker vs Native Add files host action |
+| State                               | Web |            Lynx Web |              Native | Required assertion                                          |
+| ----------------------------------- | --: | ------------------: | ------------------: | ----------------------------------------------------------- |
+| Empty landing default               | yes |                 yes |               batch | no popup; empty draft                                       |
+| Extras open, Plan off, Fast default | yes |                 yes |                 yes | exact menu items and selected states                        |
+| Plan on, Fast default               | yes |                 yes |                 yes | Plan checked only                                           |
+| Plan off, Fast on                   | yes |                 yes |                 yes | Fast selected only                                          |
+| Plan on, Fast on                    | yes |                 yes | optional diagnostic | both selected; never substitute for either single-mode cell |
+| Attachment action                   | yes | capability-specific |                 yes | Web image picker vs Native Add files host action            |
 
 ### Project picker
 
-| State | Web | Lynx Web | Native | Required assertion |
-|---|---:|---:|---:|---|
-| Empty trigger | yes | yes | yes | `Work in a project` |
-| Open default | yes | yes | yes | same groups, rows, footer actions |
-| Search filtered | yes | yes | Native if input semantics changed | same query and result order |
-| Project selected | yes | yes | yes | same workspace basename and selected indicator |
-| Selected menu open | yes | yes | yes | selected row plus reset |
-| Reset | yes | yes | yes | returns to empty trigger |
-| Loading | yes | yes | focused test acceptable if deterministic product capture is impractical | same state copy |
-| Empty/no match | yes | yes | Browser tier | same state copy |
-| Error/retry | yes | yes | host/RPC boundary if applicable | actionable error and recovery |
+| State              | Web | Lynx Web |                                                                  Native | Required assertion                             |
+| ------------------ | --: | -------: | ----------------------------------------------------------------------: | ---------------------------------------------- |
+| Empty trigger      | yes |      yes |                                                                     yes | `Work in a project`                            |
+| Open default       | yes |      yes |                                                                     yes | same groups, rows, footer actions              |
+| Search filtered    | yes |      yes |                                       Native if input semantics changed | same query and result order                    |
+| Project selected   | yes |      yes |                                                                     yes | same workspace basename and selected indicator |
+| Selected menu open | yes |      yes |                                                                     yes | selected row plus reset                        |
+| Reset              | yes |      yes |                                                                     yes | returns to empty trigger                       |
+| Loading            | yes |      yes | focused test acceptable if deterministic product capture is impractical | same state copy                                |
+| Empty/no match     | yes |      yes |                                                            Browser tier | same state copy                                |
+| Error/retry        | yes |      yes |                                         host/RPC boundary if applicable | actionable error and recovery                  |
 
 ### Skills
 
-| State | Web | Lynx Web | Native | Required assertion |
-|---|---:|---:|---:|---|
-| `$` trigger | yes | yes | if native input touched | same provider catalog |
-| Filtered query | yes | yes | batch | same result order and metadata |
-| Selected skill | yes | yes | yes after token convergence | one visible semantic token |
-| Cleared skill | yes | yes | yes after token convergence | no visible token and no structured skill |
-| Undo/redo | focused product test | focused product test | Native batch | token and structured context move together |
-| Send projection | canonical RPC/read-only DB verification | same | same | canonical provider text plus structured reference |
-| Restart persistence | Web reload | Lynx reload | exact-owned restart | draft display and context restore together |
+| State               |                                     Web |             Lynx Web |                      Native | Required assertion                                |
+| ------------------- | --------------------------------------: | -------------------: | --------------------------: | ------------------------------------------------- |
+| `$` trigger         |                                     yes |                  yes |     if native input touched | same provider catalog                             |
+| Filtered query      |                                     yes |                  yes |                       batch | same result order and metadata                    |
+| Selected skill      |                                     yes |                  yes | yes after token convergence | one visible semantic token                        |
+| Cleared skill       |                                     yes |                  yes | yes after token convergence | no visible token and no structured skill          |
+| Undo/redo           |                    focused product test | focused product test |                Native batch | token and structured context move together        |
+| Send projection     | canonical RPC/read-only DB verification |                 same |                        same | canonical provider text plus structured reference |
+| Restart persistence |                              Web reload |          Lynx reload |         exact-owned restart | draft display and context restore together        |
 
 ### Mentions
 
-| State | Web | Lynx Web | Native | Required assertion |
-|---|---:|---:|---:|---|
-| `@` trigger | yes | yes | if native input touched | same thread candidates |
-| Filtered query | yes | yes | batch | same title/project/meta |
-| Selected mention | yes | yes | yes after token convergence | one visible semantic token |
-| Cleared mention | yes | yes | yes after token convergence | no visible token and no structured mention |
-| Undo/redo | focused product test | focused product test | Native batch | token and structured context move together |
-| Send projection | canonical RPC/read-only DB verification | same | same | quoted canonical token plus `thread://` reference |
-| Restart persistence | Web reload | Lynx reload | exact-owned restart | draft display and context restore together |
+| State               |                                     Web |             Lynx Web |                      Native | Required assertion                                |
+| ------------------- | --------------------------------------: | -------------------: | --------------------------: | ------------------------------------------------- |
+| `@` trigger         |                                     yes |                  yes |     if native input touched | same thread candidates                            |
+| Filtered query      |                                     yes |                  yes |                       batch | same title/project/meta                           |
+| Selected mention    |                                     yes |                  yes | yes after token convergence | one visible semantic token                        |
+| Cleared mention     |                                     yes |                  yes | yes after token convergence | no visible token and no structured mention        |
+| Undo/redo           |                    focused product test | focused product test |                Native batch | token and structured context move together        |
+| Send projection     | canonical RPC/read-only DB verification |                 same |                        same | quoted canonical token plus `thread://` reference |
+| Restart persistence |                              Web reload |          Lynx reload |         exact-owned restart | draft display and context restore together        |
 
 ## Phase 0 — Repair the comparison contract
 
@@ -376,7 +376,7 @@ semantics:
   - Plan on / Fast default;
   - Plan off / Fast on;
   - Plan on / Fast on.
-  No combined state was reused for either single-mode state.
+    No combined state was reused for either single-mode state.
 - Eight required Browser cells moved to retained evidence. The strict manifest
   moved from 41 to 33 incomplete required cells.
 - Native Extras default, Plan-only, and Fast-only remain pending for the final
@@ -580,6 +580,8 @@ Rules:
 
 ## Phase 5 — Native certification batch
 
+Status: completed
+
 Run only after all Browser paired states pass.
 
 ### Preflight
@@ -617,6 +619,45 @@ Run only after all Browser paired states pass.
 - User state restores byte-for-byte.
 - Owned processes and ports are released.
 - No Native keyboard-shortcut claim is made.
+
+### Result
+
+- Closed the final seven Browser cells with current-build default frames, a
+  real Web image upload/preview/remove path, and strict hashed focused-test
+  artifacts for deterministic project loading/error states.
+- Exact-owned Native certification used production bundle
+  `74272594d98950e1c031e2181dc3b5834aeee5a586d171866aa58ba856b57a11`,
+  snapshot `98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070`,
+  `1280×820` outer bounds, and PID-derived
+  `localhost:8904/session 1`.
+- Retained ten dedicated `2560×1576` Native cells: default, Extras default,
+  Plan-only, Fast-only, Add files, project selected-open, and selected/cleared
+  skill and mention states.
+- The real `Add files` action delivered `bridge.dialogsPickFiles`. Its
+  PID-owned macOS `AXSheet` exposed `Cancel` and `Open`, was captured
+  separately, and was cancelled with a PID-scoped accessibility action.
+- Skill and mention cold restarts restored exactly one semantic chip, one
+  invisible textarea anchor plus spacing, canonical provider text, and the
+  structured reference. Cleared cold restarts restored none of them.
+- Native input/IME publication is independently certified by P9-D1. P9-U5
+  directly covers projection, selection, history, paste, duplicate tokens,
+  adjacent IME edits, persistence, canonical dispatch, and send-transaction
+  success/failure ordering.
+- The strict manifest validates 23 states with zero incomplete required cells.
+  Optional Native filtered-menu input is explicitly not applicable because
+  this goal did not touch general Native keyboard delivery.
+- Native error/warning consoles are empty. Isolated KV/window state restored
+  byte-for-byte, the SQLite hash remained unchanged, owned `8904` was
+  released, and existing `8901`–`8903` clients were untouched.
+- Final workspace verification:
+  - `bun fmt`: pass;
+  - `bun lint`: pass with zero errors after adding missing browser-file
+    overrides for the existing restricted-global rule;
+  - `bun typecheck`: blocked by 239 pre-existing Web errors across 91 files.
+    A detached `244be2ee` baseline has 245 errors across 94 files, including
+    the six Project Picker errors fixed by this slice. No P9-U5 Picker errors
+    remain. The remaining failures are outside this goal and are not hidden or
+    mass-edited.
 
 ## Test and build gates
 

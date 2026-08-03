@@ -1,6 +1,6 @@
 # P9-U5 Composer fidelity evidence
 
-Status: Phases 0–1 complete; later Composer slices pending
+Status: completed
 
 ## Contract
 
@@ -171,3 +171,108 @@ Native evidence.
   send clearing, RPC/DB projection, and cold restart remain for the exact-owned
   batch.
 - Strict status after Phase 4: 17 incomplete required cells.
+
+## Browser closure
+
+- Current-build default Web and Lynx-for-Web frames are retained at
+  `1280×820`, DPR 1, light theme, empty draft, Plan off, Fast off, and no
+  selected project.
+- Web attachment evidence uses the real product path:
+  - opened rendered Composer Extras;
+  - activated the real `image/*` file input;
+  - uploaded `p9-u5-attachment.png`;
+  - observed preview/remove controls;
+  - removed the attachment and closed Extras through rendered controls.
+- Project loading/error are deterministic transient states. They use strict
+  `focused-test` evidence instead of a fabricated screenshot:
+  - `focused/project-loading.json`;
+  - `focused/project-error.json`.
+    Each artifact records commands, passing counts, covered clients, source
+    owners, assertions, and a verifier-checked SHA-256.
+- The verifier rejects focused artifacts that are missing, stale, non-passing,
+  empty, wrong-client, wrong-state, or inconsistent with the manifest state.
+- Browser closure moved strict incomplete cells from 17 to the expected ten
+  Native-only cells.
+
+## Exact-owned Native certification
+
+- Certification bundle:
+  `74272594d98950e1c031e2181dc3b5834aeee5a586d171866aa58ba856b57a11`
+- Snapshot:
+  `98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070`
+- Runtime: repository Lynxtron `0.0.7`
+- Session:
+  `file:///Users/bytedance/github/synara/apps/lynx/dist/desktop/main.lynx.bundle`
+- Window: `1280×820` outer / `2560×1576` DevTool content
+- DevTool: PID-derived `localhost:8904`, session `1`
+- Owned PID sequence:
+  - `2212`: default, Extras, Plan-only, Fast-only, project selected-open;
+  - `83473`: skill selected cold restart;
+  - `99378`: skill cleared cold restart;
+  - `5963`: mention selected cold restart;
+  - `13828`: mention cleared and host Add files.
+
+Ten dedicated Native cells are retained under `native/`:
+
+1. default;
+2. Extras default;
+3. Plan-only;
+4. Fast-only;
+5. attachment action;
+6. project selected-open;
+7. skill selected;
+8. skill cleared;
+9. mention selected;
+10. mention cleared.
+
+Every main frame is a real `2560×1576` PNG converted from the DevTool frame.
+Each state has explicit assertions and an empty error/warning console.
+
+### Native state findings
+
+- Extras default contains `Add files`, a non-checked Plan switch, and a closed
+  Fast submenu.
+- Plan-only has `LxMenuSwitch--checked` while Fast remains default.
+- Fast-only has an unchecked Plan switch and the submenu check only beside
+  `Fast`.
+- Project selected-open has trigger `spike-workspace`, a selected option with
+  `aria-selected=true`, and both footer actions.
+- `Add files` delivered `bridge.dialogsPickFiles`. The PID-owned `AXSheet`
+  description is `add files`, with `Cancel` and `Open`. `dialog.png` captures
+  only that owned window; cancellation used PID-scoped `AXPress`.
+- Skill cold restart restored one `ComposerChip--skill` named `review-agent`.
+  The textarea default value was `U+2063` plus a space; KV retained canonical
+  `/review-agent ` and one structured skill.
+- Mention cold restart restored one `ComposerChip--mention` named
+  `In Progress seed task`. The textarea contained only the anchor and space;
+  KV retained the quoted canonical token and one `thread://` reference.
+- Cleared cold restarts rendered no matching chip, empty textarea value, empty
+  canonical prompt, and zero structured references.
+
+### Native behavioral boundary
+
+- P9-D1 independently certifies real Native textarea focus, committed input,
+  and `isComposing=true → false` with Doubao Pinyin.
+- P9-U5 directly tests projection, caret mapping, Backspace, selection
+  deletion, duplicate/multiple tokens, paste transition, undo/redo,
+  IME-adjacent edits, persistence, canonical command shape, and send
+  transaction ordering.
+- Successful dispatch reaches clear only after dispatch. A failed dispatch
+  never invokes clear or the success callback, so canonical prompt and
+  structured context remain.
+- Native filtered skill/mention menus remain optional and explicitly not
+  applicable because this goal did not touch general Native keyboard delivery.
+  Browser menu parity is retained and no keyboard-shortcut claim is made.
+
+### Cleanup
+
+- Original isolated state:
+  - KV `cdf73622d9f9a3aaa131483680b0e5eb31596dc3a9029406b6aa036d18de57b4`;
+  - window state
+    `2dd961d318ba0c6680929b6f58d30c76e82e6aa6f9e3b719955d1e06d69e571b`.
+- Both files were restored byte-for-byte.
+- Shared SQLite remained
+  `98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070`.
+- Owned DevTool `8904` was released. Existing `8901`, `8902`, and `8903`
+  clients were not touched.
+- Strict status after Native certification: zero incomplete required cells.

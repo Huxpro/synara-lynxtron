@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-03T03:30:28.691Z",
+  "generatedAt": "2026-08-03T17:02:07.048Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -21,7 +21,7 @@
     "entries": [
       "src/app/index.tsx"
     ],
-    "modules": 490,
+    "modules": 498,
     "externalImports": [
       "@base-ui/react/autocomplete",
       "@base-ui/react/collapsible",
@@ -70,6 +70,7 @@
       "@synara/shared/path",
       "@synara/shared/pinnedMessages",
       "@synara/shared/providerMetadata",
+      "@synara/shared/providerUsage",
       "@synara/shared/sidebarSearch",
       "@synara/shared/subagents",
       "@synara/shared/text",
@@ -135,7 +136,7 @@
       ],
       "graph": {
         "modules": 401,
-        "loc": 80826,
+        "loc": 80832,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -222,7 +223,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 333,
-          "loc": 72893
+          "loc": 72899
         },
         "PATCHED": {
           "modules": 1,
@@ -239,14 +240,14 @@
       },
       "eligible": {
         "modules": 392,
-        "loc": 79020
+        "loc": 79026
       },
       "currentReuse": {
-        "modules": 234,
-        "loc": 44219,
-        "modulePercent": 59.69,
-        "locPercent": 55.96,
-        "gatePercent": 55.96
+        "modules": 236,
+        "loc": 44351,
+        "modulePercent": 60.2,
+        "locPercent": 56.12,
+        "gatePercent": 56.12
       },
       "modules": [
         {
@@ -1610,7 +1611,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarSearchPalette.tsx",
-          "loc": 1217,
+          "loc": 1223,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -2058,7 +2059,7 @@
           "loc": 38,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/central-icons.tsx",
             "apps/web/src/lib/spaceGrouping.ts",
@@ -3826,7 +3827,7 @@
           "loc": 88,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/types.ts"
           ]
@@ -5049,7 +5050,7 @@
       ],
       "graph": {
         "modules": 347,
-        "loc": 70321,
+        "loc": 70327,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -5136,7 +5137,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 282,
-          "loc": 62432
+          "loc": 62438
         },
         "PATCHED": {
           "modules": 1,
@@ -5153,14 +5154,14 @@
       },
       "eligible": {
         "modules": 339,
-        "loc": 68538
+        "loc": 68544
       },
       "currentReuse": {
-        "modules": 231,
-        "loc": 43651,
-        "modulePercent": 68.14,
-        "locPercent": 63.69,
-        "gatePercent": 63.69
+        "modules": 233,
+        "loc": 43783,
+        "modulePercent": 68.73,
+        "locPercent": 63.88,
+        "gatePercent": 63.88
       },
       "modules": [
         {
@@ -6364,7 +6365,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarSearchPalette.tsx",
-          "loc": 1217,
+          "loc": 1223,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -6812,7 +6813,7 @@
           "loc": 38,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/central-icons.tsx",
             "apps/web/src/lib/spaceGrouping.ts",
@@ -8331,7 +8332,7 @@
           "loc": 88,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/types.ts"
           ]
@@ -9229,8 +9230,8 @@
         "src/components/composer/Composer.tsx"
       ],
       "graph": {
-        "modules": 754,
-        "loc": 151663,
+        "modules": 757,
+        "loc": 152023,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -9357,8 +9358,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 651,
-          "loc": 135222
+          "modules": 654,
+          "loc": 135582
         },
         "PATCHED": {
           "modules": 1,
@@ -9374,15 +9375,15 @@
         }
       },
       "eligible": {
-        "modules": 726,
-        "loc": 143520
+        "modules": 729,
+        "loc": 143880
       },
       "currentReuse": {
-        "modules": 344,
-        "loc": 56108,
-        "modulePercent": 47.38,
-        "locPercent": 39.09,
-        "gatePercent": 39.09
+        "modules": 349,
+        "loc": 56729,
+        "modulePercent": 47.87,
+        "locPercent": 39.43,
+        "gatePercent": 39.43
       },
       "modules": [
         {
@@ -10191,7 +10192,7 @@
         },
         {
           "path": "apps/web/src/components/chat/ComposerExtrasMenuComposition.tsx",
-          "loc": 75,
+          "loc": 76,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -10202,7 +10203,7 @@
         },
         {
           "path": "apps/web/src/components/chat/ComposerExtrasMenuCompositionElements.tsx",
-          "loc": 78,
+          "loc": 95,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -10441,6 +10442,41 @@
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
           "dependencies": []
+        },
+        {
+          "path": "apps/web/src/components/chat/ComposerProjectPicker.logic.ts",
+          "loc": 162,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
+        },
+        {
+          "path": "apps/web/src/components/chat/ComposerProjectPickerComposition.tsx",
+          "loc": 127,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": [
+            "apps/web/src/components/chat/ComposerProjectPicker.logic.ts",
+            "apps/web/src/components/chat/ComposerProjectPickerCompositionElements.tsx"
+          ]
+        },
+        {
+          "path": "apps/web/src/components/chat/ComposerProjectPickerCompositionElements.tsx",
+          "loc": 182,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": [
+            "apps/web/src/components/FolderClosed.tsx",
+            "apps/web/src/components/SpaceIcon.tsx",
+            "apps/web/src/components/chat/ComposerPickerMenuPopup.tsx",
+            "apps/web/src/components/chat/PickerPanelShell.tsx",
+            "apps/web/src/components/chat/PickerTriggerButton.tsx",
+            "apps/web/src/components/ui/menu.tsx",
+            "apps/web/src/lib/icons.tsx"
+          ]
         },
         {
           "path": "apps/web/src/components/chat/ComposerProviderPickerItems.ts",
@@ -11500,20 +11536,15 @@
         },
         {
           "path": "apps/web/src/components/chat/ProjectPicker.tsx",
-          "loc": 582,
+          "loc": 446,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
           "dependencies": [
-            "apps/web/src/components/FolderClosed.tsx",
-            "apps/web/src/components/SpaceIcon.tsx",
-            "apps/web/src/components/chat/PickerPanelShell.tsx",
-            "apps/web/src/components/chat/PickerTriggerButton.tsx",
-            "apps/web/src/components/ui/combobox.tsx",
-            "apps/web/src/lib/icons.tsx",
+            "apps/web/src/components/chat/ComposerProjectPicker.logic.ts",
+            "apps/web/src/components/chat/ComposerProjectPickerComposition.tsx",
             "apps/web/src/lib/localFoldersGroupLabel.ts",
             "apps/web/src/lib/spaceGrouping.ts",
-            "apps/web/src/lib/utils.ts",
             "apps/web/src/nativeApi.ts",
             "apps/web/src/platform/dialogs.ts",
             "apps/web/src/spacesUiStore.ts",
@@ -12253,7 +12284,7 @@
         },
         {
           "path": "apps/web/src/components/ChatView.tsx",
-          "loc": 10697,
+          "loc": 10698,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -14394,7 +14425,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarSearchPalette.tsx",
-          "loc": 1217,
+          "loc": 1223,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -14854,7 +14885,7 @@
           "loc": 38,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/central-icons.tsx",
             "apps/web/src/lib/spaceGrouping.ts",
@@ -17592,7 +17623,7 @@
           "loc": 88,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/types.ts"
           ]
@@ -19082,7 +19113,7 @@
       ],
       "graph": {
         "modules": 473,
-        "loc": 91052,
+        "loc": 91058,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -19174,7 +19205,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 400,
-          "loc": 82926
+          "loc": 82932
         },
         "PATCHED": {
           "modules": 1,
@@ -19191,14 +19222,14 @@
       },
       "eligible": {
         "modules": 464,
-        "loc": 89246
+        "loc": 89252
       },
       "currentReuse": {
-        "modules": 262,
-        "loc": 47058,
-        "modulePercent": 56.47,
-        "locPercent": 52.73,
-        "gatePercent": 52.73
+        "modules": 264,
+        "loc": 47190,
+        "modulePercent": 56.9,
+        "locPercent": 52.87,
+        "gatePercent": 52.87
       },
       "modules": [
         {
@@ -21377,7 +21408,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarSearchPalette.tsx",
-          "loc": 1217,
+          "loc": 1223,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -21825,7 +21856,7 @@
           "loc": 38,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/central-icons.tsx",
             "apps/web/src/lib/spaceGrouping.ts",
@@ -23701,7 +23732,7 @@
           "loc": 88,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/types.ts"
           ]
@@ -24967,7 +24998,7 @@
       ],
       "graph": {
         "modules": 507,
-        "loc": 98930,
+        "loc": 98936,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -25070,7 +25101,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 436,
-          "loc": 88648
+          "loc": 88654
         },
         "PATCHED": {
           "modules": 1,
@@ -25087,14 +25118,14 @@
       },
       "eligible": {
         "modules": 496,
-        "loc": 95131
+        "loc": 95137
       },
       "currentReuse": {
-        "modules": 284,
-        "loc": 50450,
-        "modulePercent": 57.26,
-        "locPercent": 53.03,
-        "gatePercent": 53.03
+        "modules": 286,
+        "loc": 50582,
+        "modulePercent": 57.66,
+        "locPercent": 53.17,
+        "gatePercent": 53.17
       },
       "modules": [
         {
@@ -27600,7 +27631,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarSearchPalette.tsx",
-          "loc": 1217,
+          "loc": 1223,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -28060,7 +28091,7 @@
           "loc": 38,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/central-icons.tsx",
             "apps/web/src/lib/spaceGrouping.ts",
@@ -30094,7 +30125,7 @@
           "loc": 88,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/types.ts"
           ]
@@ -31338,7 +31369,7 @@
       ],
       "graph": {
         "modules": 507,
-        "loc": 98931,
+        "loc": 98937,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -31441,7 +31472,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 436,
-          "loc": 88649
+          "loc": 88655
         },
         "PATCHED": {
           "modules": 1,
@@ -31458,14 +31489,14 @@
       },
       "eligible": {
         "modules": 496,
-        "loc": 95132
+        "loc": 95138
       },
       "currentReuse": {
-        "modules": 284,
-        "loc": 50450,
-        "modulePercent": 57.26,
-        "locPercent": 53.03,
-        "gatePercent": 53.03
+        "modules": 286,
+        "loc": 50582,
+        "modulePercent": 57.66,
+        "locPercent": 53.17,
+        "gatePercent": 53.17
       },
       "modules": [
         {
@@ -33971,7 +34002,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarSearchPalette.tsx",
-          "loc": 1217,
+          "loc": 1223,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -34431,7 +34462,7 @@
           "loc": 38,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/central-icons.tsx",
             "apps/web/src/lib/spaceGrouping.ts",
@@ -36465,7 +36496,7 @@
           "loc": 88,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/types.ts"
           ]
@@ -37709,7 +37740,7 @@
       ],
       "graph": {
         "modules": 495,
-        "loc": 91692,
+        "loc": 91698,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -37809,7 +37840,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 422,
-          "loc": 82253
+          "loc": 82259
         },
         "PATCHED": {
           "modules": 1,
@@ -37826,14 +37857,14 @@
       },
       "eligible": {
         "modules": 486,
-        "loc": 89886
+        "loc": 89892
       },
       "currentReuse": {
-        "modules": 306,
-        "loc": 52242,
-        "modulePercent": 62.96,
-        "locPercent": 58.12,
-        "gatePercent": 58.12
+        "modules": 308,
+        "loc": 52374,
+        "modulePercent": 63.37,
+        "locPercent": 58.26,
+        "gatePercent": 58.26
       },
       "modules": [
         {
@@ -40109,7 +40140,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarSearchPalette.tsx",
-          "loc": 1217,
+          "loc": 1223,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -40569,7 +40600,7 @@
           "loc": 38,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/central-icons.tsx",
             "apps/web/src/lib/spaceGrouping.ts",
@@ -42499,7 +42530,7 @@
           "loc": 88,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/types.ts"
           ]

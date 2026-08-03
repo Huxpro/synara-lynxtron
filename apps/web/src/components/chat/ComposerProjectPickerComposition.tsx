@@ -38,13 +38,23 @@ export function ComposerProjectPickerComposition(props: {
 }) {
   const footerModel = buildComposerProjectPickerFooterModel({
     addActionLabel: props.addActionLabel,
-    addActionBusy: props.addActionBusy,
     resetActionLabel: props.resetActionLabel,
-    resetVisible: props.resetVisible,
-    retryActionLabel: props.retryActionLabel,
-    retryActionBusy: props.retryActionBusy,
-    errorMessage: props.errorMessage,
     retryVisible: props.onRetry !== undefined,
+    ...(props.addActionBusy === undefined
+      ? {}
+      : { addActionBusy: props.addActionBusy }),
+    ...(props.resetVisible === undefined
+      ? {}
+      : { resetVisible: props.resetVisible }),
+    ...(props.retryActionLabel === undefined
+      ? {}
+      : { retryActionLabel: props.retryActionLabel }),
+    ...(props.retryActionBusy === undefined
+      ? {}
+      : { retryActionBusy: props.retryActionBusy }),
+    ...(props.errorMessage === undefined
+      ? {}
+      : { errorMessage: props.errorMessage }),
   });
   const activateAction = (
     kind: "add" | "reset" | "retry",
@@ -61,9 +71,13 @@ export function ComposerProjectPickerComposition(props: {
       side={props.side ?? "bottom"}
       primaryLabel={props.model.selectedLabel}
       secondaryLabel={props.model.selectedSecondaryLabel}
-      triggerClassName={props.triggerClassName}
       triggerLabel={props.model.selectedLabel}
-      triggerTestId={props.triggerTestId}
+      {...(props.triggerClassName === undefined
+        ? {}
+        : { triggerClassName: props.triggerClassName })}
+      {...(props.triggerTestId === undefined
+        ? {}
+        : { triggerTestId: props.triggerTestId })}
     >
       <ComposerProjectPickerPanelElement
         placeholder={props.searchPlaceholder ?? "Search projects"}

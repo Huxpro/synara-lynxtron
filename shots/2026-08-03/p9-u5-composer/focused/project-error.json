@@ -1,0 +1,36 @@
+{
+  "status": "pass",
+  "stateId": "composer-project-error",
+  "clients": ["web", "lynx"],
+  "commands": [
+    "bun run --cwd apps/web test -- src/components/chat/ComposerProjectPicker.logic.test.ts src/components/chat/ComposerProjectPickerComposition.test.tsx",
+    "bun run --cwd apps/lynx test -- src/components/composer/landingComposerFidelity.test.ts"
+  ],
+  "results": {
+    "web": {
+      "testFiles": 2,
+      "tests": 7,
+      "failed": 0
+    },
+    "lynx": {
+      "testFiles": 1,
+      "tests": 1,
+      "failed": 0
+    }
+  },
+  "assertions": [
+    "The shared footer model preserves the actionable error copy and adds Retry only when a retry intent exists.",
+    "The shared footer model changes Retry to a disabled Retrying state while recovery is active.",
+    "Web ProjectPicker surfaces directory errors and resets the request before retrying.",
+    "Lynx LandingComposer surfaces filesystem errors through the same shared composition and wires refetch to Retry.",
+    "Both platform element adapters render the shared error and retry anatomy; neither owns a separate ordinary error model."
+  ],
+  "sourceFiles": [
+    "apps/web/src/components/chat/ComposerProjectPicker.logic.ts",
+    "apps/web/src/components/chat/ComposerProjectPickerComposition.tsx",
+    "apps/web/src/components/chat/ComposerProjectPickerComposition.test.tsx",
+    "apps/web/src/components/chat/ProjectPicker.tsx",
+    "apps/lynx/src/components/composer/LandingComposer.lynx.tsx",
+    "apps/lynx/src/components/composer/landingComposerFidelity.test.ts"
+  ]
+}

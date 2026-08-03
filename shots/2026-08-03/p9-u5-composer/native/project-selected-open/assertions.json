@@ -1,0 +1,32 @@
+{
+  "client": "native",
+  "captureTier": "native",
+  "buildSha256": "74272594d98950e1c031e2181dc3b5834aeee5a586d171866aa58ba856b57a11",
+  "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+  "bundle": "file:///Users/bytedance/github/synara/apps/lynx/dist/desktop/main.lynx.bundle",
+  "runtime": "@lynx-js/lynxtron 0.0.7",
+  "devtoolClient": "localhost:8904",
+  "devtoolSession": 1,
+  "outerBounds": {
+    "x": 224,
+    "y": 165,
+    "width": 1280,
+    "height": 820
+  },
+  "contentPixels": {
+    "width": 2560,
+    "height": 1576
+  },
+  "theme": "light",
+  "console": {
+    "errors": 0,
+    "warnings": 0
+  },
+  "pids": [2212],
+  "assertions": [
+    "Project trigger is spike-workspace and expanded.",
+    "The spike-workspace option has aria-selected=true.",
+    "New project and Don't work in a project footer actions are rendered."
+  ],
+  "state": "project-selected-open"
+}

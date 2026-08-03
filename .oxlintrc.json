@@ -30,12 +30,7 @@
   },
   "overrides": [
     {
-      "files": [
-        "**/*.test.*",
-        "**/*.browser.*",
-        "apps/web/src/test/**",
-        "**/__tests__/**"
-      ],
+      "files": ["**/*.test.*", "**/*.browser.*", "apps/web/src/test/**", "**/__tests__/**"],
       "rules": {
         "no-restricted-globals": "off"
       }
@@ -59,12 +54,16 @@
         "apps/web/src/components/chat/MentionChipIcon.tsx",
         "apps/web/src/components/chat/chatSelectionDom.ts",
         "apps/web/src/components/chat/chatHeaderControls.tsx",
+        "apps/web/src/components/settings/ThemePackEditorCompositionElements.tsx",
         "apps/web/src/components/sidebarHoverCardAnchors.ts",
         "apps/web/src/components/ChatView.tsx",
         "apps/web/src/components/profile/**",
         "apps/web/src/lib/pdf/**",
         "apps/web/src/lib/central-icons.tsx",
-        "apps/web/src/lib/panelResize.ts"
+        "apps/web/src/lib/panelResize.ts",
+        "apps/web/scripts/measure-lcp.mjs",
+        "apps/marketing/src/**/*.astro",
+        "apps/marketing/src/lib/releases.ts"
       ],
       "rules": {
         "no-restricted-globals": "off"

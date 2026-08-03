@@ -48,9 +48,9 @@
 - **P1-F2 补充（测试终态）**：isBrowser 两次语义修正定稿——①改函数（late-stub 测试）；②window-only 判定（fake-window 无 document）。events port 内置 capability 检查（部分 window stub 缺 dispatchEvent/addEventListener，wsTransport.test 复绿）。终态：3018/3026，失败=预存集。
 - **P1-F3 ✅ completed**（未 commit）。window.nativeApi 生产死层删除（preload 只暴露 desktopBridge 已证实）；但浏览器测试用它做注入缝 → 新 `setNativeApiForTest` 测试缝（nativeApi.ts），迁移 ChatView.browser.tsx（3 注入点+3 restore）与 chatProjects.test.ts（6 stub 点+afterEach reset）。env.ts 的 isElectron 收敛为 desktopBridge-only。shadcn dep 移除（bun remove）+ components.json 删除（孤儿 CLI 配置）。vite-env.d.ts 移除 Window.nativeApi 类型。vitest 3015/3026，失败=预存集（ChatMarkdown 2 断言基线同败，余为负载超时）。
 - 下一步：P1-F4（tokens.css 提取：index.css @theme 66 令牌→独立 tokens.css 被 import）。之后 P1-F5。主仓未提交=F1+F2+F3。
-- **P1-F4 ✅ completed**（未 commit）。index.css:487-632 的 :root 令牌块（108 声明 = 66 亮 + 42 暗 @variant dark）原样抽为 `apps/web/src/tokens.css`（含文件头说明），index.css 顶部 `@import "./tokens.css";`（@import 相邻置顶满足 CSS 规范；重排安全已验证：487 后无同属性非 layer 重复定义、unlayered↔layer 关系不变）。验证：`bunx vite build` 成功，产物 main-*.css 含 --background 与 .dark 变体。第二个 @theme inline（scroll-fade keyframes，1842 行）非令牌，未动。
+- **P1-F4 ✅ completed**（未 commit）。index.css:487-632 的 :root 令牌块（108 声明 = 66 亮 + 42 暗 @variant dark）原样抽为 `apps/web/src/tokens.css`（含文件头说明），index.css 顶部 `@import "./tokens.css";`（@import 相邻置顶满足 CSS 规范；重排安全已验证：487 后无同属性非 layer 重复定义、unlayered↔layer 关系不变）。验证：`bunx vite build` 成功，产物 main-\*.css 含 --background 与 .dark 变体。第二个 @theme inline（scroll-fade keyframes，1842 行）非令牌，未动。
 - 下一步：P1-F5（React 19 特性降级：useTransition×7→react-pacer、useId×9→计数器 util、startTransition×5 确认 /compat）。之后 P1-F6（依赖 F4）→ Phase 2。主仓未提交=F1+F2+F3+F4。
-- **P1-F5 ✅ completed**（未 commit）。useDeferredValue×7（含漏网的 _chat.pull-requests.index）→`useDebouncedValue(x,{wait:100})`（react-pacer 已是依赖）；useId×10 站点/9 文件→新 `hooks/useUniqueId.ts`（计数器+useRef 稳定）；BranchToolbarBranchSelector 的 useTransition+**useOptimistic**（审计漏计）→手动 pending/optimistic state（比 /compat 的恒 false pending 更准）；startTransition×7 **保留**——`@lynx-js/react/compat` 已证导出 startTransition/useTransition（Preact 语义：同步执行/pending 恒 false），P2-V1 需配 react→react/compat alias。vitest 3017/3026 同基线。
+- **P1-F5 ✅ completed**（未 commit）。useDeferredValue×7（含漏网的 \_chat.pull-requests.index）→`useDebouncedValue(x,{wait:100})`（react-pacer 已是依赖）；useId×10 站点/9 文件→新 `hooks/useUniqueId.ts`（计数器+useRef 稳定）；BranchToolbarBranchSelector 的 useTransition+**useOptimistic**（审计漏计）→手动 pending/optimistic state（比 /compat 的恒 false pending 更准）；startTransition×7 **保留**——`@lynx-js/react/compat` 已证导出 startTransition/useTransition（Preact 语义：同步执行/pending 恒 false），P2-V1 需配 react→react/compat alias。vitest 3017/3026 同基线。
 - 下一步：P1-F6（CSS diff 工具：PostCSS 插件+CI+首份报告回填 02；依赖 F4 ✓）。之后 Phase 2（P2-V1 依赖 P0-S1✓+P1-F4✓ 已解锁）。主仓未提交=F1~F5。
 - **P1-F6 ✅ completed**（未 commit）。`scripts/lynx-css-report.ts`（postcss@8.5.19 加为根 devDep）：解析 index.css+tokens.css，28 条判定（✅1/❓2/⬆️2/🔀5/🔧18）；`--baseline` ratchet + `--check` 已接 CI（Lint 后新步骤，负向测试验证 exit 1）；报告 scripts/reports/lynx-css-report.md + 基线 JSON 入库。新发现回填 02：scroll-fade 依赖 @property（🔀）+ scroll-driven animations（🔧），Lynx 侧需整体重写。package.json 加 `lynx:css-report` script。
 - **🏁 Phase 1 出口达成**：F1~F6 全部 completed（详见 01 出口行）。主仓未提交改动 = **F1+F2+F3+F4+F5+F6 全部**（git status 可查；用户审查后自行 commit）。
@@ -347,7 +347,7 @@
 - `plan/templates/fidelity-notes.md` 固化两尺寸/主题、≤8px anchor、≤2px type、semantic
   tokens、≥70% reuse、逐项 exemption 与小范围 mask 规则。04 新增 P-22。
 - 验证：`node scripts/reuse-audit.mjs --check` 通过；六屏/lynx unresolved=0；`git
-  diff --check` 通过。本任务只改 synara-lynx 审计/计划文件，主仓零改动。
+diff --check` 通过。本任务只改 synara-lynx 审计/计划文件，主仓零改动。
 - 下一任务：**P5-R2 原组件树 Lynx 编译探针 + 落点决策**。优先选择 Settings 的小型纯
   presentation subtree，必须由主仓同一物理 TSX 文件进入 Rspeedy，不复制 JSX；以真实
   compiler errors 决定最小 adapter 与 D7。
@@ -415,7 +415,7 @@
   unchanged DebouncedSettingTextInput 计真实 SHARED，Settings gate 0.14%→0.24%。
 - Rstest 第一次错误传 `--run`（CLI 不支持）；之后 aggregate 与 focused suite、Node22
   三次均在 Rstest 生成的 lynx-ui vendor mjs 加载期报 `Invalid left-hand side in
-  assignment`，不是断言失败：其余五 files/13 tests 全过，失败 suite 0 tests started。
+assignment`，不是断言失败：其余五 files/13 tests 全过，失败 suite 0 tests started。
   已用 production build + real Lynxtron 分解验证，不再重复同一 loader 尝试。
 - `/ui` 全 primitive 截图另遇既有 P-09 类 DevTool screenshot timeout（三次，session
   仍存在）；未把它作为通过证据。P5-R3 的实机退出证据使用可稳定截图的 unchanged Web
@@ -519,7 +519,7 @@
   一次从 slice cwd 误跑 root generator、一次给 Rstest 传不支持的 `--run`；切换到记录的
   cwd/命令后成功。没有同一代码路径三连失败。
 - 最终验证：主仓 `bun run build` 5/5 task pass（Web 8,758 modules）；slice `npm run
-  build` pass（Lynx 612.2kB、desktop 727.2kB）；focused shellRuntime 3/3；reference reuse
+build` pass（Lynx 612.2kB、desktop 727.2kB）；focused shellRuntime 3/3；reference reuse
   check 75%；style check 当前 1,961 classes/10,208 eligible weighted/96.29%；两仓
   `git diff --check` pass。未运行禁用的 fmt/lint/typecheck/`bun test`，未提交。
 - 产出：`slice/docs/p5-r5-fidelity-gate.md`、
@@ -554,7 +554,7 @@
   基线同时测得 picker 232×27.25、action 244×28、30px cadence；两尺寸 Lynx 截图确认
   sidebar 物理宽 512px（DPR 2）且真实 projects/threads 正常。
 - Lynx 1280×820 与 1440×900 native window 均由 DevTool `list-clients → list-sessions →
-  take-screenshot/get-console` 验证，console 只有 preload startup。第二尺寸按 P-27 暂改
+take-screenshot/get-console` 验证，console 只有 preload startup。第二尺寸按 P-27 暂改
   实际 window-state，截图后已恢复到原 1280×820；只 Ctrl-C 本轮 8903 process，未触碰
   用户 8902。
 - Web baseline 证据限制：58090 上 PID 5203 是 17h+ 的 `.synara-pr84` 旧 server；当前
@@ -808,7 +808,7 @@
   为 Threads 333 graph modules、324 eligible、gate **1.06%**；style 串行 write/check
   2,256 classes、13,131 weighted、**98.04%**；两仓 diff check pass。首次 scoped test
   命令把 `--run` 误传给 turbo，立即改为在 `apps/web` 直接执行 `bun run test
-  src/components/Sidebar.logic.test.ts`，不是代码失败。
+src/components/Sidebar.logic.test.ts`，不是代码失败。
 - P6-C1 仍 in_progress。下一步不能继续把几十行 leaf composition 当主进度；应从 Web
   Sidebar 的 project/chat row controller 中抽 cohesive row view-model（active/status/
   provider/subagent/meta discriminants）并让两端直接 composition，或把 shell route-owned
@@ -1524,9 +1524,9 @@
 ### 2026-07-28 — P6-C1 心跳：shared Studio flat content composition
 
 - 上一刀只修正 segment→primary action catalog，Studio 下方仍错误复用 Threads 的 Projects
-  + Chats 内容。现将 Web 原 Studio prelude/header/actions/flat rows/empty-state 下沉为物理
-  `SidebarStudioSection`；Web 保留 auto-animate/ref 与原 row renderer，Lynx 仅适配 host
-  elements，并从共享 `sections.studioThreads` 喂扁平 rows。
+  - Chats 内容。现将 Web 原 Studio prelude/header/actions/flat rows/empty-state 下沉为物理
+    `SidebarStudioSection`；Web 保留 auto-animate/ref 与原 row renderer，Lynx 仅适配 host
+    elements，并从共享 `sections.studioThreads` 喂扁平 rows。
 - 可逆 initial-route `/studio` 生产截图已覆盖更新
   `shots/2026-07-27/port/p6-c1/current-fixes/lynx-shared-studio-primary-surface.png`：
   Studio picker/action 下只剩 `Studio` + `No studio chats yet`，无 Projects、无额外 Chats；
@@ -1626,7 +1626,7 @@
   `sidebar-surface-enter` → navigation + body → trailing）下沉为物理
   `SidebarSurfaceContent`。Web Elements 保留原 `SidebarContent gap-0 font-system-ui` 与
   `div.sidebar-surface-enter`；Lynx Elements 用 `scroll-view.AppSidebarScroll >
-  view.AppSidebarScrollInner` + `view.AppSidebarSurfaceEnter`。settings 分支以具名
+view.AppSidebarScrollInner` + `view.AppSidebarSurfaceEnter`。settings 分支以具名
   `settingsNavigation` 表达"设置导航替换整个 surface"，Web 行为与原 ternary 完全一致。
 - 结构后果：Lynx 的 picker/primary navigation 从"固定在滚动区之上"改为与 Web 一致地随
   内容滚动。为保持像素不变，把原 `.AppSidebarScrollInner` 的 `14px 10px 18px` 拆开：
@@ -3279,7 +3279,7 @@
   **1 file / 6 tests**。Web production **8,900 modules**；slice **2166.5kB Lynx /
   2282.0kB desktop total**。
 - repo-owned `8901`、1440×900 offline smoke 精确点击 Kanban 后，shared `Kanban / 0 tasks /
-  New task` 44px header 与真实 unavailable state 正常，console error/warning 为空。证据：
+New task` 44px header 与真实 unavailable state 正常，console error/warning 为空。证据：
   `shots/2026-07-30/port/p6-c6/kanban-overview-header/notes.md`。
 - KV/window-state 从 explicit backup byte-exact 恢复到
   `300eb49e87ddbcbd57929e2013ac190528ba2748632cfdcfbc2aa2a1e20bb0be` /
@@ -4266,7 +4266,6 @@
   Lynxtron 0.0.7 仍只有 0-child AXGroup、无可观察 audible channel；明确保留为 host gap，
   不冒充 screen-reader pass。下一任务进入 **P8-Q1 删除切片脚手架与重复 renderer**。
 
-
 ---
 
 ## 2026-07-31 — P8-Q1 主仓控制面迁移（completed）
@@ -4858,3 +4857,27 @@
 - 4 states × Web/Lynx共8 required cells retained，strict incomplete **25→17**。
   focused projection/store/editor/history/send **32/32**；Native IME/selection/undo-redo/
   dispatch/failed-send/cold-restart留exact-owned batch。
+
+## 2026-08-04 — P9-U5 completed
+
+- Browser剩余7格关闭：current-build default paired、Web真实Add image
+  upload/preview/remove，以及project loading/error的strict hashed focused-test
+  artifacts。verifier补artifact hash/status/client/state和selected-token name门禁；
+  strict **17→10**。
+- exact-owned Native使用bundle `74272594…`、snapshot `98753f94…`、
+  1280×820 outer / 2560×1576 frames、PID-derived `8904/session1`；retained
+  default、Extras default、Plan-only、Fast-only、Add files、project selected-open、
+  skill selected/cleared、mention selected/cleared共10格，逐格console空。
+- Add files真实到达`bridge.dialogsPickFiles`，PID-owned `AXSheet add files`有
+  Cancel/Open并单独capture；PID-scoped AXPress cancel。skill/mention cold restart
+  均为单chip + `U+2063` anchor + canonical text + structured ref；cleared均为空。
+- completion audit补send transaction direct tests：成功dispatch后才clear，失败不clear/
+  不调用success callback。P9-D1提供真实Native IME publication证据，本goal未进入
+  keyboard shortcut/general host keyboard repair。
+- isolated KV/window state byte-exact恢复，snapshot hash不变，owned 8904/62190释放，
+  8901–8903未触碰；strict manifest **0 incomplete**。
+- final heavy pass：`bun fmt`通过；`bun lint`补齐browser-only restricted-global
+  overrides后0 errors通过；`bun typecheck`仍被既有Web基线阻塞。用同一TypeScript与
+  dependencies对detached `244be2ee`实测为245 errors / 94 files；当前为239 / 91，
+  P9-U5的6个Project Picker errors已全部归零。剩余跨Sidebar/terminal/timeline/settings
+  等无关模块，不在Composer certification里批量修或降级tsconfig。
