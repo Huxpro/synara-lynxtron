@@ -1,0 +1,63 @@
+{
+  "client": "native",
+  "stateId": "landing-default",
+  "devtool": {
+    "client": "localhost:8904",
+    "session": 1
+  },
+  "viewport": {
+    "outer": {
+      "width": 1280,
+      "height": 820
+    },
+    "contentPixels": {
+      "width": 2560,
+      "height": 1576
+    },
+    "devicePixelRatio": 2
+  },
+  "roles": {
+    "sidebar": {
+      "nodeId": -1,
+      "box": null,
+      "contentBox": null,
+      "style": {}
+    },
+    "projectLabel": {
+      "nodeId": -1,
+      "box": null,
+      "contentBox": null,
+      "style": {}
+    },
+    "hero": {
+      "nodeId": -1,
+      "box": null,
+      "contentBox": null,
+      "style": {}
+    },
+    "composerSurface": {
+      "nodeId": -1,
+      "box": null,
+      "contentBox": null,
+      "style": {}
+    },
+    "textbox": {
+      "nodeId": -1,
+      "box": null,
+      "contentBox": null,
+      "style": {}
+    },
+    "projectTrigger": {
+      "nodeId": -1,
+      "box": null,
+      "contentBox": null,
+      "style": {}
+    },
+    "headerTitle": {
+      "nodeId": -1,
+      "box": null,
+      "contentBox": null,
+      "style": {}
+    }
+  }
+}

@@ -4911,3 +4911,28 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   single token projection、canonical/structured payload、Native identity/consoles/state
   restoration、builds、cleanup与最终workspace gates，未发现required gap。P9-U5状态更新为
   complete。
+
+## 2026-08-04 — P10 Phase 0 perceptual residual atlas
+
+- 新增独立 P10 strict manifest/verifier/comparison。每个 retained cell 必须同时有 raw +
+  normalized PNG、build/snapshot identity、geometry、resolved styles、console 与 state
+  echo；residual 必须有 category/severity/owner/impact/recommendation/disposition。
+  required cell missing 或 open P0/P1 均使 strict exit 2。verifier regressions **7/7**。
+- comparison 新增三端 raw frames、任意 pair overlay、alpha、draggable split、内嵌
+  geometry/style inspector 与 residual filters；不依赖 `file://` fetch。
+- 建立同一 trusted Browser origin `localhost:9933`：Web `/`、Lynx
+  `/lynx/index.html`。双 origin 被正确 CSRF gate拒绝，`/@fs/` transform导致Lynx storage
+  hydration停滞，两者均作为 harness failure 丢弃，未报告为产品 regression。
+- 共享 isolated server `59132`；通过 canonical RPC 创建 `P10 Fidelity Workspace` /
+  `Perceptual fidelity baseline`，online backup snapshot SHA `ad4295f6…`，未写SQLite。
+- 首批 Browser baseline覆盖Landing/Sidebar/Composer，light、1280×820、DPR1。发现并关闭：
+  浏览器默认body 8px inset、header额外8px margin、Projects section 14px旧gap/10px横距、
+  project label 15px line box/6px icon gap。结果：hero/Composer/Header X均exact；
+  hero Y 0.25px、Composer 0.75px、header 1.5px；project header X exact/Y 0.25px/宽差1px，
+  label X exact/Y 0.25px/height exact。
+- 删除Lynx project header恒显线程count `1`的普通anatomy分叉；保留真实collapsed status。
+  Web local-server/project-run dot在Lynx无projection，登记intentional delta，不伪造状态。
+- exact-owned Native隔离启动并得到2560×1576 diagnostic frame，但DevTool endpoint在
+  route/geometry复验前释放，故Native required cells仍red；未触碰用户state。当前 strict：
+  **6 states / 12 incomplete / 0 measured Browser P0/P1**。证据：
+  `shots/2026-08-04/p10-perceptual-fidelity/`。

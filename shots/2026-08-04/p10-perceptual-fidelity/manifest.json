@@ -1,0 +1,497 @@
+{
+  "version": 1,
+  "id": "p10-perceptual-fidelity",
+  "label": "P10 Perceptual Fidelity",
+  "defaults": {
+    "snapshotSha256": "ad4295f695424da64b6fcdb8a3a7c68ed4d766b91bf79069e87ceecbb0d82666",
+    "comparisonViewport": {
+      "width": 1280,
+      "height": 788
+    }
+  },
+  "states": [
+    {
+      "id": "landing-default",
+      "label": "New Chat landing · Default",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "default",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [
+        {
+          "id": "landing-default-shell-inset",
+          "category": "GEOMETRY",
+          "severity": "P1",
+          "status": "fixed",
+          "owner": "apps/lynx/src/app/App.css / SharedAppShellFrame host geometry",
+          "summary": "Lynx-for-Web shell is inset by 8px on both axes.",
+          "impact": "Every high-salience anchor reads as a shifted replica even when component geometry is exact.",
+          "recommendation": "Remove or centralize the Browser-only host inset so product content uses the Web authority origin; preserve any Native titlebar correction separately.",
+          "evidence": "browser/landing-default/lynx/geometry.json",
+          "reason": "Current-build Browser paired geometry after shared host/sidebar calibration."
+        },
+        {
+          "id": "landing-default-header-relative-offset",
+          "category": "GEOMETRY",
+          "severity": "P2",
+          "status": "fixed",
+          "owner": "ChatSurfaceHeaderFrame Lynx host adapter",
+          "summary": "Lynx header title is +16px X and +9.5px Y versus Web.",
+          "impact": "Header and body do not share the same visual rail, increasing the uncanny shell impression.",
+          "recommendation": "Calibrate header frame padding after the outer shell inset is removed; target relative delta <=2px.",
+          "evidence": "browser/landing-default/lynx/geometry.json",
+          "reason": "Current-build Browser paired geometry after shared host/sidebar calibration."
+        },
+        {
+          "id": "landing-default-landing-vertical-offset",
+          "category": "GEOMETRY",
+          "severity": "P1",
+          "status": "fixed",
+          "owner": "CenteredEmptyLandingStack / Lynx host inset",
+          "summary": "Landing hero and Composer are shifted down/right by about 8px.",
+          "impact": "The main focal composition misses the authority center despite exact hero and Composer sizes.",
+          "recommendation": "Fix the shared shell/landing origin rather than adding local negative margins.",
+          "evidence": "browser/landing-default/lynx/geometry.json",
+          "reason": "Current-build Browser paired geometry after shared host/sidebar calibration."
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "browser/landing-default/web/raw.png",
+          "comparisonPath": "browser/landing-default/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "c99f47603f6dfc053bc3c890ba6679816983ba1415702e1c19d39a212f8747ce",
+          "snapshotSha256": "ad4295f695424da64b6fcdb8a3a7c68ed4d766b91bf79069e87ceecbb0d82666",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "browser/landing-default/web/geometry.json",
+          "styles": "browser/landing-default/web/styles.json",
+          "console": "browser/landing-default/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "browser/landing-default/lynx/raw.png",
+          "comparisonPath": "browser/landing-default/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "eac8f8fb1684ca3e0ff1d336624b6064bfdeeff244a533afdbadd43fb785063b",
+          "snapshotSha256": "ad4295f695424da64b6fcdb8a3a7c68ed4d766b91bf79069e87ceecbb0d82666",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "browser/landing-default/lynx/geometry.json",
+          "styles": "browser/landing-default/lynx/styles.json",
+          "console": "browser/landing-default/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "diagnostic",
+          "reason": "Exact-owned frame was captured from PID 70524 / localhost:8904, but DevTool disconnected before route and geometry artifacts could be revalidated. It cannot satisfy a required P10 cell.",
+          "path": "native/default/raw.png",
+          "comparisonPath": "native/default/comparison.png"
+        }
+      }
+    },
+    {
+      "id": "sidebar-default",
+      "label": "Sidebar · Default project navigation",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "default",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [
+        {
+          "id": "sidebar-default-shell-inset",
+          "category": "GEOMETRY",
+          "severity": "P1",
+          "status": "fixed",
+          "owner": "apps/lynx/src/app/App.css / SharedAppShellFrame host geometry",
+          "summary": "Lynx-for-Web shell is inset by 8px on both axes.",
+          "impact": "Every high-salience anchor reads as a shifted replica even when component geometry is exact.",
+          "recommendation": "Remove or centralize the Browser-only host inset so product content uses the Web authority origin; preserve any Native titlebar correction separately.",
+          "evidence": "browser/sidebar-default/lynx/geometry.json",
+          "reason": "Current-build Browser paired geometry after shared host/sidebar calibration."
+        },
+        {
+          "id": "sidebar-default-header-relative-offset",
+          "category": "GEOMETRY",
+          "severity": "P2",
+          "status": "fixed",
+          "owner": "ChatSurfaceHeaderFrame Lynx host adapter",
+          "summary": "Lynx header title is +16px X and +9.5px Y versus Web.",
+          "impact": "Header and body do not share the same visual rail, increasing the uncanny shell impression.",
+          "recommendation": "Calibrate header frame padding after the outer shell inset is removed; target relative delta <=2px.",
+          "evidence": "browser/sidebar-default/lynx/geometry.json",
+          "reason": "Current-build Browser paired geometry after shared host/sidebar calibration."
+        },
+        {
+          "id": "sidebar-default-sidebar-project-rhythm",
+          "category": "GEOMETRY",
+          "severity": "P1",
+          "status": "fixed",
+          "owner": "apps/lynx/src/components/sidebar/sidebar.css",
+          "summary": "Project section starts 17.75px lower; Lynx project header is 235px wide versus Web 244px.",
+          "impact": "Sidebar density and grouping rhythm feel materially different in the highest-frequency navigation surface.",
+          "recommendation": "Align section spacing and project-row horizontal insets to Web after removing the outer host inset.",
+          "evidence": "browser/sidebar-default/lynx/geometry.json",
+          "reason": "Current-build Browser paired geometry after shared host/sidebar calibration."
+        },
+        {
+          "id": "sidebar-default-sidebar-project-linebox",
+          "category": "TYPOGRAPHY",
+          "severity": "P2",
+          "status": "fixed",
+          "owner": "SharedSidebarProjectSummaryName Lynx text metrics",
+          "summary": "Project label uses the same 12px/400 face but a 15px visual line box versus Web 18px.",
+          "impact": "Rows look vertically tighter and text sits off the Web baseline.",
+          "recommendation": "Introduce a named sidebar-row text line-height/baseline correction in the Lynx Elements layer.",
+          "evidence": "browser/sidebar-default/lynx/geometry.json",
+          "reason": "Current-build Browser paired geometry after shared host/sidebar calibration."
+        },
+        {
+          "id": "sidebar-default-project-run-capability",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P2",
+          "status": "intentional-delta",
+          "owner": "Lynx sidebar project-run projection boundary",
+          "summary": "Web can show a local-server/project-run dot; Lynx has no equivalent run projection.",
+          "impact": "Only active project-run status differs; the previous misleading thread-count badge has been removed.",
+          "recommendation": "Share the project-run projection before adding a Native indicator; do not infer running from thread count.",
+          "reason": "Lynx snapshot exposes thread lifecycle status but not Web local-server/project-run state.",
+          "evidence": "browser/sidebar-default/lynx/geometry.json"
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "browser/sidebar-default/web/raw.png",
+          "comparisonPath": "browser/sidebar-default/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "c99f47603f6dfc053bc3c890ba6679816983ba1415702e1c19d39a212f8747ce",
+          "snapshotSha256": "ad4295f695424da64b6fcdb8a3a7c68ed4d766b91bf79069e87ceecbb0d82666",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "browser/sidebar-default/web/geometry.json",
+          "styles": "browser/sidebar-default/web/styles.json",
+          "console": "browser/sidebar-default/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "browser/sidebar-default/lynx/raw.png",
+          "comparisonPath": "browser/sidebar-default/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "eac8f8fb1684ca3e0ff1d336624b6064bfdeeff244a533afdbadd43fb785063b",
+          "snapshotSha256": "ad4295f695424da64b6fcdb8a3a7c68ed4d766b91bf79069e87ceecbb0d82666",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "browser/sidebar-default/lynx/geometry.json",
+          "styles": "browser/sidebar-default/lynx/styles.json",
+          "console": "browser/sidebar-default/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "diagnostic",
+          "reason": "Exact-owned frame was captured from PID 70524 / localhost:8904, but DevTool disconnected before route and geometry artifacts could be revalidated. It cannot satisfy a required P10 cell.",
+          "path": "native/default/raw.png",
+          "comparisonPath": "native/default/comparison.png"
+        }
+      }
+    },
+    {
+      "id": "composer-default",
+      "label": "Composer · Default",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "default",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [
+        {
+          "id": "composer-default-shell-inset",
+          "category": "GEOMETRY",
+          "severity": "P1",
+          "status": "fixed",
+          "owner": "apps/lynx/src/app/App.css / SharedAppShellFrame host geometry",
+          "summary": "Lynx-for-Web shell is inset by 8px on both axes.",
+          "impact": "Every high-salience anchor reads as a shifted replica even when component geometry is exact.",
+          "recommendation": "Remove or centralize the Browser-only host inset so product content uses the Web authority origin; preserve any Native titlebar correction separately.",
+          "evidence": "browser/composer-default/lynx/geometry.json",
+          "reason": "Current-build Browser paired geometry after shared host/sidebar calibration."
+        },
+        {
+          "id": "composer-default-header-relative-offset",
+          "category": "GEOMETRY",
+          "severity": "P2",
+          "status": "fixed",
+          "owner": "ChatSurfaceHeaderFrame Lynx host adapter",
+          "summary": "Lynx header title is +16px X and +9.5px Y versus Web.",
+          "impact": "Header and body do not share the same visual rail, increasing the uncanny shell impression.",
+          "recommendation": "Calibrate header frame padding after the outer shell inset is removed; target relative delta <=2px.",
+          "evidence": "browser/composer-default/lynx/geometry.json",
+          "reason": "Current-build Browser paired geometry after shared host/sidebar calibration."
+        },
+        {
+          "id": "composer-default-composer-origin-offset",
+          "category": "GEOMETRY",
+          "severity": "P1",
+          "status": "fixed",
+          "owner": "ComposerColumnFrameSurface / landing shell origin",
+          "summary": "Composer is exactly 736×95 with matching radius/material but shifted +8px X and +7.25px Y.",
+          "impact": "A geometrically accurate control still reads as a different composition because its rail is displaced.",
+          "recommendation": "Fix the parent rail/origin; do not change Composer width, radius, border, or shadow.",
+          "evidence": "browser/composer-default/lynx/geometry.json",
+          "reason": "Current-build Browser paired geometry after shared host/sidebar calibration."
+        },
+        {
+          "id": "composer-default-project-trigger-optics",
+          "category": "GEOMETRY",
+          "severity": "P2",
+          "status": "fixed",
+          "owner": "ComposerProjectPickerTriggerCompositionElements.lynx",
+          "summary": "Lynx project trigger is 5px wider and its text sits 9.5px right / 9px down versus Web after outer-origin accounting.",
+          "impact": "The footer control balance differs even though copy and font size match.",
+          "recommendation": "Calibrate icon/text gap and trigger content padding with a named optical correction.",
+          "evidence": "browser/composer-default/lynx/geometry.json",
+          "reason": "Current-build Browser paired geometry after shared host/sidebar calibration."
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "browser/composer-default/web/raw.png",
+          "comparisonPath": "browser/composer-default/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "c99f47603f6dfc053bc3c890ba6679816983ba1415702e1c19d39a212f8747ce",
+          "snapshotSha256": "ad4295f695424da64b6fcdb8a3a7c68ed4d766b91bf79069e87ceecbb0d82666",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "browser/composer-default/web/geometry.json",
+          "styles": "browser/composer-default/web/styles.json",
+          "console": "browser/composer-default/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "browser/composer-default/lynx/raw.png",
+          "comparisonPath": "browser/composer-default/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "eac8f8fb1684ca3e0ff1d336624b6064bfdeeff244a533afdbadd43fb785063b",
+          "snapshotSha256": "ad4295f695424da64b6fcdb8a3a7c68ed4d766b91bf79069e87ceecbb0d82666",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "browser/composer-default/lynx/geometry.json",
+          "styles": "browser/composer-default/lynx/styles.json",
+          "console": "browser/composer-default/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "diagnostic",
+          "reason": "Exact-owned frame was captured from PID 70524 / localhost:8904, but DevTool disconnected before route and geometry artifacts could be revalidated. It cannot satisfy a required P10 cell.",
+          "path": "native/default/raw.png",
+          "comparisonPath": "native/default/comparison.png"
+        }
+      }
+    },
+    {
+      "id": "project-picker-open",
+      "label": "Project Picker · Open",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "project-picker-open",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "pending",
+          "reason": "Current-build P10 Web capture has not been retained."
+        },
+        "lynx": {
+          "status": "pending",
+          "reason": "Current-build P10 Lynx-for-Web capture has not been retained."
+        },
+        "native": {
+          "status": "pending",
+          "reason": "Current-build exact-owned Native capture has not been retained."
+        }
+      }
+    },
+    {
+      "id": "skill-menu-filtered",
+      "label": "Skill menu · Filtered review-agent",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "skill-filtered-review-agent",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "pending",
+          "reason": "Current-build P10 Web capture has not been retained."
+        },
+        "lynx": {
+          "status": "pending",
+          "reason": "Current-build P10 Lynx-for-Web capture has not been retained."
+        },
+        "native": {
+          "status": "pending",
+          "reason": "Current-build exact-owned Native capture has not been retained."
+        }
+      }
+    },
+    {
+      "id": "settings-general",
+      "label": "Settings · General",
+      "semanticRoute": "settings-general",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "default",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "pending",
+          "reason": "Current-build P10 Web capture has not been retained."
+        },
+        "lynx": {
+          "status": "pending",
+          "reason": "Current-build P10 Lynx-for-Web capture has not been retained."
+        },
+        "native": {
+          "status": "pending",
+          "reason": "Current-build exact-owned Native capture has not been retained."
+        }
+      }
+    }
+  ]
+}

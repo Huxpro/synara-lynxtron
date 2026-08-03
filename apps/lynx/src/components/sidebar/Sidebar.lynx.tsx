@@ -800,7 +800,6 @@ export function Sidebar({
                           status={projectRows.projectStatus}
                         />
                       ) : null}
-                      <text className="AppSidebarCount">{group.threads.length}</text>
                     </SidebarNavigationRow>
                   }
                   rows={visibleProjectThreadRows}
