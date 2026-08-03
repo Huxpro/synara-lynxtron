@@ -88,6 +88,9 @@ interface SidebarSearchPaletteProps {
   onOpenThread: (threadId: string) => void;
   importProviders: readonly ImportProviderKind[];
   onImportThread: (provider: ImportProviderKind, externalId: string) => Promise<void>;
+  onBrowseFilesystem?: (
+    partialPath: string,
+  ) => Promise<FilesystemBrowseResult | null>;
   filesystemBrowseEnabled?: boolean;
   appearanceEnabled?: boolean;
 }
@@ -428,6 +431,9 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
       queryKey: ["sidebar-palette-browse", expandedBrowsePath],
       queryFn: async () => {
         if (!canBrowse || expandedBrowsePath.length === 0) return null;
+        if (props.onBrowseFilesystem) {
+          return await props.onBrowseFilesystem(expandedBrowsePath);
+        }
         const api = readNativeApi();
         if (!api) return null;
         return await api.filesystem.browse({ partialPath: expandedBrowsePath });

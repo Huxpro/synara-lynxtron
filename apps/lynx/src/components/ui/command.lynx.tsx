@@ -70,6 +70,7 @@ export function CommandDialogPopup(props: ChildrenProps) {
   return (
     <DialogPopup
       className={cx('LxCommandDialogPopup', props.className)}
+      viewportClassName="LxCommandDialogViewport"
       showCloseButton={false}
     >
       {props.children}

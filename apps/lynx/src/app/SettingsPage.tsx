@@ -90,6 +90,7 @@ import {
 import { Button } from '../components/ui/button';
 import { SettingsGeneralBooleanControlElement } from '../adapters/SettingsGeneralCompositionElements.lynx';
 import type { ResolvedKeybindingsConfig } from '@synara/contracts';
+import { SettingsUsagePanel } from './SettingsUsagePanel';
 
 const SETTINGS_LOCAL_SAVE_ERROR =
   'Changes could not be saved. Your current values are still shown.';
@@ -324,10 +325,12 @@ async function persistThemeState(themeState: ThemeState): Promise<void> {
 }
 
 export function SettingsPage({
+  initialSection = 'general',
   onBack,
   onThemeStateChange,
   onUiDensityChange,
 }: {
+  readonly initialSection?: SettingsSectionId;
   readonly onBack: () => void;
   readonly onThemeStateChange: (state: ThemeState) => void;
   readonly onUiDensityChange: (
@@ -369,7 +372,7 @@ export function SettingsPage({
   const retrySaveRef = useRef<
     (() => Promise<SettingsPersistOutcome | void>) | null
   >(null);
-  const [section, setSection] = useState<SettingsSectionId>('general');
+  const [section, setSection] = useState<SettingsSectionId>(initialSection);
   const ready = hydrationState === 'ready';
 
   useEffect(() => {
@@ -623,6 +626,7 @@ export function SettingsPage({
             'shortcuts',
             'models',
             'providers',
+            'usage',
           ]}
           onSelectSection={setSection}
         />
@@ -634,7 +638,7 @@ export function SettingsPage({
             section={section}
             restoreDisabled={
               !ready ||
-              section === 'shortcuts' ||
+              (section === 'shortcuts' || section === 'usage') ||
               (section === 'general'
                 ? settingsGeneralValuesEqual(
                     settings,
@@ -753,6 +757,8 @@ export function SettingsPage({
                 <KeyboardShortcutsSettingsComposition
                   keybindings={keybindings}
                 />
+              ) : section === 'usage' ? (
+                <SettingsUsagePanel />
               ) : section === 'models' ? (
                 <SettingsGitWritingModelComposition
                   values={models}

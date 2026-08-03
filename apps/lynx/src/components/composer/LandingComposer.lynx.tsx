@@ -26,6 +26,12 @@ function landingId(kind: 'command' | 'project' | 'thread'): string {
   return `lynx-landing-${kind}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
+function projectWorkspaceLabel(workspaceRoot: string): string {
+  const normalized = workspaceRoot.replace(/[\\/]+$/, '');
+  const segments = normalized.split(/[\\/]+/);
+  return segments.at(-1) || workspaceRoot;
+}
+
 async function loadLandingBootstrap() {
   'background only';
   const [snapshot, config] = await Promise.all([
@@ -80,6 +86,7 @@ async function loadLandingBootstrap() {
 }
 
 export function LandingComposer(props: {
+  readonly initialProjectId?: string | null;
   readonly onThreadCreated: (threadId: string) => void;
 }) {
   const threadIdRef = useRef(landingId('thread'));
@@ -87,7 +94,12 @@ export function LandingComposer(props: {
     created: false,
     inFlight: null,
   });
-  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
+    props.initialProjectId ?? null
+  );
+  const [interactionMode, setInteractionMode] = useState<
+    'default' | 'plan'
+  >('default');
   const { data, error, isFetching, isPending, refetch } = useQuery({
     queryKey: ['landing-composer-bootstrap'],
     queryFn: loadLandingBootstrap,
@@ -111,6 +123,9 @@ export function LandingComposer(props: {
   const selectedProject = data?.projects.find(
     (project) => project.id === selectedProjectId
   );
+  const selectedProjectLabel = selectedProject
+    ? projectWorkspaceLabel(selectedProject.workspaceRoot)
+    : 'Work in a project';
   const targetProject = selectedProject ?? data?.homeProject;
 
   async function ensureThread(input: {
@@ -194,12 +209,13 @@ export function LandingComposer(props: {
         threadId={threadIdRef.current}
         modelSelection={modelSelection}
         runtimeMode="full-access"
-        interactionMode="default"
+        interactionMode={interactionMode}
         sessionStatus={null}
         activeTurnId={null}
         workspaceRoot={targetProject.workspaceRoot}
         emptyLanding={true}
         onBeforeSend={ensureThread}
+        onSetInteractionMode={setInteractionMode}
         onSendSucceeded={() => {
           'background only';
           props.onThreadCreated(threadIdRef.current);
@@ -214,11 +230,11 @@ export function LandingComposer(props: {
         <Menu>
           <MenuTrigger
             className="LandingComposerProjectTrigger"
-            ariaLabel="Work in a project"
+            ariaLabel={selectedProjectLabel}
           >
             <FolderIcon className="LandingComposerProjectIcon" />
             <text className="LandingComposerProjectLabel">
-              {selectedProject?.title ?? 'Work in a project'}
+              {selectedProjectLabel}
             </text>
           </MenuTrigger>
           <MenuPopup
@@ -228,14 +244,14 @@ export function LandingComposer(props: {
             sideOffset={6}
           >
             <MenuItem onClick={() => setSelectedProjectId(null)}>
-              Work in a project
+              Don't work in a project
             </MenuItem>
             {data.projects.map((project) => (
               <MenuItem
                 key={project.id}
                 onClick={() => setSelectedProjectId(project.id)}
               >
-                {project.title}
+                {projectWorkspaceLabel(project.workspaceRoot)}
               </MenuItem>
             ))}
           </MenuPopup>

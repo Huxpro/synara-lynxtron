@@ -6,7 +6,7 @@ import { GoTasklist } from "react-icons/go";
 
 import { PaperclipIcon, PlusIcon } from "~/lib/icons";
 import { Button } from "../ui/button";
-import { MenuItem } from "../ui/menu";
+import { MenuItem, MenuTrigger } from "../ui/menu";
 import {
   ComposerPickerMenuPopup,
   ComposerPickerMenuSubPopup,
@@ -22,6 +22,24 @@ export function ComposerExtrasMenuTriggerElement() {
     >
       <PlusIcon aria-hidden="true" className="size-4" />
     </Button>
+  );
+}
+
+export function ComposerExtrasMenuTriggerHostElement(props: { readonly open: boolean }) {
+  return (
+    <MenuTrigger
+      render={
+        <Button
+          size="icon-sm"
+          variant="chrome"
+          className="shrink-0 rounded-md"
+          aria-label="Composer extras"
+          aria-expanded={props.open}
+        >
+          <PlusIcon aria-hidden="true" className="size-4" />
+        </Button>
+      }
+    />
   );
 }
 

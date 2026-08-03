@@ -3,12 +3,13 @@
 // Platform Elements own the host trigger, image picker, labels, and popup shells.
 
 import { type ProviderInteractionMode } from "@synara/contracts";
+import { useState } from "react";
 
 import {
   ComposerExtrasFastLabelElement,
   ComposerExtrasImageItemElement,
+  ComposerExtrasMenuTriggerHostElement,
   ComposerExtrasMenuPopupElement,
-  ComposerExtrasMenuTriggerElement,
   ComposerExtrasPlanLabelElement,
   ComposerExtrasSubPopupElement,
 } from "~/components/chat/ComposerExtrasMenuCompositionElements";
@@ -20,7 +21,6 @@ import {
   MenuSeparator,
   MenuSub,
   MenuSubTrigger,
-  MenuTrigger,
 } from "~/components/ui/menu";
 
 export function ComposerExtrasMenuComposition(props: {
@@ -33,9 +33,11 @@ export function ComposerExtrasMenuComposition(props: {
   readonly onToggleFastMode: () => void;
   readonly onSetPlanMode: (enabled: boolean) => void;
 }) {
+  const [open, setOpen] = useState(false);
+
   return (
-    <Menu>
-      <MenuTrigger render={<ComposerExtrasMenuTriggerElement />} />
+    <Menu open={open} onOpenChange={setOpen}>
+      <ComposerExtrasMenuTriggerHostElement open={open} />
       <ComposerExtrasMenuPopupElement>
         <ComposerExtrasImageItemElement
           available={props.imageAttachmentsAvailable ?? true}

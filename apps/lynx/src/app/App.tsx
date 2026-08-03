@@ -23,7 +23,10 @@ import { sliceThemeClassName } from './appTheme.logic';
 import { queryClient } from './queries';
 import { SliceRouter } from './router';
 import { retryActiveSynaraQueries } from './transportRetry.logic';
-import { setLynxThemeState } from '../adapters/useTheme.lynx';
+import {
+  setLynxThemeState,
+  subscribeLynxThemeState,
+} from '../adapters/useTheme.lynx';
 import { useSynaraTransportState } from '../data/useSynaraTransportState.lynx';
 import { Button } from '../components/ui/button';
 import './App.css';
@@ -71,6 +74,10 @@ export function App() {
     'background only';
     setLynxThemeState(themeState);
   }, [themeState]);
+  useEffect(() => {
+    'background only';
+    return subscribeLynxThemeState(setThemeState);
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>

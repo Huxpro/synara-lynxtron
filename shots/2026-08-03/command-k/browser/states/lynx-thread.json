@@ -1,0 +1,16 @@
+{
+  "options": [
+    {
+      "text": "New chatHome14h@\"Draft seed task\" Reply exactly MENTION-TOKEN-OK and do not use tools.Chat match",
+      "selected": "true"
+    },
+    {
+      "text": "Draft seed taskLynx Web Spike21h",
+      "selected": null
+    }
+  ],
+  "groups": [
+    "Threads"
+  ],
+  "empty": false
+}

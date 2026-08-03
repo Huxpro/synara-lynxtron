@@ -2,7 +2,11 @@ import 'background-only';
 
 import type {
   ClientOrchestrationCommand,
+  FilesystemBrowseInput,
+  FilesystemBrowseResult,
   ModelSelection,
+  OrchestrationImportThreadInput,
+  OrchestrationImportThreadResult,
   OrchestrationLatestTurn,
   OrchestrationMessage,
   OrchestrationProposedPlan,
@@ -22,9 +26,12 @@ import type {
   PullRequestSetPinnedResult,
   PullRequestState,
   ProviderKind,
+  ProviderComposerCapabilities,
   ProviderListModelsResult,
   ProviderListSkillsResult,
   ServerConfig,
+  ServerListProviderUsageInput,
+  ServerListProviderUsageResult,
   ServerSettingsPatch,
   ServerSettingsView,
 } from '@synara/contracts';
@@ -371,12 +378,33 @@ export async function fetchProviderModels(input: {
   });
 }
 
+export async function fetchProviderComposerCapabilities(
+  provider: ProviderKind
+): Promise<ProviderComposerCapabilities> {
+  return transportRequest('provider.getComposerCapabilities', { provider });
+}
+
 export async function fetchProviderSkills(input: {
   readonly provider: ProviderKind;
   readonly cwd: string;
   readonly threadId?: string;
 }): Promise<ProviderListSkillsResult> {
   return transportRequest('provider.listSkills', input);
+}
+
+export async function browseFilesystem(
+  input: FilesystemBrowseInput
+): Promise<FilesystemBrowseResult> {
+  return transportRequest<FilesystemBrowseResult>('filesystem.browse', input);
+}
+
+export async function importSynaraThread(
+  input: OrchestrationImportThreadInput
+): Promise<OrchestrationImportThreadResult> {
+  return transportRequest<OrchestrationImportThreadResult>(
+    'orchestration.importThread',
+    input
+  );
 }
 
 export async function fetchServerSettings(): Promise<ServerSettingsView> {
@@ -391,6 +419,15 @@ export async function updateServerSettings(
 
 export async function fetchServerConfig(): Promise<ServerConfig> {
   return transportRequest('server.getConfig', {});
+}
+
+export async function fetchAllProviderUsage(
+  input: ServerListProviderUsageInput = {}
+): Promise<ServerListProviderUsageResult> {
+  return transportRequest<ServerListProviderUsageResult>(
+    'server.listProviderUsage',
+    input
+  );
 }
 
 export async function fetchSynaraPullRequests(input: {

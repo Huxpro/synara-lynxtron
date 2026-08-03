@@ -1,0 +1,16 @@
+{
+  "options": [
+    {
+      "text": "Switch to dark theme",
+      "selected": "true"
+    },
+    {
+      "text": "Switch to system theme",
+      "selected": null
+    }
+  ],
+  "groups": [
+    "Configure"
+  ],
+  "empty": false
+}

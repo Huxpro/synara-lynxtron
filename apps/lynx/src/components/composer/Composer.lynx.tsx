@@ -166,6 +166,9 @@ interface ComposerProps {
     readonly runtimeMode: 'full-access' | 'approval-required';
     readonly text: string;
   }) => Promise<void>;
+  readonly onSetInteractionMode?: (
+    interactionMode: 'default' | 'plan'
+  ) => void | Promise<void>;
   readonly onSendSucceeded?: () => void | Promise<void>;
 }
 
@@ -184,6 +187,7 @@ export function Composer({
   workspaceRoot,
   emptyLanding = false,
   onBeforeSend,
+  onSetInteractionMode,
   onSendSucceeded,
 }: ComposerProps) {
   const textareaRef = useRef<React.ElementRef<'textarea'>>(null);
@@ -997,11 +1001,16 @@ export function Composer({
     'background only';
     setSendError(null);
     try {
+      const nextInteractionMode = enabled ? 'plan' : 'default';
+      if (onSetInteractionMode) {
+        await onSetInteractionMode(nextInteractionMode);
+        return;
+      }
       await dispatchSynaraCommand(
         buildComposerInteractionModeSetCommand({
           commandId: createComposerDispatchId('command'),
           createdAt: new Date().toISOString(),
-          interactionMode: enabled ? 'plan' : 'default',
+          interactionMode: nextInteractionMode,
           threadId,
         })
       );

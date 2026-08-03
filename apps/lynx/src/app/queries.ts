@@ -219,7 +219,9 @@ export async function fetchSidebarSnapshot(): Promise<SidebarSnapshot> {
       cwd: project.cwd,
       spaceName: project.spaceId
         ? spaceNames.get(project.spaceId) ?? 'Unknown space'
-        : 'Global',
+        : project.kind === 'project'
+          ? 'Void'
+          : 'Global',
       createdAt: project.createdAt,
       updatedAt: project.updatedAt,
     })

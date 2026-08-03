@@ -1,0 +1,110 @@
+.SettingsUsage,
+.SettingsUsageCards,
+.SettingsUsageDetails {
+  display: flex;
+  flex-direction: column;
+}
+
+.SettingsUsage {
+  gap: 12px;
+}
+
+.SettingsUsageHeader,
+.SettingsUsageCardHeader,
+.SettingsUsageLimit {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.SettingsUsageSectionTitle,
+.SettingsUsageFootnote,
+.SettingsUsageDetail,
+.SettingsUsageStateText,
+.SettingsUsageSubtitle {
+  color: var(--muted-foreground);
+}
+
+.SettingsUsageSectionTitle {
+  font-size: 12px;
+}
+
+.SettingsUsageCards {
+  gap: 12px;
+}
+
+.SettingsUsageCard,
+.SettingsUsageState {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+
+.SettingsUsageCard {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.SettingsUsageProvider {
+  color: var(--foreground);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.SettingsUsageStatus {
+  border-radius: 999px;
+  padding: 4px 8px;
+  background-color: var(--muted);
+  color: var(--muted-foreground);
+  font-size: 11px;
+}
+
+.SettingsUsageStatus--needs-auth {
+  color: var(--warning);
+}
+
+.SettingsUsageStatus--error {
+  color: var(--destructive);
+}
+
+.SettingsUsageDetails {
+  gap: 10px;
+}
+
+.SettingsUsageLimit {
+  flex-wrap: wrap;
+}
+
+.SettingsUsageLabel,
+.SettingsUsageValue {
+  font-size: 12px;
+}
+
+.SettingsUsageLabel {
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.SettingsUsageValue {
+  color: var(--muted-foreground);
+}
+
+.SettingsUsageSubtitle {
+  width: 100%;
+  font-size: 11px;
+}
+
+.SettingsUsageDetail,
+.SettingsUsageStateText {
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.SettingsUsageFootnote {
+  padding: 0 8px;
+  font-size: 11px;
+  line-height: 16px;
+}

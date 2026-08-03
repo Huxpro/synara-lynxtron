@@ -18,13 +18,35 @@ describe('landing composer fidelity contract', () => {
       ),
       'utf8'
     );
+    const landingSource = readFileSync(
+      new URL('./LandingComposer.lynx.tsx', import.meta.url),
+      'utf8'
+    );
 
     expect(routerSource).toContain('<CenteredEmptyLandingStack>');
     expect(routerSource).toContain('<CenteredEmptyLanding />');
     expect(routerSource).toContain('<ComposerColumnFrameSurface>');
+    expect(routerSource).toContain('<LandingComposer');
     expect(routerSource).toContain(
-      '<LandingComposer onThreadCreated={props.onThreadCreated} />'
+      'initialProjectId={props.initialProjectId}'
     );
+    expect(landingSource).toContain(
+      'projectWorkspaceLabel(selectedProject.workspaceRoot)'
+    );
+    expect(landingSource).toContain("Don't work in a project");
+    expect(landingSource).toContain(
+      'projectWorkspaceLabel(project.workspaceRoot)'
+    );
+    expect(landingStyles).not.toMatch(
+      /\.LandingComposerTray\s*\{[^}]*z-index:/s
+    );
+    expect(routerSource).toContain(
+      'onThreadCreated={props.onThreadCreated}'
+    );
+    expect(landingSource).toContain(
+      'onSetInteractionMode={setInteractionMode}'
+    );
+    expect(landingSource).toContain('interactionMode={interactionMode}');
     expect(landingStyles).not.toMatch(/\.LandingComposer\s*\{[^}]*margin-top:/s);
     expect(frameStyles).toMatch(
       /\.ComposerColumnFrameSurfaceLynx[^}]*max-width:\s*736px;/s

@@ -1,0 +1,36 @@
+{
+  "innerWidth": 1280,
+  "innerHeight": 820,
+  "devicePixelRatio": 1,
+  "dialog": {
+    "x": 352,
+    "y": 154.890625,
+    "width": 576,
+    "height": 420,
+    "top": 154.890625,
+    "right": 928,
+    "bottom": 574.890625,
+    "left": 352
+  },
+  "input": {
+    "x": 364,
+    "y": 165.390625,
+    "width": 552,
+    "height": 31,
+    "top": 165.390625,
+    "right": 916,
+    "bottom": 196.390625,
+    "left": 364
+  },
+  "list": {
+    "x": 353,
+    "y": 204.890625,
+    "width": 570,
+    "height": 384,
+    "top": 204.890625,
+    "right": 923,
+    "bottom": 588.890625,
+    "left": 353
+  },
+  "optionCount": 11
+}

@@ -1,0 +1,12 @@
+{
+  "ownedPid": 62234,
+  "client": "localhost:8903",
+  "session": 1,
+  "bundle": "file:///Users/bytedance/github/synara/apps/lynx/dist/desktop/main.lynx.bundle",
+  "openedBy": "CGEventPostToPid Cmd+K through the native application menu accelerator",
+  "searchInputCount": 1,
+  "highlightedItemCount": 1,
+  "initialHighlightedLabel": "New chat",
+  "errorWarningConsoleEntries": 0,
+  "inactivePlainKeyBoundary": "macOS did not dispatch unmodified Arrow/Tab accelerators to the inactive background window; focused kernel tests retained separately"
+}

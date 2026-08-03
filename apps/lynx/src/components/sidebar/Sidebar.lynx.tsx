@@ -938,7 +938,12 @@ export function Sidebar({
           onOpenProject={() => navigate('/kanban')}
           onOpenThread={(threadId) => navigate(`/thread/${threadId}`)}
           onCreateThread={() => navigate('/')}
-          onOpenSettings={() => navigate('/settings')}
+          onCreateProjectThread={(projectId) =>
+            navigate(`/new-thread/${encodeURIComponent(projectId)}`)
+          }
+          onOpenSettings={(section) =>
+            navigate(section ? `/settings/${section}` : '/settings')
+          }
         />
     </view>
   );

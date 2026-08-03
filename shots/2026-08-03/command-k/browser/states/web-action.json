@@ -1,0 +1,14 @@
+{
+  "query": "",
+  "options": [
+    {
+      "text": "Settings",
+      "selected": null
+    },
+    {
+      "text": "Usage settings⇧⌘U",
+      "selected": null
+    }
+  ],
+  "empty": false
+}

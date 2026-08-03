@@ -190,6 +190,11 @@
   overflow: hidden;
 }
 
+.LxDialogViewport.LxCommandDialogViewport {
+  padding-top: 4vh;
+  padding-bottom: 15vh;
+}
+
 .LxCommand {
   display: flex;
   flex-direction: column;

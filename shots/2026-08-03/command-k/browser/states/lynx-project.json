@@ -1,0 +1,25 @@
+{
+  "options": [
+    {
+      "text": "In Progress seed taskLynx Web Spike16h...300-word essay about the history of kanban boards, then reply exactly LYNX-WEB-SPIKE-OK...4 chat hits",
+      "selected": "true"
+    },
+    {
+      "text": "Draft seed taskLynx Web Spike21hWrite a comprehensive 900-word technical essay about WebSocket backoff and reconnection...8 chat hits",
+      "selected": null
+    },
+    {
+      "text": "Done seed taskLynx Web Spike1dReply exactly LYNX-WEB-SPIKE-OK and do not use tools.3 chat hits",
+      "selected": null
+    },
+    {
+      "text": "Lynx Web SpikeGlobal/private/tmp/synara-lynx-web-spike.93a7baf3/spike-workspace",
+      "selected": null
+    }
+  ],
+  "groups": [
+    "Threads",
+    "Projects"
+  ],
+  "empty": false
+}

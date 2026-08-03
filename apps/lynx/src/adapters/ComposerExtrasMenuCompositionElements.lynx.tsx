@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 
 import { Button } from '../components/ui/button.lynx';
 import {
+  MenuTrigger,
   MenuItem,
   MenuPopupBase,
   MenuSubPopup,
@@ -17,6 +18,19 @@ export function ComposerExtrasMenuTriggerElement() {
     >
       +
     </Button>
+  );
+}
+
+export function ComposerExtrasMenuTriggerHostElement(_props: {
+  readonly open: boolean;
+}) {
+  return (
+    <MenuTrigger
+      className="ComposerExtrasTriggerLynx"
+      ariaLabel="Composer extras"
+    >
+      <ComposerExtrasMenuTriggerElement />
+    </MenuTrigger>
   );
 }
 

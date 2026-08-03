@@ -1,0 +1,16 @@
+{
+  "options": [
+    {
+      "text": "Settings",
+      "selected": "true"
+    },
+    {
+      "text": "Usage settings",
+      "selected": null
+    }
+  ],
+  "groups": [
+    "Suggested"
+  ],
+  "empty": false
+}

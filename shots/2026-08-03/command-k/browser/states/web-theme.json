@@ -1,0 +1,14 @@
+{
+  "query": "",
+  "options": [
+    {
+      "text": "Switch to dark theme",
+      "selected": null
+    },
+    {
+      "text": "Switch to system theme",
+      "selected": null
+    }
+  ],
+  "empty": false
+}

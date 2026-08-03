@@ -147,11 +147,13 @@ export function DialogPopup({
   className,
   children,
   showCloseButton = true,
+  viewportClassName,
 }: {
   className?: string;
   children?: ReactNode;
   showCloseButton?: boolean;
   bottomStickOnMobile?: boolean;
+  viewportClassName?: string;
 }) {
   const dialog = useContext(DialogDismissContext);
   const handleKeyDown = (event: {
@@ -164,7 +166,7 @@ export function DialogPopup({
     dialog.close();
   };
   return (
-    <DialogViewport>
+    <DialogViewport className={viewportClassName}>
       <DialogBackdrop />
       <LynxDialogContent
         className={cx('LxDialogPopup', className)}

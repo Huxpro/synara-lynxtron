@@ -19,7 +19,9 @@ vi.mock("~/components/ui/menu", () => ({
 }));
 
 vi.mock("./ComposerExtrasMenuCompositionElements", () => ({
-  ComposerExtrasMenuTriggerElement: () => <button aria-label="Composer extras" />,
+  ComposerExtrasMenuTriggerHostElement: ({ open }: { open: boolean }) => (
+    <button aria-label="Composer extras" aria-expanded={open} />
+  ),
   ComposerExtrasMenuPopupElement: ({ children }: { children?: ReactNode }) => (
     <div data-popup>{children}</div>
   ),
@@ -48,6 +50,7 @@ describe("ComposerExtrasMenuComposition", () => {
 
     expect(markup).toContain("data-image-item");
     expect(markup).toContain('aria-label="Composer extras"');
+    expect(markup).toContain('aria-expanded="false"');
     expect(markup.indexOf("Add image")).toBeLessThan(markup.indexOf("Plan mode"));
     expect(markup.indexOf("Plan mode")).toBeLessThan(markup.indexOf("Fast"));
   });

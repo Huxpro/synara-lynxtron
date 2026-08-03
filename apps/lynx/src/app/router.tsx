@@ -14,6 +14,7 @@ import { useCallback, useEffect, useState } from '@lynx-js/react';
 import { useQuery } from '@tanstack/react-query';
 import type { UiDensity } from '@synara-web/lib/appDensity';
 import type { ThemeState } from '@synara-web/theme/theme.logic';
+import type { SettingsSectionId } from '@synara-web/settingsNavigation';
 
 import {
   fetchThreadHeaderSummary,
@@ -93,8 +94,19 @@ function parseRoute(pathname: string): RouteState {
   if (threadMatch) {
     return { pathname: '/thread/$threadId', params: { threadId: threadMatch[1] } };
   }
-  if (pathname === '/settings') {
-    return { pathname: '/settings', params: {} };
+  const settingsMatch = pathname.match(/^\/settings(?:\/([^/]+))?$/);
+  if (settingsMatch) {
+    return {
+      pathname: '/settings',
+      params: settingsMatch[1] ? { section: settingsMatch[1] } : {},
+    };
+  }
+  const newThreadMatch = pathname.match(/^\/new-thread\/([^/]+)$/);
+  if (newThreadMatch) {
+    return {
+      pathname: '/new-thread/$projectId',
+      params: { projectId: decodeURIComponent(newThreadMatch[1]) },
+    };
   }
   if (pathname === '/studio') {
     return { pathname: '/studio', params: {} };
@@ -130,6 +142,7 @@ export function useRoute(): RouteState {
 
 // --- pages ----------------------------------------------------------------------
 function ThreadsLandingPage(props: {
+  readonly initialProjectId?: string | null;
   readonly onThreadCreated: (threadId: string) => void;
 }) {
   return (
@@ -147,7 +160,10 @@ function ThreadsLandingPage(props: {
         <CenteredEmptyLandingStack>
           <CenteredEmptyLanding />
           <ComposerColumnFrameSurface>
-            <LandingComposer onThreadCreated={props.onThreadCreated} />
+            <LandingComposer
+              initialProjectId={props.initialProjectId}
+              onThreadCreated={props.onThreadCreated}
+            />
           </ComposerColumnFrameSurface>
         </CenteredEmptyLandingStack>
       </view>
@@ -411,6 +427,9 @@ export function SliceRouter({
   if (route.pathname === '/settings') {
     return (
       <SettingsPage
+        initialSection={
+          (route.params.section as SettingsSectionId | undefined) ?? 'general'
+        }
         onBack={navigateBackFromSettings}
         onThemeStateChange={onThemeStateChange}
         onUiDensityChange={onUiDensityChange}
@@ -439,7 +458,21 @@ export function SliceRouter({
   } else if (route.pathname === '/update') {
     page = <UpdatePage />;
   } else {
-    page = <ThreadsLandingPage onThreadCreated={(threadId) => navigate(`/thread/${threadId}`)} />;
+    page = (
+      <ThreadsLandingPage
+        key={
+          route.pathname === '/new-thread/$projectId'
+            ? `project:${route.params.projectId}`
+            : 'chat'
+        }
+        initialProjectId={
+          route.pathname === '/new-thread/$projectId'
+            ? route.params.projectId
+            : null
+        }
+        onThreadCreated={(threadId) => navigate(`/thread/${threadId}`)}
+      />
+    );
   }
 
   const sidebar = (
