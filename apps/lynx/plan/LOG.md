@@ -4797,3 +4797,22 @@
 - gates：shared logic/composition **7/7**；ChatView Browser subset **3/3**；Lynx
   landing contract **1/1**；Web **8,940 modules**、Lynx-for-Web production green；
   strict verifier按剩余scope设计exit **2**；snapshot hash未变。
+
+## 2026-08-03 — P9-U5 Phase 2 Extras primitive parity
+
+- 在通用Lynx `Menu` primitive补真实switch checkbox track/thumb、checkbox保持父menu
+  open、独立定位submenu surface与native SVG radio indicator；删除Fast inline fallback。
+  Extras adapter把文本`+`、plain Add files、Plan/Fast label替换为generated native
+  Plus/Paperclip/Plan/Gauge icons。
+- measured geometry：Web main `141.42×106`、Lynx `142×108`，双方row 26px；
+  Web Fast submenu `128×62`、Lynx `128×64`，双方row 26px。Plan点击后父menu保持，
+  Fast submenu初始不render且独立位于主surface右侧。
+- 同snapshot/light/1280×820通过真实rendered controls分别采集default、Plan-only、
+  Fast-only、Plan+Fast四态，未复用组合帧；8个Browser required cells retained，
+  strict incomplete **41→33**。Native default/Plan-only/Fast-only与host Add files dialog
+  留最终exact-owned batch，不以Browser或旧组合态冒充。
+- capability delta保持：Web `Add image`，Native/Lynx `Add files`。状态切换后通过产品路径
+  恢复Plan off/Fast default；snapshot hash保持`98753f94…`，fresh consoles空。
+- gates：Lynx primitive/adapter **9/9**；Web shared composition **3/3**；Web Extras
+  Browser **3/3**；Web/Lynx-for-Web production green；strict verifier按剩余scope
+  设计exit **2**。

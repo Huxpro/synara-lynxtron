@@ -82,3 +82,31 @@ Native evidence.
   model tests but remain pending in the screenshot manifest. Native selected
   menu open remains pending for the final exact-owned batch.
 - Strict status after Phase 1: 41 incomplete required cells, down from 55.
+
+## Phase 2 Extras
+
+- Shared snapshot and Browser cell contract remained unchanged.
+- Evidence builds:
+  - Web:
+    `647bb96161b34e9b01afcf44a639c5043e5f1cdc43691694136c5ee8c115046b`
+  - Lynx-for-Web:
+    `ac70d431e030250fce84bbd14a3c6c025fc19f75050b52933326e79221da7646`
+- Four independent paired states are retained:
+  - Plan off / Fast default;
+  - Plan on / Fast default;
+  - Plan off / Fast on;
+  - Plan on / Fast on.
+- The measured main surfaces are `141.42×106` on Web and `142×108` on
+  Lynx-for-Web, with `26px` rows on both.
+- The measured Fast submenus are `128×62` on Web and `128×64` on
+  Lynx-for-Web, with `26px` rows on both.
+- Lynx uses native SVG icons, a switch track/thumb, and an independently
+  positioned submenu. The submenu is absent until the rendered Fast trigger is
+  activated.
+- Capability copy remains intentionally different: Web `Add image`, Lynx and
+  Native `Add files`.
+- State was restored through rendered controls to Plan off / Fast default.
+  Fresh console buffers were empty and the snapshot hash remained unchanged.
+- Native default, Plan-only, Fast-only, and host attachment dialog evidence
+  remain pending for the final exact-owned batch.
+- Strict status after Phase 2: 33 incomplete required cells.

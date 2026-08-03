@@ -7,8 +7,14 @@ import {
 
 import {
   Menu,
+  MenuCheckboxItem,
   MenuItem,
   MenuPopup,
+  MenuRadioGroup,
+  MenuRadioItem,
+  MenuSub,
+  MenuSubPopup,
+  MenuSubTrigger,
   MenuTrigger,
   resolveMenuCoordinates,
 } from './menu.lynx';
@@ -225,5 +231,82 @@ describe('Lynx Menu overlay contract', () => {
     expect(wrappedItems[0]?.getAttribute('class')).toContain(
       'LxMenuItem--highlighted'
     );
+  });
+
+  it('renders the switch variant with a checked track and thumb', async () => {
+    const onCheckedChange = rs.fn();
+    render(
+      <Menu defaultOpen>
+        <MenuTrigger>
+          <text>Open</text>
+        </MenuTrigger>
+        <MenuPopup>
+          <MenuCheckboxItem
+            checked
+            variant="switch"
+            onCheckedChange={onCheckedChange}
+          >
+            Plan mode
+          </MenuCheckboxItem>
+        </MenuPopup>
+      </Menu>
+    );
+
+    const switchTrack = await waitFor(() => {
+      const element = elementTree.root?.querySelector('.LxMenuSwitch');
+      if (!element) throw new Error('expected switch track');
+      return element;
+    });
+    expect(switchTrack.getAttribute('class')).toContain(
+      'LxMenuSwitch--checked'
+    );
+    expect(
+      elementTree.root?.querySelector('.LxMenuSwitch__thumb')
+    ).not.toBeNull();
+    expect(
+      elementTree.root?.querySelector('.LxMenuIndicator')
+    ).toBeNull();
+    const item = elementTree.root?.querySelector('.LxMenuItem--switch');
+    if (!item) throw new Error('expected switch menu item');
+    fireEvent.tap(item);
+    expect(onCheckedChange).toHaveBeenCalledWith(false);
+    expect(elementTree.root?.querySelector('.LxMenuPopup')).not.toBeNull();
+  });
+
+  it('keeps submenu content independent until its trigger opens it', async () => {
+    render(
+      <Menu defaultOpen>
+        <MenuTrigger>
+          <text>Open</text>
+        </MenuTrigger>
+        <MenuPopup>
+          <MenuSub>
+            <MenuSubTrigger>Fast</MenuSubTrigger>
+            <MenuSubPopup>
+              <MenuRadioGroup value="normal">
+                <MenuRadioItem value="normal">Default</MenuRadioItem>
+                <MenuRadioItem value="fast">Fast</MenuRadioItem>
+              </MenuRadioGroup>
+            </MenuSubPopup>
+          </MenuSub>
+        </MenuPopup>
+      </Menu>
+    );
+
+    expect(elementTree.root?.querySelector('.LxMenuSubPopup')).toBeNull();
+    const trigger = await waitFor(() => {
+      const element = elementTree.root?.querySelector('.LxMenuSubTrigger');
+      if (!element) throw new Error('expected submenu trigger');
+      return element;
+    });
+    expect(trigger.getAttribute('aria-expanded')).toBe('false');
+    fireEvent.tap(trigger);
+    const popup = await waitFor(() => {
+      const element = elementTree.root?.querySelector('.LxMenuSubPopup');
+      if (!element) throw new Error('expected independent submenu popup');
+      return element;
+    });
+    expect(trigger.getAttribute('aria-expanded')).toBe('true');
+    expect(popup.getAttribute('role')).toBe('menu');
   });
 });

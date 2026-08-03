@@ -321,6 +321,8 @@ Lynx owns a separate menu in `LandingComposer.lynx.tsx` with only:
 
 ## Phase 2 — Extras primitive parity
 
+Status: completed
+
 ### Root cause
 
 State/order are shared, but the native adapter replaces important visual
@@ -349,6 +351,42 @@ semantics:
 - Menu geometry and row anatomy are like-for-like.
 - Plan and Fast selected states are visually unambiguous.
 - No combined-state screenshot substitutes for a single-state cell.
+
+### Result
+
+- Replaced the Lynx `+` and plain-text attachment/Plan/Fast treatments with
+  generated native SVG icons.
+- Extended the shared Lynx menu primitive with:
+  - a switch-style checkbox track/thumb variant;
+  - checkbox activation that keeps the parent menu open;
+  - an independently positioned submenu surface;
+  - native SVG radio indicators.
+- Removed the first-slice inline Fast fallback. `Default` and `Fast` now render
+  in a separate `128×64` submenu beside the main surface.
+- Calibrated the Lynx Extras geometry against measured Web production output:
+  - main popup `142×108` versus Web `141.42×106`;
+  - `26px` main rows on both clients;
+  - Fast popup `128×64` versus Web `128×62`;
+  - `26px` Fast rows on both clients.
+- Preserved the explicit capability delta:
+  - Web `Add image`;
+  - Native/Lynx `Add files`.
+- Real rendered controls produced dedicated paired Browser evidence for:
+  - Plan off / Fast default;
+  - Plan on / Fast default;
+  - Plan off / Fast on;
+  - Plan on / Fast on.
+  No combined state was reused for either single-mode state.
+- Eight required Browser cells moved to retained evidence. The strict manifest
+  moved from 41 to 33 incomplete required cells.
+- Native Extras default, Plan-only, and Fast-only remain pending for the final
+  exact-owned batch. Attachment host-dialog certification remains separate and
+  was not inferred from a visible menu item.
+- Focused gates:
+  - Lynx menu primitive and Extras adapter: 9/9;
+  - Web shared composition: 3/3;
+  - Web Extras Browser behavior: 3/3;
+  - Web and Lynx-for-Web production builds green.
 
 ## Phase 3 — Skill and mention menu visual convergence
 

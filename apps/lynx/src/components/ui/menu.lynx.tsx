@@ -12,6 +12,7 @@ import { getRectByRef } from '@lynx-js/lynx-ui';
 import type { NodesRef } from '@lynx-js/types';
 import { resolveCommandNavigation } from '@synara/shared/commandNavigation';
 
+import { CheckIcon } from '../../lib/icons.lynx';
 import { useLynxInteractiveState } from './interactive-state.lynx';
 import { focusLynxNode, type LynxFocusableRef } from './focus.lynx';
 import { cx, renderSlot, textContent } from './shared.lynx';
@@ -398,6 +399,7 @@ export function MenuItem(props: {
   onClick?: () => void;
   trailing?: ReactNode;
   inset?: boolean;
+  closeOnClick?: boolean;
 }) {
   const menu = useContext(MenuContext);
   const valueRef = useRef<string | null>(null);
@@ -408,7 +410,7 @@ export function MenuItem(props: {
     'background only';
     if (props.disabled) return;
     props.onClick?.();
-    menu.close();
+    if (props.closeOnClick ?? true) menu.close();
   };
   const interaction = useLynxInteractiveState({
     baseClassName: cx(
@@ -495,7 +497,9 @@ export function MenuRadioItem(props: {
     <MenuItem
       className={props.className}
       disabled={props.disabled}
-      trailing={<text className="LxMenuIndicator">{checked ? '✓' : ''}</text>}
+      trailing={
+        checked ? <CheckIcon className="LxMenuIndicatorIcon" /> : undefined
+      }
       onClick={() => selection.choose?.(props.value)}
     >
       {props.children}
@@ -509,12 +513,31 @@ export function MenuCheckboxItem(props: {
   onCheckedChange?: (checked: boolean) => void;
   className?: string;
   disabled?: boolean;
+  variant?: 'default' | 'switch';
 }) {
+  const switchIndicator =
+    props.variant === 'switch' ? (
+      <view
+        className={cx(
+          'LxMenuSwitch',
+          props.checked && 'LxMenuSwitch--checked'
+        )}
+        aria-hidden="true"
+      >
+        <view className="LxMenuSwitch__thumb" />
+      </view>
+    ) : (
+      <text className="LxMenuIndicator">{props.checked ? '✓' : ''}</text>
+    );
   return (
     <MenuItem
-      className={props.className}
+      className={cx(
+        props.className,
+        props.variant === 'switch' && 'LxMenuItem--switch'
+      )}
+      closeOnClick={false}
       disabled={props.disabled}
-      trailing={<text className="LxMenuIndicator">{props.checked ? '✓' : ''}</text>}
+      trailing={switchIndicator}
       onClick={() => props.onCheckedChange?.(!props.checked)}
     >
       {props.children}
@@ -538,16 +561,90 @@ export function MenuShortcut(props: { children?: ReactNode; className?: string }
   return <>{textContent(props.children, cx('LxMenuShortcut', props.className))}</>;
 }
 
-// First-slice fallback: submenu content stays inline. It preserves imports and
-// selection behavior but does not claim independent positioning.
-export const MenuSub = MenuGroup;
-export const MenuSubTrigger = MenuItem;
+interface MenuSubContextValue {
+  readonly open: boolean;
+  readonly setOpen: (open: boolean) => void;
+}
+
+const MenuSubContext = createContext<MenuSubContextValue>({
+  open: false,
+  setOpen: () => {},
+});
+
+export function MenuSub(props: { children?: ReactNode }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <MenuSubContext.Provider value={{ open, setOpen }}>
+      <view className="LxMenuSubRoot">{props.children}</view>
+    </MenuSubContext.Provider>
+  );
+}
+
+export function MenuSubTrigger(props: {
+  children?: ReactNode;
+  className?: string;
+  disabled?: boolean;
+}) {
+  const menu = useContext(MenuContext);
+  const submenu = useContext(MenuSubContext);
+  const valueRef = useRef<string | null>(null);
+  if (valueRef.current === null) {
+    valueRef.current = `menu-sub-trigger-${++nextMenuItemId}`;
+  }
+  const activate = () => {
+    'background only';
+    if (props.disabled) return;
+    submenu.setOpen(!submenu.open);
+  };
+  const interaction = useLynxInteractiveState({
+    baseClassName: cx(
+      'LxButton',
+      'LxButton--ghost',
+      'LxButton--default',
+      'LxMenuItem',
+      'LxMenuSubTrigger',
+      props.className,
+      menu.highlightedValue === valueRef.current &&
+        'LxMenuItem--highlighted'
+    ),
+    disabled: props.disabled,
+    onActivate: activate,
+  });
+  const activateRef = useRef(activate);
+  activateRef.current = activate;
+  useEffect(() => {
+    if (props.disabled) return;
+    return menu.registerItem(valueRef.current!, {
+      activate: () => activateRef.current(),
+    });
+  }, [menu.registerItem, props.disabled]);
+  return (
+    <view
+      className={interaction.className}
+      {...interaction.eventProps}
+      aria-expanded={submenu.open}
+      aria-haspopup="menu"
+      role="menuitem"
+    >
+      <view className="LxMenuItem__row">
+        {textContent(props.children, 'LxMenuItem__text')}
+        <text className="LxMenuSubTrigger__chevron">›</text>
+      </view>
+    </view>
+  );
+}
+
 export function MenuSubPopup(props: {
   children?: ReactNode;
   className?: string;
 }) {
+  const submenu = useContext(MenuSubContext);
+  if (!submenu.open) return null;
   return (
-    <view className={cx('LxMenuSubPopup', props.className)}>
+    <view
+      className={cx('LxMenuPopup', 'LxMenuSubPopup', props.className)}
+      role="menu"
+    >
       {props.children}
     </view>
   );

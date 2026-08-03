@@ -1,5 +1,11 @@
 import type { ReactNode } from 'react';
 
+import {
+  GaugeIcon,
+  PaperclipIcon,
+  PlusIcon,
+  BlocksIcon,
+} from '../lib/icons.lynx';
 import { Button } from '../components/ui/button.lynx';
 import {
   MenuTrigger,
@@ -16,7 +22,7 @@ export function ComposerExtrasMenuTriggerElement() {
       className="ComposerExtrasTriggerLynx"
       aria-label="Composer extras"
     >
-      +
+      <PlusIcon className="ComposerExtrasTriggerIconLynx" />
     </Button>
   );
 }
@@ -60,15 +66,30 @@ export function ComposerExtrasImageItemElement(props: {
       disabled={!props.available || !props.onPickAttachments}
       onClick={props.onPickAttachments}
     >
-      {props.available ? 'Add files' : 'Add files — unavailable'}
+      <view className="ComposerExtrasItemLabelLynx">
+        <PaperclipIcon className="ComposerExtrasItemIconLynx" />
+        <text>
+          {props.available ? 'Add files' : 'Add files — unavailable'}
+        </text>
+      </view>
     </MenuItem>
   );
 }
 
 export function ComposerExtrasPlanLabelElement() {
-  return <text>Plan mode</text>;
+  return (
+    <view className="ComposerExtrasItemLabelLynx">
+      <BlocksIcon className="ComposerExtrasItemIconLynx" />
+      <text>Plan mode</text>
+    </view>
+  );
 }
 
 export function ComposerExtrasFastLabelElement() {
-  return <text>Fast</text>;
+  return (
+    <view className="ComposerExtrasItemLabelLynx">
+      <GaugeIcon className="ComposerExtrasItemIconLynx" />
+      <text>Fast</text>
+    </view>
+  );
 }

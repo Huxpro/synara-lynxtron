@@ -55,6 +55,7 @@ describe("ComposerExtrasMenu", () => {
   it("uses an image-only file picker and forwards selected images", async () => {
     await using menu = await mountMenu();
 
+    await page.getByLabelText("Composer extras").click();
     const input = document.querySelector<HTMLInputElement>("[data-testid='composer-photo-input']");
     expect(input).not.toBeNull();
     expect(input?.accept).toBe("image/*");
