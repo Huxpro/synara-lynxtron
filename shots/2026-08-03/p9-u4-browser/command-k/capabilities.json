@@ -1,0 +1,72 @@
+{
+  "filesystem": {
+    "parentPath": "/private/tmp/synara-lynx-web-spike.93a7baf3",
+    "entryCount": 2,
+    "entries": [
+      {
+        "name": "spike-tools",
+        "fullPath": "/private/tmp/synara-lynx-web-spike.93a7baf3/spike-tools"
+      },
+      {
+        "name": "spike-workspace",
+        "fullPath": "/private/tmp/synara-lynx-web-spike.93a7baf3/spike-workspace"
+      }
+    ]
+  },
+  "importProviders": [
+    {
+      "provider": "codex",
+      "supportsThreadImport": true,
+      "error": null
+    },
+    {
+      "provider": "claudeAgent",
+      "supportsThreadImport": true,
+      "error": null
+    },
+    {
+      "provider": "cursor",
+      "supportsThreadImport": true,
+      "error": null
+    },
+    {
+      "provider": "kilo",
+      "supportsThreadImport": true,
+      "error": null
+    },
+    {
+      "provider": "opencode",
+      "supportsThreadImport": true,
+      "error": null
+    }
+  ],
+  "usage": {
+    "entryCount": 3,
+    "providers": [
+      {
+        "provider": "codex",
+        "status": "error",
+        "source": "codex-wham-usage",
+        "detail": "Could not reach the Codex usage endpoint.",
+        "limitCount": 0,
+        "lineCount": 0
+      },
+      {
+        "provider": "claudeAgent",
+        "status": "needs-auth",
+        "source": "claude-oauth-usage",
+        "detail": "Sign in with `claude` to see usage.",
+        "limitCount": 0,
+        "lineCount": 0
+      },
+      {
+        "provider": "cursor",
+        "status": "error",
+        "source": "cursor-dashboard",
+        "detail": "Could not reach the Cursor dashboard.",
+        "limitCount": 0,
+        "lineCount": 0
+      }
+    ]
+  }
+}

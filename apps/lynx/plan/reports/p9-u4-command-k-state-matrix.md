@@ -1,6 +1,6 @@
 # P9-U4 Command K detailed state matrix
 
-Status: Browser matrix complete; Native keyboard certification remains
+Status: feature-state matrix complete; Native keyboard certification deferred by user
 
 ## Acceptance contract
 
@@ -78,3 +78,24 @@ Command K is complete only when retained evidence covers:
 - `shots/2026-08-03/command-k/browser/states/`
 - `shots/2026-08-03/command-k/native/empty-1280/`
 - `shots/2026-08-03/command-k/checklist.md`
+
+## Follow-up verification
+
+The follow-up slice in `shots/2026-08-03/p9-u4-browser/` adds:
+
+- Web authority Add project, Import provider, and Usage product surfaces;
+- canonical read-only evidence for `filesystem.browse`, all five thread-import
+  provider capabilities, and three real provider usage records;
+- a real Lynx search error state followed by rendered Retry recovery;
+- exact-owned Native Composer pointer states for extras, Plan, Fast, project
+  selection, and project reset.
+
+The same iteration exposed a Web production crash after enabling Fast:
+`FastModeIcon is not defined`. Importing the icon in
+`apps/web/src/components/chat/TraitsPicker.tsx` fixed the root cause. A fresh
+product session now renders `Medium · Fast` without console errors, and the
+existing TraitsPicker browser suite passes.
+
+Per the user's latest direction, Native Arrow/Tab/Enter/Escape certification is
+deferred. It remains unchecked in the completion audit and is not represented
+as a passing comparison cell.

@@ -1,0 +1,40 @@
+{
+  "ownedPid": 73466,
+  "client": "localhost:8903",
+  "session": 1,
+  "bundle": "file:///Users/bytedance/github/synara/apps/lynx/dist/desktop/main.lynx.bundle",
+  "outerWindow": {
+    "width": 1280,
+    "height": 820,
+    "source": "isolated window-state.json and CoreGraphics"
+  },
+  "lynxView": {
+    "width": 2560,
+    "height": 1576,
+    "devicePixelRatio": 2
+  },
+  "states": {
+    "extrasOpen": {
+      "ariaExpanded": true,
+      "items": ["Add files", "Plan mode", "Default", "Fast"]
+    },
+    "planMode": {
+      "checked": true
+    },
+    "fastMode": {
+      "selected": "Fast"
+    },
+    "projectOpen": {
+      "items": ["Don't work in a project", "spike-workspace"]
+    },
+    "projectSelected": {
+      "triggerLabel": "spike-workspace"
+    },
+    "projectReset": {
+      "triggerLabel": "Work in a project"
+    }
+  },
+  "errorWarningConsoleEntries": 0,
+  "defaultUserWindowStateSha256": "770cc84f1973b042e89d5cbe38903d8f4a9d7bd136bb084aaccf8c0cedbf70e4",
+  "keyboardShortcutCertification": "deferred by user; not claimed as passing"
+}

@@ -12,7 +12,7 @@ import {
 } from "@synara/contracts";
 import { applyClaudePromptEffortPrefix } from "@synara/shared/model";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
-import { ChevronDownIcon, SettingsIcon } from "~/lib/icons";
+import { ChevronDownIcon, FastModeIcon, SettingsIcon } from "~/lib/icons";
 import { Button } from "../ui/button";
 import {
   Menu,

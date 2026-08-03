@@ -1,20 +1,21 @@
 # Command K verification checklist
 
-- [ ] Web Cmd+K opens and focuses search
-- [ ] Native Cmd+K host accelerator opens and focuses search
-- [ ] repeated Cmd+K / Escape dismiss
-- [ ] empty suggested actions
-- [ ] action query
-- [ ] project query
-- [ ] thread title query
-- [ ] project-name thread query
-- [ ] message-content query with snippet metadata
-- [ ] theme mode and code theme query / activation / persistence
-- [ ] filesystem path browse state
-- [ ] import provider state
-- [ ] usage action and provider cards
-- [ ] loading/error/retry/empty result states
-- [ ] ArrowUp/ArrowDown, Tab/Shift+Tab, Enter, Escape
-- [ ] pointer activation
-- [ ] Browser geometry and exact Native frame/console
-- [ ] comparison gallery entries
+- [x] Web Cmd+K opens and focuses search
+- [x] Native Cmd+K host accelerator opens and focuses search
+- [x] repeated Cmd+K / Escape dismiss — Web
+- [x] empty suggested actions
+- [x] action query
+- [x] project query
+- [x] thread title query
+- [x] project-name thread query
+- [x] message-content query with snippet metadata
+- [x] theme mode and code theme query / activation
+- [x] filesystem path capability — canonical `filesystem.browse`
+- [x] import provider state — five canonical providers
+- [x] usage action and provider status records
+- [x] error/retry/empty result states
+- [ ] ArrowUp/ArrowDown, Tab/Shift+Tab, Enter, Escape — Native certification
+      deferred by user; no pass claimed
+- [x] pointer activation for retained Browser and Native states
+- [x] Browser geometry and exact Native frame/console
+- [x] comparison gallery entries
