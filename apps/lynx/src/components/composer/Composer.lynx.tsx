@@ -8,6 +8,7 @@ import type {
 } from '@synara/contracts';
 
 import { useComposerDraftStore } from '../../adapters/composerDraftStore.lynx';
+import { useTheme } from '../../adapters/useTheme.lynx';
 import { MicIcon } from '@synara-web/lib/icons';
 import { dialogs } from '../../platform/dialogs';
 import { onGlobalEvent } from '../../platform/bridge';
@@ -33,6 +34,10 @@ import {
   ComposerExtrasMenuComposition,
 } from '@synara-web/components/chat/ComposerExtrasMenuComposition';
 import { getComposerTraitSelection } from '@synara-web/components/chat/composerTraits';
+import {
+  buildSkillSearchFields,
+  rankProviderDiscoveryItems,
+} from '@synara-web/lib/providerDiscovery';
 import { resolveRuntimeModelDescriptor } from '@synara-web/components/chat/runtimeModelCapabilities';
 import { ComposerRuntimeModeControlComposition } from '@synara-web/components/chat/ComposerRuntimeModeControlComposition';
 import { ComposerReferenceAttachmentsComposition } from '@synara-web/components/chat/ComposerReferenceAttachmentsComposition';
@@ -190,6 +195,7 @@ export function Composer({
   onSetInteractionMode,
   onSendSucceeded,
 }: ComposerProps) {
+  const { resolvedTheme } = useTheme();
   const textareaRef = useRef<React.ElementRef<'textarea'>>(null);
   const brandedThreadId = threadId as never;
   const draft = useComposerDraftStore(
@@ -428,14 +434,11 @@ export function Composer({
   );
   const skillItems = useMemo<ComposerCommandItem[]>(() => {
     if (composerTrigger?.kind !== 'skill') return [];
-    const query = composerTrigger.query.trim().toLowerCase();
-    return (providerSkillsCatalog?.skills ?? [])
-      .filter((skill) => {
-        if (!query) return true;
-        return [skill.name, skill.description, skill.scope]
-          .filter((value): value is string => typeof value === 'string')
-          .some((value) => value.toLowerCase().includes(query));
-      })
+    return rankProviderDiscoveryItems(
+      providerSkillsCatalog?.skills ?? [],
+      composerTrigger.query,
+      buildSkillSearchFields
+    )
       .map((skill) => ({
         id: `skill:${skill.path}`,
         type: 'skill' as const,
@@ -1054,7 +1057,7 @@ export function Composer({
         {composerTrigger?.kind === 'slash-command' ? (
           <ComposerCommandMenuComposition
             items={slashCommandItems}
-            resolvedTheme="light"
+            resolvedTheme={resolvedTheme}
             isLoading={false}
             triggerKind="slash-command"
             activeItemId={slashCommandItems[0]?.id ?? null}
@@ -1067,7 +1070,7 @@ export function Composer({
         ) : composerTrigger?.kind === 'skill' ? (
           <ComposerCommandMenuComposition
             items={skillItems}
-            resolvedTheme="light"
+            resolvedTheme={resolvedTheme}
             isLoading={providerSkillsPending}
             triggerKind="skill"
             activeItemId={skillItems[0]?.id ?? null}
@@ -1080,7 +1083,7 @@ export function Composer({
         ) : composerTrigger?.kind === 'mention' ? (
           <ComposerCommandMenuComposition
             items={threadMentionItems}
-            resolvedTheme="light"
+            resolvedTheme={resolvedTheme}
             isLoading={false}
             triggerKind="mention"
             activeItemId={threadMentionItems[0]?.id ?? null}

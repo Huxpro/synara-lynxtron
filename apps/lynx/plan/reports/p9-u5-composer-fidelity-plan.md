@@ -390,6 +390,8 @@ semantics:
 
 ## Phase 3 — Skill and mention menu visual convergence
 
+Status: completed
+
 ### Root cause
 
 `ComposerCommandMenuComposition` shares grouping and selection intent, but the
@@ -419,6 +421,40 @@ typographic system.
 - Real provider/project/file/skill icon semantics are preserved.
 - No text-glyph placeholders remain in ordinary rows.
 - Light and dark resolved themes render correctly.
+
+### Result
+
+- Replaced every Lynx command-row trigger-character glyph with generated
+  semantic SVG icons for commands, skills, threads, plugins, agents, paths,
+  models, fork/review targets, and local roots.
+- Removed all three hard-coded `resolvedTheme="light"` call sites. Lynx
+  Composer now passes the live `useTheme().resolvedTheme`.
+- Matched the Web command-menu surface and row rhythm:
+  - surface height `288px` on both clients;
+  - Web width `724px`, Lynx width `726px`;
+  - `28px` rows on both clients;
+  - aligned title, description, trailing meta, group-label, and separator
+    typography.
+- Replaced the Lynx-only substring skill filter with the shared
+  `rankProviderDiscoveryItems` / `buildSkillSearchFields` ranking path.
+  `$review-agent` now returns the same four rows in the same order on both
+  clients.
+- Real rendered controls retained paired Browser evidence for:
+  - skill trigger with the full 114-item catalog;
+  - filtered skill query;
+  - mention trigger;
+  - filtered mention query resolving the same thread.
+- Mention trigger retains an intentional capability delta: Web also exposes
+  Local and Subagents entries; Lynx does not invent unavailable platform
+  actions. Shared thread candidates and filtered thread order match.
+- Eight required Browser cells moved to retained evidence. Strict incomplete
+  required cells moved from 33 to 25.
+- Selected and cleared skill/mention states remain in Phase 4 because their
+  correctness depends on the native display/canonical draft projection.
+- Focused gates:
+  - Lynx adapter/theme/selection logic: 7/7;
+  - Web shared composition: 2/2;
+  - Web and Lynx-for-Web production builds green.
 
 ## Phase 4 — Selected token architecture
 

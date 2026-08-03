@@ -56,9 +56,9 @@
 
 .ComposerCommandGroupLabelLynx,
 .ComposerCommandMenuEmptyLynx {
-  padding: 5px 8px 4px;
+  padding: 6px 8px 4px;
   color: var(--muted-foreground);
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .ComposerCommandSeparatorLynx {
@@ -68,11 +68,11 @@
 }
 
 .ComposerCommandRowLynx {
-  min-height: 34px;
+  min-height: 28px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 5px 8px;
+  padding: 4px 8px;
   border-radius: 7px;
 }
 
@@ -93,13 +93,20 @@
   opacity: 0.72;
 }
 
-.ComposerCommandGlyphLynx {
-  width: 18px;
+.ComposerCommandIconSlotLynx {
+  width: 16px;
+  height: 16px;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--muted-foreground);
-  font-family: var(--font-mono-family);
-  font-size: 11px;
-  font-weight: 700;
+}
+
+.ComposerCommandIconLynx {
+  width: 14px;
+  height: 14px;
+  color: var(--muted-foreground);
 }
 
 .ComposerCommandCopyLynx {
@@ -108,29 +115,34 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  gap: 6px;
+  overflow: hidden;
 }
 
 .ComposerCommandTitleLynx {
   flex-shrink: 0;
   color: var(--foreground);
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 11.5px;
+  font-weight: 500;
 }
 
 .ComposerCommandSecondaryLynx,
 .ComposerCommandMetaLynx {
   color: var(--muted-foreground);
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .ComposerCommandSecondaryLynx {
-  margin-left: 7px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .ComposerCommandMetaLynx {
   flex-shrink: 0;
   margin-left: auto;
   padding-left: 8px;
+  font-size: 10.5px;
 }
 
 .ComposerTextarea {

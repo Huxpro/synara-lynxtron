@@ -1,23 +1,54 @@
 import type { ReactNode } from '@lynx-js/react';
 
 import type { ComposerCommandItem } from '@synara-web/components/chat/ComposerCommandMenuComposition';
+import {
+  BlocksIcon,
+  BrainIcon,
+  BugIcon,
+  ClockIcon,
+  DeviceLaptopIcon,
+  FolderIcon,
+  GaugeIcon,
+  GitBranchIcon,
+  MessageCircleIcon,
+  PuzzleIcon,
+  ToolsIcon,
+  UserIcon,
+  type LynxIcon,
+} from '../lib/icons.lynx';
 import { useLynxInteractiveState } from '../components/ui/interactive-state.lynx';
 
-function itemGlyph(item: ComposerCommandItem): string {
-  if (item.type === 'slash-command' || item.type === 'provider-native-command') return '/';
-  if (item.type === 'skill') return '$';
+const SLASH_COMMAND_ICONS: Record<string, LynxIcon> = {
+  clear: ToolsIcon,
+  compact: BlocksIcon,
+  model: BrainIcon,
+  fast: GaugeIcon,
+  plan: BlocksIcon,
+  default: MessageCircleIcon,
+  review: BugIcon,
+  status: MessageCircleIcon,
+  subagents: UserIcon,
+  automation: ClockIcon,
+};
+
+function itemIcon(item: ComposerCommandItem): LynxIcon {
   if (
-    item.type === 'agent' ||
-    item.type === 'plugin' ||
-    item.type === 'thread' ||
-    item.type === 'path' ||
-    item.type === 'local-root'
+    item.type === 'slash-command' ||
+    item.type === 'provider-native-command'
   ) {
-    return '@';
+    return SLASH_COMMAND_ICONS[item.command] ?? ToolsIcon;
   }
-  if (item.type === 'model') return '◉';
-  if (item.type === 'fork-target') return '⑂';
-  return '✓';
+  if (item.type === 'skill') return BlocksIcon;
+  if (item.type === 'agent') return UserIcon;
+  if (item.type === 'plugin') return PuzzleIcon;
+  if (item.type === 'thread') return MessageCircleIcon;
+  if (item.type === 'path') return item.pathKind === 'directory' ? FolderIcon : ToolsIcon;
+  if (item.type === 'local-root') return DeviceLaptopIcon;
+  if (item.type === 'model') return BrainIcon;
+  if (item.type === 'fork-target') {
+    return item.target === 'local' ? DeviceLaptopIcon : GitBranchIcon;
+  }
+  return item.target === 'changes' ? BlocksIcon : GitBranchIcon;
 }
 
 export function ComposerCommandMenuFrameElement(props: {
@@ -83,6 +114,7 @@ export function ComposerCommandRowElement(props: {
   readonly onItemRef: (node: unknown | null) => void;
   readonly onSelect: () => void;
 }) {
+  const Icon = itemIcon(props.item);
   const interaction = useLynxInteractiveState({
     baseClassName: `ComposerCommandRowLynx${
       props.active ? ' ComposerCommandRowLynx--active' : ''
@@ -106,7 +138,9 @@ export function ComposerCommandRowElement(props: {
         if (!props.active) props.onHighlight();
       }}
     >
-      <text className="ComposerCommandGlyphLynx">{itemGlyph(props.item)}</text>
+      <view className="ComposerCommandIconSlotLynx">
+        <Icon className="ComposerCommandIconLynx" />
+      </view>
       <view className="ComposerCommandCopyLynx">
         <text className="ComposerCommandTitleLynx">{props.title}</text>
         {props.secondaryText ? (

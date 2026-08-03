@@ -4816,3 +4816,25 @@
 - gates：Lynx primitive/adapter **9/9**；Web shared composition **3/3**；Web Extras
   Browser **3/3**；Web/Lynx-for-Web production green；strict verifier按剩余scope
   设计exit **2**。
+
+## 2026-08-03 — P9-U5 Phase 3 Skill/Mention command menu parity
+
+- Lynx command rows删除`$`/`@`/`/`/`◉`/`⑂`文字glyph，按item type映射generated
+  semantic SVG icons；Composer三处hard-coded `resolvedTheme="light"`删除，统一消费
+  `useTheme().resolvedTheme`。
+- typography/geometry收敛：双方surface height 288px，Web width 724、Lynx 726；
+  row均28px；title 11.5/500、secondary 11、meta 10.5、group label 11，并补description
+  overflow约束。
+- 首轮`$review-agent`暴露真实ranking分叉：Web fuzzy命中4项，Lynx substring只命中1项。
+  Lynx改消费shared `rankProviderDiscoveryItems/buildSkillSearchFields`后，双方顺序统一为
+  review-agent/review-bugbot/review-security/review。
+- 同snapshot真实keyboard输入完成skill trigger、skill filtered、mention trigger、
+  mention filtered四组paired evidence；skill catalog双方114项且Lynx有114个SVG icon；
+  `@Progress`双方唯一命中`In Progress seed task`。Web mention额外Local/Subagents为明确
+  capability delta，Lynx不伪造。
+- 8个Browser required cells retained，strict incomplete **33→25**。selected/cleared
+  skill/mention留Phase 4 display/canonical token projection，不把当前duplicate-chip架构
+  冒充完成。
+- gates：Lynx adapter/theme/selection **7/7**；Web shared composition **2/2**；
+  Web/Lynx-for-Web production green；fresh Web console空，Lynx仅已登记upstream init
+  warning。

@@ -22,6 +22,10 @@ describe('landing composer fidelity contract', () => {
       new URL('./LandingComposer.lynx.tsx', import.meta.url),
       'utf8'
     );
+    const composerSource = readFileSync(
+      new URL('./Composer.lynx.tsx', import.meta.url),
+      'utf8'
+    );
 
     expect(routerSource).toContain('<CenteredEmptyLandingStack>');
     expect(routerSource).toContain('<CenteredEmptyLanding />');
@@ -41,6 +45,8 @@ describe('landing composer fidelity contract', () => {
     expect(landingSource).not.toContain('.catch(() => [])');
     expect(landingSource).not.toContain('<MenuItem');
     expect(landingSource).not.toContain('<MenuPopup');
+    expect(composerSource).toContain('const { resolvedTheme } = useTheme()');
+    expect(composerSource).not.toContain('resolvedTheme="light"');
     expect(landingStyles).not.toMatch(
       /\.LandingComposerTray\s*\{[^}]*z-index:/s
     );

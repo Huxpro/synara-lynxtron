@@ -110,3 +110,35 @@ Native evidence.
 - Native default, Plan-only, Fast-only, and host attachment dialog evidence
   remain pending for the final exact-owned batch.
 - Strict status after Phase 2: 33 incomplete required cells.
+
+## Phase 3 Command Menus
+
+- Evidence builds:
+  - Web:
+    `647bb96161b34e9b01afcf44a639c5043e5f1cdc43691694136c5ee8c115046b`
+  - Lynx-for-Web:
+    `68962ea84de383b0d758dc8d83b8dd270145e6a56f1e0d6bef66f5d21f61337c`
+- Four paired states are retained:
+  - full skill trigger;
+  - filtered skill query `review-agent`;
+  - full mention trigger;
+  - filtered mention query `Progress`.
+- Both full skill menus contained 114 rows. Every Lynx row rendered a generated
+  SVG icon; no legacy trigger-character glyph node remained.
+- The filtered skill result order matched exactly:
+  `review-agent`, `review-bugbot`, `review-security`, `review`.
+- The common mention candidates matched in order. Web additionally exposes
+  Local and Subagents platform capabilities; Lynx does not invent unavailable
+  actions.
+- `@Progress` resolved to the same single `In Progress seed task` row.
+- Command surfaces measured `724×288` on Web and `726×288` on Lynx-for-Web,
+  with `28px` rows on both.
+- Lynx-for-Web selection injection does not reliably publish Meta+A to the
+  ReactLynx input thread. For the final mention filter only,
+  `setSelectionRange` established the exact selection; Backspace and typing
+  still exercised rendered keyboard events. Product state was cleared after
+  capture.
+- Web console was clean. Lynx-for-Web had only the named upstream deprecated
+  initialization warning.
+- Selected and cleared token evidence remains pending for Phase 4.
+- Strict status after Phase 3: 25 incomplete required cells.

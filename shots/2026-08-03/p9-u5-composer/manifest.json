@@ -877,12 +877,44 @@
       },
       "evidence": {
         "web": {
-          "status": "pending",
-          "reason": "Only a filtered `$pol` frame was retained."
+          "status": "retained",
+          "path": "browser/command-menu/skill-trigger/web/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "647bb96161b34e9b01afcf44a639c5043e5f1cdc43691694136c5ee8c115046b",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/command-menu/skill-trigger/web/assertions.json",
+          "console": "browser/command-menu/skill-trigger/web/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": "skill",
+            "tokenState": "query"
+          }
         },
         "lynx": {
-          "status": "pending",
-          "reason": "Only a filtered `$pol` frame was retained."
+          "status": "retained",
+          "path": "browser/command-menu/skill-trigger/lynx/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "68962ea84de383b0d758dc8d83b8dd270145e6a56f1e0d6bef66f5d21f61337c",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/command-menu/skill-trigger/lynx/assertions.json",
+          "console": "browser/command-menu/skill-trigger/lynx/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": "skill",
+            "tokenState": "query"
+          }
         },
         "native": {
           "status": "not-applicable",
@@ -911,14 +943,44 @@
       },
       "evidence": {
         "web": {
-          "status": "diagnostic",
-          "path": "../composer-details/browser/skills-mentions-1280/web-skill-menu.png",
-          "reason": "Legacy capture lacks a recorded production build hash."
+          "status": "retained",
+          "path": "browser/command-menu/skill-filtered/web/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "647bb96161b34e9b01afcf44a639c5043e5f1cdc43691694136c5ee8c115046b",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/command-menu/skill-filtered/web/assertions.json",
+          "console": "browser/command-menu/skill-filtered/web/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": "skill",
+            "tokenState": "query"
+          }
         },
         "lynx": {
-          "status": "diagnostic",
-          "path": "../composer-details/browser/skills-mentions-1280/lynx-skill-menu.png",
-          "reason": "Legacy capture documents the text-glyph adapter that this goal replaces."
+          "status": "retained",
+          "path": "browser/command-menu/skill-filtered/lynx/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "68962ea84de383b0d758dc8d83b8dd270145e6a56f1e0d6bef66f5d21f61337c",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/command-menu/skill-filtered/lynx/assertions.json",
+          "console": "browser/command-menu/skill-filtered/lynx/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": "skill",
+            "tokenState": "query"
+          }
         },
         "native": {
           "status": "pending",
@@ -1008,12 +1070,44 @@
       },
       "evidence": {
         "web": {
-          "status": "pending",
-          "reason": "Only a filtered `@Draft` frame was retained."
+          "status": "retained",
+          "path": "browser/command-menu/mention-trigger/web/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "647bb96161b34e9b01afcf44a639c5043e5f1cdc43691694136c5ee8c115046b",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/command-menu/mention-trigger/web/assertions.json",
+          "console": "browser/command-menu/mention-trigger/web/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": "mention",
+            "tokenState": "query"
+          }
         },
         "lynx": {
-          "status": "pending",
-          "reason": "Only a filtered `@Draft` frame was retained."
+          "status": "retained",
+          "path": "browser/command-menu/mention-trigger/lynx/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "68962ea84de383b0d758dc8d83b8dd270145e6a56f1e0d6bef66f5d21f61337c",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/command-menu/mention-trigger/lynx/assertions.json",
+          "console": "browser/command-menu/mention-trigger/lynx/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": "mention",
+            "tokenState": "query"
+          }
         },
         "native": {
           "status": "not-applicable",
@@ -1042,14 +1136,44 @@
       },
       "evidence": {
         "web": {
-          "status": "diagnostic",
-          "path": "../composer-details/browser/skills-mentions-1280/web-mention-menu.png",
-          "reason": "Legacy capture lacks a recorded production build hash."
+          "status": "retained",
+          "path": "browser/command-menu/mention-filtered/web/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "647bb96161b34e9b01afcf44a639c5043e5f1cdc43691694136c5ee8c115046b",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/command-menu/mention-filtered/web/assertions.json",
+          "console": "browser/command-menu/mention-filtered/web/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": "mention",
+            "tokenState": "query"
+          }
         },
         "lynx": {
-          "status": "diagnostic",
-          "path": "../composer-details/browser/skills-mentions-1280/lynx-mention-menu.png",
-          "reason": "Legacy capture documents the text-glyph adapter that this goal replaces."
+          "status": "retained",
+          "path": "browser/command-menu/mention-filtered/lynx/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "68962ea84de383b0d758dc8d83b8dd270145e6a56f1e0d6bef66f5d21f61337c",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/command-menu/mention-filtered/lynx/assertions.json",
+          "console": "browser/command-menu/mention-filtered/lynx/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": "mention",
+            "tokenState": "query"
+          }
         },
         "native": {
           "status": "pending",
