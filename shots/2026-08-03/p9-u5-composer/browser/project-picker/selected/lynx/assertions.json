@@ -1,0 +1,71 @@
+{
+  "client": "lynx",
+  "captureTier": "browser",
+  "buildSha256": "7aa750966e51fe225c11fdb40cbff0181fc2698009b81efbf761ade8127c99ea",
+  "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+  "semanticRoute": "new-chat",
+  "actualRoute": "/lynx/",
+  "theme": "light",
+  "viewport": {
+    "width": 1280,
+    "height": 820,
+    "devicePixelRatio": 1
+  },
+  "states": {
+    "empty": {
+      "trigger": "Work in a project",
+      "open": false
+    },
+    "open": {
+      "groups": [
+        "Void",
+        "Folders on this Mac"
+      ],
+      "firstOption": "spike-workspace",
+      "footer": [
+        "New project",
+        "Don't work in a project"
+      ],
+      "hiddenDirectoryPresent": false,
+      "popup": {
+        "x": 408,
+        "width": 288,
+        "height": 258
+      },
+      "rowHeight": 26,
+      "spaceIcons": "native SVG"
+    },
+    "search": {
+      "query": "spike",
+      "options": [
+        "spike-workspace"
+      ]
+    },
+    "noMatch": {
+      "query": "spike-missing",
+      "copy": "No matching projects"
+    },
+    "selected": {
+      "trigger": "spike-workspace",
+      "open": false
+    },
+    "selectedOpen": {
+      "selectedOption": "spike-workspace",
+      "selectedIndicator": "✓",
+      "ariaSelected": true,
+      "footer": [
+        "New project",
+        "Don't work in a project"
+      ]
+    },
+    "reset": {
+      "trigger": "Work in a project",
+      "open": false
+    }
+  },
+  "stateSetup": "Rendered controls only; closed-shadow controls exercised through real CDP pointer events.",
+  "pageErrors": 0,
+  "knownWarnings": [
+    "upstream Lynx-for-Web deprecated initialization parameter warning"
+  ]
+}

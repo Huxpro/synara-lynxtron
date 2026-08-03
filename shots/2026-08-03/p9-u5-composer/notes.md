@@ -1,6 +1,6 @@
 # P9-U5 Composer fidelity evidence
 
-Status: Phase 0 diagnostic manifest
+Status: Phases 0–1 complete; later Composer slices pending
 
 ## Contract
 
@@ -31,7 +31,7 @@ The verifier checks:
 - state echo equality, preventing combined Plan/Fast evidence from being
   reused for a single-mode state.
 
-## Current baseline
+## Phase 0 baseline
 
 - 23 strict Composer states.
 - 55 required client cells are intentionally incomplete.
@@ -47,3 +47,38 @@ The verifier checks:
 This red baseline is intentional. Later P9-U5 slices replace diagnostic and
 pending entries with like-for-like retained Web, Lynx-for-Web, and exact-owned
 Native evidence.
+
+## Phase 1 Project Picker
+
+- Web and Lynx-for-Web consumed the same isolated snapshot:
+  `98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070`.
+- Evidence builds:
+  - Web:
+    `647bb96161b34e9b01afcf44a639c5043e5f1cdc43691694136c5ee8c115046b`
+  - Lynx-for-Web:
+    `7aa750966e51fe225c11fdb40cbff0181fc2698009b81efbf761ade8127c99ea`
+- Both named Browser sessions used `1280×820`, DPR 1, light theme, empty draft,
+  default interaction mode, and Fast off.
+- Seven states have retained paired evidence:
+  - empty;
+  - open;
+  - filtered search (`spike`);
+  - no match (`spike-missing`);
+  - selected;
+  - selected menu open;
+  - reset.
+- The open state measured the same `288×258` popup, `26px` option row,
+  Space/Void/local-folder group order, and footer actions on both clients.
+- Web uses a canonical local draft UUID route while Lynx-for-Web uses
+  `/lynx/`; assertions record both actual routes and the shared semantic route
+  `new-chat` rather than pretending the literal URLs are identical.
+- Lynx closed-shadow controls were exercised through real CDP pointer events.
+  Query reset used the rendered close/reopen path. No React state or SQLite
+  fixture was mutated directly.
+- Fresh Web and Lynx-for-Web console buffers contained no page errors. The
+  per-state Lynx console files name the known upstream deprecated
+  initialization warning.
+- Loading and error/retry anatomy are covered by focused deterministic shared
+  model tests but remain pending in the screenshot manifest. Native selected
+  menu open remains pending for the final exact-owned batch.
+- Strict status after Phase 1: 41 incomplete required cells, down from 55.

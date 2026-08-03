@@ -4772,3 +4772,28 @@
 - Gates: evidence tests **3/3**; diagnostic generation green; strict verifier
   exits **2** as designed; comparison HTTP check shows 23 Composer states and
   no legacy Composer ids; `git diff --check` green.
+
+## 2026-08-03 — P9-U5 Phase 1 shared Project Picker
+
+- 抽physical-shared `ComposerProjectPickerComposition`、project/folder grouping
+  model与footer action model；Web workspace-root/project两种模式和Lynx landing均反向
+  消费。Lynx删除原手写`MenuItem`/`MenuPopup`普通anatomy，只保留native
+  input/list/menu/filesystem adapter。
+- 双端同一真实snapshot开放`Void`与`Folders on this Mac`，顺序/26 options/footer统一为
+  `New project`、`Don't work in a project`；hidden directories过滤。Lynx local-folder选择
+  通过canonical `project.create`，filesystem browse错误不再静默吞掉，并使用shared
+  error/Retry anatomy。
+- measured calibration：两端popup均`288×258`、x=408，option row均26px；Lynx group
+  label 28px，Space text glyph替换为native SVG icon。真实rendered controls验证
+  open/search/no-match/select/selected-open/reset；closed-shadow Lynx控件走CDP real
+  pointer，不直接改React state。
+- `shots/2026-08-03/p9-u5-composer/browser/project-picker/`新增7个stable states ×
+  Web/Lynx共14 retained cells，均1280×820、same snapshot
+  `98753f94…`、逐client assertions与fresh console。Web canonical draft UUID与Lynx
+  `/lynx/`均记录为semantic `new-chat` route，未伪称字面URL相同。
+- strict manifest从55降至41 incomplete required cells。loading与error/retry已有
+  deterministic shared-model tests但截图仍truthful pending；selected-open Native留待最终
+  exact-owned batch，不以Browser冒充。
+- gates：shared logic/composition **7/7**；ChatView Browser subset **3/3**；Lynx
+  landing contract **1/1**；Web **8,940 modules**、Lynx-for-Web production green；
+  strict verifier按剩余scope设计exit **2**；snapshot hash未变。

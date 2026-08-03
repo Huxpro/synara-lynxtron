@@ -9884,7 +9884,7 @@ export default function ChatView({
           align="start"
           side="top"
           triggerClassName="h-7 py-1"
-          showResetToHome={Boolean(resolvedThreadWorktreePath)}
+          showResetToHome={!isStudioContainer || Boolean(resolvedThreadWorktreePath)}
           selectedWorkspaceRoot={resolvedThreadWorktreePath}
           onSelectWorkspaceRoot={handleSelectWorkspaceRoot}
           onResetToHome={handleResetWorkspaceToHome}
@@ -9898,6 +9898,7 @@ export default function ChatView({
                 searchPlaceholder: "Search folders",
               }
             : {
+                addActionLabel: "New project",
                 onSelectProject: handleSelectProjectForEmptyDraft,
                 onCreateProjectFromPath: handleCreateProjectFromPickerPath,
               })}

@@ -1,6 +1,6 @@
 # P9-U5 Composer fidelity convergence plan
 
-Status: in progress — Phase 0 completed
+Status: in progress — Phases 0–1 completed
 
 ## Goal prompt
 
@@ -234,6 +234,8 @@ Status: completed
 
 ## Phase 1 — Project picker convergence
 
+Status: completed
+
 ### Root cause
 
 Web owns a full `ProjectPicker` with:
@@ -279,6 +281,43 @@ Lynx owns a separate menu in `LandingComposer.lynx.tsx` with only:
 - No second ordinary project-picker anatomy owner remains.
 - Project selection still controls first-send project/model/workspace.
 - Web behavior does not regress.
+
+### Result
+
+- Added physical-shared `ComposerProjectPickerComposition`, pure project/folder
+  grouping and footer-state models, and Web/Lynx Elements adapters.
+- Web workspace-root and project-selection modes now consume the shared
+  composition. Lynx landing consumes the same source and no longer owns
+  `MenuItem`/`MenuPopup` project-picker anatomy.
+- Both clients expose the same search, Space/Void/local-folder groups,
+  selected indicator, `New project`, `Don't work in a project`, no-match,
+  loading, error, and explicit Retry anatomy.
+- Lynx now uses filesystem browse results instead of a flat project-only menu,
+  filters hidden directories, preserves the shared group order, creates a
+  project from a selected local folder, and surfaces browse failures rather
+  than silently replacing them with an empty list.
+- Native adapter geometry was calibrated to the Web authority:
+  - `288×258` popup;
+  - `26px` option rows;
+  - `28px` group labels;
+  - matching horizontal origin;
+  - native SVG icons instead of Space text glyphs.
+- Real rendered controls verified open, search, no-match, project selection,
+  selected-menu indicator, and reset on Web and Lynx-for-Web. Closed-shadow
+  Lynx controls were exercised through real CDP pointer events, not direct
+  state mutation.
+- Seven stable states now have retained paired Browser evidence under
+  `shots/2026-08-03/p9-u5-composer/browser/project-picker/`, covering 14
+  required cells. The strict baseline moved from 55 to 41 incomplete required
+  cells.
+- Loading and error/retry are covered by deterministic shared-model tests but
+  remain truthfully pending in the screenshot manifest. The dedicated
+  selected-menu Native frame remains pending for the final Native batch.
+- Focused gates:
+  - shared Web logic/composition: 7/7;
+  - ChatView project-picker Browser subset: 3/3;
+  - Lynx landing ownership contract: 1/1;
+  - Web and Lynx-for-Web production builds green.
 
 ## Phase 2 — Extras primitive parity
 

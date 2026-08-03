@@ -3984,10 +3984,7 @@ describe("ChatView timeline estimator parity (full app)", () => {
       await expect.element(page.getByText(/Folders on this/)).not.toBeInTheDocument();
 
       const currentProjectOption = await waitForElement(
-        () =>
-          Array.from(document.querySelectorAll<HTMLElement>('[data-slot="combobox-item"]')).find(
-            (item) => item.textContent?.trim() === "project",
-          ) ?? null,
+        () => document.querySelector<HTMLElement>('[data-project-picker-option="project"]'),
         "Unable to find current project option.",
       );
       currentProjectOption.click();
@@ -4226,10 +4223,7 @@ describe("ChatView timeline estimator parity (full app)", () => {
       await workspacePickerTrigger.click();
 
       const projectOption = await waitForElement(
-        () =>
-          Array.from(document.querySelectorAll<HTMLElement>('[data-slot="combobox-item"]')).find(
-            (item) => item.textContent?.trim() === "project",
-          ) ?? null,
+        () => document.querySelector<HTMLElement>('[data-project-picker-option="project"]'),
         "Unable to find existing project option.",
       );
       projectOption.click();

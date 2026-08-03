@@ -156,6 +156,11 @@ export default defineConfig({
           __dirname,
           'src/adapters/ComposerCommandMenuCompositionElements.lynx.tsx'
         ),
+      '~/components/chat/ComposerProjectPickerCompositionElements$':
+        path.resolve(
+          __dirname,
+          'src/adapters/ComposerProjectPickerCompositionElements.lynx.tsx'
+        ),
       '~/components/chat/MessageRowCompositionElements$':
         path.resolve(
           __dirname,

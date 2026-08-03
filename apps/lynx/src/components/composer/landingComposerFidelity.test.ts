@@ -30,13 +30,17 @@ describe('landing composer fidelity contract', () => {
     expect(routerSource).toContain(
       'initialProjectId={props.initialProjectId}'
     );
+    expect(landingSource).toContain('<ComposerProjectPickerComposition');
+    expect(landingSource).toContain('buildComposerProjectPickerModel');
+    expect(landingSource).toContain('searchPlaceholder="Search projects"');
     expect(landingSource).toContain(
-      'projectWorkspaceLabel(selectedProject.workspaceRoot)'
+      'resetActionLabel="Don\'t work in a project"'
     );
-    expect(landingSource).toContain("Don't work in a project");
-    expect(landingSource).toContain(
-      'projectWorkspaceLabel(project.workspaceRoot)'
-    );
+    expect(landingSource).toContain('localFoldersError');
+    expect(landingSource).toContain('onRetry=');
+    expect(landingSource).not.toContain('.catch(() => [])');
+    expect(landingSource).not.toContain('<MenuItem');
+    expect(landingSource).not.toContain('<MenuPopup');
     expect(landingStyles).not.toMatch(
       /\.LandingComposerTray\s*\{[^}]*z-index:/s
     );

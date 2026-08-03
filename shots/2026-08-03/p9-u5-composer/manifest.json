@@ -226,14 +226,44 @@
       },
       "evidence": {
         "web": {
-          "status": "diagnostic",
-          "path": "../p9-u4-browser/composer/web-project-reset.png",
-          "reason": "Legacy capture lacks a recorded production build hash."
+          "status": "retained",
+          "path": "browser/project-picker/empty/web/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "647bb96161b34e9b01afcf44a639c5043e5f1cdc43691694136c5ee8c115046b",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/project-picker/empty/web/assertions.json",
+          "console": "browser/project-picker/empty/web/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": null,
+            "tokenState": "none"
+          }
         },
         "lynx": {
-          "status": "diagnostic",
-          "path": "../composer-details/browser/project-picker-1280/lynx-default.png",
-          "reason": "Legacy capture lacks a recorded production build hash."
+          "status": "retained",
+          "path": "browser/project-picker/empty/lynx/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "7aa750966e51fe225c11fdb40cbff0181fc2698009b81efbf761ade8127c99ea",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/project-picker/empty/lynx/assertions.json",
+          "console": "browser/project-picker/empty/lynx/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": null,
+            "tokenState": "none"
+          }
         },
         "native": {
           "status": "retained",
@@ -270,14 +300,44 @@
       },
       "evidence": {
         "web": {
-          "status": "diagnostic",
-          "path": "../composer-details/browser/project-picker-1280/web-open.png",
-          "reason": "Legacy capture lacks a recorded production build hash."
+          "status": "retained",
+          "path": "browser/project-picker/open/web/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "647bb96161b34e9b01afcf44a639c5043e5f1cdc43691694136c5ee8c115046b",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/project-picker/open/web/assertions.json",
+          "console": "browser/project-picker/open/web/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": null,
+            "tokenState": "none"
+          }
         },
         "lynx": {
-          "status": "diagnostic",
-          "path": "../composer-details/browser/project-picker-1280/lynx-open.png",
-          "reason": "Legacy capture documents the simplified menu that this goal replaces."
+          "status": "retained",
+          "path": "browser/project-picker/open/lynx/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "7aa750966e51fe225c11fdb40cbff0181fc2698009b81efbf761ade8127c99ea",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/project-picker/open/lynx/assertions.json",
+          "console": "browser/project-picker/open/lynx/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": null,
+            "tokenState": "none"
+          }
         },
         "native": {
           "status": "retained",
@@ -314,12 +374,44 @@
       },
       "evidence": {
         "web": {
-          "status": "pending",
-          "reason": "The filtered state was exercised but no dedicated frame and assertions were retained."
+          "status": "retained",
+          "path": "browser/project-picker/search/web/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "647bb96161b34e9b01afcf44a639c5043e5f1cdc43691694136c5ee8c115046b",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/project-picker/search/web/assertions.json",
+          "console": "browser/project-picker/search/web/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": null,
+            "tokenState": "none"
+          }
         },
         "lynx": {
-          "status": "pending",
-          "reason": "The current simplified Lynx picker has no search field."
+          "status": "retained",
+          "path": "browser/project-picker/search/lynx/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "7aa750966e51fe225c11fdb40cbff0181fc2698009b81efbf761ade8127c99ea",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/project-picker/search/lynx/assertions.json",
+          "console": "browser/project-picker/search/lynx/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": null,
+            "tokenState": "none"
+          }
         },
         "native": {
           "status": "not-applicable",
@@ -341,14 +433,44 @@
       },
       "evidence": {
         "web": {
-          "status": "diagnostic",
-          "path": "../p9-u4-browser/composer/web-project-selected.png",
-          "reason": "Legacy capture lacks a recorded production build hash."
+          "status": "retained",
+          "path": "browser/project-picker/selected/web/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "647bb96161b34e9b01afcf44a639c5043e5f1cdc43691694136c5ee8c115046b",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/project-picker/selected/web/assertions.json",
+          "console": "browser/project-picker/selected/web/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": "Lynx Web Spike",
+            "tokenKind": null,
+            "tokenState": "none"
+          }
         },
         "lynx": {
-          "status": "diagnostic",
-          "path": "../composer-details/browser/project-picker-1280/lynx-selected.png",
-          "reason": "Legacy capture lacks a recorded production build hash."
+          "status": "retained",
+          "path": "browser/project-picker/selected/lynx/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "7aa750966e51fe225c11fdb40cbff0181fc2698009b81efbf761ade8127c99ea",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/project-picker/selected/lynx/assertions.json",
+          "console": "browser/project-picker/selected/lynx/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": "Lynx Web Spike",
+            "tokenKind": null,
+            "tokenState": "none"
+          }
         },
         "native": {
           "status": "retained",
@@ -387,13 +509,44 @@
       },
       "evidence": {
         "web": {
-          "status": "diagnostic",
-          "path": "../p9-u4-browser/composer/web-project-selected-menu.png",
-          "reason": "Legacy capture lacks a recorded production build hash."
+          "status": "retained",
+          "path": "browser/project-picker/selected-open/web/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "647bb96161b34e9b01afcf44a639c5043e5f1cdc43691694136c5ee8c115046b",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/project-picker/selected-open/web/assertions.json",
+          "console": "browser/project-picker/selected-open/web/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": "Lynx Web Spike",
+            "tokenKind": null,
+            "tokenState": "none"
+          }
         },
         "lynx": {
-          "status": "pending",
-          "reason": "No dedicated selected-menu frame was retained."
+          "status": "retained",
+          "path": "browser/project-picker/selected-open/lynx/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "7aa750966e51fe225c11fdb40cbff0181fc2698009b81efbf761ade8127c99ea",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/project-picker/selected-open/lynx/assertions.json",
+          "console": "browser/project-picker/selected-open/lynx/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": "Lynx Web Spike",
+            "tokenKind": null,
+            "tokenState": "none"
+          }
         },
         "native": {
           "status": "pending",
@@ -414,14 +567,44 @@
       },
       "evidence": {
         "web": {
-          "status": "diagnostic",
-          "path": "../p9-u4-browser/composer/web-project-reset.png",
-          "reason": "Legacy capture lacks a recorded production build hash."
+          "status": "retained",
+          "path": "browser/project-picker/reset/web/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "647bb96161b34e9b01afcf44a639c5043e5f1cdc43691694136c5ee8c115046b",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/project-picker/reset/web/assertions.json",
+          "console": "browser/project-picker/reset/web/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": null,
+            "tokenState": "none"
+          }
         },
         "lynx": {
-          "status": "diagnostic",
-          "path": "../composer-details/browser/project-picker-1280/lynx-reset-keyboard.png",
-          "reason": "Legacy capture lacks a recorded production build hash and was produced through the old menu."
+          "status": "retained",
+          "path": "browser/project-picker/reset/lynx/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "7aa750966e51fe225c11fdb40cbff0181fc2698009b81efbf761ade8127c99ea",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/project-picker/reset/lynx/assertions.json",
+          "console": "browser/project-picker/reset/lynx/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": null,
+            "tokenState": "none"
+          }
         },
         "native": {
           "status": "retained",
@@ -458,11 +641,11 @@
       "evidence": {
         "web": {
           "status": "pending",
-          "reason": "No deterministic product frame is retained."
+          "reason": "Shared footer loading anatomy is covered by ComposerProjectPickerComposition.test.tsx; no stable transient frame is retained."
         },
         "lynx": {
           "status": "pending",
-          "reason": "The simplified picker does not expose the shared loading state."
+          "reason": "Lynx consumes the same tested shared footer model; no stable transient frame is retained."
         },
         "native": {
           "status": "not-applicable",
@@ -483,12 +666,44 @@
       },
       "evidence": {
         "web": {
-          "status": "pending",
-          "reason": "No dedicated no-match frame is retained."
+          "status": "retained",
+          "path": "browser/project-picker/no-match/web/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "647bb96161b34e9b01afcf44a639c5043e5f1cdc43691694136c5ee8c115046b",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/project-picker/no-match/web/assertions.json",
+          "console": "browser/project-picker/no-match/web/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": null,
+            "tokenState": "none"
+          }
         },
         "lynx": {
-          "status": "pending",
-          "reason": "The simplified picker has no search or no-match state."
+          "status": "retained",
+          "path": "browser/project-picker/no-match/lynx/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "7aa750966e51fe225c11fdb40cbff0181fc2698009b81efbf761ade8127c99ea",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/project-picker/no-match/lynx/assertions.json",
+          "console": "browser/project-picker/no-match/lynx/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": null,
+            "tokenState": "none"
+          }
         },
         "native": {
           "status": "not-applicable",
@@ -509,11 +724,11 @@
       "evidence": {
         "web": {
           "status": "pending",
-          "reason": "No dedicated picker error and recovery frame is retained."
+          "reason": "Shared error/retry anatomy and explicit retry state are covered by ComposerProjectPickerComposition.test.tsx; no induced failure frame is retained."
         },
         "lynx": {
           "status": "pending",
-          "reason": "The simplified picker has no shared error state."
+          "reason": "Lynx consumes the same tested error/retry model and surfaces filesystem errors; no induced failure frame is retained."
         },
         "native": {
           "status": "not-applicable",
