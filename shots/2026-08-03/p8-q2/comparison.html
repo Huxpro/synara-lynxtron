@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Synara Lynxtron · P8-Q2 Visual Evidence</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --page: light-dark(#f1f2f4, #111315);
+        --surface: light-dark(#fafafa, #191c1f);
+        --surface-strong: light-dark(#ffffff, #202428);
+        --ink: light-dark(#16181a, #f0f1f2);
+        --muted: light-dark(#686d73, #a5abb2);
+        --line: light-dark(#d8dadd, #353a3f);
+        --line-strong: light-dark(#b8bcc1, #515860);
+        --accent: light-dark(#075ea8, #8ac6ff);
+        --accent-soft: light-dark(#e3eff9, #18344c);
+        --good: light-dark(#17683d, #79d8a6);
+        --radius: 10px;
+        --shadow: 0 18px 60px color-mix(in srgb, var(--ink) 10%, transparent);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background:
+          linear-gradient(90deg, color-mix(in srgb, var(--line) 38%, transparent) 1px, transparent 1px)
+            0 0 / 72px 72px,
+          linear-gradient(color-mix(in srgb, var(--line) 30%, transparent) 1px, transparent 1px)
+            0 0 / 72px 72px,
+          var(--page);
+        font-family:
+          "Avenir Next", "Helvetica Neue", "PingFang SC", sans-serif;
+        min-height: 100vh;
+      }
+
+      button,
+      select {
+        font: inherit;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .shell {
+        width: min(1840px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 28px 0 80px;
+      }
+
+      .masthead {
+        display: grid;
+        grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.6fr);
+        gap: clamp(28px, 5vw, 96px);
+        align-items: end;
+        padding: clamp(24px, 5vw, 64px) 0 38px;
+        border-bottom: 1px solid var(--line-strong);
+      }
+
+      .eyebrow {
+        margin: 0 0 16px;
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.17em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 920px;
+        margin: 0;
+        font-family: "Iowan Old Style", "Songti SC", serif;
+        font-size: clamp(42px, 6vw, 92px);
+        font-weight: 500;
+        letter-spacing: -0.045em;
+        line-height: 0.94;
+      }
+
+      .intro {
+        margin: 18px 0 0;
+        max-width: 760px;
+        color: var(--muted);
+        font-size: clamp(15px, 1.3vw, 19px);
+        line-height: 1.65;
+      }
+
+      .summary {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1px;
+        border: 1px solid var(--line);
+        background: var(--line);
+      }
+
+      .summary div {
+        min-height: 92px;
+        padding: 17px 18px;
+        background: var(--surface);
+      }
+
+      .summary strong {
+        display: block;
+        font-family: "Iowan Old Style", serif;
+        font-size: 30px;
+        font-weight: 500;
+      }
+
+      .summary span {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .toolbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        margin: 0 -16px 30px;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--line);
+        background: color-mix(in srgb, var(--page) 92%, transparent);
+        backdrop-filter: blur(18px);
+      }
+
+      .filter-group {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+
+      .filter-group + .filter-group {
+        padding-left: 10px;
+        border-left: 1px solid var(--line);
+      }
+
+      .filter-label {
+        margin-right: 3px;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .chip,
+      .toolbar select {
+        min-height: 32px;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        color: var(--ink);
+        background: var(--surface);
+      }
+
+      .chip {
+        padding: 5px 10px;
+        cursor: pointer;
+      }
+
+      .chip:hover {
+        border-color: var(--line-strong);
+      }
+
+      .chip[aria-pressed="true"] {
+        border-color: color-mix(in srgb, var(--accent) 62%, var(--line));
+        color: var(--accent);
+        background: var(--accent-soft);
+      }
+
+      .toolbar select {
+        padding: 4px 28px 4px 9px;
+      }
+
+      .toolbar-note {
+        margin-left: auto;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .gallery {
+        display: grid;
+        gap: 48px;
+      }
+
+      .case {
+        scroll-margin-top: 86px;
+      }
+
+      .case-header {
+        display: flex;
+        gap: 18px;
+        align-items: baseline;
+        margin-bottom: 14px;
+      }
+
+      .case-index {
+        color: var(--accent);
+        font-family: "Iowan Old Style", serif;
+        font-size: 26px;
+      }
+
+      .case h2 {
+        margin: 0;
+        font-size: clamp(21px, 2.1vw, 32px);
+        font-weight: 600;
+        letter-spacing: -0.025em;
+      }
+
+      .case-meta {
+        margin-left: auto;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .frames {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1px;
+        border: 1px solid var(--line);
+        background: var(--line);
+        box-shadow: var(--shadow);
+      }
+
+      .frame {
+        min-width: 0;
+        background: var(--surface);
+      }
+
+      .frame-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        min-height: 42px;
+        padding: 9px 12px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .frame-label {
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .frame-state {
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .image-button {
+        display: block;
+        width: 100%;
+        padding: 0;
+        border: 0;
+        background: var(--surface-strong);
+        cursor: zoom-in;
+      }
+
+      .image-button img {
+        display: block;
+        width: 100%;
+        aspect-ratio: var(--image-ratio, 1280 / 820);
+        object-fit: contain;
+        background:
+          repeating-conic-gradient(
+              color-mix(in srgb, var(--line) 32%, transparent) 0 25%,
+              transparent 0 50%
+            )
+            50% / 18px 18px;
+      }
+
+      .case-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 13px;
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .case-links a:hover {
+        color: var(--accent);
+      }
+
+      .empty {
+        padding: 90px 24px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        text-align: center;
+      }
+
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-top: 46px;
+        padding-top: 20px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .legend b {
+        color: var(--ink);
+      }
+
+      dialog {
+        width: min(96vw, 1760px);
+        max-width: none;
+        padding: 0;
+        border: 1px solid var(--line-strong);
+        border-radius: var(--radius);
+        color: var(--ink);
+        background: var(--surface);
+        box-shadow: 0 30px 100px color-mix(in srgb, #000 48%, transparent);
+      }
+
+      dialog::backdrop {
+        background: color-mix(in srgb, #090b0d 80%, transparent);
+        backdrop-filter: blur(8px);
+      }
+
+      .lightbox-head {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        padding: 11px 14px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .lightbox-title {
+        min-width: 0;
+        overflow: hidden;
+        font-size: 13px;
+        font-weight: 700;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .lightbox-help {
+        margin-left: auto;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .close {
+        min-width: 32px;
+        min-height: 30px;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        color: var(--ink);
+        background: var(--surface-strong);
+        cursor: pointer;
+      }
+
+      .lightbox-stage {
+        max-height: calc(100vh - 96px);
+        overflow: auto;
+        background: #0e1012;
+      }
+
+      .lightbox-stage img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      @media (max-width: 1100px) {
+        .masthead {
+          grid-template-columns: 1fr;
+        }
+
+        .summary {
+          max-width: 620px;
+        }
+
+        .frames {
+          grid-template-columns: 1fr;
+        }
+
+        .image-button img {
+          max-height: 72vh;
+        }
+
+        .toolbar-note {
+          width: 100%;
+          margin-left: 0;
+        }
+      }
+
+      @media (max-width: 680px) {
+        .shell {
+          width: min(100% - 20px, 1840px);
+          padding-top: 4px;
+        }
+
+        .masthead {
+          padding-top: 36px;
+        }
+
+        .summary {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .toolbar {
+          margin-inline: -10px;
+          padding-inline: 10px;
+        }
+
+        .filter-group {
+          width: 100%;
+          overflow-x: auto;
+        }
+
+        .filter-group + .filter-group {
+          padding-left: 0;
+          border-left: 0;
+        }
+
+        .case-header {
+          align-items: flex-start;
+        }
+
+        .case-meta {
+          display: none;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="masthead">
+        <div>
+          <p class="eyebrow">Synara · Lynxtron certification archive</p>
+          <h1>同一界面，三种运行表面。</h1>
+          <p class="intro">
+            P8-Q2 六个核心界面的可审计视觉证据。按界面、主题与尺寸筛选，
+            并排查看 Web authority、Lynx-for-Web 与真实 Lynxtron Native。
+            所有图片均使用仓库相对路径，下载仓库后可直接离线打开。
+          </p>
+        </div>
+        <div class="summary" aria-label="Evidence summary">
+          <div><strong>6</strong><span>核心界面</span></div>
+          <div><strong>4</strong><span>主题 × 尺寸组合</span></div>
+          <div><strong>48</strong><span>Browser client frames</span></div>
+          <div><strong>24</strong><span>Native LynxView frames</span></div>
+        </div>
+      </header>
+
+      <nav class="toolbar" aria-label="Evidence filters">
+        <div class="filter-group" id="themeFilters">
+          <span class="filter-label">主题</span>
+          <button class="chip" type="button" data-filter="theme" data-value="all" aria-pressed="true">全部</button>
+          <button class="chip" type="button" data-filter="theme" data-value="light" aria-pressed="false">Light</button>
+          <button class="chip" type="button" data-filter="theme" data-value="dark" aria-pressed="false">Dark</button>
+        </div>
+        <div class="filter-group" id="sizeFilters">
+          <span class="filter-label">尺寸</span>
+          <button class="chip" type="button" data-filter="size" data-value="all" aria-pressed="true">全部</button>
+          <button class="chip" type="button" data-filter="size" data-value="1280" aria-pressed="false">1280 × 820</button>
+          <button class="chip" type="button" data-filter="size" data-value="1440" aria-pressed="false">1440 × 900</button>
+        </div>
+        <div class="filter-group">
+          <label class="filter-label" for="screenFilter">界面</label>
+          <select id="screenFilter">
+            <option value="all">全部界面</option>
+          </select>
+        </div>
+        <span class="toolbar-note" id="resultCount"></span>
+      </nav>
+
+      <section class="gallery" id="gallery" aria-live="polite"></section>
+
+      <footer class="legend">
+        <span><b>Web</b>：原产品视觉与结构 authority</span>
+        <span><b>Lynx Web</b>：Fast loop 的 ReactLynx Web surface</span>
+        <span><b>Native</b>：exact-owned Lynxtron + DevTool LynxView</span>
+        <span>点击任意图片放大；使用 ← / → 切换，Esc 关闭</span>
+      </footer>
+    </main>
+
+    <dialog id="lightbox">
+      <div class="lightbox-head">
+        <span class="lightbox-title" id="lightboxTitle"></span>
+        <span class="lightbox-help">← / → 切换 · Esc 关闭</span>
+        <button class="close" type="button" id="closeLightbox" aria-label="关闭">×</button>
+      </div>
+      <div class="lightbox-stage">
+        <img id="lightboxImage" alt="" />
+      </div>
+    </dialog>
+
+    <script>
+      const screens = [
+        { id: "threads", label: "Threads", note: "threads-thread/notes.md" },
+        { id: "thread", label: "Thread transcript", note: "threads-thread/notes.md" },
+        { id: "settings", label: "Settings · General", note: "settings/notes.md" },
+        { id: "projects", label: "Projects overview", note: "projects/notes.md" },
+        { id: "kanban", label: "Project Kanban", note: "kanban/notes.md" },
+        { id: "pull-requests", label: "Pull Requests", note: "pull-requests/notes.md" },
+      ];
+
+      const variants = [
+        { theme: "light", size: "1280", browserSize: "1280 × 820", nativeSize: "2560 × 1576" },
+        { theme: "light", size: "1440", browserSize: "1440 × 900", nativeSize: "2880 × 1736" },
+        { theme: "dark", size: "1280", browserSize: "1280 × 820", nativeSize: "2560 × 1576" },
+        { theme: "dark", size: "1440", browserSize: "1440 × 900", nativeSize: "2880 × 1736" },
+      ];
+
+      const cases = screens.flatMap((screen) =>
+        variants.map((variant) => ({
+          ...screen,
+          ...variant,
+          key: `${screen.id}-${variant.theme}-${variant.size}`,
+          state: `${variant.theme}-${variant.size}`,
+          web: `${screen.id}/${variant.theme}-${variant.size}/web.png`,
+          lynx: `${screen.id}/${variant.theme}-${variant.size}/lynx.png`,
+          native: `native/${screen.id}/${variant.theme}-${variant.size}/native.png`,
+          webMetrics: `${screen.id}/${variant.theme}-${variant.size}/web-metrics.json`,
+          lynxMetrics: `${screen.id}/${variant.theme}-${variant.size}/lynx-metrics.json`,
+        }))
+      );
+
+      const filters = { theme: "all", size: "all", screen: "all" };
+      const gallery = document.querySelector("#gallery");
+      const resultCount = document.querySelector("#resultCount");
+      const screenFilter = document.querySelector("#screenFilter");
+      const lightbox = document.querySelector("#lightbox");
+      const lightboxImage = document.querySelector("#lightboxImage");
+      const lightboxTitle = document.querySelector("#lightboxTitle");
+      let visibleImages = [];
+      let activeImageIndex = -1;
+
+      screens.forEach((screen) => {
+        const option = document.createElement("option");
+        option.value = screen.id;
+        option.textContent = screen.label;
+        screenFilter.append(option);
+      });
+
+      function frame(label, state, src, alt, ratio) {
+        return `
+          <article class="frame">
+            <div class="frame-head">
+              <span class="frame-label">${label}</span>
+              <span class="frame-state">${state}</span>
+            </div>
+            <button class="image-button" type="button" data-image="${src}" data-title="${alt}">
+              <img src="${src}" alt="${alt}" loading="lazy" style="--image-ratio:${ratio}" />
+            </button>
+          </article>
+        `;
+      }
+
+      function render() {
+        const visible = cases.filter(
+          (item) =>
+            (filters.theme === "all" || item.theme === filters.theme) &&
+            (filters.size === "all" || item.size === filters.size) &&
+            (filters.screen === "all" || item.id === filters.screen)
+        );
+
+        resultCount.textContent = `${visible.length} / ${cases.length} 个对比单元`;
+        gallery.innerHTML = visible.length
+          ? visible
+              .map(
+                (item, index) => `
+                  <article class="case" id="${item.key}">
+                    <header class="case-header">
+                      <span class="case-index">${String(index + 1).padStart(2, "0")}</span>
+                      <h2>${item.label}</h2>
+                      <span class="case-meta">${item.theme.toUpperCase()} · ${item.browserSize}</span>
+                    </header>
+                    <div class="frames">
+                      ${frame("Web authority", item.browserSize, item.web, `${item.label} · Web · ${item.theme} ${item.browserSize}`, "1280 / 820")}
+                      ${frame("Lynx-for-Web", item.browserSize, item.lynx, `${item.label} · Lynx Web · ${item.theme} ${item.browserSize}`, "1280 / 820")}
+                      ${frame("Lynxtron Native", item.nativeSize, item.native, `${item.label} · Native · ${item.theme} ${item.browserSize}`, item.size === "1280" ? "2560 / 1576" : "2880 / 1736")}
+                    </div>
+                    <div class="case-links">
+                      <a href="${item.note}">阅读该界面 notes</a>
+                      <a href="${item.webMetrics}">Web metrics</a>
+                      <a href="${item.lynxMetrics}">Lynx metrics</a>
+                    </div>
+                  </article>
+                `
+              )
+              .join("")
+          : `<div class="empty">没有符合当前筛选条件的证据。</div>`;
+
+        visibleImages = [...gallery.querySelectorAll("[data-image]")].map((button) => ({
+          src: button.dataset.image,
+          title: button.dataset.title,
+        }));
+
+        gallery.querySelectorAll("[data-image]").forEach((button, index) => {
+          button.addEventListener("click", () => openLightbox(index));
+        });
+      }
+
+      function openLightbox(index) {
+        const item = visibleImages[index];
+        if (!item) return;
+        activeImageIndex = index;
+        lightboxImage.src = item.src;
+        lightboxImage.alt = item.title;
+        lightboxTitle.textContent = item.title;
+        lightbox.showModal();
+      }
+
+      function stepLightbox(direction) {
+        if (!visibleImages.length) return;
+        const next = (activeImageIndex + direction + visibleImages.length) % visibleImages.length;
+        openLightbox(next);
+      }
+
+      document.querySelectorAll("[data-filter]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const group = button.dataset.filter;
+          document
+            .querySelectorAll(`[data-filter="${group}"]`)
+            .forEach((peer) => peer.setAttribute("aria-pressed", String(peer === button)));
+          filters[group] = button.dataset.value;
+          render();
+        });
+      });
+
+      screenFilter.addEventListener("change", () => {
+        filters.screen = screenFilter.value;
+        render();
+      });
+
+      document.querySelector("#closeLightbox").addEventListener("click", () => lightbox.close());
+      lightbox.addEventListener("click", (event) => {
+        if (event.target === lightbox) lightbox.close();
+      });
+      document.addEventListener("keydown", (event) => {
+        if (!lightbox.open) return;
+        if (event.key === "ArrowLeft") stepLightbox(-1);
+        if (event.key === "ArrowRight") stepLightbox(1);
+      });
+
+      render();
+    </script>
+  </body>
+</html>
