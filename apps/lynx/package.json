@@ -26,7 +26,8 @@
     "test:evidence:composer": "node --test scripts/composer-evidence.test.mjs",
     "evidence:perceptual": "node scripts/perceptual-evidence.mjs",
     "evidence:perceptual:write": "node scripts/perceptual-evidence.mjs --allow-incomplete --write",
-    "test:evidence:perceptual": "node --test scripts/perceptual-evidence.test.mjs"
+    "test:evidence:perceptual": "node --test scripts/perceptual-evidence.test.mjs",
+    "test:evidence:native-capture": "node --test scripts/native-perceptual-capture.test.mjs"
   },
   "private": true,
   "devDependencies": {

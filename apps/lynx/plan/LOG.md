@@ -5003,3 +5003,19 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - current-build paired capture snapshot `efff3a23…`前后一致，fresh page errors空；
   `x-textarea` inner box 0×0登记P3 Lynx-for-Web measurement delta。6个canonical Browser
   pairs现全部retained，atlas strict **8→6 incomplete / 0 blocking**，剩余格全部Native。
+
+## 2026-08-04 — P10 PID-gated atomic Native capture helper
+
+- 新增`native-perceptual-capture.mjs`：从launch-root递归PID tree→lsof listening ports→
+  exactly-one DevTool client/latest Lynx session，单connector完成PNG、full DOM、required
+  role box/style、warning/error console与identity/state echo；任何required role/step失败都不
+  写capture metadata。
+- E2E首次暴露两个真实harness defect：同一client并发box/style CDP连接触发ECONNRESET；
+  screencast收到首帧后等待stream自然结束会超时。现改为严格串行CDP，并复制官方CLI
+  first-frame→ACK→break时序，DevTool JPEG经`sips`转最终PNG。
+- isolated E2E：server60242、launch root77749/app77750、PID-derived
+  `localhost:8904/session1`、bundle`9f3e9d40…`、snapshot`f5460711…`；产出2560×1576
+  PNG、full DOM、4 roles、empty warning/error console和完整identity。该frame为offline
+  helper diagnostic，不冒充required cell。
+- cleanup：owned60242/8904释放、isolated server/user-data删除；用户8901 PID68206、
+  8902 PID12391、8903 PID18130未触碰。pure helper tests **4/4**。

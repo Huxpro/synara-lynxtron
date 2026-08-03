@@ -148,5 +148,37 @@ therefore remain red. No user state was touched.
 
 1. Typography role contract across transcript, route titles, buttons, and chips.
 2. Dark/two-size Browser expansion for calibrated roles.
-3. A PID-gated Native capture helper that completes DOM/style/screenshot
-   collection before the transient DevTool endpoint is released.
+3. Use the PID-gated atomic Native helper to replace the diagnostic frames with
+   six exact-state retained Native cells.
+
+## Native capture helper
+
+`scripts/native-perceptual-capture.mjs` now performs one fail-closed capture
+transaction:
+
+1. walks the supplied launch-root PID tree;
+2. derives its listening ports with `lsof`;
+3. requires exactly one matching DevTool client and its latest Lynx session;
+4. captures the LynxView frame first;
+5. fetches the complete DOM, required role boxes, and computed styles strictly
+   serially on one connector;
+6. collects only warning/error console messages;
+7. writes identity and state echo metadata only after every required step
+   succeeds and the launch root is still alive.
+
+The first E2E diagnostic used isolated server `60242`, isolated user data,
+launch root `77749`, app PID `77750`, and PID-derived
+`localhost:8904/session 1`. It produced:
+
+- `2560×1576` PNG;
+- full DOM;
+- four required role geometry/style entries;
+- empty warning/error console;
+- PID/client/session/build/snapshot/state identity.
+
+The first implementation exposed two harness defects that are now locked down:
+parallel box/style CDP calls reset the single-client connection, and waiting
+for the screencast stream to end timed out after the first frame. The helper now
+uses serial CDP and the same first-frame/ACK flow as the official CLI. Failed
+attempts wrote no retained metadata. The diagnostic is not a required manifest
+cell because its route was intentionally offline; it proves the harness only.

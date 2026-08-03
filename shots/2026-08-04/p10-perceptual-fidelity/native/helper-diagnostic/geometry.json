@@ -1,0 +1,126 @@
+{
+  "client": "native",
+  "stateId": "helper-diagnostic",
+  "roles": {
+    "root": {
+      "nodeId": 13,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 788
+      },
+      "font": {
+        "family": "var(--theme-font-ui-family,-apple-system,BlinkMacSystemFont,\"Segoe UI\",system-ui,sans-serif)",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "sidebar": {
+      "nodeId": 17,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "AppSidebar"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 256,
+        "height": 788
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "hero": {
+      "nodeId": 97,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "CenteredEmptyLandingHeading"
+      },
+      "text": "",
+      "box": {
+        "x": 593,
+        "y": 368,
+        "width": 351,
+        "height": 35
+      },
+      "font": {
+        "family": "",
+        "size": "30px",
+        "weight": "400",
+        "lineHeight": "35px",
+        "letterSpacing": "-0.45px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "transport": {
+      "nodeId": 104,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "TransportStatusNotice TransportStatusNotice--offline"
+      },
+      "text": "",
+      "box": {
+        "x": 1099,
+        "y": 8,
+        "width": 169,
+        "height": 30
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(255,255,255,0.956863)",
+        "borderColor": "#e02e2a",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}
