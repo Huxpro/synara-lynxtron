@@ -12,7 +12,7 @@
     "sidebar": {
       "tag": "X-VIEW",
       "className": "AppSidebar",
-      "text": "StudioProjectsNew threadSearch⌘KKanbanPull requestsAutomationsProjectsP10 Fidelity WorkspacePerceptu",
+      "text": "StudioProjectsNew threadSearch⌘KKanbanPull requestsAutomationsProjectssynaraChats›⚙Settings",
       "box": {
         "x": 0,
         "y": 0,
@@ -20,7 +20,7 @@
         "height": 820
       },
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "16px",
         "weight": "400",
         "lineHeight": "normal",
@@ -39,7 +39,7 @@
     "projectRow": {
       "tag": "X-VIEW",
       "className": "AppSidebarProjectHeader",
-      "text": "P10 Fidelity Workspace",
+      "text": "synara",
       "box": {
         "x": 6,
         "y": 287,
@@ -47,7 +47,7 @@
         "height": 28
       },
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "16px",
         "weight": "400",
         "lineHeight": "normal",
@@ -66,15 +66,15 @@
     "projectLabel": {
       "tag": "X-TEXT",
       "className": "SharedSidebarProjectSummaryName",
-      "text": "P10 Fidelity Workspace",
+      "text": "synara",
       "box": {
         "x": 38,
         "y": 292,
-        "width": 131.203125,
+        "width": 37.4375,
         "height": 18
       },
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "12px",
         "weight": "400",
         "lineHeight": "18px",
@@ -95,13 +95,13 @@
       "className": "CenteredEmptyLandingHeading",
       "text": "What should we work on?",
       "box": {
-        "x": 607.8125,
+        "x": 607.5,
         "y": 367,
-        "width": 320.359375,
+        "width": 321,
         "height": 35
       },
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "30px",
         "weight": "400",
         "lineHeight": "35px",
@@ -128,7 +128,7 @@
         "height": 95
       },
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "16px",
         "weight": "400",
         "lineHeight": "normal",
@@ -155,7 +155,7 @@
         "height": 0
       },
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "12px",
         "weight": "400",
         "lineHeight": "19.5px",
@@ -176,13 +176,13 @@
       "className": "LxMenuTrigger LandingComposerProjectTrigger ComposerProjectPickerTriggerLynx",
       "text": "Work in a project",
       "box": {
-        "x": 400,
+        "x": 408,
         "y": 520,
-        "width": 127.859375,
+        "width": 122.859375,
         "height": 28
       },
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "16px",
         "weight": "400",
         "lineHeight": "normal",
@@ -191,9 +191,9 @@
       "paint": {
         "color": "rgb(13, 13, 13)",
         "background": "rgba(0, 0, 0, 0)",
-        "borderColor": "rgb(13, 13, 13)",
-        "borderWidth": "0px",
-        "radius": "8px",
+        "borderColor": "rgba(0, 0, 0, 0)",
+        "borderWidth": "1px",
+        "radius": "10px",
         "shadow": "none",
         "opacity": "1"
       }
@@ -209,7 +209,7 @@
         "height": 15
       },
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "12px",
         "weight": "400",
         "lineHeight": "normal",

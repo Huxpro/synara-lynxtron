@@ -63,6 +63,30 @@
           "recommendation": "Fix the shared shell/landing origin rather than adding local negative margins.",
           "evidence": "browser/landing-default/lynx/geometry.json",
           "reason": "Current-build Browser paired geometry after shared host/sidebar calibration."
+        },
+        {
+          "id": "native-landing-semantic-type-size",
+          "category": "ENGINE_CORRECTION",
+          "severity": "P1",
+          "status": "fixed",
+          "owner": "apps/lynx/src/app/App.css SliceRoot semantic role overrides",
+          "summary": "Native theme variables resolved UI and Composer semantic roles to 14px instead of the 12px product baseline.",
+          "impact": "Sidebar labels and the Composer editor read visibly larger than both Browser clients.",
+          "recommendation": "Keep Native product-role sizes explicit at the Lynx root while Web retains configurable app font tokens.",
+          "evidence": "native/landing-default/geometry.json",
+          "reason": "Native project label and Composer textarea now resolve to 12px with the canonical 18px and 19.5px line boxes."
+        },
+        {
+          "id": "native-landing-heading-glyph-advance",
+          "category": "ENGINE_CORRECTION",
+          "severity": "P1",
+          "status": "fixed",
+          "owner": "CenteredEmptyLandingHeading Native metric correction plus Web host override",
+          "summary": "Lynxtron Native ignored the Browser system-font fallback and rendered the 30px heading 351px wide.",
+          "impact": "The primary landing focal point had a different visual width and center of gravity.",
+          "recommendation": "Use a named Native tracking correction and a 321px stable text box; keep Lynx-for-Web at the Web-authority -0.45px tracking.",
+          "evidence": "native/landing-default/geometry.json",
+          "reason": "Native heading box is 321x35, Web is 320.36x34.5, and Lynx-for-Web remains single-line at 321x35."
         }
       ],
       "evidence": {
@@ -71,8 +95,8 @@
           "path": "browser/landing-default/web/raw.png",
           "comparisonPath": "browser/landing-default/web/comparison.png",
           "captureTier": "browser",
-          "buildSha256": "c99f47603f6dfc053bc3c890ba6679816983ba1415702e1c19d39a212f8747ce",
-          "snapshotSha256": "ad4295f695424da64b6fcdb8a3a7c68ed4d766b91bf79069e87ceecbb0d82666",
+          "buildSha256": "58f0c51fc25c26d8a1f512d1374c585b6c83bab4ccf1345eed52265bc33ae4bb",
+          "snapshotSha256": "11f29ffcbed5d33ead21bb95e8d58ff9e1fd68932622cafb81598308af4da08e",
           "image": {
             "width": 1280,
             "height": 820
@@ -97,8 +121,8 @@
           "path": "browser/landing-default/lynx/raw.png",
           "comparisonPath": "browser/landing-default/lynx/comparison.png",
           "captureTier": "browser",
-          "buildSha256": "eac8f8fb1684ca3e0ff1d336624b6064bfdeeff244a533afdbadd43fb785063b",
-          "snapshotSha256": "ad4295f695424da64b6fcdb8a3a7c68ed4d766b91bf79069e87ceecbb0d82666",
+          "buildSha256": "6acc6c4fb3f3f7ab5f2298afa28bf5d94f92160ef2091df1f5b1d428b15ca95c",
+          "snapshotSha256": "11f29ffcbed5d33ead21bb95e8d58ff9e1fd68932622cafb81598308af4da08e",
           "image": {
             "width": 1280,
             "height": 820
@@ -119,12 +143,33 @@
           }
         },
         "native": {
-          "status": "diagnostic",
-          "reason": "Exact-owned frame was captured from PID 70524 / localhost:8904, but DevTool disconnected before route and geometry artifacts could be revalidated. It cannot satisfy a required P10 cell.",
-          "path": "native/default/raw.png",
-          "comparisonPath": "native/default/comparison.png"
+          "status": "retained",
+          "path": "native/landing-default/raw.png",
+          "comparisonPath": "native/landing-default/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "f799a838a683a0efdeec47843d21f83b5c5492e68645ceae96823e847f0adb83",
+          "snapshotSha256": "11f29ffcbed5d33ead21bb95e8d58ff9e1fd68932622cafb81598308af4da08e",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "geometry": "native/landing-default/geometry.json",
+          "styles": "native/landing-default/styles.json",
+          "console": "native/landing-default/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
         }
-      }
+      },
+      "snapshotSha256": "11f29ffcbed5d33ead21bb95e8d58ff9e1fd68932622cafb81598308af4da08e"
     },
     {
       "id": "sidebar-default",
@@ -211,8 +256,8 @@
           "path": "browser/sidebar-default/web/raw.png",
           "comparisonPath": "browser/sidebar-default/web/comparison.png",
           "captureTier": "browser",
-          "buildSha256": "c99f47603f6dfc053bc3c890ba6679816983ba1415702e1c19d39a212f8747ce",
-          "snapshotSha256": "ad4295f695424da64b6fcdb8a3a7c68ed4d766b91bf79069e87ceecbb0d82666",
+          "buildSha256": "58f0c51fc25c26d8a1f512d1374c585b6c83bab4ccf1345eed52265bc33ae4bb",
+          "snapshotSha256": "11f29ffcbed5d33ead21bb95e8d58ff9e1fd68932622cafb81598308af4da08e",
           "image": {
             "width": 1280,
             "height": 820
@@ -237,8 +282,8 @@
           "path": "browser/sidebar-default/lynx/raw.png",
           "comparisonPath": "browser/sidebar-default/lynx/comparison.png",
           "captureTier": "browser",
-          "buildSha256": "eac8f8fb1684ca3e0ff1d336624b6064bfdeeff244a533afdbadd43fb785063b",
-          "snapshotSha256": "ad4295f695424da64b6fcdb8a3a7c68ed4d766b91bf79069e87ceecbb0d82666",
+          "buildSha256": "6acc6c4fb3f3f7ab5f2298afa28bf5d94f92160ef2091df1f5b1d428b15ca95c",
+          "snapshotSha256": "11f29ffcbed5d33ead21bb95e8d58ff9e1fd68932622cafb81598308af4da08e",
           "image": {
             "width": 1280,
             "height": 820
@@ -259,12 +304,33 @@
           }
         },
         "native": {
-          "status": "diagnostic",
-          "reason": "Exact-owned frame was captured from PID 70524 / localhost:8904, but DevTool disconnected before route and geometry artifacts could be revalidated. It cannot satisfy a required P10 cell.",
-          "path": "native/default/raw.png",
-          "comparisonPath": "native/default/comparison.png"
+          "status": "retained",
+          "path": "native/sidebar-default/raw.png",
+          "comparisonPath": "native/sidebar-default/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "f799a838a683a0efdeec47843d21f83b5c5492e68645ceae96823e847f0adb83",
+          "snapshotSha256": "11f29ffcbed5d33ead21bb95e8d58ff9e1fd68932622cafb81598308af4da08e",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "geometry": "native/sidebar-default/geometry.json",
+          "styles": "native/sidebar-default/styles.json",
+          "console": "native/sidebar-default/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
         }
-      }
+      },
+      "snapshotSha256": "11f29ffcbed5d33ead21bb95e8d58ff9e1fd68932622cafb81598308af4da08e"
     },
     {
       "id": "composer-default",
@@ -339,8 +405,8 @@
           "path": "browser/composer-default/web/raw.png",
           "comparisonPath": "browser/composer-default/web/comparison.png",
           "captureTier": "browser",
-          "buildSha256": "c99f47603f6dfc053bc3c890ba6679816983ba1415702e1c19d39a212f8747ce",
-          "snapshotSha256": "ad4295f695424da64b6fcdb8a3a7c68ed4d766b91bf79069e87ceecbb0d82666",
+          "buildSha256": "58f0c51fc25c26d8a1f512d1374c585b6c83bab4ccf1345eed52265bc33ae4bb",
+          "snapshotSha256": "11f29ffcbed5d33ead21bb95e8d58ff9e1fd68932622cafb81598308af4da08e",
           "image": {
             "width": 1280,
             "height": 820
@@ -365,8 +431,8 @@
           "path": "browser/composer-default/lynx/raw.png",
           "comparisonPath": "browser/composer-default/lynx/comparison.png",
           "captureTier": "browser",
-          "buildSha256": "eac8f8fb1684ca3e0ff1d336624b6064bfdeeff244a533afdbadd43fb785063b",
-          "snapshotSha256": "ad4295f695424da64b6fcdb8a3a7c68ed4d766b91bf79069e87ceecbb0d82666",
+          "buildSha256": "6acc6c4fb3f3f7ab5f2298afa28bf5d94f92160ef2091df1f5b1d428b15ca95c",
+          "snapshotSha256": "11f29ffcbed5d33ead21bb95e8d58ff9e1fd68932622cafb81598308af4da08e",
           "image": {
             "width": 1280,
             "height": 820
@@ -387,12 +453,33 @@
           }
         },
         "native": {
-          "status": "diagnostic",
-          "reason": "Exact-owned frame was captured from PID 70524 / localhost:8904, but DevTool disconnected before route and geometry artifacts could be revalidated. It cannot satisfy a required P10 cell.",
-          "path": "native/default/raw.png",
-          "comparisonPath": "native/default/comparison.png"
+          "status": "retained",
+          "path": "native/composer-default/raw.png",
+          "comparisonPath": "native/composer-default/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "f799a838a683a0efdeec47843d21f83b5c5492e68645ceae96823e847f0adb83",
+          "snapshotSha256": "11f29ffcbed5d33ead21bb95e8d58ff9e1fd68932622cafb81598308af4da08e",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "geometry": "native/composer-default/geometry.json",
+          "styles": "native/composer-default/styles.json",
+          "console": "native/composer-default/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
         }
-      }
+      },
+      "snapshotSha256": "11f29ffcbed5d33ead21bb95e8d58ff9e1fd68932622cafb81598308af4da08e"
     },
     {
       "id": "project-picker-open",

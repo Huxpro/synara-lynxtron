@@ -152,3 +152,36 @@ the already measured landing offset of `-0.75px`. Typography resolves to:
 The frame uses the Web-authority 14px radius and no elevated shadow. Muted
 description/meta opacity and active icon opacity are state-specific and live in
 the command-menu primitive rather than feature call sites.
+
+## Native default calibration
+
+The first exact-owned Native batch exposed two engine-specific P1 residuals
+that were invisible in Lynx-for-Web:
+
+- generated Native theme variables resolved semantic UI and Composer roles to
+  the theme's 14px base, so project labels and the textarea were too large;
+- Lynxtron did not honor the Browser system-font fallback for the 30px landing
+  heading, producing a 351px glyph box instead of Web's 320.36px.
+
+The corrections are named and centralized:
+
+- `.SliceRoot` pins Native semantic product roles to 12/11/10px while Browser
+  Web keeps the configurable app-font token path;
+- the landing heading uses a Native `-1.8px` metric correction in a stable
+  `321px` text box;
+- the Lynx-for-Web host explicitly restores Web's `-0.45px` tracking.
+
+Final retained metrics:
+
+- Web hero: `320.359×34.5`;
+- Lynx-for-Web hero: `321×35`, one line;
+- Native hero: `321×35`;
+- project label: `12px/400/18px`;
+- Composer textarea: `12px/19.5px`.
+
+The default landing/sidebar/composer cells were captured from one frozen
+isolated snapshot,
+`11f29ffcbed5d33ead21bb95e8d58ff9e1fd68932622cafb81598308af4da08e`.
+The owned server was briefly `SIGSTOP`'d only during the three-client capture
+window and immediately resumed, preventing background operational writes from
+invalidating snapshot identity.

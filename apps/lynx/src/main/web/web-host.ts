@@ -14,6 +14,10 @@ webDocument.body.style.width = '100%';
 webDocument.body.style.height = '100%';
 webDocument.body.style.margin = '0';
 webDocument.body.style.overflow = 'hidden';
+webDocument.documentElement.style.setProperty(
+  '--engine-landing-heading-letter-spacing',
+  '-0.45px'
+);
 const CLIENT_BUILD = '0.5.5-lynx-web';
 const DEFAULT_SYNARA_WS_URL = 'ws://127.0.0.1:58090';
 const SOCKET_OPEN_TIMEOUT_MS = 8_000;

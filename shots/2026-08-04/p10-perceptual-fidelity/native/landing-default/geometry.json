@@ -1,0 +1,328 @@
+{
+  "client": "native",
+  "stateId": "landing-default",
+  "roles": {
+    "root": {
+      "nodeId": 13,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 788
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "sidebar": {
+      "nodeId": 17,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "AppSidebar"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 256,
+        "height": 788
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "projectRow": {
+      "nodeId": 106,
+      "nodeName": "VIEW",
+      "attributes": {
+        "react-ref-89-0": "1",
+        "aria-label": "Collapse synara",
+        "aria-expanded": "true",
+        "accessibility-element": "true",
+        "accessibility-label": "Collapse synara",
+        "accessibility-traits": "button",
+        "accessibility-value": "Expanded",
+        "focusable": "true",
+        "aria-disabled": "false",
+        "bindmouseenter": "89:0:bindmouseenter",
+        "bindblur": "89:0:bindblur",
+        "bindmouseleave": "89:0:bindmouseleave",
+        "bindkeydown": "89:0:bindkeydown",
+        "bindtap": "89:0:bindtap",
+        "bindmouseup": "89:0:bindmouseup",
+        "bindtouchstart": "89:0:bindtouchstart",
+        "bindmousedown": "89:0:bindmousedown",
+        "bindtouchend": "89:0:bindtouchend",
+        "bindtouchcancel": "89:0:bindtouchcancel",
+        "bindfocus": "89:0:bindfocus",
+        "class": "AppSidebarProjectHeader"
+      },
+      "text": "",
+      "box": {
+        "x": 6,
+        "y": 287,
+        "width": 243,
+        "height": 28
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "projectLabel": {
+      "nodeId": 110,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "SharedSidebarProjectSummaryName"
+      },
+      "text": "",
+      "box": {
+        "x": 38,
+        "y": 292,
+        "width": 38,
+        "height": 18
+      },
+      "font": {
+        "family": "",
+        "size": "12px",
+        "weight": "400",
+        "lineHeight": "18px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "hero": {
+      "nodeId": 97,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "CenteredEmptyLandingHeading"
+      },
+      "text": "",
+      "box": {
+        "x": 608,
+        "y": 351,
+        "width": 321,
+        "height": 35
+      },
+      "font": {
+        "family": "",
+        "size": "30px",
+        "weight": "400",
+        "lineHeight": "35px",
+        "letterSpacing": "-1.8px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "composerSurface": {
+      "nodeId": 123,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "ComposerInputSurfaceLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 400,
+        "y": 405,
+        "width": 736,
+        "height": 95
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "0 4px 18px -6px #0d0d0d11",
+        "opacity": "1"
+      }
+    },
+    "textbox": {
+      "nodeId": 127,
+      "nodeName": "TEXTAREA",
+      "attributes": {
+        "aria-label": "Message composer",
+        "accessibility-element": "true",
+        "accessibility-label": "Message composer",
+        "focusable": "true",
+        "maxlength": "8000",
+        "maxlines": "6",
+        "enable-scroll-bar": "true",
+        "react-ref-102-0": "1",
+        "default-value": "",
+        "placeholder": "Ask for follow-up changes or attach images",
+        "bindfocus": "102:4:",
+        "bindselection": "102:6:",
+        "bindblur": "102:5:",
+        "bindinput": "102:7:",
+        "class": "ComposerTextarea"
+      },
+      "text": "",
+      "box": {
+        "x": 413,
+        "y": 418,
+        "width": 708,
+        "height": 39
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "12px",
+        "weight": "normal",
+        "lineHeight": "19.5px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "projectTrigger": {
+      "nodeId": 159,
+      "nodeName": "VIEW",
+      "attributes": {
+        "react-ref-134-0": "1",
+        "focusable": "true",
+        "aria-disabled": "false",
+        "aria-label": "Work in a project",
+        "aria-haspopup": "menu",
+        "aria-expanded": "false",
+        "bindmouseenter": "134:0:bindmouseenter",
+        "bindtap": "134:0:bindtap",
+        "bindmouseup": "134:0:bindmouseup",
+        "bindtouchstart": "134:0:bindtouchstart",
+        "bindmouseleave": "134:0:bindmouseleave",
+        "bindmousedown": "134:0:bindmousedown",
+        "bindtouchend": "134:0:bindtouchend",
+        "bindblur": "134:0:bindblur",
+        "catchkeydown": "134:0:catchkeydown",
+        "bindfocus": "134:0:bindfocus",
+        "bindtouchcancel": "134:0:bindtouchcancel",
+        "bindlayoutchange": "134:0:bindlayoutchange",
+        "class": "LxMenuTrigger LandingComposerProjectTrigger ComposerProjectPickerTriggerLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 408,
+        "y": 504,
+        "width": 122,
+        "height": 28
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "headerTitle": {
+      "nodeId": 91,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "SharedChatHeaderIdentityTitle"
+      },
+      "text": "",
+      "box": {
+        "x": 296,
+        "y": 16,
+        "width": 56,
+        "height": 15
+      },
+      "font": {
+        "family": "",
+        "size": "12px",
+        "weight": "400",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

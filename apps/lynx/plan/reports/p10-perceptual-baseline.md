@@ -140,7 +140,7 @@ therefore remain red. No user state was touched.
 ## Current strict status
 
 - 6 canonical states.
-- 6 incomplete required client cells, all Native.
+- 3 incomplete required client cells, all Native overlays/Settings.
 - 0 open P0/P1 residuals in measured Browser states.
 - Strict verifier exits `2` as designed.
 

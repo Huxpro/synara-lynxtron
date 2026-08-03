@@ -5019,3 +5019,19 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   helper diagnostic，不冒充required cell。
 - cleanup：owned60242/8904释放、isolated server/user-data删除；用户8901 PID68206、
   8902 PID12391、8903 PID18130未触碰。pure helper tests **4/4**。
+
+## 2026-08-04 — P10 Native default typography and three-client cells
+
+- 新同snapshot matrix使用server60342/Web10101、isolated state/user-data、1280×820
+  outer/2560×1576 Native frame；通过真实Create project UI创建`synara`，未写SQLite。
+- Native揭示Browser不可见P1：generated theme把semantic UI/Composer roles解析为14px；
+  root named correction恢复project label 12/400/18与textarea 12/19.5。
+- Lynxtron Native不采用Browser system-font fallback，30px hero原宽351px；以named
+  `--engine-landing-heading-letter-spacing` correction + 321px稳定box收敛。Web authority
+  320.359×34.5、Lynx-for-Web 321×35单行、Native 321×35；Web host显式保留-0.45px，
+  Native使用-1.8px，未散落margin hack。
+- 为避免provider/operational background writes破坏三端snapshot identity，仅在capture
+  窗口SIGSTOP owned server PID95101，Native+Web+Lynx完成后hash前后均为
+  `11f29ffc…`并立即SIGCONT；Web/Lynx page errors与Native warning/error console均空。
+- landing/sidebar/composer三个Native required cells现retained，bundle
+  `f799a838…`，PID-derived8904/session1；strict **6→3 incomplete / 0 blocking**。

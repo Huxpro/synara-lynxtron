@@ -15,6 +15,14 @@
 @import "../adapters/settings-appearance-composition-elements.css";
 
 .SliceRoot {
+  --font-ui-family: system-ui;
+  --type-ui-row-size: 12px;
+  --type-ui-supporting-size: 11px;
+  --type-ui-meta-size: 10px;
+  --type-composer-editor-size: 12px;
+  --type-settings-section-label-size: 12px;
+  --type-settings-row-title-size: 12px;
+  --type-settings-row-description-size: 12px;
   width: 100%;
   height: 100%;
   background-color: var(--background);

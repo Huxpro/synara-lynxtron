@@ -4,7 +4,7 @@
   "roles": {
     "sidebar": {
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "16px",
         "weight": "400",
         "lineHeight": "normal",
@@ -22,7 +22,7 @@
     },
     "projectRow": {
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "16px",
         "weight": "400",
         "lineHeight": "normal",
@@ -40,7 +40,7 @@
     },
     "projectLabel": {
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "12px",
         "weight": "400",
         "lineHeight": "18px",
@@ -58,7 +58,7 @@
     },
     "hero": {
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "30px",
         "weight": "400",
         "lineHeight": "35px",
@@ -76,7 +76,7 @@
     },
     "composerSurface": {
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "16px",
         "weight": "400",
         "lineHeight": "normal",
@@ -94,7 +94,7 @@
     },
     "textbox": {
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "12px",
         "weight": "400",
         "lineHeight": "19.5px",
@@ -112,7 +112,7 @@
     },
     "projectTrigger": {
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "16px",
         "weight": "400",
         "lineHeight": "normal",
@@ -121,16 +121,16 @@
       "paint": {
         "color": "rgb(13, 13, 13)",
         "background": "rgba(0, 0, 0, 0)",
-        "borderColor": "rgb(13, 13, 13)",
-        "borderWidth": "0px",
-        "radius": "8px",
+        "borderColor": "rgba(0, 0, 0, 0)",
+        "borderWidth": "1px",
+        "radius": "10px",
         "shadow": "none",
         "opacity": "1"
       }
     },
     "headerTitle": {
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "12px",
         "weight": "400",
         "lineHeight": "normal",

@@ -282,8 +282,12 @@ async function capturePng(connector, clientId, sessionId, outputPath) {
   }
   await stream[Symbol.asyncDispose]?.();
   if (!frame) throw new Error("No Page.screencastFrame received");
+  if (frame.subarray(0, 8).toString("hex") === "89504e470d0a1a0a") {
+    await fs.promises.writeFile(outputPath, frame);
+    return;
+  }
   if (frame.subarray(0, 3).toString("hex") !== "ffd8ff") {
-    throw new Error("DevTool did not return JPEG bytes");
+    throw new Error("DevTool did not return PNG or JPEG bytes");
   }
   const jpegPath = `${outputPath}.capture.jpg`;
   await fs.promises.writeFile(jpegPath, frame);

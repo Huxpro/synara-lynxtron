@@ -63,4 +63,36 @@ describe('landing composer fidelity contract', () => {
       /\.ComposerColumnFrameSurfaceLynx[^}]*max-width:\s*736px;/s
     );
   });
+
+  it('keeps Native typography corrections named and Browser-neutral', () => {
+    const appStyles = readFileSync(
+      new URL('../../app/App.css', import.meta.url),
+      'utf8'
+    );
+    const headingStyles = readFileSync(
+      new URL(
+        '../../adapters/centered-empty-landing-elements.css',
+        import.meta.url
+      ),
+      'utf8'
+    );
+    const webHostSource = readFileSync(
+      new URL('../../main/web/web-host.ts', import.meta.url),
+      'utf8'
+    );
+
+    expect(appStyles).toMatch(
+      /\.SliceRoot\s*\{[^}]*--type-ui-row-size:\s*12px;/s
+    );
+    expect(appStyles).toMatch(
+      /\.SliceRoot\s*\{[^}]*--type-composer-editor-size:\s*12px;/s
+    );
+    expect(headingStyles).toContain(
+      'var(--engine-landing-heading-letter-spacing, -1.8px)'
+    );
+    expect(webHostSource).toContain(
+      "'--engine-landing-heading-letter-spacing'"
+    );
+    expect(webHostSource).toContain("'-0.45px'");
+  });
 });
