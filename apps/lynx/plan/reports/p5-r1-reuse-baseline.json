@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-03T20:01:05.988Z",
+  "generatedAt": "2026-08-03T20:17:19.870Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -19113,7 +19113,7 @@
       ],
       "graph": {
         "modules": 473,
-        "loc": 91127,
+        "loc": 91129,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -19205,7 +19205,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 400,
-          "loc": 82946
+          "loc": 82948
         },
         "PATCHED": {
           "modules": 1,
@@ -19222,11 +19222,11 @@
       },
       "eligible": {
         "modules": 464,
-        "loc": 89319
+        "loc": 89321
       },
       "currentReuse": {
         "modules": 264,
-        "loc": 47243,
+        "loc": 47245,
         "modulePercent": 56.9,
         "locPercent": 52.89,
         "gatePercent": 52.89
@@ -20394,7 +20394,7 @@
         },
         {
           "path": "apps/web/src/components/settings/SettingsGeneralComposition.tsx",
-          "loc": 80,
+          "loc": 81,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -20405,7 +20405,7 @@
         },
         {
           "path": "apps/web/src/components/settings/SettingsGeneralCompositionElements.tsx",
-          "loc": 88,
+          "loc": 89,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",

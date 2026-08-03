@@ -4,6 +4,7 @@ import type {
   SettingsGeneralOption,
 } from '@synara-web/components/settings/SettingsGeneralComposition.logic';
 
+import { ChevronDownIcon } from '../lib/icons.lynx';
 import { Button } from '../components/ui/button';
 import {
   Menu,
@@ -34,6 +35,7 @@ export function SettingsGeneralSectionElement(props: {
 }
 
 export function SettingsGeneralRowElement(props: {
+  readonly terminal?: boolean;
   readonly title: string;
   readonly description: string;
   readonly resetLabel: string;
@@ -47,7 +49,11 @@ export function SettingsGeneralRowElement(props: {
     onActivate: props.onReset,
   });
   return (
-    <view className="SharedSettingsGeneralRow">
+    <view
+      className={`SharedSettingsGeneralRow${
+        props.terminal ? ' SharedSettingsGeneralRow--terminal' : ''
+      }`}
+    >
       <view className="SharedSettingsGeneralRowCopy">
         <view className="SharedSettingsGeneralRowTitleLine">
           <text className="SharedSettingsGeneralRowTitle">{props.title}</text>
@@ -111,10 +117,19 @@ export function SettingsGeneralSelectControlElement(props: {
       <MenuTrigger>
         <Button
           variant="outline"
-          className="SharedSettingsGeneralSelectTrigger"
+          className="SharedSettingsGeneralSelectTrigger SharedSettingsGeneralSelectTrigger--general"
           aria-label={props.ariaLabel}
         >
-          {selected?.label ?? props.value}
+          <view className="SharedSettingsGeneralSelectContent">
+            <text className="SharedSettingsGeneralSelectLabel">
+              {selected?.label ?? props.value}
+            </text>
+            <ChevronDownIcon
+              className="SharedSettingsGeneralSelectChevron"
+              size={12}
+              color="var(--foreground)"
+            />
+          </view>
         </Button>
       </MenuTrigger>
       <MenuPopup

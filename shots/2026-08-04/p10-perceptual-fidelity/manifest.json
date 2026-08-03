@@ -467,7 +467,7 @@
       "theme": "light",
       "density": "comfortable",
       "interactionState": "default",
-      "snapshotSha256": "c83ec3f6d45b242a5c58c875034fc621d62f9869dfffb78b6a49c43c275cff86",
+      "snapshotSha256": "cbbbc86e25eb95ef23c456c9b8cf81a1caf667100f139999c91e0405383f2b0c",
       "viewport": {
         "width": 1280,
         "height": 820,
@@ -531,25 +531,25 @@
           "id": "settings-general-select-control-optics",
           "category": "MATERIAL",
           "severity": "P1",
-          "status": "open",
+          "status": "fixed",
           "owner": "SharedSettingsGeneralSelectTrigger / shared select primitive",
           "summary": "The Lynx select trigger is 144px wide with an 8px transparent shell while Web is 176px wide with a 10px opaque white shell.",
           "impact": "The highest-frequency control in General settings still has a visibly different visual weight and right-edge rhythm.",
-          "recommendation": "Calibrate the shared settings select specimen in the material and optical-control phases.",
+          "recommendation": "Keep Settings select geometry, label line box, chevron bounds, and opaque surface in the shared primitive.",
           "evidence": "browser/settings-general/lynx/geometry.json",
-          "reason": "Current-build paired resolved geometry and material sampling."
+          "reason": "Post-fix control, label, and chevron positions are exact at 176x32 with a 10px opaque shell and 12px/18px label."
         },
         {
           "id": "settings-general-card-terminal-divider",
           "category": "ENGINE_CORRECTION",
           "severity": "P2",
-          "status": "open",
+          "status": "fixed",
           "owner": "SharedSettingsGeneralCard row separator contract",
           "summary": "Lynx draws a bottom divider on the last row, making the two-row card one pixel taller than Web.",
           "impact": "Repeated cards accumulate a small vertical rhythm drift.",
-          "recommendation": "Encode terminal-row separator ownership explicitly without relying on unsupported structural selectors.",
+          "recommendation": "Keep terminal-row separator ownership explicit in physical-shared composition.",
           "evidence": "browser/settings-general/lynx/geometry.json",
-          "reason": "The first row matches exactly; only the card outer height differs by one pixel."
+          "reason": "The terminal modifier removes its divider and uses the Web-authority 60px row height; card and both rows now match exactly."
         }
       ],
       "evidence": {
@@ -558,8 +558,8 @@
           "path": "browser/settings-general/web/raw.png",
           "comparisonPath": "browser/settings-general/web/comparison.png",
           "captureTier": "browser",
-          "buildSha256": "e8ee84e5973c1c4ad1a2c77d3282fa25b9db525506f65e56171d252c77f50c11",
-          "snapshotSha256": "c83ec3f6d45b242a5c58c875034fc621d62f9869dfffb78b6a49c43c275cff86",
+          "buildSha256": "47343fc6d5d12b5c990a88948055cefa7293ba0867cd0beb66542fd8e3cf161a",
+          "snapshotSha256": "cbbbc86e25eb95ef23c456c9b8cf81a1caf667100f139999c91e0405383f2b0c",
           "image": {
             "width": 1280,
             "height": 820
@@ -584,8 +584,8 @@
           "path": "browser/settings-general/lynx/raw.png",
           "comparisonPath": "browser/settings-general/lynx/comparison.png",
           "captureTier": "browser",
-          "buildSha256": "3f3920f9a70af1c44c55adbed5d2a4c14cca00ca238913e25f6d178157298fb4",
-          "snapshotSha256": "c83ec3f6d45b242a5c58c875034fc621d62f9869dfffb78b6a49c43c275cff86",
+          "buildSha256": "7790c0881f2319a61a7a62006231de54804ce1dfbc7ee332dec1b37fc9cf74f9",
+          "snapshotSha256": "cbbbc86e25eb95ef23c456c9b8cf81a1caf667100f139999c91e0405383f2b0c",
           "image": {
             "width": 1280,
             "height": 820

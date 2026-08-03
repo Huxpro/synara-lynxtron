@@ -43,6 +43,11 @@
   border-bottom-color: var(--border);
 }
 
+.SharedSettingsGeneralRow--terminal {
+  min-height: 60px;
+  border-bottom-width: 0;
+}
+
 .SharedSettingsGeneralRowCopy {
   flex: 1;
   min-width: 0;
@@ -129,8 +134,39 @@
 }
 
 .SharedSettingsGeneralSelectTrigger {
-  min-width: 144px;
-  justify-content: flex-start;
+  width: 176px;
+  height: 32px;
+  min-height: 32px;
+  padding: 0 11px;
+  justify-content: stretch;
+  border-radius: 10px;
+  background-color: var(--color-background-control-opaque);
+}
+
+.SharedSettingsGeneralSelectTrigger--writing-model {
+  width: 208px;
+}
+
+.SharedSettingsGeneralSelectContent {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.SharedSettingsGeneralSelectLabel {
+  color: var(--foreground);
+  font-size: var(--type-settings-row-title-size);
+  font-weight: 400;
+  line-height: var(--type-settings-row-title-line-height);
+}
+
+.SharedSettingsGeneralSelectChevron {
+  flex-shrink: 0;
+  margin-left: 8px;
+  opacity: 0.5;
 }
 
 .SharedSettingsGeneralSelectPopup {

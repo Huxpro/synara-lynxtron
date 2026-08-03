@@ -110,6 +110,24 @@
         "opacity": "1"
       }
     },
+    "terminalRow": {
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(13, 13, 13) rgb(13, 13, 13) rgba(13, 13, 13, 0.07)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
     "rowTitle": {
       "font": {
         "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
@@ -156,12 +174,48 @@
       },
       "paint": {
         "color": "rgb(13, 13, 13)",
-        "background": "rgba(0, 0, 0, 0)",
+        "background": "rgb(255, 255, 255)",
         "borderColor": "rgba(13, 13, 13, 0.07)",
         "borderWidth": "1px",
-        "radius": "8px",
+        "radius": "10px",
         "shadow": "none",
         "opacity": "1"
+      }
+    },
+    "controlLabel": {
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "12px",
+        "weight": "400",
+        "lineHeight": "18px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(13, 13, 13)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "controlIcon": {
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(13, 13, 13)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "0.5"
       }
     }
   }

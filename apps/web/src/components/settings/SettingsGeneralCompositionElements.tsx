@@ -26,6 +26,7 @@ export function SettingsGeneralSectionElement(props: {
 }
 
 export function SettingsGeneralRowElement(props: {
+  readonly terminal?: boolean;
   readonly title: string;
   readonly description: string;
   readonly resetLabel: string;

@@ -38,11 +38,11 @@ Retained cell:
 - viewport: `1280×820`;
 - DPR: `1`;
 - online-backup snapshot:
-  `c83ec3f6d45b242a5c58c875034fc621d62f9869dfffb78b6a49c43c275cff86`;
+  `cbbbc86e25eb95ef23c456c9b8cf81a1caf667100f139999c91e0405383f2b0c`;
 - Web build graph:
-  `e8ee84e5973c1c4ad1a2c77d3282fa25b9db525506f65e56171d252c77f50c11`;
+  `47343fc6d5d12b5c990a88948055cefa7293ba0867cd0beb66542fd8e3cf161a`;
 - Lynx-for-Web bundle:
-  `3f3920f9a70af1c44c55adbed5d2a4c14cca00ca238913e25f6d178157298fb4`.
+  `7790c0881f2319a61a7a62006231de54804ce1dfbc7ee332dec1b37fc9cf74f9`.
 
 The product state was reached through the real Settings navigation. The light
 theme was selected through the real Appearance control. The isolated project
@@ -62,14 +62,16 @@ online-backup identity and projection verification.
 No local text margin was added. The fixes live in semantic tokens, shared
 Settings adapters, and the Settings shell owner.
 
-### Open residuals
+### Material and control closure
 
-- `settings-general-select-control-optics` (`P1`): Lynx select trigger remains
-  narrower, more transparent, and less rounded than Web. This belongs to the
-  surface/material and optical-control phases.
-- `settings-general-card-terminal-divider` (`P2`): Lynx gives the final row a
-  bottom divider, making a two-row card one pixel taller. This needs an explicit
-  terminal-row separator contract rather than a fragile structural selector.
+- The shared General select now matches Web at `176×32`, radius `10px`, opaque
+  control background, 1px 7% border, `12px/18px` label, and a `12×12` chevron
+  at the same coordinates and 50% opacity.
+- Git writing-model selects reuse the same material/anatomy with their
+  intentional `208px` width.
+- Physical-shared composition marks the terminal row explicitly. Lynx removes
+  its divider and uses the Web-authority `60px` terminal-row height, so the
+  two-row card is exactly `624×123` in both clients.
 
 ## Evidence
 

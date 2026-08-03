@@ -141,13 +141,12 @@ therefore remain red. No user state was touched.
 
 - 6 canonical states.
 - 10 incomplete required client cells.
-- 1 open P1 residual: Settings General select-control material/optics.
+- 0 open P0/P1 residuals in measured Browser states.
 - Strict verifier exits `2` as designed.
 
 ## Next
 
 1. Project Picker open and filtered skill menu Browser baselines.
 2. Typography role contract across overlays, transcript, buttons, and chips.
-3. Settings select material/optical calibration.
-4. A PID-gated Native capture helper that completes DOM/style/screenshot
+3. A PID-gated Native capture helper that completes DOM/style/screenshot
    collection before the transient DevTool endpoint is released.

@@ -31,12 +31,13 @@ export function SettingsGeneralComposition(props: {
           title={section.title}
           targetId={section.targetId}
         >
-          {section.rows.map((row) => {
+          {section.rows.map((row, rowIndex) => {
             const value = props.values[row.key];
             const defaultValue = props.defaults[row.key];
             return (
               <SettingsGeneralRowElement
                 key={row.key}
+                terminal={rowIndex === section.rows.length - 1}
                 title={row.title}
                 description={row.description}
                 resetLabel={row.resetLabel}

@@ -4956,3 +4956,18 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   使用同hash；新增正反regressions，verifier **9/9**。
 - atlas strict由**12→10 incomplete**；如实登记Settings select material/optics open P1和
   terminal divider open P2，strict继续exit 2，不以typography parity掩盖后续phase差距。
+
+## 2026-08-04 — P10 Settings material and optical closure
+
+- 关闭Settings General唯一open P1：Lynx select从144px透明/r8/无chevron收敛为Web
+  authority的`176×32`、r10、opaque control surface、1px 7% border、`12/18` label与
+  `12×12` 50% chevron；外框、label和icon坐标全部exact。
+- writing-model select复用同一material/anatomy，仅保留Web对应的208px named width，
+  未把General局部数值扩散到feature call site。
+- physical-shared General composition显式标记terminal row；Lynx modifier移除末行divider
+  并使用60px terminal height。card `624×123`、首行61px、末行60px三者与Web exact，
+  关闭原open P2。
+- current-build light/comfortable 1280×820 paired evidence重拍；snapshot
+  `cbbbc86e…` capture前后online backup一致；Web build `47343fc6…`、Lynx Web
+  `7790c088…`，fresh page errors均空。measured Browser open P0/P1回到0；strict仍因
+  10个Native/overlay required cells incomplete而exit 2。

@@ -1,6 +1,7 @@
 import type { ReactNode } from '@lynx-js/react';
 import type { SettingsGitWritingModelOption } from '@synara-web/components/settings/SettingsGitWritingModelComposition.logic';
 
+import { ChevronDownIcon } from '../lib/icons.lynx';
 import { Button } from '../components/ui/button';
 import {
   Menu,
@@ -79,10 +80,19 @@ export function SettingsGitWritingModelSelectElement(props: {
       <MenuTrigger>
         <Button
           variant="outline"
-          className="SharedSettingsGeneralSelectTrigger"
+          className="SharedSettingsGeneralSelectTrigger SharedSettingsGeneralSelectTrigger--writing-model"
           aria-label={props.ariaLabel}
         >
-          {selected?.label ?? props.value}
+          <view className="SharedSettingsGeneralSelectContent">
+            <text className="SharedSettingsGeneralSelectLabel">
+              {selected?.label ?? props.value}
+            </text>
+            <ChevronDownIcon
+              className="SharedSettingsGeneralSelectChevron"
+              size={12}
+              color="var(--foreground)"
+            />
+          </view>
         </Button>
       </MenuTrigger>
       <MenuPopup
