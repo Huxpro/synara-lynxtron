@@ -4724,3 +4724,25 @@
   Settings 52.64%，style 98.07%。owned Browser/server/static
   server/Lynxtron均关闭，62190/63211/8903释放，用户8901/8902未触碰，snapshot hash不变。
   证据`shots/2026-08-03/settings-shortcuts/notes.md`；未进入P8-Q3/Q4、P9-R1或hard islands。
+
+## 2026-08-03 — P9-U3 Settings Notifications UI扩面
+
+- 抽physical-shared `SettingsNotificationsPanel`与pure defaults/equality；Web原Notifications
+  反向消费同一section/rows/copy/reset/switch composition，只保留permission/Test为Web
+  platform leaf。Lynx开放canonical Notifications row，以native switch渲染两个boolean。
+- 两个值写canonical `APP_SETTINGS_STORAGE_KEY`并preserve unknown fields。Lynx-for-Web把
+  Activity toasts切Off后full reload+rendered navigation仍为Off；Native exact KV写入
+  `false/true`，完整restart后DOM为`aria-checked=false`、accessibility value Off，最后恢复
+  `true/true`。
+- Lynx不伪造系统通知Test；Desktop row明确显示
+  `System notification tests are unavailable in this runtime.`。首轮诊断发现shared
+  `SettingsRow`的11px status被Lynx Elements当generic view导致文字丢失；新增native status
+  role后重建，未保留旧帧。
+- Browser 1280 light / 1440 dark均保持title `+5/+8px`、section与两rows
+  `x +5px / y +5.25px`。Web Desktop row因permission status + Test比Lynx单行capability
+  status高15px，为显式platform leaf。Native exact-owned 99902→restart 6627，
+  PID-derived 8903/session1，frame 2560×1576、console clean。
+- focused Web 1 file / 2 tests；Lynx 2 files / 13 tests；Web 8,937 modules；
+  Lynx-for-Web/Desktop production green；strict reuse write/check后Settings 52.73%，
+  style 98.07%。evidence：
+  `shots/2026-08-03/settings-notifications/notes.md`；未进入P8-Q3/Q4、P9-R1或hard islands。

@@ -1,0 +1,16 @@
+{
+  "ownedPids": [99902, 6627],
+  "client": "localhost:8903",
+  "session": 1,
+  "bundle": "file:///Users/bytedance/github/synara/apps/lynx/dist/desktop/main.lynx.bundle",
+  "lynxViewPixels": { "width": 2560, "height": 1576 },
+  "route": "Settings / Notifications",
+  "switchCount": 2,
+  "capabilityStatus": "System notification tests are unavailable in this runtime.",
+  "restartRestored": { "ariaChecked": false, "accessibilityValue": "Off" },
+  "finalSettings": {
+    "enableTaskCompletionToasts": true,
+    "enableSystemTaskCompletionNotifications": true
+  },
+  "errorWarningConsoleEntries": 0
+}

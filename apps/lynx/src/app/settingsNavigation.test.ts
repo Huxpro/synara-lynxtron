@@ -11,16 +11,22 @@ import {
   readSettingsAppearanceProjection,
   readSettingsBehaviorProjection,
   readSettingsGeneralProjection,
+  readSettingsNotificationsProjection,
   readSettingsProviderPickerProjection,
   writeSettingsAppearanceProjection,
   writeSettingsBehaviorProjection,
   writeSettingsGeneralProjection,
+  writeSettingsNotificationsProjection,
   writeSettingsProviderPickerProjection,
 } from '@synara-web/appSettingsStorageProjection.logic';
 import {
   DEFAULT_BEHAVIOR_SETTINGS_VALUES,
   behaviorSettingsValuesEqual,
 } from '@synara-web/components/settings/SettingsBehaviorPanel.logic';
+import {
+  DEFAULT_NOTIFICATION_SETTINGS_VALUES,
+  notificationSettingsValuesEqual,
+} from '@synara-web/components/settings/SettingsNotificationsPanel.logic';
 import {
   DEFAULT_SETTINGS_GIT_WRITING_MODEL_VALUES,
   buildSettingsGitWritingModelOptions,
@@ -47,6 +53,7 @@ describe('shared settings navigation projection', () => {
       availableSections: [
         'general',
         'appearance',
+        'notifications',
         'behavior',
         'shortcuts',
         'models',
@@ -68,6 +75,10 @@ describe('shared settings navigation projection', () => {
       available: true,
     });
     expect(groups.flatMap((group) => group.items).find((item) => item.id === 'behavior')).toMatchObject({
+      active: false,
+      available: true,
+    });
+    expect(groups.flatMap((group) => group.items).find((item) => item.id === 'notifications')).toMatchObject({
       active: false,
       available: true,
     });
@@ -207,6 +218,29 @@ describe('shared settings navigation projection', () => {
       behaviorSettingsValuesEqual(
         projected,
         DEFAULT_BEHAVIOR_SETTINGS_VALUES
+      )
+    ).toBe(false);
+  });
+
+  it('round-trips local Notification values while preserving unrelated settings', () => {
+    const raw = writeSettingsNotificationsProjection(
+      JSON.stringify({ chatFontSizePx: 18 }),
+      {
+        enableTaskCompletionToasts: false,
+        enableSystemTaskCompletionNotifications: true,
+      }
+    );
+    const projected = readSettingsNotificationsProjection(raw);
+
+    expect(JSON.parse(raw)).toMatchObject({
+      chatFontSizePx: 18,
+      enableTaskCompletionToasts: false,
+      enableSystemTaskCompletionNotifications: true,
+    });
+    expect(
+      notificationSettingsValuesEqual(
+        projected,
+        DEFAULT_NOTIFICATION_SETTINGS_VALUES
       )
     ).toBe(false);
   });

@@ -8668,7 +8668,8 @@
         "apps/web/src/components/settings/SettingsAppearanceCompositionElements.tsx",
         "apps/web/src/components/settings/SettingsBehaviorPanel.tsx",
         "apps/web/src/components/settings/SettingsGeneralCompositionElements.tsx",
-        "apps/web/src/components/settings/SettingsGitWritingModelCompositionElements.tsx"
+        "apps/web/src/components/settings/SettingsGitWritingModelCompositionElements.tsx",
+        "apps/web/src/components/settings/SettingsNotificationsPanel.tsx"
       ],
       "screens": [
         "settings"

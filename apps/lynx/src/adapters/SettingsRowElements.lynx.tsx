@@ -45,6 +45,8 @@ export function SettingsRowViewElement({ className, children }: ElementProps) {
     ? 'SharedSettingsRowCopy'
     : className?.includes('min-h-5')
       ? 'SharedSettingsRowTitleLine'
+      : className?.includes('text-[11px]')
+        ? 'SharedSettingsRowStatus'
       : className?.includes('sm:justify-end')
         ? 'SharedSettingsRowControl'
         : 'SharedSettingsRowView';
@@ -56,7 +58,11 @@ export function SettingsRowViewElement({ className, children }: ElementProps) {
           : roleClassName
       }
     >
-      {children}
+      {roleClassName === 'SharedSettingsRowStatus' ? (
+        <text className="SharedSettingsRowStatusText">{children}</text>
+      ) : (
+        children
+      )}
     </view>
   );
 }

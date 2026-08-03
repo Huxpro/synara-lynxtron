@@ -49,6 +49,16 @@
   justify-content: flex-end;
 }
 
+.SharedSettingsRowStatus {
+  padding-top: 4px;
+}
+
+.SharedSettingsRowStatusText {
+  color: var(--muted-foreground);
+  font-size: 11px;
+  line-height: 16px;
+}
+
 .SharedSettingsRowTitle,
 .SharedSettingsRowDescription {
   display: block;

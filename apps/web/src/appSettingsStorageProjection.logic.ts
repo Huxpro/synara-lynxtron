@@ -25,6 +25,10 @@ import {
   type BehaviorSettingsValues,
 } from "./components/settings/SettingsBehaviorPanel.logic";
 import {
+  DEFAULT_NOTIFICATION_SETTINGS_VALUES,
+  type NotificationSettingsValues,
+} from "./components/settings/SettingsNotificationsPanel.logic";
+import {
   DEFAULT_THEME_STATE,
   parseStoredThemeState,
   serializeThemeState,
@@ -342,5 +346,33 @@ export function writeSettingsBehaviorProjection(
     confirmThreadDelete: values.confirmThreadDelete,
     confirmThreadArchive: values.confirmThreadArchive,
     confirmTerminalTabClose: values.confirmTerminalTabClose,
+  });
+}
+
+export function readSettingsNotificationsProjection(
+  raw: string | null,
+): NotificationSettingsValues {
+  const record = parseRecord(raw);
+  return {
+    enableTaskCompletionToasts: booleanValue(
+      record,
+      "enableTaskCompletionToasts",
+      DEFAULT_NOTIFICATION_SETTINGS_VALUES.enableTaskCompletionToasts,
+    ),
+    enableSystemTaskCompletionNotifications: booleanValue(
+      record,
+      "enableSystemTaskCompletionNotifications",
+      DEFAULT_NOTIFICATION_SETTINGS_VALUES.enableSystemTaskCompletionNotifications,
+    ),
+  };
+}
+
+export function writeSettingsNotificationsProjection(
+  raw: string | null,
+  values: NotificationSettingsValues,
+): string {
+  return JSON.stringify({
+    ...parseRecord(raw),
+    ...values,
   });
 }

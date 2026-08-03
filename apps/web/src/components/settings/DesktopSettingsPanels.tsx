@@ -34,6 +34,10 @@ import { toastManager } from "~/components/ui/toast";
 import { serverConfigQueryOptions } from "~/lib/serverReactQuery";
 import { AppSnapShortcutControl } from "./AppSnapShortcutControl";
 import { SettingResetButton } from "./SettingControls";
+import {
+  SettingsNotificationsPanel,
+  type NotificationSettingKey,
+} from "./SettingsNotificationsPanel";
 import { SettingsRow, SettingsSection } from "./SettingsPanelPrimitives";
 
 import { getDesktopBridge } from "~/platform/desktopBridge";
@@ -165,69 +169,41 @@ export function NotificationsSettingsPanel({
   if (!active) return null;
 
   return (
-    <div className="space-y-6">
-      <SettingsSection title="Activity alerts">
-        <SettingsRow
-          title="Activity toasts"
-          description="Show an in-app toast when a chat or managed terminal agent finishes or needs input."
-          resetAction={
-            settings.enableTaskCompletionToasts !== defaults.enableTaskCompletionToasts ? (
-              <SettingResetButton
-                label="activity toasts"
-                onClick={() =>
-                  updateSettings({
-                    enableTaskCompletionToasts: defaults.enableTaskCompletionToasts,
-                  })
-                }
-              />
-            ) : null
-          }
-          control={
+    <SettingsNotificationsPanel
+      settings={settings}
+      defaults={defaults}
+      desktopStatus={buildNotificationSettingsSupportText(browserNotificationPermission)}
+      updateSetting={(key: NotificationSettingKey, value) => {
+        if (key === "enableSystemTaskCompletionNotifications") {
+          void setSystemNotificationsEnabled(value);
+          return;
+        }
+        updateSettings({ enableTaskCompletionToasts: value });
+      }}
+      renderResetAction={({ changed, label, onReset }) =>
+        changed ? <SettingResetButton label={label} onClick={onReset} /> : null
+      }
+      renderControl={({ key, checked, ariaLabel, onCheckedChange }) =>
+        key === "enableSystemTaskCompletionNotifications" ? (
+          <div className="flex w-full items-center gap-2 sm:w-auto sm:justify-end">
+            <Button size="xs" variant="outline" onClick={() => void sendTestNotification()}>
+              Test
+            </Button>
             <Switch
-              checked={settings.enableTaskCompletionToasts}
-              onCheckedChange={(checked) =>
-                updateSettings({ enableTaskCompletionToasts: Boolean(checked) })
-              }
-              aria-label="Activity toast notifications"
+              checked={checked}
+              onCheckedChange={(value) => onCheckedChange(Boolean(value))}
+              aria-label={ariaLabel}
             />
-          }
-        />
-
-        <SettingsRow
-          title="Desktop notifications"
-          description="Show an OS notification when a chat or managed terminal agent finishes or needs input while the app is in the background."
-          status={buildNotificationSettingsSupportText(browserNotificationPermission)}
-          resetAction={
-            settings.enableSystemTaskCompletionNotifications !==
-            defaults.enableSystemTaskCompletionNotifications ? (
-              <SettingResetButton
-                label="desktop notifications"
-                onClick={() =>
-                  updateSettings({
-                    enableSystemTaskCompletionNotifications:
-                      defaults.enableSystemTaskCompletionNotifications,
-                  })
-                }
-              />
-            ) : null
-          }
-          control={
-            <div className="flex w-full items-center gap-2 sm:w-auto sm:justify-end">
-              <Button size="xs" variant="outline" onClick={() => void sendTestNotification()}>
-                Test
-              </Button>
-              <Switch
-                checked={settings.enableSystemTaskCompletionNotifications}
-                onCheckedChange={(checked) => {
-                  void setSystemNotificationsEnabled(Boolean(checked));
-                }}
-                aria-label="Desktop activity notifications"
-              />
-            </div>
-          }
-        />
-      </SettingsSection>
-    </div>
+          </div>
+        ) : (
+          <Switch
+            checked={checked}
+            onCheckedChange={(value) => onCheckedChange(Boolean(value))}
+            aria-label={ariaLabel}
+          />
+        )
+      }
+    />
   );
 }
 

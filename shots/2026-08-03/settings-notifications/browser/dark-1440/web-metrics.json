@@ -1,0 +1,49 @@
+{
+  "theme": "dark",
+  "innerWidth": 1440,
+  "innerHeight": 900,
+  "devicePixelRatio": 1,
+  "title": {
+    "x": 536,
+    "y": 32,
+    "width": 213.625,
+    "height": 28,
+    "top": 32,
+    "right": 749.625,
+    "bottom": 60,
+    "left": 536
+  },
+  "section": {
+    "x": 536,
+    "y": 120.75,
+    "width": 624,
+    "height": 212,
+    "top": 120.75,
+    "right": 1160,
+    "bottom": 332.75,
+    "left": 536
+  },
+  "rows": [
+    {
+      "x": 537,
+      "y": 153.75,
+      "width": 622,
+      "height": 61,
+      "top": 153.75,
+      "right": 1159,
+      "bottom": 214.75,
+      "left": 537
+    },
+    {
+      "x": 537,
+      "y": 214.75,
+      "width": 622,
+      "height": 117,
+      "top": 214.75,
+      "right": 1159,
+      "bottom": 331.75,
+      "left": 537
+    }
+  ],
+  "testAvailable": true
+}

@@ -14,6 +14,15 @@ import {
 } from '@synara-web/components/settings/SettingsBehaviorPanel';
 import { KeyboardShortcutsSettingsComposition } from '@synara-web/components/settings/KeyboardShortcutsSettingsComposition';
 import {
+  SettingsNotificationsPanel,
+  type NotificationSettingKey,
+} from '@synara-web/components/settings/SettingsNotificationsPanel';
+import {
+  DEFAULT_NOTIFICATION_SETTINGS_VALUES,
+  notificationSettingsValuesEqual,
+  type NotificationSettingsValues,
+} from '@synara-web/components/settings/SettingsNotificationsPanel.logic';
+import {
   DEFAULT_BEHAVIOR_SETTINGS_VALUES,
   behaviorSettingsValuesEqual,
   type BehaviorSettingsValues,
@@ -56,10 +65,12 @@ import {
   readSettingsAppearanceProjection,
   readSettingsBehaviorProjection,
   readSettingsGeneralProjection,
+  readSettingsNotificationsProjection,
   readSettingsProviderPickerProjection,
   writeSettingsAppearanceProjection,
   writeSettingsBehaviorProjection,
   writeSettingsGeneralProjection,
+  writeSettingsNotificationsProjection,
   writeSettingsProviderPickerProjection,
 } from '@synara-web/appSettingsStorageProjection.logic';
 import type { SettingsSectionId } from '@synara-web/settingsNavigation';
@@ -96,6 +107,7 @@ async function readSettings(retry: boolean): Promise<{
   readonly general: SettingsGeneralValues;
   readonly appearance: SettingsAppearanceValues;
   readonly behavior: BehaviorSettingsValues;
+  readonly notifications: NotificationSettingsValues;
   readonly models: SettingsGitWritingModelValues;
   readonly providers: SettingsProviderUpdateChecksValues;
   readonly providerPicker: SettingsProviderPickerValues;
@@ -141,6 +153,7 @@ async function readSettings(retry: boolean): Promise<{
       appSettingsRaw,
       serverSettings?.enableAssistantStreaming
     ),
+    notifications: readSettingsNotificationsProjection(appSettingsRaw),
     models: readSettingsGitWritingModelValues(serverSettings),
     providers: readSettingsProviderUpdateChecksValues(serverSettings),
     providerPicker: readSettingsProviderPickerProjection(appSettingsRaw),
@@ -212,6 +225,22 @@ async function persistBehaviorSettings(
     }
   }
   return { kind: 'saved' };
+}
+
+async function persistNotificationSettings(
+  values: NotificationSettingsValues
+): Promise<void> {
+  'background only';
+  const { setPersistedStorageItem, webStorage } = await import(
+    /* webpackMode: "eager" */ '../platform/storage'
+  );
+  await setPersistedStorageItem(
+    APP_SETTINGS_STORAGE_KEY,
+    writeSettingsNotificationsProjection(
+      webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
+      values
+    )
+  );
 }
 
 async function persistGitWritingModel(
@@ -312,6 +341,9 @@ export function SettingsPage({
   const [behavior, setBehavior] = useState(
     DEFAULT_BEHAVIOR_SETTINGS_VALUES
   );
+  const [notifications, setNotifications] = useState(
+    DEFAULT_NOTIFICATION_SETTINGS_VALUES
+  );
   const [models, setModels] = useState(
     DEFAULT_SETTINGS_GIT_WRITING_MODEL_VALUES
   );
@@ -350,6 +382,7 @@ export function SettingsPage({
         setSettings(value.general);
         setAppearance(value.appearance);
         setBehavior(value.behavior);
+        setNotifications(value.notifications);
         setModels(value.models);
         setProviders(value.providers);
         setProviderPicker(value.providerPicker);
@@ -454,6 +487,13 @@ export function SettingsPage({
       );
       return;
     }
+    if (section === 'notifications') {
+      setNotifications(DEFAULT_NOTIFICATION_SETTINGS_VALUES);
+      runSave(() =>
+        persistNotificationSettings(DEFAULT_NOTIFICATION_SETTINGS_VALUES)
+      );
+      return;
+    }
     if (section === 'models') {
       setModels(DEFAULT_SETTINGS_GIT_WRITING_MODEL_VALUES);
       runSave(() =>
@@ -492,6 +532,17 @@ export function SettingsPage({
     runSave(() =>
       persistBehaviorSettings(next, key === 'enableAssistantStreaming')
     );
+  }
+
+  function updateNotifications(
+    key: NotificationSettingKey,
+    value: boolean
+  ) {
+    'background only';
+    if (!ready) return;
+    const next = { ...notifications, [key]: value };
+    setNotifications(next);
+    runSave(() => persistNotificationSettings(next));
   }
 
   function updateProviders(next: SettingsProviderUpdateChecksValues) {
@@ -567,6 +618,7 @@ export function SettingsPage({
           availableSections={[
             'general',
             'appearance',
+            'notifications',
             'behavior',
             'shortcuts',
             'models',
@@ -597,6 +649,11 @@ export function SettingsPage({
                     ? behaviorSettingsValuesEqual(
                         behavior,
                         DEFAULT_BEHAVIOR_SETTINGS_VALUES
+                      )
+                  : section === 'notifications'
+                    ? notificationSettingsValuesEqual(
+                        notifications,
+                        DEFAULT_NOTIFICATION_SETTINGS_VALUES
                       )
                   : section === 'models'
                     ? settingsGitWritingModelValuesEqual(
@@ -638,6 +695,36 @@ export function SettingsPage({
                   settings={behavior}
                   defaults={DEFAULT_BEHAVIOR_SETTINGS_VALUES}
                   updateSetting={updateBehavior}
+                  renderControl={({
+                    checked,
+                    ariaLabel,
+                    onCheckedChange,
+                  }) => (
+                    <SettingsGeneralBooleanControlElement
+                      checked={checked}
+                      ariaLabel={ariaLabel}
+                      onChange={onCheckedChange}
+                    />
+                  )}
+                  renderResetAction={({ changed, label, onReset }) =>
+                    changed ? (
+                      <Button
+                        variant="ghost"
+                        size="icon-xs"
+                        aria-label={`Reset ${label} to default`}
+                        onClick={onReset}
+                      >
+                        ↶
+                      </Button>
+                    ) : null
+                  }
+                />
+              ) : section === 'notifications' ? (
+                <SettingsNotificationsPanel
+                  settings={notifications}
+                  defaults={DEFAULT_NOTIFICATION_SETTINGS_VALUES}
+                  desktopStatus="System notification tests are unavailable in this runtime."
+                  updateSetting={updateNotifications}
                   renderControl={({
                     checked,
                     ariaLabel,

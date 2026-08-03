@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-03T02:28:25.825Z",
+  "generatedAt": "2026-08-03T03:30:28.691Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -21,7 +21,7 @@
     "entries": [
       "src/app/index.tsx"
     ],
-    "modules": 488,
+    "modules": 490,
     "externalImports": [
       "@base-ui/react/autocomplete",
       "@base-ui/react/collapsible",
@@ -134,8 +134,8 @@
         "src/components/sidebar/Sidebar.lynx.tsx"
       ],
       "graph": {
-        "modules": 400,
-        "loc": 80776,
+        "modules": 401,
+        "loc": 80826,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -221,8 +221,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 332,
-          "loc": 72843
+          "modules": 333,
+          "loc": 72893
         },
         "PATCHED": {
           "modules": 1,
@@ -238,15 +238,15 @@
         }
       },
       "eligible": {
-        "modules": 391,
-        "loc": 78970
+        "modules": 392,
+        "loc": 79020
       },
       "currentReuse": {
-        "modules": 233,
-        "loc": 44169,
-        "modulePercent": 59.59,
-        "locPercent": 55.93,
-        "gatePercent": 55.93
+        "modules": 234,
+        "loc": 44219,
+        "modulePercent": 59.69,
+        "locPercent": 55.96,
+        "gatePercent": 55.96
       },
       "modules": [
         {
@@ -285,7 +285,7 @@
         },
         {
           "path": "apps/web/src/appSettingsStorageProjection.logic.ts",
-          "loc": 327,
+          "loc": 357,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -294,6 +294,7 @@
             "apps/web/src/components/settings/SettingsAppearanceComposition.logic.ts",
             "apps/web/src/components/settings/SettingsBehaviorPanel.logic.ts",
             "apps/web/src/components/settings/SettingsGeneralComposition.logic.ts",
+            "apps/web/src/components/settings/SettingsNotificationsPanel.logic.ts",
             "apps/web/src/components/settings/SettingsProviderPickerComposition.logic.ts",
             "apps/web/src/lib/appDensity.ts",
             "apps/web/src/sidebarSortDefaults.ts",
@@ -868,6 +869,14 @@
           "dependencies": [
             "apps/web/src/settingsNavigation.ts"
           ]
+        },
+        {
+          "path": "apps/web/src/components/settings/SettingsNotificationsPanel.logic.ts",
+          "loc": 20,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
         },
         {
           "path": "apps/web/src/components/settings/SettingsProviderPickerComposition.logic.ts",
@@ -5039,8 +5048,8 @@
         "src/components/sidebar/Sidebar.lynx.tsx"
       ],
       "graph": {
-        "modules": 346,
-        "loc": 70271,
+        "modules": 347,
+        "loc": 70321,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -5126,8 +5135,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 281,
-          "loc": 62382
+          "modules": 282,
+          "loc": 62432
         },
         "PATCHED": {
           "modules": 1,
@@ -5143,15 +5152,15 @@
         }
       },
       "eligible": {
-        "modules": 338,
-        "loc": 68488
+        "modules": 339,
+        "loc": 68538
       },
       "currentReuse": {
-        "modules": 230,
-        "loc": 43601,
-        "modulePercent": 68.05,
-        "locPercent": 63.66,
-        "gatePercent": 63.66
+        "modules": 231,
+        "loc": 43651,
+        "modulePercent": 68.14,
+        "locPercent": 63.69,
+        "gatePercent": 63.69
       },
       "modules": [
         {
@@ -5190,7 +5199,7 @@
         },
         {
           "path": "apps/web/src/appSettingsStorageProjection.logic.ts",
-          "loc": 327,
+          "loc": 357,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -5199,6 +5208,7 @@
             "apps/web/src/components/settings/SettingsAppearanceComposition.logic.ts",
             "apps/web/src/components/settings/SettingsBehaviorPanel.logic.ts",
             "apps/web/src/components/settings/SettingsGeneralComposition.logic.ts",
+            "apps/web/src/components/settings/SettingsNotificationsPanel.logic.ts",
             "apps/web/src/components/settings/SettingsProviderPickerComposition.logic.ts",
             "apps/web/src/lib/appDensity.ts",
             "apps/web/src/sidebarSortDefaults.ts",
@@ -5629,6 +5639,14 @@
           "dependencies": [
             "apps/web/src/settingsNavigation.ts"
           ]
+        },
+        {
+          "path": "apps/web/src/components/settings/SettingsNotificationsPanel.logic.ts",
+          "loc": 20,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
         },
         {
           "path": "apps/web/src/components/settings/SettingsProviderPickerComposition.logic.ts",
@@ -9211,8 +9229,8 @@
         "src/components/composer/Composer.tsx"
       ],
       "graph": {
-        "modules": 753,
-        "loc": 151613,
+        "modules": 754,
+        "loc": 151663,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -9339,8 +9357,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 650,
-          "loc": 135172
+          "modules": 651,
+          "loc": 135222
         },
         "PATCHED": {
           "modules": 1,
@@ -9356,15 +9374,15 @@
         }
       },
       "eligible": {
-        "modules": 725,
-        "loc": 143470
+        "modules": 726,
+        "loc": 143520
       },
       "currentReuse": {
-        "modules": 343,
-        "loc": 56058,
-        "modulePercent": 47.31,
-        "locPercent": 39.07,
-        "gatePercent": 39.07
+        "modules": 344,
+        "loc": 56108,
+        "modulePercent": 47.38,
+        "locPercent": 39.09,
+        "gatePercent": 39.09
       },
       "modules": [
         {
@@ -9403,7 +9421,7 @@
         },
         {
           "path": "apps/web/src/appSettingsStorageProjection.logic.ts",
-          "loc": 327,
+          "loc": 357,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -9412,6 +9430,7 @@
             "apps/web/src/components/settings/SettingsAppearanceComposition.logic.ts",
             "apps/web/src/components/settings/SettingsBehaviorPanel.logic.ts",
             "apps/web/src/components/settings/SettingsGeneralComposition.logic.ts",
+            "apps/web/src/components/settings/SettingsNotificationsPanel.logic.ts",
             "apps/web/src/components/settings/SettingsProviderPickerComposition.logic.ts",
             "apps/web/src/lib/appDensity.ts",
             "apps/web/src/sidebarSortDefaults.ts",
@@ -13634,6 +13653,14 @@
           "dependencies": [
             "apps/web/src/settingsNavigation.ts"
           ]
+        },
+        {
+          "path": "apps/web/src/components/settings/SettingsNotificationsPanel.logic.ts",
+          "loc": 20,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
         },
         {
           "path": "apps/web/src/components/settings/SettingsProviderPickerComposition.logic.ts",
@@ -19054,8 +19081,8 @@
         "src/app/SettingsPage.tsx"
       ],
       "graph": {
-        "modules": 471,
-        "loc": 90936,
+        "modules": 473,
+        "loc": 91052,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -19146,8 +19173,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 398,
-          "loc": 82810
+          "modules": 400,
+          "loc": 82926
         },
         "PATCHED": {
           "modules": 1,
@@ -19163,15 +19190,15 @@
         }
       },
       "eligible": {
-        "modules": 462,
-        "loc": 89130
+        "modules": 464,
+        "loc": 89246
       },
       "currentReuse": {
-        "modules": 260,
-        "loc": 46918,
-        "modulePercent": 56.28,
-        "locPercent": 52.64,
-        "gatePercent": 52.64
+        "modules": 262,
+        "loc": 47058,
+        "modulePercent": 56.47,
+        "locPercent": 52.73,
+        "gatePercent": 52.73
       },
       "modules": [
         {
@@ -19210,7 +19237,7 @@
         },
         {
           "path": "apps/web/src/appSettingsStorageProjection.logic.ts",
-          "loc": 327,
+          "loc": 357,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -19219,6 +19246,7 @@
             "apps/web/src/components/settings/SettingsAppearanceComposition.logic.ts",
             "apps/web/src/components/settings/SettingsBehaviorPanel.logic.ts",
             "apps/web/src/components/settings/SettingsGeneralComposition.logic.ts",
+            "apps/web/src/components/settings/SettingsNotificationsPanel.logic.ts",
             "apps/web/src/components/settings/SettingsProviderPickerComposition.logic.ts",
             "apps/web/src/lib/appDensity.ts",
             "apps/web/src/sidebarSortDefaults.ts",
@@ -20057,7 +20085,7 @@
         },
         {
           "path": "apps/web/src/components/settings/DesktopSettingsPanels.tsx",
-          "loc": 458,
+          "loc": 434,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -20066,6 +20094,7 @@
             "apps/web/src/appSnap.logic.ts",
             "apps/web/src/components/settings/AppSnapShortcutControl.tsx",
             "apps/web/src/components/settings/SettingControls.tsx",
+            "apps/web/src/components/settings/SettingsNotificationsPanel.tsx",
             "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
             "apps/web/src/components/ui/button.tsx",
             "apps/web/src/components/ui/switch.tsx",
@@ -20388,6 +20417,27 @@
             "apps/web/src/components/settings/SettingsGitWritingModelComposition.logic.ts",
             "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
             "apps/web/src/components/ui/select.tsx"
+          ]
+        },
+        {
+          "path": "apps/web/src/components/settings/SettingsNotificationsPanel.logic.ts",
+          "loc": 20,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
+        },
+        {
+          "path": "apps/web/src/components/settings/SettingsNotificationsPanel.tsx",
+          "loc": 90,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": [
+            "apps/web/src/components/settings/SettingsNotificationsPanel.logic.ts",
+            "apps/web/src/components/settings/SettingsRow.tsx",
+            "apps/web/src/components/settings/SettingsSection.tsx",
+            "apps/web/src/components/settings/SettingsSectionElements.tsx"
           ]
         },
         {
@@ -24916,8 +24966,8 @@
         "src/app/FeatureListsPage.tsx"
       ],
       "graph": {
-        "modules": 506,
-        "loc": 98880,
+        "modules": 507,
+        "loc": 98930,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -25019,8 +25069,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 435,
-          "loc": 88598
+          "modules": 436,
+          "loc": 88648
         },
         "PATCHED": {
           "modules": 1,
@@ -25036,15 +25086,15 @@
         }
       },
       "eligible": {
-        "modules": 495,
-        "loc": 95081
+        "modules": 496,
+        "loc": 95131
       },
       "currentReuse": {
-        "modules": 283,
-        "loc": 50400,
-        "modulePercent": 57.17,
-        "locPercent": 53.01,
-        "gatePercent": 53.01
+        "modules": 284,
+        "loc": 50450,
+        "modulePercent": 57.26,
+        "locPercent": 53.03,
+        "gatePercent": 53.03
       },
       "modules": [
         {
@@ -25083,7 +25133,7 @@
         },
         {
           "path": "apps/web/src/appSettingsStorageProjection.logic.ts",
-          "loc": 327,
+          "loc": 357,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -25092,6 +25142,7 @@
             "apps/web/src/components/settings/SettingsAppearanceComposition.logic.ts",
             "apps/web/src/components/settings/SettingsBehaviorPanel.logic.ts",
             "apps/web/src/components/settings/SettingsGeneralComposition.logic.ts",
+            "apps/web/src/components/settings/SettingsNotificationsPanel.logic.ts",
             "apps/web/src/components/settings/SettingsProviderPickerComposition.logic.ts",
             "apps/web/src/lib/appDensity.ts",
             "apps/web/src/sidebarSortDefaults.ts",
@@ -26808,6 +26859,14 @@
           "dependencies": [
             "apps/web/src/settingsNavigation.ts"
           ]
+        },
+        {
+          "path": "apps/web/src/components/settings/SettingsNotificationsPanel.logic.ts",
+          "loc": 20,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
         },
         {
           "path": "apps/web/src/components/settings/SettingsProviderPickerComposition.logic.ts",
@@ -31278,8 +31337,8 @@
         "src/app/FeatureListsPage.tsx"
       ],
       "graph": {
-        "modules": 506,
-        "loc": 98881,
+        "modules": 507,
+        "loc": 98931,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -31381,8 +31440,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 435,
-          "loc": 88599
+          "modules": 436,
+          "loc": 88649
         },
         "PATCHED": {
           "modules": 1,
@@ -31398,15 +31457,15 @@
         }
       },
       "eligible": {
-        "modules": 495,
-        "loc": 95082
+        "modules": 496,
+        "loc": 95132
       },
       "currentReuse": {
-        "modules": 283,
-        "loc": 50400,
-        "modulePercent": 57.17,
-        "locPercent": 53.01,
-        "gatePercent": 53.01
+        "modules": 284,
+        "loc": 50450,
+        "modulePercent": 57.26,
+        "locPercent": 53.03,
+        "gatePercent": 53.03
       },
       "modules": [
         {
@@ -31445,7 +31504,7 @@
         },
         {
           "path": "apps/web/src/appSettingsStorageProjection.logic.ts",
-          "loc": 327,
+          "loc": 357,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -31454,6 +31513,7 @@
             "apps/web/src/components/settings/SettingsAppearanceComposition.logic.ts",
             "apps/web/src/components/settings/SettingsBehaviorPanel.logic.ts",
             "apps/web/src/components/settings/SettingsGeneralComposition.logic.ts",
+            "apps/web/src/components/settings/SettingsNotificationsPanel.logic.ts",
             "apps/web/src/components/settings/SettingsProviderPickerComposition.logic.ts",
             "apps/web/src/lib/appDensity.ts",
             "apps/web/src/sidebarSortDefaults.ts",
@@ -33170,6 +33230,14 @@
           "dependencies": [
             "apps/web/src/settingsNavigation.ts"
           ]
+        },
+        {
+          "path": "apps/web/src/components/settings/SettingsNotificationsPanel.logic.ts",
+          "loc": 20,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
         },
         {
           "path": "apps/web/src/components/settings/SettingsProviderPickerComposition.logic.ts",
@@ -37640,8 +37708,8 @@
         "src/app/FeatureListsPage.tsx"
       ],
       "graph": {
-        "modules": 494,
-        "loc": 91642,
+        "modules": 495,
+        "loc": 91692,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -37740,8 +37808,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 421,
-          "loc": 82203
+          "modules": 422,
+          "loc": 82253
         },
         "PATCHED": {
           "modules": 1,
@@ -37757,15 +37825,15 @@
         }
       },
       "eligible": {
-        "modules": 485,
-        "loc": 89836
+        "modules": 486,
+        "loc": 89886
       },
       "currentReuse": {
-        "modules": 305,
-        "loc": 52192,
-        "modulePercent": 62.89,
-        "locPercent": 58.1,
-        "gatePercent": 58.1
+        "modules": 306,
+        "loc": 52242,
+        "modulePercent": 62.96,
+        "locPercent": 58.12,
+        "gatePercent": 58.12
       },
       "modules": [
         {
@@ -37804,7 +37872,7 @@
         },
         {
           "path": "apps/web/src/appSettingsStorageProjection.logic.ts",
-          "loc": 327,
+          "loc": 357,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -37813,6 +37881,7 @@
             "apps/web/src/components/settings/SettingsAppearanceComposition.logic.ts",
             "apps/web/src/components/settings/SettingsBehaviorPanel.logic.ts",
             "apps/web/src/components/settings/SettingsGeneralComposition.logic.ts",
+            "apps/web/src/components/settings/SettingsNotificationsPanel.logic.ts",
             "apps/web/src/components/settings/SettingsProviderPickerComposition.logic.ts",
             "apps/web/src/lib/appDensity.ts",
             "apps/web/src/sidebarSortDefaults.ts",
@@ -39299,6 +39368,14 @@
           "dependencies": [
             "apps/web/src/settingsNavigation.ts"
           ]
+        },
+        {
+          "path": "apps/web/src/components/settings/SettingsNotificationsPanel.logic.ts",
+          "loc": 20,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
         },
         {
           "path": "apps/web/src/components/settings/SettingsProviderPickerComposition.logic.ts",

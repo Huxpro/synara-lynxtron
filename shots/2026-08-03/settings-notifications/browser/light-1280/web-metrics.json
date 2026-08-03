@@ -1,0 +1,48 @@
+{
+  "innerWidth": 1280,
+  "innerHeight": 820,
+  "devicePixelRatio": 1,
+  "title": {
+    "x": 456,
+    "y": 32,
+    "width": 213.625,
+    "height": 28,
+    "top": 32,
+    "right": 669.625,
+    "bottom": 60,
+    "left": 456
+  },
+  "section": {
+    "x": 456,
+    "y": 120.75,
+    "width": 624,
+    "height": 212,
+    "top": 120.75,
+    "right": 1080,
+    "bottom": 332.75,
+    "left": 456
+  },
+  "rows": [
+    {
+      "x": 457,
+      "y": 153.75,
+      "width": 622,
+      "height": 61,
+      "top": 153.75,
+      "right": 1079,
+      "bottom": 214.75,
+      "left": 457
+    },
+    {
+      "x": 457,
+      "y": 214.75,
+      "width": 622,
+      "height": 117,
+      "top": 214.75,
+      "right": 1079,
+      "bottom": 331.75,
+      "left": 457
+    }
+  ],
+  "testAvailable": true
+}
