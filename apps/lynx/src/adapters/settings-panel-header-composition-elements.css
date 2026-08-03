@@ -14,14 +14,14 @@
 
 .SharedSettingsPanelHeaderTitle {
   color: var(--foreground);
-  font-size: 20px;
+  font-size: var(--type-settings-header-title-size);
   font-weight: 500;
-  line-height: 28px;
+  line-height: var(--type-settings-header-title-line-height);
 }
 
 .SharedSettingsPanelHeaderDescription {
   margin-top: 6px;
   color: var(--muted-foreground);
-  font-size: 14px;
-  line-height: 20px;
+  font-size: var(--type-settings-header-description-size);
+  line-height: var(--type-settings-header-description-line-height);
 }

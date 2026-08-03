@@ -32,6 +32,33 @@
   );
   --font-chat-code-family: var(--theme-font-code-family, var(--font-mono-family));
   --terminal-font-family: "JetBrainsMono NFM", "JetBrainsMono NF", "JetBrains Mono", monospace;
+  /* Cross-platform product typography roles. These describe visual jobs rather
+     than host elements so Web, Lynx-for-Web, and Native can share line boxes
+     even when their engines disagree on `normal`. */
+  --type-ui-row-size: var(--app-font-size-ui, 12px);
+  --type-ui-row-line-height: 18px;
+  --type-ui-supporting-size: var(--app-font-size-ui-sm, 11px);
+  --type-ui-supporting-line-height: 16px;
+  --type-ui-meta-size: var(--app-font-size-ui-meta, 10px);
+  --type-ui-meta-line-height: 15px;
+  --type-composer-editor-size: var(--app-font-size-chat, 12px);
+  --type-composer-editor-line-height: 19.5px;
+  --type-picker-group-size: 11px;
+  --type-picker-group-line-height: 16px;
+  --type-picker-title-size: 11.5px;
+  --type-picker-title-line-height: 16px;
+  --type-picker-description-size: 11px;
+  --type-picker-description-line-height: 16px;
+  --type-picker-meta-size: 10.5px;
+  --type-picker-meta-line-height: 15px;
+  --type-settings-header-title-size: 20px;
+  --type-settings-header-title-line-height: 28px;
+  --type-settings-header-description-size: 14px;
+  --type-settings-header-description-line-height: 20px;
+  --type-settings-row-title-size: var(--app-font-size-ui, 12px);
+  --type-settings-row-title-line-height: 18px;
+  --type-settings-row-description-size: var(--app-font-size-ui, 12px);
+  --type-settings-row-description-line-height: 18px;
   --app-shell-background: transparent;
   --app-sidebar-backdrop-filter: blur(8px) saturate(135%);
   --app-sidebar-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.025);

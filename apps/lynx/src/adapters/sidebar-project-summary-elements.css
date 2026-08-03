@@ -18,9 +18,9 @@
 
 .SharedSidebarProjectSummaryName {
   color: var(--sidebar-foreground);
-  font-size: var(--app-font-size-ui, 12px);
+  font-size: var(--type-ui-row-size);
   font-weight: 400;
-  line-height: 18px;
+  line-height: var(--type-ui-row-line-height);
 }
 
 .SharedSidebarProjectSummarySecondary {

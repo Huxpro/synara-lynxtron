@@ -41,7 +41,7 @@ import {
 import type { ComposerCommandItem } from "./ComposerCommandMenuComposition";
 
 const GROUP_LABEL_CLASSNAME =
-  "px-2 pt-1.5 pb-1 text-[11px] font-normal text-muted-foreground/60";
+  "px-2 pt-1.5 pb-1 text-[length:var(--type-picker-group-size)] leading-[var(--type-picker-group-line-height)] font-normal text-muted-foreground/60";
 const ICON_SLOT_CLASSNAME =
   "flex size-4 shrink-0 items-center justify-center text-muted-foreground/60";
 const FILE_ICON_CLASSNAME =
@@ -130,7 +130,7 @@ export function ComposerCommandMenuFrameElement(props: {
       <div className={COMPOSER_COMMAND_MENU_SURFACE_CLASS_NAME}>
         <CommandList className="max-h-72 scroll-py-1 p-1">{props.children}</CommandList>
         {props.emptyText ? (
-          <p className="px-2 py-1.5 text-muted-foreground/50 text-[11px]">
+          <p className="px-2 py-1.5 text-muted-foreground/50 text-[length:var(--type-picker-description-size)] leading-[var(--type-picker-description-line-height)]">
             {props.emptyText}
           </p>
         ) : null}
@@ -204,17 +204,17 @@ export const ComposerCommandRowElement = memo(function ComposerCommandRowElement
       </span>
       <div className="min-w-0 flex flex-1 items-center gap-3">
         <div className="min-w-0 flex flex-1 items-center gap-1.5 overflow-hidden">
-          <span className="shrink-0 text-[11.5px] font-medium text-foreground/80">
+          <span className="shrink-0 text-[length:var(--type-picker-title-size)] leading-[var(--type-picker-title-line-height)] font-medium text-foreground/80">
             {props.title}
           </span>
           {props.secondaryText ? (
-            <span className="truncate text-[11px] text-muted-foreground/55">
+            <span className="truncate text-[length:var(--type-picker-description-size)] leading-[var(--type-picker-description-line-height)] text-muted-foreground/55">
               {props.secondaryText}
             </span>
           ) : null}
         </div>
         {props.trailingMeta ? (
-          <span className="shrink-0 pl-2 text-right text-[10.5px] text-muted-foreground/42">
+          <span className="shrink-0 pl-2 text-right text-[length:var(--type-picker-meta-size)] leading-[var(--type-picker-meta-line-height)] text-muted-foreground/42">
             {props.trailingMeta}
           </span>
         ) : null}

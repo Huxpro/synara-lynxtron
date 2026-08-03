@@ -38,11 +38,11 @@ export const SETTINGS_CARD_ROW_CLASS_NAME =
 
 /** Row title — same UI font/size as the description; weight and color differ. */
 export const SETTINGS_CARD_ROW_TITLE_CLASS_NAME =
-  "text-[length:var(--app-font-size-ui,12px)] font-medium text-foreground";
+  "text-[length:var(--type-settings-row-title-size)] leading-[var(--type-settings-row-title-line-height)] font-medium text-foreground";
 
 /** Row description — standard app UI typography. */
 export const SETTINGS_CARD_ROW_DESCRIPTION_CLASS_NAME =
-  "text-[length:var(--app-font-size-ui,12px)] text-muted-foreground";
+  "text-[length:var(--type-settings-row-description-size)] leading-[var(--type-settings-row-description-line-height)] text-muted-foreground";
 
 /** Divider between stacked rows inside one card. */
 export const SETTINGS_CARD_ROW_DIVIDER_CLASS_NAME = "border-t border-[color:var(--color-border)]";

@@ -24,7 +24,7 @@ export function SettingsPanelHeaderCopyElement(props: ChildrenProps) {
 
 export function SettingsPanelHeaderTitleElement(props: ChildrenProps) {
   return (
-    <h1 className="text-xl font-medium tracking-tight text-foreground">
+    <h1 className="text-[length:var(--type-settings-header-title-size)] leading-[var(--type-settings-header-title-line-height)] font-medium tracking-tight text-foreground">
       {props.children}
     </h1>
   );
@@ -32,7 +32,7 @@ export function SettingsPanelHeaderTitleElement(props: ChildrenProps) {
 
 export function SettingsPanelHeaderDescriptionElement(props: ChildrenProps) {
   return (
-    <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+    <p className="mt-1.5 text-[length:var(--type-settings-header-description-size)] leading-[var(--type-settings-header-description-line-height)] text-muted-foreground">
       {props.children}
     </p>
   );

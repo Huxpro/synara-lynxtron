@@ -185,7 +185,7 @@ export const COMPOSER_PICKER_MENU_POPUP_VIEWPORT_CLASS_NAME =
  *  icon `<span data-slot=central-icon>` so a masked Central glyph (e.g. the Explorer
  *  "folders" or Terminal "console" icon) lines up and dims exactly like the SVG icons
  *  instead of sitting brighter and 2px out of alignment. */
-export const COMPOSER_PICKER_MENU_OPTION_CLASS_NAME = `[&>svg,&>[data-slot=central-icon]]:-mx-0.5 flex cursor-default select-none items-center ${COMPOSER_PICKER_OPTION_RADIUS_CLASS_NAME} text-[length:var(--app-font-size-ui,12px)] text-[var(--color-text-foreground)] outline-none data-disabled:pointer-events-none data-highlighted:bg-[var(--color-background-button-secondary-hover)] data-highlighted:text-[var(--color-text-foreground)] data-disabled:opacity-64 [&>svg:not([class*='opacity-']),&>[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&>svg,&>[data-slot=central-icon]]:pointer-events-none [&>svg,&>[data-slot=central-icon]]:shrink-0`;
+export const COMPOSER_PICKER_MENU_OPTION_CLASS_NAME = `[&>svg,&>[data-slot=central-icon]]:-mx-0.5 flex cursor-default select-none items-center ${COMPOSER_PICKER_OPTION_RADIUS_CLASS_NAME} text-[length:var(--type-ui-row-size)] leading-[var(--type-ui-row-line-height)] text-[var(--color-text-foreground)] outline-none data-disabled:pointer-events-none data-highlighted:bg-[var(--color-background-button-secondary-hover)] data-highlighted:text-[var(--color-text-foreground)] data-disabled:opacity-64 [&>svg:not([class*='opacity-']),&>[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&>svg,&>[data-slot=central-icon]]:pointer-events-none [&>svg,&>[data-slot=central-icon]]:shrink-0`;
 
 /** Same as menu options, adapted for select item grid layout. */
 export const COMPOSER_PICKER_SELECT_OPTION_CLASS_NAME = `${COMPOSER_PICKER_MENU_OPTION_CLASS_NAME} grid in-data-[side=none]:min-w-[calc(var(--anchor-width)+1.25rem)]`;
@@ -236,8 +236,10 @@ export const RUNTIME_FULL_ACCESS_ACCENT_CLASS_NAME =
 
 /** Minimum composer editor height — two lines at the element's line-height.
  *  `leading-relaxed` (1.625) keeps the input in step with the transcript/bubble leading. */
-export const COMPOSER_EDITOR_LINE_HEIGHT_CLASS_NAME = "leading-relaxed";
-export const COMPOSER_EDITOR_TEXT_CLASS_NAME = "text-[length:var(--app-font-size-chat,12px)]";
+export const COMPOSER_EDITOR_LINE_HEIGHT_CLASS_NAME =
+  "leading-[var(--type-composer-editor-line-height)]";
+export const COMPOSER_EDITOR_TEXT_CLASS_NAME =
+  "text-[length:var(--type-composer-editor-size)]";
 /** Font, size, and leading shared by the composer editor and its placeholder so the
  *  placeholder always aligns with typed text. Keep both surfaces on this one token. */
 export const COMPOSER_EDITOR_TYPOGRAPHY_CLASS_NAME = `font-system-ui ${COMPOSER_EDITOR_TEXT_CLASS_NAME} ${COMPOSER_EDITOR_LINE_HEIGHT_CLASS_NAME}`;

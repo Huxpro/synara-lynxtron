@@ -55,14 +55,20 @@
 
 .SharedSettingsRowStatusText {
   color: var(--muted-foreground);
-  font-size: 11px;
-  line-height: 16px;
+  font-size: var(--type-ui-supporting-size);
+  line-height: var(--type-ui-supporting-line-height);
 }
 
-.SharedSettingsRowTitle,
+.SharedSettingsRowTitle {
+  display: block;
+  font-size: var(--type-settings-row-title-size);
+  line-height: var(--type-settings-row-title-line-height);
+}
+
 .SharedSettingsRowDescription {
   display: block;
-  line-height: 18px;
+  font-size: var(--type-settings-row-description-size);
+  line-height: var(--type-settings-row-description-line-height);
 }
 
 .SharedSettingsRowInline {
