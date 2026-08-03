@@ -241,6 +241,11 @@ export default defineConfig({
         rootPath,
         './src/adapters/SettingsAppearanceCompositionElements.lynx.tsx'
       ),
+      '~/components/settings/KeyboardShortcutsSettingsCompositionElements$':
+        path.resolve(
+          rootPath,
+          './src/adapters/KeyboardShortcutsSettingsCompositionElements.lynx.tsx'
+        ),
       '~/components/settings/ThemePackEditorCompositionElements$': path.resolve(
         rootPath,
         './src/adapters/ThemePackEditorCompositionElements.lynx.tsx'

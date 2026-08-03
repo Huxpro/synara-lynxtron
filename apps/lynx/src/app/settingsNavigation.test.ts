@@ -48,6 +48,7 @@ describe('shared settings navigation projection', () => {
         'general',
         'appearance',
         'behavior',
+        'shortcuts',
         'models',
         'providers',
       ],
@@ -67,6 +68,10 @@ describe('shared settings navigation projection', () => {
       available: true,
     });
     expect(groups.flatMap((group) => group.items).find((item) => item.id === 'behavior')).toMatchObject({
+      active: false,
+      available: true,
+    });
+    expect(groups.flatMap((group) => group.items).find((item) => item.id === 'shortcuts')).toMatchObject({
       active: false,
       available: true,
     });
@@ -133,6 +138,10 @@ describe('shared settings navigation projection', () => {
     expect(resolveSettingsPanelHeader('appearance').description).toBe(
       'Theme, typography, and timestamp formatting.'
     );
+    expect(resolveSettingsPanelHeader('shortcuts')).toEqual({
+      title: 'Keyboard Shortcuts',
+      description: 'Every keyboard shortcut available in Synara, grouped by context.',
+    });
   });
 
   it('uses the canonical app-settings key and preserves non-General fields', () => {

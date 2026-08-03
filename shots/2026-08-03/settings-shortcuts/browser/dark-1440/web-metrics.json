@@ -1,0 +1,51 @@
+{
+  "theme": "dark",
+  "url": "http://127.0.0.1:63211/settings?section=shortcuts",
+  "innerWidth": 1440,
+  "innerHeight": 900,
+  "visualViewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "devicePixelRatio": 1,
+  "title": {
+    "x": 536,
+    "y": 32,
+    "width": 418.3125,
+    "height": 28,
+    "top": 32,
+    "right": 954.3125,
+    "bottom": 60,
+    "left": 536
+  },
+  "search": {
+    "x": 536,
+    "y": 120.75,
+    "width": 624,
+    "height": 28,
+    "top": 120.75,
+    "right": 1160,
+    "bottom": 148.75,
+    "left": 536
+  },
+  "header": {
+    "x": 537,
+    "y": 165.75,
+    "width": 622,
+    "height": 33.5,
+    "top": 165.75,
+    "right": 1159,
+    "bottom": 199.25,
+    "left": 537
+  },
+  "first": {
+    "x": 537,
+    "y": 199.25,
+    "width": 622,
+    "height": 59,
+    "top": 199.25,
+    "right": 1159,
+    "bottom": 258.25,
+    "left": 537
+  }
+}

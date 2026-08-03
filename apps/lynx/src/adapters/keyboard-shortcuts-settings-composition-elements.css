@@ -1,0 +1,92 @@
+.SharedKeyboardShortcutsRoot {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.SharedKeyboardShortcutsSearch {
+  width: 100%;
+}
+
+.SharedKeyboardShortcutsCard,
+.SharedKeyboardShortcutsEmpty {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.SharedKeyboardShortcutsHeader,
+.SharedKeyboardShortcutsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.SharedKeyboardShortcutsHeader {
+  padding: 8px 12px;
+}
+
+.SharedKeyboardShortcutsHeaderText {
+  color: var(--muted-foreground);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 17.5px;
+}
+
+.SharedKeyboardShortcutsRow {
+  min-height: 59px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--border);
+}
+
+.SharedKeyboardShortcutsRow--muted {
+  opacity: 0.75;
+}
+
+.SharedKeyboardShortcutsCopy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.SharedKeyboardShortcutsTitle,
+.SharedKeyboardShortcutsDescription {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.SharedKeyboardShortcutsTitle {
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.SharedKeyboardShortcutsDescription {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.SharedKeyboardShortcutsShortcut {
+  flex-shrink: 0;
+}
+
+.SharedKeyboardShortcutsEmpty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 96px;
+  padding: 40px 16px;
+  border-style: dashed;
+}
+
+.SharedKeyboardShortcutsEmptyText {
+  color: var(--muted-foreground);
+  font-size: 14px;
+  text-align: center;
+}

@@ -12,6 +12,7 @@ import {
   SettingsBehaviorPanel,
   type BehaviorSettingKey,
 } from '@synara-web/components/settings/SettingsBehaviorPanel';
+import { KeyboardShortcutsSettingsComposition } from '@synara-web/components/settings/KeyboardShortcutsSettingsComposition';
 import {
   DEFAULT_BEHAVIOR_SETTINGS_VALUES,
   behaviorSettingsValuesEqual,
@@ -77,6 +78,7 @@ import {
 } from './settingsPersistence.logic';
 import { Button } from '../components/ui/button';
 import { SettingsGeneralBooleanControlElement } from '../adapters/SettingsGeneralCompositionElements.lynx';
+import type { ResolvedKeybindingsConfig } from '@synara/contracts';
 
 const SETTINGS_LOCAL_SAVE_ERROR =
   'Changes could not be saved. Your current values are still shown.';
@@ -88,6 +90,7 @@ const SETTINGS_PROVIDER_SAVE_ERROR =
   'The provider update-check preference could not be updated. Your selected value is still shown.';
 const SETTINGS_BEHAVIOR_SAVE_ERROR =
   'Changes were saved locally, but assistant streaming could not be updated on the server.';
+const EMPTY_KEYBINDINGS: ResolvedKeybindingsConfig = [];
 
 async function readSettings(retry: boolean): Promise<{
   readonly general: SettingsGeneralValues;
@@ -97,6 +100,7 @@ async function readSettings(retry: boolean): Promise<{
   readonly providers: SettingsProviderUpdateChecksValues;
   readonly providerPicker: SettingsProviderPickerValues;
   readonly modelOptions: readonly SettingsGitWritingModelOption[];
+  readonly keybindings: ResolvedKeybindingsConfig;
   readonly themeState: ThemeState;
 }> {
   'background only';
@@ -107,7 +111,7 @@ async function readSettings(retry: boolean): Promise<{
       retryHydrateStorage,
       webStorage,
     },
-    { fetchServerSettings },
+    { fetchServerConfig, fetchServerSettings },
   ] =
     await Promise.all([
       import(/* webpackMode: "eager" */ '../platform/storage'),
@@ -121,6 +125,7 @@ async function readSettings(retry: boolean): Promise<{
   const hydrationError = getStorageHydrationError();
   if (hydrationError) throw hydrationError;
   const serverSettings = await fetchServerSettings().catch(() => null);
+  const serverConfig = await fetchServerConfig().catch(() => null);
   const appSettingsRaw = webStorage.getItem(APP_SETTINGS_STORAGE_KEY);
   const themeRaw = webStorage.getItem(THEME_STORAGE_KEY);
   return {
@@ -143,6 +148,7 @@ async function readSettings(retry: boolean): Promise<{
       settings: serverSettings,
       selected: readSettingsGitWritingModelValues(serverSettings),
     }),
+    keybindings: serverConfig?.keybindings ?? EMPTY_KEYBINDINGS,
     themeState: parseStoredThemeState(themeRaw),
   };
 }
@@ -318,6 +324,8 @@ export function SettingsPage({
   const [modelOptions, setModelOptions] = useState<
     readonly SettingsGitWritingModelOption[]
   >([]);
+  const [keybindings, setKeybindings] =
+    useState<ResolvedKeybindingsConfig>(EMPTY_KEYBINDINGS);
   const [themeState, setThemeState] = useState(DEFAULT_THEME_STATE);
   const [hydrationState, setHydrationState] = useState<
     'loading' | 'ready' | 'error'
@@ -346,6 +354,7 @@ export function SettingsPage({
         setProviders(value.providers);
         setProviderPicker(value.providerPicker);
         setModelOptions(value.modelOptions);
+        setKeybindings(value.keybindings);
         setThemeState(value.themeState);
         onThemeStateChange(value.themeState);
         onUiDensityChange(value.appearance.uiDensity);
@@ -559,6 +568,7 @@ export function SettingsPage({
             'general',
             'appearance',
             'behavior',
+            'shortcuts',
             'models',
             'providers',
           ]}
@@ -572,6 +582,7 @@ export function SettingsPage({
             section={section}
             restoreDisabled={
               !ready ||
+              section === 'shortcuts' ||
               (section === 'general'
                 ? settingsGeneralValuesEqual(
                     settings,
@@ -650,6 +661,10 @@ export function SettingsPage({
                       </Button>
                     ) : null
                   }
+                />
+              ) : section === 'shortcuts' ? (
+                <KeyboardShortcutsSettingsComposition
+                  keybindings={keybindings}
                 />
               ) : section === 'models' ? (
                 <SettingsGitWritingModelComposition

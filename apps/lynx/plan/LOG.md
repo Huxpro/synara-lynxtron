@@ -4697,3 +4697,30 @@
 - gates：Web 1 file / 2 tests；Lynx 2 files / 12 tests；Web 8,933 modules；
   Web/Lynx/Desktop production green；reuse write/check后Settings 51.88%，style 98.07%；
   evidence `shots/2026-08-03/settings-behavior/notes.md`。未进入P8-Q3/Q4、P9-R1或hard islands。
+
+## 2026-08-03 — P9-U2 Settings Keyboard Shortcuts UI扩面
+
+- 把Web原`KeyboardShortcutsSettingsPanel`的search state、canonical section/filter、
+  Command/Keybinding顺序、muted alternate-context rows与empty state抽成physical-shared
+  `KeyboardShortcutsSettingsComposition`；Web wrapper只保留query获取，Lynx Elements只映射
+  native view/text/input/keycaps。
+- Lynx Settings开放canonical `shortcuts` row，并从真实`server.getConfig().keybindings`
+  hydrate 51行。首版composition误用relative Elements import，Lynx-for-Web虽显示正确内容，
+  实际编入Web DOM elements；该诊断build未保留，改为`~` alias后Web/Desktop bundle均含
+  `SharedKeyboardShortcuts*` native class。
+- Fast Browser同源真实snapshot：
+  - Web rendered search输入`Search projects`后51行收敛为唯一目标，Escape清空后恢复51行；
+  - 1280 light与1440 dark均为title `+5/+8px`、search/header/row整体
+    `x +5px / y +5.25px`；
+  - 初版Lynx row 54px相对Web 59px产生累积漂移，未保留；校准后header 33.5px、
+    row 59px，第1/10行均无累计差。
+- exact-owned Native PID 81457、PID-derived 8903/session 1、isolated 1280×820：
+  rendered Settings→Keyboard Shortcuts touch路径成功；exact DOM为47 normal + 4 muted rows，
+  含真实`Search projects and threads`、search input；DevTool frame 2560×1576且error/warning
+  console空。showInactive DevTool touch/wheel未能移动Settings scroll owner，未保留scroll或
+  Native filter交互，不将该harness limitation冒充产品认证。
+- gates：Web focused 2 files / 3 tests；Lynx focused 2 files / 12 tests；
+  Web 8,935 modules；Lynx-for-Web/Desktop production green；strict reuse write/check后
+  Settings 52.64%，style 98.07%。owned Browser/server/static
+  server/Lynxtron均关闭，62190/63211/8903释放，用户8901/8902未触碰，snapshot hash不变。
+  证据`shots/2026-08-03/settings-shortcuts/notes.md`；未进入P8-Q3/Q4、P9-R1或hard islands。

@@ -1,0 +1,16 @@
+{
+  "ownedPid": 81457,
+  "client": "localhost:8903",
+  "session": 1,
+  "bundle": "file:///Users/bytedance/github/synara/apps/lynx/dist/desktop/main.lynx.bundle",
+  "outerWindow": { "width": 1280, "height": 820, "source": "isolated window-state.json" },
+  "lynxViewPixels": { "width": 2560, "height": 1576 },
+  "theme": "light",
+  "route": "Settings / Keyboard Shortcuts",
+  "navigation": "rendered Settings and Keyboard Shortcuts controls via Input.emulateTouchFromMouseEvent",
+  "sharedRowCount": 51,
+  "realConfigEntry": "Search projects and threads",
+  "searchInputPresent": true,
+  "errorWarningConsoleEntries": 0,
+  "nativeScrollInjection": "not retained: showInactive DevTool wheel/touch injection did not move the scroll owner"
+}

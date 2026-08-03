@@ -12,14 +12,14 @@
   "summary": {
     "classes": 2255,
     "customClasses": 77,
-    "surfaceWeighted": 14169,
-    "totalWeighted": 13240,
-    "coveredWeighted": 12984,
+    "surfaceWeighted": 14170,
+    "totalWeighted": 13241,
+    "coveredWeighted": 12985,
     "coveragePercent": 98.07,
     "status": {
       "GENERATED": {
         "classes": 1088,
-        "weighted": 11048
+        "weighted": 11049
       },
       "PATCHED": {
         "classes": 574,
@@ -39,8 +39,8 @@
       }
     },
     "runtime": {
-      "classes": 1365,
-      "weighted": 12840
+      "classes": 1368,
+      "weighted": 12850
     }
   },
   "classes": [
@@ -208,7 +208,7 @@
         "apps/web/src/components/settings/ConversationStorageSettingsPanels.tsx",
         "apps/web/src/components/settings/DesktopSettingsPanels.tsx",
         "apps/web/src/components/settings/ExternalMcpSettingsPanel.tsx",
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx",
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
         "apps/web/src/components/settings/ModelsSettingsPanel.tsx",
         "apps/web/src/components/settings/ProfileSettingsPanel.tsx",
         "apps/web/src/components/settings/ProviderUsageSettingsPanel.tsx",
@@ -424,7 +424,7 @@
         "apps/web/src/components/settings/ConversationStorageSettingsPanels.tsx",
         "apps/web/src/components/settings/DesktopSettingsPanels.tsx",
         "apps/web/src/components/settings/ExternalMcpSettingsPanel.tsx",
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx",
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
         "apps/web/src/components/settings/ModelsSettingsPanel.tsx",
         "apps/web/src/components/settings/ProfileSettingsPanel.tsx",
         "apps/web/src/components/settings/ProviderUsageSettingsPanel.tsx",
@@ -474,7 +474,7 @@
     },
     {
       "token": "shrink-0",
-      "occurrences": 481,
+      "occurrences": 482,
       "files": [
         "apps/web/src/components/AppNavigationButtons.tsx",
         "apps/web/src/components/AppSnapWelcomeDialog.tsx",
@@ -612,6 +612,7 @@
         "apps/web/src/components/pullRequest/pullRequestStatePresentation.tsx",
         "apps/web/src/components/settings/AdvancedSettingsPanel.tsx",
         "apps/web/src/components/settings/DesktopSettingsPanels.tsx",
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
         "apps/web/src/components/settings/ModelsSettingsPanel.tsx",
         "apps/web/src/components/settings/ProfileSettingsPanel.tsx",
         "apps/web/src/components/settings/ProviderUsageSettingsPanel.tsx",
@@ -765,7 +766,7 @@
         "apps/web/src/components/pullRequest/PullRequestsUnavailableState.tsx",
         "apps/web/src/components/settings/DesktopSettingsPanels.tsx",
         "apps/web/src/components/settings/ExternalMcpSettingsPanel.tsx",
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx",
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
         "apps/web/src/components/settings/ModelsSettingsPanel.tsx",
         "apps/web/src/components/settings/ProfileSettingsPanel.tsx",
         "apps/web/src/components/settings/ProviderUsageSettingsPanel.tsx",
@@ -883,7 +884,7 @@
         "apps/web/src/components/settings/ConversationStorageSettingsPanels.tsx",
         "apps/web/src/components/settings/DesktopSettingsPanels.tsx",
         "apps/web/src/components/settings/ExternalMcpSettingsPanel.tsx",
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx",
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
         "apps/web/src/components/settings/ModelsSettingsPanel.tsx",
         "apps/web/src/components/settings/ProfileSettingsPanel.tsx",
         "apps/web/src/components/settings/ProviderUsageSettingsPanel.tsx",
@@ -1024,7 +1025,7 @@
         "apps/web/src/components/pullRequest/PullRequestsUnavailableState.tsx",
         "apps/web/src/components/settings/ConversationStorageSettingsPanels.tsx",
         "apps/web/src/components/settings/ExternalMcpSettingsPanel.tsx",
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx",
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
         "apps/web/src/components/settings/ModelsSettingsPanel.tsx",
         "apps/web/src/components/settings/ProfileSettingsPanel.tsx",
         "apps/web/src/components/settings/ProviderUsageSettingsPanel.tsx",
@@ -1604,7 +1605,7 @@
         "apps/web/src/components/settings/ConversationStorageSettingsPanels.tsx",
         "apps/web/src/components/settings/DesktopSettingsPanels.tsx",
         "apps/web/src/components/settings/ExternalMcpSettingsPanel.tsx",
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx",
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
         "apps/web/src/components/settings/ProfileSettingsPanel.tsx",
         "apps/web/src/components/settings/ProviderUsageSettingsPanel.tsx",
         "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
@@ -1716,7 +1717,7 @@
         "apps/web/src/components/settings/AppSnapShortcutControl.tsx",
         "apps/web/src/components/settings/DesktopSettingsPanels.tsx",
         "apps/web/src/components/settings/ExternalMcpSettingsPanel.tsx",
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx",
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
         "apps/web/src/components/settings/ModelsSettingsPanel.tsx",
         "apps/web/src/components/settings/ProfileSettingsPanel.tsx",
         "apps/web/src/components/settings/SettingControls.tsx",
@@ -2366,7 +2367,7 @@
         "apps/web/src/components/settings/AppSnapShortcutControl.tsx",
         "apps/web/src/components/settings/ConversationStorageSettingsPanels.tsx",
         "apps/web/src/components/settings/ExternalMcpSettingsPanel.tsx",
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx",
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
         "apps/web/src/components/settings/ProviderUsageSettingsPanel.tsx",
         "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
         "apps/web/src/components/settings/SettingsRow.tsx",
@@ -2435,7 +2436,7 @@
         "apps/web/src/components/profile/EditProfileDialog.tsx",
         "apps/web/src/components/pullRequest/PullRequestListFilters.tsx",
         "apps/web/src/components/pullRequest/PullRequestTimelineCompositionElements.tsx",
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx",
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
         "apps/web/src/components/settings/ThemePackEditorCompositionElements.tsx",
         "apps/web/src/components/ui/alert-dialog.tsx",
         "apps/web/src/components/ui/alert.tsx",
@@ -2678,7 +2679,7 @@
         "apps/web/src/components/profile/ShareCard.tsx",
         "apps/web/src/components/pullRequest/PullRequestRouteControlsCompositionElements.tsx",
         "apps/web/src/components/settings/ConversationStorageSettingsPanels.tsx",
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx",
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
         "apps/web/src/components/settings/ModelsSettingsPanel.tsx",
         "apps/web/src/components/settings/ProfileSettingsPanel.tsx",
         "apps/web/src/components/settings/ProviderUsageSettingsPanel.tsx",
@@ -3131,7 +3132,7 @@
         "apps/web/src/components/profile/EditProfileDialog.tsx",
         "apps/web/src/components/pullRequest/PullRequestListFilters.tsx",
         "apps/web/src/components/pullRequest/PullRequestTimelineCompositionElements.tsx",
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx",
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
         "apps/web/src/components/ui/autocomplete.tsx",
         "apps/web/src/components/ui/checkbox.tsx",
         "apps/web/src/components/ui/combobox.tsx",
@@ -3203,7 +3204,7 @@
         "apps/web/src/components/pullRequest/PullRequestStateGlyph.tsx",
         "apps/web/src/components/settings/AdvancedSettingsPanel.tsx",
         "apps/web/src/components/settings/DesktopSettingsPanels.tsx",
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx",
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
         "apps/web/src/components/settings/ProviderUsageSettingsPanel.tsx",
         "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
         "apps/web/src/components/settings/SettingsProviderPickerCompositionElements.tsx",
@@ -3274,7 +3275,7 @@
         "apps/web/src/components/pullRequest/PullRequestsUnavailableState.tsx",
         "apps/web/src/components/settings/AdvancedSettingsPanel.tsx",
         "apps/web/src/components/settings/ExternalMcpSettingsPanel.tsx",
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx",
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
         "apps/web/src/components/settings/ProfileSettingsPanel.tsx",
         "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
         "apps/web/src/components/settings/SettingsProviderPickerCompositionElements.tsx",
@@ -3705,7 +3706,7 @@
         "apps/web/src/components/kanban/KanbanOverviewCompositionElements.tsx",
         "apps/web/src/components/kanban/KanbanRouteHeaderCompositionElements.tsx",
         "apps/web/src/components/pullRequest/pullRequestText.ts",
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx",
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
         "apps/web/src/components/ui/search-input.tsx",
         "apps/web/src/routes/-automations.shared.tsx",
         "apps/web/src/whatsNew/ChangelogAccordion.tsx"
@@ -3982,7 +3983,7 @@
         "apps/web/src/components/pullRequest/PullRequestListFilters.tsx",
         "apps/web/src/components/settings/AdvancedSettingsPanel.tsx",
         "apps/web/src/components/settings/ExternalMcpSettingsPanel.tsx",
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx",
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
         "apps/web/src/components/settings/ProfileSettingsPanel.tsx",
         "apps/web/src/components/settings/ProviderUsageSettingsPanel.tsx",
         "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
@@ -4088,7 +4089,7 @@
         "apps/web/src/components/pullRequest/PullRequestWarningNote.tsx",
         "apps/web/src/components/pullRequest/PullRequestsUnavailableState.tsx",
         "apps/web/src/components/settings/ExternalMcpSettingsPanel.tsx",
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx",
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
         "apps/web/src/components/settings/ModelsSettingsPanel.tsx",
         "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
         "apps/web/src/components/settings/ThemePackEditorCompositionElements.tsx",
@@ -4243,7 +4244,7 @@
         "apps/web/src/components/profile/ShareDialog.tsx",
         "apps/web/src/components/pullRequest/PullRequestSummaryCompositionElements.tsx",
         "apps/web/src/components/settings/ConversationStorageSettingsPanels.tsx",
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx",
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
         "apps/web/src/components/settings/ProfileSettingsPanel.tsx",
         "apps/web/src/components/settings/ThemePackEditorCompositionElements.tsx",
         "apps/web/src/components/ui/alert-dialog.tsx",
@@ -4336,7 +4337,7 @@
         "apps/web/src/components/chat/SplitChatSurface.tsx",
         "apps/web/src/components/chat/TranscriptSelectionAction.tsx",
         "apps/web/src/components/chat/environment/EnvironmentPanel.tsx",
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx",
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
         "apps/web/src/components/ui/autocomplete.tsx",
         "apps/web/src/components/ui/combobox.tsx",
         "apps/web/src/components/ui/empty.tsx",
@@ -4613,7 +4614,7 @@
         "apps/web/src/components/profile/EditProfileDialog.tsx",
         "apps/web/src/components/settings/ConversationStorageSettingsPanels.tsx",
         "apps/web/src/components/settings/DesktopSettingsPanels.tsx",
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx",
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
         "apps/web/src/components/settings/ModelsSettingsPanel.tsx",
         "apps/web/src/components/settings/ProviderUsageSettingsPanel.tsx",
         "apps/web/src/components/settings/ThemePackEditorCompositionElements.tsx",
@@ -5395,7 +5396,7 @@
         "apps/web/src/components/chat/ExpandedImageOverlay.tsx",
         "apps/web/src/components/chat/MessageTrail.tsx",
         "apps/web/src/components/chat/workspaceExplorer.tsx",
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx",
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
         "apps/web/src/components/ui/autocomplete.tsx",
         "apps/web/src/components/ui/combobox.tsx",
         "apps/web/src/components/ui/search-input.tsx"
@@ -5677,7 +5678,7 @@
         "apps/web/src/components/chat/ExpandedImageOverlay.tsx",
         "apps/web/src/components/chat/MessagesTimeline.tsx",
         "apps/web/src/components/chat/workspaceExplorer.tsx",
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx",
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
         "apps/web/src/components/ui/autocomplete.tsx",
         "apps/web/src/components/ui/combobox.tsx",
         "apps/web/src/components/ui/search-input.tsx"
@@ -6579,7 +6580,7 @@
         "apps/web/src/components/chat/MessagesTimeline.tsx",
         "apps/web/src/components/chat/TimelineWorkEntryRow.tsx",
         "apps/web/src/components/pullRequest/PullRequestListCompositionElements.tsx",
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx",
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
         "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
         "apps/web/src/components/settings/SettingsRow.tsx"
       ],
@@ -7133,7 +7134,7 @@
         "apps/web/src/components/profile/EditProfileDialog.tsx",
         "apps/web/src/components/profile/ShareCard.tsx",
         "apps/web/src/components/settings/ExternalMcpSettingsPanel.tsx",
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx",
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
         "apps/web/src/components/settings/SettingsPanelHeaderCompositionElements.tsx",
         "apps/web/src/components/ui/empty.tsx",
         "apps/web/src/components/ui/menu.tsx",
@@ -8348,7 +8349,7 @@
         "apps/web/src/components/chat/SplitChatSurface.tsx",
         "apps/web/src/components/pullRequest/PullRequestDetailPanel.tsx",
         "apps/web/src/components/pullRequest/PullRequestSummaryCompositionElements.tsx",
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx"
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx"
       ],
       "screens": [
         "kanban",
@@ -9167,7 +9168,7 @@
         "apps/web/src/components/ShortcutsDialog.tsx",
         "apps/web/src/components/SidebarSearchPalette.tsx",
         "apps/web/src/components/settings/ConversationStorageSettingsPanels.tsx",
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx",
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
         "apps/web/src/routes/__root.tsx"
       ],
       "screens": [
@@ -10689,7 +10690,7 @@
         "apps/web/src/components/ShortcutsDialog.tsx",
         "apps/web/src/components/chat/TraitsPicker.tsx",
         "apps/web/src/components/chat/workspaceExplorer.tsx",
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx"
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx"
       ],
       "screens": [
         "kanban",
@@ -10699,7 +10700,7 @@
         "thread",
         "threads"
       ],
-      "runtime": false,
+      "runtime": true,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -11405,7 +11406,7 @@
       "files": [
         "apps/web/src/components/chat/AgentActivityDetailView.tsx",
         "apps/web/src/components/profile/EditProfileDialog.tsx",
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx",
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
         "apps/web/src/components/settings/ProfileSettingsPanel.tsx",
         "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
         "apps/web/src/components/settings/SettingsSection.tsx"
@@ -15773,7 +15774,7 @@
       "token": "divide-[color:var(--color-border)]",
       "occurrences": 3,
       "files": [
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx",
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
         "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
         "apps/web/src/components/settings/SettingsSection.tsx"
       ],
@@ -25853,12 +25854,12 @@
       "token": "[&>[data-slot=input]]:pr-9",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx"
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx"
       ],
       "screens": [
         "settings"
       ],
-      "runtime": false,
+      "runtime": true,
       "status": "UNSUPPORTED",
       "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
     },
@@ -41377,12 +41378,12 @@
       "token": "right-2.5",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx"
+        "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx"
       ],
       "screens": [
         "settings"
       ],
-      "runtime": false,
+      "runtime": true,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },

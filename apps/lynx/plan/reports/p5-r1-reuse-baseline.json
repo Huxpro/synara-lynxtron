@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-03T01:18:13.709Z",
+  "generatedAt": "2026-08-03T02:28:25.825Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -21,7 +21,7 @@
     "entries": [
       "src/app/index.tsx"
     ],
-    "modules": 484,
+    "modules": 488,
     "externalImports": [
       "@base-ui/react/autocomplete",
       "@base-ui/react/collapsible",
@@ -242,11 +242,11 @@
         "loc": 78970
       },
       "currentReuse": {
-        "modules": 231,
-        "loc": 43643,
-        "modulePercent": 59.08,
-        "locPercent": 55.27,
-        "gatePercent": 55.27
+        "modules": 233,
+        "loc": 44169,
+        "modulePercent": 59.59,
+        "locPercent": 55.93,
+        "gatePercent": 55.93
       },
       "modules": [
         {
@@ -4265,7 +4265,7 @@
           "loc": 108,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -4580,7 +4580,7 @@
           "loc": 418,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/keybindings.ts",
             "apps/web/src/lib/utils.ts",
@@ -5147,11 +5147,11 @@
         "loc": 68488
       },
       "currentReuse": {
-        "modules": 229,
-        "loc": 43493,
-        "modulePercent": 67.75,
-        "locPercent": 63.5,
-        "gatePercent": 63.5
+        "modules": 230,
+        "loc": 43601,
+        "modulePercent": 68.05,
+        "locPercent": 63.66,
+        "gatePercent": 63.66
       },
       "modules": [
         {
@@ -8710,7 +8710,7 @@
           "loc": 108,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -9360,11 +9360,11 @@
         "loc": 143470
       },
       "currentReuse": {
-        "modules": 341,
-        "loc": 55532,
-        "modulePercent": 47.03,
-        "locPercent": 38.71,
-        "gatePercent": 38.71
+        "modules": 343,
+        "loc": 56058,
+        "modulePercent": 47.31,
+        "locPercent": 39.07,
+        "gatePercent": 39.07
       },
       "modules": [
         {
@@ -18173,7 +18173,7 @@
           "loc": 108,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -18542,7 +18542,7 @@
           "loc": 418,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/keybindings.ts",
             "apps/web/src/lib/utils.ts",
@@ -19054,8 +19054,8 @@
         "src/app/SettingsPage.tsx"
       ],
       "graph": {
-        "modules": 469,
-        "loc": 90831,
+        "modules": 471,
+        "loc": 90936,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -19146,8 +19146,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 396,
-          "loc": 82705
+          "modules": 398,
+          "loc": 82810
         },
         "PATCHED": {
           "modules": 1,
@@ -19163,15 +19163,15 @@
         }
       },
       "eligible": {
-        "modules": 460,
-        "loc": 89025
+        "modules": 462,
+        "loc": 89130
       },
       "currentReuse": {
-        "modules": 256,
-        "loc": 46187,
-        "modulePercent": 55.65,
-        "locPercent": 51.88,
-        "gatePercent": 51.88
+        "modules": 260,
+        "loc": 46918,
+        "modulePercent": 56.28,
+        "locPercent": 52.64,
+        "gatePercent": 52.64
       },
       "modules": [
         {
@@ -20111,20 +20111,40 @@
           "dependencies": []
         },
         {
+          "path": "apps/web/src/components/settings/KeyboardShortcutsSettingsComposition.tsx",
+          "loc": 84,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": [
+            "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
+            "apps/web/src/components/ui/shortcut-kbd.tsx",
+            "apps/web/src/platform/env.ts",
+            "apps/web/src/shortcutsSheet.ts"
+          ]
+        },
+        {
+          "path": "apps/web/src/components/settings/KeyboardShortcutsSettingsCompositionElements.tsx",
+          "loc": 121,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": [
+            "apps/web/src/components/ui/input.tsx",
+            "apps/web/src/lib/central-icons.tsx",
+            "apps/web/src/lib/utils.ts",
+            "apps/web/src/settingsPanelStyles.ts"
+          ]
+        },
+        {
           "path": "apps/web/src/components/settings/KeyboardShortcutsSettingsPanel.tsx",
-          "loc": 110,
+          "loc": 10,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
           "dependencies": [
-            "apps/web/src/components/ui/input.tsx",
-            "apps/web/src/components/ui/shortcut-kbd.tsx",
-            "apps/web/src/lib/central-icons.tsx",
-            "apps/web/src/lib/serverReactQuery.ts",
-            "apps/web/src/lib/utils.ts",
-            "apps/web/src/platform/env.ts",
-            "apps/web/src/settingsPanelStyles.ts",
-            "apps/web/src/shortcutsSheet.ts"
+            "apps/web/src/components/settings/KeyboardShortcutsSettingsComposition.tsx",
+            "apps/web/src/lib/serverReactQuery.ts"
           ]
         },
         {
@@ -24095,7 +24115,7 @@
           "loc": 108,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -24435,7 +24455,7 @@
           "loc": 418,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/keybindings.ts",
             "apps/web/src/lib/utils.ts",
@@ -25020,11 +25040,11 @@
         "loc": 95081
       },
       "currentReuse": {
-        "modules": 281,
-        "loc": 49874,
-        "modulePercent": 56.77,
-        "locPercent": 52.45,
-        "gatePercent": 52.45
+        "modules": 283,
+        "loc": 50400,
+        "modulePercent": 57.17,
+        "locPercent": 53.01,
+        "gatePercent": 53.01
       },
       "modules": [
         {
@@ -30481,7 +30501,7 @@
           "loc": 108,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -30797,7 +30817,7 @@
           "loc": 418,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/keybindings.ts",
             "apps/web/src/lib/utils.ts",
@@ -31382,11 +31402,11 @@
         "loc": 95082
       },
       "currentReuse": {
-        "modules": 281,
-        "loc": 49874,
-        "modulePercent": 56.77,
-        "locPercent": 52.45,
-        "gatePercent": 52.45
+        "modules": 283,
+        "loc": 50400,
+        "modulePercent": 57.17,
+        "locPercent": 53.01,
+        "gatePercent": 53.01
       },
       "modules": [
         {
@@ -36843,7 +36863,7 @@
           "loc": 108,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -37159,7 +37179,7 @@
           "loc": 418,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/keybindings.ts",
             "apps/web/src/lib/utils.ts",
@@ -37741,11 +37761,11 @@
         "loc": 89836
       },
       "currentReuse": {
-        "modules": 303,
-        "loc": 51666,
-        "modulePercent": 62.47,
-        "locPercent": 57.51,
-        "gatePercent": 57.51
+        "modules": 305,
+        "loc": 52192,
+        "modulePercent": 62.89,
+        "locPercent": 58.1,
+        "gatePercent": 58.1
       },
       "modules": [
         {
@@ -42901,7 +42921,7 @@
           "loc": 108,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -43240,7 +43260,7 @@
           "loc": 418,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/keybindings.ts",
             "apps/web/src/lib/utils.ts",

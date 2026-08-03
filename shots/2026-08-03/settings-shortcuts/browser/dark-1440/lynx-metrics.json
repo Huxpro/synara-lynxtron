@@ -1,0 +1,63 @@
+{
+  "theme": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable",
+  "url": "http://127.0.0.1:63211/lynx/",
+  "innerWidth": 1440,
+  "innerHeight": 900,
+  "visualViewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "devicePixelRatio": 1,
+  "title": {
+    "x": 541,
+    "y": 40,
+    "width": 418.3125,
+    "height": 28,
+    "top": 40,
+    "right": 959.3125,
+    "bottom": 68,
+    "left": 541
+  },
+  "search": {
+    "x": 541,
+    "y": 126,
+    "width": 624,
+    "height": 28,
+    "top": 126,
+    "right": 1165,
+    "bottom": 154,
+    "left": 541
+  },
+  "header": {
+    "x": 542,
+    "y": 171,
+    "width": 622,
+    "height": 33.5,
+    "top": 171,
+    "right": 1164,
+    "bottom": 204.5,
+    "left": 542
+  },
+  "first": {
+    "x": 542,
+    "y": 204.5,
+    "width": 622,
+    "height": 59,
+    "top": 204.5,
+    "right": 1164,
+    "bottom": 263.5,
+    "left": 542
+  },
+  "tenth": {
+    "x": 542,
+    "y": 735.5,
+    "width": 622,
+    "height": 59,
+    "top": 735.5,
+    "right": 1164,
+    "bottom": 794.5,
+    "left": 542
+  },
+  "rowCount": 51,
+  "hasRealKeybinding": true
+}

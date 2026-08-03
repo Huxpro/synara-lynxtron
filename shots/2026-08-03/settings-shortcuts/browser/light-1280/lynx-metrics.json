@@ -1,0 +1,62 @@
+{
+  "url": "http://127.0.0.1:63211/lynx/",
+  "innerWidth": 1280,
+  "innerHeight": 820,
+  "visualViewport": {
+    "width": 1280,
+    "height": 820
+  },
+  "devicePixelRatio": 1,
+  "title": {
+    "x": 461,
+    "y": 40,
+    "width": 418.3125,
+    "height": 28,
+    "top": 40,
+    "right": 879.3125,
+    "bottom": 68,
+    "left": 461
+  },
+  "search": {
+    "x": 461,
+    "y": 126,
+    "width": 624,
+    "height": 28,
+    "top": 126,
+    "right": 1085,
+    "bottom": 154,
+    "left": 461
+  },
+  "header": {
+    "x": 462,
+    "y": 171,
+    "width": 622,
+    "height": 33.5,
+    "top": 171,
+    "right": 1084,
+    "bottom": 204.5,
+    "left": 462
+  },
+  "first": {
+    "x": 462,
+    "y": 204.5,
+    "width": 622,
+    "height": 59,
+    "top": 204.5,
+    "right": 1084,
+    "bottom": 263.5,
+    "left": 462
+  },
+  "tenth": {
+    "x": 462,
+    "y": 735.5,
+    "width": 622,
+    "height": 59,
+    "top": 735.5,
+    "right": 1084,
+    "bottom": 794.5,
+    "left": 462
+  },
+  "rowCount": 51,
+  "hasRealKeybinding": true
+}
