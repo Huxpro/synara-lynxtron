@@ -6,6 +6,16 @@
 // Layer: L1 platform port (web implementation)
 // Exports: addWindowEventListener, removeWindowEventListener, dispatchWindowEvent
 
+export function addWindowEventListener<Type extends keyof WindowEventMap>(
+  type: Type,
+  listener: (this: Window, event: WindowEventMap[Type]) => void,
+  options?: AddEventListenerOptions | boolean,
+): void;
+export function addWindowEventListener(
+  type: string,
+  listener: EventListener,
+  options?: AddEventListenerOptions | boolean,
+): void;
 export function addWindowEventListener(
   type: string,
   listener: EventListener,
@@ -17,6 +27,16 @@ export function addWindowEventListener(
   window.addEventListener(type, listener, options);
 }
 
+export function removeWindowEventListener<Type extends keyof WindowEventMap>(
+  type: Type,
+  listener: (this: Window, event: WindowEventMap[Type]) => void,
+  options?: EventListenerOptions | boolean,
+): void;
+export function removeWindowEventListener(
+  type: string,
+  listener: EventListener,
+  options?: EventListenerOptions | boolean,
+): void;
 export function removeWindowEventListener(
   type: string,
   listener: EventListener,
@@ -31,6 +51,16 @@ export function dispatchWindowEvent(event: Event): boolean {
   return window.dispatchEvent(event);
 }
 
+export function addDocumentEventListener<Type extends keyof DocumentEventMap>(
+  type: Type,
+  listener: (this: Document, event: DocumentEventMap[Type]) => void,
+  options?: AddEventListenerOptions | boolean,
+): void;
+export function addDocumentEventListener(
+  type: string,
+  listener: EventListener,
+  options?: AddEventListenerOptions | boolean,
+): void;
 export function addDocumentEventListener(
   type: string,
   listener: EventListener,
@@ -40,6 +70,16 @@ export function addDocumentEventListener(
   document.addEventListener(type, listener, options);
 }
 
+export function removeDocumentEventListener<Type extends keyof DocumentEventMap>(
+  type: Type,
+  listener: (this: Document, event: DocumentEventMap[Type]) => void,
+  options?: EventListenerOptions | boolean,
+): void;
+export function removeDocumentEventListener(
+  type: string,
+  listener: EventListener,
+  options?: EventListenerOptions | boolean,
+): void;
 export function removeDocumentEventListener(
   type: string,
   listener: EventListener,

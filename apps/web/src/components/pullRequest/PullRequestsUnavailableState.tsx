@@ -23,7 +23,7 @@ import { cn } from "~/lib/utils";
 import { ensureNativeApi } from "~/nativeApi";
 import { PR_FINE_TEXT_CLASS_NAME, PR_META_TEXT_CLASS_NAME } from "./pullRequestText";
 
-import { getNavigatorPlatform } from "~/platform/env";
+import { getNavigatorPlatform, isBrowser } from "~/platform/env";
 export function isPullRequestsUnavailableError(
   error: unknown,
 ): error is { _tag: "PullRequestsUnavailableError"; reason: string; message: string } {

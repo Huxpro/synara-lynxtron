@@ -25,7 +25,7 @@ export type Icon = React.FC<SVGProps<SVGSVGElement>>;
 // Adapts Simple Icons components to the app's SVG icon shape without changing call sites.
 function adaptSimpleIcon(Component: IconType): Icon {
   return function SimpleIcon({ color, ...props }) {
-    const iconProps = props as Omit<SVGProps<SVGElement>, "color">;
+    const { children: _children, ...iconProps } = props;
     return <Component {...iconProps} {...(typeof color === "string" ? { color } : {})} />;
   };
 }
@@ -165,9 +165,7 @@ export const Zed: Icon = (props) => {
   );
 };
 
-export const OpenAI: Icon = ({ color, ...props }) => {
-  const iconProps = props as Omit<SVGProps<SVGElement>, "color">;
-
+export const OpenAI: Icon = ({ color, children: _children, ...iconProps }) => {
   return <SiOpenai {...iconProps} {...(typeof color === "string" ? { color } : {})} />;
 };
 

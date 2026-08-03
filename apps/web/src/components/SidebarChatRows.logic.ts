@@ -8,20 +8,24 @@ import {
   resolveSidebarThreadListPaging,
 } from "./SidebarThreadPaging.logic";
 
-export interface SidebarChatRowEntry<TThread> {
+export interface SidebarChatRowEntry<
+  TThread extends { readonly id: string; readonly parentThreadId?: string | null | undefined },
+> {
   readonly kind: "thread";
-  readonly rowId: string;
-  readonly rootRowId: string;
+  readonly rowId: TThread["id"];
+  readonly rootRowId: TThread["id"];
   readonly row: {
     readonly thread: TThread;
     readonly depth: number;
-    readonly rootThreadId: string;
+    readonly rootThreadId: TThread["id"];
   };
 }
 
-export interface SidebarChatRowsData<TThread> {
+export interface SidebarChatRowsData<
+  TThread extends { readonly id: string; readonly parentThreadId?: string | null | undefined },
+> {
   readonly orderedEntries: readonly SidebarChatRowEntry<TThread>[];
-  readonly orderedThreadIds: readonly string[];
+  readonly orderedThreadIds: readonly TThread["id"][];
   readonly visibleEntries: readonly SidebarChatRowEntry<TThread>[];
   readonly effectiveExtraPages: number;
   readonly canShowMoreThreads: boolean;
@@ -114,8 +118,7 @@ export function deriveSidebarChatRows<
     orderedThreadIds: orderedEntries.map((entry) => entry.rowId),
     visibleEntries,
     effectiveExtraPages: paging.effectiveExtraPages,
-    canShowMoreThreads:
-      paging.canShowMore && visibleEntries.length < orderedEntries.length,
+    canShowMoreThreads: paging.canShowMore && visibleEntries.length < orderedEntries.length,
     canShowLessThreads: paging.canShowLess,
     activeEntryId: activeEntry?.rowId ?? null,
   };

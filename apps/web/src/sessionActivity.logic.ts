@@ -2,13 +2,13 @@
 // Purpose: Small runtime-portable predicates for the latest turn/session lifecycle.
 // Exports: Shared settled/live checks without the full work-log projection graph.
 
-type LatestTurnTiming = {
+export type LatestTurnTiming = {
   readonly state: string;
   readonly startedAt?: string | null | undefined;
   readonly completedAt?: string | null | undefined;
 };
 
-type SessionActivityState = {
+export type SessionActivityState = {
   readonly orchestrationStatus?: string | null | undefined;
   readonly activeTurnId?: string | null | undefined;
 };

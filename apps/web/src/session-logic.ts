@@ -12,6 +12,8 @@ import { orderedActivities } from "./workLog";
 import {
   hasLiveLatestTurn,
   isLatestTurnSettled,
+  type LatestTurnTiming,
+  type SessionActivityState,
 } from "./sessionActivity.logic";
 
 import type {
@@ -43,10 +45,7 @@ export {
   type WorkLogSynaraCreatedThread,
   type WorkLogSynaraThreadCreation,
 } from "./workLog";
-export {
-  hasLiveLatestTurn,
-  isLatestTurnSettled,
-} from "./sessionActivity.logic";
+export { hasLiveLatestTurn, isLatestTurnSettled } from "./sessionActivity.logic";
 
 export type ProviderPickerKind = ProviderKind;
 
@@ -178,7 +177,7 @@ export function isThreadRunningTurn(thread: Pick<Thread, "session">): boolean {
 }
 
 export function deriveActiveWorkStartedAt(
-  latestTurn: LatestTurnTiming | null,
+  latestTurn: (LatestTurnTiming & { readonly turnId: TurnId }) | null,
   session: SessionActivityState | null,
   sendStartedAt: string | null,
 ): string | null {

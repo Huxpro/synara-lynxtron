@@ -703,7 +703,9 @@ async function waitForShellProjectById(
   return { project: null, snapshot: latestSnapshot };
 }
 
-function automationScheduleActivityPayload(schedule: AutomationSchedule) {
+function automationScheduleActivityPayload(
+  schedule: AutomationSchedule,
+): Record<string, string | number> {
   switch (schedule.type) {
     case "manual":
       return { type: "manual" } as const;

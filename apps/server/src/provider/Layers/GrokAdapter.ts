@@ -1937,7 +1937,8 @@ export function makeGrokAdapter(
                     turnId,
                     payload: { planMarkdown: terminalPlanMarkdown },
                     raw: {
-                      source: "synara.grok.terminal-plan-response",
+                      source: "acp.jsonrpc",
+                      method: "synara.grok.terminal-plan-response",
                       payload: result,
                     },
                   });

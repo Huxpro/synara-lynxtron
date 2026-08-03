@@ -68,6 +68,7 @@ export function useMediaQuery(query: BreakpointQuery | MediaQueryInput | (string
   const subscribe = (callback: () => void) => {
     if (!isBrowser()) return () => {};
     const mql = matchMediaSafe(mediaQuery);
+    if (!mql) return () => {};
     mql.addEventListener("change", callback);
     return () => mql.removeEventListener("change", callback);
   };

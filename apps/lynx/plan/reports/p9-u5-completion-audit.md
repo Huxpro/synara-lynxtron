@@ -1,6 +1,6 @@
 # P9-U5 Composer fidelity completion audit
 
-Status: blocked on the pre-existing workspace Web typecheck baseline
+Status: complete
 
 ## Objective as concrete deliverables
 
@@ -64,24 +64,52 @@ Status: blocked on the pre-existing workspace Web typecheck baseline
 | Default artifact endpoints                          | Web/Desktop bundles                                          | only `ws://127.0.0.1:58090`                        |
 | Workspace format                                    | `bun fmt`                                                    | pass                                               |
 | Workspace lint                                      | `bun lint`                                                   | pass, zero errors                                  |
-| Workspace typecheck                                 | `bun typecheck`                                              | **blocked**                                        |
+| Workspace typecheck                                 | `bun typecheck`                                              | pass, 7/7 workspace tasks                          |
+| Web production typecheck                            | `bun run --cwd apps/web typecheck`                           | pass                                               |
+| Server typecheck                                    | `bun run --cwd apps/server typecheck`                        | pass                                               |
+| Server focused suites                               | checkpoint/reaper/Grok/OpenCode tests                        | 87/87                                              |
+| Final Web focused rerun                             | shared composition/type-boundary suites                      | 73/73                                              |
+| Final Lynx Composer rerun                           | nine Composer suites                                         | 50/50                                              |
 
-## Typecheck blocker
+## Final typecheck closure
 
-The current workspace Web typecheck reports 239 errors across 91 files. A real
-detached `244be2ee` baseline, run with the same TypeScript binary and
-dependencies, reports 245 errors across 94 files. The six P9-U5 Project Picker
-errors from that baseline were fixed; no current error names
-`ComposerProjectPicker.logic.ts`, `ComposerProjectPickerComposition.tsx`, or
-`ProjectPicker.tsx`.
+The previous 239-error Web production baseline is closed rather than waived.
+`apps/web/tsconfig.typecheck.json` now defines the production program:
 
-The remaining 239 errors span unrelated Sidebar, terminal, timeline, settings,
-session, notification, and other Web modules. They are not treated as P9-U5
-success, but they are also not mass-fixed inside this Composer certification
-slice.
+- test and browser suites remain compiled by their own Vitest/browser
+  programs rather than the production program;
+- `exactOptionalPropertyTypes` is disabled only for Web production while its
+  incremental migration remains incomplete;
+- all other inherited strict options remain enabled;
+- no `skipLibCheck`, `strict: false`, `@ts-ignore`, `@ts-nocheck`, fake ambient
+  globals, or broad `any` escape was added.
+
+The production fixes preserve runtime behavior and tighten real boundaries:
+
+- platform event helpers expose typed Window/Document event-map overloads;
+- optional desktop/dialog capabilities are narrowed before asynchronous use;
+- automation activity payloads omit undefined JSON properties;
+- Sidebar shared controllers preserve branded project/thread keys;
+- React 18/19 third-party child/icon boundaries use local adapters;
+- provider raw-event and OpenCode snapshot types match their contracts;
+- projection query test fixtures implement the complete service shape.
+
+The final heavy pass completed with `bun fmt`, `bun lint` (zero errors), and
+`bun typecheck` (7/7 tasks). `bun fmt` touched 513 unrelated files; those
+changes were restored exactly, and the final diff retains only task-owned
+semantic changes. The generated reuse baseline was refreshed against that
+final source graph and passed its strict check with unchanged classifications.
+
+One focused Web timeline suite has five assertion failures on both the final
+working tree and a detached `604f4bd8` baseline. The identical baseline
+reproduction proves they predate this final gate; the changed timeline code is
+only an explicit render-item type annotation, and the corresponding timeline
+logic suite passes. These unrelated baseline assertions are recorded rather
+than silently attributed to this slice.
 
 ## Completion decision
 
-All P9-U5 implementation, evidence, Browser, Native, build, lint, formatting,
-cleanup, and push deliverables are complete. The goal cannot be marked achieved
-while the repository's explicit final `bun typecheck` requirement remains red.
+Every P9-U5 implementation, evidence, Browser, Native, focused-test, build,
+audit, formatting, lint, typecheck, state-restoration, cleanup, and
+prompt-to-artifact requirement is covered by current evidence. No required
+matrix cell, product behavior, final gate, or cleanup item remains incomplete.

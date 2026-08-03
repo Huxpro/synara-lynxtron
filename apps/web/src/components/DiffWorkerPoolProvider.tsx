@@ -32,8 +32,7 @@ function DiffWorkerThemeSync({ themeName }: { themeName: DiffThemeName }) {
 export function DiffWorkerPoolProvider({ children }: { children?: ReactNode }) {
   const { resolvedTheme } = useTheme();
   const diffThemeName = resolveDiffThemeName(resolvedTheme);
-  const cores =
-    Math.max(1, getHardwareConcurrency() || 4);
+  const cores = Math.max(1, getHardwareConcurrency() || 4);
   const workerPoolSize = Math.max(2, Math.min(6, Math.floor(cores / 2)));
 
   return (
@@ -49,7 +48,7 @@ export function DiffWorkerPoolProvider({ children }: { children?: ReactNode }) {
       }}
     >
       <DiffWorkerThemeSync themeName={diffThemeName} />
-      {children}
+      <>{children}</>
     </WorkerPoolContextProvider>
   );
 }

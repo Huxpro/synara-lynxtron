@@ -1,6 +1,6 @@
 # P9-U5 Composer fidelity convergence plan
 
-Status: implementation and certification complete; final workspace typecheck blocked
+Status: complete
 
 ## Goal prompt
 
@@ -653,11 +653,25 @@ Run only after all Browser paired states pass.
   - `bun fmt`: pass;
   - `bun lint`: pass with zero errors after adding missing browser-file
     overrides for the existing restricted-global rule;
-  - `bun typecheck`: blocked by 239 pre-existing Web errors across 91 files.
-    A detached `244be2ee` baseline has 245 errors across 94 files, including
-    the six Project Picker errors fixed by this slice. No P9-U5 Picker errors
-    remain. The remaining failures are outside this goal and are not hidden or
-    mass-edited.
+  - `bun typecheck`: pass, 7/7 workspace tasks.
+- The final gate introduced a dedicated Web production typecheck config. It
+  excludes Vitest/browser suites from the production program, keeps the
+  remaining strict options enabled, and limits the existing
+  `exactOptionalPropertyTypes` migration exception to that Web production
+  config.
+- Production errors were fixed at their real boundaries: typed platform event
+  overloads, optional host capabilities, JSON payload construction, branded
+  project/space/thread ids, React 18/19 third-party adapters, and narrow
+  provider/query contracts. Server fixtures were updated to satisfy the
+  complete projection query interface.
+- Final focused reruns passed: Web shared/type-boundary suites 73/73, Lynx
+  Composer suites 50/50, and Server provider/query suites 87/87. The Web
+  production build, strict Composer verifier (23 states, zero incomplete),
+  verifier regressions (6/6), reuse audit, and style audit all passed.
+- A detached `604f4bd8` run reproduced the same five pre-existing
+  `MessagesTimeline.test.tsx` assertion failures seen before this final gate;
+  they are not regressions from this slice and were not mixed into the
+  Composer/typecheck closure.
 
 ## Test and build gates
 

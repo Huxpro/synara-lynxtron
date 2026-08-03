@@ -132,8 +132,9 @@ export function NotificationsSettingsPanel({
     const title = "Activity notification";
     const body = "Notification test for chats and terminal agents.";
 
-    if (getDesktopBridge()) {
-      const shown = await getDesktopBridge().notifications.show({ title, body, silent: false });
+    const desktopBridge = getDesktopBridge();
+    if (desktopBridge) {
+      const shown = await desktopBridge.notifications.show({ title, body, silent: false });
       toastManager.add({
         type: shown ? "success" : "warning",
         title: shown ? "Test notification sent" : "Notifications unavailable",

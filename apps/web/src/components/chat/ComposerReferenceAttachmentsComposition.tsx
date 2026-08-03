@@ -1,7 +1,10 @@
 // FILE: ComposerReferenceAttachmentsComposition.tsx
 // Purpose: Own the cross-platform composer reference-attachment ordering and visibility.
 
-import { type ComposerImageAttachment } from "../../composerDraftStore";
+import {
+  type ComposerFileAttachment,
+  type ComposerImageAttachment,
+} from "../../composerDraftStore";
 import { type PastedTextDraft } from "../../lib/composerPastedText";
 import { type FileCommentDraft } from "../../lib/fileComments";
 import { type ChatAssistantSelectionAttachment } from "../../types";
@@ -19,12 +22,7 @@ export interface ComposerReferenceAttachmentsCompositionProps {
   assistantSelections: ReadonlyArray<ChatAssistantSelectionAttachment>;
   fileComments: ReadonlyArray<FileCommentDraft>;
   pastedTexts?: ReadonlyArray<PastedTextDraft>;
-  files: ReadonlyArray<{
-    readonly id: string;
-    readonly mimeType: string;
-    readonly name: string;
-    readonly sizeBytes: number;
-  }>;
+  files: ReadonlyArray<ComposerFileAttachment>;
   images: ReadonlyArray<ComposerImageAttachment>;
   nonPersistedImageIdSet: ReadonlySet<string>;
   onExpandImage: (preview: ExpandedImagePreview) => void;
@@ -80,11 +78,7 @@ export function ComposerReferenceAttachmentsComposition({
         />
       ))}
       {files.map((file) => (
-        <ComposerFileAttachmentElement
-          key={file.id}
-          file={file}
-          onRemove={onRemoveFile}
-        />
+        <ComposerFileAttachmentElement key={file.id} file={file} onRemove={onRemoveFile} />
       ))}
       {images.map((image) => (
         <ComposerImageAttachmentElement

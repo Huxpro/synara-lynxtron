@@ -4881,3 +4881,33 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   dependencies对detached `244be2ee`实测为245 errors / 94 files；当前为239 / 91，
   P9-U5的6个Project Picker errors已全部归零。剩余跨Sidebar/terminal/timeline/settings
   等无关模块，不在Composer certification里批量修或降级tsconfig。
+
+## 2026-08-04 — P9-U5 final workspace gate closed
+
+- 关闭此前唯一未完成的workspace gate，而非豁免baseline。新增
+  `apps/web/tsconfig.typecheck.json`作为Web production program：排除由Vitest/browser
+  suites独立编译的test/browser files，仅在Web production保留
+  `exactOptionalPropertyTypes: false`迁移边界，其余strict配置继承；未使用
+  `skipLibCheck`、`strict: false`、ignore directives、伪ambient globals或宽泛any。
+- Web production errors按真实边界修复：Window/Document event-map overloads、optional
+  desktop/dialog capability narrowing、Json payload、branded Project/Space/Thread ids、
+  React 18/19第三方children/icon adapter，以及session lifecycle最小类型。Web package
+  typecheck zero errors。
+- root gate暴露Server真实错误后同步修复：projection query fixtures补齐
+  sidebar shell/search methods；Grok terminal-plan raw event使用允许的`acp.jsonrpc`
+  source并保留method identity；OpenCode snapshot接受SDK实际`time.created` shape。
+  Server typecheck与focused checkpoint/reaper/Grok/OpenCode **87/87**通过。
+- final verification：Web focused **73/73**、Lynx Composer **50/50**、Web production
+  build green；strict Composer verifier **23 states / 0 incomplete**、verifier regressions
+  **6/6**、reuse/style strict checks green。`bun fmt`、`bun lint`（0 errors）与
+  `bun typecheck`（7/7 workspace tasks）全部通过。
+- `bun fmt`曾触及513个task外文件；通过pre-format path snapshot精确恢复，并进一步移除
+  目标文件中的纯format churn，最终只保留语义diff。reuse generated baseline按最终source
+  graph刷新，module classifications不变，所有screen gate保持高于旧baseline。
+- `MessagesTimeline.test.tsx`的5个icon/status assertions在当前tree与detached
+  `604f4bd8`均同样失败，确认是本slice之前的baseline，不伪称通过，也不混入P9-U5
+  typecheck closure；相关timeline logic suite通过。
+- prompt-to-artifact completion audit重新逐项核对strict matrix、shared owners、icons、
+  single token projection、canonical/structured payload、Native identity/consoles/state
+  restoration、builds、cleanup与最终workspace gates，未发现required gap。P9-U5状态更新为
+  complete。

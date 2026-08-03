@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-03T17:02:07.048Z",
+  "generatedAt": "2026-08-03T17:49:54.076Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -136,7 +136,7 @@
       ],
       "graph": {
         "modules": 401,
-        "loc": 80832,
+        "loc": 80898,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -223,7 +223,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 333,
-          "loc": 72899
+          "loc": 72910
         },
         "PATCHED": {
           "modules": 1,
@@ -231,23 +231,23 @@
         },
         "SPLIT": {
           "modules": 58,
-          "loc": 5907
+          "loc": 5960
         },
         "EXCLUSIVE": {
           "modules": 9,
-          "loc": 1806
+          "loc": 1808
         }
       },
       "eligible": {
         "modules": 392,
-        "loc": 79026
+        "loc": 79090
       },
       "currentReuse": {
         "modules": 236,
-        "loc": 44351,
+        "loc": 44402,
         "modulePercent": 60.2,
-        "locPercent": 56.12,
-        "gatePercent": 56.12
+        "locPercent": 56.14,
+        "gatePercent": 56.14
       },
       "modules": [
         {
@@ -730,7 +730,7 @@
         },
         {
           "path": "apps/web/src/components/Icons.tsx",
-          "loc": 305,
+          "loc": 303,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -1015,7 +1015,7 @@
         },
         {
           "path": "apps/web/src/components/Sidebar.tsx",
-          "loc": 6046,
+          "loc": 6051,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -1190,7 +1190,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarChatRows.logic.ts",
-          "loc": 111,
+          "loc": 114,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -1657,7 +1657,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarSections.logic.ts",
-          "loc": 76,
+          "loc": 73,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -2201,7 +2201,7 @@
         },
         {
           "path": "apps/web/src/components/terminal/terminalRuntimeAppearance.ts",
-          "loc": 266,
+          "loc": 268,
           "classification": "EXCLUSIVE",
           "reason": "xterm/canvas terminal hard island",
           "currentReuse": "UNMAPPED",
@@ -3023,7 +3023,7 @@
         },
         {
           "path": "apps/web/src/hooks/useMediaQuery.ts",
-          "loc": 82,
+          "loc": 83,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -3196,7 +3196,7 @@
         },
         {
           "path": "apps/web/src/hooks/useTheme.ts",
-          "loc": 303,
+          "loc": 316,
           "classification": "SPLIT",
           "reason": "theme state contract with DOM versus static Lynx token projection",
           "currentReuse": "SHARED",
@@ -4107,7 +4107,7 @@
         },
         {
           "path": "apps/web/src/notifications/taskCompletion.tsx",
-          "loc": 317,
+          "loc": 325,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -4204,7 +4204,7 @@
         },
         {
           "path": "apps/web/src/platform/events.ts",
-          "loc": 36,
+          "loc": 76,
           "classification": "SPLIT",
           "reason": "L1 platform implementation behind a shared port",
           "currentReuse": "SHARED",
@@ -4526,7 +4526,7 @@
         },
         {
           "path": "apps/web/src/session-logic.ts",
-          "loc": 487,
+          "loc": 486,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -5050,7 +5050,7 @@
       ],
       "graph": {
         "modules": 347,
-        "loc": 70327,
+        "loc": 70385,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -5137,7 +5137,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 282,
-          "loc": 62438
+          "loc": 62441
         },
         "PATCHED": {
           "modules": 1,
@@ -5145,23 +5145,23 @@
         },
         "SPLIT": {
           "modules": 56,
-          "loc": 5886
+          "loc": 5939
         },
         "EXCLUSIVE": {
           "modules": 8,
-          "loc": 1783
+          "loc": 1785
         }
       },
       "eligible": {
         "modules": 339,
-        "loc": 68544
+        "loc": 68600
       },
       "currentReuse": {
         "modules": 233,
-        "loc": 43783,
+        "loc": 43834,
         "modulePercent": 68.73,
-        "locPercent": 63.88,
-        "gatePercent": 63.88
+        "locPercent": 63.9,
+        "gatePercent": 63.9
       },
       "modules": [
         {
@@ -5535,7 +5535,7 @@
         },
         {
           "path": "apps/web/src/components/Icons.tsx",
-          "loc": 305,
+          "loc": 303,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -5769,7 +5769,7 @@
         },
         {
           "path": "apps/web/src/components/Sidebar.tsx",
-          "loc": 6046,
+          "loc": 6051,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -5944,7 +5944,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarChatRows.logic.ts",
-          "loc": 111,
+          "loc": 114,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -6411,7 +6411,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarSections.logic.ts",
-          "loc": 76,
+          "loc": 73,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -6933,7 +6933,7 @@
         },
         {
           "path": "apps/web/src/components/terminal/terminalRuntimeAppearance.ts",
-          "loc": 266,
+          "loc": 268,
           "classification": "EXCLUSIVE",
           "reason": "xterm/canvas terminal hard island",
           "currentReuse": "UNMAPPED",
@@ -7676,7 +7676,7 @@
         },
         {
           "path": "apps/web/src/hooks/useMediaQuery.ts",
-          "loc": 82,
+          "loc": 83,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -7777,7 +7777,7 @@
         },
         {
           "path": "apps/web/src/hooks/useTheme.ts",
-          "loc": 303,
+          "loc": 316,
           "classification": "SPLIT",
           "reason": "theme state contract with DOM versus static Lynx token projection",
           "currentReuse": "SHARED",
@@ -8658,7 +8658,7 @@
         },
         {
           "path": "apps/web/src/platform/events.ts",
-          "loc": 36,
+          "loc": 76,
           "classification": "SPLIT",
           "reason": "L1 platform implementation behind a shared port",
           "currentReuse": "SHARED",
@@ -8802,7 +8802,7 @@
         },
         {
           "path": "apps/web/src/session-logic.ts",
-          "loc": 487,
+          "loc": 486,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -9231,7 +9231,7 @@
       ],
       "graph": {
         "modules": 757,
-        "loc": 152023,
+        "loc": 152078,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -9367,23 +9367,23 @@
         },
         "SPLIT": {
           "modules": 74,
-          "loc": 8078
+          "loc": 8131
         },
         "EXCLUSIVE": {
           "modules": 28,
-          "loc": 8143
+          "loc": 8145
         }
       },
       "eligible": {
         "modules": 729,
-        "loc": 143880
+        "loc": 143933
       },
       "currentReuse": {
         "modules": 349,
-        "loc": 56729,
+        "loc": 56762,
         "modulePercent": 47.87,
-        "locPercent": 39.43,
-        "gatePercent": 39.43
+        "locPercent": 39.44,
+        "gatePercent": 39.44
       },
       "modules": [
         {
@@ -10531,7 +10531,7 @@
         },
         {
           "path": "apps/web/src/components/chat/ComposerReferenceAttachmentsComposition.tsx",
-          "loc": 95,
+          "loc": 89,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -11378,7 +11378,7 @@
         },
         {
           "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
-          "loc": 2691,
+          "loc": 2697,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -12284,7 +12284,7 @@
         },
         {
           "path": "apps/web/src/components/ChatView.tsx",
-          "loc": 10698,
+          "loc": 10700,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -12758,7 +12758,7 @@
         },
         {
           "path": "apps/web/src/components/DiffWorkerPoolProvider.tsx",
-          "loc": 48,
+          "loc": 47,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -12869,7 +12869,7 @@
         },
         {
           "path": "apps/web/src/components/Icons.tsx",
-          "loc": 305,
+          "loc": 303,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -13455,7 +13455,7 @@
         },
         {
           "path": "apps/web/src/components/pullRequest/PullRequestSummaryCompositionElements.tsx",
-          "loc": 275,
+          "loc": 263,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -13829,7 +13829,7 @@
         },
         {
           "path": "apps/web/src/components/Sidebar.tsx",
-          "loc": 6046,
+          "loc": 6051,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -14004,7 +14004,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarChatRows.logic.ts",
-          "loc": 111,
+          "loc": 114,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -14471,7 +14471,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarSections.logic.ts",
-          "loc": 76,
+          "loc": 73,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -15057,7 +15057,7 @@
         },
         {
           "path": "apps/web/src/components/terminal/terminalRuntimeAppearance.ts",
-          "loc": 266,
+          "loc": 268,
           "classification": "EXCLUSIVE",
           "reason": "xterm/canvas terminal hard island",
           "currentReuse": "UNMAPPED",
@@ -16308,7 +16308,7 @@
         },
         {
           "path": "apps/web/src/hooks/useMediaQuery.ts",
-          "loc": 82,
+          "loc": 83,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -16553,7 +16553,7 @@
         },
         {
           "path": "apps/web/src/hooks/useTheme.ts",
-          "loc": 303,
+          "loc": 316,
           "classification": "SPLIT",
           "reason": "theme state contract with DOM versus static Lynx token projection",
           "currentReuse": "SHARED",
@@ -18008,7 +18008,7 @@
         },
         {
           "path": "apps/web/src/notifications/taskCompletion.tsx",
-          "loc": 317,
+          "loc": 325,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -18140,7 +18140,7 @@
         },
         {
           "path": "apps/web/src/platform/events.ts",
-          "loc": 36,
+          "loc": 76,
           "classification": "SPLIT",
           "reason": "L1 platform implementation behind a shared port",
           "currentReuse": "SHARED",
@@ -18536,7 +18536,7 @@
         },
         {
           "path": "apps/web/src/session-logic.ts",
-          "loc": 487,
+          "loc": 486,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -19113,7 +19113,7 @@
       ],
       "graph": {
         "modules": 473,
-        "loc": 91058,
+        "loc": 91125,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -19205,7 +19205,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 400,
-          "loc": 82932
+          "loc": 82944
         },
         "PATCHED": {
           "modules": 1,
@@ -19213,23 +19213,23 @@
         },
         "SPLIT": {
           "modules": 63,
-          "loc": 6100
+          "loc": 6153
         },
         "EXCLUSIVE": {
           "modules": 9,
-          "loc": 1806
+          "loc": 1808
         }
       },
       "eligible": {
         "modules": 464,
-        "loc": 89252
+        "loc": 89317
       },
       "currentReuse": {
         "modules": 264,
-        "loc": 47190,
+        "loc": 47241,
         "modulePercent": 56.9,
-        "locPercent": 52.87,
-        "gatePercent": 52.87
+        "locPercent": 52.89,
+        "gatePercent": 52.89
       },
       "modules": [
         {
@@ -19743,7 +19743,7 @@
         },
         {
           "path": "apps/web/src/components/Icons.tsx",
-          "loc": 305,
+          "loc": 303,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -20116,7 +20116,7 @@
         },
         {
           "path": "apps/web/src/components/settings/DesktopSettingsPanels.tsx",
-          "loc": 434,
+          "loc": 435,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -20812,7 +20812,7 @@
         },
         {
           "path": "apps/web/src/components/Sidebar.tsx",
-          "loc": 6046,
+          "loc": 6051,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -20987,7 +20987,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarChatRows.logic.ts",
-          "loc": 111,
+          "loc": 114,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -21454,7 +21454,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarSections.logic.ts",
-          "loc": 76,
+          "loc": 73,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -21988,7 +21988,7 @@
         },
         {
           "path": "apps/web/src/components/terminal/terminalRuntimeAppearance.ts",
-          "loc": 266,
+          "loc": 268,
           "classification": "EXCLUSIVE",
           "reason": "xterm/canvas terminal hard island",
           "currentReuse": "UNMAPPED",
@@ -22831,7 +22831,7 @@
         },
         {
           "path": "apps/web/src/hooks/useMediaQuery.ts",
-          "loc": 82,
+          "loc": 83,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -23018,7 +23018,7 @@
         },
         {
           "path": "apps/web/src/hooks/useTheme.ts",
-          "loc": 303,
+          "loc": 316,
           "classification": "SPLIT",
           "reason": "theme state contract with DOM versus static Lynx token projection",
           "currentReuse": "SHARED",
@@ -24020,7 +24020,7 @@
         },
         {
           "path": "apps/web/src/notifications/taskCompletion.tsx",
-          "loc": 317,
+          "loc": 325,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -24125,7 +24125,7 @@
         },
         {
           "path": "apps/web/src/platform/events.ts",
-          "loc": 36,
+          "loc": 76,
           "classification": "SPLIT",
           "reason": "L1 platform implementation behind a shared port",
           "currentReuse": "SHARED",
@@ -24472,7 +24472,7 @@
         },
         {
           "path": "apps/web/src/session-logic.ts",
-          "loc": 487,
+          "loc": 486,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -24998,7 +24998,7 @@
       ],
       "graph": {
         "modules": 507,
-        "loc": 98936,
+        "loc": 98996,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -25101,7 +25101,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 436,
-          "loc": 88654
+          "loc": 88659
         },
         "PATCHED": {
           "modules": 1,
@@ -25109,23 +25109,23 @@
         },
         "SPLIT": {
           "modules": 59,
-          "loc": 6263
+          "loc": 6316
         },
         "EXCLUSIVE": {
           "modules": 11,
-          "loc": 3799
+          "loc": 3801
         }
       },
       "eligible": {
         "modules": 496,
-        "loc": 95137
+        "loc": 95195
       },
       "currentReuse": {
         "modules": 286,
-        "loc": 50582,
+        "loc": 50627,
         "modulePercent": 57.66,
-        "locPercent": 53.17,
-        "gatePercent": 53.17
+        "locPercent": 53.18,
+        "gatePercent": 53.18
       },
       "modules": [
         {
@@ -25596,7 +25596,7 @@
         },
         {
           "path": "apps/web/src/components/chat/ComposerReferenceAttachmentsComposition.tsx",
-          "loc": 95,
+          "loc": 89,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -26190,7 +26190,7 @@
         },
         {
           "path": "apps/web/src/components/Icons.tsx",
-          "loc": 305,
+          "loc": 303,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -27035,7 +27035,7 @@
         },
         {
           "path": "apps/web/src/components/Sidebar.tsx",
-          "loc": 6046,
+          "loc": 6051,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -27210,7 +27210,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarChatRows.logic.ts",
-          "loc": 111,
+          "loc": 114,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -27677,7 +27677,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarSections.logic.ts",
-          "loc": 76,
+          "loc": 73,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -28223,7 +28223,7 @@
         },
         {
           "path": "apps/web/src/components/terminal/terminalRuntimeAppearance.ts",
-          "loc": 266,
+          "loc": 268,
           "classification": "EXCLUSIVE",
           "reason": "xterm/canvas terminal hard island",
           "currentReuse": "UNMAPPED",
@@ -29133,7 +29133,7 @@
         },
         {
           "path": "apps/web/src/hooks/useMediaQuery.ts",
-          "loc": 82,
+          "loc": 83,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -29336,7 +29336,7 @@
         },
         {
           "path": "apps/web/src/hooks/useTheme.ts",
-          "loc": 303,
+          "loc": 316,
           "classification": "SPLIT",
           "reason": "theme state contract with DOM versus static Lynx token projection",
           "currentReuse": "SHARED",
@@ -30423,7 +30423,7 @@
         },
         {
           "path": "apps/web/src/notifications/taskCompletion.tsx",
-          "loc": 317,
+          "loc": 325,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -30520,7 +30520,7 @@
         },
         {
           "path": "apps/web/src/platform/events.ts",
-          "loc": 36,
+          "loc": 76,
           "classification": "SPLIT",
           "reason": "L1 platform implementation behind a shared port",
           "currentReuse": "SHARED",
@@ -30843,7 +30843,7 @@
         },
         {
           "path": "apps/web/src/session-logic.ts",
-          "loc": 487,
+          "loc": 486,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -31369,7 +31369,7 @@
       ],
       "graph": {
         "modules": 507,
-        "loc": 98937,
+        "loc": 98997,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -31472,7 +31472,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 436,
-          "loc": 88655
+          "loc": 88660
         },
         "PATCHED": {
           "modules": 1,
@@ -31480,23 +31480,23 @@
         },
         "SPLIT": {
           "modules": 59,
-          "loc": 6263
+          "loc": 6316
         },
         "EXCLUSIVE": {
           "modules": 11,
-          "loc": 3799
+          "loc": 3801
         }
       },
       "eligible": {
         "modules": 496,
-        "loc": 95138
+        "loc": 95196
       },
       "currentReuse": {
         "modules": 286,
-        "loc": 50582,
+        "loc": 50627,
         "modulePercent": 57.66,
-        "locPercent": 53.17,
-        "gatePercent": 53.17
+        "locPercent": 53.18,
+        "gatePercent": 53.18
       },
       "modules": [
         {
@@ -31967,7 +31967,7 @@
         },
         {
           "path": "apps/web/src/components/chat/ComposerReferenceAttachmentsComposition.tsx",
-          "loc": 95,
+          "loc": 89,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -32561,7 +32561,7 @@
         },
         {
           "path": "apps/web/src/components/Icons.tsx",
-          "loc": 305,
+          "loc": 303,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -33406,7 +33406,7 @@
         },
         {
           "path": "apps/web/src/components/Sidebar.tsx",
-          "loc": 6046,
+          "loc": 6051,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -33581,7 +33581,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarChatRows.logic.ts",
-          "loc": 111,
+          "loc": 114,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -34048,7 +34048,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarSections.logic.ts",
-          "loc": 76,
+          "loc": 73,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -34594,7 +34594,7 @@
         },
         {
           "path": "apps/web/src/components/terminal/terminalRuntimeAppearance.ts",
-          "loc": 266,
+          "loc": 268,
           "classification": "EXCLUSIVE",
           "reason": "xterm/canvas terminal hard island",
           "currentReuse": "UNMAPPED",
@@ -35504,7 +35504,7 @@
         },
         {
           "path": "apps/web/src/hooks/useMediaQuery.ts",
-          "loc": 82,
+          "loc": 83,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -35707,7 +35707,7 @@
         },
         {
           "path": "apps/web/src/hooks/useTheme.ts",
-          "loc": 303,
+          "loc": 316,
           "classification": "SPLIT",
           "reason": "theme state contract with DOM versus static Lynx token projection",
           "currentReuse": "SHARED",
@@ -36794,7 +36794,7 @@
         },
         {
           "path": "apps/web/src/notifications/taskCompletion.tsx",
-          "loc": 317,
+          "loc": 325,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -36891,7 +36891,7 @@
         },
         {
           "path": "apps/web/src/platform/events.ts",
-          "loc": 36,
+          "loc": 76,
           "classification": "SPLIT",
           "reason": "L1 platform implementation behind a shared port",
           "currentReuse": "SHARED",
@@ -37214,7 +37214,7 @@
         },
         {
           "path": "apps/web/src/session-logic.ts",
-          "loc": 487,
+          "loc": 486,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -37740,7 +37740,7 @@
       ],
       "graph": {
         "modules": 495,
-        "loc": 91698,
+        "loc": 91751,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -37840,7 +37840,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 422,
-          "loc": 82259
+          "loc": 82257
         },
         "PATCHED": {
           "modules": 1,
@@ -37848,23 +37848,23 @@
         },
         "SPLIT": {
           "modules": 63,
-          "loc": 7413
+          "loc": 7466
         },
         "EXCLUSIVE": {
           "modules": 9,
-          "loc": 1806
+          "loc": 1808
         }
       },
       "eligible": {
         "modules": 486,
-        "loc": 89892
+        "loc": 89943
       },
       "currentReuse": {
         "modules": 308,
-        "loc": 52374,
+        "loc": 52413,
         "modulePercent": 63.37,
-        "locPercent": 58.26,
-        "gatePercent": 58.26
+        "locPercent": 58.27,
+        "gatePercent": 58.27
       },
       "modules": [
         {
@@ -38647,7 +38647,7 @@
         },
         {
           "path": "apps/web/src/components/DiffWorkerPoolProvider.tsx",
-          "loc": 48,
+          "loc": 47,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -38685,7 +38685,7 @@
         },
         {
           "path": "apps/web/src/components/Icons.tsx",
-          "loc": 305,
+          "loc": 303,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -39208,7 +39208,7 @@
         },
         {
           "path": "apps/web/src/components/pullRequest/PullRequestSummaryCompositionElements.tsx",
-          "loc": 275,
+          "loc": 263,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -39544,7 +39544,7 @@
         },
         {
           "path": "apps/web/src/components/Sidebar.tsx",
-          "loc": 6046,
+          "loc": 6051,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -39719,7 +39719,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarChatRows.logic.ts",
-          "loc": 111,
+          "loc": 114,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -40186,7 +40186,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarSections.logic.ts",
-          "loc": 76,
+          "loc": 73,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -40732,7 +40732,7 @@
         },
         {
           "path": "apps/web/src/components/terminal/terminalRuntimeAppearance.ts",
-          "loc": 266,
+          "loc": 268,
           "classification": "EXCLUSIVE",
           "reason": "xterm/canvas terminal hard island",
           "currentReuse": "UNMAPPED",
@@ -41599,7 +41599,7 @@
         },
         {
           "path": "apps/web/src/hooks/useMediaQuery.ts",
-          "loc": 82,
+          "loc": 83,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -41782,7 +41782,7 @@
         },
         {
           "path": "apps/web/src/hooks/useTheme.ts",
-          "loc": 303,
+          "loc": 316,
           "classification": "SPLIT",
           "reason": "theme state contract with DOM versus static Lynx token projection",
           "currentReuse": "SHARED",
@@ -42845,7 +42845,7 @@
         },
         {
           "path": "apps/web/src/notifications/taskCompletion.tsx",
-          "loc": 317,
+          "loc": 325,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -42958,7 +42958,7 @@
         },
         {
           "path": "apps/web/src/platform/events.ts",
-          "loc": 36,
+          "loc": 76,
           "classification": "SPLIT",
           "reason": "L1 platform implementation behind a shared port",
           "currentReuse": "SHARED",
@@ -43304,7 +43304,7 @@
         },
         {
           "path": "apps/web/src/session-logic.ts",
-          "loc": 487,
+          "loc": 486,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",

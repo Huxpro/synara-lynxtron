@@ -22,8 +22,8 @@ export interface SidebarSectionCollections<
   TProject,
   TThread extends { readonly projectId: string },
 > {
-  readonly threadsByProjectId: ReadonlyMap<string, TThread[]>;
-  readonly sortedThreadsByProjectId: ReadonlyMap<string, TThread[]>;
+  readonly threadsByProjectId: ReadonlyMap<TThread["projectId"], TThread[]>;
+  readonly sortedThreadsByProjectId: ReadonlyMap<TThread["projectId"], TThread[]>;
   readonly sortedProjects: readonly TProject[];
   readonly projectPartitions: SidebarProjectPartitions<TProject>;
   readonly chatThreads: readonly TThread[];
@@ -46,7 +46,7 @@ export function deriveSidebarSectionCollections<
   readonly resolveProjectSection: (project: TProject) => SidebarProjectSection | null;
 }): SidebarSectionCollections<TProject, TThread> {
   const threadsByProjectId = groupSidebarThreadsByProjectId(input.treeThreads);
-  const sortedThreadsByProjectId = new Map<string, TThread[]>();
+  const sortedThreadsByProjectId = new Map<TThread["projectId"], TThread[]>();
   for (const [projectId, projectThreads] of threadsByProjectId) {
     sortedThreadsByProjectId.set(
       projectId,
@@ -59,10 +59,7 @@ export function deriveSidebarSectionCollections<
     input.projectSortThreads ?? input.treeThreads,
     input.projectSortOrder,
   );
-  const projectPartitions = partitionSidebarProjects(
-    sortedProjects,
-    input.resolveProjectSection,
-  );
+  const projectPartitions = partitionSidebarProjects(sortedProjects, input.resolveProjectSection);
   const flattenSectionThreads = (projects: readonly TProject[]) =>
     sortThreadsForSidebar(
       projects.flatMap((project) => sortedThreadsByProjectId.get(project.id) ?? []),

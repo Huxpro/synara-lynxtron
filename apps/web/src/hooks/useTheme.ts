@@ -31,7 +31,12 @@ import {
 
 import { webStorage } from "~/platform/storage";
 import { THEME_STORAGE_KEY } from "../appSettingsStorageProjection.logic";
-import { getNavigatorPlatform, isBrowser, matchMediaSafe, getDocumentElement } from "~/platform/env";
+import {
+  getNavigatorPlatform,
+  isBrowser,
+  matchMediaSafe,
+  getDocumentElement,
+} from "~/platform/env";
 import { getDesktopBridge } from "~/platform/desktopBridge";
 import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
 type ThemeSnapshot = {
@@ -111,6 +116,11 @@ function subscribe(listener: () => void): () => void {
   listeners.push(listener);
 
   const mediaQuery = matchMediaSafe(MEDIA_QUERY);
+  if (!mediaQuery) {
+    return () => {
+      listeners = listeners.filter((currentListener) => currentListener !== listener);
+    };
+  }
   const handleMediaChange = () => {
     const state = readStoredThemeState();
     if (state.mode === "system") {
@@ -144,6 +154,9 @@ function applyThemeState(state: ThemeState, suppressTransitions = false) {
   }
 
   const root = getDocumentElement();
+  if (!root) {
+    return;
+  }
   // Some server-rendered tests stub only the tiny DOM surface they need.
   if (
     typeof root.classList?.toggle !== "function" ||

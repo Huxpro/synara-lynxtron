@@ -29,7 +29,14 @@ import {
   shouldShowThreadNotificationToast,
 } from "./taskCompletion.logic";
 
-import { isBrowser, isSecureContext, isDocumentVisible, isDocumentFocused, focusWindow, hasNotificationApi } from "~/platform/env";
+import {
+  isBrowser,
+  isSecureContext,
+  isDocumentVisible,
+  isDocumentFocused,
+  focusWindow,
+  hasNotificationApi,
+} from "~/platform/env";
 import { getDesktopBridge } from "~/platform/desktopBridge";
 export type BrowserNotificationPermissionState =
   | NotificationPermission
@@ -94,12 +101,13 @@ async function showSystemThreadNotification(
 ): Promise<boolean> {
   const { body, title } = copy;
 
-  if (getDesktopBridge()) {
-    const supported = await getDesktopBridge().notifications.isSupported();
+  const desktopBridge = getDesktopBridge();
+  if (desktopBridge) {
+    const supported = await desktopBridge.notifications.isSupported();
     if (!supported) {
       return false;
     }
-    return getDesktopBridge().notifications.show({ title, body, silent: false, threadId });
+    return desktopBridge.notifications.show({ title, body, silent: false, threadId });
   }
 
   if (readBrowserNotificationPermissionState() !== "granted") {

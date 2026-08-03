@@ -70,9 +70,9 @@ export function getTerminalFontFamily(): string {
     return FALLBACK_MONO_FONT_FAMILY;
   }
 
-  const configuredFontFamily = getComputedStyleSafe(getDocumentElement()!)
-    .getPropertyValue("--terminal-font-family")
-    .trim();
+  const root = getDocumentElement();
+  const computedStyle = root ? getComputedStyleSafe(root) : null;
+  const configuredFontFamily = computedStyle?.getPropertyValue("--terminal-font-family").trim();
   return configuredFontFamily || FALLBACK_MONO_FONT_FAMILY;
 }
 
@@ -81,9 +81,11 @@ export function getTerminalFontSizePx(): number {
     return FALLBACK_TERMINAL_FONT_SIZE_PX;
   }
 
-  const rawValue = getComputedStyleSafe(getDocumentElement()!)
-    .getPropertyValue("--app-font-size-terminal")
-    .trim();
+  const root = getDocumentElement();
+  const rawValue =
+    (root ? getComputedStyleSafe(root) : null)
+      ?.getPropertyValue("--app-font-size-terminal")
+      .trim() ?? "";
   const parsedValue = Number.parseFloat(rawValue);
   return Number.isFinite(parsedValue) && parsedValue > 0
     ? parsedValue

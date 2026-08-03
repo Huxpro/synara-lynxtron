@@ -28,7 +28,7 @@ export function FileDiffSurface(props: { className?: string; children: ReactNode
       className={cn("diff-render-surface", props.className)}
       config={DIFF_VIRTUALIZER_CONFIG}
     >
-      {props.children}
+      <>{props.children}</>
     </Virtualizer>
   );
 }

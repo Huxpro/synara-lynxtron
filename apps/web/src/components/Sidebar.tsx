@@ -475,7 +475,7 @@ function ProjectContextMenuIcon({ icon }: { icon: LucideIcon }) {
   return <SidebarContextMenuIcon icon={icon} />;
 }
 
-type DebugFeatureFlagsWindow = Window & {
+type DebugFeatureFlagsWindow = {
   synaraShowFeatureFlags?: () => void;
   synaraHideFeatureFlags?: () => void;
 };
@@ -1164,7 +1164,7 @@ export default function Sidebar() {
       return;
     }
 
-    const debugWindow = globalThis as DebugFeatureFlagsWindow;
+    const debugWindow = globalThis as typeof globalThis & DebugFeatureFlagsWindow;
     const updateVisibility = () => {
       setShowDebugFeatureFlagsMenu(readDebugFeatureFlagsMenuVisibility());
     };
@@ -4879,7 +4879,12 @@ export default function Sidebar() {
         ),
         newSpaceIcon: AddPlusIcon,
         onSelectVoidSpace: () => handleSelectSpace(null),
-        onSelectSpace: (spaceId) => handleSelectSpace(spaceId),
+        onSelectSpace: (spaceId) => {
+          const selectedSpace = spaces.find((space) => space.id === spaceId);
+          if (selectedSpace) {
+            handleSelectSpace(selectedSpace.id);
+          }
+        },
         onCreateSpace: () => openSpaceCreator(),
       }),
     [
@@ -5488,7 +5493,7 @@ export default function Sidebar() {
                             items={standardProjects.map((project) => project.id)}
                             strategy={verticalListSortingStrategy}
                           >
-                            {children}
+                            <>{children}</>
                           </SortableContext>
                         </SidebarMenu>
                       </DndContext>

@@ -91,7 +91,8 @@ export const ProposedPlanActions = memo(function ProposedPlanActions({
     const api = readNativeApi();
     if (!api) return;
 
-    if (!dialogs.saveFile) {
+    const saveFile = dialogs.saveFile;
+    if (!saveFile) {
       toastManager.add({
         type: "error",
         title: "Export is unavailable",
@@ -101,12 +102,11 @@ export const ProposedPlanActions = memo(function ProposedPlanActions({
     }
 
     setIsExporting(true);
-    void api.dialogs
-      .saveFile({
-        defaultFilename: filename,
-        contents: markdown,
-        filters: [{ name: "Markdown", extensions: ["md"] }],
-      })
+    void saveFile({
+      defaultFilename: filename,
+      contents: markdown,
+      filters: [{ name: "Markdown", extensions: ["md"] }],
+    })
       .then((filePath) => {
         if (!filePath) return;
         toastManager.add({

@@ -12,7 +12,11 @@ import {
 } from "@synara/contracts";
 import { resolveLatestTailUserMessageEditTarget } from "@synara/shared/conversationEdit";
 import { pluralize } from "@synara/shared/text";
-import { LegendList, type LegendListRef } from "@legendapp/list/react";
+import {
+  LegendList,
+  type LegendListRef,
+  type LegendListRenderItemProps,
+} from "@legendapp/list/react";
 import {
   memo,
   useCallback,
@@ -1979,7 +1983,9 @@ export const MessagesTimeline = memo(function MessagesTimeline({
         ref={resolvedListRef}
         data={rows}
         keyExtractor={(row) => row.id}
-        renderItem={({ item }) => renderRowContent(item)}
+        renderItem={({ item }: LegendListRenderItemProps<MessagesTimelineRow>) =>
+          renderRowContent(item)
+        }
         estimatedItemSize={90}
         // LegendList caches rendered rows, so every local expansion map that changes row content
         // has to be surfaced through extraData.

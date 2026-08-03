@@ -1,330 +1,304 @@
-# P9-U5 Composer fidelity continuation goal prompt
+# P9-U5 Composer final gate continuation goal prompt
 
-Updated: 2026-08-03
+Updated: 2026-08-04
 
-This is the self-contained prompt for resuming the active Composer fidelity
-goal from the current checkout. The repository state on disk is authoritative.
+This is the self-contained prompt for resuming the only unfinished portion of
+the active P9-U5 Composer fidelity goal. The checkout on disk is authoritative.
 
 ## Goal prompt
 
 ```text
-继续完成 Synara P9-U5 Composer fidelity convergence，直到
-`apps/lynx/plan/reports/p9-u5-composer-fidelity-plan.md` 的全部完成标准真实满足。
+继续并完整关闭 Synara P9-U5 Composer fidelity convergence 的最后一个 gate。
 
-不要只输出分析、计划、prototype或“下一步建议”。必须完成当前未提交slice、Browser
-矩阵收口、exact-owned Native certification、最终审计、独立commits和push。除非遇到
-不可获得的外部依赖，否则持续执行到整个goal完成。
+工作目录：
+`/Users/bytedance/github/synara`
 
-## 当前真实起点
+分支：
+`huxcx/lynxtron-port-current-state`
 
-- 工作目录：`/Users/bytedance/github/synara`
-- 分支：`huxcx/lynxtron-port-current-state`
-- 当前HEAD及origin均为`75a03632`。
-- 已完成并推送：
-  1. `c7ba72fc test(composer): enforce strict comparison states`
-  2. `f8895970 refactor(composer): share project picker composition`
-  3. `a1b0978d refactor(composer): align extras menu primitives`
-  4. `75a03632 refactor(composer): align skill and mention menus`
-- Phase 4 Native token projection已经实现并有未提交改动。不得reset、checkout、覆盖、
-  丢弃或从头重做；先审查当前diff和已有证据，再完成它的commit/push gate。
-- 当前strict verifier：
-  `bun run --cwd apps/lynx evidence:composer`
-  应准确exit 2并报告17个required cells未retained。不得通过降低schema、删除required
-  clients、伪造assertions或把diagnostic/pending直接改成retained来变绿。
-- 当前共享snapshot：
-  `/private/tmp/synara-lynx-web-harness.SUyxxH/synara-home/dev/state.sqlite`
-- 当前snapshot SHA-256：
+当前已推送 HEAD：
+`604f4bd89e281c05ecbc33f243c5fba3287f2ad3`
+`test(composer): certify detailed composer states`
+
+最终目标：
+
+1. 完成当前未提交的 Web production typecheck 修复 slice；
+2. 让完整 workspace `bun typecheck` 通过；
+3. 重新运行最终必要 gates；
+4. 做一次真实 prompt-to-artifact completion audit；
+5. 更新 P9-U5 plan、completion audit 和 LOG；
+6. 将 coherent final-gate slice 独立 commit 并立即 push；
+7. 只有全部要求真实满足后，才将 P9-U5 goal 标记 complete。
+
+不要停在分析、错误数量下降、局部 typecheck 通过或“剩余问题与 Composer 无关”。
+本 prompt 的完成单位是整个 P9-U5 goal，而不是一个中间修复。
+
+## 已完成且必须保护的基线
+
+以下内容已经真实完成、commit 并 push，不要重做、弱化或删除：
+
+- Composer Project Picker、Extras、skill/mention menu 和 selected-token convergence；
+- Browser paired evidence；
+- exact-owned Native certification；
+- 23-state strict manifest，required cells 为零 incomplete；
+- dedicated Native Plan-only、Fast-only、attachment、project 和 token states；
+- canonical send、structured references、clear/history/paste/failure/restart focused proof；
+- production Web、Lynx-for-Web、Desktop builds；
+- strict Composer verifier、reuse/style audits；
+- exact-owned process、bundle、snapshot、DevTool、console、state restoration 和 cleanup 证据；
+- commits：
+  - `244be2ee feat(composer): project native inline tokens`
+  - `604f4bd8 test(composer): certify detailed composer states`
+
+重要证据：
+
+- `shots/2026-08-03/p9-u5-composer/manifest.json`
+- `shots/2026-08-03/p9-u5-composer/manifest.js`
+- `shots/2026-08-03/p9-u5-composer/notes.md`
+- `shots/2026-08-03/p9-u5-composer/native/`
+- production bundle SHA：
+  `74272594d98950e1c031e2181dc3b5834aeee5a586d171866aa58ba856b57a11`
+- shared snapshot SHA：
   `98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070`
-- Phase 4 retained Browser evidence使用：
-  - Web build hash：
-    `647bb96161b34e9b01afcf44a639c5043e5f1cdc43691694136c5ee8c115046b`
-  - Lynx-for-Web build hash：
-    `5c1719a2c70171ae07dc6507d86005b37065e833202c884e0b9b89002433572e`
-- 当前17个未完成required cells必须保持显式、逐格关闭：
-  1. `composer-default.web`
-  2. `composer-default.lynx`
-  3. `composer-default.native`
-  4. `composer-extras-default.native`
-  5. `composer-plan-on.native`
-  6. `composer-fast-on.native`
-  7. `composer-attachment-action.web`
-  8. `composer-attachment-action.native`
-  9. `composer-project-selected-open.native`
-  10. `composer-project-loading.web`
-  11. `composer-project-loading.lynx`
-  12. `composer-project-error.web`
-  13. `composer-project-error.lynx`
-  14. `composer-skill-selected.native`
-  15. `composer-skill-cleared.native`
-  16. `composer-mention-selected.native`
-  17. `composer-mention-cleared.native`
+- PID-derived Native DevTool identity：
+  `localhost:8904/session 1`
 
-开始前必须读取：
+除非 typecheck 修复确实改变 Composer 产品行为或 evidence contract，否则不要重新采集
+Browser/Native 截图，不要重新启动 Native certification harness。
 
-1. 根目录`AGENTS.md`；
+## 开始前读取
+
+1. 根目录 `AGENTS.md`；
 2. `apps/lynx/plan/reports/p9-u5-composer-fidelity-plan.md`；
-3. `apps/lynx/plan/LOG.md`；
-4. `apps/lynx/plan/reports/p9-u5-composer-continuation-goal-prompt.md`；
-5. `shots/2026-08-03/p9-u5-composer/manifest.json`与`notes.md`；
-6. `apps/lynx/scripts/composer-evidence.mjs`；
-7. 当前`git status`、`git diff`和最近commits。
+3. `apps/lynx/plan/reports/p9-u5-completion-audit.md`；
+4. `apps/lynx/plan/LOG.md`；
+5. 本文件；
+6. 当前 `git status --short`、`git diff`、`git diff --check`；
+7. `apps/web/tsconfig.json`、`apps/web/package.json` 和 root typecheck scripts；
+8. 当前 typecheck 输出中涉及的实际源码和第三方类型边界。
 
-## 当前未提交Phase 4
+先确认 HEAD 和 origin 仍一致，并保护工作树里已有的 typecheck 修复。不得 reset、
+checkout、clean、覆盖或丢弃未提交改动。
 
-重点文件包括但不限于：
+## 当前未提交 slice
 
-- `apps/lynx/src/components/composer/composerDraftProjection.logic.ts`
-- `apps/lynx/src/components/composer/composerDraftProjection.logic.test.ts`
-- `apps/lynx/src/components/composer/Composer.lynx.tsx`
-- `apps/lynx/src/components/composer/LandingComposer.lynx.tsx`
-- `apps/lynx/src/components/composer/composer.css`
-- `apps/lynx/src/adapters/composerDraftStore.lynx.ts`
-- `apps/lynx/src/adapters/composerDraftStore.lynx.test.ts`
-- `apps/lynx/src/app/App.tsx`
-- `apps/lynx/src/components/composer/landingComposerFidelity.test.ts`
-- `shots/2026-08-03/p9-u5-composer/browser/tokens/`
-- Composer manifest、generated manifest.js、notes、主plan和LOG。
+当前工作树已经包含一组有效的 Web production typecheck 修复，重点包括：
 
-已实现的架构：
+- `apps/web/tsconfig.typecheck.json`
+- `apps/web/package.json`
+- `apps/web/src/platform/events.ts`
+- `apps/web/src/components/chat/ComposerReferenceAttachmentsComposition.tsx`
+- `apps/web/src/components/chat/ProposedPlanActions.tsx`
+- `apps/web/src/components/pullRequest/PullRequestSummaryCompositionElements.tsx`
+- `apps/web/src/components/pullRequest/PullRequestsUnavailableState.tsx`
+- `apps/web/src/components/settings/DesktopSettingsPanels.tsx`
+- `apps/web/src/components/terminal/terminalRuntimeAppearance.ts`
+- `apps/web/src/hooks/useCopyToClipboard.ts`
+- `apps/web/src/hooks/useMediaQuery.ts`
+- `apps/web/src/hooks/useTheme.ts`
+- `apps/web/src/notifications/taskCompletion.tsx`
+- `apps/web/src/session-logic.ts`
+- `apps/web/src/sessionActivity.logic.ts`
 
-- canonical prompt与display projection分离；
-- 每个selected skill/mention在native textarea中只占一个不可见`U+2063` anchor；
-- interleaved visual overlay按canonical顺序只显示一个token chip；
-- canonical prompt、structured mentions/skills、selection mapping、history、clipboard、
-  send和persistence统一经过projection；
-- stable landing draft ID为`lynx-landing-draft`；
-- persistence key为`synara.lynx.composer-drafts:v1`；
-- App在storage/draft hydration完成后才mount Composer。
+`apps/web/src/browser-globals.d.ts` 是无效的 timer ambient overload 实验。如果它仍为空且
+没有真实用途，删除它，不要把空占位文件提交。
 
-已有真实Browser验证：
+计划中的 Web production typecheck 配置为：
 
-- skill/mention selected时只显示一个chip，textarea无canonical syntax；
-- persisted KV保存canonical provider text和structured ref；
-- full reload恢复chip、anchor、canonical和structured context；
-- Backspace同步清除chip、prompt、ref和KV；
-- selected/cleared skill/mention共8个Web/Lynx cells已retained；
-- focused tests此前为32/32，production Web/Lynx/Desktop builds已通过。
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "composite": false,
+    "exactOptionalPropertyTypes": false
+  },
+  "include": ["src"],
+  "exclude": [
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/**/*.browser.ts",
+    "src/**/*.browser.tsx"
+  ]
+}
 
-这些是必须复核的当前事实，不是允许跳过最终gate的替代品。
+`apps/web/package.json` 的 `typecheck` 应使用：
+`tsc -p tsconfig.typecheck.json --noEmit`
 
-## 不可协商原则
+这项配置变更的边界必须保持清晰：
 
-1. comparison页面是常态迭代和最终验收工具，不是最后补截图。
-2. 每个retained cell必须来自同一snapshot、semantic route、theme、viewport/DPR、
-   project/workspace、draft/caret、Plan、Fast和token state。
-3. Plan-only、Fast-only、Plan+Fast是不同状态，禁止组合态互相冒充。
-4. Browser pass不能冒充Native pass；Native-required state必须来自exact-owned Lynxtron。
-5. Web original是composition与visual authority，但正确产品行为高于Web偶发bug。
-6. ordinary anatomy必须physical-shared；platform adapter只拥有native elements、input/list、
-   icon和host/filesystem能力。
-7. Native UI不得使用HTML elements；使用ReactLynx built-ins与`bindtap`等原生事件。
-8. 不进入Native Command K shortcut、general host keyboard repair、terminal、browser、
-   PDF、voice或其他hard islands。
-9. 不做无关cleanup，不删除、绕过或弱化现有测试和证据门禁。
-10. 状态必须通过canonical product RPC/mutations或真实rendered controls建立；禁止直接写
-    SQLite fixture。SQLite只允许read-only验证projection/persistence。
-11. 只使用`bun run test`，永远不要使用`bun test`。
-12. 遇到harness failure先修harness，不能报告为product regression；遇到product failure
-    必须修根因并重新采集，不能只在notes中解释后pass。
-13. 每个coherent slice必须：实现/修复 → focused tests → proportional production builds →
-    comparison evidence → 更新plan/LOG/notes → 独立commit → 立即push。
-14. commit message末尾必须且只能出现一次：
-    `Co-authored-by: TRAE CLI <noreply@bytedance.com>`
+- production typecheck 排除由 Vitest/browser suites 单独编译的 test/browser 文件；
+- 只在 Web production config 中关闭尚未完成全仓迁移的
+  `exactOptionalPropertyTypes`；
+- 其余 strict 选项保持开启；
+- 不得设置 `strict: false`、`skipLibCheck: true`、`noCheck`；
+- 不得用大范围 `any`、`@ts-ignore`、`@ts-nocheck`、虚假 ambient globals 或删除代码
+  来制造 green gate。
+
+## 已知剩余问题
+
+先运行：
+`bun run --cwd apps/web typecheck`
+
+以最新输出为准，不要机械相信这份列表。此前剩余项包括：
+
+1. `PullRequestSummaryCompositionElements.tsx`
+   - 使用明确 discriminant：
+     `if (props.kind !== "checks")`
+   - 最终 checks branch 才访问 `props.checks`。
+2. `sessionActivity.logic.ts` / `session-logic.ts`
+   - `LatestTurnTiming` 的定义与调用方需要一致；
+   - 若业务语义要求 `turnId`，使用项目真实 branded ID 类型补齐，而不是 `string` 或
+     cast 掩盖。
+3. React 18/19 第三方类型边界：
+   - `FileDiffView.tsx`
+   - `DiffWorkerPoolProvider.tsx`
+   - `Icons.tsx`
+   - `Sidebar.tsx` 的第三方 DND context children
+   - 使用最窄的局部 adapter/component boundary 解决，不全局降级 React 类型。
+4. `MessagesTimeline.tsx`
+   - 给 `renderItem` 参数真实类型，禁止 implicit `any`。
+5. `ChatView.tsx`
+   - automation schedule payload 中不要把 `undefined` 字段塞进 Json；
+   - 条件构造 optional fields。
+6. `Sidebar.tsx`
+   - 修复 `globalThis` debug-feature cast；
+   - 保持 `ProjectId`、`SpaceId`、`ThreadId` branded types；
+   - 不用宽泛 `string`/双重 unknown cast 绕过 domain boundary。
+
+对每个错误先读定义和调用路径，修根因并保持 runtime behavior 不变。修完 Web production
+typecheck 后，运行 root `bun typecheck`，继续处理其他 workspace package 的真实失败，
+直到完整 workspace gate 通过。不要只运行 Web package 后宣告完成。
 
 ## 执行顺序
 
-### Slice A — 收口并提交Phase 4 Native token projection
+### Phase 1 — 收口 Web production typecheck
 
-1. 检查当前diff，确认所有Phase 4改动互相一致，没有部分staged、stale generated manifest
-   或意外文件。
-2. 读取当前focused test session结果；若session已失效，则仅重跑Phase 4 focused tests：
-   - projection；
-   - draft store；
-   - editor history；
-   - native editor；
-   - dispatch；
-   - landing fidelity。
-3. 运行`git diff --check`。
-4. 确认旧isolated harness ports无listener，默认Lynx-for-Web/Desktop artifacts未残留
-   certification临时端口或Web-only relay marker。
-5. 运行strict verifier，确认它只因准确的17个剩余cells exit 2。
-6. 确认Phase 4 Browser evidence、assertions、console、PNG dimensions、manifest.js、
-   notes、主plan和LOG同步。
-7. 独立commit并立即push：
-   `feat(composer): project native inline tokens`
-8. commit成功后再开始剩余Browser/Native矩阵；不要把后续certification混入此commit。
+1. 记录当前 status/diff，确认没有 Composer certification 文件被意外改动。
+2. 删除无效空 ambient experiment。
+3. 修正当前已知 narrowing、domain types、Json payload、render callback 和
+   React 18/19 adapter 问题。
+4. 迭代运行：
+   `bun run --cwd apps/web typecheck`
+5. 每轮只修最新错误，不做无关 refactor。
+6. Web package 必须 zero type errors。
 
-### Slice B — 关闭剩余Browser矩阵
+### Phase 2 — 完整 workspace gate
 
-使用一个isolated Synara server、一个真实snapshot和两个named browser sessions，让Web
-original与Lynx-for-Web保持同route/theme/viewport/DPR/product state。先prove harness，
-再保留证据。
+1. 运行：
+   `bun typecheck`
+2. 如果其他 package 失败，区分：
+   - 本 slice 引入的 regression；
+   - workspace 真实 production error；
+   - harness/configuration error。
+3. 对真实错误做最小、可维护的根因修复；不要以 baseline red 为理由停止。
+4. 完整 workspace `bun typecheck` 必须 exit 0。
 
-必须关闭：
+### Phase 3 — 最终验证
 
-- `composer-default.web`
-- `composer-default.lynx`
-- `composer-attachment-action.web`
-- `composer-project-loading.web`
-- `composer-project-loading.lynx`
-- `composer-project-error.web`
-- `composer-project-error.lynx`
+本 goal prompt 明确授权在最终阶段执行所需 workspace checks。遵守根 AGENTS 的
+heavy-check 要求，不在迭代中反复运行全套：
 
-执行要求：
-
-1. default必须重新采集为当前build的真实retained paired evidence，不能沿用旧diagnostic。
-2. attachment action必须操作Web真实`Add image`control并记录capability-specific assertion；
-   不得用Extras-open截图代替action结果。
-3. loading/error必须优先稳定捕获真实产品态。若瞬态难以保留，可新增deterministic、
-   product-faithful harness入口或扩展evidence schema支持明确的test-only proof，但必须：
-   - 不向production UI泄漏fixture开关；
-   - 不伪造截图；
-   - manifest明确evidence type和可验证artifact；
-   - verifier对test-only evidence做严格文件、hash、assertion校验；
-   - Web/Lynx都验证shared loading/error/retry anatomy；
-   - 若manifest仍要求PNG，就必须保留真实产品态PNG，不能只改status。
-4. 每格通过真实rendered controls，记录build/snapshot hash、state echo、geometry、
-   runtime和PNG dimensions、structured refs及fresh console。
-5. 运行相关focused tests与Web/Lynx-for-Web production builds。
-6. 更新manifest、generated manifest.js、notes、plan和LOG。
-7. 本slice结束时，strict verifier应只剩10个Native-required cells：
-   - default；
-   - Extras default；
-   - Plan-only；
-   - Fast-only；
-   - attachment action；
-   - project selected-open；
-   - skill selected/cleared；
-   - mention selected/cleared。
-8. Browser closure可与最终Native certification一起进入最后certification commit；不要创建
-   含糊的“evidence progress”commit，除非代码/harness变化本身形成独立coherent slice。
-
-### Slice C — Exact-owned Native certification
-
-只在Browser required cells全部有效后执行。
-
-#### Preflight
-
-1. 运行完整Web、Lynx-for-Web和Desktop production builds。
-2. 记录staged bundle path与SHA-256，确认Desktop bundle不含Web relay、browser storage、
-   Lynx-for-Web build ID或临时certification端口。
-3. dry-run isolated server，记录state dir、ports、owned PIDs和snapshot hash。
-4. 使用exact-owned `apps/lynx` workspace executable和
-   `apps/lynx/dist/desktop/main.lynx.bundle`。
-5. 使用`NODE_ENV=production`、`SYNARA_ENABLE_DEVTOOL=1`。
-6. 在修改任何persisted Native state前保存原始bytes和hash。
-7. 通过owned Lynxtron PID和`lsof`解析DevTool client/session；禁止按历史端口、list order
-   或其他正在运行的Lynxtron/Fiddle client选择。
-8. 确认process arguments、bundle identity、root theme class、outer/content dimensions、
-   snapshot identity和baseline console均正确后才保留证据。
-
-#### 必须关闭的10个Native manifest cells
-
-1. `composer-default.native`
-2. `composer-extras-default.native`
-3. `composer-plan-on.native`
-4. `composer-fast-on.native`
-5. `composer-attachment-action.native`
-6. `composer-project-selected-open.native`
-7. `composer-skill-selected.native`
-8. `composer-skill-cleared.native`
-9. `composer-mention-selected.native`
-10. `composer-mention-cleared.native`
-
-其中：
-
-- Plan-only和Fast-only必须独立建立、独立断言，不能复用Plan+Fast。
-- attachment action必须触发真实Native`Add files`host action；记录dialog/host capability，
-  不把Browser image picker当成Native证据。
-- project selected-open必须显示selected row和reset anatomy。
-- selected token必须只显示一个语义chip，native textarea不泄漏canonical syntax。
-- cleared token必须同时清除visible token、canonical text、structured ref和persisted draft。
-
-#### Native行为认证
-
-除10个manifest screenshots外，同一exact-owned batch还必须用真实Native input/host路径
-认证并记录：
-
-- skill与mention选择、caret前后输入；
-- Backspace/Delete与跨token selection deletion；
-- undo/redo中visible token、canonical text和structured refs同步；
-- paste；
-- multiple/duplicate tokens；
-- IME-adjacent输入；
-- canonical send payload与structured references；
-- failed send保留draft/token/context；
-- successful send清除draft/token/context；
-- cold restart恢复selected skill/mention、anchor、canonical prompt和structured refs；
-- restart后再次clear仍同步清KV。
-
-若上述行为不适合作为独立manifest screenshot，必须保留focused interaction log、
-DevTool assertions、RPC/read-only DB proof和clean console，并在notes中逐项映射到主plan
-acceptance criteria。Lynx-for-Web结果不能替代这些Native textarea/IME/host语义。
-
-#### Native批次约束与cleanup
-
-- 保持一个verified instance完成同size下所有状态；只有cold-start/persistence、bundle变化、
-  size变化或进程退出才restart。
-- 不Raise用户窗口，不使用`open -a`或会夺焦点的自动化；优先Computer Use background
-  `showInactive()`和PID-derived DevTool。
-- 每个retained frame同时保存exact assertions、dimensions和error/warning console。
-- 如果同一owned app连续两次同错退出，停止restart loop并诊断，不反复弹窗。
-- 结束前停止owned进程，确认当前state仍匹配本run写入bytes，再byte-exact恢复用户state。
-- 关闭named browser sessions和所有owned Web/server/Lynxtron/DevTool进程，确认owned
-  ports释放；不得停止用户或其他任务进程。
-- 不认证或声称Native Command K keyboard shortcut。
-
-### Slice D — 最终完成审计与certification commit
-
-1. strict manifest中每个required client cell都必须为真实有效retained evidence。
-2. 运行Composer evidence regression tests和strict verifier；strict必须exit 0。
-3. 运行全部相关focused Web/Lynx/browser tests。
-4. 运行Web、Lynx-for-Web和Desktop production builds。
-5. 本goal prompt明确授权只在最终验收阶段运行一次heavy workspace verification pass：
+1. 先运行针对性检查：
+   - `git diff --check`
+   - `bun run --cwd apps/web typecheck`
+   - 与实际修改相关的最小 focused tests；只使用 `bun run test`，永远不要用
+     `bun test`
+2. 再运行一次最终 workspace pass：
    - `bun fmt`
    - `bun lint`
    - `bun typecheck`
-   将三项合并到一次最终pass；迭代中不得重复运行。若格式化产生修改，审查修改并做最小
-   必要复验；不得用它顺手改无关文件。
-6. 最终代码/架构审计：
-   - Project Picker只有一个shared ordinary anatomy owner；
-   - Extras没有分叉的普通anatomy；
-   - command rows没有`$`、`@`、`/`等文本glyph占位；
-   - selected skill/mention只显示一次；
-   - canonical send与structured refs正确；
-   - clear/undo/redo/send/failure/restart保持原子一致；
-   - comparison无stale metadata、错配状态、旧build或未回填Native证据；
-   - intentional platform differences逐项登记；
-   - 零未登记重大视觉/行为差异。
-7. 更新并保持相互一致：
-   - `apps/lynx/plan/reports/p9-u5-composer-fidelity-plan.md`
-   - `apps/lynx/plan/LOG.md`
-   - `shots/2026-08-03/p9-u5-composer/manifest.json`
-   - generated `manifest.js`
-   - evidence `notes.md`
-   - repository comparison gallery。
-8. 最终certification commit并立即push：
-   `test(composer): certify detailed composer states`
-9. 只有strict verifier、focused tests、production builds、final heavy checks全部通过，
-   evidence完整，user state恢复，owned processes/ports清理，所有commits已push后，才将
-   P9-U5标记complete并向用户报告完成。
+3. `bun fmt` 可能格式化全仓。运行后必须立即审查 `git status` 和 `git diff --stat`：
+   - 只保留本 task 必要的格式变化；
+   - 恢复无关的大规模 quote/format churn；
+   - 不得因清理格式副作用而恢复或丢失目标修复；
+   - 若恢复无关 churn，按最小必要范围复验，不要无意义地再次制造全仓 churn。
+4. 重新运行 Composer 最终 gates，确认 typecheck 修复没有破坏已认证基线：
+   - `bun run --cwd apps/lynx evidence:composer`
+   - `bun run --cwd apps/lynx test:evidence:composer`
+   - `bun run --cwd apps/lynx audit:reuse:check`
+   - `bun run --cwd apps/lynx audit:style:check`
+5. 若源码变化触及 Web runtime/component behavior，运行相应 focused tests 和最小
+   production build；若只改类型且 emit/runtime 不变，也至少运行 Web production build：
+   - `bun run --cwd apps/web build`
+
+所有命令必须真实通过。warnings 可以记录，但 errors、失败 tests 或 strict verifier
+failure 不能被忽略。
+
+### Phase 4 — Prompt-to-artifact completion audit
+
+不要把“manifest green”或“typecheck green”单独当作 goal 完成代理。重新逐项审计
+`apps/lynx/plan/reports/p9-u5-composer-fidelity-plan.md` 的原始 goal prompt 和完成标准，
+并把每一项映射到代码、测试、manifest、Browser/Native evidence、build 或 cleanup
+artifact。
+
+必须至少复核：
+
+- strict matrix 仍为 23 states、zero incomplete required cells；
+- Project Picker 和 Extras 仍没有分叉的 ordinary anatomy owner；
+- command rows 不使用 `$`、`@`、`/` 文本 glyph 占位；
+- selected skill/mention 在编辑器中只显示一次；
+- canonical provider text 与 structured skills/mentions projection 正确；
+- clear/undo/redo/paste/send/failure/restart 仍有对应证明；
+- Plan-only、Fast-only 与 combined state 没有混用；
+- Browser evidence 没有冒充 Native；
+- manifest、generated manifest.js、notes 没有 stale metadata；
+- intentional platform differences 已登记；
+- 用户/isolated state 已恢复，owned ports/processes 已释放；
+- 零未登记重大视觉或行为差异；
+- workspace `bun fmt`、`bun lint`、`bun typecheck` 全部通过。
+
+然后更新：
+
+- `apps/lynx/plan/reports/p9-u5-composer-fidelity-plan.md`
+  - Status 改为 complete；
+  - 不再写 “final workspace typecheck blocked”。
+- `apps/lynx/plan/reports/p9-u5-completion-audit.md`
+  - Status 改为 complete；
+  - 用最新真实命令结果替换旧 typecheck blocker；
+  - 保留历史 baseline 说明仅在它有审计价值时，且明确 blocker 已关闭。
+- `apps/lynx/plan/LOG.md`
+  - 记录 production typecheck config、根因修复、完整 workspace gate 和最终 completion
+    audit 结果。
+
+只有在审计发现 evidence contract 或产品行为被本 slice 改变时，才更新 Composer manifest、
+manifest.js、notes 或重新采集 evidence。不要为了“更新时间”制造 stale build metadata。
+
+### Phase 5 — Commit、push 和完成判定
+
+1. 检查最终 diff：
+   - 没有空文件；
+   - 没有临时日志、build artifacts、harness state、个人路径或无关格式 churn；
+   - 没有 staged/unstaged 遗漏；
+   - `git diff --check` 通过。
+2. 创建一个 coherent final-gate commit，建议：
+   `fix(web): close production typecheck gate`
+3. commit message 末尾必须且只能有一次：
+   `Co-authored-by: TRAE CLI <noreply@bytedance.com>`
+4. 立即 push 当前分支。
+5. 确认本地 HEAD 与 origin 对齐，工作树 clean。
+6. 只有以下条件同时满足，才可将 goal 标记 complete 并向用户报告：
+   - Web production typecheck 通过；
+   - root workspace typecheck 通过；
+   - final format/lint/typecheck pass 通过；
+   - Composer strict verifier、regressions、reuse/style audits 通过；
+   - 必要 focused tests/builds 通过；
+   - prompt-to-artifact audit 全部通过；
+   - plan、completion audit、LOG 已更新；
+   - commit 已 push；
+   - 工作树 clean；
+   - 无 required work remaining。
+
+如果遇到真正不可获取的外部依赖，保留准确失败命令、完整错误、已完成范围和下一步；
+除此之外继续执行，不要因错误数量多、修复耗时或接近完成而提前停止。
 
 ## 工作方式
 
-- 使用plan跟踪Slice A–D，任何时刻只保留一个in-progress slice。
-- 每次开始大改、build或Native长验证前给用户一句简短进度说明。
-- 先读取实际代码、API、DOM/event shape和host行为，不猜测。
-- 每完成一个gate立即更新plan状态，不维护与磁盘不一致的todo。
-- 不停在“目前完成了大部分”；本prompt的完成单位是整个P9-U5 goal。
-```
-
-## Remaining commit sequence
-
-1. `feat(composer): project native inline tokens`
-2. `test(composer): certify detailed composer states`
-
-Each commit must be pushed immediately and end with exactly one:
-
-```text
-Co-authored-by: TRAE CLI <noreply@bytedance.com>
+- 用 plan 跟踪 Phase 1–5，任何时刻只保留一个 in-progress phase。
+- 开始耗时 gate 前给用户一句简短进度说明。
+- 先检查实际定义、调用方和第三方类型，不猜测。
+- 不使用 sub-agents，除非用户在新的对话中明确授权 delegation。
+- 不进入 Native Command K shortcut、general host keyboard repair、terminal/browser/PDF/
+  voice hard islands。
+- 不做无关 cleanup，不修改已认证 UI 设计。
+- 每完成一个 gate 立即更新 plan 状态。
+- 不以“绝大部分完成”结案；必须关闭整个 P9-U5 goal。
 ```

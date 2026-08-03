@@ -1,8 +1,4 @@
-import type {
-  PullRequestActor,
-  PullRequestCheck,
-  PullRequestDetail,
-} from "@synara/contracts";
+import type { PullRequestActor, PullRequestCheck, PullRequestDetail } from "@synara/contracts";
 import { useState, type ReactNode } from "react";
 
 import { Collapsible, CollapsiblePanel, CollapsibleTrigger } from "~/components/ui/collapsible";
@@ -18,10 +14,7 @@ import { PullRequestCommentComposer } from "./PullRequestCommentComposer";
 import { PullRequestDiffStat } from "./PullRequestDiffStat";
 import { PullRequestMarkdown } from "./PullRequestMarkdown";
 import { PullRequestConflictIcon } from "./pullRequestStatePresentation";
-import {
-  PULL_REQUEST_CHECK_STATUS_LABELS,
-  withStableCheckKeys,
-} from "./pullRequestSummary.logic";
+import { PULL_REQUEST_CHECK_STATUS_LABELS, withStableCheckKeys } from "./pullRequestSummary.logic";
 import { PullRequestWarningNote } from "./PullRequestWarningNote";
 import {
   PR_BODY_TEXT_CLASS_NAME,
@@ -55,10 +48,7 @@ export function PullRequestSummaryIntroElement(props: {
           "mt-1.5 flex flex-wrap items-center gap-1.5 text-muted-foreground",
         )}
       >
-        <PullRequestActorLabel
-          actor={props.author}
-          className="font-medium text-foreground"
-        />
+        <PullRequestActorLabel actor={props.author} className="font-medium text-foreground" />
         <span>·</span>
         <span>{props.updatedAtLabel}</span>
         <span>·</span>
@@ -162,7 +152,7 @@ export function PullRequestSummaryMetaRowElement(props: PullRequestSummaryMetaRo
       </MetaRow>
     );
   }
-  if (props.kind === "comments") {
+  if (props.kind !== "checks") {
     return (
       <MetaRow icon={<ChatBubbleIcon className="size-3.5" />} label={props.label}>
         {props.value}
@@ -225,9 +215,7 @@ export function PullRequestSummaryChecksElement(props: {
   return (
     <div className="space-y-1">
       {props.checks.length === 0 ? (
-        <p className={cn(PR_META_TEXT_CLASS_NAME, "text-muted-foreground")}>
-          No checks reported.
-        </p>
+        <p className={cn(PR_META_TEXT_CLASS_NAME, "text-muted-foreground")}>No checks reported.</p>
       ) : (
         withStableCheckKeys(props.checks).map(({ key, check }) => (
           <button
