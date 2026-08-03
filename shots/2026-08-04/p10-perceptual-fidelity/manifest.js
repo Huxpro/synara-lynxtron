@@ -3885,18 +3885,458 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
         "width": 1280,
         "height": 788
       },
-      "residuals": [],
+      "residuals": [
+        {
+          "id": "skill-menu-frame-anatomy",
+          "category": "GEOMETRY",
+          "severity": "P1",
+          "status": "fixed",
+          "owner": "ComposerCommandMenuLynx shared frame and row primitives",
+          "summary": "Lynx used a tighter 10px frame, heavy shadow, 8px row padding, and 7px row radius while Web used a 14px frame with no shadow and 10px/8px row anatomy.",
+          "impact": "The high-frequency filtered overlay looked denser and more elevated than the Web authority.",
+          "recommendation": "Keep frame and row chrome centralized in the command-menu primitive.",
+          "evidence": "browser/skill-menu-filtered/lynx/geometry.json",
+          "reason": "Surface and row boxes now match Web exactly; every measured anchor shares the same -0.75px landing offset."
+        },
+        {
+          "id": "skill-menu-text-density",
+          "category": "TYPOGRAPHY",
+          "severity": "P1",
+          "status": "fixed",
+          "owner": "shared picker typography roles",
+          "summary": "Command title, description, and metadata previously lacked a cross-engine line-box contract and muted hierarchy.",
+          "impact": "Long descriptions and trailing provider labels had visibly different density and contrast.",
+          "recommendation": "Continue consuming semantic picker title, description, and meta roles.",
+          "evidence": "browser/skill-menu-filtered/lynx/styles.json",
+          "reason": "Both clients resolve title 11.5px/500/16px, description 11px/400/16px, and meta 10.5px/400/15px."
+        },
+        {
+          "id": "skill-menu-icon-optics",
+          "category": "ICON",
+          "severity": "P1",
+          "status": "fixed",
+          "owner": "ComposerCommandMenuCompositionElements Lynx icon slot",
+          "summary": "Generated Lynx skill icons retained their 16px inline size and the active state did not match Web foreground opacity.",
+          "impact": "The leading rail shifted and the highlighted row lacked the same visual center.",
+          "recommendation": "Pass the 14px optical size through the generated icon API and apply active opacity at the primitive.",
+          "evidence": "browser/skill-menu-filtered/lynx/geometry.json",
+          "reason": "The 16px slot and 14px painted icon bounds now match Web at the same coordinates."
+        },
+        {
+          "id": "skill-menu-filter-query-input",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Lynx-for-Web x-textarea host element",
+          "summary": "The custom textarea reports a zero-sized inner box although its visible editor region and canonical value are real.",
+          "impact": "Browser evidence cannot use the inner node as a geometry anchor.",
+          "recommendation": "Retain query, result order, menu geometry, and typography in Browser; certify textarea metrics in Native.",
+          "evidence": "browser/skill-menu-filtered/lynx/geometry.json",
+          "reason": "The retained canonical value is exactly $review-agent and both clients return review-agent, review-bugbot, review-security, review in that order."
+        }
+      ],
       "evidence": {
         "web": {
-          "status": "pending",
-          "reason": "Current-build P10 Web capture has not been retained.",
-          "path": null,
-          "comparisonPath": null,
-          "geometry": null,
-          "geometryData": null,
-          "styles": null,
-          "stylesData": null,
-          "console": null,
+          "status": "retained",
+          "reason": null,
+          "path": "browser/skill-menu-filtered/web/raw.png",
+          "comparisonPath": "browser/skill-menu-filtered/web/comparison.png",
+          "geometry": "browser/skill-menu-filtered/web/geometry.json",
+          "geometryData": {
+            "client": "web",
+            "stateId": "skill-menu-filtered",
+            "viewport": {
+              "width": 1280,
+              "height": 820,
+              "dpr": 1,
+              "visualWidth": 1280,
+              "visualHeight": 820
+            },
+            "query": "review-agent",
+            "items": [
+              "review-agent",
+              "review-bugbot",
+              "review-security",
+              "review"
+            ],
+            "roles": {
+              "surface": {
+                "tag": "DIV",
+                "className": "relative overflow-hidden rounded-xl border border-border bg-popover text-popover-foreground",
+                "text": "review-agentPerform a read-only, defect-first review of a specified code change and return every actionable finding. Use",
+                "box": {
+                  "x": 405,
+                  "y": 292.75,
+                  "width": 726,
+                  "height": 122
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "14px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "DIV",
+                "className": "min-h-8 text-base outline-none data-disabled:pointer-events-none data-highlighted:text-[var(--color-text-foreground)] data-disabled:opacity-64 sm:min-h-7 sm:text-sm flex cursor-pointer select-none items-center gap-2 rounded-md px-2.5 py-1 transition-colors hover:bg-[var(--color-background-button-secondary-hover)] data-highlighted:bg-[var(--color-background-button-secondary-hover)] bg-[var(--color-background-button-secondary)] text-[var(--color-text-foreground)]",
+                "text": "review-agentPerform a read-only, defect-first review of a specified code change and return every actionable finding. Use",
+                "box": {
+                  "x": 410,
+                  "y": 297.75,
+                  "width": 716,
+                  "height": 28
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(13, 13, 13, 0.04)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "iconSlot": {
+                "tag": "SPAN",
+                "className": "flex size-4 shrink-0 items-center justify-center text-foreground/70",
+                "text": "",
+                "box": {
+                  "x": 420,
+                  "y": 303.75,
+                  "width": 16,
+                  "height": 16
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.7)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "icon": {
+                "tag": "SPAN",
+                "className": "inline-block shrink-0 bg-current size-3.5",
+                "text": "",
+                "box": {
+                  "x": 421,
+                  "y": 304.75,
+                  "width": 14,
+                  "height": 14
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.7)",
+                  "background": "oklab(0.159065 0.00000723451 0.00000317395 / 0.7)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "tag": "SPAN",
+                "className": "shrink-0 text-[length:var(--type-picker-title-size)] leading-[var(--type-picker-title-line-height)] font-medium text-foreground/80",
+                "text": "review-agent",
+                "box": {
+                  "x": 444,
+                  "y": 303.75,
+                  "width": 73.515625,
+                  "height": 16
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.8)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "desc": {
+                "tag": "SPAN",
+                "className": "truncate text-[length:var(--type-picker-description-size)] leading-[var(--type-picker-description-line-height)] text-muted-foreground/55",
+                "text": "Perform a read-only, defect-first review of a specified code change and return every actionable finding. Use when anothe",
+                "box": {
+                  "x": 523.515625,
+                  "y": 303.75,
+                  "width": 540.546875,
+                  "height": 16
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.327843)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "meta": {
+                "tag": "SPAN",
+                "className": "shrink-0 pl-2 text-right text-[length:var(--type-picker-meta-size)] leading-[var(--type-picker-meta-line-height)] text-muted-foreground/42",
+                "text": "Codex",
+                "box": {
+                  "x": 1076.0625,
+                  "y": 304.25,
+                  "width": 39.9375,
+                  "height": 15
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "10.5px",
+                  "weight": "400",
+                  "lineHeight": "15px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.250353)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "editor": {
+                "tag": "DIV",
+                "className": "block max-h-[200px] w-full overflow-y-auto whitespace-pre-wrap break-words bg-transparent text-foreground focus:outline-none font-system-ui text-[length:var(--type-composer-editor-size)] leading-[var(--type-composer-editor-line-height)] min-h-[var(--app-density-composer-editor-min-height,2lh)] [&_p]:m-0",
+                "text": "$review-agent",
+                "box": {
+                  "x": 413,
+                  "y": 434.75,
+                  "width": 708,
+                  "height": 39
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "browser/skill-menu-filtered/web/styles.json",
+          "stylesData": {
+            "client": "web",
+            "stateId": "skill-menu-filtered",
+            "query": "review-agent",
+            "items": [
+              "review-agent",
+              "review-bugbot",
+              "review-security",
+              "review"
+            ],
+            "roles": {
+              "surface": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "14px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(13, 13, 13, 0.04)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "iconSlot": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.7)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "icon": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.7)",
+                  "background": "oklab(0.159065 0.00000723451 0.00000317395 / 0.7)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.8)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "desc": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.327843)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "meta": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "10.5px",
+                  "weight": "400",
+                  "lineHeight": "15px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.250353)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "editor": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "browser/skill-menu-filtered/web/console.txt",
           "alignment": {
             "x": 0,
             "y": 0,
@@ -3904,15 +4344,406 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
           }
         },
         "lynx": {
-          "status": "pending",
-          "reason": "Current-build P10 Lynx-for-Web capture has not been retained.",
-          "path": null,
-          "comparisonPath": null,
-          "geometry": null,
-          "geometryData": null,
-          "styles": null,
-          "stylesData": null,
-          "console": null,
+          "status": "retained",
+          "reason": null,
+          "path": "browser/skill-menu-filtered/lynx/raw.png",
+          "comparisonPath": "browser/skill-menu-filtered/lynx/comparison.png",
+          "geometry": "browser/skill-menu-filtered/lynx/geometry.json",
+          "geometryData": {
+            "client": "lynx",
+            "stateId": "skill-menu-filtered",
+            "viewport": {
+              "width": 1280,
+              "height": 820,
+              "dpr": 1,
+              "visualWidth": 1280,
+              "visualHeight": 820
+            },
+            "query": "review-agent",
+            "items": [
+              "review-agent",
+              "review-bugbot",
+              "review-security",
+              "review"
+            ],
+            "roles": {
+              "surface": {
+                "tag": "X-VIEW",
+                "className": "ComposerCommandMenuLynx",
+                "text": "review-agentPerform a read-only, defect-first review of a specified code change and return every actionable finding. Use",
+                "box": {
+                  "x": 405,
+                  "y": 292,
+                  "width": 726,
+                  "height": 122
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "14px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "X-VIEW",
+                "className": "ComposerCommandRowLynx ComposerCommandRowLynx--active",
+                "text": "review-agentPerform a read-only, defect-first review of a specified code change and return every actionable finding. Use",
+                "box": {
+                  "x": 410,
+                  "y": 297,
+                  "width": 716,
+                  "height": 28
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(232, 242, 250)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "iconSlot": {
+                "tag": "X-VIEW",
+                "className": "ComposerCommandIconSlotLynx",
+                "text": "",
+                "box": {
+                  "x": 420,
+                  "y": 303,
+                  "width": 16,
+                  "height": 16
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.7"
+                }
+              },
+              "icon": {
+                "tag": "X-SVG",
+                "className": "ComposerCommandIconLynx",
+                "text": "",
+                "box": {
+                  "x": 421,
+                  "y": 304,
+                  "width": 14,
+                  "height": 14
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.7"
+                }
+              },
+              "title": {
+                "tag": "X-TEXT",
+                "className": "ComposerCommandTitleLynx",
+                "text": "review-agent",
+                "box": {
+                  "x": 444,
+                  "y": 303,
+                  "width": 73.515625,
+                  "height": 16
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.8"
+                }
+              },
+              "desc": {
+                "tag": "X-TEXT",
+                "className": "ComposerCommandSecondaryLynx",
+                "text": "Perform a read-only, defect-first review of a specified code change and return every actionable finding. Use when anothe",
+                "box": {
+                  "x": 523.515625,
+                  "y": 303,
+                  "width": 540.546875,
+                  "height": 16
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgba(13, 13, 13, 0.596)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.596)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.55"
+                }
+              },
+              "meta": {
+                "tag": "X-TEXT",
+                "className": "ComposerCommandMetaLynx",
+                "text": "Codex",
+                "box": {
+                  "x": 1076.0625,
+                  "y": 303.5,
+                  "width": 39.9375,
+                  "height": 15
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "10.5px",
+                  "weight": "400",
+                  "lineHeight": "15px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgba(13, 13, 13, 0.596)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.596)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.42"
+                }
+              },
+              "editor": {
+                "tag": "X-TEXTAREA",
+                "className": "ComposerTextarea",
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "browser/skill-menu-filtered/lynx/styles.json",
+          "stylesData": {
+            "client": "lynx",
+            "stateId": "skill-menu-filtered",
+            "query": "review-agent",
+            "items": [
+              "review-agent",
+              "review-bugbot",
+              "review-security",
+              "review"
+            ],
+            "roles": {
+              "surface": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "14px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(232, 242, 250)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "iconSlot": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.7"
+                }
+              },
+              "icon": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.7"
+                }
+              },
+              "title": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.8"
+                }
+              },
+              "desc": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgba(13, 13, 13, 0.596)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.596)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.55"
+                }
+              },
+              "meta": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "10.5px",
+                  "weight": "400",
+                  "lineHeight": "15px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgba(13, 13, 13, 0.596)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.596)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.42"
+                }
+              },
+              "editor": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "browser/skill-menu-filtered/lynx/console.txt",
           "alignment": {
             "x": 0,
             "y": 0,

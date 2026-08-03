@@ -4988,3 +4988,18 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - Lynx-for-Web inner `x-input`仍报告0×0，登记P3 host measurement delta；visible search
   shell exact，真实input metrics留Native认证。atlas strict **10→8 incomplete / 0
   blocking**。
+
+## 2026-08-04 — P10 filtered skill-menu Browser convergence
+
+- 用rendered Composer editor建立同一`$review-agent` state；Web contenteditable真实fill，
+  Lynx-for-Web使用1个`$` keyboard event + 1个text input event（逐键automation会吞事件），
+  capture前严格验证value等于`$review-agent`，未直接赋DOM value。
+- 两端结果严格同序：`review-agent`、`review-bugbot`、`review-security`、`review`，
+  首项active。surface 726×122、row 716×28、16px icon slot/14px painted icon与
+  title/description/meta X/size全部exact；共同Y仅既有landing -0.75px。
+- shared picker roles最终为title 11.5/500/16、description 11/400/16、meta
+  10.5/400/15；Lynx frame收敛到Web r14/no shadow，row r8/10px横距，muted和active icon
+  opacity按状态集中在command-menu primitive。
+- current-build paired capture snapshot `efff3a23…`前后一致，fresh page errors空；
+  `x-textarea` inner box 0×0登记P3 Lynx-for-Web measurement delta。6个canonical Browser
+  pairs现全部retained，atlas strict **8→6 incomplete / 0 blocking**，剩余格全部Native。

@@ -92,7 +92,6 @@ tests cover both a valid later capture and client drift within that capture.
 
 Phase 1 is not complete until:
 
-- filtered skill-menu typography is retained from a like-for-like state;
 - route/thread/transcript/status/button/chip roles are measured;
 - light/dark and both target sizes are covered;
 - Native font fallback, weight mapping, baseline, wrapping, and truncation are
@@ -126,3 +125,30 @@ general keyboard repair.
 The Browser custom-element inner `x-input` still reports a zero-sized box. Its
 visible search shell is measurable and aligned; actual input metrics remain a
 Native certification item.
+
+## Filtered skill-menu measurement
+
+The `$review-agent` state was created through the rendered Composer editors.
+The Lynx-for-Web harness required one `$` keyboard event followed by one text
+input event because rapid per-key automation drops events in the custom
+textarea. The retained value was verified as exactly `$review-agent` before
+capture; no DOM value was assigned.
+
+Both clients return exactly:
+
+1. `review-agent`;
+2. `review-bugbot`;
+3. `review-security`;
+4. `review`.
+
+The 726×122 surface, 716×28 active row, 16px icon slot, 14px painted icon, and
+title/description/meta rails now match in X and size. Their common Y delta is
+the already measured landing offset of `-0.75px`. Typography resolves to:
+
+- title `11.5px/500/16px`;
+- description `11px/400/16px`;
+- meta `10.5px/400/15px`.
+
+The frame uses the Web-authority 14px radius and no elevated shadow. Muted
+description/meta opacity and active icon opacity are state-specific and live in
+the command-menu primitive rather than feature call sites.

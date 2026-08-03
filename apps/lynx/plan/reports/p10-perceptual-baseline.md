@@ -13,9 +13,9 @@ canonical Browser states:
 - Sidebar project navigation;
 - default Composer.
 
-Project Picker open, filtered skill menu, and every required Native cell remain
-explicitly incomplete. Settings General now has retained Web and Lynx-for-Web
-evidence in `p10-typography-calibration.md`.
+All six canonical Browser pairs are retained. Every required Native cell
+remains explicitly incomplete. Typography details for Settings, Project Picker,
+and the filtered skill menu are in `p10-typography-calibration.md`.
 
 ## Harness
 
@@ -140,13 +140,13 @@ therefore remain red. No user state was touched.
 ## Current strict status
 
 - 6 canonical states.
-- 8 incomplete required client cells.
+- 6 incomplete required client cells, all Native.
 - 0 open P0/P1 residuals in measured Browser states.
 - Strict verifier exits `2` as designed.
 
 ## Next
 
-1. Filtered skill menu Browser baseline.
-2. Typography role contract across overlays, transcript, buttons, and chips.
+1. Typography role contract across transcript, route titles, buttons, and chips.
+2. Dark/two-size Browser expansion for calibrated roles.
 3. A PID-gated Native capture helper that completes DOM/style/screenshot
    collection before the transient DevTool endpoint is released.

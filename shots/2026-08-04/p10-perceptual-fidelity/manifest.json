@@ -540,6 +540,7 @@
       "theme": "light",
       "density": "comfortable",
       "interactionState": "skill-filtered-review-agent",
+      "snapshotSha256": "efff3a237391e06af6b7b1304a7f45055d86a803a5445de3c17afa79209de987",
       "viewport": {
         "width": 1280,
         "height": 820,
@@ -550,15 +551,108 @@
         "lynx",
         "native"
       ],
-      "residuals": [],
+      "residuals": [
+        {
+          "id": "skill-menu-frame-anatomy",
+          "category": "GEOMETRY",
+          "severity": "P1",
+          "status": "fixed",
+          "owner": "ComposerCommandMenuLynx shared frame and row primitives",
+          "summary": "Lynx used a tighter 10px frame, heavy shadow, 8px row padding, and 7px row radius while Web used a 14px frame with no shadow and 10px/8px row anatomy.",
+          "impact": "The high-frequency filtered overlay looked denser and more elevated than the Web authority.",
+          "recommendation": "Keep frame and row chrome centralized in the command-menu primitive.",
+          "evidence": "browser/skill-menu-filtered/lynx/geometry.json",
+          "reason": "Surface and row boxes now match Web exactly; every measured anchor shares the same -0.75px landing offset."
+        },
+        {
+          "id": "skill-menu-text-density",
+          "category": "TYPOGRAPHY",
+          "severity": "P1",
+          "status": "fixed",
+          "owner": "shared picker typography roles",
+          "summary": "Command title, description, and metadata previously lacked a cross-engine line-box contract and muted hierarchy.",
+          "impact": "Long descriptions and trailing provider labels had visibly different density and contrast.",
+          "recommendation": "Continue consuming semantic picker title, description, and meta roles.",
+          "evidence": "browser/skill-menu-filtered/lynx/styles.json",
+          "reason": "Both clients resolve title 11.5px/500/16px, description 11px/400/16px, and meta 10.5px/400/15px."
+        },
+        {
+          "id": "skill-menu-icon-optics",
+          "category": "ICON",
+          "severity": "P1",
+          "status": "fixed",
+          "owner": "ComposerCommandMenuCompositionElements Lynx icon slot",
+          "summary": "Generated Lynx skill icons retained their 16px inline size and the active state did not match Web foreground opacity.",
+          "impact": "The leading rail shifted and the highlighted row lacked the same visual center.",
+          "recommendation": "Pass the 14px optical size through the generated icon API and apply active opacity at the primitive.",
+          "evidence": "browser/skill-menu-filtered/lynx/geometry.json",
+          "reason": "The 16px slot and 14px painted icon bounds now match Web at the same coordinates."
+        },
+        {
+          "id": "skill-menu-filter-query-input",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Lynx-for-Web x-textarea host element",
+          "summary": "The custom textarea reports a zero-sized inner box although its visible editor region and canonical value are real.",
+          "impact": "Browser evidence cannot use the inner node as a geometry anchor.",
+          "recommendation": "Retain query, result order, menu geometry, and typography in Browser; certify textarea metrics in Native.",
+          "evidence": "browser/skill-menu-filtered/lynx/geometry.json",
+          "reason": "The retained canonical value is exactly $review-agent and both clients return review-agent, review-bugbot, review-security, review in that order."
+        }
+      ],
       "evidence": {
         "web": {
-          "status": "pending",
-          "reason": "Current-build P10 Web capture has not been retained."
+          "status": "retained",
+          "path": "browser/skill-menu-filtered/web/raw.png",
+          "comparisonPath": "browser/skill-menu-filtered/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9a353b905d1aaad20a47909dc30c12e4fa4dd438b7a95418342607ab99e5857b",
+          "snapshotSha256": "efff3a237391e06af6b7b1304a7f45055d86a803a5445de3c17afa79209de987",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "browser/skill-menu-filtered/web/geometry.json",
+          "styles": "browser/skill-menu-filtered/web/styles.json",
+          "console": "browser/skill-menu-filtered/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "skill-filtered-review-agent"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
         },
         "lynx": {
-          "status": "pending",
-          "reason": "Current-build P10 Lynx-for-Web capture has not been retained."
+          "status": "retained",
+          "path": "browser/skill-menu-filtered/lynx/raw.png",
+          "comparisonPath": "browser/skill-menu-filtered/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "c82d286739d4bfcec46bd4084d0802997d4b47865d0bc94eff0c2876bc26f8be",
+          "snapshotSha256": "efff3a237391e06af6b7b1304a7f45055d86a803a5445de3c17afa79209de987",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "browser/skill-menu-filtered/lynx/geometry.json",
+          "styles": "browser/skill-menu-filtered/lynx/styles.json",
+          "console": "browser/skill-menu-filtered/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "skill-filtered-review-agent"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
         },
         "native": {
           "status": "pending",

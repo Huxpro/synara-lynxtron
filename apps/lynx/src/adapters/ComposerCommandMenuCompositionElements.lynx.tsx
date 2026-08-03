@@ -139,7 +139,7 @@ export function ComposerCommandRowElement(props: {
       }}
     >
       <view className="ComposerCommandIconSlotLynx">
-        <Icon className="ComposerCommandIconLynx" />
+        <Icon className="ComposerCommandIconLynx" size={14} />
       </view>
       <view className="ComposerCommandCopyLynx">
         <text className="ComposerCommandTitleLynx">{props.title}</text>
