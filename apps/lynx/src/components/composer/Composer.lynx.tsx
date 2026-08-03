@@ -82,7 +82,6 @@ import {
   cutComposerNativeEditorSelection,
   normalizeComposerNativeEditorSnapshot,
   selectAllComposerNativeEditor,
-  selectedComposerNativeEditorText,
   type ComposerNativeEditorSnapshot,
 } from './composerNativeEditor.logic';
 import {
@@ -92,6 +91,12 @@ import {
   undoComposerEditorHistory,
   type ComposerEditorHistorySnapshot,
 } from './composerEditorHistory.logic';
+import {
+  applyNativeComposerDisplayEdit,
+  createNativeComposerDraftProjection,
+  displayOffsetForCanonicalOffset,
+  type NativeComposerDisplayToken,
+} from './composerDraftProjection.logic';
 import {
   releasePickedComposerFile,
   resolvePickedComposerFiles,
@@ -156,6 +161,47 @@ function ComposerChip({
   );
 }
 
+function ComposerProjectionChip({
+  token,
+}: {
+  readonly token: NativeComposerDisplayToken;
+}) {
+  return (
+    <view className={`ComposerChip ComposerChip--${token.kind}`}>
+      <text className="ComposerChipGlyph">
+        {token.kind === 'mention' ? '@' : '◆'}
+      </text>
+      <text className="ComposerChipLabel">{token.label}</text>
+    </view>
+  );
+}
+
+function ComposerProjectedVisualContent({
+  projection,
+}: {
+  readonly projection: ReturnType<typeof createNativeComposerDraftProjection>;
+}) {
+  return (
+    <view className="ComposerProjectedVisualContent" aria-hidden="true">
+      {projection.plainSegments.map((plain, index) => (
+        <view
+          className="ComposerProjectedVisualSegment"
+          key={`plain:${index}`}
+        >
+          {plain ? (
+            <text className="ComposerProjectedVisualText">{plain}</text>
+          ) : null}
+          {projection.displayTokens[index] ? (
+            <ComposerProjectionChip
+              token={projection.displayTokens[index]!}
+            />
+          ) : null}
+        </view>
+      ))}
+    </view>
+  );
+}
+
 interface ComposerProps {
   readonly activeTurnId: string | null;
   readonly interactionMode: 'default' | 'plan' | undefined;
@@ -163,6 +209,7 @@ interface ComposerProps {
   readonly runtimeMode: 'full-access' | 'approval-required' | undefined;
   readonly sessionStatus: string | null;
   readonly threadId: string;
+  readonly draftId?: string;
   readonly workspaceRoot?: string | null;
   readonly emptyLanding?: boolean;
   readonly onBeforeSend?: (input: {
@@ -189,6 +236,7 @@ export function Composer({
   runtimeMode,
   sessionStatus,
   threadId,
+  draftId,
   workspaceRoot,
   emptyLanding = false,
   onBeforeSend,
@@ -197,7 +245,7 @@ export function Composer({
 }: ComposerProps) {
   const { resolvedTheme } = useTheme();
   const textareaRef = useRef<React.ElementRef<'textarea'>>(null);
-  const brandedThreadId = threadId as never;
+  const brandedThreadId = (draftId ?? threadId) as never;
   const draft = useComposerDraftStore(
     (state) => state.draftsByThreadId[brandedThreadId]?.prompt ?? ''
   );
@@ -215,6 +263,15 @@ export function Composer({
   );
   const skills = useComposerDraftStore(
     (state) => state.draftsByThreadId[brandedThreadId]?.skills ?? EMPTY_SKILLS
+  );
+  const draftProjection = useMemo(
+    () =>
+      createNativeComposerDraftProjection({
+        canonicalText: draft,
+        mentions,
+        skills,
+      }),
+    [draft, mentions, skills]
   );
   const draftModelSelection = useComposerDraftStore(
     (state) =>
@@ -248,15 +305,18 @@ export function Composer({
     readonly value: string;
   } | null>(null);
   const nativeSelectionRef = useRef({
-    selectionStart: draft.length,
-    selectionEnd: draft.length,
+    selectionStart: draftProjection.displayText.length,
+    selectionEnd: draftProjection.displayText.length,
   });
   const nativeEditorSnapshotRef = useRef<ComposerNativeEditorSnapshot>({
-    value: draft,
-    selectionStart: draft.length,
-    selectionEnd: draft.length,
+    value: draftProjection.displayText,
+    selectionStart: draftProjection.displayText.length,
+    selectionEnd: draftProjection.displayText.length,
     isComposing: false,
   });
+  const draftProjectionRef = useRef(draftProjection);
+  const appliedDisplayProjectionRef = useRef<string | null>(null);
+  draftProjectionRef.current = draftProjection;
   const editorHistoryRef = useRef(
     createComposerEditorHistory<ComposerEditorHistoryContext>()
   );
@@ -268,13 +328,22 @@ export function Composer({
     const prompt =
       useComposerDraftStore.getState().draftsByThreadId[brandedThreadId]
         ?.prompt ?? '';
+    const current =
+      useComposerDraftStore.getState().draftsByThreadId[brandedThreadId];
+    const projection = createNativeComposerDraftProjection({
+      canonicalText: prompt,
+      mentions: current?.mentions ?? EMPTY_MENTIONS,
+      skills: current?.skills ?? EMPTY_SKILLS,
+    });
     const selection = {
-      selectionStart: prompt.length,
-      selectionEnd: prompt.length,
+      selectionStart: projection.displayText.length,
+      selectionEnd: projection.displayText.length,
     };
+    draftProjectionRef.current = projection;
+    appliedDisplayProjectionRef.current = null;
     nativeSelectionRef.current = selection;
     nativeEditorSnapshotRef.current = {
-      value: prompt,
+      value: projection.displayText,
       ...selection,
       isComposing: false,
     };
@@ -409,9 +478,11 @@ export function Composer({
     [mentionSnapshot]
   );
   const segments = useMemo(() => splitPromptIntoComposerSegments(draft), [draft]);
-  const tokens = segments.filter(
+  const auxiliaryTokens = segments.filter(
     (segment): segment is ComposerTokenSegment =>
-      segment.type !== 'text'
+      segment.type !== 'text' &&
+      segment.type !== 'mention' &&
+      segment.type !== 'skill'
   );
   const slashCommandItems = useMemo(
     () =>
@@ -449,31 +520,50 @@ export function Composer({
   }, [composerTrigger, providerSkillsCatalog?.skills]);
 
   function setNativeValue(
-    value: string,
-    selectionStart = value.length,
+    canonicalValue: string,
+    selectionStart = canonicalValue.length,
     selectionEnd = selectionStart
   ) {
     'background only';
-    const safeSelectionStart = Math.max(
+    const current =
+      useComposerDraftStore.getState().draftsByThreadId[brandedThreadId];
+    const projection = createNativeComposerDraftProjection({
+      canonicalText: canonicalValue,
+      mentions: current?.mentions ?? EMPTY_MENTIONS,
+      skills: current?.skills ?? EMPTY_SKILLS,
+    });
+    draftProjectionRef.current = projection;
+    const safeCanonicalSelectionStart = Math.max(
       0,
-      Math.min(value.length, selectionStart)
+      Math.min(canonicalValue.length, selectionStart)
+    );
+    const safeCanonicalSelectionEnd = Math.max(
+      safeCanonicalSelectionStart,
+      Math.min(canonicalValue.length, selectionEnd)
     );
     const nextSelection = {
-      selectionStart: safeSelectionStart,
-      selectionEnd: Math.max(
-        safeSelectionStart,
-        Math.min(value.length, selectionEnd)
-      ),
+      selectionStart: displayOffsetForCanonicalOffset({
+        projection,
+        canonicalOffset: safeCanonicalSelectionStart,
+      }),
+      selectionEnd: displayOffsetForCanonicalOffset({
+        projection,
+        canonicalOffset: safeCanonicalSelectionEnd,
+      }),
     };
-    pendingNativeValueRef.current = { value, ...nextSelection };
+    pendingNativeValueRef.current = {
+      value: projection.displayText,
+      ...nextSelection,
+    };
+    appliedDisplayProjectionRef.current = projection.displayText;
     nativeSelectionRef.current = nextSelection;
     nativeEditorSnapshotRef.current = {
-      value,
+      value: projection.displayText,
       ...nextSelection,
       isComposing: false,
     };
     textareaRef.current
-      ?.invoke({ method: 'setValue', params: { value } })
+      ?.invoke({ method: 'setValue', params: { value: projection.displayText } })
       .exec();
     textareaRef.current
       ?.invoke({ method: 'focus' })
@@ -491,6 +581,41 @@ export function Composer({
       .exec();
   }
 
+  useEffect(() => {
+    'background only';
+    if (
+      appliedDisplayProjectionRef.current === draftProjection.displayText &&
+      nativeEditorSnapshotRef.current.value === draftProjection.displayText
+    ) {
+      return;
+    }
+    const selection = {
+      selectionStart: draftProjection.displayText.length,
+      selectionEnd: draftProjection.displayText.length,
+    };
+    draftProjectionRef.current = draftProjection;
+    nativeSelectionRef.current = selection;
+    nativeEditorSnapshotRef.current = {
+      value: draftProjection.displayText,
+      ...selection,
+      isComposing: false,
+    };
+    pendingNativeValueRef.current = {
+      value: draftProjection.displayText,
+      ...selection,
+    };
+    appliedDisplayProjectionRef.current = draftProjection.displayText;
+    textareaRef.current
+      ?.invoke({
+        method: 'setValue',
+        params: { value: draftProjection.displayText },
+      })
+      .exec();
+    textareaRef.current
+      ?.invoke({ method: 'setSelectionRange', params: selection })
+      .exec();
+  }, [draftProjection]);
+
   async function readNativeEditorSnapshot(fallbackPrompt: string): Promise<{
     readonly isComposing: boolean;
     readonly selectionEnd: number;
@@ -498,12 +623,19 @@ export function Composer({
     readonly value: string;
   } | null> {
     'background only';
+    const fallbackProjection = draftProjectionRef.current.canonicalText === fallbackPrompt
+      ? draftProjectionRef.current
+      : createNativeComposerDraftProjection({
+          canonicalText: fallbackPrompt,
+          mentions,
+          skills,
+        });
     const trackedSnapshot = nativeEditorSnapshotRef.current;
     const fallback: ComposerNativeEditorSnapshot =
-      trackedSnapshot.value === fallbackPrompt
+      trackedSnapshot.value === fallbackProjection.displayText
         ? trackedSnapshot
         : {
-            value: fallbackPrompt,
+            value: fallbackProjection.displayText,
             isComposing: false,
             ...nativeSelectionRef.current,
           };
@@ -543,14 +675,20 @@ export function Composer({
     'background only';
     const current =
       useComposerDraftStore.getState().draftsByThreadId[brandedThreadId];
+    const edit = applyNativeComposerDisplayEdit({
+      projection: draftProjectionRef.current,
+      displayText: editor.value,
+      displaySelectionStart: editor.selectionStart,
+      displaySelectionEnd: editor.selectionEnd,
+    });
     return {
-      value: editor.value,
-      selectionStart: editor.selectionStart,
-      selectionEnd: editor.selectionEnd,
+      value: edit.canonicalText,
+      selectionStart: edit.canonicalSelectionStart,
+      selectionEnd: edit.canonicalSelectionEnd,
       context: {
-        mentions: [...(current?.mentions ?? EMPTY_MENTIONS)],
+        mentions: [...edit.mentions],
         pastedTexts: [...(current?.pastedTexts ?? EMPTY_PASTED_TEXTS)],
-        skills: [...(current?.skills ?? EMPTY_SKILLS)],
+        skills: [...edit.skills],
       },
     };
   }
@@ -626,7 +764,16 @@ export function Composer({
     'background only';
     if (!focused) return;
     const editor = nativeEditorSnapshotRef.current;
-    const selectedText = selectedComposerNativeEditorText(editor);
+    const projected = applyNativeComposerDisplayEdit({
+      projection: draftProjectionRef.current,
+      displayText: editor.value,
+      displaySelectionStart: editor.selectionStart,
+      displaySelectionEnd: editor.selectionEnd,
+    });
+    const selectedText = projected.canonicalText.slice(
+      projected.canonicalSelectionStart,
+      projected.canonicalSelectionEnd
+    );
     if (!selectedText) return;
     try {
       await clipboardPort.writeText(selectedText);
@@ -641,14 +788,22 @@ export function Composer({
     }
     recordEditorHistory(editor);
     const next = cutComposerNativeEditorSelection(editor);
-    setPrompt(brandedThreadId, next.value);
+    const edit = applyNativeComposerDisplayEdit({
+      projection: draftProjectionRef.current,
+      displayText: next.value,
+      displaySelectionStart: next.selectionStart,
+      displaySelectionEnd: next.selectionEnd,
+    });
+    setPrompt(brandedThreadId, edit.canonicalText);
+    setMentions(brandedThreadId, edit.mentions);
+    setSkills(brandedThreadId, edit.skills);
     setNativeValue(
-      next.value,
-      next.selectionStart,
-      next.selectionEnd
+      edit.canonicalText,
+      edit.canonicalSelectionStart,
+      edit.canonicalSelectionEnd
     );
     setComposerTrigger(
-      detectComposerTrigger(next.value, next.selectionStart)
+      detectComposerTrigger(edit.canonicalText, edit.canonicalSelectionStart)
     );
   }
 
@@ -784,19 +939,27 @@ export function Composer({
       return;
     }
     recordEditorHistory(nativeEditor);
-    const nextPrompt = `${nativeEditor.value.slice(
+    const nextDisplay = `${nativeEditor.value.slice(
       0,
       nativeEditor.selectionStart
     )}${text}${nativeEditor.value.slice(nativeEditor.selectionEnd)}`;
-    const nextSelection = nativeEditor.selectionStart + text.length;
+    const nextDisplaySelection = nativeEditor.selectionStart + text.length;
+    const projected = applyNativeComposerDisplayEdit({
+      projection: draftProjectionRef.current,
+      displayText: nextDisplay,
+      displaySelectionStart: nextDisplaySelection,
+      displaySelectionEnd: nextDisplaySelection,
+    });
     const transition = resolveComposerInputTransition({
-      previousPrompt: nativeEditor.value,
-      nextPrompt,
-      selectionStart: nextSelection,
-      selectionEnd: nextSelection,
+      previousPrompt: draft,
+      nextPrompt: projected.canonicalText,
+      selectionStart: projected.canonicalSelectionStart,
+      selectionEnd: projected.canonicalSelectionEnd,
       isComposing: false,
     });
     setPrompt(brandedThreadId, transition.prompt);
+    setMentions(brandedThreadId, projected.mentions);
+    setSkills(brandedThreadId, projected.skills);
     if (transition.kind === 'collapsed-paste') {
       addPastedText(
         brandedThreadId,
@@ -941,11 +1104,19 @@ export function Composer({
       selectionEnd: nativeEditor.selectionEnd,
     };
     nativeEditorSnapshotRef.current = nativeEditor;
-    if (nativeEditor.value !== draft) {
-      setPrompt(brandedThreadId, nativeEditor.value);
+    const projectedEditor = applyNativeComposerDisplayEdit({
+      projection: draftProjectionRef.current,
+      displayText: nativeEditor.value,
+      displaySelectionStart: nativeEditor.selectionStart,
+      displaySelectionEnd: nativeEditor.selectionEnd,
+    });
+    if (projectedEditor.canonicalText !== draft) {
+      setPrompt(brandedThreadId, projectedEditor.canonicalText);
+      setMentions(brandedThreadId, projectedEditor.mentions);
+      setSkills(brandedThreadId, projectedEditor.skills);
     }
     const text = appendPastedTextsToPrompt(
-      nativeEditor.value,
+      projectedEditor.canonicalText,
       pastedTexts
     ).trim();
     if (
@@ -981,8 +1152,8 @@ export function Composer({
             runtimeMode,
             text: text || 'Review the attached file.',
             threadId,
-            mentions,
-            skills,
+            mentions: projectedEditor.mentions,
+            skills: projectedEditor.skills,
           })
         )
       );
@@ -1115,10 +1286,10 @@ export function Composer({
           onRemoveFile={removeNativeComposerFile}
           onRemoveImage={() => undefined}
         />
-        {tokens.length > 0 ? (
+        {auxiliaryTokens.length > 0 ? (
           <scroll-view className="ComposerTokenPreview" scroll-orientation="horizontal">
             <view className="ComposerTokenRow">
-              {tokens.map((segment, index) => (
+              {auxiliaryTokens.map((segment, index) => (
                 <ComposerChip
                   key={`${segment.type}:${segmentLabel(segment)}:${index}`}
                   segment={segment}
@@ -1127,31 +1298,39 @@ export function Composer({
             </view>
           </scroll-view>
         ) : null}
-        <textarea
-          ref={textareaRef}
-          className="ComposerTextarea"
-          aria-label="Message composer"
-          accessibility-element={true}
-          accessibility-label="Message composer"
-          focusable={true}
-          default-value={draft}
-          placeholder={
-            emptyLanding
-              ? 'Ask for follow-up changes or attach images'
-              : 'Ask anything, @mention a path, or use $skill'
-          }
-          maxlength={8000}
-          maxlines={6}
-          enable-scroll-bar={true}
-          bindfocus={() => {
+        <view className="ComposerProjectedEditorFlow">
+          {draftProjection.displayTokens.length > 0 ? (
+            <ComposerProjectedVisualContent projection={draftProjection} />
+          ) : null}
+          <textarea
+            ref={textareaRef}
+            className={`ComposerTextarea${
+              draftProjection.displayTokens.length > 0
+                ? ' ComposerTextarea--projected'
+                : ''
+            }`}
+            aria-label="Message composer"
+            accessibility-element={true}
+            accessibility-label="Message composer"
+            focusable={true}
+            default-value={draftProjection.displayText}
+            placeholder={
+              emptyLanding
+                ? 'Ask for follow-up changes or attach images'
+                : 'Ask anything, @mention a path, or use $skill'
+            }
+            maxlength={8000}
+            maxlines={6}
+            enable-scroll-bar={true}
+            bindfocus={() => {
             'background only';
             setFocused(true);
           }}
-          bindblur={() => {
+            bindblur={() => {
             'background only';
             setFocused(false);
           }}
-          bindselection={(event) => {
+            bindselection={(event) => {
             'background only';
             nativeSelectionRef.current = {
               selectionStart: event.detail.selectionStart,
@@ -1163,7 +1342,7 @@ export function Composer({
               selectionEnd: event.detail.selectionEnd,
             };
           }}
-          bindinput={(event) => {
+            bindinput={(event) => {
             'background only';
             const previousNativeEditor = nativeEditorSnapshotRef.current;
             nativeEditorSnapshotRef.current = {
@@ -1199,14 +1378,22 @@ export function Composer({
             const currentPrompt =
               useComposerDraftStore.getState().draftsByThreadId[brandedThreadId]
                 ?.prompt ?? '';
+            const projected = applyNativeComposerDisplayEdit({
+              projection: draftProjectionRef.current,
+              displayText: event.detail.value,
+              displaySelectionStart: event.detail.selectionStart,
+              displaySelectionEnd: event.detail.selectionEnd,
+            });
             const transition = resolveComposerInputTransition({
               previousPrompt: currentPrompt,
-              nextPrompt: event.detail.value,
-              selectionStart: event.detail.selectionStart,
-              selectionEnd: event.detail.selectionEnd,
+              nextPrompt: projected.canonicalText,
+              selectionStart: projected.canonicalSelectionStart,
+              selectionEnd: projected.canonicalSelectionEnd,
               isComposing: event.detail.isComposing,
             });
             setPrompt(brandedThreadId, transition.prompt);
+            setMentions(brandedThreadId, projected.mentions);
+            setSkills(brandedThreadId, projected.skills);
             if (transition.kind === 'collapsed-paste') {
               addPastedText(
                 brandedThreadId,
@@ -1232,8 +1419,9 @@ export function Composer({
                     transition.selectionStart
                   )
             );
-          }}
-        />
+            }}
+          />
+        </view>
       </ComposerEditorRegionComposition>
       <ComposerFooterRowComposition>
         <ComposerFooterContentComposition

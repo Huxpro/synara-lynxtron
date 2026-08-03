@@ -142,3 +142,32 @@ Native evidence.
   initialization warning.
 - Selected and cleared token evidence remains pending for Phase 4.
 - Strict status after Phase 3: 25 incomplete required cells.
+
+## Phase 4 Tokens
+
+- Evidence builds:
+  - Web:
+    `647bb96161b34e9b01afcf44a639c5043e5f1cdc43691694136c5ee8c115046b`
+  - Lynx-for-Web:
+    `5c1719a2c70171ae07dc6507d86005b37065e833202c884e0b9b89002433572e`
+- Four paired states are retained:
+  - selected skill;
+  - cleared skill;
+  - selected mention;
+  - cleared mention.
+- A selected Lynx token appears once in the interleaved visual overlay. The
+  native textarea contains one invisible `U+2063` anchor plus ordinary
+  spacing; canonical provider syntax is not visible.
+- The host-backed draft record persists canonical text and structured refs:
+  - `/review-agent ` plus one skill reference;
+  - `@"In Progress seed task" ` plus one `thread://` mention reference.
+- Full Lynx-for-Web reload restored chip and anchor together. Backspace removed
+  the anchor, chip, canonical token, structured ref, and persisted projection
+  together.
+- Pure tests cover multiple and duplicate tokens, ordinary text edits,
+  Backspace, selection deletion, selection mapping, IME-adjacent edits,
+  persistence parsing, history, and canonical dispatch shape.
+- Native input, IME, selection, undo/redo, failed-send retention, successful
+  send clearing, RPC/DB projection, and cold restart remain for the exact-owned
+  batch.
+- Strict status after Phase 4: 17 incomplete required cells.

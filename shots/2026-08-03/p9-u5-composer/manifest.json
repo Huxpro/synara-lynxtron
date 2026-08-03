@@ -1009,14 +1009,44 @@
       },
       "evidence": {
         "web": {
-          "status": "diagnostic",
-          "path": "../p9-u4-browser/composer/web-skill-selected.png",
-          "reason": "Legacy capture lacks a recorded production build hash."
+          "status": "retained",
+          "path": "browser/tokens/skill-selected/web/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "647bb96161b34e9b01afcf44a639c5043e5f1cdc43691694136c5ee8c115046b",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/tokens/skill-selected/web/assertions.json",
+          "console": "browser/tokens/skill-selected/web/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": "skill",
+            "tokenState": "selected"
+          }
         },
         "lynx": {
-          "status": "diagnostic",
-          "path": "../composer-details/browser/skills-mentions-1280/lynx-skill-selected.png",
-          "reason": "Legacy capture exposes duplicate chip plus canonical text and is intentionally not accepted."
+          "status": "retained",
+          "path": "browser/tokens/skill-selected/lynx/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "5c1719a2c70171ae07dc6507d86005b37065e833202c884e0b9b89002433572e",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/tokens/skill-selected/lynx/assertions.json",
+          "console": "browser/tokens/skill-selected/lynx/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": "skill",
+            "tokenState": "selected"
+          }
         },
         "native": {
           "status": "pending",
@@ -1038,13 +1068,44 @@
       },
       "evidence": {
         "web": {
-          "status": "diagnostic",
-          "path": "../p9-u4-browser/composer/web-skill-cleared.png",
-          "reason": "Legacy capture lacks a recorded production build hash and structured-draft assertion."
+          "status": "retained",
+          "path": "browser/tokens/skill-cleared/web/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "647bb96161b34e9b01afcf44a639c5043e5f1cdc43691694136c5ee8c115046b",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/tokens/skill-cleared/web/assertions.json",
+          "console": "browser/tokens/skill-cleared/web/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": "skill",
+            "tokenState": "cleared"
+          }
         },
         "lynx": {
-          "status": "pending",
-          "reason": "No dedicated Lynx skill-cleared frame and structured assertion are retained."
+          "status": "retained",
+          "path": "browser/tokens/skill-cleared/lynx/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "5c1719a2c70171ae07dc6507d86005b37065e833202c884e0b9b89002433572e",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/tokens/skill-cleared/lynx/assertions.json",
+          "console": "browser/tokens/skill-cleared/lynx/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": "skill",
+            "tokenState": "cleared"
+          }
         },
         "native": {
           "status": "pending",
@@ -1202,14 +1263,44 @@
       },
       "evidence": {
         "web": {
-          "status": "diagnostic",
-          "path": "../p9-u4-browser/composer/web-mention-selected.png",
-          "reason": "Legacy capture lacks a recorded production build hash."
+          "status": "retained",
+          "path": "browser/tokens/mention-selected/web/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "647bb96161b34e9b01afcf44a639c5043e5f1cdc43691694136c5ee8c115046b",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/tokens/mention-selected/web/assertions.json",
+          "console": "browser/tokens/mention-selected/web/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": "mention",
+            "tokenState": "selected"
+          }
         },
         "lynx": {
-          "status": "diagnostic",
-          "path": "../composer-details/browser/skills-mentions-1280/lynx-mention-selected.png",
-          "reason": "Legacy capture exposes duplicate chip plus canonical text and is intentionally not accepted."
+          "status": "retained",
+          "path": "browser/tokens/mention-selected/lynx/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "5c1719a2c70171ae07dc6507d86005b37065e833202c884e0b9b89002433572e",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/tokens/mention-selected/lynx/assertions.json",
+          "console": "browser/tokens/mention-selected/lynx/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": "mention",
+            "tokenState": "selected"
+          }
         },
         "native": {
           "status": "pending",
@@ -1231,13 +1322,44 @@
       },
       "evidence": {
         "web": {
-          "status": "diagnostic",
-          "path": "../p9-u4-browser/composer/web-mention-cleared.png",
-          "reason": "Legacy capture lacks a recorded production build hash and structured-draft assertion."
+          "status": "retained",
+          "path": "browser/tokens/mention-cleared/web/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "647bb96161b34e9b01afcf44a639c5043e5f1cdc43691694136c5ee8c115046b",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/tokens/mention-cleared/web/assertions.json",
+          "console": "browser/tokens/mention-cleared/web/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": "mention",
+            "tokenState": "cleared"
+          }
         },
         "lynx": {
-          "status": "pending",
-          "reason": "No dedicated Lynx mention-cleared frame and structured assertion are retained."
+          "status": "retained",
+          "path": "browser/tokens/mention-cleared/lynx/screenshot.png",
+          "captureTier": "browser",
+          "buildSha256": "5c1719a2c70171ae07dc6507d86005b37065e833202c884e0b9b89002433572e",
+          "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "assertions": "browser/tokens/mention-cleared/lynx/assertions.json",
+          "console": "browser/tokens/mention-cleared/lynx/console.txt",
+          "stateEcho": {
+            "interactionMode": "default",
+            "fastMode": false,
+            "selectedProject": null,
+            "tokenKind": "mention",
+            "tokenState": "cleared"
+          }
         },
         "native": {
           "status": "pending",

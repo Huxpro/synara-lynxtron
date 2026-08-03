@@ -4838,3 +4838,23 @@
 - gates：Lynx adapter/theme/selection **7/7**；Web shared composition **2/2**；
   Web/Lynx-for-Web production green；fresh Web console空，Lynx仅已登记upstream init
   warning。
+
+## 2026-08-03 — P9-U5 Phase 4 Native token projection
+
+- 新增pure `NativeComposerDraftProjection`，明确拆分canonical provider text、display
+  text、ordered display tokens、structured skills/mentions。textarea每个token只保留一个
+  invisible `U+2063` anchor；interleaved visual overlay按plain/token canonical顺序渲染，
+  不再显示chip + raw syntax双份语义。
+- display edit通过token-aware alignment原子投影回canonical；anchor删除同步清structured
+  ref。input/selection、Backspace/Delete、selection deletion、copy/cut/paste、undo/redo、
+  IME-adjacent text、send/failed-send/success-clear边界统一走projection。
+- Lynx subset draft store新增host-backed KV persistence与stable
+  `lynx-landing-draft` key；App增加storage hydration gate，Composer首次mount即拿到
+  canonical draft/ref并初始化anchor。malformed JSON fails closed。
+- 真实Browser验证skill与mention各自selected/cleared：selected时仅1个visible chip，
+  textarea为`U+2063 + space`且无canonical syntax；KV分别保存`/review-agent ` +
+  structured skill、quoted mention + `thread://` ref；full reload恢复chip+anchor；
+  Backspace后chip/prompt/ref/KV一起清空。
+- 4 states × Web/Lynx共8 required cells retained，strict incomplete **25→17**。
+  focused projection/store/editor/history/send **32/32**；Native IME/selection/undo-redo/
+  dispatch/failed-send/cold-restart留exact-owned batch。

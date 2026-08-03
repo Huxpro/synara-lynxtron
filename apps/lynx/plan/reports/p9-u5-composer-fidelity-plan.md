@@ -458,6 +458,8 @@ typographic system.
 
 ## Phase 4 — Selected token architecture
 
+Status: completed
+
 ### Root cause
 
 Web's Lexical editor stores and displays inline atomic tokens. Lynx's native
@@ -532,6 +534,49 @@ Rules:
 - No provider canonical syntax leaks into the visible editor.
 - Canonical dispatch and structured references remain correct.
 - Token operations are predictable under failure and restart.
+
+### Result
+
+- Added a pure `NativeComposerDraftProjection` that explicitly separates:
+  - canonical provider text;
+  - display text;
+  - ordered display tokens;
+  - structured skills and mentions.
+- Native textarea display replaces every selected skill/mention with one
+  invisible `U+2063` anchor. Canonical syntax is never visible. A token-aware
+  interleaved visual overlay renders plain text and chips in canonical order,
+  so `text → token → text` composition remains correct.
+- Display edits are projected back to canonical text without reparsing visible
+  labels. Removing an anchor atomically removes its structured reference.
+- Integrated the projection across:
+  - native input events and selection mapping;
+  - Backspace/Delete and selection deletion;
+  - copy/cut/paste;
+  - undo/redo history snapshots;
+  - IME-adjacent text;
+  - failed-send draft retention;
+  - successful-send clear;
+  - canonical turn dispatch.
+- Added host-backed Lynx draft persistence with a stable landing draft key.
+  Canonical prompt, selected skills/mentions, model selection, pasted text, and
+  files survive reload/restart. Malformed persisted JSON fails closed.
+- Added an app hydration gate so Composer mounts only after storage and draft
+  hydration. The native textarea is then initialized with the correct display
+  anchors rather than briefly mounting an empty value.
+- Real Browser interactions verified:
+  - skill selected: one visible chip, textarea contains only anchor plus
+    spacing, KV contains canonical `/review-agent` and one structured skill;
+  - mention selected: one visible chip, textarea contains only anchor plus
+    spacing, KV contains quoted canonical mention and one `thread://` ref;
+  - full reload restores chip and anchor together;
+  - Backspace removes chip, canonical text, structured ref, and persisted
+    projection together.
+- Four selected/cleared states have paired retained Browser evidence, moving
+  eight required Browser cells to retained. Strict incomplete required cells
+  moved from 25 to 17.
+- Focused projection/store/editor/history/send gates: 32/32. Native IME,
+  selection, undo/redo, send projection, failed send, and cold restart remain
+  required in the exact-owned Native batch.
 
 ## Phase 5 — Native certification batch
 

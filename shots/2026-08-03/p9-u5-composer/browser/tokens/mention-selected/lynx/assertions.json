@@ -1,0 +1,56 @@
+{
+  "client": "lynx",
+  "captureTier": "browser",
+  "buildSha256": "5c1719a2c70171ae07dc6507d86005b37065e833202c884e0b9b89002433572e",
+  "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+  "semanticRoute": "new-chat",
+  "theme": "light",
+  "viewport": {
+    "width": 1280,
+    "height": 820,
+    "devicePixelRatio": 1
+  },
+  "states": {
+    "skillSelected": {
+      "visibleTokens": [
+        "review-agent"
+      ],
+      "visibleCount": 1,
+      "textareaCodePoints": [
+        "2063",
+        "20"
+      ],
+      "canonicalText": "/review-agent ",
+      "structuredSkills": 1,
+      "reloadPersisted": true
+    },
+    "skillCleared": {
+      "visibleCount": 0,
+      "canonicalText": "",
+      "structuredSkills": 0
+    },
+    "mentionSelected": {
+      "visibleTokens": [
+        "In Progress seed task"
+      ],
+      "visibleCount": 1,
+      "textareaCodePoints": [
+        "2063",
+        "20"
+      ],
+      "canonicalText": "@\"In Progress seed task\" ",
+      "structuredMentions": 1,
+      "reloadPersisted": true
+    },
+    "mentionCleared": {
+      "visibleCount": 0,
+      "canonicalText": "",
+      "structuredMentions": 0
+    }
+  },
+  "projection": "canonical prompt plus structured refs persisted; interleaved visual overlay renders one chip per invisible textarea anchor",
+  "pageErrors": 0,
+  "knownWarnings": [
+    "upstream Lynx-for-Web deprecated initialization parameter warning"
+  ]
+}

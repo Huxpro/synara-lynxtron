@@ -2,8 +2,8 @@
 
 Updated: 2026-08-03
 
-This file is a self-contained execution prompt for continuing the active
-Composer fidelity goal. The repository state on disk is authoritative.
+This is the self-contained prompt for resuming the active Composer fidelity
+goal from the current checkout. The repository state on disk is authoritative.
 
 ## Goal prompt
 
@@ -11,261 +11,319 @@ Composer fidelity goal. The repository state on disk is authoritative.
 继续完成 Synara P9-U5 Composer fidelity convergence，直到
 `apps/lynx/plan/reports/p9-u5-composer-fidelity-plan.md` 的全部完成标准真实满足。
 
-不要只写分析、计划或 prototype；要完成产品实现、严格 comparison evidence、
-Browser paired validation、exact-owned Native certification、独立 commits、push 和最终审计。
+不要只输出分析、计划、prototype或“下一步建议”。必须完成当前未提交slice、Browser
+矩阵收口、exact-owned Native certification、最终审计、独立commits和push。除非遇到
+不可获得的外部依赖，否则持续执行到整个goal完成。
 
-## 起点
+## 当前真实起点
 
 - 工作目录：`/Users/bytedance/github/synara`
 - 分支：`huxcx/lynxtron-port-current-state`
-- 已完成并推送 Phase 0：
-  - commit `c7ba72fc`，`test(composer): enforce strict comparison states`
-  - strict manifest：
-    `shots/2026-08-03/p9-u5-composer/manifest.json`
-  - comparison gallery：
-    `shots/2026-08-03/p8-q2/comparison.html`
-  - verifier：
-    `bun run --cwd apps/lynx evidence:composer`
-- Phase 0 strict verifier 当前因 required evidence 尚未完成而 exit 2，这是正确红灯，
-  不能通过降低规则、把 diagnostic 改成 retained 或删掉 required cells 来变绿。
-- 当前工作树包含未提交的 Phase 1 Project Picker 实现。先检查和继续这些改动，
-  不得 reset、checkout、覆盖或重做：
-  - `apps/web/src/components/chat/ComposerProjectPicker.logic.ts`
-  - `apps/web/src/components/chat/ComposerProjectPicker.logic.test.ts`
-  - `apps/web/src/components/chat/ComposerProjectPickerComposition.tsx`
-  - `apps/web/src/components/chat/ComposerProjectPickerCompositionElements.tsx`
-  - `apps/web/src/components/chat/ProjectPicker.tsx`
-  - `apps/web/src/components/ChatView.browser.tsx`
-  - `apps/lynx/src/adapters/ComposerProjectPickerCompositionElements.lynx.tsx`
-  - `apps/lynx/lynx.config.ts`
-  - `apps/lynx/src/components/composer/LandingComposer.lynx.tsx`
-  - `apps/lynx/src/components/composer/landing-composer.css`
-  - `apps/lynx/src/components/composer/landingComposerFidelity.test.ts`
-  - `shots/2026-08-03/p9-u5-composer/diagnostic/project-picker/`
-- 当前 shared picker model 已支持 project/folder、Space/Void/Folders 分组、search、
-  selected、empty/no-match、reset 与 New project intents。Web 与 Lynx 已接入 shared
-  composition；需要完成真实交互验证、deterministic state coverage、证据和 slice commit。
+- 当前HEAD及origin均为`75a03632`。
+- 已完成并推送：
+  1. `c7ba72fc test(composer): enforce strict comparison states`
+  2. `f8895970 refactor(composer): share project picker composition`
+  3. `a1b0978d refactor(composer): align extras menu primitives`
+  4. `75a03632 refactor(composer): align skill and mention menus`
+- Phase 4 Native token projection已经实现并有未提交改动。不得reset、checkout、覆盖、
+  丢弃或从头重做；先审查当前diff和已有证据，再完成它的commit/push gate。
+- 当前strict verifier：
+  `bun run --cwd apps/lynx evidence:composer`
+  应准确exit 2并报告17个required cells未retained。不得通过降低schema、删除required
+  clients、伪造assertions或把diagnostic/pending直接改成retained来变绿。
+- 当前共享snapshot：
+  `/private/tmp/synara-lynx-web-harness.SUyxxH/synara-home/dev/state.sqlite`
+- 当前snapshot SHA-256：
+  `98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070`
+- Phase 4 retained Browser evidence使用：
+  - Web build hash：
+    `647bb96161b34e9b01afcf44a639c5043e5f1cdc43691694136c5ee8c115046b`
+  - Lynx-for-Web build hash：
+    `5c1719a2c70171ae07dc6507d86005b37065e833202c884e0b9b89002433572e`
+- 当前17个未完成required cells必须保持显式、逐格关闭：
+  1. `composer-default.web`
+  2. `composer-default.lynx`
+  3. `composer-default.native`
+  4. `composer-extras-default.native`
+  5. `composer-plan-on.native`
+  6. `composer-fast-on.native`
+  7. `composer-attachment-action.web`
+  8. `composer-attachment-action.native`
+  9. `composer-project-selected-open.native`
+  10. `composer-project-loading.web`
+  11. `composer-project-loading.lynx`
+  12. `composer-project-error.web`
+  13. `composer-project-error.lynx`
+  14. `composer-skill-selected.native`
+  15. `composer-skill-cleared.native`
+  16. `composer-mention-selected.native`
+  17. `composer-mention-cleared.native`
 
-开始前读取：
+开始前必须读取：
 
-1. 根目录 `AGENTS.md`；
+1. 根目录`AGENTS.md`；
 2. `apps/lynx/plan/reports/p9-u5-composer-fidelity-plan.md`；
 3. `apps/lynx/plan/LOG.md`；
-4. 当前 `git status`、`git diff`；
-5. strict manifest、verifier和comparison实现。
+4. `apps/lynx/plan/reports/p9-u5-composer-continuation-goal-prompt.md`；
+5. `shots/2026-08-03/p9-u5-composer/manifest.json`与`notes.md`；
+6. `apps/lynx/scripts/composer-evidence.mjs`；
+7. 当前`git status`、`git diff`和最近commits。
+
+## 当前未提交Phase 4
+
+重点文件包括但不限于：
+
+- `apps/lynx/src/components/composer/composerDraftProjection.logic.ts`
+- `apps/lynx/src/components/composer/composerDraftProjection.logic.test.ts`
+- `apps/lynx/src/components/composer/Composer.lynx.tsx`
+- `apps/lynx/src/components/composer/LandingComposer.lynx.tsx`
+- `apps/lynx/src/components/composer/composer.css`
+- `apps/lynx/src/adapters/composerDraftStore.lynx.ts`
+- `apps/lynx/src/adapters/composerDraftStore.lynx.test.ts`
+- `apps/lynx/src/app/App.tsx`
+- `apps/lynx/src/components/composer/landingComposerFidelity.test.ts`
+- `shots/2026-08-03/p9-u5-composer/browser/tokens/`
+- Composer manifest、generated manifest.js、notes、主plan和LOG。
+
+已实现的架构：
+
+- canonical prompt与display projection分离；
+- 每个selected skill/mention在native textarea中只占一个不可见`U+2063` anchor；
+- interleaved visual overlay按canonical顺序只显示一个token chip；
+- canonical prompt、structured mentions/skills、selection mapping、history、clipboard、
+  send和persistence统一经过projection；
+- stable landing draft ID为`lynx-landing-draft`；
+- persistence key为`synara.lynx.composer-drafts:v1`；
+- App在storage/draft hydration完成后才mount Composer。
+
+已有真实Browser验证：
+
+- skill/mention selected时只显示一个chip，textarea无canonical syntax；
+- persisted KV保存canonical provider text和structured ref；
+- full reload恢复chip、anchor、canonical和structured context；
+- Backspace同步清除chip、prompt、ref和KV；
+- selected/cleared skill/mention共8个Web/Lynx cells已retained；
+- focused tests此前为32/32，production Web/Lynx/Desktop builds已通过。
+
+这些是必须复核的当前事实，不是允许跳过最终gate的替代品。
 
 ## 不可协商原则
 
-1. comparison 页面是日常迭代和最终验收工具，不是任务结束时补截图。
-2. 每个 retained cell 必须使用同一 build、snapshot、route、theme、viewport/DPR、
+1. comparison页面是常态迭代和最终验收工具，不是最后补截图。
+2. 每个retained cell必须来自同一snapshot、semantic route、theme、viewport/DPR、
    project/workspace、draft/caret、Plan、Fast和token state。
-3. 禁止复用不同组合态；Plan-only、Fast-only、Plan+Fast必须是独立状态。
-4. Browser pass不能冒充Native pass；Native-required state必须使用exact-owned Lynxtron。
-5. Web original是composition和visual authority，但正确产品行为高于Web偶发bug。
-6. ordinary anatomy必须physical-shared；platform adapter只拥有原生elements、input/list、
-   icon及host/filesystem能力。
-7. Native UI不得使用HTML elements；使用ReactLynx built-ins、`bindtap`等原生事件。
-8. 不进入Native Command K keyboard shortcut、general host keyboard repair、terminal、
-   browser、PDF、voice等hard islands。
-9. 不做无关cleanup，不删除或弱化既有测试/证据门禁。
-10. 只使用`bun run test`，永远不要使用`bun test`。
-11. 每个coherent slice必须：实现 → focused tests → production builds →
-    comparison evidence → 更新plan/LOG → 独立commit → 立即push。
-12. commit message末尾必须且只能有一次：
+3. Plan-only、Fast-only、Plan+Fast是不同状态，禁止组合态互相冒充。
+4. Browser pass不能冒充Native pass；Native-required state必须来自exact-owned Lynxtron。
+5. Web original是composition与visual authority，但正确产品行为高于Web偶发bug。
+6. ordinary anatomy必须physical-shared；platform adapter只拥有native elements、input/list、
+   icon和host/filesystem能力。
+7. Native UI不得使用HTML elements；使用ReactLynx built-ins与`bindtap`等原生事件。
+8. 不进入Native Command K shortcut、general host keyboard repair、terminal、browser、
+   PDF、voice或其他hard islands。
+9. 不做无关cleanup，不删除、绕过或弱化现有测试和证据门禁。
+10. 状态必须通过canonical product RPC/mutations或真实rendered controls建立；禁止直接写
+    SQLite fixture。SQLite只允许read-only验证projection/persistence。
+11. 只使用`bun run test`，永远不要使用`bun test`。
+12. 遇到harness failure先修harness，不能报告为product regression；遇到product failure
+    必须修根因并重新采集，不能只在notes中解释后pass。
+13. 每个coherent slice必须：实现/修复 → focused tests → proportional production builds →
+    comparison evidence → 更新plan/LOG/notes → 独立commit → 立即push。
+14. commit message末尾必须且只能出现一次：
     `Co-authored-by: TRAE CLI <noreply@bytedance.com>`
 
 ## 执行顺序
 
-### Slice 1 — 完成 Project Picker convergence
+### Slice A — 收口并提交Phase 4 Native token projection
 
-先完成当前未提交工作，不要开始Extras。
-
-1. 审查shared model/composition/adapters，确认Web workspace-root mode和project mode、
-   Lynx landing mode均使用同一ordinary anatomy owner。
-2. 在Lynx-for-Web真实操作：
-   - 打开picker；
-   - 检查实际closed shadow DOM中的option outerHTML、文字和bounding boxes；
-   - 按可见文本定位并点击`spike-workspace`，断言trigger更新；
-   - 重新打开并点击reset，断言恢复`Work in a project`；
-   - 通过真实input事件验证search filtered和no-match；
-   - 不要因automation的`fill`不触发ReactLynx main-thread input而修改产品逻辑。
-3. 补足deterministic tests：
-   - grouping/order；
-   - project/folder filtering；
-   - selected/reset；
-   - loading；
-   - empty/no-match；
-   - error/retry；
-   - New project和folder selection intents。
-4. 验证first-send仍投影正确的project/model/workspace。
-5. 保存同snapshot、同状态Web/Lynx paired evidence并回填manifest；diagnostic不得冒充
-   retained。
-6. 运行focused Web/Lynx tests、相关browser tests、Web和Lynx-for-Web production
-   builds。
-7. 更新主plan状态和`apps/lynx/plan/LOG.md`。
-8. commit：
-   `refactor(composer): share project picker composition`
-   然后立即push。
-
-Project Picker gate：
-
-- Web/Lynx的search、groups/order、selected/reset、New project、loading、empty/no-match、
-  error/retry anatomy一致；
-- local folder与existing project行为真实可用；
-- Landing Composer不再拥有`MenuItem/MenuPopup`普通picker anatomy；
-- Web没有行为回归；
-- strict manifest中Project Picker Browser-required cells有有效paired evidence；
-- Native-required cells若尚未batch认证，必须保持truthful pending，不能伪装完成。
-
-### Slice 2 — Extras primitive parity
-
-1. 反向检查Web和Lynx是否都消费现有shared Extras composition。
-2. 用真实native icons替换`+`、paperclip、Plan、Fast文本/简化占位。
-3. Plan使用与Web一致的switch/check anatomy。
-4. Fast实现独立定位submenu，不使用inline fallback。
-5. 对齐surface、border、radius、shadow、row height、padding、icon size、selected state和
-   popup geometry，并复用shared tokens。
-6. 保留明确平台能力差异：
-   - Web：`Add image`
-   - Native：`Add files`
-7. 分别采集Plan-only、Fast-only、Plan+Fast；禁止互相代替。
-8. 完成tests/builds/evidence/plan/LOG后commit并push：
-   `refactor(composer): align extras menu primitives`
-
-### Slice 3 — Skill and Mention command menus
-
-1. 保留shared ranking、grouping、selection intents和structured references。
-2. 用真实native icons替换`$`、`@`、`/`、`◉`等文本glyph占位。
-3. 传递真实resolved theme，删除hard-coded light theme。
-4. 对齐surface、width/max-height、group labels、row typography、description、
-   project/scope metadata、highlight/selected/loading/empty/error states。
-5. 验证长description和trailing metadata无碰撞，light/dark均正确。
-6. 完成paired evidence和focused gates后commit并push：
-   `refactor(composer): align skill and mention menus`
-
-### Slice 4 — Native selected token projection
-
-目标：skill/mention每个语义token在编辑器中只显示一次，同时provider dispatch仍获得
-canonical text与structured references。
-
-1. 先调查现有Web Lexical token、Lynx textarea、draft persistence、send projection和
-   provider payload边界；不要直接在CSS层隐藏重复文本。
-2. 建立明确的native draft projection，至少区分：
-   - display text/tokens；
-   - canonical provider text；
-   - structured mentions；
-   - structured skills。
-3. 选择token后，visible editor不得同时出现chip和canonical raw syntax。
-4. editing、clear、selection delete、Backspace/Delete、undo/redo、paste、multiple tokens、
-   duplicate selection、failed send、successful send、reload/restart必须原子维护display、
-   canonical和structured context。
-5. IME/selection/paste/undo等Native textarea语义必须留到exact-owned Native验证，不能由
-   Lynx-for-Web推断。
-6. send通过canonical product RPC；SQLite仅read-only验证projection，禁止直接写fixture。
-7. 完成tests/builds/evidence后commit并push：
+1. 检查当前diff，确认所有Phase 4改动互相一致，没有部分staged、stale generated manifest
+   或意外文件。
+2. 读取当前focused test session结果；若session已失效，则仅重跑Phase 4 focused tests：
+   - projection；
+   - draft store；
+   - editor history；
+   - native editor；
+   - dispatch；
+   - landing fidelity。
+3. 运行`git diff --check`。
+4. 确认旧isolated harness ports无listener，默认Lynx-for-Web/Desktop artifacts未残留
+   certification临时端口或Web-only relay marker。
+5. 运行strict verifier，确认它只因准确的17个剩余cells exit 2。
+6. 确认Phase 4 Browser evidence、assertions、console、PNG dimensions、manifest.js、
+   notes、主plan和LOG同步。
+7. 独立commit并立即push：
    `feat(composer): project native inline tokens`
+8. commit成功后再开始剩余Browser/Native矩阵；不要把后续certification混入此commit。
 
-### Slice 5 — Browser matrix closure
+### Slice B — 关闭剩余Browser矩阵
 
-1. 使用一个isolated Synara server、一个真实snapshot、两个named browser sessions。
-2. Web original与Lynx-for-Web保持同route/theme/viewport/DPR/product state。
-3. 通过canonical RPC/mutations创建状态；禁止直接写SQLite。
-4. 对strict manifest的全部Browser-required cells逐格执行真实rendered controls。
-5. 每格记录：
-   - build/snapshot hash；
-   - route/theme/viewport/DPR；
-   - runtime与PNG dimensions；
-   - project/draft/caret/Plan/Fast/token state；
-   - structured refs；
-   - geometry/assertions；
-   - fresh console。
-6. 每次先measure再patch，旧图或不同状态图不得retained。
-7. strict verifier可以在Native batch前因Native-required pending保持红，但所有Browser
-   required cells必须完整且有效。
+使用一个isolated Synara server、一个真实snapshot和两个named browser sessions，让Web
+original与Lynx-for-Web保持同route/theme/viewport/DPR/product state。先prove harness，
+再保留证据。
 
-### Slice 6 — Exact-owned Native certification batch
+必须关闭：
 
-只在Browser矩阵通过后执行。
+- `composer-default.web`
+- `composer-default.lynx`
+- `composer-attachment-action.web`
+- `composer-project-loading.web`
+- `composer-project-loading.lynx`
+- `composer-project-error.web`
+- `composer-project-error.lynx`
 
-1. 完整production build并记录staged bundle path/hash。
-2. dry-run isolated server；记录state dir、ports、owned PIDs和snapshot hash。
-3. 使用exact-owned `apps/lynx` workspace executable和
-   `apps/lynx/dist/desktop/main.lynx.bundle`。
-4. `NODE_ENV=production`、`SYNARA_ENABLE_DEVTOOL=1`。
-5. 从owned Lynxtron PID通过`lsof`解析DevTool client；禁止按历史端口或list order选择。
-6. 先确认root theme class、bundle identity、outer/content dimensions、console clean。
-7. 保持一个verified instance完成同size下所有route/theme/state；只有cold-start、
-   persistence、bundle变化或size变化才restart。
-8. 至少认证：
-   - default landing；
+执行要求：
+
+1. default必须重新采集为当前build的真实retained paired evidence，不能沿用旧diagnostic。
+2. attachment action必须操作Web真实`Add image`control并记录capability-specific assertion；
+   不得用Extras-open截图代替action结果。
+3. loading/error必须优先稳定捕获真实产品态。若瞬态难以保留，可新增deterministic、
+   product-faithful harness入口或扩展evidence schema支持明确的test-only proof，但必须：
+   - 不向production UI泄漏fixture开关；
+   - 不伪造截图；
+   - manifest明确evidence type和可验证artifact；
+   - verifier对test-only evidence做严格文件、hash、assertion校验；
+   - Web/Lynx都验证shared loading/error/retry anatomy；
+   - 若manifest仍要求PNG，就必须保留真实产品态PNG，不能只改status。
+4. 每格通过真实rendered controls，记录build/snapshot hash、state echo、geometry、
+   runtime和PNG dimensions、structured refs及fresh console。
+5. 运行相关focused tests与Web/Lynx-for-Web production builds。
+6. 更新manifest、generated manifest.js、notes、plan和LOG。
+7. 本slice结束时，strict verifier应只剩10个Native-required cells：
+   - default；
    - Extras default；
    - Plan-only；
    - Fast-only；
-   - Project open/selected/reset；
-   - Skill menu/selected/cleared；
-   - Mention menu/selected/cleared；
-   - token editing；
-   - send projection；
-   - restart persistence。
-9. 不认证Native Command K shortcut，不把它重新纳入scope。
-10. 每个retained Native frame同时保存exact assertions和error/warning console。
-11. 退出前恢复用户state原始bytes/hash；关闭named browser和所有owned
-    Web/server/Lynxtron/DevTool进程；确认owned ports释放。
+   - attachment action；
+   - project selected-open；
+   - skill selected/cleared；
+   - mention selected/cleared。
+8. Browser closure可与最终Native certification一起进入最后certification commit；不要创建
+   含糊的“evidence progress”commit，除非代码/harness变化本身形成独立coherent slice。
 
-### Slice 7 — Final completion audit
+### Slice C — Exact-owned Native certification
 
-1. strict manifest中每个required cell都必须是有效retained evidence。
-2. 运行：
-   - Composer evidence regression tests；
-   - strict evidence verifier；
-   - 所有相关focused Web/Lynx/browser tests；
-   - Web、Lynx-for-Web、Desktop production builds。
-3. 本goal prompt明确授权仅在最终验收阶段运行一次heavy workspace checks：
+只在Browser required cells全部有效后执行。
+
+#### Preflight
+
+1. 运行完整Web、Lynx-for-Web和Desktop production builds。
+2. 记录staged bundle path与SHA-256，确认Desktop bundle不含Web relay、browser storage、
+   Lynx-for-Web build ID或临时certification端口。
+3. dry-run isolated server，记录state dir、ports、owned PIDs和snapshot hash。
+4. 使用exact-owned `apps/lynx` workspace executable和
+   `apps/lynx/dist/desktop/main.lynx.bundle`。
+5. 使用`NODE_ENV=production`、`SYNARA_ENABLE_DEVTOOL=1`。
+6. 在修改任何persisted Native state前保存原始bytes和hash。
+7. 通过owned Lynxtron PID和`lsof`解析DevTool client/session；禁止按历史端口、list order
+   或其他正在运行的Lynxtron/Fiddle client选择。
+8. 确认process arguments、bundle identity、root theme class、outer/content dimensions、
+   snapshot identity和baseline console均正确后才保留证据。
+
+#### 必须关闭的10个Native manifest cells
+
+1. `composer-default.native`
+2. `composer-extras-default.native`
+3. `composer-plan-on.native`
+4. `composer-fast-on.native`
+5. `composer-attachment-action.native`
+6. `composer-project-selected-open.native`
+7. `composer-skill-selected.native`
+8. `composer-skill-cleared.native`
+9. `composer-mention-selected.native`
+10. `composer-mention-cleared.native`
+
+其中：
+
+- Plan-only和Fast-only必须独立建立、独立断言，不能复用Plan+Fast。
+- attachment action必须触发真实Native`Add files`host action；记录dialog/host capability，
+  不把Browser image picker当成Native证据。
+- project selected-open必须显示selected row和reset anatomy。
+- selected token必须只显示一个语义chip，native textarea不泄漏canonical syntax。
+- cleared token必须同时清除visible token、canonical text、structured ref和persisted draft。
+
+#### Native行为认证
+
+除10个manifest screenshots外，同一exact-owned batch还必须用真实Native input/host路径
+认证并记录：
+
+- skill与mention选择、caret前后输入；
+- Backspace/Delete与跨token selection deletion；
+- undo/redo中visible token、canonical text和structured refs同步；
+- paste；
+- multiple/duplicate tokens；
+- IME-adjacent输入；
+- canonical send payload与structured references；
+- failed send保留draft/token/context；
+- successful send清除draft/token/context；
+- cold restart恢复selected skill/mention、anchor、canonical prompt和structured refs；
+- restart后再次clear仍同步清KV。
+
+若上述行为不适合作为独立manifest screenshot，必须保留focused interaction log、
+DevTool assertions、RPC/read-only DB proof和clean console，并在notes中逐项映射到主plan
+acceptance criteria。Lynx-for-Web结果不能替代这些Native textarea/IME/host语义。
+
+#### Native批次约束与cleanup
+
+- 保持一个verified instance完成同size下所有状态；只有cold-start/persistence、bundle变化、
+  size变化或进程退出才restart。
+- 不Raise用户窗口，不使用`open -a`或会夺焦点的自动化；优先Computer Use background
+  `showInactive()`和PID-derived DevTool。
+- 每个retained frame同时保存exact assertions、dimensions和error/warning console。
+- 如果同一owned app连续两次同错退出，停止restart loop并诊断，不反复弹窗。
+- 结束前停止owned进程，确认当前state仍匹配本run写入bytes，再byte-exact恢复用户state。
+- 关闭named browser sessions和所有owned Web/server/Lynxtron/DevTool进程，确认owned
+  ports释放；不得停止用户或其他任务进程。
+- 不认证或声称Native Command K keyboard shortcut。
+
+### Slice D — 最终完成审计与certification commit
+
+1. strict manifest中每个required client cell都必须为真实有效retained evidence。
+2. 运行Composer evidence regression tests和strict verifier；strict必须exit 0。
+3. 运行全部相关focused Web/Lynx/browser tests。
+4. 运行Web、Lynx-for-Web和Desktop production builds。
+5. 本goal prompt明确授权只在最终验收阶段运行一次heavy workspace verification pass：
    - `bun fmt`
    - `bun lint`
    - `bun typecheck`
-   将三项合并为一次final verification pass，不在迭代中重复运行。
-4. 检查：
-   - Project Picker只有一个shared ordinary owner；
-   - Extras没有独立普通anatomy；
-   - command rows没有文本glyph占位；
-   - selected token只显示一次；
-   - canonical send payload和structured refs正确；
-   - clean consoles；
-   - user state byte-exact restore；
-   - owned processes/ports全部清理；
-   - comparison无stale metadata、错配状态或未回填证据；
-   - 所有intentional platform differences逐项登记；
+   将三项合并到一次最终pass；迭代中不得重复运行。若格式化产生修改，审查修改并做最小
+   必要复验；不得用它顺手改无关文件。
+6. 最终代码/架构审计：
+   - Project Picker只有一个shared ordinary anatomy owner；
+   - Extras没有分叉的普通anatomy；
+   - command rows没有`$`、`@`、`/`等文本glyph占位；
+   - selected skill/mention只显示一次；
+   - canonical send与structured refs正确；
+   - clear/undo/redo/send/failure/restart保持原子一致；
+   - comparison无stale metadata、错配状态、旧build或未回填Native证据；
+   - intentional platform differences逐项登记；
    - 零未登记重大视觉/行为差异。
-5. 更新：
+7. 更新并保持相互一致：
    - `apps/lynx/plan/reports/p9-u5-composer-fidelity-plan.md`
    - `apps/lynx/plan/LOG.md`
+   - `shots/2026-08-03/p9-u5-composer/manifest.json`
+   - generated `manifest.js`
    - evidence `notes.md`
-   - comparison manifest/gallery
-6. 最终certification commit并push：
+   - repository comparison gallery。
+8. 最终certification commit并立即push：
    `test(composer): certify detailed composer states`
-7. 只有strict verifier、focused tests、production builds、final heavy checks全部通过，
-   evidence完整、clean-up完成且所有commits已push后，才能声明P9-U5 complete。
+9. 只有strict verifier、focused tests、production builds、final heavy checks全部通过，
+   evidence完整，user state恢复，owned processes/ports清理，所有commits已push后，才将
+   P9-U5标记complete并向用户报告完成。
 
 ## 工作方式
 
-- 使用plan跟踪上述slices，任何时候只保留一个in-progress slice。
-- 每次开始大改或长验证前给用户一句简短进度说明。
-- 先检查依赖和实际代码，不猜测API、DOM、event shape或host行为。
-- 遇到harness failure先修harness，不能报告成product regression。
-- 遇到product failure必须修根因并重新采集该cell，不能在notes里解释后直接pass。
-- 不停在“建议下一步”；除非缺少真实外部依赖或用户授权，否则持续推进到完整完成。
+- 使用plan跟踪Slice A–D，任何时刻只保留一个in-progress slice。
+- 每次开始大改、build或Native长验证前给用户一句简短进度说明。
+- 先读取实际代码、API、DOM/event shape和host行为，不猜测。
+- 每完成一个gate立即更新plan状态，不维护与磁盘不一致的todo。
+- 不停在“目前完成了大部分”；本prompt的完成单位是整个P9-U5 goal。
 ```
 
-## Expected commit sequence
+## Remaining commit sequence
 
-1. `refactor(composer): share project picker composition`
-2. `refactor(composer): align extras menu primitives`
-3. `refactor(composer): align skill and mention menus`
-4. `feat(composer): project native inline tokens`
-5. `test(composer): certify detailed composer states`
+1. `feat(composer): project native inline tokens`
+2. `test(composer): certify detailed composer states`
 
-Each commit must be pushed immediately and must end with:
+Each commit must be pushed immediately and end with exactly one:
 
 ```text
 Co-authored-by: TRAE CLI <noreply@bytedance.com>

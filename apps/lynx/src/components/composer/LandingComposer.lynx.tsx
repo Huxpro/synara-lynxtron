@@ -361,6 +361,7 @@ export function LandingComposer(props: {
         </view>
       ) : null}
       <Composer
+        draftId="lynx-landing-draft"
         threadId={threadIdRef.current}
         modelSelection={modelSelection}
         runtimeMode="full-access"

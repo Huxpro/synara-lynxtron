@@ -1,10 +1,16 @@
 import { beforeEach, describe, expect, it } from '@rstest/core';
 
 import { createPastedTextDraft } from '@synara-web/lib/composerPastedText';
-import { useComposerDraftStore } from './composerDraftStore.lynx';
+import {
+  LYNX_COMPOSER_DRAFT_STORAGE_KEY,
+  parsePersistedLynxComposerDrafts,
+  useComposerDraftStore,
+} from './composerDraftStore.lynx';
+import { webStorage } from '../platform/storage';
 
 describe('Lynx composer draft attachment subset', () => {
   beforeEach(() => {
+    webStorage.clear();
     useComposerDraftStore.setState({ draftsByThreadId: {} });
   });
 
@@ -150,5 +156,49 @@ describe('Lynx composer draft attachment subset', () => {
     expect(
       useComposerDraftStore.getState().draftsByThreadId['thread-1']?.skills
     ).toEqual([]);
+  });
+
+  it('persists canonical prompt and structured token references for restart', () => {
+    const store = useComposerDraftStore.getState();
+    store.setPrompt('thread-1', 'Use /polish with @"Release prep"');
+    store.setSkills('thread-1', [
+      { name: 'polish', path: '/skills/polish/SKILL.md' },
+    ]);
+    store.setMentions('thread-1', [
+      { name: 'Release prep', path: 'thread://release' },
+    ]);
+
+    const persisted = webStorage.getItem(LYNX_COMPOSER_DRAFT_STORAGE_KEY);
+    expect(parsePersistedLynxComposerDrafts(persisted)['thread-1']).toMatchObject({
+      prompt: 'Use /polish with @"Release prep"',
+      skills: [{ name: 'polish', path: '/skills/polish/SKILL.md' }],
+      mentions: [{ name: 'Release prep', path: 'thread://release' }],
+    });
+  });
+
+  it('fails closed when persisted draft JSON is malformed', () => {
+    expect(parsePersistedLynxComposerDrafts('{bad')).toEqual({});
+    expect(
+      parsePersistedLynxComposerDrafts(
+        JSON.stringify({
+          broken: { prompt: 42 },
+          valid: {
+            prompt: 'keep',
+            skills: [],
+            mentions: [],
+            files: [],
+            pastedTexts: [],
+          },
+        })
+      )
+    ).toEqual({
+      valid: {
+        prompt: 'keep',
+        skills: [],
+        mentions: [],
+        files: [],
+        pastedTexts: [],
+      },
+    });
   });
 });

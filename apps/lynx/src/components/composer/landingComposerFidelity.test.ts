@@ -35,6 +35,7 @@ describe('landing composer fidelity contract', () => {
       'initialProjectId={props.initialProjectId}'
     );
     expect(landingSource).toContain('<ComposerProjectPickerComposition');
+    expect(landingSource).toContain('draftId="lynx-landing-draft"');
     expect(landingSource).toContain('buildComposerProjectPickerModel');
     expect(landingSource).toContain('searchPlaceholder="Search projects"');
     expect(landingSource).toContain(

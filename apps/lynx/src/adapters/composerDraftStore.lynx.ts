@@ -21,6 +21,10 @@ import {
 } from '@synara-web/lib/composerMentions';
 import type { PastedTextDraft } from '@synara-web/lib/composerPastedText';
 import type { NativeComposerFileAttachment } from '../components/composer/composerAttachments.lynx';
+import { webStorage } from '../platform/storage';
+
+export const LYNX_COMPOSER_DRAFT_STORAGE_KEY =
+  'synara.lynx.composer-drafts:v1';
 
 interface LynxComposerDraft {
   readonly files: ReadonlyArray<NativeComposerFileAttachment>;
@@ -54,6 +58,49 @@ interface LynxComposerDraftStoreState {
     threadId: string,
     skills: ReadonlyArray<ProviderSkillReference>
   ) => void;
+}
+
+function isStringRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+export function parsePersistedLynxComposerDrafts(
+  raw: string | null
+): Record<string, LynxComposerDraft> {
+  if (!raw) return {};
+  try {
+    const parsed = JSON.parse(raw) as unknown;
+    if (!isStringRecord(parsed)) return {};
+    const drafts: Record<string, LynxComposerDraft> = {};
+    for (const [threadId, candidate] of Object.entries(parsed)) {
+      if (!isStringRecord(candidate) || typeof candidate.prompt !== 'string') {
+        continue;
+      }
+      drafts[threadId] = {
+        files: Array.isArray(candidate.files)
+          ? (candidate.files as NativeComposerFileAttachment[])
+          : [],
+        mentions: Array.isArray(candidate.mentions)
+          ? (candidate.mentions as ProviderMentionReference[])
+          : [],
+        ...(isStringRecord(candidate.modelSelection) &&
+        typeof candidate.modelSelection.provider === 'string' &&
+        typeof candidate.modelSelection.model === 'string'
+          ? { modelSelection: candidate.modelSelection as ModelSelection }
+          : {}),
+        pastedTexts: Array.isArray(candidate.pastedTexts)
+          ? (candidate.pastedTexts as PastedTextDraft[])
+          : [],
+        prompt: candidate.prompt,
+        skills: Array.isArray(candidate.skills)
+          ? (candidate.skills as ProviderSkillReference[])
+          : [],
+      };
+    }
+    return drafts;
+  } catch {
+    return {};
+  }
 }
 
 function emptyDraft(): LynxComposerDraft {
@@ -257,3 +304,26 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()(
       }),
   })
 );
+
+let draftStoreHydrated = false;
+
+export async function hydrateLynxComposerDraftStore(): Promise<void> {
+  if (draftStoreHydrated) return;
+  const { hydrateStorage } = await import(
+    /* webpackMode: "eager" */ '../platform/storage'
+  );
+  await hydrateStorage();
+  const draftsByThreadId = parsePersistedLynxComposerDrafts(
+    webStorage.getItem(LYNX_COMPOSER_DRAFT_STORAGE_KEY)
+  );
+  useComposerDraftStore.setState({ draftsByThreadId });
+  draftStoreHydrated = true;
+}
+
+useComposerDraftStore.subscribe((state, previousState) => {
+  if (state.draftsByThreadId === previousState.draftsByThreadId) return;
+  webStorage.setItem(
+    LYNX_COMPOSER_DRAFT_STORAGE_KEY,
+    JSON.stringify(state.draftsByThreadId)
+  );
+});

@@ -40,6 +40,10 @@ async function readPersistedAppearance(): Promise<{
     /* webpackMode: "eager" */ '../platform/storage'
   );
   await hydrateStorage();
+  const { hydrateLynxComposerDraftStore } = await import(
+    /* webpackMode: "eager" */ '../adapters/composerDraftStore.lynx'
+  );
+  await hydrateLynxComposerDraftStore();
   const themeRaw = webStorage.getItem(THEME_STORAGE_KEY);
   return {
     themeState: parseStoredThemeState(themeRaw),
@@ -51,6 +55,7 @@ async function readPersistedAppearance(): Promise<{
 }
 
 export function App() {
+  const [storageReady, setStorageReady] = useState(false);
   const [uiDensity, setUiDensity] =
     useState<UiDensity>(DEFAULT_UI_DENSITY);
   const [themeState, setThemeState] =
@@ -64,6 +69,7 @@ export function App() {
       if (!active) return;
       setUiDensity(value.uiDensity);
       setThemeState(value.themeState);
+      setStorageReady(true);
     });
     return () => {
       active = false;
@@ -118,10 +124,16 @@ export function App() {
             ) : null}
           </view>
         ) : null}
-        <SliceRouter
-          onThemeStateChange={setThemeState}
-          onUiDensityChange={setUiDensity}
-        />
+        {storageReady ? (
+          <SliceRouter
+            onThemeStateChange={setThemeState}
+            onUiDensityChange={setUiDensity}
+          />
+        ) : (
+          <view className="AppHydrationState">
+            <text>Preparing Synara…</text>
+          </view>
+        )}
       </view>
     </QueryClientProvider>
   );
