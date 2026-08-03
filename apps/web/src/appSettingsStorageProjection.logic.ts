@@ -21,6 +21,10 @@ import {
   type SettingsAppearanceValues,
 } from "./components/settings/SettingsAppearanceComposition.logic";
 import {
+  DEFAULT_BEHAVIOR_SETTINGS_VALUES,
+  type BehaviorSettingsValues,
+} from "./components/settings/SettingsBehaviorPanel.logic";
+import {
   DEFAULT_THEME_STATE,
   parseStoredThemeState,
   serializeThemeState,
@@ -288,5 +292,55 @@ export function writeSettingsProviderPickerProjection(
     ...parseRecord(raw),
     hiddenProviders: normalized.hiddenProviders,
     providerOrder: normalized.providerOrder,
+  });
+}
+
+export function readSettingsBehaviorProjection(
+  raw: string | null,
+  serverEnableAssistantStreaming?: unknown,
+): BehaviorSettingsValues {
+  const record = parseRecord(raw);
+  return {
+    enableAssistantStreaming:
+      typeof serverEnableAssistantStreaming === "boolean"
+        ? serverEnableAssistantStreaming
+        : booleanValue(
+            record,
+            "enableAssistantStreaming",
+            DEFAULT_BEHAVIOR_SETTINGS_VALUES.enableAssistantStreaming,
+          ),
+    diffWordWrap: booleanValue(
+      record,
+      "diffWordWrap",
+      DEFAULT_BEHAVIOR_SETTINGS_VALUES.diffWordWrap,
+    ),
+    confirmThreadDelete: booleanValue(
+      record,
+      "confirmThreadDelete",
+      DEFAULT_BEHAVIOR_SETTINGS_VALUES.confirmThreadDelete,
+    ),
+    confirmThreadArchive: booleanValue(
+      record,
+      "confirmThreadArchive",
+      DEFAULT_BEHAVIOR_SETTINGS_VALUES.confirmThreadArchive,
+    ),
+    confirmTerminalTabClose: booleanValue(
+      record,
+      "confirmTerminalTabClose",
+      DEFAULT_BEHAVIOR_SETTINGS_VALUES.confirmTerminalTabClose,
+    ),
+  };
+}
+
+export function writeSettingsBehaviorProjection(
+  raw: string | null,
+  values: BehaviorSettingsValues,
+): string {
+  return JSON.stringify({
+    ...parseRecord(raw),
+    diffWordWrap: values.diffWordWrap,
+    confirmThreadDelete: values.confirmThreadDelete,
+    confirmThreadArchive: values.confirmThreadArchive,
+    confirmTerminalTabClose: values.confirmTerminalTabClose,
   });
 }

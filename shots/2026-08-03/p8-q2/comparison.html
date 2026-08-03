@@ -281,6 +281,30 @@
             50% / 18px 18px;
       }
 
+      .frame-missing {
+        display: grid;
+        min-height: 280px;
+        place-items: center;
+        padding: 32px;
+        color: var(--muted);
+        background:
+          linear-gradient(
+            135deg,
+            transparent 48%,
+            color-mix(in srgb, var(--line) 58%, transparent) 49% 51%,
+            transparent 52%
+          ),
+          var(--surface-strong);
+        text-align: center;
+      }
+
+      .frame-missing strong {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--ink);
+        font-size: 13px;
+      }
+
       .case-links {
         display: flex;
         flex-wrap: wrap;
@@ -452,16 +476,16 @@
           <p class="eyebrow">Synara · Lynxtron certification archive</p>
           <h1>同一界面，三种运行表面。</h1>
           <p class="intro">
-            P8-Q2 六个核心界面的可审计视觉证据。按界面、主题与尺寸筛选，
+            P8-Q2 六个核心界面与后续 UI 扩面切片的可审计视觉证据。按界面、主题与尺寸筛选，
             并排查看 Web authority、Lynx-for-Web 与真实 Lynxtron Native。
             所有图片均使用仓库相对路径，下载仓库后可直接离线打开。
           </p>
         </div>
         <div class="summary" aria-label="Evidence summary">
-          <div><strong>6</strong><span>核心界面</span></div>
+          <div><strong>7</strong><span>已覆盖界面</span></div>
           <div><strong>4</strong><span>主题 × 尺寸组合</span></div>
-          <div><strong>48</strong><span>Browser client frames</span></div>
-          <div><strong>24</strong><span>Native LynxView frames</span></div>
+          <div><strong>52</strong><span>Browser client frames</span></div>
+          <div><strong>25</strong><span>画廊 Native frames</span></div>
         </div>
       </header>
 
@@ -509,13 +533,21 @@
     </dialog>
 
     <script>
-      const screens = [
+      const coreScreens = [
         { id: "threads", label: "Threads", note: "threads-thread/notes.md" },
         { id: "thread", label: "Thread transcript", note: "threads-thread/notes.md" },
         { id: "settings", label: "Settings · General", note: "settings/notes.md" },
         { id: "projects", label: "Projects overview", note: "projects/notes.md" },
         { id: "kanban", label: "Project Kanban", note: "kanban/notes.md" },
         { id: "pull-requests", label: "Pull Requests", note: "pull-requests/notes.md" },
+      ];
+      const screens = [
+        ...coreScreens,
+        {
+          id: "settings-behavior",
+          label: "Settings · Behavior",
+          note: "../settings-behavior/notes.md",
+        },
       ];
 
       const variants = [
@@ -525,7 +557,7 @@
         { theme: "dark", size: "1440", browserSize: "1440 × 900", nativeSize: "2880 × 1736" },
       ];
 
-      const cases = screens.flatMap((screen) =>
+      const coreCases = coreScreens.flatMap((screen) =>
         variants.map((variant) => ({
           ...screen,
           ...variant,
@@ -538,6 +570,41 @@
           lynxMetrics: `${screen.id}/${variant.theme}-${variant.size}/lynx-metrics.json`,
         }))
       );
+      const cases = [
+        ...coreCases,
+        {
+          id: "settings-behavior",
+          label: "Settings · Behavior",
+          note: "../settings-behavior/notes.md",
+          theme: "light",
+          size: "1280",
+          browserSize: "1280 × 820",
+          nativeSize: "2560 × 1576",
+          key: "settings-behavior-light-1280",
+          state: "light-1280",
+          web: "../settings-behavior/browser/light-1280/web.png",
+          lynx: "../settings-behavior/browser/light-1280/lynx.png",
+          native: "../settings-behavior/native/light-1280/native.png",
+          webMetrics: "../settings-behavior/browser/light-1280/web-metrics.json",
+          lynxMetrics: "../settings-behavior/browser/light-1280/lynx-metrics.json",
+        },
+        {
+          id: "settings-behavior",
+          label: "Settings · Behavior",
+          note: "../settings-behavior/notes.md",
+          theme: "dark",
+          size: "1440",
+          browserSize: "1440 × 900",
+          nativeSize: "Not retained",
+          key: "settings-behavior-dark-1440",
+          state: "dark-1440",
+          web: "../settings-behavior/browser/dark-1440/web.png",
+          lynx: "../settings-behavior/browser/dark-1440/lynx.png",
+          native: null,
+          webMetrics: "../settings-behavior/browser/dark-1440/web-metrics.json",
+          lynxMetrics: "../settings-behavior/browser/dark-1440/lynx-metrics.json",
+        },
+      ];
 
       const filters = { theme: "all", size: "all", screen: "all" };
       const gallery = document.querySelector("#gallery");
@@ -557,6 +624,22 @@
       });
 
       function frame(label, state, src, alt, ratio) {
+        if (!src) {
+          return `
+            <article class="frame">
+              <div class="frame-head">
+                <span class="frame-label">${label}</span>
+                <span class="frame-state">${state}</span>
+              </div>
+              <div class="frame-missing">
+                <span>
+                  <strong>未保留该 Native cell</strong>
+                  本扩面切片以 1280 light Native 完成功能与重启认证。
+                </span>
+              </div>
+            </article>
+          `;
+        }
         return `
           <article class="frame">
             <div class="frame-head">

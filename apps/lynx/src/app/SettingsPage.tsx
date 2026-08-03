@@ -8,6 +8,15 @@ import {
   type SettingsAppearanceKey,
   type SettingsAppearanceValues,
 } from '@synara-web/components/settings/SettingsAppearanceComposition.logic';
+import {
+  SettingsBehaviorPanel,
+  type BehaviorSettingKey,
+} from '@synara-web/components/settings/SettingsBehaviorPanel';
+import {
+  DEFAULT_BEHAVIOR_SETTINGS_VALUES,
+  behaviorSettingsValuesEqual,
+  type BehaviorSettingsValues,
+} from '@synara-web/components/settings/SettingsBehaviorPanel.logic';
 import { SettingsGeneralComposition } from '@synara-web/components/settings/SettingsGeneralComposition';
 import {
   settingsGeneralValuesEqual,
@@ -44,9 +53,11 @@ import {
   DEFAULT_SETTINGS_GENERAL_VALUES,
   THEME_STORAGE_KEY,
   readSettingsAppearanceProjection,
+  readSettingsBehaviorProjection,
   readSettingsGeneralProjection,
   readSettingsProviderPickerProjection,
   writeSettingsAppearanceProjection,
+  writeSettingsBehaviorProjection,
   writeSettingsGeneralProjection,
   writeSettingsProviderPickerProjection,
 } from '@synara-web/appSettingsStorageProjection.logic';
@@ -65,6 +76,7 @@ import {
   type SettingsPersistOutcome,
 } from './settingsPersistence.logic';
 import { Button } from '../components/ui/button';
+import { SettingsGeneralBooleanControlElement } from '../adapters/SettingsGeneralCompositionElements.lynx';
 
 const SETTINGS_LOCAL_SAVE_ERROR =
   'Changes could not be saved. Your current values are still shown.';
@@ -74,10 +86,13 @@ const SETTINGS_MODEL_SAVE_ERROR =
   'The Git writing model could not be updated. Your selected value is still shown.';
 const SETTINGS_PROVIDER_SAVE_ERROR =
   'The provider update-check preference could not be updated. Your selected value is still shown.';
+const SETTINGS_BEHAVIOR_SAVE_ERROR =
+  'Changes were saved locally, but assistant streaming could not be updated on the server.';
 
 async function readSettings(retry: boolean): Promise<{
   readonly general: SettingsGeneralValues;
   readonly appearance: SettingsAppearanceValues;
+  readonly behavior: BehaviorSettingsValues;
   readonly models: SettingsGitWritingModelValues;
   readonly providers: SettingsProviderUpdateChecksValues;
   readonly providerPicker: SettingsProviderPickerValues;
@@ -116,6 +131,10 @@ async function readSettings(retry: boolean): Promise<{
     appearance: readSettingsAppearanceProjection(
       appSettingsRaw,
       themeRaw
+    ),
+    behavior: readSettingsBehaviorProjection(
+      appSettingsRaw,
+      serverSettings?.enableAssistantStreaming
     ),
     models: readSettingsGitWritingModelValues(serverSettings),
     providers: readSettingsProviderUpdateChecksValues(serverSettings),
@@ -157,6 +176,36 @@ async function persistProviderPicker(
       values
     )
   );
+}
+
+async function persistBehaviorSettings(
+  values: BehaviorSettingsValues,
+  updateServerStreaming: boolean
+): Promise<SettingsPersistOutcome> {
+  'background only';
+  const { setPersistedStorageItem, webStorage } = await import(
+    /* webpackMode: "eager" */ '../platform/storage'
+  );
+  await setPersistedStorageItem(
+    APP_SETTINGS_STORAGE_KEY,
+    writeSettingsBehaviorProjection(
+      webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
+      values
+    )
+  );
+  if (updateServerStreaming) {
+    const { updateServerSettings } = await import(
+      /* webpackMode: "eager" */ '../data/synaraClient'
+    );
+    try {
+      await updateServerSettings({
+        enableAssistantStreaming: values.enableAssistantStreaming,
+      });
+    } catch {
+      return { kind: 'partial', message: SETTINGS_BEHAVIOR_SAVE_ERROR };
+    }
+  }
+  return { kind: 'saved' };
 }
 
 async function persistGitWritingModel(
@@ -254,6 +303,9 @@ export function SettingsPage({
   const [appearance, setAppearance] = useState(
     DEFAULT_SETTINGS_APPEARANCE_VALUES
   );
+  const [behavior, setBehavior] = useState(
+    DEFAULT_BEHAVIOR_SETTINGS_VALUES
+  );
   const [models, setModels] = useState(
     DEFAULT_SETTINGS_GIT_WRITING_MODEL_VALUES
   );
@@ -289,6 +341,7 @@ export function SettingsPage({
         if (!active) return;
         setSettings(value.general);
         setAppearance(value.appearance);
+        setBehavior(value.behavior);
         setModels(value.models);
         setProviders(value.providers);
         setProviderPicker(value.providerPicker);
@@ -385,6 +438,13 @@ export function SettingsPage({
       );
       return;
     }
+    if (section === 'behavior') {
+      setBehavior(DEFAULT_BEHAVIOR_SETTINGS_VALUES);
+      runSave(() =>
+        persistBehaviorSettings(DEFAULT_BEHAVIOR_SETTINGS_VALUES, true)
+      );
+      return;
+    }
     if (section === 'models') {
       setModels(DEFAULT_SETTINGS_GIT_WRITING_MODEL_VALUES);
       runSave(() =>
@@ -410,6 +470,19 @@ export function SettingsPage({
     if (!ready) return;
     setModels(next);
     runSave(() => persistGitWritingModel(next));
+  }
+
+  function updateBehavior(
+    key: BehaviorSettingKey,
+    value: boolean
+  ) {
+    'background only';
+    if (!ready) return;
+    const next = { ...behavior, [key]: value };
+    setBehavior(next);
+    runSave(() =>
+      persistBehaviorSettings(next, key === 'enableAssistantStreaming')
+    );
   }
 
   function updateProviders(next: SettingsProviderUpdateChecksValues) {
@@ -482,7 +555,13 @@ export function SettingsPage({
         />
         <SettingsNavigationComposition
           activeSection={section}
-          availableSections={['general', 'appearance', 'models', 'providers']}
+          availableSections={[
+            'general',
+            'appearance',
+            'behavior',
+            'models',
+            'providers',
+          ]}
           onSelectSection={setSection}
         />
       </view>
@@ -503,6 +582,11 @@ export function SettingsPage({
                       appearance,
                       DEFAULT_SETTINGS_APPEARANCE_VALUES
                     )
+                  : section === 'behavior'
+                    ? behaviorSettingsValuesEqual(
+                        behavior,
+                        DEFAULT_BEHAVIOR_SETTINGS_VALUES
+                      )
                   : section === 'models'
                     ? settingsGitWritingModelValuesEqual(
                         models,
@@ -537,6 +621,35 @@ export function SettingsPage({
                   themeState={themeState}
                   onThemeStateChange={updateThemeState}
                   onChange={updateAppearance}
+                />
+              ) : section === 'behavior' ? (
+                <SettingsBehaviorPanel
+                  settings={behavior}
+                  defaults={DEFAULT_BEHAVIOR_SETTINGS_VALUES}
+                  updateSetting={updateBehavior}
+                  renderControl={({
+                    checked,
+                    ariaLabel,
+                    onCheckedChange,
+                  }) => (
+                    <SettingsGeneralBooleanControlElement
+                      checked={checked}
+                      ariaLabel={ariaLabel}
+                      onChange={onCheckedChange}
+                    />
+                  )}
+                  renderResetAction={({ changed, label, onReset }) =>
+                    changed ? (
+                      <Button
+                        variant="ghost"
+                        size="icon-xs"
+                        aria-label={`Reset ${label} to default`}
+                        onClick={onReset}
+                      >
+                        ↶
+                      </Button>
+                    ) : null
+                  }
                 />
               ) : section === 'models' ? (
                 <SettingsGitWritingModelComposition

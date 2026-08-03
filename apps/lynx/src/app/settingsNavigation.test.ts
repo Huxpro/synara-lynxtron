@@ -9,12 +9,18 @@ import {
   DEFAULT_SETTINGS_GENERAL_VALUES,
   THEME_STORAGE_KEY,
   readSettingsAppearanceProjection,
+  readSettingsBehaviorProjection,
   readSettingsGeneralProjection,
   readSettingsProviderPickerProjection,
   writeSettingsAppearanceProjection,
+  writeSettingsBehaviorProjection,
   writeSettingsGeneralProjection,
   writeSettingsProviderPickerProjection,
 } from '@synara-web/appSettingsStorageProjection.logic';
+import {
+  DEFAULT_BEHAVIOR_SETTINGS_VALUES,
+  behaviorSettingsValuesEqual,
+} from '@synara-web/components/settings/SettingsBehaviorPanel.logic';
 import {
   DEFAULT_SETTINGS_GIT_WRITING_MODEL_VALUES,
   buildSettingsGitWritingModelOptions,
@@ -38,7 +44,13 @@ describe('shared settings navigation projection', () => {
   it('keeps the full canonical taxonomy and enables only implemented native panels', () => {
     const groups = resolveSettingsNavigationCompositionGroups({
       activeSection: 'appearance',
-      availableSections: ['general', 'appearance', 'models', 'providers'],
+      availableSections: [
+        'general',
+        'appearance',
+        'behavior',
+        'models',
+        'providers',
+      ],
     });
 
     expect(groups.map((group) => group.label)).toEqual(['App', 'Synara']);
@@ -51,6 +63,10 @@ describe('shared settings navigation projection', () => {
       available: true,
     });
     expect(groups.flatMap((group) => group.items).find((item) => item.id === 'models')).toMatchObject({
+      active: false,
+      available: true,
+    });
+    expect(groups.flatMap((group) => group.items).find((item) => item.id === 'behavior')).toMatchObject({
       active: false,
       available: true,
     });
@@ -155,6 +171,35 @@ describe('shared settings navigation projection', () => {
       themeMode: 'dark',
       timestampFormat: '24-hour',
     });
+  });
+
+  it('round-trips local Behavior values while server streaming stays authoritative', () => {
+    const raw = writeSettingsBehaviorProjection(
+      JSON.stringify({ chatFontSizePx: 18 }),
+      {
+        ...DEFAULT_BEHAVIOR_SETTINGS_VALUES,
+        diffWordWrap: true,
+        confirmThreadArchive: true,
+      }
+    );
+    const projected = readSettingsBehaviorProjection(raw, false);
+
+    expect(JSON.parse(raw)).toMatchObject({
+      chatFontSizePx: 18,
+      diffWordWrap: true,
+      confirmThreadArchive: true,
+    });
+    expect(projected).toMatchObject({
+      enableAssistantStreaming: false,
+      diffWordWrap: true,
+      confirmThreadArchive: true,
+    });
+    expect(
+      behaviorSettingsValuesEqual(
+        projected,
+        DEFAULT_BEHAVIOR_SETTINGS_VALUES
+      )
+    ).toBe(false);
   });
 
   it('uses the shared editable theme-pack model and pure state mutation', () => {

@@ -4676,3 +4676,24 @@
 - **P9-D1 completed**：Web 25/25 bound、9/25 delivered；Native retained runs合并为
   25/25 bound、13/25 delivered；所有gap均已登记。P9-R1仍pending且需用户明确授权，
   本轮不进入。
+
+## 2026-08-03 — P9-U1 Settings Behavior UI扩面
+
+- 新增pure `SettingsBehaviorPanel.logic`，Web原Behavior panel反向消费；Lynx Settings
+  开放canonical `behavior` row并直接消费同一composition。5项control全部使用已有
+  shared SettingsSection/SettingsRow anatomy，Lynx叶子只映射native switch/reset。
+- persistence分层：`enableAssistantStreaming`继续server-owned；diff wrap与3项confirmation
+  写入`APP_SETTINGS_STORAGE_KEY`，projection preserve unknown fields。Restore defaults按
+  当前section处理，overlapping save/stale completion继续沿用既有序列化门禁。
+- Fast Browser同源真实snapshot：
+  - Lynx-for-Web把streaming切Off，Web rendered Behavior同步显示Off；恢复On后再同步；
+  - local diff wrap切On后canonical key落盘，完整reload+rendered navigation后仍为On，
+    最终恢复Off；
+  - 1280 light与1440 dark两格均为title `+5/+8px`，两张card `x +5px`、
+    `y +5.25/+6.25px`，宽度精确、高度仅1px差，page errors空。
+- exact-owned Native 1280×820：五项accessibility control可达；diff wrap落入isolated
+  `kv.json`，完整restart后DOM仍为`--on`、`aria-checked=true`、value On，随后恢复Off；
+  DevTool error/warning console空。
+- gates：Web 1 file / 2 tests；Lynx 2 files / 12 tests；Web 8,933 modules；
+  Web/Lynx/Desktop production green；reuse write/check后Settings 51.88%，style 98.07%；
+  evidence `shots/2026-08-03/settings-behavior/notes.md`。未进入P8-Q3/Q4、P9-R1或hard islands。

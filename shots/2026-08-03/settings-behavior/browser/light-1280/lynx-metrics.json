@@ -1,0 +1,56 @@
+{
+  "boxes": {
+    "runtime": {
+      "fontSize": "16px",
+      "height": 142,
+      "width": 624,
+      "x": 461,
+      "y": 158
+    },
+    "safety": {
+      "fontSize": "16px",
+      "height": 185,
+      "width": 624,
+      "x": 461,
+      "y": 356
+    },
+    "title": {
+      "fontSize": "20px",
+      "height": 28,
+      "width": 358.8125,
+      "x": 461,
+      "y": 40
+    }
+  },
+  "controls": [
+    {
+      "checked": "true",
+      "name": "Stream assistant messages"
+    },
+    {
+      "checked": null,
+      "name": "Wrap diff lines by default"
+    },
+    {
+      "checked": "true",
+      "name": "Confirm thread deletion"
+    },
+    {
+      "checked": null,
+      "name": "Confirm thread archive"
+    },
+    {
+      "checked": "true",
+      "name": "Confirm terminal tab close"
+    }
+  ],
+  "theme": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable",
+  "url": "http://localhost:63313/lynx/",
+  "viewport": {
+    "dpr": 1,
+    "innerHeight": 820,
+    "innerWidth": 1280,
+    "visualHeight": 820,
+    "visualWidth": 1280
+  }
+}

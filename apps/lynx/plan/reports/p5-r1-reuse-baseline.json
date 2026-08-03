@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-02T13:18:24.620Z",
+  "generatedAt": "2026-08-03T01:18:13.709Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -21,7 +21,7 @@
     "entries": [
       "src/app/index.tsx"
     ],
-    "modules": 481,
+    "modules": 484,
     "externalImports": [
       "@base-ui/react/autocomplete",
       "@base-ui/react/collapsible",
@@ -134,8 +134,8 @@
         "src/components/sidebar/Sidebar.lynx.tsx"
       ],
       "graph": {
-        "modules": 399,
-        "loc": 80702,
+        "modules": 400,
+        "loc": 80776,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -221,8 +221,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 331,
-          "loc": 72769
+          "modules": 332,
+          "loc": 72843
         },
         "PATCHED": {
           "modules": 1,
@@ -238,15 +238,15 @@
         }
       },
       "eligible": {
-        "modules": 390,
-        "loc": 78896
+        "modules": 391,
+        "loc": 78970
       },
       "currentReuse": {
-        "modules": 230,
-        "loc": 43569,
-        "modulePercent": 58.97,
-        "locPercent": 55.22,
-        "gatePercent": 55.22
+        "modules": 231,
+        "loc": 43643,
+        "modulePercent": 59.08,
+        "locPercent": 55.27,
+        "gatePercent": 55.27
       },
       "modules": [
         {
@@ -285,13 +285,14 @@
         },
         {
           "path": "apps/web/src/appSettingsStorageProjection.logic.ts",
-          "loc": 275,
+          "loc": 327,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/chatFontSize.ts",
             "apps/web/src/components/settings/SettingsAppearanceComposition.logic.ts",
+            "apps/web/src/components/settings/SettingsBehaviorPanel.logic.ts",
             "apps/web/src/components/settings/SettingsGeneralComposition.logic.ts",
             "apps/web/src/components/settings/SettingsProviderPickerComposition.logic.ts",
             "apps/web/src/lib/appDensity.ts",
@@ -845,6 +846,14 @@
         {
           "path": "apps/web/src/components/settings/SettingsAppearanceComposition.logic.ts",
           "loc": 69,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
+        },
+        {
+          "path": "apps/web/src/components/settings/SettingsBehaviorPanel.logic.ts",
+          "loc": 22,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -5030,8 +5039,8 @@
         "src/components/sidebar/Sidebar.lynx.tsx"
       ],
       "graph": {
-        "modules": 345,
-        "loc": 70197,
+        "modules": 346,
+        "loc": 70271,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -5117,8 +5126,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 280,
-          "loc": 62308
+          "modules": 281,
+          "loc": 62382
         },
         "PATCHED": {
           "modules": 1,
@@ -5134,15 +5143,15 @@
         }
       },
       "eligible": {
-        "modules": 337,
-        "loc": 68414
+        "modules": 338,
+        "loc": 68488
       },
       "currentReuse": {
-        "modules": 228,
-        "loc": 43419,
-        "modulePercent": 67.66,
-        "locPercent": 63.47,
-        "gatePercent": 63.47
+        "modules": 229,
+        "loc": 43493,
+        "modulePercent": 67.75,
+        "locPercent": 63.5,
+        "gatePercent": 63.5
       },
       "modules": [
         {
@@ -5181,13 +5190,14 @@
         },
         {
           "path": "apps/web/src/appSettingsStorageProjection.logic.ts",
-          "loc": 275,
+          "loc": 327,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/chatFontSize.ts",
             "apps/web/src/components/settings/SettingsAppearanceComposition.logic.ts",
+            "apps/web/src/components/settings/SettingsBehaviorPanel.logic.ts",
             "apps/web/src/components/settings/SettingsGeneralComposition.logic.ts",
             "apps/web/src/components/settings/SettingsProviderPickerComposition.logic.ts",
             "apps/web/src/lib/appDensity.ts",
@@ -5597,6 +5607,14 @@
         {
           "path": "apps/web/src/components/settings/SettingsAppearanceComposition.logic.ts",
           "loc": 69,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
+        },
+        {
+          "path": "apps/web/src/components/settings/SettingsBehaviorPanel.logic.ts",
+          "loc": 22,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -9193,8 +9211,8 @@
         "src/components/composer/Composer.tsx"
       ],
       "graph": {
-        "modules": 752,
-        "loc": 151539,
+        "modules": 753,
+        "loc": 151613,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -9321,8 +9339,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 649,
-          "loc": 135098
+          "modules": 650,
+          "loc": 135172
         },
         "PATCHED": {
           "modules": 1,
@@ -9338,15 +9356,15 @@
         }
       },
       "eligible": {
-        "modules": 724,
-        "loc": 143396
+        "modules": 725,
+        "loc": 143470
       },
       "currentReuse": {
-        "modules": 340,
-        "loc": 55458,
-        "modulePercent": 46.96,
-        "locPercent": 38.67,
-        "gatePercent": 38.67
+        "modules": 341,
+        "loc": 55532,
+        "modulePercent": 47.03,
+        "locPercent": 38.71,
+        "gatePercent": 38.71
       },
       "modules": [
         {
@@ -9385,13 +9403,14 @@
         },
         {
           "path": "apps/web/src/appSettingsStorageProjection.logic.ts",
-          "loc": 275,
+          "loc": 327,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/chatFontSize.ts",
             "apps/web/src/components/settings/SettingsAppearanceComposition.logic.ts",
+            "apps/web/src/components/settings/SettingsBehaviorPanel.logic.ts",
             "apps/web/src/components/settings/SettingsGeneralComposition.logic.ts",
             "apps/web/src/components/settings/SettingsProviderPickerComposition.logic.ts",
             "apps/web/src/lib/appDensity.ts",
@@ -13593,6 +13612,14 @@
         {
           "path": "apps/web/src/components/settings/SettingsAppearanceComposition.logic.ts",
           "loc": 69,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
+        },
+        {
+          "path": "apps/web/src/components/settings/SettingsBehaviorPanel.logic.ts",
+          "loc": 22,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -19027,8 +19054,8 @@
         "src/app/SettingsPage.tsx"
       ],
       "graph": {
-        "modules": 468,
-        "loc": 90756,
+        "modules": 469,
+        "loc": 90831,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -19119,8 +19146,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 395,
-          "loc": 82630
+          "modules": 396,
+          "loc": 82705
         },
         "PATCHED": {
           "modules": 1,
@@ -19136,15 +19163,15 @@
         }
       },
       "eligible": {
-        "modules": 459,
-        "loc": 88950
+        "modules": 460,
+        "loc": 89025
       },
       "currentReuse": {
-        "modules": 254,
-        "loc": 46005,
-        "modulePercent": 55.34,
-        "locPercent": 51.72,
-        "gatePercent": 51.72
+        "modules": 256,
+        "loc": 46187,
+        "modulePercent": 55.65,
+        "locPercent": 51.88,
+        "gatePercent": 51.88
       },
       "modules": [
         {
@@ -19183,13 +19210,14 @@
         },
         {
           "path": "apps/web/src/appSettingsStorageProjection.logic.ts",
-          "loc": 275,
+          "loc": 327,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/chatFontSize.ts",
             "apps/web/src/components/settings/SettingsAppearanceComposition.logic.ts",
+            "apps/web/src/components/settings/SettingsBehaviorPanel.logic.ts",
             "apps/web/src/components/settings/SettingsGeneralComposition.logic.ts",
             "apps/web/src/components/settings/SettingsProviderPickerComposition.logic.ts",
             "apps/web/src/lib/appDensity.ts",
@@ -20254,12 +20282,21 @@
           ]
         },
         {
-          "path": "apps/web/src/components/settings/SettingsBehaviorPanel.tsx",
-          "loc": 107,
+          "path": "apps/web/src/components/settings/SettingsBehaviorPanel.logic.ts",
+          "loc": 22,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
+          "dependencies": []
+        },
+        {
+          "path": "apps/web/src/components/settings/SettingsBehaviorPanel.tsx",
+          "loc": 108,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
           "dependencies": [
+            "apps/web/src/components/settings/SettingsBehaviorPanel.logic.ts",
             "apps/web/src/components/settings/SettingsRow.tsx",
             "apps/web/src/components/settings/SettingsSection.tsx",
             "apps/web/src/components/settings/SettingsSectionElements.tsx"
@@ -24859,8 +24896,8 @@
         "src/app/FeatureListsPage.tsx"
       ],
       "graph": {
-        "modules": 505,
-        "loc": 98806,
+        "modules": 506,
+        "loc": 98880,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -24962,8 +24999,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 434,
-          "loc": 88524
+          "modules": 435,
+          "loc": 88598
         },
         "PATCHED": {
           "modules": 1,
@@ -24979,15 +25016,15 @@
         }
       },
       "eligible": {
-        "modules": 494,
-        "loc": 95007
+        "modules": 495,
+        "loc": 95081
       },
       "currentReuse": {
-        "modules": 280,
-        "loc": 49800,
-        "modulePercent": 56.68,
-        "locPercent": 52.42,
-        "gatePercent": 52.42
+        "modules": 281,
+        "loc": 49874,
+        "modulePercent": 56.77,
+        "locPercent": 52.45,
+        "gatePercent": 52.45
       },
       "modules": [
         {
@@ -25026,13 +25063,14 @@
         },
         {
           "path": "apps/web/src/appSettingsStorageProjection.logic.ts",
-          "loc": 275,
+          "loc": 327,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/chatFontSize.ts",
             "apps/web/src/components/settings/SettingsAppearanceComposition.logic.ts",
+            "apps/web/src/components/settings/SettingsBehaviorPanel.logic.ts",
             "apps/web/src/components/settings/SettingsGeneralComposition.logic.ts",
             "apps/web/src/components/settings/SettingsProviderPickerComposition.logic.ts",
             "apps/web/src/lib/appDensity.ts",
@@ -26728,6 +26766,14 @@
         {
           "path": "apps/web/src/components/settings/SettingsAppearanceComposition.logic.ts",
           "loc": 69,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
+        },
+        {
+          "path": "apps/web/src/components/settings/SettingsBehaviorPanel.logic.ts",
+          "loc": 22,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -31212,8 +31258,8 @@
         "src/app/FeatureListsPage.tsx"
       ],
       "graph": {
-        "modules": 505,
-        "loc": 98807,
+        "modules": 506,
+        "loc": 98881,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -31315,8 +31361,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 434,
-          "loc": 88525
+          "modules": 435,
+          "loc": 88599
         },
         "PATCHED": {
           "modules": 1,
@@ -31332,15 +31378,15 @@
         }
       },
       "eligible": {
-        "modules": 494,
-        "loc": 95008
+        "modules": 495,
+        "loc": 95082
       },
       "currentReuse": {
-        "modules": 280,
-        "loc": 49800,
-        "modulePercent": 56.68,
-        "locPercent": 52.42,
-        "gatePercent": 52.42
+        "modules": 281,
+        "loc": 49874,
+        "modulePercent": 56.77,
+        "locPercent": 52.45,
+        "gatePercent": 52.45
       },
       "modules": [
         {
@@ -31379,13 +31425,14 @@
         },
         {
           "path": "apps/web/src/appSettingsStorageProjection.logic.ts",
-          "loc": 275,
+          "loc": 327,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/chatFontSize.ts",
             "apps/web/src/components/settings/SettingsAppearanceComposition.logic.ts",
+            "apps/web/src/components/settings/SettingsBehaviorPanel.logic.ts",
             "apps/web/src/components/settings/SettingsGeneralComposition.logic.ts",
             "apps/web/src/components/settings/SettingsProviderPickerComposition.logic.ts",
             "apps/web/src/lib/appDensity.ts",
@@ -33081,6 +33128,14 @@
         {
           "path": "apps/web/src/components/settings/SettingsAppearanceComposition.logic.ts",
           "loc": 69,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
+        },
+        {
+          "path": "apps/web/src/components/settings/SettingsBehaviorPanel.logic.ts",
+          "loc": 22,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -37565,8 +37620,8 @@
         "src/app/FeatureListsPage.tsx"
       ],
       "graph": {
-        "modules": 493,
-        "loc": 91568,
+        "modules": 494,
+        "loc": 91642,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -37665,8 +37720,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 420,
-          "loc": 82129
+          "modules": 421,
+          "loc": 82203
         },
         "PATCHED": {
           "modules": 1,
@@ -37682,15 +37737,15 @@
         }
       },
       "eligible": {
-        "modules": 484,
-        "loc": 89762
+        "modules": 485,
+        "loc": 89836
       },
       "currentReuse": {
-        "modules": 302,
-        "loc": 51592,
-        "modulePercent": 62.4,
-        "locPercent": 57.48,
-        "gatePercent": 57.48
+        "modules": 303,
+        "loc": 51666,
+        "modulePercent": 62.47,
+        "locPercent": 57.51,
+        "gatePercent": 57.51
       },
       "modules": [
         {
@@ -37729,13 +37784,14 @@
         },
         {
           "path": "apps/web/src/appSettingsStorageProjection.logic.ts",
-          "loc": 275,
+          "loc": 327,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/chatFontSize.ts",
             "apps/web/src/components/settings/SettingsAppearanceComposition.logic.ts",
+            "apps/web/src/components/settings/SettingsBehaviorPanel.logic.ts",
             "apps/web/src/components/settings/SettingsGeneralComposition.logic.ts",
             "apps/web/src/components/settings/SettingsProviderPickerComposition.logic.ts",
             "apps/web/src/lib/appDensity.ts",
@@ -39201,6 +39257,14 @@
         {
           "path": "apps/web/src/components/settings/SettingsAppearanceComposition.logic.ts",
           "loc": 69,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
+        },
+        {
+          "path": "apps/web/src/components/settings/SettingsBehaviorPanel.logic.ts",
+          "loc": 22,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",

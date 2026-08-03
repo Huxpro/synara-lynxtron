@@ -150,6 +150,7 @@ Phase 8 出口：普通 UI 的"移植完成"有源码复用和视觉证据；终
 |---|---|---|---|---|---|
 | P9-D1 | host/input-bridge 边界调查与闭环 | 见下方详细定义 | P7-I1, P7-I3 | `synara/apps/lynx` | completed（2026-08-03 · Web 25/25 bindings、9/25 delivery；Native retained runs合并为25/25 bindings、13/25 delivered。exact-owned probe经可用Computer Use真实点击激活，Doubao Pinyin产生8次`input:composing`，最后`value=zhong'wen;isComposing=true`；单次Space提交后`input:committed`为`value=中文;isComposing=false`。4 files / 15 focused tests、probe/default builds、strict audits、cleanup均通过。[报告](reports/p9-d1-host-input-bridge.md) · [IME evidence](../shots/2026-08-03/p9-d1/native-ime/notes.md)） |
 | P9-R1 | host/input-bridge 修复与补齐 | 按 D1 结论逐项修复已验证缺口；每项有 Native evidence | P9-D1 | `synara/apps/lynx` | pending（禁止在 D1 完成前进入） |
+| P9-U1 | Settings Behavior UI 扩面 | 复用 canonical Behavior composition；5项真实设置、local/server persistence、reset、Browser/Native证据 | P8-Q2, P9-D1 | `synara/apps/lynx` + `synara/apps/web` | completed（2026-08-03 · Behavior row从disabled taxonomy变为可用；streaming走server settings，其余4项走canonical `synara:app-settings:v1`；Lynx-for-Web toggle/reload/cross-client投影与Native restart恢复均通过。Browser 1280 light + 1440 dark几何最大8px/1px，Native exact console clean；Settings reuse 51.88%、style 98.07%。[证据](../shots/2026-08-03/settings-behavior/notes.md)） |
 
 ### P9-D1 详细定义
 

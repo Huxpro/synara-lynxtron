@@ -7,15 +7,15 @@ import type { ReactNode } from "react";
 import { SettingsPanelStackElement } from "~/components/settings/SettingsSectionElements";
 import { SettingsRow } from "./SettingsRow";
 import { SettingsSection } from "./SettingsSection";
+import type {
+  BehaviorSettingKey,
+  BehaviorSettingsValues,
+} from "./SettingsBehaviorPanel.logic";
 
-export type BehaviorSettingKey =
-  | "enableAssistantStreaming"
-  | "diffWordWrap"
-  | "confirmThreadDelete"
-  | "confirmThreadArchive"
-  | "confirmTerminalTabClose";
-
-export type BehaviorSettingsValues = Readonly<Record<BehaviorSettingKey, boolean>>;
+export type {
+  BehaviorSettingKey,
+  BehaviorSettingsValues,
+} from "./SettingsBehaviorPanel.logic";
 
 type ControlRenderArgs = {
   readonly checked: boolean;

@@ -1,0 +1,34 @@
+{
+  "boxes": {
+    "runtime": {
+      "fontSize": "16px",
+      "height": 141,
+      "width": 624,
+      "x": 536,
+      "y": 152.75
+    },
+    "safety": {
+      "fontSize": "16px",
+      "height": 184,
+      "width": 624,
+      "x": 536,
+      "y": 349.75
+    },
+    "title": {
+      "fontSize": "20px",
+      "height": 28,
+      "width": 358.8125,
+      "x": 536,
+      "y": 32
+    }
+  },
+  "theme": "dark",
+  "url": "http://localhost:63313/settings?section=behavior",
+  "viewport": {
+    "dpr": 1,
+    "innerHeight": 900,
+    "innerWidth": 1440,
+    "visualHeight": 900,
+    "visualWidth": 1440
+  }
+}
