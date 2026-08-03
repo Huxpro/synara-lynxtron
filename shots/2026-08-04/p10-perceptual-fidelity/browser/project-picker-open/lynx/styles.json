@@ -4,7 +4,7 @@
   "roles": {
     "trigger": {
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "16px",
         "weight": "400",
         "lineHeight": "normal",
@@ -22,7 +22,7 @@
     },
     "popup": {
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "16px",
         "weight": "400",
         "lineHeight": "normal",
@@ -40,7 +40,7 @@
     },
     "panel": {
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "16px",
         "weight": "400",
         "lineHeight": "normal",
@@ -58,7 +58,7 @@
     },
     "search": {
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "16px",
         "weight": "400",
         "lineHeight": "normal",
@@ -76,7 +76,7 @@
     },
     "searchInput": {
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "11px",
         "weight": "400",
         "lineHeight": "16.5px",
@@ -94,7 +94,7 @@
     },
     "groupLabel": {
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "16px",
         "weight": "400",
         "lineHeight": "normal",
@@ -110,27 +110,9 @@
         "opacity": "1"
       }
     },
-    "groupIcon": {
-      "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
-        "size": "16px",
-        "weight": "400",
-        "lineHeight": "normal",
-        "letterSpacing": "normal"
-      },
-      "paint": {
-        "color": "rgba(13, 13, 13, 0.596)",
-        "background": "rgba(0, 0, 0, 0)",
-        "borderColor": "rgba(13, 13, 13, 0.596)",
-        "borderWidth": "0px",
-        "radius": "0px",
-        "shadow": "none",
-        "opacity": "0.45"
-      }
-    },
     "option": {
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "16px",
         "weight": "400",
         "lineHeight": "normal",
@@ -146,27 +128,9 @@
         "opacity": "1"
       }
     },
-    "optionIcon": {
-      "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
-        "size": "16px",
-        "weight": "400",
-        "lineHeight": "normal",
-        "letterSpacing": "normal"
-      },
-      "paint": {
-        "color": "rgba(13, 13, 13, 0.596)",
-        "background": "rgba(0, 0, 0, 0)",
-        "borderColor": "rgba(13, 13, 13, 0.596)",
-        "borderWidth": "0px",
-        "radius": "0px",
-        "shadow": "none",
-        "opacity": "0.7"
-      }
-    },
     "optionTitle": {
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "12px",
         "weight": "400",
         "lineHeight": "18px",
@@ -184,7 +148,7 @@
     },
     "footer": {
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "16px",
         "weight": "400",
         "lineHeight": "normal",
@@ -202,7 +166,7 @@
     },
     "action": {
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "16px",
         "weight": "400",
         "lineHeight": "normal",
@@ -216,24 +180,6 @@
         "radius": "8px",
         "shadow": "none",
         "opacity": "1"
-      }
-    },
-    "actionIcon": {
-      "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
-        "size": "16px",
-        "weight": "400",
-        "lineHeight": "normal",
-        "letterSpacing": "normal"
-      },
-      "paint": {
-        "color": "rgba(13, 13, 13, 0.596)",
-        "background": "rgba(0, 0, 0, 0)",
-        "borderColor": "rgba(13, 13, 13, 0.596)",
-        "borderWidth": "0px",
-        "radius": "0px",
-        "shadow": "none",
-        "opacity": "0.7"
       }
     }
   }

@@ -488,7 +488,7 @@
       "theme": "light",
       "density": "comfortable",
       "interactionState": "project-picker-open",
-      "snapshotSha256": "391f0871debfa1bc5493fd40d22f792036f219ef7e86db7c28a613727c1c7469",
+      "snapshotSha256": "e9aa05624905b761355980fcec2c2ed64282361af03f144b8ad99dd0c60e7deb",
       "viewport": {
         "width": 1280,
         "height": 820,
@@ -567,8 +567,8 @@
           "path": "browser/project-picker-open/web/raw.png",
           "comparisonPath": "browser/project-picker-open/web/comparison.png",
           "captureTier": "browser",
-          "buildSha256": "b502e31feff3d4b6f9bca3324f8b806c547741c56efd37dc78839647a9daf549",
-          "snapshotSha256": "391f0871debfa1bc5493fd40d22f792036f219ef7e86db7c28a613727c1c7469",
+          "buildSha256": "58f0c51fc25c26d8a1f512d1374c585b6c83bab4ccf1345eed52265bc33ae4bb",
+          "snapshotSha256": "e9aa05624905b761355980fcec2c2ed64282361af03f144b8ad99dd0c60e7deb",
           "image": {
             "width": 1280,
             "height": 820
@@ -593,8 +593,8 @@
           "path": "browser/project-picker-open/lynx/raw.png",
           "comparisonPath": "browser/project-picker-open/lynx/comparison.png",
           "captureTier": "browser",
-          "buildSha256": "657f68b42dbb48c9df0b177b47b43cb7dbd7de8d42cfa3a5a1dcdfbc11657ff7",
-          "snapshotSha256": "391f0871debfa1bc5493fd40d22f792036f219ef7e86db7c28a613727c1c7469",
+          "buildSha256": "6acc6c4fb3f3f7ab5f2298afa28bf5d94f92160ef2091df1f5b1d428b15ca95c",
+          "snapshotSha256": "e9aa05624905b761355980fcec2c2ed64282361af03f144b8ad99dd0c60e7deb",
           "image": {
             "width": 1280,
             "height": 820
@@ -615,8 +615,30 @@
           }
         },
         "native": {
-          "status": "pending",
-          "reason": "Current-build exact-owned Native capture has not been retained."
+          "status": "retained",
+          "path": "native/project-picker-open/raw.png",
+          "comparisonPath": "native/project-picker-open/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "f799a838a683a0efdeec47843d21f83b5c5492e68645ceae96823e847f0adb83",
+          "snapshotSha256": "e9aa05624905b761355980fcec2c2ed64282361af03f144b8ad99dd0c60e7deb",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "geometry": "native/project-picker-open/geometry.json",
+          "styles": "native/project-picker-open/styles.json",
+          "console": "native/project-picker-open/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "project-picker-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
         }
       }
     },
@@ -754,7 +776,7 @@
       "theme": "light",
       "density": "comfortable",
       "interactionState": "default",
-      "snapshotSha256": "cbbbc86e25eb95ef23c456c9b8cf81a1caf667100f139999c91e0405383f2b0c",
+      "snapshotSha256": "c0b7bfec2f2748e905de3c1f1972772a8603ec272ba81038fb14708426163c33",
       "viewport": {
         "width": 1280,
         "height": 820,
@@ -845,8 +867,8 @@
           "path": "browser/settings-general/web/raw.png",
           "comparisonPath": "browser/settings-general/web/comparison.png",
           "captureTier": "browser",
-          "buildSha256": "47343fc6d5d12b5c990a88948055cefa7293ba0867cd0beb66542fd8e3cf161a",
-          "snapshotSha256": "cbbbc86e25eb95ef23c456c9b8cf81a1caf667100f139999c91e0405383f2b0c",
+          "buildSha256": "58f0c51fc25c26d8a1f512d1374c585b6c83bab4ccf1345eed52265bc33ae4bb",
+          "snapshotSha256": "c0b7bfec2f2748e905de3c1f1972772a8603ec272ba81038fb14708426163c33",
           "image": {
             "width": 1280,
             "height": 820
@@ -871,8 +893,8 @@
           "path": "browser/settings-general/lynx/raw.png",
           "comparisonPath": "browser/settings-general/lynx/comparison.png",
           "captureTier": "browser",
-          "buildSha256": "7790c0881f2319a61a7a62006231de54804ce1dfbc7ee332dec1b37fc9cf74f9",
-          "snapshotSha256": "cbbbc86e25eb95ef23c456c9b8cf81a1caf667100f139999c91e0405383f2b0c",
+          "buildSha256": "6acc6c4fb3f3f7ab5f2298afa28bf5d94f92160ef2091df1f5b1d428b15ca95c",
+          "snapshotSha256": "c0b7bfec2f2748e905de3c1f1972772a8603ec272ba81038fb14708426163c33",
           "image": {
             "width": 1280,
             "height": 820
@@ -893,8 +915,30 @@
           }
         },
         "native": {
-          "status": "pending",
-          "reason": "Current-build exact-owned Native capture has not been retained."
+          "status": "retained",
+          "path": "native/settings-general/raw.png",
+          "comparisonPath": "native/settings-general/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "f799a838a683a0efdeec47843d21f83b5c5492e68645ceae96823e847f0adb83",
+          "snapshotSha256": "c0b7bfec2f2748e905de3c1f1972772a8603ec272ba81038fb14708426163c33",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "geometry": "native/settings-general/geometry.json",
+          "styles": "native/settings-general/styles.json",
+          "console": "native/settings-general/console.txt",
+          "stateEcho": {
+            "semanticRoute": "settings-general",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
         }
       }
     }

@@ -4254,12 +4254,12 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               "popup": {
                 "tag": "DIV",
                 "className": "flex origin-(--transform-origin) outline-none focus:outline-none max-w-[92vw] composer-picker-menu composer-picker-menu--normal min-w-72 relative overflow-hidden bg-popover/70 text-popover-foreground before:pointer-events-none before:absolute before:inset-0 before:-z-1 before:rounded-[inherit] before:backdrop-blur-2xl before:backdrop-saturate-150 border border-border rounded-[0.65rem] shadow-[0_4px_18px_-6px_color-mix(in_srgb,var(--foreground)_7%,transparent)] dark:shadow-[0_6px_24px_-10px_rgba(0,0,0,0.30)]",
-                "text": "Folders on this Mac_pf_partsai_completionantigravity-claude-proxyApplicationsbinbytedconductorDesktopdim-agentDocumentsD",
+                "text": "VoidsynaraNew projectDon't work in a projectRetrySocketOpenError: timeout waiting for \"open\"",
                 "box": {
                   "x": 408,
-                  "y": 259,
+                  "y": 301,
                   "width": 288,
-                  "height": 258
+                  "height": 216
                 },
                 "font": {
                   "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
@@ -4281,12 +4281,12 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               "panel": {
                 "tag": "DIV",
                 "className": "flex min-h-0 flex-col w-full max-h-64 -m-1 overflow-clip rounded-[0.65rem]",
-                "text": "Folders on this Mac_pf_partsai_completionantigravity-claude-proxyApplicationsbinbytedconductorDesktopdim-agentDocumentsD",
+                "text": "VoidsynaraNew projectDon't work in a projectRetrySocketOpenError: timeout waiting for \"open\"",
                 "box": {
                   "x": 409,
-                  "y": 260,
+                  "y": 302,
                   "width": 278,
-                  "height": 256
+                  "height": 214
                 },
                 "font": {
                   "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
@@ -4311,7 +4311,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                 "text": "",
                 "box": {
                   "x": 409,
-                  "y": 260,
+                  "y": 302,
                   "width": 278,
                   "height": 43
                 },
@@ -4338,7 +4338,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                 "text": "",
                 "box": {
                   "x": 416,
-                  "y": 271.5,
+                  "y": 313.5,
                   "width": 264,
                   "height": 21
                 },
@@ -4362,10 +4362,10 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               "groupLabel": {
                 "tag": "DIV",
                 "className": "px-2 py-1.5 font-normal text-xs text-muted-foreground/45 data-inset:ps-9 sm:data-inset:ps-8 flex items-center gap-1.5",
-                "text": "Folders on this Mac",
+                "text": "Void",
                 "box": {
                   "x": 409,
-                  "y": 305,
+                  "y": 347,
                   "width": 278,
                   "height": 28
                 },
@@ -4386,14 +4386,13 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "opacity": "1"
                 }
               },
-              "groupIcon": null,
               "option": {
                 "tag": "DIV",
                 "className": "[&>svg,&>[data-slot=central-icon]]:-mx-0.5 flex cursor-default select-none items-center rounded-[0.5rem] text-[length:var(--type-ui-row-size)] leading-[var(--type-ui-row-line-height)] text-[var(--color-text-foreground)] outline-none data-disabled:pointer-events-none data-highlighted:bg-[var(--color-background-button-secondary-hover)] data-highlighted:text-[var(--color-text-foreground)] data-disabled:opacity-64 [&>svg:not([class*='opacity-']),&>[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&>svg,&>[data-slot=central-icon]]:pointer-events-none [&>svg,&>[data-slot=central-icon]]:shrink-0 data-inset:ps-8 data-[variant=destructive]:text-destructive",
-                "text": "_pf_parts",
+                "text": "synara",
                 "box": {
                   "x": 409,
-                  "y": 333,
+                  "y": 375,
                   "width": 278,
                   "height": 26
                 },
@@ -4406,7 +4405,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                 },
                 "paint": {
                   "color": "rgb(13, 13, 13)",
-                  "background": "rgba(0, 0, 0, 0)",
+                  "background": "rgba(13, 13, 13, 0.04)",
                   "borderColor": "rgba(13, 13, 13, 0.07)",
                   "borderWidth": "0px",
                   "radius": "8px",
@@ -4414,15 +4413,14 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "opacity": "1"
                 }
               },
-              "optionIcon": null,
               "optionTitle": {
                 "tag": "SPAN",
                 "className": "min-w-0 truncate",
-                "text": "_pf_parts",
+                "text": "synara",
                 "box": {
                   "x": 439,
-                  "y": 337,
-                  "width": 54.828125,
+                  "y": 379,
+                  "width": 37.4375,
                   "height": 18
                 },
                 "font": {
@@ -4445,12 +4443,12 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               "footer": {
                 "tag": "DIV",
                 "className": "border-t p-1",
-                "text": "New projectDon't work in a project",
+                "text": "New projectDon't work in a projectRetrySocketOpenError: timeout waiting for \"open\"",
                 "box": {
                   "x": 409,
-                  "y": 451,
+                  "y": 403,
                   "width": 278,
-                  "height": 65
+                  "height": 113
                 },
                 "font": {
                   "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
@@ -4475,7 +4473,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                 "text": "New project",
                 "box": {
                   "x": 413,
-                  "y": 456,
+                  "y": 408,
                   "width": 270,
                   "height": 28
                 },
@@ -4492,33 +4490,6 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "borderColor": "rgba(13, 13, 13, 0.07)",
                   "borderWidth": "0px",
                   "radius": "8px",
-                  "shadow": "none",
-                  "opacity": "1"
-                }
-              },
-              "actionIcon": {
-                "tag": "svg",
-                "className": "[object SVGAnimatedString]",
-                "text": "",
-                "box": {
-                  "x": 421,
-                  "y": 463,
-                  "width": 14,
-                  "height": 14
-                },
-                "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
-                  "size": "14px",
-                  "weight": "400",
-                  "lineHeight": "20px",
-                  "letterSpacing": "normal"
-                },
-                "paint": {
-                  "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.417255)",
-                  "background": "rgba(0, 0, 0, 0)",
-                  "borderColor": "rgba(13, 13, 13, 0.07)",
-                  "borderWidth": "0px",
-                  "radius": "0px",
                   "shadow": "none",
                   "opacity": "1"
                 }
@@ -4638,7 +4609,6 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "opacity": "1"
                 }
               },
-              "groupIcon": null,
               "option": {
                 "font": {
                   "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
@@ -4649,7 +4619,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                 },
                 "paint": {
                   "color": "rgb(13, 13, 13)",
-                  "background": "rgba(0, 0, 0, 0)",
+                  "background": "rgba(13, 13, 13, 0.04)",
                   "borderColor": "rgba(13, 13, 13, 0.07)",
                   "borderWidth": "0px",
                   "radius": "8px",
@@ -4657,7 +4627,6 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "opacity": "1"
                 }
               },
-              "optionIcon": null,
               "optionTitle": {
                 "font": {
                   "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
@@ -4711,24 +4680,6 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "shadow": "none",
                   "opacity": "1"
                 }
-              },
-              "actionIcon": {
-                "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
-                  "size": "14px",
-                  "weight": "400",
-                  "lineHeight": "20px",
-                  "letterSpacing": "normal"
-                },
-                "paint": {
-                  "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.417255)",
-                  "background": "rgba(0, 0, 0, 0)",
-                  "borderColor": "rgba(13, 13, 13, 0.07)",
-                  "borderWidth": "0px",
-                  "radius": "0px",
-                  "shadow": "none",
-                  "opacity": "1"
-                }
               }
             }
           },
@@ -4767,7 +4718,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 28
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -4786,7 +4737,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               "popup": {
                 "tag": "X-VIEW",
                 "className": "LxMenuPopup ComposerProjectPickerPopupLynx",
-                "text": "Folders on this Mac_pf_partsai_completionantigravity-claude-proxyApplicationsbinbytedconductorDesktopdim-agentDocumentsD",
+                "text": "VoidsynaraFolders on this Mac_pf_partsai_completionantigravity-claude-proxyApplicationsbinbytedconductorDesktopdim-agent",
                 "box": {
                   "x": 408,
                   "y": 259,
@@ -4794,7 +4745,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 258
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -4813,7 +4764,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               "panel": {
                 "tag": "X-VIEW",
                 "className": "ComposerProjectPickerPanelLynx",
-                "text": "Folders on this Mac_pf_partsai_completionantigravity-claude-proxyApplicationsbinbytedconductorDesktopdim-agentDocumentsD",
+                "text": "VoidsynaraFolders on this Mac_pf_partsai_completionantigravity-claude-proxyApplicationsbinbytedconductorDesktopdim-agent",
                 "box": {
                   "x": 409,
                   "y": 260,
@@ -4821,7 +4772,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 256
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -4848,7 +4799,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 43
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -4875,7 +4826,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 0
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "11px",
                   "weight": "400",
                   "lineHeight": "16.5px",
@@ -4894,7 +4845,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               "groupLabel": {
                 "tag": "X-VIEW",
                 "className": "ComposerProjectPickerGroupLabelLynx",
-                "text": "Folders on this Mac",
+                "text": "Void",
                 "box": {
                   "x": 409,
                   "y": 305,
@@ -4902,7 +4853,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 28
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -4918,37 +4869,10 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "opacity": "1"
                 }
               },
-              "groupIcon": {
-                "tag": "X-SVG",
-                "className": "ComposerProjectPickerSpaceIconLynx",
-                "text": "",
-                "box": {
-                  "x": 417,
-                  "y": 313,
-                  "width": 12,
-                  "height": 12
-                },
-                "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
-                  "size": "16px",
-                  "weight": "400",
-                  "lineHeight": "normal",
-                  "letterSpacing": "normal"
-                },
-                "paint": {
-                  "color": "rgba(13, 13, 13, 0.596)",
-                  "background": "rgba(0, 0, 0, 0)",
-                  "borderColor": "rgba(13, 13, 13, 0.596)",
-                  "borderWidth": "0px",
-                  "radius": "0px",
-                  "shadow": "none",
-                  "opacity": "0.45"
-                }
-              },
               "option": {
                 "tag": "X-VIEW",
                 "className": "LxButton LxButton--ghost LxButton--default LxMenuItem ComposerProjectPickerOptionLynx LxMenuItem--highlighted",
-                "text": "_pf_parts",
+                "text": "synara",
                 "box": {
                   "x": 409,
                   "y": 333,
@@ -4956,7 +4880,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 26
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -4972,45 +4896,18 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "opacity": "1"
                 }
               },
-              "optionIcon": {
-                "tag": "X-SVG",
-                "className": "ComposerProjectPickerOptionIconLynx",
-                "text": "",
-                "box": {
-                  "x": 418,
-                  "y": 339,
-                  "width": 14,
-                  "height": 14
-                },
-                "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
-                  "size": "16px",
-                  "weight": "400",
-                  "lineHeight": "normal",
-                  "letterSpacing": "normal"
-                },
-                "paint": {
-                  "color": "rgba(13, 13, 13, 0.596)",
-                  "background": "rgba(0, 0, 0, 0)",
-                  "borderColor": "rgba(13, 13, 13, 0.596)",
-                  "borderWidth": "0px",
-                  "radius": "0px",
-                  "shadow": "none",
-                  "opacity": "0.7"
-                }
-              },
               "optionTitle": {
                 "tag": "X-TEXT",
                 "className": "ComposerProjectPickerOptionTitleLynx",
-                "text": "_pf_parts",
+                "text": "synara",
                 "box": {
                   "x": 440,
                   "y": 337,
-                  "width": 54.828125,
+                  "width": 37.4375,
                   "height": 18
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "12px",
                   "weight": "400",
                   "lineHeight": "18px",
@@ -5037,7 +4934,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 65
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -5064,7 +4961,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 28
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -5079,33 +4976,6 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "shadow": "none",
                   "opacity": "1"
                 }
-              },
-              "actionIcon": {
-                "tag": "X-SVG",
-                "className": "ComposerProjectPickerActionIconLynx",
-                "text": "",
-                "box": {
-                  "x": 421,
-                  "y": 463,
-                  "width": 14,
-                  "height": 14
-                },
-                "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
-                  "size": "16px",
-                  "weight": "400",
-                  "lineHeight": "normal",
-                  "letterSpacing": "normal"
-                },
-                "paint": {
-                  "color": "rgba(13, 13, 13, 0.596)",
-                  "background": "rgba(0, 0, 0, 0)",
-                  "borderColor": "rgba(13, 13, 13, 0.596)",
-                  "borderWidth": "0px",
-                  "radius": "0px",
-                  "shadow": "none",
-                  "opacity": "0.7"
-                }
               }
             }
           },
@@ -5116,7 +4986,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
             "roles": {
               "trigger": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -5134,7 +5004,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               },
               "popup": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -5152,7 +5022,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               },
               "panel": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -5170,7 +5040,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               },
               "search": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -5188,7 +5058,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               },
               "searchInput": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "11px",
                   "weight": "400",
                   "lineHeight": "16.5px",
@@ -5206,7 +5076,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               },
               "groupLabel": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -5222,27 +5092,9 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "opacity": "1"
                 }
               },
-              "groupIcon": {
-                "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
-                  "size": "16px",
-                  "weight": "400",
-                  "lineHeight": "normal",
-                  "letterSpacing": "normal"
-                },
-                "paint": {
-                  "color": "rgba(13, 13, 13, 0.596)",
-                  "background": "rgba(0, 0, 0, 0)",
-                  "borderColor": "rgba(13, 13, 13, 0.596)",
-                  "borderWidth": "0px",
-                  "radius": "0px",
-                  "shadow": "none",
-                  "opacity": "0.45"
-                }
-              },
               "option": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -5258,27 +5110,9 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "opacity": "1"
                 }
               },
-              "optionIcon": {
-                "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
-                  "size": "16px",
-                  "weight": "400",
-                  "lineHeight": "normal",
-                  "letterSpacing": "normal"
-                },
-                "paint": {
-                  "color": "rgba(13, 13, 13, 0.596)",
-                  "background": "rgba(0, 0, 0, 0)",
-                  "borderColor": "rgba(13, 13, 13, 0.596)",
-                  "borderWidth": "0px",
-                  "radius": "0px",
-                  "shadow": "none",
-                  "opacity": "0.7"
-                }
-              },
               "optionTitle": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "12px",
                   "weight": "400",
                   "lineHeight": "18px",
@@ -5296,7 +5130,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               },
               "footer": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -5314,7 +5148,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               },
               "action": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -5329,24 +5163,6 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "shadow": "none",
                   "opacity": "1"
                 }
-              },
-              "actionIcon": {
-                "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
-                  "size": "16px",
-                  "weight": "400",
-                  "lineHeight": "normal",
-                  "letterSpacing": "normal"
-                },
-                "paint": {
-                  "color": "rgba(13, 13, 13, 0.596)",
-                  "background": "rgba(0, 0, 0, 0)",
-                  "borderColor": "rgba(13, 13, 13, 0.596)",
-                  "borderWidth": "0px",
-                  "radius": "0px",
-                  "shadow": "none",
-                  "opacity": "0.7"
-                }
               }
             }
           },
@@ -5358,19 +5174,561 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
           }
         },
         "native": {
-          "status": "pending",
-          "reason": "Current-build exact-owned Native capture has not been retained.",
-          "path": null,
-          "comparisonPath": null,
-          "geometry": null,
-          "geometryData": null,
-          "styles": null,
-          "stylesData": null,
-          "console": null,
+          "status": "retained",
+          "reason": null,
+          "path": "native/project-picker-open/raw.png",
+          "comparisonPath": "native/project-picker-open/comparison.png",
+          "geometry": "native/project-picker-open/geometry.json",
+          "geometryData": {
+            "client": "native",
+            "stateId": "project-picker-open",
+            "roles": {
+              "root": {
+                "nodeId": 5321,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+                },
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1280,
+                  "height": 788
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "nodeId": 5459,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "react-ref-4933-0": "1",
+                  "focusable": "true",
+                  "aria-disabled": "false",
+                  "aria-label": "Work in a project",
+                  "aria-haspopup": "menu",
+                  "aria-expanded": "true",
+                  "bindmouseenter": "4933:0:bindmouseenter",
+                  "bindtap": "4933:0:bindtap",
+                  "bindmouseup": "4933:0:bindmouseup",
+                  "bindtouchstart": "4933:0:bindtouchstart",
+                  "bindmouseleave": "4933:0:bindmouseleave",
+                  "bindmousedown": "4933:0:bindmousedown",
+                  "bindtouchend": "4933:0:bindtouchend",
+                  "bindblur": "4933:0:bindblur",
+                  "catchkeydown": "4933:0:catchkeydown",
+                  "bindfocus": "4933:0:bindfocus",
+                  "bindtouchcancel": "4933:0:bindtouchcancel",
+                  "bindlayoutchange": "4933:0:bindlayoutchange",
+                  "class": "LxMenuTrigger LandingComposerProjectTrigger ComposerProjectPickerTriggerLynx ComposerProjectPickerTriggerLynx--open"
+                },
+                "text": "",
+                "box": {
+                  "x": 408,
+                  "y": 504,
+                  "width": 122,
+                  "height": 28
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "popup": {
+                "nodeId": 7849,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "aria-modal": "false",
+                  "role": "menu",
+                  "bindkeydown": "7205:4:",
+                  "bindlayoutchange": "7205:5:",
+                  "class": "LxMenuPopup ComposerProjectPickerPopupLynx",
+                  "style": "visibility:visible;top:244px;left:408px;"
+                },
+                "text": "",
+                "box": {
+                  "x": 408,
+                  "y": 244,
+                  "width": 288,
+                  "height": 258
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(255,255,255,0.698039)",
+                  "borderColor": "hsla(0,0%,5%,.069)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "0 4px 18px -6px #0d0d0d11",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "nodeId": 7850,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "ComposerProjectPickerPanelLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 409,
+                  "y": 245,
+                  "width": 278,
+                  "height": 256
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "search": {
+                "nodeId": 7851,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "ComposerProjectPickerSearchLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 409,
+                  "y": 245,
+                  "width": 278,
+                  "height": 43
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "groupLabel": {
+                "nodeId": 7857,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "ComposerProjectPickerGroupLabelLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 409,
+                  "y": 290,
+                  "width": 278,
+                  "height": 28
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "option": {
+                "nodeId": 7862,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "focusable": "true",
+                  "role": "menuitem",
+                  "bindmouseenter": "7213:0:bindmouseenter",
+                  "bindblur": "7213:0:bindblur",
+                  "bindmouseleave": "7213:0:bindmouseleave",
+                  "bindtap": "7213:0:bindtap",
+                  "bindmouseup": "7213:0:bindmouseup",
+                  "bindtouchstart": "7213:0:bindtouchstart",
+                  "bindmousedown": "7213:0:bindmousedown",
+                  "bindtouchend": "7213:0:bindtouchend",
+                  "bindtouchcancel": "7213:0:bindtouchcancel",
+                  "catchkeydown": "7213:0:catchkeydown",
+                  "bindfocus": "7213:0:bindfocus",
+                  "class": "LxButton LxButton--ghost LxButton--default LxMenuItem ComposerProjectPickerOptionLynx LxMenuItem--highlighted"
+                },
+                "text": "",
+                "box": {
+                  "x": 409,
+                  "y": 318,
+                  "width": 278,
+                  "height": 26
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "optionTitle": {
+                "nodeId": 7867,
+                "nodeName": "TEXT",
+                "attributes": {
+                  "class": "ComposerProjectPickerOptionTitleLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 440,
+                  "y": 322,
+                  "width": 38,
+                  "height": 18
+                },
+                "font": {
+                  "family": "",
+                  "size": "12px",
+                  "weight": "normal",
+                  "lineHeight": "18px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "footer": {
+                "nodeId": 8129,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "ComposerProjectPickerFooterLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 409,
+                  "y": 436,
+                  "width": 278,
+                  "height": 65
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "action": {
+                "nodeId": 8130,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "accessibility-element": "true",
+                  "accessibility-label": "New project",
+                  "accessibility-traits": "button",
+                  "focusable": "true",
+                  "aria-disabled": "false",
+                  "bindmouseenter": "7323:0:bindmouseenter",
+                  "bindblur": "7323:0:bindblur",
+                  "bindmouseleave": "7323:0:bindmouseleave",
+                  "bindkeydown": "7323:0:bindkeydown",
+                  "bindtap": "7323:0:bindtap",
+                  "bindmouseup": "7323:0:bindmouseup",
+                  "bindtouchstart": "7323:0:bindtouchstart",
+                  "bindmousedown": "7323:0:bindmousedown",
+                  "bindtouchend": "7323:0:bindtouchend",
+                  "bindtouchcancel": "7323:0:bindtouchcancel",
+                  "bindfocus": "7323:0:bindfocus",
+                  "class": "ComposerProjectPickerActionLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 413,
+                  "y": 441,
+                  "width": 270,
+                  "height": 28
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "native/project-picker-open/styles.json",
+          "stylesData": {
+            "client": "native",
+            "stateId": "project-picker-open",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "popup": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(255,255,255,0.698039)",
+                  "borderColor": "hsla(0,0%,5%,.069)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "0 4px 18px -6px #0d0d0d11",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "search": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "groupLabel": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "option": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "optionTitle": {
+                "font": {
+                  "family": "",
+                  "size": "12px",
+                  "weight": "normal",
+                  "lineHeight": "18px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "footer": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "action": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "native/project-picker-open/console.txt",
           "alignment": {
             "x": 0,
             "y": 0,
-            "scale": 1
+            "scale": 0.5
           }
         }
       }
@@ -6966,7 +7324,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 820
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -6993,7 +7351,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 28
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "20px",
                   "weight": "500",
                   "lineHeight": "28px",
@@ -7020,7 +7378,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 20
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "14px",
                   "weight": "400",
                   "lineHeight": "20px",
@@ -7047,7 +7405,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 26
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "12px",
                   "weight": "400",
                   "lineHeight": "18px",
@@ -7074,7 +7432,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 123
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -7101,7 +7459,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 61
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -7128,7 +7486,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 60
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -7155,7 +7513,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 18
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "12px",
                   "weight": "500",
                   "lineHeight": "18px",
@@ -7182,7 +7540,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 18
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "12px",
                   "weight": "400",
                   "lineHeight": "18px",
@@ -7209,7 +7567,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 32
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -7236,7 +7594,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 18
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "12px",
                   "weight": "400",
                   "lineHeight": "18px",
@@ -7263,7 +7621,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 12
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -7288,7 +7646,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
             "roles": {
               "settingsSidebar": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -7306,7 +7664,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               },
               "headerTitle": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "20px",
                   "weight": "500",
                   "lineHeight": "28px",
@@ -7324,7 +7682,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               },
               "headerDescription": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "14px",
                   "weight": "400",
                   "lineHeight": "20px",
@@ -7342,7 +7700,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               },
               "sectionTitle": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "12px",
                   "weight": "400",
                   "lineHeight": "18px",
@@ -7360,7 +7718,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               },
               "card": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -7378,7 +7736,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               },
               "row": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -7396,7 +7754,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               },
               "terminalRow": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -7414,7 +7772,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               },
               "rowTitle": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "12px",
                   "weight": "500",
                   "lineHeight": "18px",
@@ -7432,7 +7790,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               },
               "rowDescription": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "12px",
                   "weight": "400",
                   "lineHeight": "18px",
@@ -7450,7 +7808,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               },
               "control": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -7468,7 +7826,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               },
               "controlLabel": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "12px",
                   "weight": "400",
                   "lineHeight": "18px",
@@ -7486,7 +7844,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               },
               "controlIcon": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -7512,19 +7870,617 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
           }
         },
         "native": {
-          "status": "pending",
-          "reason": "Current-build exact-owned Native capture has not been retained.",
-          "path": null,
-          "comparisonPath": null,
-          "geometry": null,
-          "geometryData": null,
-          "styles": null,
-          "stylesData": null,
-          "console": null,
+          "status": "retained",
+          "reason": null,
+          "path": "native/settings-general/raw.png",
+          "comparisonPath": "native/settings-general/comparison.png",
+          "geometry": "native/settings-general/geometry.json",
+          "geometryData": {
+            "client": "native",
+            "stateId": "settings-general",
+            "roles": {
+              "root": {
+                "nodeId": 13,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+                },
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1280,
+                  "height": 788
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "settingsSidebar": {
+                "nodeId": 172,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "SettingsSidebar"
+                },
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 256,
+                  "height": 788
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "headerTitle": {
+                "nodeId": 289,
+                "nodeName": "TEXT",
+                "attributes": {
+                  "class": "SharedSettingsPanelHeaderTitle"
+                },
+                "text": "",
+                "box": {
+                  "x": 456,
+                  "y": 32,
+                  "width": 371,
+                  "height": 28
+                },
+                "font": {
+                  "family": "",
+                  "size": "20px",
+                  "weight": "500",
+                  "lineHeight": "28px",
+                  "letterSpacing": "-0.5px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "headerDescription": {
+                "nodeId": 291,
+                "nodeName": "TEXT",
+                "attributes": {
+                  "class": "SharedSettingsPanelHeaderDescription"
+                },
+                "text": "",
+                "box": {
+                  "x": 456,
+                  "y": 66,
+                  "width": 371,
+                  "height": 20
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "20px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgba(13,13,13,0.596078)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "sectionTitle": {
+                "nodeId": 302,
+                "nodeName": "TEXT",
+                "attributes": {
+                  "class": "SharedSettingsGeneralSectionTitle"
+                },
+                "text": "",
+                "box": {
+                  "x": 456,
+                  "y": 118,
+                  "width": 624,
+                  "height": 26
+                },
+                "font": {
+                  "family": "",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgba(13,13,13,0.596078)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "0.58"
+                }
+              },
+              "card": {
+                "nodeId": 303,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "SharedSettingsGeneralCard"
+                },
+                "text": "",
+                "box": {
+                  "x": 456,
+                  "y": 150,
+                  "width": 624,
+                  "height": 123
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "hsla(0,0%,5%,.069)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "nodeId": 305,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "SharedSettingsGeneralRow"
+                },
+                "text": "",
+                "box": {
+                  "x": 457,
+                  "y": 151,
+                  "width": 622,
+                  "height": 61
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "rowTitle": {
+                "nodeId": 308,
+                "nodeName": "TEXT",
+                "attributes": {
+                  "class": "SharedSettingsGeneralRowTitle"
+                },
+                "text": "",
+                "box": {
+                  "x": 469,
+                  "y": 162,
+                  "width": 94,
+                  "height": 18
+                },
+                "font": {
+                  "family": "",
+                  "size": "12px",
+                  "weight": "500",
+                  "lineHeight": "18px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "rowDescription": {
+                "nodeId": 310,
+                "nodeName": "TEXT",
+                "attributes": {
+                  "class": "SharedSettingsGeneralRowDescription"
+                },
+                "text": "",
+                "box": {
+                  "x": 469,
+                  "y": 182,
+                  "width": 406,
+                  "height": 18
+                },
+                "font": {
+                  "family": "",
+                  "size": "12px",
+                  "weight": "normal",
+                  "lineHeight": "18px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgba(13,13,13,0.596078)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "control": {
+                "nodeId": 316,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "event-through": "false",
+                  "accessibility-element": "true",
+                  "accessibility-label": "Default provider",
+                  "accessibility-traits": "button",
+                  "bindtap": "271:0:bindtap",
+                  "bindmouseup": "271:0:bindmouseup",
+                  "bindmousedown": "271:0:bindmousedown",
+                  "bindtouchstart": "271:0:bindtouchstart",
+                  "bindtouchend": "271:0:bindtouchend",
+                  "bindtouchcancel": "271:0:bindtouchcancel",
+                  "class": "LxButton LxButton--outline LxButton--default SharedSettingsGeneralSelectTrigger SharedSettingsGeneralSelectTrigger--general"
+                },
+                "text": "",
+                "box": {
+                  "x": 891,
+                  "y": 165,
+                  "width": 176,
+                  "height": 32
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "hsla(0,0%,5%,.069)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "controlLabel": {
+                "nodeId": 318,
+                "nodeName": "TEXT",
+                "attributes": {
+                  "class": "SharedSettingsGeneralSelectLabel"
+                },
+                "text": "",
+                "box": {
+                  "x": 903,
+                  "y": 172,
+                  "width": 37,
+                  "height": 18
+                },
+                "font": {
+                  "family": "",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "controlIcon": {
+                "nodeId": 321,
+                "nodeName": "SVG",
+                "attributes": {
+                  "content": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0d0d0d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-chevron-down\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M6 9l6 6l6 -6\" /> </svg>",
+                  "class": "SharedSettingsGeneralSelectChevron",
+                  "style": "height:12px;width:12px;"
+                },
+                "text": "",
+                "box": {
+                  "x": 1043,
+                  "y": 175,
+                  "width": 12,
+                  "height": 12
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "0.5"
+                }
+              }
+            }
+          },
+          "styles": "native/settings-general/styles.json",
+          "stylesData": {
+            "client": "native",
+            "stateId": "settings-general",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "settingsSidebar": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "headerTitle": {
+                "font": {
+                  "family": "",
+                  "size": "20px",
+                  "weight": "500",
+                  "lineHeight": "28px",
+                  "letterSpacing": "-0.5px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "headerDescription": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "20px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgba(13,13,13,0.596078)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "sectionTitle": {
+                "font": {
+                  "family": "",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgba(13,13,13,0.596078)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "0.58"
+                }
+              },
+              "card": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "hsla(0,0%,5%,.069)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "rowTitle": {
+                "font": {
+                  "family": "",
+                  "size": "12px",
+                  "weight": "500",
+                  "lineHeight": "18px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "rowDescription": {
+                "font": {
+                  "family": "",
+                  "size": "12px",
+                  "weight": "normal",
+                  "lineHeight": "18px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgba(13,13,13,0.596078)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "control": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "hsla(0,0%,5%,.069)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "controlLabel": {
+                "font": {
+                  "family": "",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "controlIcon": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "0.5"
+                }
+              }
+            }
+          },
+          "console": "native/settings-general/console.txt",
           "alignment": {
             "x": 0,
             "y": 0,
-            "scale": 1
+            "scale": 0.5
           }
         }
       }

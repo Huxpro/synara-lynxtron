@@ -1,0 +1,378 @@
+{
+  "client": "native",
+  "stateId": "settings-general",
+  "roles": {
+    "root": {
+      "nodeId": 13,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 788
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "settingsSidebar": {
+      "nodeId": 172,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsSidebar"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 256,
+        "height": 788
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "headerTitle": {
+      "nodeId": 289,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "SharedSettingsPanelHeaderTitle"
+      },
+      "text": "",
+      "box": {
+        "x": 456,
+        "y": 32,
+        "width": 371,
+        "height": 28
+      },
+      "font": {
+        "family": "",
+        "size": "20px",
+        "weight": "500",
+        "lineHeight": "28px",
+        "letterSpacing": "-0.5px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "headerDescription": {
+      "nodeId": 291,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "SharedSettingsPanelHeaderDescription"
+      },
+      "text": "",
+      "box": {
+        "x": 456,
+        "y": 66,
+        "width": 371,
+        "height": 20
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "20px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgba(13,13,13,0.596078)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "sectionTitle": {
+      "nodeId": 302,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "SharedSettingsGeneralSectionTitle"
+      },
+      "text": "",
+      "box": {
+        "x": 456,
+        "y": 118,
+        "width": 624,
+        "height": 26
+      },
+      "font": {
+        "family": "",
+        "size": "12px",
+        "weight": "400",
+        "lineHeight": "18px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgba(13,13,13,0.596078)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "0.58"
+      }
+    },
+    "card": {
+      "nodeId": 303,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SharedSettingsGeneralCard"
+      },
+      "text": "",
+      "box": {
+        "x": 456,
+        "y": 150,
+        "width": 624,
+        "height": 123
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "hsla(0,0%,5%,.069)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "row": {
+      "nodeId": 305,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SharedSettingsGeneralRow"
+      },
+      "text": "",
+      "box": {
+        "x": 457,
+        "y": 151,
+        "width": 622,
+        "height": 61
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "rowTitle": {
+      "nodeId": 308,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "SharedSettingsGeneralRowTitle"
+      },
+      "text": "",
+      "box": {
+        "x": 469,
+        "y": 162,
+        "width": 94,
+        "height": 18
+      },
+      "font": {
+        "family": "",
+        "size": "12px",
+        "weight": "500",
+        "lineHeight": "18px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "rowDescription": {
+      "nodeId": 310,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "SharedSettingsGeneralRowDescription"
+      },
+      "text": "",
+      "box": {
+        "x": 469,
+        "y": 182,
+        "width": 406,
+        "height": 18
+      },
+      "font": {
+        "family": "",
+        "size": "12px",
+        "weight": "normal",
+        "lineHeight": "18px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgba(13,13,13,0.596078)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "control": {
+      "nodeId": 316,
+      "nodeName": "VIEW",
+      "attributes": {
+        "event-through": "false",
+        "accessibility-element": "true",
+        "accessibility-label": "Default provider",
+        "accessibility-traits": "button",
+        "bindtap": "271:0:bindtap",
+        "bindmouseup": "271:0:bindmouseup",
+        "bindmousedown": "271:0:bindmousedown",
+        "bindtouchstart": "271:0:bindtouchstart",
+        "bindtouchend": "271:0:bindtouchend",
+        "bindtouchcancel": "271:0:bindtouchcancel",
+        "class": "LxButton LxButton--outline LxButton--default SharedSettingsGeneralSelectTrigger SharedSettingsGeneralSelectTrigger--general"
+      },
+      "text": "",
+      "box": {
+        "x": 891,
+        "y": 165,
+        "width": 176,
+        "height": 32
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "hsla(0,0%,5%,.069)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "controlLabel": {
+      "nodeId": 318,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "SharedSettingsGeneralSelectLabel"
+      },
+      "text": "",
+      "box": {
+        "x": 903,
+        "y": 172,
+        "width": 37,
+        "height": 18
+      },
+      "font": {
+        "family": "",
+        "size": "12px",
+        "weight": "400",
+        "lineHeight": "18px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "controlIcon": {
+      "nodeId": 321,
+      "nodeName": "SVG",
+      "attributes": {
+        "content": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0d0d0d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-chevron-down\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M6 9l6 6l6 -6\" /> </svg>",
+        "class": "SharedSettingsGeneralSelectChevron",
+        "style": "height:12px;width:12px;"
+      },
+      "text": "",
+      "box": {
+        "x": 1043,
+        "y": 175,
+        "width": 12,
+        "height": 12
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "0.5"
+      }
+    }
+  }
+}
