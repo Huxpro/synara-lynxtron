@@ -1,0 +1,34 @@
+{
+  "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+  "recordedAt": "2026-08-04T13:18:37+08:00",
+  "web": {
+    "command": "bun run test -- src/components/ChatView.logic.test.ts src/components/chat/MessagesTimeline.logic.test.ts",
+    "result": {
+      "testFiles": 2,
+      "tests": 175,
+      "passed": 175,
+      "failed": 0
+    },
+    "proof": [
+      "Transcript auto-follow signal stays stable when only non-message turn activity changes",
+      "Real transcript append and tail lifecycle changes update the signal",
+      "Working and tool rows remain separate from message-arrival semantics",
+      "Timeline grouping does not turn a trailing working row into a new message"
+    ]
+  },
+  "lynx": {
+    "command": "bun run test -- src/app/threadPageState.logic.test.ts",
+    "result": {
+      "testFiles": 1,
+      "tests": 5,
+      "passed": 5,
+      "failed": 0
+    },
+    "proof": [
+      "Initial query remains an explicit loading state",
+      "Transport failures stay distinct from ordinary query errors",
+      "Last-known-good transcript rows remain mounted during transport failure",
+      "Successful rows pass through without a measurement-driven follow cycle"
+    ]
+  }
+}

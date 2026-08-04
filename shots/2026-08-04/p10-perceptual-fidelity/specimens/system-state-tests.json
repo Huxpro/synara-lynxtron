@@ -1,0 +1,44 @@
+{
+  "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+  "recordedAt": "2026-08-04T13:13:29+08:00",
+  "web": {
+    "command": "bun run test -- src/components/SidebarSystemStates.test.tsx src/components/kanban/KanbanStateComposition.test.tsx src/components/pullRequest/PullRequestListComposition.test.tsx src/components/chat/ComposerProjectPicker.logic.test.ts src/components/chat/ComposerProjectPickerComposition.test.tsx",
+    "result": {
+      "testFiles": 5,
+      "tests": 15,
+      "passed": 15,
+      "failed": 0
+    },
+    "proof": [
+      "Sidebar loading, error and loaded-empty states preserve bounded live semantics",
+      "Kanban loading, offline and missing-project states keep distinct anatomy and intent",
+      "Pull Request loading and status rows retain role and copy contracts",
+      "Project Picker loading, adding, disabled action, error and retry presentations remain shared"
+    ],
+    "sourceHashes": {
+      "sidebarSystemStates": "03fdcab5d97cb34c1a4b2852f1b0b78c7299de32d8956bc42e0a24a775cf6747",
+      "kanbanState": "243682c10f5759e79510d4a278a42ee2535c71324cd4d4205a4486f39fc24a2e",
+      "pullRequestState": "947af708bf0b6ab75425a7621e5975836f86a767269137d5deee6145aaacced9",
+      "projectPickerLogic": "2bac20ec2d2359b54d869f70a6106a5979f6e88a1b94966e0ecf65902416a6c8",
+      "projectPickerComposition": "ccf8bd56a8333231dffb2ffc59b63ea093c4e4cdf86a95b2f455468eafb87149"
+    }
+  },
+  "lynx": {
+    "command": "bun run test -- src/components/composer/landingComposerFidelity.test.ts src/platform/system-state-announcement.logic.test.ts",
+    "result": {
+      "testFiles": 2,
+      "tests": 5,
+      "passed": 5,
+      "failed": 0
+    },
+    "proof": [
+      "Landing Composer consumes shared state anatomy without duplicate spacing",
+      "Discrete loading/result/error announcements publish once and suppress duplicate noise",
+      "Plain content resets the state announcement channel"
+    ],
+    "sourceHashes": {
+      "landingComposerFidelity": "5e52682ea7187d384953faf324c0ce74922f2f06865a9ea076f05aa1fc4a898e",
+      "systemStateAnnouncement": "ec5702ff9c6b370ab059cb3543c7cb4e3e434aab72897ee60e18faa53a4d7b71"
+    }
+  }
+}

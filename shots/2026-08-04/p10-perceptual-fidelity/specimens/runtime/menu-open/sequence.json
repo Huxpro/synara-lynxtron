@@ -1,0 +1,59 @@
+{
+  "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+  "contract": "instant-presence",
+  "reason": "Web and Native composer menu surfaces define no open/close transition; fixed samples prove no cross-platform instant-vs-animated mismatch.",
+  "samples": [
+    {
+      "label": "t0",
+      "requestedMs": 0,
+      "actualMs": 20.349791999999994,
+      "present": true,
+      "className": "LxMenuPopup ComposerExtrasPopupLynx",
+      "box": {
+        "x": 407,
+        "y": 353,
+        "width": 142,
+        "height": 109
+      }
+    },
+    {
+      "label": "t80",
+      "requestedMs": 80,
+      "actualMs": 98.37258299999999,
+      "present": true,
+      "className": "LxMenuPopup ComposerExtrasPopupLynx",
+      "box": {
+        "x": 407,
+        "y": 353,
+        "width": 142,
+        "height": 109
+      }
+    },
+    {
+      "label": "t160",
+      "requestedMs": 160,
+      "actualMs": 177.90954200000002,
+      "present": true,
+      "className": "LxMenuPopup ComposerExtrasPopupLynx",
+      "box": {
+        "x": 407,
+        "y": 353,
+        "width": 142,
+        "height": 109
+      }
+    },
+    {
+      "label": "t220",
+      "requestedMs": 220,
+      "actualMs": 235.40458299999997,
+      "present": true,
+      "className": "LxMenuPopup ComposerExtrasPopupLynx",
+      "box": {
+        "x": 407,
+        "y": 353,
+        "width": 142,
+        "height": 109
+      }
+    }
+  ]
+}

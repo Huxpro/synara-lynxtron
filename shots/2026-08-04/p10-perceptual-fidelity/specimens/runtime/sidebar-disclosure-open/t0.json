@@ -1,0 +1,47 @@
+{
+  "label": "t0",
+  "requestedMs": 0,
+  "actualMs": 18.986958999999985,
+  "header": {
+    "attributes": {
+      "react-ref-89-0": "1",
+      "aria-label": "Collapse Lynx Web Spike",
+      "aria-expanded": "true",
+      "accessibility-element": "true",
+      "accessibility-label": "Collapse Lynx Web Spike",
+      "accessibility-traits": "button",
+      "accessibility-value": "Expanded",
+      "focusable": "true",
+      "aria-disabled": "false",
+      "bindmouseenter": "89:0:bindmouseenter",
+      "bindblur": "89:0:bindblur",
+      "bindmouseleave": "89:0:bindmouseleave",
+      "bindkeydown": "89:0:bindkeydown",
+      "bindtap": "89:0:bindtap",
+      "bindmouseup": "89:0:bindmouseup",
+      "bindtouchstart": "89:0:bindtouchstart",
+      "bindmousedown": "89:0:bindmousedown",
+      "bindtouchend": "89:0:bindtouchend",
+      "bindtouchcancel": "89:0:bindtouchcancel",
+      "bindfocus": "89:0:bindfocus",
+      "class": "AppSidebarProjectHeader"
+    },
+    "box": {
+      "x": 6,
+      "y": 287,
+      "width": 243,
+      "height": 28
+    }
+  },
+  "body": {
+    "attributes": {
+      "class": "LynxDisclosureMotion LynxDisclosureMotion--open AppSidebarProjectBody"
+    },
+    "box": {
+      "x": 6,
+      "y": 311.5,
+      "width": 243,
+      "height": 90
+    }
+  }
+}

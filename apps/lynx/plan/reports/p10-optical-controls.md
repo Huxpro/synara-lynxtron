@@ -1,6 +1,6 @@
 # P10 optical control calibration
 
-Status: in progress
+Status: complete
 
 Updated: 2026-08-04
 
@@ -86,13 +86,28 @@ skill row retains:
 - 14×14 painted icon;
 - exact four-item order and active first row.
 
-The product has broad interaction-state implementation and older runtime proof,
-but there is no single current-build P10 golden state matrix. Therefore Phase 3
-remains in progress.
+The current-build specimen SSOT is
+`shots/2026-08-04/p10-perceptual-fidelity/specimens/manifest.json`.
+`apps/lynx/scripts/specimen-evidence.mjs` now requires all 15 controls and every
+applicable state. Strict verification reports **15 controls / 0 incomplete**.
 
-## Remaining gate
+Current optical metrics are retained in
+`shots/2026-08-04/p10-perceptual-fidelity/specimens/optical-metrics.json`:
 
-1. Retain current-build state specimens for all 15 rows above.
-2. Record painted bounds and visual-center dispositions.
-3. Register any P2 engine correction and close all P0/P1 residuals.
-4. Prove shared primitive changes across at least two consuming routes.
+- the command icon is 14×14 inside a 16×16 slot with exactly 1px on every edge;
+- the painted icon and slot centers are both `(428, 295)`;
+- selected and pressed command rows retain the same 716×28 box and visual
+  center; pressed feedback changes opacity to `0.72` without moving content;
+- the semantic mention chip is 142×24 inside the unchanged 708×39 editor rail;
+- Sidebar disclosure width remains 243px throughout its fixed-time sequence,
+  with a 4px transform trajectory and no cumulative row drift.
+
+Current focused suites prove disabled controls are unfocusable and handler-free,
+checked state is explicit, and shared interaction classes remain stable. Real
+Native runtime proves pressed/release and semantic token selection. Native and
+Lynx-for-Web mouseenter plus host Tab focus publication remain named platform
+deltas; the manifest does not misreport them as runtime success.
+
+No new anonymous correction or feature-local margin was required. Shared
+primitives are consumed by Sidebar, Composer, Settings, Kanban, Pull Requests,
+and transcript disclosures, satisfying the multi-route consumer gate.

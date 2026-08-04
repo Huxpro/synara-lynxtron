@@ -1,6 +1,6 @@
 # P10 motion and temporal fidelity contract
 
-Status: in progress
+Status: complete
 
 Updated: 2026-08-04
 
@@ -76,10 +76,32 @@ Current tests prove:
   and reduced-motion declarations;
 - Native 220ms/40ms timing and open/closed/chevron class projection.
 
-P7-I4 retained a real Native Sidebar close sequence: closed state observed at
-approximately 4.93ms, body present at 100ms, absent at 320ms. That evidence
-establishes the platform contract but predates P10 calibration and is not the
-final current-build certification.
+P10 current-build sequences are retained under
+`shots/2026-08-04/p10-perceptual-fidelity/specimens/runtime/`:
+
+- Sidebar close: samples at approximately 13/93/173/232ms retain the closed
+  body and its exit trajectory; the body is absent at 334ms after the shared
+  220ms + 40ms cleanup contract.
+- Sidebar open: samples at approximately 19/94/176/235ms retain the open body;
+  the stable 243×90 end frame is present at 335ms.
+- Collapsed work: the 728×32 panel follows the open transform trajectory
+  through 220ms. Close removes it immediately because
+  `preserveOnClose=false` protects Native list measurement and transcript
+  follow from exit-node feedback.
+- Composer menus: Web and Native intentionally use instant presence rather than
+  disclosure motion. Open samples at approximately 20/98/178/235ms retain an
+  identical 142×109 box; close samples at approximately 14/96/173/234ms remain
+  absent. There is no instant-vs-animated cross-platform mismatch.
+- Pressed feedback: Native command-row pointer down publishes `ui-pressed` and
+  opacity `0.72` without changing its 716×28 box; release clears the row through
+  the real product action.
+- Reduced motion: current Web and Native focused tests retain
+  `transition-none` and `0.01ms` fallbacks with identical final states.
+- Transcript guardrails: current Web auto-follow/timeline suites pass 175
+  tests and Native thread-state suites pass 5 tests. Non-message working/tool
+  activity leaves the message signal stable, while loading/error states retain
+  last-known-good transcript rows instead of creating a measurement/follow
+  feedback path.
 
 ## Evidence format
 
@@ -94,8 +116,15 @@ Every retained P10 temporal specimen records:
 - reduced-motion mode;
 - final static frame and residual disposition.
 
-## Remaining gate
+## Completion
 
-Phase 4 is complete only when every required temporal surface above has
-current-build proof, no route has instant-vs-animated mismatch, reduced motion
-is certified, and transcript follow/measurement tests remain green.
+The current-build specimen SSOT is
+`shots/2026-08-04/p10-perceptual-fidelity/specimens/manifest.json`.
+`apps/lynx/scripts/specimen-evidence.mjs` requires all 12 temporal surfaces and
+their applicable samples. Strict verification reports
+**12 temporal surfaces / 0 incomplete**.
+
+Focused interaction, disclosure, system-state, and transcript guardrail suites
+remain green. Host Tab focus and inconsistent Native/Lynx mouseenter delivery
+are explicit platform deltas rather than fabricated temporal proof. No open
+P0/P1 motion residual remains.

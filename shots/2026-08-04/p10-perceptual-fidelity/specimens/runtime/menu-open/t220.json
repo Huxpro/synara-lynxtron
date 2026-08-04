@@ -1,0 +1,13 @@
+{
+  "label": "t220",
+  "requestedMs": 220,
+  "actualMs": 235.40458299999997,
+  "present": true,
+  "className": "LxMenuPopup ComposerExtrasPopupLynx",
+  "box": {
+    "x": 407,
+    "y": 353,
+    "width": 142,
+    "height": 109
+  }
+}

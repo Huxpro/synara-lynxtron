@@ -1,0 +1,30 @@
+[
+  {
+    "nodeId": 1136,
+    "nodeName": "VIEW",
+    "attributes": {
+      "aria-label": "In Progress seed task",
+      "aria-selected": "true",
+      "focusable": "true",
+      "aria-disabled": "false",
+      "bindmouseenter": "1183:0:bindmouseenter",
+      "bindblur": "1183:0:bindblur",
+      "bindmouseleave": "1183:0:bindmouseleave",
+      "bindkeydown": "1183:0:bindkeydown",
+      "bindtap": "1183:0:bindtap",
+      "bindmouseup": "1183:0:bindmouseup",
+      "bindtouchstart": "1183:0:bindtouchstart",
+      "bindmousedown": "1183:0:bindmousedown",
+      "bindtouchend": "1183:0:bindtouchend",
+      "bindtouchcancel": "1183:0:bindtouchcancel",
+      "bindfocus": "1183:0:bindfocus",
+      "class": "ComposerCommandRowLynx ComposerCommandRowLynx--active"
+    },
+    "box": {
+      "x": 410,
+      "y": 316,
+      "width": 716,
+      "height": 28
+    }
+  }
+]

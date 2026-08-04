@@ -1,0 +1,81 @@
+{
+  "client": "native",
+  "stateId": "command-row-pressed",
+  "roles": {
+    "root": {
+      "nodeId": 13,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 788
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "row": {
+      "nodeId": 1106,
+      "nodeName": "VIEW",
+      "attributes": {
+        "aria-label": "In Progress seed task",
+        "aria-selected": "true",
+        "focusable": "true",
+        "aria-disabled": "false",
+        "bindmouseenter": "1164:0:bindmouseenter",
+        "bindblur": "1164:0:bindblur",
+        "bindmouseleave": "1164:0:bindmouseleave",
+        "bindkeydown": "1164:0:bindkeydown",
+        "bindtap": "1164:0:bindtap",
+        "bindmouseup": "1164:0:bindmouseup",
+        "bindtouchstart": "1164:0:bindtouchstart",
+        "bindmousedown": "1164:0:bindmousedown",
+        "bindtouchend": "1164:0:bindtouchend",
+        "bindtouchcancel": "1164:0:bindtouchcancel",
+        "bindfocus": "1164:0:bindfocus",
+        "class": "ComposerCommandRowLynx ComposerCommandRowLynx--active ui-pressed"
+      },
+      "text": "",
+      "box": {
+        "x": 410,
+        "y": 316,
+        "width": 716,
+        "height": 28
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(232,242,250)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "0.72"
+      }
+    }
+  }
+}

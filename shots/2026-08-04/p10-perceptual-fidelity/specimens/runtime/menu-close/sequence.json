@@ -1,0 +1,34 @@
+{
+  "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+  "contract": "instant-absence",
+  "samples": [
+    {
+      "label": "t0",
+      "requestedMs": 0,
+      "actualMs": 13.710541999999975,
+      "present": false,
+      "box": null
+    },
+    {
+      "label": "t80",
+      "requestedMs": 80,
+      "actualMs": 95.85083299999997,
+      "present": false,
+      "box": null
+    },
+    {
+      "label": "t160",
+      "requestedMs": 160,
+      "actualMs": 173.05733299999997,
+      "present": false,
+      "box": null
+    },
+    {
+      "label": "t220",
+      "requestedMs": 220,
+      "actualMs": 233.72758299999998,
+      "present": false,
+      "box": null
+    }
+  ]
+}

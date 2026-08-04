@@ -5150,3 +5150,31 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - 该red状态是honest baseline，不是产品回归。下一切片必须通过真实product consumers、
   focused tests与fixed-time runtime sequences逐项关闭，不能把source class存在或旧P7/P9
   evidence冒充current-build proof。
+
+## 2026-08-04 — P10 control and temporal specimen closure
+
+- current-build focused contracts：Lynx interaction/menu/motion **5 files /
+  25 tests**，Web disclosure **1 file / 4 tests**；system-state/loading/error
+  Web **5 files / 15 tests**、Lynx **2 files / 5 tests**。hash-bound summaries
+  留在specimen目录。
+- exact-owned Native runtime retained：
+  - command row pressed进入`ui-pressed`、opacity `0.72`，716×28 box/center不动；
+  - Sidebar close在约13/93/173/232ms保留exit body，334ms cleanup；open在约
+    19/94/176/235ms沿4px轨迹进入，335ms稳定243×90；
+  - collapsed work open为728×32并走220ms轨迹，close因
+    `preserveOnClose=false`约52ms内移除，避免Native list measure/follow反馈；
+  - Composer menu open在约20/98/178/235ms稳定142×109，close在约
+    14/96/173/234ms均absent；Web/Native共同使用instant menu presence，无一端瞬间、
+    一端渐变的不一致。
+- real mention selection生成单semantic chip：Native 142×24、Lynx-for-Web
+  143.84×23，editor仍708×39；Web保留等价Lexical inline语义。Native console 0。
+- optical metrics确认14×14 painted icon在16×16 slot内四边各1px，painted center与slot
+  center均`(428,295)`；selected/pressed row和disclosure rail无visual-center/cumulative
+  drift。
+- Native/Lynx mouseenter与host Tab focus仍是明确platform delta；source wiring/test
+  retained，但未冒充runtime delivery。strict specimen verifier现为
+  **15 controls / 12 temporal surfaces / 0 incomplete**。
+- transcript guardrails current-build：Web auto-follow/timeline **2 files /
+  175 tests**、Native thread body state **1 file / 5 tests**。普通working/tool
+  activity不改变message signal；loading/error保留last-known-good rows，不触发
+  measurement/follow feedback。

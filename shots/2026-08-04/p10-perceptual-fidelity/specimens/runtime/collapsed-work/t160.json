@@ -1,0 +1,13 @@
+{
+  "label": "t160",
+  "requestedMs": 160,
+  "actualMs": 194.01741700000002,
+  "expanded": "true",
+  "panelClass": "LynxDisclosureMotion LynxDisclosureMotion--open SharedCollapsedWorkPanel",
+  "panelBox": {
+    "x": 399,
+    "y": 342,
+    "width": 728,
+    "height": 32
+  }
+}

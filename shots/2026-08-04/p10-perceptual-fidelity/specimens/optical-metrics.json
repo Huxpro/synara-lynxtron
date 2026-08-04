@@ -1,0 +1,222 @@
+{
+  "version": 1,
+  "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+  "gates": {
+    "positionSizeDeltaPx": 2,
+    "repeatedRowDriftPx": 2,
+    "baselineDeltaPx": 1,
+    "popupTriggerAlignmentPx": 2
+  },
+  "commandRow": {
+    "native": {
+      "surface": {
+        "x": 405,
+        "y": 276,
+        "width": 726,
+        "height": 122
+      },
+      "row": {
+        "x": 410,
+        "y": 281,
+        "width": 716,
+        "height": 28
+      },
+      "iconSlot": {
+        "x": 420,
+        "y": 287,
+        "width": 16,
+        "height": 16
+      },
+      "paintedIcon": {
+        "x": 421,
+        "y": 288,
+        "width": 14,
+        "height": 14
+      },
+      "title": {
+        "x": 444,
+        "y": 287,
+        "width": 77,
+        "height": 16
+      },
+      "iconInset": {
+        "left": 1,
+        "top": 1,
+        "right": 1,
+        "bottom": 1
+      },
+      "iconCenter": {
+        "x": 428,
+        "y": 295
+      },
+      "slotCenter": {
+        "x": 428,
+        "y": 295
+      }
+    },
+    "lynxForWeb": {
+      "surface": {
+        "x": 405,
+        "y": 292,
+        "width": 726,
+        "height": 122
+      },
+      "row": {
+        "x": 410,
+        "y": 297,
+        "width": 716,
+        "height": 28
+      },
+      "iconSlot": {
+        "x": 420,
+        "y": 303,
+        "width": 16,
+        "height": 16
+      },
+      "paintedIcon": {
+        "x": 421,
+        "y": 304,
+        "width": 14,
+        "height": 14
+      },
+      "title": {
+        "x": 444,
+        "y": 303,
+        "width": 73.515625,
+        "height": 16
+      }
+    },
+    "pressed": {
+      "row": {
+        "x": 410,
+        "y": 316,
+        "width": 716,
+        "height": 28
+      },
+      "center": {
+        "x": 768,
+        "y": 330
+      },
+      "opacity": "0.72",
+      "className": "ComposerCommandRowLynx ComposerCommandRowLynx--active ui-pressed"
+    },
+    "disposition": "14x14 painted icon is centered in a 16x16 slot with 1px inset on every edge; selected and pressed rows retain the same 716x28 box and visual center."
+  },
+  "mentionChip": {
+    "native": {
+      "x": 413,
+      "y": 426,
+      "width": 142,
+      "height": 24
+    },
+    "editor": {
+      "x": 413,
+      "y": 418,
+      "width": 708,
+      "height": 39
+    },
+    "disposition": "Semantic mention chip is 142x24 and remains within the 708x39 editor rail without changing editor geometry."
+  },
+  "disclosure": {
+    "closeSamples": [
+      {
+        "label": "t0",
+        "actualMs": 12.72833300000002,
+        "bodyBox": {
+          "x": 6,
+          "y": 314.5,
+          "width": 243,
+          "height": 0
+        }
+      },
+      {
+        "label": "t80",
+        "actualMs": 92.96241699999996,
+        "bodyBox": {
+          "x": 6,
+          "y": 313,
+          "width": 243,
+          "height": 0
+        }
+      },
+      {
+        "label": "t160",
+        "actualMs": 172.752167,
+        "bodyBox": {
+          "x": 6,
+          "y": 311.5,
+          "width": 243,
+          "height": 0
+        }
+      },
+      {
+        "label": "t220",
+        "actualMs": 232.26129200000003,
+        "bodyBox": {
+          "x": 6,
+          "y": 311,
+          "width": 243,
+          "height": 0
+        }
+      },
+      {
+        "label": "end",
+        "actualMs": 333.548667,
+        "bodyBox": null
+      }
+    ],
+    "openSamples": [
+      {
+        "label": "t0",
+        "actualMs": 18.986958999999985,
+        "bodyBox": {
+          "x": 6,
+          "y": 311.5,
+          "width": 243,
+          "height": 90
+        }
+      },
+      {
+        "label": "t80",
+        "actualMs": 94.23941699999997,
+        "bodyBox": {
+          "x": 6,
+          "y": 313,
+          "width": 243,
+          "height": 90
+        }
+      },
+      {
+        "label": "t160",
+        "actualMs": 175.86445899999998,
+        "bodyBox": {
+          "x": 6,
+          "y": 314.5,
+          "width": 243,
+          "height": 90
+        }
+      },
+      {
+        "label": "t220",
+        "actualMs": 235.07416700000002,
+        "bodyBox": {
+          "x": 6,
+          "y": 315,
+          "width": 243,
+          "height": 90
+        }
+      },
+      {
+        "label": "end",
+        "actualMs": 334.932542,
+        "bodyBox": {
+          "x": 6,
+          "y": 315,
+          "width": 243,
+          "height": 90
+        }
+      }
+    ],
+    "disposition": "Sidebar disclosure keeps a stable 243px width, uses a 4px transform trajectory, and does not move the header or introduce cumulative row drift."
+  }
+}

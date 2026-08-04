@@ -1,0 +1,110 @@
+{
+  "client": "native",
+  "stateId": "mention-chip-selected",
+  "roles": {
+    "root": {
+      "nodeId": 13,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 788
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "chip": {
+      "nodeId": 1200,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "ComposerChip ComposerChip--mention"
+      },
+      "text": "",
+      "box": {
+        "x": 413,
+        "y": 426,
+        "width": 142,
+        "height": 24
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(232,242,250)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "editor": {
+      "nodeId": 767,
+      "nodeName": "TEXTAREA",
+      "attributes": {
+        "aria-label": "Message composer",
+        "accessibility-element": "true",
+        "accessibility-label": "Message composer",
+        "focusable": "true",
+        "maxlength": "8000",
+        "maxlines": "6",
+        "enable-scroll-bar": "true",
+        "react-ref-1000-0": "1",
+        "default-value": "⁣ ",
+        "placeholder": "Ask for follow-up changes or attach images",
+        "bindfocus": "1000:4:",
+        "bindselection": "1000:6:",
+        "bindblur": "1000:5:",
+        "bindinput": "1000:7:",
+        "class": "ComposerTextarea ComposerTextarea--projected"
+      },
+      "text": "",
+      "box": {
+        "x": 413,
+        "y": 418,
+        "width": 708,
+        "height": 39
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "12px",
+        "weight": "normal",
+        "lineHeight": "19.5px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgba(0,0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

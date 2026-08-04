@@ -1,0 +1,67 @@
+{
+  "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+  "contract": "open-220ms-close-immediate",
+  "reason": "Collapsed work disables exit presence so native list measurement and transcript follow never observe an exiting panel.",
+  "samples": [
+    {
+      "label": "t0",
+      "requestedMs": 0,
+      "actualMs": 32.777584000000004,
+      "expanded": "true",
+      "panelClass": "LynxDisclosureMotion LynxDisclosureMotion--open SharedCollapsedWorkPanel",
+      "panelBox": {
+        "x": 399,
+        "y": 338.5,
+        "width": 728,
+        "height": 32
+      }
+    },
+    {
+      "label": "t80",
+      "requestedMs": 80,
+      "actualMs": 112.277709,
+      "expanded": "true",
+      "panelClass": "LynxDisclosureMotion LynxDisclosureMotion--open SharedCollapsedWorkPanel",
+      "panelBox": {
+        "x": 399,
+        "y": 340.5,
+        "width": 728,
+        "height": 32
+      }
+    },
+    {
+      "label": "t160",
+      "requestedMs": 160,
+      "actualMs": 194.01741700000002,
+      "expanded": "true",
+      "panelClass": "LynxDisclosureMotion LynxDisclosureMotion--open SharedCollapsedWorkPanel",
+      "panelBox": {
+        "x": 399,
+        "y": 342,
+        "width": 728,
+        "height": 32
+      }
+    },
+    {
+      "label": "t220",
+      "requestedMs": 220,
+      "actualMs": 251.43870900000002,
+      "expanded": "true",
+      "panelClass": "LynxDisclosureMotion LynxDisclosureMotion--open SharedCollapsedWorkPanel",
+      "panelBox": {
+        "x": 399,
+        "y": 342,
+        "width": 728,
+        "height": 32
+      }
+    },
+    {
+      "label": "close-end",
+      "requestedMs": 20,
+      "actualMs": 52.057000000000016,
+      "expanded": "false",
+      "panelClass": null,
+      "panelBox": null
+    }
+  ]
+}

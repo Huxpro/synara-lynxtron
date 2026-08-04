@@ -36,16 +36,52 @@
           ]
         },
         "hover": {
-          "status": "pending"
+          "status": "intentional-delta",
+          "owner": "Lynxtron Desktop pointer publication",
+          "reason": "Native mouseenter is not published consistently; Web retains hover authority and Native pressed feedback is certified.",
+          "evidence": [
+            {
+              "kind": "representative-primitive",
+              "path": "runtime/command-row/hover/geometry.json"
+            }
+          ]
         },
         "pressed": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "The shared view-backed interaction helper publishes immediate pressed state without geometry drift; Sidebar uses the same helper and CSS state contract.",
+          "evidence": [
+            {
+              "kind": "representative-primitive",
+              "path": "runtime/command-row/pressed/geometry.json"
+            }
+          ]
         },
         "disabled": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Disabled product primitives are unfocusable, handler-free and skipped by navigation in current focused suites.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "focused": {
-          "status": "pending"
+          "status": "intentional-delta",
+          "owner": "Lynxtron host focus publication",
+          "reason": "Current source tests prove focus state wiring, but exact Native host Tab does not publish focus into view-backed controls; runtime focus is not claimed.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            },
+            {
+              "kind": "report",
+              "path": "../../../../apps/lynx/plan/reports/p7-i1-interaction-inventory.md"
+            }
+          ]
         }
       }
     },
@@ -71,16 +107,64 @@
           ]
         },
         "hover": {
-          "status": "pending"
+          "status": "intentional-delta",
+          "owner": "Web CSS hover authority and Lynxtron pointer publication",
+          "reason": "Web product controls retain real CSS hover. Current Native/Lynx host mouseenter publication is inconsistent, so no fake ui-hover runtime class is claimed; Native pressed and release feedback remain certified.",
+          "evidence": [
+            {
+              "kind": "native-negative-runtime",
+              "path": "runtime/command-row/hover/geometry.json"
+            },
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "pressed": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "The shared view-backed interaction primitive publishes ui-pressed immediately with no geometry or visual-center drift; current Native runtime and focused tests are retained.",
+          "evidence": [
+            {
+              "kind": "native-runtime",
+              "path": "runtime/command-row/pressed/geometry.json"
+            },
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "selected": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Selected Sidebar surface is retained in current route frames and current interaction tests preserve aria-pressed selection semantics.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "../final-matrix/landing-default-light-1280/native/geometry.json"
+            },
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "focused": {
-          "status": "pending"
+          "status": "intentional-delta",
+          "owner": "Lynxtron host focus publication",
+          "reason": "Current source tests prove focus state wiring, but exact Native host Tab does not publish focus into view-backed controls; runtime focus is not claimed.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            },
+            {
+              "kind": "report",
+              "path": "../../../../apps/lynx/plan/reports/p7-i1-interaction-inventory.md"
+            }
+          ]
         }
       }
     },
@@ -106,16 +190,60 @@
           ]
         },
         "hover": {
-          "status": "pending"
+          "status": "intentional-delta",
+          "owner": "Web CSS hover authority and Lynxtron pointer publication",
+          "reason": "Web product controls retain real CSS hover. Current Native/Lynx host mouseenter publication is inconsistent, so no fake ui-hover runtime class is claimed; Native pressed and release feedback remain certified.",
+          "evidence": [
+            {
+              "kind": "native-negative-runtime",
+              "path": "runtime/command-row/hover/geometry.json"
+            },
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "pressed": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "The shared view-backed interaction primitive publishes ui-pressed immediately with no geometry or visual-center drift; current Native runtime and focused tests are retained.",
+          "evidence": [
+            {
+              "kind": "native-runtime",
+              "path": "runtime/command-row/pressed/geometry.json"
+            },
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "disabled": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Disabled product primitives are unfocusable, handler-free and skipped by navigation in current focused suites.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "focused": {
-          "status": "pending"
+          "status": "intentional-delta",
+          "owner": "Lynxtron host focus publication",
+          "reason": "Current source tests prove focus state wiring, but exact Native host Tab does not publish focus into view-backed controls; runtime focus is not claimed.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            },
+            {
+              "kind": "report",
+              "path": "../../../../apps/lynx/plan/reports/p7-i1-interaction-inventory.md"
+            }
+          ]
         }
       }
     },
@@ -137,20 +265,76 @@
             {
               "kind": "geometry",
               "path": "../final-matrix/thread-default-light-1280/native/geometry.json"
+            },
+            {
+              "kind": "optical-metrics",
+              "path": "optical-metrics.json"
             }
           ]
         },
         "hover": {
-          "status": "pending"
+          "status": "intentional-delta",
+          "owner": "Web CSS hover authority and Lynxtron pointer publication",
+          "reason": "Web product controls retain real CSS hover. Current Native/Lynx host mouseenter publication is inconsistent, so no fake ui-hover runtime class is claimed; Native pressed and release feedback remain certified.",
+          "evidence": [
+            {
+              "kind": "native-negative-runtime",
+              "path": "runtime/command-row/hover/geometry.json"
+            },
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "pressed": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "The shared view-backed interaction primitive publishes ui-pressed immediately with no geometry or visual-center drift; current Native runtime and focused tests are retained.",
+          "evidence": [
+            {
+              "kind": "native-runtime",
+              "path": "runtime/command-row/pressed/geometry.json"
+            },
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            },
+            {
+              "kind": "optical-metrics",
+              "path": "optical-metrics.json"
+            }
+          ]
         },
         "selected": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Expanded Sidebar disclosure preserves header rail and stable body geometry through the 220ms open trajectory.",
+          "evidence": [
+            {
+              "kind": "fixed-time-sequence",
+              "path": "runtime/sidebar-disclosure-open/sequence.json"
+            },
+            {
+              "kind": "optical-metrics",
+              "path": "optical-metrics.json"
+            }
+          ]
         },
         "focused": {
-          "status": "pending"
+          "status": "intentional-delta",
+          "owner": "Lynxtron host focus publication",
+          "reason": "Current source tests prove focus state wiring, but exact Native host Tab does not publish focus into view-backed controls; runtime focus is not claimed.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            },
+            {
+              "kind": "report",
+              "path": "../../../../apps/lynx/plan/reports/p7-i1-interaction-inventory.md"
+            }
+          ]
         }
       }
     },
@@ -175,13 +359,49 @@
           ]
         },
         "focused": {
-          "status": "pending"
+          "status": "intentional-delta",
+          "owner": "Lynxtron host focus publication",
+          "reason": "Current source tests prove focus state wiring, but exact Native host Tab does not publish focus into view-backed controls; runtime focus is not claimed.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            },
+            {
+              "kind": "report",
+              "path": "../../../../apps/lynx/plan/reports/p7-i1-interaction-inventory.md"
+            }
+          ]
         },
         "disabled": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Disabled product primitives are unfocusable, handler-free and skipped by navigation in current focused suites.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "loading": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Current shared product-composition tests retain loading, disabled action, error, retry, status and announcement semantics across Web and Lynx consumers.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "system-state-tests.json"
+            },
+            {
+              "kind": "prior-current-family-fixture",
+              "path": "../../../2026-08-03/p9-u5-composer/focused/project-loading.json"
+            },
+            {
+              "kind": "prior-current-family-fixture",
+              "path": "../../../2026-08-03/p9-u5-composer/focused/project-error.json"
+            }
+          ]
         }
       }
     },
@@ -205,10 +425,30 @@
           ]
         },
         "focused": {
-          "status": "pending"
+          "status": "intentional-delta",
+          "owner": "Lynxtron host focus publication",
+          "reason": "Current source tests prove focus state wiring, but exact Native host Tab does not publish focus into view-backed controls; runtime focus is not claimed.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            },
+            {
+              "kind": "report",
+              "path": "../../../../apps/lynx/plan/reports/p7-i1-interaction-inventory.md"
+            }
+          ]
         },
         "disabled": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Disabled product primitives are unfocusable, handler-free and skipped by navigation in current focused suites.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         }
       }
     },
@@ -246,16 +486,60 @@
           ]
         },
         "hover": {
-          "status": "pending"
+          "status": "intentional-delta",
+          "owner": "Web CSS hover authority and Lynxtron pointer publication",
+          "reason": "Web product controls retain real CSS hover. Current Native/Lynx host mouseenter publication is inconsistent, so no fake ui-hover runtime class is claimed; Native pressed and release feedback remain certified.",
+          "evidence": [
+            {
+              "kind": "native-negative-runtime",
+              "path": "runtime/command-row/hover/geometry.json"
+            },
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "pressed": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "The shared view-backed interaction primitive publishes ui-pressed immediately with no geometry or visual-center drift; current Native runtime and focused tests are retained.",
+          "evidence": [
+            {
+              "kind": "native-runtime",
+              "path": "runtime/command-row/pressed/geometry.json"
+            },
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "disabled": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Disabled product primitives are unfocusable, handler-free and skipped by navigation in current focused suites.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "focused": {
-          "status": "pending"
+          "status": "intentional-delta",
+          "owner": "Lynxtron host focus publication",
+          "reason": "Current source tests prove focus state wiring, but exact Native host Tab does not publish focus into view-backed controls; runtime focus is not claimed.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            },
+            {
+              "kind": "report",
+              "path": "../../../../apps/lynx/plan/reports/p7-i1-interaction-inventory.md"
+            }
+          ]
         }
       }
     },
@@ -278,6 +562,10 @@
             {
               "kind": "geometry",
               "path": "../final-overlays/skill-menu-filtered-light-1440/native/geometry.json"
+            },
+            {
+              "kind": "optical-metrics",
+              "path": "optical-metrics.json"
             }
           ]
         },
@@ -289,20 +577,68 @@
             {
               "kind": "geometry",
               "path": "../final-overlays/skill-menu-filtered-light-1440/native/geometry.json"
+            },
+            {
+              "kind": "optical-metrics",
+              "path": "optical-metrics.json"
             }
           ]
         },
         "hover": {
-          "status": "pending"
+          "status": "intentional-delta",
+          "owner": "Lynxtron Desktop pointer publication",
+          "reason": "Current Native and Lynx-for-Web engines do not publish mouseenter for this product row; Web authority retains CSS hover and Native pressed/release feedback remains runtime-proven.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "runtime/command-row/hover/geometry.json"
+            }
+          ]
         },
         "pressed": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Native command row enters ui-pressed at pointer down, opacity changes to 0.72, and the 716x28 box and visual center remain fixed.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "runtime/command-row/pressed/geometry.json"
+            },
+            {
+              "kind": "optical-metrics",
+              "path": "optical-metrics.json"
+            }
+          ]
         },
         "disabled": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Disabled product primitives are unfocusable, handler-free and skipped by navigation in current focused suites.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            },
+            {
+              "kind": "optical-metrics",
+              "path": "optical-metrics.json"
+            }
+          ]
         },
         "focused": {
-          "status": "pending"
+          "status": "intentional-delta",
+          "owner": "Lynxtron host focus publication",
+          "reason": "Current source tests prove focus state wiring, but exact Native host Tab does not publish focus into view-backed controls; runtime focus is not claimed.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            },
+            {
+              "kind": "report",
+              "path": "../../../../apps/lynx/plan/reports/p7-i1-interaction-inventory.md"
+            }
+          ]
         }
       }
     },
@@ -331,25 +667,69 @@
         "selected": {
           "status": "retained",
           "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
-          "disposition": "Checked mode presentation is retained.",
+          "disposition": "Checked switch track/thumb and aria state are current-build tested.",
           "evidence": [
             {
-              "kind": "geometry",
-              "path": "../final-overlays/extras-open-light-1280/native/geometry.json"
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
             }
           ]
         },
         "hover": {
-          "status": "pending"
+          "status": "intentional-delta",
+          "owner": "Web CSS hover authority and Lynxtron pointer publication",
+          "reason": "Web product controls retain real CSS hover. Current Native/Lynx host mouseenter publication is inconsistent, so no fake ui-hover runtime class is claimed; Native pressed and release feedback remain certified.",
+          "evidence": [
+            {
+              "kind": "native-negative-runtime",
+              "path": "runtime/command-row/hover/geometry.json"
+            },
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "pressed": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "The shared view-backed interaction primitive publishes ui-pressed immediately with no geometry or visual-center drift; current Native runtime and focused tests are retained.",
+          "evidence": [
+            {
+              "kind": "native-runtime",
+              "path": "runtime/command-row/pressed/geometry.json"
+            },
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "disabled": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Disabled product primitives are unfocusable, handler-free and skipped by navigation in current focused suites.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "focused": {
-          "status": "pending"
+          "status": "intentional-delta",
+          "owner": "Lynxtron host focus publication",
+          "reason": "Current source tests prove focus state wiring, but exact Native host Tab does not publish focus into view-backed controls; runtime focus is not claimed.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            },
+            {
+              "kind": "report",
+              "path": "../../../../apps/lynx/plan/reports/p7-i1-interaction-inventory.md"
+            }
+          ]
         }
       }
     },
@@ -374,13 +754,41 @@
           ]
         },
         "selected": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Canonical selected control state is represented by the same checked primitive contract.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "disabled": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Disabled product primitives are unfocusable, handler-free and skipped by navigation in current focused suites.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "focused": {
-          "status": "pending"
+          "status": "intentional-delta",
+          "owner": "Lynxtron host focus publication",
+          "reason": "Current source tests prove focus state wiring, but exact Native host Tab does not publish focus into view-backed controls; runtime focus is not claimed.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            },
+            {
+              "kind": "report",
+              "path": "../../../../apps/lynx/plan/reports/p7-i1-interaction-inventory.md"
+            }
+          ]
         }
       }
     },
@@ -405,13 +813,49 @@
           ]
         },
         "hover": {
-          "status": "pending"
+          "status": "intentional-delta",
+          "owner": "Web CSS hover authority and Lynxtron pointer publication",
+          "reason": "Web product controls retain real CSS hover. Current Native/Lynx host mouseenter publication is inconsistent, so no fake ui-hover runtime class is claimed; Native pressed and release feedback remain certified.",
+          "evidence": [
+            {
+              "kind": "native-negative-runtime",
+              "path": "runtime/command-row/hover/geometry.json"
+            },
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "pressed": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "The shared view-backed interaction primitive publishes ui-pressed immediately with no geometry or visual-center drift; current Native runtime and focused tests are retained.",
+          "evidence": [
+            {
+              "kind": "native-runtime",
+              "path": "runtime/command-row/pressed/geometry.json"
+            },
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "focused": {
-          "status": "pending"
+          "status": "intentional-delta",
+          "owner": "Lynxtron host focus publication",
+          "reason": "Current source tests prove focus state wiring, but exact Native host Tab does not publish focus into view-backed controls; runtime focus is not claimed.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            },
+            {
+              "kind": "report",
+              "path": "../../../../apps/lynx/plan/reports/p7-i1-interaction-inventory.md"
+            }
+          ]
         }
       }
     },
@@ -426,19 +870,107 @@
       ],
       "states": {
         "default": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Canonical mention selection creates one semantic chip at 142x24 Native / 143.84x23 Lynx-for-Web while Web retains equivalent Lexical inline semantics; Native console is empty.",
+          "evidence": [
+            {
+              "kind": "native-geometry",
+              "path": "runtime/mention-chip/native/geometry.json"
+            },
+            {
+              "kind": "native-capture",
+              "path": "runtime/mention-chip/native/capture.json"
+            },
+            {
+              "kind": "lynx-frame",
+              "path": "runtime/mention-chip/lynx-web.png"
+            },
+            {
+              "kind": "web-frame",
+              "path": "runtime/mention-chip/web.png"
+            },
+            {
+              "kind": "optical-metrics",
+              "path": "optical-metrics.json"
+            }
+          ]
         },
         "hover": {
-          "status": "pending"
+          "status": "intentional-delta",
+          "owner": "Web CSS hover authority and Lynxtron pointer publication",
+          "reason": "Web product controls retain real CSS hover. Current Native/Lynx host mouseenter publication is inconsistent, so no fake ui-hover runtime class is claimed; Native pressed and release feedback remain certified.",
+          "evidence": [
+            {
+              "kind": "native-negative-runtime",
+              "path": "runtime/command-row/hover/geometry.json"
+            },
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "pressed": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "The shared view-backed interaction primitive publishes ui-pressed immediately with no geometry or visual-center drift; current Native runtime and focused tests are retained.",
+          "evidence": [
+            {
+              "kind": "native-runtime",
+              "path": "runtime/command-row/pressed/geometry.json"
+            },
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            },
+            {
+              "kind": "optical-metrics",
+              "path": "optical-metrics.json"
+            }
+          ]
         },
         "selected": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Canonical mention selection creates one semantic chip at 142x24 Native / 143.84x23 Lynx-for-Web while Web retains equivalent Lexical inline semantics; Native console is empty.",
+          "evidence": [
+            {
+              "kind": "native-geometry",
+              "path": "runtime/mention-chip/native/geometry.json"
+            },
+            {
+              "kind": "native-capture",
+              "path": "runtime/mention-chip/native/capture.json"
+            },
+            {
+              "kind": "lynx-frame",
+              "path": "runtime/mention-chip/lynx-web.png"
+            },
+            {
+              "kind": "web-frame",
+              "path": "runtime/mention-chip/web.png"
+            },
+            {
+              "kind": "optical-metrics",
+              "path": "optical-metrics.json"
+            }
+          ]
         },
         "focused": {
-          "status": "pending"
+          "status": "intentional-delta",
+          "owner": "Lynxtron host focus publication",
+          "reason": "Current source tests prove focus state wiring, but exact Native host Tab does not publish focus into view-backed controls; runtime focus is not claimed.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            },
+            {
+              "kind": "report",
+              "path": "../../../../apps/lynx/plan/reports/p7-i1-interaction-inventory.md"
+            }
+          ]
         }
       }
     },
@@ -463,13 +995,57 @@
           ]
         },
         "loading": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Current shared product-composition tests retain loading, disabled action, error, retry, status and announcement semantics across Web and Lynx consumers.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "system-state-tests.json"
+            },
+            {
+              "kind": "prior-current-family-fixture",
+              "path": "../../../2026-08-03/p9-u5-composer/focused/project-loading.json"
+            },
+            {
+              "kind": "prior-current-family-fixture",
+              "path": "../../../2026-08-03/p9-u5-composer/focused/project-error.json"
+            }
+          ]
         },
         "error": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Current shared product-composition tests retain loading, disabled action, error, retry, status and announcement semantics across Web and Lynx consumers.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "system-state-tests.json"
+            },
+            {
+              "kind": "prior-current-family-fixture",
+              "path": "../../../2026-08-03/p9-u5-composer/focused/project-loading.json"
+            },
+            {
+              "kind": "prior-current-family-fixture",
+              "path": "../../../2026-08-03/p9-u5-composer/focused/project-error.json"
+            }
+          ]
         },
         "selected": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Current Thread and command/status selected rows retain distinct active anatomy and shared semantic tokens.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "../final-matrix/thread-default-light-1280/native/geometry.json"
+            },
+            {
+              "kind": "geometry",
+              "path": "../final-overlays/skill-menu-filtered-light-1440/native/geometry.json"
+            }
+          ]
         }
       }
     },
@@ -520,19 +1096,79 @@
           ]
         },
         "hover": {
-          "status": "pending"
+          "status": "intentional-delta",
+          "owner": "Web CSS hover authority and Lynxtron pointer publication",
+          "reason": "Web product controls retain real CSS hover. Current Native/Lynx host mouseenter publication is inconsistent, so no fake ui-hover runtime class is claimed; Native pressed and release feedback remain certified.",
+          "evidence": [
+            {
+              "kind": "native-negative-runtime",
+              "path": "runtime/command-row/hover/geometry.json"
+            },
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "pressed": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "The shared view-backed interaction primitive publishes ui-pressed immediately with no geometry or visual-center drift; current Native runtime and focused tests are retained.",
+          "evidence": [
+            {
+              "kind": "native-runtime",
+              "path": "runtime/command-row/pressed/geometry.json"
+            },
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "disabled": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Disabled product primitives are unfocusable, handler-free and skipped by navigation in current focused suites.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "focused": {
-          "status": "pending"
+          "status": "intentional-delta",
+          "owner": "Lynxtron host focus publication",
+          "reason": "Current source tests prove focus state wiring, but exact Native host Tab does not publish focus into view-backed controls; runtime focus is not claimed.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            },
+            {
+              "kind": "report",
+              "path": "../../../../apps/lynx/plan/reports/p7-i1-interaction-inventory.md"
+            }
+          ]
         },
         "loading": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Current shared product-composition tests retain loading, disabled action, error, retry, status and announcement semantics across Web and Lynx consumers.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "system-state-tests.json"
+            },
+            {
+              "kind": "prior-current-family-fixture",
+              "path": "../../../2026-08-03/p9-u5-composer/focused/project-loading.json"
+            },
+            {
+              "kind": "prior-current-family-fixture",
+              "path": "../../../2026-08-03/p9-u5-composer/focused/project-error.json"
+            }
+          ]
         }
       }
     }
@@ -549,19 +1185,59 @@
       ],
       "samples": {
         "t0": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Current Native Sidebar close sequence retains the closed body through t0 and cleans it after the shared 220ms plus cleanup contract.",
+          "evidence": [
+            {
+              "kind": "fixed-time-sequence",
+              "path": "runtime/sidebar-disclosure/sequence.json"
+            }
+          ]
         },
         "t80": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Current Native Sidebar close sequence retains the closed body through t80 and cleans it after the shared 220ms plus cleanup contract.",
+          "evidence": [
+            {
+              "kind": "fixed-time-sequence",
+              "path": "runtime/sidebar-disclosure/sequence.json"
+            }
+          ]
         },
         "t160": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Current Native Sidebar close sequence retains the closed body through t160 and cleans it after the shared 220ms plus cleanup contract.",
+          "evidence": [
+            {
+              "kind": "fixed-time-sequence",
+              "path": "runtime/sidebar-disclosure/sequence.json"
+            }
+          ]
         },
         "t220": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Current Native Sidebar close sequence retains the closed body through t220 and cleans it after the shared 220ms plus cleanup contract.",
+          "evidence": [
+            {
+              "kind": "fixed-time-sequence",
+              "path": "runtime/sidebar-disclosure/sequence.json"
+            }
+          ]
         },
         "end": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Current Native Sidebar open sequence reaches a stable 243x90 body with no layout feedback.",
+          "evidence": [
+            {
+              "kind": "fixed-time-sequence",
+              "path": "runtime/sidebar-disclosure-open/sequence.json"
+            }
+          ]
         }
       }
     },
@@ -576,16 +1252,96 @@
       ],
       "samples": {
         "t0": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Composer menu contract is intentionally instant on both Web and Native; fixed Native samples retain identical 142x109 geometry with no instant-vs-animated mismatch.",
+          "evidence": [
+            {
+              "kind": "fixed-time-sequence",
+              "path": "runtime/menu-open/sequence.json"
+            },
+            {
+              "kind": "source-authority",
+              "path": "../../../../apps/web/src/components/ui/menu.tsx"
+            },
+            {
+              "kind": "source-authority",
+              "path": "../../../../apps/lynx/src/components/ui/primitives.css"
+            },
+            {
+              "kind": "fixed-time-close-sequence",
+              "path": "runtime/menu-close/sequence.json"
+            }
+          ]
         },
         "t80": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Composer menu contract is intentionally instant on both Web and Native; fixed Native samples retain identical 142x109 geometry with no instant-vs-animated mismatch.",
+          "evidence": [
+            {
+              "kind": "fixed-time-sequence",
+              "path": "runtime/menu-open/sequence.json"
+            },
+            {
+              "kind": "source-authority",
+              "path": "../../../../apps/web/src/components/ui/menu.tsx"
+            },
+            {
+              "kind": "source-authority",
+              "path": "../../../../apps/lynx/src/components/ui/primitives.css"
+            },
+            {
+              "kind": "fixed-time-close-sequence",
+              "path": "runtime/menu-close/sequence.json"
+            }
+          ]
         },
         "t160": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Composer menu contract is intentionally instant on both Web and Native; fixed Native samples retain identical 142x109 geometry with no instant-vs-animated mismatch.",
+          "evidence": [
+            {
+              "kind": "fixed-time-sequence",
+              "path": "runtime/menu-open/sequence.json"
+            },
+            {
+              "kind": "source-authority",
+              "path": "../../../../apps/web/src/components/ui/menu.tsx"
+            },
+            {
+              "kind": "source-authority",
+              "path": "../../../../apps/lynx/src/components/ui/primitives.css"
+            },
+            {
+              "kind": "fixed-time-close-sequence",
+              "path": "runtime/menu-close/sequence.json"
+            }
+          ]
         },
         "t220": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Composer menu contract is intentionally instant on both Web and Native; fixed Native samples retain identical 142x109 geometry with no instant-vs-animated mismatch.",
+          "evidence": [
+            {
+              "kind": "fixed-time-sequence",
+              "path": "runtime/menu-open/sequence.json"
+            },
+            {
+              "kind": "source-authority",
+              "path": "../../../../apps/web/src/components/ui/menu.tsx"
+            },
+            {
+              "kind": "source-authority",
+              "path": "../../../../apps/lynx/src/components/ui/primitives.css"
+            },
+            {
+              "kind": "fixed-time-close-sequence",
+              "path": "runtime/menu-close/sequence.json"
+            }
+          ]
         },
         "end": {
           "status": "retained",
@@ -595,6 +1351,10 @@
             {
               "kind": "geometry",
               "path": "../final-overlays/extras-open-light-1280/native/geometry.json"
+            },
+            {
+              "kind": "fixed-time-close-sequence",
+              "path": "runtime/menu-close/sequence.json"
             }
           ]
         }
@@ -611,19 +1371,59 @@
       ],
       "samples": {
         "t0": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Current Menu primitive tests prove independent submenu presence until trigger open and the shared open/close state contract.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "t80": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Current Menu primitive tests prove independent submenu presence until trigger open and the shared open/close state contract.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "t160": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Current Menu primitive tests prove independent submenu presence until trigger open and the shared open/close state contract.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "t220": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Current Menu primitive tests prove independent submenu presence until trigger open and the shared open/close state contract.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "end": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Current Menu primitive tests prove independent submenu presence until trigger open and the shared open/close state contract.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         }
       }
     },
@@ -635,10 +1435,34 @@
       ],
       "samples": {
         "entry": {
-          "status": "pending"
+          "status": "intentional-delta",
+          "owner": "Web CSS hover authority and Lynxtron pointer publication",
+          "reason": "Web product controls retain real CSS hover. Current Native/Lynx host mouseenter publication is inconsistent, so no fake ui-hover runtime class is claimed; Native pressed and release feedback remain certified.",
+          "evidence": [
+            {
+              "kind": "native-negative-runtime",
+              "path": "runtime/command-row/hover/geometry.json"
+            },
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "stable": {
-          "status": "pending"
+          "status": "intentional-delta",
+          "owner": "Web CSS hover authority and Lynxtron pointer publication",
+          "reason": "Web product controls retain real CSS hover. Current Native/Lynx host mouseenter publication is inconsistent, so no fake ui-hover runtime class is claimed; Native pressed and release feedback remain certified.",
+          "evidence": [
+            {
+              "kind": "native-negative-runtime",
+              "path": "runtime/command-row/hover/geometry.json"
+            },
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         }
       }
     },
@@ -650,10 +1474,26 @@
       ],
       "samples": {
         "down": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Pointer down immediately publishes ui-pressed with no box movement.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "runtime/command-row/pressed/geometry.json"
+            }
+          ]
         },
         "release": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Pointer release clears the pressed row and executes the real command action.",
+          "evidence": [
+            {
+              "kind": "state-sequence",
+              "path": "runtime/command-row/released-rows.json"
+            }
+          ]
         }
       }
     },
@@ -665,7 +1505,15 @@
       ],
       "samples": {
         "before": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Filtered mention menu before selection is retained.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "../final-overlays/mention-menu-filtered-light-1280/native/geometry.json"
+            }
+          ]
         },
         "after": {
           "status": "retained",
@@ -689,13 +1537,42 @@
       ],
       "samples": {
         "before": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Composer before semantic token selection is retained at 736x95 shell and 39px editor.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "../final-overlays/mention-menu-filtered-light-1280/native/geometry.json"
+            }
+          ]
         },
         "intermediate": {
-          "status": "pending"
+          "status": "not-applicable",
+          "reason": "Semantic token insertion is an atomic controlled-value transaction; there is no animated intermediate height for a single-line token."
         },
         "end": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Canonical mention selection creates one semantic chip at 142x24 Native / 143.84x23 Lynx-for-Web while Web retains equivalent Lexical inline semantics; Native console is empty.",
+          "evidence": [
+            {
+              "kind": "native-geometry",
+              "path": "runtime/mention-chip/native/geometry.json"
+            },
+            {
+              "kind": "native-capture",
+              "path": "runtime/mention-chip/native/capture.json"
+            },
+            {
+              "kind": "lynx-frame",
+              "path": "runtime/mention-chip/lynx-web.png"
+            },
+            {
+              "kind": "web-frame",
+              "path": "runtime/mention-chip/web.png"
+            }
+          ]
         }
       }
     },
@@ -707,7 +1584,23 @@
       ],
       "samples": {
         "loading": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Current shared product-composition tests retain loading, disabled action, error, retry, status and announcement semantics across Web and Lynx consumers.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "system-state-tests.json"
+            },
+            {
+              "kind": "prior-current-family-fixture",
+              "path": "../../../2026-08-03/p9-u5-composer/focused/project-loading.json"
+            },
+            {
+              "kind": "prior-current-family-fixture",
+              "path": "../../../2026-08-03/p9-u5-composer/focused/project-error.json"
+            }
+          ]
         },
         "content": {
           "status": "retained",
@@ -733,19 +1626,59 @@
       ],
       "samples": {
         "t0": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Current Native Sidebar close sequence retains the closed body through t0 and cleans it after the shared 220ms plus cleanup contract.",
+          "evidence": [
+            {
+              "kind": "fixed-time-sequence",
+              "path": "runtime/sidebar-disclosure/sequence.json"
+            }
+          ]
         },
         "t80": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Current Native Sidebar close sequence retains the closed body through t80 and cleans it after the shared 220ms plus cleanup contract.",
+          "evidence": [
+            {
+              "kind": "fixed-time-sequence",
+              "path": "runtime/sidebar-disclosure/sequence.json"
+            }
+          ]
         },
         "t160": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Current Native Sidebar close sequence retains the closed body through t160 and cleans it after the shared 220ms plus cleanup contract.",
+          "evidence": [
+            {
+              "kind": "fixed-time-sequence",
+              "path": "runtime/sidebar-disclosure/sequence.json"
+            }
+          ]
         },
         "t220": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Current Native Sidebar close sequence retains the closed body through t220 and cleans it after the shared 220ms plus cleanup contract.",
+          "evidence": [
+            {
+              "kind": "fixed-time-sequence",
+              "path": "runtime/sidebar-disclosure/sequence.json"
+            }
+          ]
         },
         "end": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Current Native Sidebar open sequence reaches a stable 243x90 body with no layout feedback.",
+          "evidence": [
+            {
+              "kind": "fixed-time-sequence",
+              "path": "runtime/sidebar-disclosure-open/sequence.json"
+            }
+          ]
         }
       }
     },
@@ -760,25 +1693,61 @@
       ],
       "samples": {
         "t0": {
-          "status": "pending"
-        },
-        "t80": {
-          "status": "pending"
-        },
-        "t160": {
-          "status": "pending"
-        },
-        "t220": {
-          "status": "pending"
-        },
-        "end": {
           "status": "retained",
           "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
-          "disposition": "Collapsed-work product consumer end frame is retained.",
+          "disposition": "Current Native collapsed-work open sequence follows the shared 220ms transform/opacity trajectory with a stable 728x32 panel.",
           "evidence": [
             {
-              "kind": "geometry",
-              "path": "../final-matrix/thread-default-light-1280/native/geometry.json"
+              "kind": "fixed-time-sequence",
+              "path": "runtime/collapsed-work/sequence.json"
+            }
+          ]
+        },
+        "t80": {
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Current Native collapsed-work open sequence follows the shared 220ms transform/opacity trajectory with a stable 728x32 panel.",
+          "evidence": [
+            {
+              "kind": "fixed-time-sequence",
+              "path": "runtime/collapsed-work/sequence.json"
+            }
+          ]
+        },
+        "t160": {
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Current Native collapsed-work open sequence follows the shared 220ms transform/opacity trajectory with a stable 728x32 panel.",
+          "evidence": [
+            {
+              "kind": "fixed-time-sequence",
+              "path": "runtime/collapsed-work/sequence.json"
+            }
+          ]
+        },
+        "t220": {
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Current Native collapsed-work open sequence follows the shared 220ms transform/opacity trajectory with a stable 728x32 panel.",
+          "evidence": [
+            {
+              "kind": "fixed-time-sequence",
+              "path": "runtime/collapsed-work/sequence.json"
+            }
+          ]
+        },
+        "end": {
+          "status": "intentional-delta",
+          "owner": "Native transcript list measurement guardrail",
+          "reason": "Collapsed-work close removes the panel immediately because preserveOnClose=false prevents exit nodes from perturbing native list measurement and transcript follow.",
+          "evidence": [
+            {
+              "kind": "fixed-time-sequence",
+              "path": "runtime/collapsed-work/sequence.json"
+            },
+            {
+              "kind": "source-authority",
+              "path": "../../../../apps/lynx/src/adapters/CollapsedWorkCompositionElements.lynx.tsx"
             }
           ]
         }
@@ -792,10 +1761,30 @@
       ],
       "samples": {
         "before": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Current product controls render their unfocused default state without a focus ring.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "focused": {
-          "status": "pending"
+          "status": "intentional-delta",
+          "owner": "Lynxtron host focus publication",
+          "reason": "Current source tests prove focus state wiring, but exact Native host Tab does not publish focus into view-backed controls; runtime focus is not claimed.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            },
+            {
+              "kind": "report",
+              "path": "../../../../apps/lynx/plan/reports/p7-i1-interaction-inventory.md"
+            }
+          ]
         }
       }
     },
@@ -807,10 +1796,26 @@
       ],
       "samples": {
         "start": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Web shared disclosure declares motion-reduce transition-none; Native declares 0.01ms animation/transition fallback.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         },
         "end": {
-          "status": "pending"
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Reduced motion preserves the same open/closed and chevron final states without intermediate animation.",
+          "evidence": [
+            {
+              "kind": "focused-tests",
+              "path": "focused-contract-tests.json"
+            }
+          ]
         }
       }
     }

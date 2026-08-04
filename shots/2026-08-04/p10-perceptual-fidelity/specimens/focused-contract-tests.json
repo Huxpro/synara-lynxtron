@@ -1,0 +1,47 @@
+{
+  "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+  "recordedAt": "2026-08-04T13:07:29+08:00",
+  "lynx": {
+    "command": "bun run test -- src/components/ui/command.lynx.test.tsx src/components/ui/menu.lynx.test.tsx src/adapters/useLynxInteractiveState.test.ts src/adapters/ThemePackEditorCompositionElements.lynx.test.tsx src/platform/motion.lynx.test.ts",
+    "result": {
+      "testFiles": 5,
+      "tests": 25,
+      "passed": 25,
+      "failed": 0
+    },
+    "proof": [
+      "hover, pressed, focus and stable state-class order",
+      "disabled command and menu items are unfocusable and handler-free",
+      "checked switch state and exact pointer/key/tap activation",
+      "220ms disclosure timing with 40ms cleanup",
+      "open, closed and chevron class projection"
+    ],
+    "sourceHashes": {
+      "commandTest": "a50df20cb0410b63fcd5ef7439b1876b1fe721ceb44f69215b918dcb2521bbb6",
+      "menuTest": "b4a9e40310ce605a7f298e4b6f18cd4ab096a2d0e8eb845624813026c30b3d13",
+      "interactiveStateTest": "da80dcff3bc5c0efa0eec8189106f55fccb491aee3f66633bc1e24131af35d56",
+      "themeSwitchTest": "9f0f8235368d06a31038e99b515e05306da2eb83ff5f8d720a49f51eb2c54d35",
+      "motionTest": "61e7e766cefd8692bd20ff174ff0371f005d98192e2148846afc8fb52dba160d",
+      "motionCss": "7c41b27237b9173906f1eb273890e2feca79d42d7597a39c3b9e2c69f88af844"
+    }
+  },
+  "web": {
+    "command": "bun run test -- src/lib/disclosureMotion.test.ts",
+    "result": {
+      "testFiles": 1,
+      "tests": 4,
+      "passed": 4,
+      "failed": 0
+    },
+    "proof": [
+      "open and closed shared shell classes",
+      "chevron rotation",
+      "closed content is non-interactive",
+      "220ms ease-out and reduced-motion transition-none"
+    ],
+    "sourceHashes": {
+      "disclosureMotionTest": "7d7af68617a662e04e1898fa31179f9338a3a3a493cdee90d0a6b8344c1c65c1",
+      "disclosureMotion": "1b15c9e4a5bcb7fb7d0298bdd77447d340258a579062b0d2823b0a3d18799a6f"
+    }
+  }
+}
