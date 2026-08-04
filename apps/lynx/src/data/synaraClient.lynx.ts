@@ -9,6 +9,7 @@ import type {
   OrchestrationImportThreadResult,
   OrchestrationLatestTurn,
   OrchestrationMessage,
+  OrchestrationReadModel,
   OrchestrationProposedPlan,
   OrchestrationShellSnapshot,
   OrchestrationSidebarSearchSnapshot,
@@ -38,6 +39,7 @@ import type {
   ServerListProviderUsageResult,
   ServerSettingsPatch,
   ServerSettingsView,
+  EditorId,
 } from '@synara/contracts';
 import { createWebSocket, resolveDefaultSocketUrl, type WebSocketLike } from '../platform/net.socket';
 import { sleepOnHost } from '../platform/timer';
@@ -442,6 +444,17 @@ export async function updateServerSettings(
 
 export async function fetchServerConfig(): Promise<ServerConfig> {
   return transportRequest('server.getConfig', {});
+}
+
+export async function openPathInEditor(input: {
+  readonly cwd: string;
+  readonly editor: EditorId;
+}): Promise<void> {
+  await transportRequest('shell.openInEditor', input);
+}
+
+export async function repairSynaraState(): Promise<OrchestrationReadModel> {
+  return transportRequest<OrchestrationReadModel>('orchestration.repairState', {});
 }
 
 export async function fetchProfileStats(

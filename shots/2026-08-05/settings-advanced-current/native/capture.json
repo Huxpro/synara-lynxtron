@@ -1,0 +1,36 @@
+{
+  "client": "native",
+  "stateId": "settings-advanced-light-1280",
+  "buildSha256": "cc74a723952ae3be1fbba4d6296b9aad9239eb513d4de3400502242307572377",
+  "snapshotSha256": "c5313f03838f0669fc1e8cb558bf7d2d04c86b479bebc3a1559472c740db95a5",
+  "stateEcho": {
+    "semanticRoute": "settings-advanced",
+    "theme": "light",
+    "density": "comfortable",
+    "interactionState": "recovery-visible"
+  },
+  "identity": {
+    "rootPid": 73880,
+    "descendantPids": [
+      73880
+    ],
+    "ownedPorts": [
+      8904
+    ],
+    "client": {
+      "id": "localhost:8904",
+      "info": {
+        "App": "@synara/lynx",
+        "appId": "0000",
+        "sdkVersion": "4.1"
+      },
+      "port": 8904
+    },
+    "session": {
+      "session_id": 1,
+      "type": "lynx",
+      "url": "file:///Users/bytedance/github/synara/apps/lynx/dist/desktop/main.lynx.bundle"
+    }
+  },
+  "consoleMessages": []
+}

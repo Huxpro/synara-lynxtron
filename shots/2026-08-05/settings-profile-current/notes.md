@@ -6,7 +6,7 @@ Status: retained Web, Lynx-for-Web, and exact-owned Native evidence
 
 - Source base: `cfdd6db4`
 - Lynx-for-Web bundle SHA-256:
-  `bb4d3f2eef1f57fdd2924f8e53ff7266d867a06ef503133a154939338f1123ad`
+  `f14f75c4b231e4c2e45a9658a032e41d587db4cbc6826eb90a58d1093d4a04ab`
 - Native bundle SHA-256:
   `eb3aaa2e47f3c48457d9a108ad878cc9d07748c68a002c5f21416b5de507e1e1`
 - SQLite online-backup snapshot SHA-256:
@@ -68,3 +68,7 @@ The Native light-theme capture temporarily changed only the owned
 `.p10-view-native` KV file. The app was stopped before restoration, and the
 original bytes were restored with SHA-256
 `f53a83aac62fff4c8e7b6dac18d34ce8ffe27970a807a428fa0d9b0ba1a42474`.
+
+## Lynx-for-Web correction
+
+An earlier browser capture had hit Vite's SPA fallback instead of the generated Lynx-for-Web host because the staged `/lynx` assets were missing. That evidence was invalidated. The retained frame uses the staged current-head bundle, keeps the host URL under `/lynx/index.html`, and verifies the target `X-VIEW` class after memory-history navigation.

@@ -1,5 +1,4 @@
-[debug] [vite] connecting...
-[debug] [vite] connected.
-[info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[warning] Warning: A notFoundError was encountered on the route with ID "/_chat", but a notFoundComponent option was not configured, nor was a router level defaultNotFoundComponent configured. Consider configuring at least one of these to avoid TanStack Router's overly generic defaultNotFoundComponent (<p>Not Found</p>)
-[warning] Warning: A notFoundError was encountered on the route with ID "/_chat", but a notFoundComponent option was not configured, nor was a router level defaultNotFoundComponent configured. Consider configuring at least one of these to avoid TanStack Router's overly generic defaultNotFoundComponent (<p>Not Found</p>)
+[log] [Lynxtron Web] Configuring nodejs module with script: http://localhost:8921/lynx/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://localhost:8921/93e765ed-6150-4d4b-8004-4b31077c7d80
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://localhost:8921/1b05e20b-0ebd-4601-be74-1ad7c9c3778d", nodejs: "blob:http://localhost:8921/93e765ed-6150-4d4b-8004-4b31077c7d80"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead

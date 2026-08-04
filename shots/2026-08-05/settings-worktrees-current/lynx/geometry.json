@@ -1,1 +1,1 @@
-"{\"runtime\":{\"innerWidth\":1280,\"innerHeight\":820,\"dpr\":1,\"visualWidth\":1280,\"visualHeight\":820},\"hasEmpty\":true,\"route\":\"settings-worktrees\"}"
+"{\"client\":\"lynx\",\"stateId\":\"settings-worktrees-light-1280\",\"runtime\":{\"innerWidth\":1280,\"innerHeight\":820,\"dpr\":1,\"visualWidth\":1280,\"visualHeight\":820},\"href\":\"http://localhost:8921/lynx/index.html?build=clean-settings\",\"header\":\"Worktrees\",\"targetClass\":\"SettingsWorktreesState\",\"target\":{\"x\":456,\"y\":118,\"width\":624,\"height\":72}}"

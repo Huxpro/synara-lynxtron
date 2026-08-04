@@ -6,7 +6,7 @@ Status: retained Web, Lynx-for-Web, and exact-owned Native evidence
 
 - Source base: `5f827e77`
 - Lynx-for-Web bundle SHA-256:
-  `82c4c1b0ff0526d756a3bf41da88930b0d32e4a25c2dc88b313ed0a5c62b6fb5`
+  `f14f75c4b231e4c2e45a9658a032e41d587db4cbc6826eb90a58d1093d4a04ab`
 - Native bundle SHA-256:
   `2855d261583527a6e7541d4816f8f818b8439f650d05e6625e0a4283ddc2019c`
 - SQLite snapshot SHA-256:
@@ -69,9 +69,7 @@ The final exact-owned Native capture used PID `97417`, its PID-derived
 `localhost:8904/session 1`, retained all seven required roles, and reported zero
 warning/error console messages.
 
-Lynx-for-Web records the known upstream TanStack not-found initialization
-warning from entering the root route before product navigation. The target
-Archived state rendered successfully through the real Settings controls.
+The retained Lynx-for-Web console contains only the upstream web-core deprecated initialization warning; the target state has no RPC or product runtime errors.
 
 ## State cleanup
 
@@ -79,3 +77,7 @@ The Native light-theme capture temporarily changed only the owned
 `.p10-view-native` KV file. The app was stopped before restoration, and the
 original bytes were restored with SHA-256
 `f53a83aac62fff4c8e7b6dac18d34ce8ffe27970a807a428fa0d9b0ba1a42474`.
+
+## Lynx-for-Web correction
+
+An earlier browser capture had hit Vite's SPA fallback instead of the generated Lynx-for-Web host because the staged `/lynx` assets were missing. That evidence was invalidated. The retained frame uses the staged current-head bundle, keeps the host URL under `/lynx/index.html`, and verifies the target `X-VIEW` class after memory-history navigation.

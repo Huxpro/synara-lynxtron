@@ -1,0 +1,104 @@
+.SettingsAdvancedPanel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 24px;
+}
+
+.SettingsAdvancedState {
+  display: flex;
+  width: 100%;
+  min-height: 72px;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.SettingsAdvancedStateText,
+.SettingsAdvancedRowDescription {
+  color: var(--muted-foreground);
+  font-size: var(--type-settings-row-description-size);
+  line-height: var(--type-settings-row-description-line-height);
+}
+
+.SettingsAdvancedRow {
+  display: flex;
+  width: 100%;
+  min-height: 84px;
+  padding: var(--app-density-settings-row-padding-y, 10px) 12px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.SettingsAdvancedRow--divided {
+  border-top: 1px solid var(--border);
+}
+
+.SettingsAdvancedRow--keybindings {
+  min-height: 104px;
+}
+
+.SettingsAdvancedRowCopy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.SettingsAdvancedRowTitle,
+.SettingsAdvancedRecoveryTitle {
+  color: var(--foreground);
+  font-size: var(--type-settings-row-title-size);
+  font-weight: 500;
+  line-height: var(--type-settings-row-title-line-height);
+}
+
+.SettingsAdvancedPath {
+  margin-top: 4px;
+  color: var(--foreground);
+  font-family: var(--font-mono-family);
+  font-size: 11px;
+  line-height: 16px;
+}
+
+.SettingsAdvancedRecoveryDetails {
+  display: flex;
+  flex-direction: column;
+  margin-top: 12px;
+  padding: 12px;
+  gap: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.SettingsAdvancedVersion {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.SettingsAdvancedNotice {
+  display: flex;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.SettingsAdvancedNotice--error {
+  border-color: var(--destructive);
+}
+
+.SettingsAdvancedNoticeText {
+  color: var(--foreground);
+  font-size: var(--type-settings-row-description-size);
+  line-height: var(--type-settings-row-description-line-height);
+}
+
+.SettingsAdvancedNotice--error .SettingsAdvancedNoticeText {
+  color: var(--destructive);
+}

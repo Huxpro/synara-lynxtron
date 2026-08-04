@@ -18,6 +18,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const requireFromApp = createRequire(import.meta.url);
 const rootPath = process.cwd();
+const appVersion = String(
+  (requireFromApp('./package.json') as { readonly version?: string }).version ??
+    '0.0.0'
+);
 const configuredSynaraWsUrl = process.env.SYNARA_WS_URL?.trim() ?? '';
 const buildHostInputProbe = process.env.SYNARA_HOST_INPUT_PROBE === '1';
 console.log('rootPath: ', path.resolve(rootPath, './src/assets'));
@@ -403,6 +407,7 @@ export default defineConfig({
       source: {
         define: {
           'process.env.SYNARA_WS_URL': JSON.stringify(configuredSynaraWsUrl),
+          'process.env.SYNARA_APP_VERSION': JSON.stringify(appVersion),
           'process.env.SYNARA_LYNX_WEB_RELAY': JSON.stringify(
             buildHostInputProbe ? '0' : '1'
           ),
@@ -433,6 +438,7 @@ export default defineConfig({
         // product default in runtimeEndpoint.logic.
         define: {
           'process.env.SYNARA_WS_URL': JSON.stringify(configuredSynaraWsUrl),
+          'process.env.SYNARA_APP_VERSION': JSON.stringify(appVersion),
           'process.env.SYNARA_LYNX_WEB_RELAY': JSON.stringify('0'),
           'process.env.SYNARA_HOST_INPUT_PROBE_RUNTIME': JSON.stringify(
             buildHostInputProbe ? 'Lynxtron Native' : ''

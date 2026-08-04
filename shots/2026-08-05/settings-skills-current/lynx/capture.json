@@ -12,6 +12,6 @@
     "width": 1280,
     "height": 820
   },
-  "origin": "http://localhost:8921/lynx/index.html",
-  "buildSha256": "c7d30767942f0f1d713f9e3870bf7f36fd08438726de8826431e16c0b22a9213"
+  "origin": "http://localhost:8921/lynx/index.html?build=clean-settings",
+  "buildSha256": "f14f75c4b231e4c2e45a9658a032e41d587db4cbc6826eb90a58d1093d4a04ab"
 }

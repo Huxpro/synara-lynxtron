@@ -1,1 +1,1 @@
-"{\"runtime\":{\"innerWidth\":1280,\"innerHeight\":820,\"dpr\":1,\"visualWidth\":1280,\"visualHeight\":820},\"hasPortable\":true,\"hasShared\":true,\"switches\":114}"
+"{\"client\":\"lynx\",\"stateId\":\"settings-skills-light-1280\",\"runtime\":{\"innerWidth\":1280,\"innerHeight\":820,\"dpr\":1,\"visualWidth\":1280,\"visualHeight\":820},\"href\":\"http://localhost:8921/lynx/index.html?build=clean-settings\",\"header\":\"Skills\",\"targetClass\":\"SettingsSkillsPanel\",\"target\":{\"x\":456,\"y\":118,\"width\":624,\"height\":18082}}"

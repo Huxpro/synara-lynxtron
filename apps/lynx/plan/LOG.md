@@ -5246,3 +5246,25 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   builds全部通过。exact-owned Native PID-derived `8904/session 1`、7 roles、
   console 0，owned KV byte-exact restored；证据位于
   `shots/2026-08-05/settings-skills-current/`。
+
+## 2026-08-05 — Settings Advanced and Lynx-for-Web evidence correction
+
+- Advanced此前从Lynx Settings排除。当前slice接入真实server config、
+  `shell.openInEditor`、conditional `orchestration.repairState`与build-time
+  package version；Release history dialog尚未port，因此不展示inert action。
+- recovery eligibility复用hydrated projects/thread shells/message presence contract；
+  repair走host confirm并刷新sidebar snapshot。focused tests **2 files / 5 tests**，
+  Web/Lynx-for-Web/Native builds通过。
+- keybindings row首次比Web短4px；归因到Advanced-owned row，使用命名的
+  `SettingsAdvancedRow--keybindings` 104px correction。最终Web row
+  `x=457,y=151,622x104`，Lynx/Native `x=457,y=150,622x104`。
+- 审计发现本轮早期Settings Lynx browser captures实际命中Vite SPA fallback：
+  `/lynx/index.html`返回Web original，因为`apps/web/public/lynx`未stage。所有此类
+  screenshot/geometry判为无效并覆盖。
+- 正确harness将current-head `dist/web` stage后重启owned Vite；preflight要求
+  `Lynxtron Web App` title、served bundle hash一致、host URL保持`/lynx/index.html`、
+  target `X-VIEW` class存在。Profile/Appearance/Worktrees/Archived/Skills/Advanced
+  六格全部按该合同重拍，bundle hash统一为`f14f75c4…`。
+- Advanced exact-owned Native使用PID-derived `8904/session 1`、7 roles、console 0；
+  owned KV byte-exact restored。证据位于
+  `shots/2026-08-05/settings-advanced-current/`。

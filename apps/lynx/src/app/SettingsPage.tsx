@@ -95,6 +95,7 @@ import { SettingsProfilePanel } from './SettingsProfilePanel.lynx';
 import { SettingsArchivedPanel } from './SettingsArchivedPanel.lynx';
 import { SettingsWorktreesPanel } from './SettingsWorktreesPanel.lynx';
 import { SettingsSkillsPanel } from './SettingsSkillsPanel.lynx';
+import { SettingsAdvancedPanel } from './SettingsAdvancedPanel.lynx';
 
 const SETTINGS_LOCAL_SAVE_ERROR =
   'Changes could not be saved. Your current values are still shown.';
@@ -635,6 +636,7 @@ export function SettingsPage({
             'providers',
             'skills',
             'usage',
+            'advanced',
           ]}
           onSelectSection={setSection}
         />
@@ -655,6 +657,7 @@ export function SettingsPage({
                   section === 'usage' ||
                   section === 'worktrees' ||
                   section === 'skills' ||
+                  section === 'advanced' ||
                   section === 'archived') ||
                 (section === 'general'
                   ? settingsGeneralValuesEqual(
@@ -783,6 +786,8 @@ export function SettingsPage({
                 <SettingsWorktreesPanel />
               ) : section === 'skills' ? (
                 <SettingsSkillsPanel />
+              ) : section === 'advanced' ? (
+                <SettingsAdvancedPanel />
               ) : section === 'archived' ? (
                 <SettingsArchivedPanel />
               ) : section === 'models' ? (
@@ -809,6 +814,7 @@ export function SettingsPage({
               {section !== 'profile' &&
               section !== 'worktrees' &&
               section !== 'skills' &&
+              section !== 'advanced' &&
               section !== 'archived' ? (
                 <PanelStateMessage
                   density="compact"
