@@ -514,6 +514,7 @@ import { resolveRuntimeModelDescriptor } from "./chat/runtimeModelCapabilities";
 import { ProjectPicker } from "./chat/ProjectPicker";
 import { FolderClosed } from "./FolderClosed";
 import { ProviderHealthBanner } from "./chat/ProviderHealthBanner";
+import { resolveProviderHealthBannerPresentation } from "./chat/ProviderHealthBanner.logic";
 import { ThreadErrorBanner } from "./chat/ThreadErrorBanner";
 import {
   RateLimitBanner,
@@ -894,16 +895,7 @@ function getProviderStartOptionsCustomBinaryPath(
 }
 
 function getProviderHealthBannerDismissalKey(status: ServerProviderStatus | null): string | null {
-  if (!status || status.status === "ready") {
-    return null;
-  }
-  return [
-    status.provider,
-    status.status,
-    status.available ? "available" : "unavailable",
-    status.authStatus,
-    status.message?.trim() ?? "",
-  ].join("\u001f");
+  return resolveProviderHealthBannerPresentation(status)?.key ?? null;
 }
 
 function getRateLimitBannerDismissalKey(

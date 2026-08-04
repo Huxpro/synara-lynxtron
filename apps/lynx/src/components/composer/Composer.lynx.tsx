@@ -5,6 +5,7 @@ import type {
   ProviderKind,
   ProviderMentionReference,
   ProviderSkillReference,
+  ServerProviderStatus,
 } from '@synara/contracts';
 
 import { useComposerDraftStore } from '../../adapters/composerDraftStore.lynx';
@@ -223,6 +224,9 @@ interface ComposerProps {
     readonly runtimeMode: 'full-access' | 'approval-required';
     readonly text: string;
   }) => Promise<void>;
+  readonly onProviderStatusesChange?: (
+    statuses: readonly ServerProviderStatus[]
+  ) => void;
   readonly onSetInteractionMode?: (
     interactionMode: 'default' | 'plan'
   ) => void | Promise<void>;
@@ -245,6 +249,7 @@ export function Composer({
   workspaceRoot,
   emptyLanding = false,
   onBeforeSend,
+  onProviderStatusesChange,
   onSetInteractionMode,
   onSendSucceeded,
 }: ComposerProps) {
@@ -391,6 +396,11 @@ export function Composer({
     },
     staleTime: 30_000,
   });
+  useEffect(() => {
+    if (serverConfig) {
+      onProviderStatusesChange?.(serverConfig.providers);
+    }
+  }, [onProviderStatusesChange, serverConfig]);
   const {
     data: providerSkillsCatalog,
     isPending: providerSkillsPending,

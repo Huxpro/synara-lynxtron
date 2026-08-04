@@ -3,7 +3,7 @@
 // Layer: Chat status presentation
 // Exports: ProviderHealthBanner
 
-import { PROVIDER_DISPLAY_NAMES, type ServerProviderStatus } from "@synara/contracts";
+import type { ServerProviderStatus } from "@synara/contracts";
 import { Alert, AlertAction, AlertDescription, AlertTitle } from "../ui/alert";
 import { IconButton } from "../ui/icon-button";
 import {
@@ -13,6 +13,7 @@ import {
 import { CircleAlertIcon, TriangleAlertIcon, XIcon } from "~/lib/icons";
 import { cn } from "~/lib/utils";
 import { ChatColumnBannerFrame } from "./ChatColumnBannerFrame";
+import { resolveProviderHealthBannerPresentation } from "./ProviderHealthBanner.logic";
 
 export const ProviderHealthBanner = function ProviderHealthBanner({
   onDismiss,
@@ -21,31 +22,28 @@ export const ProviderHealthBanner = function ProviderHealthBanner({
   onDismiss?: () => void;
   status: ServerProviderStatus | null;
 }) {
-  if (!status || status.status === "ready") {
+  const presentation = resolveProviderHealthBannerPresentation(status);
+  if (!presentation) {
     return null;
   }
 
-  const providerLabel = PROVIDER_DISPLAY_NAMES[status.provider] ?? status.provider;
-  const defaultMessage =
-    status.status === "error"
-      ? `${providerLabel} provider is unavailable.`
-      : `${providerLabel} provider has limited availability.`;
-  const title = `${providerLabel} provider status`;
-  const Icon = status.status === "error" ? CircleAlertIcon : TriangleAlertIcon;
+  const Icon = presentation.tone === "error" ? CircleAlertIcon : TriangleAlertIcon;
 
   return (
     <ChatColumnBannerFrame>
       <Alert
         className={cn(EXPANDED_NOTIFICATION_SURFACE_CLASS_NAME, "pr-10")}
-        variant={status.status === "error" ? "error" : "warning"}
+        variant={presentation.tone}
       >
         <Icon className={NOTIFICATION_ICON_CLASS_NAME} />
-        <AlertTitle className="font-normal text-[var(--notification-fg)]">{title}</AlertTitle>
+        <AlertTitle className="font-normal text-[var(--notification-fg)]">
+          {presentation.title}
+        </AlertTitle>
         <AlertDescription
           className="line-clamp-3 text-[var(--notification-fg)]/72"
-          title={status.message ?? defaultMessage}
+          title={presentation.message}
         >
-          {status.message ?? defaultMessage}
+          {presentation.message}
         </AlertDescription>
         {onDismiss ? (
           <AlertAction className="absolute top-2 right-2">

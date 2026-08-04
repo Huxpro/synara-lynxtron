@@ -84,7 +84,7 @@ export interface ThreadHeaderSummary {
   readonly id: string;
   readonly title: string;
   readonly project: string;
-  readonly provider?: string;
+  readonly provider?: ProviderKind;
   readonly modelSelection: ModelSelection;
   readonly runtimeMode: 'full-access' | 'approval-required';
   readonly interactionMode: 'default' | 'plan';

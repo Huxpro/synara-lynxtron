@@ -12,9 +12,12 @@
 import { createMemoryHistory } from '@tanstack/history';
 import { useCallback, useEffect, useState } from '@lynx-js/react';
 import { useQuery } from '@tanstack/react-query';
+import type { ProviderKind, ServerProviderStatus } from '@synara/contracts';
 import type { UiDensity } from '@synara-web/lib/appDensity';
 import type { ThemeState } from '@synara-web/theme/theme.logic';
 import type { SettingsSectionId } from '@synara-web/settingsNavigation';
+import { resolveProviderHealthBannerPresentation } from '@synara-web/components/chat/ProviderHealthBanner.logic';
+import { findProviderStatus } from '@synara-web/lib/providerAvailability';
 
 import {
   fetchThreadHeaderSummary,
@@ -41,6 +44,7 @@ import { ChatEmptyStateHero } from '@synara-web/components/chat/ChatEmptyStateHe
 import { PanelStateMessage } from '@synara-web/components/chat/PanelStateMessage';
 import { LandingComposer } from '../components/composer/LandingComposer.lynx';
 import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
+import { ProviderHealthBanner } from '../components/ProviderHealthBanner.lynx';
 import {
   EMPTY_ROUTE_RESTORE_FALLBACK_DELAY_MS,
   resolveRestorableThreadRoute,
@@ -140,11 +144,35 @@ export function useRoute(): RouteState {
   return route;
 }
 
+function useProviderHealthBanner(
+  provider: ProviderKind,
+  providerStatuses: readonly ServerProviderStatus[]
+): {
+  readonly dismiss: () => void;
+  readonly status: ServerProviderStatus | null;
+} {
+  const status = findProviderStatus(providerStatuses, provider);
+  const presentation = resolveProviderHealthBannerPresentation(status);
+  const [dismissedKey, setDismissedKey] = useState<string | null>(null);
+  const dismiss = useCallback(() => {
+    setDismissedKey(presentation?.key ?? null);
+  }, [presentation?.key]);
+
+  return {
+    dismiss,
+    status: presentation?.key === dismissedKey ? null : status,
+  };
+}
+
 // --- pages ----------------------------------------------------------------------
 function ThreadsLandingPage(props: {
   readonly initialProjectId?: string | null;
   readonly onThreadCreated: (threadId: string) => void;
 }) {
+  const [providerStatuses, setProviderStatuses] = useState<
+    readonly ServerProviderStatus[]
+  >([]);
+  const providerHealth = useProviderHealthBanner('codex', providerStatuses);
   return (
     <view className="ThreadsLanding">
       <ChatSurfaceHeaderFrame>
@@ -156,12 +184,17 @@ function ThreadsLandingPage(props: {
           />
         </view>
       </ChatSurfaceHeaderFrame>
+      <ProviderHealthBanner
+        status={providerHealth.status}
+        onDismiss={providerHealth.dismiss}
+      />
       <view className="ThreadsLandingBody">
         <CenteredEmptyLandingStack>
           <CenteredEmptyLanding />
           <ComposerColumnFrameSurface>
             <LandingComposer
               initialProjectId={props.initialProjectId}
+              onProviderStatusesChange={setProviderStatuses}
               onThreadCreated={props.onThreadCreated}
             />
           </ComposerColumnFrameSurface>
@@ -241,12 +274,19 @@ function useThreadTranscriptPolling(threadId: string) {
 
 function ThreadPage(props: { threadId: string }) {
   const { threadId } = props;
+  const [providerStatuses, setProviderStatuses] = useState<
+    readonly ServerProviderStatus[]
+  >([]);
   const {
     data,
     error,
     isPending,
     summary: currentThread,
   } = useThreadTranscriptPolling(threadId);
+  const providerHealth = useProviderHealthBanner(
+    currentThread?.provider ?? 'codex',
+    providerStatuses
+  );
   const bodyState = resolveThreadPageBodyState({
     isPending,
     error,
@@ -261,6 +301,10 @@ function ThreadPage(props: { threadId: string }) {
           iconTitle={currentThread?.project ?? 'Synara'}
         />
       </ChatSurfaceHeaderFrame>
+      <ProviderHealthBanner
+        status={providerHealth.status}
+        onDismiss={providerHealth.dismiss}
+      />
       {bodyState.kind === 'transcript' ? (
         <ComposerColumnFrameSurface className="ThreadTranscriptColumn">
           <Transcript rows={bodyState.rows} />
@@ -299,6 +343,7 @@ function ThreadPage(props: { threadId: string }) {
           sessionStatus={currentThread?.sessionStatus ?? null}
           activeTurnId={currentThread?.activeTurnId ?? null}
           workspaceRoot={currentThread?.workspaceRoot ?? null}
+          onProviderStatusesChange={setProviderStatuses}
         />
       </ComposerColumnFrameSurface>
     </view>
