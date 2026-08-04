@@ -32,6 +32,7 @@ import type {
   ProviderListModelsResult,
   ProviderListSkillsResult,
   ServerConfig,
+  ServerListWorktreesResult,
   ServerListProviderUsageInput,
   ServerListProviderUsageResult,
   ServerSettingsPatch,
@@ -378,6 +379,18 @@ export async function fetchProviderModels(input: {
     provider: input.provider,
     ...(input.cwd ? { cwd: input.cwd } : {}),
   });
+}
+
+export async function fetchManagedWorktrees(): Promise<ServerListWorktreesResult> {
+  return transportRequest<ServerListWorktreesResult>('server.listWorktrees', {});
+}
+
+export async function removeManagedWorktree(input: {
+  readonly cwd: string;
+  readonly path: string;
+  readonly force?: boolean;
+}): Promise<void> {
+  await transportRequest('git.removeWorktree', input);
 }
 
 export async function fetchProviderComposerCapabilities(

@@ -84,6 +84,14 @@ export interface ProjectSummary {
   readonly isPinned?: boolean;
 }
 
+export interface WorktreeThreadSummary {
+  readonly id: string;
+  readonly title: string;
+  readonly archivedAt?: string | null;
+  readonly worktreePath?: string | null;
+  readonly associatedWorktreePath?: string | null;
+}
+
 export interface ThreadHeaderSummary {
   readonly id: string;
   readonly title: string;
@@ -101,6 +109,7 @@ export interface SidebarSnapshot {
   readonly projects: readonly ProjectSummary[];
   readonly threads: readonly ThreadSummary[];
   readonly archivedThreads: readonly ThreadSummary[];
+  readonly workspaceThreads: readonly WorktreeThreadSummary[];
   readonly searchProjects: readonly SidebarSearchProject[];
   readonly searchThreads: readonly SidebarSearchThread[];
   readonly kanbanProjects: readonly Pick<Project, 'id' | 'kind' | 'name'>[];
@@ -180,6 +189,15 @@ export async function fetchSidebarSnapshot(): Promise<SidebarSnapshot> {
   const displayThreads = createSidebarDisplayThreadsSelector()(normalized);
   const archivedThreadShells = createThreadShellsSelector()(normalized).filter(
     (thread) => thread.archivedAt != null
+  );
+  const workspaceThreads = createThreadShellsSelector()(normalized).map(
+    (thread) => ({
+      id: thread.id,
+      title: thread.title,
+      archivedAt: thread.archivedAt ?? null,
+      worktreePath: thread.worktreePath ?? null,
+      associatedWorktreePath: thread.associatedWorktreePath ?? null,
+    })
   );
   const searchMessagesByThreadId = new Map(
     searchSnapshot.threads.map((thread) => [thread.threadId, thread.messages] as const)
@@ -276,6 +294,7 @@ export async function fetchSidebarSnapshot(): Promise<SidebarSnapshot> {
     })),
     threads,
     archivedThreads,
+    workspaceThreads,
     searchProjects,
     searchThreads,
     kanbanProjects: normalized.projects.map((project) => ({

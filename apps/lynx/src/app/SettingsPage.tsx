@@ -93,6 +93,7 @@ import type { ResolvedKeybindingsConfig } from '@synara/contracts';
 import { SettingsUsagePanel } from './SettingsUsagePanel';
 import { SettingsProfilePanel } from './SettingsProfilePanel.lynx';
 import { SettingsArchivedPanel } from './SettingsArchivedPanel.lynx';
+import { SettingsWorktreesPanel } from './SettingsWorktreesPanel.lynx';
 
 const SETTINGS_LOCAL_SAVE_ERROR =
   'Changes could not be saved. Your current values are still shown.';
@@ -627,6 +628,7 @@ export function SettingsPage({
             'notifications',
             'behavior',
             'shortcuts',
+            'worktrees',
             'archived',
             'models',
             'providers',
@@ -649,6 +651,7 @@ export function SettingsPage({
                 !ready ||
                 (section === 'shortcuts' ||
                   section === 'usage' ||
+                  section === 'worktrees' ||
                   section === 'archived') ||
                 (section === 'general'
                   ? settingsGeneralValuesEqual(
@@ -773,6 +776,8 @@ export function SettingsPage({
                 />
               ) : section === 'usage' ? (
                 <SettingsUsagePanel />
+              ) : section === 'worktrees' ? (
+                <SettingsWorktreesPanel />
               ) : section === 'archived' ? (
                 <SettingsArchivedPanel />
               ) : section === 'models' ? (
@@ -796,7 +801,9 @@ export function SettingsPage({
                   />
                 </>
               )}
-              {section !== 'profile' && section !== 'archived' ? (
+              {section !== 'profile' &&
+              section !== 'worktrees' &&
+              section !== 'archived' ? (
                 <PanelStateMessage
                   density="compact"
                   className="SettingsSavedState"

@@ -1,0 +1,109 @@
+.SettingsWorktreesPanel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 24px;
+}
+
+.SettingsWorktreesState {
+  display: flex;
+  width: 100%;
+  min-height: 72px;
+  padding: 24px 16px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.SettingsWorktreesState--error,
+.SettingsWorktreesDeleteError {
+  border-color: var(--destructive);
+}
+
+.SettingsWorktreesStateText,
+.SettingsWorktreesRowDescription,
+.SettingsWorktreesPath {
+  color: var(--muted-foreground);
+  font-size: var(--type-settings-row-description-size);
+  line-height: var(--type-settings-row-description-line-height);
+}
+
+.SettingsWorktreesRow {
+  display: flex;
+  width: 100%;
+  min-height: 96px;
+  padding: var(--app-density-settings-row-padding-y, 10px) 12px;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.SettingsWorktreesRow--divided {
+  border-top: 1px solid var(--border);
+}
+
+.SettingsWorktreesRowCopy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.SettingsWorktreesRowTitle,
+.SettingsWorktreesConversation {
+  color: var(--foreground);
+  font-size: var(--type-settings-row-title-size);
+  font-weight: 500;
+  line-height: var(--type-settings-row-title-line-height);
+}
+
+.SettingsWorktreesPath {
+  margin-top: 2px;
+  font-family: var(--font-mono-family);
+}
+
+.SettingsWorktreesConversationLabel {
+  margin-top: 8px;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+.SettingsWorktreesConversationList {
+  display: flex;
+  flex-direction: column;
+  margin-top: 4px;
+  gap: 4px;
+}
+
+.SettingsWorktreesActions {
+  display: flex;
+  width: 160px;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.SettingsWorktreesActionHint {
+  color: var(--muted-foreground);
+  font-size: var(--type-settings-row-description-size);
+  line-height: var(--type-settings-row-description-line-height);
+  text-align: right;
+}
+
+.SettingsWorktreesDeleteError {
+  display: flex;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--destructive);
+  border-radius: var(--radius-lg);
+}
+
+.SettingsWorktreesDeleteErrorText {
+  color: var(--destructive);
+  font-size: var(--type-settings-row-description-size);
+  line-height: var(--type-settings-row-description-line-height);
+}

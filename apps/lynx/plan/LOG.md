@@ -5207,3 +5207,23 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - `p10-completion-audit.md`已逐项重审Phase 0–7、completion criteria、named
   artifacts、tests/builds/audits/state identity与intentional deltas；无
   `WEAK`/`MISSING`/uncertainty requirement。
+
+## 2026-08-05 — Settings Worktrees continuation
+
+- current-HEAD audit确认旧P10 44-state manifest只覆盖Settings General，不能代理
+  Worktrees、Archived、Profile等真实Settings sections；继续按页面功能缺口做
+  current-head三端收敛。
+- Worktrees从Lynx Settings navigation缺失，且renderer没有
+  `server.listWorktrees` / `git.removeWorktree` transport。当前slice补齐真实RPC、
+  全量thread-shell worktree metadata投影，以及按workspace root分组的Web-authority
+  anatomy。
+- destructive flow保持canonical顺序：host confirm → 删除关联archived threads →
+  `git.removeWorktree(force)`；active threads只进入明确风险文案。两个query在finally
+  invalidated，partial failure不会留下陈旧deleted-thread projection。
+- focused tests **2 files / 7 tests**；Web、Lynx-for-Web、Native/Desktop production
+  builds全部通过。首次Native build因queryFn未声明`background only`被compiler
+  fail-closed拒绝，已按现有ReactLynx query boundary修复，未放宽guard。
+- current-head evidence位于
+  `shots/2026-08-05/settings-worktrees-current/`：Web/Native content与header anchors
+  exact，empty state仅2px height差；Native exact-owned PID-derived
+  `8904/session 1`，5 required roles，console 0，owned KV byte-exact restored。
