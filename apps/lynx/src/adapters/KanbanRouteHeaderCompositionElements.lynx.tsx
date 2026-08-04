@@ -1,5 +1,6 @@
 import type { ReactNode } from '@lynx-js/react';
 
+import { PlusIcon } from '../lib/icons.lynx';
 import './kanban-route-header-composition-elements.css';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 
@@ -71,7 +72,8 @@ export function KanbanRouteHeaderNewTaskElement(props: {
       aria-label="New task"
       {...interaction.eventProps}
     >
-      <text className="SharedKanbanRouteNewTaskText">＋ New task</text>
+      <PlusIcon className="SharedKanbanRouteNewTaskIcon" size={14} />
+      <text className="SharedKanbanRouteNewTaskText">New task</text>
     </view>
   );
 }

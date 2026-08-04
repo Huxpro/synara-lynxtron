@@ -1,0 +1,312 @@
+{
+  "client": "native",
+  "stateId": "kanban-overview-light-1280",
+  "roles": {
+    "header": {
+      "nodeId": 171,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SharedKanbanRouteHeader"
+      },
+      "text": "",
+      "box": {
+        "x": 256,
+        "y": 0,
+        "width": 1024,
+        "height": 46
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "title": {
+      "nodeId": 173,
+      "nodeName": "TEXT",
+      "attributes": {
+        "maxlines": "1",
+        "class": "SharedKanbanRouteTitle"
+      },
+      "text": "",
+      "box": {
+        "x": 276,
+        "y": 13,
+        "width": 51,
+        "height": 20
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "500",
+        "lineHeight": "20px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "count": {
+      "nodeId": 175,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "SharedKanbanRouteCount"
+      },
+      "text": "",
+      "box": {
+        "x": 339,
+        "y": 15,
+        "width": 41,
+        "height": 16
+      },
+      "font": {
+        "family": "",
+        "size": "12px",
+        "weight": "normal",
+        "lineHeight": "16px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgba(13,13,13,0.596078)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "0.7"
+      }
+    },
+    "newTask": {
+      "nodeId": 179,
+      "nodeName": "VIEW",
+      "attributes": {
+        "aria-label": "New task",
+        "focusable": "false",
+        "aria-disabled": "true",
+        "class": "SharedKanbanRouteNewTask SharedKanbanRouteNewTask--disabled"
+      },
+      "text": "",
+      "box": {
+        "x": 1167,
+        "y": 9,
+        "width": 93,
+        "height": 28
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "0.64"
+      }
+    },
+    "newTaskIcon": {
+      "nodeId": 182,
+      "nodeName": "SVG",
+      "attributes": {
+        "content": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0d0d0d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-plus\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M12 5l0 14\" /> <path d=\"M5 12l14 0\" /> </svg>",
+        "class": "SharedKanbanRouteNewTaskIcon",
+        "style": "height:14px;width:14px;"
+      },
+      "text": "",
+      "box": {
+        "x": 1177,
+        "y": 16,
+        "width": 14,
+        "height": 14
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgba(13,13,13,0.596078)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "overviewBody": {
+      "nodeId": 183,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "FeatureOverviewBody"
+      },
+      "text": "",
+      "box": {
+        "x": 256,
+        "y": 46,
+        "width": 1024,
+        "height": 742
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "emptyRoot": {
+      "nodeId": 184,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SharedKanbanOverviewEmptyRoot"
+      },
+      "text": "",
+      "box": {
+        "x": 256,
+        "y": 58,
+        "width": 1024,
+        "height": 730
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "emptyCopy": {
+      "nodeId": 185,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SharedKanbanOverviewEmptyCopy"
+      },
+      "text": "",
+      "box": {
+        "x": 576,
+        "y": 391,
+        "width": 384,
+        "height": 64
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "emptyTitle": {
+      "nodeId": 186,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "SharedKanbanOverviewEmptyTitle"
+      },
+      "text": "",
+      "box": {
+        "x": 684,
+        "y": 391,
+        "width": 168,
+        "height": 20
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "500",
+        "lineHeight": "20px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "emptyBody": {
+      "nodeId": 188,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "SharedKanbanOverviewEmptyBody"
+      },
+      "text": "",
+      "box": {
+        "x": 578,
+        "y": 415,
+        "width": 380,
+        "height": 40
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "20px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgba(13,13,13,0.596078)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

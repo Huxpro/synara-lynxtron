@@ -1,0 +1,16 @@
+{
+  "client": "web",
+  "stateId": "kanban-overview-light-1280",
+  "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 },
+  "roles": {
+    "header": { "x": 256, "y": 0, "width": 1024, "height": 46 },
+    "title": { "x": 276, "y": 13, "width": 49.703125, "height": 20 },
+    "count": { "x": 337.703125, "y": 15, "width": 40.765625, "height": 16 },
+    "newTask": { "x": 1166.640625, "y": 9, "width": 93.359375, "height": 28 },
+    "overviewBody": { "x": 256, "y": 46, "width": 1024, "height": 774 },
+    "emptyRoot": { "x": 256, "y": 58, "width": 1024, "height": 762 },
+    "emptyCopy": { "x": 576, "y": 407, "width": 384, "height": 64 },
+    "emptyTitle": { "x": 576, "y": 407, "width": 384, "height": 20 },
+    "emptyBody": { "x": 576, "y": 431, "width": 384, "height": 40 }
+  }
+}

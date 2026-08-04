@@ -1,0 +1,36 @@
+{
+  "client": "native",
+  "stateId": "kanban-overview-light-1280",
+  "buildSha256": "096535f4029b70bf0a9fa704f19e0b8e91cd11f2552f31dadcebdf62a95f80c1",
+  "snapshotSha256": "84d05db5d654601715926c496331c770b38a2626bfcfaea94e405a997ad8d601",
+  "stateEcho": {
+    "semanticRoute": "kanban",
+    "theme": "light",
+    "density": "comfortable",
+    "interactionState": "empty"
+  },
+  "identity": {
+    "rootPid": 43207,
+    "descendantPids": [
+      43207
+    ],
+    "ownedPorts": [
+      8903
+    ],
+    "client": {
+      "id": "localhost:8903",
+      "info": {
+        "App": "@synara/lynx",
+        "appId": "0000",
+        "sdkVersion": "4.1"
+      },
+      "port": 8903
+    },
+    "session": {
+      "session_id": 1,
+      "type": "lynx",
+      "url": "file:///Users/bytedance/github/synara/apps/lynx/dist/desktop/main.lynx.bundle"
+    }
+  },
+  "consoleMessages": []
+}

@@ -2,7 +2,7 @@
   width: 100%;
   height: 46px;
   flex-shrink: 0;
-  padding: 0 24px;
+  padding: 0 20px;
   border-bottom: 1px solid var(--border);
 }
 
@@ -12,7 +12,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
 }
 
 .SharedKanbanRouteBack {
@@ -52,14 +52,14 @@
   color: var(--foreground);
   font-size: 14px;
   line-height: 20px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .SharedKanbanRouteCount {
   flex-shrink: 0;
   color: var(--muted-foreground);
   font-size: 12px;
-  line-height: 18px;
+  line-height: 16px;
   opacity: 0.7;
 }
 
@@ -72,17 +72,25 @@
   height: 28px;
   flex-shrink: 0;
   display: flex;
+  flex-direction: row;
   align-items: center;
+  gap: 6px;
   padding: 0 10px;
   border-radius: 8px;
 }
 
 .SharedKanbanRouteNewTask--disabled {
-  opacity: 0.45;
+  opacity: 0.64;
+}
+
+.SharedKanbanRouteNewTaskIcon {
+  width: 14px;
+  height: 14px;
+  color: var(--muted-foreground);
 }
 
 .SharedKanbanRouteNewTaskText {
-  color: var(--foreground);
+  color: var(--muted-foreground);
   font-size: 12px;
   line-height: 18px;
 }

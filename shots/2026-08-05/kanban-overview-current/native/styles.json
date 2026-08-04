@@ -1,0 +1,186 @@
+{
+  "client": "native",
+  "stateId": "kanban-overview-light-1280",
+  "roles": {
+    "header": {
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "title": {
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "500",
+        "lineHeight": "20px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "count": {
+      "font": {
+        "family": "",
+        "size": "12px",
+        "weight": "normal",
+        "lineHeight": "16px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgba(13,13,13,0.596078)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "0.7"
+      }
+    },
+    "newTask": {
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "0.64"
+      }
+    },
+    "newTaskIcon": {
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgba(13,13,13,0.596078)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "overviewBody": {
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "emptyRoot": {
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "emptyCopy": {
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "emptyTitle": {
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "500",
+        "lineHeight": "20px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "emptyBody": {
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "20px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgba(13,13,13,0.596078)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}
