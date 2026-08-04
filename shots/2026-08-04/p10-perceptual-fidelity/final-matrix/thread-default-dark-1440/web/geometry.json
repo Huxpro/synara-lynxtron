@@ -1,0 +1,125 @@
+{
+  "client": "web",
+  "stateId": "thread-default-dark-1440",
+  "semanticRoute": "thread",
+  "theme": "dark",
+  "viewport": {
+    "width": 1440,
+    "height": 900,
+    "dpr": 1,
+    "visualWidth": 1440,
+    "visualHeight": 900
+  },
+  "rootClass": "",
+  "roles": {
+    "root": null,
+    "sidebar": {
+      "tag": "DIV",
+      "className": "relative z-0 flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow-sm/5 app-sidebar-surface",
+      "text": "Toggle SidebarToggle SidebarStudioProjectsNew thread⌘NSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed task\n    To pick up a draggable item, press the space bar.\n    While dragging, u",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 256,
+        "height": 900
+      },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "24px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgb(17, 17, 17)",
+        "borderColor": "rgba(252, 252, 252, 0.07)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "rgba(255, 255, 255, 0.024) 0px 1px 0px 0px inset",
+        "opacity": "1"
+      }
+    },
+    "title": {
+      "tag": "H2",
+      "className": "max-w-[clamp(12rem,42vw,36rem)] truncate font-system-ui text-[length:var(--app-font-size-ui,12px)] font-normal text-foreground",
+      "text": "Draft seed task",
+      "box": {
+        "x": 298,
+        "y": 14,
+        "width": 86.515625,
+        "height": 18
+      },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "12px",
+        "weight": "400",
+        "lineHeight": "18px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgba(252, 252, 252, 0.07)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "content": {
+      "tag": "MAIN",
+      "className": "relative flex min-w-0 w-full flex-1 flex-col bg-transparent md:peer-data-[variant=sidebar]:peer-data-[side=left]:peer-data-[state=expanded]:-ms-[var(--sidebar-width)] md:peer-data-[variant=sidebar]:peer-data-[side=left]:peer-data-[state=expanded]:w-[calc(100%+var(--sidebar-width))] md:peer-data-[variant=sidebar]:peer-data-[side=left]:peer-data-[state=expanded]:ps-[var(--sidebar-width)] md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ms-2 md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ms-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow-sm/5 h-dvh min-h-0 overflow-hidden overscroll-y-none text-foreground",
+      "text": "Draft seed taskHand offAdd actionCodex provider statusCodex CLI is installed but failed to run. Error: codex not found in PATHLYNX-WEB-SPIKE-OK7:05 AMWrite a comprehensive 900-word technical essay about WebSocket backoff and reconnection st",
+      "box": {
+        "x": 256,
+        "y": 0,
+        "width": 1184,
+        "height": 900
+      },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "24px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgba(252, 252, 252, 0.07)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "primary": {
+      "tag": "DIV",
+      "className": "block max-h-[200px] w-full overflow-y-auto whitespace-pre-wrap break-words bg-transparent text-foreground focus:outline-none font-system-ui text-[length:var(--type-composer-editor-size)] leading-[var(--type-composer-editor-line-height)] min-h-[var(--app-density-composer-editor-min-height,2lh)] [&_p]:m-0",
+      "text": "",
+      "box": {
+        "x": 493,
+        "y": 802,
+        "width": 708,
+        "height": 39
+      },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "12px",
+        "weight": "400",
+        "lineHeight": "19.5px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgba(252, 252, 252, 0.07)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    }
+  }
+}

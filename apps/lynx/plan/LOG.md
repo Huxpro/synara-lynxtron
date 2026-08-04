@@ -5097,3 +5097,18 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Native `(312,13)`，均20px高；仅保留system-font/engine glyph advance宽差。
 - 该source change使此前pre-fix Lynx/Native matrix frames失效；后续final matrix必须用
   post-fix bundle重拍，禁止沿用旧build evidence。
+
+## 2026-08-04 — P10 post-fix route matrix
+
+- post-fix builds：Web `2f1081bd…`、Lynx-for-Web `9ff47872…`、Native
+  `8dde80b7…`。隔离snapshot保留3 projects/5 threads/30 messages；所有route导航均走
+  rendered controls，未写SQLite或注入隐藏route state。
+- 完成Landing、Thread、Settings General、project Kanban、Pull Requests × light/dark ×
+  1280×820/1440×900，共20 states / 60 client cells。Browser raw精确目标viewport，
+  Native raw为2560×1576或2880×1736；comparison为1280×788或1440×868。
+- 每个Native cell由PID-owned atomic helper产出5 roles、full DOM、resolved styles、
+  build/snapshot/state identity与empty warning/error console；每次route remount先resume
+  server hydration，再freeze并online backup，故manifest使用state-specific snapshot hash。
+- 所有20 states已进入P10 manifest，统一登记32px macOS titlebar normalization为P3
+  intentional platform delta。verifier现为**26 states / 18 missing / 0 blocking**；
+  剩余missing全部是Project Picker/Extras/Command K/skill/mention overlay matrix。

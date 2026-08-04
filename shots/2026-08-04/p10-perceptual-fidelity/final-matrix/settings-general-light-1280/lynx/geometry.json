@@ -1,0 +1,125 @@
+{
+  "client": "lynx",
+  "stateId": "settings-general-light-1280",
+  "semanticRoute": "settings-general",
+  "theme": "light",
+  "viewport": {
+    "width": 1280,
+    "height": 820,
+    "dpr": 1,
+    "visualWidth": 1280,
+    "visualHeight": 820
+  },
+  "rootClass": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable",
+  "roles": {
+    "root": {
+      "tag": "X-VIEW",
+      "className": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable",
+      "text": "Back to appSearch unavailable in this runtimeAppGeneralProfileAppearanceNotificationsBehaviorAppSnapKeyboard ShortcutsWorktreesArchivedSynaraModelsProvidersSkillsUsageIntegrationsAdvancedGeneralDefault provider, thread mode, and sidebar org",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 820
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgb(255, 255, 255)",
+        "borderColor": "rgb(13, 13, 13)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "sidebar": {
+      "tag": "X-VIEW",
+      "className": "SharedSettingsNavigation",
+      "text": "AppGeneralProfileAppearanceNotificationsBehaviorAppSnapKeyboard ShortcutsWorktreesArchivedSynaraModelsProvidersSkillsUsageIntegrationsAdvanced",
+      "box": {
+        "x": 14,
+        "y": 98,
+        "width": 227,
+        "height": 506
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(13, 13, 13)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "title": {
+      "tag": "X-TEXT",
+      "className": "SharedSettingsPanelHeaderTitle",
+      "text": "General",
+      "box": {
+        "x": 456,
+        "y": 32,
+        "width": 363.890625,
+        "height": 28
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "20px",
+        "weight": "500",
+        "lineHeight": "28px",
+        "letterSpacing": "-0.5px"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(13, 13, 13)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "content": {
+      "tag": "SCROLL-VIEW",
+      "className": "SettingsContent",
+      "text": "GeneralDefault provider, thread mode, and sidebar organization.Restore defaultsCore defaultsDefault providerChoose the provider used for new chats.CodexNew threadsPick the default workspace mode for newly created draft threads.LocalSidebar ",
+      "box": {
+        "x": 256,
+        "y": 0,
+        "width": 1024,
+        "height": 820
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgb(255, 255, 255)",
+        "borderColor": "rgb(13, 13, 13)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "primary": null
+  }
+}

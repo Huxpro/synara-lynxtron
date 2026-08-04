@@ -1,0 +1,151 @@
+{
+  "client": "lynx",
+  "stateId": "kanban-project-dark-1280",
+  "semanticRoute": "kanban-project",
+  "theme": "dark",
+  "viewport": {
+    "width": 1280,
+    "height": 820,
+    "dpr": 1,
+    "visualWidth": 1280,
+    "visualHeight": 820
+  },
+  "rootClass": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable",
+  "roles": {
+    "root": {
+      "tag": "X-VIEW",
+      "className": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable",
+      "text": "StudioProjectsNew threadSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed taskChats›⚙Settings‹Lynx Web Spike3 tasks＋ New taskDraft0◌No cardsIn Progress0◐No cardsDone3✓Draft seed task••",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 820
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgb(16, 16, 16)",
+        "borderColor": "rgb(252, 252, 252)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "sidebar": {
+      "tag": "X-VIEW",
+      "className": "AppSidebar",
+      "text": "StudioProjectsNew threadSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed taskChats›⚙Settings",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 256,
+        "height": 820
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgb(17, 17, 17)",
+        "borderColor": "rgb(252, 252, 252) rgba(252, 252, 252, 0.07) rgb(252, 252, 252) rgb(252, 252, 252)",
+        "borderWidth": "0px 1px 0px 0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "title": {
+      "tag": "X-TEXT",
+      "className": "SharedKanbanRouteTitle",
+      "text": "Lynx Web Spike",
+      "box": {
+        "x": 312,
+        "y": 13,
+        "width": 105.53125,
+        "height": 20
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "600",
+        "lineHeight": "20px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(252, 252, 252)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "content": {
+      "tag": "X-VIEW",
+      "className": "KanbanScroller",
+      "text": "Draft0◌No cardsIn Progress0◐No cardsDone3✓Draft seed task•••1dDoneIn Progress seed task•••2dDoneDone seed task•••2dDone",
+      "box": {
+        "x": 256,
+        "y": 46,
+        "width": 1024,
+        "height": 774
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(252, 252, 252)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "primary": {
+      "tag": "X-VIEW",
+      "className": "SharedKanbanColumnRoot",
+      "text": "Draft0◌No cards",
+      "box": {
+        "x": 272,
+        "y": 58,
+        "width": 322.65625,
+        "height": 746
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(252, 252, 252)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    }
+  }
+}

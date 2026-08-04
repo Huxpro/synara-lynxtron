@@ -1,0 +1,151 @@
+{
+  "client": "lynx",
+  "stateId": "landing-default-dark-1440",
+  "semanticRoute": "new-chat",
+  "theme": "dark",
+  "viewport": {
+    "width": 1440,
+    "height": 900,
+    "dpr": 1,
+    "visualWidth": 1440,
+    "visualHeight": 900
+  },
+  "rootClass": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable",
+  "roles": {
+    "root": {
+      "tag": "X-VIEW",
+      "className": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable",
+      "text": "Reconnecting…StudioProjectsNew threadSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed taskChats›⚙SettingsNew ChatWhat should we work on?Full accessGPT-5.5⌄Medium⌄↑Work in a project",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 900
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgb(16, 16, 16)",
+        "borderColor": "rgb(252, 252, 252)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "sidebar": {
+      "tag": "X-VIEW",
+      "className": "AppSidebar",
+      "text": "StudioProjectsNew threadSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed taskChats›⚙Settings",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 256,
+        "height": 900
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgb(17, 17, 17)",
+        "borderColor": "rgb(252, 252, 252) rgba(252, 252, 252, 0.07) rgb(252, 252, 252) rgb(252, 252, 252)",
+        "borderWidth": "0px 1px 0px 0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "title": {
+      "tag": "X-TEXT",
+      "className": "SharedChatHeaderIdentityTitle",
+      "text": "New Chat",
+      "box": {
+        "x": 298,
+        "y": 15.5,
+        "width": 55.0625,
+        "height": 15
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "12px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(252, 252, 252)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "content": {
+      "tag": "X-VIEW",
+      "className": "ThreadsLandingBody",
+      "text": "What should we work on?Full accessGPT-5.5⌄Medium⌄↑Work in a project",
+      "box": {
+        "x": 256,
+        "y": 46,
+        "width": 1184,
+        "height": 854
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(252, 252, 252)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "primary": {
+      "tag": "X-VIEW",
+      "className": "ComposerInputSurfaceLynx",
+      "text": "Full accessGPT-5.5⌄Medium⌄↑",
+      "box": {
+        "x": 480,
+        "y": 461,
+        "width": 736,
+        "height": 95
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgb(23, 23, 23)",
+        "borderColor": "rgba(252, 252, 252, 0.07)",
+        "borderWidth": "1px",
+        "radius": "19.2px",
+        "shadow": "rgba(13, 13, 13, 0.07) 0px 4px 18px -6px",
+        "opacity": "1"
+      }
+    }
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "client": "native",
+  "stateId": "settings-general-light-1440",
+  "roles": {
+    "root": {
+      "nodeId": 13,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 868
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(252,252,252)",
+        "background": "rgb(16,16,16)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "sidebar": {
+      "nodeId": 2010,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SharedSettingsNavigation"
+      },
+      "text": "",
+      "box": {
+        "x": 14,
+        "y": 98,
+        "width": 227,
+        "height": 506
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "title": {
+      "nodeId": 2111,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "SharedSettingsPanelHeaderTitle"
+      },
+      "text": "",
+      "box": {
+        "x": 536,
+        "y": 32,
+        "width": 371,
+        "height": 28
+      },
+      "font": {
+        "family": "",
+        "size": "20px",
+        "weight": "500",
+        "lineHeight": "28px",
+        "letterSpacing": "-0.5px"
+      },
+      "paint": {
+        "color": "rgb(252,252,252)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "content": {
+      "nodeId": 2637,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SharedSettingsGeneralCard"
+      },
+      "text": "",
+      "box": {
+        "x": 536,
+        "y": 150,
+        "width": 624,
+        "height": 123
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "hsla(0,0%,99%,.072)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "primary": {
+      "nodeId": 2650,
+      "nodeName": "VIEW",
+      "attributes": {
+        "event-through": "false",
+        "accessibility-element": "true",
+        "accessibility-label": "Default provider",
+        "accessibility-traits": "button",
+        "bindtap": "2764:0:bindtap",
+        "bindmouseup": "2764:0:bindmouseup",
+        "bindmousedown": "2764:0:bindmousedown",
+        "bindtouchstart": "2764:0:bindtouchstart",
+        "bindtouchend": "2764:0:bindtouchend",
+        "bindtouchcancel": "2764:0:bindtouchcancel",
+        "class": "LxButton LxButton--outline LxButton--default SharedSettingsGeneralSelectTrigger SharedSettingsGeneralSelectTrigger--general"
+      },
+      "text": "",
+      "box": {
+        "x": 971,
+        "y": 165,
+        "width": 176,
+        "height": 32
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(23,23,23)",
+        "borderColor": "hsla(0,0%,99%,.072)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

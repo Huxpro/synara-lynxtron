@@ -12,12 +12,16 @@
   "requiredMatrix": [
     {
       "id": "landing-default-light-1280",
-      "stateId": "landing-default",
+      "stateId": "landing-default-light-1280",
       "semanticRoute": "new-chat",
       "theme": "light",
       "density": "comfortable",
       "interactionState": "default",
-      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "landing-default-dark-1280",
@@ -26,7 +30,11 @@
       "theme": "dark",
       "density": "comfortable",
       "interactionState": "default",
-      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "landing-default-light-1440",
@@ -35,7 +43,11 @@
       "theme": "light",
       "density": "comfortable",
       "interactionState": "default",
-      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "landing-default-dark-1440",
@@ -44,7 +56,11 @@
       "theme": "dark",
       "density": "comfortable",
       "interactionState": "default",
-      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "thread-default-light-1280",
@@ -53,7 +69,11 @@
       "theme": "light",
       "density": "comfortable",
       "interactionState": "default",
-      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "thread-default-dark-1280",
@@ -62,7 +82,11 @@
       "theme": "dark",
       "density": "comfortable",
       "interactionState": "default",
-      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "thread-default-light-1440",
@@ -71,7 +95,11 @@
       "theme": "light",
       "density": "comfortable",
       "interactionState": "default",
-      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "thread-default-dark-1440",
@@ -80,16 +108,24 @@
       "theme": "dark",
       "density": "comfortable",
       "interactionState": "default",
-      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "settings-general-light-1280",
-      "stateId": "settings-general",
+      "stateId": "settings-general-light-1280",
       "semanticRoute": "settings-general",
       "theme": "light",
       "density": "comfortable",
       "interactionState": "default",
-      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "settings-general-dark-1280",
@@ -98,7 +134,11 @@
       "theme": "dark",
       "density": "comfortable",
       "interactionState": "default",
-      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "settings-general-light-1440",
@@ -107,7 +147,11 @@
       "theme": "light",
       "density": "comfortable",
       "interactionState": "default",
-      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "settings-general-dark-1440",
@@ -116,7 +160,11 @@
       "theme": "dark",
       "density": "comfortable",
       "interactionState": "default",
-      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "kanban-project-light-1280",
@@ -125,7 +173,11 @@
       "theme": "light",
       "density": "comfortable",
       "interactionState": "default",
-      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "kanban-project-dark-1280",
@@ -134,7 +186,11 @@
       "theme": "dark",
       "density": "comfortable",
       "interactionState": "default",
-      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "kanban-project-light-1440",
@@ -143,7 +199,11 @@
       "theme": "light",
       "density": "comfortable",
       "interactionState": "default",
-      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "kanban-project-dark-1440",
@@ -152,7 +212,11 @@
       "theme": "dark",
       "density": "comfortable",
       "interactionState": "default",
-      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "pull-requests-light-1280",
@@ -161,7 +225,11 @@
       "theme": "light",
       "density": "comfortable",
       "interactionState": "default",
-      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "pull-requests-dark-1280",
@@ -170,7 +238,11 @@
       "theme": "dark",
       "density": "comfortable",
       "interactionState": "default",
-      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "pull-requests-light-1440",
@@ -179,7 +251,11 @@
       "theme": "light",
       "density": "comfortable",
       "interactionState": "default",
-      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "pull-requests-dark-1440",
@@ -188,7 +264,11 @@
       "theme": "dark",
       "density": "comfortable",
       "interactionState": "default",
-      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "project-picker-light-1280",
@@ -197,7 +277,11 @@
       "theme": "light",
       "density": "comfortable",
       "interactionState": "project-picker-open",
-      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "project-picker-dark-1280",
@@ -206,7 +290,11 @@
       "theme": "dark",
       "density": "comfortable",
       "interactionState": "project-picker-open",
-      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "project-picker-light-1440",
@@ -215,7 +303,11 @@
       "theme": "light",
       "density": "comfortable",
       "interactionState": "project-picker-open",
-      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "project-picker-dark-1440",
@@ -224,7 +316,11 @@
       "theme": "dark",
       "density": "comfortable",
       "interactionState": "project-picker-open",
-      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "extras-light-1280",
@@ -233,7 +329,11 @@
       "theme": "light",
       "density": "comfortable",
       "interactionState": "extras-open",
-      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "extras-dark-1280",
@@ -242,7 +342,11 @@
       "theme": "dark",
       "density": "comfortable",
       "interactionState": "extras-open",
-      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "extras-light-1440",
@@ -251,7 +355,11 @@
       "theme": "light",
       "density": "comfortable",
       "interactionState": "extras-open",
-      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "extras-dark-1440",
@@ -260,7 +368,11 @@
       "theme": "dark",
       "density": "comfortable",
       "interactionState": "extras-open",
-      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "command-k-light-1280",
@@ -269,7 +381,11 @@
       "theme": "light",
       "density": "comfortable",
       "interactionState": "command-k-open",
-      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "command-k-dark-1280",
@@ -278,7 +394,11 @@
       "theme": "dark",
       "density": "comfortable",
       "interactionState": "command-k-open",
-      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "command-k-light-1440",
@@ -287,7 +407,11 @@
       "theme": "light",
       "density": "comfortable",
       "interactionState": "command-k-open",
-      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "command-k-dark-1440",
@@ -296,7 +420,11 @@
       "theme": "dark",
       "density": "comfortable",
       "interactionState": "command-k-open",
-      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "skill-menu-light-1280",
@@ -305,7 +433,11 @@
       "theme": "light",
       "density": "comfortable",
       "interactionState": "skill-filtered-review-agent",
-      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "skill-menu-dark-1280",
@@ -314,7 +446,11 @@
       "theme": "dark",
       "density": "comfortable",
       "interactionState": "skill-filtered-review-agent",
-      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "skill-menu-light-1440",
@@ -323,7 +459,11 @@
       "theme": "light",
       "density": "comfortable",
       "interactionState": "skill-filtered-review-agent",
-      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "skill-menu-dark-1440",
@@ -332,7 +472,11 @@
       "theme": "dark",
       "density": "comfortable",
       "interactionState": "skill-filtered-review-agent",
-      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "mention-menu-light-1280",
@@ -341,7 +485,11 @@
       "theme": "light",
       "density": "comfortable",
       "interactionState": "mention-filtered-progress",
-      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "mention-menu-dark-1280",
@@ -350,7 +498,11 @@
       "theme": "dark",
       "density": "comfortable",
       "interactionState": "mention-filtered-progress",
-      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "mention-menu-light-1440",
@@ -359,7 +511,11 @@
       "theme": "light",
       "density": "comfortable",
       "interactionState": "mention-filtered-progress",
-      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      }
     },
     {
       "id": "mention-menu-dark-1440",
@@ -368,7 +524,11 @@
       "theme": "dark",
       "density": "comfortable",
       "interactionState": "mention-filtered-progress",
-      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      }
     }
   ],
   "states": [
@@ -1327,6 +1487,2346 @@
           "stateEcho": {
             "semanticRoute": "settings-general",
             "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "landing-default-light-1280",
+      "label": "New Chat landing · light · 1280×820",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "default",
+      "snapshotSha256": "4862aaa80b65f5042745686a8aa78f3f657a3af51eaf2b82ba19cecaa95ddfa9",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1280,
+        "height": 788
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [
+        {
+          "id": "landing-default-light-1280-native-titlebar",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Native window/titlebar comparison normalization",
+          "summary": "Native content height excludes the 32px macOS titlebar while Browser viewport includes the full requested height.",
+          "impact": "Raw frame heights differ but product content coordinates align after named normalization.",
+          "recommendation": "Keep the center crop and 0.5 Native scale explicit in evidence metadata.",
+          "evidence": "final-matrix/landing-default-light-1280/native/capture.json",
+          "reason": "CoreGraphics outer bounds and DevTool content dimensions were verified for both target sizes."
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-matrix/landing-default-light-1280/web/raw.png",
+          "comparisonPath": "final-matrix/landing-default-light-1280/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "4862aaa80b65f5042745686a8aa78f3f657a3af51eaf2b82ba19cecaa95ddfa9",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-matrix/landing-default-light-1280/web/geometry.json",
+          "styles": "final-matrix/landing-default-light-1280/web/styles.json",
+          "console": "final-matrix/landing-default-light-1280/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-matrix/landing-default-light-1280/lynx/raw.png",
+          "comparisonPath": "final-matrix/landing-default-light-1280/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "4862aaa80b65f5042745686a8aa78f3f657a3af51eaf2b82ba19cecaa95ddfa9",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-matrix/landing-default-light-1280/lynx/geometry.json",
+          "styles": "final-matrix/landing-default-light-1280/lynx/styles.json",
+          "console": "final-matrix/landing-default-light-1280/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-matrix/landing-default-light-1280/native/raw.png",
+          "comparisonPath": "final-matrix/landing-default-light-1280/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "4862aaa80b65f5042745686a8aa78f3f657a3af51eaf2b82ba19cecaa95ddfa9",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "geometry": "final-matrix/landing-default-light-1280/native/geometry.json",
+          "styles": "final-matrix/landing-default-light-1280/native/styles.json",
+          "console": "final-matrix/landing-default-light-1280/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "landing-default-light-1440",
+      "label": "New Chat landing · light · 1440×900",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "default",
+      "snapshotSha256": "45067be34ff504ba03901389178e8816fc7ad5537619d5d659dcbde24d65bb3b",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [
+        {
+          "id": "landing-default-light-1440-native-titlebar",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Native window/titlebar comparison normalization",
+          "summary": "Native content height excludes the 32px macOS titlebar while Browser viewport includes the full requested height.",
+          "impact": "Raw frame heights differ but product content coordinates align after named normalization.",
+          "recommendation": "Keep the center crop and 0.5 Native scale explicit in evidence metadata.",
+          "evidence": "final-matrix/landing-default-light-1440/native/capture.json",
+          "reason": "CoreGraphics outer bounds and DevTool content dimensions were verified for both target sizes."
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-matrix/landing-default-light-1440/web/raw.png",
+          "comparisonPath": "final-matrix/landing-default-light-1440/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "45067be34ff504ba03901389178e8816fc7ad5537619d5d659dcbde24d65bb3b",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-matrix/landing-default-light-1440/web/geometry.json",
+          "styles": "final-matrix/landing-default-light-1440/web/styles.json",
+          "console": "final-matrix/landing-default-light-1440/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-matrix/landing-default-light-1440/lynx/raw.png",
+          "comparisonPath": "final-matrix/landing-default-light-1440/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "45067be34ff504ba03901389178e8816fc7ad5537619d5d659dcbde24d65bb3b",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-matrix/landing-default-light-1440/lynx/geometry.json",
+          "styles": "final-matrix/landing-default-light-1440/lynx/styles.json",
+          "console": "final-matrix/landing-default-light-1440/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-matrix/landing-default-light-1440/native/raw.png",
+          "comparisonPath": "final-matrix/landing-default-light-1440/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "45067be34ff504ba03901389178e8816fc7ad5537619d5d659dcbde24d65bb3b",
+          "image": {
+            "width": 2880,
+            "height": 1736
+          },
+          "geometry": "final-matrix/landing-default-light-1440/native/geometry.json",
+          "styles": "final-matrix/landing-default-light-1440/native/styles.json",
+          "console": "final-matrix/landing-default-light-1440/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "landing-default-dark-1280",
+      "label": "New Chat landing · dark · 1280×820",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "default",
+      "snapshotSha256": "15bb4d4f44cee44ec6cc733b620cc8ae1d8a89caab898b30ce6445e034f7703b",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1280,
+        "height": 788
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [
+        {
+          "id": "landing-default-dark-1280-native-titlebar",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Native window/titlebar comparison normalization",
+          "summary": "Native content height excludes the 32px macOS titlebar while Browser viewport includes the full requested height.",
+          "impact": "Raw frame heights differ but product content coordinates align after named normalization.",
+          "recommendation": "Keep the center crop and 0.5 Native scale explicit in evidence metadata.",
+          "evidence": "final-matrix/landing-default-dark-1280/native/capture.json",
+          "reason": "CoreGraphics outer bounds and DevTool content dimensions were verified for both target sizes."
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-matrix/landing-default-dark-1280/web/raw.png",
+          "comparisonPath": "final-matrix/landing-default-dark-1280/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "15bb4d4f44cee44ec6cc733b620cc8ae1d8a89caab898b30ce6445e034f7703b",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-matrix/landing-default-dark-1280/web/geometry.json",
+          "styles": "final-matrix/landing-default-dark-1280/web/styles.json",
+          "console": "final-matrix/landing-default-dark-1280/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-matrix/landing-default-dark-1280/lynx/raw.png",
+          "comparisonPath": "final-matrix/landing-default-dark-1280/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "15bb4d4f44cee44ec6cc733b620cc8ae1d8a89caab898b30ce6445e034f7703b",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-matrix/landing-default-dark-1280/lynx/geometry.json",
+          "styles": "final-matrix/landing-default-dark-1280/lynx/styles.json",
+          "console": "final-matrix/landing-default-dark-1280/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-matrix/landing-default-dark-1280/native/raw.png",
+          "comparisonPath": "final-matrix/landing-default-dark-1280/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "15bb4d4f44cee44ec6cc733b620cc8ae1d8a89caab898b30ce6445e034f7703b",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "geometry": "final-matrix/landing-default-dark-1280/native/geometry.json",
+          "styles": "final-matrix/landing-default-dark-1280/native/styles.json",
+          "console": "final-matrix/landing-default-dark-1280/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "landing-default-dark-1440",
+      "label": "New Chat landing · dark · 1440×900",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "default",
+      "snapshotSha256": "be180cffc6ecfc215fcb02a070ccda92a85c7430c0acc4ddde0b9cb84bd53ace",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [
+        {
+          "id": "landing-default-dark-1440-native-titlebar",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Native window/titlebar comparison normalization",
+          "summary": "Native content height excludes the 32px macOS titlebar while Browser viewport includes the full requested height.",
+          "impact": "Raw frame heights differ but product content coordinates align after named normalization.",
+          "recommendation": "Keep the center crop and 0.5 Native scale explicit in evidence metadata.",
+          "evidence": "final-matrix/landing-default-dark-1440/native/capture.json",
+          "reason": "CoreGraphics outer bounds and DevTool content dimensions were verified for both target sizes."
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-matrix/landing-default-dark-1440/web/raw.png",
+          "comparisonPath": "final-matrix/landing-default-dark-1440/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "be180cffc6ecfc215fcb02a070ccda92a85c7430c0acc4ddde0b9cb84bd53ace",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-matrix/landing-default-dark-1440/web/geometry.json",
+          "styles": "final-matrix/landing-default-dark-1440/web/styles.json",
+          "console": "final-matrix/landing-default-dark-1440/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-matrix/landing-default-dark-1440/lynx/raw.png",
+          "comparisonPath": "final-matrix/landing-default-dark-1440/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "be180cffc6ecfc215fcb02a070ccda92a85c7430c0acc4ddde0b9cb84bd53ace",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-matrix/landing-default-dark-1440/lynx/geometry.json",
+          "styles": "final-matrix/landing-default-dark-1440/lynx/styles.json",
+          "console": "final-matrix/landing-default-dark-1440/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-matrix/landing-default-dark-1440/native/raw.png",
+          "comparisonPath": "final-matrix/landing-default-dark-1440/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "be180cffc6ecfc215fcb02a070ccda92a85c7430c0acc4ddde0b9cb84bd53ace",
+          "image": {
+            "width": 2880,
+            "height": 1736
+          },
+          "geometry": "final-matrix/landing-default-dark-1440/native/geometry.json",
+          "styles": "final-matrix/landing-default-dark-1440/native/styles.json",
+          "console": "final-matrix/landing-default-dark-1440/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "thread-default-light-1280",
+      "label": "Thread transcript · light · 1280×820",
+      "semanticRoute": "thread",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "default",
+      "snapshotSha256": "4862aaa80b65f5042745686a8aa78f3f657a3af51eaf2b82ba19cecaa95ddfa9",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1280,
+        "height": 788
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [
+        {
+          "id": "thread-default-light-1280-native-titlebar",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Native window/titlebar comparison normalization",
+          "summary": "Native content height excludes the 32px macOS titlebar while Browser viewport includes the full requested height.",
+          "impact": "Raw frame heights differ but product content coordinates align after named normalization.",
+          "recommendation": "Keep the center crop and 0.5 Native scale explicit in evidence metadata.",
+          "evidence": "final-matrix/thread-default-light-1280/native/capture.json",
+          "reason": "CoreGraphics outer bounds and DevTool content dimensions were verified for both target sizes."
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-matrix/thread-default-light-1280/web/raw.png",
+          "comparisonPath": "final-matrix/thread-default-light-1280/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "4862aaa80b65f5042745686a8aa78f3f657a3af51eaf2b82ba19cecaa95ddfa9",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-matrix/thread-default-light-1280/web/geometry.json",
+          "styles": "final-matrix/thread-default-light-1280/web/styles.json",
+          "console": "final-matrix/thread-default-light-1280/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "thread",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-matrix/thread-default-light-1280/lynx/raw.png",
+          "comparisonPath": "final-matrix/thread-default-light-1280/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "4862aaa80b65f5042745686a8aa78f3f657a3af51eaf2b82ba19cecaa95ddfa9",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-matrix/thread-default-light-1280/lynx/geometry.json",
+          "styles": "final-matrix/thread-default-light-1280/lynx/styles.json",
+          "console": "final-matrix/thread-default-light-1280/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "thread",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-matrix/thread-default-light-1280/native/raw.png",
+          "comparisonPath": "final-matrix/thread-default-light-1280/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "4862aaa80b65f5042745686a8aa78f3f657a3af51eaf2b82ba19cecaa95ddfa9",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "geometry": "final-matrix/thread-default-light-1280/native/geometry.json",
+          "styles": "final-matrix/thread-default-light-1280/native/styles.json",
+          "console": "final-matrix/thread-default-light-1280/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "thread",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "thread-default-light-1440",
+      "label": "Thread transcript · light · 1440×900",
+      "semanticRoute": "thread",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "default",
+      "snapshotSha256": "45067be34ff504ba03901389178e8816fc7ad5537619d5d659dcbde24d65bb3b",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [
+        {
+          "id": "thread-default-light-1440-native-titlebar",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Native window/titlebar comparison normalization",
+          "summary": "Native content height excludes the 32px macOS titlebar while Browser viewport includes the full requested height.",
+          "impact": "Raw frame heights differ but product content coordinates align after named normalization.",
+          "recommendation": "Keep the center crop and 0.5 Native scale explicit in evidence metadata.",
+          "evidence": "final-matrix/thread-default-light-1440/native/capture.json",
+          "reason": "CoreGraphics outer bounds and DevTool content dimensions were verified for both target sizes."
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-matrix/thread-default-light-1440/web/raw.png",
+          "comparisonPath": "final-matrix/thread-default-light-1440/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "45067be34ff504ba03901389178e8816fc7ad5537619d5d659dcbde24d65bb3b",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-matrix/thread-default-light-1440/web/geometry.json",
+          "styles": "final-matrix/thread-default-light-1440/web/styles.json",
+          "console": "final-matrix/thread-default-light-1440/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "thread",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-matrix/thread-default-light-1440/lynx/raw.png",
+          "comparisonPath": "final-matrix/thread-default-light-1440/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "45067be34ff504ba03901389178e8816fc7ad5537619d5d659dcbde24d65bb3b",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-matrix/thread-default-light-1440/lynx/geometry.json",
+          "styles": "final-matrix/thread-default-light-1440/lynx/styles.json",
+          "console": "final-matrix/thread-default-light-1440/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "thread",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-matrix/thread-default-light-1440/native/raw.png",
+          "comparisonPath": "final-matrix/thread-default-light-1440/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "45067be34ff504ba03901389178e8816fc7ad5537619d5d659dcbde24d65bb3b",
+          "image": {
+            "width": 2880,
+            "height": 1736
+          },
+          "geometry": "final-matrix/thread-default-light-1440/native/geometry.json",
+          "styles": "final-matrix/thread-default-light-1440/native/styles.json",
+          "console": "final-matrix/thread-default-light-1440/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "thread",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "thread-default-dark-1280",
+      "label": "Thread transcript · dark · 1280×820",
+      "semanticRoute": "thread",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "default",
+      "snapshotSha256": "15bb4d4f44cee44ec6cc733b620cc8ae1d8a89caab898b30ce6445e034f7703b",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1280,
+        "height": 788
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [
+        {
+          "id": "thread-default-dark-1280-native-titlebar",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Native window/titlebar comparison normalization",
+          "summary": "Native content height excludes the 32px macOS titlebar while Browser viewport includes the full requested height.",
+          "impact": "Raw frame heights differ but product content coordinates align after named normalization.",
+          "recommendation": "Keep the center crop and 0.5 Native scale explicit in evidence metadata.",
+          "evidence": "final-matrix/thread-default-dark-1280/native/capture.json",
+          "reason": "CoreGraphics outer bounds and DevTool content dimensions were verified for both target sizes."
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-matrix/thread-default-dark-1280/web/raw.png",
+          "comparisonPath": "final-matrix/thread-default-dark-1280/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "15bb4d4f44cee44ec6cc733b620cc8ae1d8a89caab898b30ce6445e034f7703b",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-matrix/thread-default-dark-1280/web/geometry.json",
+          "styles": "final-matrix/thread-default-dark-1280/web/styles.json",
+          "console": "final-matrix/thread-default-dark-1280/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "thread",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-matrix/thread-default-dark-1280/lynx/raw.png",
+          "comparisonPath": "final-matrix/thread-default-dark-1280/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "15bb4d4f44cee44ec6cc733b620cc8ae1d8a89caab898b30ce6445e034f7703b",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-matrix/thread-default-dark-1280/lynx/geometry.json",
+          "styles": "final-matrix/thread-default-dark-1280/lynx/styles.json",
+          "console": "final-matrix/thread-default-dark-1280/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "thread",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-matrix/thread-default-dark-1280/native/raw.png",
+          "comparisonPath": "final-matrix/thread-default-dark-1280/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "15bb4d4f44cee44ec6cc733b620cc8ae1d8a89caab898b30ce6445e034f7703b",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "geometry": "final-matrix/thread-default-dark-1280/native/geometry.json",
+          "styles": "final-matrix/thread-default-dark-1280/native/styles.json",
+          "console": "final-matrix/thread-default-dark-1280/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "thread",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "thread-default-dark-1440",
+      "label": "Thread transcript · dark · 1440×900",
+      "semanticRoute": "thread",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "default",
+      "snapshotSha256": "be180cffc6ecfc215fcb02a070ccda92a85c7430c0acc4ddde0b9cb84bd53ace",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [
+        {
+          "id": "thread-default-dark-1440-native-titlebar",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Native window/titlebar comparison normalization",
+          "summary": "Native content height excludes the 32px macOS titlebar while Browser viewport includes the full requested height.",
+          "impact": "Raw frame heights differ but product content coordinates align after named normalization.",
+          "recommendation": "Keep the center crop and 0.5 Native scale explicit in evidence metadata.",
+          "evidence": "final-matrix/thread-default-dark-1440/native/capture.json",
+          "reason": "CoreGraphics outer bounds and DevTool content dimensions were verified for both target sizes."
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-matrix/thread-default-dark-1440/web/raw.png",
+          "comparisonPath": "final-matrix/thread-default-dark-1440/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "be180cffc6ecfc215fcb02a070ccda92a85c7430c0acc4ddde0b9cb84bd53ace",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-matrix/thread-default-dark-1440/web/geometry.json",
+          "styles": "final-matrix/thread-default-dark-1440/web/styles.json",
+          "console": "final-matrix/thread-default-dark-1440/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "thread",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-matrix/thread-default-dark-1440/lynx/raw.png",
+          "comparisonPath": "final-matrix/thread-default-dark-1440/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "be180cffc6ecfc215fcb02a070ccda92a85c7430c0acc4ddde0b9cb84bd53ace",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-matrix/thread-default-dark-1440/lynx/geometry.json",
+          "styles": "final-matrix/thread-default-dark-1440/lynx/styles.json",
+          "console": "final-matrix/thread-default-dark-1440/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "thread",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-matrix/thread-default-dark-1440/native/raw.png",
+          "comparisonPath": "final-matrix/thread-default-dark-1440/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "be180cffc6ecfc215fcb02a070ccda92a85c7430c0acc4ddde0b9cb84bd53ace",
+          "image": {
+            "width": 2880,
+            "height": 1736
+          },
+          "geometry": "final-matrix/thread-default-dark-1440/native/geometry.json",
+          "styles": "final-matrix/thread-default-dark-1440/native/styles.json",
+          "console": "final-matrix/thread-default-dark-1440/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "thread",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "settings-general-light-1280",
+      "label": "Settings General · light · 1280×820",
+      "semanticRoute": "settings-general",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "default",
+      "snapshotSha256": "4862aaa80b65f5042745686a8aa78f3f657a3af51eaf2b82ba19cecaa95ddfa9",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1280,
+        "height": 788
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [
+        {
+          "id": "settings-general-light-1280-native-titlebar",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Native window/titlebar comparison normalization",
+          "summary": "Native content height excludes the 32px macOS titlebar while Browser viewport includes the full requested height.",
+          "impact": "Raw frame heights differ but product content coordinates align after named normalization.",
+          "recommendation": "Keep the center crop and 0.5 Native scale explicit in evidence metadata.",
+          "evidence": "final-matrix/settings-general-light-1280/native/capture.json",
+          "reason": "CoreGraphics outer bounds and DevTool content dimensions were verified for both target sizes."
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-matrix/settings-general-light-1280/web/raw.png",
+          "comparisonPath": "final-matrix/settings-general-light-1280/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "4862aaa80b65f5042745686a8aa78f3f657a3af51eaf2b82ba19cecaa95ddfa9",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-matrix/settings-general-light-1280/web/geometry.json",
+          "styles": "final-matrix/settings-general-light-1280/web/styles.json",
+          "console": "final-matrix/settings-general-light-1280/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "settings-general",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-matrix/settings-general-light-1280/lynx/raw.png",
+          "comparisonPath": "final-matrix/settings-general-light-1280/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "4862aaa80b65f5042745686a8aa78f3f657a3af51eaf2b82ba19cecaa95ddfa9",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-matrix/settings-general-light-1280/lynx/geometry.json",
+          "styles": "final-matrix/settings-general-light-1280/lynx/styles.json",
+          "console": "final-matrix/settings-general-light-1280/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "settings-general",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-matrix/settings-general-light-1280/native/raw.png",
+          "comparisonPath": "final-matrix/settings-general-light-1280/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "4862aaa80b65f5042745686a8aa78f3f657a3af51eaf2b82ba19cecaa95ddfa9",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "geometry": "final-matrix/settings-general-light-1280/native/geometry.json",
+          "styles": "final-matrix/settings-general-light-1280/native/styles.json",
+          "console": "final-matrix/settings-general-light-1280/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "settings-general",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "settings-general-light-1440",
+      "label": "Settings General · light · 1440×900",
+      "semanticRoute": "settings-general",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "default",
+      "snapshotSha256": "c8f5980d7eb4005299d51daa192dc6420c4d8edb248663e75f9d866ad887511b",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [
+        {
+          "id": "settings-general-light-1440-native-titlebar",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Native window/titlebar comparison normalization",
+          "summary": "Native content height excludes the 32px macOS titlebar while Browser viewport includes the full requested height.",
+          "impact": "Raw frame heights differ but product content coordinates align after named normalization.",
+          "recommendation": "Keep the center crop and 0.5 Native scale explicit in evidence metadata.",
+          "evidence": "final-matrix/settings-general-light-1440/native/capture.json",
+          "reason": "CoreGraphics outer bounds and DevTool content dimensions were verified for both target sizes."
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-matrix/settings-general-light-1440/web/raw.png",
+          "comparisonPath": "final-matrix/settings-general-light-1440/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "c8f5980d7eb4005299d51daa192dc6420c4d8edb248663e75f9d866ad887511b",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-matrix/settings-general-light-1440/web/geometry.json",
+          "styles": "final-matrix/settings-general-light-1440/web/styles.json",
+          "console": "final-matrix/settings-general-light-1440/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "settings-general",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-matrix/settings-general-light-1440/lynx/raw.png",
+          "comparisonPath": "final-matrix/settings-general-light-1440/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "c8f5980d7eb4005299d51daa192dc6420c4d8edb248663e75f9d866ad887511b",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-matrix/settings-general-light-1440/lynx/geometry.json",
+          "styles": "final-matrix/settings-general-light-1440/lynx/styles.json",
+          "console": "final-matrix/settings-general-light-1440/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "settings-general",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-matrix/settings-general-light-1440/native/raw.png",
+          "comparisonPath": "final-matrix/settings-general-light-1440/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "c8f5980d7eb4005299d51daa192dc6420c4d8edb248663e75f9d866ad887511b",
+          "image": {
+            "width": 2880,
+            "height": 1736
+          },
+          "geometry": "final-matrix/settings-general-light-1440/native/geometry.json",
+          "styles": "final-matrix/settings-general-light-1440/native/styles.json",
+          "console": "final-matrix/settings-general-light-1440/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "settings-general",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "settings-general-dark-1280",
+      "label": "Settings General · dark · 1280×820",
+      "semanticRoute": "settings-general",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "default",
+      "snapshotSha256": "15bb4d4f44cee44ec6cc733b620cc8ae1d8a89caab898b30ce6445e034f7703b",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1280,
+        "height": 788
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [
+        {
+          "id": "settings-general-dark-1280-native-titlebar",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Native window/titlebar comparison normalization",
+          "summary": "Native content height excludes the 32px macOS titlebar while Browser viewport includes the full requested height.",
+          "impact": "Raw frame heights differ but product content coordinates align after named normalization.",
+          "recommendation": "Keep the center crop and 0.5 Native scale explicit in evidence metadata.",
+          "evidence": "final-matrix/settings-general-dark-1280/native/capture.json",
+          "reason": "CoreGraphics outer bounds and DevTool content dimensions were verified for both target sizes."
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-matrix/settings-general-dark-1280/web/raw.png",
+          "comparisonPath": "final-matrix/settings-general-dark-1280/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "15bb4d4f44cee44ec6cc733b620cc8ae1d8a89caab898b30ce6445e034f7703b",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-matrix/settings-general-dark-1280/web/geometry.json",
+          "styles": "final-matrix/settings-general-dark-1280/web/styles.json",
+          "console": "final-matrix/settings-general-dark-1280/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "settings-general",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-matrix/settings-general-dark-1280/lynx/raw.png",
+          "comparisonPath": "final-matrix/settings-general-dark-1280/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "15bb4d4f44cee44ec6cc733b620cc8ae1d8a89caab898b30ce6445e034f7703b",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-matrix/settings-general-dark-1280/lynx/geometry.json",
+          "styles": "final-matrix/settings-general-dark-1280/lynx/styles.json",
+          "console": "final-matrix/settings-general-dark-1280/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "settings-general",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-matrix/settings-general-dark-1280/native/raw.png",
+          "comparisonPath": "final-matrix/settings-general-dark-1280/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "15bb4d4f44cee44ec6cc733b620cc8ae1d8a89caab898b30ce6445e034f7703b",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "geometry": "final-matrix/settings-general-dark-1280/native/geometry.json",
+          "styles": "final-matrix/settings-general-dark-1280/native/styles.json",
+          "console": "final-matrix/settings-general-dark-1280/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "settings-general",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "settings-general-dark-1440",
+      "label": "Settings General · dark · 1440×900",
+      "semanticRoute": "settings-general",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "default",
+      "snapshotSha256": "be180cffc6ecfc215fcb02a070ccda92a85c7430c0acc4ddde0b9cb84bd53ace",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [
+        {
+          "id": "settings-general-dark-1440-native-titlebar",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Native window/titlebar comparison normalization",
+          "summary": "Native content height excludes the 32px macOS titlebar while Browser viewport includes the full requested height.",
+          "impact": "Raw frame heights differ but product content coordinates align after named normalization.",
+          "recommendation": "Keep the center crop and 0.5 Native scale explicit in evidence metadata.",
+          "evidence": "final-matrix/settings-general-dark-1440/native/capture.json",
+          "reason": "CoreGraphics outer bounds and DevTool content dimensions were verified for both target sizes."
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-matrix/settings-general-dark-1440/web/raw.png",
+          "comparisonPath": "final-matrix/settings-general-dark-1440/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "be180cffc6ecfc215fcb02a070ccda92a85c7430c0acc4ddde0b9cb84bd53ace",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-matrix/settings-general-dark-1440/web/geometry.json",
+          "styles": "final-matrix/settings-general-dark-1440/web/styles.json",
+          "console": "final-matrix/settings-general-dark-1440/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "settings-general",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-matrix/settings-general-dark-1440/lynx/raw.png",
+          "comparisonPath": "final-matrix/settings-general-dark-1440/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "be180cffc6ecfc215fcb02a070ccda92a85c7430c0acc4ddde0b9cb84bd53ace",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-matrix/settings-general-dark-1440/lynx/geometry.json",
+          "styles": "final-matrix/settings-general-dark-1440/lynx/styles.json",
+          "console": "final-matrix/settings-general-dark-1440/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "settings-general",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-matrix/settings-general-dark-1440/native/raw.png",
+          "comparisonPath": "final-matrix/settings-general-dark-1440/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "be180cffc6ecfc215fcb02a070ccda92a85c7430c0acc4ddde0b9cb84bd53ace",
+          "image": {
+            "width": 2880,
+            "height": 1736
+          },
+          "geometry": "final-matrix/settings-general-dark-1440/native/geometry.json",
+          "styles": "final-matrix/settings-general-dark-1440/native/styles.json",
+          "console": "final-matrix/settings-general-dark-1440/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "settings-general",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "kanban-project-light-1280",
+      "label": "Kanban project · light · 1280×820",
+      "semanticRoute": "kanban-project",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "default",
+      "snapshotSha256": "dae5409e1a6dcbe529d0a0c23113eb713cc43b010382efd6486b701239538652",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1280,
+        "height": 788
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [
+        {
+          "id": "kanban-project-light-1280-native-titlebar",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Native window/titlebar comparison normalization",
+          "summary": "Native content height excludes the 32px macOS titlebar while Browser viewport includes the full requested height.",
+          "impact": "Raw frame heights differ but product content coordinates align after named normalization.",
+          "recommendation": "Keep the center crop and 0.5 Native scale explicit in evidence metadata.",
+          "evidence": "final-matrix/kanban-project-light-1280/native/capture.json",
+          "reason": "CoreGraphics outer bounds and DevTool content dimensions were verified for both target sizes."
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-matrix/kanban-project-light-1280/web/raw.png",
+          "comparisonPath": "final-matrix/kanban-project-light-1280/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "dae5409e1a6dcbe529d0a0c23113eb713cc43b010382efd6486b701239538652",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-matrix/kanban-project-light-1280/web/geometry.json",
+          "styles": "final-matrix/kanban-project-light-1280/web/styles.json",
+          "console": "final-matrix/kanban-project-light-1280/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "kanban-project",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-matrix/kanban-project-light-1280/lynx/raw.png",
+          "comparisonPath": "final-matrix/kanban-project-light-1280/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "dae5409e1a6dcbe529d0a0c23113eb713cc43b010382efd6486b701239538652",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-matrix/kanban-project-light-1280/lynx/geometry.json",
+          "styles": "final-matrix/kanban-project-light-1280/lynx/styles.json",
+          "console": "final-matrix/kanban-project-light-1280/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "kanban-project",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-matrix/kanban-project-light-1280/native/raw.png",
+          "comparisonPath": "final-matrix/kanban-project-light-1280/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "dae5409e1a6dcbe529d0a0c23113eb713cc43b010382efd6486b701239538652",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "geometry": "final-matrix/kanban-project-light-1280/native/geometry.json",
+          "styles": "final-matrix/kanban-project-light-1280/native/styles.json",
+          "console": "final-matrix/kanban-project-light-1280/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "kanban-project",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "kanban-project-light-1440",
+      "label": "Kanban project · light · 1440×900",
+      "semanticRoute": "kanban-project",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "default",
+      "snapshotSha256": "45067be34ff504ba03901389178e8816fc7ad5537619d5d659dcbde24d65bb3b",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [
+        {
+          "id": "kanban-project-light-1440-native-titlebar",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Native window/titlebar comparison normalization",
+          "summary": "Native content height excludes the 32px macOS titlebar while Browser viewport includes the full requested height.",
+          "impact": "Raw frame heights differ but product content coordinates align after named normalization.",
+          "recommendation": "Keep the center crop and 0.5 Native scale explicit in evidence metadata.",
+          "evidence": "final-matrix/kanban-project-light-1440/native/capture.json",
+          "reason": "CoreGraphics outer bounds and DevTool content dimensions were verified for both target sizes."
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-matrix/kanban-project-light-1440/web/raw.png",
+          "comparisonPath": "final-matrix/kanban-project-light-1440/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "45067be34ff504ba03901389178e8816fc7ad5537619d5d659dcbde24d65bb3b",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-matrix/kanban-project-light-1440/web/geometry.json",
+          "styles": "final-matrix/kanban-project-light-1440/web/styles.json",
+          "console": "final-matrix/kanban-project-light-1440/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "kanban-project",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-matrix/kanban-project-light-1440/lynx/raw.png",
+          "comparisonPath": "final-matrix/kanban-project-light-1440/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "45067be34ff504ba03901389178e8816fc7ad5537619d5d659dcbde24d65bb3b",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-matrix/kanban-project-light-1440/lynx/geometry.json",
+          "styles": "final-matrix/kanban-project-light-1440/lynx/styles.json",
+          "console": "final-matrix/kanban-project-light-1440/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "kanban-project",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-matrix/kanban-project-light-1440/native/raw.png",
+          "comparisonPath": "final-matrix/kanban-project-light-1440/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "45067be34ff504ba03901389178e8816fc7ad5537619d5d659dcbde24d65bb3b",
+          "image": {
+            "width": 2880,
+            "height": 1736
+          },
+          "geometry": "final-matrix/kanban-project-light-1440/native/geometry.json",
+          "styles": "final-matrix/kanban-project-light-1440/native/styles.json",
+          "console": "final-matrix/kanban-project-light-1440/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "kanban-project",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "kanban-project-dark-1280",
+      "label": "Kanban project · dark · 1280×820",
+      "semanticRoute": "kanban-project",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "default",
+      "snapshotSha256": "2ee7e088d19d113f9a308c1f6024e573f4873906820630b2a068af025c1b62c2",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1280,
+        "height": 788
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [
+        {
+          "id": "kanban-project-dark-1280-native-titlebar",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Native window/titlebar comparison normalization",
+          "summary": "Native content height excludes the 32px macOS titlebar while Browser viewport includes the full requested height.",
+          "impact": "Raw frame heights differ but product content coordinates align after named normalization.",
+          "recommendation": "Keep the center crop and 0.5 Native scale explicit in evidence metadata.",
+          "evidence": "final-matrix/kanban-project-dark-1280/native/capture.json",
+          "reason": "CoreGraphics outer bounds and DevTool content dimensions were verified for both target sizes."
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-matrix/kanban-project-dark-1280/web/raw.png",
+          "comparisonPath": "final-matrix/kanban-project-dark-1280/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "2ee7e088d19d113f9a308c1f6024e573f4873906820630b2a068af025c1b62c2",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-matrix/kanban-project-dark-1280/web/geometry.json",
+          "styles": "final-matrix/kanban-project-dark-1280/web/styles.json",
+          "console": "final-matrix/kanban-project-dark-1280/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "kanban-project",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-matrix/kanban-project-dark-1280/lynx/raw.png",
+          "comparisonPath": "final-matrix/kanban-project-dark-1280/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "2ee7e088d19d113f9a308c1f6024e573f4873906820630b2a068af025c1b62c2",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-matrix/kanban-project-dark-1280/lynx/geometry.json",
+          "styles": "final-matrix/kanban-project-dark-1280/lynx/styles.json",
+          "console": "final-matrix/kanban-project-dark-1280/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "kanban-project",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-matrix/kanban-project-dark-1280/native/raw.png",
+          "comparisonPath": "final-matrix/kanban-project-dark-1280/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "2ee7e088d19d113f9a308c1f6024e573f4873906820630b2a068af025c1b62c2",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "geometry": "final-matrix/kanban-project-dark-1280/native/geometry.json",
+          "styles": "final-matrix/kanban-project-dark-1280/native/styles.json",
+          "console": "final-matrix/kanban-project-dark-1280/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "kanban-project",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "kanban-project-dark-1440",
+      "label": "Kanban project · dark · 1440×900",
+      "semanticRoute": "kanban-project",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "default",
+      "snapshotSha256": "ce542d330b140a0fa818198987ff61fb92644e3e9868d071a9e54153fa517e4b",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [
+        {
+          "id": "kanban-project-dark-1440-native-titlebar",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Native window/titlebar comparison normalization",
+          "summary": "Native content height excludes the 32px macOS titlebar while Browser viewport includes the full requested height.",
+          "impact": "Raw frame heights differ but product content coordinates align after named normalization.",
+          "recommendation": "Keep the center crop and 0.5 Native scale explicit in evidence metadata.",
+          "evidence": "final-matrix/kanban-project-dark-1440/native/capture.json",
+          "reason": "CoreGraphics outer bounds and DevTool content dimensions were verified for both target sizes."
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-matrix/kanban-project-dark-1440/web/raw.png",
+          "comparisonPath": "final-matrix/kanban-project-dark-1440/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "ce542d330b140a0fa818198987ff61fb92644e3e9868d071a9e54153fa517e4b",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-matrix/kanban-project-dark-1440/web/geometry.json",
+          "styles": "final-matrix/kanban-project-dark-1440/web/styles.json",
+          "console": "final-matrix/kanban-project-dark-1440/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "kanban-project",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-matrix/kanban-project-dark-1440/lynx/raw.png",
+          "comparisonPath": "final-matrix/kanban-project-dark-1440/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "ce542d330b140a0fa818198987ff61fb92644e3e9868d071a9e54153fa517e4b",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-matrix/kanban-project-dark-1440/lynx/geometry.json",
+          "styles": "final-matrix/kanban-project-dark-1440/lynx/styles.json",
+          "console": "final-matrix/kanban-project-dark-1440/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "kanban-project",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-matrix/kanban-project-dark-1440/native/raw.png",
+          "comparisonPath": "final-matrix/kanban-project-dark-1440/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "ce542d330b140a0fa818198987ff61fb92644e3e9868d071a9e54153fa517e4b",
+          "image": {
+            "width": 2880,
+            "height": 1736
+          },
+          "geometry": "final-matrix/kanban-project-dark-1440/native/geometry.json",
+          "styles": "final-matrix/kanban-project-dark-1440/native/styles.json",
+          "console": "final-matrix/kanban-project-dark-1440/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "kanban-project",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "pull-requests-light-1280",
+      "label": "Pull requests · light · 1280×820",
+      "semanticRoute": "pull-requests",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "default",
+      "snapshotSha256": "4862aaa80b65f5042745686a8aa78f3f657a3af51eaf2b82ba19cecaa95ddfa9",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1280,
+        "height": 788
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [
+        {
+          "id": "pull-requests-light-1280-native-titlebar",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Native window/titlebar comparison normalization",
+          "summary": "Native content height excludes the 32px macOS titlebar while Browser viewport includes the full requested height.",
+          "impact": "Raw frame heights differ but product content coordinates align after named normalization.",
+          "recommendation": "Keep the center crop and 0.5 Native scale explicit in evidence metadata.",
+          "evidence": "final-matrix/pull-requests-light-1280/native/capture.json",
+          "reason": "CoreGraphics outer bounds and DevTool content dimensions were verified for both target sizes."
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-matrix/pull-requests-light-1280/web/raw.png",
+          "comparisonPath": "final-matrix/pull-requests-light-1280/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "4862aaa80b65f5042745686a8aa78f3f657a3af51eaf2b82ba19cecaa95ddfa9",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-matrix/pull-requests-light-1280/web/geometry.json",
+          "styles": "final-matrix/pull-requests-light-1280/web/styles.json",
+          "console": "final-matrix/pull-requests-light-1280/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "pull-requests",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-matrix/pull-requests-light-1280/lynx/raw.png",
+          "comparisonPath": "final-matrix/pull-requests-light-1280/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "4862aaa80b65f5042745686a8aa78f3f657a3af51eaf2b82ba19cecaa95ddfa9",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-matrix/pull-requests-light-1280/lynx/geometry.json",
+          "styles": "final-matrix/pull-requests-light-1280/lynx/styles.json",
+          "console": "final-matrix/pull-requests-light-1280/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "pull-requests",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-matrix/pull-requests-light-1280/native/raw.png",
+          "comparisonPath": "final-matrix/pull-requests-light-1280/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "4862aaa80b65f5042745686a8aa78f3f657a3af51eaf2b82ba19cecaa95ddfa9",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "geometry": "final-matrix/pull-requests-light-1280/native/geometry.json",
+          "styles": "final-matrix/pull-requests-light-1280/native/styles.json",
+          "console": "final-matrix/pull-requests-light-1280/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "pull-requests",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "pull-requests-light-1440",
+      "label": "Pull requests · light · 1440×900",
+      "semanticRoute": "pull-requests",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "default",
+      "snapshotSha256": "45067be34ff504ba03901389178e8816fc7ad5537619d5d659dcbde24d65bb3b",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [
+        {
+          "id": "pull-requests-light-1440-native-titlebar",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Native window/titlebar comparison normalization",
+          "summary": "Native content height excludes the 32px macOS titlebar while Browser viewport includes the full requested height.",
+          "impact": "Raw frame heights differ but product content coordinates align after named normalization.",
+          "recommendation": "Keep the center crop and 0.5 Native scale explicit in evidence metadata.",
+          "evidence": "final-matrix/pull-requests-light-1440/native/capture.json",
+          "reason": "CoreGraphics outer bounds and DevTool content dimensions were verified for both target sizes."
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-matrix/pull-requests-light-1440/web/raw.png",
+          "comparisonPath": "final-matrix/pull-requests-light-1440/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "45067be34ff504ba03901389178e8816fc7ad5537619d5d659dcbde24d65bb3b",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-matrix/pull-requests-light-1440/web/geometry.json",
+          "styles": "final-matrix/pull-requests-light-1440/web/styles.json",
+          "console": "final-matrix/pull-requests-light-1440/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "pull-requests",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-matrix/pull-requests-light-1440/lynx/raw.png",
+          "comparisonPath": "final-matrix/pull-requests-light-1440/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "45067be34ff504ba03901389178e8816fc7ad5537619d5d659dcbde24d65bb3b",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-matrix/pull-requests-light-1440/lynx/geometry.json",
+          "styles": "final-matrix/pull-requests-light-1440/lynx/styles.json",
+          "console": "final-matrix/pull-requests-light-1440/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "pull-requests",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-matrix/pull-requests-light-1440/native/raw.png",
+          "comparisonPath": "final-matrix/pull-requests-light-1440/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "45067be34ff504ba03901389178e8816fc7ad5537619d5d659dcbde24d65bb3b",
+          "image": {
+            "width": 2880,
+            "height": 1736
+          },
+          "geometry": "final-matrix/pull-requests-light-1440/native/geometry.json",
+          "styles": "final-matrix/pull-requests-light-1440/native/styles.json",
+          "console": "final-matrix/pull-requests-light-1440/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "pull-requests",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "pull-requests-dark-1280",
+      "label": "Pull requests · dark · 1280×820",
+      "semanticRoute": "pull-requests",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "default",
+      "snapshotSha256": "2ee7e088d19d113f9a308c1f6024e573f4873906820630b2a068af025c1b62c2",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1280,
+        "height": 788
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [
+        {
+          "id": "pull-requests-dark-1280-native-titlebar",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Native window/titlebar comparison normalization",
+          "summary": "Native content height excludes the 32px macOS titlebar while Browser viewport includes the full requested height.",
+          "impact": "Raw frame heights differ but product content coordinates align after named normalization.",
+          "recommendation": "Keep the center crop and 0.5 Native scale explicit in evidence metadata.",
+          "evidence": "final-matrix/pull-requests-dark-1280/native/capture.json",
+          "reason": "CoreGraphics outer bounds and DevTool content dimensions were verified for both target sizes."
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-matrix/pull-requests-dark-1280/web/raw.png",
+          "comparisonPath": "final-matrix/pull-requests-dark-1280/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "2ee7e088d19d113f9a308c1f6024e573f4873906820630b2a068af025c1b62c2",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-matrix/pull-requests-dark-1280/web/geometry.json",
+          "styles": "final-matrix/pull-requests-dark-1280/web/styles.json",
+          "console": "final-matrix/pull-requests-dark-1280/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "pull-requests",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-matrix/pull-requests-dark-1280/lynx/raw.png",
+          "comparisonPath": "final-matrix/pull-requests-dark-1280/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "2ee7e088d19d113f9a308c1f6024e573f4873906820630b2a068af025c1b62c2",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-matrix/pull-requests-dark-1280/lynx/geometry.json",
+          "styles": "final-matrix/pull-requests-dark-1280/lynx/styles.json",
+          "console": "final-matrix/pull-requests-dark-1280/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "pull-requests",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-matrix/pull-requests-dark-1280/native/raw.png",
+          "comparisonPath": "final-matrix/pull-requests-dark-1280/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "2ee7e088d19d113f9a308c1f6024e573f4873906820630b2a068af025c1b62c2",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "geometry": "final-matrix/pull-requests-dark-1280/native/geometry.json",
+          "styles": "final-matrix/pull-requests-dark-1280/native/styles.json",
+          "console": "final-matrix/pull-requests-dark-1280/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "pull-requests",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "pull-requests-dark-1440",
+      "label": "Pull requests · dark · 1440×900",
+      "semanticRoute": "pull-requests",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "default",
+      "snapshotSha256": "ce542d330b140a0fa818198987ff61fb92644e3e9868d071a9e54153fa517e4b",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [
+        {
+          "id": "pull-requests-dark-1440-native-titlebar",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Native window/titlebar comparison normalization",
+          "summary": "Native content height excludes the 32px macOS titlebar while Browser viewport includes the full requested height.",
+          "impact": "Raw frame heights differ but product content coordinates align after named normalization.",
+          "recommendation": "Keep the center crop and 0.5 Native scale explicit in evidence metadata.",
+          "evidence": "final-matrix/pull-requests-dark-1440/native/capture.json",
+          "reason": "CoreGraphics outer bounds and DevTool content dimensions were verified for both target sizes."
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-matrix/pull-requests-dark-1440/web/raw.png",
+          "comparisonPath": "final-matrix/pull-requests-dark-1440/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "ce542d330b140a0fa818198987ff61fb92644e3e9868d071a9e54153fa517e4b",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-matrix/pull-requests-dark-1440/web/geometry.json",
+          "styles": "final-matrix/pull-requests-dark-1440/web/styles.json",
+          "console": "final-matrix/pull-requests-dark-1440/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "pull-requests",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-matrix/pull-requests-dark-1440/lynx/raw.png",
+          "comparisonPath": "final-matrix/pull-requests-dark-1440/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "ce542d330b140a0fa818198987ff61fb92644e3e9868d071a9e54153fa517e4b",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-matrix/pull-requests-dark-1440/lynx/geometry.json",
+          "styles": "final-matrix/pull-requests-dark-1440/lynx/styles.json",
+          "console": "final-matrix/pull-requests-dark-1440/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "pull-requests",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "default"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-matrix/pull-requests-dark-1440/native/raw.png",
+          "comparisonPath": "final-matrix/pull-requests-dark-1440/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "ce542d330b140a0fa818198987ff61fb92644e3e9868d071a9e54153fa517e4b",
+          "image": {
+            "width": 2880,
+            "height": 1736
+          },
+          "geometry": "final-matrix/pull-requests-dark-1440/native/geometry.json",
+          "styles": "final-matrix/pull-requests-dark-1440/native/styles.json",
+          "console": "final-matrix/pull-requests-dark-1440/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "pull-requests",
+            "theme": "dark",
             "density": "comfortable",
             "interactionState": "default"
           },
