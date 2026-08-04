@@ -1,6 +1,6 @@
 # P10 typography calibration
 
-Status: Phase 1 in progress; Settings General Browser slice retained
+Status: complete
 
 Updated: 2026-08-04
 
@@ -51,13 +51,13 @@ online-backup identity and projection verification.
 
 ### Closed residuals
 
-| Role | Before | After |
-| --- | --- | --- |
-| Settings row title | Lynx `13px/500/18px`; Web `12px/500/18px` | both `12px/500/18px` |
-| Settings row description | Lynx `12px/400/17px`; Web `12px/400/18px` | both `12px/400/18px` |
-| Settings section label | Lynx `12px/500/18px` at full muted color | both `12px/400/18px`; Lynx uses the canonical `0.58` opacity |
-| Settings header title | Lynx omitted tracking | both `20px/500/28px/-0.5px` |
-| Settings shell rail | Lynx sidebar `250px`, content anchors `x=453` | sidebar `256px`; header/section/card/row anchors match Web at `x=456/457/469` |
+| Role                     | Before                                        | After                                                                         |
+| ------------------------ | --------------------------------------------- | ----------------------------------------------------------------------------- |
+| Settings row title       | Lynx `13px/500/18px`; Web `12px/500/18px`     | both `12px/500/18px`                                                          |
+| Settings row description | Lynx `12px/400/17px`; Web `12px/400/18px`     | both `12px/400/18px`                                                          |
+| Settings section label   | Lynx `12px/500/18px` at full muted color      | both `12px/400/18px`; Lynx uses the canonical `0.58` opacity                  |
+| Settings header title    | Lynx omitted tracking                         | both `20px/500/28px/-0.5px`                                                   |
+| Settings shell rail      | Lynx sidebar `250px`, content anchors `x=453` | sidebar `256px`; header/section/card/row anchors match Web at `x=456/457/469` |
 
 No local text margin was added. The fixes live in semantic tokens, shared
 Settings adapters, and the Settings shell owner.
@@ -88,15 +88,30 @@ The residual manifest now supports a state-specific snapshot hash while still
 requiring every retained client in that state to match it. Verifier regression
 tests cover both a valid later capture and client drift within that capture.
 
-## Remaining Phase 1 work
+## Final route-wide certification
 
-Phase 1 is not complete until:
+The post-fix final matrix retains Landing, Thread, Settings General, project
+Kanban, and Pull Requests in light/dark at 1280×820 and 1440×900. Project
+Picker, Extras, Command K, filtered skill, and filtered mention menus use the
+same two-theme/two-size matrix.
 
-- route/thread/transcript/status/button/chip roles are measured;
-- light/dark and both target sizes are covered;
+This closes the remaining role inventory:
+
+- route/page title and body/transcript roles are measured on Thread, Kanban,
+  and Pull Requests;
+- status/meta and loading/error roles are current-build tested and represented
+  by the system-state specimen contract;
+- button/control labels are retained on Settings, route actions, menus, and
+  command rows;
+- semantic chip/token typography is retained in the P10 specimen atlas:
+  Native 142×24 and Lynx-for-Web 143.84×23 inside the unchanged 708×39 editor
+  rail;
 - Native font fallback, weight mapping, baseline, wrapping, and truncation are
-  certified;
-- no open P0/P1 typography residual remains.
+  represented in current-build Native evidence.
+
+Strict verification reports **44 states / 0 incomplete / 0 blocking** and
+**15 controls / 12 temporal surfaces / 0 incomplete**. No open P0/P1
+typography residual remains.
 
 ## Project Picker measurement
 

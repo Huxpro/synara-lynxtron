@@ -1,0 +1,97 @@
+{
+  "recordedAt": "2026-08-04T13:28:00+08:00",
+  "sourceHead": "52ec3f62cd961302c1660a6bc901ac8768330222",
+  "builds": {
+    "web": {
+      "command": "bun run build",
+      "workdir": "apps/web",
+      "result": "pass",
+      "modules": 8940,
+      "sha256": "80b162411ecbe7c2314e9ce1b4608d0582638b0eb77a3c5fb23305fb352c121f"
+    },
+    "lynxForWeb": {
+      "command": "bun run build:web",
+      "workdir": "apps/lynx",
+      "result": "pass",
+      "bundleKb": 2685.9,
+      "sha256": "28282050ea6656a02204339426d503973079b99c7273253ca24c7d8e5593e815"
+    },
+    "nativeDesktop": {
+      "command": "bun run build",
+      "workdir": "apps/lynx",
+      "result": "pass",
+      "bundleKb": 2583.5,
+      "sha256": "5c981c76148ede488412e26aa73f8c7da687716873ea47067a8535d97c99e8f7",
+      "webRelayMarkersAbsent": [
+        "synaraRpc",
+        "0.5.5-lynx-web",
+        "Synara relay endpoint",
+        "relayBridgeRequest",
+        "globalThis.localStorage"
+      ]
+    }
+  },
+  "strictEvidence": {
+    "perceptual": "44 states, 0 incomplete cells, 0 blocking residuals",
+    "specimens": "15 controls, 12 temporal surfaces, 0 incomplete specimens",
+    "perceptualVerifierTests": "11/11",
+    "specimenVerifierTests": "6/6",
+    "nativeCaptureHelperTests": "4/4"
+  },
+  "focusedTests": {
+    "lynx": "10 files, 39/39",
+    "web": "9 files, 195/195",
+    "transcriptGuardrails": "Web 175/175; Lynx 5/5"
+  },
+  "audits": {
+    "reuse": {
+      "result": "pass",
+      "gates": {
+        "threads": 56.14,
+        "threadsShell": 63.9,
+        "thread": 39.44,
+        "settings": 52.89,
+        "projects": 53.18,
+        "kanban": 53.18,
+        "pullRequests": 58.27
+      }
+    },
+    "style": {
+      "result": "pass",
+      "coveragePercent": 98.07,
+      "classes": 2275,
+      "weightedOccurrences": 13231
+    }
+  },
+  "heavyPass": {
+    "bunFmt": {
+      "result": "command-pass",
+      "filesProcessed": 3371,
+      "taskUnrelatedChangesRestored": 640,
+      "fmtCheckAfterRestore": "fail: 640 pre-existing tracked files differ from current oxfmt output",
+      "disposition": "The required formatter command completed. Per AGENTS.md, broad task-unrelated formatter churn was restored. The checkout's pre-existing formatter baseline is not globally clean."
+    },
+    "bunLint": {
+      "result": "pass-after-harness-cleanup",
+      "errors": 0,
+      "warnings": 406,
+      "firstAttemptFailure": "Untracked .p10-final-matrix external worktrees were scanned; owned harness cleanup removed the pollution before the passing rerun."
+    },
+    "bunTypecheck": {
+      "result": "pass",
+      "packages": "7/7"
+    }
+  },
+  "reactDoctor": {
+    "command": "npx react-doctor@latest --verbose --scope changed",
+    "result": "tool-start-failed",
+    "error": "npm EOVERRIDE: postcss override conflicts with the direct dependency",
+    "disposition": "The remaining product-source diff after the previously clean Composer scan contains only Kanban CSS and its focused test, not React component code. The tool failure is recorded and not reported as a passing scan."
+  },
+  "cleanup": {
+    "ownedPortsFree": [60442, 9985, 8904, 9229],
+    "namedBrowserSessionsClosed": ["p10-matrix-web", "p10-matrix-lynx"],
+    "temporaryPathsRemoved": [".p10-final-matrix", ".p10-final-native", "apps/web/public/lynx"],
+    "userClientsUntouched": ["8901/PID 68206", "8902/PID 12391", "8903/PID 18130"]
+  }
+}

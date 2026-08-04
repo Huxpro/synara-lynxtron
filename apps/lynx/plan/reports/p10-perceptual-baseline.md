@@ -1,6 +1,6 @@
 # P10 perceptual fidelity baseline
 
-Status: Phase 0 complete; Phase 1 typography calibration in progress
+Status: complete
 
 Updated: 2026-08-04
 

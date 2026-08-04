@@ -5178,3 +5178,32 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   175 tests**、Native thread body state **1 file / 5 tests**。普通working/tool
   activity不改变message signal；loading/error保留last-known-good rows，不触发
   measurement/follow feedback。
+
+## 2026-08-04 — P10 final verification and completion audit
+
+- final strict gates：perceptual **44 states / 0 incomplete / 0 blocking**；
+  specimens **15 controls / 12 temporal surfaces / 0 incomplete**；verifier
+  tests 11/11 + 6/6，Native helper 4/4。
+- final focused suites：Lynx **10 files / 39 tests**；Web **9 files / 195
+  tests**；其中transcript guardrails Web 175/175、Lynx 5/5。
+- production builds：
+  - Web 8940 modules，`index.html` `80b16241…`；
+  - Lynx-for-Web 2685.9kB，bundle `28282050…`；
+  - Native/Desktop 2583.5kB，bundle `5c981c76…`；
+  - Desktop bundle不含`synaraRpc`、`0.5.5-lynx-web`、relay symbols或
+    `globalThis.localStorage` Web-only markers。
+- strict audits：reuse七个screen全部pass；style 98.07%（2275 classes /
+  13231 weighted occurrences）。
+- heavy pass：`bun fmt`成功处理3371 files；按AGENTS.md恢复640个task外大规模
+  formatter churn，故仓库既有`fmt:check` baseline仍非clean；cleanup后`bun lint`
+  **0 errors / 406 warnings**，`bun typecheck` **7/7 packages**。该formatter
+  baseline事实明确记录，不冒充clean check。
+- React Doctor changed scan因npm `EOVERRIDE`（postcss override）未启动；最后剩余
+  product source diff仅Kanban CSS和focused test，不含React component source，且此前
+  Composer source scan为0 issues。
+- cleanup：owned ports 60442/9985/8904/9229释放，named browser sessions关闭，
+  `.p10-final-matrix`、`.p10-final-native`、`apps/web/public/lynx`删除；用户
+  8901/8902/8903 clients未触碰。
+- `p10-completion-audit.md`已逐项重审Phase 0–7、completion criteria、named
+  artifacts、tests/builds/audits/state identity与intentional deltas；无
+  `WEAK`/`MISSING`/uncertainty requirement。
