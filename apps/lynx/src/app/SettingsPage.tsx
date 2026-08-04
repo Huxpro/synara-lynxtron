@@ -91,6 +91,7 @@ import { Button } from '../components/ui/button';
 import { SettingsGeneralBooleanControlElement } from '../adapters/SettingsGeneralCompositionElements.lynx';
 import type { ResolvedKeybindingsConfig } from '@synara/contracts';
 import { SettingsUsagePanel } from './SettingsUsagePanel';
+import { SettingsProfilePanel } from './SettingsProfilePanel.lynx';
 
 const SETTINGS_LOCAL_SAVE_ERROR =
   'Changes could not be saved. Your current values are still shown.';
@@ -620,6 +621,7 @@ export function SettingsPage({
           activeSection={section}
           availableSections={[
             'general',
+            'profile',
             'appearance',
             'notifications',
             'behavior',
@@ -633,48 +635,54 @@ export function SettingsPage({
       </view>
 
       <scroll-view className="SettingsContent" scroll-orientation="vertical">
-        <view className="SettingsContentInner">
-          <SettingsPanelHeaderComposition
-            section={section}
-            restoreDisabled={
-              !ready ||
-              (section === 'shortcuts' || section === 'usage') ||
-              (section === 'general'
-                ? settingsGeneralValuesEqual(
-                    settings,
-                    DEFAULT_SETTINGS_GENERAL_VALUES
-                  )
-                : section === 'appearance'
-                  ? settingsAppearanceValuesEqual(
-                      appearance,
-                      DEFAULT_SETTINGS_APPEARANCE_VALUES
+        <view
+          className={`SettingsContentInner${
+            section === 'profile' ? ' SettingsContentInner--profile' : ''
+          }`}
+        >
+          {section !== 'profile' ? (
+            <SettingsPanelHeaderComposition
+              section={section}
+              restoreDisabled={
+                !ready ||
+                (section === 'shortcuts' || section === 'usage') ||
+                (section === 'general'
+                  ? settingsGeneralValuesEqual(
+                      settings,
+                      DEFAULT_SETTINGS_GENERAL_VALUES
                     )
-                  : section === 'behavior'
-                    ? behaviorSettingsValuesEqual(
-                        behavior,
-                        DEFAULT_BEHAVIOR_SETTINGS_VALUES
+                  : section === 'appearance'
+                    ? settingsAppearanceValuesEqual(
+                        appearance,
+                        DEFAULT_SETTINGS_APPEARANCE_VALUES
                       )
-                  : section === 'notifications'
-                    ? notificationSettingsValuesEqual(
-                        notifications,
-                        DEFAULT_NOTIFICATION_SETTINGS_VALUES
-                      )
-                  : section === 'models'
-                    ? settingsGitWritingModelValuesEqual(
-                        models,
-                        DEFAULT_SETTINGS_GIT_WRITING_MODEL_VALUES
-                      )
-                    : settingsProviderUpdateChecksValuesEqual(
-                          providers,
-                          DEFAULT_SETTINGS_PROVIDER_UPDATE_CHECKS_VALUES
-                        ) &&
-                        settingsProviderPickerValuesEqual(
-                          providerPicker,
-                          DEFAULT_SETTINGS_PROVIDER_PICKER_VALUES
-                        ))
-            }
-            onRestore={restoreDefaults}
-          />
+                    : section === 'behavior'
+                      ? behaviorSettingsValuesEqual(
+                          behavior,
+                          DEFAULT_BEHAVIOR_SETTINGS_VALUES
+                        )
+                      : section === 'notifications'
+                        ? notificationSettingsValuesEqual(
+                            notifications,
+                            DEFAULT_NOTIFICATION_SETTINGS_VALUES
+                          )
+                        : section === 'models'
+                          ? settingsGitWritingModelValuesEqual(
+                              models,
+                              DEFAULT_SETTINGS_GIT_WRITING_MODEL_VALUES
+                            )
+                          : settingsProviderUpdateChecksValuesEqual(
+                                providers,
+                                DEFAULT_SETTINGS_PROVIDER_UPDATE_CHECKS_VALUES
+                              ) &&
+                              settingsProviderPickerValuesEqual(
+                                providerPicker,
+                                DEFAULT_SETTINGS_PROVIDER_PICKER_VALUES
+                              ))
+              }
+              onRestore={restoreDefaults}
+            />
+          ) : null}
 
           {ready ? (
             <>
@@ -684,6 +692,8 @@ export function SettingsPage({
                   defaults={DEFAULT_SETTINGS_GENERAL_VALUES}
                   onChange={update}
                 />
+              ) : section === 'profile' ? (
+                <SettingsProfilePanel />
               ) : section === 'appearance' ? (
                 <SettingsAppearanceComposition
                   values={appearance}
@@ -780,14 +790,16 @@ export function SettingsPage({
                   />
                 </>
               )}
-              <PanelStateMessage
-                density="compact"
-                className="SettingsSavedState"
-                intent={persistencePresentation.intent}
-                announcement={persistencePresentation.announcement}
-              >
-                {persistencePresentation.message}
-              </PanelStateMessage>
+              {section !== 'profile' ? (
+                <PanelStateMessage
+                  density="compact"
+                  className="SettingsSavedState"
+                  intent={persistencePresentation.intent}
+                  announcement={persistencePresentation.announcement}
+                >
+                  {persistencePresentation.message}
+                </PanelStateMessage>
+              ) : null}
               {persistenceState.kind === 'error' ? (
                 <Button
                   variant="outline"

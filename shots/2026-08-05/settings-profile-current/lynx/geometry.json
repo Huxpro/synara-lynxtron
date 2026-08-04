@@ -1,0 +1,21 @@
+{
+  "client": "lynx",
+  "stateId": "settings-profile-light-1280",
+  "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 },
+  "roles": {
+    "profile": { "x": 408, "y": 32, "width": 720, "height": 821.5 },
+    "actions": { "x": 408, "y": 32, "width": 720, "height": 28 },
+    "identity": { "x": 408, "y": 88, "width": 720, "height": 137 },
+    "avatar": { "x": 736, "y": 88, "width": 64, "height": 64 },
+    "name": { "x": 711.75, "y": 164, "width": 112.5, "height": 29 },
+    "stats": { "x": 408, "y": 253, "width": 720, "height": 64 },
+    "activity": { "x": 408, "y": 345, "width": 720, "height": 168.5 },
+    "heatmap": { "x": 408, "y": 377, "width": 720, "height": 136.5 },
+    "heatmapGrid": { "x": 408, "y": 377, "width": 720, "height": 112 },
+    "heatmapMonths": { "x": 408, "y": 492, "width": 720, "height": 21.5 },
+    "columns": { "x": 408, "y": 541.5, "width": 720, "height": 232 },
+    "modelUsage": { "x": 408, "y": 801.5, "width": 720, "height": 52 }
+  },
+  "heatmapCellCount": 274,
+  "insightRowCount": 7
+}

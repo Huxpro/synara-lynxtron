@@ -1,0 +1,348 @@
+.SettingsProfile,
+.SettingsProfileIdentity,
+.SettingsProfileSection,
+.SettingsProfileColumn,
+.SettingsProfileList,
+.SettingsProfileModels,
+.SettingsProfileModel {
+  display: flex;
+  flex-direction: column;
+}
+
+.SettingsProfile {
+  width: 100%;
+  gap: 28px;
+}
+
+.SettingsProfileActions {
+  height: 28px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.SettingsProfileIdentity {
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.SettingsProfileAvatar {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 32px;
+  background-color: #22c55e;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.SettingsProfileAvatarText {
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.SettingsProfileName {
+  color: var(--foreground);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 29px;
+  letter-spacing: -0.5px;
+}
+
+.SettingsProfileHandleLine {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+.SettingsProfileHandle,
+.SettingsProfileDot {
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.SettingsProfileBadge {
+  padding: 1px 6px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.SettingsProfileStats {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.SettingsProfileStat {
+  width: 20%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 12px 6px;
+  border-left: 1px solid var(--border);
+}
+
+.SettingsProfileStat:first-child {
+  border-left-width: 0;
+}
+
+.SettingsProfileStatValue,
+.SettingsProfileStatLabel {
+  width: 100%;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+}
+
+.SettingsProfileStatValue {
+  color: var(--foreground);
+}
+
+.SettingsProfileStatLabel {
+  overflow: hidden;
+  color: var(--muted-foreground);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.SettingsProfileSection {
+  min-width: 0;
+  gap: 12px;
+}
+
+.SettingsProfileSectionTitle {
+  color: var(--foreground);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.SettingsProfileHeatmap {
+  width: 100%;
+  height: 136.5px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.SettingsProfileHeatmapGrid {
+  width: 100%;
+  height: 112px;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 3px;
+}
+
+.SettingsProfileHeatmapColumn {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.SettingsProfileHeatmapCell {
+  min-height: 0;
+  flex: 1;
+  border-radius: 3px;
+  background-color: var(--muted);
+  opacity: 0.7;
+}
+
+.SettingsProfileHeatmapCell--1 {
+  background-color: rgba(1, 105, 204, 0.24);
+  opacity: 1;
+}
+
+.SettingsProfileHeatmapCell--2 {
+  background-color: rgba(1, 105, 204, 0.46);
+  opacity: 1;
+}
+
+.SettingsProfileHeatmapCell--3 {
+  background-color: rgba(1, 105, 204, 0.72);
+  opacity: 1;
+}
+
+.SettingsProfileHeatmapCell--4 {
+  background-color: var(--info);
+  opacity: 1;
+}
+
+.SettingsProfileHeatmapMonths {
+  width: 100%;
+  height: 21.5px;
+  display: flex;
+  flex-direction: row;
+  gap: 3px;
+}
+
+.SettingsProfileHeatmapMonth {
+  min-width: 0;
+  flex: 1;
+  overflow: visible;
+  color: var(--muted-foreground);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 12px;
+  white-space: nowrap;
+}
+
+.SettingsProfileColumns {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 48px;
+}
+
+.SettingsProfileColumn {
+  width: calc((100% - 48px) / 2);
+  min-width: 0;
+  gap: 12px;
+}
+
+.SettingsProfileList {
+  gap: 10px;
+}
+
+.SettingsProfileInsightRow,
+.SettingsProfilePluginRow,
+.SettingsProfilePluginIdentity,
+.SettingsProfileModelLine {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.SettingsProfileInsightRow,
+.SettingsProfilePluginRow,
+.SettingsProfileModelLine {
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.SettingsProfileInsightLabel,
+.SettingsProfileInsightValue,
+.SettingsProfilePluginName,
+.SettingsProfilePluginCount,
+.SettingsProfileModelName,
+.SettingsProfileModelPercent,
+.SettingsProfileEmpty {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.SettingsProfileInsightLabel,
+.SettingsProfilePluginCount,
+.SettingsProfileModelPercent,
+.SettingsProfileEmpty {
+  color: var(--muted-foreground);
+}
+
+.SettingsProfileInsightValue,
+.SettingsProfilePluginName,
+.SettingsProfileModelName {
+  min-width: 0;
+  color: var(--foreground);
+}
+
+.SettingsProfileInsightValue,
+.SettingsProfileModelName {
+  flex: 1;
+  overflow: hidden;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.SettingsProfilePluginIdentity {
+  min-width: 0;
+  flex: 1;
+  gap: 10px;
+}
+
+.SettingsProfilePluginIcon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background-color: var(--muted);
+}
+
+.SettingsProfilePluginIconText {
+  color: var(--muted-foreground);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.SettingsProfilePluginName {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.SettingsProfileModels {
+  flex-direction: row;
+  flex-wrap: wrap;
+  column-gap: 48px;
+  row-gap: 12px;
+}
+
+.SettingsProfileModel {
+  width: calc((100% - 48px) / 2);
+  gap: 6px;
+}
+
+.SettingsProfileModelName {
+  text-align: left;
+}
+
+.SettingsProfileModelTrack {
+  width: 100%;
+  height: 4px;
+  overflow: hidden;
+  border-radius: 2px;
+  background-color: var(--muted);
+}
+
+.SettingsProfileModelFill {
+  height: 4px;
+  border-radius: 2px;
+  background-color: var(--info);
+}
+
+.SettingsProfileState {
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.SettingsProfileStateText {
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+}

@@ -726,6 +726,10 @@
   padding: 32px 24px 48px;
 }
 
+.SettingsContentInner--profile {
+  max-width: 768px;
+}
+
 .SharedPanelStateMessage.SettingsSavedState {
   flex: none;
   height: auto;

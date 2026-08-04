@@ -1,0 +1,17 @@
+{
+  "client": "lynx",
+  "stateId": "settings-profile-light-1280",
+  "snapshotSha256": "c8dc59aee6d79dd9c166c410beacd9ea325fcadd686b13e2ac6ceae45eca93d6",
+  "stateEcho": {
+    "semanticRoute": "settings-profile",
+    "theme": "light",
+    "density": "comfortable",
+    "interactionState": "default"
+  },
+  "image": {
+    "width": 1280,
+    "height": 820
+  },
+  "origin": "http://localhost:8921/lynx/index.html",
+  "buildSha256": "bb4d3f2eef1f57fdd2924f8e53ff7266d867a06ef503133a154939338f1123ad"
+}

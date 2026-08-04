@@ -25,6 +25,8 @@ import type {
   PullRequestSetPinnedInput,
   PullRequestSetPinnedResult,
   PullRequestState,
+  ProfileStats,
+  ProfileTokenStats,
   ProviderKind,
   ProviderComposerCapabilities,
   ProviderListModelsResult,
@@ -419,6 +421,22 @@ export async function updateServerSettings(
 
 export async function fetchServerConfig(): Promise<ServerConfig> {
   return transportRequest('server.getConfig', {});
+}
+
+export async function fetchProfileStats(
+  utcOffsetMinutes: number
+): Promise<ProfileStats> {
+  return transportRequest<ProfileStats>('stats.getProfileStats', {
+    utcOffsetMinutes,
+  });
+}
+
+export async function fetchProfileTokenStats(
+  utcOffsetMinutes: number
+): Promise<ProfileTokenStats> {
+  return transportRequest<ProfileTokenStats>('stats.getProfileTokenStats', {
+    utcOffsetMinutes,
+  });
 }
 
 export async function fetchAllProviderUsage(

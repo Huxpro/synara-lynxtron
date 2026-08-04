@@ -1,0 +1,15 @@
+{
+  "client": "web",
+  "stateId": "settings-profile-light-1280",
+  "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 },
+  "roles": {
+    "profile": { "x": 408, "y": 32, "width": 720, "height": 822.546875 },
+    "actions": { "x": 408, "y": 32, "width": 720, "height": 28 },
+    "identity": { "x": 408, "y": 88, "width": 720, "height": 134 },
+    "avatar": { "x": 736, "y": 88, "width": 64, "height": 64 },
+    "name": { "x": 712.1875, "y": 164, "width": 111.609375, "height": 32 },
+    "stats": { "x": 408, "y": 250, "width": 720, "height": 68 },
+    "activity": { "x": 408, "y": 346, "width": 720, "height": 168.546875 },
+    "columns": { "x": 408, "y": 542.546875, "width": 720, "height": 232 }
+  }
+}
