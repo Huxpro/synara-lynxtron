@@ -92,6 +92,7 @@ import { SettingsGeneralBooleanControlElement } from '../adapters/SettingsGenera
 import type { ResolvedKeybindingsConfig } from '@synara/contracts';
 import { SettingsUsagePanel } from './SettingsUsagePanel';
 import { SettingsProfilePanel } from './SettingsProfilePanel.lynx';
+import { SettingsArchivedPanel } from './SettingsArchivedPanel.lynx';
 
 const SETTINGS_LOCAL_SAVE_ERROR =
   'Changes could not be saved. Your current values are still shown.';
@@ -626,6 +627,7 @@ export function SettingsPage({
             'notifications',
             'behavior',
             'shortcuts',
+            'archived',
             'models',
             'providers',
             'usage',
@@ -645,7 +647,9 @@ export function SettingsPage({
               section={section}
               restoreDisabled={
                 !ready ||
-                (section === 'shortcuts' || section === 'usage') ||
+                (section === 'shortcuts' ||
+                  section === 'usage' ||
+                  section === 'archived') ||
                 (section === 'general'
                   ? settingsGeneralValuesEqual(
                       settings,
@@ -769,6 +773,8 @@ export function SettingsPage({
                 />
               ) : section === 'usage' ? (
                 <SettingsUsagePanel />
+              ) : section === 'archived' ? (
+                <SettingsArchivedPanel />
               ) : section === 'models' ? (
                 <SettingsGitWritingModelComposition
                   values={models}
@@ -790,7 +796,7 @@ export function SettingsPage({
                   />
                 </>
               )}
-              {section !== 'profile' ? (
+              {section !== 'profile' && section !== 'archived' ? (
                 <PanelStateMessage
                   density="compact"
                   className="SettingsSavedState"

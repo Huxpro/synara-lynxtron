@@ -1,0 +1,106 @@
+.SettingsArchivedPanel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 24px;
+}
+
+.SettingsArchivedEmpty,
+.SettingsArchivedState {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 168px;
+  padding: 40px 20px;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-lg);
+  background-color: transparent;
+}
+
+.SettingsArchivedEmptyIconShell {
+  display: flex;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 12px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background-color: var(--background);
+  color: var(--muted-foreground);
+}
+
+.SettingsArchivedEmptyIcon {
+  width: 20px;
+  height: 20px;
+  color: var(--muted-foreground);
+}
+
+.SettingsArchivedEmptyTitle,
+.SettingsArchivedRowTitle {
+  color: var(--foreground);
+  font-size: var(--type-settings-row-title-size);
+  font-weight: 500;
+  line-height: var(--type-settings-row-title-line-height);
+}
+
+.SettingsArchivedEmptyDescription,
+.SettingsArchivedRowDescription,
+.SettingsArchivedStateText {
+  color: var(--muted-foreground);
+  font-size: var(--type-settings-row-description-size);
+  line-height: var(--type-settings-row-description-line-height);
+}
+
+.SettingsArchivedEmptyDescription {
+  margin-top: 4px;
+  text-align: center;
+}
+
+.SettingsArchivedState {
+  min-height: 112px;
+  gap: 12px;
+}
+
+.SettingsArchivedState--error,
+.SettingsArchivedRestoreError {
+  border-color: var(--destructive);
+}
+
+.SettingsArchivedRow {
+  display: flex;
+  width: 100%;
+  min-height: 60px;
+  padding: var(--app-density-settings-row-padding-y, 10px) 12px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.SettingsArchivedRow--divided {
+  border-top: 1px solid var(--border);
+}
+
+.SettingsArchivedRowCopy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.SettingsArchivedRestoreError {
+  display: flex;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--destructive);
+  border-radius: var(--radius-lg);
+}
+
+.SettingsArchivedRestoreErrorText {
+  color: var(--destructive);
+  font-size: var(--type-settings-row-description-size);
+  line-height: var(--type-settings-row-description-line-height);
+}

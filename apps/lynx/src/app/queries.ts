@@ -26,7 +26,10 @@ import {
   deriveTimelineEntries,
   deriveWorkLogEntries,
 } from '@synara-web/session-logic';
-import { createSidebarDisplayThreadsSelector } from '@synara-web/storeSelectors';
+import {
+  createSidebarDisplayThreadsSelector,
+  createThreadShellsSelector,
+} from '@synara-web/storeSelectors';
 import type {
   Project,
   SidebarThreadSummary,
@@ -57,6 +60,7 @@ export interface ThreadSummary {
   readonly messageCount: number;
   readonly createdAt?: string;
   readonly updatedAt: string;
+  readonly archivedAt?: string | null;
   readonly latestUserMessageAt?: string | null;
   readonly live: boolean;
   readonly provider?: ProviderKind;
@@ -96,6 +100,7 @@ export interface ThreadHeaderSummary {
 export interface SidebarSnapshot {
   readonly projects: readonly ProjectSummary[];
   readonly threads: readonly ThreadSummary[];
+  readonly archivedThreads: readonly ThreadSummary[];
   readonly searchProjects: readonly SidebarSearchProject[];
   readonly searchThreads: readonly SidebarSearchThread[];
   readonly kanbanProjects: readonly Pick<Project, 'id' | 'kind' | 'name'>[];
@@ -173,6 +178,9 @@ export async function fetchSidebarSnapshot(): Promise<SidebarSnapshot> {
     normalized.spaces.map((space) => [space.id, space.name])
   );
   const displayThreads = createSidebarDisplayThreadsSelector()(normalized);
+  const archivedThreadShells = createThreadShellsSelector()(normalized).filter(
+    (thread) => thread.archivedAt != null
+  );
   const searchMessagesByThreadId = new Map(
     searchSnapshot.threads.map((thread) => [thread.threadId, thread.messages] as const)
   );
@@ -187,6 +195,7 @@ export async function fetchSidebarSnapshot(): Promise<SidebarSnapshot> {
         0,
       createdAt: thread.createdAt,
       updatedAt: thread.updatedAt ?? thread.createdAt,
+      archivedAt: thread.archivedAt ?? null,
       latestUserMessageAt: thread.latestUserMessageAt ?? null,
       live: thread.hasLiveTailWork,
       provider: thread.session?.provider ?? thread.modelSelection.provider,
@@ -209,6 +218,19 @@ export async function fetchSidebarSnapshot(): Promise<SidebarSnapshot> {
         hasPendingUserInput: thread.hasPendingUserInput,
       }),
     }));
+  const archivedThreads = archivedThreadShells.map((thread) => ({
+    id: thread.id,
+    title: thread.title,
+    projectId: thread.projectId,
+    project: projectNames.get(thread.projectId) ?? 'Unknown project',
+    messageCount: normalized.messageIdsByThreadId?.[thread.id]?.length ?? 0,
+    createdAt: thread.createdAt,
+    updatedAt: thread.updatedAt ?? thread.createdAt,
+    archivedAt: thread.archivedAt ?? null,
+    latestUserMessageAt: thread.latestUserMessageAt ?? null,
+    live: false,
+    provider: thread.modelSelection.provider,
+  }));
   const searchProjects = normalized.projects.map((project) =>
     projectSidebarSearchProject({
       id: project.id,
@@ -253,6 +275,7 @@ export async function fetchSidebarSnapshot(): Promise<SidebarSnapshot> {
       isPinned: project.isPinned,
     })),
     threads,
+    archivedThreads,
     searchProjects,
     searchThreads,
     kanbanProjects: normalized.projects.map((project) => ({
