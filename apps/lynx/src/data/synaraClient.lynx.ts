@@ -40,6 +40,9 @@ import type {
   ServerSettingsPatch,
   ServerSettingsView,
   EditorId,
+  ExternalMcpCapability,
+  ExternalMcpCreateIntegrationResult,
+  ExternalMcpIntegration,
 } from '@synara/contracts';
 import { createWebSocket, resolveDefaultSocketUrl, type WebSocketLike } from '../platform/net.socket';
 import { sleepOnHost } from '../platform/timer';
@@ -455,6 +458,45 @@ export async function openPathInEditor(input: {
 
 export async function repairSynaraState(): Promise<OrchestrationReadModel> {
   return transportRequest<OrchestrationReadModel>('orchestration.repairState', {});
+}
+
+export async function fetchExternalMcpIntegrations(): Promise<
+  readonly ExternalMcpIntegration[]
+> {
+  return transportRequest<readonly ExternalMcpIntegration[]>(
+    'server.listExternalMcpIntegrations',
+    {}
+  );
+}
+
+export async function createExternalMcpIntegration(input: {
+  readonly name: string;
+  readonly projectScope: 'all' | 'selected';
+  readonly projectIds?: readonly string[];
+  readonly capabilities: readonly ExternalMcpCapability[];
+  readonly expiresInDays: number;
+}): Promise<ExternalMcpCreateIntegrationResult> {
+  return transportRequest<ExternalMcpCreateIntegrationResult>(
+    'server.createExternalMcpIntegration',
+    input
+  );
+}
+
+export async function revokeExternalMcpIntegration(
+  integrationId: string
+): Promise<{ readonly revoked: boolean }> {
+  return transportRequest('server.revokeExternalMcpIntegration', {
+    integrationId,
+  });
+}
+
+export async function refreshExternalMcpPairing(
+  integrationId: string
+): Promise<ExternalMcpCreateIntegrationResult> {
+  return transportRequest<ExternalMcpCreateIntegrationResult>(
+    'server.refreshExternalMcpPairing',
+    { integrationId }
+  );
 }
 
 export async function fetchProfileStats(

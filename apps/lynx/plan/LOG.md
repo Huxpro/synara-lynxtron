@@ -5268,3 +5268,20 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - Advanced exact-owned Native使用PID-derived `8904/session 1`、7 roles、console 0；
   owned KV byte-exact restored。证据位于
   `shots/2026-08-05/settings-advanced-current/`。
+
+## 2026-08-05 — Settings Integrations continuation
+
+- Integrations此前从Lynx Settings排除。当前slice实现完整external MCP workflow：
+  list/create/revoke/refresh RPC、name、all/selected project scope、safe core
+  capabilities、advanced permissions、canonical setup prompt、clipboard和connected
+  agent states；未伪造credential或pairing state。
+- current snapshot没有connected agents，留证只覆盖真实empty form，不创建、刷新或撤销
+  任何credential。create/setup/revoke/resume的产品契约由focused tests覆盖。
+- 首次Lynx几何使用72px form rows/92px empty，造成累计8px和34px residual；owner定位到
+  Integrations自身recipe，调整为79px rows与58px setup/empty。最终四行Web/Lynx
+  exact，empty Web `y=524,h=58`、Lynx `y=525,h=58`、Native
+  `y=522,h=58`。
+- focused tests **2 files / 7 tests**；Web、Lynx-for-Web、Native/Desktop builds
+  通过。exact-owned Native PID-derived `8904/session 1`、8 roles、console 0，
+  owned KV byte-exact restored；证据位于
+  `shots/2026-08-05/settings-integrations-current/`。

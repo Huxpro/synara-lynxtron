@@ -1,0 +1,152 @@
+.SettingsIntegrationsPanel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 24px;
+}
+
+.SettingsIntegrationsState {
+  display: flex;
+  min-height: 72px;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.SettingsIntegrationsStateText,
+.SettingsIntegrationsRowDescription {
+  color: var(--muted-foreground);
+  font-size: var(--type-settings-row-description-size);
+  line-height: var(--type-settings-row-description-line-height);
+}
+
+.SettingsIntegrationsRow,
+.SettingsIntegrationsConnection {
+  display: flex;
+  width: 100%;
+  min-height: 79px;
+  padding: var(--app-density-settings-row-padding-y, 10px) 12px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.SettingsIntegrationsRow--divided,
+.SettingsIntegrationsConnection--divided {
+  border-top: 1px solid var(--border);
+}
+
+.SettingsIntegrationsRowCopy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.SettingsIntegrationsRowTitle,
+.SettingsIntegrationsPermissionTitle,
+.SettingsIntegrationsProjectTitle {
+  color: var(--foreground);
+  font-size: var(--type-settings-row-title-size);
+  font-weight: 500;
+  line-height: var(--type-settings-row-title-line-height);
+}
+
+.SettingsIntegrationsNameInput {
+  width: 256px;
+}
+
+.SettingsIntegrationsProjectGrid,
+.SettingsIntegrationsAdvanced {
+  display: flex;
+  flex-direction: column;
+  margin-top: 12px;
+  gap: 8px;
+}
+
+.SettingsIntegrationsProject,
+.SettingsIntegrationsPermission {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.SettingsIntegrationsProject {
+  min-height: 36px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.SettingsIntegrationsProject--checked {
+  background-color: var(--muted);
+}
+
+.SettingsIntegrationsCheckbox {
+  display: flex;
+  width: 16px;
+  height: 16px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.SettingsIntegrationsCheckbox--checked {
+  border-color: var(--primary);
+  background-color: var(--primary);
+}
+
+.SettingsIntegrationsCheckmark {
+  color: var(--primary-foreground);
+  font-size: 11px;
+}
+
+.SettingsIntegrationsAdvanced {
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.SettingsIntegrationsPermission {
+  min-height: 48px;
+}
+
+.SettingsIntegrationsSetup,
+.SettingsIntegrationsEmpty {
+  display: flex;
+  flex-direction: column;
+  min-height: 58px;
+  padding: 10px 12px;
+  justify-content: center;
+  gap: 0;
+}
+
+.SettingsIntegrationsSetupActions,
+.SettingsIntegrationsConnectionActions {
+  display: flex;
+  margin-top: 8px;
+  align-items: center;
+  gap: 8px;
+}
+
+.SettingsIntegrationsConnectionActions {
+  width: 190px;
+  flex-shrink: 0;
+  justify-content: flex-end;
+}
+
+.SettingsIntegrationsNotice {
+  display: flex;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.SettingsIntegrationsNoticeText {
+  color: var(--foreground);
+  font-size: var(--type-settings-row-description-size);
+  line-height: var(--type-settings-row-description-line-height);
+}
