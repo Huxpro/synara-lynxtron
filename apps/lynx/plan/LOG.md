@@ -5085,3 +5085,15 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - 现有6-state atlas仅满足其中4个matrix entries；allow-incomplete现如实报告
   **36 missing required states / 0 blocking residuals**。后续Browser与Native capture必须
   逐项关闭该列表，不能再以canonical six-state strict green代理P10完成。
+
+## 2026-08-04 — P10 Kanban route-header rail closure
+
+- final route diagnostic在light/dark×1280/1440四格稳定发现Kanban title
+  `x -4px / y -1px`，而PR exact、Thread在1.5px内；该重复模式定位到Native adapter仍用
+  私有`20px / 44px` rail，Web shared header authority已是`24px / 46px`。
+- `SharedKanbanRouteHeader`与Row收敛到24px横距、46px高度；未在feature route添加margin。
+  focused Lynx route/state **4/4**、Web shared header **1/1**。
+- post-build三端实测title：Web `(312,13)`、Lynx-for-Web `(312,13)`、
+  Native `(312,13)`，均20px高；仅保留system-font/engine glyph advance宽差。
+- 该source change使此前pre-fix Lynx/Native matrix frames失效；后续final matrix必须用
+  post-fix bundle重拍，禁止沿用旧build evidence。
