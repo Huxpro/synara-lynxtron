@@ -5797,6 +5797,18 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
           "recommendation": "Retain query, result order, menu geometry, and typography in Browser; certify textarea metrics in Native.",
           "evidence": "browser/skill-menu-filtered/lynx/geometry.json",
           "reason": "The retained canonical value is exactly $review-agent and both clients return review-agent, review-bugbot, review-security, review in that order."
+        },
+        {
+          "id": "native-programmatic-value-ack-trigger",
+          "category": "INTERACTION",
+          "severity": "P1",
+          "status": "fixed",
+          "owner": "Native Composer value ACK transaction",
+          "summary": "A programmatic textarea setValue ACK always cleared the caller-owned command trigger, so Native paste, cut, and history restoration could close a correctly derived menu.",
+          "impact": "The filtered skill menu disappeared immediately after the canonical Native product paste path updated the editor.",
+          "recommendation": "Keep trigger disposition explicit on every programmatic Native value transaction.",
+          "evidence": "native/skill-menu-filtered/capture.json",
+          "reason": "The exact-owned Native capture retains the four ranked skill rows after the setValue ACK; focused ACK/editor/paste regressions pass."
         }
       ],
       "evidence": {
@@ -5823,11 +5835,12 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               "review-security",
               "review"
             ],
+            "activeFirst": true,
             "roles": {
               "surface": {
                 "tag": "DIV",
                 "className": "relative overflow-hidden rounded-xl border border-border bg-popover text-popover-foreground",
-                "text": "review-agentPerform a read-only, defect-first review of a specified code change and return every actionable finding. Use",
+                "text": "review-agentPerform a read-only, defect-first review of a specified code change and return every actionable finding. Use when another agent delegates review of uncommitted changes,",
                 "box": {
                   "x": 405,
                   "y": 292.75,
@@ -5854,7 +5867,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               "row": {
                 "tag": "DIV",
                 "className": "min-h-8 text-base outline-none data-disabled:pointer-events-none data-highlighted:text-[var(--color-text-foreground)] data-disabled:opacity-64 sm:min-h-7 sm:text-sm flex cursor-pointer select-none items-center gap-2 rounded-md px-2.5 py-1 transition-colors hover:bg-[var(--color-background-button-secondary-hover)] data-highlighted:bg-[var(--color-background-button-secondary-hover)] bg-[var(--color-background-button-secondary)] text-[var(--color-text-foreground)]",
-                "text": "review-agentPerform a read-only, defect-first review of a specified code change and return every actionable finding. Use",
+                "text": "review-agentPerform a read-only, defect-first review of a specified code change and return every actionable finding. Use when another agent delegates review of uncommitted changes,",
                 "box": {
                   "x": 410,
                   "y": 297.75,
@@ -5962,7 +5975,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               "desc": {
                 "tag": "SPAN",
                 "className": "truncate text-[length:var(--type-picker-description-size)] leading-[var(--type-picker-description-line-height)] text-muted-foreground/55",
-                "text": "Perform a read-only, defect-first review of a specified code change and return every actionable finding. Use when anothe",
+                "text": "Perform a read-only, defect-first review of a specified code change and return every actionable finding. Use when another agent delegates review of uncommitted changes, a base-bran",
                 "box": {
                   "x": 523.515625,
                   "y": 303.75,
@@ -6230,11 +6243,12 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               "review-security",
               "review"
             ],
+            "activeFirst": true,
             "roles": {
               "surface": {
                 "tag": "X-VIEW",
                 "className": "ComposerCommandMenuLynx",
-                "text": "review-agentPerform a read-only, defect-first review of a specified code change and return every actionable finding. Use",
+                "text": "review-agentPerform a read-only, defect-first review of a specified code change and return every actionable finding. Use when another agent delegates review of uncommitted changes,",
                 "box": {
                   "x": 405,
                   "y": 292,
@@ -6242,7 +6256,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 122
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -6261,7 +6275,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               "row": {
                 "tag": "X-VIEW",
                 "className": "ComposerCommandRowLynx ComposerCommandRowLynx--active",
-                "text": "review-agentPerform a read-only, defect-first review of a specified code change and return every actionable finding. Use",
+                "text": "review-agentPerform a read-only, defect-first review of a specified code change and return every actionable finding. Use when another agent delegates review of uncommitted changes,",
                 "box": {
                   "x": 410,
                   "y": 297,
@@ -6269,7 +6283,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 28
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -6296,7 +6310,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 16
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -6323,7 +6337,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 14
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -6350,7 +6364,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 16
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "11.5px",
                   "weight": "500",
                   "lineHeight": "16px",
@@ -6369,7 +6383,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               "desc": {
                 "tag": "X-TEXT",
                 "className": "ComposerCommandSecondaryLynx",
-                "text": "Perform a read-only, defect-first review of a specified code change and return every actionable finding. Use when anothe",
+                "text": "Perform a read-only, defect-first review of a specified code change and return every actionable finding. Use when another agent delegates review of uncommitted changes, a base-bran",
                 "box": {
                   "x": 523.515625,
                   "y": 303,
@@ -6377,7 +6391,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 16
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "11px",
                   "weight": "400",
                   "lineHeight": "16px",
@@ -6404,7 +6418,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 15
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "10.5px",
                   "weight": "400",
                   "lineHeight": "15px",
@@ -6431,7 +6445,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
                   "height": 0
                 },
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "12px",
                   "weight": "400",
                   "lineHeight": "19.5px",
@@ -6463,7 +6477,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
             "roles": {
               "surface": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -6481,7 +6495,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               },
               "row": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -6499,7 +6513,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               },
               "iconSlot": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -6517,7 +6531,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               },
               "icon": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "16px",
                   "weight": "400",
                   "lineHeight": "normal",
@@ -6535,7 +6549,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               },
               "title": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "11.5px",
                   "weight": "500",
                   "lineHeight": "16px",
@@ -6553,7 +6567,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               },
               "desc": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "11px",
                   "weight": "400",
                   "lineHeight": "16px",
@@ -6571,7 +6585,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               },
               "meta": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "10.5px",
                   "weight": "400",
                   "lineHeight": "15px",
@@ -6589,7 +6603,7 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
               },
               "editor": {
                 "font": {
-                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "family": "system-ui",
                   "size": "12px",
                   "weight": "400",
                   "lineHeight": "19.5px",
@@ -6615,19 +6629,492 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
           }
         },
         "native": {
-          "status": "pending",
-          "reason": "Current-build exact-owned Native capture has not been retained.",
-          "path": null,
-          "comparisonPath": null,
-          "geometry": null,
-          "geometryData": null,
-          "styles": null,
-          "stylesData": null,
-          "console": null,
+          "status": "retained",
+          "reason": null,
+          "path": "native/skill-menu-filtered/raw.png",
+          "comparisonPath": "native/skill-menu-filtered/comparison.png",
+          "geometry": "native/skill-menu-filtered/geometry.json",
+          "geometryData": {
+            "client": "native",
+            "stateId": "skill-menu-filtered",
+            "roles": {
+              "root": {
+                "nodeId": 13,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+                },
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1280,
+                  "height": 788
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "nodeId": 167,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "ComposerCommandMenuLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 405,
+                  "y": 276,
+                  "width": 726,
+                  "height": 122
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "nodeId": 177,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "aria-label": "review-agent",
+                  "aria-selected": "true",
+                  "focusable": "true",
+                  "aria-disabled": "false",
+                  "bindmouseenter": "144:0:bindmouseenter",
+                  "bindblur": "144:0:bindblur",
+                  "bindmouseleave": "144:0:bindmouseleave",
+                  "bindkeydown": "144:0:bindkeydown",
+                  "bindtap": "144:0:bindtap",
+                  "bindmouseup": "144:0:bindmouseup",
+                  "bindtouchstart": "144:0:bindtouchstart",
+                  "bindmousedown": "144:0:bindmousedown",
+                  "bindtouchend": "144:0:bindtouchend",
+                  "bindtouchcancel": "144:0:bindtouchcancel",
+                  "bindfocus": "144:0:bindfocus",
+                  "class": "ComposerCommandRowLynx ComposerCommandRowLynx--active"
+                },
+                "text": "",
+                "box": {
+                  "x": 410,
+                  "y": 281,
+                  "width": 716,
+                  "height": 28
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "iconSlot": {
+                "nodeId": 178,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "ComposerCommandIconSlotLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 420,
+                  "y": 287,
+                  "width": 16,
+                  "height": 16
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "0.7"
+                }
+              },
+              "icon": {
+                "nodeId": 183,
+                "nodeName": "SVG",
+                "attributes": {
+                  "content": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0d0d0d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-blocks\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M14 4a1 1 0 0 1 1 -1h5a1 1 0 0 1 1 1v5a1 1 0 0 1 -1 1h-5a1 1 0 0 1 -1 -1l0 -5\" /> <path d=\"M3 14h12a2 2 0 0 1 2 2v3a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h3a2 2 0 0 1 2 2v12\" /> </svg>",
+                  "class": "ComposerCommandIconLynx",
+                  "style": "height:14px;width:14px;"
+                },
+                "text": "",
+                "box": {
+                  "x": 421,
+                  "y": 288,
+                  "width": 14,
+                  "height": 14
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "0.7"
+                }
+              },
+              "title": {
+                "nodeId": 180,
+                "nodeName": "TEXT",
+                "attributes": {
+                  "class": "ComposerCommandTitleLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 444,
+                  "y": 287,
+                  "width": 77,
+                  "height": 16
+                },
+                "font": {
+                  "family": "",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "0.8"
+                }
+              },
+              "desc": {
+                "nodeId": 185,
+                "nodeName": "TEXT",
+                "attributes": {
+                  "class": "ComposerCommandSecondaryLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 527,
+                  "y": 287,
+                  "width": 535,
+                  "height": 16
+                },
+                "font": {
+                  "family": "",
+                  "size": "11px",
+                  "weight": "normal",
+                  "lineHeight": "16px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgba(13,13,13,0.596078)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "0.55"
+                }
+              },
+              "meta": {
+                "nodeId": 187,
+                "nodeName": "TEXT",
+                "attributes": {
+                  "class": "ComposerCommandMetaLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 1074,
+                  "y": 288,
+                  "width": 42,
+                  "height": 15
+                },
+                "font": {
+                  "family": "",
+                  "size": "10.5px",
+                  "weight": "normal",
+                  "lineHeight": "15px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgba(13,13,13,0.596078)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "0.42"
+                }
+              },
+              "editor": {
+                "nodeId": 127,
+                "nodeName": "TEXTAREA",
+                "attributes": {
+                  "aria-label": "Message composer",
+                  "accessibility-element": "true",
+                  "accessibility-label": "Message composer",
+                  "focusable": "true",
+                  "maxlength": "8000",
+                  "maxlines": "6",
+                  "enable-scroll-bar": "true",
+                  "react-ref-102-0": "1",
+                  "default-value": "$review-agent",
+                  "placeholder": "Ask for follow-up changes or attach images",
+                  "bindfocus": "102:4:",
+                  "bindselection": "102:6:",
+                  "bindblur": "102:5:",
+                  "bindinput": "102:7:",
+                  "class": "ComposerTextarea"
+                },
+                "text": "",
+                "box": {
+                  "x": 413,
+                  "y": 418,
+                  "width": 708,
+                  "height": 39
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "normal",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "native/skill-menu-filtered/styles.json",
+          "stylesData": {
+            "client": "native",
+            "stateId": "skill-menu-filtered",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "iconSlot": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "0.7"
+                }
+              },
+              "icon": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "0.7"
+                }
+              },
+              "title": {
+                "font": {
+                  "family": "",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "0.8"
+                }
+              },
+              "desc": {
+                "font": {
+                  "family": "",
+                  "size": "11px",
+                  "weight": "normal",
+                  "lineHeight": "16px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgba(13,13,13,0.596078)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "0.55"
+                }
+              },
+              "meta": {
+                "font": {
+                  "family": "",
+                  "size": "10.5px",
+                  "weight": "normal",
+                  "lineHeight": "15px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgba(13,13,13,0.596078)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "0.42"
+                }
+              },
+              "editor": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "normal",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "native/skill-menu-filtered/console.txt",
           "alignment": {
             "x": 0,
             "y": 0,
-            "scale": 1
+            "scale": 0.5
           }
         }
       }

@@ -5035,3 +5035,22 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   `11f29ffc…`并立即SIGCONT；Web/Lynx page errors与Native warning/error console均空。
 - landing/sidebar/composer三个Native required cells现retained，bundle
   `f799a838…`，PID-derived8904/session1；strict **6→3 incomplete / 0 blocking**。
+
+## 2026-08-04 — P10 canonical Native matrix close-out
+
+- Settings General与Project Picker exact-owned Native cells先行retained；最后关闭filtered
+  skill menu。真实Native setup必须让owned PID成为macOS text client并点击可见textarea；
+  DevTool touch、后台`focus()`和当前输入源的`Shift+4`均不能冒充真实`$`输入。
+- 最后一个产品root cause是programmatic `setValue`的异步`bindinput` ACK无条件清空
+  `composerTrigger`。Native value transaction现携带显式`triggerAfterAck`；paste/cut/
+  undo/redo恢复调用者trigger，token selection/send/clear等close路径保持null。
+- focused ACK/editor/paste/fidelity regression **14/14**；完整Lynx/Desktop production
+  build green。最终Native bundle `ac5bff5b…`。
+- final frozen三端transaction snapshot前后均为`c3703ba8…`。Web/Lynx-for-Web/Native
+  query均精确`$review-agent`，顺序均为review-agent/review-bugbot/review-security/review，
+  首项active；Native 9 roles、2560×1576、PID-derived8904/session1、console 0。
+- Browser raw 1280×820，Native raw 2560×1576，三端comparison统一1280×788；
+  strict atlas现为**6 states / 0 incomplete / 0 blocking**。
+- coverage boundary：这只关闭Phase 0 canonical六状态，不代表P10 final dark/two-size/
+  route-wide/motion/golden-control matrix完成；后续completion audit必须继续把这些缺口当作
+  required work。

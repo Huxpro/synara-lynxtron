@@ -182,3 +182,47 @@ for the screencast stream to end timed out after the first frame. The helper now
 uses serial CDP and the same first-frame/ACK flow as the official CLI. Failed
 attempts wrote no retained metadata. The diagnostic is not a required manifest
 cell because its route was intentionally offline; it proves the harness only.
+
+## Canonical six-state Native close-out
+
+The six Phase 0 canonical states now have like-for-like Web, Lynx-for-Web, and
+exact-owned Native evidence. The last cell was the filtered `$review-agent`
+skill menu.
+
+That close-out exposed one real Native interaction defect. Programmatic
+`setValue` emits a later `bindinput` ACK. The ACK handler always cleared
+`composerTrigger`, even when the caller had intentionally derived and opened a
+skill trigger after Native paste, cut, undo, or redo. The Native value
+transaction now carries an explicit `triggerAfterAck` disposition. Matching
+ACKs restore that disposition; token selection, send, clear, and other close
+paths still use `null`.
+
+The retained filtered state was created through the real Native input boundary:
+
+1. activate only the exact-owned PID long enough to make it the macOS text
+   client;
+2. click the visible textarea at its audited screen coordinates;
+3. invoke the existing host Edit path (`select-all`, `cut`, and
+   `composer:paste-text`);
+4. warm provider skill discovery before freezing the owned server;
+5. capture with the PID-gated atomic helper.
+
+The final frozen transaction used snapshot
+`c3703ba8e9429344f70ab0d984afcfa608635876a0cda6e945931d5376d6b3a4`.
+Before and after online backups matched. All clients retained the exact query
+and result order:
+
+1. `review-agent`;
+2. `review-bugbot`;
+3. `review-security`;
+4. `review`.
+
+The first row is active. Native retained nine required roles, a `2560×1576`
+frame, PID-derived `localhost:8904/session 1`, and an empty warning/error
+console. Browser frames are `1280×820`; all normalized comparison frames are
+`1280×788`.
+
+The strict atlas currently reports **6 states / 0 incomplete cells / 0 blocking
+residuals**. This closes only the Phase 0 canonical baseline. It does **not**
+certify the P10 final route × theme × size × state matrix, motion sequences, or
+golden-control state coverage.

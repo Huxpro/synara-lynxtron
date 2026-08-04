@@ -86,6 +86,10 @@ import {
   type ComposerNativeEditorSnapshot,
 } from './composerNativeEditor.logic';
 import {
+  consumeComposerNativeValueAck,
+  type ComposerNativeValueAck,
+} from './composerNativeValueAck.logic';
+import {
   createComposerEditorHistory,
   pushComposerEditorHistory,
   redoComposerEditorHistory,
@@ -300,11 +304,7 @@ export function Composer({
     useState<ComposerTrigger | null>(null);
   const [modelCatalogProvider, setModelCatalogProvider] =
     useState<ProviderKind | null>(null);
-  const pendingNativeValueRef = useRef<{
-    readonly selectionEnd: number;
-    readonly selectionStart: number;
-    readonly value: string;
-  } | null>(null);
+  const pendingNativeValueRef = useRef<ComposerNativeValueAck | null>(null);
   const nativeSelectionRef = useRef({
     selectionStart: draftProjection.displayText.length,
     selectionEnd: draftProjection.displayText.length,
@@ -523,7 +523,8 @@ export function Composer({
   function setNativeValue(
     canonicalValue: string,
     selectionStart = canonicalValue.length,
-    selectionEnd = selectionStart
+    selectionEnd = selectionStart,
+    triggerAfterAck: ComposerTrigger | null = null
   ) {
     'background only';
     const current =
@@ -554,7 +555,7 @@ export function Composer({
     };
     pendingNativeValueRef.current = {
       value: projection.displayText,
-      ...nextSelection,
+      triggerAfterAck,
     };
     appliedDisplayProjectionRef.current = projection.displayText;
     nativeSelectionRef.current = nextSelection;
@@ -719,14 +720,17 @@ export function Composer({
     setMentions(brandedThreadId, snapshot.context.mentions);
     setSkills(brandedThreadId, snapshot.context.skills);
     setPrompt(brandedThreadId, snapshot.value);
+    const nextTrigger = detectComposerTrigger(
+      snapshot.value,
+      snapshot.selectionStart
+    );
     setNativeValue(
       snapshot.value,
       snapshot.selectionStart,
-      snapshot.selectionEnd
+      snapshot.selectionEnd,
+      nextTrigger
     );
-    setComposerTrigger(
-      detectComposerTrigger(snapshot.value, snapshot.selectionStart)
-    );
+    setComposerTrigger(nextTrigger);
     setSendError(null);
   }
 
@@ -798,14 +802,17 @@ export function Composer({
     setPrompt(brandedThreadId, edit.canonicalText);
     setMentions(brandedThreadId, edit.mentions);
     setSkills(brandedThreadId, edit.skills);
+    const nextTrigger = detectComposerTrigger(
+      edit.canonicalText,
+      edit.canonicalSelectionStart
+    );
     setNativeValue(
       edit.canonicalText,
       edit.canonicalSelectionStart,
-      edit.canonicalSelectionEnd
+      edit.canonicalSelectionEnd,
+      nextTrigger
     );
-    setComposerTrigger(
-      detectComposerTrigger(edit.canonicalText, edit.canonicalSelectionStart)
-    );
+    setComposerTrigger(nextTrigger);
   }
 
   function selectSlashCommand(item: ComposerCommandItem) {
@@ -971,14 +978,17 @@ export function Composer({
         })
       );
     }
+    const nextTrigger = detectComposerTrigger(
+      transition.prompt,
+      transition.selectionStart
+    );
     setNativeValue(
       transition.prompt,
       transition.selectionStart,
-      transition.selectionEnd
+      transition.selectionEnd,
+      nextTrigger
     );
-    setComposerTrigger(
-      detectComposerTrigger(transition.prompt, transition.selectionStart)
-    );
+    setComposerTrigger(nextTrigger);
     setSendError(null);
   }
 
@@ -1361,10 +1371,14 @@ export function Composer({
               isComposing: event.detail.isComposing,
             };
             if (pendingNativeValueRef.current !== null) {
-              const pendingNativeValue = pendingNativeValueRef.current.value;
+              const pendingNativeValue = pendingNativeValueRef.current;
               pendingNativeValueRef.current = null;
-              if (event.detail.value === pendingNativeValue) {
-                setComposerTrigger(null);
+              const nativeValueAck = consumeComposerNativeValueAck({
+                eventValue: event.detail.value,
+                pending: pendingNativeValue,
+              });
+              if (nativeValueAck.matched) {
+                setComposerTrigger(nativeValueAck.triggerAfterAck);
                 return;
               }
             }

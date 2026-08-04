@@ -11,7 +11,7 @@
   "roles": {
     "surface": {
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "16px",
         "weight": "400",
         "lineHeight": "normal",
@@ -29,7 +29,7 @@
     },
     "row": {
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "16px",
         "weight": "400",
         "lineHeight": "normal",
@@ -47,7 +47,7 @@
     },
     "iconSlot": {
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "16px",
         "weight": "400",
         "lineHeight": "normal",
@@ -65,7 +65,7 @@
     },
     "icon": {
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "16px",
         "weight": "400",
         "lineHeight": "normal",
@@ -83,7 +83,7 @@
     },
     "title": {
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "11.5px",
         "weight": "500",
         "lineHeight": "16px",
@@ -101,7 +101,7 @@
     },
     "desc": {
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "11px",
         "weight": "400",
         "lineHeight": "16px",
@@ -119,7 +119,7 @@
     },
     "meta": {
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "10.5px",
         "weight": "400",
         "lineHeight": "15px",
@@ -137,7 +137,7 @@
     },
     "editor": {
       "font": {
-        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "family": "system-ui",
         "size": "12px",
         "weight": "400",
         "lineHeight": "19.5px",

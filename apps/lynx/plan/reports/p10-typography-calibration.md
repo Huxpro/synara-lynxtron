@@ -185,3 +185,23 @@ isolated snapshot,
 The owned server was briefly `SIGSTOP`'d only during the three-client capture
 window and immediately resumed, preventing background operational writes from
 invalidating snapshot identity.
+
+## Native filtered skill-menu certification
+
+The final filtered menu extends the Browser typography calibration to
+exact-owned Native:
+
+- title `11.5px/500/16px`;
+- description `11px/400/16px`;
+- meta `10.5px/400/15px`;
+- Native textarea `12px/19.5px`;
+- 16px icon slot with 14px painted icon bounds.
+
+Native engine glyph widths differ slightly from Browser system-font metrics
+(`review-agent` 77px Native versus 73.52px Web), but the row, icon rail,
+description rail, meta rail, and 726×122/716×28 frame anatomy remain stable.
+This is measured engine text rasterization, not a layout-owner split. No local
+text margin or feature-level optical offset was added.
+
+The retained state uses snapshot `c3703ba8…`, Native bundle `ac5bff5b…`, and
+empty fresh consoles on all three clients.

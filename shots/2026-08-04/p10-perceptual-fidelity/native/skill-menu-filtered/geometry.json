@@ -1,0 +1,307 @@
+{
+  "client": "native",
+  "stateId": "skill-menu-filtered",
+  "roles": {
+    "root": {
+      "nodeId": 13,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 788
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "surface": {
+      "nodeId": 167,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "ComposerCommandMenuLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 405,
+        "y": 276,
+        "width": 726,
+        "height": 122
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "row": {
+      "nodeId": 177,
+      "nodeName": "VIEW",
+      "attributes": {
+        "aria-label": "review-agent",
+        "aria-selected": "true",
+        "focusable": "true",
+        "aria-disabled": "false",
+        "bindmouseenter": "144:0:bindmouseenter",
+        "bindblur": "144:0:bindblur",
+        "bindmouseleave": "144:0:bindmouseleave",
+        "bindkeydown": "144:0:bindkeydown",
+        "bindtap": "144:0:bindtap",
+        "bindmouseup": "144:0:bindmouseup",
+        "bindtouchstart": "144:0:bindtouchstart",
+        "bindmousedown": "144:0:bindmousedown",
+        "bindtouchend": "144:0:bindtouchend",
+        "bindtouchcancel": "144:0:bindtouchcancel",
+        "bindfocus": "144:0:bindfocus",
+        "class": "ComposerCommandRowLynx ComposerCommandRowLynx--active"
+      },
+      "text": "",
+      "box": {
+        "x": 410,
+        "y": 281,
+        "width": 716,
+        "height": 28
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(232,242,250)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "iconSlot": {
+      "nodeId": 178,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "ComposerCommandIconSlotLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 420,
+        "y": 287,
+        "width": 16,
+        "height": 16
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "0.7"
+      }
+    },
+    "icon": {
+      "nodeId": 183,
+      "nodeName": "SVG",
+      "attributes": {
+        "content": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0d0d0d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-blocks\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M14 4a1 1 0 0 1 1 -1h5a1 1 0 0 1 1 1v5a1 1 0 0 1 -1 1h-5a1 1 0 0 1 -1 -1l0 -5\" /> <path d=\"M3 14h12a2 2 0 0 1 2 2v3a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h3a2 2 0 0 1 2 2v12\" /> </svg>",
+        "class": "ComposerCommandIconLynx",
+        "style": "height:14px;width:14px;"
+      },
+      "text": "",
+      "box": {
+        "x": 421,
+        "y": 288,
+        "width": 14,
+        "height": 14
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "0.7"
+      }
+    },
+    "title": {
+      "nodeId": 180,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "ComposerCommandTitleLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 444,
+        "y": 287,
+        "width": 77,
+        "height": 16
+      },
+      "font": {
+        "family": "",
+        "size": "11.5px",
+        "weight": "500",
+        "lineHeight": "16px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "0.8"
+      }
+    },
+    "desc": {
+      "nodeId": 185,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "ComposerCommandSecondaryLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 527,
+        "y": 287,
+        "width": 535,
+        "height": 16
+      },
+      "font": {
+        "family": "",
+        "size": "11px",
+        "weight": "normal",
+        "lineHeight": "16px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgba(13,13,13,0.596078)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "0.55"
+      }
+    },
+    "meta": {
+      "nodeId": 187,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "ComposerCommandMetaLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 1074,
+        "y": 288,
+        "width": 42,
+        "height": 15
+      },
+      "font": {
+        "family": "",
+        "size": "10.5px",
+        "weight": "normal",
+        "lineHeight": "15px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgba(13,13,13,0.596078)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "0.42"
+      }
+    },
+    "editor": {
+      "nodeId": 127,
+      "nodeName": "TEXTAREA",
+      "attributes": {
+        "aria-label": "Message composer",
+        "accessibility-element": "true",
+        "accessibility-label": "Message composer",
+        "focusable": "true",
+        "maxlength": "8000",
+        "maxlines": "6",
+        "enable-scroll-bar": "true",
+        "react-ref-102-0": "1",
+        "default-value": "$review-agent",
+        "placeholder": "Ask for follow-up changes or attach images",
+        "bindfocus": "102:4:",
+        "bindselection": "102:6:",
+        "bindblur": "102:5:",
+        "bindinput": "102:7:",
+        "class": "ComposerTextarea"
+      },
+      "text": "",
+      "box": {
+        "x": 413,
+        "y": 418,
+        "width": 708,
+        "height": 39
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "12px",
+        "weight": "normal",
+        "lineHeight": "19.5px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

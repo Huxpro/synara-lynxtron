@@ -1,1 +1,237 @@
-{"client":"web","stateId":"skill-menu-filtered","viewport":{"width":1280,"height":820,"dpr":1,"visualWidth":1280,"visualHeight":820},"query":"review-agent","items":["review-agent","review-bugbot","review-security","review"],"roles":{"surface":{"tag":"DIV","className":"relative overflow-hidden rounded-xl border border-border bg-popover text-popover-foreground","text":"review-agentPerform a read-only, defect-first review of a specified code change and return every actionable finding. Use","box":{"x":405,"y":292.75,"width":726,"height":122},"font":{"family":"-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif","size":"16px","weight":"400","lineHeight":"24px","letterSpacing":"normal"},"paint":{"color":"rgb(13, 13, 13)","background":"rgb(255, 255, 255)","borderColor":"rgba(13, 13, 13, 0.07)","borderWidth":"1px","radius":"14px","shadow":"none","opacity":"1"}},"row":{"tag":"DIV","className":"min-h-8 text-base outline-none data-disabled:pointer-events-none data-highlighted:text-[var(--color-text-foreground)] data-disabled:opacity-64 sm:min-h-7 sm:text-sm flex cursor-pointer select-none items-center gap-2 rounded-md px-2.5 py-1 transition-colors hover:bg-[var(--color-background-button-secondary-hover)] data-highlighted:bg-[var(--color-background-button-secondary-hover)] bg-[var(--color-background-button-secondary)] text-[var(--color-text-foreground)]","text":"review-agentPerform a read-only, defect-first review of a specified code change and return every actionable finding. Use","box":{"x":410,"y":297.75,"width":716,"height":28},"font":{"family":"-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif","size":"14px","weight":"400","lineHeight":"20px","letterSpacing":"normal"},"paint":{"color":"rgb(13, 13, 13)","background":"rgba(13, 13, 13, 0.04)","borderColor":"rgba(13, 13, 13, 0.07)","borderWidth":"0px","radius":"8px","shadow":"none","opacity":"1"}},"iconSlot":{"tag":"SPAN","className":"flex size-4 shrink-0 items-center justify-center text-foreground/70","text":"","box":{"x":420,"y":303.75,"width":16,"height":16},"font":{"family":"-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif","size":"14px","weight":"400","lineHeight":"20px","letterSpacing":"normal"},"paint":{"color":"oklab(0.159065 0.00000723451 0.00000317395 / 0.7)","background":"rgba(0, 0, 0, 0)","borderColor":"rgba(13, 13, 13, 0.07)","borderWidth":"0px","radius":"0px","shadow":"none","opacity":"1"}},"icon":{"tag":"SPAN","className":"inline-block shrink-0 bg-current size-3.5","text":"","box":{"x":421,"y":304.75,"width":14,"height":14},"font":{"family":"-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif","size":"14px","weight":"400","lineHeight":"20px","letterSpacing":"normal"},"paint":{"color":"oklab(0.159065 0.00000723451 0.00000317395 / 0.7)","background":"oklab(0.159065 0.00000723451 0.00000317395 / 0.7)","borderColor":"rgba(13, 13, 13, 0.07)","borderWidth":"0px","radius":"0px","shadow":"none","opacity":"1"}},"title":{"tag":"SPAN","className":"shrink-0 text-[length:var(--type-picker-title-size)] leading-[var(--type-picker-title-line-height)] font-medium text-foreground/80","text":"review-agent","box":{"x":444,"y":303.75,"width":73.515625,"height":16},"font":{"family":"-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif","size":"11.5px","weight":"500","lineHeight":"16px","letterSpacing":"normal"},"paint":{"color":"oklab(0.159065 0.00000723451 0.00000317395 / 0.8)","background":"rgba(0, 0, 0, 0)","borderColor":"rgba(13, 13, 13, 0.07)","borderWidth":"0px","radius":"0px","shadow":"none","opacity":"1"}},"desc":{"tag":"SPAN","className":"truncate text-[length:var(--type-picker-description-size)] leading-[var(--type-picker-description-line-height)] text-muted-foreground/55","text":"Perform a read-only, defect-first review of a specified code change and return every actionable finding. Use when anothe","box":{"x":523.515625,"y":303.75,"width":540.546875,"height":16},"font":{"family":"-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif","size":"11px","weight":"400","lineHeight":"16px","letterSpacing":"normal"},"paint":{"color":"oklab(0.159065 0.00000723451 0.00000317395 / 0.327843)","background":"rgba(0, 0, 0, 0)","borderColor":"rgba(13, 13, 13, 0.07)","borderWidth":"0px","radius":"0px","shadow":"none","opacity":"1"}},"meta":{"tag":"SPAN","className":"shrink-0 pl-2 text-right text-[length:var(--type-picker-meta-size)] leading-[var(--type-picker-meta-line-height)] text-muted-foreground/42","text":"Codex","box":{"x":1076.0625,"y":304.25,"width":39.9375,"height":15},"font":{"family":"-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif","size":"10.5px","weight":"400","lineHeight":"15px","letterSpacing":"normal"},"paint":{"color":"oklab(0.159065 0.00000723451 0.00000317395 / 0.250353)","background":"rgba(0, 0, 0, 0)","borderColor":"rgba(13, 13, 13, 0.07)","borderWidth":"0px","radius":"0px","shadow":"none","opacity":"1"}},"editor":{"tag":"DIV","className":"block max-h-[200px] w-full overflow-y-auto whitespace-pre-wrap break-words bg-transparent text-foreground focus:outline-none font-system-ui text-[length:var(--type-composer-editor-size)] leading-[var(--type-composer-editor-line-height)] min-h-[var(--app-density-composer-editor-min-height,2lh)] [&_p]:m-0","text":"$review-agent","box":{"x":413,"y":434.75,"width":708,"height":39},"font":{"family":"-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif","size":"12px","weight":"400","lineHeight":"19.5px","letterSpacing":"normal"},"paint":{"color":"rgb(13, 13, 13)","background":"rgba(0, 0, 0, 0)","borderColor":"rgba(13, 13, 13, 0.07)","borderWidth":"0px","radius":"0px","shadow":"none","opacity":"1"}}}}
+{
+  "client": "web",
+  "stateId": "skill-menu-filtered",
+  "viewport": {
+    "width": 1280,
+    "height": 820,
+    "dpr": 1,
+    "visualWidth": 1280,
+    "visualHeight": 820
+  },
+  "query": "review-agent",
+  "items": [
+    "review-agent",
+    "review-bugbot",
+    "review-security",
+    "review"
+  ],
+  "activeFirst": true,
+  "roles": {
+    "surface": {
+      "tag": "DIV",
+      "className": "relative overflow-hidden rounded-xl border border-border bg-popover text-popover-foreground",
+      "text": "review-agentPerform a read-only, defect-first review of a specified code change and return every actionable finding. Use when another agent delegates review of uncommitted changes,",
+      "box": {
+        "x": 405,
+        "y": 292.75,
+        "width": 726,
+        "height": 122
+      },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "24px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgb(255, 255, 255)",
+        "borderColor": "rgba(13, 13, 13, 0.07)",
+        "borderWidth": "1px",
+        "radius": "14px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "row": {
+      "tag": "DIV",
+      "className": "min-h-8 text-base outline-none data-disabled:pointer-events-none data-highlighted:text-[var(--color-text-foreground)] data-disabled:opacity-64 sm:min-h-7 sm:text-sm flex cursor-pointer select-none items-center gap-2 rounded-md px-2.5 py-1 transition-colors hover:bg-[var(--color-background-button-secondary-hover)] data-highlighted:bg-[var(--color-background-button-secondary-hover)] bg-[var(--color-background-button-secondary)] text-[var(--color-text-foreground)]",
+      "text": "review-agentPerform a read-only, defect-first review of a specified code change and return every actionable finding. Use when another agent delegates review of uncommitted changes,",
+      "box": {
+        "x": 410,
+        "y": 297.75,
+        "width": 716,
+        "height": 28
+      },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "14px",
+        "weight": "400",
+        "lineHeight": "20px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgba(13, 13, 13, 0.04)",
+        "borderColor": "rgba(13, 13, 13, 0.07)",
+        "borderWidth": "0px",
+        "radius": "8px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "iconSlot": {
+      "tag": "SPAN",
+      "className": "flex size-4 shrink-0 items-center justify-center text-foreground/70",
+      "text": "",
+      "box": {
+        "x": 420,
+        "y": 303.75,
+        "width": 16,
+        "height": 16
+      },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "14px",
+        "weight": "400",
+        "lineHeight": "20px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.7)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgba(13, 13, 13, 0.07)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "icon": {
+      "tag": "SPAN",
+      "className": "inline-block shrink-0 bg-current size-3.5",
+      "text": "",
+      "box": {
+        "x": 421,
+        "y": 304.75,
+        "width": 14,
+        "height": 14
+      },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "14px",
+        "weight": "400",
+        "lineHeight": "20px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.7)",
+        "background": "oklab(0.159065 0.00000723451 0.00000317395 / 0.7)",
+        "borderColor": "rgba(13, 13, 13, 0.07)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "title": {
+      "tag": "SPAN",
+      "className": "shrink-0 text-[length:var(--type-picker-title-size)] leading-[var(--type-picker-title-line-height)] font-medium text-foreground/80",
+      "text": "review-agent",
+      "box": {
+        "x": 444,
+        "y": 303.75,
+        "width": 73.515625,
+        "height": 16
+      },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "11.5px",
+        "weight": "500",
+        "lineHeight": "16px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.8)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgba(13, 13, 13, 0.07)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "desc": {
+      "tag": "SPAN",
+      "className": "truncate text-[length:var(--type-picker-description-size)] leading-[var(--type-picker-description-line-height)] text-muted-foreground/55",
+      "text": "Perform a read-only, defect-first review of a specified code change and return every actionable finding. Use when another agent delegates review of uncommitted changes, a base-bran",
+      "box": {
+        "x": 523.515625,
+        "y": 303.75,
+        "width": 540.546875,
+        "height": 16
+      },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "11px",
+        "weight": "400",
+        "lineHeight": "16px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.327843)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgba(13, 13, 13, 0.07)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "meta": {
+      "tag": "SPAN",
+      "className": "shrink-0 pl-2 text-right text-[length:var(--type-picker-meta-size)] leading-[var(--type-picker-meta-line-height)] text-muted-foreground/42",
+      "text": "Codex",
+      "box": {
+        "x": 1076.0625,
+        "y": 304.25,
+        "width": 39.9375,
+        "height": 15
+      },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "10.5px",
+        "weight": "400",
+        "lineHeight": "15px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.250353)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgba(13, 13, 13, 0.07)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "editor": {
+      "tag": "DIV",
+      "className": "block max-h-[200px] w-full overflow-y-auto whitespace-pre-wrap break-words bg-transparent text-foreground focus:outline-none font-system-ui text-[length:var(--type-composer-editor-size)] leading-[var(--type-composer-editor-line-height)] min-h-[var(--app-density-composer-editor-min-height,2lh)] [&_p]:m-0",
+      "text": "$review-agent",
+      "box": {
+        "x": 413,
+        "y": 434.75,
+        "width": 708,
+        "height": 39
+      },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "12px",
+        "weight": "400",
+        "lineHeight": "19.5px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgba(13, 13, 13, 0.07)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    }
+  }
+}

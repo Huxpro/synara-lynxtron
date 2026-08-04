@@ -649,7 +649,7 @@
       "theme": "light",
       "density": "comfortable",
       "interactionState": "skill-filtered-review-agent",
-      "snapshotSha256": "efff3a237391e06af6b7b1304a7f45055d86a803a5445de3c17afa79209de987",
+      "snapshotSha256": "c3703ba8e9429344f70ab0d984afcfa608635876a0cda6e945931d5376d6b3a4",
       "viewport": {
         "width": 1280,
         "height": 820,
@@ -708,6 +708,18 @@
           "recommendation": "Retain query, result order, menu geometry, and typography in Browser; certify textarea metrics in Native.",
           "evidence": "browser/skill-menu-filtered/lynx/geometry.json",
           "reason": "The retained canonical value is exactly $review-agent and both clients return review-agent, review-bugbot, review-security, review in that order."
+        },
+        {
+          "id": "native-programmatic-value-ack-trigger",
+          "category": "INTERACTION",
+          "severity": "P1",
+          "status": "fixed",
+          "owner": "Native Composer value ACK transaction",
+          "summary": "A programmatic textarea setValue ACK always cleared the caller-owned command trigger, so Native paste, cut, and history restoration could close a correctly derived menu.",
+          "impact": "The filtered skill menu disappeared immediately after the canonical Native product paste path updated the editor.",
+          "recommendation": "Keep trigger disposition explicit on every programmatic Native value transaction.",
+          "evidence": "native/skill-menu-filtered/capture.json",
+          "reason": "The exact-owned Native capture retains the four ranked skill rows after the setValue ACK; focused ACK/editor/paste regressions pass."
         }
       ],
       "evidence": {
@@ -716,8 +728,8 @@
           "path": "browser/skill-menu-filtered/web/raw.png",
           "comparisonPath": "browser/skill-menu-filtered/web/comparison.png",
           "captureTier": "browser",
-          "buildSha256": "9a353b905d1aaad20a47909dc30c12e4fa4dd438b7a95418342607ab99e5857b",
-          "snapshotSha256": "efff3a237391e06af6b7b1304a7f45055d86a803a5445de3c17afa79209de987",
+          "buildSha256": "58f0c51fc25c26d8a1f512d1374c585b6c83bab4ccf1345eed52265bc33ae4bb",
+          "snapshotSha256": "c3703ba8e9429344f70ab0d984afcfa608635876a0cda6e945931d5376d6b3a4",
           "image": {
             "width": 1280,
             "height": 820
@@ -742,8 +754,8 @@
           "path": "browser/skill-menu-filtered/lynx/raw.png",
           "comparisonPath": "browser/skill-menu-filtered/lynx/comparison.png",
           "captureTier": "browser",
-          "buildSha256": "c82d286739d4bfcec46bd4084d0802997d4b47865d0bc94eff0c2876bc26f8be",
-          "snapshotSha256": "efff3a237391e06af6b7b1304a7f45055d86a803a5445de3c17afa79209de987",
+          "buildSha256": "6acc6c4fb3f3f7ab5f2298afa28bf5d94f92160ef2091df1f5b1d428b15ca95c",
+          "snapshotSha256": "c3703ba8e9429344f70ab0d984afcfa608635876a0cda6e945931d5376d6b3a4",
           "image": {
             "width": 1280,
             "height": 820
@@ -764,8 +776,30 @@
           }
         },
         "native": {
-          "status": "pending",
-          "reason": "Current-build exact-owned Native capture has not been retained."
+          "status": "retained",
+          "path": "native/skill-menu-filtered/raw.png",
+          "comparisonPath": "native/skill-menu-filtered/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "ac5bff5b640742f1d2a42ccbb415f7ec8149ff8c9860c93acce5e139d15d1875",
+          "snapshotSha256": "c3703ba8e9429344f70ab0d984afcfa608635876a0cda6e945931d5376d6b3a4",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "geometry": "native/skill-menu-filtered/geometry.json",
+          "styles": "native/skill-menu-filtered/styles.json",
+          "console": "native/skill-menu-filtered/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "skill-filtered-review-agent"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
         }
       }
     },
