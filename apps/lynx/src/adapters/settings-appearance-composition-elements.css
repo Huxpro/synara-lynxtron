@@ -7,17 +7,20 @@
   flex-direction: column;
 }
 
-.SharedSettingsAppearanceRoot,
-.SharedSettingsAppearanceSection {
+.SharedSettingsAppearanceRoot {
   gap: 24px;
 }
 
+.SharedSettingsAppearanceSection {
+  gap: 6px;
+}
+
 .SharedSettingsAppearanceSectionTitle {
-  padding: 0 12px 8px;
+  padding: 4px 8px;
   color: var(--muted-foreground);
   font-size: 12px;
-  font-weight: 500;
-  line-height: 16px;
+  font-weight: 400;
+  line-height: 18px;
 }
 
 .SharedSettingsAppearanceCard {
@@ -33,8 +36,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  min-height: 72px;
-  padding: var(--app-density-settings-row-padding-y, 0.625rem) 16px;
+  padding: var(--app-density-settings-row-padding-y, 0.625rem) 12px;
   border-bottom-width: 1px;
   border-bottom-style: solid;
   border-bottom-color: var(--border);
@@ -54,18 +56,22 @@
   align-items: center;
 }
 
+.SharedSettingsAppearanceTitleLine {
+  min-height: 20px;
+}
+
 .SharedSettingsAppearanceRowTitle {
   color: var(--foreground);
-  font-size: 13px;
+  font-size: var(--type-settings-row-title-size);
   font-weight: 500;
-  line-height: 18px;
+  line-height: var(--type-settings-row-title-line-height);
 }
 
 .SharedSettingsAppearanceRowDescription,
 .SharedSettingsAppearanceSuffix {
   color: var(--muted-foreground);
-  font-size: 12px;
-  line-height: 17px;
+  font-size: var(--type-settings-row-description-size);
+  line-height: var(--type-settings-row-description-line-height);
 }
 
 .SharedSettingsAppearanceRowDescription {

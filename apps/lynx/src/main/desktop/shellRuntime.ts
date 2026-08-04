@@ -318,7 +318,12 @@ export function parseSynaraDeepLink(raw: string): string | null {
     const url = new URL(raw);
     if (url.protocol !== 'synara:') return null;
     if (url.hostname === 'threads') return '/';
-    if (url.hostname === 'settings') return '/settings';
+    if (url.hostname === 'settings') {
+      const section = url.pathname.replace(/^\/+/, '').split('/')[0];
+      return section
+        ? `/settings/${encodeURIComponent(decodeURIComponent(section))}`
+        : '/settings';
+    }
     if (url.hostname === 'update') return '/update';
     if (url.hostname === 'pull-requests') return '/pull-requests';
     if (url.hostname === 'kanban') {

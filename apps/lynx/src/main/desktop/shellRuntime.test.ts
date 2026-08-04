@@ -54,6 +54,9 @@ describe('shellRuntime', () => {
   it('maps supported deep links to memory-history routes', () => {
     expect(parseSynaraDeepLink('synara://threads')).toBe('/');
     expect(parseSynaraDeepLink('synara://settings')).toBe('/settings');
+    expect(parseSynaraDeepLink('synara://settings/appearance')).toBe(
+      '/settings/appearance'
+    );
     expect(parseSynaraDeepLink('synara://update')).toBe('/update');
     expect(parseSynaraDeepLink('synara://pull-requests')).toBe('/pull-requests');
     expect(parseSynaraDeepLink('synara://kanban')).toBe('/kanban');

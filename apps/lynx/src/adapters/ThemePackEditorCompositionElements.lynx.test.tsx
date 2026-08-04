@@ -1,5 +1,6 @@
 import { describe, expect, it, rs } from '@rstest/core';
 import { fireEvent, render } from '@lynx-js/react/testing-library';
+import { readFileSync } from 'node:fs';
 
 import { ThemePackBooleanControlElement } from './ThemePackEditorCompositionElements.lynx';
 
@@ -10,6 +11,29 @@ function switchElement(): Element {
 }
 
 describe('ThemePack boolean interaction contract', () => {
+  it('matches the Web two-row header and row typography', () => {
+    const styles = readFileSync(
+      new URL('./theme-pack-editor-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(styles).toMatch(
+      /\.SharedThemePackHeader\s*\{[^}]*height:\s*84px;[^}]*flex-wrap:\s*wrap;[^}]*padding:\s*12px 16px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedThemePackHeader\s*>\s*\.LxMenuRoot\s*\{[^}]*width:\s*100%;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedThemePackCodeSelect\s*\{[^}]*width:\s*100%;[^}]*min-height:\s*28px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedThemePackTitle\s*\{[^}]*font-size:\s*14px;[^}]*font-weight:\s*500;[^}]*line-height:\s*20px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedThemePackRowLabel\s*\{[^}]*font-size:\s*14px;[^}]*font-weight:\s*400;[^}]*line-height:\s*20px;/s
+    );
+  });
+
   it('publishes checked state and exact pointer/key/tap activation', () => {
     const onChange = rs.fn();
     render(

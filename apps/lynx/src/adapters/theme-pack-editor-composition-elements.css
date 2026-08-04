@@ -20,33 +20,52 @@
 }
 
 .SharedThemePackHeader {
-  min-height: 48px;
-  padding: 8px 12px;
+  height: 84px;
+  flex-wrap: wrap;
+  padding: 12px 16px;
   gap: 4px;
 }
 
 .SharedThemePackTitleLine {
   flex: 1;
-  gap: 5px;
+  min-width: 0;
+  gap: 8px;
 }
 
-.SharedThemePackTitle,
+.SharedThemePackTitle {
+  color: var(--foreground);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
 .SharedThemePackRowLabel {
   color: var(--foreground);
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.SharedThemePackHeader > .LxButton {
+  min-height: 24px;
+  padding: 3px 8px;
+}
+
+.SharedThemePackHeader > .LxMenuRoot {
+  width: 100%;
 }
 
 .SharedThemePackContext {
-  padding: 0 12px 10px;
+  padding: 0 16px 12px;
   color: var(--muted-foreground);
-  font-size: 10px;
+  font-size: 11px;
+  line-height: 16px;
 }
 
 .SharedThemePackRow {
-  min-height: 52px;
+  min-height: 48px;
   justify-content: space-between;
-  padding: 8px 12px;
+  padding: var(--app-density-settings-row-padding-y, 0.625rem) 12px;
   border-top-width: 1px;
   border-top-style: solid;
   border-top-color: var(--border);
@@ -77,7 +96,10 @@
 }
 
 .SharedThemePackCodeSelect {
-  min-width: 150px;
+  width: 100%;
+  min-height: 28px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .SharedThemePackCodePopup {
