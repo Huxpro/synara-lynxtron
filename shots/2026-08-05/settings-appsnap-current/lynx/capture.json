@@ -1,0 +1,17 @@
+{
+  "client": "lynx",
+  "stateId": "settings-appsnap-light-1280",
+  "snapshotSha256": "c5313f03838f0669fc1e8cb558bf7d2d04c86b479bebc3a1559472c740db95a5",
+  "stateEcho": {
+    "semanticRoute": "settings-appsnap",
+    "theme": "light",
+    "density": "comfortable",
+    "interactionState": "unavailable"
+  },
+  "image": {
+    "width": 1280,
+    "height": 820
+  },
+  "origin": "http://localhost:8921/lynx/index.html?build=appsnap-last",
+  "buildSha256": "9df0fcbf792a03d6d22da33150d854fbc0c09738db4809232b637ab07a53ebc1"
+}

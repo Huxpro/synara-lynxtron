@@ -5285,3 +5285,19 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   通过。exact-owned Native PID-derived `8904/session 1`、8 roles、console 0，
   owned KV byte-exact restored；证据位于
   `shots/2026-08-05/settings-integrations-current/`。
+
+## 2026-08-05 — Settings AppSnap capability boundary
+
+- AppSnap是最后一个Lynx Settings缺页。host audit确认Electron Web实现依赖
+  global shortcut conflict、Input Monitoring、Screen Recording、frontmost-window
+  capture与capture event routing；Lynxtron host当前均未暴露，只存在menu accelerator。
+- 因此不伪造可用toggle或shortcut picker。Lynx页面保留Web hero/Capture anatomy，
+  disabled switch无handler，并明确screen-capture/permission/global-shortcut bridge
+  unavailable；Destination仍展示真实Automatic语义，不读取或写入`enableAppSnap`。
+- 首版统一79px rows造成累计drift；测量后用AppSnap-owned named heights：
+  hero130、Enable84、Shortcut97、Destination79、Sound60。Web/Lynx/Native关键anchors
+  收敛到≤1px。
+- focused test **1 file / 2 tests**；Web、Lynx-for-Web、Native/Desktop builds通过。
+  exact-owned Native PID-derived `8903/session 1`、7 roles、console 0，owned KV
+  byte-exact restored；证据位于
+  `shots/2026-08-05/settings-appsnap-current/`。

@@ -97,6 +97,7 @@ import { SettingsWorktreesPanel } from './SettingsWorktreesPanel.lynx';
 import { SettingsSkillsPanel } from './SettingsSkillsPanel.lynx';
 import { SettingsAdvancedPanel } from './SettingsAdvancedPanel.lynx';
 import { SettingsIntegrationsPanel } from './SettingsIntegrationsPanel.lynx';
+import { SettingsAppSnapPanel } from './SettingsAppSnapPanel.lynx';
 
 const SETTINGS_LOCAL_SAVE_ERROR =
   'Changes could not be saved. Your current values are still shown.';
@@ -630,6 +631,7 @@ export function SettingsPage({
             'appearance',
             'notifications',
             'behavior',
+            'appsnap',
             'shortcuts',
             'worktrees',
             'archived',
@@ -657,6 +659,7 @@ export function SettingsPage({
                 !ready ||
                 (section === 'shortcuts' ||
                   section === 'usage' ||
+                  section === 'appsnap' ||
                   section === 'worktrees' ||
                   section === 'skills' ||
                   section === 'integrations' ||
@@ -749,6 +752,8 @@ export function SettingsPage({
                     ) : null
                   }
                 />
+              ) : section === 'appsnap' ? (
+                <SettingsAppSnapPanel />
               ) : section === 'notifications' ? (
                 <SettingsNotificationsPanel
                   settings={notifications}
@@ -817,6 +822,7 @@ export function SettingsPage({
                 </>
               )}
               {section !== 'profile' &&
+              section !== 'appsnap' &&
               section !== 'worktrees' &&
               section !== 'skills' &&
               section !== 'advanced' &&

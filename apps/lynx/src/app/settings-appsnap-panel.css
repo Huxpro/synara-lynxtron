@@ -1,0 +1,131 @@
+.SettingsAppSnapPanel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 24px;
+}
+
+.SettingsAppSnapHero {
+  display: flex;
+  width: 100%;
+  min-height: 130px;
+  padding: 14px 16px;
+  align-items: flex-start;
+  gap: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.SettingsAppSnapIcon {
+  position: relative;
+  display: flex;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.SettingsAppSnapIconFrame {
+  width: 16px;
+  height: 12px;
+  border: 1px solid var(--muted-foreground);
+  border-radius: 2px;
+}
+
+.SettingsAppSnapIconCorner {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  width: 5px;
+  height: 5px;
+  border-right: 1px solid var(--muted-foreground);
+  border-bottom: 1px solid var(--muted-foreground);
+}
+
+.SettingsAppSnapHeroCopy,
+.SettingsAppSnapRowCopy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.SettingsAppSnapRow {
+  display: flex;
+  width: 100%;
+  min-height: 79px;
+  padding: var(--app-density-settings-row-padding-y, 10px) 12px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.SettingsAppSnapRow--divided {
+  border-top: 1px solid var(--border);
+}
+
+.SettingsAppSnapRow--enable {
+  min-height: 84px;
+}
+
+.SettingsAppSnapRow--shortcut {
+  min-height: 97px;
+}
+
+.SettingsAppSnapRow--destination {
+  min-height: 79px;
+}
+
+.SettingsAppSnapRow--sound {
+  min-height: 60px;
+}
+
+.SettingsAppSnapRowTitle {
+  color: var(--foreground);
+  font-size: var(--type-settings-row-title-size);
+  font-weight: 500;
+  line-height: var(--type-settings-row-title-line-height);
+}
+
+.SettingsAppSnapRowDescription,
+.SettingsAppSnapStatus,
+.SettingsAppSnapUnavailable {
+  color: var(--muted-foreground);
+  font-size: var(--type-settings-row-description-size);
+  line-height: var(--type-settings-row-description-line-height);
+}
+
+.SettingsAppSnapUnavailable {
+  margin-top: 4px;
+}
+
+.SettingsAppSnapValue {
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.SettingsAppSnapDisabledSwitch {
+  display: flex;
+  width: 32px;
+  height: 18px;
+  flex-shrink: 0;
+  align-items: center;
+  padding: 2px;
+  border-radius: 9px;
+  background-color: var(--muted);
+  opacity: 0.5;
+}
+
+.SettingsAppSnapDisabledSwitchThumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 7px;
+  background-color: var(--background);
+}
