@@ -9,6 +9,368 @@
       "height": 788
     }
   },
+  "requiredMatrix": [
+    {
+      "id": "landing-default-light-1280",
+      "stateId": "landing-default",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "default",
+      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "landing-default-dark-1280",
+      "stateId": "landing-default-dark-1280",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "default",
+      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "landing-default-light-1440",
+      "stateId": "landing-default-light-1440",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "default",
+      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "landing-default-dark-1440",
+      "stateId": "landing-default-dark-1440",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "default",
+      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "thread-default-light-1280",
+      "stateId": "thread-default-light-1280",
+      "semanticRoute": "thread",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "default",
+      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "thread-default-dark-1280",
+      "stateId": "thread-default-dark-1280",
+      "semanticRoute": "thread",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "default",
+      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "thread-default-light-1440",
+      "stateId": "thread-default-light-1440",
+      "semanticRoute": "thread",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "default",
+      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "thread-default-dark-1440",
+      "stateId": "thread-default-dark-1440",
+      "semanticRoute": "thread",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "default",
+      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "settings-general-light-1280",
+      "stateId": "settings-general",
+      "semanticRoute": "settings-general",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "default",
+      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "settings-general-dark-1280",
+      "stateId": "settings-general-dark-1280",
+      "semanticRoute": "settings-general",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "default",
+      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "settings-general-light-1440",
+      "stateId": "settings-general-light-1440",
+      "semanticRoute": "settings-general",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "default",
+      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "settings-general-dark-1440",
+      "stateId": "settings-general-dark-1440",
+      "semanticRoute": "settings-general",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "default",
+      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "kanban-project-light-1280",
+      "stateId": "kanban-project-light-1280",
+      "semanticRoute": "kanban-project",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "default",
+      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "kanban-project-dark-1280",
+      "stateId": "kanban-project-dark-1280",
+      "semanticRoute": "kanban-project",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "default",
+      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "kanban-project-light-1440",
+      "stateId": "kanban-project-light-1440",
+      "semanticRoute": "kanban-project",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "default",
+      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "kanban-project-dark-1440",
+      "stateId": "kanban-project-dark-1440",
+      "semanticRoute": "kanban-project",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "default",
+      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "pull-requests-light-1280",
+      "stateId": "pull-requests-light-1280",
+      "semanticRoute": "pull-requests",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "default",
+      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "pull-requests-dark-1280",
+      "stateId": "pull-requests-dark-1280",
+      "semanticRoute": "pull-requests",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "default",
+      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "pull-requests-light-1440",
+      "stateId": "pull-requests-light-1440",
+      "semanticRoute": "pull-requests",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "default",
+      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "pull-requests-dark-1440",
+      "stateId": "pull-requests-dark-1440",
+      "semanticRoute": "pull-requests",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "default",
+      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "project-picker-light-1280",
+      "stateId": "project-picker-open",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "project-picker-open",
+      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "project-picker-dark-1280",
+      "stateId": "project-picker-open-dark-1280",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "project-picker-open",
+      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "project-picker-light-1440",
+      "stateId": "project-picker-open-light-1440",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "project-picker-open",
+      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "project-picker-dark-1440",
+      "stateId": "project-picker-open-dark-1440",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "project-picker-open",
+      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "extras-light-1280",
+      "stateId": "extras-open-light-1280",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "extras-open",
+      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "extras-dark-1280",
+      "stateId": "extras-open-dark-1280",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "extras-open",
+      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "extras-light-1440",
+      "stateId": "extras-open-light-1440",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "extras-open",
+      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "extras-dark-1440",
+      "stateId": "extras-open-dark-1440",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "extras-open",
+      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "command-k-light-1280",
+      "stateId": "command-k-open-light-1280",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "command-k-open",
+      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "command-k-dark-1280",
+      "stateId": "command-k-open-dark-1280",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "command-k-open",
+      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "command-k-light-1440",
+      "stateId": "command-k-open-light-1440",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "command-k-open",
+      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "command-k-dark-1440",
+      "stateId": "command-k-open-dark-1440",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "command-k-open",
+      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "skill-menu-light-1280",
+      "stateId": "skill-menu-filtered",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "skill-filtered-review-agent",
+      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "skill-menu-dark-1280",
+      "stateId": "skill-menu-filtered-dark-1280",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "skill-filtered-review-agent",
+      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "skill-menu-light-1440",
+      "stateId": "skill-menu-filtered-light-1440",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "skill-filtered-review-agent",
+      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "skill-menu-dark-1440",
+      "stateId": "skill-menu-filtered-dark-1440",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "skill-filtered-review-agent",
+      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "mention-menu-light-1280",
+      "stateId": "mention-menu-filtered-light-1280",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "mention-filtered-progress",
+      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "mention-menu-dark-1280",
+      "stateId": "mention-menu-filtered-dark-1280",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "mention-filtered-progress",
+      "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "mention-menu-light-1440",
+      "stateId": "mention-menu-filtered-light-1440",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "mention-filtered-progress",
+      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+    },
+    {
+      "id": "mention-menu-dark-1440",
+      "stateId": "mention-menu-filtered-dark-1440",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "mention-filtered-progress",
+      "viewport": { "width": 1440, "height": 900, "devicePixelRatio": 1 }
+    }
+  ],
   "states": [
     {
       "id": "landing-default",

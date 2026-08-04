@@ -251,6 +251,77 @@ function validateResidual(errors, blocking, state, residual, residualIds) {
   }
 }
 
+function matrixCoordinateKey(coordinate) {
+  const viewport = coordinate.viewport ?? {};
+  return JSON.stringify({
+    semanticRoute: coordinate.semanticRoute,
+    theme: coordinate.theme,
+    density: coordinate.density,
+    interactionState: coordinate.interactionState,
+    viewport: {
+      width: viewport.width,
+      height: viewport.height,
+      devicePixelRatio: viewport.devicePixelRatio,
+    },
+  });
+}
+
+function validateRequiredMatrix(errors, incomplete, manifest) {
+  if (!Array.isArray(manifest.requiredMatrix) || manifest.requiredMatrix.length === 0) {
+    errors.push("manifest.requiredMatrix must be a non-empty array");
+    return;
+  }
+  const requirementIds = new Set();
+  const requiredStateIds = new Set();
+  for (const requirement of manifest.requiredMatrix) {
+    if (!requirement.id || typeof requirement.id !== "string") {
+      errors.push("Every requiredMatrix entry requires a string id");
+      continue;
+    }
+    if (requirementIds.has(requirement.id)) {
+      errors.push(`requiredMatrix.${requirement.id}: duplicate requirement id`);
+      continue;
+    }
+    requirementIds.add(requirement.id);
+    if (!requirement.stateId || typeof requirement.stateId !== "string") {
+      errors.push(`requiredMatrix.${requirement.id}: stateId is required`);
+      continue;
+    }
+    if (requiredStateIds.has(requirement.stateId)) {
+      errors.push(
+        `requiredMatrix.${requirement.id}: duplicate stateId ${requirement.stateId}`,
+      );
+      continue;
+    }
+    requiredStateIds.add(requirement.stateId);
+    for (const key of [
+      "semanticRoute",
+      "theme",
+      "density",
+      "interactionState",
+      "viewport",
+    ]) {
+      if (requirement[key] === undefined || requirement[key] === "") {
+        errors.push(`requiredMatrix.${requirement.id}: ${key} is required`);
+      }
+    }
+    const matchingState = manifest.states.find(
+      (state) => state.id === requirement.stateId,
+    );
+    if (!matchingState) {
+      incomplete.push(
+        `requiredMatrix.${requirement.id}: required state ${requirement.stateId} is missing`,
+      );
+    } else if (
+      matrixCoordinateKey(matchingState) !== matrixCoordinateKey(requirement)
+    ) {
+      errors.push(
+        `requiredMatrix.${requirement.id}: state ${requirement.stateId} axes do not match`,
+      );
+    }
+  }
+}
+
 export function validateManifest(manifest, manifestPath) {
   const errors = [];
   const incomplete = [];
@@ -269,6 +340,7 @@ export function validateManifest(manifest, manifestPath) {
     errors.push("manifest.states must be a non-empty array");
     return { blocking, errors, incomplete };
   }
+  validateRequiredMatrix(errors, incomplete, manifest);
 
   for (const state of manifest.states) {
     if (!state.id || typeof state.id !== "string") {
@@ -321,6 +393,7 @@ function toGalleryData(manifest, manifestPath) {
     id: manifest.id,
     label: manifest.label,
     defaults: manifest.defaults,
+    requiredMatrix: manifest.requiredMatrix,
     states: manifest.states.map((state) => ({
       id: state.id,
       label: state.label,

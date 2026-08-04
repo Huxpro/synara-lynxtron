@@ -5072,3 +5072,16 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
     temporal surfaces、transcript guardrails与fixed-time evidence格式。
 - 当前结论保持honest：Phase 0 complete；Phase 1–4 systems存在但P10证据不完整；
   Phase 5–7 final matrix仍缺大多数required cells，P10不得标complete。
+
+## 2026-08-04 — P10 final-matrix SSOT ratchet
+
+- perceptual manifest新增声明式`requiredMatrix`；每个entry绑定唯一`stateId`与
+  semantic route/theme/density/interaction/viewport axes。verifier先检查required state
+  是否存在，再检查state axes与三端evidence，避免未声明cell让strict伪green。
+- regressions新增missing required state与duplicate stateId正反门禁；verifier现
+  **11/11**。
+- final合同声明40个required cells：Landing/Thread/Settings/Kanban/PR与Project Picker/
+  Extras/Command K/skill/mention，全部light/dark×1280×820/1440×900。
+- 现有6-state atlas仅满足其中4个matrix entries；allow-incomplete现如实报告
+  **36 missing required states / 0 blocking residuals**。后续Browser与Native capture必须
+  逐项关闭该列表，不能再以canonical six-state strict green代理P10完成。

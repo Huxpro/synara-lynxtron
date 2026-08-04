@@ -79,6 +79,17 @@ function writeFixture(overrides = {}) {
       snapshotSha256: "snapshot",
       comparisonViewport: { width: 10, height: 10 },
     },
+    requiredMatrix: [
+      {
+        id: "landing-light-10",
+        stateId: "landing-default",
+        semanticRoute: "new-chat",
+        theme: "light",
+        density: "comfortable",
+        interactionState: "default",
+        viewport: { width: 10, height: 10, devicePixelRatio: 1 },
+      },
+    ],
     states: [
       {
         id: "landing-default",
@@ -143,6 +154,42 @@ test("keeps required pending cells red", () => {
   const strict = run(fixture);
   assert.equal(strict.status, 2);
   assert.match(strict.stderr, /landing-default\.native: required evidence is pending/);
+});
+
+test("keeps an undeclared required matrix coordinate red", () => {
+  const fixture = writeFixture();
+  const manifest = JSON.parse(fs.readFileSync(fixture.manifestPath, "utf8"));
+  manifest.requiredMatrix.push({
+    id: "thread-dark-10",
+    stateId: "thread-dark-10",
+    semanticRoute: "thread",
+    theme: "dark",
+    density: "comfortable",
+    interactionState: "default",
+    viewport: { width: 10, height: 10, devicePixelRatio: 1 },
+  });
+  fs.writeFileSync(fixture.manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+
+  const strict = run(fixture);
+  assert.equal(strict.status, 2);
+  assert.match(
+    strict.stderr,
+    /requiredMatrix\.thread-dark-10: required state thread-dark-10 is missing/,
+  );
+});
+
+test("rejects duplicate required matrix state ids", () => {
+  const fixture = writeFixture();
+  const manifest = JSON.parse(fs.readFileSync(fixture.manifestPath, "utf8"));
+  manifest.requiredMatrix.push({
+    ...manifest.requiredMatrix[0],
+    id: "landing-duplicate",
+  });
+  fs.writeFileSync(fixture.manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+
+  const result = run(fixture, "--allow-incomplete");
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /duplicate stateId landing-default/);
 });
 
 test("keeps open P0 and P1 residuals red", () => {
