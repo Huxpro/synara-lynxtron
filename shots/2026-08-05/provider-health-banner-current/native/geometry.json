@@ -1,0 +1,234 @@
+{
+  "client": "native",
+  "stateId": "provider-health-banner-light-1280",
+  "roles": {
+    "frame": {
+      "nodeId": 162,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "ProviderHealthBannerFrame"
+      },
+      "text": "",
+      "box": {
+        "x": 256,
+        "y": 46,
+        "width": 1024,
+        "height": 80
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "alert": {
+      "nodeId": 163,
+      "nodeName": "VIEW",
+      "attributes": {
+        "accessibility-element": "true",
+        "accessibility-label": "Codex provider status. Codex CLI is installed but failed to run. Error: codex not found in PATH",
+        "class": "ProviderHealthBanner ProviderHealthBanner--error"
+      },
+      "text": "",
+      "box": {
+        "x": 400,
+        "y": 58,
+        "width": 736,
+        "height": 68
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(1,105,204,0.0980392)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "0 4px 18px -6px #00000019",
+        "opacity": "1"
+      }
+    },
+    "title": {
+      "nodeId": 166,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "ProviderHealthBannerTitle"
+      },
+      "text": "",
+      "box": {
+        "x": 439,
+        "y": 71,
+        "width": 656,
+        "height": 20
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "400",
+        "lineHeight": "20px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "description": {
+      "nodeId": 167,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "ProviderHealthBannerDescription"
+      },
+      "text": "",
+      "box": {
+        "x": 439,
+        "y": 91,
+        "width": 656,
+        "height": 20
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "400",
+        "lineHeight": "20px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "0.72"
+      }
+    },
+    "dismiss": {
+      "nodeId": 172,
+      "nodeName": "VIEW",
+      "attributes": {
+        "accessibility-element": "true",
+        "accessibility-label": "Dismiss provider status",
+        "accessibility-traits": "button",
+        "focusable": "true",
+        "aria-disabled": "false",
+        "bindmouseenter": "135:0:bindmouseenter",
+        "bindblur": "135:0:bindblur",
+        "bindmouseleave": "135:0:bindmouseleave",
+        "bindkeydown": "135:0:bindkeydown",
+        "bindtap": "135:0:bindtap",
+        "bindmouseup": "135:0:bindmouseup",
+        "bindtouchstart": "135:0:bindtouchstart",
+        "bindmousedown": "135:0:bindmousedown",
+        "bindtouchend": "135:0:bindtouchend",
+        "bindtouchcancel": "135:0:bindtouchcancel",
+        "bindfocus": "135:0:bindfocus",
+        "class": "ProviderHealthBannerDismiss"
+      },
+      "text": "",
+      "box": {
+        "x": 1103,
+        "y": 79,
+        "width": 24,
+        "height": 24
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "0.65"
+      }
+    },
+    "hero": {
+      "nodeId": 95,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "CenteredEmptyLandingFrame"
+      },
+      "text": "",
+      "box": {
+        "x": 256,
+        "y": 335,
+        "width": 1024,
+        "height": 111
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "composer": {
+      "nodeId": 118,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "ComposerInputSurfaceLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 400,
+        "y": 445,
+        "width": 736,
+        "height": 95
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "0 4px 18px -6px #0d0d0d11",
+        "opacity": "1"
+      }
+    }
+  }
+}

@@ -106,6 +106,7 @@ async function loadLandingBootstrap() {
       localFolders: localFolderResult.entries,
       localFoldersError: localFolderResult.errorMessage,
       homeDir: config.homeDir ?? null,
+      serverConfig: config,
     };
   } catch (error) {
     const refreshed = await fetchSynaraSidebarShellSnapshot();

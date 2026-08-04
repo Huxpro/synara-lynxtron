@@ -1,0 +1,8 @@
+{
+  "client": "lynx",
+  "stateId": "provider-health-banner-light-1280",
+  "snapshotSha256": "84c3fa5351a20b2edb8d75e20a6a1c9bea391e5032f20386524456f9937507c6",
+  "stateEcho": { "semanticRoute": "new-chat", "theme": "light", "density": "comfortable", "interactionState": "provider-health-banner" },
+  "image": { "width": 1280, "height": 820 },
+  "origin": "http://localhost:8921/lynx/index.html"
+}

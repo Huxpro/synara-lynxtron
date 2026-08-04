@@ -1,0 +1,10 @@
+{
+  "client": "web",
+  "stateId": "provider-health-banner-light-1280",
+  "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 },
+  "roles": {
+    "alert": { "x": 400, "y": 58, "width": 736, "height": 68 },
+    "heroHeading": { "x": 607.8125, "y": 407.25, "width": 320.359375, "height": 34.5 }
+  },
+  "text": "Codex provider statusCodex CLI is installed but failed to run. Error: codex not found in PATH"
+}

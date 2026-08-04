@@ -1,0 +1,24 @@
+{
+  "client": "lynx",
+  "stateId": "provider-health-banner-light-1280",
+  "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 },
+  "roles": {
+    "frame": { "x": 256, "y": 46, "width": 1024, "height": 80 },
+    "alert": { "x": 400, "y": 58, "width": 736, "height": 68 },
+    "title": { "x": 439, "y": 71, "width": 656, "height": 20 },
+    "description": { "x": 439, "y": 91, "width": 656, "height": 20 },
+    "dismiss": { "x": 1103, "y": 79, "width": 24, "height": 24 },
+    "hero": { "x": 256, "y": 351, "width": 1024, "height": 111 },
+    "composer": { "x": 400, "y": 461, "width": 736, "height": 95 }
+  },
+  "text": {
+    "title": "Codex provider status",
+    "description": "Codex CLI is installed but failed to run. Error: codex not found in PATH"
+  },
+  "dismissLabel": "Dismiss provider status",
+  "dismissResult": {
+    "frame": null,
+    "alert": null,
+    "composer": { "x": 400, "y": 421, "width": 736, "height": 95 }
+  }
+}

@@ -42,6 +42,7 @@ describe('landing composer fidelity contract', () => {
       'resetActionLabel="Don\'t work in a project"'
     );
     expect(landingSource).toContain('localFoldersError');
+    expect(landingSource.match(/serverConfig:\s*config/g)).toHaveLength(3);
     expect(landingSource).toContain('onRetry=');
     expect(landingSource).not.toContain('.catch(() => [])');
     expect(landingSource).not.toContain('<MenuItem');
