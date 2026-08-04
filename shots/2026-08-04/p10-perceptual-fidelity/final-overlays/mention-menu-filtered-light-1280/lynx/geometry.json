@@ -1,0 +1,148 @@
+{
+  "client": "lynx",
+  "stateId": "mention-menu-filtered-light-1280",
+  "semanticRoute": "new-chat",
+  "theme": "light",
+  "viewport": {
+    "width": 1280,
+    "height": 820,
+    "dpr": 1
+  },
+  "roles": {
+    "root": {
+      "tag": "X-VIEW",
+      "className": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable",
+      "text": "StudioProjectsNew threadSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed taskChats›⚙SettingsNew ChatWhat should we work on?ChatsIn Progress seed taskLynx Web SpikeFilesType to search ",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 820
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgb(255, 255, 255)",
+        "borderColor": "rgb(13, 13, 13)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "surface": {
+      "tag": "X-VIEW",
+      "className": "ComposerCommandMenuLynx",
+      "text": "ChatsIn Progress seed taskLynx Web SpikeFilesType to search for files",
+      "box": {
+        "x": 405,
+        "y": 301,
+        "width": 726,
+        "height": 113
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgb(255, 255, 255)",
+        "borderColor": "rgba(13, 13, 13, 0.07)",
+        "borderWidth": "1px",
+        "radius": "14px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "row": {
+      "tag": "X-VIEW",
+      "className": "ComposerCommandRowLynx ComposerCommandRowLynx--active",
+      "text": "In Progress seed taskLynx Web Spike",
+      "box": {
+        "x": 410,
+        "y": 332,
+        "width": 716,
+        "height": 28
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgb(232, 242, 250)",
+        "borderColor": "rgb(13, 13, 13)",
+        "borderWidth": "0px",
+        "radius": "8px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "title": {
+      "tag": "X-TEXT",
+      "className": "ComposerCommandTitleLynx",
+      "text": "In Progress seed task",
+      "box": {
+        "x": 444,
+        "y": 338,
+        "width": 119.859375,
+        "height": 16
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "11.5px",
+        "weight": "500",
+        "lineHeight": "16px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(13, 13, 13)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "0.8"
+      }
+    },
+    "editor": {
+      "tag": "X-TEXTAREA",
+      "className": "ComposerTextarea",
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "12px",
+        "weight": "400",
+        "lineHeight": "19.5px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(13, 13, 13)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    }
+  }
+}

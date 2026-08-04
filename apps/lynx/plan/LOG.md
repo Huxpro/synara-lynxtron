@@ -5116,3 +5116,22 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Lynx-for-Web `9ff47872…` / Native `8dde80b7…`重拍；Web authority保持
   `2f1081bd…`。批量audit确认20/20 Native capture均为post-fix hash、clean console，
   manifest state-specific snapshot identities已由最新`capture.json`重新生成。
+
+## 2026-08-04 — P10 final overlay matrix
+
+- 完成Project Picker、Extras、Command K、filtered skill、filtered mention的final
+  overlay matrix。新增18 states / 54 client cells，与canonical light/1280 Project
+  Picker和skill cells共同覆盖全部20个overlay required coordinates。
+- 所有Browser raw精确为1280×820或1440×900、DPR 1；Native raw精确为
+  2560×1576或2880×1736。每个Native cell绑定exact-owned PID-derived
+  8904/session1、staged `main.lynx.bundle`、state-specific online backup hash与空
+  warning/error console。
+- Command K只通过可见Search control建立，未测试shortcut delivery。skill query精确为
+  `$review-agent`，三端顺序均为review-agent/review-bugbot/review-security/review；
+  mention query精确为`@Progress`，三端唯一候选均为`In Progress seed task`。
+- Native filtered input使用真实macOS text client focus与host edit events；快速逐键输入因
+  controlled-value ACK竞争被fail-closed拒绝，未进入retained evidence。Project Picker中
+  Lynx host额外local folders登记为P3 intentional platform delta，不从产品中删除。
+- `integrate-final-overlays.mjs`从18个证据目录、Native capture metadata和PNG bytes重建
+  显式manifest entries，并强制18目录门禁。strict verifier现为
+  **44 states / 0 incomplete / 0 blocking**，40个required matrix coordinates全部满足。

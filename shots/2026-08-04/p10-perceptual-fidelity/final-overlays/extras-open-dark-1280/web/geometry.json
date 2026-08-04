@@ -1,0 +1,121 @@
+{
+  "client": "web",
+  "stateId": "extras-open-dark-1280",
+  "semanticRoute": "new-chat",
+  "theme": "dark",
+  "viewport": {
+    "width": 1280,
+    "height": 820,
+    "dpr": 1
+  },
+  "roles": {
+    "root": {
+      "tag": "BODY",
+      "className": "",
+      "text": "Toggle SidebarToggle SidebarStudioProjectsNew thread⌘NSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed task\n    To pick up a draggable item, press the space bar.\n    While dragging, u",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 820
+      },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "24px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgba(252, 252, 252, 0.07)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "surface": {
+      "tag": "DIV",
+      "className": "flex origin-(--transform-origin) outline-none focus:outline-none min-w-0 max-w-[92vw] composer-picker-menu composer-picker-menu--normal relative overflow-hidden bg-popover/70 text-popover-foreground before:pointer-events-none before:absolute before:inset-0 before:-z-1 before:rounded-[inherit] before:backdrop-blur-2xl before:backdrop-saturate-150 border border-border rounded-[0.65rem] shadow-[0_4px_18px_-6px_color-mix(in_srgb,var(--foreground)_7%,transparent)] dark:shadow-[0_6px_24px_-10px_rgba(0,0,0,0.30)]",
+      "text": "Add imagePlan modeFast",
+      "box": {
+        "x": 407,
+        "y": 554,
+        "width": 141.421875,
+        "height": 106
+      },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "24px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "oklab(0.204625 0.00000931323 0.00000409782 / 0.7)",
+        "borderColor": "rgba(252, 252, 252, 0.07)",
+        "borderWidth": "1px",
+        "radius": "10.4px",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.3) 0px 6px 24px -10px",
+        "opacity": "1"
+      }
+    },
+    "row": {
+      "tag": "DIV",
+      "className": "[&>svg,&>[data-slot=central-icon]]:-mx-0.5 flex cursor-default select-none items-center rounded-[0.5rem] text-[length:var(--type-ui-row-size)] leading-[var(--type-ui-row-line-height)] text-[var(--color-text-foreground)] outline-none data-disabled:pointer-events-none data-highlighted:bg-[var(--color-background-button-secondary-hover)] data-highlighted:text-[var(--color-text-foreground)] data-disabled:opacity-64 [&>svg:not([class*='opacity-']),&>[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&>svg,&>[data-slot=central-icon]]:pointer-events-none [&>svg,&>[data-slot=central-icon]]:shrink-0 data-inset:ps-8 data-[variant=destructive]:text-destructive",
+      "text": "Add image",
+      "box": {
+        "x": 412,
+        "y": 559,
+        "width": 131.421875,
+        "height": 26
+      },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "12px",
+        "weight": "400",
+        "lineHeight": "18px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgba(252, 252, 252, 0.07)",
+        "borderWidth": "0px",
+        "radius": "8px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "trigger": {
+      "tag": "BUTTON",
+      "className": "[&_svg,&_[data-slot=central-icon]]:-mx-0.5 relative inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap border font-medium text-[length:var(--app-font-size-ui,12px)] outline-none pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 focus-visible:ring-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 sm:text-[length:var(--app-font-size-ui,12px)] [&_svg:not([class*='opacity-'])]:opacity-80 [&_[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4.5 [&_[data-slot=central-icon]:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 sm:[&_[data-slot=central-icon]:not([class*='size-'])]:size-4 [&_svg,&_[data-slot=central-icon]]:pointer-events-none [&_svg,&_[data-slot=central-icon]]:shrink-0 size-8 sm:size-7 border-transparent bg-transparent text-[var(--color-text-foreground-secondary)] focus-visible:ring-[color:var(--color-border-focus)]/60 focus-visible:ring-offset-0 [:hover,[data-pressed]]:bg-[var(--color-background-elevated-secondary)] [:hover,[data-pressed]]:text-[var(--color-text-foreground)] data-pressed:bg-[var(--color-background-elevated-secondary)] data-pressed:text-[var(--color-text-foreground)] shrink-0 rounded-md",
+      "text": "",
+      "box": {
+        "x": 407,
+        "y": 521.75,
+        "width": 28,
+        "height": 28
+      },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "12px",
+        "weight": "500",
+        "lineHeight": "18px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgba(252, 252, 252, 0.008)",
+        "borderColor": "rgba(0, 0, 0, 0)",
+        "borderWidth": "1px",
+        "radius": "8px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    }
+  }
+}

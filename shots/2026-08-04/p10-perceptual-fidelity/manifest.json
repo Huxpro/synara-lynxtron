@@ -3837,6 +3837,1917 @@
           }
         }
       }
+    },
+    {
+      "id": "command-k-open-dark-1280",
+      "label": "command k open dark 1280 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "command-k-open",
+      "snapshotSha256": "63c5f9bf2e3d28790e66017b42e4170d3b80af699c4281f0ca7a57f14df576cc",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1280,
+        "height": 788
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-overlays/command-k-open-dark-1280/web/raw.png",
+          "comparisonPath": "final-overlays/command-k-open-dark-1280/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "63c5f9bf2e3d28790e66017b42e4170d3b80af699c4281f0ca7a57f14df576cc",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-overlays/command-k-open-dark-1280/web/geometry.json",
+          "styles": "final-overlays/command-k-open-dark-1280/web/styles.json",
+          "console": "final-overlays/command-k-open-dark-1280/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "command-k-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-overlays/command-k-open-dark-1280/lynx/raw.png",
+          "comparisonPath": "final-overlays/command-k-open-dark-1280/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "63c5f9bf2e3d28790e66017b42e4170d3b80af699c4281f0ca7a57f14df576cc",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-overlays/command-k-open-dark-1280/lynx/geometry.json",
+          "styles": "final-overlays/command-k-open-dark-1280/lynx/styles.json",
+          "console": "final-overlays/command-k-open-dark-1280/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "command-k-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-overlays/command-k-open-dark-1280/native/raw.png",
+          "comparisonPath": "final-overlays/command-k-open-dark-1280/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "63c5f9bf2e3d28790e66017b42e4170d3b80af699c4281f0ca7a57f14df576cc",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "geometry": "final-overlays/command-k-open-dark-1280/native/geometry.json",
+          "styles": "final-overlays/command-k-open-dark-1280/native/styles.json",
+          "console": "final-overlays/command-k-open-dark-1280/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "command-k-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "command-k-open-dark-1440",
+      "label": "command k open dark 1440 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "command-k-open",
+      "snapshotSha256": "50e956f4e94a438bdbb0c450817d03d1b032908b335e947f2c4acbcc876aee98",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-overlays/command-k-open-dark-1440/web/raw.png",
+          "comparisonPath": "final-overlays/command-k-open-dark-1440/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "50e956f4e94a438bdbb0c450817d03d1b032908b335e947f2c4acbcc876aee98",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-overlays/command-k-open-dark-1440/web/geometry.json",
+          "styles": "final-overlays/command-k-open-dark-1440/web/styles.json",
+          "console": "final-overlays/command-k-open-dark-1440/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "command-k-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-overlays/command-k-open-dark-1440/lynx/raw.png",
+          "comparisonPath": "final-overlays/command-k-open-dark-1440/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "50e956f4e94a438bdbb0c450817d03d1b032908b335e947f2c4acbcc876aee98",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-overlays/command-k-open-dark-1440/lynx/geometry.json",
+          "styles": "final-overlays/command-k-open-dark-1440/lynx/styles.json",
+          "console": "final-overlays/command-k-open-dark-1440/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "command-k-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-overlays/command-k-open-dark-1440/native/raw.png",
+          "comparisonPath": "final-overlays/command-k-open-dark-1440/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "50e956f4e94a438bdbb0c450817d03d1b032908b335e947f2c4acbcc876aee98",
+          "image": {
+            "width": 2880,
+            "height": 1736
+          },
+          "geometry": "final-overlays/command-k-open-dark-1440/native/geometry.json",
+          "styles": "final-overlays/command-k-open-dark-1440/native/styles.json",
+          "console": "final-overlays/command-k-open-dark-1440/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "command-k-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "command-k-open-light-1280",
+      "label": "command k open light 1280 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "command-k-open",
+      "snapshotSha256": "0e42cc78aaed5dceae67d0e7b2b972c23c542313fc7970617973762b86f6dd01",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1280,
+        "height": 788
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-overlays/command-k-open-light-1280/web/raw.png",
+          "comparisonPath": "final-overlays/command-k-open-light-1280/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "0e42cc78aaed5dceae67d0e7b2b972c23c542313fc7970617973762b86f6dd01",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-overlays/command-k-open-light-1280/web/geometry.json",
+          "styles": "final-overlays/command-k-open-light-1280/web/styles.json",
+          "console": "final-overlays/command-k-open-light-1280/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "command-k-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-overlays/command-k-open-light-1280/lynx/raw.png",
+          "comparisonPath": "final-overlays/command-k-open-light-1280/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "0e42cc78aaed5dceae67d0e7b2b972c23c542313fc7970617973762b86f6dd01",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-overlays/command-k-open-light-1280/lynx/geometry.json",
+          "styles": "final-overlays/command-k-open-light-1280/lynx/styles.json",
+          "console": "final-overlays/command-k-open-light-1280/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "command-k-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-overlays/command-k-open-light-1280/native/raw.png",
+          "comparisonPath": "final-overlays/command-k-open-light-1280/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "0e42cc78aaed5dceae67d0e7b2b972c23c542313fc7970617973762b86f6dd01",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "geometry": "final-overlays/command-k-open-light-1280/native/geometry.json",
+          "styles": "final-overlays/command-k-open-light-1280/native/styles.json",
+          "console": "final-overlays/command-k-open-light-1280/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "command-k-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "command-k-open-light-1440",
+      "label": "command k open light 1440 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "command-k-open",
+      "snapshotSha256": "da5151e2fbb7e23368455964d9a529bbed93e818ebf5544ce63acf3910f7f803",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-overlays/command-k-open-light-1440/web/raw.png",
+          "comparisonPath": "final-overlays/command-k-open-light-1440/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "da5151e2fbb7e23368455964d9a529bbed93e818ebf5544ce63acf3910f7f803",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-overlays/command-k-open-light-1440/web/geometry.json",
+          "styles": "final-overlays/command-k-open-light-1440/web/styles.json",
+          "console": "final-overlays/command-k-open-light-1440/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "command-k-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-overlays/command-k-open-light-1440/lynx/raw.png",
+          "comparisonPath": "final-overlays/command-k-open-light-1440/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "da5151e2fbb7e23368455964d9a529bbed93e818ebf5544ce63acf3910f7f803",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-overlays/command-k-open-light-1440/lynx/geometry.json",
+          "styles": "final-overlays/command-k-open-light-1440/lynx/styles.json",
+          "console": "final-overlays/command-k-open-light-1440/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "command-k-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-overlays/command-k-open-light-1440/native/raw.png",
+          "comparisonPath": "final-overlays/command-k-open-light-1440/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "da5151e2fbb7e23368455964d9a529bbed93e818ebf5544ce63acf3910f7f803",
+          "image": {
+            "width": 2880,
+            "height": 1736
+          },
+          "geometry": "final-overlays/command-k-open-light-1440/native/geometry.json",
+          "styles": "final-overlays/command-k-open-light-1440/native/styles.json",
+          "console": "final-overlays/command-k-open-light-1440/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "command-k-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "extras-open-dark-1280",
+      "label": "extras open dark 1280 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "extras-open",
+      "snapshotSha256": "efbcb3304792e579fd2de412cea37e161e055c2a41d19d29569031f439984915",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1280,
+        "height": 788
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-overlays/extras-open-dark-1280/web/raw.png",
+          "comparisonPath": "final-overlays/extras-open-dark-1280/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "efbcb3304792e579fd2de412cea37e161e055c2a41d19d29569031f439984915",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-overlays/extras-open-dark-1280/web/geometry.json",
+          "styles": "final-overlays/extras-open-dark-1280/web/styles.json",
+          "console": "final-overlays/extras-open-dark-1280/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "extras-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-overlays/extras-open-dark-1280/lynx/raw.png",
+          "comparisonPath": "final-overlays/extras-open-dark-1280/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "efbcb3304792e579fd2de412cea37e161e055c2a41d19d29569031f439984915",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-overlays/extras-open-dark-1280/lynx/geometry.json",
+          "styles": "final-overlays/extras-open-dark-1280/lynx/styles.json",
+          "console": "final-overlays/extras-open-dark-1280/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "extras-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-overlays/extras-open-dark-1280/native/raw.png",
+          "comparisonPath": "final-overlays/extras-open-dark-1280/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "efbcb3304792e579fd2de412cea37e161e055c2a41d19d29569031f439984915",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "geometry": "final-overlays/extras-open-dark-1280/native/geometry.json",
+          "styles": "final-overlays/extras-open-dark-1280/native/styles.json",
+          "console": "final-overlays/extras-open-dark-1280/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "extras-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "extras-open-dark-1440",
+      "label": "extras open dark 1440 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "extras-open",
+      "snapshotSha256": "a7c7b20e7ddda3a2979e30c1aef96760c1966a610b441c13ac98d72cd21c38ea",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-overlays/extras-open-dark-1440/web/raw.png",
+          "comparisonPath": "final-overlays/extras-open-dark-1440/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "a7c7b20e7ddda3a2979e30c1aef96760c1966a610b441c13ac98d72cd21c38ea",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-overlays/extras-open-dark-1440/web/geometry.json",
+          "styles": "final-overlays/extras-open-dark-1440/web/styles.json",
+          "console": "final-overlays/extras-open-dark-1440/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "extras-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-overlays/extras-open-dark-1440/lynx/raw.png",
+          "comparisonPath": "final-overlays/extras-open-dark-1440/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "a7c7b20e7ddda3a2979e30c1aef96760c1966a610b441c13ac98d72cd21c38ea",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-overlays/extras-open-dark-1440/lynx/geometry.json",
+          "styles": "final-overlays/extras-open-dark-1440/lynx/styles.json",
+          "console": "final-overlays/extras-open-dark-1440/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "extras-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-overlays/extras-open-dark-1440/native/raw.png",
+          "comparisonPath": "final-overlays/extras-open-dark-1440/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "a7c7b20e7ddda3a2979e30c1aef96760c1966a610b441c13ac98d72cd21c38ea",
+          "image": {
+            "width": 2880,
+            "height": 1736
+          },
+          "geometry": "final-overlays/extras-open-dark-1440/native/geometry.json",
+          "styles": "final-overlays/extras-open-dark-1440/native/styles.json",
+          "console": "final-overlays/extras-open-dark-1440/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "extras-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "extras-open-light-1280",
+      "label": "extras open light 1280 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "extras-open",
+      "snapshotSha256": "1c2e97e8e1a894b7cc60c5c24ded5e516c2af3114b38482ce348e53603008aff",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1280,
+        "height": 788
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-overlays/extras-open-light-1280/web/raw.png",
+          "comparisonPath": "final-overlays/extras-open-light-1280/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "1c2e97e8e1a894b7cc60c5c24ded5e516c2af3114b38482ce348e53603008aff",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-overlays/extras-open-light-1280/web/geometry.json",
+          "styles": "final-overlays/extras-open-light-1280/web/styles.json",
+          "console": "final-overlays/extras-open-light-1280/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "extras-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-overlays/extras-open-light-1280/lynx/raw.png",
+          "comparisonPath": "final-overlays/extras-open-light-1280/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "1c2e97e8e1a894b7cc60c5c24ded5e516c2af3114b38482ce348e53603008aff",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-overlays/extras-open-light-1280/lynx/geometry.json",
+          "styles": "final-overlays/extras-open-light-1280/lynx/styles.json",
+          "console": "final-overlays/extras-open-light-1280/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "extras-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-overlays/extras-open-light-1280/native/raw.png",
+          "comparisonPath": "final-overlays/extras-open-light-1280/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "1c2e97e8e1a894b7cc60c5c24ded5e516c2af3114b38482ce348e53603008aff",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "geometry": "final-overlays/extras-open-light-1280/native/geometry.json",
+          "styles": "final-overlays/extras-open-light-1280/native/styles.json",
+          "console": "final-overlays/extras-open-light-1280/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "extras-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "extras-open-light-1440",
+      "label": "extras open light 1440 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "extras-open",
+      "snapshotSha256": "755583034dcda0cf930121324891f7ac0a67b739b81112d4a590dab26bd3c894",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-overlays/extras-open-light-1440/web/raw.png",
+          "comparisonPath": "final-overlays/extras-open-light-1440/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "755583034dcda0cf930121324891f7ac0a67b739b81112d4a590dab26bd3c894",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-overlays/extras-open-light-1440/web/geometry.json",
+          "styles": "final-overlays/extras-open-light-1440/web/styles.json",
+          "console": "final-overlays/extras-open-light-1440/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "extras-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-overlays/extras-open-light-1440/lynx/raw.png",
+          "comparisonPath": "final-overlays/extras-open-light-1440/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "755583034dcda0cf930121324891f7ac0a67b739b81112d4a590dab26bd3c894",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-overlays/extras-open-light-1440/lynx/geometry.json",
+          "styles": "final-overlays/extras-open-light-1440/lynx/styles.json",
+          "console": "final-overlays/extras-open-light-1440/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "extras-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-overlays/extras-open-light-1440/native/raw.png",
+          "comparisonPath": "final-overlays/extras-open-light-1440/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "755583034dcda0cf930121324891f7ac0a67b739b81112d4a590dab26bd3c894",
+          "image": {
+            "width": 2880,
+            "height": 1736
+          },
+          "geometry": "final-overlays/extras-open-light-1440/native/geometry.json",
+          "styles": "final-overlays/extras-open-light-1440/native/styles.json",
+          "console": "final-overlays/extras-open-light-1440/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "extras-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "mention-menu-filtered-dark-1280",
+      "label": "mention menu filtered dark 1280 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "mention-filtered-progress",
+      "snapshotSha256": "ff677636cb07d03844166ec307220383aa236ac2b2eaeab2da6070724a8a174e",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1280,
+        "height": 788
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-overlays/mention-menu-filtered-dark-1280/web/raw.png",
+          "comparisonPath": "final-overlays/mention-menu-filtered-dark-1280/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "ff677636cb07d03844166ec307220383aa236ac2b2eaeab2da6070724a8a174e",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-overlays/mention-menu-filtered-dark-1280/web/geometry.json",
+          "styles": "final-overlays/mention-menu-filtered-dark-1280/web/styles.json",
+          "console": "final-overlays/mention-menu-filtered-dark-1280/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "mention-filtered-progress"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-overlays/mention-menu-filtered-dark-1280/lynx/raw.png",
+          "comparisonPath": "final-overlays/mention-menu-filtered-dark-1280/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "ff677636cb07d03844166ec307220383aa236ac2b2eaeab2da6070724a8a174e",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-overlays/mention-menu-filtered-dark-1280/lynx/geometry.json",
+          "styles": "final-overlays/mention-menu-filtered-dark-1280/lynx/styles.json",
+          "console": "final-overlays/mention-menu-filtered-dark-1280/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "mention-filtered-progress"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-overlays/mention-menu-filtered-dark-1280/native/raw.png",
+          "comparisonPath": "final-overlays/mention-menu-filtered-dark-1280/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "ff677636cb07d03844166ec307220383aa236ac2b2eaeab2da6070724a8a174e",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "geometry": "final-overlays/mention-menu-filtered-dark-1280/native/geometry.json",
+          "styles": "final-overlays/mention-menu-filtered-dark-1280/native/styles.json",
+          "console": "final-overlays/mention-menu-filtered-dark-1280/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "mention-filtered-progress"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "mention-menu-filtered-dark-1440",
+      "label": "mention menu filtered dark 1440 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "mention-filtered-progress",
+      "snapshotSha256": "582cf7e6f5f997727602493b73c0b7a59b6970816598424e5b621a048628aa13",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-overlays/mention-menu-filtered-dark-1440/web/raw.png",
+          "comparisonPath": "final-overlays/mention-menu-filtered-dark-1440/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "582cf7e6f5f997727602493b73c0b7a59b6970816598424e5b621a048628aa13",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-overlays/mention-menu-filtered-dark-1440/web/geometry.json",
+          "styles": "final-overlays/mention-menu-filtered-dark-1440/web/styles.json",
+          "console": "final-overlays/mention-menu-filtered-dark-1440/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "mention-filtered-progress"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-overlays/mention-menu-filtered-dark-1440/lynx/raw.png",
+          "comparisonPath": "final-overlays/mention-menu-filtered-dark-1440/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "582cf7e6f5f997727602493b73c0b7a59b6970816598424e5b621a048628aa13",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-overlays/mention-menu-filtered-dark-1440/lynx/geometry.json",
+          "styles": "final-overlays/mention-menu-filtered-dark-1440/lynx/styles.json",
+          "console": "final-overlays/mention-menu-filtered-dark-1440/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "mention-filtered-progress"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-overlays/mention-menu-filtered-dark-1440/native/raw.png",
+          "comparisonPath": "final-overlays/mention-menu-filtered-dark-1440/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "582cf7e6f5f997727602493b73c0b7a59b6970816598424e5b621a048628aa13",
+          "image": {
+            "width": 2880,
+            "height": 1736
+          },
+          "geometry": "final-overlays/mention-menu-filtered-dark-1440/native/geometry.json",
+          "styles": "final-overlays/mention-menu-filtered-dark-1440/native/styles.json",
+          "console": "final-overlays/mention-menu-filtered-dark-1440/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "mention-filtered-progress"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "mention-menu-filtered-light-1280",
+      "label": "mention menu filtered light 1280 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "mention-filtered-progress",
+      "snapshotSha256": "5ea5e80ad5f418bd64769666b8fdc08d87e3f3c621753e29eb45c1be20b0b899",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1280,
+        "height": 788
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-overlays/mention-menu-filtered-light-1280/web/raw.png",
+          "comparisonPath": "final-overlays/mention-menu-filtered-light-1280/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "5ea5e80ad5f418bd64769666b8fdc08d87e3f3c621753e29eb45c1be20b0b899",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-overlays/mention-menu-filtered-light-1280/web/geometry.json",
+          "styles": "final-overlays/mention-menu-filtered-light-1280/web/styles.json",
+          "console": "final-overlays/mention-menu-filtered-light-1280/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "mention-filtered-progress"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-overlays/mention-menu-filtered-light-1280/lynx/raw.png",
+          "comparisonPath": "final-overlays/mention-menu-filtered-light-1280/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "5ea5e80ad5f418bd64769666b8fdc08d87e3f3c621753e29eb45c1be20b0b899",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-overlays/mention-menu-filtered-light-1280/lynx/geometry.json",
+          "styles": "final-overlays/mention-menu-filtered-light-1280/lynx/styles.json",
+          "console": "final-overlays/mention-menu-filtered-light-1280/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "mention-filtered-progress"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-overlays/mention-menu-filtered-light-1280/native/raw.png",
+          "comparisonPath": "final-overlays/mention-menu-filtered-light-1280/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "5ea5e80ad5f418bd64769666b8fdc08d87e3f3c621753e29eb45c1be20b0b899",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "geometry": "final-overlays/mention-menu-filtered-light-1280/native/geometry.json",
+          "styles": "final-overlays/mention-menu-filtered-light-1280/native/styles.json",
+          "console": "final-overlays/mention-menu-filtered-light-1280/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "mention-filtered-progress"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "mention-menu-filtered-light-1440",
+      "label": "mention menu filtered light 1440 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "mention-filtered-progress",
+      "snapshotSha256": "616d0a09a4390245c72b9a2b2ddcff1d627f1f257afb49e80acc5732451bc4df",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-overlays/mention-menu-filtered-light-1440/web/raw.png",
+          "comparisonPath": "final-overlays/mention-menu-filtered-light-1440/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "616d0a09a4390245c72b9a2b2ddcff1d627f1f257afb49e80acc5732451bc4df",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-overlays/mention-menu-filtered-light-1440/web/geometry.json",
+          "styles": "final-overlays/mention-menu-filtered-light-1440/web/styles.json",
+          "console": "final-overlays/mention-menu-filtered-light-1440/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "mention-filtered-progress"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-overlays/mention-menu-filtered-light-1440/lynx/raw.png",
+          "comparisonPath": "final-overlays/mention-menu-filtered-light-1440/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "616d0a09a4390245c72b9a2b2ddcff1d627f1f257afb49e80acc5732451bc4df",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-overlays/mention-menu-filtered-light-1440/lynx/geometry.json",
+          "styles": "final-overlays/mention-menu-filtered-light-1440/lynx/styles.json",
+          "console": "final-overlays/mention-menu-filtered-light-1440/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "mention-filtered-progress"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-overlays/mention-menu-filtered-light-1440/native/raw.png",
+          "comparisonPath": "final-overlays/mention-menu-filtered-light-1440/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "616d0a09a4390245c72b9a2b2ddcff1d627f1f257afb49e80acc5732451bc4df",
+          "image": {
+            "width": 2880,
+            "height": 1736
+          },
+          "geometry": "final-overlays/mention-menu-filtered-light-1440/native/geometry.json",
+          "styles": "final-overlays/mention-menu-filtered-light-1440/native/styles.json",
+          "console": "final-overlays/mention-menu-filtered-light-1440/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "mention-filtered-progress"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "project-picker-open-dark-1280",
+      "label": "project picker open dark 1280 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "project-picker-open",
+      "snapshotSha256": "a6959bc8e7daeca07d906d54fc1cdcb490c509d1ca29e7eb15aaed6f23df14f3",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1280,
+        "height": 788
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [
+        {
+          "id": "project-picker-open-dark-1280-host-folder-capability",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Project Picker host filesystem capability boundary",
+          "summary": "Web lists server projects while Lynx-for-Web and Native also expose host-local folders.",
+          "impact": "The retained popup row count differs after the shared selected project row, while popup geometry and the canonical project action remain comparable.",
+          "recommendation": "Keep the capability delta explicit and compare only shared project-picker anatomy and the selected spike-workspace row.",
+          "evidence": "final-overlays/project-picker-open-dark-1280/native/geometry.json",
+          "reason": "Host-local folder discovery is unavailable to Web original and is intentionally retained on Lynx host clients."
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-overlays/project-picker-open-dark-1280/web/raw.png",
+          "comparisonPath": "final-overlays/project-picker-open-dark-1280/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "a6959bc8e7daeca07d906d54fc1cdcb490c509d1ca29e7eb15aaed6f23df14f3",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-overlays/project-picker-open-dark-1280/web/geometry.json",
+          "styles": "final-overlays/project-picker-open-dark-1280/web/styles.json",
+          "console": "final-overlays/project-picker-open-dark-1280/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "project-picker-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-overlays/project-picker-open-dark-1280/lynx/raw.png",
+          "comparisonPath": "final-overlays/project-picker-open-dark-1280/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "a6959bc8e7daeca07d906d54fc1cdcb490c509d1ca29e7eb15aaed6f23df14f3",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-overlays/project-picker-open-dark-1280/lynx/geometry.json",
+          "styles": "final-overlays/project-picker-open-dark-1280/lynx/styles.json",
+          "console": "final-overlays/project-picker-open-dark-1280/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "project-picker-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-overlays/project-picker-open-dark-1280/native/raw.png",
+          "comparisonPath": "final-overlays/project-picker-open-dark-1280/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "a6959bc8e7daeca07d906d54fc1cdcb490c509d1ca29e7eb15aaed6f23df14f3",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "geometry": "final-overlays/project-picker-open-dark-1280/native/geometry.json",
+          "styles": "final-overlays/project-picker-open-dark-1280/native/styles.json",
+          "console": "final-overlays/project-picker-open-dark-1280/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "project-picker-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "project-picker-open-dark-1440",
+      "label": "project picker open dark 1440 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "project-picker-open",
+      "snapshotSha256": "6a0efecff913e342c76d990dff8d0610f1fba0126a52340146da2b8732c2bcad",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [
+        {
+          "id": "project-picker-open-dark-1440-host-folder-capability",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Project Picker host filesystem capability boundary",
+          "summary": "Web lists server projects while Lynx-for-Web and Native also expose host-local folders.",
+          "impact": "The retained popup row count differs after the shared selected project row, while popup geometry and the canonical project action remain comparable.",
+          "recommendation": "Keep the capability delta explicit and compare only shared project-picker anatomy and the selected spike-workspace row.",
+          "evidence": "final-overlays/project-picker-open-dark-1440/native/geometry.json",
+          "reason": "Host-local folder discovery is unavailable to Web original and is intentionally retained on Lynx host clients."
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-overlays/project-picker-open-dark-1440/web/raw.png",
+          "comparisonPath": "final-overlays/project-picker-open-dark-1440/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "6a0efecff913e342c76d990dff8d0610f1fba0126a52340146da2b8732c2bcad",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-overlays/project-picker-open-dark-1440/web/geometry.json",
+          "styles": "final-overlays/project-picker-open-dark-1440/web/styles.json",
+          "console": "final-overlays/project-picker-open-dark-1440/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "project-picker-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-overlays/project-picker-open-dark-1440/lynx/raw.png",
+          "comparisonPath": "final-overlays/project-picker-open-dark-1440/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "6a0efecff913e342c76d990dff8d0610f1fba0126a52340146da2b8732c2bcad",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-overlays/project-picker-open-dark-1440/lynx/geometry.json",
+          "styles": "final-overlays/project-picker-open-dark-1440/lynx/styles.json",
+          "console": "final-overlays/project-picker-open-dark-1440/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "project-picker-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-overlays/project-picker-open-dark-1440/native/raw.png",
+          "comparisonPath": "final-overlays/project-picker-open-dark-1440/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "6a0efecff913e342c76d990dff8d0610f1fba0126a52340146da2b8732c2bcad",
+          "image": {
+            "width": 2880,
+            "height": 1736
+          },
+          "geometry": "final-overlays/project-picker-open-dark-1440/native/geometry.json",
+          "styles": "final-overlays/project-picker-open-dark-1440/native/styles.json",
+          "console": "final-overlays/project-picker-open-dark-1440/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "project-picker-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "project-picker-open-light-1440",
+      "label": "project picker open light 1440 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "project-picker-open",
+      "snapshotSha256": "81b30ba9746355aa9193ff94ad515760d53fc32c7bd94b545a39709d1d639e39",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [
+        {
+          "id": "project-picker-open-light-1440-host-folder-capability",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Project Picker host filesystem capability boundary",
+          "summary": "Web lists server projects while Lynx-for-Web and Native also expose host-local folders.",
+          "impact": "The retained popup row count differs after the shared selected project row, while popup geometry and the canonical project action remain comparable.",
+          "recommendation": "Keep the capability delta explicit and compare only shared project-picker anatomy and the selected spike-workspace row.",
+          "evidence": "final-overlays/project-picker-open-light-1440/native/geometry.json",
+          "reason": "Host-local folder discovery is unavailable to Web original and is intentionally retained on Lynx host clients."
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-overlays/project-picker-open-light-1440/web/raw.png",
+          "comparisonPath": "final-overlays/project-picker-open-light-1440/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "81b30ba9746355aa9193ff94ad515760d53fc32c7bd94b545a39709d1d639e39",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-overlays/project-picker-open-light-1440/web/geometry.json",
+          "styles": "final-overlays/project-picker-open-light-1440/web/styles.json",
+          "console": "final-overlays/project-picker-open-light-1440/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "project-picker-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-overlays/project-picker-open-light-1440/lynx/raw.png",
+          "comparisonPath": "final-overlays/project-picker-open-light-1440/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "81b30ba9746355aa9193ff94ad515760d53fc32c7bd94b545a39709d1d639e39",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-overlays/project-picker-open-light-1440/lynx/geometry.json",
+          "styles": "final-overlays/project-picker-open-light-1440/lynx/styles.json",
+          "console": "final-overlays/project-picker-open-light-1440/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "project-picker-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-overlays/project-picker-open-light-1440/native/raw.png",
+          "comparisonPath": "final-overlays/project-picker-open-light-1440/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "81b30ba9746355aa9193ff94ad515760d53fc32c7bd94b545a39709d1d639e39",
+          "image": {
+            "width": 2880,
+            "height": 1736
+          },
+          "geometry": "final-overlays/project-picker-open-light-1440/native/geometry.json",
+          "styles": "final-overlays/project-picker-open-light-1440/native/styles.json",
+          "console": "final-overlays/project-picker-open-light-1440/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "project-picker-open"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "skill-menu-filtered-dark-1280",
+      "label": "skill menu filtered dark 1280 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "skill-filtered-review-agent",
+      "snapshotSha256": "fbc2b82714f7691c87d72e10b4808520a2477155998cb6438587cd221c060a13",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1280,
+        "height": 788
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-overlays/skill-menu-filtered-dark-1280/web/raw.png",
+          "comparisonPath": "final-overlays/skill-menu-filtered-dark-1280/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "fbc2b82714f7691c87d72e10b4808520a2477155998cb6438587cd221c060a13",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-overlays/skill-menu-filtered-dark-1280/web/geometry.json",
+          "styles": "final-overlays/skill-menu-filtered-dark-1280/web/styles.json",
+          "console": "final-overlays/skill-menu-filtered-dark-1280/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "skill-filtered-review-agent"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-overlays/skill-menu-filtered-dark-1280/lynx/raw.png",
+          "comparisonPath": "final-overlays/skill-menu-filtered-dark-1280/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "fbc2b82714f7691c87d72e10b4808520a2477155998cb6438587cd221c060a13",
+          "image": {
+            "width": 1280,
+            "height": 820
+          },
+          "geometry": "final-overlays/skill-menu-filtered-dark-1280/lynx/geometry.json",
+          "styles": "final-overlays/skill-menu-filtered-dark-1280/lynx/styles.json",
+          "console": "final-overlays/skill-menu-filtered-dark-1280/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "skill-filtered-review-agent"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-overlays/skill-menu-filtered-dark-1280/native/raw.png",
+          "comparisonPath": "final-overlays/skill-menu-filtered-dark-1280/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "fbc2b82714f7691c87d72e10b4808520a2477155998cb6438587cd221c060a13",
+          "image": {
+            "width": 2560,
+            "height": 1576
+          },
+          "geometry": "final-overlays/skill-menu-filtered-dark-1280/native/geometry.json",
+          "styles": "final-overlays/skill-menu-filtered-dark-1280/native/styles.json",
+          "console": "final-overlays/skill-menu-filtered-dark-1280/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "skill-filtered-review-agent"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "skill-menu-filtered-dark-1440",
+      "label": "skill menu filtered dark 1440 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "skill-filtered-review-agent",
+      "snapshotSha256": "fbff55ae060de46f09ebbb159bb93f497071fa56f5b58b1e83277e2e2903ad3a",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-overlays/skill-menu-filtered-dark-1440/web/raw.png",
+          "comparisonPath": "final-overlays/skill-menu-filtered-dark-1440/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "fbff55ae060de46f09ebbb159bb93f497071fa56f5b58b1e83277e2e2903ad3a",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-overlays/skill-menu-filtered-dark-1440/web/geometry.json",
+          "styles": "final-overlays/skill-menu-filtered-dark-1440/web/styles.json",
+          "console": "final-overlays/skill-menu-filtered-dark-1440/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "skill-filtered-review-agent"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-overlays/skill-menu-filtered-dark-1440/lynx/raw.png",
+          "comparisonPath": "final-overlays/skill-menu-filtered-dark-1440/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "fbff55ae060de46f09ebbb159bb93f497071fa56f5b58b1e83277e2e2903ad3a",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-overlays/skill-menu-filtered-dark-1440/lynx/geometry.json",
+          "styles": "final-overlays/skill-menu-filtered-dark-1440/lynx/styles.json",
+          "console": "final-overlays/skill-menu-filtered-dark-1440/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "skill-filtered-review-agent"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-overlays/skill-menu-filtered-dark-1440/native/raw.png",
+          "comparisonPath": "final-overlays/skill-menu-filtered-dark-1440/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "fbff55ae060de46f09ebbb159bb93f497071fa56f5b58b1e83277e2e2903ad3a",
+          "image": {
+            "width": 2880,
+            "height": 1736
+          },
+          "geometry": "final-overlays/skill-menu-filtered-dark-1440/native/geometry.json",
+          "styles": "final-overlays/skill-menu-filtered-dark-1440/native/styles.json",
+          "console": "final-overlays/skill-menu-filtered-dark-1440/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "density": "comfortable",
+            "interactionState": "skill-filtered-review-agent"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "skill-menu-filtered-light-1440",
+      "label": "skill menu filtered light 1440 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "skill-filtered-review-agent",
+      "snapshotSha256": "485f7a7e3f92b2c02514b819a88ba5b84b6392bf3b4207e46a013343ee1b0cdd",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "requiredClients": [
+        "web",
+        "lynx",
+        "native"
+      ],
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "path": "final-overlays/skill-menu-filtered-light-1440/web/raw.png",
+          "comparisonPath": "final-overlays/skill-menu-filtered-light-1440/web/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "2f1081bdc01d666bc11d6203274b54a3d54906eead14e064bfeda9d058ea4a9d",
+          "snapshotSha256": "485f7a7e3f92b2c02514b819a88ba5b84b6392bf3b4207e46a013343ee1b0cdd",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-overlays/skill-menu-filtered-light-1440/web/geometry.json",
+          "styles": "final-overlays/skill-menu-filtered-light-1440/web/styles.json",
+          "console": "final-overlays/skill-menu-filtered-light-1440/web/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "skill-filtered-review-agent"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "path": "final-overlays/skill-menu-filtered-light-1440/lynx/raw.png",
+          "comparisonPath": "final-overlays/skill-menu-filtered-light-1440/lynx/comparison.png",
+          "captureTier": "browser",
+          "buildSha256": "9ff47872420c1af0c991a6864e2d91eb0e7f526b42bc1e950c382621cce76aaf",
+          "snapshotSha256": "485f7a7e3f92b2c02514b819a88ba5b84b6392bf3b4207e46a013343ee1b0cdd",
+          "image": {
+            "width": 1440,
+            "height": 900
+          },
+          "geometry": "final-overlays/skill-menu-filtered-light-1440/lynx/geometry.json",
+          "styles": "final-overlays/skill-menu-filtered-light-1440/lynx/styles.json",
+          "console": "final-overlays/skill-menu-filtered-light-1440/lynx/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "skill-filtered-review-agent"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "path": "final-overlays/skill-menu-filtered-light-1440/native/raw.png",
+          "comparisonPath": "final-overlays/skill-menu-filtered-light-1440/native/comparison.png",
+          "captureTier": "native",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "snapshotSha256": "485f7a7e3f92b2c02514b819a88ba5b84b6392bf3b4207e46a013343ee1b0cdd",
+          "image": {
+            "width": 2880,
+            "height": 1736
+          },
+          "geometry": "final-overlays/skill-menu-filtered-light-1440/native/geometry.json",
+          "styles": "final-overlays/skill-menu-filtered-light-1440/native/styles.json",
+          "console": "final-overlays/skill-menu-filtered-light-1440/native/console.txt",
+          "stateEcho": {
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "density": "comfortable",
+            "interactionState": "skill-filtered-review-agent"
+          },
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
     }
   ]
 }

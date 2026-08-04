@@ -1,0 +1,182 @@
+{
+  "client": "native",
+  "stateId": "command-k-open-light-1280",
+  "roles": {
+    "root": {
+      "nodeId": 13,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 788
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(252,252,252)",
+        "background": "rgb(16,16,16)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "surface": {
+      "nodeId": 3104,
+      "nodeName": "VIEW",
+      "attributes": {
+        "overlap": "false",
+        "event-through": "false",
+        "aria-modal": "true",
+        "role": "dialog",
+        "flatten": "false",
+        "bindanimationstart": "2816:0:bindanimationstart",
+        "bindanimationend": "2816:0:bindanimationend",
+        "bindtransitionstart": "2816:0:bindtransitionstart",
+        "bindtransitioncancel": "2816:0:bindtransitioncancel",
+        "bindtransitionend": "2816:0:bindtransitionend",
+        "bindanimationcancel": "2816:0:bindanimationcancel",
+        "bindkeydown": "2816:0:bindkeydown",
+        "class": "LxDialogPopup LxCommandDialogPopup ui-closed"
+      },
+      "text": "",
+      "box": {
+        "x": 352,
+        "y": 141,
+        "width": 576,
+        "height": 420
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "hsla(0,0%,5%,.06)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "panel": {
+      "nodeId": 3106,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "LxCommandPanel overflow-hidden"
+      },
+      "text": "",
+      "box": {
+        "x": 352,
+        "y": 142,
+        "width": 576,
+        "height": 377
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "hsla(0,0%,5%,.06)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "row": {
+      "nodeId": 3117,
+      "nodeName": "VIEW",
+      "attributes": {
+        "focusable": "true",
+        "aria-disabled": "false",
+        "aria-selected": "true",
+        "bindmouseenter": "2827:0:bindmouseenter",
+        "bindblur": "2827:0:bindblur",
+        "bindmouseleave": "2827:0:bindmouseleave",
+        "bindtap": "2827:0:bindtap",
+        "bindmouseup": "2827:0:bindmouseup",
+        "bindtouchstart": "2827:0:bindtouchstart",
+        "bindmousedown": "2827:0:bindmousedown",
+        "bindtouchend": "2827:0:bindtouchend",
+        "bindtouchcancel": "2827:0:bindtouchcancel",
+        "catchkeydown": "2827:0:catchkeydown",
+        "bindfocus": "2827:0:bindfocus",
+        "class": "LxCommandItem cursor-pointer items-center gap-2 rounded-lg px-2.5 py-1.5 LxCommandItem--highlighted"
+      },
+      "text": "",
+      "box": {
+        "x": 359,
+        "y": 210,
+        "width": 562,
+        "height": 31
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(232,242,250)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "input": {
+      "nodeId": 3108,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "LxCommandInput"
+      },
+      "text": "",
+      "box": {
+        "x": 353,
+        "y": 143,
+        "width": 574,
+        "height": 48
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

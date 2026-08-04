@@ -25329,6 +25329,14492 @@ globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ = {
           }
         }
       }
+    },
+    {
+      "id": "command-k-open-dark-1280",
+      "label": "command k open dark 1280 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "command-k-open",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1280,
+        "height": 788
+      },
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/command-k-open-dark-1280/web/raw.png",
+          "comparisonPath": "final-overlays/command-k-open-dark-1280/web/comparison.png",
+          "geometry": "final-overlays/command-k-open-dark-1280/web/geometry.json",
+          "geometryData": {
+            "client": "web",
+            "stateId": "command-k-open-dark-1280",
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "viewport": {
+              "width": 1280,
+              "height": 820,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "BODY",
+                "className": "",
+                "text": "Toggle SidebarToggle SidebarStudioProjectsNew thread⌘NSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed task\n    To pick up a draggable item, press the space bar.\n    While dragging, u",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1280,
+                  "height": 820
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "DIV",
+                "className": "-translate-y-[calc(1.25rem*var(--nested-dialogs))] relative row-start-2 flex max-h-105 min-h-0 w-full min-w-0 max-w-xl scale-[calc(1-0.1*var(--nested-dialogs))] flex-col rounded-2xl border border-[color:var(--color-border-light)] bg-[var(--color-background-surface-under)] text-[var(--color-text-foreground)] opacity-[calc(1-0.1*var(--nested-dialogs))] shadow-lg/5 outline-none transition-[scale,opacity,translate] duration-200 ease-in-out will-change-transform before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-2xl)-1px)] before:bg-[var(--color-background-elevated-secondary)]/72 before:shadow-[0_1px_--theme(--color-black/4%)] data-nested:data-ending-style:translate-y-8 data-nested:data-starting-style:translate-y-8 data-nested-dialog-open:origin-top data-ending-style:scale-98 data-starting-style:scale-98 data-ending-style:opacity-0 data-starting-style:opacity-0 **:data-[slot=scroll-area-viewport]:data-has-overflow-y:pe-1 dark:before:shadow-[0_-1px_--theme(--color-white/6%)]",
+                "text": "SuggestedNew chat⌥⌘NNew thread⌘NAdd project⇧⌘OImport thread from...⌘IFeedback SynaraSettingsUsage settings⇧⌘UNew spaceRecentNew chatHome1dNew chatHome1dIn Progress seed taskLynx Web Spike1dJump to threads, projects, actions, or appearance.E",
+                "box": {
+                  "x": 352,
+                  "y": 154.890625,
+                  "width": 576,
+                  "height": 420
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgba(252, 252, 252, 0.047)",
+                  "borderWidth": "1px",
+                  "radius": "18px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0 0 0 / 0.05) 0px 10px 15px -3px, oklab(0 0 0 / 0.05) 0px 4px 6px -4px",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "tag": "DIV",
+                "className": "-mx-px not-has-[+[data-slot=command-footer]]:-mb-px relative min-h-0 rounded-t-xl not-has-[+[data-slot=command-footer]]:rounded-b-2xl border border-b-0 border-[color:var(--color-border-light)] bg-[var(--color-background-surface-under)] shadow-xs/5 [clip-path:inset(0_1px)] not-has-[+[data-slot=command-footer]]:[clip-path:inset(0_1px_1px_1px_round_0_0_calc(var(--radius-2xl)-1px)_calc(var(--radius-2xl)-1px))] before:pointer-events-none before:absolute before:inset-0 before:rounded-t-[calc(var(--radius-xl)-1px)] **:data-[slot=scroll-area-scrollbar]:mt-2 overflow-hidden",
+                "text": "SuggestedNew chat⌥⌘NNew thread⌘NAdd project⇧⌘OImport thread from...⌘IFeedback SynaraSettingsUsage settings⇧⌘UNew spaceRecentNew chatHome1dNew chatHome1dIn Progress seed taskLynx Web Spike1d",
+                "box": {
+                  "x": 352,
+                  "y": 155.890625,
+                  "width": 576,
+                  "height": 377
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgba(252, 252, 252, 0.047)",
+                  "borderWidth": "1px 1px 0px",
+                  "radius": "14px 14px 0px 0px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0 0 0 / 0.05) 0px 1px 2px 0px",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "DIV",
+                "className": "flex min-h-8 select-none text-base outline-none data-disabled:pointer-events-none data-highlighted:bg-[var(--color-background-button-secondary-hover)] data-highlighted:text-[var(--color-text-foreground)] data-disabled:opacity-64 sm:min-h-7 sm:text-sm cursor-pointer items-center gap-2 rounded-lg px-2.5 py-1.5",
+                "text": "New chat⌥⌘N",
+                "box": {
+                  "x": 359,
+                  "y": 226.890625,
+                  "width": 558,
+                  "height": 32
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(252, 252, 252, 0.04)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "input": {
+                "tag": "INPUT",
+                "className": "font-system-ui h-full w-full min-w-0 rounded-[inherit] border-0 bg-transparent text-[length:var(--app-font-size-ui,12px)] leading-normal outline-none placeholder:text-muted-foreground/72 [transition:background-color_5000000s_ease-in-out_0s] sm:text-[length:var(--app-font-size-ui,12px)] px-3.5 py-2",
+                "text": "",
+                "box": {
+                  "x": 364,
+                  "y": 165.390625,
+                  "width": 552,
+                  "height": 31
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/command-k-open-dark-1280/web/styles.json",
+          "stylesData": {
+            "client": "web",
+            "stateId": "command-k-open-dark-1280",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgba(252, 252, 252, 0.047)",
+                  "borderWidth": "1px",
+                  "radius": "18px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0 0 0 / 0.05) 0px 10px 15px -3px, oklab(0 0 0 / 0.05) 0px 4px 6px -4px",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgba(252, 252, 252, 0.047)",
+                  "borderWidth": "1px 1px 0px",
+                  "radius": "14px 14px 0px 0px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0 0 0 / 0.05) 0px 1px 2px 0px",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(252, 252, 252, 0.04)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "input": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/command-k-open-dark-1280/web/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/command-k-open-dark-1280/lynx/raw.png",
+          "comparisonPath": "final-overlays/command-k-open-dark-1280/lynx/comparison.png",
+          "geometry": "final-overlays/command-k-open-dark-1280/lynx/geometry.json",
+          "geometryData": {
+            "client": "lynx",
+            "stateId": "command-k-open-dark-1280",
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "viewport": {
+              "width": 1280,
+              "height": 820,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "X-VIEW",
+                "className": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable",
+                "text": "StudioProjectsNew threadSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed taskChats›⚙SettingsSuggestedNew chat⌘NNew threadAdd projectImport thread from...SettingsUsage settingsRecentNe",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1280,
+                  "height": 820
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "X-VIEW",
+                "className": "LxDialogPopup LxCommandDialogPopup ui-open",
+                "text": "SuggestedNew chat⌘NNew threadAdd projectImport thread from...SettingsUsage settingsRecentNew chatHome1dNew chatHome1dIn Progress seed taskLynx Web Spike1dJump to threads, projects, actions, or appearance.Enter to open",
+                "box": {
+                  "x": 352,
+                  "y": 154.890625,
+                  "width": 576,
+                  "height": 420
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgba(252, 252, 252, 0.047)",
+                  "borderWidth": "1px",
+                  "radius": "16px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "tag": "X-VIEW",
+                "className": "LxCommandPanel overflow-hidden",
+                "text": "SuggestedNew chat⌘NNew threadAdd projectImport thread from...SettingsUsage settingsRecentNew chatHome1dNew chatHome1dIn Progress seed taskLynx Web Spike1d",
+                "box": {
+                  "x": 352,
+                  "y": 155.890625,
+                  "width": 576,
+                  "height": 377
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgba(252, 252, 252, 0.047)",
+                  "borderWidth": "1px 1px 0px",
+                  "radius": "12px 12px 0px 0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "X-VIEW",
+                "className": "LxCommandItem cursor-pointer items-center gap-2 rounded-lg px-2.5 py-1.5 LxCommandItem--highlighted",
+                "text": "New chat⌘N",
+                "box": {
+                  "x": 359,
+                  "y": 220.28125,
+                  "width": 562,
+                  "height": 32
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(0, 15, 29)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "input": {
+                "tag": "X-VIEW",
+                "className": "LxCommandInput",
+                "text": "",
+                "box": {
+                  "x": 353,
+                  "y": 156.890625,
+                  "width": 574,
+                  "height": 48
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/command-k-open-dark-1280/lynx/styles.json",
+          "stylesData": {
+            "client": "lynx",
+            "stateId": "command-k-open-dark-1280",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgba(252, 252, 252, 0.047)",
+                  "borderWidth": "1px",
+                  "radius": "16px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgba(252, 252, 252, 0.047)",
+                  "borderWidth": "1px 1px 0px",
+                  "radius": "12px 12px 0px 0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(0, 15, 29)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "input": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/command-k-open-dark-1280/lynx/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/command-k-open-dark-1280/native/raw.png",
+          "comparisonPath": "final-overlays/command-k-open-dark-1280/native/comparison.png",
+          "geometry": "final-overlays/command-k-open-dark-1280/native/geometry.json",
+          "geometryData": {
+            "client": "native",
+            "stateId": "command-k-open-dark-1280",
+            "roles": {
+              "root": {
+                "nodeId": 13,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable"
+                },
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1280,
+                  "height": 788
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "nodeId": 1240,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "overlap": "false",
+                  "event-through": "false",
+                  "aria-modal": "true",
+                  "role": "dialog",
+                  "flatten": "false",
+                  "bindanimationstart": "1238:0:bindanimationstart",
+                  "bindanimationend": "1238:0:bindanimationend",
+                  "bindtransitionstart": "1238:0:bindtransitionstart",
+                  "bindtransitioncancel": "1238:0:bindtransitioncancel",
+                  "bindtransitionend": "1238:0:bindtransitionend",
+                  "bindanimationcancel": "1238:0:bindanimationcancel",
+                  "bindkeydown": "1238:0:bindkeydown",
+                  "class": "LxDialogPopup LxCommandDialogPopup ui-closed"
+                },
+                "text": "",
+                "box": {
+                  "x": 352,
+                  "y": 141,
+                  "width": 576,
+                  "height": 420
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "hsla(0,0%,99%,.046)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "nodeId": 1242,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "LxCommandPanel overflow-hidden"
+                },
+                "text": "",
+                "box": {
+                  "x": 352,
+                  "y": 142,
+                  "width": 576,
+                  "height": 377
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "hsla(0,0%,99%,.046)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "nodeId": 1253,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "focusable": "true",
+                  "aria-disabled": "false",
+                  "aria-selected": "true",
+                  "bindmouseenter": "1249:0:bindmouseenter",
+                  "bindblur": "1249:0:bindblur",
+                  "bindmouseleave": "1249:0:bindmouseleave",
+                  "bindtap": "1249:0:bindtap",
+                  "bindmouseup": "1249:0:bindmouseup",
+                  "bindtouchstart": "1249:0:bindtouchstart",
+                  "bindmousedown": "1249:0:bindmousedown",
+                  "bindtouchend": "1249:0:bindtouchend",
+                  "bindtouchcancel": "1249:0:bindtouchcancel",
+                  "catchkeydown": "1249:0:catchkeydown",
+                  "bindfocus": "1249:0:bindfocus",
+                  "class": "LxCommandItem cursor-pointer items-center gap-2 rounded-lg px-2.5 py-1.5 LxCommandItem--highlighted"
+                },
+                "text": "",
+                "box": {
+                  "x": 359,
+                  "y": 210,
+                  "width": 562,
+                  "height": 31
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(0,15,29)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "input": {
+                "nodeId": 1244,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "LxCommandInput"
+                },
+                "text": "",
+                "box": {
+                  "x": 353,
+                  "y": 143,
+                  "width": 574,
+                  "height": 48
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/command-k-open-dark-1280/native/styles.json",
+          "stylesData": {
+            "client": "native",
+            "stateId": "command-k-open-dark-1280",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "hsla(0,0%,99%,.046)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "hsla(0,0%,99%,.046)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(0,15,29)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "input": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/command-k-open-dark-1280/native/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "command-k-open-dark-1440",
+      "label": "command k open dark 1440 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "command-k-open",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/command-k-open-dark-1440/web/raw.png",
+          "comparisonPath": "final-overlays/command-k-open-dark-1440/web/comparison.png",
+          "geometry": "final-overlays/command-k-open-dark-1440/web/geometry.json",
+          "geometryData": {
+            "client": "web",
+            "stateId": "command-k-open-dark-1440",
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "viewport": {
+              "width": 1440,
+              "height": 900,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "BODY",
+                "className": "",
+                "text": "Toggle SidebarToggle SidebarStudioProjectsNew thread⌘NSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed task\n    To pick up a draggable item, press the space bar.\n    While dragging, u",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 900
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "DIV",
+                "className": "-translate-y-[calc(1.25rem*var(--nested-dialogs))] relative row-start-2 flex max-h-105 min-h-0 w-full min-w-0 max-w-xl scale-[calc(1-0.1*var(--nested-dialogs))] flex-col rounded-2xl border border-[color:var(--color-border-light)] bg-[var(--color-background-surface-under)] text-[var(--color-text-foreground)] opacity-[calc(1-0.1*var(--nested-dialogs))] shadow-lg/5 outline-none transition-[scale,opacity,translate] duration-200 ease-in-out will-change-transform before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-2xl)-1px)] before:bg-[var(--color-background-elevated-secondary)]/72 before:shadow-[0_1px_--theme(--color-black/4%)] data-nested:data-ending-style:translate-y-8 data-nested:data-starting-style:translate-y-8 data-nested-dialog-open:origin-top data-ending-style:scale-98 data-starting-style:scale-98 data-ending-style:opacity-0 data-starting-style:opacity-0 **:data-[slot=scroll-area-viewport]:data-has-overflow-y:pe-1 dark:before:shadow-[0_-1px_--theme(--color-white/6%)]",
+                "text": "SuggestedNew chat⌥⌘NNew thread⌘NAdd project⇧⌘OImport thread from...⌘IFeedback SynaraSettingsUsage settings⇧⌘UNew spaceRecentNew chatHome1dNew chatHome1dIn Progress seed taskLynx Web Spike1dJump to threads, projects, actions, or appearance.E",
+                "box": {
+                  "x": 432,
+                  "y": 190.5,
+                  "width": 576,
+                  "height": 420
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgba(252, 252, 252, 0.047)",
+                  "borderWidth": "1px",
+                  "radius": "18px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0 0 0 / 0.05) 0px 10px 15px -3px, oklab(0 0 0 / 0.05) 0px 4px 6px -4px",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "tag": "DIV",
+                "className": "-mx-px not-has-[+[data-slot=command-footer]]:-mb-px relative min-h-0 rounded-t-xl not-has-[+[data-slot=command-footer]]:rounded-b-2xl border border-b-0 border-[color:var(--color-border-light)] bg-[var(--color-background-surface-under)] shadow-xs/5 [clip-path:inset(0_1px)] not-has-[+[data-slot=command-footer]]:[clip-path:inset(0_1px_1px_1px_round_0_0_calc(var(--radius-2xl)-1px)_calc(var(--radius-2xl)-1px))] before:pointer-events-none before:absolute before:inset-0 before:rounded-t-[calc(var(--radius-xl)-1px)] **:data-[slot=scroll-area-scrollbar]:mt-2 overflow-hidden",
+                "text": "SuggestedNew chat⌥⌘NNew thread⌘NAdd project⇧⌘OImport thread from...⌘IFeedback SynaraSettingsUsage settings⇧⌘UNew spaceRecentNew chatHome1dNew chatHome1dIn Progress seed taskLynx Web Spike1d",
+                "box": {
+                  "x": 432,
+                  "y": 191.5,
+                  "width": 576,
+                  "height": 377
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgba(252, 252, 252, 0.047)",
+                  "borderWidth": "1px 1px 0px",
+                  "radius": "14px 14px 0px 0px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0 0 0 / 0.05) 0px 1px 2px 0px",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "DIV",
+                "className": "flex min-h-8 select-none text-base outline-none data-disabled:pointer-events-none data-highlighted:bg-[var(--color-background-button-secondary-hover)] data-highlighted:text-[var(--color-text-foreground)] data-disabled:opacity-64 sm:min-h-7 sm:text-sm cursor-pointer items-center gap-2 rounded-lg px-2.5 py-1.5",
+                "text": "New chat⌥⌘N",
+                "box": {
+                  "x": 439,
+                  "y": 262.5,
+                  "width": 558,
+                  "height": 32
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(252, 252, 252, 0.04)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "input": {
+                "tag": "INPUT",
+                "className": "font-system-ui h-full w-full min-w-0 rounded-[inherit] border-0 bg-transparent text-[length:var(--app-font-size-ui,12px)] leading-normal outline-none placeholder:text-muted-foreground/72 [transition:background-color_5000000s_ease-in-out_0s] sm:text-[length:var(--app-font-size-ui,12px)] px-3.5 py-2",
+                "text": "",
+                "box": {
+                  "x": 444,
+                  "y": 201,
+                  "width": 552,
+                  "height": 31
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/command-k-open-dark-1440/web/styles.json",
+          "stylesData": {
+            "client": "web",
+            "stateId": "command-k-open-dark-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgba(252, 252, 252, 0.047)",
+                  "borderWidth": "1px",
+                  "radius": "18px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0 0 0 / 0.05) 0px 10px 15px -3px, oklab(0 0 0 / 0.05) 0px 4px 6px -4px",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgba(252, 252, 252, 0.047)",
+                  "borderWidth": "1px 1px 0px",
+                  "radius": "14px 14px 0px 0px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0 0 0 / 0.05) 0px 1px 2px 0px",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(252, 252, 252, 0.04)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "input": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/command-k-open-dark-1440/web/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/command-k-open-dark-1440/lynx/raw.png",
+          "comparisonPath": "final-overlays/command-k-open-dark-1440/lynx/comparison.png",
+          "geometry": "final-overlays/command-k-open-dark-1440/lynx/geometry.json",
+          "geometryData": {
+            "client": "lynx",
+            "stateId": "command-k-open-dark-1440",
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "viewport": {
+              "width": 1440,
+              "height": 900,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "X-VIEW",
+                "className": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable",
+                "text": "StudioProjectsNew threadSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed taskChats›⚙SettingsSuggestedNew chat⌘NNew threadAdd projectImport thread from...SettingsUsage settingsRecentNe",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 900
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "X-VIEW",
+                "className": "LxDialogPopup LxCommandDialogPopup ui-open",
+                "text": "SuggestedNew chat⌘NNew threadAdd projectImport thread from...SettingsUsage settingsRecentNew chatHome1dNew chatHome1dIn Progress seed taskLynx Web Spike1dJump to threads, projects, actions, or appearance.Enter to open",
+                "box": {
+                  "x": 432,
+                  "y": 190.5,
+                  "width": 576,
+                  "height": 420
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgba(252, 252, 252, 0.047)",
+                  "borderWidth": "1px",
+                  "radius": "16px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "tag": "X-VIEW",
+                "className": "LxCommandPanel overflow-hidden",
+                "text": "SuggestedNew chat⌘NNew threadAdd projectImport thread from...SettingsUsage settingsRecentNew chatHome1dNew chatHome1dIn Progress seed taskLynx Web Spike1d",
+                "box": {
+                  "x": 432,
+                  "y": 191.5,
+                  "width": 576,
+                  "height": 377
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgba(252, 252, 252, 0.047)",
+                  "borderWidth": "1px 1px 0px",
+                  "radius": "12px 12px 0px 0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "X-VIEW",
+                "className": "LxCommandItem cursor-pointer items-center gap-2 rounded-lg px-2.5 py-1.5 LxCommandItem--highlighted",
+                "text": "New chat⌘N",
+                "box": {
+                  "x": 439,
+                  "y": 255.890625,
+                  "width": 562,
+                  "height": 32
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(0, 15, 29)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "input": {
+                "tag": "X-VIEW",
+                "className": "LxCommandInput",
+                "text": "",
+                "box": {
+                  "x": 433,
+                  "y": 192.5,
+                  "width": 574,
+                  "height": 48
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/command-k-open-dark-1440/lynx/styles.json",
+          "stylesData": {
+            "client": "lynx",
+            "stateId": "command-k-open-dark-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgba(252, 252, 252, 0.047)",
+                  "borderWidth": "1px",
+                  "radius": "16px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgba(252, 252, 252, 0.047)",
+                  "borderWidth": "1px 1px 0px",
+                  "radius": "12px 12px 0px 0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(0, 15, 29)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "input": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/command-k-open-dark-1440/lynx/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/command-k-open-dark-1440/native/raw.png",
+          "comparisonPath": "final-overlays/command-k-open-dark-1440/native/comparison.png",
+          "geometry": "final-overlays/command-k-open-dark-1440/native/geometry.json",
+          "geometryData": {
+            "client": "native",
+            "stateId": "command-k-open-dark-1440",
+            "roles": {
+              "root": {
+                "nodeId": 13,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable"
+                },
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 868
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "nodeId": 7545,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "overlap": "false",
+                  "event-through": "false",
+                  "aria-modal": "true",
+                  "role": "dialog",
+                  "flatten": "false",
+                  "bindanimationstart": "7187:0:bindanimationstart",
+                  "bindanimationend": "7187:0:bindanimationend",
+                  "bindtransitionstart": "7187:0:bindtransitionstart",
+                  "bindtransitioncancel": "7187:0:bindtransitioncancel",
+                  "bindtransitionend": "7187:0:bindtransitionend",
+                  "bindanimationcancel": "7187:0:bindanimationcancel",
+                  "bindkeydown": "7187:0:bindkeydown",
+                  "class": "LxDialogPopup LxCommandDialogPopup ui-closed"
+                },
+                "text": "",
+                "box": {
+                  "x": 432,
+                  "y": 177,
+                  "width": 576,
+                  "height": 420
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "hsla(0,0%,5%,.06)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "nodeId": 7547,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "LxCommandPanel overflow-hidden"
+                },
+                "text": "",
+                "box": {
+                  "x": 432,
+                  "y": 178,
+                  "width": 576,
+                  "height": 377
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "hsla(0,0%,5%,.06)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "nodeId": 7558,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "focusable": "true",
+                  "aria-disabled": "false",
+                  "aria-selected": "true",
+                  "bindmouseenter": "7198:0:bindmouseenter",
+                  "bindblur": "7198:0:bindblur",
+                  "bindmouseleave": "7198:0:bindmouseleave",
+                  "bindtap": "7198:0:bindtap",
+                  "bindmouseup": "7198:0:bindmouseup",
+                  "bindtouchstart": "7198:0:bindtouchstart",
+                  "bindmousedown": "7198:0:bindmousedown",
+                  "bindtouchend": "7198:0:bindtouchend",
+                  "bindtouchcancel": "7198:0:bindtouchcancel",
+                  "catchkeydown": "7198:0:catchkeydown",
+                  "bindfocus": "7198:0:bindfocus",
+                  "class": "LxCommandItem cursor-pointer items-center gap-2 rounded-lg px-2.5 py-1.5 LxCommandItem--highlighted"
+                },
+                "text": "",
+                "box": {
+                  "x": 439,
+                  "y": 246,
+                  "width": 562,
+                  "height": 31
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "input": {
+                "nodeId": 7549,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "LxCommandInput"
+                },
+                "text": "",
+                "box": {
+                  "x": 433,
+                  "y": 179,
+                  "width": 574,
+                  "height": 48
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/command-k-open-dark-1440/native/styles.json",
+          "stylesData": {
+            "client": "native",
+            "stateId": "command-k-open-dark-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "hsla(0,0%,5%,.06)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "hsla(0,0%,5%,.06)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "input": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/command-k-open-dark-1440/native/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "command-k-open-light-1280",
+      "label": "command k open light 1280 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "command-k-open",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1280,
+        "height": 788
+      },
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/command-k-open-light-1280/web/raw.png",
+          "comparisonPath": "final-overlays/command-k-open-light-1280/web/comparison.png",
+          "geometry": "final-overlays/command-k-open-light-1280/web/geometry.json",
+          "geometryData": {
+            "client": "web",
+            "stateId": "command-k-open-light-1280",
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "viewport": {
+              "width": 1280,
+              "height": 820,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "BODY",
+                "className": "",
+                "text": "Toggle SidebarToggle SidebarStudioProjectsNew thread⌘NSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed task\n    To pick up a draggable item, press the space bar.\n    While dragging, u",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1280,
+                  "height": 820
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "DIV",
+                "className": "-translate-y-[calc(1.25rem*var(--nested-dialogs))] relative row-start-2 flex max-h-105 min-h-0 w-full min-w-0 max-w-xl scale-[calc(1-0.1*var(--nested-dialogs))] flex-col rounded-2xl border border-[color:var(--color-border-light)] bg-[var(--color-background-surface-under)] text-[var(--color-text-foreground)] opacity-[calc(1-0.1*var(--nested-dialogs))] shadow-lg/5 outline-none transition-[scale,opacity,translate] duration-200 ease-in-out will-change-transform before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-2xl)-1px)] before:bg-[var(--color-background-elevated-secondary)]/72 before:shadow-[0_1px_--theme(--color-black/4%)] data-nested:data-ending-style:translate-y-8 data-nested:data-starting-style:translate-y-8 data-nested-dialog-open:origin-top data-ending-style:scale-98 data-starting-style:scale-98 data-ending-style:opacity-0 data-starting-style:opacity-0 **:data-[slot=scroll-area-viewport]:data-has-overflow-y:pe-1 dark:before:shadow-[0_-1px_--theme(--color-white/6%)]",
+                "text": "SuggestedNew chat⌥⌘NNew thread⌘NAdd project⇧⌘OImport thread from...⌘IFeedback SynaraSettingsUsage settings⇧⌘UNew spaceRecentNew chatHome1dNew chatHome1dIn Progress seed taskLynx Web Spike1dJump to threads, projects, actions, or appearance.E",
+                "box": {
+                  "x": 352,
+                  "y": 154.890625,
+                  "width": 576,
+                  "height": 420
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.06)",
+                  "borderWidth": "1px",
+                  "radius": "18px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0 0 0 / 0.05) 0px 10px 15px -3px, oklab(0 0 0 / 0.05) 0px 4px 6px -4px",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "tag": "DIV",
+                "className": "-mx-px not-has-[+[data-slot=command-footer]]:-mb-px relative min-h-0 rounded-t-xl not-has-[+[data-slot=command-footer]]:rounded-b-2xl border border-b-0 border-[color:var(--color-border-light)] bg-[var(--color-background-surface-under)] shadow-xs/5 [clip-path:inset(0_1px)] not-has-[+[data-slot=command-footer]]:[clip-path:inset(0_1px_1px_1px_round_0_0_calc(var(--radius-2xl)-1px)_calc(var(--radius-2xl)-1px))] before:pointer-events-none before:absolute before:inset-0 before:rounded-t-[calc(var(--radius-xl)-1px)] **:data-[slot=scroll-area-scrollbar]:mt-2 overflow-hidden",
+                "text": "SuggestedNew chat⌥⌘NNew thread⌘NAdd project⇧⌘OImport thread from...⌘IFeedback SynaraSettingsUsage settings⇧⌘UNew spaceRecentNew chatHome1dNew chatHome1dIn Progress seed taskLynx Web Spike1d",
+                "box": {
+                  "x": 352,
+                  "y": 155.890625,
+                  "width": 576,
+                  "height": 377
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.06)",
+                  "borderWidth": "1px 1px 0px",
+                  "radius": "14px 14px 0px 0px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0 0 0 / 0.05) 0px 1px 2px 0px",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "DIV",
+                "className": "flex min-h-8 select-none text-base outline-none data-disabled:pointer-events-none data-highlighted:bg-[var(--color-background-button-secondary-hover)] data-highlighted:text-[var(--color-text-foreground)] data-disabled:opacity-64 sm:min-h-7 sm:text-sm cursor-pointer items-center gap-2 rounded-lg px-2.5 py-1.5",
+                "text": "New chat⌥⌘N",
+                "box": {
+                  "x": 359,
+                  "y": 226.890625,
+                  "width": 558,
+                  "height": 32
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(13, 13, 13, 0.04)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "input": {
+                "tag": "INPUT",
+                "className": "font-system-ui h-full w-full min-w-0 rounded-[inherit] border-0 bg-transparent text-[length:var(--app-font-size-ui,12px)] leading-normal outline-none placeholder:text-muted-foreground/72 [transition:background-color_5000000s_ease-in-out_0s] sm:text-[length:var(--app-font-size-ui,12px)] px-3.5 py-2",
+                "text": "",
+                "box": {
+                  "x": 364,
+                  "y": 165.390625,
+                  "width": 552,
+                  "height": 31
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/command-k-open-light-1280/web/styles.json",
+          "stylesData": {
+            "client": "web",
+            "stateId": "command-k-open-light-1280",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.06)",
+                  "borderWidth": "1px",
+                  "radius": "18px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0 0 0 / 0.05) 0px 10px 15px -3px, oklab(0 0 0 / 0.05) 0px 4px 6px -4px",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.06)",
+                  "borderWidth": "1px 1px 0px",
+                  "radius": "14px 14px 0px 0px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0 0 0 / 0.05) 0px 1px 2px 0px",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(13, 13, 13, 0.04)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "input": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/command-k-open-light-1280/web/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/command-k-open-light-1280/lynx/raw.png",
+          "comparisonPath": "final-overlays/command-k-open-light-1280/lynx/comparison.png",
+          "geometry": "final-overlays/command-k-open-light-1280/lynx/geometry.json",
+          "geometryData": {
+            "client": "lynx",
+            "stateId": "command-k-open-light-1280",
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "viewport": {
+              "width": 1280,
+              "height": 820,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "X-VIEW",
+                "className": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable",
+                "text": "StudioProjectsNew threadSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed taskChats›⚙SettingsSuggestedNew chat⌘NNew threadAdd projectImport thread from...SettingsUsage settingsRecentNe",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1280,
+                  "height": 820
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "X-VIEW",
+                "className": "LxDialogPopup LxCommandDialogPopup ui-open",
+                "text": "SuggestedNew chat⌘NNew threadAdd projectImport thread from...SettingsUsage settingsRecentNew chatHome1dNew chatHome1dIn Progress seed taskLynx Web Spike1dJump to threads, projects, actions, or appearance.Enter to open",
+                "box": {
+                  "x": 352,
+                  "y": 154.890625,
+                  "width": 576,
+                  "height": 420
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.06)",
+                  "borderWidth": "1px",
+                  "radius": "16px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "tag": "X-VIEW",
+                "className": "LxCommandPanel overflow-hidden",
+                "text": "SuggestedNew chat⌘NNew threadAdd projectImport thread from...SettingsUsage settingsRecentNew chatHome1dNew chatHome1dIn Progress seed taskLynx Web Spike1d",
+                "box": {
+                  "x": 352,
+                  "y": 155.890625,
+                  "width": 576,
+                  "height": 377
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.06)",
+                  "borderWidth": "1px 1px 0px",
+                  "radius": "12px 12px 0px 0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "X-VIEW",
+                "className": "LxCommandItem cursor-pointer items-center gap-2 rounded-lg px-2.5 py-1.5 LxCommandItem--highlighted",
+                "text": "New chat⌘N",
+                "box": {
+                  "x": 359,
+                  "y": 220.28125,
+                  "width": 562,
+                  "height": 32
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(232, 242, 250)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "input": {
+                "tag": "X-VIEW",
+                "className": "LxCommandInput",
+                "text": "",
+                "box": {
+                  "x": 353,
+                  "y": 156.890625,
+                  "width": 574,
+                  "height": 48
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/command-k-open-light-1280/lynx/styles.json",
+          "stylesData": {
+            "client": "lynx",
+            "stateId": "command-k-open-light-1280",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.06)",
+                  "borderWidth": "1px",
+                  "radius": "16px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.06)",
+                  "borderWidth": "1px 1px 0px",
+                  "radius": "12px 12px 0px 0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(232, 242, 250)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "input": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/command-k-open-light-1280/lynx/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/command-k-open-light-1280/native/raw.png",
+          "comparisonPath": "final-overlays/command-k-open-light-1280/native/comparison.png",
+          "geometry": "final-overlays/command-k-open-light-1280/native/geometry.json",
+          "geometryData": {
+            "client": "native",
+            "stateId": "command-k-open-light-1280",
+            "roles": {
+              "root": {
+                "nodeId": 13,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+                },
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1280,
+                  "height": 788
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "nodeId": 3104,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "overlap": "false",
+                  "event-through": "false",
+                  "aria-modal": "true",
+                  "role": "dialog",
+                  "flatten": "false",
+                  "bindanimationstart": "2816:0:bindanimationstart",
+                  "bindanimationend": "2816:0:bindanimationend",
+                  "bindtransitionstart": "2816:0:bindtransitionstart",
+                  "bindtransitioncancel": "2816:0:bindtransitioncancel",
+                  "bindtransitionend": "2816:0:bindtransitionend",
+                  "bindanimationcancel": "2816:0:bindanimationcancel",
+                  "bindkeydown": "2816:0:bindkeydown",
+                  "class": "LxDialogPopup LxCommandDialogPopup ui-closed"
+                },
+                "text": "",
+                "box": {
+                  "x": 352,
+                  "y": 141,
+                  "width": 576,
+                  "height": 420
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "hsla(0,0%,5%,.06)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "nodeId": 3106,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "LxCommandPanel overflow-hidden"
+                },
+                "text": "",
+                "box": {
+                  "x": 352,
+                  "y": 142,
+                  "width": 576,
+                  "height": 377
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "hsla(0,0%,5%,.06)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "nodeId": 3117,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "focusable": "true",
+                  "aria-disabled": "false",
+                  "aria-selected": "true",
+                  "bindmouseenter": "2827:0:bindmouseenter",
+                  "bindblur": "2827:0:bindblur",
+                  "bindmouseleave": "2827:0:bindmouseleave",
+                  "bindtap": "2827:0:bindtap",
+                  "bindmouseup": "2827:0:bindmouseup",
+                  "bindtouchstart": "2827:0:bindtouchstart",
+                  "bindmousedown": "2827:0:bindmousedown",
+                  "bindtouchend": "2827:0:bindtouchend",
+                  "bindtouchcancel": "2827:0:bindtouchcancel",
+                  "catchkeydown": "2827:0:catchkeydown",
+                  "bindfocus": "2827:0:bindfocus",
+                  "class": "LxCommandItem cursor-pointer items-center gap-2 rounded-lg px-2.5 py-1.5 LxCommandItem--highlighted"
+                },
+                "text": "",
+                "box": {
+                  "x": 359,
+                  "y": 210,
+                  "width": 562,
+                  "height": 31
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "input": {
+                "nodeId": 3108,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "LxCommandInput"
+                },
+                "text": "",
+                "box": {
+                  "x": 353,
+                  "y": 143,
+                  "width": 574,
+                  "height": 48
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/command-k-open-light-1280/native/styles.json",
+          "stylesData": {
+            "client": "native",
+            "stateId": "command-k-open-light-1280",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "hsla(0,0%,5%,.06)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "hsla(0,0%,5%,.06)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "input": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/command-k-open-light-1280/native/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "command-k-open-light-1440",
+      "label": "command k open light 1440 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "command-k-open",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/command-k-open-light-1440/web/raw.png",
+          "comparisonPath": "final-overlays/command-k-open-light-1440/web/comparison.png",
+          "geometry": "final-overlays/command-k-open-light-1440/web/geometry.json",
+          "geometryData": {
+            "client": "web",
+            "stateId": "command-k-open-light-1440",
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "viewport": {
+              "width": 1440,
+              "height": 900,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "BODY",
+                "className": "",
+                "text": "Toggle SidebarToggle SidebarStudioProjectsNew thread⌘NSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed task\n    To pick up a draggable item, press the space bar.\n    While dragging, u",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 900
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "DIV",
+                "className": "-translate-y-[calc(1.25rem*var(--nested-dialogs))] relative row-start-2 flex max-h-105 min-h-0 w-full min-w-0 max-w-xl scale-[calc(1-0.1*var(--nested-dialogs))] flex-col rounded-2xl border border-[color:var(--color-border-light)] bg-[var(--color-background-surface-under)] text-[var(--color-text-foreground)] opacity-[calc(1-0.1*var(--nested-dialogs))] shadow-lg/5 outline-none transition-[scale,opacity,translate] duration-200 ease-in-out will-change-transform before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-2xl)-1px)] before:bg-[var(--color-background-elevated-secondary)]/72 before:shadow-[0_1px_--theme(--color-black/4%)] data-nested:data-ending-style:translate-y-8 data-nested:data-starting-style:translate-y-8 data-nested-dialog-open:origin-top data-ending-style:scale-98 data-starting-style:scale-98 data-ending-style:opacity-0 data-starting-style:opacity-0 **:data-[slot=scroll-area-viewport]:data-has-overflow-y:pe-1 dark:before:shadow-[0_-1px_--theme(--color-white/6%)]",
+                "text": "SuggestedNew chat⌥⌘NNew thread⌘NAdd project⇧⌘OImport thread from...⌘IFeedback SynaraSettingsUsage settings⇧⌘UNew spaceRecentNew chatHome1dNew chatHome1dIn Progress seed taskLynx Web Spike1dJump to threads, projects, actions, or appearance.E",
+                "box": {
+                  "x": 432,
+                  "y": 190.5,
+                  "width": 576,
+                  "height": 420
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.06)",
+                  "borderWidth": "1px",
+                  "radius": "18px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0 0 0 / 0.05) 0px 10px 15px -3px, oklab(0 0 0 / 0.05) 0px 4px 6px -4px",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "tag": "DIV",
+                "className": "-mx-px not-has-[+[data-slot=command-footer]]:-mb-px relative min-h-0 rounded-t-xl not-has-[+[data-slot=command-footer]]:rounded-b-2xl border border-b-0 border-[color:var(--color-border-light)] bg-[var(--color-background-surface-under)] shadow-xs/5 [clip-path:inset(0_1px)] not-has-[+[data-slot=command-footer]]:[clip-path:inset(0_1px_1px_1px_round_0_0_calc(var(--radius-2xl)-1px)_calc(var(--radius-2xl)-1px))] before:pointer-events-none before:absolute before:inset-0 before:rounded-t-[calc(var(--radius-xl)-1px)] **:data-[slot=scroll-area-scrollbar]:mt-2 overflow-hidden",
+                "text": "SuggestedNew chat⌥⌘NNew thread⌘NAdd project⇧⌘OImport thread from...⌘IFeedback SynaraSettingsUsage settings⇧⌘UNew spaceRecentNew chatHome1dNew chatHome1dIn Progress seed taskLynx Web Spike1d",
+                "box": {
+                  "x": 432,
+                  "y": 191.5,
+                  "width": 576,
+                  "height": 377
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.06)",
+                  "borderWidth": "1px 1px 0px",
+                  "radius": "14px 14px 0px 0px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0 0 0 / 0.05) 0px 1px 2px 0px",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "DIV",
+                "className": "flex min-h-8 select-none text-base outline-none data-disabled:pointer-events-none data-highlighted:bg-[var(--color-background-button-secondary-hover)] data-highlighted:text-[var(--color-text-foreground)] data-disabled:opacity-64 sm:min-h-7 sm:text-sm cursor-pointer items-center gap-2 rounded-lg px-2.5 py-1.5",
+                "text": "New chat⌥⌘N",
+                "box": {
+                  "x": 439,
+                  "y": 262.5,
+                  "width": 558,
+                  "height": 32
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(13, 13, 13, 0.04)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "input": {
+                "tag": "INPUT",
+                "className": "font-system-ui h-full w-full min-w-0 rounded-[inherit] border-0 bg-transparent text-[length:var(--app-font-size-ui,12px)] leading-normal outline-none placeholder:text-muted-foreground/72 [transition:background-color_5000000s_ease-in-out_0s] sm:text-[length:var(--app-font-size-ui,12px)] px-3.5 py-2",
+                "text": "",
+                "box": {
+                  "x": 444,
+                  "y": 201,
+                  "width": 552,
+                  "height": 31
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/command-k-open-light-1440/web/styles.json",
+          "stylesData": {
+            "client": "web",
+            "stateId": "command-k-open-light-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.06)",
+                  "borderWidth": "1px",
+                  "radius": "18px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0 0 0 / 0.05) 0px 10px 15px -3px, oklab(0 0 0 / 0.05) 0px 4px 6px -4px",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.06)",
+                  "borderWidth": "1px 1px 0px",
+                  "radius": "14px 14px 0px 0px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0 0 0 / 0.05) 0px 1px 2px 0px",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(13, 13, 13, 0.04)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "input": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/command-k-open-light-1440/web/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/command-k-open-light-1440/lynx/raw.png",
+          "comparisonPath": "final-overlays/command-k-open-light-1440/lynx/comparison.png",
+          "geometry": "final-overlays/command-k-open-light-1440/lynx/geometry.json",
+          "geometryData": {
+            "client": "lynx",
+            "stateId": "command-k-open-light-1440",
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "viewport": {
+              "width": 1440,
+              "height": 900,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "X-VIEW",
+                "className": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable",
+                "text": "StudioProjectsNew threadSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed taskChats›⚙SettingsSuggestedNew chat⌘NNew threadAdd projectImport thread from...SettingsUsage settingsRecentNe",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 900
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "X-VIEW",
+                "className": "LxDialogPopup LxCommandDialogPopup ui-open",
+                "text": "SuggestedNew chat⌘NNew threadAdd projectImport thread from...SettingsUsage settingsRecentNew chatHome1dNew chatHome1dIn Progress seed taskLynx Web Spike1dJump to threads, projects, actions, or appearance.Enter to open",
+                "box": {
+                  "x": 432,
+                  "y": 190.5,
+                  "width": 576,
+                  "height": 420
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.06)",
+                  "borderWidth": "1px",
+                  "radius": "16px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "tag": "X-VIEW",
+                "className": "LxCommandPanel overflow-hidden",
+                "text": "SuggestedNew chat⌘NNew threadAdd projectImport thread from...SettingsUsage settingsRecentNew chatHome1dNew chatHome1dIn Progress seed taskLynx Web Spike1d",
+                "box": {
+                  "x": 432,
+                  "y": 191.5,
+                  "width": 576,
+                  "height": 377
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.06)",
+                  "borderWidth": "1px 1px 0px",
+                  "radius": "12px 12px 0px 0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "X-VIEW",
+                "className": "LxCommandItem cursor-pointer items-center gap-2 rounded-lg px-2.5 py-1.5 LxCommandItem--highlighted",
+                "text": "New chat⌘N",
+                "box": {
+                  "x": 439,
+                  "y": 255.890625,
+                  "width": 562,
+                  "height": 32
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(232, 242, 250)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "input": {
+                "tag": "X-VIEW",
+                "className": "LxCommandInput",
+                "text": "",
+                "box": {
+                  "x": 433,
+                  "y": 192.5,
+                  "width": 574,
+                  "height": 48
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/command-k-open-light-1440/lynx/styles.json",
+          "stylesData": {
+            "client": "lynx",
+            "stateId": "command-k-open-light-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.06)",
+                  "borderWidth": "1px",
+                  "radius": "16px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.06)",
+                  "borderWidth": "1px 1px 0px",
+                  "radius": "12px 12px 0px 0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(232, 242, 250)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "input": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/command-k-open-light-1440/lynx/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/command-k-open-light-1440/native/raw.png",
+          "comparisonPath": "final-overlays/command-k-open-light-1440/native/comparison.png",
+          "geometry": "final-overlays/command-k-open-light-1440/native/geometry.json",
+          "geometryData": {
+            "client": "native",
+            "stateId": "command-k-open-light-1440",
+            "roles": {
+              "root": {
+                "nodeId": 13,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+                },
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 868
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "nodeId": 5115,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "overlap": "false",
+                  "event-through": "false",
+                  "aria-modal": "true",
+                  "role": "dialog",
+                  "flatten": "false",
+                  "bindanimationstart": "5285:0:bindanimationstart",
+                  "bindanimationend": "5285:0:bindanimationend",
+                  "bindtransitionstart": "5285:0:bindtransitionstart",
+                  "bindtransitioncancel": "5285:0:bindtransitioncancel",
+                  "bindtransitionend": "5285:0:bindtransitionend",
+                  "bindanimationcancel": "5285:0:bindanimationcancel",
+                  "bindkeydown": "5285:0:bindkeydown",
+                  "class": "LxDialogPopup LxCommandDialogPopup ui-closed"
+                },
+                "text": "",
+                "box": {
+                  "x": 432,
+                  "y": 177,
+                  "width": 576,
+                  "height": 420
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "hsla(0,0%,5%,.06)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "nodeId": 5117,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "LxCommandPanel overflow-hidden"
+                },
+                "text": "",
+                "box": {
+                  "x": 432,
+                  "y": 178,
+                  "width": 576,
+                  "height": 377
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "hsla(0,0%,5%,.06)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "nodeId": 5128,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "focusable": "true",
+                  "aria-disabled": "false",
+                  "aria-selected": "true",
+                  "bindmouseenter": "5296:0:bindmouseenter",
+                  "bindblur": "5296:0:bindblur",
+                  "bindmouseleave": "5296:0:bindmouseleave",
+                  "bindtap": "5296:0:bindtap",
+                  "bindmouseup": "5296:0:bindmouseup",
+                  "bindtouchstart": "5296:0:bindtouchstart",
+                  "bindmousedown": "5296:0:bindmousedown",
+                  "bindtouchend": "5296:0:bindtouchend",
+                  "bindtouchcancel": "5296:0:bindtouchcancel",
+                  "catchkeydown": "5296:0:catchkeydown",
+                  "bindfocus": "5296:0:bindfocus",
+                  "class": "LxCommandItem cursor-pointer items-center gap-2 rounded-lg px-2.5 py-1.5 LxCommandItem--highlighted"
+                },
+                "text": "",
+                "box": {
+                  "x": 439,
+                  "y": 246,
+                  "width": 562,
+                  "height": 31
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "input": {
+                "nodeId": 5119,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "LxCommandInput"
+                },
+                "text": "",
+                "box": {
+                  "x": 433,
+                  "y": 179,
+                  "width": 574,
+                  "height": 48
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/command-k-open-light-1440/native/styles.json",
+          "stylesData": {
+            "client": "native",
+            "stateId": "command-k-open-light-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "hsla(0,0%,5%,.06)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "hsla(0,0%,5%,.06)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "input": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/command-k-open-light-1440/native/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "extras-open-dark-1280",
+      "label": "extras open dark 1280 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "extras-open",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1280,
+        "height": 788
+      },
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/extras-open-dark-1280/web/raw.png",
+          "comparisonPath": "final-overlays/extras-open-dark-1280/web/comparison.png",
+          "geometry": "final-overlays/extras-open-dark-1280/web/geometry.json",
+          "geometryData": {
+            "client": "web",
+            "stateId": "extras-open-dark-1280",
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "viewport": {
+              "width": 1280,
+              "height": 820,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "BODY",
+                "className": "",
+                "text": "Toggle SidebarToggle SidebarStudioProjectsNew thread⌘NSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed task\n    To pick up a draggable item, press the space bar.\n    While dragging, u",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1280,
+                  "height": 820
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "DIV",
+                "className": "flex origin-(--transform-origin) outline-none focus:outline-none min-w-0 max-w-[92vw] composer-picker-menu composer-picker-menu--normal relative overflow-hidden bg-popover/70 text-popover-foreground before:pointer-events-none before:absolute before:inset-0 before:-z-1 before:rounded-[inherit] before:backdrop-blur-2xl before:backdrop-saturate-150 border border-border rounded-[0.65rem] shadow-[0_4px_18px_-6px_color-mix(in_srgb,var(--foreground)_7%,transparent)] dark:shadow-[0_6px_24px_-10px_rgba(0,0,0,0.30)]",
+                "text": "Add imagePlan modeFast",
+                "box": {
+                  "x": 407,
+                  "y": 554,
+                  "width": 141.421875,
+                  "height": 106
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "oklab(0.204625 0.00000931323 0.00000409782 / 0.7)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10.4px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.3) 0px 6px 24px -10px",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "DIV",
+                "className": "[&>svg,&>[data-slot=central-icon]]:-mx-0.5 flex cursor-default select-none items-center rounded-[0.5rem] text-[length:var(--type-ui-row-size)] leading-[var(--type-ui-row-line-height)] text-[var(--color-text-foreground)] outline-none data-disabled:pointer-events-none data-highlighted:bg-[var(--color-background-button-secondary-hover)] data-highlighted:text-[var(--color-text-foreground)] data-disabled:opacity-64 [&>svg:not([class*='opacity-']),&>[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&>svg,&>[data-slot=central-icon]]:pointer-events-none [&>svg,&>[data-slot=central-icon]]:shrink-0 data-inset:ps-8 data-[variant=destructive]:text-destructive",
+                "text": "Add image",
+                "box": {
+                  "x": 412,
+                  "y": 559,
+                  "width": 131.421875,
+                  "height": 26
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "tag": "BUTTON",
+                "className": "[&_svg,&_[data-slot=central-icon]]:-mx-0.5 relative inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap border font-medium text-[length:var(--app-font-size-ui,12px)] outline-none pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 focus-visible:ring-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 sm:text-[length:var(--app-font-size-ui,12px)] [&_svg:not([class*='opacity-'])]:opacity-80 [&_[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4.5 [&_[data-slot=central-icon]:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 sm:[&_[data-slot=central-icon]:not([class*='size-'])]:size-4 [&_svg,&_[data-slot=central-icon]]:pointer-events-none [&_svg,&_[data-slot=central-icon]]:shrink-0 size-8 sm:size-7 border-transparent bg-transparent text-[var(--color-text-foreground-secondary)] focus-visible:ring-[color:var(--color-border-focus)]/60 focus-visible:ring-offset-0 [:hover,[data-pressed]]:bg-[var(--color-background-elevated-secondary)] [:hover,[data-pressed]]:text-[var(--color-text-foreground)] data-pressed:bg-[var(--color-background-elevated-secondary)] data-pressed:text-[var(--color-text-foreground)] shrink-0 rounded-md",
+                "text": "",
+                "box": {
+                  "x": 407,
+                  "y": 521.75,
+                  "width": 28,
+                  "height": 28
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "500",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(252, 252, 252, 0.008)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/extras-open-dark-1280/web/styles.json",
+          "stylesData": {
+            "client": "web",
+            "stateId": "extras-open-dark-1280",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "oklab(0.204625 0.00000931323 0.00000409782 / 0.7)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10.4px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.3) 0px 6px 24px -10px",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "500",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(252, 252, 252, 0.008)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/extras-open-dark-1280/web/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/extras-open-dark-1280/lynx/raw.png",
+          "comparisonPath": "final-overlays/extras-open-dark-1280/lynx/comparison.png",
+          "geometry": "final-overlays/extras-open-dark-1280/lynx/geometry.json",
+          "geometryData": {
+            "client": "lynx",
+            "stateId": "extras-open-dark-1280",
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "viewport": {
+              "width": 1280,
+              "height": 820,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "X-VIEW",
+                "className": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable",
+                "text": "StudioProjectsNew threadSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed taskChats›⚙SettingsNew ChatWhat should we work on?Add filesPlan modeFast›Full accessGPT-5.5⌄Medium⌄↑spike-work",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1280,
+                  "height": 820
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "X-VIEW",
+                "className": "LxMenuPopup ComposerExtrasPopupLynx",
+                "text": "Add filesPlan modeFast›",
+                "box": {
+                  "x": 407,
+                  "y": 369,
+                  "width": 142,
+                  "height": 108
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(23, 23, 23)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "X-VIEW",
+                "className": "LxButton LxButton--ghost LxButton--default LxMenuItem LxMenuItem--highlighted",
+                "text": "Add files",
+                "box": {
+                  "x": 413,
+                  "y": 375,
+                  "width": 130,
+                  "height": 26
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(0, 15, 29)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "6px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "tag": "X-VIEW",
+                "className": "LxMenuTrigger ComposerExtrasTriggerLynx",
+                "text": "",
+                "box": {
+                  "x": 407,
+                  "y": 481,
+                  "width": 32,
+                  "height": 28
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/extras-open-dark-1280/lynx/styles.json",
+          "stylesData": {
+            "client": "lynx",
+            "stateId": "extras-open-dark-1280",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(23, 23, 23)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(0, 15, 29)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "6px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/extras-open-dark-1280/lynx/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/extras-open-dark-1280/native/raw.png",
+          "comparisonPath": "final-overlays/extras-open-dark-1280/native/comparison.png",
+          "geometry": "final-overlays/extras-open-dark-1280/native/geometry.json",
+          "geometryData": {
+            "client": "native",
+            "stateId": "extras-open-dark-1280",
+            "roles": {
+              "root": {
+                "nodeId": 13,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable"
+                },
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1280,
+                  "height": 788
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "nodeId": 1142,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "aria-modal": "false",
+                  "role": "menu",
+                  "bindkeydown": "1180:4:",
+                  "bindlayoutchange": "1180:5:",
+                  "class": "LxMenuPopup ComposerExtrasPopupLynx",
+                  "style": "visibility:visible;top:353px;left:407px;"
+                },
+                "text": "",
+                "box": {
+                  "x": 407,
+                  "y": 353,
+                  "width": 142,
+                  "height": 109
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(23,23,23)",
+                  "borderColor": "hsla(0,0%,99%,.072)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "nodeId": 1143,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "focusable": "true",
+                  "aria-disabled": "false",
+                  "role": "menuitem",
+                  "bindmouseenter": "1181:0:bindmouseenter",
+                  "bindblur": "1181:0:bindblur",
+                  "bindmouseleave": "1181:0:bindmouseleave",
+                  "bindtap": "1181:0:bindtap",
+                  "bindmouseup": "1181:0:bindmouseup",
+                  "bindtouchstart": "1181:0:bindtouchstart",
+                  "bindmousedown": "1181:0:bindmousedown",
+                  "bindtouchend": "1181:0:bindtouchend",
+                  "bindtouchcancel": "1181:0:bindtouchcancel",
+                  "catchkeydown": "1181:0:catchkeydown",
+                  "bindfocus": "1181:0:bindfocus",
+                  "class": "LxButton LxButton--ghost LxButton--default LxMenuItem LxMenuItem--highlighted"
+                },
+                "text": "",
+                "box": {
+                  "x": 413,
+                  "y": 359,
+                  "width": 130,
+                  "height": 26
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(0,15,29)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "nodeId": 811,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "react-ref-1024-0": "1",
+                  "focusable": "true",
+                  "aria-disabled": "false",
+                  "aria-label": "Composer extras",
+                  "aria-haspopup": "menu",
+                  "aria-expanded": "true",
+                  "bindmouseenter": "1024:0:bindmouseenter",
+                  "bindtap": "1024:0:bindtap",
+                  "bindmouseup": "1024:0:bindmouseup",
+                  "bindtouchstart": "1024:0:bindtouchstart",
+                  "bindmouseleave": "1024:0:bindmouseleave",
+                  "bindmousedown": "1024:0:bindmousedown",
+                  "bindtouchend": "1024:0:bindtouchend",
+                  "bindblur": "1024:0:bindblur",
+                  "catchkeydown": "1024:0:catchkeydown",
+                  "bindfocus": "1024:0:bindfocus",
+                  "bindtouchcancel": "1024:0:bindtouchcancel",
+                  "bindlayoutchange": "1024:0:bindlayoutchange",
+                  "class": "LxMenuTrigger ComposerExtrasTriggerLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 407,
+                  "y": 465,
+                  "width": 32,
+                  "height": 28
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/extras-open-dark-1280/native/styles.json",
+          "stylesData": {
+            "client": "native",
+            "stateId": "extras-open-dark-1280",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(23,23,23)",
+                  "borderColor": "hsla(0,0%,99%,.072)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(0,15,29)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/extras-open-dark-1280/native/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "extras-open-dark-1440",
+      "label": "extras open dark 1440 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "extras-open",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/extras-open-dark-1440/web/raw.png",
+          "comparisonPath": "final-overlays/extras-open-dark-1440/web/comparison.png",
+          "geometry": "final-overlays/extras-open-dark-1440/web/geometry.json",
+          "geometryData": {
+            "client": "web",
+            "stateId": "extras-open-dark-1440",
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "viewport": {
+              "width": 1440,
+              "height": 900,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "BODY",
+                "className": "",
+                "text": "Toggle SidebarToggle SidebarStudioProjectsNew thread⌘NSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed task\n    To pick up a draggable item, press the space bar.\n    While dragging, u",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 900
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "DIV",
+                "className": "flex origin-(--transform-origin) outline-none focus:outline-none min-w-0 max-w-[92vw] composer-picker-menu composer-picker-menu--normal relative overflow-hidden bg-popover/70 text-popover-foreground before:pointer-events-none before:absolute before:inset-0 before:-z-1 before:rounded-[inherit] before:backdrop-blur-2xl before:backdrop-saturate-150 border border-border rounded-[0.65rem] shadow-[0_4px_18px_-6px_color-mix(in_srgb,var(--foreground)_7%,transparent)] dark:shadow-[0_6px_24px_-10px_rgba(0,0,0,0.30)]",
+                "text": "Add imagePlan modeFast",
+                "box": {
+                  "x": 487,
+                  "y": 594,
+                  "width": 141.421875,
+                  "height": 106
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "oklab(0.204625 0.00000931323 0.00000409782 / 0.7)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10.4px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.3) 0px 6px 24px -10px",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "DIV",
+                "className": "[&>svg,&>[data-slot=central-icon]]:-mx-0.5 flex cursor-default select-none items-center rounded-[0.5rem] text-[length:var(--type-ui-row-size)] leading-[var(--type-ui-row-line-height)] text-[var(--color-text-foreground)] outline-none data-disabled:pointer-events-none data-highlighted:bg-[var(--color-background-button-secondary-hover)] data-highlighted:text-[var(--color-text-foreground)] data-disabled:opacity-64 [&>svg:not([class*='opacity-']),&>[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&>svg,&>[data-slot=central-icon]]:pointer-events-none [&>svg,&>[data-slot=central-icon]]:shrink-0 data-inset:ps-8 data-[variant=destructive]:text-destructive",
+                "text": "Add image",
+                "box": {
+                  "x": 492,
+                  "y": 599,
+                  "width": 131.421875,
+                  "height": 26
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "tag": "BUTTON",
+                "className": "[&_svg,&_[data-slot=central-icon]]:-mx-0.5 relative inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap border font-medium text-[length:var(--app-font-size-ui,12px)] outline-none pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 focus-visible:ring-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 sm:text-[length:var(--app-font-size-ui,12px)] [&_svg:not([class*='opacity-'])]:opacity-80 [&_[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4.5 [&_[data-slot=central-icon]:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 sm:[&_[data-slot=central-icon]:not([class*='size-'])]:size-4 [&_svg,&_[data-slot=central-icon]]:pointer-events-none [&_svg,&_[data-slot=central-icon]]:shrink-0 size-8 sm:size-7 border-transparent bg-transparent text-[var(--color-text-foreground-secondary)] focus-visible:ring-[color:var(--color-border-focus)]/60 focus-visible:ring-offset-0 [:hover,[data-pressed]]:bg-[var(--color-background-elevated-secondary)] [:hover,[data-pressed]]:text-[var(--color-text-foreground)] data-pressed:bg-[var(--color-background-elevated-secondary)] data-pressed:text-[var(--color-text-foreground)] shrink-0 rounded-md",
+                "text": "",
+                "box": {
+                  "x": 487,
+                  "y": 561.75,
+                  "width": 28,
+                  "height": 28
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "500",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(252, 252, 252, 0.008)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/extras-open-dark-1440/web/styles.json",
+          "stylesData": {
+            "client": "web",
+            "stateId": "extras-open-dark-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "oklab(0.204625 0.00000931323 0.00000409782 / 0.7)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10.4px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.3) 0px 6px 24px -10px",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "500",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(252, 252, 252, 0.008)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/extras-open-dark-1440/web/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/extras-open-dark-1440/lynx/raw.png",
+          "comparisonPath": "final-overlays/extras-open-dark-1440/lynx/comparison.png",
+          "geometry": "final-overlays/extras-open-dark-1440/lynx/geometry.json",
+          "geometryData": {
+            "client": "lynx",
+            "stateId": "extras-open-dark-1440",
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "viewport": {
+              "width": 1440,
+              "height": 900,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "X-VIEW",
+                "className": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable",
+                "text": "StudioProjectsNew threadSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed taskChats›⚙SettingsNew ChatWhat should we work on?Add filesPlan modeFast›Full accessGPT-5.5⌄Medium⌄↑spike-work",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 900
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "X-VIEW",
+                "className": "LxMenuPopup ComposerExtrasPopupLynx",
+                "text": "Add filesPlan modeFast›",
+                "box": {
+                  "x": 487,
+                  "y": 409,
+                  "width": 142,
+                  "height": 108
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(23, 23, 23)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "X-VIEW",
+                "className": "LxButton LxButton--ghost LxButton--default LxMenuItem LxMenuItem--highlighted",
+                "text": "Add files",
+                "box": {
+                  "x": 493,
+                  "y": 415,
+                  "width": 130,
+                  "height": 26
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(0, 15, 29)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "6px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "tag": "X-VIEW",
+                "className": "LxMenuTrigger ComposerExtrasTriggerLynx",
+                "text": "",
+                "box": {
+                  "x": 487,
+                  "y": 521,
+                  "width": 32,
+                  "height": 28
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/extras-open-dark-1440/lynx/styles.json",
+          "stylesData": {
+            "client": "lynx",
+            "stateId": "extras-open-dark-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(23, 23, 23)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(0, 15, 29)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "6px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/extras-open-dark-1440/lynx/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/extras-open-dark-1440/native/raw.png",
+          "comparisonPath": "final-overlays/extras-open-dark-1440/native/comparison.png",
+          "geometry": "final-overlays/extras-open-dark-1440/native/geometry.json",
+          "geometryData": {
+            "client": "native",
+            "stateId": "extras-open-dark-1440",
+            "roles": {
+              "root": {
+                "nodeId": 13,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable"
+                },
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 868
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "nodeId": 7222,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "aria-modal": "false",
+                  "role": "menu",
+                  "bindkeydown": "7045:4:",
+                  "bindlayoutchange": "7045:5:",
+                  "class": "LxMenuPopup ComposerExtrasPopupLynx",
+                  "style": "visibility:visible;top:393px;left:487px;"
+                },
+                "text": "",
+                "box": {
+                  "x": 487,
+                  "y": 393,
+                  "width": 142,
+                  "height": 109
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "hsla(0,0%,5%,.069)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "nodeId": 7223,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "focusable": "true",
+                  "aria-disabled": "false",
+                  "role": "menuitem",
+                  "bindmouseenter": "7046:0:bindmouseenter",
+                  "bindblur": "7046:0:bindblur",
+                  "bindmouseleave": "7046:0:bindmouseleave",
+                  "bindtap": "7046:0:bindtap",
+                  "bindmouseup": "7046:0:bindmouseup",
+                  "bindtouchstart": "7046:0:bindtouchstart",
+                  "bindmousedown": "7046:0:bindmousedown",
+                  "bindtouchend": "7046:0:bindtouchend",
+                  "bindtouchcancel": "7046:0:bindtouchcancel",
+                  "catchkeydown": "7046:0:catchkeydown",
+                  "bindfocus": "7046:0:bindfocus",
+                  "class": "LxButton LxButton--ghost LxButton--default LxMenuItem LxMenuItem--highlighted"
+                },
+                "text": "",
+                "box": {
+                  "x": 493,
+                  "y": 399,
+                  "width": 130,
+                  "height": 26
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "nodeId": 6597,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "react-ref-6764-0": "1",
+                  "focusable": "true",
+                  "aria-disabled": "false",
+                  "aria-label": "Composer extras",
+                  "aria-haspopup": "menu",
+                  "aria-expanded": "true",
+                  "bindmouseenter": "6764:0:bindmouseenter",
+                  "bindtap": "6764:0:bindtap",
+                  "bindmouseup": "6764:0:bindmouseup",
+                  "bindtouchstart": "6764:0:bindtouchstart",
+                  "bindmouseleave": "6764:0:bindmouseleave",
+                  "bindmousedown": "6764:0:bindmousedown",
+                  "bindtouchend": "6764:0:bindtouchend",
+                  "bindblur": "6764:0:bindblur",
+                  "catchkeydown": "6764:0:catchkeydown",
+                  "bindfocus": "6764:0:bindfocus",
+                  "bindtouchcancel": "6764:0:bindtouchcancel",
+                  "bindlayoutchange": "6764:0:bindlayoutchange",
+                  "class": "LxMenuTrigger ComposerExtrasTriggerLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 487,
+                  "y": 505,
+                  "width": 32,
+                  "height": 28
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/extras-open-dark-1440/native/styles.json",
+          "stylesData": {
+            "client": "native",
+            "stateId": "extras-open-dark-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "hsla(0,0%,5%,.069)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/extras-open-dark-1440/native/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "extras-open-light-1280",
+      "label": "extras open light 1280 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "extras-open",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1280,
+        "height": 788
+      },
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/extras-open-light-1280/web/raw.png",
+          "comparisonPath": "final-overlays/extras-open-light-1280/web/comparison.png",
+          "geometry": "final-overlays/extras-open-light-1280/web/geometry.json",
+          "geometryData": {
+            "client": "web",
+            "stateId": "extras-open-light-1280",
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "viewport": {
+              "width": 1280,
+              "height": 820,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "BODY",
+                "className": "",
+                "text": "Toggle SidebarToggle SidebarStudioProjectsNew thread⌘NSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed task\n    To pick up a draggable item, press the space bar.\n    While dragging, u",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1280,
+                  "height": 820
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "DIV",
+                "className": "flex origin-(--transform-origin) outline-none focus:outline-none min-w-0 max-w-[92vw] composer-picker-menu composer-picker-menu--normal relative overflow-hidden bg-popover/70 text-popover-foreground before:pointer-events-none before:absolute before:inset-0 before:-z-1 before:rounded-[inherit] before:backdrop-blur-2xl before:backdrop-saturate-150 border border-border rounded-[0.65rem] shadow-[0_4px_18px_-6px_color-mix(in_srgb,var(--foreground)_7%,transparent)] dark:shadow-[0_6px_24px_-10px_rgba(0,0,0,0.30)]",
+                "text": "Add imagePlan modeFast",
+                "box": {
+                  "x": 407,
+                  "y": 554,
+                  "width": 141.421875,
+                  "height": 106
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "oklab(0.999994 0.0000455677 0.0000200868 / 0.7)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10.4px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, color(srgb 0.0509804 0.0509804 0.0509804 / 0.07) 0px 4px 18px -6px",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "DIV",
+                "className": "[&>svg,&>[data-slot=central-icon]]:-mx-0.5 flex cursor-default select-none items-center rounded-[0.5rem] text-[length:var(--type-ui-row-size)] leading-[var(--type-ui-row-line-height)] text-[var(--color-text-foreground)] outline-none data-disabled:pointer-events-none data-highlighted:bg-[var(--color-background-button-secondary-hover)] data-highlighted:text-[var(--color-text-foreground)] data-disabled:opacity-64 [&>svg:not([class*='opacity-']),&>[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&>svg,&>[data-slot=central-icon]]:pointer-events-none [&>svg,&>[data-slot=central-icon]]:shrink-0 data-inset:ps-8 data-[variant=destructive]:text-destructive",
+                "text": "Add image",
+                "box": {
+                  "x": 412,
+                  "y": 559,
+                  "width": 131.421875,
+                  "height": 26
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "tag": "BUTTON",
+                "className": "[&_svg,&_[data-slot=central-icon]]:-mx-0.5 relative inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap border font-medium text-[length:var(--app-font-size-ui,12px)] outline-none pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 focus-visible:ring-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 sm:text-[length:var(--app-font-size-ui,12px)] [&_svg:not([class*='opacity-'])]:opacity-80 [&_[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4.5 [&_[data-slot=central-icon]:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 sm:[&_[data-slot=central-icon]:not([class*='size-'])]:size-4 [&_svg,&_[data-slot=central-icon]]:pointer-events-none [&_svg,&_[data-slot=central-icon]]:shrink-0 size-8 sm:size-7 border-transparent bg-transparent text-[var(--color-text-foreground-secondary)] focus-visible:ring-[color:var(--color-border-focus)]/60 focus-visible:ring-offset-0 [:hover,[data-pressed]]:bg-[var(--color-background-elevated-secondary)] [:hover,[data-pressed]]:text-[var(--color-text-foreground)] data-pressed:bg-[var(--color-background-elevated-secondary)] data-pressed:text-[var(--color-text-foreground)] shrink-0 rounded-md",
+                "text": "",
+                "box": {
+                  "x": 407,
+                  "y": 521.75,
+                  "width": 28,
+                  "height": 28
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "500",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(13, 13, 13, 0.04)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/extras-open-light-1280/web/styles.json",
+          "stylesData": {
+            "client": "web",
+            "stateId": "extras-open-light-1280",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "oklab(0.999994 0.0000455677 0.0000200868 / 0.7)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10.4px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, color(srgb 0.0509804 0.0509804 0.0509804 / 0.07) 0px 4px 18px -6px",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "500",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(13, 13, 13, 0.04)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/extras-open-light-1280/web/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/extras-open-light-1280/lynx/raw.png",
+          "comparisonPath": "final-overlays/extras-open-light-1280/lynx/comparison.png",
+          "geometry": "final-overlays/extras-open-light-1280/lynx/geometry.json",
+          "geometryData": {
+            "client": "lynx",
+            "stateId": "extras-open-light-1280",
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "viewport": {
+              "width": 1280,
+              "height": 820,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "X-VIEW",
+                "className": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable",
+                "text": "StudioProjectsNew threadSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed taskChats›⚙SettingsNew ChatWhat should we work on?Add filesPlan modeFast›Full accessGPT-5.5⌄Medium⌄↑spike-work",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1280,
+                  "height": 820
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "X-VIEW",
+                "className": "LxMenuPopup ComposerExtrasPopupLynx",
+                "text": "Add filesPlan modeFast›",
+                "box": {
+                  "x": 407,
+                  "y": 369,
+                  "width": 142,
+                  "height": 108
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "X-VIEW",
+                "className": "LxButton LxButton--ghost LxButton--default LxMenuItem LxMenuItem--highlighted",
+                "text": "Add files",
+                "box": {
+                  "x": 413,
+                  "y": 375,
+                  "width": 130,
+                  "height": 26
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(232, 242, 250)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "6px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "tag": "X-VIEW",
+                "className": "LxMenuTrigger ComposerExtrasTriggerLynx",
+                "text": "",
+                "box": {
+                  "x": 407,
+                  "y": 481,
+                  "width": 32,
+                  "height": 28
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/extras-open-light-1280/lynx/styles.json",
+          "stylesData": {
+            "client": "lynx",
+            "stateId": "extras-open-light-1280",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(232, 242, 250)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "6px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/extras-open-light-1280/lynx/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/extras-open-light-1280/native/raw.png",
+          "comparisonPath": "final-overlays/extras-open-light-1280/native/comparison.png",
+          "geometry": "final-overlays/extras-open-light-1280/native/geometry.json",
+          "geometryData": {
+            "client": "native",
+            "stateId": "extras-open-light-1280",
+            "roles": {
+              "root": {
+                "nodeId": 13,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+                },
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1280,
+                  "height": 788
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "nodeId": 3075,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "aria-modal": "false",
+                  "role": "menu",
+                  "bindkeydown": "2799:4:",
+                  "bindlayoutchange": "2799:5:",
+                  "class": "LxMenuPopup ComposerExtrasPopupLynx",
+                  "style": "visibility:visible;top:353px;left:407px;"
+                },
+                "text": "",
+                "box": {
+                  "x": 407,
+                  "y": 353,
+                  "width": 142,
+                  "height": 109
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(23,23,23)",
+                  "borderColor": "hsla(0,0%,99%,.072)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "nodeId": 3076,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "focusable": "true",
+                  "aria-disabled": "false",
+                  "role": "menuitem",
+                  "bindmouseenter": "2800:0:bindmouseenter",
+                  "bindblur": "2800:0:bindblur",
+                  "bindmouseleave": "2800:0:bindmouseleave",
+                  "bindtap": "2800:0:bindtap",
+                  "bindmouseup": "2800:0:bindmouseup",
+                  "bindtouchstart": "2800:0:bindtouchstart",
+                  "bindmousedown": "2800:0:bindmousedown",
+                  "bindtouchend": "2800:0:bindtouchend",
+                  "bindtouchcancel": "2800:0:bindtouchcancel",
+                  "catchkeydown": "2800:0:catchkeydown",
+                  "bindfocus": "2800:0:bindfocus",
+                  "class": "LxButton LxButton--ghost LxButton--default LxMenuItem LxMenuItem--highlighted"
+                },
+                "text": "",
+                "box": {
+                  "x": 413,
+                  "y": 359,
+                  "width": 130,
+                  "height": 26
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(0,15,29)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "nodeId": 2744,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "react-ref-2643-0": "1",
+                  "focusable": "true",
+                  "aria-disabled": "false",
+                  "aria-label": "Composer extras",
+                  "aria-haspopup": "menu",
+                  "aria-expanded": "true",
+                  "bindmouseenter": "2643:0:bindmouseenter",
+                  "bindtap": "2643:0:bindtap",
+                  "bindmouseup": "2643:0:bindmouseup",
+                  "bindtouchstart": "2643:0:bindtouchstart",
+                  "bindmouseleave": "2643:0:bindmouseleave",
+                  "bindmousedown": "2643:0:bindmousedown",
+                  "bindtouchend": "2643:0:bindtouchend",
+                  "bindblur": "2643:0:bindblur",
+                  "catchkeydown": "2643:0:catchkeydown",
+                  "bindfocus": "2643:0:bindfocus",
+                  "bindtouchcancel": "2643:0:bindtouchcancel",
+                  "bindlayoutchange": "2643:0:bindlayoutchange",
+                  "class": "LxMenuTrigger ComposerExtrasTriggerLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 407,
+                  "y": 465,
+                  "width": 32,
+                  "height": 28
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/extras-open-light-1280/native/styles.json",
+          "stylesData": {
+            "client": "native",
+            "stateId": "extras-open-light-1280",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(23,23,23)",
+                  "borderColor": "hsla(0,0%,99%,.072)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(0,15,29)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/extras-open-light-1280/native/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "extras-open-light-1440",
+      "label": "extras open light 1440 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "extras-open",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/extras-open-light-1440/web/raw.png",
+          "comparisonPath": "final-overlays/extras-open-light-1440/web/comparison.png",
+          "geometry": "final-overlays/extras-open-light-1440/web/geometry.json",
+          "geometryData": {
+            "client": "web",
+            "stateId": "extras-open-light-1440",
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "viewport": {
+              "width": 1440,
+              "height": 900,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "BODY",
+                "className": "",
+                "text": "Toggle SidebarToggle SidebarStudioProjectsNew thread⌘NSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed task\n    To pick up a draggable item, press the space bar.\n    While dragging, u",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 900
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "DIV",
+                "className": "flex origin-(--transform-origin) outline-none focus:outline-none min-w-0 max-w-[92vw] composer-picker-menu composer-picker-menu--normal relative overflow-hidden bg-popover/70 text-popover-foreground before:pointer-events-none before:absolute before:inset-0 before:-z-1 before:rounded-[inherit] before:backdrop-blur-2xl before:backdrop-saturate-150 border border-border rounded-[0.65rem] shadow-[0_4px_18px_-6px_color-mix(in_srgb,var(--foreground)_7%,transparent)] dark:shadow-[0_6px_24px_-10px_rgba(0,0,0,0.30)]",
+                "text": "Add imagePlan modeFast",
+                "box": {
+                  "x": 487,
+                  "y": 594,
+                  "width": 141.421875,
+                  "height": 106
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "oklab(0.999994 0.0000455677 0.0000200868 / 0.7)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10.4px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, color(srgb 0.0509804 0.0509804 0.0509804 / 0.07) 0px 4px 18px -6px",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "DIV",
+                "className": "[&>svg,&>[data-slot=central-icon]]:-mx-0.5 flex cursor-default select-none items-center rounded-[0.5rem] text-[length:var(--type-ui-row-size)] leading-[var(--type-ui-row-line-height)] text-[var(--color-text-foreground)] outline-none data-disabled:pointer-events-none data-highlighted:bg-[var(--color-background-button-secondary-hover)] data-highlighted:text-[var(--color-text-foreground)] data-disabled:opacity-64 [&>svg:not([class*='opacity-']),&>[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&>svg,&>[data-slot=central-icon]]:pointer-events-none [&>svg,&>[data-slot=central-icon]]:shrink-0 data-inset:ps-8 data-[variant=destructive]:text-destructive",
+                "text": "Add image",
+                "box": {
+                  "x": 492,
+                  "y": 599,
+                  "width": 131.421875,
+                  "height": 26
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "tag": "BUTTON",
+                "className": "[&_svg,&_[data-slot=central-icon]]:-mx-0.5 relative inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap border font-medium text-[length:var(--app-font-size-ui,12px)] outline-none pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 focus-visible:ring-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 sm:text-[length:var(--app-font-size-ui,12px)] [&_svg:not([class*='opacity-'])]:opacity-80 [&_[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4.5 [&_[data-slot=central-icon]:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 sm:[&_[data-slot=central-icon]:not([class*='size-'])]:size-4 [&_svg,&_[data-slot=central-icon]]:pointer-events-none [&_svg,&_[data-slot=central-icon]]:shrink-0 size-8 sm:size-7 border-transparent bg-transparent text-[var(--color-text-foreground-secondary)] focus-visible:ring-[color:var(--color-border-focus)]/60 focus-visible:ring-offset-0 [:hover,[data-pressed]]:bg-[var(--color-background-elevated-secondary)] [:hover,[data-pressed]]:text-[var(--color-text-foreground)] data-pressed:bg-[var(--color-background-elevated-secondary)] data-pressed:text-[var(--color-text-foreground)] shrink-0 rounded-md",
+                "text": "",
+                "box": {
+                  "x": 487,
+                  "y": 561.75,
+                  "width": 28,
+                  "height": 28
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "500",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(13, 13, 13, 0.04)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/extras-open-light-1440/web/styles.json",
+          "stylesData": {
+            "client": "web",
+            "stateId": "extras-open-light-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "oklab(0.999994 0.0000455677 0.0000200868 / 0.7)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10.4px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, color(srgb 0.0509804 0.0509804 0.0509804 / 0.07) 0px 4px 18px -6px",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "500",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(13, 13, 13, 0.04)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/extras-open-light-1440/web/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/extras-open-light-1440/lynx/raw.png",
+          "comparisonPath": "final-overlays/extras-open-light-1440/lynx/comparison.png",
+          "geometry": "final-overlays/extras-open-light-1440/lynx/geometry.json",
+          "geometryData": {
+            "client": "lynx",
+            "stateId": "extras-open-light-1440",
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "viewport": {
+              "width": 1440,
+              "height": 900,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "X-VIEW",
+                "className": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable",
+                "text": "StudioProjectsNew threadSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed taskChats›⚙SettingsNew ChatWhat should we work on?Add filesPlan modeFast›Full accessGPT-5.5⌄Medium⌄↑spike-work",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 900
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "X-VIEW",
+                "className": "LxMenuPopup ComposerExtrasPopupLynx",
+                "text": "Add filesPlan modeFast›",
+                "box": {
+                  "x": 487,
+                  "y": 409,
+                  "width": 142,
+                  "height": 108
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "X-VIEW",
+                "className": "LxButton LxButton--ghost LxButton--default LxMenuItem LxMenuItem--highlighted",
+                "text": "Add files",
+                "box": {
+                  "x": 493,
+                  "y": 415,
+                  "width": 130,
+                  "height": 26
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(232, 242, 250)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "6px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "tag": "X-VIEW",
+                "className": "LxMenuTrigger ComposerExtrasTriggerLynx",
+                "text": "",
+                "box": {
+                  "x": 487,
+                  "y": 521,
+                  "width": 32,
+                  "height": 28
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/extras-open-light-1440/lynx/styles.json",
+          "stylesData": {
+            "client": "lynx",
+            "stateId": "extras-open-light-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(232, 242, 250)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "6px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/extras-open-light-1440/lynx/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/extras-open-light-1440/native/raw.png",
+          "comparisonPath": "final-overlays/extras-open-light-1440/native/comparison.png",
+          "geometry": "final-overlays/extras-open-light-1440/native/geometry.json",
+          "geometryData": {
+            "client": "native",
+            "stateId": "extras-open-light-1440",
+            "roles": {
+              "root": {
+                "nodeId": 13,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+                },
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 868
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "nodeId": 4981,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "aria-modal": "false",
+                  "role": "menu",
+                  "bindkeydown": "5165:4:",
+                  "bindlayoutchange": "5165:5:",
+                  "class": "LxMenuPopup ComposerExtrasPopupLynx",
+                  "style": "visibility:visible;top:393px;left:487px;"
+                },
+                "text": "",
+                "box": {
+                  "x": 487,
+                  "y": 393,
+                  "width": 142,
+                  "height": 109
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "hsla(0,0%,5%,.069)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "nodeId": 4982,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "focusable": "true",
+                  "aria-disabled": "false",
+                  "role": "menuitem",
+                  "bindmouseenter": "5166:0:bindmouseenter",
+                  "bindblur": "5166:0:bindblur",
+                  "bindmouseleave": "5166:0:bindmouseleave",
+                  "bindtap": "5166:0:bindtap",
+                  "bindmouseup": "5166:0:bindmouseup",
+                  "bindtouchstart": "5166:0:bindtouchstart",
+                  "bindmousedown": "5166:0:bindmousedown",
+                  "bindtouchend": "5166:0:bindtouchend",
+                  "bindtouchcancel": "5166:0:bindtouchcancel",
+                  "catchkeydown": "5166:0:catchkeydown",
+                  "bindfocus": "5166:0:bindfocus",
+                  "class": "LxButton LxButton--ghost LxButton--default LxMenuItem LxMenuItem--highlighted"
+                },
+                "text": "",
+                "box": {
+                  "x": 493,
+                  "y": 399,
+                  "width": 130,
+                  "height": 26
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "nodeId": 4352,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "react-ref-4882-0": "1",
+                  "focusable": "true",
+                  "aria-disabled": "false",
+                  "aria-label": "Composer extras",
+                  "aria-haspopup": "menu",
+                  "aria-expanded": "true",
+                  "bindmouseenter": "4882:0:bindmouseenter",
+                  "bindtap": "4882:0:bindtap",
+                  "bindmouseup": "4882:0:bindmouseup",
+                  "bindtouchstart": "4882:0:bindtouchstart",
+                  "bindmouseleave": "4882:0:bindmouseleave",
+                  "bindmousedown": "4882:0:bindmousedown",
+                  "bindtouchend": "4882:0:bindtouchend",
+                  "bindblur": "4882:0:bindblur",
+                  "catchkeydown": "4882:0:catchkeydown",
+                  "bindfocus": "4882:0:bindfocus",
+                  "bindtouchcancel": "4882:0:bindtouchcancel",
+                  "bindlayoutchange": "4882:0:bindlayoutchange",
+                  "class": "LxMenuTrigger ComposerExtrasTriggerLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 487,
+                  "y": 505,
+                  "width": 32,
+                  "height": 28
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/extras-open-light-1440/native/styles.json",
+          "stylesData": {
+            "client": "native",
+            "stateId": "extras-open-light-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "hsla(0,0%,5%,.069)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/extras-open-light-1440/native/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "mention-menu-filtered-dark-1280",
+      "label": "mention menu filtered dark 1280 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "mention-filtered-progress",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1280,
+        "height": 788
+      },
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/mention-menu-filtered-dark-1280/web/raw.png",
+          "comparisonPath": "final-overlays/mention-menu-filtered-dark-1280/web/comparison.png",
+          "geometry": "final-overlays/mention-menu-filtered-dark-1280/web/geometry.json",
+          "geometryData": {
+            "client": "web",
+            "stateId": "mention-menu-filtered-dark-1280",
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "viewport": {
+              "width": 1280,
+              "height": 820,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "BODY",
+                "className": "",
+                "text": "Toggle SidebarToggle SidebarStudioProjectsNew thread⌘NSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed task⌘1Draft seed task⌘2Done seed task⌘3\n    To pick up a draggable item, press the space bar.\n    While dragg",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1280,
+                  "height": 820
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "DIV",
+                "className": "h-full overscroll-contain rounded-[inherit] outline-none transition-shadows focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background data-has-overflow-x:overscroll-x-contain mask-t-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-y-start)))] mask-b-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-y-end)))] mask-l-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-x-start)))] mask-r-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-x-end)))] [--fade-size:1.5rem] data-has-overflow-y:pe-2.5 data-has-overflow-x:pb-2.5 base-ui-disable-scrollbar",
+                "text": "ChatsIn Progress seed taskLynx Web SpikeFilesType to search for files",
+                "box": {
+                  "x": 406,
+                  "y": 342.25,
+                  "width": 724,
+                  "height": 111.5
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "DIV",
+                "className": "min-h-8 text-base outline-none data-disabled:pointer-events-none data-highlighted:text-[var(--color-text-foreground)] data-disabled:opacity-64 sm:min-h-7 sm:text-sm flex cursor-pointer select-none items-center gap-2 rounded-md px-2.5 py-1 transition-colors hover:bg-[var(--color-background-button-secondary-hover)] data-highlighted:bg-[var(--color-background-button-secondary-hover)] bg-[var(--color-background-button-secondary)] text-[var(--color-text-foreground)]",
+                "text": "In Progress seed taskLynx Web Spike",
+                "box": {
+                  "x": 410,
+                  "y": 372.25,
+                  "width": 716,
+                  "height": 28
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(252, 252, 252, 0.027)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "tag": "SPAN",
+                "className": "truncate text-[length:var(--type-picker-description-size)] leading-[var(--type-picker-description-line-height)] text-muted-foreground/55",
+                "text": "Lynx Web Spike",
+                "box": {
+                  "x": 569.859375,
+                  "y": 378.25,
+                  "width": 82.328125,
+                  "height": 16
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.991063 0.0000452101 0.0000197887 / 0.319216)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "editor": {
+                "tag": "DIV",
+                "className": "block max-h-[200px] w-full overflow-y-auto whitespace-pre-wrap break-words bg-transparent text-foreground focus:outline-none font-system-ui text-[length:var(--type-composer-editor-size)] leading-[var(--type-composer-editor-line-height)] min-h-[var(--app-density-composer-editor-min-height,2lh)] [&_p]:m-0",
+                "text": "@Progress",
+                "box": {
+                  "x": 413,
+                  "y": 474.75,
+                  "width": 708,
+                  "height": 39
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/mention-menu-filtered-dark-1280/web/styles.json",
+          "stylesData": {
+            "client": "web",
+            "stateId": "mention-menu-filtered-dark-1280",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(252, 252, 252, 0.027)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.991063 0.0000452101 0.0000197887 / 0.319216)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "editor": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/mention-menu-filtered-dark-1280/web/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/mention-menu-filtered-dark-1280/lynx/raw.png",
+          "comparisonPath": "final-overlays/mention-menu-filtered-dark-1280/lynx/comparison.png",
+          "geometry": "final-overlays/mention-menu-filtered-dark-1280/lynx/geometry.json",
+          "geometryData": {
+            "client": "lynx",
+            "stateId": "mention-menu-filtered-dark-1280",
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "viewport": {
+              "width": 1280,
+              "height": 820,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "X-VIEW",
+                "className": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable",
+                "text": "StudioProjectsNew threadSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed taskChats›⚙SettingsNew ChatWhat should we work on?ChatsIn Progress seed taskLynx Web SpikeFilesType to search ",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1280,
+                  "height": 820
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "X-VIEW",
+                "className": "ComposerCommandMenuLynx",
+                "text": "ChatsIn Progress seed taskLynx Web SpikeFilesType to search for files",
+                "box": {
+                  "x": 405,
+                  "y": 301,
+                  "width": 726,
+                  "height": 113
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(23, 23, 23)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "14px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "X-VIEW",
+                "className": "ComposerCommandRowLynx ComposerCommandRowLynx--active",
+                "text": "In Progress seed taskLynx Web Spike",
+                "box": {
+                  "x": 410,
+                  "y": 332,
+                  "width": 716,
+                  "height": 28
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(0, 15, 29)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "tag": "X-TEXT",
+                "className": "ComposerCommandTitleLynx",
+                "text": "In Progress seed task",
+                "box": {
+                  "x": 444,
+                  "y": 338,
+                  "width": 119.859375,
+                  "height": 16
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.8"
+                }
+              },
+              "editor": {
+                "tag": "X-TEXTAREA",
+                "className": "ComposerTextarea",
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/mention-menu-filtered-dark-1280/lynx/styles.json",
+          "stylesData": {
+            "client": "lynx",
+            "stateId": "mention-menu-filtered-dark-1280",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(23, 23, 23)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "14px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(0, 15, 29)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.8"
+                }
+              },
+              "editor": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/mention-menu-filtered-dark-1280/lynx/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/mention-menu-filtered-dark-1280/native/raw.png",
+          "comparisonPath": "final-overlays/mention-menu-filtered-dark-1280/native/comparison.png",
+          "geometry": "final-overlays/mention-menu-filtered-dark-1280/native/geometry.json",
+          "geometryData": {
+            "client": "native",
+            "stateId": "mention-menu-filtered-dark-1280",
+            "roles": {
+              "root": {
+                "nodeId": 13,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable"
+                },
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1280,
+                  "height": 788
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "nodeId": 1164,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "ComposerCommandMenuLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 405,
+                  "y": 285,
+                  "width": 726,
+                  "height": 113
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(23,23,23)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "nodeId": 1170,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "aria-label": "In Progress seed task",
+                  "aria-selected": "true",
+                  "focusable": "true",
+                  "aria-disabled": "false",
+                  "bindmouseenter": "1197:0:bindmouseenter",
+                  "bindblur": "1197:0:bindblur",
+                  "bindmouseleave": "1197:0:bindmouseleave",
+                  "bindkeydown": "1197:0:bindkeydown",
+                  "bindtap": "1197:0:bindtap",
+                  "bindmouseup": "1197:0:bindmouseup",
+                  "bindtouchstart": "1197:0:bindtouchstart",
+                  "bindmousedown": "1197:0:bindmousedown",
+                  "bindtouchend": "1197:0:bindtouchend",
+                  "bindtouchcancel": "1197:0:bindtouchcancel",
+                  "bindfocus": "1197:0:bindfocus",
+                  "class": "ComposerCommandRowLynx ComposerCommandRowLynx--active"
+                },
+                "text": "",
+                "box": {
+                  "x": 410,
+                  "y": 316,
+                  "width": 716,
+                  "height": 28
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(0,15,29)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "nodeId": 1173,
+                "nodeName": "TEXT",
+                "attributes": {
+                  "class": "ComposerCommandTitleLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 444,
+                  "y": 322,
+                  "width": 125,
+                  "height": 16
+                },
+                "font": {
+                  "family": "",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "0.8"
+                }
+              },
+              "editor": {
+                "nodeId": 811,
+                "nodeName": "TEXTAREA",
+                "attributes": {
+                  "aria-label": "Message composer",
+                  "accessibility-element": "true",
+                  "accessibility-label": "Message composer",
+                  "focusable": "true",
+                  "maxlength": "8000",
+                  "maxlines": "6",
+                  "enable-scroll-bar": "true",
+                  "react-ref-1022-0": "1",
+                  "default-value": "@Progress",
+                  "placeholder": "Ask for follow-up changes or attach images",
+                  "bindfocus": "1022:4:",
+                  "bindselection": "1022:6:",
+                  "bindblur": "1022:5:",
+                  "bindinput": "1022:7:",
+                  "class": "ComposerTextarea"
+                },
+                "text": "",
+                "box": {
+                  "x": 413,
+                  "y": 418,
+                  "width": 708,
+                  "height": 39
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "normal",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/mention-menu-filtered-dark-1280/native/styles.json",
+          "stylesData": {
+            "client": "native",
+            "stateId": "mention-menu-filtered-dark-1280",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(23,23,23)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(0,15,29)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "font": {
+                  "family": "",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "0.8"
+                }
+              },
+              "editor": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "normal",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/mention-menu-filtered-dark-1280/native/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "mention-menu-filtered-dark-1440",
+      "label": "mention menu filtered dark 1440 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "mention-filtered-progress",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/mention-menu-filtered-dark-1440/web/raw.png",
+          "comparisonPath": "final-overlays/mention-menu-filtered-dark-1440/web/comparison.png",
+          "geometry": "final-overlays/mention-menu-filtered-dark-1440/web/geometry.json",
+          "geometryData": {
+            "client": "web",
+            "stateId": "mention-menu-filtered-dark-1440",
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "viewport": {
+              "width": 1440,
+              "height": 900,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "BODY",
+                "className": "",
+                "text": "Toggle SidebarToggle SidebarStudioProjectsNew thread⌘NSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed task⌘1Draft seed task⌘2Done seed task⌘3\n    To pick up a draggable item, press the space bar.\n    While dragg",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 900
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "DIV",
+                "className": "h-full overscroll-contain rounded-[inherit] outline-none transition-shadows focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background data-has-overflow-x:overscroll-x-contain mask-t-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-y-start)))] mask-b-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-y-end)))] mask-l-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-x-start)))] mask-r-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-x-end)))] [--fade-size:1.5rem] data-has-overflow-y:pe-2.5 data-has-overflow-x:pb-2.5 base-ui-disable-scrollbar",
+                "text": "ChatsIn Progress seed taskLynx Web SpikeFilesType to search for files",
+                "box": {
+                  "x": 486,
+                  "y": 382.25,
+                  "width": 724,
+                  "height": 111.5
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "DIV",
+                "className": "min-h-8 text-base outline-none data-disabled:pointer-events-none data-highlighted:text-[var(--color-text-foreground)] data-disabled:opacity-64 sm:min-h-7 sm:text-sm flex cursor-pointer select-none items-center gap-2 rounded-md px-2.5 py-1 transition-colors hover:bg-[var(--color-background-button-secondary-hover)] data-highlighted:bg-[var(--color-background-button-secondary-hover)] bg-[var(--color-background-button-secondary)] text-[var(--color-text-foreground)]",
+                "text": "In Progress seed taskLynx Web Spike",
+                "box": {
+                  "x": 490,
+                  "y": 412.25,
+                  "width": 716,
+                  "height": 28
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(252, 252, 252, 0.027)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "tag": "SPAN",
+                "className": "truncate text-[length:var(--type-picker-description-size)] leading-[var(--type-picker-description-line-height)] text-muted-foreground/55",
+                "text": "Lynx Web Spike",
+                "box": {
+                  "x": 649.859375,
+                  "y": 418.25,
+                  "width": 82.328125,
+                  "height": 16
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.991063 0.0000452101 0.0000197887 / 0.319216)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "editor": {
+                "tag": "DIV",
+                "className": "block max-h-[200px] w-full overflow-y-auto whitespace-pre-wrap break-words bg-transparent text-foreground focus:outline-none font-system-ui text-[length:var(--type-composer-editor-size)] leading-[var(--type-composer-editor-line-height)] min-h-[var(--app-density-composer-editor-min-height,2lh)] [&_p]:m-0",
+                "text": "@Progress",
+                "box": {
+                  "x": 493,
+                  "y": 514.75,
+                  "width": 708,
+                  "height": 39
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/mention-menu-filtered-dark-1440/web/styles.json",
+          "stylesData": {
+            "client": "web",
+            "stateId": "mention-menu-filtered-dark-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(252, 252, 252, 0.027)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.991063 0.0000452101 0.0000197887 / 0.319216)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "editor": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/mention-menu-filtered-dark-1440/web/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/mention-menu-filtered-dark-1440/lynx/raw.png",
+          "comparisonPath": "final-overlays/mention-menu-filtered-dark-1440/lynx/comparison.png",
+          "geometry": "final-overlays/mention-menu-filtered-dark-1440/lynx/geometry.json",
+          "geometryData": {
+            "client": "lynx",
+            "stateId": "mention-menu-filtered-dark-1440",
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "viewport": {
+              "width": 1440,
+              "height": 900,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "X-VIEW",
+                "className": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable",
+                "text": "StudioProjectsNew threadSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed taskChats›⚙SettingsNew ChatWhat should we work on?ChatsIn Progress seed taskLynx Web SpikeFilesType to search ",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 900
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "X-VIEW",
+                "className": "ComposerCommandMenuLynx",
+                "text": "ChatsIn Progress seed taskLynx Web SpikeFilesType to search for files",
+                "box": {
+                  "x": 485,
+                  "y": 341,
+                  "width": 726,
+                  "height": 113
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(23, 23, 23)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "14px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "X-VIEW",
+                "className": "ComposerCommandRowLynx ComposerCommandRowLynx--active",
+                "text": "In Progress seed taskLynx Web Spike",
+                "box": {
+                  "x": 490,
+                  "y": 372,
+                  "width": 716,
+                  "height": 28
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(0, 15, 29)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "tag": "X-TEXT",
+                "className": "ComposerCommandTitleLynx",
+                "text": "In Progress seed task",
+                "box": {
+                  "x": 524,
+                  "y": 378,
+                  "width": 119.859375,
+                  "height": 16
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.8"
+                }
+              },
+              "editor": {
+                "tag": "X-TEXTAREA",
+                "className": "ComposerTextarea",
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/mention-menu-filtered-dark-1440/lynx/styles.json",
+          "stylesData": {
+            "client": "lynx",
+            "stateId": "mention-menu-filtered-dark-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(23, 23, 23)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "14px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(0, 15, 29)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.8"
+                }
+              },
+              "editor": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/mention-menu-filtered-dark-1440/lynx/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/mention-menu-filtered-dark-1440/native/raw.png",
+          "comparisonPath": "final-overlays/mention-menu-filtered-dark-1440/native/comparison.png",
+          "geometry": "final-overlays/mention-menu-filtered-dark-1440/native/geometry.json",
+          "geometryData": {
+            "client": "native",
+            "stateId": "mention-menu-filtered-dark-1440",
+            "roles": {
+              "root": {
+                "nodeId": 13,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable"
+                },
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 868
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "nodeId": 7706,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "ComposerCommandMenuLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 485,
+                  "y": 325,
+                  "width": 726,
+                  "height": 113
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "nodeId": 7712,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "aria-label": "In Progress seed task",
+                  "aria-selected": "true",
+                  "focusable": "true",
+                  "aria-disabled": "false",
+                  "bindmouseenter": "7326:0:bindmouseenter",
+                  "bindblur": "7326:0:bindblur",
+                  "bindmouseleave": "7326:0:bindmouseleave",
+                  "bindkeydown": "7326:0:bindkeydown",
+                  "bindtap": "7326:0:bindtap",
+                  "bindmouseup": "7326:0:bindmouseup",
+                  "bindtouchstart": "7326:0:bindtouchstart",
+                  "bindmousedown": "7326:0:bindmousedown",
+                  "bindtouchend": "7326:0:bindtouchend",
+                  "bindtouchcancel": "7326:0:bindtouchcancel",
+                  "bindfocus": "7326:0:bindfocus",
+                  "class": "ComposerCommandRowLynx ComposerCommandRowLynx--active"
+                },
+                "text": "",
+                "box": {
+                  "x": 490,
+                  "y": 356,
+                  "width": 716,
+                  "height": 28
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "nodeId": 7715,
+                "nodeName": "TEXT",
+                "attributes": {
+                  "class": "ComposerCommandTitleLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 524,
+                  "y": 362,
+                  "width": 125,
+                  "height": 16
+                },
+                "font": {
+                  "family": "",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "0.8"
+                }
+              },
+              "editor": {
+                "nodeId": 6593,
+                "nodeName": "TEXTAREA",
+                "attributes": {
+                  "aria-label": "Message composer",
+                  "accessibility-element": "true",
+                  "accessibility-label": "Message composer",
+                  "focusable": "true",
+                  "maxlength": "8000",
+                  "maxlines": "6",
+                  "enable-scroll-bar": "true",
+                  "react-ref-6760-0": "1",
+                  "default-value": "@Progress",
+                  "placeholder": "Ask for follow-up changes or attach images",
+                  "bindfocus": "6760:4:",
+                  "bindselection": "6760:6:",
+                  "bindblur": "6760:5:",
+                  "bindinput": "6760:7:",
+                  "class": "ComposerTextarea"
+                },
+                "text": "",
+                "box": {
+                  "x": 493,
+                  "y": 458,
+                  "width": 708,
+                  "height": 39
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "normal",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/mention-menu-filtered-dark-1440/native/styles.json",
+          "stylesData": {
+            "client": "native",
+            "stateId": "mention-menu-filtered-dark-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "font": {
+                  "family": "",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "0.8"
+                }
+              },
+              "editor": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "normal",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/mention-menu-filtered-dark-1440/native/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "mention-menu-filtered-light-1280",
+      "label": "mention menu filtered light 1280 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "mention-filtered-progress",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1280,
+        "height": 788
+      },
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/mention-menu-filtered-light-1280/web/raw.png",
+          "comparisonPath": "final-overlays/mention-menu-filtered-light-1280/web/comparison.png",
+          "geometry": "final-overlays/mention-menu-filtered-light-1280/web/geometry.json",
+          "geometryData": {
+            "client": "web",
+            "stateId": "mention-menu-filtered-light-1280",
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "viewport": {
+              "width": 1280,
+              "height": 820,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "BODY",
+                "className": "",
+                "text": "Toggle SidebarToggle SidebarStudioProjectsNew thread⌘NSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed task\n    To pick up a draggable item, press the space bar.\n    While dragging, u",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1280,
+                  "height": 820
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "DIV",
+                "className": "h-full overscroll-contain rounded-[inherit] outline-none transition-shadows focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background data-has-overflow-x:overscroll-x-contain mask-t-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-y-start)))] mask-b-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-y-end)))] mask-l-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-x-start)))] mask-r-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-x-end)))] [--fade-size:1.5rem] data-has-overflow-y:pe-2.5 data-has-overflow-x:pb-2.5 base-ui-disable-scrollbar",
+                "text": "ChatsIn Progress seed taskLynx Web SpikeFilesType to search for files",
+                "box": {
+                  "x": 406,
+                  "y": 342.25,
+                  "width": 724,
+                  "height": 111.5
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "DIV",
+                "className": "min-h-8 text-base outline-none data-disabled:pointer-events-none data-highlighted:text-[var(--color-text-foreground)] data-disabled:opacity-64 sm:min-h-7 sm:text-sm flex cursor-pointer select-none items-center gap-2 rounded-md px-2.5 py-1 transition-colors hover:bg-[var(--color-background-button-secondary-hover)] data-highlighted:bg-[var(--color-background-button-secondary-hover)] bg-[var(--color-background-button-secondary)] text-[var(--color-text-foreground)]",
+                "text": "In Progress seed taskLynx Web Spike",
+                "box": {
+                  "x": 410,
+                  "y": 372.25,
+                  "width": 716,
+                  "height": 28
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(13, 13, 13, 0.04)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "tag": "SPAN",
+                "className": "truncate text-[length:var(--type-picker-description-size)] leading-[var(--type-picker-description-line-height)] text-muted-foreground/55",
+                "text": "Lynx Web Spike",
+                "box": {
+                  "x": 569.859375,
+                  "y": 378.25,
+                  "width": 82.328125,
+                  "height": 16
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.327843)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "editor": {
+                "tag": "DIV",
+                "className": "block max-h-[200px] w-full overflow-y-auto whitespace-pre-wrap break-words bg-transparent text-foreground focus:outline-none font-system-ui text-[length:var(--type-composer-editor-size)] leading-[var(--type-composer-editor-line-height)] min-h-[var(--app-density-composer-editor-min-height,2lh)] [&_p]:m-0",
+                "text": "@Progress",
+                "box": {
+                  "x": 413,
+                  "y": 474.75,
+                  "width": 708,
+                  "height": 39
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/mention-menu-filtered-light-1280/web/styles.json",
+          "stylesData": {
+            "client": "web",
+            "stateId": "mention-menu-filtered-light-1280",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(13, 13, 13, 0.04)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.327843)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "editor": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/mention-menu-filtered-light-1280/web/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/mention-menu-filtered-light-1280/lynx/raw.png",
+          "comparisonPath": "final-overlays/mention-menu-filtered-light-1280/lynx/comparison.png",
+          "geometry": "final-overlays/mention-menu-filtered-light-1280/lynx/geometry.json",
+          "geometryData": {
+            "client": "lynx",
+            "stateId": "mention-menu-filtered-light-1280",
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "viewport": {
+              "width": 1280,
+              "height": 820,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "X-VIEW",
+                "className": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable",
+                "text": "StudioProjectsNew threadSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed taskChats›⚙SettingsNew ChatWhat should we work on?ChatsIn Progress seed taskLynx Web SpikeFilesType to search ",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1280,
+                  "height": 820
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "X-VIEW",
+                "className": "ComposerCommandMenuLynx",
+                "text": "ChatsIn Progress seed taskLynx Web SpikeFilesType to search for files",
+                "box": {
+                  "x": 405,
+                  "y": 301,
+                  "width": 726,
+                  "height": 113
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "14px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "X-VIEW",
+                "className": "ComposerCommandRowLynx ComposerCommandRowLynx--active",
+                "text": "In Progress seed taskLynx Web Spike",
+                "box": {
+                  "x": 410,
+                  "y": 332,
+                  "width": 716,
+                  "height": 28
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(232, 242, 250)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "tag": "X-TEXT",
+                "className": "ComposerCommandTitleLynx",
+                "text": "In Progress seed task",
+                "box": {
+                  "x": 444,
+                  "y": 338,
+                  "width": 119.859375,
+                  "height": 16
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.8"
+                }
+              },
+              "editor": {
+                "tag": "X-TEXTAREA",
+                "className": "ComposerTextarea",
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/mention-menu-filtered-light-1280/lynx/styles.json",
+          "stylesData": {
+            "client": "lynx",
+            "stateId": "mention-menu-filtered-light-1280",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "14px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(232, 242, 250)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.8"
+                }
+              },
+              "editor": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/mention-menu-filtered-light-1280/lynx/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/mention-menu-filtered-light-1280/native/raw.png",
+          "comparisonPath": "final-overlays/mention-menu-filtered-light-1280/native/comparison.png",
+          "geometry": "final-overlays/mention-menu-filtered-light-1280/native/geometry.json",
+          "geometryData": {
+            "client": "native",
+            "stateId": "mention-menu-filtered-light-1280",
+            "roles": {
+              "root": {
+                "nodeId": 13,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+                },
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1280,
+                  "height": 788
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "nodeId": 1100,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "ComposerCommandMenuLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 405,
+                  "y": 285,
+                  "width": 726,
+                  "height": 113
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "nodeId": 1106,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "aria-label": "In Progress seed task",
+                  "aria-selected": "true",
+                  "focusable": "true",
+                  "aria-disabled": "false",
+                  "bindmouseenter": "1164:0:bindmouseenter",
+                  "bindblur": "1164:0:bindblur",
+                  "bindmouseleave": "1164:0:bindmouseleave",
+                  "bindkeydown": "1164:0:bindkeydown",
+                  "bindtap": "1164:0:bindtap",
+                  "bindmouseup": "1164:0:bindmouseup",
+                  "bindtouchstart": "1164:0:bindtouchstart",
+                  "bindmousedown": "1164:0:bindmousedown",
+                  "bindtouchend": "1164:0:bindtouchend",
+                  "bindtouchcancel": "1164:0:bindtouchcancel",
+                  "bindfocus": "1164:0:bindfocus",
+                  "class": "ComposerCommandRowLynx ComposerCommandRowLynx--active"
+                },
+                "text": "",
+                "box": {
+                  "x": 410,
+                  "y": 316,
+                  "width": 716,
+                  "height": 28
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "nodeId": 1109,
+                "nodeName": "TEXT",
+                "attributes": {
+                  "class": "ComposerCommandTitleLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 444,
+                  "y": 322,
+                  "width": 125,
+                  "height": 16
+                },
+                "font": {
+                  "family": "",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "0.8"
+                }
+              },
+              "editor": {
+                "nodeId": 767,
+                "nodeName": "TEXTAREA",
+                "attributes": {
+                  "aria-label": "Message composer",
+                  "accessibility-element": "true",
+                  "accessibility-label": "Message composer",
+                  "focusable": "true",
+                  "maxlength": "8000",
+                  "maxlines": "6",
+                  "enable-scroll-bar": "true",
+                  "react-ref-1000-0": "1",
+                  "default-value": "@Progress",
+                  "placeholder": "Ask for follow-up changes or attach images",
+                  "bindfocus": "1000:4:",
+                  "bindselection": "1000:6:",
+                  "bindblur": "1000:5:",
+                  "bindinput": "1000:7:",
+                  "class": "ComposerTextarea"
+                },
+                "text": "",
+                "box": {
+                  "x": 413,
+                  "y": 418,
+                  "width": 708,
+                  "height": 39
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "normal",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/mention-menu-filtered-light-1280/native/styles.json",
+          "stylesData": {
+            "client": "native",
+            "stateId": "mention-menu-filtered-light-1280",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "font": {
+                  "family": "",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "0.8"
+                }
+              },
+              "editor": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "normal",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/mention-menu-filtered-light-1280/native/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "mention-menu-filtered-light-1440",
+      "label": "mention menu filtered light 1440 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "mention-filtered-progress",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/mention-menu-filtered-light-1440/web/raw.png",
+          "comparisonPath": "final-overlays/mention-menu-filtered-light-1440/web/comparison.png",
+          "geometry": "final-overlays/mention-menu-filtered-light-1440/web/geometry.json",
+          "geometryData": {
+            "client": "web",
+            "stateId": "mention-menu-filtered-light-1440",
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "viewport": {
+              "width": 1440,
+              "height": 900,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "BODY",
+                "className": "",
+                "text": "Toggle SidebarToggle SidebarStudioProjectsNew thread⌘NSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed task⌘1Draft seed task⌘2Done seed task⌘3\n    To pick up a draggable item, press the space bar.\n    While dragg",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 900
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "DIV",
+                "className": "h-full overscroll-contain rounded-[inherit] outline-none transition-shadows focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background data-has-overflow-x:overscroll-x-contain mask-t-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-y-start)))] mask-b-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-y-end)))] mask-l-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-x-start)))] mask-r-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-x-end)))] [--fade-size:1.5rem] data-has-overflow-y:pe-2.5 data-has-overflow-x:pb-2.5 base-ui-disable-scrollbar",
+                "text": "ChatsIn Progress seed taskLynx Web SpikeFilesType to search for files",
+                "box": {
+                  "x": 486,
+                  "y": 382.25,
+                  "width": 724,
+                  "height": 111.5
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "DIV",
+                "className": "min-h-8 text-base outline-none data-disabled:pointer-events-none data-highlighted:text-[var(--color-text-foreground)] data-disabled:opacity-64 sm:min-h-7 sm:text-sm flex cursor-pointer select-none items-center gap-2 rounded-md px-2.5 py-1 transition-colors hover:bg-[var(--color-background-button-secondary-hover)] data-highlighted:bg-[var(--color-background-button-secondary-hover)] bg-[var(--color-background-button-secondary)] text-[var(--color-text-foreground)]",
+                "text": "In Progress seed taskLynx Web Spike",
+                "box": {
+                  "x": 490,
+                  "y": 412.25,
+                  "width": 716,
+                  "height": 28
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(13, 13, 13, 0.04)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "tag": "SPAN",
+                "className": "truncate text-[length:var(--type-picker-description-size)] leading-[var(--type-picker-description-line-height)] text-muted-foreground/55",
+                "text": "Lynx Web Spike",
+                "box": {
+                  "x": 649.859375,
+                  "y": 418.25,
+                  "width": 82.328125,
+                  "height": 16
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.327843)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "editor": {
+                "tag": "DIV",
+                "className": "block max-h-[200px] w-full overflow-y-auto whitespace-pre-wrap break-words bg-transparent text-foreground focus:outline-none font-system-ui text-[length:var(--type-composer-editor-size)] leading-[var(--type-composer-editor-line-height)] min-h-[var(--app-density-composer-editor-min-height,2lh)] [&_p]:m-0",
+                "text": "@Progress",
+                "box": {
+                  "x": 493,
+                  "y": 514.75,
+                  "width": 708,
+                  "height": 39
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/mention-menu-filtered-light-1440/web/styles.json",
+          "stylesData": {
+            "client": "web",
+            "stateId": "mention-menu-filtered-light-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(13, 13, 13, 0.04)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.327843)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "editor": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/mention-menu-filtered-light-1440/web/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/mention-menu-filtered-light-1440/lynx/raw.png",
+          "comparisonPath": "final-overlays/mention-menu-filtered-light-1440/lynx/comparison.png",
+          "geometry": "final-overlays/mention-menu-filtered-light-1440/lynx/geometry.json",
+          "geometryData": {
+            "client": "lynx",
+            "stateId": "mention-menu-filtered-light-1440",
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "viewport": {
+              "width": 1440,
+              "height": 900,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "X-VIEW",
+                "className": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable",
+                "text": "StudioProjectsNew threadSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed taskChats›⚙SettingsNew ChatWhat should we work on?ChatsIn Progress seed taskLynx Web SpikeFilesType to search ",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 900
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "X-VIEW",
+                "className": "ComposerCommandMenuLynx",
+                "text": "ChatsIn Progress seed taskLynx Web SpikeFilesType to search for files",
+                "box": {
+                  "x": 485,
+                  "y": 341,
+                  "width": 726,
+                  "height": 113
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "14px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "X-VIEW",
+                "className": "ComposerCommandRowLynx ComposerCommandRowLynx--active",
+                "text": "In Progress seed taskLynx Web Spike",
+                "box": {
+                  "x": 490,
+                  "y": 372,
+                  "width": 716,
+                  "height": 28
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(232, 242, 250)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "tag": "X-TEXT",
+                "className": "ComposerCommandTitleLynx",
+                "text": "In Progress seed task",
+                "box": {
+                  "x": 524,
+                  "y": 378,
+                  "width": 119.859375,
+                  "height": 16
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.8"
+                }
+              },
+              "editor": {
+                "tag": "X-TEXTAREA",
+                "className": "ComposerTextarea",
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/mention-menu-filtered-light-1440/lynx/styles.json",
+          "stylesData": {
+            "client": "lynx",
+            "stateId": "mention-menu-filtered-light-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "14px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(232, 242, 250)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.8"
+                }
+              },
+              "editor": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/mention-menu-filtered-light-1440/lynx/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/mention-menu-filtered-light-1440/native/raw.png",
+          "comparisonPath": "final-overlays/mention-menu-filtered-light-1440/native/comparison.png",
+          "geometry": "final-overlays/mention-menu-filtered-light-1440/native/geometry.json",
+          "geometryData": {
+            "client": "native",
+            "stateId": "mention-menu-filtered-light-1440",
+            "roles": {
+              "root": {
+                "nodeId": 13,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+                },
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 868
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "nodeId": 5272,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "ComposerCommandMenuLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 485,
+                  "y": 325,
+                  "width": 726,
+                  "height": 113
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "nodeId": 5278,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "aria-label": "In Progress seed task",
+                  "aria-selected": "true",
+                  "focusable": "true",
+                  "aria-disabled": "false",
+                  "bindmouseenter": "5422:0:bindmouseenter",
+                  "bindblur": "5422:0:bindblur",
+                  "bindmouseleave": "5422:0:bindmouseleave",
+                  "bindkeydown": "5422:0:bindkeydown",
+                  "bindtap": "5422:0:bindtap",
+                  "bindmouseup": "5422:0:bindmouseup",
+                  "bindtouchstart": "5422:0:bindtouchstart",
+                  "bindmousedown": "5422:0:bindmousedown",
+                  "bindtouchend": "5422:0:bindtouchend",
+                  "bindtouchcancel": "5422:0:bindtouchcancel",
+                  "bindfocus": "5422:0:bindfocus",
+                  "class": "ComposerCommandRowLynx ComposerCommandRowLynx--active"
+                },
+                "text": "",
+                "box": {
+                  "x": 490,
+                  "y": 356,
+                  "width": 716,
+                  "height": 28
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "nodeId": 5281,
+                "nodeName": "TEXT",
+                "attributes": {
+                  "class": "ComposerCommandTitleLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 524,
+                  "y": 362,
+                  "width": 125,
+                  "height": 16
+                },
+                "font": {
+                  "family": "",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "0.8"
+                }
+              },
+              "editor": {
+                "nodeId": 4348,
+                "nodeName": "TEXTAREA",
+                "attributes": {
+                  "aria-label": "Message composer",
+                  "accessibility-element": "true",
+                  "accessibility-label": "Message composer",
+                  "focusable": "true",
+                  "maxlength": "8000",
+                  "maxlines": "6",
+                  "enable-scroll-bar": "true",
+                  "react-ref-4878-0": "1",
+                  "default-value": "@Progress",
+                  "placeholder": "Ask for follow-up changes or attach images",
+                  "bindfocus": "4878:4:",
+                  "bindselection": "4878:6:",
+                  "bindblur": "4878:5:",
+                  "bindinput": "4878:7:",
+                  "class": "ComposerTextarea"
+                },
+                "text": "",
+                "box": {
+                  "x": 493,
+                  "y": 458,
+                  "width": 708,
+                  "height": 39
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "normal",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/mention-menu-filtered-light-1440/native/styles.json",
+          "stylesData": {
+            "client": "native",
+            "stateId": "mention-menu-filtered-light-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "font": {
+                  "family": "",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "0.8"
+                }
+              },
+              "editor": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "normal",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/mention-menu-filtered-light-1440/native/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "project-picker-open-dark-1280",
+      "label": "project picker open dark 1280 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "project-picker-open",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1280,
+        "height": 788
+      },
+      "residuals": [
+        {
+          "id": "project-picker-open-dark-1280-host-folder-capability",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Project Picker host filesystem capability boundary",
+          "summary": "Web lists server projects while Lynx-for-Web and Native also expose host-local folders.",
+          "impact": "The retained popup row count differs after the shared selected project row, while popup geometry and the canonical project action remain comparable.",
+          "recommendation": "Keep the capability delta explicit and compare only shared project-picker anatomy and the selected spike-workspace row.",
+          "evidence": "final-overlays/project-picker-open-dark-1280/native/geometry.json",
+          "reason": "Host-local folder discovery is unavailable to Web original and is intentionally retained on Lynx host clients."
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/project-picker-open-dark-1280/web/raw.png",
+          "comparisonPath": "final-overlays/project-picker-open-dark-1280/web/comparison.png",
+          "geometry": "final-overlays/project-picker-open-dark-1280/web/geometry.json",
+          "geometryData": {
+            "client": "web",
+            "stateId": "project-picker-open-dark-1280",
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "viewport": {
+              "width": 1280,
+              "height": 820,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "BODY",
+                "className": "",
+                "text": "Toggle SidebarToggle SidebarStudioProjectsNew thread⌘NSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed task\n    To pick up a draggable item, press the space bar.\n    While dragging, u",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1280,
+                  "height": 820
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "DIV",
+                "className": "flex origin-(--transform-origin) outline-none focus:outline-none max-w-[92vw] composer-picker-menu composer-picker-menu--normal min-w-72 relative overflow-hidden bg-popover/70 text-popover-foreground before:pointer-events-none before:absolute before:inset-0 before:-z-1 before:rounded-[inherit] before:backdrop-blur-2xl before:backdrop-saturate-150 border border-border rounded-[0.65rem] shadow-[0_4px_18px_-6px_color-mix(in_srgb,var(--foreground)_7%,transparent)] dark:shadow-[0_6px_24px_-10px_rgba(0,0,0,0.30)]",
+                "text": "Voidspike-workspace✓New projectDon't work in a project",
+                "box": {
+                  "x": 408,
+                  "y": 389,
+                  "width": 288,
+                  "height": 168
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "oklab(0.204625 0.00000931323 0.00000409782 / 0.7)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10.4px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.3) 0px 6px 24px -10px",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "tag": "DIV",
+                "className": "w-full min-w-0 overflow-y-auto overscroll-contain composer-picker-scroll relative z-1 max-h-(--available-height)",
+                "text": "Voidspike-workspace✓New projectDon't work in a project",
+                "box": {
+                  "x": 409,
+                  "y": 390,
+                  "width": 286,
+                  "height": 166
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "DIV",
+                "className": "[&>svg,&>[data-slot=central-icon]]:-mx-0.5 flex cursor-default select-none items-center rounded-[0.5rem] text-[length:var(--type-ui-row-size)] leading-[var(--type-ui-row-line-height)] text-[var(--color-text-foreground)] outline-none data-disabled:pointer-events-none data-highlighted:bg-[var(--color-background-button-secondary-hover)] data-highlighted:text-[var(--color-text-foreground)] data-disabled:opacity-64 [&>svg:not([class*='opacity-']),&>[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&>svg,&>[data-slot=central-icon]]:pointer-events-none [&>svg,&>[data-slot=central-icon]]:shrink-0 data-inset:ps-8 data-[variant=destructive]:text-destructive",
+                "text": "spike-workspace✓",
+                "box": {
+                  "x": 409,
+                  "y": 463,
+                  "width": 278,
+                  "height": 26
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "tag": "BUTTON",
+                "className": "[&_svg,&_[data-slot=central-icon]]:-mx-0.5 relative inline-flex cursor-pointer items-center rounded-lg border outline-none pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 focus-visible:ring-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 [&_svg:not([class*='opacity-'])]:opacity-80 [&_[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4.5 [&_[data-slot=central-icon]:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 sm:[&_[data-slot=central-icon]:not([class*='size-'])]:size-4 [&_svg,&_[data-slot=central-icon]]:pointer-events-none [&_svg,&_[data-slot=central-icon]]:shrink-0 gap-1.5 sm:h-7 border-transparent bg-transparent focus-visible:ring-[color:var(--color-border-focus)]/60 focus-visible:ring-offset-0 [:hover,[data-pressed]]:bg-[var(--color-background-elevated-secondary)] [:hover,[data-pressed]]:text-[var(--color-text-foreground)] data-pressed:bg-[var(--color-background-elevated-secondary)] min-w-0 justify-start overflow-hidden whitespace-nowrap px-1.5 [&_svg]:mx-0 text-[length:var(--app-font-size-ui-sm,11px)] text-[var(--color-text-foreground-secondary)] sm:text-[length:var(--app-font-size-ui-sm,11px)] font-normal hover:text-[var(--color-text-foreground)] data-pressed:text-[var(--color-text-foreground)] max-w-56 shrink sm:max-w-64 sm:px-1.5 h-7 py-1",
+                "text": "spike-workspace",
+                "box": {
+                  "x": 408,
+                  "y": 560.75,
+                  "width": 122.96875,
+                  "height": 28
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(252, 252, 252, 0.008)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/project-picker-open-dark-1280/web/styles.json",
+          "stylesData": {
+            "client": "web",
+            "stateId": "project-picker-open-dark-1280",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "oklab(0.204625 0.00000931323 0.00000409782 / 0.7)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10.4px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.3) 0px 6px 24px -10px",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(252, 252, 252, 0.008)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/project-picker-open-dark-1280/web/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/project-picker-open-dark-1280/lynx/raw.png",
+          "comparisonPath": "final-overlays/project-picker-open-dark-1280/lynx/comparison.png",
+          "geometry": "final-overlays/project-picker-open-dark-1280/lynx/geometry.json",
+          "geometryData": {
+            "client": "lynx",
+            "stateId": "project-picker-open-dark-1280",
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "viewport": {
+              "width": 1280,
+              "height": 820,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "X-VIEW",
+                "className": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable",
+                "text": "StudioProjectsNew threadSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed taskChats›⚙SettingsNew ChatWhat should we work on?Full accessGPT-5.5⌄Medium⌄↑spike-workspaceVoidspike-workspac",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1280,
+                  "height": 820
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "X-VIEW",
+                "className": "LxMenuPopup ComposerProjectPickerPopupLynx",
+                "text": "Voidspike-workspace✓Folders on this Mac_pf_partsai_completionantigravity-claude-proxyApplicationsbinbytedconductorDesktopdim-agentDocumentsDoubaoDownloadsexamplesgemsgithubjdksLibrarylynx-stack-pr-2325memoryMoviesMusicPicturesPublicScreen S",
+                "box": {
+                  "x": 408,
+                  "y": 259,
+                  "width": 288,
+                  "height": 258
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(23, 23, 23, 0.7)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10.4px",
+                  "shadow": "rgba(0, 0, 0, 0.3) 0px 6px 24px -10px",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "tag": "X-VIEW",
+                "className": "ComposerProjectPickerPanelLynx",
+                "text": "Voidspike-workspace✓Folders on this Mac_pf_partsai_completionantigravity-claude-proxyApplicationsbinbytedconductorDesktopdim-agentDocumentsDoubaoDownloadsexamplesgemsgithubjdksLibrarylynx-stack-pr-2325memoryMoviesMusicPicturesPublicScreen S",
+                "box": {
+                  "x": 409,
+                  "y": 260,
+                  "width": 278,
+                  "height": 256
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "X-VIEW",
+                "className": "LxButton LxButton--ghost LxButton--default LxMenuItem ComposerProjectPickerOptionLynx ComposerProjectPickerOptionLynx--selected LxMenuItem--highlighted",
+                "text": "spike-workspace✓",
+                "box": {
+                  "x": 409,
+                  "y": 333,
+                  "width": 278,
+                  "height": 26
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(0, 15, 29)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "tag": "X-VIEW",
+                "className": "LxMenuTrigger LandingComposerProjectTrigger ComposerProjectPickerTriggerLynx ComposerProjectPickerTriggerLynx--open",
+                "text": "spike-workspace",
+                "box": {
+                  "x": 408,
+                  "y": 520,
+                  "width": 122.96875,
+                  "height": 28
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(0, 15, 29)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/project-picker-open-dark-1280/lynx/styles.json",
+          "stylesData": {
+            "client": "lynx",
+            "stateId": "project-picker-open-dark-1280",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(23, 23, 23, 0.7)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10.4px",
+                  "shadow": "rgba(0, 0, 0, 0.3) 0px 6px 24px -10px",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(0, 15, 29)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(0, 15, 29)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/project-picker-open-dark-1280/lynx/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/project-picker-open-dark-1280/native/raw.png",
+          "comparisonPath": "final-overlays/project-picker-open-dark-1280/native/comparison.png",
+          "geometry": "final-overlays/project-picker-open-dark-1280/native/geometry.json",
+          "geometryData": {
+            "client": "native",
+            "stateId": "project-picker-open-dark-1280",
+            "roles": {
+              "root": {
+                "nodeId": 13,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable"
+                },
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1280,
+                  "height": 788
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "nodeId": 1171,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "aria-modal": "false",
+                  "role": "menu",
+                  "bindkeydown": "1195:4:",
+                  "bindlayoutchange": "1195:5:",
+                  "class": "LxMenuPopup ComposerProjectPickerPopupLynx",
+                  "style": "visibility:visible;top:244px;left:408px;"
+                },
+                "text": "",
+                "box": {
+                  "x": 408,
+                  "y": 244,
+                  "width": 288,
+                  "height": 258
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(23,23,23,0.698039)",
+                  "borderColor": "hsla(0,0%,99%,.072)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "0 6px 24px -10px #0000004c",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "nodeId": 1172,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "ComposerProjectPickerPanelLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 409,
+                  "y": 245,
+                  "width": 278,
+                  "height": 256
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "nodeId": 1184,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "focusable": "true",
+                  "role": "menuitem",
+                  "bindmouseenter": "1203:0:bindmouseenter",
+                  "bindblur": "1203:0:bindblur",
+                  "bindmouseleave": "1203:0:bindmouseleave",
+                  "bindtap": "1203:0:bindtap",
+                  "bindmouseup": "1203:0:bindmouseup",
+                  "bindtouchstart": "1203:0:bindtouchstart",
+                  "bindmousedown": "1203:0:bindmousedown",
+                  "bindtouchend": "1203:0:bindtouchend",
+                  "bindtouchcancel": "1203:0:bindtouchcancel",
+                  "catchkeydown": "1203:0:catchkeydown",
+                  "bindfocus": "1203:0:bindfocus",
+                  "class": "LxButton LxButton--ghost LxButton--default LxMenuItem ComposerProjectPickerOptionLynx ComposerProjectPickerOptionLynx--selected LxMenuItem--highlighted"
+                },
+                "text": "",
+                "box": {
+                  "x": 409,
+                  "y": 318,
+                  "width": 278,
+                  "height": 26
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(0,15,29)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "nodeId": 839,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "react-ref-1052-0": "1",
+                  "focusable": "true",
+                  "aria-disabled": "false",
+                  "aria-label": "spike-workspace",
+                  "aria-haspopup": "menu",
+                  "aria-expanded": "true",
+                  "bindmouseenter": "1052:0:bindmouseenter",
+                  "bindtap": "1052:0:bindtap",
+                  "bindmouseup": "1052:0:bindmouseup",
+                  "bindtouchstart": "1052:0:bindtouchstart",
+                  "bindmouseleave": "1052:0:bindmouseleave",
+                  "bindmousedown": "1052:0:bindmousedown",
+                  "bindtouchend": "1052:0:bindtouchend",
+                  "bindblur": "1052:0:bindblur",
+                  "catchkeydown": "1052:0:catchkeydown",
+                  "bindfocus": "1052:0:bindfocus",
+                  "bindtouchcancel": "1052:0:bindtouchcancel",
+                  "bindlayoutchange": "1052:0:bindlayoutchange",
+                  "class": "LxMenuTrigger LandingComposerProjectTrigger ComposerProjectPickerTriggerLynx ComposerProjectPickerTriggerLynx--open"
+                },
+                "text": "",
+                "box": {
+                  "x": 408,
+                  "y": 504,
+                  "width": 123,
+                  "height": 28
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(0,15,29)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/project-picker-open-dark-1280/native/styles.json",
+          "stylesData": {
+            "client": "native",
+            "stateId": "project-picker-open-dark-1280",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(23,23,23,0.698039)",
+                  "borderColor": "hsla(0,0%,99%,.072)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "0 6px 24px -10px #0000004c",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(0,15,29)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(0,15,29)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/project-picker-open-dark-1280/native/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "project-picker-open-dark-1440",
+      "label": "project picker open dark 1440 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "project-picker-open",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "residuals": [
+        {
+          "id": "project-picker-open-dark-1440-host-folder-capability",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Project Picker host filesystem capability boundary",
+          "summary": "Web lists server projects while Lynx-for-Web and Native also expose host-local folders.",
+          "impact": "The retained popup row count differs after the shared selected project row, while popup geometry and the canonical project action remain comparable.",
+          "recommendation": "Keep the capability delta explicit and compare only shared project-picker anatomy and the selected spike-workspace row.",
+          "evidence": "final-overlays/project-picker-open-dark-1440/native/geometry.json",
+          "reason": "Host-local folder discovery is unavailable to Web original and is intentionally retained on Lynx host clients."
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/project-picker-open-dark-1440/web/raw.png",
+          "comparisonPath": "final-overlays/project-picker-open-dark-1440/web/comparison.png",
+          "geometry": "final-overlays/project-picker-open-dark-1440/web/geometry.json",
+          "geometryData": {
+            "client": "web",
+            "stateId": "project-picker-open-dark-1440",
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "viewport": {
+              "width": 1440,
+              "height": 900,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "BODY",
+                "className": "",
+                "text": "Toggle SidebarToggle SidebarStudioProjectsNew thread⌘NSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed task\n    To pick up a draggable item, press the space bar.\n    While dragging, u",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 900
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "DIV",
+                "className": "flex origin-(--transform-origin) outline-none focus:outline-none max-w-[92vw] composer-picker-menu composer-picker-menu--normal min-w-72 relative overflow-hidden bg-popover/70 text-popover-foreground before:pointer-events-none before:absolute before:inset-0 before:-z-1 before:rounded-[inherit] before:backdrop-blur-2xl before:backdrop-saturate-150 border border-border rounded-[0.65rem] shadow-[0_4px_18px_-6px_color-mix(in_srgb,var(--foreground)_7%,transparent)] dark:shadow-[0_6px_24px_-10px_rgba(0,0,0,0.30)]",
+                "text": "Voidspike-workspace✓New projectDon't work in a project",
+                "box": {
+                  "x": 488,
+                  "y": 429,
+                  "width": 288,
+                  "height": 168
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "oklab(0.204625 0.00000931323 0.00000409782 / 0.7)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10.4px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.3) 0px 6px 24px -10px",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "tag": "DIV",
+                "className": "w-full min-w-0 overflow-y-auto overscroll-contain composer-picker-scroll relative z-1 max-h-(--available-height)",
+                "text": "Voidspike-workspace✓New projectDon't work in a project",
+                "box": {
+                  "x": 489,
+                  "y": 430,
+                  "width": 286,
+                  "height": 166
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "DIV",
+                "className": "[&>svg,&>[data-slot=central-icon]]:-mx-0.5 flex cursor-default select-none items-center rounded-[0.5rem] text-[length:var(--type-ui-row-size)] leading-[var(--type-ui-row-line-height)] text-[var(--color-text-foreground)] outline-none data-disabled:pointer-events-none data-highlighted:bg-[var(--color-background-button-secondary-hover)] data-highlighted:text-[var(--color-text-foreground)] data-disabled:opacity-64 [&>svg:not([class*='opacity-']),&>[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&>svg,&>[data-slot=central-icon]]:pointer-events-none [&>svg,&>[data-slot=central-icon]]:shrink-0 data-inset:ps-8 data-[variant=destructive]:text-destructive",
+                "text": "spike-workspace✓",
+                "box": {
+                  "x": 489,
+                  "y": 503,
+                  "width": 278,
+                  "height": 26
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "tag": "BUTTON",
+                "className": "[&_svg,&_[data-slot=central-icon]]:-mx-0.5 relative inline-flex cursor-pointer items-center rounded-lg border outline-none pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 focus-visible:ring-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 [&_svg:not([class*='opacity-'])]:opacity-80 [&_[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4.5 [&_[data-slot=central-icon]:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 sm:[&_[data-slot=central-icon]:not([class*='size-'])]:size-4 [&_svg,&_[data-slot=central-icon]]:pointer-events-none [&_svg,&_[data-slot=central-icon]]:shrink-0 gap-1.5 sm:h-7 border-transparent bg-transparent focus-visible:ring-[color:var(--color-border-focus)]/60 focus-visible:ring-offset-0 [:hover,[data-pressed]]:bg-[var(--color-background-elevated-secondary)] [:hover,[data-pressed]]:text-[var(--color-text-foreground)] data-pressed:bg-[var(--color-background-elevated-secondary)] min-w-0 justify-start overflow-hidden whitespace-nowrap px-1.5 [&_svg]:mx-0 text-[length:var(--app-font-size-ui-sm,11px)] text-[var(--color-text-foreground-secondary)] sm:text-[length:var(--app-font-size-ui-sm,11px)] font-normal hover:text-[var(--color-text-foreground)] data-pressed:text-[var(--color-text-foreground)] max-w-56 shrink sm:max-w-64 sm:px-1.5 h-7 py-1",
+                "text": "spike-workspace",
+                "box": {
+                  "x": 488,
+                  "y": 600.75,
+                  "width": 122.96875,
+                  "height": 28
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(252, 252, 252, 0.008)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/project-picker-open-dark-1440/web/styles.json",
+          "stylesData": {
+            "client": "web",
+            "stateId": "project-picker-open-dark-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "oklab(0.204625 0.00000931323 0.00000409782 / 0.7)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10.4px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.3) 0px 6px 24px -10px",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(252, 252, 252, 0.008)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/project-picker-open-dark-1440/web/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/project-picker-open-dark-1440/lynx/raw.png",
+          "comparisonPath": "final-overlays/project-picker-open-dark-1440/lynx/comparison.png",
+          "geometry": "final-overlays/project-picker-open-dark-1440/lynx/geometry.json",
+          "geometryData": {
+            "client": "lynx",
+            "stateId": "project-picker-open-dark-1440",
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "viewport": {
+              "width": 1440,
+              "height": 900,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "X-VIEW",
+                "className": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable",
+                "text": "StudioProjectsNew threadSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed taskChats›⚙SettingsNew ChatWhat should we work on?Full accessGPT-5.5⌄Medium⌄↑spike-workspaceVoidspike-workspac",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 900
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "X-VIEW",
+                "className": "LxMenuPopup ComposerProjectPickerPopupLynx",
+                "text": "Voidspike-workspace✓Folders on this Mac_pf_partsai_completionantigravity-claude-proxyApplicationsbinbytedconductorDesktopdim-agentDocumentsDoubaoDownloadsexamplesgemsgithubjdksLibrarylynx-stack-pr-2325memoryMoviesMusicPicturesPublicScreen S",
+                "box": {
+                  "x": 488,
+                  "y": 299,
+                  "width": 288,
+                  "height": 258
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(23, 23, 23, 0.7)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10.4px",
+                  "shadow": "rgba(0, 0, 0, 0.3) 0px 6px 24px -10px",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "tag": "X-VIEW",
+                "className": "ComposerProjectPickerPanelLynx",
+                "text": "Voidspike-workspace✓Folders on this Mac_pf_partsai_completionantigravity-claude-proxyApplicationsbinbytedconductorDesktopdim-agentDocumentsDoubaoDownloadsexamplesgemsgithubjdksLibrarylynx-stack-pr-2325memoryMoviesMusicPicturesPublicScreen S",
+                "box": {
+                  "x": 489,
+                  "y": 300,
+                  "width": 278,
+                  "height": 256
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "X-VIEW",
+                "className": "LxButton LxButton--ghost LxButton--default LxMenuItem ComposerProjectPickerOptionLynx ComposerProjectPickerOptionLynx--selected LxMenuItem--highlighted",
+                "text": "spike-workspace✓",
+                "box": {
+                  "x": 489,
+                  "y": 373,
+                  "width": 278,
+                  "height": 26
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(0, 15, 29)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "tag": "X-VIEW",
+                "className": "LxMenuTrigger LandingComposerProjectTrigger ComposerProjectPickerTriggerLynx ComposerProjectPickerTriggerLynx--open",
+                "text": "spike-workspace",
+                "box": {
+                  "x": 488,
+                  "y": 560,
+                  "width": 122.96875,
+                  "height": 28
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(0, 15, 29)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/project-picker-open-dark-1440/lynx/styles.json",
+          "stylesData": {
+            "client": "lynx",
+            "stateId": "project-picker-open-dark-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(23, 23, 23, 0.7)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10.4px",
+                  "shadow": "rgba(0, 0, 0, 0.3) 0px 6px 24px -10px",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(0, 15, 29)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(0, 15, 29)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/project-picker-open-dark-1440/lynx/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/project-picker-open-dark-1440/native/raw.png",
+          "comparisonPath": "final-overlays/project-picker-open-dark-1440/native/comparison.png",
+          "geometry": "final-overlays/project-picker-open-dark-1440/native/geometry.json",
+          "geometryData": {
+            "client": "native",
+            "stateId": "project-picker-open-dark-1440",
+            "roles": {
+              "root": {
+                "nodeId": 13,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable"
+                },
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 868
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "nodeId": 7251,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "aria-modal": "false",
+                  "role": "menu",
+                  "bindkeydown": "7060:4:",
+                  "bindlayoutchange": "7060:5:",
+                  "class": "LxMenuPopup ComposerProjectPickerPopupLynx",
+                  "style": "visibility:visible;top:284px;left:488px;"
+                },
+                "text": "",
+                "box": {
+                  "x": 488,
+                  "y": 284,
+                  "width": 288,
+                  "height": 258
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(23,23,23,0.698039)",
+                  "borderColor": "hsla(0,0%,5%,.069)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "0 6px 24px -10px #0000004c",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "nodeId": 7252,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "ComposerProjectPickerPanelLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 489,
+                  "y": 285,
+                  "width": 278,
+                  "height": 256
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "nodeId": 7264,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "focusable": "true",
+                  "role": "menuitem",
+                  "bindmouseenter": "7068:0:bindmouseenter",
+                  "bindblur": "7068:0:bindblur",
+                  "bindmouseleave": "7068:0:bindmouseleave",
+                  "bindtap": "7068:0:bindtap",
+                  "bindmouseup": "7068:0:bindmouseup",
+                  "bindtouchstart": "7068:0:bindtouchstart",
+                  "bindmousedown": "7068:0:bindmousedown",
+                  "bindtouchend": "7068:0:bindtouchend",
+                  "bindtouchcancel": "7068:0:bindtouchcancel",
+                  "catchkeydown": "7068:0:catchkeydown",
+                  "bindfocus": "7068:0:bindfocus",
+                  "class": "LxButton LxButton--ghost LxButton--default LxMenuItem ComposerProjectPickerOptionLynx ComposerProjectPickerOptionLynx--selected LxMenuItem--highlighted"
+                },
+                "text": "",
+                "box": {
+                  "x": 489,
+                  "y": 358,
+                  "width": 278,
+                  "height": 26
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "nodeId": 6625,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "react-ref-6792-0": "1",
+                  "focusable": "true",
+                  "aria-disabled": "false",
+                  "aria-label": "spike-workspace",
+                  "aria-haspopup": "menu",
+                  "aria-expanded": "true",
+                  "bindmouseenter": "6792:0:bindmouseenter",
+                  "bindtap": "6792:0:bindtap",
+                  "bindmouseup": "6792:0:bindmouseup",
+                  "bindtouchstart": "6792:0:bindtouchstart",
+                  "bindmouseleave": "6792:0:bindmouseleave",
+                  "bindmousedown": "6792:0:bindmousedown",
+                  "bindtouchend": "6792:0:bindtouchend",
+                  "bindblur": "6792:0:bindblur",
+                  "catchkeydown": "6792:0:catchkeydown",
+                  "bindfocus": "6792:0:bindfocus",
+                  "bindtouchcancel": "6792:0:bindtouchcancel",
+                  "bindlayoutchange": "6792:0:bindlayoutchange",
+                  "class": "LxMenuTrigger LandingComposerProjectTrigger ComposerProjectPickerTriggerLynx ComposerProjectPickerTriggerLynx--open"
+                },
+                "text": "",
+                "box": {
+                  "x": 488,
+                  "y": 544,
+                  "width": 123,
+                  "height": 28
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/project-picker-open-dark-1440/native/styles.json",
+          "stylesData": {
+            "client": "native",
+            "stateId": "project-picker-open-dark-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(23,23,23,0.698039)",
+                  "borderColor": "hsla(0,0%,5%,.069)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "0 6px 24px -10px #0000004c",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/project-picker-open-dark-1440/native/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "project-picker-open-light-1440",
+      "label": "project picker open light 1440 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "project-picker-open",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "residuals": [
+        {
+          "id": "project-picker-open-light-1440-host-folder-capability",
+          "category": "INTENTIONAL_PLATFORM_DELTA",
+          "severity": "P3",
+          "status": "intentional-delta",
+          "owner": "Project Picker host filesystem capability boundary",
+          "summary": "Web lists server projects while Lynx-for-Web and Native also expose host-local folders.",
+          "impact": "The retained popup row count differs after the shared selected project row, while popup geometry and the canonical project action remain comparable.",
+          "recommendation": "Keep the capability delta explicit and compare only shared project-picker anatomy and the selected spike-workspace row.",
+          "evidence": "final-overlays/project-picker-open-light-1440/native/geometry.json",
+          "reason": "Host-local folder discovery is unavailable to Web original and is intentionally retained on Lynx host clients."
+        }
+      ],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/project-picker-open-light-1440/web/raw.png",
+          "comparisonPath": "final-overlays/project-picker-open-light-1440/web/comparison.png",
+          "geometry": "final-overlays/project-picker-open-light-1440/web/geometry.json",
+          "geometryData": {
+            "client": "web",
+            "stateId": "project-picker-open-light-1440",
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "viewport": {
+              "width": 1440,
+              "height": 900,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "BODY",
+                "className": "",
+                "text": "Toggle SidebarToggle SidebarStudioProjectsNew thread⌘NSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed task\n    To pick up a draggable item, press the space bar.\n    While dragging, u",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 900
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "DIV",
+                "className": "flex origin-(--transform-origin) outline-none focus:outline-none max-w-[92vw] composer-picker-menu composer-picker-menu--normal min-w-72 relative overflow-hidden bg-popover/70 text-popover-foreground before:pointer-events-none before:absolute before:inset-0 before:-z-1 before:rounded-[inherit] before:backdrop-blur-2xl before:backdrop-saturate-150 border border-border rounded-[0.65rem] shadow-[0_4px_18px_-6px_color-mix(in_srgb,var(--foreground)_7%,transparent)] dark:shadow-[0_6px_24px_-10px_rgba(0,0,0,0.30)]",
+                "text": "Voidspike-workspace✓New projectDon't work in a project",
+                "box": {
+                  "x": 488,
+                  "y": 429,
+                  "width": 288,
+                  "height": 168
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "oklab(0.999994 0.0000455677 0.0000200868 / 0.7)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10.4px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, color(srgb 0.0509804 0.0509804 0.0509804 / 0.07) 0px 4px 18px -6px",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "tag": "DIV",
+                "className": "w-full min-w-0 overflow-y-auto overscroll-contain composer-picker-scroll relative z-1 max-h-(--available-height)",
+                "text": "Voidspike-workspace✓New projectDon't work in a project",
+                "box": {
+                  "x": 489,
+                  "y": 430,
+                  "width": 286,
+                  "height": 166
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "DIV",
+                "className": "[&>svg,&>[data-slot=central-icon]]:-mx-0.5 flex cursor-default select-none items-center rounded-[0.5rem] text-[length:var(--type-ui-row-size)] leading-[var(--type-ui-row-line-height)] text-[var(--color-text-foreground)] outline-none data-disabled:pointer-events-none data-highlighted:bg-[var(--color-background-button-secondary-hover)] data-highlighted:text-[var(--color-text-foreground)] data-disabled:opacity-64 [&>svg:not([class*='opacity-']),&>[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&>svg,&>[data-slot=central-icon]]:pointer-events-none [&>svg,&>[data-slot=central-icon]]:shrink-0 data-inset:ps-8 data-[variant=destructive]:text-destructive",
+                "text": "spike-workspace✓",
+                "box": {
+                  "x": 489,
+                  "y": 503,
+                  "width": 278,
+                  "height": 26
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "tag": "BUTTON",
+                "className": "[&_svg,&_[data-slot=central-icon]]:-mx-0.5 relative inline-flex cursor-pointer items-center rounded-lg border outline-none pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 focus-visible:ring-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 [&_svg:not([class*='opacity-'])]:opacity-80 [&_[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4.5 [&_[data-slot=central-icon]:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 sm:[&_[data-slot=central-icon]:not([class*='size-'])]:size-4 [&_svg,&_[data-slot=central-icon]]:pointer-events-none [&_svg,&_[data-slot=central-icon]]:shrink-0 gap-1.5 sm:h-7 border-transparent bg-transparent focus-visible:ring-[color:var(--color-border-focus)]/60 focus-visible:ring-offset-0 [:hover,[data-pressed]]:bg-[var(--color-background-elevated-secondary)] [:hover,[data-pressed]]:text-[var(--color-text-foreground)] data-pressed:bg-[var(--color-background-elevated-secondary)] min-w-0 justify-start overflow-hidden whitespace-nowrap px-1.5 [&_svg]:mx-0 text-[length:var(--app-font-size-ui-sm,11px)] text-[var(--color-text-foreground-secondary)] sm:text-[length:var(--app-font-size-ui-sm,11px)] font-normal hover:text-[var(--color-text-foreground)] data-pressed:text-[var(--color-text-foreground)] max-w-56 shrink sm:max-w-64 sm:px-1.5 h-7 py-1",
+                "text": "spike-workspace",
+                "box": {
+                  "x": 488,
+                  "y": 600.75,
+                  "width": 122.96875,
+                  "height": 28
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(13, 13, 13, 0.04)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/project-picker-open-light-1440/web/styles.json",
+          "stylesData": {
+            "client": "web",
+            "stateId": "project-picker-open-light-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "oklab(0.999994 0.0000455677 0.0000200868 / 0.7)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10.4px",
+                  "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, color(srgb 0.0509804 0.0509804 0.0509804 / 0.07) 0px 4px 18px -6px",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "18px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(13, 13, 13, 0.04)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/project-picker-open-light-1440/web/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/project-picker-open-light-1440/lynx/raw.png",
+          "comparisonPath": "final-overlays/project-picker-open-light-1440/lynx/comparison.png",
+          "geometry": "final-overlays/project-picker-open-light-1440/lynx/geometry.json",
+          "geometryData": {
+            "client": "lynx",
+            "stateId": "project-picker-open-light-1440",
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "viewport": {
+              "width": 1440,
+              "height": 900,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "X-VIEW",
+                "className": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable",
+                "text": "StudioProjectsNew threadSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed taskChats›⚙SettingsNew ChatWhat should we work on?Full accessGPT-5.5⌄Medium⌄↑spike-workspaceVoidspike-workspac",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 900
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "X-VIEW",
+                "className": "LxMenuPopup ComposerProjectPickerPopupLynx",
+                "text": "Voidspike-workspace✓Folders on this Mac_pf_partsai_completionantigravity-claude-proxyApplicationsbinbytedconductorDesktopdim-agentDocumentsDoubaoDownloadsexamplesgemsgithubjdksLibrarylynx-stack-pr-2325memoryMoviesMusicPicturesPublicScreen S",
+                "box": {
+                  "x": 488,
+                  "y": 299,
+                  "width": 288,
+                  "height": 258
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(255, 255, 255, 0.7)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10.4px",
+                  "shadow": "rgba(13, 13, 13, 0.07) 0px 4px 18px -6px",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "tag": "X-VIEW",
+                "className": "ComposerProjectPickerPanelLynx",
+                "text": "Voidspike-workspace✓Folders on this Mac_pf_partsai_completionantigravity-claude-proxyApplicationsbinbytedconductorDesktopdim-agentDocumentsDoubaoDownloadsexamplesgemsgithubjdksLibrarylynx-stack-pr-2325memoryMoviesMusicPicturesPublicScreen S",
+                "box": {
+                  "x": 489,
+                  "y": 300,
+                  "width": 278,
+                  "height": 256
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "X-VIEW",
+                "className": "LxButton LxButton--ghost LxButton--default LxMenuItem ComposerProjectPickerOptionLynx ComposerProjectPickerOptionLynx--selected LxMenuItem--highlighted",
+                "text": "spike-workspace✓",
+                "box": {
+                  "x": 489,
+                  "y": 373,
+                  "width": 278,
+                  "height": 26
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(232, 242, 250)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "tag": "X-VIEW",
+                "className": "LxMenuTrigger LandingComposerProjectTrigger ComposerProjectPickerTriggerLynx ComposerProjectPickerTriggerLynx--open",
+                "text": "spike-workspace",
+                "box": {
+                  "x": 488,
+                  "y": 560,
+                  "width": 122.96875,
+                  "height": 28
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(232, 242, 250)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/project-picker-open-light-1440/lynx/styles.json",
+          "stylesData": {
+            "client": "lynx",
+            "stateId": "project-picker-open-light-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(255, 255, 255, 0.7)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "10.4px",
+                  "shadow": "rgba(13, 13, 13, 0.07) 0px 4px 18px -6px",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(232, 242, 250)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(232, 242, 250)",
+                  "borderColor": "rgba(0, 0, 0, 0)",
+                  "borderWidth": "1px",
+                  "radius": "10px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/project-picker-open-light-1440/lynx/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/project-picker-open-light-1440/native/raw.png",
+          "comparisonPath": "final-overlays/project-picker-open-light-1440/native/comparison.png",
+          "geometry": "final-overlays/project-picker-open-light-1440/native/geometry.json",
+          "geometryData": {
+            "client": "native",
+            "stateId": "project-picker-open-light-1440",
+            "roles": {
+              "root": {
+                "nodeId": 13,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+                },
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 868
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "nodeId": 4687,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "aria-modal": "false",
+                  "role": "menu",
+                  "bindkeydown": "5040:4:",
+                  "bindlayoutchange": "5040:5:",
+                  "class": "LxMenuPopup ComposerProjectPickerPopupLynx",
+                  "style": "visibility:visible;top:284px;left:488px;"
+                },
+                "text": "",
+                "box": {
+                  "x": 488,
+                  "y": 284,
+                  "width": 288,
+                  "height": 258
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(255,255,255,0.698039)",
+                  "borderColor": "hsla(0,0%,5%,.069)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "0 4px 18px -6px #0d0d0d11",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "nodeId": 4688,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "ComposerProjectPickerPanelLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 489,
+                  "y": 285,
+                  "width": 278,
+                  "height": 256
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "nodeId": 4700,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "focusable": "true",
+                  "role": "menuitem",
+                  "bindmouseenter": "5048:0:bindmouseenter",
+                  "bindblur": "5048:0:bindblur",
+                  "bindmouseleave": "5048:0:bindmouseleave",
+                  "bindtap": "5048:0:bindtap",
+                  "bindmouseup": "5048:0:bindmouseup",
+                  "bindtouchstart": "5048:0:bindtouchstart",
+                  "bindmousedown": "5048:0:bindmousedown",
+                  "bindtouchend": "5048:0:bindtouchend",
+                  "bindtouchcancel": "5048:0:bindtouchcancel",
+                  "catchkeydown": "5048:0:catchkeydown",
+                  "bindfocus": "5048:0:bindfocus",
+                  "class": "LxButton LxButton--ghost LxButton--default LxMenuItem ComposerProjectPickerOptionLynx ComposerProjectPickerOptionLynx--selected LxMenuItem--highlighted"
+                },
+                "text": "",
+                "box": {
+                  "x": 489,
+                  "y": 358,
+                  "width": 278,
+                  "height": 26
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "nodeId": 4380,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "react-ref-4910-0": "1",
+                  "focusable": "true",
+                  "aria-disabled": "false",
+                  "aria-label": "spike-workspace",
+                  "aria-haspopup": "menu",
+                  "aria-expanded": "true",
+                  "bindmouseenter": "4910:0:bindmouseenter",
+                  "bindtap": "4910:0:bindtap",
+                  "bindmouseup": "4910:0:bindmouseup",
+                  "bindtouchstart": "4910:0:bindtouchstart",
+                  "bindmouseleave": "4910:0:bindmouseleave",
+                  "bindmousedown": "4910:0:bindmousedown",
+                  "bindtouchend": "4910:0:bindtouchend",
+                  "bindblur": "4910:0:bindblur",
+                  "catchkeydown": "4910:0:catchkeydown",
+                  "bindfocus": "4910:0:bindfocus",
+                  "bindtouchcancel": "4910:0:bindtouchcancel",
+                  "bindlayoutchange": "4910:0:bindlayoutchange",
+                  "class": "LxMenuTrigger LandingComposerProjectTrigger ComposerProjectPickerTriggerLynx ComposerProjectPickerTriggerLynx--open ui-focus"
+                },
+                "text": "",
+                "box": {
+                  "x": 488,
+                  "y": 544,
+                  "width": 123,
+                  "height": 28
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "0 0 0 1px #0169cc",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/project-picker-open-light-1440/native/styles.json",
+          "stylesData": {
+            "client": "native",
+            "stateId": "project-picker-open-light-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(255,255,255,0.698039)",
+                  "borderColor": "hsla(0,0%,5%,.069)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "0 4px 18px -6px #0d0d0d11",
+                  "opacity": "1"
+                }
+              },
+              "panel": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "trigger": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "0 0 0 1px #0169cc",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/project-picker-open-light-1440/native/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "skill-menu-filtered-dark-1280",
+      "label": "skill menu filtered dark 1280 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "skill-filtered-review-agent",
+      "viewport": {
+        "width": 1280,
+        "height": 820,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1280,
+        "height": 788
+      },
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/skill-menu-filtered-dark-1280/web/raw.png",
+          "comparisonPath": "final-overlays/skill-menu-filtered-dark-1280/web/comparison.png",
+          "geometry": "final-overlays/skill-menu-filtered-dark-1280/web/geometry.json",
+          "geometryData": {
+            "client": "web",
+            "stateId": "skill-menu-filtered-dark-1280",
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "viewport": {
+              "width": 1280,
+              "height": 820,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "BODY",
+                "className": "",
+                "text": "Toggle SidebarToggle SidebarStudioProjectsNew thread⌘NSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed task\n    To pick up a draggable item, press the space bar.\n    While dragging, u",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1280,
+                  "height": 820
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "DIV",
+                "className": "h-full overscroll-contain rounded-[inherit] outline-none transition-shadows focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background data-has-overflow-x:overscroll-x-contain mask-t-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-y-start)))] mask-b-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-y-end)))] mask-l-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-x-start)))] mask-r-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-x-end)))] [--fade-size:1.5rem] data-has-overflow-y:pe-2.5 data-has-overflow-x:pb-2.5 base-ui-disable-scrollbar",
+                "text": "review-agentPerform a read-only, defect-first review of a specified code change and return every actionable finding. Use when another agent delegates review of uncommitted changes, a base-branch diff, a commit, or custom review instructions",
+                "box": {
+                  "x": 406,
+                  "y": 333.75,
+                  "width": 724,
+                  "height": 120
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "DIV",
+                "className": "min-h-8 text-base outline-none data-disabled:pointer-events-none data-highlighted:text-[var(--color-text-foreground)] data-disabled:opacity-64 sm:min-h-7 sm:text-sm flex cursor-pointer select-none items-center gap-2 rounded-md px-2.5 py-1 transition-colors hover:bg-[var(--color-background-button-secondary-hover)] data-highlighted:bg-[var(--color-background-button-secondary-hover)] bg-[var(--color-background-button-secondary)] text-[var(--color-text-foreground)]",
+                "text": "review-agentPerform a read-only, defect-first review of a specified code change and return every actionable finding. Use when another agent delegates review of uncommitted changes, a base-branch diff, a commit, or custom review instructions",
+                "box": {
+                  "x": 410,
+                  "y": 337.75,
+                  "width": 716,
+                  "height": 28
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(252, 252, 252, 0.027)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "tag": "SPAN",
+                "className": "truncate text-[length:var(--type-picker-description-size)] leading-[var(--type-picker-description-line-height)] text-muted-foreground/55",
+                "text": "Perform a read-only, defect-first review of a specified code change and return every actionable finding. Use when another agent delegates review of uncommitted changes, a base-branch diff, a commit, or custom review instructions.",
+                "box": {
+                  "x": 523.515625,
+                  "y": 343.75,
+                  "width": 540.546875,
+                  "height": 16
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.991063 0.0000452101 0.0000197887 / 0.319216)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "editor": {
+                "tag": "DIV",
+                "className": "block max-h-[200px] w-full overflow-y-auto whitespace-pre-wrap break-words bg-transparent text-foreground focus:outline-none font-system-ui text-[length:var(--type-composer-editor-size)] leading-[var(--type-composer-editor-line-height)] min-h-[var(--app-density-composer-editor-min-height,2lh)] [&_p]:m-0",
+                "text": "$review-agent",
+                "box": {
+                  "x": 413,
+                  "y": 474.75,
+                  "width": 708,
+                  "height": 39
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/skill-menu-filtered-dark-1280/web/styles.json",
+          "stylesData": {
+            "client": "web",
+            "stateId": "skill-menu-filtered-dark-1280",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(252, 252, 252, 0.027)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.991063 0.0000452101 0.0000197887 / 0.319216)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "editor": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/skill-menu-filtered-dark-1280/web/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/skill-menu-filtered-dark-1280/lynx/raw.png",
+          "comparisonPath": "final-overlays/skill-menu-filtered-dark-1280/lynx/comparison.png",
+          "geometry": "final-overlays/skill-menu-filtered-dark-1280/lynx/geometry.json",
+          "geometryData": {
+            "client": "lynx",
+            "stateId": "skill-menu-filtered-dark-1280",
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "viewport": {
+              "width": 1280,
+              "height": 820,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "X-VIEW",
+                "className": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable",
+                "text": "StudioProjectsNew threadSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed taskChats›⚙SettingsNew ChatWhat should we work on?review-agentPerform a read-only, defect-first review of a sp",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1280,
+                  "height": 820
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "X-VIEW",
+                "className": "ComposerCommandMenuLynx",
+                "text": "review-agentPerform a read-only, defect-first review of a specified code change and return every actionable finding. Use when another agent delegates review of uncommitted changes, a base-branch diff, a commit, or custom review instructions",
+                "box": {
+                  "x": 405,
+                  "y": 292,
+                  "width": 726,
+                  "height": 122
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(23, 23, 23)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "14px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "X-VIEW",
+                "className": "ComposerCommandRowLynx ComposerCommandRowLynx--active",
+                "text": "review-agentPerform a read-only, defect-first review of a specified code change and return every actionable finding. Use when another agent delegates review of uncommitted changes, a base-branch diff, a commit, or custom review instructions",
+                "box": {
+                  "x": 410,
+                  "y": 297,
+                  "width": 716,
+                  "height": 28
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(0, 15, 29)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "tag": "X-TEXT",
+                "className": "ComposerCommandTitleLynx",
+                "text": "review-agent",
+                "box": {
+                  "x": 444,
+                  "y": 303,
+                  "width": 73.515625,
+                  "height": 16
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.8"
+                }
+              },
+              "editor": {
+                "tag": "X-TEXTAREA",
+                "className": "ComposerTextarea",
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/skill-menu-filtered-dark-1280/lynx/styles.json",
+          "stylesData": {
+            "client": "lynx",
+            "stateId": "skill-menu-filtered-dark-1280",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(23, 23, 23)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "14px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(0, 15, 29)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.8"
+                }
+              },
+              "editor": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/skill-menu-filtered-dark-1280/lynx/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/skill-menu-filtered-dark-1280/native/raw.png",
+          "comparisonPath": "final-overlays/skill-menu-filtered-dark-1280/native/comparison.png",
+          "geometry": "final-overlays/skill-menu-filtered-dark-1280/native/geometry.json",
+          "geometryData": {
+            "client": "native",
+            "stateId": "skill-menu-filtered-dark-1280",
+            "roles": {
+              "root": {
+                "nodeId": 13,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable"
+                },
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1280,
+                  "height": 788
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "nodeId": 1184,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "ComposerCommandMenuLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 405,
+                  "y": 276,
+                  "width": 726,
+                  "height": 122
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(23,23,23)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "nodeId": 1190,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "aria-label": "review-agent",
+                  "aria-selected": "true",
+                  "focusable": "true",
+                  "aria-disabled": "false",
+                  "bindmouseenter": "1208:0:bindmouseenter",
+                  "bindblur": "1208:0:bindblur",
+                  "bindmouseleave": "1208:0:bindmouseleave",
+                  "bindkeydown": "1208:0:bindkeydown",
+                  "bindtap": "1208:0:bindtap",
+                  "bindmouseup": "1208:0:bindmouseup",
+                  "bindtouchstart": "1208:0:bindtouchstart",
+                  "bindmousedown": "1208:0:bindmousedown",
+                  "bindtouchend": "1208:0:bindtouchend",
+                  "bindtouchcancel": "1208:0:bindtouchcancel",
+                  "bindfocus": "1208:0:bindfocus",
+                  "class": "ComposerCommandRowLynx ComposerCommandRowLynx--active"
+                },
+                "text": "",
+                "box": {
+                  "x": 410,
+                  "y": 281,
+                  "width": 716,
+                  "height": 28
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(0,15,29)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "nodeId": 1193,
+                "nodeName": "TEXT",
+                "attributes": {
+                  "class": "ComposerCommandTitleLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 444,
+                  "y": 287,
+                  "width": 77,
+                  "height": 16
+                },
+                "font": {
+                  "family": "",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "0.8"
+                }
+              },
+              "editor": {
+                "nodeId": 811,
+                "nodeName": "TEXTAREA",
+                "attributes": {
+                  "aria-label": "Message composer",
+                  "accessibility-element": "true",
+                  "accessibility-label": "Message composer",
+                  "focusable": "true",
+                  "maxlength": "8000",
+                  "maxlines": "6",
+                  "enable-scroll-bar": "true",
+                  "react-ref-1022-0": "1",
+                  "default-value": "$review-agent",
+                  "placeholder": "Ask for follow-up changes or attach images",
+                  "bindfocus": "1022:4:",
+                  "bindselection": "1022:6:",
+                  "bindblur": "1022:5:",
+                  "bindinput": "1022:7:",
+                  "class": "ComposerTextarea"
+                },
+                "text": "",
+                "box": {
+                  "x": 413,
+                  "y": 418,
+                  "width": 708,
+                  "height": 39
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "normal",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/skill-menu-filtered-dark-1280/native/styles.json",
+          "stylesData": {
+            "client": "native",
+            "stateId": "skill-menu-filtered-dark-1280",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(23,23,23)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(0,15,29)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "font": {
+                  "family": "",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "0.8"
+                }
+              },
+              "editor": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "normal",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/skill-menu-filtered-dark-1280/native/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "skill-menu-filtered-dark-1440",
+      "label": "skill menu filtered dark 1440 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "skill-filtered-review-agent",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/skill-menu-filtered-dark-1440/web/raw.png",
+          "comparisonPath": "final-overlays/skill-menu-filtered-dark-1440/web/comparison.png",
+          "geometry": "final-overlays/skill-menu-filtered-dark-1440/web/geometry.json",
+          "geometryData": {
+            "client": "web",
+            "stateId": "skill-menu-filtered-dark-1440",
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "viewport": {
+              "width": 1440,
+              "height": 900,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "BODY",
+                "className": "",
+                "text": "Toggle SidebarToggle SidebarStudioProjectsNew thread⌘NSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed task⌘1Draft seed task⌘2Done seed task⌘3\n    To pick up a draggable item, press the space bar.\n    While dragg",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 900
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "DIV",
+                "className": "h-full overscroll-contain rounded-[inherit] outline-none transition-shadows focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background data-has-overflow-x:overscroll-x-contain mask-t-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-y-start)))] mask-b-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-y-end)))] mask-l-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-x-start)))] mask-r-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-x-end)))] [--fade-size:1.5rem] data-has-overflow-y:pe-2.5 data-has-overflow-x:pb-2.5 base-ui-disable-scrollbar",
+                "text": "review-agentPerform a read-only, defect-first review of a specified code change and return every actionable finding. Use when another agent delegates review of uncommitted changes, a base-branch diff, a commit, or custom review instructions",
+                "box": {
+                  "x": 486,
+                  "y": 373.75,
+                  "width": 724,
+                  "height": 120
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "DIV",
+                "className": "min-h-8 text-base outline-none data-disabled:pointer-events-none data-highlighted:text-[var(--color-text-foreground)] data-disabled:opacity-64 sm:min-h-7 sm:text-sm flex cursor-pointer select-none items-center gap-2 rounded-md px-2.5 py-1 transition-colors hover:bg-[var(--color-background-button-secondary-hover)] data-highlighted:bg-[var(--color-background-button-secondary-hover)] bg-[var(--color-background-button-secondary)] text-[var(--color-text-foreground)]",
+                "text": "review-agentPerform a read-only, defect-first review of a specified code change and return every actionable finding. Use when another agent delegates review of uncommitted changes, a base-branch diff, a commit, or custom review instructions",
+                "box": {
+                  "x": 490,
+                  "y": 377.75,
+                  "width": 716,
+                  "height": 28
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(252, 252, 252, 0.027)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "tag": "SPAN",
+                "className": "truncate text-[length:var(--type-picker-description-size)] leading-[var(--type-picker-description-line-height)] text-muted-foreground/55",
+                "text": "Perform a read-only, defect-first review of a specified code change and return every actionable finding. Use when another agent delegates review of uncommitted changes, a base-branch diff, a commit, or custom review instructions.",
+                "box": {
+                  "x": 603.515625,
+                  "y": 383.75,
+                  "width": 540.546875,
+                  "height": 16
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.991063 0.0000452101 0.0000197887 / 0.319216)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "editor": {
+                "tag": "DIV",
+                "className": "block max-h-[200px] w-full overflow-y-auto whitespace-pre-wrap break-words bg-transparent text-foreground focus:outline-none font-system-ui text-[length:var(--type-composer-editor-size)] leading-[var(--type-composer-editor-line-height)] min-h-[var(--app-density-composer-editor-min-height,2lh)] [&_p]:m-0",
+                "text": "$review-agent",
+                "box": {
+                  "x": 493,
+                  "y": 514.75,
+                  "width": 708,
+                  "height": 39
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/skill-menu-filtered-dark-1440/web/styles.json",
+          "stylesData": {
+            "client": "web",
+            "stateId": "skill-menu-filtered-dark-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(252, 252, 252, 0.027)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.991063 0.0000452101 0.0000197887 / 0.319216)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "editor": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/skill-menu-filtered-dark-1440/web/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/skill-menu-filtered-dark-1440/lynx/raw.png",
+          "comparisonPath": "final-overlays/skill-menu-filtered-dark-1440/lynx/comparison.png",
+          "geometry": "final-overlays/skill-menu-filtered-dark-1440/lynx/geometry.json",
+          "geometryData": {
+            "client": "lynx",
+            "stateId": "skill-menu-filtered-dark-1440",
+            "semanticRoute": "new-chat",
+            "theme": "dark",
+            "viewport": {
+              "width": 1440,
+              "height": 900,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "X-VIEW",
+                "className": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable",
+                "text": "StudioProjectsNew threadSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed taskChats›⚙SettingsNew ChatWhat should we work on?review-agentPerform a read-only, defect-first review of a sp",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 900
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "X-VIEW",
+                "className": "ComposerCommandMenuLynx",
+                "text": "review-agentPerform a read-only, defect-first review of a specified code change and return every actionable finding. Use when another agent delegates review of uncommitted changes, a base-branch diff, a commit, or custom review instructions",
+                "box": {
+                  "x": 485,
+                  "y": 332,
+                  "width": 726,
+                  "height": 122
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(23, 23, 23)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "14px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "X-VIEW",
+                "className": "ComposerCommandRowLynx ComposerCommandRowLynx--active",
+                "text": "review-agentPerform a read-only, defect-first review of a specified code change and return every actionable finding. Use when another agent delegates review of uncommitted changes, a base-branch diff, a commit, or custom review instructions",
+                "box": {
+                  "x": 490,
+                  "y": 337,
+                  "width": 716,
+                  "height": 28
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(0, 15, 29)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "tag": "X-TEXT",
+                "className": "ComposerCommandTitleLynx",
+                "text": "review-agent",
+                "box": {
+                  "x": 524,
+                  "y": 343,
+                  "width": 73.515625,
+                  "height": 16
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.8"
+                }
+              },
+              "editor": {
+                "tag": "X-TEXTAREA",
+                "className": "ComposerTextarea",
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/skill-menu-filtered-dark-1440/lynx/styles.json",
+          "stylesData": {
+            "client": "lynx",
+            "stateId": "skill-menu-filtered-dark-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(16, 16, 16)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(23, 23, 23)",
+                  "borderColor": "rgba(252, 252, 252, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "14px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgb(0, 15, 29)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.8"
+                }
+              },
+              "editor": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(252, 252, 252)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(252, 252, 252)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/skill-menu-filtered-dark-1440/lynx/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/skill-menu-filtered-dark-1440/native/raw.png",
+          "comparisonPath": "final-overlays/skill-menu-filtered-dark-1440/native/comparison.png",
+          "geometry": "final-overlays/skill-menu-filtered-dark-1440/native/geometry.json",
+          "geometryData": {
+            "client": "native",
+            "stateId": "skill-menu-filtered-dark-1440",
+            "roles": {
+              "root": {
+                "nodeId": 13,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable"
+                },
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 868
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "nodeId": 7648,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "ComposerCommandMenuLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 485,
+                  "y": 316,
+                  "width": 726,
+                  "height": 122
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "nodeId": 7658,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "aria-label": "review-agent",
+                  "aria-selected": "true",
+                  "focusable": "true",
+                  "aria-disabled": "false",
+                  "bindmouseenter": "7294:0:bindmouseenter",
+                  "bindblur": "7294:0:bindblur",
+                  "bindmouseleave": "7294:0:bindmouseleave",
+                  "bindkeydown": "7294:0:bindkeydown",
+                  "bindtap": "7294:0:bindtap",
+                  "bindmouseup": "7294:0:bindmouseup",
+                  "bindtouchstart": "7294:0:bindtouchstart",
+                  "bindmousedown": "7294:0:bindmousedown",
+                  "bindtouchend": "7294:0:bindtouchend",
+                  "bindtouchcancel": "7294:0:bindtouchcancel",
+                  "bindfocus": "7294:0:bindfocus",
+                  "class": "ComposerCommandRowLynx ComposerCommandRowLynx--active"
+                },
+                "text": "",
+                "box": {
+                  "x": 490,
+                  "y": 321,
+                  "width": 716,
+                  "height": 28
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "nodeId": 7661,
+                "nodeName": "TEXT",
+                "attributes": {
+                  "class": "ComposerCommandTitleLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 524,
+                  "y": 327,
+                  "width": 77,
+                  "height": 16
+                },
+                "font": {
+                  "family": "",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "0.8"
+                }
+              },
+              "editor": {
+                "nodeId": 6593,
+                "nodeName": "TEXTAREA",
+                "attributes": {
+                  "aria-label": "Message composer",
+                  "accessibility-element": "true",
+                  "accessibility-label": "Message composer",
+                  "focusable": "true",
+                  "maxlength": "8000",
+                  "maxlines": "6",
+                  "enable-scroll-bar": "true",
+                  "react-ref-6760-0": "1",
+                  "default-value": "$review-agent",
+                  "placeholder": "Ask for follow-up changes or attach images",
+                  "bindfocus": "6760:4:",
+                  "bindselection": "6760:6:",
+                  "bindblur": "6760:5:",
+                  "bindinput": "6760:7:",
+                  "class": "ComposerTextarea"
+                },
+                "text": "",
+                "box": {
+                  "x": 493,
+                  "y": 458,
+                  "width": 708,
+                  "height": 39
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "normal",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/skill-menu-filtered-dark-1440/native/styles.json",
+          "stylesData": {
+            "client": "native",
+            "stateId": "skill-menu-filtered-dark-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "font": {
+                  "family": "",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "0.8"
+                }
+              },
+              "editor": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "normal",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/skill-menu-filtered-dark-1440/native/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "skill-menu-filtered-light-1440",
+      "label": "skill menu filtered light 1440 · retained overlay",
+      "semanticRoute": "new-chat",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "skill-filtered-review-agent",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "comparisonViewport": {
+        "width": 1440,
+        "height": 868
+      },
+      "residuals": [],
+      "evidence": {
+        "web": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/skill-menu-filtered-light-1440/web/raw.png",
+          "comparisonPath": "final-overlays/skill-menu-filtered-light-1440/web/comparison.png",
+          "geometry": "final-overlays/skill-menu-filtered-light-1440/web/geometry.json",
+          "geometryData": {
+            "client": "web",
+            "stateId": "skill-menu-filtered-light-1440",
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "viewport": {
+              "width": 1440,
+              "height": 900,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "BODY",
+                "className": "",
+                "text": "Toggle SidebarToggle SidebarStudioProjectsNew thread⌘NSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed task⌘1Draft seed task⌘2Done seed task⌘3\n    To pick up a draggable item, press the space bar.\n    While dragg",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 900
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "DIV",
+                "className": "h-full overscroll-contain rounded-[inherit] outline-none transition-shadows focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background data-has-overflow-x:overscroll-x-contain mask-t-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-y-start)))] mask-b-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-y-end)))] mask-l-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-x-start)))] mask-r-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-x-end)))] [--fade-size:1.5rem] data-has-overflow-y:pe-2.5 data-has-overflow-x:pb-2.5 base-ui-disable-scrollbar",
+                "text": "review-agentPerform a read-only, defect-first review of a specified code change and return every actionable finding. Use when another agent delegates review of uncommitted changes, a base-branch diff, a commit, or custom review instructions",
+                "box": {
+                  "x": 486,
+                  "y": 373.75,
+                  "width": 724,
+                  "height": 120
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "DIV",
+                "className": "min-h-8 text-base outline-none data-disabled:pointer-events-none data-highlighted:text-[var(--color-text-foreground)] data-disabled:opacity-64 sm:min-h-7 sm:text-sm flex cursor-pointer select-none items-center gap-2 rounded-md px-2.5 py-1 transition-colors hover:bg-[var(--color-background-button-secondary-hover)] data-highlighted:bg-[var(--color-background-button-secondary-hover)] bg-[var(--color-background-button-secondary)] text-[var(--color-text-foreground)]",
+                "text": "review-agentPerform a read-only, defect-first review of a specified code change and return every actionable finding. Use when another agent delegates review of uncommitted changes, a base-branch diff, a commit, or custom review instructions",
+                "box": {
+                  "x": 490,
+                  "y": 377.75,
+                  "width": 716,
+                  "height": 28
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(13, 13, 13, 0.04)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "tag": "SPAN",
+                "className": "truncate text-[length:var(--type-picker-description-size)] leading-[var(--type-picker-description-line-height)] text-muted-foreground/55",
+                "text": "Perform a read-only, defect-first review of a specified code change and return every actionable finding. Use when another agent delegates review of uncommitted changes, a base-branch diff, a commit, or custom review instructions.",
+                "box": {
+                  "x": 603.515625,
+                  "y": 383.75,
+                  "width": 540.546875,
+                  "height": 16
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.327843)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "editor": {
+                "tag": "DIV",
+                "className": "block max-h-[200px] w-full overflow-y-auto whitespace-pre-wrap break-words bg-transparent text-foreground focus:outline-none font-system-ui text-[length:var(--type-composer-editor-size)] leading-[var(--type-composer-editor-line-height)] min-h-[var(--app-density-composer-editor-min-height,2lh)] [&_p]:m-0",
+                "text": "$review-agent",
+                "box": {
+                  "x": 493,
+                  "y": 514.75,
+                  "width": 708,
+                  "height": 39
+                },
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/skill-menu-filtered-light-1440/web/styles.json",
+          "stylesData": {
+            "client": "web",
+            "stateId": "skill-menu-filtered-light-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "24px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "14px",
+                  "weight": "400",
+                  "lineHeight": "20px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(13, 13, 13, 0.04)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "11px",
+                  "weight": "400",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.327843)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "editor": {
+                "font": {
+                  "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/skill-menu-filtered-light-1440/web/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "lynx": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/skill-menu-filtered-light-1440/lynx/raw.png",
+          "comparisonPath": "final-overlays/skill-menu-filtered-light-1440/lynx/comparison.png",
+          "geometry": "final-overlays/skill-menu-filtered-light-1440/lynx/geometry.json",
+          "geometryData": {
+            "client": "lynx",
+            "stateId": "skill-menu-filtered-light-1440",
+            "semanticRoute": "new-chat",
+            "theme": "light",
+            "viewport": {
+              "width": 1440,
+              "height": 900,
+              "dpr": 1
+            },
+            "roles": {
+              "root": {
+                "tag": "X-VIEW",
+                "className": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable",
+                "text": "StudioProjectsNew threadSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed taskChats›⚙SettingsNew ChatWhat should we work on?review-agentPerform a read-only, defect-first review of a sp",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 900
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "tag": "X-VIEW",
+                "className": "ComposerCommandMenuLynx",
+                "text": "review-agentPerform a read-only, defect-first review of a specified code change and return every actionable finding. Use when another agent delegates review of uncommitted changes, a base-branch diff, a commit, or custom review instructions",
+                "box": {
+                  "x": 485,
+                  "y": 332,
+                  "width": 726,
+                  "height": 122
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "14px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "tag": "X-VIEW",
+                "className": "ComposerCommandRowLynx ComposerCommandRowLynx--active",
+                "text": "review-agentPerform a read-only, defect-first review of a specified code change and return every actionable finding. Use when another agent delegates review of uncommitted changes, a base-branch diff, a commit, or custom review instructions",
+                "box": {
+                  "x": 490,
+                  "y": 337,
+                  "width": 716,
+                  "height": 28
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(232, 242, 250)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "tag": "X-TEXT",
+                "className": "ComposerCommandTitleLynx",
+                "text": "review-agent",
+                "box": {
+                  "x": 524,
+                  "y": 343,
+                  "width": 73.515625,
+                  "height": 16
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.8"
+                }
+              },
+              "editor": {
+                "tag": "X-TEXTAREA",
+                "className": "ComposerTextarea",
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/skill-menu-filtered-light-1440/lynx/styles.json",
+          "stylesData": {
+            "client": "lynx",
+            "stateId": "skill-menu-filtered-light-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(255, 255, 255)",
+                  "borderColor": "rgba(13, 13, 13, 0.07)",
+                  "borderWidth": "1px",
+                  "radius": "14px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "16px",
+                  "weight": "400",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgb(232, 242, 250)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "8px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "0.8"
+                }
+              },
+              "editor": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "400",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "normal"
+                },
+                "paint": {
+                  "color": "rgb(13, 13, 13)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "borderColor": "rgb(13, 13, 13)",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "none",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/skill-menu-filtered-light-1440/lynx/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        },
+        "native": {
+          "status": "retained",
+          "reason": null,
+          "path": "final-overlays/skill-menu-filtered-light-1440/native/raw.png",
+          "comparisonPath": "final-overlays/skill-menu-filtered-light-1440/native/comparison.png",
+          "geometry": "final-overlays/skill-menu-filtered-light-1440/native/geometry.json",
+          "geometryData": {
+            "client": "native",
+            "stateId": "skill-menu-filtered-light-1440",
+            "roles": {
+              "root": {
+                "nodeId": 13,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+                },
+                "text": "",
+                "box": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 1440,
+                  "height": 868
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "nodeId": 5218,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "class": "ComposerCommandMenuLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 485,
+                  "y": 316,
+                  "width": 726,
+                  "height": 122
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "nodeId": 5224,
+                "nodeName": "VIEW",
+                "attributes": {
+                  "aria-label": "review-agent",
+                  "aria-selected": "true",
+                  "focusable": "true",
+                  "aria-disabled": "false",
+                  "bindmouseenter": "5390:0:bindmouseenter",
+                  "bindblur": "5390:0:bindblur",
+                  "bindmouseleave": "5390:0:bindmouseleave",
+                  "bindkeydown": "5390:0:bindkeydown",
+                  "bindtap": "5390:0:bindtap",
+                  "bindmouseup": "5390:0:bindmouseup",
+                  "bindtouchstart": "5390:0:bindtouchstart",
+                  "bindmousedown": "5390:0:bindmousedown",
+                  "bindtouchend": "5390:0:bindtouchend",
+                  "bindtouchcancel": "5390:0:bindtouchcancel",
+                  "bindfocus": "5390:0:bindfocus",
+                  "class": "ComposerCommandRowLynx ComposerCommandRowLynx--active"
+                },
+                "text": "",
+                "box": {
+                  "x": 490,
+                  "y": 321,
+                  "width": 716,
+                  "height": 28
+                },
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "nodeId": 5227,
+                "nodeName": "TEXT",
+                "attributes": {
+                  "class": "ComposerCommandTitleLynx"
+                },
+                "text": "",
+                "box": {
+                  "x": 524,
+                  "y": 327,
+                  "width": 77,
+                  "height": 16
+                },
+                "font": {
+                  "family": "",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "0.8"
+                }
+              },
+              "editor": {
+                "nodeId": 4348,
+                "nodeName": "TEXTAREA",
+                "attributes": {
+                  "aria-label": "Message composer",
+                  "accessibility-element": "true",
+                  "accessibility-label": "Message composer",
+                  "focusable": "true",
+                  "maxlength": "8000",
+                  "maxlines": "6",
+                  "enable-scroll-bar": "true",
+                  "react-ref-4878-0": "1",
+                  "default-value": "$review-agent",
+                  "placeholder": "Ask for follow-up changes or attach images",
+                  "bindfocus": "4878:4:",
+                  "bindselection": "4878:6:",
+                  "bindblur": "4878:5:",
+                  "bindinput": "4878:7:",
+                  "class": "ComposerTextarea"
+                },
+                "text": "",
+                "box": {
+                  "x": 493,
+                  "y": 458,
+                  "width": 708,
+                  "height": 39
+                },
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "normal",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "styles": "final-overlays/skill-menu-filtered-light-1440/native/styles.json",
+          "stylesData": {
+            "client": "native",
+            "stateId": "skill-menu-filtered-light-1440",
+            "roles": {
+              "root": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(252,252,252)",
+                  "background": "rgb(16,16,16)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "surface": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(255,255,255)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "row": {
+                "font": {
+                  "family": "",
+                  "size": "14px",
+                  "weight": "normal",
+                  "lineHeight": "",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(0,0,0)",
+                  "background": "rgb(232,242,250)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              },
+              "title": {
+                "font": {
+                  "family": "",
+                  "size": "11.5px",
+                  "weight": "500",
+                  "lineHeight": "16px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "0.8"
+                }
+              },
+              "editor": {
+                "font": {
+                  "family": "system-ui",
+                  "size": "12px",
+                  "weight": "normal",
+                  "lineHeight": "19.5px",
+                  "letterSpacing": "0px"
+                },
+                "paint": {
+                  "color": "rgb(13,13,13)",
+                  "background": "rgba(0,0,0,0)",
+                  "borderColor": "black",
+                  "borderWidth": "0px",
+                  "radius": "0px",
+                  "shadow": "",
+                  "opacity": "1"
+                }
+              }
+            }
+          },
+          "console": "final-overlays/skill-menu-filtered-light-1440/native/console.txt",
+          "alignment": {
+            "x": 0,
+            "y": 0,
+            "scale": 0.5
+          }
+        }
+      }
     }
   ]
 };
