@@ -31,6 +31,7 @@ import type {
   ProviderComposerCapabilities,
   ProviderListModelsResult,
   ProviderListSkillsResult,
+  ProviderSkillsCatalogResult,
   ServerConfig,
   ServerListWorktreesResult,
   ServerListProviderUsageInput,
@@ -405,6 +406,13 @@ export async function fetchProviderSkills(input: {
   readonly threadId?: string;
 }): Promise<ProviderListSkillsResult> {
   return transportRequest('provider.listSkills', input);
+}
+
+export async function fetchSkillsCatalog(): Promise<ProviderSkillsCatalogResult> {
+  return transportRequest<ProviderSkillsCatalogResult>(
+    'provider.listSkillsCatalog',
+    {}
+  );
 }
 
 export async function browseFilesystem(

@@ -1,0 +1,137 @@
+.SettingsSkillsPanel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 32px;
+}
+
+.SettingsSkillsState {
+  display: flex;
+  width: 100%;
+  min-height: 72px;
+  padding: 24px 16px;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.SettingsSkillsState--error,
+.SettingsSkillsSaveError {
+  border-color: var(--destructive);
+}
+
+.SettingsSkillsStateText,
+.SettingsSkillsRowDescription,
+.SettingsSkillsSource,
+.SettingsSkillsPath,
+.SettingsSkillsSaving {
+  color: var(--muted-foreground);
+  font-size: var(--type-settings-row-description-size);
+  line-height: var(--type-settings-row-description-line-height);
+}
+
+.SettingsSkillsPortableRow,
+.SettingsSkillsRow,
+.SettingsSkillsEmptyRow {
+  display: flex;
+  width: 100%;
+  min-height: 72px;
+  padding: var(--app-density-settings-row-padding-y, 10px) 12px;
+}
+
+.SettingsSkillsPortableRow {
+  min-height: 120px;
+}
+
+.SettingsSkillsRow {
+  min-height: 126px;
+}
+
+.SettingsSkillsPortableRow,
+.SettingsSkillsRow {
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.SettingsSkillsEmptyRow {
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+}
+
+.SettingsSkillsRow--divided {
+  border-top: 1px solid var(--border);
+}
+
+.SettingsSkillsRowCopy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.SettingsSkillsTitleLine {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.SettingsSkillsRowTitle {
+  color: var(--foreground);
+  font-size: var(--type-settings-row-title-size);
+  font-weight: 500;
+  line-height: var(--type-settings-row-title-line-height);
+}
+
+.SettingsSkillsCount {
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.SettingsSkillsPath {
+  font-family: var(--font-mono-family);
+}
+
+.SettingsSkillsCube {
+  display: flex;
+  width: 14px;
+  height: 14px;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(30deg) skew(-6deg, -6deg);
+}
+
+.SettingsSkillsCubeFace {
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--muted-foreground);
+  border-radius: 2px;
+}
+
+.SettingsSkillsControl {
+  display: flex;
+  width: 72px;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.SettingsSkillsSaveError {
+  display: flex;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--destructive);
+  border-radius: var(--radius-lg);
+}
+
+.SettingsSkillsSaveErrorText {
+  color: var(--destructive);
+  font-size: var(--type-settings-row-description-size);
+  line-height: var(--type-settings-row-description-line-height);
+}

@@ -5227,3 +5227,22 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   `shots/2026-08-05/settings-worktrees-current/`：Web/Native content与header anchors
   exact，empty state仅2px height差；Native exact-owned PID-derived
   `8904/session 1`，5 required roles，console 0，owned KV byte-exact restored。
+
+## 2026-08-05 — Settings Skills continuation
+
+- Skills此前从Lynx Settings navigation排除，且没有统一catalog/toggle workflow。
+  当前slice接入`provider.listSkillsCatalog`、server settings与真实
+  `skills.disabled` patch，复刻Web normalized-name dedupe、source/provider order、
+  shared section及fallback copy。
+- Web共享model使用`toSorted`/locale comparator，不能安全进入PrimJS；Lynx-safe纯逻辑
+  保持同一产品规则但只用确定性基础比较。rapid toggles使用串行queue和latest-operation
+  guard，避免并发响应倒序覆盖用户最后选择；失败回滚并重新读取server settings。
+- current snapshot真实发现114个skills。Web、Lynx-for-Web、Native均渲染114个switches；
+  没有直接写SQLite或构造假catalog，也未在留证时改变任何skill setting。
+- 首次Native首屏测量发现shared section上移15.5px；owner定位为Skills自身的vertical
+  rhythm。通过命名的32px panel gap、120px portable row和126px skill row收敛，
+  first row Web `y=335.5/h=125.5`、Native `y=334/h=126`，无匿名margin hack。
+- focused tests **2 files / 7 tests**；Web、Lynx-for-Web、Native/Desktop production
+  builds全部通过。exact-owned Native PID-derived `8904/session 1`、7 roles、
+  console 0，owned KV byte-exact restored；证据位于
+  `shots/2026-08-05/settings-skills-current/`。

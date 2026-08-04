@@ -1,0 +1,235 @@
+{
+  "client": "native",
+  "stateId": "settings-skills-light-1280",
+  "roles": {
+    "root": {
+      "nodeId": 13,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 788
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "content": {
+      "nodeId": 173,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsContentInner"
+      },
+      "text": "",
+      "box": {
+        "x": 432,
+        "y": 0,
+        "width": 672,
+        "height": 18222
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "header": {
+      "nodeId": 286,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SharedSettingsPanelHeader"
+      },
+      "text": "",
+      "box": {
+        "x": 456,
+        "y": 32,
+        "width": 624,
+        "height": 54
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "panel": {
+      "nodeId": 301,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsSkillsPanel"
+      },
+      "text": "",
+      "box": {
+        "x": 456,
+        "y": 118,
+        "width": 624,
+        "height": 18056
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "portable": {
+      "nodeId": 306,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsSkillsPortableRow"
+      },
+      "text": "",
+      "box": {
+        "x": 457,
+        "y": 150,
+        "width": 622,
+        "height": 120
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "firstRow": {
+      "nodeId": 326,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsSkillsRow"
+      },
+      "text": "",
+      "box": {
+        "x": 457,
+        "y": 334,
+        "width": 622,
+        "height": 126
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "firstSwitch": {
+      "nodeId": 343,
+      "nodeName": "VIEW",
+      "attributes": {
+        "aria-label": "Enable the adapt skill",
+        "aria-checked": "true",
+        "accessibility-element": "true",
+        "accessibility-label": "Enable the adapt skill",
+        "accessibility-traits": "button",
+        "accessibility-value": "On",
+        "focusable": "true",
+        "aria-disabled": "false",
+        "bindmouseenter": "283:0:bindmouseenter",
+        "bindblur": "283:0:bindblur",
+        "bindmouseleave": "283:0:bindmouseleave",
+        "bindkeydown": "283:0:bindkeydown",
+        "bindtap": "283:0:bindtap",
+        "bindmouseup": "283:0:bindmouseup",
+        "bindtouchstart": "283:0:bindtouchstart",
+        "bindmousedown": "283:0:bindmousedown",
+        "bindtouchend": "283:0:bindtouchend",
+        "bindtouchcancel": "283:0:bindtouchcancel",
+        "bindfocus": "283:0:bindfocus",
+        "class": "SharedSettingsGeneralSwitch SharedSettingsGeneralSwitch--on"
+      },
+      "text": "",
+      "box": {
+        "x": 1035,
+        "y": 388,
+        "width": 32,
+        "height": 18
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(1,105,204)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}
