@@ -5135,3 +5135,18 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - `integrate-final-overlays.mjs`从18个证据目录、Native capture metadata和PNG bytes重建
   显式manifest entries，并强制18目录门禁。strict verifier现为
   **44 states / 0 incomplete / 0 blocking**，40个required matrix coordinates全部满足。
+
+## 2026-08-04 — P10 control and temporal specimen SSOT
+
+- 新增独立`specimen-evidence.mjs`门禁，强制声明15个golden controls与12类temporal
+  surfaces；每个required state/sample必须是retained、pending、intentional-delta或
+  有理由的not-applicable，retained证据必须绑定build、disposition和真实文件。
+- verifier tests覆盖complete inventory、missing state、pending temporal、missing file、
+  malformed intentional delta与missing required control，避免static final matrix再次代理
+  Phase 3/4 completion。
+- 首版manifest只导入44-state current-build atlas能直接证明的default/open/selected/end
+  frames；hover/pressed/focused/disabled/loading与0/80/160/220ms temporal samples保持
+  pending。allow-incomplete首跑为**15 controls / 12 temporal surfaces / 88 incomplete**。
+- 该red状态是honest baseline，不是产品回归。下一切片必须通过真实product consumers、
+  focused tests与fixed-time runtime sequences逐项关闭，不能把source class存在或旧P7/P9
+  evidence冒充current-build proof。

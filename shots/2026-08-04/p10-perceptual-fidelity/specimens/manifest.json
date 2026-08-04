@@ -1,0 +1,818 @@
+{
+  "version": 1,
+  "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+  "controls": [
+    {
+      "id": "sidebar-row",
+      "requiredStates": [
+        "default",
+        "hover",
+        "pressed",
+        "selected",
+        "disabled",
+        "focused"
+      ],
+      "states": {
+        "default": {
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Sidebar rail and 28px product rhythm are retained.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "../final-matrix/landing-default-light-1280/native/geometry.json"
+            }
+          ]
+        },
+        "selected": {
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Active thread selection is retained.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "../final-matrix/thread-default-light-1280/native/geometry.json"
+            }
+          ]
+        },
+        "hover": {
+          "status": "pending"
+        },
+        "pressed": {
+          "status": "pending"
+        },
+        "disabled": {
+          "status": "pending"
+        },
+        "focused": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "segmented-control",
+      "requiredStates": [
+        "default",
+        "hover",
+        "pressed",
+        "selected",
+        "focused"
+      ],
+      "states": {
+        "default": {
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Sidebar segmented control is present in the retained shell.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "../final-matrix/landing-default-light-1280/native/geometry.json"
+            }
+          ]
+        },
+        "hover": {
+          "status": "pending"
+        },
+        "pressed": {
+          "status": "pending"
+        },
+        "selected": {
+          "status": "pending"
+        },
+        "focused": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "icon-button",
+      "requiredStates": [
+        "default",
+        "hover",
+        "pressed",
+        "disabled",
+        "focused"
+      ],
+      "states": {
+        "default": {
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Route action hit box and icon slot are retained.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "../final-matrix/kanban-project-light-1280/native/geometry.json"
+            }
+          ]
+        },
+        "hover": {
+          "status": "pending"
+        },
+        "pressed": {
+          "status": "pending"
+        },
+        "disabled": {
+          "status": "pending"
+        },
+        "focused": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "disclosure-chevron",
+      "requiredStates": [
+        "default",
+        "hover",
+        "pressed",
+        "selected",
+        "focused"
+      ],
+      "states": {
+        "default": {
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Collapsed-work disclosure consumer is retained.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "../final-matrix/thread-default-light-1280/native/geometry.json"
+            }
+          ]
+        },
+        "hover": {
+          "status": "pending"
+        },
+        "pressed": {
+          "status": "pending"
+        },
+        "selected": {
+          "status": "pending"
+        },
+        "focused": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "composer-shell",
+      "requiredStates": [
+        "default",
+        "focused",
+        "disabled",
+        "loading"
+      ],
+      "states": {
+        "default": {
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Composer shell current-build geometry is retained.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "../final-matrix/landing-default-light-1280/native/geometry.json"
+            }
+          ]
+        },
+        "focused": {
+          "status": "pending"
+        },
+        "disabled": {
+          "status": "pending"
+        },
+        "loading": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "textarea",
+      "requiredStates": [
+        "default",
+        "focused",
+        "disabled"
+      ],
+      "states": {
+        "default": {
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Textarea 12/19.5 role and 39px field are retained.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "../final-overlays/mention-menu-filtered-light-1280/native/geometry.json"
+            }
+          ]
+        },
+        "focused": {
+          "status": "pending"
+        },
+        "disabled": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "project-picker-row",
+      "requiredStates": [
+        "default",
+        "hover",
+        "pressed",
+        "selected",
+        "disabled",
+        "focused"
+      ],
+      "states": {
+        "default": {
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Project row current-build geometry is retained.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "../final-overlays/project-picker-open-light-1440/native/geometry.json"
+            }
+          ]
+        },
+        "selected": {
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Selected project row and highlight are retained.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "../final-overlays/project-picker-open-light-1440/native/geometry.json"
+            }
+          ]
+        },
+        "hover": {
+          "status": "pending"
+        },
+        "pressed": {
+          "status": "pending"
+        },
+        "disabled": {
+          "status": "pending"
+        },
+        "focused": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "command-menu-row",
+      "requiredStates": [
+        "default",
+        "hover",
+        "pressed",
+        "selected",
+        "disabled",
+        "focused"
+      ],
+      "states": {
+        "default": {
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Command row geometry and painted icon slot are retained.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "../final-overlays/skill-menu-filtered-light-1440/native/geometry.json"
+            }
+          ]
+        },
+        "selected": {
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Active first command row is retained.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "../final-overlays/skill-menu-filtered-light-1440/native/geometry.json"
+            }
+          ]
+        },
+        "hover": {
+          "status": "pending"
+        },
+        "pressed": {
+          "status": "pending"
+        },
+        "disabled": {
+          "status": "pending"
+        },
+        "focused": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "switch",
+      "requiredStates": [
+        "default",
+        "hover",
+        "pressed",
+        "selected",
+        "disabled",
+        "focused"
+      ],
+      "states": {
+        "default": {
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Product-consumed switch row is retained.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "../final-overlays/extras-open-light-1280/native/geometry.json"
+            }
+          ]
+        },
+        "selected": {
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Checked mode presentation is retained.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "../final-overlays/extras-open-light-1280/native/geometry.json"
+            }
+          ]
+        },
+        "hover": {
+          "status": "pending"
+        },
+        "pressed": {
+          "status": "pending"
+        },
+        "disabled": {
+          "status": "pending"
+        },
+        "focused": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "checkbox-radio",
+      "requiredStates": [
+        "default",
+        "selected",
+        "disabled",
+        "focused"
+      ],
+      "states": {
+        "default": {
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Settings current-build control anatomy is retained.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "../final-matrix/settings-general-light-1280/native/geometry.json"
+            }
+          ]
+        },
+        "selected": {
+          "status": "pending"
+        },
+        "disabled": {
+          "status": "pending"
+        },
+        "focused": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "tooltip-popover",
+      "requiredStates": [
+        "default",
+        "hover",
+        "pressed",
+        "focused"
+      ],
+      "states": {
+        "default": {
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Popover trigger alignment and open surface are retained.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "../final-overlays/extras-open-light-1280/native/geometry.json"
+            }
+          ]
+        },
+        "hover": {
+          "status": "pending"
+        },
+        "pressed": {
+          "status": "pending"
+        },
+        "focused": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "chip-token",
+      "requiredStates": [
+        "default",
+        "hover",
+        "pressed",
+        "selected",
+        "focused"
+      ],
+      "states": {
+        "default": {
+          "status": "pending"
+        },
+        "hover": {
+          "status": "pending"
+        },
+        "pressed": {
+          "status": "pending"
+        },
+        "selected": {
+          "status": "pending"
+        },
+        "focused": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "status-row",
+      "requiredStates": [
+        "default",
+        "loading",
+        "error",
+        "selected"
+      ],
+      "states": {
+        "default": {
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Transcript/status anatomy is retained.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "../final-matrix/thread-default-light-1280/native/geometry.json"
+            }
+          ]
+        },
+        "loading": {
+          "status": "pending"
+        },
+        "error": {
+          "status": "pending"
+        },
+        "selected": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "empty-state-header",
+      "requiredStates": [
+        "default",
+        "loading"
+      ],
+      "states": {
+        "default": {
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Empty hero center and heading metrics are retained.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "../final-matrix/landing-default-light-1280/native/geometry.json"
+            }
+          ]
+        },
+        "loading": {
+          "status": "not-applicable",
+          "reason": "The product empty-state hero has no loading state; route loading is represented by status-row and loading-to-content specimens."
+        }
+      }
+    },
+    {
+      "id": "primary-secondary-button",
+      "requiredStates": [
+        "default",
+        "hover",
+        "pressed",
+        "disabled",
+        "focused",
+        "loading"
+      ],
+      "states": {
+        "default": {
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Current route action control is retained.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "../final-matrix/kanban-project-light-1280/native/geometry.json"
+            }
+          ]
+        },
+        "hover": {
+          "status": "pending"
+        },
+        "pressed": {
+          "status": "pending"
+        },
+        "disabled": {
+          "status": "pending"
+        },
+        "focused": {
+          "status": "pending"
+        },
+        "loading": {
+          "status": "pending"
+        }
+      }
+    }
+  ],
+  "temporal": [
+    {
+      "id": "disclosure-open-close",
+      "requiredSamples": [
+        "t0",
+        "t80",
+        "t160",
+        "t220",
+        "end"
+      ],
+      "samples": {
+        "t0": {
+          "status": "pending"
+        },
+        "t80": {
+          "status": "pending"
+        },
+        "t160": {
+          "status": "pending"
+        },
+        "t220": {
+          "status": "pending"
+        },
+        "end": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "popover-menu-open-close",
+      "requiredSamples": [
+        "t0",
+        "t80",
+        "t160",
+        "t220",
+        "end"
+      ],
+      "samples": {
+        "t0": {
+          "status": "pending"
+        },
+        "t80": {
+          "status": "pending"
+        },
+        "t160": {
+          "status": "pending"
+        },
+        "t220": {
+          "status": "pending"
+        },
+        "end": {
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Final open popover frame is retained.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "../final-overlays/extras-open-light-1280/native/geometry.json"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "submenu-disclosure",
+      "requiredSamples": [
+        "t0",
+        "t80",
+        "t160",
+        "t220",
+        "end"
+      ],
+      "samples": {
+        "t0": {
+          "status": "pending"
+        },
+        "t80": {
+          "status": "pending"
+        },
+        "t160": {
+          "status": "pending"
+        },
+        "t220": {
+          "status": "pending"
+        },
+        "end": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "hover",
+      "requiredSamples": [
+        "entry",
+        "stable"
+      ],
+      "samples": {
+        "entry": {
+          "status": "pending"
+        },
+        "stable": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "pressed",
+      "requiredSamples": [
+        "down",
+        "release"
+      ],
+      "samples": {
+        "down": {
+          "status": "pending"
+        },
+        "release": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "selected-transition",
+      "requiredSamples": [
+        "before",
+        "after"
+      ],
+      "samples": {
+        "before": {
+          "status": "pending"
+        },
+        "after": {
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Selected command row final frame is retained.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "../final-overlays/skill-menu-filtered-light-1440/native/geometry.json"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "composer-height-content",
+      "requiredSamples": [
+        "before",
+        "intermediate",
+        "end"
+      ],
+      "samples": {
+        "before": {
+          "status": "pending"
+        },
+        "intermediate": {
+          "status": "pending"
+        },
+        "end": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "loading-to-content",
+      "requiredSamples": [
+        "loading",
+        "content"
+      ],
+      "samples": {
+        "loading": {
+          "status": "pending"
+        },
+        "content": {
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Loaded transcript content frame is retained.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "../final-matrix/thread-default-light-1280/native/geometry.json"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "sidebar-expansion",
+      "requiredSamples": [
+        "t0",
+        "t80",
+        "t160",
+        "t220",
+        "end"
+      ],
+      "samples": {
+        "t0": {
+          "status": "pending"
+        },
+        "t80": {
+          "status": "pending"
+        },
+        "t160": {
+          "status": "pending"
+        },
+        "t220": {
+          "status": "pending"
+        },
+        "end": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "collapsed-work",
+      "requiredSamples": [
+        "t0",
+        "t80",
+        "t160",
+        "t220",
+        "end"
+      ],
+      "samples": {
+        "t0": {
+          "status": "pending"
+        },
+        "t80": {
+          "status": "pending"
+        },
+        "t160": {
+          "status": "pending"
+        },
+        "t220": {
+          "status": "pending"
+        },
+        "end": {
+          "status": "retained",
+          "buildSha256": "8dde80b78a9b2971dceaef1c451b469de1c0eb4e8443058593b0dedcaa46a830",
+          "disposition": "Collapsed-work product consumer end frame is retained.",
+          "evidence": [
+            {
+              "kind": "geometry",
+              "path": "../final-matrix/thread-default-light-1280/native/geometry.json"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "focus-ring",
+      "requiredSamples": [
+        "before",
+        "focused"
+      ],
+      "samples": {
+        "before": {
+          "status": "pending"
+        },
+        "focused": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "reduced-motion",
+      "requiredSamples": [
+        "start",
+        "end"
+      ],
+      "samples": {
+        "start": {
+          "status": "pending"
+        },
+        "end": {
+          "status": "pending"
+        }
+      }
+    }
+  ]
+}
