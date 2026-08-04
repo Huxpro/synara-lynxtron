@@ -5112,3 +5112,7 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - 所有20 states已进入P10 manifest，统一登记32px macOS titlebar normalization为P3
   intentional platform delta。verifier现为**26 states / 18 missing / 0 blocking**；
   剩余missing全部是Project Picker/Extras/Command K/skill/mention overlay matrix。
+- Kanban header rail修复后，旧Lynx/Native route frames全部废弃并用post-fix
+  Lynx-for-Web `9ff47872…` / Native `8dde80b7…`重拍；Web authority保持
+  `2f1081bd…`。批量audit确认20/20 Native capture均为post-fix hash、clean console，
+  manifest state-specific snapshot identities已由最新`capture.json`重新生成。
