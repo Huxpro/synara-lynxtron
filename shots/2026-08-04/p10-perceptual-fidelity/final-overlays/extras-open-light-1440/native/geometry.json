@@ -1,0 +1,163 @@
+{
+  "client": "native",
+  "stateId": "extras-open-light-1440",
+  "roles": {
+    "root": {
+      "nodeId": 13,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 868
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(252,252,252)",
+        "background": "rgb(16,16,16)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "surface": {
+      "nodeId": 4981,
+      "nodeName": "VIEW",
+      "attributes": {
+        "aria-modal": "false",
+        "role": "menu",
+        "bindkeydown": "5165:4:",
+        "bindlayoutchange": "5165:5:",
+        "class": "LxMenuPopup ComposerExtrasPopupLynx",
+        "style": "visibility:visible;top:393px;left:487px;"
+      },
+      "text": "",
+      "box": {
+        "x": 487,
+        "y": 393,
+        "width": 142,
+        "height": 109
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "hsla(0,0%,5%,.069)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "row": {
+      "nodeId": 4982,
+      "nodeName": "VIEW",
+      "attributes": {
+        "focusable": "true",
+        "aria-disabled": "false",
+        "role": "menuitem",
+        "bindmouseenter": "5166:0:bindmouseenter",
+        "bindblur": "5166:0:bindblur",
+        "bindmouseleave": "5166:0:bindmouseleave",
+        "bindtap": "5166:0:bindtap",
+        "bindmouseup": "5166:0:bindmouseup",
+        "bindtouchstart": "5166:0:bindtouchstart",
+        "bindmousedown": "5166:0:bindmousedown",
+        "bindtouchend": "5166:0:bindtouchend",
+        "bindtouchcancel": "5166:0:bindtouchcancel",
+        "catchkeydown": "5166:0:catchkeydown",
+        "bindfocus": "5166:0:bindfocus",
+        "class": "LxButton LxButton--ghost LxButton--default LxMenuItem LxMenuItem--highlighted"
+      },
+      "text": "",
+      "box": {
+        "x": 493,
+        "y": 399,
+        "width": 130,
+        "height": 26
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(232,242,250)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "trigger": {
+      "nodeId": 4352,
+      "nodeName": "VIEW",
+      "attributes": {
+        "react-ref-4882-0": "1",
+        "focusable": "true",
+        "aria-disabled": "false",
+        "aria-label": "Composer extras",
+        "aria-haspopup": "menu",
+        "aria-expanded": "true",
+        "bindmouseenter": "4882:0:bindmouseenter",
+        "bindtap": "4882:0:bindtap",
+        "bindmouseup": "4882:0:bindmouseup",
+        "bindtouchstart": "4882:0:bindtouchstart",
+        "bindmouseleave": "4882:0:bindmouseleave",
+        "bindmousedown": "4882:0:bindmousedown",
+        "bindtouchend": "4882:0:bindtouchend",
+        "bindblur": "4882:0:bindblur",
+        "catchkeydown": "4882:0:catchkeydown",
+        "bindfocus": "4882:0:bindfocus",
+        "bindtouchcancel": "4882:0:bindtouchcancel",
+        "bindlayoutchange": "4882:0:bindlayoutchange",
+        "class": "LxMenuTrigger ComposerExtrasTriggerLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 487,
+        "y": 505,
+        "width": 32,
+        "height": 28
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

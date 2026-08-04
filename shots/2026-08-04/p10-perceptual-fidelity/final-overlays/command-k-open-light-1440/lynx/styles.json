@@ -1,0 +1,96 @@
+{
+  "client": "lynx",
+  "stateId": "command-k-open-light-1440",
+  "roles": {
+    "root": {
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgb(255, 255, 255)",
+        "borderColor": "rgb(13, 13, 13)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "surface": {
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgb(255, 255, 255)",
+        "borderColor": "rgba(13, 13, 13, 0.06)",
+        "borderWidth": "1px",
+        "radius": "16px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "panel": {
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgb(255, 255, 255)",
+        "borderColor": "rgba(13, 13, 13, 0.06)",
+        "borderWidth": "1px 1px 0px",
+        "radius": "12px 12px 0px 0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "row": {
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgb(232, 242, 250)",
+        "borderColor": "rgb(13, 13, 13)",
+        "borderWidth": "0px",
+        "radius": "8px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "input": {
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(13, 13, 13)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    }
+  }
+}

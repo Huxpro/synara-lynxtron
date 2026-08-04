@@ -1,0 +1,148 @@
+{
+  "client": "lynx",
+  "stateId": "project-picker-open-light-1440",
+  "semanticRoute": "new-chat",
+  "theme": "light",
+  "viewport": {
+    "width": 1440,
+    "height": 900,
+    "dpr": 1
+  },
+  "roles": {
+    "root": {
+      "tag": "X-VIEW",
+      "className": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable",
+      "text": "StudioProjectsNew threadSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed taskChats›⚙SettingsNew ChatWhat should we work on?Full accessGPT-5.5⌄Medium⌄↑spike-workspaceVoidspike-workspac",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 900
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgb(255, 255, 255)",
+        "borderColor": "rgb(13, 13, 13)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "surface": {
+      "tag": "X-VIEW",
+      "className": "LxMenuPopup ComposerProjectPickerPopupLynx",
+      "text": "Voidspike-workspace✓Folders on this Mac_pf_partsai_completionantigravity-claude-proxyApplicationsbinbytedconductorDesktopdim-agentDocumentsDoubaoDownloadsexamplesgemsgithubjdksLibrarylynx-stack-pr-2325memoryMoviesMusicPicturesPublicScreen S",
+      "box": {
+        "x": 488,
+        "y": 299,
+        "width": 288,
+        "height": 258
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgba(255, 255, 255, 0.7)",
+        "borderColor": "rgba(13, 13, 13, 0.07)",
+        "borderWidth": "1px",
+        "radius": "10.4px",
+        "shadow": "rgba(13, 13, 13, 0.07) 0px 4px 18px -6px",
+        "opacity": "1"
+      }
+    },
+    "panel": {
+      "tag": "X-VIEW",
+      "className": "ComposerProjectPickerPanelLynx",
+      "text": "Voidspike-workspace✓Folders on this Mac_pf_partsai_completionantigravity-claude-proxyApplicationsbinbytedconductorDesktopdim-agentDocumentsDoubaoDownloadsexamplesgemsgithubjdksLibrarylynx-stack-pr-2325memoryMoviesMusicPicturesPublicScreen S",
+      "box": {
+        "x": 489,
+        "y": 300,
+        "width": 278,
+        "height": 256
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(13, 13, 13)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "row": {
+      "tag": "X-VIEW",
+      "className": "LxButton LxButton--ghost LxButton--default LxMenuItem ComposerProjectPickerOptionLynx ComposerProjectPickerOptionLynx--selected LxMenuItem--highlighted",
+      "text": "spike-workspace✓",
+      "box": {
+        "x": 489,
+        "y": 373,
+        "width": 278,
+        "height": 26
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgb(232, 242, 250)",
+        "borderColor": "rgba(0, 0, 0, 0)",
+        "borderWidth": "1px",
+        "radius": "8px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "trigger": {
+      "tag": "X-VIEW",
+      "className": "LxMenuTrigger LandingComposerProjectTrigger ComposerProjectPickerTriggerLynx ComposerProjectPickerTriggerLynx--open",
+      "text": "spike-workspace",
+      "box": {
+        "x": 488,
+        "y": 560,
+        "width": 122.96875,
+        "height": 28
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgb(232, 242, 250)",
+        "borderColor": "rgba(0, 0, 0, 0)",
+        "borderWidth": "1px",
+        "radius": "10px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    }
+  }
+}

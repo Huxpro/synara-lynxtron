@@ -1,0 +1,148 @@
+{
+  "client": "web",
+  "stateId": "mention-menu-filtered-dark-1440",
+  "semanticRoute": "new-chat",
+  "theme": "dark",
+  "viewport": {
+    "width": 1440,
+    "height": 900,
+    "dpr": 1
+  },
+  "roles": {
+    "root": {
+      "tag": "BODY",
+      "className": "",
+      "text": "Toggle SidebarToggle SidebarStudioProjectsNew thread⌘NSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed task⌘1Draft seed task⌘2Done seed task⌘3\n    To pick up a draggable item, press the space bar.\n    While dragg",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 900
+      },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "24px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgba(252, 252, 252, 0.07)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "surface": {
+      "tag": "DIV",
+      "className": "h-full overscroll-contain rounded-[inherit] outline-none transition-shadows focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background data-has-overflow-x:overscroll-x-contain mask-t-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-y-start)))] mask-b-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-y-end)))] mask-l-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-x-start)))] mask-r-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-x-end)))] [--fade-size:1.5rem] data-has-overflow-y:pe-2.5 data-has-overflow-x:pb-2.5 base-ui-disable-scrollbar",
+      "text": "ChatsIn Progress seed taskLynx Web SpikeFilesType to search for files",
+      "box": {
+        "x": 486,
+        "y": 382.25,
+        "width": 724,
+        "height": 111.5
+      },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "24px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgba(252, 252, 252, 0.07)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "row": {
+      "tag": "DIV",
+      "className": "min-h-8 text-base outline-none data-disabled:pointer-events-none data-highlighted:text-[var(--color-text-foreground)] data-disabled:opacity-64 sm:min-h-7 sm:text-sm flex cursor-pointer select-none items-center gap-2 rounded-md px-2.5 py-1 transition-colors hover:bg-[var(--color-background-button-secondary-hover)] data-highlighted:bg-[var(--color-background-button-secondary-hover)] bg-[var(--color-background-button-secondary)] text-[var(--color-text-foreground)]",
+      "text": "In Progress seed taskLynx Web Spike",
+      "box": {
+        "x": 490,
+        "y": 412.25,
+        "width": 716,
+        "height": 28
+      },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "14px",
+        "weight": "400",
+        "lineHeight": "20px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgba(252, 252, 252, 0.027)",
+        "borderColor": "rgba(252, 252, 252, 0.07)",
+        "borderWidth": "0px",
+        "radius": "8px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "title": {
+      "tag": "SPAN",
+      "className": "truncate text-[length:var(--type-picker-description-size)] leading-[var(--type-picker-description-line-height)] text-muted-foreground/55",
+      "text": "Lynx Web Spike",
+      "box": {
+        "x": 649.859375,
+        "y": 418.25,
+        "width": 82.328125,
+        "height": 16
+      },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "11px",
+        "weight": "400",
+        "lineHeight": "16px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "oklab(0.991063 0.0000452101 0.0000197887 / 0.319216)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgba(252, 252, 252, 0.07)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "editor": {
+      "tag": "DIV",
+      "className": "block max-h-[200px] w-full overflow-y-auto whitespace-pre-wrap break-words bg-transparent text-foreground focus:outline-none font-system-ui text-[length:var(--type-composer-editor-size)] leading-[var(--type-composer-editor-line-height)] min-h-[var(--app-density-composer-editor-min-height,2lh)] [&_p]:m-0",
+      "text": "@Progress",
+      "box": {
+        "x": 493,
+        "y": 514.75,
+        "width": 708,
+        "height": 39
+      },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "12px",
+        "weight": "400",
+        "lineHeight": "19.5px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgba(252, 252, 252, 0.07)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    }
+  }
+}

@@ -1,0 +1,192 @@
+{
+  "client": "native",
+  "stateId": "project-picker-open-dark-1440",
+  "roles": {
+    "root": {
+      "nodeId": 13,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 868
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(252,252,252)",
+        "background": "rgb(16,16,16)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "surface": {
+      "nodeId": 7251,
+      "nodeName": "VIEW",
+      "attributes": {
+        "aria-modal": "false",
+        "role": "menu",
+        "bindkeydown": "7060:4:",
+        "bindlayoutchange": "7060:5:",
+        "class": "LxMenuPopup ComposerProjectPickerPopupLynx",
+        "style": "visibility:visible;top:284px;left:488px;"
+      },
+      "text": "",
+      "box": {
+        "x": 488,
+        "y": 284,
+        "width": 288,
+        "height": 258
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(23,23,23,0.698039)",
+        "borderColor": "hsla(0,0%,5%,.069)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "0 6px 24px -10px #0000004c",
+        "opacity": "1"
+      }
+    },
+    "panel": {
+      "nodeId": 7252,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "ComposerProjectPickerPanelLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 489,
+        "y": 285,
+        "width": 278,
+        "height": 256
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "row": {
+      "nodeId": 7264,
+      "nodeName": "VIEW",
+      "attributes": {
+        "focusable": "true",
+        "role": "menuitem",
+        "bindmouseenter": "7068:0:bindmouseenter",
+        "bindblur": "7068:0:bindblur",
+        "bindmouseleave": "7068:0:bindmouseleave",
+        "bindtap": "7068:0:bindtap",
+        "bindmouseup": "7068:0:bindmouseup",
+        "bindtouchstart": "7068:0:bindtouchstart",
+        "bindmousedown": "7068:0:bindmousedown",
+        "bindtouchend": "7068:0:bindtouchend",
+        "bindtouchcancel": "7068:0:bindtouchcancel",
+        "catchkeydown": "7068:0:catchkeydown",
+        "bindfocus": "7068:0:bindfocus",
+        "class": "LxButton LxButton--ghost LxButton--default LxMenuItem ComposerProjectPickerOptionLynx ComposerProjectPickerOptionLynx--selected LxMenuItem--highlighted"
+      },
+      "text": "",
+      "box": {
+        "x": 489,
+        "y": 358,
+        "width": 278,
+        "height": 26
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(232,242,250)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "trigger": {
+      "nodeId": 6625,
+      "nodeName": "VIEW",
+      "attributes": {
+        "react-ref-6792-0": "1",
+        "focusable": "true",
+        "aria-disabled": "false",
+        "aria-label": "spike-workspace",
+        "aria-haspopup": "menu",
+        "aria-expanded": "true",
+        "bindmouseenter": "6792:0:bindmouseenter",
+        "bindtap": "6792:0:bindtap",
+        "bindmouseup": "6792:0:bindmouseup",
+        "bindtouchstart": "6792:0:bindtouchstart",
+        "bindmouseleave": "6792:0:bindmouseleave",
+        "bindmousedown": "6792:0:bindmousedown",
+        "bindtouchend": "6792:0:bindtouchend",
+        "bindblur": "6792:0:bindblur",
+        "catchkeydown": "6792:0:catchkeydown",
+        "bindfocus": "6792:0:bindfocus",
+        "bindtouchcancel": "6792:0:bindtouchcancel",
+        "bindlayoutchange": "6792:0:bindlayoutchange",
+        "class": "LxMenuTrigger LandingComposerProjectTrigger ComposerProjectPickerTriggerLynx ComposerProjectPickerTriggerLynx--open"
+      },
+      "text": "",
+      "box": {
+        "x": 488,
+        "y": 544,
+        "width": 123,
+        "height": 28
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(232,242,250)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

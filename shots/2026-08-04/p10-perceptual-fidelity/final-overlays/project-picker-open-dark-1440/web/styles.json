@@ -1,0 +1,96 @@
+{
+  "client": "web",
+  "stateId": "project-picker-open-dark-1440",
+  "roles": {
+    "root": {
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "24px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgba(252, 252, 252, 0.07)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "surface": {
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "24px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "oklab(0.204625 0.00000931323 0.00000409782 / 0.7)",
+        "borderColor": "rgba(252, 252, 252, 0.07)",
+        "borderWidth": "1px",
+        "radius": "10.4px",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.3) 0px 6px 24px -10px",
+        "opacity": "1"
+      }
+    },
+    "panel": {
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "24px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgba(252, 252, 252, 0.07)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "row": {
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "12px",
+        "weight": "400",
+        "lineHeight": "18px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgba(252, 252, 252, 0.07)",
+        "borderWidth": "0px",
+        "radius": "8px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "trigger": {
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "11px",
+        "weight": "400",
+        "lineHeight": "16.5px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgba(252, 252, 252, 0.008)",
+        "borderColor": "rgba(0, 0, 0, 0)",
+        "borderWidth": "1px",
+        "radius": "10px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    }
+  }
+}

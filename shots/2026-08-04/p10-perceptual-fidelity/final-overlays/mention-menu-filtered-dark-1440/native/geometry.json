@@ -1,0 +1,185 @@
+{
+  "client": "native",
+  "stateId": "mention-menu-filtered-dark-1440",
+  "roles": {
+    "root": {
+      "nodeId": 13,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 868
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(252,252,252)",
+        "background": "rgb(16,16,16)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "surface": {
+      "nodeId": 7706,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "ComposerCommandMenuLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 485,
+        "y": 325,
+        "width": 726,
+        "height": 113
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "row": {
+      "nodeId": 7712,
+      "nodeName": "VIEW",
+      "attributes": {
+        "aria-label": "In Progress seed task",
+        "aria-selected": "true",
+        "focusable": "true",
+        "aria-disabled": "false",
+        "bindmouseenter": "7326:0:bindmouseenter",
+        "bindblur": "7326:0:bindblur",
+        "bindmouseleave": "7326:0:bindmouseleave",
+        "bindkeydown": "7326:0:bindkeydown",
+        "bindtap": "7326:0:bindtap",
+        "bindmouseup": "7326:0:bindmouseup",
+        "bindtouchstart": "7326:0:bindtouchstart",
+        "bindmousedown": "7326:0:bindmousedown",
+        "bindtouchend": "7326:0:bindtouchend",
+        "bindtouchcancel": "7326:0:bindtouchcancel",
+        "bindfocus": "7326:0:bindfocus",
+        "class": "ComposerCommandRowLynx ComposerCommandRowLynx--active"
+      },
+      "text": "",
+      "box": {
+        "x": 490,
+        "y": 356,
+        "width": 716,
+        "height": 28
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(232,242,250)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "title": {
+      "nodeId": 7715,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "ComposerCommandTitleLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 524,
+        "y": 362,
+        "width": 125,
+        "height": 16
+      },
+      "font": {
+        "family": "",
+        "size": "11.5px",
+        "weight": "500",
+        "lineHeight": "16px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "0.8"
+      }
+    },
+    "editor": {
+      "nodeId": 6593,
+      "nodeName": "TEXTAREA",
+      "attributes": {
+        "aria-label": "Message composer",
+        "accessibility-element": "true",
+        "accessibility-label": "Message composer",
+        "focusable": "true",
+        "maxlength": "8000",
+        "maxlines": "6",
+        "enable-scroll-bar": "true",
+        "react-ref-6760-0": "1",
+        "default-value": "@Progress",
+        "placeholder": "Ask for follow-up changes or attach images",
+        "bindfocus": "6760:4:",
+        "bindselection": "6760:6:",
+        "bindblur": "6760:5:",
+        "bindinput": "6760:7:",
+        "class": "ComposerTextarea"
+      },
+      "text": "",
+      "box": {
+        "x": 493,
+        "y": 458,
+        "width": 708,
+        "height": 39
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "12px",
+        "weight": "normal",
+        "lineHeight": "19.5px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "client": "lynx",
+  "stateId": "extras-open-dark-1440",
+  "semanticRoute": "new-chat",
+  "theme": "dark",
+  "viewport": {
+    "width": 1440,
+    "height": 900,
+    "dpr": 1
+  },
+  "roles": {
+    "root": {
+      "tag": "X-VIEW",
+      "className": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable",
+      "text": "StudioProjectsNew threadSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed taskChats›⚙SettingsNew ChatWhat should we work on?Add filesPlan modeFast›Full accessGPT-5.5⌄Medium⌄↑spike-work",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 900
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgb(16, 16, 16)",
+        "borderColor": "rgb(252, 252, 252)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "surface": {
+      "tag": "X-VIEW",
+      "className": "LxMenuPopup ComposerExtrasPopupLynx",
+      "text": "Add filesPlan modeFast›",
+      "box": {
+        "x": 487,
+        "y": 409,
+        "width": 142,
+        "height": 108
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgb(23, 23, 23)",
+        "borderColor": "rgba(252, 252, 252, 0.07)",
+        "borderWidth": "1px",
+        "radius": "10px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "row": {
+      "tag": "X-VIEW",
+      "className": "LxButton LxButton--ghost LxButton--default LxMenuItem LxMenuItem--highlighted",
+      "text": "Add files",
+      "box": {
+        "x": 493,
+        "y": 415,
+        "width": 130,
+        "height": 26
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgb(0, 15, 29)",
+        "borderColor": "rgba(0, 0, 0, 0)",
+        "borderWidth": "1px",
+        "radius": "6px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "trigger": {
+      "tag": "X-VIEW",
+      "className": "LxMenuTrigger ComposerExtrasTriggerLynx",
+      "text": "",
+      "box": {
+        "x": 487,
+        "y": 521,
+        "width": 32,
+        "height": 28
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(252, 252, 252)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    }
+  }
+}

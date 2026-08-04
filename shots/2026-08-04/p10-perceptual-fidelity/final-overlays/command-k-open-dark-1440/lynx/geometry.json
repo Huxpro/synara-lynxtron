@@ -1,0 +1,148 @@
+{
+  "client": "lynx",
+  "stateId": "command-k-open-dark-1440",
+  "semanticRoute": "new-chat",
+  "theme": "dark",
+  "viewport": {
+    "width": 1440,
+    "height": 900,
+    "dpr": 1
+  },
+  "roles": {
+    "root": {
+      "tag": "X-VIEW",
+      "className": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable",
+      "text": "StudioProjectsNew threadSearch⌘KKanbanPull requestsAutomationsProjectsLynx Web SpikeIn Progress seed taskDraft seed taskDone seed taskChats›⚙SettingsSuggestedNew chat⌘NNew threadAdd projectImport thread from...SettingsUsage settingsRecentNe",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 900
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgb(16, 16, 16)",
+        "borderColor": "rgb(252, 252, 252)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "surface": {
+      "tag": "X-VIEW",
+      "className": "LxDialogPopup LxCommandDialogPopup ui-open",
+      "text": "SuggestedNew chat⌘NNew threadAdd projectImport thread from...SettingsUsage settingsRecentNew chatHome1dNew chatHome1dIn Progress seed taskLynx Web Spike1dJump to threads, projects, actions, or appearance.Enter to open",
+      "box": {
+        "x": 432,
+        "y": 190.5,
+        "width": 576,
+        "height": 420
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgb(16, 16, 16)",
+        "borderColor": "rgba(252, 252, 252, 0.047)",
+        "borderWidth": "1px",
+        "radius": "16px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "panel": {
+      "tag": "X-VIEW",
+      "className": "LxCommandPanel overflow-hidden",
+      "text": "SuggestedNew chat⌘NNew threadAdd projectImport thread from...SettingsUsage settingsRecentNew chatHome1dNew chatHome1dIn Progress seed taskLynx Web Spike1d",
+      "box": {
+        "x": 432,
+        "y": 191.5,
+        "width": 576,
+        "height": 377
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgb(16, 16, 16)",
+        "borderColor": "rgba(252, 252, 252, 0.047)",
+        "borderWidth": "1px 1px 0px",
+        "radius": "12px 12px 0px 0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "row": {
+      "tag": "X-VIEW",
+      "className": "LxCommandItem cursor-pointer items-center gap-2 rounded-lg px-2.5 py-1.5 LxCommandItem--highlighted",
+      "text": "New chat⌘N",
+      "box": {
+        "x": 439,
+        "y": 255.890625,
+        "width": 562,
+        "height": 32
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgb(0, 15, 29)",
+        "borderColor": "rgb(252, 252, 252)",
+        "borderWidth": "0px",
+        "radius": "8px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "input": {
+      "tag": "X-VIEW",
+      "className": "LxCommandInput",
+      "text": "",
+      "box": {
+        "x": 433,
+        "y": 192.5,
+        "width": 574,
+        "height": 48
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(252, 252, 252)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(252, 252, 252)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    }
+  }
+}
