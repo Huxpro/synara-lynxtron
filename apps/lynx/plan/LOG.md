@@ -5054,3 +5054,21 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - coverage boundary：这只关闭Phase 0 canonical六状态，不代表P10 final dark/two-size/
   route-wide/motion/golden-control matrix完成；后续completion audit必须继续把这些缺口当作
   required work。
+
+## 2026-08-04 — P10 prompt-to-artifact gap audit
+
+- 新增`p10-completion-audit.md`，逐项映射goal prompt的completion criteria、Phase 0–7、
+  verification gates与最终matrix axes；明确canonical strict green只覆盖6个light/1280
+  states，不能代理dark/two-size/Thread/Kanban/PR/overlays/motion/control states。
+- audit确认P7/P8已建立并product-consume了canonical light/dark tokens、view-backed
+  interaction states、220ms disclosure/reduced-motion和旧24-cell route matrix；这些是
+  implementation/evidence inputs，但早于P10 calibration，不能直接认证final build。
+- 新增三份系统合同：
+  - `p10-surface-material-contract.md`登记14个surface/status roles、light/dark anchors、
+    material anatomy与剩余current-build samples；
+  - `p10-optical-controls.md`登记15个required golden specimens、owners、painted-bound/
+    baseline/visual-center gates与state gaps；
+  - `p10-motion-contract.md`登记Web/Native 220ms authority、platform downgrade、12类
+    temporal surfaces、transcript guardrails与fixed-time evidence格式。
+- 当前结论保持honest：Phase 0 complete；Phase 1–4 systems存在但P10证据不完整；
+  Phase 5–7 final matrix仍缺大多数required cells，P10不得标complete。
