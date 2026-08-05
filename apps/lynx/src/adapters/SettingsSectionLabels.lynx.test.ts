@@ -76,5 +76,8 @@ describe('Lynx Settings section labels', () => {
     );
     expect(providerSource).toContain('<Undo2Icon size={14}');
     expect(providerSource).not.toContain('↶');
+    expect(providerSource).toContain('<ChevronDownIcon');
+    expect(providerSource).not.toContain('↑');
+    expect(providerSource).not.toContain('↓');
   });
 });

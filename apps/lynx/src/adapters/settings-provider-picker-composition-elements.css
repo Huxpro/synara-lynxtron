@@ -109,6 +109,10 @@
   gap: 4px;
 }
 
+.SharedSettingsProviderPickerMoveIcon--up {
+  transform: rotate(180deg);
+}
+
 .SharedSettingsProviderPickerSwitch {
   width: 32px;
   height: 18px;

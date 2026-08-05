@@ -5479,3 +5479,6 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - Provider Picker reset affordance移除文本glyph `↶`，改用已有生成
   `Undo2Icon` 14px，并将interactive owner改为可承载SVG的native `view`，保留
   accessibility label与bindtap。focused tests **3/3**，两端build通过。
+- Native保留up/down按钮作为Web drag reordering的平台替代，但移除文本`↑/↓`，
+  共用生成`ChevronDownIcon`，up方向通过固定180° transform；disabled与onMove
+  contract不变。focused tests **3/3**，两端build通过。

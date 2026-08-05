@@ -5,7 +5,7 @@ import type {
 } from '@synara-web/components/settings/SettingsProviderPickerComposition.logic';
 
 import { Button } from '../components/ui/button';
-import { Undo2Icon } from '../lib/icons.lynx';
+import { ChevronDownIcon, Undo2Icon } from '../lib/icons.lynx';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 
 function ProviderVisibilitySwitch(props: {
@@ -98,7 +98,11 @@ export function SettingsProviderPickerElement(props: {
                   aria-label={`Move ${item.title} up`}
                   onClick={() => props.onMove(item.provider, 'up')}
                 >
-                  ↑
+                  <ChevronDownIcon
+                    className="SharedSettingsProviderPickerMoveIcon SharedSettingsProviderPickerMoveIcon--up"
+                    size={14}
+                    color="var(--muted-foreground)"
+                  />
                 </Button>
                 <Button
                   size="icon-xs"
@@ -107,7 +111,11 @@ export function SettingsProviderPickerElement(props: {
                   aria-label={`Move ${item.title} down`}
                   onClick={() => props.onMove(item.provider, 'down')}
                 >
-                  ↓
+                  <ChevronDownIcon
+                    className="SharedSettingsProviderPickerMoveIcon"
+                    size={14}
+                    color="var(--muted-foreground)"
+                  />
                 </Button>
                 <ProviderVisibilitySwitch
                   item={item}
