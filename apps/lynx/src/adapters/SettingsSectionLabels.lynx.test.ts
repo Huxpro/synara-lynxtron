@@ -232,9 +232,22 @@ describe('Lynx Settings section labels', () => {
       new URL('./settings-general-composition-elements.css', import.meta.url),
       'utf8'
     );
+    const modelSource = readFileSync(
+      new URL(
+        './SettingsGitWritingModelCompositionElements.lynx.tsx',
+        import.meta.url
+      ),
+      'utf8'
+    );
 
     expect(generalStyles).toMatch(
       /\.SharedSettingsGeneralSelectChevron\s*\{[^}]*opacity:\s*0\.5;/s
+    );
+    expect(modelSource).toContain(
+      'SharedSettingsGeneralRow SharedSettingsGeneralRow--terminal'
+    );
+    expect(modelSource).toContain(
+      '<MenuTrigger ariaLabel={props.ariaLabel}>'
     );
   });
 

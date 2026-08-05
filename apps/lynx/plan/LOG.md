@@ -5692,6 +5692,11 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   `useLynxDisclosurePresence` + shared 220ms content motion；Review copy保持稳定，
   补aria-expanded与14px generated rotating chevron。focused Integrations/motion tests
   **5/5**，Lynx-for-Web/Native builds通过。
+- Models/Git writing只有单row card，但Native未标terminal，留下Web `divide-y`不存在的
+  trailing bottom divider；interactive MenuTrigger也未发布select aria label。补
+  `SharedSettingsGeneralRow--terminal`与wrapper label，继续复用已校准176/208px
+  General select chrome与0.5 chevron tone。focused Settings tests **17/17**，
+  Lynx-for-Web/Native builds通过。
 - 新增icon后审计Button primitive发现Lynx无content gap，且mixed children中的label
   未自动套`LxButton__text`。补Web base/default 8px、sm 6px、xs 4px gap，并显式
   包裹Theme option label，确保icon+text typography与间距都生效。focused Settings

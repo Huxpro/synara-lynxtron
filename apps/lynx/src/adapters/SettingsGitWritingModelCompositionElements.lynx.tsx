@@ -44,7 +44,7 @@ export function SettingsGitWritingModelRowElement(props: {
     onActivate: props.onReset,
   });
   return (
-    <view className="SharedSettingsGeneralRow">
+    <view className="SharedSettingsGeneralRow SharedSettingsGeneralRow--terminal">
       <view className="SharedSettingsGeneralRowCopy">
         <view className="SharedSettingsGeneralRowTitleLine">
           <text className="SharedSettingsGeneralRowTitle">{props.title}</text>
@@ -78,7 +78,7 @@ export function SettingsGitWritingModelSelectElement(props: {
   );
   return (
     <Menu>
-      <MenuTrigger>
+      <MenuTrigger ariaLabel={props.ariaLabel}>
         <Button
           variant="outline"
           className="SharedSettingsGeneralSelectTrigger SharedSettingsGeneralSelectTrigger--writing-model"
