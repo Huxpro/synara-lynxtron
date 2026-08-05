@@ -5626,6 +5626,10 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   与shared reset icon，不伪造当前host不存在的native color picker。focused tests
   **5/5**，两端build通过。首次build捕获unsupported `text-transform`，改为value层
   uppercasing后复跑仅剩既有warnings。
+- Appearance Time format select此前只有144px label-only outline button，Web desktop是
+  160px标准select trigger。现trigger/popup统一160px，补14px chevron、8px gap、
+  12px left-aligned truncating label及真实aria label。focused tests **2/2**，
+  Lynx-for-Web/Native builds通过。
 - 新增icon后审计Button primitive发现Lynx无content gap，且mixed children中的label
   未自动套`LxButton__text`。补Web base/default 8px、sm 6px、xs 4px gap，并显式
   包裹Theme option label，确保icon+text typography与间距都生效。focused Settings

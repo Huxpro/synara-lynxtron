@@ -83,6 +83,20 @@ describe('Settings Appearance fidelity', () => {
     expect(styles).toMatch(
       /\.SharedSettingsAppearanceFontPopup\s*\{[^}]*width:\s*224px;/s
     );
+    expect(source).toContain('className="SharedSettingsAppearanceSelectLabel"');
+    expect(source).toContain('className="SharedSettingsAppearanceSelectChevron"');
+    expect(styles).toMatch(
+      /\.SharedSettingsAppearanceSelect\s*\{[^}]*width:\s*160px;[^}]*justify-content:\s*flex-start;[^}]*gap:\s*8px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedSettingsAppearanceSelectLabel\s*\{[^}]*font-size:\s*12px;[^}]*text-align:\s*left;[^}]*text-overflow:\s*ellipsis;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedSettingsAppearanceSelectChevron\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedSettingsAppearanceSelectPopup\s*\{[^}]*width:\s*160px;/s
+    );
   });
 
   it('filters the shared terminal font suggestions without restricting free-form values', () => {

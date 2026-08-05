@@ -220,11 +220,30 @@
 }
 
 .SharedSettingsAppearanceSelect {
-  min-width: 144px;
+  width: 160px;
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.SharedSettingsAppearanceSelectLabel {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--foreground);
+  font-size: 12px;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.SharedSettingsAppearanceSelectChevron {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
 }
 
 .SharedSettingsAppearanceSelectPopup {
-  width: 190px;
+  width: 160px;
 }
 
 .SharedSettingsAppearanceThemePacks {

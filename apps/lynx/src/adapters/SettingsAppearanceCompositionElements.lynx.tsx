@@ -4,8 +4,8 @@ import { TERMINAL_FONT_FAMILY_SUGGESTIONS } from '@synara-web/components/setting
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import {
-  DeviceLaptopIcon,
   ChevronDownIcon,
+  DeviceLaptopIcon,
   MoonIcon,
   SunIcon,
   XIcon,
@@ -287,7 +287,14 @@ export function SettingsAppearanceSelectControlElement(props: {
           className="SharedSettingsAppearanceSelect"
           aria-label={props.ariaLabel}
         >
-          {selected?.label ?? props.value}
+          <text className="SharedSettingsAppearanceSelectLabel">
+            {selected?.label ?? props.value}
+          </text>
+          <ChevronDownIcon
+            className="SharedSettingsAppearanceSelectChevron"
+            size={14}
+            color="var(--muted-foreground)"
+          />
         </Button>
       </MenuTrigger>
       <MenuPopup className="SharedSettingsAppearanceSelectPopup">
