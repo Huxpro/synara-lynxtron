@@ -5739,3 +5739,15 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   divider保持。Web Notifications tests **2/2**、Lynx shared-row test **1/1**，
   三端production builds通过；证据在
   `shots/2026-08-05/notifications-current-head/`。
+- current-head Profile使用真实identity、5个stat tiles、274 activity cells与空
+  plugin/model sections复验；populated model rows在该snapshot缺席，继续明确只由focused
+  source contract覆盖。量化发现Lynx虽显示40列，却直接每7个cells切列，漏掉Web按首日
+  `weekday`生成的3个lead pads与3个tail pads，导致日期/月份归属错列；同时grid固定
+  112px、month row 21.5px，而Web fill mode为123.5px grid、15.0625px cells、10px
+  month row。改为与Web一致的slot columns/first-real-cell month算法后，40 columns、
+  274 cells、6 transparent pads与十个月份x坐标逐项exact。另修identity两层结构：
+  avatar后为6px-gap name/handle group，avatar text 20/28、name 24/32；identity
+  `408/88/720/134`、stats `408/250/720/68`、activity/heatmap/month row均exact。
+  stats radius由16补为Web computed 18px。focused Profile suite **3/3**（含weekday
+  behavior test），Lynx-for-Web/Native builds通过；证据在
+  `shots/2026-08-05/profile-current-head/`。

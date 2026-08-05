@@ -39,6 +39,10 @@ const PROFILE_MONTHS = [
   'Dec',
 ] as const;
 
+type ProfileHeatmapSlot =
+  | { readonly kind: 'cell'; readonly cell: ProfileHeatmapCell }
+  | { readonly kind: 'pad'; readonly key: string };
+
 function formatCompact(value: number | null | undefined): string {
   if (value === null || value === undefined || !Number.isFinite(value)) {
     return '—';
@@ -125,23 +129,37 @@ function capitalize(value: string): string {
   return value.length > 0 ? `${value[0]!.toUpperCase()}${value.slice(1)}` : value;
 }
 
-function heatmapColumns(
+export function heatmapColumns(
   cells: readonly ProfileHeatmapCell[]
-): readonly (readonly ProfileHeatmapCell[])[] {
+): readonly (readonly ProfileHeatmapSlot[])[] {
   const visibleCells = cells.slice(-(PROFILE_HEATMAP_COLUMNS * 7));
-  const columns: ProfileHeatmapCell[][] = [];
-  for (let index = 0; index < visibleCells.length; index += 7) {
-    columns.push(visibleCells.slice(index, index + 7));
+  const slots: ProfileHeatmapSlot[] = [];
+  const firstCell = visibleCells[0];
+  for (let index = 0; index < (firstCell?.weekday ?? 0); index += 1) {
+    slots.push({ kind: 'pad', key: `lead-${index}` });
   }
-  return columns;
+  for (const cell of visibleCells) {
+    slots.push({ kind: 'cell', cell });
+  }
+  while (slots.length % 7 !== 0) {
+    slots.push({ kind: 'pad', key: `tail-${slots.length}` });
+  }
+  const columns: ProfileHeatmapSlot[][] = [];
+  for (let index = 0; index < slots.length; index += 7) {
+    columns.push(slots.slice(index, index + 7));
+  }
+  return columns.slice(-PROFILE_HEATMAP_COLUMNS);
 }
 
-function heatmapMonthLabels(
-  columns: readonly (readonly ProfileHeatmapCell[])[]
+export function heatmapMonthLabels(
+  columns: readonly (readonly ProfileHeatmapSlot[])[]
 ): readonly string[] {
   let previousMonth = -1;
   return columns.map((column) => {
-    const firstCell = column[0];
+    const firstCell = column.find(
+      (slot): slot is Extract<ProfileHeatmapSlot, { readonly kind: 'cell' }> =>
+        slot.kind === 'cell'
+    )?.cell;
     if (!firstCell) return '';
     const month = Number(firstCell.day.split('-')[1]) - 1;
     if (month < 0 || month === previousMonth) return '';
@@ -242,13 +260,15 @@ function ProfileContent(props: {
             {props.stats.identity.initials}
           </text>
         </view>
-        <text className="SettingsProfileName">{displayName}</text>
-        <view className="SettingsProfileHandleLine">
-          <text className="SettingsProfileHandle">
-            {props.stats.identity.defaultHandle}
-          </text>
-          <text className="SettingsProfileDot">·</text>
-          <text className="SettingsProfileBadge">Synara</text>
+        <view className="SettingsProfileIdentityCopy">
+          <text className="SettingsProfileName">{displayName}</text>
+          <view className="SettingsProfileHandleLine">
+            <text className="SettingsProfileHandle">
+              {props.stats.identity.defaultHandle}
+            </text>
+            <text className="SettingsProfileDot">·</text>
+            <text className="SettingsProfileBadge">Synara</text>
+          </view>
         </view>
       </view>
 
@@ -296,12 +316,19 @@ function ProfileContent(props: {
                 className="SettingsProfileHeatmapColumn"
                 key={`profile-heatmap-${columnIndex}`}
               >
-                {column.map((cell) => (
-                  <view
-                    className={`SettingsProfileHeatmapCell SettingsProfileHeatmapCell--${cell.intensity}`}
-                    key={cell.day}
-                  />
-                ))}
+                {column.map((slot) =>
+                  slot.kind === 'cell' ? (
+                    <view
+                      className={`SettingsProfileHeatmapCell SettingsProfileHeatmapCell--${slot.cell.intensity}`}
+                      key={slot.cell.day}
+                    />
+                  ) : (
+                    <view
+                      className="SettingsProfileHeatmapCell SettingsProfileHeatmapCell--pad"
+                      key={slot.key}
+                    />
+                  )
+                )}
               </view>
             ))}
           </view>

@@ -99,7 +99,7 @@ complete.
 | Shared Behavior/Notifications section and row anatomy matches Web | 12px/400/18px muted/58 labels, 6px section gap, transparent 10px cards, density-driven rows, 2px copy rhythm, 20px title lines, correct first-row dividers, and supplemental status outside the common control-centering layout | PASS — current-head visual proof |
 | Notifications reflects actual Lynx runtime capability | no toast/OS notification consumer exists; both stored preferences remain visible/resettable but controls are disabled, non-focusable, aria-disabled, and carry explicit per-row unavailable status without shifting their Web-common switch anchors | PASS — honest capability delta and current-head visual proof |
 | Advanced recovery details reuse shared disclosure behavior | controlled `What this does` trigger publishes expanded state, uses generated 14px chevron and shared 220ms motion/presence, then reveals the 10px inset explanation | PASS |
-| Profile stats, heatmap, and model rows match Web identity | stat values/labels use 14px/20px, heatmap cells use 5px radius, and model rows restore 14px mapped provider SVGs or neutral fallbacks with 8px gaps | PASS |
+| Profile stats, heatmap, and model rows match Web identity | identity uses the Web 6px name/handle subgroup and 20/28 + 24/32 typography; stat values/labels use 14px/20px in an exact 18px-radius card; heatmap uses Web weekday pads, 40 week columns, 15.0625px cells, 5px radius, and exact month anchors; model rows retain 14px mapped provider SVGs or neutral fallbacks with 8px gaps | PASS — current-head visual proof for real identity/stats/heatmap/empty state; populated model branch source-tested |
 | Worktrees rows match Web shared-list density and typography | rows have no artificial 96px minimum, mono paths truncate, and linked conversation titles use regular description typography instead of row-title weight | PASS |
 | Archived empty and list states match Web hierarchy | empty state uses generated 20px Archive icon and 14px/20px copy; populated rows no longer force a 60px minimum | PASS |
 | Skills rows match Web density and provider identity | rows/control columns self-size, source/path text truncates, and overlapping 16px provider-copy badges use mapped 12px SVGs or neutral fallbacks | PASS |
@@ -157,6 +157,20 @@ The retained replacement cells:
 
 ## Verification results
 
+- Current-head Profile fast harness: same trusted origin/snapshot, Light,
+  `1280×820`, DPR 1. The real state covered identity, five stat tiles, 274
+  heatmap cells, insight values, and empty plugin/model sections. Populated
+  plugin/model rows were absent and remain explicitly source-tested rather than
+  screenshot-certified. Evidence is under
+  `shots/2026-08-05/profile-current-head/`.
+- Current-head Profile residual repair: heatmap columns now include Web's
+  weekday lead/tail pads (40 columns, 274 cells, 6 pads), months use each
+  week's first real cell, and grid/cell/month geometry is exact. Identity now
+  uses the Web 6px name/handle subgroup with 20/28 and 24/32 typography; stats
+  card aligns at `408/250/720/68` with radius 18.
+- Current-head Profile focused rerun: 1 file, 3/3 tests including pure
+  weekday-slot behavior; Lynx-for-Web and Native/Desktop production builds
+  pass. Bundles: Lynx-for-Web `5173a650…`; Native `417aef48…`.
 - Current-head Notifications fast harness: same trusted origin/snapshot,
   explicit Light theme, `1280×820`, DPR 1. Web retained its real browser
   notification controls; Lynx retained disabled switches and explicit

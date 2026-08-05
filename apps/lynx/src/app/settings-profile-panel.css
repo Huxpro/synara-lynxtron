@@ -28,6 +28,13 @@
   text-align: center;
 }
 
+.SettingsProfileIdentityCopy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
 .SettingsProfileAvatar {
   width: 64px;
   height: 64px;
@@ -43,14 +50,14 @@
   color: #ffffff;
   font-size: 20px;
   font-weight: 600;
-  line-height: 24px;
+  line-height: 28px;
 }
 
 .SettingsProfileName {
   color: var(--foreground);
   font-size: 24px;
   font-weight: 600;
-  line-height: 29px;
+  line-height: 32px;
   letter-spacing: -0.5px;
 }
 
@@ -83,7 +90,7 @@
   flex-direction: row;
   overflow: hidden;
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 18px;
 }
 
 .SettingsProfileStat {
@@ -142,7 +149,7 @@
 
 .SettingsProfileHeatmapGrid {
   width: 100%;
-  height: 112px;
+  height: 123.5px;
   display: flex;
   flex-direction: row;
   align-items: stretch;
@@ -170,6 +177,11 @@
   opacity: 1;
 }
 
+.SettingsProfileHeatmapCell--pad {
+  background-color: transparent;
+  opacity: 1;
+}
+
 .SettingsProfileHeatmapCell--2 {
   background-color: rgba(1, 105, 204, 0.46);
   opacity: 1;
@@ -187,7 +199,7 @@
 
 .SettingsProfileHeatmapMonths {
   width: 100%;
-  height: 21.5px;
+  height: 10px;
   display: flex;
   flex-direction: row;
   gap: 3px;
@@ -200,7 +212,7 @@
   color: var(--muted-foreground);
   font-size: 10px;
   font-weight: 500;
-  line-height: 12px;
+  line-height: 10px;
   white-space: nowrap;
 }
 
