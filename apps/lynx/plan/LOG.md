@@ -5433,3 +5433,8 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   为0.95、nested setting title为0.89，active/hover/pressed恢复1。current runtime
   实测四个状态全部命中，且icon/label由row owner同步衰减；focused tests **4/4**，
   证据位于`shots/2026-08-06/settings-row-tone/`。
+- Settings row interaction owner继续对齐Web：active改用
+  `--sidebar-accent-active`，focus ring改为inset，并移除nav/back pressed时0.8整行
+  淡化。active runtime实测opacity 1且semantic fill生效；Native focus/pressed无法由
+  Lynx-for-Web键盘模型认证，因此只声明focused CSS contract与Native build覆盖。
+  focused tests **4/4**，bundle为Lynx-for-Web `a0304988…`、Native `b4ebc2bc…`。

@@ -22,5 +22,11 @@ describe('Lynx Settings navigation typography', () => {
     expect(styles).toMatch(
       /\.SharedSettingsNavigationButton--active\s*\{[^}]*opacity:\s*1;/s
     );
+    expect(styles).toMatch(
+      /\.SharedSettingsNavigationButton--active\s*\{[^}]*background-color:\s*var\(--sidebar-accent-active\);/s
+    );
+    expect(styles).toMatch(
+      /\.SharedSettingsNavigationButton\.ui-focus\s*\{[^}]*box-shadow:\s*inset 0 0 0 1px var\(--ring\);/s
+    );
   });
 });
