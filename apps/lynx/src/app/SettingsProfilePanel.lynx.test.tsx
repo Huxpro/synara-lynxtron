@@ -42,6 +42,10 @@ describe('Settings Profile fidelity', () => {
       new URL('./settings-profile-panel.css', import.meta.url),
       'utf8'
     );
+    const source = readFileSync(
+      new URL('./SettingsProfilePanel.lynx.tsx', import.meta.url),
+      'utf8'
+    );
 
     expect(styles).toMatch(
       /\.SettingsProfile\s*\{[^}]*width:\s*100%;[^}]*gap:\s*28px;/s
@@ -56,16 +60,30 @@ describe('Settings Profile fidelity', () => {
       /\.SettingsProfileStats\s*\{[^}]*border-radius:\s*16px;/s
     );
     expect(styles).toMatch(
+      /\.SettingsProfileStatValue,\s*\.SettingsProfileStatLabel\s*\{[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;/s
+    );
+    expect(styles).toMatch(
       /\.SettingsProfileHeatmap\s*\{[^}]*height:\s*136\.5px;[^}]*gap:\s*3px;/s
     );
     expect(styles).toMatch(
       /\.SettingsProfileHeatmapGrid\s*\{[^}]*height:\s*112px;[^}]*gap:\s*3px;/s
     );
     expect(styles).toMatch(
+      /\.SettingsProfileHeatmapCell\s*\{[^}]*border-radius:\s*5px;/s
+    );
+    expect(styles).toMatch(
       /\.SettingsProfileHeatmapMonths\s*\{[^}]*height:\s*21\.5px;/s
     );
     expect(styles).toMatch(
       /\.SettingsProfileColumns\s*\{[^}]*gap:\s*48px;/s
+    );
+    expect(source).toContain('<ProfileProviderIcon provider={entry.provider} />');
+    expect(source).toContain('hasLynxProviderIcon(props.provider)');
+    expect(styles).toMatch(
+      /\.SettingsProfileModelIdentity\s*\{[^}]*flex:\s*1;[^}]*gap:\s*8px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsProfileModelIdentity \.OpenAIProviderIcon,\s*\.SettingsProfileProviderFallback\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;/s
     );
   });
 });

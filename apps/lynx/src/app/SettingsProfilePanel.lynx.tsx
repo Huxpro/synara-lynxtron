@@ -13,6 +13,10 @@ import {
 
 import { Button } from '../components/ui/button';
 import {
+  OpenAIProviderIcon,
+  hasLynxProviderIcon,
+} from '../components/OpenAIProviderIcon.lynx';
+import {
   fetchProfileStats,
   fetchProfileTokenStats,
 } from '../data/synaraClient.lynx';
@@ -167,6 +171,22 @@ function InsightRow(props: {
       <text className="SettingsProfileInsightLabel">{props.label}</text>
       <text className="SettingsProfileInsightValue" maxlines={1}>
         {props.value}
+      </text>
+    </view>
+  );
+}
+
+function ProfileProviderIcon(props: {
+  readonly provider: ProviderKind | 'unknown';
+}) {
+  return hasLynxProviderIcon(props.provider) ? (
+    <OpenAIProviderIcon provider={props.provider} />
+  ) : (
+    <view className="SettingsProfileProviderFallback">
+      <text className="SettingsProfileProviderFallbackText">
+        {props.provider === 'unknown'
+          ? '•'
+          : providerLabel(props.provider).slice(0, 1)}
       </text>
     </view>
   );
@@ -373,9 +393,12 @@ function ProfileContent(props: {
                 key={`${entry.provider}:${entry.model}`}
               >
                 <view className="SettingsProfileModelLine">
-                  <text className="SettingsProfileModelName" maxlines={1}>
-                    {entry.model}
-                  </text>
+                  <view className="SettingsProfileModelIdentity">
+                    <ProfileProviderIcon provider={entry.provider} />
+                    <text className="SettingsProfileModelName" maxlines={1}>
+                      {entry.model}
+                    </text>
+                  </view>
                   <text className="SettingsProfileModelPercent">
                     {entry.percent}%
                   </text>

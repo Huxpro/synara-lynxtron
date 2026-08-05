@@ -104,8 +104,8 @@
 .SettingsProfileStatValue,
 .SettingsProfileStatLabel {
   width: 100%;
-  font-size: 12px;
-  line-height: 18px;
+  font-size: 14px;
+  line-height: 20px;
   text-align: center;
 }
 
@@ -160,7 +160,7 @@
 .SettingsProfileHeatmapCell {
   min-height: 0;
   flex: 1;
-  border-radius: 3px;
+  border-radius: 5px;
   background-color: var(--muted);
   opacity: 0.7;
 }
@@ -224,6 +224,7 @@
 .SettingsProfileInsightRow,
 .SettingsProfilePluginRow,
 .SettingsProfilePluginIdentity,
+.SettingsProfileModelIdentity,
 .SettingsProfileModelLine {
   display: flex;
   flex-direction: row;
@@ -232,6 +233,7 @@
 
 .SettingsProfileInsightRow,
 .SettingsProfilePluginRow,
+.SettingsProfileModelIdentity,
 .SettingsProfileModelLine {
   justify-content: space-between;
   gap: 12px;
@@ -275,6 +277,35 @@
   min-width: 0;
   flex: 1;
   gap: 10px;
+}
+
+.SettingsProfileModelIdentity {
+  min-width: 0;
+  flex: 1;
+  gap: 8px;
+}
+
+.SettingsProfileModelIdentity .OpenAIProviderIcon,
+.SettingsProfileProviderFallback {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.SettingsProfileProviderFallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background-color: var(--muted);
+}
+
+.SettingsProfileProviderFallbackText {
+  color: var(--muted-foreground);
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 9px;
 }
 
 .SettingsProfilePluginIcon {

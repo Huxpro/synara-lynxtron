@@ -5666,6 +5666,10 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   chevron，并复用`useLynxDisclosurePresence` + shared 220ms content/chevron motion；
   details保持12px divider/inset、10px card，close animation完成后再unmount。focused
   Advanced/motion tests **5/5**，Lynx-for-Web/Native builds通过。
+- Profile stat tiles此前value/label为12px/18px，Web两者均14px/20px；heatmap cells也
+  用3px radius而非Web请求的5px。完成token校准，并给Model usage恢复provider identity：
+  mapped providers使用14px真实SVG，asset未覆盖/unknown使用neutral badge，8px gap且
+  model label继续truncate。focused tests **2/2**，Lynx-for-Web/Native builds通过。
 - 新增icon后审计Button primitive发现Lynx无content gap，且mixed children中的label
   未自动套`LxButton__text`。补Web base/default 8px、sm 6px、xs 4px gap，并显式
   包裹Theme option label，确保icon+text typography与间距都生效。focused Settings
