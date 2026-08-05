@@ -5549,6 +5549,9 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   quota，Web会在meters前显示warning notice；Native此前完全丢弃。现补14px生成
   TriangleAlert icon、6px gap、12px/18px warning copy，仅在ok+hasUsage分支消费，
   non-ok detail fallback不变。focused tests **6/6**，两端build通过。
+- Usage section/card header之前被同一grouped selector设为12px gap，而Web两处均
+  `gap-2` 8px；拆分owner后header统一8px，provider identity继续保留`gap-2.5`
+  10px。focused tests **6/6**，两端build通过。
 - Usage line list此前沿用meter column，把label/value纵向堆叠。现拆分Meters与Lines
   owners：line header横向justify-between、item gap2、list gap6；meters与lines同时
   存在时加12px top divider。空类别不渲染container，避免无内容gap。focused tests
@@ -5562,6 +5565,11 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   policy保留缺失provider的last result。server当前每次调用均live fetch，Claude安全
   cooldown仍按设计不被手动刷新绕过。shared tests **5/5**、Web tests **4/4**、
   Lynx focused tests **6/6**；三端build通过。
+- 该refresh commit hook显示“React Doctor found staged regressions”，但global hook
+  对任意nonzero（含tool启动失败）都输出同一文案。实际`pnpm dlx react-doctor@latest
+  --verbose --scope changed`因commit后无changed scope退化为full scan；其
+  `diagnostics.json`对`SettingsUsagePanel.tsx`与Web
+  `ProviderUsageSettingsPanel.tsx`筛选结果均为空，故本slice无Doctor finding。
 - Usage footer从简写说明恢复为Web完整凭据、OAuth token refresh与CLI重新认证文案，
   并对齐11px/18px排版及8px横向inset。focused tests **6/6**，Web/Lynx-for-Web/
   Native/Desktop builds通过。

@@ -58,6 +58,12 @@ describe('Lynx Settings section labels', () => {
       /\.SettingsUsageCard\s*\{[^}]*gap:\s*14px;[^}]*padding:\s*16px;/s
     );
     expect(usageStyles).toMatch(
+      /\.SettingsUsageHeader,\s*\.SettingsUsageCardHeader\s*\{[^}]*justify-content:\s*space-between;[^}]*gap:\s*8px;/s
+    );
+    expect(usageStyles).toMatch(
+      /\.SettingsUsageProviderIdentity\s*\{[^}]*justify-content:\s*flex-start;[^}]*gap:\s*10px;/s
+    );
+    expect(usageStyles).toMatch(
       /\.SettingsUsageState\s*\{[^}]*padding:\s*14px 16px;/s
     );
     expect(usageStyles).toMatch(

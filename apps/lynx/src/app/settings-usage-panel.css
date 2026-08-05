@@ -10,13 +10,12 @@
 }
 
 .SettingsUsageHeader,
-.SettingsUsageCardHeader,
-.SettingsUsageProviderIdentity {
+.SettingsUsageCardHeader {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 8px;
 }
 
 .SettingsUsageSectionTitle,
@@ -57,6 +56,9 @@
 }
 
 .SettingsUsageProviderIdentity {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   min-width: 0;
   justify-content: flex-start;
   gap: 10px;
