@@ -8,6 +8,7 @@ import {
 
 import { Button } from '../components/ui/button';
 import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
+import { RefreshCwIcon } from '../lib/icons.lynx';
 import './settings-usage-panel.css';
 
 function missingSnapshot(
@@ -108,7 +109,12 @@ export function SettingsUsagePanel() {
           aria-label="Refresh provider usage"
           onClick={() => void usageQuery.refetch()}
         >
-          {usageQuery.isFetching ? 'Refreshing…' : 'Refresh'}
+          <RefreshCwIcon
+            className={usageQuery.isFetching ? 'animate-spin' : undefined}
+            size={14}
+            color="var(--foreground)"
+          />
+          <text className="LxButton__text">Refresh</text>
         </Button>
       </view>
       {usageQuery.isPending && !usageQuery.data ? (

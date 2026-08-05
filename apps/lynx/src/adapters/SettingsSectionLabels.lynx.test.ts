@@ -70,6 +70,8 @@ describe('Lynx Settings section labels', () => {
     expect(usageSource).toContain(
       '<OpenAIProviderIcon provider={snapshot.provider} />'
     );
+    expect(usageSource).toContain('<RefreshCwIcon');
+    expect(usageSource).toContain("usageQuery.isFetching ? 'animate-spin'");
     expect(usageSource).toContain(
       "if ((snapshot.status ?? 'ok') === 'ok') return snapshot.planName ?? null;"
     );

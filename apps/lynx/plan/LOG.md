@@ -5544,6 +5544,9 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   owners：line header横向justify-between、item gap2、list gap6；meters与lines同时
   存在时加12px top divider。空类别不渲染container，避免无内容gap。focused tests
   **6/6**，两端build通过。
+- Usage Refresh action补Web 14px rotate icon，fetching时复用已有`animate-spin`，
+  mixed children中的文字显式套`LxButton__text`；disabled/refetch行为不变。
+  focused tests **6/6**，两端build通过。
 - Appearance Theme preference segmented buttons原本只有文字，Web明确带
   Sun/Moon/Laptop icons；补生成的14px icons，仅Theme preference使用。同期发现
   Appearance boolean switch是第四套旧18/14实现，统一到32×20/16px及shared
