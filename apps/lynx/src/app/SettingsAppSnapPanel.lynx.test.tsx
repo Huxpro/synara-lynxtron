@@ -37,16 +37,29 @@ describe('Settings AppSnap capability fidelity', () => {
       /\.SettingsAppSnapHero\s*\{[^}]*min-height:\s*130px;[^}]*padding:\s*14px 16px;[^}]*gap:\s*12px;/s
     );
     expect(styles).toMatch(
-      /\.SettingsAppSnapRow\s*\{[^}]*min-height:\s*79px;[^}]*justify-content:\s*space-between;/s
+      /\.SettingsAppSnapRow\s*\{[^}]*padding:\s*var\(--app-density-settings-row-padding-y,\s*10px\) 12px;[^}]*flex-direction:\s*column;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsAppSnapMain\s*\{[^}]*align-items:\s*center;[^}]*justify-content:\s*space-between;[^}]*gap:\s*20px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsAppSnapTitleLine\s*\{[^}]*min-height:\s*20px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsAppSnapMetadata\s*\{[^}]*padding-top:\s*4px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsAppSnapStatus\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*16\.5px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsAppSnapRow--continued\s*\{[^}]*border-bottom:\s*1px solid var\(--border\);/s
+    );
+    expect(styles).not.toMatch(
+      /\.SettingsAppSnapRow\s*\{[^}]*min-height:/s
     );
     expect(styles).toMatch(
       /\.SettingsAppSnapDisabledSwitch\s*\{[^}]*width:\s*32px;[^}]*height:\s*20px;[^}]*opacity:\s*0\.5;/s
     );
-    expect(styles).toMatch(
-      /\.SettingsAppSnapRow--shortcut\s*\{[^}]*min-height:\s*97px;/s
-    );
-    expect(styles).toMatch(
-      /\.SettingsAppSnapRow--sound\s*\{[^}]*min-height:\s*60px;/s
-    );
+    expect(styles).not.toContain('SettingsAppSnapRow--divided');
   });
 });

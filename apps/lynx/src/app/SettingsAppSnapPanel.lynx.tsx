@@ -28,33 +28,41 @@ export function SettingsAppSnapPanel() {
       </view>
 
       <SettingsSection title="Capture">
-        <view className="SettingsAppSnapRow SettingsAppSnapRow--enable">
-          <view className="SettingsAppSnapRowCopy">
-            <text className="SettingsAppSnapRowTitle">Enable AppSnap</text>
-            <text className="SettingsAppSnapRowDescription">
-              Run the capture listener in the background while Synara is open.
-            </text>
+        <view className="SettingsAppSnapRow SettingsAppSnapRow--continued">
+          <view className="SettingsAppSnapMain">
+            <view className="SettingsAppSnapRowCopy">
+              <view className="SettingsAppSnapTitleLine">
+                <text className="SettingsAppSnapRowTitle">Enable AppSnap</text>
+              </view>
+              <text className="SettingsAppSnapRowDescription">
+                Run the capture listener in the background while Synara is open.
+              </text>
+            </view>
+            <view
+              className="SettingsAppSnapDisabledSwitch"
+              aria-label="Enable AppSnap"
+              aria-checked={false}
+              aria-disabled={true}
+              accessibility-element={true}
+              accessibility-label="Enable AppSnap"
+              accessibility-state={{ disabled: true }}
+              accessibility-value="Off"
+            >
+              <view className="SettingsAppSnapDisabledSwitchThumb" />
+            </view>
+          </view>
+          <view className="SettingsAppSnapMetadata">
             <text className="SettingsAppSnapStatus">
               Unavailable in this runtime
             </text>
           </view>
-          <view
-            className="SettingsAppSnapDisabledSwitch"
-            aria-label="Enable AppSnap"
-            aria-checked={false}
-            aria-disabled={true}
-            accessibility-element={true}
-            accessibility-label="Enable AppSnap"
-            accessibility-state={{ disabled: true }}
-            accessibility-value="Off"
-          >
-            <view className="SettingsAppSnapDisabledSwitchThumb" />
-          </view>
         </view>
 
-        <view className="SettingsAppSnapRow SettingsAppSnapRow--shortcut SettingsAppSnapRow--divided">
+        <view className="SettingsAppSnapRow SettingsAppSnapRow--continued">
           <view className="SettingsAppSnapRowCopy">
-            <text className="SettingsAppSnapRowTitle">Shortcut</text>
+            <view className="SettingsAppSnapTitleLine">
+              <text className="SettingsAppSnapRowTitle">Shortcut</text>
+            </view>
             <text className="SettingsAppSnapRowDescription">
               Shortcut registration requires the desktop host&apos;s global
               shortcut conflict and permission service.
@@ -63,9 +71,11 @@ export function SettingsAppSnapPanel() {
           <text className="SettingsAppSnapValue">Unavailable</text>
         </view>
 
-        <view className="SettingsAppSnapRow SettingsAppSnapRow--destination SettingsAppSnapRow--divided">
+        <view className="SettingsAppSnapRow SettingsAppSnapRow--continued">
           <view className="SettingsAppSnapRowCopy">
-            <text className="SettingsAppSnapRowTitle">Destination</text>
+            <view className="SettingsAppSnapTitleLine">
+              <text className="SettingsAppSnapRowTitle">Destination</text>
+            </view>
             <text className="SettingsAppSnapRowDescription">
               Snaps join the task you interacted with recently; otherwise
               Synara opens a fresh task with the capture attached.
@@ -74,9 +84,11 @@ export function SettingsAppSnapPanel() {
           <text className="SettingsAppSnapValue">Automatic</text>
         </view>
 
-        <view className="SettingsAppSnapRow SettingsAppSnapRow--sound SettingsAppSnapRow--divided">
+        <view className="SettingsAppSnapRow">
           <view className="SettingsAppSnapRowCopy">
-            <text className="SettingsAppSnapRowTitle">Capture sound</text>
+            <view className="SettingsAppSnapTitleLine">
+              <text className="SettingsAppSnapRowTitle">Capture sound</text>
+            </view>
             <text className="SettingsAppSnapRowDescription">
               Play a short shutter cue when a window is captured.
             </text>

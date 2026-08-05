@@ -98,6 +98,7 @@ complete.
 | Behavior and Notifications reuse shared reset identity | both shared panels consume one SettingsPage reset renderer with generated 14px Undo icon, icon-xs ghost chrome, and preserved labels | PASS |
 | Shared Behavior/Notifications section and row anatomy matches Web | 12px/400/18px muted/58 labels, 6px section gap, transparent 10px cards, density-driven rows, 2px copy rhythm, 20px title lines, correct first-row dividers, and supplemental status outside the common control-centering layout | PASS — current-head visual proof |
 | Notifications reflects actual Lynx runtime capability | no toast/OS notification consumer exists; both stored preferences remain visible/resettable but controls are disabled, non-focusable, aria-disabled, and carry explicit per-row unavailable status without shifting their Web-common switch anchors | PASS — honest capability delta and current-head visual proof |
+| AppSnap unavailable capability rows preserve Web anatomy | unavailable status follows the common main layout, disabled switch shares the Web baseline, all four rows are content-driven with 20px title lines and previous-row bottom dividers | PASS — honest capability delta and current-head visual proof |
 | Advanced rows and recovery details match shared Settings/disclosure behavior | keybindings/recovery main layouts, 11/16.5 metadata, and 24px actions match Web; controlled `What this does` uses a 16px trigger/chevron, exact 42px inset details, and shared 220ms motion/presence | PASS — current-head visual and interaction proof |
 | Profile stats, heatmap, and model rows match Web identity | identity uses the Web 6px name/handle subgroup and 20/28 + 24/32 typography; stat values/labels use 14px/20px in an exact 18px-radius card; heatmap uses Web weekday pads, 40 week columns, 15.0625px cells, 5px radius, and exact month anchors; model rows retain 14px mapped provider SVGs or neutral fallbacks with 8px gaps | PASS — current-head visual proof for real identity/stats/heatmap/empty state; populated model branch source-tested |
 | Worktrees rows and empty state match Web density and typography | real empty state is exact 624×70 with 24×16 padding, 10px radius, and 14px/20px copy; populated rows have no artificial 96px minimum, mono paths truncate, and linked conversation titles use regular description typography | PASS — current-head empty-state visual proof; populated rows source-tested |
@@ -158,6 +159,12 @@ The retained replacement cells:
 
 ## Verification results
 
+- Current-head AppSnap proof preserves the unavailable host boundary while
+  aligning all four Capture rows. Enable's disabled switch converged from
+  `y=337` to Web `y=325`; status remains visible as 11/16.5 supplemental
+  metadata. Evidence is under `shots/2026-08-05/appsnap-current-head/`.
+- AppSnap focused rerun: 1 file, 2/2 tests; Lynx-for-Web and Native/Desktop
+  builds pass. Bundles: Lynx-for-Web `526cf88a…`; Native `0528a538…`.
 - Current-head Integrations proof covers exact four-row form geometry, two
   canonical project choices, three advanced permissions, and both disclosure
   exit lifecycles. Access-all state was restored and the snapshot hash stayed

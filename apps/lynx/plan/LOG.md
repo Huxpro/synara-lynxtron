@@ -5818,3 +5818,12 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Access all最终恢复且snapshot hash不变。focused suite **3/3**，
   Lynx-for-Web/Native builds通过；证据在
   `shots/2026-08-05/integrations-current-head/`。
+- current-head AppSnap保持真实unavailable capability boundary，但修复其shared row
+  anatomy：`Unavailable in this runtime`此前位于Enable copy内，使disabled switch按整块
+  status居中到y=337而非Web共同baseline y=325；四行还依赖固定min-height与后行top
+  dividers。改为`SettingsAppSnapMain`（title/description+switch）、11/16.5 metadata
+  sibling、20px title lines、content-driven rows与前行bottom divider。final Enable
+  row `457/305/622/81.5`、main `469/315/598/40`、switch `1035/325/32/20`、
+  status `469/359/598/16.5` exact；Shortcut/Destination/Capture sound也由内容自然
+  复现Web bounds。focused suite **2/2**，Lynx-for-Web/Native builds通过；证据在
+  `shots/2026-08-05/appsnap-current-head/`。
