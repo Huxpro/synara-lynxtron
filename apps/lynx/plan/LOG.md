@@ -5849,3 +5849,12 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   output/message，避免把provider-level失败静默当成功。
   focused Providers+navigation **15/15**，Lynx-for-Web/Native builds、reuse/style
   strict checks通过；证据在`shots/2026-08-05/providers-current-head/`。
+- Providers Native follow-up用configured `60462` production bundle
+  `98083afb…`与startup deep link直接进入目标页；每个client均从launch PID/lsof解析，
+  未按历史port猜测。closed首update row `596x58`、首tool row `596x44`；documented
+  `scroll-view.scrollTo(offset:950)`后真实显示9个Installed CLIs。DevTool
+  press/release打开Codex为`596x257`，content `596x213`，两个input wrapper
+  `572x28`且Native INPUT均`readonly=false`并发布focus/blur/selection/confirm。
+  `CODEX_HOME`只做focus tap，不输入字符，因此不伪称IME/text-entry认证。四态
+  exact-owned captures的warning/error console均空，KV/window/settings/SQLite全部
+  byte-exact不变；证据在`shots/2026-08-06/providers-native-current/`。

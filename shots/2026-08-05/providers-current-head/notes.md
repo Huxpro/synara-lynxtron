@@ -88,9 +88,9 @@ repeated row-owner error.
 - `providers-lynx-web-1280x820-light.png`: final current-head fast-loop frame.
 - `providers-lynx-web-tools-1280x820-light.png`: all nine tool rows.
 - `providers-lynx-web-codex-open-1280x820-light.png`: open Codex disclosure.
-- `providers-lynx-1280x820-light.png`: earlier Native reference already in the
-  directory; it is not claimed as current-head Native certification for this
-  focused slice.
+- `providers-lynx-1280x820-light.png`: earlier Native reference retained for
+  history. Current-head Native certification is now under
+  `shots/2026-08-06/providers-native-current/`.
 
 ## Gates
 
@@ -98,6 +98,9 @@ repeated row-owner error.
 - Lynx-for-Web production build with the isolated relay: passed.
 - Native/Desktop production build: passed with only the existing
   `color-scheme`, `overflow-wrap`, and optional `ws` native-module warnings.
+- Exact-owned Native certification covers closed, tools-visible, Codex-open,
+  and input-focus-tap states with empty warning/error consoles. It does not
+  claim text entry or IME behavior.
 - Reuse baseline regenerated and strict check passed; Settings gate is 53.75%.
 - Style strict check passed at 98.07% weighted coverage.
 - `bun fmt`, `bun lint`, and `bun typecheck` were not run because the current
