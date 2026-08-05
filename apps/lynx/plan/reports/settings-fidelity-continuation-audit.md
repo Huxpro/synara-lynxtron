@@ -54,6 +54,7 @@ complete.
 | Shared content section labels use one Web identity | General, Appearance, Provider Picker, and Usage use 12px/400/18px, 4×8 padding, muted/58; Profile dashboard heading intentionally distinct | PASS |
 | Standard Settings cards use one Web radius | General, Appearance, Provider Picker, and generic cards resolve to rounded-lg / 10px; custom quota cards excluded | PASS |
 | Provider Picker typography matches its Web owners | standard header uses SettingsRow token; provider items use text-sm 14px/20px | PASS |
+| Provider Picker supporting copy preserves Web hierarchy | description 12px/18px; status 11px/17px with existing offsets | PASS |
 | Settings sidebar search matches Web intent | shared ranking/index, real Lynx input/results/selection/row targeting, canonical section icons, Web-owned horizontal gutter, Web/Lynx filtered evidence, Native default anatomy | PASS — Native filtered text entry not claimed |
 | Populated destructive/mutation paths are visually certified without fabricated data | canonical snapshot has no managed worktree/integration/archived rows; logic/RPC tests cover the product paths and direct SQLite fixtures are forbidden | NOT APPLICABLE — no safe canonical populated state |
 | Full final heavy pass | AGENTS requires `bun fmt`, `bun lint`, `bun typecheck`; current conversation does not explicitly authorize running them | **BLOCKED BY INSTRUCTION** |

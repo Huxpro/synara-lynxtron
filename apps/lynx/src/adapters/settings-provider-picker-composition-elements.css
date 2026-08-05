@@ -62,8 +62,11 @@
 .SharedSettingsProviderPickerDescription,
 .SharedSettingsProviderPickerStatus {
   color: var(--muted-foreground);
+}
+
+.SharedSettingsProviderPickerDescription {
   font-size: 12px;
-  line-height: 17px;
+  line-height: 18px;
 }
 
 .SharedSettingsProviderPickerDescription {
@@ -72,6 +75,8 @@
 
 .SharedSettingsProviderPickerStatus {
   margin-top: 6px;
+  font-size: 11px;
+  line-height: 17px;
 }
 
 .SharedSettingsProviderPickerList {

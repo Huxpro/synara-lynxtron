@@ -61,5 +61,11 @@ describe('Lynx Settings section labels', () => {
     expect(providerStyles).toMatch(
       /\.SharedSettingsProviderPickerItemTitle\s*\{[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;/s
     );
+    expect(providerStyles).toMatch(
+      /\.SharedSettingsProviderPickerDescription\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s
+    );
+    expect(providerStyles).toMatch(
+      /\.SharedSettingsProviderPickerStatus\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*17px;/s
+    );
   });
 });

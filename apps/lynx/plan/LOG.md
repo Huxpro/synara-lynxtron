@@ -5470,3 +5470,6 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   仍13px而Web复用12px SettingsRow token，provider item则Web `text-sm`为14/20，
   Lynx为13/18。分别改为shared row token与14/20，同时保持42px item min-height。
   focused tests **3/3**，两端build通过。
+- Provider Picker supporting copy继续拆分真实owner：description按标准SettingsRow
+  12/18，status按Web独立11px supporting text（17px pixel line-height）；保留既有
+  2px/6px vertical offsets。focused tests **3/3**，两端build通过。
