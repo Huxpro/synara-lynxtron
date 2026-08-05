@@ -5490,3 +5490,7 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   20% foreground mix（light `#cfcfcf`、dark `#454545`）、border 14%，on-state
   border/fill均accent，thumb恒白。General/Provider/AppSnap三owner统一消费语义
   tokens。focused tests **6/6**，两端build通过。
+- Provider switch虽发布ui-hover/focus/pressed classes却无CSS消费，键盘焦点不可见。
+  现复用General Native switch反馈：hover 1px border halo、focus 2px ring、pressed
+  0.8；Web thumb-scale micro-motion保留为平台边界。focused tests **3/3**，两端
+  build通过。

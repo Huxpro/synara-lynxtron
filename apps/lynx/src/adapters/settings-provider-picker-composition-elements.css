@@ -128,6 +128,18 @@
   background-color: var(--color-text-accent);
 }
 
+.SharedSettingsProviderPickerSwitch.ui-hover {
+  box-shadow: 0 0 0 1px var(--border);
+}
+
+.SharedSettingsProviderPickerSwitch.ui-focus {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.SharedSettingsProviderPickerSwitch.ui-pressed {
+  opacity: 0.8;
+}
+
 .SharedSettingsProviderPickerSwitchThumb {
   width: 16px;
   height: 16px;

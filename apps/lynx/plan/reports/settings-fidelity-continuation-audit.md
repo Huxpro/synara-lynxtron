@@ -60,6 +60,7 @@ complete.
 | Provider Picker move controls use real icons | Native keeps explicit up/down adaptation with generated chevrons; disabled/action contracts unchanged | PASS |
 | Settings switch geometry matches Web desktop primitive | General, Provider Picker, and disabled AppSnap use 32×20 track with 16px thumb | PASS |
 | Settings switch paint matches Web desktop primitive | 14% border, theme-safe 20% off track, accent on state, white thumb across all owners | PASS |
+| Provider switch has visible Native interaction feedback | hover/focus/pressed classes now render halo/ring/press feedback; Web thumb-scale motion remains platform-specific | PASS |
 | Settings sidebar search matches Web intent | shared ranking/index, real Lynx input/results/selection/row targeting, canonical section icons, Web-owned horizontal gutter, Web/Lynx filtered evidence, Native default anatomy | PASS — Native filtered text entry not claimed |
 | Populated destructive/mutation paths are visually certified without fabricated data | canonical snapshot has no managed worktree/integration/archived rows; logic/RPC tests cover the product paths and direct SQLite fixtures are forbidden | NOT APPLICABLE — no safe canonical populated state |
 | Full final heavy pass | AGENTS requires `bun fmt`, `bun lint`, `bun typecheck`; current conversation does not explicitly authorize running them | **BLOCKED BY INSTRUCTION** |

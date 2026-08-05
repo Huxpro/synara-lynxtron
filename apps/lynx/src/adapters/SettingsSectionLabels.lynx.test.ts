@@ -91,5 +91,8 @@ describe('Lynx Settings section labels', () => {
     expect(providerStyles).toMatch(
       /\.SharedSettingsProviderPickerSwitchThumb\s*\{[^}]*background-color:\s*#ffffff;/s
     );
+    expect(providerStyles).toMatch(
+      /\.SharedSettingsProviderPickerSwitch\.ui-focus\s*\{[^}]*box-shadow:\s*0 0 0 2px var\(--ring\);/s
+    );
   });
 });
