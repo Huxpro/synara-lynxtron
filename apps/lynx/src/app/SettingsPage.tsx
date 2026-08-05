@@ -91,10 +91,14 @@ import {
 import { Button } from '../components/ui/button';
 import { SettingsGeneralBooleanControlElement } from '../adapters/SettingsGeneralCompositionElements.lynx';
 import { SettingsResetIcon } from '../adapters/SettingsResetIcon.lynx';
-import type { ResolvedKeybindingsConfig } from '@synara/contracts';
+import type {
+  ResolvedKeybindingsConfig,
+  ServerSettingsView,
+} from '@synara/contracts';
 import { SettingsUsagePanel } from './SettingsUsagePanel';
 import { SettingsProfilePanel } from './SettingsProfilePanel.lynx';
 import { SettingsArchivedPanel } from './SettingsArchivedPanel.lynx';
+import { SettingsCustomModelsPanel } from './SettingsCustomModelsPanel.lynx';
 import { SettingsWorktreesPanel } from './SettingsWorktreesPanel.lynx';
 import { SettingsSkillsPanel } from './SettingsSkillsPanel.lynx';
 import { SettingsAdvancedPanel } from './SettingsAdvancedPanel.lynx';
@@ -570,6 +574,17 @@ export function SettingsPage({
     runSave(() => persistGitWritingModel(next));
   }
 
+  function applyModelSettings(next: ServerSettingsView) {
+    const selected = readSettingsGitWritingModelValues(next);
+    setModels(selected);
+    setModelOptions(
+      buildSettingsGitWritingModelOptions({
+        settings: next,
+        selected,
+      })
+    );
+  }
+
   function updateBehavior(
     key: BehaviorSettingKey,
     value: boolean
@@ -834,12 +849,17 @@ export function SettingsPage({
               ) : section === 'archived' ? (
                 <SettingsArchivedPanel />
               ) : section === 'models' ? (
-                <SettingsGitWritingModelComposition
-                  values={models}
-                  defaults={DEFAULT_SETTINGS_GIT_WRITING_MODEL_VALUES}
-                  options={modelOptions}
-                  onChange={updateModels}
-                />
+                <view className="SettingsModelsStack">
+                  <SettingsGitWritingModelComposition
+                    values={models}
+                    defaults={DEFAULT_SETTINGS_GIT_WRITING_MODEL_VALUES}
+                    options={modelOptions}
+                    onChange={updateModels}
+                  />
+                  <SettingsCustomModelsPanel
+                    onSettingsChange={applyModelSettings}
+                  />
+                </view>
               ) : section === 'providers' ? (
                 <>
                   <SettingsProviderUpdateChecksComposition

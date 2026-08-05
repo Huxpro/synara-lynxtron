@@ -1,0 +1,170 @@
+.SettingsCustomModelsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.SettingsCustomModelsSectionTitle {
+  width: 100%;
+  height: 26px;
+  padding: 4px 8px;
+}
+
+.SettingsCustomModelsSectionTitleText {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  opacity: 0.58;
+}
+
+.SettingsCustomModelsCard {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.SettingsCustomModelsRow {
+  padding: 10px 12px;
+}
+
+.SettingsCustomModelsHeader {
+  width: 100%;
+}
+
+.SettingsCustomModelsCopy,
+.SettingsCustomModelsEditor {
+  display: flex;
+  flex-direction: column;
+}
+
+.SettingsCustomModelsCopy {
+  gap: 2px;
+}
+
+.SettingsCustomModelsTitleLine,
+.SettingsCustomModelsEditorRow,
+.SettingsCustomModelsListRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.SettingsCustomModelsTitleLine {
+  min-height: 20px;
+  gap: 6px;
+}
+
+.SettingsCustomModelsTitle {
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.SettingsCustomModelsDescription,
+.SettingsCustomModelsState {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.SettingsCustomModelsEditor {
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.SettingsCustomModelsEditorRow {
+  width: 100%;
+  gap: 8px;
+}
+
+.SettingsCustomModelsProviderTrigger {
+  width: 144px;
+  height: 28px;
+  justify-content: flex-start;
+  gap: 8px;
+  padding: 5px 10px;
+}
+
+.SettingsCustomModelsProviderLabel {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  color: var(--foreground);
+  font-size: 12px;
+  line-height: 18px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.SettingsCustomModelsChevron {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.SettingsCustomModelsProviderPopup {
+  width: 160px;
+}
+
+.SettingsCustomModelsInput {
+  min-width: 0;
+  height: 28px;
+  flex: 1;
+}
+
+.SettingsCustomModelsAdd {
+  width: 69px;
+  height: 32px;
+  flex-shrink: 0;
+  gap: 8px;
+  padding: 7px 12px;
+}
+
+.SettingsCustomModelsError {
+  color: var(--destructive);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.SettingsCustomModelsList {
+  overflow: hidden;
+  margin-top: 4px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.SettingsCustomModelsListRow {
+  min-height: 36px;
+  gap: 12px;
+  padding: 8px 12px;
+}
+
+.SettingsCustomModelsListRow--divided {
+  border-top: 1px solid var(--border);
+}
+
+.SettingsCustomModelsRowProvider {
+  width: 96px;
+  overflow: hidden;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 18px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.SettingsCustomModelsRowSlug {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  color: var(--foreground);
+  font-family: var(--font-chat-code-family);
+  font-size: 14px;
+  line-height: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

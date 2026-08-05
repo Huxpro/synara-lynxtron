@@ -117,6 +117,12 @@
   --app-density-composer-footer-padding-end: 9.2px;
 }
 
+.SettingsModelsStack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
 .AppMain {
   flex: 1;
   min-width: 0;

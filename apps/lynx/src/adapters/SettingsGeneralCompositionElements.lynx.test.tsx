@@ -71,6 +71,9 @@ describe('Settings General fidelity', () => {
     expect(styles).toMatch(
       /\.SharedSettingsGeneralProviderLabel\s*\{[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s
     );
+    expect(styles).toMatch(
+      /\.SharedSettingsGeneralRowTitleLine\s*\{[^}]*min-height:\s*20px;/s
+    );
   });
 
   it('keeps unavailable switches visible but inert', () => {

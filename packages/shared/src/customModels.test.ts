@@ -1,21 +1,27 @@
-import { getModelOptions } from "@synara/shared/model";
+import { getModelOptions } from "./model";
+import { describe, expect, it } from "vitest";
+
 import {
   MAX_CUSTOM_MODEL_LENGTH,
   validateCustomModelInput,
-} from "@synara/shared/customModels";
-import { describe, expect, it } from "vitest";
+} from "./customModels";
 
 describe("validateCustomModelInput", () => {
-  it("returns the same validation messages as the custom-model editor", () => {
-    expect(validateCustomModelInput({ provider: "codex", value: "   ", savedModels: [] })).toEqual({
-      error: "Enter a model slug.",
-    });
-
-    const builtIn = getModelOptions("codex")[0]!.slug;
+  it("rejects empty, built-in, oversized, and duplicate model slugs", () => {
     expect(
-      validateCustomModelInput({ provider: "codex", value: builtIn, savedModels: [] }),
+      validateCustomModelInput({
+        provider: "codex",
+        value: " ",
+        savedModels: [],
+      }),
+    ).toEqual({ error: "Enter a model slug." });
+    expect(
+      validateCustomModelInput({
+        provider: "codex",
+        value: getModelOptions("codex")[0]!.slug,
+        savedModels: [],
+      }),
     ).toEqual({ error: "That model is already built in." });
-
     expect(
       validateCustomModelInput({
         provider: "codex",
@@ -25,7 +31,6 @@ describe("validateCustomModelInput", () => {
     ).toEqual({
       error: `Model slugs must be ${MAX_CUSTOM_MODEL_LENGTH} characters or less.`,
     });
-
     expect(
       validateCustomModelInput({
         provider: "codex",
@@ -35,7 +40,7 @@ describe("validateCustomModelInput", () => {
     ).toEqual({ error: "That custom model is already saved." });
   });
 
-  it("returns the normalized model when it can be saved", () => {
+  it("returns the provider-normalized slug", () => {
     expect(
       validateCustomModelInput({
         provider: "codex",

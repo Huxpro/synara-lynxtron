@@ -8,6 +8,10 @@
       "types": "./src/model.ts",
       "import": "./src/model.ts"
     },
+    "./customModels": {
+      "types": "./src/customModels.ts",
+      "import": "./src/customModels.ts"
+    },
     "./git": {
       "types": "./src/git.ts",
       "import": "./src/git.ts"

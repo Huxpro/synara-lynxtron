@@ -23,6 +23,7 @@ import {
   normalizeModelSlug,
   resolveSelectableModel,
 } from "@synara/shared/model";
+import { MAX_CUSTOM_MODEL_LENGTH } from "@synara/shared/customModels";
 import {
   APP_SNAP_SHORTCUT_KEYS,
   APP_SNAP_SHORTCUT_MODIFIERS,
@@ -69,7 +70,7 @@ import {
 } from "./components/settings/SettingsAppearanceComposition.logic";
 const SERVER_SETTINGS_MIGRATION_STORAGE_KEY = "synara:server-settings-migrated:v1";
 const MAX_CUSTOM_MODEL_COUNT = 32;
-export const MAX_CUSTOM_MODEL_LENGTH = 256;
+export { MAX_CUSTOM_MODEL_LENGTH };
 export { MIN_CHAT_FONT_SIZE_PX, MAX_CHAT_FONT_SIZE_PX, DEFAULT_CHAT_FONT_SIZE_PX };
 export {
   DEFAULT_TERMINAL_FONT_FAMILY,

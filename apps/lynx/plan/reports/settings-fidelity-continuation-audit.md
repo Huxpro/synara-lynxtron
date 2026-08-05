@@ -105,7 +105,7 @@ complete.
 | Skills rows match Web density and provider identity | real 114-row catalog uses separate main/control and supplemental metadata owners; source/path is exact 11px/16.5px, switches share Web anchors, previous-row bottom dividers match `divide-y`, and overlapping 16px provider-copy badges use mapped 12px SVGs or neutral fallbacks | PASS — current-head populated visual proof |
 | Integrations rows and actions match Web content-driven geometry | form/connection/setup/empty rows no longer force 79px/58px minima and connected-agent action groups self-size instead of reserving 190px | PASS |
 | Integrations disclosures reuse shared motion | project picker and advanced permissions use shared 220ms presence/content motion; Review publishes expanded state and a generated rotating 14px chevron | PASS |
-| Models single-row card and select wrapper match Web | Git writing row is terminal with no trailing divider; interactive trigger publishes the control label while reusing calibrated writing-model select chrome | PASS |
+| Models includes complete Git-writing and custom-model workflows | Git writing row is terminal with exact 20px title line and no trailing divider; custom models use shared validation, canonical server settings, eight-provider editor, Add/Enter/remove/reset, immediate picker refresh, and exact Web geometry | PASS — current-head visual and real add-picker-remove proof |
 | Shared Button icon-label spacing matches Web | default/sm/xs gaps are 8/6/4px; mixed Appearance labels retain `LxButton__text` styling | PASS |
 | Settings large card radius resolves at runtime | the Lynx root defines shared `--radius-lg: 10px`; AppSnap, Skills, and Worktrees representative surfaces compute to 10px, while Advanced/Integrations consumers are statically covered | PASS — current-head runtime and consumer audit |
 | Settings sidebar search matches Web intent | shared ranking/index, real Lynx input/results/selection/row targeting, canonical section icons, Web-owned horizontal gutter, Web/Lynx filtered evidence, Native default anatomy | PASS — Native filtered text entry not claimed |
@@ -158,6 +158,17 @@ The retained replacement cells:
 
 ## Verification results
 
+- Current-head Models audit found the entire Custom models workflow missing.
+  Lynx now shares Web validation, reads/writes canonical provider custom-model
+  arrays, supports eight-provider selection/Add/Enter/remove/reset, and updates
+  Git writing options immediately. A real temporary Codex slug was added,
+  observed in the writing picker, then removed through rendered controls with
+  no residue. Evidence is under
+  `shots/2026-08-05/models-current-head-complete/`.
+- Current-head Models geometry is exact for both Generation and Custom models
+  sections. Shared tests 2/2, Web tests 2/2, Lynx tests 15/15; all production
+  builds pass. Bundles: Web `ecb93a6e…`, Lynx-for-Web `e8a2aceb…`, Native
+  `9768fe07…`.
 - Current-head populated Skills harness used the real 114-item catalog. Main
   title/description/control layout is now independent from 11/16.5 provider
   metadata and paths; switch anchors and previous-row bottom dividers match Web

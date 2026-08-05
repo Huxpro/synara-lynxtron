@@ -5778,3 +5778,15 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   provider stacks/path truncation与114 rows均保留。focused suite **3/3**，
   Lynx-for-Web/Native builds通过；证据在
   `shots/2026-08-05/skills-current-head-populated/`。
+- current-head Models对照发现此前只实现`Generation defaults`，整个Web
+  `Custom models` workflow缺失，不是单纯几何残差。抽出
+  `@synara/shared/customModels`作为Web/Lynx共同validation/normalization owner；
+  Lynx新增canonical `server.getSettings`/`server.updateSettings` editor，覆盖8个Web可编辑
+  providers（Droid继续因authoritative ACP catalog排除）、provider menu、native confirm、
+  Add、validation、saved rows、Remove、Reset，并在success后即时刷新Git writing options。
+  真实rendered路径验证空Add错误、添加`trae-fidelity-temp-model`、saved Codex row、
+  Git writing menu即时出现对应option、rendered Remove后row/option消失且无settings残留。
+  同时修shared General title-line 20px与Custom models单SettingsRow anatomy；final
+  Generation section/card/row与Custom section/card/editor/provider/input/Add全部exact。
+  shared **2/2**、Web **2/2**、Lynx **15/15** tests，三端build通过；证据在
+  `shots/2026-08-05/models-current-head-complete/`。

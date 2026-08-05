@@ -6,14 +6,15 @@ import {
   DEFAULT_GIT_TEXT_GENERATION_MODEL,
   type ProviderKind,
 } from "@synara/contracts";
-import { getModelOptions, normalizeModelSlug } from "@synara/shared/model";
+import {
+  validateCustomModelInput,
+} from "@synara/shared/customModels";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback, useMemo, useState } from "react";
 
 import {
   CUSTOM_MODEL_EDITOR_PROVIDER_SETTINGS,
   type AppSettingsBinding,
-  MAX_CUSTOM_MODEL_LENGTH,
   getCustomModelsForProvider,
   getDefaultCustomModelsForProvider,
   getGitTextGenerationModelOptions,
@@ -44,31 +45,6 @@ import {
   isGitWritingModelProvider,
   readSettingsGitWritingModelValues,
 } from "./SettingsGitWritingModelComposition.logic";
-
-type CustomModelValidationResult =
-  | { readonly model: string; readonly error?: never }
-  | { readonly model?: never; readonly error: string };
-
-export function validateCustomModelInput(input: {
-  readonly provider: ProviderKind;
-  readonly value: string;
-  readonly savedModels: readonly string[];
-}): CustomModelValidationResult {
-  const normalized = normalizeModelSlug(input.value, input.provider);
-  if (!normalized) {
-    return { error: "Enter a model slug." };
-  }
-  if (getModelOptions(input.provider).some((option) => option.slug === normalized)) {
-    return { error: "That model is already built in." };
-  }
-  if (normalized.length > MAX_CUSTOM_MODEL_LENGTH) {
-    return { error: `Model slugs must be ${MAX_CUSTOM_MODEL_LENGTH} characters or less.` };
-  }
-  if (input.savedModels.includes(normalized)) {
-    return { error: "That custom model is already saved." };
-  }
-  return { model: normalized };
-}
 
 function isCustomModelEditorProvider(value: string | null): value is ProviderKind {
   return CUSTOM_MODEL_EDITOR_PROVIDER_SETTINGS.some((config) => config.provider === value);
