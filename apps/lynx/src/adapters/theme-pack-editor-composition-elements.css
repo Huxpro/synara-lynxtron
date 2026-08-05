@@ -98,12 +98,63 @@
 .SharedThemePackCodeSelect {
   width: 100%;
   min-height: 28px;
+  justify-content: flex-start;
+  gap: 8px;
   padding-top: 5px;
   padding-bottom: 5px;
 }
 
 .SharedThemePackCodePopup {
   width: 220px;
+}
+
+.SharedThemePackCodeOption {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.SharedThemePackCodeSwatch {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 6px;
+}
+
+.SharedThemePackCodeSwatchText {
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 10px;
+}
+
+.SharedThemePackCodeLabel {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--foreground);
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.SharedThemePackCodeChevron {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.SharedThemePackCodeMenuItem {
+  min-height: 36px;
+  padding: 8px;
+  border-radius: 10px;
 }
 
 .SharedThemePackSwitch {

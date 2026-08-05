@@ -2,7 +2,11 @@ import { describe, expect, it, rs } from '@rstest/core';
 import { fireEvent, render } from '@lynx-js/react/testing-library';
 import { readFileSync } from 'node:fs';
 
-import { ThemePackBooleanControlElement } from './ThemePackEditorCompositionElements.lynx';
+import {
+  ThemePackBooleanControlElement,
+  ThemePackCodeThemeControlElement,
+  mixThemeColors,
+} from './ThemePackEditorCompositionElements.lynx';
 
 function switchElement(): Element {
   const element = elementTree.root?.querySelector('.SharedThemePackSwitch');
@@ -50,6 +54,65 @@ describe('ThemePack boolean interaction contract', () => {
     );
     expect(styles).toMatch(
       /\.SharedThemePackSwitch--on \.SharedThemePackSwitchThumb\s*\{[^}]*transform:\s*translateX\(12px\);/s
+    );
+    expect(styles).toMatch(
+      /\.SharedThemePackCodeSwatch\s*\{[^}]*width:\s*20px;[^}]*height:\s*20px;[^}]*border-radius:\s*6px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedThemePackCodeLabel\s*\{[^}]*font-size:\s*13px;[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s
+    );
+  });
+
+  it('renders palette previews in the code-theme trigger and options', () => {
+    render(
+      <ThemePackCodeThemeControlElement
+        value="linear"
+        label="Linear"
+        ariaLabel="Light theme code theme"
+        theme={{
+          accent: '#5e6ad2',
+          surface: '#ffffff',
+          ink: '#1a1c1f',
+          contrast: 50,
+          fonts: { ui: null, code: null },
+          opaqueWindows: false,
+        }}
+        options={[
+          {
+            id: 'linear',
+            label: 'Linear',
+            previewTheme: {
+              accent: '#5e6ad2',
+              surface: '#ffffff',
+              ink: '#1a1c1f',
+              contrast: 50,
+              fonts: { ui: null, code: null },
+              opaqueWindows: false,
+            },
+          },
+        ]}
+        onChange={() => {}}
+      />
+    );
+
+    const trigger = elementTree.root?.querySelector('.LxMenuTrigger');
+    if (!trigger) throw new Error('expected code theme trigger');
+    expect(trigger.getAttribute('aria-label')).toBe('Light theme code theme');
+    expect(
+      elementTree.root?.querySelector('.SharedThemePackCodeSwatchText')?.textContent
+    ).toBe('Aa');
+    expect(
+      elementTree.root?.querySelector('.SharedThemePackCodeLabel')?.textContent
+    ).toBe('Linear');
+    expect(elementTree.root?.querySelector('.SharedThemePackCodeChevron')).not.toBeNull();
+
+    fireEvent.tap(trigger);
+    const menuItem = elementTree.root?.querySelector('.SharedThemePackCodeMenuItem');
+    if (!menuItem) throw new Error('expected code theme option');
+    expect(menuItem.textContent).toContain('Aa');
+    expect(menuItem.textContent).toContain('Linear');
+    expect(mixThemeColors('#ffffff', '#1a1c1f', 0.16)).toBe(
+      'rgb(218, 219, 219)'
     );
   });
 

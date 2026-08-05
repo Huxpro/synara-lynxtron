@@ -2,6 +2,7 @@ import type { ReactNode } from '@lynx-js/react';
 
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
+import { ChevronDownIcon } from '../lib/icons.lynx';
 import {
   Menu,
   MenuPopup,
@@ -18,6 +19,52 @@ import type {
 import './theme-pack-editor-composition-elements.css';
 
 const HEX_COLOR_RE = /^#[0-9a-fA-F]{6}$/;
+
+export function mixThemeColors(
+  fromHex: string,
+  toHex: string,
+  amount: number
+): string {
+  if (!HEX_COLOR_RE.test(fromHex) || !HEX_COLOR_RE.test(toHex)) return fromHex;
+  const channel = (hex: string, offset: number) =>
+    Number.parseInt(hex.slice(offset, offset + 2), 16);
+  const clamped = Math.max(0, Math.min(1, amount));
+  const mix = (offset: number) =>
+    Math.round(
+      channel(fromHex, offset) +
+        (channel(toHex, offset) - channel(fromHex, offset)) * clamped
+    );
+  return `rgb(${mix(1)}, ${mix(3)}, ${mix(5)})`;
+}
+
+function CodeThemeOption(props: {
+  readonly label: string;
+  readonly theme: ChromeTheme;
+}) {
+  return (
+    <view className="SharedThemePackCodeOption">
+      <view
+        className="SharedThemePackCodeSwatch"
+        style={{
+          backgroundColor: props.theme.surface,
+          borderColor: mixThemeColors(
+            props.theme.surface,
+            props.theme.ink,
+            0.16
+          ),
+        }}
+      >
+        <text
+          className="SharedThemePackCodeSwatchText"
+          style={{ color: props.theme.accent }}
+        >
+          Aa
+        </text>
+      </view>
+      <text className="SharedThemePackCodeLabel">{props.label}</text>
+    </view>
+  );
+}
 
 export function ThemePackRootElement(props: {
   readonly children?: ReactNode;
@@ -114,9 +161,18 @@ export function ThemePackCodeThemeControlElement(props: {
 }) {
   return (
     <Menu>
-      <MenuTrigger>
-        <Button variant="outline" className="SharedThemePackCodeSelect">
-          {props.label}
+      <MenuTrigger ariaLabel={props.ariaLabel}>
+        <Button
+          variant="outline"
+          className="SharedThemePackCodeSelect"
+          aria-label={props.ariaLabel}
+        >
+          <CodeThemeOption label={props.label} theme={props.theme} />
+          <ChevronDownIcon
+            className="SharedThemePackCodeChevron"
+            size={14}
+            color="var(--muted-foreground)"
+          />
         </Button>
       </MenuTrigger>
       <MenuPopup className="SharedThemePackCodePopup">
@@ -127,8 +183,15 @@ export function ThemePackCodeThemeControlElement(props: {
           }}
         >
           {props.options.map((option) => (
-            <MenuRadioItem key={option.id} value={option.id}>
-              {option.label}
+            <MenuRadioItem
+              key={option.id}
+              value={option.id}
+              className="SharedThemePackCodeMenuItem"
+            >
+              <CodeThemeOption
+                label={option.label}
+                theme={option.previewTheme}
+              />
             </MenuRadioItem>
           ))}
         </MenuRadioGroup>
