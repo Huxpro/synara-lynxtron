@@ -1,0 +1,36 @@
+{
+  "client": "native",
+  "stateId": "worktrees-populated-native",
+  "buildSha256": "7b17b78006cd415caec2b5bf405843ec2a3644f48d2d96f6b94afad98659fecb",
+  "snapshotSha256": "cd3e1e9efe5d373efd3271338eb504f94f98f5aea24a7b3df43acbb9d5e06710",
+  "stateEcho": {
+    "semanticRoute": "settings/worktrees",
+    "theme": "light",
+    "density": "comfortable",
+    "interactionState": "populated"
+  },
+  "identity": {
+    "rootPid": 35940,
+    "descendantPids": [
+      35940
+    ],
+    "ownedPorts": [
+      8903
+    ],
+    "client": {
+      "id": "localhost:8903",
+      "info": {
+        "App": "@synara/lynx",
+        "appId": "0000",
+        "sdkVersion": "4.1"
+      },
+      "port": 8903
+    },
+    "session": {
+      "session_id": 1,
+      "type": "lynx",
+      "url": "file:///Users/bytedance/github/synara/apps/lynx/dist/desktop/main.lynx.bundle"
+    }
+  },
+  "consoleMessages": []
+}

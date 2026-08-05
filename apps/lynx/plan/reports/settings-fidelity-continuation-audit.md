@@ -101,7 +101,7 @@ complete.
 | AppSnap unavailable capability rows preserve Web anatomy | unavailable status follows the common main layout, disabled switch shares the Web baseline, all four rows are content-driven with 20px title lines and previous-row bottom dividers | PASS — honest capability delta and current-head visual proof |
 | Advanced rows and recovery details match shared Settings/disclosure behavior | keybindings/recovery main layouts, 11/16.5 metadata, and 24px actions match Web; controlled `What this does` uses a 16px trigger/chevron, exact 42px inset details, and shared 220ms motion/presence | PASS — current-head visual and interaction proof |
 | Profile stats, heatmap, and model rows match Web identity | identity uses the Web 6px name/handle subgroup and 20/28 + 24/32 typography; stat values/labels use 14px/20px in an exact 18px-radius card; heatmap uses Web weekday pads, 40 week columns, 15.0625px cells, 5px radius, and exact month anchors; model rows retain 14px mapped provider SVGs or neutral fallbacks with 8px gaps | PASS — current-head visual proof for real identity/stats/heatmap/empty state; populated model branch source-tested |
-| Worktrees rows and empty state match Web density and typography | real empty state is exact 624×70 with 24×16 padding, 10px radius, and 14px/20px copy; populated rows have no artificial 96px minimum, mono paths truncate, and linked conversation titles use regular description typography | PASS — current-head empty-state visual proof; populated rows source-tested |
+| Worktrees rows and empty state match Web density and typography | empty state remains exact 624×70; canonical `git.createWorktree` now proves the populated row, exact 540.109375px copy/path width, 11/18 conversation label, shared 4px list rhythm, and 24px Delete action across Browser and exact-owned Native | PASS — current-head populated proof in `shots/2026-08-06/worktrees-populated-current/` |
 | Archived empty and list states match Web hierarchy | empty state remains exact 624×182; real canonical create→archive proof now covers the populated title/description plus Restore/Delete action row with exact 24px, 10/15 xs controls and 8px action gap | PASS — current-head Browser and exact-owned Native populated proof in `shots/2026-08-06/archived-populated-current/` |
 | Skills rows match Web density and provider identity | real 114-row catalog uses separate main/control and supplemental metadata owners; source/path is exact 11px/16.5px, switches share Web anchors, previous-row bottom dividers match `divide-y`, and overlapping 16px provider-copy badges use mapped 12px SVGs or neutral fallbacks | PASS — current-head populated visual proof |
 | Integrations rows and actions match Web content-driven geometry | real form rows use exact 20px title lines, 12/18/500 titles, previous-row bottom dividers, and Web bounds; connection/setup/empty rows remain content-driven and action groups self-size | PASS — current-head real form proof |
@@ -393,6 +393,24 @@ The retained replacement cells:
   projections. SQLite, settings, Native KV, and window state returned to their
   original hashes. Evidence is under
   `shots/2026-08-06/archived-populated-current/`.
+- Current-head populated Worktrees proof replaces the previous source-only row
+  claim with a real reversible product path. An excluded disposable Git repo
+  plus canonical `git.createWorktree` produced one managed worktree that
+  `server.listWorktrees` returned to both clients; canonical
+  `git.removeWorktree` later restored an empty inventory and removed it from
+  disk.
+- The populated row exposed three real owners: a fixed 160px action wrapper
+  compressed path/copy content to 418px instead of Web's 540.109375px, the
+  conversation label used a 16px rather than 18px line box, and the empty
+  conversation branch skipped Web's 4px list rhythm. Actions now self-size,
+  only the optional hint owns 160px, the row gap is 10px, and both empty and
+  populated branches share one conversation-list wrapper.
+- Final Web/Lynx-for-Web title, path, conversation label, empty copy, and
+  24px Delete anchors are exact at `1280x820` DPR1. Exact-owned Native bundle
+  `7b17b780…`, root PID `35940`, PID-derived `localhost:8903/session 1`, and
+  `2560x1576` capture retain the same internal row geometry with an empty
+  console. Evidence is under
+  `shots/2026-08-06/worktrees-populated-current/`.
 - Settings focused continuation: 14 files, 50/50 tests.
 - AppSnap final focused check: 1 file, 2/2 tests.
 - Canonical taxonomy/explicit-owner gate: 1 file, 11/11 tests.

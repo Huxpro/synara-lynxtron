@@ -1,0 +1,249 @@
+{
+  "client": "native",
+  "stateId": "worktrees-populated-native",
+  "roles": {
+    "root": {
+      "nodeId": 170,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsPage SettingsPage--theme-light"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 788
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "panel": {
+      "nodeId": 302,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsWorktreesPanel"
+      },
+      "text": "",
+      "box": {
+        "x": 456,
+        "y": 118,
+        "width": 624,
+        "height": 139
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "row": {
+      "nodeId": 307,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsWorktreesRow"
+      },
+      "text": "",
+      "box": {
+        "x": 457,
+        "y": 150,
+        "width": 622,
+        "height": 106
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "title": {
+      "nodeId": 309,
+      "nodeName": "TEXT",
+      "attributes": {
+        "text": "Worktree",
+        "class": "SettingsWorktreesRowTitle"
+      },
+      "text": "",
+      "box": {
+        "x": 469,
+        "y": 160,
+        "width": 540,
+        "height": 18
+      },
+      "font": {
+        "family": "",
+        "size": "12px",
+        "weight": "500",
+        "lineHeight": "18px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "path": {
+      "nodeId": 310,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "SettingsWorktreesPath"
+      },
+      "text": "",
+      "box": {
+        "x": 469,
+        "y": 180,
+        "width": 540,
+        "height": 18
+      },
+      "font": {
+        "family": "var(--theme-font-code-family,\"JetBrains Mono Variable\",\"JetBrains Mono\",\"SF Mono\",\"SFMono-Regular\",Consolas,\"Liberation Mono\",Menlo,monospace)",
+        "size": "12px",
+        "weight": "normal",
+        "lineHeight": "18px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgba(13,13,13,0.596078)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "conversation-label": {
+      "nodeId": 311,
+      "nodeName": "TEXT",
+      "attributes": {
+        "text": "Conversations",
+        "class": "SettingsWorktreesConversationLabel"
+      },
+      "text": "",
+      "box": {
+        "x": 469,
+        "y": 206,
+        "width": 540,
+        "height": 18
+      },
+      "font": {
+        "family": "",
+        "size": "11px",
+        "weight": "500",
+        "lineHeight": "18px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgba(13,13,13,0.596078)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "description": {
+      "nodeId": 316,
+      "nodeName": "TEXT",
+      "attributes": {
+        "text": "No conversations linked to this worktree.",
+        "class": "SettingsWorktreesRowDescription"
+      },
+      "text": "",
+      "box": {
+        "x": 469,
+        "y": 228,
+        "width": 540,
+        "height": 18
+      },
+      "font": {
+        "family": "",
+        "size": "12px",
+        "weight": "normal",
+        "lineHeight": "18px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgba(13,13,13,0.596078)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "actions": {
+      "nodeId": 313,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsWorktreesActions"
+      },
+      "text": "",
+      "box": {
+        "x": 1019,
+        "y": 160,
+        "width": 48,
+        "height": 24
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

@@ -40,7 +40,7 @@
   padding: var(--app-density-settings-row-padding-y, 10px) 12px;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 20px;
+  gap: 10px;
 }
 
 .SettingsWorktreesRow--divided {
@@ -74,7 +74,7 @@
   color: var(--muted-foreground);
   font-size: 11px;
   font-weight: 500;
-  line-height: 16px;
+  line-height: 18px;
 }
 
 .SettingsWorktreesConversation {
@@ -93,13 +93,14 @@
 
 .SettingsWorktreesActions {
   display: flex;
-  width: 160px;
+  flex-shrink: 0;
   flex-direction: column;
   align-items: flex-end;
   gap: 8px;
 }
 
 .SettingsWorktreesActionHint {
+  width: 160px;
   color: var(--muted-foreground);
   font-size: var(--type-settings-row-description-size);
   line-height: var(--type-settings-row-description-line-height);

@@ -30,6 +30,9 @@ describe('Settings Worktrees fidelity', () => {
     expect(panelSource).toContain("queryKey: ['managed-worktrees']");
     expect(panelSource).toContain('No app-managed worktrees found yet.');
     expect(panelSource).toContain('No conversations linked to this worktree.');
+    expect(panelSource).toMatch(
+      /<view className="SettingsWorktreesConversationList">\s*<text className="SettingsWorktreesRowDescription">\s*No conversations linked to this worktree\./s
+    );
   });
 
   it('uses host confirmation and the canonical destructive transaction', () => {
@@ -67,13 +70,19 @@ describe('Settings Worktrees fidelity', () => {
       /\.SettingsWorktreesStateText\s*\{[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;/s
     );
     expect(styles).toMatch(
-      /\.SettingsWorktreesRow\s*\{[^}]*align-items:\s*flex-start;[^}]*justify-content:\s*space-between;[^}]*gap:\s*20px;/s
+      /\.SettingsWorktreesRow\s*\{[^}]*align-items:\s*flex-start;[^}]*justify-content:\s*space-between;[^}]*gap:\s*10px;/s
     );
     expect(styles).not.toMatch(
       /\.SettingsWorktreesRow\s*\{[^}]*min-height:/s
     );
     expect(styles).toMatch(
-      /\.SettingsWorktreesActions\s*\{[^}]*width:\s*160px;[^}]*align-items:\s*flex-end;/s
+      /\.SettingsWorktreesActions\s*\{[^}]*flex-shrink:\s*0;[^}]*align-items:\s*flex-end;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsWorktreesActionHint\s*\{[^}]*width:\s*160px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsWorktreesConversationLabel\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*18px;/s
     );
     expect(styles).toMatch(
       /\.SettingsWorktreesPath\s*\{[^}]*overflow:\s*hidden;[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s

@@ -199,9 +199,11 @@ export function SettingsWorktreesPanel() {
                     ))}
                   </view>
                 ) : (
-                  <text className="SettingsWorktreesRowDescription">
-                    No conversations linked to this worktree.
-                  </text>
+                  <view className="SettingsWorktreesConversationList">
+                    <text className="SettingsWorktreesRowDescription">
+                      No conversations linked to this worktree.
+                    </text>
+                  </view>
                 )}
               </view>
               <view className="SettingsWorktreesActions">

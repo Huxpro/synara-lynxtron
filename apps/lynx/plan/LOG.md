@@ -5947,3 +5947,29 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   `f53a83aa…`、window `2dd961d3…` byte-exact恢复。focused Archived+Advanced
   **6/6**，configured Lynx-for-Web与Native/Desktop builds通过；默认Native bundle已
   重建恢复58090。证据在`shots/2026-08-06/archived-populated-current/`。
+
+## 2026-08-06 — current-head Worktrees populated row
+
+- completion audit继续处理第二个source-only弱项。所有harness输入均位于excluded
+  `.p10-view`：初始化disposable Git repo，通过真实`git.createWorktree`显式创建
+  `.p10-view/worktrees/fidelity-worktree`；`server.listWorktrees`唯一返回该path和primary
+  workspace root，未伪造server inventory或SQLite。
+- 真实row暴露三个owner残差：`SettingsWorktreesActions`固定160px把copy/path从Web
+  540.109375px压到418px；`Conversations`为11/16而Web为11/18；empty conversation
+  直接跟label、缺Web `space-y-1`的4px。修复为action wrapper自然自宽、只有optional
+  hint保留160px，copy→action gap为10px，label 11/18，empty/populated都复用
+  `SettingsWorktreesConversationList`。
+- final Web/Lynx-for-Web anchors逐项exact：title `469/161/540.109375/18`、path
+  `469/181/540.109375/18`、label `469/207/540.109375/18`、empty copy
+  `469/229/540.109375/18`、Delete `1019.109375/161/47.890625/24`。Browser runtime、
+  visualViewport与PNG均1280×820 DPR1，errors为空。
+- exact-owned Native configured bundle `7b17b780…`，root PID35940，
+  PID-derived localhost:8903/session1，session URL为current
+  `apps/lynx/dist/desktop/main.lynx.bundle`；raw2560×1576，row622×106，内部
+  title/path/label/description/actions尺寸与Browser一致，仅整体content frame y-1，
+  console 0。
+- cleanup走canonical `git.removeWorktree({force:true})`，随后server inventory为空；
+  disposable repo/worktree均删除。SQLite `cd3e1e9e…`、settings `d221bb25…`、KV
+  `f53a83aa…`、window `2dd961d3…` byte-exact。focused Worktrees+Archived **6/6**、
+  Worktrees final **3/3**，configured两端build通过。证据在
+  `shots/2026-08-06/worktrees-populated-current/`。
