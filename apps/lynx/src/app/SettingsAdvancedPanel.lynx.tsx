@@ -5,6 +5,13 @@ import { createAllThreadsMessagelessSelector } from '@synara-web/storeSelectors'
 import { useStore } from '@synara-web/store';
 
 import { Button } from '../components/ui/button';
+import { ChevronRightIcon } from '../lib/icons.lynx';
+import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
+import {
+  disclosureChevronClassName,
+  disclosureContentClassName,
+  useLynxDisclosurePresence,
+} from '../platform/motion.lynx';
 import {
   fetchServerConfig,
   openPathInEditor,
@@ -41,6 +48,7 @@ export function SettingsAdvancedPanel() {
   const threadsHydrated = useStore((state) => state.threadsHydrated);
   const [openingFile, setOpeningFile] = useState(false);
   const [repairing, setRepairing] = useState(false);
+  const [showRecoveryTools, setShowRecoveryTools] = useState(false);
   const [notice, setNotice] = useState<{
     readonly intent: 'success' | 'error';
     readonly message: string;
@@ -54,6 +62,15 @@ export function SettingsAdvancedPanel() {
     threadCount: snapshotQuery.data?.workspaceThreads.length ?? 0,
     threadsHydrated,
     allThreadsMessageless,
+  });
+  const recoveryDetailsPresent = useLynxDisclosurePresence(
+    recoveryAvailable && showRecoveryTools
+  );
+  const recoveryDisclosure = useLynxInteractiveState({
+    baseClassName: 'SettingsAdvancedRecoveryTrigger',
+    accessibleLabel: 'What this does',
+    accessibilityValue: showRecoveryTools ? 'Expanded' : 'Collapsed',
+    onActivate: () => setShowRecoveryTools((current) => !current),
   });
 
   async function openKeybindings() {
@@ -173,14 +190,38 @@ export function SettingsAdvancedPanel() {
                 : 'Shown automatically only when recovery actions are relevant.'}
             </text>
             {recoveryAvailable ? (
-              <view className="SettingsAdvancedRecoveryDetails">
-                <text className="SettingsAdvancedRecoveryTitle">
-                  What this does
-                </text>
-                <text className="SettingsAdvancedRowDescription">
-                  Rebuilds local project indexes and refreshes project
-                  snapshots. Existing chats stay in place.
-                </text>
+              <view className="SettingsAdvancedRecoveryDisclosure">
+                <view
+                  className={recoveryDisclosure.className}
+                  aria-expanded={showRecoveryTools}
+                  {...recoveryDisclosure.eventProps}
+                >
+                  <text className="SettingsAdvancedRecoveryTitle">
+                    What this does
+                  </text>
+                  <ChevronRightIcon
+                    className={disclosureChevronClassName(
+                      showRecoveryTools,
+                      'SettingsAdvancedRecoveryChevron'
+                    )}
+                    size={14}
+                    color="var(--muted-foreground)"
+                  />
+                </view>
+                {recoveryDetailsPresent ? (
+                  <view
+                    className={disclosureContentClassName(
+                      showRecoveryTools,
+                      'SettingsAdvancedRecoveryDetails'
+                    )}
+                    aria-hidden={!showRecoveryTools}
+                  >
+                    <text className="SettingsAdvancedRowDescription">
+                      Rebuilds local project indexes and refreshes project
+                      snapshots. Existing chats stay in place.
+                    </text>
+                  </view>
+                ) : null}
               </view>
             ) : null}
           </view>

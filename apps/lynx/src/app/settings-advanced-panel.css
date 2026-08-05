@@ -64,6 +64,39 @@
   line-height: 16px;
 }
 
+.SettingsAdvancedRecoveryDisclosure {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--settings-project-border);
+}
+
+.SettingsAdvancedRecoveryTrigger {
+  display: flex;
+  width: 100%;
+  min-height: 20px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.SettingsAdvancedRecoveryTrigger.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.SettingsAdvancedRecoveryTrigger.ui-pressed {
+  opacity: 0.72;
+}
+
+.SettingsAdvancedRecoveryTitle {
+  color: var(--muted-foreground);
+}
+
+.SettingsAdvancedRecoveryChevron {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
 .SettingsAdvancedRecoveryDetails {
   display: flex;
   flex-direction: column;
@@ -71,7 +104,7 @@
   padding: 12px;
   gap: 4px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: 10px;
 }
 
 .SettingsAdvancedVersion {

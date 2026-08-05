@@ -5661,6 +5661,11 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   两行分别显示明确unavailable copy；switch保留stored checked state与reset visibility，
   但统一disabled/non-focusable/aria-disabled，避免写入无runtime effect的偏好。Web tests
   **2/2**、Lynx tests **13/13**，三端build通过。
+- Advanced Recovery details在Web是`What this does` disclosure，Lynx此前只要recovery
+  relevant就永久展开。现补controlled trigger、aria-expanded/value、14px generated
+  chevron，并复用`useLynxDisclosurePresence` + shared 220ms content/chevron motion；
+  details保持12px divider/inset、10px card，close animation完成后再unmount。focused
+  Advanced/motion tests **5/5**，Lynx-for-Web/Native builds通过。
 - 新增icon后审计Button primitive发现Lynx无content gap，且mixed children中的label
   未自动套`LxButton__text`。补Web base/default 8px、sm 6px、xs 4px gap，并显式
   包裹Theme option label，确保icon+text typography与间距都生效。focused Settings

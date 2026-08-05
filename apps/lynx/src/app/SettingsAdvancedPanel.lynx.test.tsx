@@ -45,6 +45,11 @@ describe('Settings Advanced fidelity', () => {
     );
     expect(panelSource).toContain('await openPathInEditor({ cwd: path, editor })');
     expect(panelSource).toContain('No available editors found.');
+    expect(panelSource).toContain('useLynxDisclosurePresence(');
+    expect(panelSource).toContain('disclosureContentClassName(');
+    expect(panelSource).toContain('disclosureChevronClassName(');
+    expect(panelSource).toContain('aria-expanded={showRecoveryTools}');
+    expect(panelSource).toContain("'SettingsAdvancedRecoveryChevron'");
   });
 
   it('matches the Web developer-tools and About row anatomy', () => {
@@ -64,6 +69,18 @@ describe('Settings Advanced fidelity', () => {
     );
     expect(styles).toMatch(
       /\.SettingsAdvancedRecoveryDetails\s*\{[^}]*margin-top:\s*12px;[^}]*padding:\s*12px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsAdvancedRecoveryDisclosure\s*\{[^}]*margin-top:\s*12px;[^}]*padding-top:\s*12px;[^}]*border-top:\s*1px solid var\(--settings-project-border\);/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsAdvancedRecoveryTrigger\s*\{[^}]*min-height:\s*20px;[^}]*justify-content:\s*space-between;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsAdvancedRecoveryChevron\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsAdvancedRecoveryDetails\s*\{[^}]*border-radius:\s*10px;/s
     );
   });
 });
