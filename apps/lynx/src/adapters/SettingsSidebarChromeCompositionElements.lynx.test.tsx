@@ -11,6 +11,8 @@ describe('Lynx Settings search input', () => {
     expect(source).toContain('const inputRef = useRef<InputRef>(null)');
     expect(source).toContain('defaultValue={props.value}');
     expect(source).not.toContain('value={props.value}');
+    expect(source).toContain('size="sm"');
+    expect(source).toContain('variant="soft"');
     expect(source).toContain("inputRef.current?.setValue('')");
     expect(source).toContain(
       'onChange={(event) => props.onValueChange?.(event.target.value)}'

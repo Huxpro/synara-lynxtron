@@ -1,0 +1,32 @@
+{
+  "light": {
+    "box": {
+      "x": 10,
+      "y": 58,
+      "width": 235,
+      "height": 28
+    },
+    "background": "rgba(13, 13, 13, 0.02)",
+    "border": "1px solid rgba(13, 13, 13, 0.07)",
+    "borderRadius": "10px",
+    "fontSize": "11px",
+    "padding": "0px 8px 0px 28px"
+  },
+  "dark": {
+    "box": {
+      "x": 10,
+      "y": 58,
+      "width": 235,
+      "height": 28
+    },
+    "background": "rgba(252, 252, 252, 0.02)",
+    "border": "1px solid rgba(252, 252, 252, 0.07)",
+    "borderRadius": "10px",
+    "fontSize": "11px"
+  },
+  "keyboardResult": {
+    "query": "archived thread",
+    "count": 1,
+    "accessibleLabel": "Archived: Archived threads"
+  }
+}

@@ -5420,3 +5420,9 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Lynx却单独强制500。删除该异常字重并锁Web contract；focused chrome/navigation/
   layout tests **4/4**，Web与Native/Desktop builds通过，bundle为Lynx-for-Web
   `280831ac…`、Native `2be6bcf4…`。
+- Settings search原先把default 32px `Input`塞入自绘28px bordered shell，造成
+  wrapper上下溢出2px、双chrome、8px radius、12px text与白底。改为shared Input
+  单一owner（`sm + soft`），外层仅定位icon；current light/dark实测均28px、
+  radius10、11px，surface分别为foreground 2%，border 7%。真实键盘
+  `archived thread`仍唯一命中。focused tests **6/6**，证据位于
+  `shots/2026-08-06/settings-search-chrome/`。

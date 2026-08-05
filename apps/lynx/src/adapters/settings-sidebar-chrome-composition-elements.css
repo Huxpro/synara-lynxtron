@@ -68,25 +68,23 @@
 }
 
 .SharedSettingsSidebarSearch {
+  position: relative;
   display: flex;
-  flex-direction: row;
-  align-items: center;
   height: 28px;
-  padding: 0 8px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background-color: var(--background);
 }
 
 .SharedSettingsSidebarSearchInput {
+  width: 100%;
   min-width: 0;
-  height: 26px;
+  min-height: 28px;
+  height: 28px;
   flex: 1;
-  padding: 0;
-  border-width: 0;
+  padding-left: 28px;
+  padding-right: 8px;
+  border-radius: 10px;
+  background-color: var(--settings-search-surface);
   color: var(--foreground);
-  font-size: 12px;
-  background-color: transparent;
+  font-size: 11px;
 }
 
 .SharedSettingsSidebarSearchIcon {
@@ -95,6 +93,16 @@
   justify-content: center;
   width: 14px;
   height: 14px;
+}
+
+.SharedSettingsSidebarSearch > .SharedSettingsSidebarSearchIcon {
+  position: absolute;
+  left: 9px;
+  top: 7px;
+  z-index: 1;
+}
+
+.SharedSettingsSidebarSearchUnavailable > .SharedSettingsSidebarSearchIcon {
   margin-right: 6px;
 }
 

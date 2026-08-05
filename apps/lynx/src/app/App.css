@@ -30,6 +30,14 @@
   font-family: var(--font-ui-family);
 }
 
+.SliceRoot--theme-light {
+  --settings-search-surface: rgba(13, 13, 13, 0.02);
+}
+
+.SliceRoot--theme-dark {
+  --settings-search-surface: rgba(252, 252, 252, 0.02);
+}
+
 /*
  * Lynxtron 0.0.7 does not reliably apply runtime custom-property mutations.
  * The root therefore switches stable classes while keeping the variable names

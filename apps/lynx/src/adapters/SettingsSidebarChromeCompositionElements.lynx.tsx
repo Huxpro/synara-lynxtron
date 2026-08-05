@@ -73,6 +73,8 @@ export function SettingsSidebarSearchElement(props: {
       <Input
         ref={inputRef}
         className="SharedSettingsSidebarSearchInput"
+        size="sm"
+        variant="soft"
         defaultValue={props.value}
         placeholder={props.placeholder}
         aria-label={props.accessibleLabel}
