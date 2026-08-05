@@ -43,6 +43,10 @@
   border-bottom-color: var(--border);
 }
 
+.SharedSettingsAppearanceRow--terminal {
+  border-bottom-width: 0;
+}
+
 .SharedSettingsAppearanceRowCopy {
   flex: 1;
   min-width: 0;
@@ -147,15 +151,19 @@
 }
 
 .SharedSettingsAppearanceInputLine {
-  width: 170px;
+  gap: 8px;
 }
 
 .SharedSettingsAppearanceInputLine .LxInputControl {
-  flex: 1;
+  width: 80px;
+}
+
+.SharedSettingsAppearanceInputLine .LxInput {
+  text-align: right;
 }
 
 .SharedSettingsAppearanceSuffix {
-  margin-left: 8px;
+  flex-shrink: 0;
 }
 
 .SharedSettingsAppearanceSelect {

@@ -5581,6 +5581,11 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Sun/Moon/Laptop icons；补生成的14px icons，仅Theme preference使用。同期发现
   Appearance boolean switch是第四套旧18/14实现，统一到32×20/16px及shared
   switch paint tokens。focused tests **7/7**，两端build通过。
+- Appearance card此前每一row都画bottom border，导致每个card最后一行仍有Web
+  `divide-y`不存在的尾分隔线。给physical-shared row增加显式terminal contract，
+  覆盖2-row theme card、条件font-smoothing card及单行time card。数字控制同时从
+  170px custom line收敛到Web `sm` soft 80px right-aligned input + 8px suffix gap，
+  空编辑不再瞬间写入minimum。Web/Lynx focused tests各 **1/1**，三端build通过。
 - 新增icon后审计Button primitive发现Lynx无content gap，且mixed children中的label
   未自动套`LxButton__text`。补Web base/default 8px、sm 6px、xs 4px gap，并显式
   包裹Theme option label，确保icon+text typography与间距都生效。focused Settings

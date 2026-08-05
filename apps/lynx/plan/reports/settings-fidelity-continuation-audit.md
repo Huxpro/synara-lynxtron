@@ -82,6 +82,8 @@ complete.
 | Usage Refresh matches Web request semantics | dedicated mutation sends `{ forceRefresh: true }`, merges partial batches with prior provider cards, and shares pending/disabled/spin state without bypassing provider cooldown safety | PASS |
 | Usage footer matches Web explanation and rhythm | full local-credentials, OAuth refresh, and CLI re-authentication copy with 11px/18px typography and 8px horizontal inset | PASS |
 | Appearance theme controls match Web icon and switch identity | Theme preference uses generated Sun/Moon/Laptop icons; boolean switch uses normalized geometry/paint | PASS |
+| Appearance card separators match Web divide-y ownership | physical-shared terminal-row contract removes trailing dividers across fixed, conditional, and single-row cards | PASS |
+| Appearance numeric controls match Web geometry and editing | 28px soft input is 80px wide, right-aligned, separated from `px` by 8px, and ignores transient empty edits | PASS |
 | Shared Button icon-label spacing matches Web | default/sm/xs gaps are 8/6/4px; mixed Appearance labels retain `LxButton__text` styling | PASS |
 | Settings sidebar search matches Web intent | shared ranking/index, real Lynx input/results/selection/row targeting, canonical section icons, Web-owned horizontal gutter, Web/Lynx filtered evidence, Native default anatomy | PASS — Native filtered text entry not claimed |
 | Populated destructive/mutation paths are visually certified without fabricated data | canonical snapshot has no managed worktree/integration/archived rows; logic/RPC tests cover the product paths and direct SQLite fixtures are forbidden | NOT APPLICABLE — no safe canonical populated state |

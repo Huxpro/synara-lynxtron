@@ -53,9 +53,11 @@ export function SettingsAppearanceComposition(props: {
     title: string,
     description: string,
     control: ReactNode,
+    terminal = false,
   ) => (
     <SettingsAppearanceRowElement
       key={key}
+      terminal={terminal}
       title={title}
       description={description}
       resetLabel={title.toLowerCase()}
@@ -100,6 +102,7 @@ export function SettingsAppearanceComposition(props: {
               ariaLabel="Use system UI font"
               onChange={(checked) => props.onChange("systemUiFont", checked)}
             />,
+            true,
           )}
         </SettingsAppearanceCardElement>
 
@@ -213,6 +216,7 @@ export function SettingsAppearanceComposition(props: {
               ariaLabel="Terminal font family"
               onChange={(value) => props.onChange("terminalFontFamily", value)}
             />,
+            !props.showFontSmoothing,
           )}
           {props.showFontSmoothing
             ? row(
@@ -226,6 +230,7 @@ export function SettingsAppearanceComposition(props: {
                     props.onChange("enableNativeFontSmoothing", checked)
                   }
                 />,
+                true,
               )
             : null}
         </SettingsAppearanceCardElement>
@@ -248,6 +253,7 @@ export function SettingsAppearanceComposition(props: {
                 )
               }
             />,
+            true,
           )}
         </SettingsAppearanceCardElement>
       </SettingsAppearanceSectionElement>

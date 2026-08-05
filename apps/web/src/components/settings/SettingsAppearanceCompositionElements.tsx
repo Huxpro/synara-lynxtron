@@ -49,6 +49,7 @@ export function SettingsAppearanceCardElement(props: { readonly children?: React
 }
 
 export function SettingsAppearanceRowElement(props: {
+  readonly terminal?: boolean;
   readonly title: string;
   readonly description: string;
   readonly resetLabel: string;

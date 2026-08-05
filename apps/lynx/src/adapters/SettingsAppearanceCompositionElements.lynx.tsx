@@ -52,6 +52,7 @@ export function SettingsAppearanceCardElement(props: {
 }
 
 export function SettingsAppearanceRowElement(props: {
+  readonly terminal?: boolean;
   readonly title: string;
   readonly description: string;
   readonly resetLabel: string;
@@ -67,7 +68,9 @@ export function SettingsAppearanceRowElement(props: {
   return (
     <view
       id={settingRowAnchorId(props.title)}
-      className="SharedSettingsAppearanceRow"
+      className={`SharedSettingsAppearanceRow${
+        props.terminal ? ' SharedSettingsAppearanceRow--terminal' : ''
+      }`}
     >
       <view className="SharedSettingsAppearanceRowCopy">
         <view className="SharedSettingsAppearanceTitleLine">
@@ -156,9 +159,14 @@ export function SettingsAppearanceNumberControlElement(props: {
     <view className="SharedSettingsAppearanceInputLine">
       <Input
         type="number"
+        size="sm"
+        variant="soft"
         value={String(props.value)}
         accessibility-label={props.ariaLabel}
-        onChange={(event) => props.onChange(Number(event.target.value))}
+        onChange={(event) => {
+          const value = event.target.value.trim();
+          if (value) props.onChange(Number(value));
+        }}
       />
       <text className="SharedSettingsAppearanceSuffix">{props.suffix}</text>
     </view>

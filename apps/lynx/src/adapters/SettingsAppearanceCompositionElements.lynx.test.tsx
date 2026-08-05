@@ -11,6 +11,13 @@ describe('Settings Appearance fidelity', () => {
       new URL('./settings-appearance-composition-elements.css', import.meta.url),
       'utf8'
     );
+    const composition = readFileSync(
+      new URL(
+        '../../../web/src/components/settings/SettingsAppearanceComposition.tsx',
+        import.meta.url
+      ),
+      'utf8'
+    );
 
     expect(styles).toMatch(
       /\.SharedSettingsAppearanceRoot\s*\{[^}]*gap:\s*24px;/s
@@ -27,6 +34,14 @@ describe('Settings Appearance fidelity', () => {
     expect(styles).not.toMatch(
       /\.SharedSettingsAppearanceRow\s*\{[^}]*min-height:/s
     );
+    expect(source).toContain(
+      "props.terminal ? ' SharedSettingsAppearanceRow--terminal' : ''"
+    );
+    expect(styles).toMatch(
+      /\.SharedSettingsAppearanceRow--terminal\s*\{[^}]*border-bottom-width:\s*0;/s
+    );
+    expect(composition).toContain('terminal={terminal}');
+    expect(composition).toContain('!props.showFontSmoothing');
     expect(styles).toMatch(
       /\.SharedSettingsAppearanceRowTitle\s*\{[^}]*font-size:\s*var\(--type-settings-row-title-size\);[^}]*line-height:\s*var\(--type-settings-row-title-line-height\);/s
     );
@@ -40,6 +55,19 @@ describe('Settings Appearance fidelity', () => {
     expect(source).toContain('<text className="LxButton__text">{option.label}</text>');
     expect(styles).toMatch(
       /\.SharedSettingsAppearanceSwitch\s*\{[^}]*width:\s*32px;[^}]*height:\s*20px;[^}]*border:\s*1px solid var\(--settings-switch-border\);/s
+    );
+    expect(source).toContain('size="sm"');
+    expect(source).toContain('variant="soft"');
+    expect(source).toContain('const value = event.target.value.trim();');
+    expect(source).toContain('if (value) props.onChange(Number(value));');
+    expect(styles).toMatch(
+      /\.SharedSettingsAppearanceInputLine\s*\{[^}]*gap:\s*8px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedSettingsAppearanceInputLine \.LxInputControl\s*\{[^}]*width:\s*80px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedSettingsAppearanceInputLine \.LxInput\s*\{[^}]*text-align:\s*right;/s
     );
   });
 });
