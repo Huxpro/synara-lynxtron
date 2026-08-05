@@ -3,6 +3,7 @@ import { fireEvent, render } from '@lynx-js/react/testing-library';
 import { readFileSync } from 'node:fs';
 
 import {
+  SettingsGeneralBooleanControlElement,
   SettingsGeneralSectionElement,
   SettingsGeneralSelectControlElement,
 } from './SettingsGeneralCompositionElements.lynx';
@@ -70,5 +71,29 @@ describe('Settings General fidelity', () => {
     expect(styles).toMatch(
       /\.SharedSettingsGeneralProviderLabel\s*\{[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s
     );
+  });
+
+  it('keeps unavailable switches visible but inert', () => {
+    let changes = 0;
+    render(
+      <SettingsGeneralBooleanControlElement
+        checked
+        disabled
+        ariaLabel="Desktop activity notifications"
+        onChange={() => {
+          changes += 1;
+        }}
+      />
+    );
+
+    const control = elementTree.root?.querySelector(
+      '.SharedSettingsGeneralSwitch--disabled'
+    );
+    if (!control) throw new Error('expected disabled settings switch');
+    expect(control.getAttribute('focusable')).toBe('false');
+    expect(control.getAttribute('aria-disabled')).toBe('true');
+    expect(control.getAttribute('aria-checked')).toBe('true');
+    fireEvent.tap(control);
+    expect(changes).toBe(0);
   });
 });

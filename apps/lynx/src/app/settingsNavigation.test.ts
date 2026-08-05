@@ -96,6 +96,15 @@ describe('shared settings navigation projection', () => {
     );
     expect(source).toContain('<SettingsResetIcon />');
     expect(source).not.toContain('↶');
+    expect(source).toContain(
+      'activityStatus="In-app activity toasts are unavailable in this runtime."'
+    );
+    expect(source).toContain(
+      'desktopStatus="System notifications are unavailable in this runtime."'
+    );
+    expect(source).toMatch(
+      /<SettingsGeneralBooleanControlElement\s+checked=\{checked\}\s+disabled/s
+    );
   });
 
   it('projects the real server provider update-check preference', () => {

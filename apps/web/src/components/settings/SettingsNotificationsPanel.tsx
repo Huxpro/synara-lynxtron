@@ -29,6 +29,7 @@ type ResetRenderArgs = {
 export function SettingsNotificationsPanel({
   settings,
   defaults,
+  activityStatus,
   desktopStatus,
   updateSetting,
   renderControl,
@@ -36,6 +37,7 @@ export function SettingsNotificationsPanel({
 }: {
   readonly settings: NotificationSettingsValues;
   readonly defaults: NotificationSettingsValues;
+  readonly activityStatus?: ReactNode;
   readonly desktopStatus?: ReactNode;
   readonly updateSetting: (key: NotificationSettingKey, value: boolean) => void;
   readonly renderControl: (args: ControlRenderArgs) => ReactNode;
@@ -47,6 +49,7 @@ export function SettingsNotificationsPanel({
         <SettingsRow
           title="Activity toasts"
           description="Show an in-app toast when a chat or managed terminal agent finishes or needs input."
+          status={activityStatus}
           resetAction={renderResetAction({
             changed:
               settings.enableTaskCompletionToasts !==

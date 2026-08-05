@@ -16,6 +16,7 @@ describe("SettingsNotificationsPanel", () => {
           enableTaskCompletionToasts: false,
         }}
         defaults={DEFAULT_NOTIFICATION_SETTINGS_VALUES}
+        activityStatus="Activity unavailable"
         desktopStatus="Permission granted"
         updateSetting={vi.fn()}
         renderControl={({ ariaLabel }) => <span>{ariaLabel}</span>}
@@ -28,6 +29,7 @@ describe("SettingsNotificationsPanel", () => {
     expect(markup).toContain("Activity alerts");
     expect(markup).toContain("Activity toasts");
     expect(markup).toContain("Desktop notifications");
+    expect(markup).toContain("Activity unavailable");
     expect(markup).toContain("Permission granted");
     expect(markup).toContain("Reset activity toasts to default");
     expect(markup).not.toContain("Reset desktop notifications to default");

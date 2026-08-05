@@ -85,15 +85,17 @@ export function SettingsGeneralRowElement(props: {
 
 export function SettingsGeneralBooleanControlElement(props: {
   readonly checked: boolean;
+  readonly disabled?: boolean;
   readonly ariaLabel: string;
   readonly onChange: (checked: boolean) => void;
 }) {
   const interaction = useLynxInteractiveState({
     baseClassName: `SharedSettingsGeneralSwitch${
       props.checked ? ' SharedSettingsGeneralSwitch--on' : ''
-    }`,
+    }${props.disabled ? ' SharedSettingsGeneralSwitch--disabled' : ''}`,
     accessibleLabel: props.ariaLabel,
     accessibilityValue: props.checked ? 'On' : 'Off',
+    disabled: props.disabled,
     onActivate: () => props.onChange(!props.checked),
   });
   return (

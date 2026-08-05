@@ -5655,6 +5655,12 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   2px copy gap/20px title line，并补第三个first-row anchor。focused tests **12/12**，
   Lynx-for-Web/Native builds通过；首次test因直接import Web panel绕过Rstest alias失败，
   改为直接验证真实Lynx platform adapters后通过。
+- Notifications两项preferences在Lynx只有storage projection：全仓无toast dispatcher、
+  completion-event consumer或host notification bridge，原UI却显示可操作switch，仅desktop
+  row附“tests unavailable”，属于misleading control。扩shared panel支持activity status，
+  两行分别显示明确unavailable copy；switch保留stored checked state与reset visibility，
+  但统一disabled/non-focusable/aria-disabled，避免写入无runtime effect的偏好。Web tests
+  **2/2**、Lynx tests **13/13**，三端build通过。
 - 新增icon后审计Button primitive发现Lynx无content gap，且mixed children中的label
   未自动套`LxButton__text`。补Web base/default 8px、sm 6px、xs 4px gap，并显式
   包裹Theme option label，确保icon+text typography与间距都生效。focused Settings

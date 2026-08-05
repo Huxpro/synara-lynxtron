@@ -126,6 +126,10 @@
   opacity: 0.8;
 }
 
+.SharedSettingsGeneralSwitch--disabled {
+  opacity: 0.48;
+}
+
 .SharedSettingsGeneralSwitchThumb {
   width: 16px;
   height: 16px;

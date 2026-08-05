@@ -800,7 +800,8 @@ export function SettingsPage({
                 <SettingsNotificationsPanel
                   settings={notifications}
                   defaults={DEFAULT_NOTIFICATION_SETTINGS_VALUES}
-                  desktopStatus="System notification tests are unavailable in this runtime."
+                  activityStatus="In-app activity toasts are unavailable in this runtime."
+                  desktopStatus="System notifications are unavailable in this runtime."
                   updateSetting={updateNotifications}
                   renderControl={({
                     checked,
@@ -809,6 +810,7 @@ export function SettingsPage({
                   }) => (
                     <SettingsGeneralBooleanControlElement
                       checked={checked}
+                      disabled
                       ariaLabel={ariaLabel}
                       onChange={onCheckedChange}
                     />
