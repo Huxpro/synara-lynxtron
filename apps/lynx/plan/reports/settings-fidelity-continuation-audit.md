@@ -33,7 +33,7 @@ complete.
 | Every canonical section has an explicit renderer and unknown ids fail closed | `settingsNavigation.test.ts`; explicit Providers branch and terminal `null` fallback | PASS |
 | Current focused regression suite | 14 files, 50/50 tests; AppSnap final focused suite 2/2 | PASS |
 | Current Web/Lynx-for-Web/Desktop production builds | Final AppSnap slice builds pass; expected CSS and optional `ws` native-module warnings only | PASS |
-| Reuse audit includes current graph | regenerated baseline; strict check passes; Settings gate 53.75% | PASS |
+| Reuse audit includes current graph | regenerated baseline; strict check passes; Settings gate 53.91% | PASS |
 | Style audit current | strict check passes; 98.07% weighted coverage | PASS |
 | Exact-owned Native identity and cleanup for every new page | per-page `native/capture.json`, empty Native consoles, byte-exact KV restoration | PASS |
 | Current-head evidence is not Web fallback masquerading as Lynx | six affected Settings cells recaptured from staged bundle with stable Lynx host URL | PASS |
@@ -113,6 +113,8 @@ complete.
 | OpenCode-specific provider overrides are rendered on all clients | Web/Lynx-for-Web/Native evidence in `shots/2026-08-06/providers-opencode-current/` covers binary path, server URL, password, and WebSocket switch without mutating values; Native locks text/text/password types, `readonly=false`, exact switch accessibility state, and empty console | PASS — provider-specific branch, no mutation |
 | Provider checks-off behavior matches Web and crosses the real server boundary | Lynx rendered switch mutation + Web readback in `shots/2026-08-06/providers-checks-off/`; two off summaries, hidden behind-latest list/actions, unknown-advisory actions retained, rendered reset restores preference, original settings/SQLite bytes restored | PASS — real mutation and cross-client proof |
 | Hidden providers filter update rows without changing server availability | rendered Claude visibility switch in `shots/2026-08-06/providers-hidden-filter/` changes both summaries 3→2 and removes only Claude; rendered reset restores Claude, 3 updates, and local `hiddenProviders: []`; server settings/SQLite unchanged | PASS — local projection and update-filter integration |
+| Web and Lynx provider-tool schemas cannot drift independently | `@synara/shared/providerTools` owns all nine providers, docs, field kinds/keys/placeholders, password configured keys, and structured descriptions; Web renders code segments and Lynx projects the same segments to native text | PASS — one config owner, shared 2/2 tests, Web 5/5, Lynx 15/15 |
+| Early Web provider refresh survives config hydration ordering | `writeProviderStatusesToConfigCache` loads the complete config when refresh wins the race, then merges provider statuses; existing-cache path avoids refetch | PASS — focused race regression 2/2; fresh current-head Web renders three updates |
 | Shared Button icon-label spacing matches Web | default/sm/xs gaps are 8/6/4px; mixed Appearance labels retain `LxButton__text` styling | PASS |
 | Settings large card radius resolves at runtime | the Lynx root defines shared `--radius-lg: 10px`; AppSnap, Skills, and Worktrees representative surfaces compute to 10px, while Advanced/Integrations consumers are statically covered | PASS — current-head runtime and consumer audit |
 | Settings sidebar search matches Web intent | shared ranking/index, real Lynx input/results/selection/row targeting, canonical section icons, Web-owned horizontal gutter, Web/Lynx filtered evidence, Native default anatomy | PASS — Native filtered text entry not claimed |
@@ -304,9 +306,9 @@ The retained replacement cells:
   no residue; isolated `settings.json` and `state.sqlite` returned to their
   original SHA-256 values after owned-server shutdown. Focused Providers +
   navigation tests pass 15/15; Lynx-for-Web and Native/Desktop production
-  builds pass. Bundles: Lynx-for-Web `52b92766…`; Native `eaf1b834…`.
+  builds pass. Bundles: Lynx-for-Web `4efc6668…`; Native `af128952…`.
 - Current-head exact-owned Native certification used the online configured
-  bundle `98083afb…`, startup deep link `synara://settings/providers`, and
+  bundle `9184c738…`, startup deep link `synara://settings/providers`, and
   PID-derived sessions only. It captured closed, all-tools-visible, rendered
   Codex-open, and `CODEX_HOME` focus-tap states. Codex open is exactly
   `596x257`, disclosure content `596x213`, input wrapper `572x28`; both native
@@ -351,6 +353,24 @@ The retained replacement cells:
   Claude from the behind-latest list while preserving OpenCode/Pi. The rendered
   reset restores all three rows and canonical empty `hiddenProviders` storage;
   server settings and SQLite never change.
+- Provider tools no longer maintain separate Web and Lynx configuration arrays.
+  `@synara/shared/providerTools` now owns provider order, docs, field keys/kinds,
+  password redaction keys, placeholders, and structured descriptions. Web keeps
+  inline-code presentation while Lynx joins the same segments into native text.
+- The current-head recapture exposed a Web refresh/config ordering race:
+  `server.refreshProviders` could finish before `serverConfig` existed, and the
+  cache updater silently discarded the result. The updater now hydrates the
+  complete config first when needed, then merges providers. Focused tests cover
+  both early-refresh and existing-cache paths.
+- Because the shared-config refactor changed bundle identities and the canonical
+  refresh now reports OpenCode `v1.18.12 -> v1.18.14`, all 19 Providers evidence
+  states were recaptured. Strict verifier 19/19 and regression tests 3/3 pass
+  against Lynx-for-Web `4efc6668…`, online Native `9184c738…`, and default
+  Native `af128952…`.
+- React Doctor did not produce a result for this refactor: both fresh `bunx`
+  and cached CLI paths failed before scanning because their packaged
+  `oxc-parser` / `oxlint-plugin-react-doctor` dependencies were unavailable.
+  This is recorded as a tooling failure, not a green diagnostic scan.
 - Settings focused continuation: 14 files, 50/50 tests.
 - AppSnap final focused check: 1 file, 2/2 tests.
 - Canonical taxonomy/explicit-owner gate: 1 file, 11/11 tests.

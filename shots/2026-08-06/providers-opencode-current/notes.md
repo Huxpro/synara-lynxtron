@@ -11,15 +11,18 @@ This evidence closes the provider-specific branch that Codex cannot cover:
 
 No field or switch value was changed.
 
+Both clients consume this configuration from the same
+`@synara/shared/providerTools` entry.
+
 ## Identity
 
 - Source commit: `06485112`.
 - Shared snapshot:
   `cd3e1e9efe5d373efd3271338eb504f94f98f5aea24a7b3df43acbb9d5e06710`.
 - Lynx-for-Web bundle:
-  `52b92766573497209b59db06104c536f23ceb8a177bf09a6bcaca942094a7c5b`.
+  `4efc66686ddec6ee4267a265e50ff81dfa1cfc5309ab01b58a5b9f4ea2675183`.
 - Native online bundle:
-  `98083afbc10c3f6891fabcfa9b59db9d2274619a9d1b8046ea39be42a22bd780`.
+  `9184c73835963c442b533be89745b2cd808b60a7dd020289ba79c210e370cc77`.
 - Viewport: Web/Lynx-for-Web `1280x820`, Native `2560x1576`.
 
 ## Web Authority
@@ -69,6 +72,6 @@ exact-client press/release events.
 
 - Owned app and server processes exited.
 - Default Native bundle was restored to
-  `eaf1b834841fd25fb135a59895be62f5d406ae867aaaaeedc71175703ca52dcb`
+  `af1289524bb0880088166b0d55d74cf44ec53e067507607490e8b36589671e2d`
   and contains only `ws://127.0.0.1:58090`.
 - KV/window/settings/SQLite remained byte-exact.

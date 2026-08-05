@@ -1,51 +1,17 @@
 import {
   DEFAULT_SERVER_SETTINGS_VIEW,
-  type ProviderKind,
   type ServerSettingsPatch,
   type ServerSettingsView,
 } from '@synara/contracts';
+import type {
+  ProviderToolConfig,
+  ProviderToolField,
+  ProviderToolPasswordKey,
+  ProviderToolTextKey,
+} from '@synara/shared/providerTools';
 
-export type ProviderTextFieldId =
-  | 'codexBinaryPath'
-  | 'codexHomePath'
-  | 'claudeBinaryPath'
-  | 'cursorBinaryPath'
-  | 'cursorApiEndpoint'
-  | 'antigravityBinaryPath'
-  | 'grokBinaryPath'
-  | 'droidBinaryPath'
-  | 'kiloBinaryPath'
-  | 'kiloServerUrl'
-  | 'kiloServerPassword'
-  | 'openCodeBinaryPath'
-  | 'openCodeServerUrl'
-  | 'openCodeServerPassword'
-  | 'piBinaryPath'
-  | 'piAgentDir';
-
-export type ProviderToolField =
-  | {
-      readonly kind: 'text' | 'password';
-      readonly id: ProviderTextFieldId;
-      readonly label: string;
-      readonly placeholder: string;
-      readonly description: string;
-    }
-  | {
-      readonly kind: 'boolean';
-      readonly id: 'openCodeExperimentalWebSockets';
-      readonly label: string;
-      readonly description: string;
-    };
-
-export type ProviderToolConfig = {
-  readonly provider: ProviderKind;
-  readonly docs: ReadonlyArray<{
-    readonly label: string;
-    readonly href: string;
-  }>;
-  readonly fields: readonly ProviderToolField[];
-};
+export type ProviderTextFieldId = ProviderToolTextKey | ProviderToolPasswordKey;
+export type { ProviderToolConfig, ProviderToolField };
 
 function providerFieldRawValue(
   settings: ServerSettingsView,
@@ -196,10 +162,10 @@ export function isProviderToolDirty(
       );
     }
     if (field.kind === 'password') {
-      return field.id === 'kiloServerPassword'
+      return field.settingsKey === 'kiloServerPassword'
         ? settings.providers.kilo.serverPasswordConfigured
         : settings.providers.opencode.serverPasswordConfigured;
     }
-    return providerFieldValue(settings, field.id) !== '';
+    return providerFieldValue(settings, field.settingsKey) !== '';
   });
 }

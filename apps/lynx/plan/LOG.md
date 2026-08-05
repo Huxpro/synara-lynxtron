@@ -5850,7 +5850,7 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   focused Providers+navigation **15/15**，Lynx-for-Web/Native builds、reuse/style
   strict checks通过；证据在`shots/2026-08-05/providers-current-head/`。
 - Providers Native follow-up用configured `60462` production bundle
-  `98083afb…`与startup deep link直接进入目标页；每个client均从launch PID/lsof解析，
+  `9184c738…`与startup deep link直接进入目标页；每个client均从launch PID/lsof解析，
   未按历史port猜测。closed首update row `596x58`、首tool row `596x44`；documented
   `scroll-view.scrollTo(offset:950)`后真实显示9个Installed CLIs。DevTool
   press/release打开Codex为`596x257`，content `596x213`，两个input wrapper
@@ -5899,3 +5899,17 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   `1 provider hidden`，local storage为`hiddenProviders:[claudeAgent]`；rendered reset
   恢复Claude/3 updates/All providers visible与空hidden list。server settings/SQLite
   全程不变。Providers strict verifier扩至**19/19**。
+- Provider tools配置从Web/Lynx两份手写数组抽到单一
+  `@synara/shared/providerTools`：9-provider顺序、docs、field kind/key/placeholder、
+  password configured key与结构化description均共享；Web将code segment保留为`<code>`，
+  Lynx用同一segments投影native text。shared tests **2/2**、Web focused **5/5**、
+  Lynx focused **15/15**。
+- current-head重拍发现Web `server.refreshProviders`若早于`serverConfig` hydration完成，
+  原cache updater会对undefined直接返回并永久丢掉refresh结果，页面错误显示
+  `No provider updates detected`。修复为缺cache时先加载完整config再merge providers，
+  已有cache则不refetch；focused race tests **2/2**。canonical refresh同时确认当前
+  OpenCode latest已从1.18.13更新为1.18.14，因此19态全部按当前真实数据和新bundle
+  重拍，strict verifier **19/19**。
+- React Doctor fresh `bunx`与本地cache CLI均在扫描前因缺失
+  `oxc-parser/src-js` / `oxlint-plugin-react-doctor`失败，未产生diagnostics；本刀不把
+  tool failure伪称green，功能与bundle/verifier/audit gates仍分别独立通过。

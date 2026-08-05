@@ -8,6 +8,12 @@ import {
   type ServerProviderStatus,
   type ServerSettings,
 } from "@synara/contracts";
+import {
+  PROVIDER_TOOL_CONFIGS,
+  type ProviderToolConfig,
+  type ProviderToolField,
+  type ProviderToolDescriptionSegment,
+} from "@synara/shared/providerTools";
 import { pluralize } from "@synara/shared/text";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { type MouseEvent, type ReactNode, useCallback, useMemo, useState } from "react";
@@ -42,312 +48,8 @@ import { SettingsListRow, SettingsRow, SettingsSection } from "./SettingsPanelPr
 import { SettingsProviderUpdateChecksRowComposition } from "./SettingsProviderUpdateChecksComposition";
 import { SettingsProviderPickerComposition } from "./SettingsProviderPickerComposition";
 
-type ProviderInstallTextKey =
-  | "claudeBinaryPath"
-  | "codexBinaryPath"
-  | "codexHomePath"
-  | "cursorBinaryPath"
-  | "cursorApiEndpoint"
-  | "antigravityBinaryPath"
-  | "grokBinaryPath"
-  | "droidBinaryPath"
-  | "kiloBinaryPath"
-  | "kiloServerUrl"
-  | "openCodeBinaryPath"
-  | "openCodeServerUrl"
-  | "piBinaryPath"
-  | "piAgentDir";
-type ProviderInstallPasswordKey = "kiloServerPassword" | "openCodeServerPassword";
-type ProviderInstallPasswordConfiguredKey =
-  | "kiloServerPasswordConfigured"
-  | "openCodeServerPasswordConfigured";
-type ProviderInstallBooleanKey = "openCodeExperimentalWebSockets";
-
-type ProviderInstallTextField = {
-  readonly kind: "text";
-  readonly settingsKey: ProviderInstallTextKey;
-  readonly label: string;
-  readonly placeholder: string;
-  readonly description: ReactNode;
-};
-type ProviderInstallPasswordField = {
-  readonly kind: "password";
-  readonly settingsKey: ProviderInstallPasswordKey;
-  readonly configuredKey: ProviderInstallPasswordConfiguredKey;
-  readonly label: string;
-  readonly placeholder: string;
-  readonly description: ReactNode;
-};
-type ProviderInstallBooleanField = {
-  readonly kind: "boolean";
-  readonly settingsKey: ProviderInstallBooleanKey;
-  readonly label: string;
-  readonly description: ReactNode;
-};
-type ProviderInstallField =
-  | ProviderInstallTextField
-  | ProviderInstallPasswordField
-  | ProviderInstallBooleanField;
-type ProviderInstallSettings = {
-  readonly provider: ProviderKind;
-  readonly docs: ReadonlyArray<{ readonly label: string; readonly href: string }>;
-  readonly fields: readonly ProviderInstallField[];
-};
-
-const PROVIDER_INSTALL_SETTINGS: readonly ProviderInstallSettings[] = [
-  {
-    provider: "codex",
-    docs: [
-      { label: "Install", href: "https://help.openai.com/en/articles/11096431" },
-      { label: "Update", href: "https://help.openai.com/en/articles/11096431" },
-      { label: "Config", href: "https://github.com/openai/codex/blob/main/docs/config.md" },
-    ],
-    fields: [
-      {
-        kind: "text",
-        settingsKey: "codexBinaryPath",
-        label: "Codex binary path",
-        placeholder: "Codex binary path",
-        description: (
-          <>
-            Leave blank to use <code>codex</code> from your PATH.
-          </>
-        ),
-      },
-      {
-        kind: "text",
-        settingsKey: "codexHomePath",
-        label: "CODEX_HOME path",
-        placeholder: "CODEX_HOME",
-        description: "Optional custom Codex home and config directory.",
-      },
-    ],
-  },
-  {
-    provider: "claudeAgent",
-    docs: [
-      { label: "Install", href: "https://code.claude.com/docs/en/installation" },
-      { label: "Update", href: "https://code.claude.com/docs/en/installation#update-claude-code" },
-      { label: "Config", href: "https://code.claude.com/docs/en/settings" },
-    ],
-    fields: [
-      {
-        kind: "text",
-        settingsKey: "claudeBinaryPath",
-        label: "Claude binary path",
-        placeholder: "Claude binary path",
-        description: (
-          <>
-            Leave blank to use <code>claude</code> from your PATH.
-          </>
-        ),
-      },
-    ],
-  },
-  {
-    provider: "cursor",
-    docs: [
-      { label: "Install", href: "https://docs.cursor.com/en/cli/installation" },
-      { label: "Update", href: "https://docs.cursor.com/en/cli/installation#updates" },
-      { label: "Config", href: "https://docs.cursor.com/en/cli/overview" },
-    ],
-    fields: [
-      {
-        kind: "text",
-        settingsKey: "cursorBinaryPath",
-        label: "Cursor binary path",
-        placeholder: "Cursor Agent or Cursor CLI path",
-        description: (
-          <>
-            Leave blank to use <code>cursor-agent</code> from your PATH. Cursor editor CLI paths are
-            accepted too.
-          </>
-        ),
-      },
-      {
-        kind: "text",
-        settingsKey: "cursorApiEndpoint",
-        label: "Cursor API endpoint",
-        placeholder: "https://api2.cursor.sh",
-        description: "Optional Cursor API endpoint override passed to `cursor-agent -e`.",
-      },
-    ],
-  },
-  {
-    provider: "antigravity",
-    docs: [
-      { label: "Install", href: "https://antigravity.google/docs/cli-using" },
-      { label: "Reference", href: "https://antigravity.google/docs/cli-reference" },
-      { label: "Hooks", href: "https://antigravity.google/docs/hooks" },
-    ],
-    fields: [
-      {
-        kind: "text",
-        settingsKey: "antigravityBinaryPath",
-        label: "Antigravity binary path",
-        placeholder: "Antigravity CLI binary path",
-        description: (
-          <>
-            Leave blank to use <code>agy</code> from your PATH.
-          </>
-        ),
-      },
-    ],
-  },
-  {
-    provider: "grok",
-    docs: [
-      { label: "Install", href: "https://docs.x.ai/build/overview" },
-      { label: "Headless", href: "https://docs.x.ai/build/cli/headless-scripting" },
-      { label: "Config", href: "https://docs.x.ai/build/overview" },
-    ],
-    fields: [
-      {
-        kind: "text",
-        settingsKey: "grokBinaryPath",
-        label: "Grok binary path",
-        placeholder: "Grok binary path",
-        description: (
-          <>
-            Leave blank to use <code>grok</code> from your PATH.
-          </>
-        ),
-      },
-    ],
-  },
-  {
-    provider: "droid",
-    docs: [
-      {
-        label: "Quickstart",
-        href: "https://docs.factory.ai/cli/getting-started/quickstart.md",
-      },
-    ],
-    fields: [
-      {
-        kind: "text",
-        settingsKey: "droidBinaryPath",
-        label: "Droid binary path",
-        placeholder: "droid",
-        description: (
-          <>
-            Leave blank to use <code>droid</code> from your PATH.
-          </>
-        ),
-      },
-    ],
-  },
-  {
-    provider: "kilo",
-    docs: [
-      { label: "Install", href: "https://kilo.ai/docs/cli" },
-      { label: "Update", href: "https://kilo.ai/docs/cli" },
-      { label: "Config", href: "https://kilo.ai/docs/cli#configuration" },
-    ],
-    fields: [
-      {
-        kind: "text",
-        settingsKey: "kiloBinaryPath",
-        label: "Kilo binary path",
-        placeholder: "Kilo binary path",
-        description: (
-          <>
-            Leave blank to use <code>kilo</code> from your PATH.
-          </>
-        ),
-      },
-      {
-        kind: "text",
-        settingsKey: "kiloServerUrl",
-        label: "Kilo server URL",
-        placeholder: "http://127.0.0.1:4096",
-        description: "Optional existing Kilo server URL. Leave blank to spawn a local server.",
-      },
-      {
-        kind: "password",
-        settingsKey: "kiloServerPassword",
-        configuredKey: "kiloServerPasswordConfigured",
-        label: "Kilo server password",
-        placeholder: "Kilo server password",
-        description: "Optional password for an externally managed Kilo server.",
-      },
-    ],
-  },
-  {
-    provider: "opencode",
-    docs: [
-      { label: "Install", href: "https://opencode.ai/docs/" },
-      { label: "Update", href: "https://opencode.ai/docs/cli/" },
-      { label: "Config", href: "https://opencode.ai/docs/config/" },
-    ],
-    fields: [
-      {
-        kind: "text",
-        settingsKey: "openCodeBinaryPath",
-        label: "OpenCode binary path",
-        placeholder: "OpenCode binary path",
-        description: (
-          <>
-            Leave blank to use <code>opencode</code> from your PATH.
-          </>
-        ),
-      },
-      {
-        kind: "text",
-        settingsKey: "openCodeServerUrl",
-        label: "OpenCode server URL",
-        placeholder: "http://127.0.0.1:4096",
-        description: "Optional existing OpenCode server URL. Leave blank to spawn a local server.",
-      },
-      {
-        kind: "password",
-        settingsKey: "openCodeServerPassword",
-        configuredKey: "openCodeServerPasswordConfigured",
-        label: "OpenCode server password",
-        placeholder: "OpenCode server password",
-        description: "Optional password for an externally managed OpenCode server.",
-      },
-      {
-        kind: "boolean",
-        settingsKey: "openCodeExperimentalWebSockets",
-        label: "OpenAI response WebSockets",
-        description:
-          "Use Opencode's experimental OpenAI response WebSocket transport for managed local servers.",
-      },
-    ],
-  },
-  {
-    provider: "pi",
-    docs: [
-      { label: "Install", href: "https://pi.dev/docs/latest" },
-      { label: "Update", href: "https://pi.dev/docs/latest/settings" },
-      { label: "Config", href: "https://pi.dev/docs/latest/settings" },
-    ],
-    fields: [
-      {
-        kind: "text",
-        settingsKey: "piBinaryPath",
-        label: "Pi binary path",
-        placeholder: "Pi binary path",
-        description: (
-          <>
-            Leave blank to use <code>pi</code> from your PATH.
-          </>
-        ),
-      },
-      {
-        kind: "text",
-        settingsKey: "piAgentDir",
-        label: "Pi agent directory",
-        placeholder: "Pi agent directory",
-        description: "Optional custom Pi agent directory for auth, models, skills, and commands.",
-      },
-    ],
-  },
-];
-
 function isProviderInstallFieldDirty(
-  field: ProviderInstallField,
+  field: ProviderToolField,
   settings: AppSettings,
   defaults: AppSettings,
 ): boolean {
@@ -357,7 +59,7 @@ function isProviderInstallFieldDirty(
 }
 
 function isProviderInstallConfigDirty(
-  config: ProviderInstallSettings,
+  config: ProviderToolConfig,
   settings: AppSettings,
   defaults: AppSettings,
 ): boolean {
@@ -368,7 +70,7 @@ export function isProviderInstallSettingsDirty(
   settings: AppSettings,
   defaults: AppSettings,
 ): boolean {
-  return PROVIDER_INSTALL_SETTINGS.some((config) =>
+  return PROVIDER_TOOL_CONFIGS.some((config) =>
     isProviderInstallConfigDirty(config, settings, defaults),
   );
 }
@@ -377,7 +79,7 @@ function createProviderInstallDisclosureState(
   settings: AppSettings,
 ): Record<ProviderKind, boolean> {
   return Object.fromEntries(
-    PROVIDER_INSTALL_SETTINGS.map((config) => [
+    PROVIDER_TOOL_CONFIGS.map((config) => [
       config.provider,
       config.fields.some((field) =>
         field.kind === "password"
@@ -390,19 +92,19 @@ function createProviderInstallDisclosureState(
 
 function createClosedProviderInstallDisclosureState(): Record<ProviderKind, boolean> {
   return Object.fromEntries(
-    PROVIDER_INSTALL_SETTINGS.map((config) => [config.provider, false]),
+    PROVIDER_TOOL_CONFIGS.map((config) => [config.provider, false]),
   ) as Record<ProviderKind, boolean>;
 }
 
 export function createProviderInstallResetPatch(defaults: AppSettings): Partial<AppSettings> {
   return Object.fromEntries(
-    PROVIDER_INSTALL_SETTINGS.flatMap((config) =>
+    PROVIDER_TOOL_CONFIGS.flatMap((config) =>
       config.fields.map((field) => [field.settingsKey, defaults[field.settingsKey]]),
     ),
   ) as Partial<AppSettings>;
 }
 
-function ProviderDocsLinks({ docs }: { docs: ProviderInstallSettings["docs"] }) {
+function ProviderDocsLinks({ docs }: { docs: ProviderToolConfig["docs"] }) {
   return (
     <div className={cn(SETTINGS_INSET_LIST_CLASS_NAME, "px-3 py-2.5")}>
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -487,8 +189,18 @@ function ProviderUpdateAction(props: {
   );
 }
 
+function ProviderToolDescription({
+  segments,
+}: {
+  segments: readonly ProviderToolDescriptionSegment[];
+}) {
+  return segments.map((segment, index) =>
+    segment.code ? <code key={index}>{segment.text}</code> : segment.text,
+  );
+}
+
 function ProviderInstallFieldControl(props: {
-  field: ProviderInstallField;
+  field: ProviderToolField;
   settings: AppSettings;
   updateSettings: (patch: Partial<AppSettings>) => void;
 }) {
@@ -502,7 +214,7 @@ function ProviderInstallFieldControl(props: {
         <span className="min-w-0">
           <span className="block text-xs font-medium text-foreground">{props.field.label}</span>
           <span className="mt-1 block text-xs text-muted-foreground">
-            {props.field.description}
+            <ProviderToolDescription segments={props.field.description} />
           </span>
         </span>
         <Switch
@@ -540,13 +252,15 @@ function ProviderInstallFieldControl(props: {
         autoComplete={isPassword ? "new-password" : undefined}
         spellCheck={false}
       />
-      <span className="mt-1 block text-xs text-muted-foreground">{props.field.description}</span>
+      <span className="mt-1 block text-xs text-muted-foreground">
+        <ProviderToolDescription segments={props.field.description} />
+      </span>
     </label>
   );
 }
 
 function ProviderToolRow(props: {
-  config: ProviderInstallSettings;
+  config: ProviderToolConfig;
   open: boolean;
   settings: AppSettings;
   defaults: AppSettings;
@@ -870,7 +584,7 @@ export function ProvidersSettingsPanel({
           >
             <div className="mt-4">
               <div className={SETTINGS_INSET_LIST_CLASS_NAME}>
-                {PROVIDER_INSTALL_SETTINGS.map((config) => (
+                {PROVIDER_TOOL_CONFIGS.map((config) => (
                   <ProviderToolRow
                     key={config.provider}
                     config={config}

@@ -2,9 +2,9 @@
   "version": 1,
   "snapshotSha256": "cd3e1e9efe5d373efd3271338eb504f94f98f5aea24a7b3df43acbb9d5e06710",
   "builds": {
-    "lynxWeb": "52b92766573497209b59db06104c536f23ceb8a177bf09a6bcaca942094a7c5b",
-    "nativeOnline": "98083afbc10c3f6891fabcfa9b59db9d2274619a9d1b8046ea39be42a22bd780",
-    "nativeDefault": "eaf1b834841fd25fb135a59895be62f5d406ae867aaaaeedc71175703ca52dcb"
+    "lynxWeb": "4efc66686ddec6ee4267a265e50ff81dfa1cfc5309ab01b58a5b9f4ea2675183",
+    "nativeOnline": "9184c73835963c442b533be89745b2cd808b60a7dd020289ba79c210e370cc77",
+    "nativeDefault": "af1289524bb0880088166b0d55d74cf44ec53e067507607490e8b36589671e2d"
   },
   "nativeBundlePath": "file:///Users/bytedance/github/synara/apps/lynx/dist/desktop/main.lynx.bundle",
   "states": [
@@ -13,8 +13,11 @@
       "kind": "static-image",
       "client": "web",
       "image": "../2026-08-05/providers-current-head/providers-web-1280x820-light.png",
-      "imageSha256": "dbaae614e132001d8d50a840272f735d5294a9f38b96c38f56f9745209f5a2e0",
-      "dimensions": { "width": 1280, "height": 820 },
+      "imageSha256": "027666cd66d6bf40a9cdf41be422f15847da309bb3d68b57e508920c93f4ae0d",
+      "dimensions": {
+        "width": 1280,
+        "height": 820
+      },
       "notes": "../2026-08-05/providers-current-head/notes.md"
     },
     {
@@ -22,17 +25,24 @@
       "kind": "static-image",
       "client": "lynx",
       "image": "../2026-08-05/providers-current-head/providers-lynx-web-1280x820-light.png",
-      "imageSha256": "7793e5f66444417db2685ebe0d0ae3302155356cbc3dbad3daf651aa35290adc",
-      "dimensions": { "width": 1280, "height": 820 },
-      "notes": "../2026-08-05/providers-current-head/notes.md"
+      "imageSha256": "961664fa3fc71395aa7567591586905277d544d5de2106750a27c06f9bb7d6fd",
+      "dimensions": {
+        "width": 1280,
+        "height": 820
+      },
+      "notes": "../2026-08-05/providers-current-head/notes.md",
+      "buildSha256": "4efc66686ddec6ee4267a265e50ff81dfa1cfc5309ab01b58a5b9f4ea2675183"
     },
     {
       "id": "providers-native-light-closed",
       "kind": "native",
       "captureStateId": "providers-native-closed",
       "directory": "providers-native-current/closed",
-      "imageSha256": "d731262c1627afad1f46cdca77728ee15e17157d5707f8af2c5e74bc3c97d304",
-      "dimensions": { "width": 2560, "height": 1576 },
+      "imageSha256": "2790da2ec6be05b10d1a48ff6a1055d6747c03bf247a23e4769f8f6c8e602896",
+      "dimensions": {
+        "width": 2560,
+        "height": 1576
+      },
       "expect": {
         "roles.root.attributes.class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable",
         "roles.root.box.width": 1280,
@@ -48,8 +58,11 @@
       "kind": "native",
       "captureStateId": "providers-native-tools",
       "directory": "providers-native-current/tools",
-      "imageSha256": "64aaf5d009a0ccebac280fdda31c5c892a6ddc72b5d30300d5256cd2e53e4ba7",
-      "dimensions": { "width": 2560, "height": 1576 },
+      "imageSha256": "53291e27233f769febb6ee828fc038f37c27eb9fdf20e5edec07b777840c4d6d",
+      "dimensions": {
+        "width": 2560,
+        "height": 1576
+      },
       "expect": {
         "roles.tool.box.width": 596,
         "roles.tool.box.height": 44,
@@ -61,8 +74,11 @@
       "kind": "native",
       "captureStateId": "providers-native-codex-open",
       "directory": "providers-native-current/open",
-      "imageSha256": "7b6a186607095f277467f7135b4f4087dfc1e012daa12e592124b848393fcc13",
-      "dimensions": { "width": 2560, "height": 1576 },
+      "imageSha256": "89b88dce2a97fb3e62ab98249c7dce68efb0af51b1e9279dd6cb334317cc013f",
+      "dimensions": {
+        "width": 2560,
+        "height": 1576
+      },
       "expect": {
         "roles.tool.box.width": 596,
         "roles.tool.box.height": 257,
@@ -78,8 +94,11 @@
       "kind": "native",
       "captureStateId": "providers-native-codex-home-focused",
       "directory": "providers-native-current/focused",
-      "imageSha256": "7b6a186607095f277467f7135b4f4087dfc1e012daa12e592124b848393fcc13",
-      "dimensions": { "width": 2560, "height": 1576 },
+      "imageSha256": "89b88dce2a97fb3e62ab98249c7dce68efb0af51b1e9279dd6cb334317cc013f",
+      "dimensions": {
+        "width": 2560,
+        "height": 1576
+      },
       "expect": {
         "roles.tool.box.height": 257,
         "roles.field.box.width": 572,
@@ -91,8 +110,11 @@
       "kind": "browser",
       "client": "web",
       "image": "providers-dark-1440/web/raw.png",
-      "imageSha256": "1bf728aa9ed38d6bce86254385da685f7368996393a66f0b7f958e100721410b",
-      "dimensions": { "width": 1440, "height": 900 },
+      "imageSha256": "4d187d114e151ac3108d85562c280176e3561f67d01c51a9d023c53660303ffb",
+      "dimensions": {
+        "width": 1440,
+        "height": 900
+      },
       "geometry": "providers-dark-1440/web/geometry.json",
       "errors": "providers-dark-1440/web/errors.txt",
       "console": "providers-dark-1440/web/console.txt",
@@ -111,10 +133,13 @@
       "id": "providers-lynx-dark-1440",
       "kind": "browser",
       "client": "lynx",
-      "buildSha256": "52b92766573497209b59db06104c536f23ceb8a177bf09a6bcaca942094a7c5b",
+      "buildSha256": "4efc66686ddec6ee4267a265e50ff81dfa1cfc5309ab01b58a5b9f4ea2675183",
       "image": "providers-dark-1440/lynx/raw.png",
-      "imageSha256": "f38caa4b6490f1d2169c438cf774a9120d0df56c80aa43d88cb76858d17acd6b",
-      "dimensions": { "width": 1440, "height": 900 },
+      "imageSha256": "738e386f537b29800828bb34fba3f849d76f2c37e9018d3e2273c2e57d231ab1",
+      "dimensions": {
+        "width": 1440,
+        "height": 900
+      },
       "geometry": "providers-dark-1440/lynx/geometry.json",
       "errors": "providers-dark-1440/lynx/errors.txt",
       "console": "providers-dark-1440/lynx/console.txt",
@@ -136,7 +161,10 @@
       "kind": "native",
       "directory": "providers-dark-1440/native-closed",
       "imageSha256": "7b592f25d3a0e19a5657e6bca7035d4496c55f88166f32b44ff65178c40e57e2",
-      "dimensions": { "width": 2880, "height": 1736 },
+      "dimensions": {
+        "width": 2880,
+        "height": 1736
+      },
       "expect": {
         "roles.root.attributes.class": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable",
         "roles.root.box.width": 1440,
@@ -151,8 +179,11 @@
       "id": "providers-native-dark-1440-tools",
       "kind": "native",
       "directory": "providers-dark-1440/native-tools",
-      "imageSha256": "5e868d03a910bd3d0dd45d1dd7e0863c008086167f57507cf779d0d7040cfcc3",
-      "dimensions": { "width": 2880, "height": 1736 },
+      "imageSha256": "05389f2b47c41aa3993b57efb8f263c1133c78ea74f0dc2056e68411aeb1ff05",
+      "dimensions": {
+        "width": 2880,
+        "height": 1736
+      },
       "expect": {
         "roles.root.attributes.class": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable",
         "roles.tool.box.width": 596,
@@ -165,8 +196,11 @@
       "kind": "native",
       "captureStateId": "settings-row-base",
       "directory": "settings-row-native-interaction/base",
-      "imageSha256": "2790da2ec6be05b10d1a48ff6a1055d6747c03bf247a23e4769f8f6c8e602896",
-      "dimensions": { "width": 2560, "height": 1576 },
+      "imageSha256": "66285420e9ad699f9fed19c1aed5319670593784322c53788c1173eaac84e124",
+      "dimensions": {
+        "width": 2560,
+        "height": 1576
+      },
       "expect": {
         "roles.navigation.box.width": 243,
         "roles.navigation.box.height": 510,
@@ -178,8 +212,11 @@
       "kind": "native",
       "captureStateId": "settings-row-pressed",
       "directory": "settings-row-native-interaction/pressed",
-      "imageSha256": "0b1be3e57c487839420854cb9eee4ad1c968a6ea32c8b9c42a43b51e6cc062f4",
-      "dimensions": { "width": 2560, "height": 1576 },
+      "imageSha256": "ecbc81d4e8c15e8e1d3fa29953a0fe31fb7bf84c73e3c70ed65a87f8763486d9",
+      "dimensions": {
+        "width": 2560,
+        "height": 1576
+      },
       "expect": {
         "roles.pressed.attributes.class": "SharedSettingsNavigationButton ui-pressed",
         "roles.pressed.box.width": 243,
@@ -196,8 +233,11 @@
       "kind": "native",
       "captureStateId": "settings-row-focus",
       "directory": "settings-row-native-interaction/focus",
-      "imageSha256": "12ddab050dbe979e6b8f30a2af8d4a8a88110e4ce7725a65b4078df07444812f",
-      "dimensions": { "width": 2560, "height": 1576 },
+      "imageSha256": "7a3cb1bc348808061d5d50369ec658821431f72e631495beb8b17d7dc3cc0929",
+      "dimensions": {
+        "width": 2560,
+        "height": 1576
+      },
       "expect": {
         "roles.focused.attributes.class": "SharedSettingsNavigationButton ui-focus",
         "roles.focused.box.width": 243,
@@ -214,8 +254,11 @@
       "kind": "browser",
       "client": "web",
       "image": "providers-opencode-current/web/raw.png",
-      "imageSha256": "c69a55f2e98ba0db1d174a21ac7950786ae85f35283bbd001f8cf15543083407",
-      "dimensions": { "width": 1280, "height": 820 },
+      "imageSha256": "b454d8bcb812035ac9db3135d4eacd2d4678ab6e02bdf0bd51f09de2832f111b",
+      "dimensions": {
+        "width": 1280,
+        "height": 820
+      },
       "geometry": "providers-opencode-current/web/geometry.json",
       "errors": "providers-opencode-current/web/errors.txt",
       "expect": {
@@ -232,10 +275,13 @@
       "id": "providers-opencode-lynx",
       "kind": "browser",
       "client": "lynx",
-      "buildSha256": "52b92766573497209b59db06104c536f23ceb8a177bf09a6bcaca942094a7c5b",
+      "buildSha256": "4efc66686ddec6ee4267a265e50ff81dfa1cfc5309ab01b58a5b9f4ea2675183",
       "image": "providers-opencode-current/lynx/raw.png",
-      "imageSha256": "8fd2d928ee55acc638a5aecb1362bf586587d429f6140ad81ac998c7c0927252",
-      "dimensions": { "width": 1280, "height": 820 },
+      "imageSha256": "5c79ccc2e6535543d95805f6197a7fbe7b0bd4257be37e6660efbc331464f5ea",
+      "dimensions": {
+        "width": 1280,
+        "height": 820
+      },
       "geometry": "providers-opencode-current/lynx/geometry.json",
       "errors": "providers-opencode-current/lynx/errors.txt",
       "console": "providers-opencode-current/lynx/console.txt",
@@ -260,8 +306,11 @@
       "kind": "native",
       "captureStateId": "providers-opencode-native-open",
       "directory": "providers-opencode-current/native",
-      "imageSha256": "26cf523f6eaebbbc581443d5606a91f54368b48996f561406f564dae743c8079",
-      "dimensions": { "width": 2560, "height": 1576 },
+      "imageSha256": "66285420e9ad699f9fed19c1aed5319670593784322c53788c1173eaac84e124",
+      "dimensions": {
+        "width": 2560,
+        "height": 1576
+      },
       "expect": {
         "roles.disclosure.box.width": 596,
         "roles.disclosure.box.height": 385,
@@ -311,7 +360,10 @@
       "client": "web",
       "image": "providers-checks-off/web/raw.png",
       "imageSha256": "935681f88f709c1ec52cfa32d983cee7635b93c4a4a8c82400ce90c223319c3d",
-      "dimensions": { "width": 1280, "height": 820 },
+      "dimensions": {
+        "width": 1280,
+        "height": 820
+      },
       "geometry": "providers-checks-off/web/geometry.json",
       "errors": "providers-checks-off/web/errors.txt",
       "expect": {
@@ -325,10 +377,13 @@
       "id": "providers-checks-off-lynx",
       "kind": "browser",
       "client": "lynx",
-      "buildSha256": "52b92766573497209b59db06104c536f23ceb8a177bf09a6bcaca942094a7c5b",
+      "buildSha256": "4efc66686ddec6ee4267a265e50ff81dfa1cfc5309ab01b58a5b9f4ea2675183",
       "image": "providers-checks-off/lynx/raw.png",
       "imageSha256": "c50e8ce69ae8105d24418d6407c90cf70a330fbd6e2cdb03bb8574fa3a3b29be",
-      "dimensions": { "width": 1280, "height": 820 },
+      "dimensions": {
+        "width": 1280,
+        "height": 820
+      },
       "geometry": "providers-checks-off/lynx/geometry.json",
       "errors": "providers-checks-off/lynx/errors.txt",
       "console": "providers-checks-off/lynx/console.txt",
@@ -346,10 +401,13 @@
       "id": "providers-hidden-claude-lynx",
       "kind": "browser",
       "client": "lynx",
-      "buildSha256": "52b92766573497209b59db06104c536f23ceb8a177bf09a6bcaca942094a7c5b",
+      "buildSha256": "4efc66686ddec6ee4267a265e50ff81dfa1cfc5309ab01b58a5b9f4ea2675183",
       "image": "providers-hidden-filter/hidden.png",
-      "imageSha256": "2c00dc41a30efb2845c12dc5019d4b49a8ebaa228a8d839ed1d20b0048297ecc",
-      "dimensions": { "width": 1280, "height": 820 },
+      "imageSha256": "f9e60b876c787965469b482aca98755d9c2fa07185551ff8d3fb64af9d279c29",
+      "dimensions": {
+        "width": 1280,
+        "height": 820
+      },
       "geometry": "providers-hidden-filter/hidden.json",
       "errors": "providers-hidden-filter/errors.txt",
       "expect": {

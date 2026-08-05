@@ -6,7 +6,7 @@
 - Certification bundle:
   `apps/lynx/dist/desktop/main.lynx.bundle`.
 - Certification bundle SHA-256:
-  `98083afbc10c3f6891fabcfa9b59db9d2274619a9d1b8046ea39be42a22bd780`.
+  `9184c73835963c442b533be89745b2cd808b60a7dd020289ba79c210e370cc77`.
 - The certification bundle was built with
   `SYNARA_WS_URL=ws://127.0.0.1:60462`; strings contain the explicit endpoint
   plus the normal `58090` fallback.

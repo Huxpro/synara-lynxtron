@@ -111,12 +111,11 @@ describe('Settings Provider tools fidelity', () => {
     expect(source).toContain('disclosureContentClassName(');
     expect(source).toContain('disclosureChevronClassName(');
     expect(source).toContain('platformWindow.openExternal(props.href)');
-    expect(source).toContain("id: 'codexHomePath'");
-    expect(source).toContain("id: 'cursorApiEndpoint'");
-    expect(source).toContain("id: 'kiloServerPassword'");
-    expect(source).toContain("id: 'openCodeExperimentalWebSockets'");
-    expect(source).toContain("id: 'piAgentDir'");
-    expect(source.match(/provider: '/g)).toHaveLength(9);
+    expect(source).toContain("from '@synara/shared/providerTools'");
+    expect(source).toContain('PROVIDER_TOOL_CONFIGS');
+    expect(source).toContain('providerToolDescriptionText');
+    expect(source).not.toContain("provider: 'opencode'");
+    expect(source).not.toContain("id: 'openCodeExperimentalWebSockets'");
     expect(settingsSource).toContain('providerPicker={');
 
     const panelStart = settingsSource.indexOf('<SettingsProviderToolsPanel');

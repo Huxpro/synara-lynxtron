@@ -9,6 +9,12 @@ import type {
 import { DEFAULT_SERVER_SETTINGS_VIEW } from '@synara/contracts';
 import { PROVIDER_DESCRIPTOR_BY_KIND } from '@synara/shared/providerMetadata';
 import {
+  PROVIDER_TOOL_CONFIGS,
+  providerToolDescriptionText,
+  type ProviderToolConfig,
+  type ProviderToolField,
+} from '@synara/shared/providerTools';
+import {
   getVisibleProviderUpdateStatuses,
   isProviderUpdateActive,
   shouldOfferProviderUpdateAction,
@@ -45,9 +51,6 @@ import {
   providerFieldPatch,
   providerFieldValue,
   providerToolResetPatch,
-  type ProviderTextFieldId,
-  type ProviderToolConfig,
-  type ProviderToolField,
 } from './settingsProviderTools.logic';
 
 import './settings-provider-tools-panel.css';
@@ -92,249 +95,6 @@ function providerUpdateFailureMessage(
     'The provider update did not complete.'
   );
 }
-
-const PROVIDER_TOOL_CONFIGS: readonly ProviderToolConfig[] = [
-  {
-    provider: 'codex',
-    docs: [
-      { label: 'Install', href: 'https://help.openai.com/en/articles/11096431' },
-      { label: 'Update', href: 'https://help.openai.com/en/articles/11096431' },
-      {
-        label: 'Config',
-        href: 'https://github.com/openai/codex/blob/main/docs/config.md',
-      },
-    ],
-    fields: [
-      {
-        kind: 'text',
-        id: 'codexBinaryPath',
-        label: 'Codex binary path',
-        placeholder: 'Codex binary path',
-        description: 'Leave blank to use codex from your PATH.',
-      },
-      {
-        kind: 'text',
-        id: 'codexHomePath',
-        label: 'CODEX_HOME path',
-        placeholder: 'CODEX_HOME',
-        description: 'Optional custom Codex home and config directory.',
-      },
-    ],
-  },
-  {
-    provider: 'claudeAgent',
-    docs: [
-      {
-        label: 'Install',
-        href: 'https://code.claude.com/docs/en/installation',
-      },
-      {
-        label: 'Update',
-        href: 'https://code.claude.com/docs/en/installation#update-claude-code',
-      },
-      { label: 'Config', href: 'https://code.claude.com/docs/en/settings' },
-    ],
-    fields: [
-      {
-        kind: 'text',
-        id: 'claudeBinaryPath',
-        label: 'Claude binary path',
-        placeholder: 'Claude binary path',
-        description: 'Leave blank to use claude from your PATH.',
-      },
-    ],
-  },
-  {
-    provider: 'cursor',
-    docs: [
-      {
-        label: 'Install',
-        href: 'https://docs.cursor.com/en/cli/installation',
-      },
-      {
-        label: 'Update',
-        href: 'https://docs.cursor.com/en/cli/installation#updates',
-      },
-      { label: 'Config', href: 'https://docs.cursor.com/en/cli/overview' },
-    ],
-    fields: [
-      {
-        kind: 'text',
-        id: 'cursorBinaryPath',
-        label: 'Cursor binary path',
-        placeholder: 'Cursor Agent or Cursor CLI path',
-        description:
-          'Leave blank to use cursor-agent from your PATH. Cursor editor CLI paths are accepted too.',
-      },
-      {
-        kind: 'text',
-        id: 'cursorApiEndpoint',
-        label: 'Cursor API endpoint',
-        placeholder: 'https://api2.cursor.sh',
-        description:
-          'Optional Cursor API endpoint override passed to cursor-agent -e.',
-      },
-    ],
-  },
-  {
-    provider: 'antigravity',
-    docs: [
-      {
-        label: 'Install',
-        href: 'https://antigravity.google/docs/cli-using',
-      },
-      {
-        label: 'Reference',
-        href: 'https://antigravity.google/docs/cli-reference',
-      },
-      { label: 'Hooks', href: 'https://antigravity.google/docs/hooks' },
-    ],
-    fields: [
-      {
-        kind: 'text',
-        id: 'antigravityBinaryPath',
-        label: 'Antigravity binary path',
-        placeholder: 'Antigravity CLI binary path',
-        description: 'Leave blank to use agy from your PATH.',
-      },
-    ],
-  },
-  {
-    provider: 'grok',
-    docs: [
-      { label: 'Install', href: 'https://docs.x.ai/build/overview' },
-      {
-        label: 'Headless',
-        href: 'https://docs.x.ai/build/cli/headless-scripting',
-      },
-      { label: 'Config', href: 'https://docs.x.ai/build/overview' },
-    ],
-    fields: [
-      {
-        kind: 'text',
-        id: 'grokBinaryPath',
-        label: 'Grok binary path',
-        placeholder: 'Grok binary path',
-        description: 'Leave blank to use grok from your PATH.',
-      },
-    ],
-  },
-  {
-    provider: 'droid',
-    docs: [
-      {
-        label: 'Quickstart',
-        href: 'https://docs.factory.ai/cli/getting-started/quickstart.md',
-      },
-    ],
-    fields: [
-      {
-        kind: 'text',
-        id: 'droidBinaryPath',
-        label: 'Droid binary path',
-        placeholder: 'droid',
-        description: 'Leave blank to use droid from your PATH.',
-      },
-    ],
-  },
-  {
-    provider: 'kilo',
-    docs: [
-      { label: 'Install', href: 'https://kilo.ai/docs/cli' },
-      { label: 'Update', href: 'https://kilo.ai/docs/cli' },
-      { label: 'Config', href: 'https://kilo.ai/docs/cli#configuration' },
-    ],
-    fields: [
-      {
-        kind: 'text',
-        id: 'kiloBinaryPath',
-        label: 'Kilo binary path',
-        placeholder: 'Kilo binary path',
-        description: 'Leave blank to use kilo from your PATH.',
-      },
-      {
-        kind: 'text',
-        id: 'kiloServerUrl',
-        label: 'Kilo server URL',
-        placeholder: 'http://127.0.0.1:4096',
-        description:
-          'Optional existing Kilo server URL. Leave blank to spawn a local server.',
-      },
-      {
-        kind: 'password',
-        id: 'kiloServerPassword',
-        label: 'Kilo server password',
-        placeholder: 'Kilo server password',
-        description: 'Optional password for an externally managed Kilo server.',
-      },
-    ],
-  },
-  {
-    provider: 'opencode',
-    docs: [
-      { label: 'Install', href: 'https://opencode.ai/docs/' },
-      { label: 'Update', href: 'https://opencode.ai/docs/cli/' },
-      { label: 'Config', href: 'https://opencode.ai/docs/config/' },
-    ],
-    fields: [
-      {
-        kind: 'text',
-        id: 'openCodeBinaryPath',
-        label: 'OpenCode binary path',
-        placeholder: 'OpenCode binary path',
-        description: 'Leave blank to use opencode from your PATH.',
-      },
-      {
-        kind: 'text',
-        id: 'openCodeServerUrl',
-        label: 'OpenCode server URL',
-        placeholder: 'http://127.0.0.1:4096',
-        description:
-          'Optional existing OpenCode server URL. Leave blank to spawn a local server.',
-      },
-      {
-        kind: 'password',
-        id: 'openCodeServerPassword',
-        label: 'OpenCode server password',
-        placeholder: 'OpenCode server password',
-        description:
-          'Optional password for an externally managed OpenCode server.',
-      },
-      {
-        kind: 'boolean',
-        id: 'openCodeExperimentalWebSockets',
-        label: 'OpenAI response WebSockets',
-        description:
-          "Use OpenCode's experimental OpenAI response WebSocket transport for managed local servers.",
-      },
-    ],
-  },
-  {
-    provider: 'pi',
-    docs: [
-      { label: 'Install', href: 'https://pi.dev/docs/latest' },
-      { label: 'Update', href: 'https://pi.dev/docs/latest/settings' },
-      { label: 'Config', href: 'https://pi.dev/docs/latest/settings' },
-    ],
-    fields: [
-      {
-        kind: 'text',
-        id: 'piBinaryPath',
-        label: 'Pi binary path',
-        placeholder: 'Pi binary path',
-        description: 'Leave blank to use pi from your PATH.',
-      },
-      {
-        kind: 'text',
-        id: 'piAgentDir',
-        label: 'Pi agent directory',
-        placeholder: 'Pi agent directory',
-        description:
-          'Optional custom Pi agent directory for auth, models, skills, and commands.',
-      },
-    ],
-  },
-];
 
 function ProviderIdentity(props: { readonly provider: ProviderKind }) {
   const descriptor = PROVIDER_DESCRIPTOR_BY_KIND[props.provider];
@@ -425,12 +185,15 @@ function ProviderTextField(props: {
   readonly disabled: boolean;
   readonly onCommit: (patch: ServerSettingsPatch) => void;
 }) {
-  const storedValue = providerFieldValue(props.settings, props.field.id);
+  const storedValue = providerFieldValue(
+    props.settings,
+    props.field.settingsKey
+  );
   const [value, setValue] = useState(storedValue);
   useEffect(() => setValue(storedValue), [storedValue]);
   const configured =
     props.field.kind === 'password' &&
-    (props.field.id === 'kiloServerPassword'
+    (props.field.settingsKey === 'kiloServerPassword'
       ? props.settings.providers.kilo.serverPasswordConfigured
       : props.settings.providers.opencode.serverPasswordConfigured);
 
@@ -456,13 +219,13 @@ function ProviderTextField(props: {
         onBlur={(event) => {
           if (event.target.value !== storedValue) {
             props.onCommit(
-              providerFieldPatch(props.field.id, event.target.value)
+              providerFieldPatch(props.field.settingsKey, event.target.value)
             );
           }
         }}
       />
       <text className="SettingsProviderToolsFieldDescription">
-        {props.field.description}
+        {providerToolDescriptionText(props.field.description)}
       </text>
     </view>
   );
@@ -583,7 +346,7 @@ function ProviderToolRow(props: {
           {props.config.fields.map((field) =>
             field.kind === 'boolean' ? (
               <view
-                key={field.id}
+                key={field.settingsKey}
                 className="SettingsProviderToolsBooleanField"
               >
                 <view className="SettingsProviderToolsBooleanCopy">
@@ -591,7 +354,7 @@ function ProviderToolRow(props: {
                     {field.label}
                   </text>
                   <text className="SettingsProviderToolsFieldDescription">
-                    {field.description}
+                    {providerToolDescriptionText(field.description)}
                   </text>
                 </view>
                 <SettingsGeneralBooleanControlElement
@@ -611,7 +374,7 @@ function ProviderToolRow(props: {
               </view>
             ) : (
               <ProviderTextField
-                key={field.id}
+                key={field.settingsKey}
                 field={field}
                 settings={props.settings}
                 disabled={props.saving}

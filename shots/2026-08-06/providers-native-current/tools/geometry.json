@@ -33,7 +33,7 @@
       }
     },
     "target": {
-      "nodeId": 304,
+      "nodeId": 300,
       "nodeName": "VIEW",
       "attributes": {
         "class": "SettingsProviderToolsRoot"
@@ -63,7 +63,7 @@
       }
     },
     "tool": {
-      "nodeId": 486,
+      "nodeId": 482,
       "nodeName": "VIEW",
       "attributes": {
         "class": "SettingsProviderToolsDisclosure"
@@ -93,7 +93,7 @@
       }
     },
     "trigger": {
-      "nodeId": 488,
+      "nodeId": 484,
       "nodeName": "VIEW",
       "attributes": {
         "accessibility-element": "true",
@@ -102,17 +102,17 @@
         "accessibility-value": "Collapsed",
         "focusable": "true",
         "aria-disabled": "false",
-        "bindmouseenter": "374:2:bindmouseenter",
-        "bindblur": "374:2:bindblur",
-        "bindmouseleave": "374:2:bindmouseleave",
-        "bindkeydown": "374:2:bindkeydown",
-        "bindtap": "374:2:bindtap",
-        "bindmouseup": "374:2:bindmouseup",
-        "bindtouchstart": "374:2:bindtouchstart",
-        "bindmousedown": "374:2:bindmousedown",
-        "bindtouchend": "374:2:bindtouchend",
-        "bindtouchcancel": "374:2:bindtouchcancel",
-        "bindfocus": "374:2:bindfocus",
+        "bindmouseenter": "372:2:bindmouseenter",
+        "bindblur": "372:2:bindblur",
+        "bindmouseleave": "372:2:bindmouseleave",
+        "bindkeydown": "372:2:bindkeydown",
+        "bindtap": "372:2:bindtap",
+        "bindmouseup": "372:2:bindmouseup",
+        "bindtouchstart": "372:2:bindtouchstart",
+        "bindmousedown": "372:2:bindmousedown",
+        "bindtouchend": "372:2:bindtouchend",
+        "bindtouchcancel": "372:2:bindtouchcancel",
+        "bindfocus": "372:2:bindfocus",
         "class": "SettingsProviderToolsDisclosureTrigger"
       },
       "text": "",

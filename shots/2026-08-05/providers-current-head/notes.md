@@ -9,9 +9,9 @@
   server snapshot at `/Users/bytedance/github/synara/.p10-view/dev/state.sqlite`.
 - Owned isolated server PID: `32042`, listening on `127.0.0.1:60462`.
 - Final staged Lynx-for-Web bundle SHA-256:
-  `52b92766573497209b59db06104c536f23ceb8a177bf09a6bcaca942094a7c5b`.
+  `4efc66686ddec6ee4267a265e50ff81dfa1cfc5309ab01b58a5b9f4ea2675183`.
 - Final Native/Desktop bundle SHA-256:
-  `eaf1b834841fd25fb135a59895be62f5d406ae867aaaaeedc71175703ca52dcb`.
+  `af1289524bb0880088166b0d55d74cf44ec53e067507607490e8b36589671e2d`.
 - Every retained PNG is exactly `1280x820`.
 
 The first generic production build contained only the default `58090` relay
@@ -33,10 +33,14 @@ provider picker. Current head now owns the complete Web composition:
 7. Canonical `server.updateSettings` field edits and one provider-tools reset.
 8. Redacted configured-password semantics for Kilo and OpenCode.
 
+The nine-provider docs and field schema now has one source of truth in
+`@synara/shared/providerTools`. Web preserves inline-code segments while Lynx
+renders the same descriptions as native text.
+
 The real snapshot contained three behind-latest providers:
 
 - Claude: `v2.1.212 -> v2.1.220`
-- OpenCode: `v1.18.12 -> v1.18.13`
+- OpenCode: `v1.18.12 -> v1.18.14`
 - Pi: `v0.80.6 -> v0.83.0`
 
 Provider tools also exposed safe unknown-advisory update actions for Cursor,
@@ -95,13 +99,15 @@ repeated row-owner error.
 ## Gates
 
 - Focused Providers + Settings navigation: 2 files, 15/15 tests.
+- Shared provider-tools schema: 2/2 tests.
+- Web provider settings plus provider-refresh race suites: 5/5 tests.
 - Lynx-for-Web production build with the isolated relay: passed.
 - Native/Desktop production build: passed with only the existing
   `color-scheme`, `overflow-wrap`, and optional `ws` native-module warnings.
 - Exact-owned Native certification covers closed, tools-visible, Codex-open,
   and input-focus-tap states with empty warning/error consoles. It does not
   claim text entry or IME behavior.
-- Reuse baseline regenerated and strict check passed; Settings gate is 53.75%.
+- Reuse baseline regenerated and strict check passed; Settings gate is 53.91%.
 - Style strict check passed at 98.07% weighted coverage.
 - `bun fmt`, `bun lint`, and `bun typecheck` were not run because the current
   conversation does not authorize those heavyweight checks.

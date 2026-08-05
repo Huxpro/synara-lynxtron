@@ -9,7 +9,7 @@ import { type QueryClient, useQueryClient } from "@tanstack/react-query";
 import type { ServerConfig, ServerProviderStatus } from "@synara/contracts";
 import { toastManager } from "../components/ui/toast";
 import { readNativeApi } from "../nativeApi";
-import { serverQueryKeys } from "../lib/serverReactQuery";
+import { serverConfigQueryOptions, serverQueryKeys } from "../lib/serverReactQuery";
 
 import { isBrowser, isDocumentVisible, onDocumentVisibilityChange } from "~/platform/env";
 import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
@@ -21,13 +21,18 @@ export type RefreshProviderStatusesNow = (
   options?: RefreshProviderStatusesOptions,
 ) => Promise<readonly ServerProviderStatus[] | null>;
 
-function writeProviderStatusesToConfigCache(
+export async function writeProviderStatusesToConfigCache(
   queryClient: QueryClient,
   providers: readonly ServerProviderStatus[],
-) {
-  queryClient.setQueryData<ServerConfig>(serverQueryKeys.config(), (current) =>
-    current ? { ...current, providers } : current,
-  );
+  loadConfig: () => Promise<ServerConfig> = () =>
+    queryClient.fetchQuery(serverConfigQueryOptions()),
+): Promise<void> {
+  const current = queryClient.getQueryData<ServerConfig>(serverQueryKeys.config());
+  const config = current ?? (await loadConfig());
+  queryClient.setQueryData<ServerConfig>(serverQueryKeys.config(), {
+    ...config,
+    providers,
+  });
 }
 
 /**
@@ -41,7 +46,7 @@ export function useRefreshProviderStatusesNow(): RefreshProviderStatusesNow {
     if (!api) return null;
     try {
       const result = await api.server.refreshProviders();
-      writeProviderStatusesToConfigCache(queryClient, result.providers);
+      await writeProviderStatusesToConfigCache(queryClient, result.providers);
       return result.providers;
     } catch (error) {
       if (!options?.silent) {
@@ -99,7 +104,7 @@ export function useProviderStatusRefresh(options: ProviderStatusRefreshOptions):
           if (disposed) {
             return;
           }
-          writeProviderStatusesToConfigCache(queryClient, result.providers);
+          return writeProviderStatusesToConfigCache(queryClient, result.providers);
         })
         .catch(() => undefined);
     };

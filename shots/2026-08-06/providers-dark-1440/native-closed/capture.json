@@ -1,7 +1,7 @@
 {
   "client": "native",
   "stateId": "providers-native-dark-1440-closed",
-  "buildSha256": "98083afbc10c3f6891fabcfa9b59db9d2274619a9d1b8046ea39be42a22bd780",
+  "buildSha256": "9184c73835963c442b533be89745b2cd808b60a7dd020289ba79c210e370cc77",
   "snapshotSha256": "cd3e1e9efe5d373efd3271338eb504f94f98f5aea24a7b3df43acbb9d5e06710",
   "stateEcho": {
     "semanticRoute": "settings-providers",
@@ -10,22 +10,22 @@
     "interactionState": "closed"
   },
   "identity": {
-    "rootPid": 68996,
+    "rootPid": 42203,
     "descendantPids": [
-      68996,
-      68998
+      42203,
+      42205
     ],
     "ownedPorts": [
-      8904
+      8903
     ],
     "client": {
-      "id": "localhost:8904",
+      "id": "localhost:8903",
       "info": {
         "App": "@synara/lynx",
         "appId": "0000",
         "sdkVersion": "4.1"
       },
-      "port": 8904
+      "port": 8903
     },
     "session": {
       "session_id": 1,

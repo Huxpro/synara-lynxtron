@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-05T19:25:30.250Z",
+  "generatedAt": "2026-08-05T22:01:26.649Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -71,6 +71,7 @@
       "@synara/shared/path",
       "@synara/shared/pinnedMessages",
       "@synara/shared/providerMetadata",
+      "@synara/shared/providerTools",
       "@synara/shared/providerUsage",
       "@synara/shared/providerUsageDisplay",
       "@synara/shared/sidebarSearch",
@@ -138,7 +139,7 @@
       ],
       "graph": {
         "modules": 401,
-        "loc": 80901,
+        "loc": 80906,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -226,7 +227,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 333,
-          "loc": 72913
+          "loc": 72918
         },
         "PATCHED": {
           "modules": 1,
@@ -243,7 +244,7 @@
       },
       "eligible": {
         "modules": 392,
-        "loc": 79093
+        "loc": 79098
       },
       "currentReuse": {
         "modules": 239,
@@ -3092,7 +3093,7 @@
         },
         {
           "path": "apps/web/src/hooks/useProviderStatusRefresh.ts",
-          "loc": 116,
+          "loc": 121,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -5053,7 +5054,7 @@
       ],
       "graph": {
         "modules": 347,
-        "loc": 70388,
+        "loc": 70393,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -5141,7 +5142,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 282,
-          "loc": 62444
+          "loc": 62449
         },
         "PATCHED": {
           "modules": 1,
@@ -5158,14 +5159,14 @@
       },
       "eligible": {
         "modules": 339,
-        "loc": 68603
+        "loc": 68608
       },
       "currentReuse": {
         "modules": 235,
         "loc": 44357,
         "modulePercent": 69.32,
-        "locPercent": 64.66,
-        "gatePercent": 64.66
+        "locPercent": 64.65,
+        "gatePercent": 64.65
       },
       "modules": [
         {
@@ -7716,7 +7717,7 @@
         },
         {
           "path": "apps/web/src/hooks/useProviderStatusRefresh.ts",
-          "loc": 116,
+          "loc": 121,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -9235,7 +9236,7 @@
       ],
       "graph": {
         "modules": 757,
-        "loc": 151975,
+        "loc": 151980,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -9365,7 +9366,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 654,
-          "loc": 135479
+          "loc": 135484
         },
         "PATCHED": {
           "modules": 1,
@@ -9382,7 +9383,7 @@
       },
       "eligible": {
         "modules": 729,
-        "loc": 143830
+        "loc": 143835
       },
       "currentReuse": {
         "modules": 353,
@@ -16411,7 +16412,7 @@
         },
         {
           "path": "apps/web/src/hooks/useProviderStatusRefresh.ts",
-          "loc": 116,
+          "loc": 121,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -19120,7 +19121,7 @@
       ],
       "graph": {
         "modules": 472,
-        "loc": 90975,
+        "loc": 90697,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -19158,6 +19159,7 @@
           "@synara/shared/pinnedMessages",
           "@synara/shared/projectContainers",
           "@synara/shared/providerMetadata",
+          "@synara/shared/providerTools",
           "@synara/shared/providerUsage",
           "@synara/shared/providerUsageDisplay",
           "@synara/shared/sidebarSearch",
@@ -19214,7 +19216,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 399,
-          "loc": 82794
+          "loc": 82516
         },
         "PATCHED": {
           "modules": 1,
@@ -19231,14 +19233,14 @@
       },
       "eligible": {
         "modules": 463,
-        "loc": 89167
+        "loc": 88889
       },
       "currentReuse": {
         "modules": 267,
         "loc": 47924,
         "modulePercent": 57.67,
-        "locPercent": 53.75,
-        "gatePercent": 53.75
+        "locPercent": 53.91,
+        "gatePercent": 53.91
       },
       "modules": [
         {
@@ -20266,7 +20268,7 @@
         },
         {
           "path": "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
-          "loc": 885,
+          "loc": 602,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -22906,7 +22908,7 @@
         },
         {
           "path": "apps/web/src/hooks/useProviderStatusRefresh.ts",
-          "loc": 116,
+          "loc": 121,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -24998,7 +25000,7 @@
       ],
       "graph": {
         "modules": 506,
-        "loc": 98872,
+        "loc": 98877,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -25103,7 +25105,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 435,
-          "loc": 88535
+          "loc": 88540
         },
         "PATCHED": {
           "modules": 1,
@@ -25120,7 +25122,7 @@
       },
       "eligible": {
         "modules": 495,
-        "loc": 95071
+        "loc": 95076
       },
       "currentReuse": {
         "modules": 289,
@@ -29209,7 +29211,7 @@
         },
         {
           "path": "apps/web/src/hooks/useProviderStatusRefresh.ts",
-          "loc": 116,
+          "loc": 121,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -31362,7 +31364,7 @@
       ],
       "graph": {
         "modules": 506,
-        "loc": 98873,
+        "loc": 98878,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -31467,7 +31469,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 435,
-          "loc": 88536
+          "loc": 88541
         },
         "PATCHED": {
           "modules": 1,
@@ -31484,7 +31486,7 @@
       },
       "eligible": {
         "modules": 495,
-        "loc": 95072
+        "loc": 95077
       },
       "currentReuse": {
         "modules": 289,
@@ -35573,7 +35575,7 @@
         },
         {
           "path": "apps/web/src/hooks/useProviderStatusRefresh.ts",
-          "loc": 116,
+          "loc": 121,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -37726,7 +37728,7 @@
       ],
       "graph": {
         "modules": 495,
-        "loc": 91754,
+        "loc": 91759,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -37827,7 +37829,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 422,
-          "loc": 82260
+          "loc": 82265
         },
         "PATCHED": {
           "modules": 1,
@@ -37844,7 +37846,7 @@
       },
       "eligible": {
         "modules": 486,
-        "loc": 89946
+        "loc": 89951
       },
       "currentReuse": {
         "modules": 311,
@@ -41652,7 +41654,7 @@
         },
         {
           "path": "apps/web/src/hooks/useProviderStatusRefresh.ts",
-          "loc": 116,
+          "loc": 121,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",

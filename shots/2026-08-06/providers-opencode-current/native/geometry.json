@@ -33,7 +33,7 @@
       }
     },
     "target": {
-      "nodeId": 1337,
+      "nodeId": 300,
       "nodeName": "VIEW",
       "attributes": {
         "class": "SettingsProviderToolsRoot"
@@ -41,7 +41,7 @@
       "text": "",
       "box": {
         "x": 456,
-        "y": -885,
+        "y": -832,
         "width": 624,
         "height": 1986
       },
@@ -63,7 +63,7 @@
       }
     },
     "disclosure": {
-      "nodeId": 1665,
+      "nodeId": 659,
       "nodeName": "VIEW",
       "attributes": {
         "aria-hidden": "false",
@@ -72,7 +72,7 @@
       "text": "",
       "box": {
         "x": 470,
-        "y": 658,
+        "y": 711,
         "width": 596,
         "height": 385
       },
@@ -94,7 +94,7 @@
       }
     },
     "field": {
-      "nodeId": 1682,
+      "nodeId": 676,
       "nodeName": "VIEW",
       "attributes": {
         "class": "LxInputControl LxInputControl--sm LxInputControl--soft SettingsProviderToolsFieldInput"
@@ -102,7 +102,7 @@
       "text": "",
       "box": {
         "x": 482,
-        "y": 725,
+        "y": 778,
         "width": 572,
         "height": 28
       },
@@ -124,7 +124,7 @@
       }
     },
     "boolean": {
-      "nodeId": 1701,
+      "nodeId": 695,
       "nodeName": "VIEW",
       "attributes": {
         "class": "SettingsProviderToolsBooleanField"
@@ -132,7 +132,7 @@
       "text": "",
       "box": {
         "x": 482,
-        "y": 955,
+        "y": 1008,
         "width": 572,
         "height": 76
       },
@@ -154,7 +154,7 @@
       }
     },
     "switch": {
-      "nodeId": 1349,
+      "nodeId": 312,
       "nodeName": "VIEW",
       "attributes": {
         "aria-label": "Automatic CLI update checks",
@@ -165,23 +165,23 @@
         "accessibility-value": "On",
         "focusable": "true",
         "aria-disabled": "false",
-        "bindmouseenter": "978:0:bindmouseenter",
-        "bindblur": "978:0:bindblur",
-        "bindmouseleave": "978:0:bindmouseleave",
-        "bindkeydown": "978:0:bindkeydown",
-        "bindtap": "978:0:bindtap",
-        "bindmouseup": "978:0:bindmouseup",
-        "bindtouchstart": "978:0:bindtouchstart",
-        "bindmousedown": "978:0:bindmousedown",
-        "bindtouchend": "978:0:bindtouchend",
-        "bindtouchcancel": "978:0:bindtouchcancel",
-        "bindfocus": "978:0:bindfocus",
+        "bindmouseenter": "265:0:bindmouseenter",
+        "bindblur": "265:0:bindblur",
+        "bindmouseleave": "265:0:bindmouseleave",
+        "bindkeydown": "265:0:bindkeydown",
+        "bindtap": "265:0:bindtap",
+        "bindmouseup": "265:0:bindmouseup",
+        "bindtouchstart": "265:0:bindtouchstart",
+        "bindmousedown": "265:0:bindmousedown",
+        "bindtouchend": "265:0:bindtouchend",
+        "bindtouchcancel": "265:0:bindtouchcancel",
+        "bindfocus": "265:0:bindfocus",
         "class": "SharedSettingsGeneralSwitch SharedSettingsGeneralSwitch--on"
       },
       "text": "",
       "box": {
         "x": 1035,
-        "y": -833,
+        "y": -780,
         "width": 32,
         "height": 20
       },
@@ -203,7 +203,7 @@
       }
     },
     "content": {
-      "nodeId": 979,
+      "nodeId": 172,
       "nodeName": "SCROLL-VIEW",
       "attributes": {
         "scroll-orientation": "vertical",
