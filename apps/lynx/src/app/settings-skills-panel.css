@@ -41,9 +41,7 @@
 
 .SettingsSkillsPortableRow,
 .SettingsSkillsRow {
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
+  flex-direction: column;
 }
 
 .SettingsSkillsEmptyRow {
@@ -52,8 +50,25 @@
   gap: 2px;
 }
 
-.SettingsSkillsRow--divided {
-  border-top: 1px solid var(--border);
+.SettingsSkillsMain {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.SettingsSkillsMetadata {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 4px;
+}
+
+.SettingsSkillsRow--continued {
+  border-bottom: 1px solid var(--border);
 }
 
 .SettingsSkillsRowCopy {
@@ -64,9 +79,18 @@
   gap: 2px;
 }
 
+.SettingsSkillsPortableTitleLine,
 .SettingsSkillsTitleLine {
   display: flex;
   align-items: center;
+}
+
+.SettingsSkillsPortableTitleLine {
+  min-height: 20px;
+}
+
+.SettingsSkillsTitleLine {
+  min-height: 21px;
   gap: 6px;
 }
 
@@ -82,14 +106,26 @@
   color: var(--muted-foreground);
   font-size: 12px;
   font-weight: 500;
-  line-height: 18px;
+  line-height: 16px;
+}
+
+.SettingsSkillsSource,
+.SettingsSkillsPath,
+.SettingsSkillsSaving {
+  font-size: 11px;
+  line-height: 16.5px;
+}
+
+.SettingsSkillsSource,
+.SettingsSkillsPath {
+  overflow: hidden;
+  color: var(--muted-foreground);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .SettingsSkillsPath {
-  overflow: hidden;
   font-family: var(--font-mono-family);
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .SettingsSkillsCube {

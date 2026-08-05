@@ -102,7 +102,7 @@ complete.
 | Profile stats, heatmap, and model rows match Web identity | identity uses the Web 6px name/handle subgroup and 20/28 + 24/32 typography; stat values/labels use 14px/20px in an exact 18px-radius card; heatmap uses Web weekday pads, 40 week columns, 15.0625px cells, 5px radius, and exact month anchors; model rows retain 14px mapped provider SVGs or neutral fallbacks with 8px gaps | PASS — current-head visual proof for real identity/stats/heatmap/empty state; populated model branch source-tested |
 | Worktrees rows match Web shared-list density and typography | rows have no artificial 96px minimum, mono paths truncate, and linked conversation titles use regular description typography instead of row-title weight | PASS |
 | Archived empty and list states match Web hierarchy | real empty state is exact 624×182 with 40×20 padding, dashed border, explicit 10px radius, generated 20px Archive icon, and 14px/20px copy; populated rows no longer force a 60px minimum | PASS — current-head visual proof for empty state; populated row source-tested |
-| Skills rows match Web density and provider identity | rows/control columns self-size, source/path text truncates, and overlapping 16px provider-copy badges use mapped 12px SVGs or neutral fallbacks | PASS |
+| Skills rows match Web density and provider identity | real 114-row catalog uses separate main/control and supplemental metadata owners; source/path is exact 11px/16.5px, switches share Web anchors, previous-row bottom dividers match `divide-y`, and overlapping 16px provider-copy badges use mapped 12px SVGs or neutral fallbacks | PASS — current-head populated visual proof |
 | Integrations rows and actions match Web content-driven geometry | form/connection/setup/empty rows no longer force 79px/58px minima and connected-agent action groups self-size instead of reserving 190px | PASS |
 | Integrations disclosures reuse shared motion | project picker and advanced permissions use shared 220ms presence/content motion; Review publishes expanded state and a generated rotating 14px chevron | PASS |
 | Models single-row card and select wrapper match Web | Git writing row is terminal with no trailing divider; interactive trigger publishes the control label while reusing calibrated writing-model select chrome | PASS |
@@ -158,6 +158,14 @@ The retained replacement cells:
 
 ## Verification results
 
+- Current-head populated Skills harness used the real 114-item catalog. Main
+  title/description/control layout is now independent from 11/16.5 provider
+  metadata and paths; switch anchors and previous-row bottom dividers match Web
+  exactly across short and long rows. Evidence is under
+  `shots/2026-08-05/skills-current-head-populated/`.
+- Current-head Skills focused rerun: 1 file, 3/3 tests; Lynx-for-Web and
+  Native/Desktop production builds pass. Bundles: Lynx-for-Web `1d98f676…`;
+  Native `788dbf0e…`.
 - Settings token-resolution audit found eleven `--radius-lg` consumers across
   five native panels with no root definition. The shared root now owns
   `--radius-lg: 10px`; runtime proof covers AppSnap, Skills, and Worktrees, and

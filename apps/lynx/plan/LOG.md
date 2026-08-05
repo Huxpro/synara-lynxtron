@@ -5767,3 +5767,14 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Integrations/Advanced当前state未暴露qualifying surface，明确只计静态consumer coverage。
   focused suite **2/2**，Lynx-for-Web/Native builds通过；证据在
   `shots/2026-08-05/settings-radius-token-current/`。
+- current-head Skills使用真实114-item catalog（114 switches，全enabled）完成本轮首个
+  populated large-list对照。Lynx此前把provider/source/path metadata放在main copy
+  column，导致switch按整块长metadata居中；metadata还错误继承12/18而Web supplemental
+  status为11/16.5。重构为`SettingsSkillsMain`（title/description + control）和
+  `SettingsSkillsMetadata` sibling，portable title line 20px、icon-bearing skill
+  title line 21px，并把divider ownership从后行top改为前行bottom以复刻Web `divide-y`
+  box geometry。final `adapt` 123.5px、`agent-browser` 213.5px、`agent-device`
+  159.5px、`android-device-automation` 123.5px rows及switch/metadata anchors逐项exact；
+  provider stacks/path truncation与114 rows均保留。focused suite **3/3**，
+  Lynx-for-Web/Native builds通过；证据在
+  `shots/2026-08-05/skills-current-head-populated/`。

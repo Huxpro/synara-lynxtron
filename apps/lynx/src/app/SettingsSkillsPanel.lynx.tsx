@@ -155,23 +155,29 @@ export function SettingsSkillsPanel() {
     <view className="SettingsSkillsPanel">
       <SettingsSection title="Portable skills">
         <view className="SettingsSkillsPortableRow">
-          <view className="SettingsSkillsRowCopy">
-            <text className="SettingsSkillsRowTitle">Synara skills folder</text>
-            <text className="SettingsSkillsRowDescription">
-              Skills placed here are available on every provider. When a
-              provider already ships its own copy of a skill, that copy is
-              used; otherwise Synara&apos;s copy is the fallback.
+          <view className="SettingsSkillsMain">
+            <view className="SettingsSkillsRowCopy">
+              <view className="SettingsSkillsPortableTitleLine">
+                <text className="SettingsSkillsRowTitle">Synara skills folder</text>
+              </view>
+              <text className="SettingsSkillsRowDescription">
+                Skills placed here are available on every provider. When a
+                provider already ships its own copy of a skill, that copy is
+                used; otherwise Synara&apos;s copy is the fallback.
+              </text>
+            </view>
+            <text className="SettingsSkillsCount">
+              {enabledCount} of {groups.length}{' '}
+              {groups.length === 1 ? 'skill' : 'skills'} enabled
             </text>
-            {catalogQuery.data?.synaraSkillsDir ? (
+          </view>
+          {catalogQuery.data?.synaraSkillsDir ? (
+            <view className="SettingsSkillsMetadata">
               <text className="SettingsSkillsPath">
                 {catalogQuery.data.synaraSkillsDir}
               </text>
-            ) : null}
-          </view>
-          <text className="SettingsSkillsCount">
-            {enabledCount} of {groups.length}{' '}
-            {groups.length === 1 ? 'skill' : 'skills'} enabled
-          </text>
+            </view>
+          ) : null}
         </view>
       </SettingsSection>
 
@@ -201,21 +207,39 @@ export function SettingsSkillsPanel() {
               <view
                 key={group.key}
                 className={`SettingsSkillsRow${
-                  index > 0 ? ' SettingsSkillsRow--divided' : ''
+                  index < section.groups.length - 1
+                    ? ' SettingsSkillsRow--continued'
+                    : ''
                 }`}
               >
-                <view className="SettingsSkillsRowCopy">
-                  <view className="SettingsSkillsTitleLine">
-                    <view className="SettingsSkillsCube">
-                      <view className="SettingsSkillsCubeFace" />
+                <view className="SettingsSkillsMain">
+                  <view className="SettingsSkillsRowCopy">
+                    <view className="SettingsSkillsTitleLine">
+                      <view className="SettingsSkillsCube">
+                        <view className="SettingsSkillsCubeFace" />
+                      </view>
+                      <text className="SettingsSkillsRowTitle">
+                        {group.displayName}
+                      </text>
                     </view>
-                    <text className="SettingsSkillsRowTitle">
-                      {group.displayName}
+                    <text className="SettingsSkillsRowDescription">
+                      {group.description}
                     </text>
                   </view>
-                  <text className="SettingsSkillsRowDescription">
-                    {group.description}
-                  </text>
+                  <view className="SettingsSkillsControl">
+                    <SettingsGeneralBooleanControlElement
+                      checked={enabled}
+                      ariaLabel={`Enable the ${group.displayName} skill`}
+                      onChange={(checked) =>
+                        void setSkillEnabled(group.primarySkill.name, checked)
+                      }
+                    />
+                    {savingSkillKey === group.key ? (
+                      <text className="SettingsSkillsSaving">Saving…</text>
+                    ) : null}
+                  </view>
+                </view>
+                <view className="SettingsSkillsMetadata">
                   <view className="SettingsSkillsSourceLine">
                     <SkillProviderStack providers={group.providers} />
                     <text className="SettingsSkillsSource">
@@ -232,18 +256,6 @@ export function SettingsSkillsPanel() {
                       {source.skill.path}
                     </text>
                   ))}
-                </view>
-                <view className="SettingsSkillsControl">
-                  <SettingsGeneralBooleanControlElement
-                    checked={enabled}
-                    ariaLabel={`Enable the ${group.displayName} skill`}
-                    onChange={(checked) =>
-                      void setSkillEnabled(group.primarySkill.name, checked)
-                    }
-                  />
-                  {savingSkillKey === group.key ? (
-                    <text className="SettingsSkillsSaving">Saving…</text>
-                  ) : null}
                 </view>
               </view>
             );

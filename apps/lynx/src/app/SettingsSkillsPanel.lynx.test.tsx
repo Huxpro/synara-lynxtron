@@ -64,7 +64,28 @@ describe('Settings Skills fidelity', () => {
       /\.SettingsSkills(?:PortableRow|Row|EmptyRow)\s*\{[^}]*min-height:/s
     );
     expect(styles).toMatch(
-      /\.SettingsSkillsRow\s*\{[^}]*align-items:\s*center;[^}]*justify-content:\s*space-between;[^}]*gap:\s*20px;/s
+      /\.SettingsSkillsPortableRow,\s*\.SettingsSkillsRow\s*\{[^}]*flex-direction:\s*column;/s
+    );
+    expect(source).toContain('className="SettingsSkillsMain"');
+    expect(source).toContain('className="SettingsSkillsMetadata"');
+    expect(source).toContain("' SettingsSkillsRow--continued'");
+    expect(source).toContain('index < section.groups.length - 1');
+    expect(styles).toMatch(
+      /\.SettingsSkillsRow--continued\s*\{[^}]*border-bottom:\s*1px solid var\(--border\);/s
+    );
+    expect(styles).not.toContain('SettingsSkillsRow--divided');
+    expect(styles).toMatch(
+      /\.SettingsSkillsMain\s*\{[^}]*align-items:\s*center;[^}]*justify-content:\s*space-between;[^}]*gap:\s*20px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsSkillsMetadata\s*\{[^}]*flex-direction:\s*column;[^}]*gap:\s*4px;[^}]*padding-top:\s*4px;/s
+    );
+    expect(source).toContain('className="SettingsSkillsPortableTitleLine"');
+    expect(styles).toMatch(
+      /\.SettingsSkillsPortableTitleLine\s*\{[^}]*min-height:\s*20px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsSkillsTitleLine\s*\{[^}]*min-height:\s*21px;[^}]*gap:\s*6px;/s
     );
     expect(styles).toMatch(
       /\.SettingsSkillsControl\s*\{[^}]*flex-shrink:\s*0;[^}]*align-items:\s*flex-end;/s
@@ -81,6 +102,12 @@ describe('Settings Skills fidelity', () => {
     );
     expect(styles).toMatch(
       /\.SettingsSkillsPath\s*\{[^}]*overflow:\s*hidden;[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsSkillsSource,\s*\.SettingsSkillsPath,\s*\.SettingsSkillsSaving\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*16\.5px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsSkillsCount\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s
     );
   });
 });
