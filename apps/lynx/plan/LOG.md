@@ -5416,3 +5416,7 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   margin；current Lynx实测label 26px、General y=124，Web y=160扣除36px desktop
   chrome后同为124。focused tests **5/5**，Web与Native/Desktop builds通过；
   证据位于`shots/2026-08-06/settings-navigation-typography/`。
+- 同一chrome继续检查发现Back label在Web继承shared sidebar row的`font-normal`，
+  Lynx却单独强制500。删除该异常字重并锁Web contract；focused chrome/navigation/
+  layout tests **4/4**，Web与Native/Desktop builds通过，bundle为Lynx-for-Web
+  `280831ac…`、Native `2be6bcf4…`。

@@ -16,4 +16,20 @@ describe('Lynx Settings search input', () => {
       'onChange={(event) => props.onValueChange?.(event.target.value)}'
     );
   });
+
+  it('matches the Web back-row label weight', () => {
+    const styles = readFileSync(
+      new URL('./settings-sidebar-chrome-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+    const webStyles = readFileSync(
+      new URL('../../../web/src/sidebarRowStyles.ts', import.meta.url),
+      'utf8'
+    );
+
+    expect(webStyles).toContain('font-normal');
+    expect(styles).toMatch(
+      /\.SharedSettingsSidebarBackLabel\s*\{[^}]*font-size:\s*12px;[^}]*font-weight:\s*400;[^}]*line-height:\s*18px;/s
+    );
+  });
 });
