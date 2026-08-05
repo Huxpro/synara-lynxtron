@@ -39,9 +39,9 @@ complete.
 | Current-head evidence is not Web fallback masquerading as Lynx | six affected Settings cells recaptured from staged bundle with stable Lynx host URL | PASS |
 | New Settings pages cover light/dark × 1280/1440 | light/1280 plus dark/1440 retained for eight continuation pages | PASS |
 | Continuation matrix is machine-verified against final HEAD | `settings-continuation-manifest.json`; `settings-continuation-evidence.mjs` validates 16 states / 48 cells | PASS |
-| Populated destructive/mutation paths are visually certified without fabricated data | logic/RPC tests cover unavailable canonical snapshot states; no SQLite fixtures used | PARTIAL — behavior covered, visual populated states not all available |
+| Populated destructive/mutation paths are visually certified without fabricated data | canonical snapshot has no managed worktree/integration/archived rows; logic/RPC tests cover the product paths and direct SQLite fixtures are forbidden | NOT APPLICABLE — no safe canonical populated state |
 | Full final heavy pass | AGENTS requires `bun fmt`, `bun lint`, `bun typecheck`; current conversation does not explicitly authorize running them | **BLOCKED BY INSTRUCTION** |
-| Worktree clean and local HEAD equals origin | only isolated runtime directories may remain; final audit commit not yet pushed | PENDING |
+| Worktree clean and local HEAD equals origin | local/remote both `8ea05253`; only excluded isolated `.p10-view*` runtime directories remain | PASS |
 
 ## Section ownership
 

@@ -5359,3 +5359,6 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - final evidence bundle identities统一为Lynx-for-Web `a5ec04ab…`、Native
   `9c9046af…`；explicit-owner commit之后的16 states / 48 cells全部重新生成，而非只
   修改metadata hash。
+- completion audit不再把不存在的canonical populated worktree/integration/archived
+  rows标PARTIAL：用户约束禁止直接写SQLite或伪造数据，因此这类视觉状态为N/A with
+  focused behavior/RPC proof。local/remote已对齐，只剩隔离`.p10-view*`目录。
