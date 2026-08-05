@@ -47,9 +47,9 @@
 
 .SharedSettingsProviderPickerTitle {
   color: var(--foreground);
-  font-size: 13px;
+  font-size: var(--type-settings-row-title-size);
   font-weight: 500;
-  line-height: 18px;
+  line-height: var(--type-settings-row-title-line-height);
 }
 
 .SharedSettingsProviderPickerReset {
@@ -92,8 +92,8 @@
 .SharedSettingsProviderPickerItemTitle {
   flex: 1;
   color: var(--foreground);
-  font-size: 13px;
-  line-height: 18px;
+  font-size: 14px;
+  line-height: 20px;
 }
 
 .SharedSettingsProviderPickerItemActions {

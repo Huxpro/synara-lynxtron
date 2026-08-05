@@ -48,4 +48,18 @@ describe('Lynx Settings section labels', () => {
       expect(styles).toMatch(/Card\s*\{[^}]*border-radius:\s*10px;/s);
     }
   });
+
+  it('uses the standard row token and Web provider item typography', () => {
+    const providerStyles = readFileSync(
+      new URL('./settings-provider-picker-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(providerStyles).toMatch(
+      /\.SharedSettingsProviderPickerTitle\s*\{[^}]*font-size:\s*var\(--type-settings-row-title-size\);[^}]*line-height:\s*var\(--type-settings-row-title-line-height\);/s
+    );
+    expect(providerStyles).toMatch(
+      /\.SharedSettingsProviderPickerItemTitle\s*\{[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;/s
+    );
+  });
 });

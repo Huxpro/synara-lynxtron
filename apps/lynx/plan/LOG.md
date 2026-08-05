@@ -5466,3 +5466,7 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Provider Picker与generic card已正确，Appearance单独写12px。改回10px并新增
   跨owner contract；Usage quota cards为独立设计不纳入。focused tests **3/3**，
   两端build通过。
+- Standard row typography审计中General/Appearance已正确；Provider Picker header
+  仍13px而Web复用12px SettingsRow token，provider item则Web `text-sm`为14/20，
+  Lynx为13/18。分别改为shared row token与14/20，同时保持42px item min-height。
+  focused tests **3/3**，两端build通过。
