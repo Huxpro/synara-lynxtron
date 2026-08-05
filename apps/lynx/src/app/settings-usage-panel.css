@@ -11,8 +11,7 @@
 
 .SettingsUsageHeader,
 .SettingsUsageCardHeader,
-.SettingsUsageProviderIdentity,
-.SettingsUsageLimit {
+.SettingsUsageProviderIdentity {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -137,21 +136,41 @@
 }
 
 .SettingsUsageLimit {
+  display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
   gap: 6px;
 }
 
-.SettingsUsageLimitHeader,
+.SettingsUsageLimitTitle,
+.SettingsUsageLimitMeta,
+.SettingsUsageLimitPace,
 .SettingsUsageLineHeader {
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+
+.SettingsUsageLimitTitle {
+  justify-content: flex-start;
+  gap: 6px;
+}
+
+.SettingsUsageLimitMeta,
+.SettingsUsageLimitPace,
+.SettingsUsageLineHeader {
   justify-content: space-between;
   gap: 8px;
 }
 
+.SettingsUsagePaceDot {
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  border-radius: 999px;
+}
+
 .SettingsUsageTrack {
+  position: relative;
   width: 100%;
   height: 8px;
   overflow: hidden;
@@ -164,15 +183,31 @@
   border-radius: 999px;
 }
 
-.SettingsUsageTrackFill--healthy {
+.SettingsUsageTrackMarkerGap {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  margin-left: -4px;
+  padding: 0 3px;
+  background-color: var(--background);
+}
+
+.SettingsUsageTrackMarker {
+  width: 2px;
+  height: 100%;
+  border-radius: 999px;
+}
+
+.SettingsUsageTone--healthy {
   background-color: var(--success);
 }
 
-.SettingsUsageTrackFill--warning {
+.SettingsUsageTone--warning {
   background-color: var(--warning);
 }
 
-.SettingsUsageTrackFill--danger {
+.SettingsUsageTone--danger {
   background-color: var(--destructive);
 }
 
@@ -188,6 +223,11 @@
 
 .SettingsUsageValue {
   color: var(--muted-foreground);
+}
+
+.SettingsUsageMetaText {
+  color: var(--muted-foreground);
+  font-size: 11px;
 }
 
 .SettingsUsageSubtitle {

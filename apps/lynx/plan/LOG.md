@@ -5538,8 +5538,13 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   focused tests **6/6**，两端build通过。
 - Usage limits此前只显示“% left”文本，丢失Web核心8px progress track。现直接使用
   canonical `usedPercent`计算remaining，按Web阈值映射healthy/warning/danger fill，
-  保留真实ARIA progress语义；未伪造Native数据模型未携带的pace marker。subtitle补
-  muted/80 tone。focused tests **6/6**，Web/Native builds已通过。
+  保留真实ARIA progress语义；该slice当时尚未接入pace marker。subtitle补muted/80
+  tone。focused tests **6/6**，Web/Native builds已通过。
+- Usage meter row继续从Web source authority收敛：抽取跨Web/Lynx共享的server-limit
+  remaining/reset/pace derivation，Native改为label+6px pace dot、8px track+expected
+  pace marker、11px remaining/reset metadata及可选reserve/ETA row。现在wire schema
+  已有`resetsAt`与`windowDurationMins`时显示真实pace，不再省略可推导信息。shared
+  tests **4/4**、Web wrapper tests **8/8**、Lynx focused tests **6/6**；三端build通过。
 - Usage line list此前沿用meter column，把label/value纵向堆叠。现拆分Meters与Lines
   owners：line header横向justify-between、item gap2、list gap6；meters与lines同时
   存在时加12px top divider。空类别不渲染container，避免无内容gap。focused tests

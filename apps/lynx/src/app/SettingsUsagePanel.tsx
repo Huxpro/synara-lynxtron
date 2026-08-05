@@ -5,6 +5,7 @@ import {
   providerUsageDisplayName,
   providerUsageNeedsAuthDetail,
 } from '@synara/shared/providerUsage';
+import { deriveProviderUsageLimitDisplay } from '@synara/shared/providerUsageDisplay';
 
 import { Button } from '../components/ui/button';
 import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
@@ -32,49 +33,70 @@ function statusLabel(snapshot: ServerProviderUsageSnapshot): string | null {
   return 'Unavailable';
 }
 
-function remainingTone(remainingPercent: number): 'healthy' | 'warning' | 'danger' {
-  if (remainingPercent <= 10) return 'danger';
-  if (remainingPercent <= 25) return 'warning';
-  return 'healthy';
-}
-
 function UsageLimitRow(props: {
   readonly limit: ServerProviderUsageSnapshot['limits'][number];
   readonly provider: ServerProviderUsageSnapshot['provider'];
 }) {
-  const remainingPercent =
-    props.limit.usedPercent === undefined
-      ? null
-      : Math.min(100, Math.max(0, 100 - props.limit.usedPercent));
+  const display = deriveProviderUsageLimitDisplay(props.limit);
+  const paceAmountText = display.pace?.amountText ?? null;
+  const paceEtaText = display.pace?.etaText ?? null;
+  const hasPaceDetails = paceAmountText !== null || paceEtaText !== null;
+
   return (
     <view
       className="SettingsUsageLimit"
       key={`${props.provider}:${props.limit.window}`}
     >
-      <view className="SettingsUsageLimitHeader">
-        <text className="SettingsUsageLabel">{props.limit.window}</text>
-        <text className="SettingsUsageValue">
-          {remainingPercent === null
-            ? 'Usage reported'
-            : `${remainingPercent.toFixed(0)}% left`}
-        </text>
+      <view className="SettingsUsageLimitTitle">
+        <text className="SettingsUsageLabel">{display.label}</text>
+        <view
+          className={`SettingsUsagePaceDot SettingsUsageTone--${display.paceTone}`}
+        />
       </view>
-      {remainingPercent === null ? null : (
+      {display.remainingPercent === null ? null : (
         <view
           className="SettingsUsageTrack"
           aria-label={`${props.limit.window} remaining`}
-          aria-valuenow={Math.round(remainingPercent)}
+          aria-valuenow={Math.round(display.remainingPercent)}
           aria-valuemin={0}
           aria-valuemax={100}
         >
           <view
-            className={`SettingsUsageTrackFill SettingsUsageTrackFill--${remainingTone(
-              remainingPercent
-            )}`}
-            style={{ width: `${remainingPercent}%` }}
+            className={`SettingsUsageTrackFill SettingsUsageTone--${display.remainingTone}`}
+            style={{ width: `${display.remainingPercent}%` }}
           />
+          {display.markerPercent === null ||
+          display.remainingPercent <= 0 ||
+          display.remainingPercent >= 100 ? null : (
+            <view
+              className="SettingsUsageTrackMarkerGap"
+              style={{ left: `${display.markerPercent}%` }}
+            >
+              <view
+                className={`SettingsUsageTrackMarker SettingsUsageTone--${display.paceTone}`}
+              />
+            </view>
+          )}
         </view>
       )}
+      <view className="SettingsUsageLimitMeta">
+        <text className="SettingsUsageMetaText">{display.leftText}</text>
+        {display.resetText ? (
+          <text className="SettingsUsageMetaText">{display.resetText}</text>
+        ) : null}
+      </view>
+      {hasPaceDetails ? (
+        <view className="SettingsUsageLimitPace">
+          {paceAmountText ? (
+            <text className="SettingsUsageMetaText">{paceAmountText}</text>
+          ) : (
+            <view />
+          )}
+          {paceEtaText ? (
+            <text className="SettingsUsageMetaText">{paceEtaText}</text>
+          ) : null}
+        </view>
+      ) : null}
     </view>
   );
 }

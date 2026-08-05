@@ -5,13 +5,16 @@
 import {
   deriveVisibleRateLimitRows,
   formatRateLimitRemainingPercent,
-  formatRateLimitResetCountdown,
   type ProviderRateLimit,
   type VisibleRateLimitRow,
 } from "~/lib/rateLimits";
-import { deriveUsagePace, type UsagePaceSummary } from "~/lib/usagePace";
+import {
+  deriveProviderUsageLimitDisplay,
+  type ProviderUsageTone,
+  type UsagePaceSummary,
+} from "@synara/shared/providerUsageDisplay";
 
-export type ProviderUsageTone = "healthy" | "warning" | "danger";
+export type { ProviderUsageTone };
 
 export interface ProviderUsageDisplayRow extends VisibleRateLimitRow {
   remainingLabel: string;
@@ -42,40 +45,6 @@ export const PROVIDER_USAGE_TONE_CLASS_NAME: Record<ProviderUsageTone, string> =
   danger: "bg-red-500",
 };
 
-function clampPercent(value: number): number {
-  return Math.min(100, Math.max(0, value));
-}
-
-function remainingTone(remainingPercent: number): ProviderUsageTone {
-  if (remainingPercent <= 10) return "danger";
-  if (remainingPercent <= 25) return "warning";
-  return "healthy";
-}
-
-function paceTone(status: UsagePaceSummary["status"]): ProviderUsageTone {
-  switch (status) {
-    case "behind":
-      return "danger";
-    case "on-track":
-      return "warning";
-    case "ahead":
-      return "healthy";
-  }
-}
-
-function windowDurationMinsForRow(row: VisibleRateLimitRow): number | undefined {
-  if (row.windowDurationMins !== undefined) {
-    return row.windowDurationMins;
-  }
-  if (row.label === "5h") {
-    return 300;
-  }
-  if (row.label === "Weekly") {
-    return 10_080;
-  }
-  return undefined;
-}
-
 export function providerUsageToneClassName(tone: ProviderUsageTone): string {
   return PROVIDER_USAGE_TONE_CLASS_NAME[tone];
 }
@@ -105,26 +74,27 @@ export function providerUsagePaceDetails(
 }
 
 export function deriveProviderUsageDisplayRow(row: VisibleRateLimitRow): ProviderUsageDisplayRow {
-  const remainingPercent = clampPercent(row.remainingPercent);
-  const pace = deriveUsagePace({
-    remainingPercent,
-    resetsAt: row.resetsAt,
-    windowDurationMins: windowDurationMinsForRow(row),
+  const display = deriveProviderUsageLimitDisplay({
+    window: row.label,
+    usedPercent: 100 - row.remainingPercent,
+    ...(row.resetsAt ? { resetsAt: row.resetsAt } : {}),
+    ...(row.windowDurationMins !== undefined
+      ? { windowDurationMins: row.windowDurationMins }
+      : {}),
   });
+  const remainingPercent = display.remainingPercent ?? row.remainingPercent;
   const remainingLabel = formatRateLimitRemainingPercent(remainingPercent);
-  const usageRemainingTone = remainingTone(remainingPercent);
-  const usagePaceTone = pace ? paceTone(pace.status) : usageRemainingTone;
 
   return {
     ...row,
     remainingPercent,
     remainingLabel,
-    leftText: `${remainingLabel} left`,
-    resetText: row.resetsAt ? formatRateLimitResetCountdown(row.resetsAt) : null,
-    pace,
-    markerPercent: pace ? clampPercent(pace.expectedRemainingPercent) : null,
-    remainingTone: usageRemainingTone,
-    paceTone: usagePaceTone,
+    leftText: display.leftText,
+    resetText: display.resetText,
+    pace: display.pace,
+    markerPercent: display.markerPercent,
+    remainingTone: display.remainingTone,
+    paceTone: display.paceTone,
   };
 }
 

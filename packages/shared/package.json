@@ -188,6 +188,10 @@
       "types": "./src/providerUsage.ts",
       "import": "./src/providerUsage.ts"
     },
+    "./providerUsageDisplay": {
+      "types": "./src/providerUsageDisplay.ts",
+      "import": "./src/providerUsageDisplay.ts"
+    },
     "./providerMetadata": {
       "types": "./src/providerMetadata.ts",
       "import": "./src/providerMetadata.ts"

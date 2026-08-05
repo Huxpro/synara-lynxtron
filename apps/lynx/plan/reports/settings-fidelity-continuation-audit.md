@@ -72,7 +72,8 @@ complete.
 | Usage cards match Web SettingsCard anatomy | 10px radius, 16px card padding, 14px internal gap; loading state keeps 14×16 padding | PASS |
 | Usage cards preserve provider visual identity | 28px rounded provider shell with existing mapped SVG icon, border, and muted/60 surface | PASS |
 | Usage status pills match Web semantics | ok shows plan pill only when named; needs-auth/error use 12% semantic surfaces and theme-aware text; unsupported remains muted | PASS |
-| Usage cards render real quota meters | canonical `usedPercent` drives 8px healthy/warning/danger remaining tracks; pace marker omitted because Native data lacks it | PASS |
+| Usage cards render real quota meters | canonical `usedPercent` drives 8px healthy/warning/danger remaining tracks rather than text-only quota summaries | PASS |
+| Usage meter rows match Web metadata and pace anatomy | shared server-limit derivation drives label + 6px pace dot, 8px track + marker, remaining/reset metadata, and optional reserve/ETA rows from real reset timing | PASS |
 | Usage line list matches Web row structure | horizontal label/value rows, 2px item rhythm, 6px list gap, and 12px divider after meters | PASS |
 | Usage Refresh action matches Web identity | generated 14px refresh icon spins while fetching; label keeps shared Button typography | PASS |
 | Usage footer matches Web explanation and rhythm | full local-credentials, OAuth refresh, and CLI re-authentication copy with 11px/18px typography and 8px horizontal inset | PASS |

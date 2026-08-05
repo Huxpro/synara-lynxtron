@@ -81,11 +81,32 @@ describe('Lynx Settings section labels', () => {
     expect(usageStyles).toMatch(
       /\.SettingsUsageStatus--needs-auth\s*\{[^}]*background-color:\s*var\(--settings-usage-warning-surface\);[^}]*color:\s*var\(--settings-usage-warning-text\);/s
     );
-    expect(usageSource).toContain('function remainingTone(');
+    expect(usageSource).toContain(
+      "import { deriveProviderUsageLimitDisplay } from '@synara/shared/providerUsageDisplay';"
+    );
+    expect(usageSource).toContain(
+      'const display = deriveProviderUsageLimitDisplay(props.limit);'
+    );
+    expect(usageSource).toContain('className="SettingsUsageLimitTitle"');
+    expect(usageSource).toContain('className="SettingsUsageLimitMeta"');
+    expect(usageSource).toContain('className="SettingsUsageLimitPace"');
+    expect(usageSource).not.toContain('className="SettingsUsageLimitHeader"');
     expect(usageSource).toContain('className="SettingsUsageTrack"');
-    expect(usageSource).toContain("style={{ width: `${remainingPercent}%` }}");
+    expect(usageSource).toContain(
+      "style={{ width: `${display.remainingPercent}%` }}"
+    );
+    expect(usageSource).toContain('className="SettingsUsageTrackMarkerGap"');
     expect(usageStyles).toMatch(
       /\.SettingsUsageTrack\s*\{[^}]*height:\s*8px;[^}]*border-radius:\s*999px;/s
+    );
+    expect(usageStyles).toMatch(
+      /\.SettingsUsagePaceDot\s*\{[^}]*width:\s*6px;[^}]*height:\s*6px;[^}]*border-radius:\s*999px;/s
+    );
+    expect(usageStyles).toMatch(
+      /\.SettingsUsageMetaText\s*\{[^}]*font-size:\s*11px;/s
+    );
+    expect(usageStyles).toMatch(
+      /\.SettingsUsageTrackMarkerGap\s*\{[^}]*width:\s*8px;[^}]*margin-left:\s*-4px;[^}]*padding:\s*0 3px;/s
     );
     expect(usageStyles).toMatch(
       /\.SettingsUsageSubtitle\s*\{[^}]*font-size:\s*11px;[^}]*opacity:\s*0\.8;/s
