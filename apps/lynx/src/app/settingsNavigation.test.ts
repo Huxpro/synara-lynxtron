@@ -91,6 +91,11 @@ describe('shared settings navigation projection', () => {
     }
     expect(source).toContain("section === 'providers' ? (");
     expect(source).toContain(') : null}');
+    expect(source).toContain(
+      'renderResetAction={renderSettingsResetAction}'
+    );
+    expect(source).toContain('<SettingsResetIcon />');
+    expect(source).not.toContain('↶');
   });
 
   it('projects the real server provider update-check preference', () => {

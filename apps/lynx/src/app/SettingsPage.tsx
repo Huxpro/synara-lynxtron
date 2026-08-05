@@ -90,6 +90,7 @@ import {
 } from './settingsPersistence.logic';
 import { Button } from '../components/ui/button';
 import { SettingsGeneralBooleanControlElement } from '../adapters/SettingsGeneralCompositionElements.lynx';
+import { SettingsResetIcon } from '../adapters/SettingsResetIcon.lynx';
 import type { ResolvedKeybindingsConfig } from '@synara/contracts';
 import { SettingsUsagePanel } from './SettingsUsagePanel';
 import { SettingsProfilePanel } from './SettingsProfilePanel.lynx';
@@ -115,6 +116,23 @@ const SETTINGS_PROVIDER_SAVE_ERROR =
 const SETTINGS_BEHAVIOR_SAVE_ERROR =
   'Changes were saved locally, but assistant streaming could not be updated on the server.';
 const EMPTY_KEYBINDINGS: ResolvedKeybindingsConfig = [];
+
+function renderSettingsResetAction(args: {
+  readonly changed: boolean;
+  readonly label: string;
+  readonly onReset: () => void;
+}) {
+  return args.changed ? (
+    <Button
+      variant="ghost"
+      size="icon-xs"
+      aria-label={`Reset ${args.label} to default`}
+      onClick={args.onReset}
+    >
+      <SettingsResetIcon />
+    </Button>
+  ) : null;
+}
 
 async function readSettings(retry: boolean): Promise<{
   readonly general: SettingsGeneralValues;
@@ -774,18 +792,7 @@ export function SettingsPage({
                       onChange={onCheckedChange}
                     />
                   )}
-                  renderResetAction={({ changed, label, onReset }) =>
-                    changed ? (
-                      <Button
-                        variant="ghost"
-                        size="icon-xs"
-                        aria-label={`Reset ${label} to default`}
-                        onClick={onReset}
-                      >
-                        ↶
-                      </Button>
-                    ) : null
-                  }
+                  renderResetAction={renderSettingsResetAction}
                 />
               ) : section === 'appsnap' ? (
                 <SettingsAppSnapPanel />
@@ -806,18 +813,7 @@ export function SettingsPage({
                       onChange={onCheckedChange}
                     />
                   )}
-                  renderResetAction={({ changed, label, onReset }) =>
-                    changed ? (
-                      <Button
-                        variant="ghost"
-                        size="icon-xs"
-                        aria-label={`Reset ${label} to default`}
-                        onClick={onReset}
-                      >
-                        ↶
-                      </Button>
-                    ) : null
-                  }
+                  renderResetAction={renderSettingsResetAction}
                 />
               ) : section === 'shortcuts' ? (
                 <KeyboardShortcutsSettingsComposition

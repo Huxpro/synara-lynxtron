@@ -5644,6 +5644,10 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - General标准select的176×32 geometry已与Web一致，但chevron仍沿用旧0.8 tone，
   Web default SelectTrigger实际为12px/0.5；改为0.5，并给interactive MenuTrigger补
   与内部Button一致的aria label。focused tests **7/7**，两端build通过。
+- Behavior/Notifications在SettingsPage内各自复制reset callback，仍渲染文本`↶`，
+  绕过已统一的Settings reset identity。抽取单一`renderSettingsResetAction`，
+  两个shared panels现在共用generated `SettingsResetIcon` 14px、icon-xs ghost button
+  与原accessibility label。focused settings tests **11/11**，两端build通过。
 - 新增icon后审计Button primitive发现Lynx无content gap，且mixed children中的label
   未自动套`LxButton__text`。补Web base/default 8px、sm 6px、xs 4px gap，并显式
   包裹Theme option label，确保icon+text typography与间距都生效。focused Settings
