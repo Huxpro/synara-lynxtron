@@ -3,6 +3,12 @@ import type { ReactNode } from '@lynx-js/react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import {
+  DeviceLaptopIcon,
+  MoonIcon,
+  SunIcon,
+  type LynxIcon,
+} from '../lib/icons.lynx';
+import {
   Menu,
   MenuPopup,
   MenuRadioGroup,
@@ -14,6 +20,12 @@ import { useLynxInteractiveState } from './useLynxInteractiveState';
 import { settingRowAnchorId } from '@synara-web/settingsNavigation';
 
 type Option = { readonly value: string; readonly label: string };
+
+const THEME_OPTION_ICONS: Readonly<Record<string, LynxIcon>> = {
+  light: SunIcon,
+  dark: MoonIcon,
+  system: DeviceLaptopIcon,
+};
 
 export function SettingsAppearanceRootElement(props: {
   readonly children?: ReactNode;
@@ -87,17 +99,24 @@ export function SettingsAppearanceSegmentedControlElement(props: {
 }) {
   return (
     <view className="SharedSettingsAppearanceSegments">
-      {props.options.map((option) => (
-        <Button
-          key={option.value}
-          size="sm"
-          variant={option.value === props.value ? 'secondary' : 'ghost'}
-          aria-label={`${props.ariaLabel}: ${option.label}`}
-          onClick={() => props.onChange(option.value)}
-        >
-          {option.label}
-        </Button>
-      ))}
+      {props.options.map((option) => {
+        const Icon =
+          props.ariaLabel === 'Theme preference'
+            ? THEME_OPTION_ICONS[option.value]
+            : undefined;
+        return (
+          <Button
+            key={option.value}
+            size="sm"
+            variant={option.value === props.value ? 'secondary' : 'ghost'}
+            aria-label={`${props.ariaLabel}: ${option.label}`}
+            onClick={() => props.onChange(option.value)}
+          >
+            {Icon ? <Icon size={14} color="var(--foreground)" /> : null}
+            {option.label}
+          </Button>
+        );
+      })}
     </view>
   );
 }

@@ -111,13 +111,15 @@
 
 .SharedSettingsAppearanceSwitch {
   width: 32px;
-  height: 18px;
-  padding: 2px;
-  border-radius: 9px;
-  background-color: var(--muted);
+  height: 20px;
+  padding: 1px;
+  border: 1px solid var(--settings-switch-border);
+  border-radius: 10px;
+  background-color: var(--settings-switch-off);
 }
 
 .SharedSettingsAppearanceSwitch--on {
+  border-color: var(--color-text-accent);
   background-color: var(--color-text-accent);
 }
 
@@ -134,14 +136,14 @@
 }
 
 .SharedSettingsAppearanceSwitchThumb {
-  width: 14px;
-  height: 14px;
-  border-radius: 7px;
-  background-color: var(--background);
+  width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  background-color: #ffffff;
 }
 
 .SharedSettingsAppearanceSwitch--on .SharedSettingsAppearanceSwitchThumb {
-  transform: translateX(14px);
+  transform: translateX(12px);
 }
 
 .SharedSettingsAppearanceInputLine {

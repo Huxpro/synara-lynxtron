@@ -68,6 +68,7 @@ complete.
 | Integrations project picker matches Web desktop columns | Native uses two-column flex-wrap at Lynxtron desktop widths; canonical snapshot has no safe populated visual state | PASS — focused contract, visual N/A |
 | Shared Input radius matches Web controls | Lynx `LxInputControl` uses rounded-lg / 10px across Settings inputs | PASS |
 | Shared Button radius matches Web controls | Lynx `LxButton` uses rounded-lg / 10px; explicit capsule/special variants remain owners | PASS |
+| Appearance theme controls match Web icon and switch identity | Theme preference uses generated Sun/Moon/Laptop icons; boolean switch uses normalized geometry/paint | PASS |
 | Settings sidebar search matches Web intent | shared ranking/index, real Lynx input/results/selection/row targeting, canonical section icons, Web-owned horizontal gutter, Web/Lynx filtered evidence, Native default anatomy | PASS — Native filtered text entry not claimed |
 | Populated destructive/mutation paths are visually certified without fabricated data | canonical snapshot has no managed worktree/integration/archived rows; logic/RPC tests cover the product paths and direct SQLite fixtures are forbidden | NOT APPLICABLE — no safe canonical populated state |
 | Full final heavy pass | AGENTS requires `bun fmt`, `bun lint`, `bun typecheck`; current conversation does not explicitly authorize running them | **BLOCKED BY INSTRUCTION** |

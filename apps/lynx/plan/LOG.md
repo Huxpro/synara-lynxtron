@@ -5521,3 +5521,7 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Integrations、Advanced等Settings actions。修primitive owner为10px；capsule与
   显式special variants继续覆盖。focused Settings control suites **14/14**，两端
   build通过。
+- Appearance Theme preference segmented buttons原本只有文字，Web明确带
+  Sun/Moon/Laptop icons；补生成的14px icons，仅Theme preference使用。同期发现
+  Appearance boolean switch是第四套旧18/14实现，统一到32×20/16px及shared
+  switch paint tokens。focused tests **7/7**，两端build通过。

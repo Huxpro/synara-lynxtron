@@ -3,6 +3,10 @@ import { readFileSync } from 'node:fs';
 
 describe('Settings Appearance fidelity', () => {
   it('matches the shared Web section and row anatomy', () => {
+    const source = readFileSync(
+      new URL('./SettingsAppearanceCompositionElements.lynx.tsx', import.meta.url),
+      'utf8'
+    );
     const styles = readFileSync(
       new URL('./settings-appearance-composition-elements.css', import.meta.url),
       'utf8'
@@ -28,6 +32,13 @@ describe('Settings Appearance fidelity', () => {
     );
     expect(styles).toMatch(
       /\.SharedSettingsAppearanceRowDescription,\s*\.SharedSettingsAppearanceSuffix\s*\{[^}]*font-size:\s*var\(--type-settings-row-description-size\);[^}]*line-height:\s*var\(--type-settings-row-description-line-height\);/s
+    );
+    expect(source).toContain('THEME_OPTION_ICONS');
+    expect(source).toContain('SunIcon');
+    expect(source).toContain('MoonIcon');
+    expect(source).toContain('DeviceLaptopIcon');
+    expect(styles).toMatch(
+      /\.SharedSettingsAppearanceSwitch\s*\{[^}]*width:\s*32px;[^}]*height:\s*20px;[^}]*border:\s*1px solid var\(--settings-switch-border\);/s
     );
   });
 });
