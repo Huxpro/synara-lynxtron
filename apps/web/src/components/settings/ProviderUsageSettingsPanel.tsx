@@ -6,6 +6,7 @@
 import type { ProviderKind, ServerProviderUsageSnapshot } from "@synara/contracts";
 import {
   PROVIDER_USAGE_PROVIDERS,
+  mergeProviderUsageRefresh,
   providerUsageDisplayName,
   providerUsageNeedsAuthDetail,
 } from "@synara/shared/providerUsage";
@@ -145,20 +146,6 @@ function missingSnapshot(provider: ProviderKind): ServerProviderUsageSnapshot {
     status: "error",
     detail: "Usage is currently unavailable.",
   };
-}
-
-function mergeProviderUsageRefresh(
-  previous: readonly ServerProviderUsageSnapshot[] | undefined,
-  next: readonly ServerProviderUsageSnapshot[],
-): readonly ServerProviderUsageSnapshot[] {
-  if (!previous) {
-    return next;
-  }
-  const previousByProvider = new Map(previous.map((snapshot) => [snapshot.provider, snapshot]));
-  const nextByProvider = new Map(next.map((snapshot) => [snapshot.provider, snapshot]));
-  return PROVIDER_USAGE_PROVIDERS.map(
-    (provider) => nextByProvider.get(provider) ?? previousByProvider.get(provider),
-  ).filter((snapshot): snapshot is ServerProviderUsageSnapshot => snapshot !== undefined);
 }
 
 export function ProviderUsageSettingsPanel() {

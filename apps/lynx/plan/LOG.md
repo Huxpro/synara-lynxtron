@@ -5556,6 +5556,12 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - Usage Refresh action补Web 14px rotate icon，fetching时复用已有`animate-spin`，
   mixed children中的文字显式套`LxButton__text`；disabled/refetch行为不变。
   focused tests **6/6**，两端build通过。
+- Usage Refresh行为此前只调用React Query默认`refetch()`，未显式发送Web既有的
+  `{ forceRefresh: true }` API intent，也未保护batch暂时漏回provider时的旧card。
+  现改为独立mutation、pending/fetching统一disabled+spin，并抽取Web/Lynx共享merge
+  policy保留缺失provider的last result。server当前每次调用均live fetch，Claude安全
+  cooldown仍按设计不被手动刷新绕过。shared tests **5/5**、Web tests **4/4**、
+  Lynx focused tests **6/6**；三端build通过。
 - Usage footer从简写说明恢复为Web完整凭据、OAuth token refresh与CLI重新认证文案，
   并对齐11px/18px排版及8px横向inset。focused tests **6/6**，Web/Lynx-for-Web/
   Native/Desktop builds通过。

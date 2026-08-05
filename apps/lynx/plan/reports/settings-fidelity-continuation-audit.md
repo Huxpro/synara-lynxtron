@@ -77,6 +77,7 @@ complete.
 | Usage stale-data warnings preserve Web semantics | otherwise-OK snapshots with `detail` retain last-good usage and show a 14px warning icon plus 12px/18px warning copy before meters | PASS |
 | Usage line list matches Web row structure | horizontal label/value rows, 2px item rhythm, 6px list gap, and 12px divider after meters | PASS |
 | Usage Refresh action matches Web identity | generated 14px refresh icon spins while fetching; label keeps shared Button typography | PASS |
+| Usage Refresh matches Web request semantics | dedicated mutation sends `{ forceRefresh: true }`, merges partial batches with prior provider cards, and shares pending/disabled/spin state without bypassing provider cooldown safety | PASS |
 | Usage footer matches Web explanation and rhythm | full local-credentials, OAuth refresh, and CLI re-authentication copy with 11px/18px typography and 8px horizontal inset | PASS |
 | Appearance theme controls match Web icon and switch identity | Theme preference uses generated Sun/Moon/Laptop icons; boolean switch uses normalized geometry/paint | PASS |
 | Shared Button icon-label spacing matches Web | default/sm/xs gaps are 8/6/4px; mixed Appearance labels retain `LxButton__text` styling | PASS |

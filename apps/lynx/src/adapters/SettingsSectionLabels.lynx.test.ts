@@ -71,7 +71,17 @@ describe('Lynx Settings section labels', () => {
       '<OpenAIProviderIcon provider={snapshot.provider} />'
     );
     expect(usageSource).toContain('<RefreshCwIcon');
-    expect(usageSource).toContain("usageQuery.isFetching ? 'animate-spin'");
+    expect(usageSource).toContain('mutationFn: () => loadProviderUsage(true)');
+    expect(usageSource).toContain(
+      'return fetchAllProviderUsage(forceRefresh ? { forceRefresh: true } : {});'
+    );
+    expect(usageSource).toContain(
+      '(previous) => mergeProviderUsageRefresh(previous, data)'
+    );
+    expect(usageSource).toContain(
+      'const isRefreshing = usageQuery.isFetching || refreshMutation.isPending;'
+    );
+    expect(usageSource).toContain("isRefreshing ? 'animate-spin'");
     expect(usageSource).toContain('<TriangleAlertIcon');
     expect(usageSource).toContain('snapshot.detail?.trim()');
     expect(usageSource).toContain('className="SettingsUsageNotice"');

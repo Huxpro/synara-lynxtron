@@ -5,6 +5,7 @@ import {
   deriveUsagePace,
   formatProviderUsageResetCountdown,
 } from "./providerUsageDisplay";
+import { mergeProviderUsageRefresh } from "./providerUsage";
 
 describe("providerUsageDisplay", () => {
   it("derives the remaining, reset, and pace metadata for a server limit", () => {
@@ -87,5 +88,37 @@ describe("providerUsageDisplay", () => {
     expect(formatProviderUsageResetCountdown("2026-06-09T11:00:00.000Z")).toBe("Resets soon");
 
     vi.useRealTimers();
+  });
+
+  it("keeps prior provider cards when a forced refresh omits a transient result", () => {
+    const previous = [
+      {
+        provider: "codex" as const,
+        updatedAt: "2026-06-09T12:00:00.000Z",
+        limits: [],
+        usageLines: [],
+        source: "codex",
+        status: "ok" as const,
+      },
+      {
+        provider: "claudeAgent" as const,
+        updatedAt: "2026-06-09T12:00:00.000Z",
+        limits: [],
+        usageLines: [],
+        source: "claude",
+        status: "ok" as const,
+      },
+    ];
+    const next = [
+      {
+        ...previous[0],
+        updatedAt: "2026-06-09T12:01:00.000Z",
+      },
+    ];
+
+    expect(mergeProviderUsageRefresh(previous, next)).toEqual([
+      next[0],
+      previous[1],
+    ]);
   });
 });

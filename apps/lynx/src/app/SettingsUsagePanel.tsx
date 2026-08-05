@@ -1,7 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { ServerProviderUsageSnapshot } from '@synara/contracts';
 import {
   PROVIDER_USAGE_PROVIDERS,
+  mergeProviderUsageRefresh,
   providerUsageDisplayName,
   providerUsageNeedsAuthDetail,
 } from '@synara/shared/providerUsage';
@@ -11,6 +12,16 @@ import { Button } from '../components/ui/button';
 import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
 import { RefreshCwIcon, TriangleAlertIcon } from '../lib/icons.lynx';
 import './settings-usage-panel.css';
+
+const SETTINGS_PROVIDER_USAGE_QUERY_KEY = ['settings-provider-usage'] as const;
+
+async function loadProviderUsage(forceRefresh = false) {
+  'background only';
+  const { fetchAllProviderUsage } = await import(
+    /* webpackMode: "eager" */ '../data/synaraClient.lynx'
+  );
+  return fetchAllProviderUsage(forceRefresh ? { forceRefresh: true } : {});
+}
 
 function missingSnapshot(
   provider: (typeof PROVIDER_USAGE_PROVIDERS)[number]
@@ -102,17 +113,22 @@ function UsageLimitRow(props: {
 }
 
 export function SettingsUsagePanel() {
+  const queryClient = useQueryClient();
   const usageQuery = useQuery({
-    queryKey: ['settings-provider-usage'],
-    queryFn: async () => {
-      'background only';
-      const { fetchAllProviderUsage } = await import(
-        /* webpackMode: "eager" */ '../data/synaraClient.lynx'
-      );
-      return fetchAllProviderUsage();
-    },
+    queryKey: SETTINGS_PROVIDER_USAGE_QUERY_KEY,
+    queryFn: () => loadProviderUsage(),
     staleTime: 30_000,
   });
+  const refreshMutation = useMutation({
+    mutationFn: () => loadProviderUsage(true),
+    onSuccess: (data) => {
+      queryClient.setQueryData<readonly ServerProviderUsageSnapshot[]>(
+        SETTINGS_PROVIDER_USAGE_QUERY_KEY,
+        (previous) => mergeProviderUsageRefresh(previous, data)
+      );
+    },
+  });
+  const isRefreshing = usageQuery.isFetching || refreshMutation.isPending;
   const snapshots = new Map(
     (usageQuery.data ?? []).map((snapshot) => [snapshot.provider, snapshot])
   );
@@ -127,12 +143,12 @@ export function SettingsUsagePanel() {
         <Button
           size="xs"
           variant="outline"
-          disabled={usageQuery.isFetching}
+          disabled={isRefreshing}
           aria-label="Refresh provider usage"
-          onClick={() => void usageQuery.refetch()}
+          onClick={() => refreshMutation.mutate()}
         >
           <RefreshCwIcon
-            className={usageQuery.isFetching ? 'animate-spin' : undefined}
+            className={isRefreshing ? 'animate-spin' : undefined}
             size={14}
             color="var(--foreground)"
           />
