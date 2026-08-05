@@ -73,6 +73,7 @@ complete.
 | Usage cards preserve provider visual identity | 28px rounded provider shell with existing mapped SVG icon, border, and muted/60 surface | PASS |
 | Usage status pills match Web semantics | ok shows plan pill only when named; needs-auth/error use 12% semantic surfaces and theme-aware text; unsupported remains muted | PASS |
 | Usage cards render real quota meters | canonical `usedPercent` drives 8px healthy/warning/danger remaining tracks; pace marker omitted because Native data lacks it | PASS |
+| Usage line list matches Web row structure | horizontal label/value rows, 2px item rhythm, 6px list gap, and 12px divider after meters | PASS |
 | Appearance theme controls match Web icon and switch identity | Theme preference uses generated Sun/Moon/Laptop icons; boolean switch uses normalized geometry/paint | PASS |
 | Shared Button icon-label spacing matches Web | default/sm/xs gaps are 8/6/4px; mixed Appearance labels retain `LxButton__text` styling | PASS |
 | Settings sidebar search matches Web intent | shared ranking/index, real Lynx input/results/selection/row targeting, canonical section icons, Web-owned horizontal gutter, Web/Lynx filtered evidence, Native default anatomy | PASS — Native filtered text entry not claimed |

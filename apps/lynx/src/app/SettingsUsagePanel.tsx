@@ -37,6 +37,47 @@ function remainingTone(remainingPercent: number): 'healthy' | 'warning' | 'dange
   return 'healthy';
 }
 
+function UsageLimitRow(props: {
+  readonly limit: ServerProviderUsageSnapshot['limits'][number];
+  readonly provider: ServerProviderUsageSnapshot['provider'];
+}) {
+  const remainingPercent =
+    props.limit.usedPercent === undefined
+      ? null
+      : Math.min(100, Math.max(0, 100 - props.limit.usedPercent));
+  return (
+    <view
+      className="SettingsUsageLimit"
+      key={`${props.provider}:${props.limit.window}`}
+    >
+      <view className="SettingsUsageLimitHeader">
+        <text className="SettingsUsageLabel">{props.limit.window}</text>
+        <text className="SettingsUsageValue">
+          {remainingPercent === null
+            ? 'Usage reported'
+            : `${remainingPercent.toFixed(0)}% left`}
+        </text>
+      </view>
+      {remainingPercent === null ? null : (
+        <view
+          className="SettingsUsageTrack"
+          aria-label={`${props.limit.window} remaining`}
+          aria-valuenow={Math.round(remainingPercent)}
+          aria-valuemin={0}
+          aria-valuemax={100}
+        >
+          <view
+            className={`SettingsUsageTrackFill SettingsUsageTrackFill--${remainingTone(
+              remainingPercent
+            )}`}
+            style={{ width: `${remainingPercent}%` }}
+          />
+        </view>
+      )}
+    </view>
+  );
+}
+
 export function SettingsUsagePanel() {
   const usageQuery = useQuery({
     queryKey: ['settings-provider-usage'],
@@ -102,64 +143,47 @@ export function SettingsUsagePanel() {
                 </view>
                 {status === 'ok' && hasUsage ? (
                   <view className="SettingsUsageDetails">
-                    {snapshot.limits.map((limit) => (
-                      (() => {
-                        const remainingPercent =
-                          limit.usedPercent === undefined
-                            ? null
-                            : Math.min(
-                                100,
-                                Math.max(0, 100 - limit.usedPercent)
-                              );
-                        return (
-                          <view
-                            className="SettingsUsageLimit"
+                    {snapshot.limits.length > 0 ? (
+                      <view className="SettingsUsageMeters">
+                        {snapshot.limits.map((limit) => (
+                          <UsageLimitRow
                             key={`${snapshot.provider}:${limit.window}`}
+                            limit={limit}
+                            provider={snapshot.provider}
+                          />
+                        ))}
+                      </view>
+                    ) : null}
+                    {snapshot.usageLines.length > 0 ? (
+                      <view
+                        className={`SettingsUsageLines${
+                          snapshot.limits.length > 0
+                            ? ' SettingsUsageLines--after-meters'
+                            : ''
+                        }`}
+                      >
+                        {snapshot.usageLines.map((line) => (
+                          <view
+                            className="SettingsUsageLine"
+                            key={`${snapshot.provider}:${line.label}:${line.value}`}
                           >
-                            <view className="SettingsUsageLimitHeader">
+                            <view className="SettingsUsageLineHeader">
                               <text className="SettingsUsageLabel">
-                                {limit.window}
+                                {line.label}
                               </text>
                               <text className="SettingsUsageValue">
-                                {remainingPercent === null
-                                  ? 'Usage reported'
-                                  : `${remainingPercent.toFixed(0)}% left`}
+                                {line.value}
                               </text>
                             </view>
-                            {remainingPercent === null ? null : (
-                              <view
-                                className="SettingsUsageTrack"
-                                aria-label={`${limit.window} remaining`}
-                                aria-valuenow={Math.round(remainingPercent)}
-                                aria-valuemin={0}
-                                aria-valuemax={100}
-                              >
-                                <view
-                                  className={`SettingsUsageTrackFill SettingsUsageTrackFill--${remainingTone(
-                                    remainingPercent
-                                  )}`}
-                                  style={{ width: `${remainingPercent}%` }}
-                                />
-                              </view>
-                            )}
+                            {line.subtitle ? (
+                              <text className="SettingsUsageSubtitle">
+                                {line.subtitle}
+                              </text>
+                            ) : null}
                           </view>
-                        );
-                      })()
-                    ))}
-                    {snapshot.usageLines.map((line) => (
-                      <view
-                        className="SettingsUsageLimit"
-                        key={`${snapshot.provider}:${line.label}:${line.value}`}
-                      >
-                        <text className="SettingsUsageLabel">{line.label}</text>
-                        <text className="SettingsUsageValue">{line.value}</text>
-                        {line.subtitle ? (
-                          <text className="SettingsUsageSubtitle">
-                            {line.subtitle}
-                          </text>
-                        ) : null}
+                        ))}
                       </view>
-                    ))}
+                    ) : null}
                   </view>
                 ) : (
                   <text className="SettingsUsageDetail">

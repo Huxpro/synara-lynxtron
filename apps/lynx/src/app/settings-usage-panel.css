@@ -107,8 +107,33 @@
   color: var(--settings-usage-error-text);
 }
 
+.SettingsUsageDetails,
+.SettingsUsageMeters,
+.SettingsUsageLines,
+.SettingsUsageLine {
+  display: flex;
+  flex-direction: column;
+}
+
 .SettingsUsageDetails {
-  gap: 10px;
+  gap: 12px;
+}
+
+.SettingsUsageMeters {
+  gap: 12px;
+}
+
+.SettingsUsageLines {
+  gap: 6px;
+}
+
+.SettingsUsageLines--after-meters {
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.SettingsUsageLine {
+  gap: 2px;
 }
 
 .SettingsUsageLimit {
@@ -117,7 +142,8 @@
   gap: 6px;
 }
 
-.SettingsUsageLimitHeader {
+.SettingsUsageLimitHeader,
+.SettingsUsageLineHeader {
   display: flex;
   flex-direction: row;
   align-items: center;

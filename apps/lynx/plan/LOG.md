@@ -5540,6 +5540,10 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   canonical `usedPercent`计算remaining，按Web阈值映射healthy/warning/danger fill，
   保留真实ARIA progress语义；未伪造Native数据模型未携带的pace marker。subtitle补
   muted/80 tone。focused tests **6/6**，Web/Native builds已通过。
+- Usage line list此前沿用meter column，把label/value纵向堆叠。现拆分Meters与Lines
+  owners：line header横向justify-between、item gap2、list gap6；meters与lines同时
+  存在时加12px top divider。空类别不渲染container，避免无内容gap。focused tests
+  **6/6**，两端build通过。
 - Appearance Theme preference segmented buttons原本只有文字，Web明确带
   Sun/Moon/Laptop icons；补生成的14px icons，仅Theme preference使用。同期发现
   Appearance boolean switch是第四套旧18/14实现，统一到32×20/16px及shared
