@@ -28,6 +28,9 @@ describe('Settings Archived fidelity', () => {
     expect(panelSource).toContain(
       'Archived threads will appear here and can be restored to the sidebar.'
     );
+    expect(panelSource).toContain("import { ArchiveIcon } from '../lib/icons.lynx';");
+    expect(panelSource).toContain('className="SettingsArchivedEmptyIcon"');
+    expect(panelSource).not.toContain('function ArchiveIcon()');
   });
 
   it('wires restore through the canonical command and invalidates the snapshot', () => {
@@ -58,7 +61,13 @@ describe('Settings Archived fidelity', () => {
       /\.SettingsArchivedEmptyIconShell\s*\{[^}]*width:\s*44px;[^}]*height:\s*44px;[^}]*border-radius:\s*22px;/s
     );
     expect(styles).toMatch(
+      /\.SettingsArchivedEmptyTitle,\s*\.SettingsArchivedEmptyDescription\s*\{[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;/s
+    );
+    expect(styles).toMatch(
       /\.SettingsArchivedRow\s*\{[^}]*justify-content:\s*space-between;[^}]*gap:\s*16px;/s
+    );
+    expect(styles).not.toMatch(
+      /\.SettingsArchivedRow\s*\{[^}]*min-height:/s
     );
   });
 });

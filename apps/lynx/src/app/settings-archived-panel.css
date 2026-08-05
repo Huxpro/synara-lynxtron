@@ -41,15 +41,28 @@
 .SettingsArchivedEmptyTitle,
 .SettingsArchivedRowTitle {
   color: var(--foreground);
-  font-size: var(--type-settings-row-title-size);
   font-weight: 500;
-  line-height: var(--type-settings-row-title-line-height);
 }
 
 .SettingsArchivedEmptyDescription,
 .SettingsArchivedRowDescription,
 .SettingsArchivedStateText {
   color: var(--muted-foreground);
+}
+
+.SettingsArchivedEmptyTitle,
+.SettingsArchivedEmptyDescription {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.SettingsArchivedRowTitle {
+  font-size: var(--type-settings-row-title-size);
+  line-height: var(--type-settings-row-title-line-height);
+}
+
+.SettingsArchivedRowDescription,
+.SettingsArchivedStateText {
   font-size: var(--type-settings-row-description-size);
   line-height: var(--type-settings-row-description-line-height);
 }
@@ -72,7 +85,6 @@
 .SettingsArchivedRow {
   display: flex;
   width: 100%;
-  min-height: 60px;
   padding: var(--app-density-settings-row-padding-y, 10px) 12px;
   align-items: center;
   justify-content: space-between;

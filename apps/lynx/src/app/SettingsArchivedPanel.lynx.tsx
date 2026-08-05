@@ -4,6 +4,7 @@ import { SettingsSection } from '@synara-web/components/settings/SettingsSection
 import { formatRelativeTime } from '@synara-web/lib/relativeTime';
 
 import { Button } from '../components/ui/button';
+import { ArchiveIcon } from '../lib/icons.lynx';
 import { dispatchSynaraCommand } from '../data/synaraClient.lynx';
 import { fetchSidebarSnapshot, queryClient } from './queries';
 import {
@@ -17,25 +18,6 @@ function newCommandId(): string {
   return `lynx-archived-${Date.now()}-${Math.random()
     .toString(16)
     .slice(2)}`;
-}
-
-function ArchiveIcon() {
-  return (
-    <svg
-      className="SettingsArchivedEmptyIcon"
-      viewBox="0 0 24 24"
-      buttonProps={{ 'aria-hidden': true }}
-    >
-      <path
-        d="M4 7.5h16M6 7.5v11h12v-11M9.5 11.5h5M5 4h14l1 3.5H4L5 4Z"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.6"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-    </svg>
-  );
 }
 
 export function SettingsArchivedPanel() {
@@ -110,7 +92,11 @@ export function SettingsArchivedPanel() {
     return (
       <view className="SettingsArchivedEmpty">
         <view className="SettingsArchivedEmptyIconShell">
-          <ArchiveIcon />
+          <ArchiveIcon
+            className="SettingsArchivedEmptyIcon"
+            size={20}
+            color="var(--muted-foreground)"
+          />
         </view>
         <text className="SettingsArchivedEmptyTitle">No archived threads</text>
         <text className="SettingsArchivedEmptyDescription">
