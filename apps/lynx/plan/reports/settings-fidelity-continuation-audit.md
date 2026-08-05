@@ -3,7 +3,7 @@
 Status: incomplete — current-head sidebar correction and full Settings matrix
 refresh complete; heavy verification still pending
 
-Updated: 2026-08-05
+Updated: 2026-08-06
 
 Objective: continue closing UI fidelity issues found after the previous P10
 audit, with real product behavior and current-head Web → Lynx-for-Web → Native
@@ -22,7 +22,7 @@ complete.
 | Fix Kanban overview residual | `b463ff26`; `shots/2026-08-05/kanban-overview-current/` | PASS |
 | Converge Settings Appearance | `cfdd6db4`; current-head Lynx frame corrected in `52d55bf7` | PASS |
 | Add real Profile dashboard | `5f827e77`; canonical stats RPCs and shared selectors | PASS |
-| Add real Archived workflow | `31d6a956`; canonical shell projection and `thread.unarchive` | PASS |
+| Add real Archived workflow | `31d6a956` plus current-head populated follow-up; canonical shell projection, `thread.unarchive`, confirmed `thread.delete`, and shared pending/error ownership | PASS |
 | Add real Worktrees workflow | `29c229e9`; canonical list/remove RPCs and linked-thread deletion ordering | PASS |
 | Add real Skills workflow | `1dee54c0`; 114 real catalog switches and serialized setting updates | PASS |
 | Add real Advanced workflow | `52d55bf7`; keybindings open, conditional repair, build-sourced version | PASS |
@@ -102,7 +102,7 @@ complete.
 | Advanced rows and recovery details match shared Settings/disclosure behavior | keybindings/recovery main layouts, 11/16.5 metadata, and 24px actions match Web; controlled `What this does` uses a 16px trigger/chevron, exact 42px inset details, and shared 220ms motion/presence | PASS — current-head visual and interaction proof |
 | Profile stats, heatmap, and model rows match Web identity | identity uses the Web 6px name/handle subgroup and 20/28 + 24/32 typography; stat values/labels use 14px/20px in an exact 18px-radius card; heatmap uses Web weekday pads, 40 week columns, 15.0625px cells, 5px radius, and exact month anchors; model rows retain 14px mapped provider SVGs or neutral fallbacks with 8px gaps | PASS — current-head visual proof for real identity/stats/heatmap/empty state; populated model branch source-tested |
 | Worktrees rows and empty state match Web density and typography | real empty state is exact 624×70 with 24×16 padding, 10px radius, and 14px/20px copy; populated rows have no artificial 96px minimum, mono paths truncate, and linked conversation titles use regular description typography | PASS — current-head empty-state visual proof; populated rows source-tested |
-| Archived empty and list states match Web hierarchy | real empty state is exact 624×182 with 40×20 padding, dashed border, explicit 10px radius, generated 20px Archive icon, and 14px/20px copy; populated rows no longer force a 60px minimum | PASS — current-head visual proof for empty state; populated row source-tested |
+| Archived empty and list states match Web hierarchy | empty state remains exact 624×182; real canonical create→archive proof now covers the populated title/description plus Restore/Delete action row with exact 24px, 10/15 xs controls and 8px action gap | PASS — current-head Browser and exact-owned Native populated proof in `shots/2026-08-06/archived-populated-current/` |
 | Skills rows match Web density and provider identity | real 114-row catalog uses separate main/control and supplemental metadata owners; source/path is exact 11px/16.5px, switches share Web anchors, previous-row bottom dividers match `divide-y`, and overlapping 16px provider-copy badges use mapped 12px SVGs or neutral fallbacks | PASS — current-head populated visual proof |
 | Integrations rows and actions match Web content-driven geometry | real form rows use exact 20px title lines, 12/18/500 titles, previous-row bottom dividers, and Web bounds; connection/setup/empty rows remain content-driven and action groups self-size | PASS — current-head real form proof |
 | Integrations disclosures reuse shared motion | rendered Access all opens two real projects; Review opens three permissions; both use shared 220ms presence/content motion and restore cleanly | PASS — current-head interaction proof |
@@ -371,6 +371,28 @@ The retained replacement cells:
   and cached CLI paths failed before scanning because their packaged
   `oxc-parser` / `oxlint-plugin-react-doctor` dependencies were unavailable.
   This is recorded as a tooling failure, not a green diagnostic scan.
+- Current-head populated Archived proof closes the row branch that the prior
+  empty-state screenshot could not cover. A temporary thread was created and
+  archived through canonical commands; Web exposed both Restore and confirmed
+  Delete while Lynx still exposed Restore only. Lynx now dispatches canonical
+  `thread.delete` after the same host confirmation copy and shares one
+  pending/error owner across both actions.
+- The real populated row also exposed the remaining generic xs-button fork:
+  Lynx rendered 25px / 12px controls while Web rendered 24px controls with
+  10px/15px labels. The shared `LxButton--xs` owner now carries exact 24px
+  height, 7px horizontal padding, 10px/15px copy, and 4px mixed-content gap.
+  Archived's copy-to-actions gap converged from 16px to Web's 10px owner.
+- Final Browser content anchors are exact for title, description, Restore,
+  Delete, and the 8px action gap at `1280x820` DPR1. Exact-owned Native PID
+  `71742`, PID-derived `localhost:8903/session 1`, bundle `f2982a11…`, and
+  `2560x1576` capture retain the same row/action anatomy with an empty console.
+  Native touch activation reached the real `dialogsConfirm` bridge with the
+  complete permanent-delete warning; the hidden system dialog was not
+  auto-confirmed because doing so would take over user focus.
+- The canonical delete cleanup removed the temporary thread from shell/sidebar
+  projections. SQLite, settings, Native KV, and window state returned to their
+  original hashes. Evidence is under
+  `shots/2026-08-06/archived-populated-current/`.
 - Settings focused continuation: 14 files, 50/50 tests.
 - AppSnap final focused check: 1 file, 2/2 tests.
 - Canonical taxonomy/explicit-owner gate: 1 file, 11/11 tests.

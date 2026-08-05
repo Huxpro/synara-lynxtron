@@ -92,7 +92,17 @@
 }
 
 .LxButton--xs {
+  height: 24px;
+  padding-left: 7px;
+  padding-right: 7px;
+  padding-top: 0;
+  padding-bottom: 0;
   gap: 4px;
+}
+
+.LxButton--xs .LxButton__text {
+  font-size: 10px;
+  line-height: 15px;
 }
 
 .LxButton--sm,

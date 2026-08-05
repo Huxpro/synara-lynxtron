@@ -6,8 +6,10 @@ import { formatRelativeTime } from '@synara-web/lib/relativeTime';
 import { Button } from '../components/ui/button';
 import { ArchiveIcon } from '../lib/icons.lynx';
 import { dispatchSynaraCommand } from '../data/synaraClient.lynx';
+import { dialogs } from '../platform/dialogs';
 import { fetchSidebarSnapshot, queryClient } from './queries';
 import {
+  createDeleteArchivedThreadCommand,
   createUnarchiveCommand,
   groupArchivedThreads,
 } from './settingsArchived.logic';
@@ -25,10 +27,11 @@ export function SettingsArchivedPanel() {
     queryKey: ['sidebar-snapshot'],
     queryFn: fetchSidebarSnapshot,
   });
-  const [restoringThreadId, setRestoringThreadId] = useState<string | null>(
-    null
-  );
-  const [restoreError, setRestoreError] = useState<string | null>(null);
+  const [pendingAction, setPendingAction] = useState<{
+    readonly threadId: string;
+    readonly type: 'restore' | 'delete';
+  } | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
   const groups = groupArchivedThreads(
     snapshotQuery.data?.projects ?? [],
     snapshotQuery.data?.archivedThreads ?? []
@@ -36,9 +39,9 @@ export function SettingsArchivedPanel() {
 
   async function restoreThread(threadId: string) {
     'background only';
-    if (restoringThreadId) return;
-    setRestoringThreadId(threadId);
-    setRestoreError(null);
+    if (pendingAction) return;
+    setPendingAction({ threadId, type: 'restore' });
+    setActionError(null);
     try {
       await dispatchSynaraCommand(
         createUnarchiveCommand({
@@ -48,11 +51,38 @@ export function SettingsArchivedPanel() {
       );
       await queryClient.invalidateQueries({ queryKey: ['sidebar-snapshot'] });
     } catch (error) {
-      setRestoreError(
+      setActionError(
         error instanceof Error ? error.message : 'Unable to restore the thread.'
       );
     } finally {
-      setRestoringThreadId(null);
+      setPendingAction(null);
+    }
+  }
+
+  async function deleteThread(threadId: string, threadTitle: string) {
+    'background only';
+    if (pendingAction) return;
+    const confirmed = await dialogs.confirm(
+      `Permanently delete "${threadTitle}"?\n\nThis will remove the thread and its conversation history forever.`
+    );
+    if (!confirmed) return;
+
+    setPendingAction({ threadId, type: 'delete' });
+    setActionError(null);
+    try {
+      await dispatchSynaraCommand(
+        createDeleteArchivedThreadCommand({
+          threadId,
+          commandId: newCommandId(),
+        })
+      );
+      await queryClient.invalidateQueries({ queryKey: ['sidebar-snapshot'] });
+    } catch (error) {
+      setActionError(
+        error instanceof Error ? error.message : 'Unable to delete the thread.'
+      );
+    } finally {
+      setPendingAction(null);
     }
   }
 
@@ -108,10 +138,10 @@ export function SettingsArchivedPanel() {
 
   return (
     <view className="SettingsArchivedPanel">
-      {restoreError ? (
+      {actionError ? (
         <view className="SettingsArchivedRestoreError">
           <text className="SettingsArchivedRestoreErrorText">
-            {restoreError}
+            {actionError}
           </text>
         </view>
       ) : null}
@@ -139,15 +169,32 @@ export function SettingsArchivedPanel() {
                   )}
                 </text>
               </view>
-              <Button
-                size="xs"
-                variant="outline"
-                disabled={restoringThreadId !== null}
-                aria-label={`Restore ${thread.title}`}
-                onClick={() => void restoreThread(thread.id)}
-              >
-                {restoringThreadId === thread.id ? 'Restoring…' : 'Restore'}
-              </Button>
+              <view className="SettingsArchivedRowActions">
+                <Button
+                  size="xs"
+                  variant="outline"
+                  disabled={pendingAction !== null}
+                  aria-label={`Restore ${thread.title}`}
+                  onClick={() => void restoreThread(thread.id)}
+                >
+                  {pendingAction?.threadId === thread.id &&
+                  pendingAction.type === 'restore'
+                    ? 'Restoring…'
+                    : 'Restore'}
+                </Button>
+                <Button
+                  size="xs"
+                  variant="destructive"
+                  disabled={pendingAction !== null}
+                  aria-label={`Delete ${thread.title}`}
+                  onClick={() => void deleteThread(thread.id, thread.title)}
+                >
+                  {pendingAction?.threadId === thread.id &&
+                  pendingAction.type === 'delete'
+                    ? 'Deleting…'
+                    : 'Delete'}
+                </Button>
+              </view>
             </view>
           ))}
         </SettingsSection>

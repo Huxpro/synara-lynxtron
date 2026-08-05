@@ -1,0 +1,3006 @@
+{
+  "client": "native",
+  "stateId": "archived-populated-native",
+  "root": {
+    "attributes": [],
+    "backendNodeId": 11,
+    "childNodeCount": 1,
+    "children": [
+      {
+        "attributes": [],
+        "backendNodeId": 10,
+        "childNodeCount": 1,
+        "children": [
+          {
+            "attributes": [
+              "class",
+              "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+            ],
+            "backendNodeId": 13,
+            "childNodeCount": 1,
+            "children": [
+              {
+                "attributes": [
+                  "class",
+                  "SettingsPage SettingsPage--theme-light"
+                ],
+                "backendNodeId": 170,
+                "childNodeCount": 2,
+                "children": [
+                  {
+                    "attributes": [
+                      "class",
+                      "SettingsSidebar"
+                    ],
+                    "backendNodeId": 171,
+                    "childNodeCount": 2,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "SharedSettingsSidebarChrome"
+                        ],
+                        "backendNodeId": 174,
+                        "childNodeCount": 2,
+                        "children": [
+                          {
+                            "attributes": [
+                              "class",
+                              "SharedSettingsSidebarBackRegion"
+                            ],
+                            "backendNodeId": 175,
+                            "childNodeCount": 1,
+                            "children": [
+                              {
+                                "attributes": [
+                                  "aria-label",
+                                  "Back to app",
+                                  "accessibility-element",
+                                  "true",
+                                  "accessibility-label",
+                                  "Back to app",
+                                  "accessibility-traits",
+                                  "button",
+                                  "focusable",
+                                  "true",
+                                  "aria-disabled",
+                                  "false",
+                                  "bindmouseenter",
+                                  "138:0:bindmouseenter",
+                                  "bindblur",
+                                  "138:0:bindblur",
+                                  "bindmouseleave",
+                                  "138:0:bindmouseleave",
+                                  "bindkeydown",
+                                  "138:0:bindkeydown",
+                                  "bindtap",
+                                  "138:0:bindtap",
+                                  "bindmouseup",
+                                  "138:0:bindmouseup",
+                                  "bindtouchstart",
+                                  "138:0:bindtouchstart",
+                                  "bindmousedown",
+                                  "138:0:bindmousedown",
+                                  "bindtouchend",
+                                  "138:0:bindtouchend",
+                                  "bindtouchcancel",
+                                  "138:0:bindtouchcancel",
+                                  "bindfocus",
+                                  "138:0:bindfocus",
+                                  "class",
+                                  "SharedSettingsSidebarBackButton"
+                                ],
+                                "backendNodeId": 176,
+                                "childNodeCount": 2,
+                                "children": [
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SharedSettingsSidebarBackIcon"
+                                    ],
+                                    "backendNodeId": 177,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "content",
+                                          "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0d0d0d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-arrow-left\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M5 12l14 0\" /> <path d=\"M5 12l6 6\" /> <path d=\"M5 12l6 -6\" /> </svg>",
+                                          "style",
+                                          "height:16px;width:16px;"
+                                        ],
+                                        "backendNodeId": 178,
+                                        "childNodeCount": 0,
+                                        "children": [],
+                                        "localName": "svg",
+                                        "nodeId": 178,
+                                        "nodeName": "SVG",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 177
+                                      }
+                                    ],
+                                    "localName": "view",
+                                    "nodeId": 177,
+                                    "nodeName": "VIEW",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 176
+                                  },
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SharedSettingsSidebarBackLabel"
+                                    ],
+                                    "backendNodeId": 179,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "text",
+                                          "Back to app"
+                                        ],
+                                        "backendNodeId": 180,
+                                        "childNodeCount": 0,
+                                        "children": [],
+                                        "localName": "raw-text",
+                                        "nodeId": 180,
+                                        "nodeName": "RAW-TEXT",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 179
+                                      }
+                                    ],
+                                    "localName": "text",
+                                    "nodeId": 179,
+                                    "nodeName": "TEXT",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 176
+                                  }
+                                ],
+                                "localName": "view",
+                                "nodeId": 176,
+                                "nodeName": "VIEW",
+                                "nodeType": 1,
+                                "nodeValue": "",
+                                "parentId": 175
+                              }
+                            ],
+                            "localName": "view",
+                            "nodeId": 175,
+                            "nodeName": "VIEW",
+                            "nodeType": 1,
+                            "nodeValue": "",
+                            "parentId": 174
+                          },
+                          {
+                            "attributes": [
+                              "class",
+                              "SharedSettingsSidebarSearchRegion"
+                            ],
+                            "backendNodeId": 181,
+                            "childNodeCount": 1,
+                            "children": [
+                              {
+                                "attributes": [
+                                  "class",
+                                  "SharedSettingsSidebarSearch"
+                                ],
+                                "backendNodeId": 182,
+                                "childNodeCount": 2,
+                                "children": [
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SharedSettingsSidebarSearchIcon"
+                                    ],
+                                    "backendNodeId": 183,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "content",
+                                          "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"rgba(13, 13, 13, 0.6)\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-search\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0\" /> <path d=\"M21 21l-6 -6\" /> </svg>",
+                                          "style",
+                                          "height:14px;width:14px;"
+                                        ],
+                                        "backendNodeId": 185,
+                                        "childNodeCount": 0,
+                                        "children": [],
+                                        "localName": "svg",
+                                        "nodeId": 185,
+                                        "nodeName": "SVG",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 183
+                                      }
+                                    ],
+                                    "localName": "view",
+                                    "nodeId": 183,
+                                    "nodeName": "VIEW",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 182
+                                  },
+                                  {
+                                    "attributes": [],
+                                    "backendNodeId": 184,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "class",
+                                          "LxInputControl LxInputControl--sm LxInputControl--soft SharedSettingsSidebarSearchInput"
+                                        ],
+                                        "backendNodeId": 186,
+                                        "childNodeCount": 1,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "ignore-focus",
+                                              "true",
+                                              "react-ref-147-0",
+                                              "1",
+                                              "idSelector",
+                                              "",
+                                              "placeholder",
+                                              "Search settings...",
+                                              "confirm-type",
+                                              "search",
+                                              "type",
+                                              "text",
+                                              "maxlength",
+                                              "140",
+                                              "show-soft-input-on-focus",
+                                              "true",
+                                              "bindfocus",
+                                              "147:10:",
+                                              "bindselection",
+                                              "147:13:",
+                                              "bindblur",
+                                              "147:11:",
+                                              "bindconfirm",
+                                              "147:12:",
+                                              "catchkeydown",
+                                              "147:14:",
+                                              "class",
+                                              "LxInput"
+                                            ],
+                                            "backendNodeId": 187,
+                                            "childNodeCount": 0,
+                                            "children": [],
+                                            "localName": "input",
+                                            "nodeId": 187,
+                                            "nodeName": "INPUT",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 186
+                                          }
+                                        ],
+                                        "localName": "view",
+                                        "nodeId": 186,
+                                        "nodeName": "VIEW",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 184
+                                      }
+                                    ],
+                                    "localName": "wrapper",
+                                    "nodeId": 184,
+                                    "nodeName": "WRAPPER",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 182
+                                  }
+                                ],
+                                "localName": "view",
+                                "nodeId": 182,
+                                "nodeName": "VIEW",
+                                "nodeType": 1,
+                                "nodeValue": "",
+                                "parentId": 181
+                              }
+                            ],
+                            "localName": "view",
+                            "nodeId": 181,
+                            "nodeName": "VIEW",
+                            "nodeType": 1,
+                            "nodeValue": "",
+                            "parentId": 174
+                          }
+                        ],
+                        "localName": "view",
+                        "nodeId": 174,
+                        "nodeName": "VIEW",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 171
+                      },
+                      {
+                        "attributes": [
+                          "class",
+                          "SharedSettingsNavigation"
+                        ],
+                        "backendNodeId": 188,
+                        "childNodeCount": 2,
+                        "children": [
+                          {
+                            "attributes": [
+                              "class",
+                              "SharedSettingsNavigationGroup"
+                            ],
+                            "backendNodeId": 189,
+                            "childNodeCount": 2,
+                            "children": [
+                              {
+                                "attributes": [
+                                  "class",
+                                  "SharedSettingsNavigationGroupLabel"
+                                ],
+                                "backendNodeId": 190,
+                                "childNodeCount": 1,
+                                "children": [
+                                  {
+                                    "attributes": [
+                                      "text",
+                                      "App"
+                                    ],
+                                    "backendNodeId": 191,
+                                    "childNodeCount": 0,
+                                    "children": [],
+                                    "localName": "raw-text",
+                                    "nodeId": 191,
+                                    "nodeName": "RAW-TEXT",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 190
+                                  }
+                                ],
+                                "localName": "text",
+                                "nodeId": 190,
+                                "nodeName": "TEXT",
+                                "nodeType": 1,
+                                "nodeValue": "",
+                                "parentId": 189
+                              },
+                              {
+                                "attributes": [
+                                  "class",
+                                  "SharedSettingsNavigationList"
+                                ],
+                                "backendNodeId": 192,
+                                "childNodeCount": 9,
+                                "children": [
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SharedSettingsNavigationItem"
+                                    ],
+                                    "backendNodeId": 193,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "aria-selected",
+                                          "false",
+                                          "accessibility-element",
+                                          "true",
+                                          "accessibility-label",
+                                          "General",
+                                          "accessibility-traits",
+                                          "button",
+                                          "focusable",
+                                          "true",
+                                          "aria-disabled",
+                                          "false",
+                                          "bindmouseenter",
+                                          "154:0:bindmouseenter",
+                                          "bindblur",
+                                          "154:0:bindblur",
+                                          "bindmouseleave",
+                                          "154:0:bindmouseleave",
+                                          "bindkeydown",
+                                          "154:0:bindkeydown",
+                                          "bindtap",
+                                          "154:0:bindtap",
+                                          "bindmouseup",
+                                          "154:0:bindmouseup",
+                                          "bindtouchstart",
+                                          "154:0:bindtouchstart",
+                                          "bindmousedown",
+                                          "154:0:bindmousedown",
+                                          "bindtouchend",
+                                          "154:0:bindtouchend",
+                                          "bindtouchcancel",
+                                          "154:0:bindtouchcancel",
+                                          "bindfocus",
+                                          "154:0:bindfocus",
+                                          "class",
+                                          "SharedSettingsNavigationButton"
+                                        ],
+                                        "backendNodeId": 194,
+                                        "childNodeCount": 2,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationIcon"
+                                            ],
+                                            "backendNodeId": 195,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "content",
+                                                  "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0d0d0d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-settings\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065\" /> <path d=\"M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0\" /> </svg>",
+                                                  "style",
+                                                  "height:16px;width:16px;"
+                                                ],
+                                                "backendNodeId": 196,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "svg",
+                                                "nodeId": 196,
+                                                "nodeName": "SVG",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 195
+                                              }
+                                            ],
+                                            "localName": "view",
+                                            "nodeId": 195,
+                                            "nodeName": "VIEW",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 194
+                                          },
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationItemLabel"
+                                            ],
+                                            "backendNodeId": 197,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "text",
+                                                  "General"
+                                                ],
+                                                "backendNodeId": 198,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "raw-text",
+                                                "nodeId": 198,
+                                                "nodeName": "RAW-TEXT",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 197
+                                              }
+                                            ],
+                                            "localName": "text",
+                                            "nodeId": 197,
+                                            "nodeName": "TEXT",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 194
+                                          }
+                                        ],
+                                        "localName": "view",
+                                        "nodeId": 194,
+                                        "nodeName": "VIEW",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 193
+                                      }
+                                    ],
+                                    "localName": "view",
+                                    "nodeId": 193,
+                                    "nodeName": "VIEW",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 192
+                                  },
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SharedSettingsNavigationItem"
+                                    ],
+                                    "backendNodeId": 199,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "aria-selected",
+                                          "false",
+                                          "accessibility-element",
+                                          "true",
+                                          "accessibility-label",
+                                          "Profile",
+                                          "accessibility-traits",
+                                          "button",
+                                          "focusable",
+                                          "true",
+                                          "aria-disabled",
+                                          "false",
+                                          "bindmouseenter",
+                                          "160:0:bindmouseenter",
+                                          "bindblur",
+                                          "160:0:bindblur",
+                                          "bindmouseleave",
+                                          "160:0:bindmouseleave",
+                                          "bindkeydown",
+                                          "160:0:bindkeydown",
+                                          "bindtap",
+                                          "160:0:bindtap",
+                                          "bindmouseup",
+                                          "160:0:bindmouseup",
+                                          "bindtouchstart",
+                                          "160:0:bindtouchstart",
+                                          "bindmousedown",
+                                          "160:0:bindmousedown",
+                                          "bindtouchend",
+                                          "160:0:bindtouchend",
+                                          "bindtouchcancel",
+                                          "160:0:bindtouchcancel",
+                                          "bindfocus",
+                                          "160:0:bindfocus",
+                                          "class",
+                                          "SharedSettingsNavigationButton"
+                                        ],
+                                        "backendNodeId": 200,
+                                        "childNodeCount": 2,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationIcon"
+                                            ],
+                                            "backendNodeId": 201,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "content",
+                                                  "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0d0d0d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-user\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0\" /> <path d=\"M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2\" /> </svg>",
+                                                  "style",
+                                                  "height:16px;width:16px;"
+                                                ],
+                                                "backendNodeId": 202,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "svg",
+                                                "nodeId": 202,
+                                                "nodeName": "SVG",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 201
+                                              }
+                                            ],
+                                            "localName": "view",
+                                            "nodeId": 201,
+                                            "nodeName": "VIEW",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 200
+                                          },
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationItemLabel"
+                                            ],
+                                            "backendNodeId": 203,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "text",
+                                                  "Profile"
+                                                ],
+                                                "backendNodeId": 204,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "raw-text",
+                                                "nodeId": 204,
+                                                "nodeName": "RAW-TEXT",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 203
+                                              }
+                                            ],
+                                            "localName": "text",
+                                            "nodeId": 203,
+                                            "nodeName": "TEXT",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 200
+                                          }
+                                        ],
+                                        "localName": "view",
+                                        "nodeId": 200,
+                                        "nodeName": "VIEW",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 199
+                                      }
+                                    ],
+                                    "localName": "view",
+                                    "nodeId": 199,
+                                    "nodeName": "VIEW",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 192
+                                  },
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SharedSettingsNavigationItem"
+                                    ],
+                                    "backendNodeId": 205,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "aria-selected",
+                                          "false",
+                                          "accessibility-element",
+                                          "true",
+                                          "accessibility-label",
+                                          "Appearance",
+                                          "accessibility-traits",
+                                          "button",
+                                          "focusable",
+                                          "true",
+                                          "aria-disabled",
+                                          "false",
+                                          "bindmouseenter",
+                                          "166:0:bindmouseenter",
+                                          "bindblur",
+                                          "166:0:bindblur",
+                                          "bindmouseleave",
+                                          "166:0:bindmouseleave",
+                                          "bindkeydown",
+                                          "166:0:bindkeydown",
+                                          "bindtap",
+                                          "166:0:bindtap",
+                                          "bindmouseup",
+                                          "166:0:bindmouseup",
+                                          "bindtouchstart",
+                                          "166:0:bindtouchstart",
+                                          "bindmousedown",
+                                          "166:0:bindmousedown",
+                                          "bindtouchend",
+                                          "166:0:bindtouchend",
+                                          "bindtouchcancel",
+                                          "166:0:bindtouchcancel",
+                                          "bindfocus",
+                                          "166:0:bindfocus",
+                                          "class",
+                                          "SharedSettingsNavigationButton"
+                                        ],
+                                        "backendNodeId": 206,
+                                        "childNodeCount": 2,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationIcon"
+                                            ],
+                                            "backendNodeId": 207,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "content",
+                                                  "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0d0d0d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-palette\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M12 21a9 9 0 0 1 0 -18c4.97 0 9 3.582 9 8c0 1.06 -.474 2.078 -1.318 2.828c-.844 .75 -1.989 1.172 -3.182 1.172h-2.5a2 2 0 0 0 -1 3.75a1.3 1.3 0 0 1 -1 2.25\" /> <path d=\"M7.5 10.5a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\" /> <path d=\"M11.5 7.5a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\" /> <path d=\"M15.5 10.5a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\" /> </svg>",
+                                                  "style",
+                                                  "height:16px;width:16px;"
+                                                ],
+                                                "backendNodeId": 208,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "svg",
+                                                "nodeId": 208,
+                                                "nodeName": "SVG",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 207
+                                              }
+                                            ],
+                                            "localName": "view",
+                                            "nodeId": 207,
+                                            "nodeName": "VIEW",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 206
+                                          },
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationItemLabel"
+                                            ],
+                                            "backendNodeId": 209,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "text",
+                                                  "Appearance"
+                                                ],
+                                                "backendNodeId": 210,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "raw-text",
+                                                "nodeId": 210,
+                                                "nodeName": "RAW-TEXT",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 209
+                                              }
+                                            ],
+                                            "localName": "text",
+                                            "nodeId": 209,
+                                            "nodeName": "TEXT",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 206
+                                          }
+                                        ],
+                                        "localName": "view",
+                                        "nodeId": 206,
+                                        "nodeName": "VIEW",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 205
+                                      }
+                                    ],
+                                    "localName": "view",
+                                    "nodeId": 205,
+                                    "nodeName": "VIEW",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 192
+                                  },
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SharedSettingsNavigationItem"
+                                    ],
+                                    "backendNodeId": 211,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "aria-selected",
+                                          "false",
+                                          "accessibility-element",
+                                          "true",
+                                          "accessibility-label",
+                                          "Notifications",
+                                          "accessibility-traits",
+                                          "button",
+                                          "focusable",
+                                          "true",
+                                          "aria-disabled",
+                                          "false",
+                                          "bindmouseenter",
+                                          "172:0:bindmouseenter",
+                                          "bindblur",
+                                          "172:0:bindblur",
+                                          "bindmouseleave",
+                                          "172:0:bindmouseleave",
+                                          "bindkeydown",
+                                          "172:0:bindkeydown",
+                                          "bindtap",
+                                          "172:0:bindtap",
+                                          "bindmouseup",
+                                          "172:0:bindmouseup",
+                                          "bindtouchstart",
+                                          "172:0:bindtouchstart",
+                                          "bindmousedown",
+                                          "172:0:bindmousedown",
+                                          "bindtouchend",
+                                          "172:0:bindtouchend",
+                                          "bindtouchcancel",
+                                          "172:0:bindtouchcancel",
+                                          "bindfocus",
+                                          "172:0:bindfocus",
+                                          "class",
+                                          "SharedSettingsNavigationButton"
+                                        ],
+                                        "backendNodeId": 212,
+                                        "childNodeCount": 2,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationIcon"
+                                            ],
+                                            "backendNodeId": 213,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "content",
+                                                  "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0d0d0d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-bell\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6\" /> <path d=\"M9 17v1a3 3 0 0 0 6 0v-1\" /> </svg>",
+                                                  "style",
+                                                  "height:16px;width:16px;"
+                                                ],
+                                                "backendNodeId": 214,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "svg",
+                                                "nodeId": 214,
+                                                "nodeName": "SVG",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 213
+                                              }
+                                            ],
+                                            "localName": "view",
+                                            "nodeId": 213,
+                                            "nodeName": "VIEW",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 212
+                                          },
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationItemLabel"
+                                            ],
+                                            "backendNodeId": 215,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "text",
+                                                  "Notifications"
+                                                ],
+                                                "backendNodeId": 216,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "raw-text",
+                                                "nodeId": 216,
+                                                "nodeName": "RAW-TEXT",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 215
+                                              }
+                                            ],
+                                            "localName": "text",
+                                            "nodeId": 215,
+                                            "nodeName": "TEXT",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 212
+                                          }
+                                        ],
+                                        "localName": "view",
+                                        "nodeId": 212,
+                                        "nodeName": "VIEW",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 211
+                                      }
+                                    ],
+                                    "localName": "view",
+                                    "nodeId": 211,
+                                    "nodeName": "VIEW",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 192
+                                  },
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SharedSettingsNavigationItem"
+                                    ],
+                                    "backendNodeId": 217,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "aria-selected",
+                                          "false",
+                                          "accessibility-element",
+                                          "true",
+                                          "accessibility-label",
+                                          "Behavior",
+                                          "accessibility-traits",
+                                          "button",
+                                          "focusable",
+                                          "true",
+                                          "aria-disabled",
+                                          "false",
+                                          "bindmouseenter",
+                                          "178:0:bindmouseenter",
+                                          "bindblur",
+                                          "178:0:bindblur",
+                                          "bindmouseleave",
+                                          "178:0:bindmouseleave",
+                                          "bindkeydown",
+                                          "178:0:bindkeydown",
+                                          "bindtap",
+                                          "178:0:bindtap",
+                                          "bindmouseup",
+                                          "178:0:bindmouseup",
+                                          "bindtouchstart",
+                                          "178:0:bindtouchstart",
+                                          "bindmousedown",
+                                          "178:0:bindmousedown",
+                                          "bindtouchend",
+                                          "178:0:bindtouchend",
+                                          "bindtouchcancel",
+                                          "178:0:bindtouchcancel",
+                                          "bindfocus",
+                                          "178:0:bindfocus",
+                                          "class",
+                                          "SharedSettingsNavigationButton"
+                                        ],
+                                        "backendNodeId": 218,
+                                        "childNodeCount": 2,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationIcon"
+                                            ],
+                                            "backendNodeId": 219,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "content",
+                                                  "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0d0d0d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-adjustments-horizontal\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M12 6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M4 6l8 0\" /> <path d=\"M16 6l4 0\" /> <path d=\"M6 12a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M4 12l2 0\" /> <path d=\"M10 12l10 0\" /> <path d=\"M15 18a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M4 18l11 0\" /> <path d=\"M19 18l1 0\" /> </svg>",
+                                                  "style",
+                                                  "height:16px;width:16px;"
+                                                ],
+                                                "backendNodeId": 220,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "svg",
+                                                "nodeId": 220,
+                                                "nodeName": "SVG",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 219
+                                              }
+                                            ],
+                                            "localName": "view",
+                                            "nodeId": 219,
+                                            "nodeName": "VIEW",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 218
+                                          },
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationItemLabel"
+                                            ],
+                                            "backendNodeId": 221,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "text",
+                                                  "Behavior"
+                                                ],
+                                                "backendNodeId": 222,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "raw-text",
+                                                "nodeId": 222,
+                                                "nodeName": "RAW-TEXT",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 221
+                                              }
+                                            ],
+                                            "localName": "text",
+                                            "nodeId": 221,
+                                            "nodeName": "TEXT",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 218
+                                          }
+                                        ],
+                                        "localName": "view",
+                                        "nodeId": 218,
+                                        "nodeName": "VIEW",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 217
+                                      }
+                                    ],
+                                    "localName": "view",
+                                    "nodeId": 217,
+                                    "nodeName": "VIEW",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 192
+                                  },
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SharedSettingsNavigationItem"
+                                    ],
+                                    "backendNodeId": 223,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "aria-selected",
+                                          "false",
+                                          "accessibility-element",
+                                          "true",
+                                          "accessibility-label",
+                                          "AppSnap",
+                                          "accessibility-traits",
+                                          "button",
+                                          "focusable",
+                                          "true",
+                                          "aria-disabled",
+                                          "false",
+                                          "bindmouseenter",
+                                          "184:0:bindmouseenter",
+                                          "bindblur",
+                                          "184:0:bindblur",
+                                          "bindmouseleave",
+                                          "184:0:bindmouseleave",
+                                          "bindkeydown",
+                                          "184:0:bindkeydown",
+                                          "bindtap",
+                                          "184:0:bindtap",
+                                          "bindmouseup",
+                                          "184:0:bindmouseup",
+                                          "bindtouchstart",
+                                          "184:0:bindtouchstart",
+                                          "bindmousedown",
+                                          "184:0:bindmousedown",
+                                          "bindtouchend",
+                                          "184:0:bindtouchend",
+                                          "bindtouchcancel",
+                                          "184:0:bindtouchcancel",
+                                          "bindfocus",
+                                          "184:0:bindfocus",
+                                          "class",
+                                          "SharedSettingsNavigationButton"
+                                        ],
+                                        "backendNodeId": 224,
+                                        "childNodeCount": 2,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationIcon"
+                                            ],
+                                            "backendNodeId": 225,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "content",
+                                                  "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0d0d0d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-screenshot\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M7 19a2 2 0 0 1 -2 -2\" /> <path d=\"M5 13v-2\" /> <path d=\"M5 7a2 2 0 0 1 2 -2\" /> <path d=\"M11 5h2\" /> <path d=\"M17 5a2 2 0 0 1 2 2\" /> <path d=\"M19 11v2\" /> <path d=\"M19 17v4\" /> <path d=\"M21 19h-4\" /> <path d=\"M13 19h-2\" /> </svg>",
+                                                  "style",
+                                                  "height:16px;width:16px;"
+                                                ],
+                                                "backendNodeId": 226,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "svg",
+                                                "nodeId": 226,
+                                                "nodeName": "SVG",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 225
+                                              }
+                                            ],
+                                            "localName": "view",
+                                            "nodeId": 225,
+                                            "nodeName": "VIEW",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 224
+                                          },
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationItemLabel"
+                                            ],
+                                            "backendNodeId": 227,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "text",
+                                                  "AppSnap"
+                                                ],
+                                                "backendNodeId": 228,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "raw-text",
+                                                "nodeId": 228,
+                                                "nodeName": "RAW-TEXT",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 227
+                                              }
+                                            ],
+                                            "localName": "text",
+                                            "nodeId": 227,
+                                            "nodeName": "TEXT",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 224
+                                          }
+                                        ],
+                                        "localName": "view",
+                                        "nodeId": 224,
+                                        "nodeName": "VIEW",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 223
+                                      }
+                                    ],
+                                    "localName": "view",
+                                    "nodeId": 223,
+                                    "nodeName": "VIEW",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 192
+                                  },
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SharedSettingsNavigationItem"
+                                    ],
+                                    "backendNodeId": 229,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "aria-selected",
+                                          "false",
+                                          "accessibility-element",
+                                          "true",
+                                          "accessibility-label",
+                                          "Keyboard Shortcuts",
+                                          "accessibility-traits",
+                                          "button",
+                                          "focusable",
+                                          "true",
+                                          "aria-disabled",
+                                          "false",
+                                          "bindmouseenter",
+                                          "190:0:bindmouseenter",
+                                          "bindblur",
+                                          "190:0:bindblur",
+                                          "bindmouseleave",
+                                          "190:0:bindmouseleave",
+                                          "bindkeydown",
+                                          "190:0:bindkeydown",
+                                          "bindtap",
+                                          "190:0:bindtap",
+                                          "bindmouseup",
+                                          "190:0:bindmouseup",
+                                          "bindtouchstart",
+                                          "190:0:bindtouchstart",
+                                          "bindmousedown",
+                                          "190:0:bindmousedown",
+                                          "bindtouchend",
+                                          "190:0:bindtouchend",
+                                          "bindtouchcancel",
+                                          "190:0:bindtouchcancel",
+                                          "bindfocus",
+                                          "190:0:bindfocus",
+                                          "class",
+                                          "SharedSettingsNavigationButton"
+                                        ],
+                                        "backendNodeId": 230,
+                                        "childNodeCount": 2,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationIcon"
+                                            ],
+                                            "backendNodeId": 231,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "content",
+                                                  "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0d0d0d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-keyboard\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M2 8a2 2 0 0 1 2 -2h16a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-16a2 2 0 0 1 -2 -2l0 -8\" /> <path d=\"M6 10l0 .01\" /> <path d=\"M10 10l0 .01\" /> <path d=\"M14 10l0 .01\" /> <path d=\"M18 10l0 .01\" /> <path d=\"M6 14l0 .01\" /> <path d=\"M18 14l0 .01\" /> <path d=\"M10 14l4 .01\" /> </svg>",
+                                                  "style",
+                                                  "height:16px;width:16px;"
+                                                ],
+                                                "backendNodeId": 232,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "svg",
+                                                "nodeId": 232,
+                                                "nodeName": "SVG",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 231
+                                              }
+                                            ],
+                                            "localName": "view",
+                                            "nodeId": 231,
+                                            "nodeName": "VIEW",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 230
+                                          },
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationItemLabel"
+                                            ],
+                                            "backendNodeId": 233,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "text",
+                                                  "Keyboard Shortcuts"
+                                                ],
+                                                "backendNodeId": 234,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "raw-text",
+                                                "nodeId": 234,
+                                                "nodeName": "RAW-TEXT",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 233
+                                              }
+                                            ],
+                                            "localName": "text",
+                                            "nodeId": 233,
+                                            "nodeName": "TEXT",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 230
+                                          }
+                                        ],
+                                        "localName": "view",
+                                        "nodeId": 230,
+                                        "nodeName": "VIEW",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 229
+                                      }
+                                    ],
+                                    "localName": "view",
+                                    "nodeId": 229,
+                                    "nodeName": "VIEW",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 192
+                                  },
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SharedSettingsNavigationItem"
+                                    ],
+                                    "backendNodeId": 235,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "aria-selected",
+                                          "false",
+                                          "accessibility-element",
+                                          "true",
+                                          "accessibility-label",
+                                          "Worktrees",
+                                          "accessibility-traits",
+                                          "button",
+                                          "focusable",
+                                          "true",
+                                          "aria-disabled",
+                                          "false",
+                                          "bindmouseenter",
+                                          "196:0:bindmouseenter",
+                                          "bindblur",
+                                          "196:0:bindblur",
+                                          "bindmouseleave",
+                                          "196:0:bindmouseleave",
+                                          "bindkeydown",
+                                          "196:0:bindkeydown",
+                                          "bindtap",
+                                          "196:0:bindtap",
+                                          "bindmouseup",
+                                          "196:0:bindmouseup",
+                                          "bindtouchstart",
+                                          "196:0:bindtouchstart",
+                                          "bindmousedown",
+                                          "196:0:bindmousedown",
+                                          "bindtouchend",
+                                          "196:0:bindtouchend",
+                                          "bindtouchcancel",
+                                          "196:0:bindtouchcancel",
+                                          "bindfocus",
+                                          "196:0:bindfocus",
+                                          "class",
+                                          "SharedSettingsNavigationButton"
+                                        ],
+                                        "backendNodeId": 236,
+                                        "childNodeCount": 2,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationIcon"
+                                            ],
+                                            "backendNodeId": 237,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "content",
+                                                  "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0d0d0d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-git-branch\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M5 18a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M5 6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M15 6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M7 8l0 8\" /> <path d=\"M9 18h6a2 2 0 0 0 2 -2v-5\" /> <path d=\"M14 14l3 -3l3 3\" /> </svg>",
+                                                  "style",
+                                                  "height:16px;width:16px;"
+                                                ],
+                                                "backendNodeId": 238,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "svg",
+                                                "nodeId": 238,
+                                                "nodeName": "SVG",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 237
+                                              }
+                                            ],
+                                            "localName": "view",
+                                            "nodeId": 237,
+                                            "nodeName": "VIEW",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 236
+                                          },
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationItemLabel"
+                                            ],
+                                            "backendNodeId": 239,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "text",
+                                                  "Worktrees"
+                                                ],
+                                                "backendNodeId": 240,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "raw-text",
+                                                "nodeId": 240,
+                                                "nodeName": "RAW-TEXT",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 239
+                                              }
+                                            ],
+                                            "localName": "text",
+                                            "nodeId": 239,
+                                            "nodeName": "TEXT",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 236
+                                          }
+                                        ],
+                                        "localName": "view",
+                                        "nodeId": 236,
+                                        "nodeName": "VIEW",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 235
+                                      }
+                                    ],
+                                    "localName": "view",
+                                    "nodeId": 235,
+                                    "nodeName": "VIEW",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 192
+                                  },
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SharedSettingsNavigationItem"
+                                    ],
+                                    "backendNodeId": 241,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "aria-selected",
+                                          "true",
+                                          "accessibility-element",
+                                          "true",
+                                          "accessibility-label",
+                                          "Archived",
+                                          "accessibility-traits",
+                                          "button",
+                                          "accessibility-value",
+                                          "Current section",
+                                          "focusable",
+                                          "true",
+                                          "aria-disabled",
+                                          "false",
+                                          "bindmouseenter",
+                                          "202:0:bindmouseenter",
+                                          "bindblur",
+                                          "202:0:bindblur",
+                                          "bindmouseleave",
+                                          "202:0:bindmouseleave",
+                                          "bindkeydown",
+                                          "202:0:bindkeydown",
+                                          "bindtap",
+                                          "202:0:bindtap",
+                                          "bindmouseup",
+                                          "202:0:bindmouseup",
+                                          "bindtouchstart",
+                                          "202:0:bindtouchstart",
+                                          "bindmousedown",
+                                          "202:0:bindmousedown",
+                                          "bindtouchend",
+                                          "202:0:bindtouchend",
+                                          "bindtouchcancel",
+                                          "202:0:bindtouchcancel",
+                                          "bindfocus",
+                                          "202:0:bindfocus",
+                                          "class",
+                                          "SharedSettingsNavigationButton SharedSettingsNavigationButton--active"
+                                        ],
+                                        "backendNodeId": 242,
+                                        "childNodeCount": 2,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationIcon"
+                                            ],
+                                            "backendNodeId": 243,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "content",
+                                                  "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0d0d0d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-archive\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M3 6a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2\" /> <path d=\"M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10\" /> <path d=\"M10 12l4 0\" /> </svg>",
+                                                  "style",
+                                                  "height:16px;width:16px;"
+                                                ],
+                                                "backendNodeId": 244,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "svg",
+                                                "nodeId": 244,
+                                                "nodeName": "SVG",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 243
+                                              }
+                                            ],
+                                            "localName": "view",
+                                            "nodeId": 243,
+                                            "nodeName": "VIEW",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 242
+                                          },
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationItemLabel"
+                                            ],
+                                            "backendNodeId": 245,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "text",
+                                                  "Archived"
+                                                ],
+                                                "backendNodeId": 246,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "raw-text",
+                                                "nodeId": 246,
+                                                "nodeName": "RAW-TEXT",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 245
+                                              }
+                                            ],
+                                            "localName": "text",
+                                            "nodeId": 245,
+                                            "nodeName": "TEXT",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 242
+                                          }
+                                        ],
+                                        "localName": "view",
+                                        "nodeId": 242,
+                                        "nodeName": "VIEW",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 241
+                                      }
+                                    ],
+                                    "localName": "view",
+                                    "nodeId": 241,
+                                    "nodeName": "VIEW",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 192
+                                  }
+                                ],
+                                "localName": "view",
+                                "nodeId": 192,
+                                "nodeName": "VIEW",
+                                "nodeType": 1,
+                                "nodeValue": "",
+                                "parentId": 189
+                              }
+                            ],
+                            "localName": "view",
+                            "nodeId": 189,
+                            "nodeName": "VIEW",
+                            "nodeType": 1,
+                            "nodeValue": "",
+                            "parentId": 188
+                          },
+                          {
+                            "attributes": [
+                              "class",
+                              "SharedSettingsNavigationGroup SharedSettingsNavigationGroup--following"
+                            ],
+                            "backendNodeId": 247,
+                            "childNodeCount": 2,
+                            "children": [
+                              {
+                                "attributes": [
+                                  "class",
+                                  "SharedSettingsNavigationGroupLabel"
+                                ],
+                                "backendNodeId": 248,
+                                "childNodeCount": 1,
+                                "children": [
+                                  {
+                                    "attributes": [
+                                      "text",
+                                      "Synara"
+                                    ],
+                                    "backendNodeId": 249,
+                                    "childNodeCount": 0,
+                                    "children": [],
+                                    "localName": "raw-text",
+                                    "nodeId": 249,
+                                    "nodeName": "RAW-TEXT",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 248
+                                  }
+                                ],
+                                "localName": "text",
+                                "nodeId": 248,
+                                "nodeName": "TEXT",
+                                "nodeType": 1,
+                                "nodeValue": "",
+                                "parentId": 247
+                              },
+                              {
+                                "attributes": [
+                                  "class",
+                                  "SharedSettingsNavigationList"
+                                ],
+                                "backendNodeId": 250,
+                                "childNodeCount": 6,
+                                "children": [
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SharedSettingsNavigationItem"
+                                    ],
+                                    "backendNodeId": 251,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "aria-selected",
+                                          "false",
+                                          "accessibility-element",
+                                          "true",
+                                          "accessibility-label",
+                                          "Models",
+                                          "accessibility-traits",
+                                          "button",
+                                          "focusable",
+                                          "true",
+                                          "aria-disabled",
+                                          "false",
+                                          "bindmouseenter",
+                                          "212:0:bindmouseenter",
+                                          "bindblur",
+                                          "212:0:bindblur",
+                                          "bindmouseleave",
+                                          "212:0:bindmouseleave",
+                                          "bindkeydown",
+                                          "212:0:bindkeydown",
+                                          "bindtap",
+                                          "212:0:bindtap",
+                                          "bindmouseup",
+                                          "212:0:bindmouseup",
+                                          "bindtouchstart",
+                                          "212:0:bindtouchstart",
+                                          "bindmousedown",
+                                          "212:0:bindmousedown",
+                                          "bindtouchend",
+                                          "212:0:bindtouchend",
+                                          "bindtouchcancel",
+                                          "212:0:bindtouchcancel",
+                                          "bindfocus",
+                                          "212:0:bindfocus",
+                                          "class",
+                                          "SharedSettingsNavigationButton"
+                                        ],
+                                        "backendNodeId": 252,
+                                        "childNodeCount": 2,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationIcon"
+                                            ],
+                                            "backendNodeId": 253,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "content",
+                                                  "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0d0d0d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-brain\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M15.5 13a3.5 3.5 0 0 0 -3.5 3.5v1a3.5 3.5 0 0 0 7 0v-1.8\" /> <path d=\"M8.5 13a3.5 3.5 0 0 1 3.5 3.5v1a3.5 3.5 0 0 1 -7 0v-1.8\" /> <path d=\"M17.5 16a3.5 3.5 0 0 0 0 -7h-.5\" /> <path d=\"M19 9.3v-2.8a3.5 3.5 0 0 0 -7 0\" /> <path d=\"M6.5 16a3.5 3.5 0 0 1 0 -7h.5\" /> <path d=\"M5 9.3v-2.8a3.5 3.5 0 0 1 7 0v10\" /> </svg>",
+                                                  "style",
+                                                  "height:16px;width:16px;"
+                                                ],
+                                                "backendNodeId": 254,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "svg",
+                                                "nodeId": 254,
+                                                "nodeName": "SVG",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 253
+                                              }
+                                            ],
+                                            "localName": "view",
+                                            "nodeId": 253,
+                                            "nodeName": "VIEW",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 252
+                                          },
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationItemLabel"
+                                            ],
+                                            "backendNodeId": 255,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "text",
+                                                  "Models"
+                                                ],
+                                                "backendNodeId": 256,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "raw-text",
+                                                "nodeId": 256,
+                                                "nodeName": "RAW-TEXT",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 255
+                                              }
+                                            ],
+                                            "localName": "text",
+                                            "nodeId": 255,
+                                            "nodeName": "TEXT",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 252
+                                          }
+                                        ],
+                                        "localName": "view",
+                                        "nodeId": 252,
+                                        "nodeName": "VIEW",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 251
+                                      }
+                                    ],
+                                    "localName": "view",
+                                    "nodeId": 251,
+                                    "nodeName": "VIEW",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 250
+                                  },
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SharedSettingsNavigationItem"
+                                    ],
+                                    "backendNodeId": 257,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "aria-selected",
+                                          "false",
+                                          "accessibility-element",
+                                          "true",
+                                          "accessibility-label",
+                                          "Providers",
+                                          "accessibility-traits",
+                                          "button",
+                                          "focusable",
+                                          "true",
+                                          "aria-disabled",
+                                          "false",
+                                          "bindmouseenter",
+                                          "218:0:bindmouseenter",
+                                          "bindblur",
+                                          "218:0:bindblur",
+                                          "bindmouseleave",
+                                          "218:0:bindmouseleave",
+                                          "bindkeydown",
+                                          "218:0:bindkeydown",
+                                          "bindtap",
+                                          "218:0:bindtap",
+                                          "bindmouseup",
+                                          "218:0:bindmouseup",
+                                          "bindtouchstart",
+                                          "218:0:bindtouchstart",
+                                          "bindmousedown",
+                                          "218:0:bindmousedown",
+                                          "bindtouchend",
+                                          "218:0:bindtouchend",
+                                          "bindtouchcancel",
+                                          "218:0:bindtouchcancel",
+                                          "bindfocus",
+                                          "218:0:bindfocus",
+                                          "class",
+                                          "SharedSettingsNavigationButton"
+                                        ],
+                                        "backendNodeId": 258,
+                                        "childNodeCount": 2,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationIcon"
+                                            ],
+                                            "backendNodeId": 259,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "content",
+                                                  "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0d0d0d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-puzzle\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1\" /> </svg>",
+                                                  "style",
+                                                  "height:16px;width:16px;"
+                                                ],
+                                                "backendNodeId": 260,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "svg",
+                                                "nodeId": 260,
+                                                "nodeName": "SVG",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 259
+                                              }
+                                            ],
+                                            "localName": "view",
+                                            "nodeId": 259,
+                                            "nodeName": "VIEW",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 258
+                                          },
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationItemLabel"
+                                            ],
+                                            "backendNodeId": 261,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "text",
+                                                  "Providers"
+                                                ],
+                                                "backendNodeId": 262,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "raw-text",
+                                                "nodeId": 262,
+                                                "nodeName": "RAW-TEXT",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 261
+                                              }
+                                            ],
+                                            "localName": "text",
+                                            "nodeId": 261,
+                                            "nodeName": "TEXT",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 258
+                                          }
+                                        ],
+                                        "localName": "view",
+                                        "nodeId": 258,
+                                        "nodeName": "VIEW",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 257
+                                      }
+                                    ],
+                                    "localName": "view",
+                                    "nodeId": 257,
+                                    "nodeName": "VIEW",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 250
+                                  },
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SharedSettingsNavigationItem"
+                                    ],
+                                    "backendNodeId": 263,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "aria-selected",
+                                          "false",
+                                          "accessibility-element",
+                                          "true",
+                                          "accessibility-label",
+                                          "Skills",
+                                          "accessibility-traits",
+                                          "button",
+                                          "focusable",
+                                          "true",
+                                          "aria-disabled",
+                                          "false",
+                                          "bindmouseenter",
+                                          "224:0:bindmouseenter",
+                                          "bindblur",
+                                          "224:0:bindblur",
+                                          "bindmouseleave",
+                                          "224:0:bindmouseleave",
+                                          "bindkeydown",
+                                          "224:0:bindkeydown",
+                                          "bindtap",
+                                          "224:0:bindtap",
+                                          "bindmouseup",
+                                          "224:0:bindmouseup",
+                                          "bindtouchstart",
+                                          "224:0:bindtouchstart",
+                                          "bindmousedown",
+                                          "224:0:bindmousedown",
+                                          "bindtouchend",
+                                          "224:0:bindtouchend",
+                                          "bindtouchcancel",
+                                          "224:0:bindtouchcancel",
+                                          "bindfocus",
+                                          "224:0:bindfocus",
+                                          "class",
+                                          "SharedSettingsNavigationButton"
+                                        ],
+                                        "backendNodeId": 264,
+                                        "childNodeCount": 2,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationIcon"
+                                            ],
+                                            "backendNodeId": 265,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "content",
+                                                  "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0d0d0d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-blocks\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M14 4a1 1 0 0 1 1 -1h5a1 1 0 0 1 1 1v5a1 1 0 0 1 -1 1h-5a1 1 0 0 1 -1 -1l0 -5\" /> <path d=\"M3 14h12a2 2 0 0 1 2 2v3a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h3a2 2 0 0 1 2 2v12\" /> </svg>",
+                                                  "style",
+                                                  "height:16px;width:16px;"
+                                                ],
+                                                "backendNodeId": 266,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "svg",
+                                                "nodeId": 266,
+                                                "nodeName": "SVG",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 265
+                                              }
+                                            ],
+                                            "localName": "view",
+                                            "nodeId": 265,
+                                            "nodeName": "VIEW",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 264
+                                          },
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationItemLabel"
+                                            ],
+                                            "backendNodeId": 267,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "text",
+                                                  "Skills"
+                                                ],
+                                                "backendNodeId": 268,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "raw-text",
+                                                "nodeId": 268,
+                                                "nodeName": "RAW-TEXT",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 267
+                                              }
+                                            ],
+                                            "localName": "text",
+                                            "nodeId": 267,
+                                            "nodeName": "TEXT",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 264
+                                          }
+                                        ],
+                                        "localName": "view",
+                                        "nodeId": 264,
+                                        "nodeName": "VIEW",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 263
+                                      }
+                                    ],
+                                    "localName": "view",
+                                    "nodeId": 263,
+                                    "nodeName": "VIEW",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 250
+                                  },
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SharedSettingsNavigationItem"
+                                    ],
+                                    "backendNodeId": 269,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "aria-selected",
+                                          "false",
+                                          "accessibility-element",
+                                          "true",
+                                          "accessibility-label",
+                                          "Usage",
+                                          "accessibility-traits",
+                                          "button",
+                                          "focusable",
+                                          "true",
+                                          "aria-disabled",
+                                          "false",
+                                          "bindmouseenter",
+                                          "230:0:bindmouseenter",
+                                          "bindblur",
+                                          "230:0:bindblur",
+                                          "bindmouseleave",
+                                          "230:0:bindmouseleave",
+                                          "bindkeydown",
+                                          "230:0:bindkeydown",
+                                          "bindtap",
+                                          "230:0:bindtap",
+                                          "bindmouseup",
+                                          "230:0:bindmouseup",
+                                          "bindtouchstart",
+                                          "230:0:bindtouchstart",
+                                          "bindmousedown",
+                                          "230:0:bindmousedown",
+                                          "bindtouchend",
+                                          "230:0:bindtouchend",
+                                          "bindtouchcancel",
+                                          "230:0:bindtouchcancel",
+                                          "bindfocus",
+                                          "230:0:bindfocus",
+                                          "class",
+                                          "SharedSettingsNavigationButton"
+                                        ],
+                                        "backendNodeId": 270,
+                                        "childNodeCount": 2,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationIcon"
+                                            ],
+                                            "backendNodeId": 271,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "content",
+                                                  "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0d0d0d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-gauge\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0\" /> <path d=\"M11 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\" /> <path d=\"M13.41 10.59l2.59 -2.59\" /> <path d=\"M7 12a5 5 0 0 1 5 -5\" /> </svg>",
+                                                  "style",
+                                                  "height:16px;width:16px;"
+                                                ],
+                                                "backendNodeId": 272,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "svg",
+                                                "nodeId": 272,
+                                                "nodeName": "SVG",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 271
+                                              }
+                                            ],
+                                            "localName": "view",
+                                            "nodeId": 271,
+                                            "nodeName": "VIEW",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 270
+                                          },
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationItemLabel"
+                                            ],
+                                            "backendNodeId": 273,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "text",
+                                                  "Usage"
+                                                ],
+                                                "backendNodeId": 274,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "raw-text",
+                                                "nodeId": 274,
+                                                "nodeName": "RAW-TEXT",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 273
+                                              }
+                                            ],
+                                            "localName": "text",
+                                            "nodeId": 273,
+                                            "nodeName": "TEXT",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 270
+                                          }
+                                        ],
+                                        "localName": "view",
+                                        "nodeId": 270,
+                                        "nodeName": "VIEW",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 269
+                                      }
+                                    ],
+                                    "localName": "view",
+                                    "nodeId": 269,
+                                    "nodeName": "VIEW",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 250
+                                  },
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SharedSettingsNavigationItem"
+                                    ],
+                                    "backendNodeId": 275,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "aria-selected",
+                                          "false",
+                                          "accessibility-element",
+                                          "true",
+                                          "accessibility-label",
+                                          "Integrations",
+                                          "accessibility-traits",
+                                          "button",
+                                          "focusable",
+                                          "true",
+                                          "aria-disabled",
+                                          "false",
+                                          "bindmouseenter",
+                                          "236:0:bindmouseenter",
+                                          "bindblur",
+                                          "236:0:bindblur",
+                                          "bindmouseleave",
+                                          "236:0:bindmouseleave",
+                                          "bindkeydown",
+                                          "236:0:bindkeydown",
+                                          "bindtap",
+                                          "236:0:bindtap",
+                                          "bindmouseup",
+                                          "236:0:bindmouseup",
+                                          "bindtouchstart",
+                                          "236:0:bindtouchstart",
+                                          "bindmousedown",
+                                          "236:0:bindmousedown",
+                                          "bindtouchend",
+                                          "236:0:bindtouchend",
+                                          "bindtouchcancel",
+                                          "236:0:bindtouchcancel",
+                                          "bindfocus",
+                                          "236:0:bindfocus",
+                                          "class",
+                                          "SharedSettingsNavigationButton"
+                                        ],
+                                        "backendNodeId": 276,
+                                        "childNodeCount": 2,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationIcon"
+                                            ],
+                                            "backendNodeId": 277,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "content",
+                                                  "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0d0d0d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-plug\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M9.785 6l8.215 8.215l-2.054 2.054a5.81 5.81 0 1 1 -8.215 -8.215l2.054 -2.054\" /> <path d=\"M4 20l3.5 -3.5\" /> <path d=\"M15 4l-3.5 3.5\" /> <path d=\"M20 9l-3.5 3.5\" /> </svg>",
+                                                  "style",
+                                                  "height:16px;width:16px;"
+                                                ],
+                                                "backendNodeId": 278,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "svg",
+                                                "nodeId": 278,
+                                                "nodeName": "SVG",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 277
+                                              }
+                                            ],
+                                            "localName": "view",
+                                            "nodeId": 277,
+                                            "nodeName": "VIEW",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 276
+                                          },
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationItemLabel"
+                                            ],
+                                            "backendNodeId": 279,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "text",
+                                                  "Integrations"
+                                                ],
+                                                "backendNodeId": 280,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "raw-text",
+                                                "nodeId": 280,
+                                                "nodeName": "RAW-TEXT",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 279
+                                              }
+                                            ],
+                                            "localName": "text",
+                                            "nodeId": 279,
+                                            "nodeName": "TEXT",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 276
+                                          }
+                                        ],
+                                        "localName": "view",
+                                        "nodeId": 276,
+                                        "nodeName": "VIEW",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 275
+                                      }
+                                    ],
+                                    "localName": "view",
+                                    "nodeId": 275,
+                                    "nodeName": "VIEW",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 250
+                                  },
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SharedSettingsNavigationItem"
+                                    ],
+                                    "backendNodeId": 281,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "aria-selected",
+                                          "false",
+                                          "accessibility-element",
+                                          "true",
+                                          "accessibility-label",
+                                          "Advanced",
+                                          "accessibility-traits",
+                                          "button",
+                                          "focusable",
+                                          "true",
+                                          "aria-disabled",
+                                          "false",
+                                          "bindmouseenter",
+                                          "242:0:bindmouseenter",
+                                          "bindblur",
+                                          "242:0:bindblur",
+                                          "bindmouseleave",
+                                          "242:0:bindmouseleave",
+                                          "bindkeydown",
+                                          "242:0:bindkeydown",
+                                          "bindtap",
+                                          "242:0:bindtap",
+                                          "bindmouseup",
+                                          "242:0:bindmouseup",
+                                          "bindtouchstart",
+                                          "242:0:bindtouchstart",
+                                          "bindmousedown",
+                                          "242:0:bindmousedown",
+                                          "bindtouchend",
+                                          "242:0:bindtouchend",
+                                          "bindtouchcancel",
+                                          "242:0:bindtouchcancel",
+                                          "bindfocus",
+                                          "242:0:bindfocus",
+                                          "class",
+                                          "SharedSettingsNavigationButton"
+                                        ],
+                                        "backendNodeId": 282,
+                                        "childNodeCount": 2,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationIcon"
+                                            ],
+                                            "backendNodeId": 283,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "content",
+                                                  "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0d0d0d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-tools\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M3 21h4l13 -13a1.5 1.5 0 0 0 -4 -4l-13 13v4\" /> <path d=\"M14.5 5.5l4 4\" /> <path d=\"M12 8l-5 -5l-4 4l5 5\" /> <path d=\"M7 8l-1.5 1.5\" /> <path d=\"M16 12l5 5l-4 4l-5 -5\" /> <path d=\"M16 17l-1.5 1.5\" /> </svg>",
+                                                  "style",
+                                                  "height:16px;width:16px;"
+                                                ],
+                                                "backendNodeId": 284,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "svg",
+                                                "nodeId": 284,
+                                                "nodeName": "SVG",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 283
+                                              }
+                                            ],
+                                            "localName": "view",
+                                            "nodeId": 283,
+                                            "nodeName": "VIEW",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 282
+                                          },
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSettingsNavigationItemLabel"
+                                            ],
+                                            "backendNodeId": 285,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "text",
+                                                  "Advanced"
+                                                ],
+                                                "backendNodeId": 286,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "raw-text",
+                                                "nodeId": 286,
+                                                "nodeName": "RAW-TEXT",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 285
+                                              }
+                                            ],
+                                            "localName": "text",
+                                            "nodeId": 285,
+                                            "nodeName": "TEXT",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 282
+                                          }
+                                        ],
+                                        "localName": "view",
+                                        "nodeId": 282,
+                                        "nodeName": "VIEW",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 281
+                                      }
+                                    ],
+                                    "localName": "view",
+                                    "nodeId": 281,
+                                    "nodeName": "VIEW",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 250
+                                  }
+                                ],
+                                "localName": "view",
+                                "nodeId": 250,
+                                "nodeName": "VIEW",
+                                "nodeType": 1,
+                                "nodeValue": "",
+                                "parentId": 247
+                              }
+                            ],
+                            "localName": "view",
+                            "nodeId": 247,
+                            "nodeName": "VIEW",
+                            "nodeType": 1,
+                            "nodeValue": "",
+                            "parentId": 188
+                          }
+                        ],
+                        "localName": "view",
+                        "nodeId": 188,
+                        "nodeName": "VIEW",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 171
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 171,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 170
+                  },
+                  {
+                    "attributes": [
+                      "scroll-orientation",
+                      "vertical",
+                      "class",
+                      "SettingsContent"
+                    ],
+                    "backendNodeId": 172,
+                    "childNodeCount": 1,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "SettingsContentInner"
+                        ],
+                        "backendNodeId": 173,
+                        "childNodeCount": 2,
+                        "children": [
+                          {
+                            "attributes": [
+                              "class",
+                              "SharedSettingsPanelHeader"
+                            ],
+                            "backendNodeId": 287,
+                            "childNodeCount": 2,
+                            "children": [
+                              {
+                                "attributes": [
+                                  "class",
+                                  "SharedSettingsPanelHeaderCopy"
+                                ],
+                                "backendNodeId": 288,
+                                "childNodeCount": 2,
+                                "children": [
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SharedSettingsPanelHeaderTitle"
+                                    ],
+                                    "backendNodeId": 289,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "text",
+                                          "Archived"
+                                        ],
+                                        "backendNodeId": 290,
+                                        "childNodeCount": 0,
+                                        "children": [],
+                                        "localName": "raw-text",
+                                        "nodeId": 290,
+                                        "nodeName": "RAW-TEXT",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 289
+                                      }
+                                    ],
+                                    "localName": "text",
+                                    "nodeId": 289,
+                                    "nodeName": "TEXT",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 288
+                                  },
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SharedSettingsPanelHeaderDescription"
+                                    ],
+                                    "backendNodeId": 291,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "text",
+                                          "View and restore archived threads."
+                                        ],
+                                        "backendNodeId": 292,
+                                        "childNodeCount": 0,
+                                        "children": [],
+                                        "localName": "raw-text",
+                                        "nodeId": 292,
+                                        "nodeName": "RAW-TEXT",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 291
+                                      }
+                                    ],
+                                    "localName": "text",
+                                    "nodeId": 291,
+                                    "nodeName": "TEXT",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 288
+                                  }
+                                ],
+                                "localName": "view",
+                                "nodeId": 288,
+                                "nodeName": "VIEW",
+                                "nodeType": 1,
+                                "nodeValue": "",
+                                "parentId": 287
+                              },
+                              {
+                                "attributes": [
+                                  "event-through",
+                                  "false",
+                                  "bindtap",
+                                  "253:0:bindtap",
+                                  "bindmouseup",
+                                  "253:0:bindmouseup",
+                                  "bindmousedown",
+                                  "253:0:bindmousedown",
+                                  "bindtouchstart",
+                                  "253:0:bindtouchstart",
+                                  "bindtouchend",
+                                  "253:0:bindtouchend",
+                                  "bindtouchcancel",
+                                  "253:0:bindtouchcancel",
+                                  "class",
+                                  "LxButton LxButton--outline LxButton--default ui-disabled"
+                                ],
+                                "backendNodeId": 293,
+                                "childNodeCount": 1,
+                                "children": [
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "LxButton__text"
+                                    ],
+                                    "backendNodeId": 294,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "text",
+                                          "Restore defaults"
+                                        ],
+                                        "backendNodeId": 295,
+                                        "childNodeCount": 0,
+                                        "children": [],
+                                        "localName": "raw-text",
+                                        "nodeId": 295,
+                                        "nodeName": "RAW-TEXT",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 294
+                                      }
+                                    ],
+                                    "localName": "text",
+                                    "nodeId": 294,
+                                    "nodeName": "TEXT",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 293
+                                  }
+                                ],
+                                "localName": "view",
+                                "nodeId": 293,
+                                "nodeName": "VIEW",
+                                "nodeType": 1,
+                                "nodeValue": "",
+                                "parentId": 287
+                              }
+                            ],
+                            "localName": "view",
+                            "nodeId": 287,
+                            "nodeName": "VIEW",
+                            "nodeType": 1,
+                            "nodeValue": "",
+                            "parentId": 173
+                          },
+                          {
+                            "attributes": [
+                              "class",
+                              "SettingsArchivedPanel"
+                            ],
+                            "backendNodeId": 304,
+                            "childNodeCount": 1,
+                            "children": [
+                              {
+                                "attributes": [
+                                  "class",
+                                  "SharedSettingsSection flex flex-col gap-1.5 not-first:mt-4"
+                                ],
+                                "backendNodeId": 305,
+                                "childNodeCount": 2,
+                                "children": [
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SharedSettingsSectionTitle px-2 py-1 text-[length:var(--app-font-size-ui,12px)] font-normal text-muted-foreground/58"
+                                    ],
+                                    "backendNodeId": 306,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "text",
+                                          "Home"
+                                        ],
+                                        "backendNodeId": 307,
+                                        "childNodeCount": 0,
+                                        "children": [],
+                                        "localName": "raw-text",
+                                        "nodeId": 307,
+                                        "nodeName": "RAW-TEXT",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 306
+                                      }
+                                    ],
+                                    "localName": "text",
+                                    "nodeId": 306,
+                                    "nodeName": "TEXT",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 305
+                                  },
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SharedSettingsCard overflow-hidden bg-transparent border border-[color:var(--color-border)] rounded-lg divide-y divide-[color:var(--color-border)]"
+                                    ],
+                                    "backendNodeId": 308,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "class",
+                                          "SettingsArchivedRow"
+                                        ],
+                                        "backendNodeId": 309,
+                                        "childNodeCount": 2,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SettingsArchivedRowCopy"
+                                            ],
+                                            "backendNodeId": 310,
+                                            "childNodeCount": 2,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "class",
+                                                  "SettingsArchivedRowTitle"
+                                                ],
+                                                "backendNodeId": 311,
+                                                "childNodeCount": 1,
+                                                "children": [
+                                                  {
+                                                    "attributes": [
+                                                      "text",
+                                                      "Fidelity archived row verification"
+                                                    ],
+                                                    "backendNodeId": 316,
+                                                    "childNodeCount": 0,
+                                                    "children": [],
+                                                    "localName": "raw-text",
+                                                    "nodeId": 316,
+                                                    "nodeName": "RAW-TEXT",
+                                                    "nodeType": 1,
+                                                    "nodeValue": "",
+                                                    "parentId": 311
+                                                  }
+                                                ],
+                                                "localName": "text",
+                                                "nodeId": 311,
+                                                "nodeName": "TEXT",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 310
+                                              },
+                                              {
+                                                "attributes": [
+                                                  "class",
+                                                  "SettingsArchivedRowDescription"
+                                                ],
+                                                "backendNodeId": 312,
+                                                "childNodeCount": 2,
+                                                "children": [
+                                                  {
+                                                    "attributes": [
+                                                      "text",
+                                                      "Archived"
+                                                    ],
+                                                    "backendNodeId": 313,
+                                                    "childNodeCount": 0,
+                                                    "children": [],
+                                                    "localName": "raw-text",
+                                                    "nodeId": 313,
+                                                    "nodeName": "RAW-TEXT",
+                                                    "nodeType": 1,
+                                                    "nodeValue": "",
+                                                    "parentId": 312
+                                                  },
+                                                  {
+                                                    "attributes": [],
+                                                    "backendNodeId": 314,
+                                                    "childNodeCount": 2,
+                                                    "children": [
+                                                      {
+                                                        "attributes": [
+                                                          "text",
+                                                          " "
+                                                        ],
+                                                        "backendNodeId": 317,
+                                                        "childNodeCount": 0,
+                                                        "children": [],
+                                                        "localName": "raw-text",
+                                                        "nodeId": 317,
+                                                        "nodeName": "RAW-TEXT",
+                                                        "nodeType": 1,
+                                                        "nodeValue": "",
+                                                        "parentId": 314
+                                                      },
+                                                      {
+                                                        "attributes": [
+                                                          "text",
+                                                          "21m"
+                                                        ],
+                                                        "backendNodeId": 318,
+                                                        "childNodeCount": 0,
+                                                        "children": [],
+                                                        "localName": "raw-text",
+                                                        "nodeId": 318,
+                                                        "nodeName": "RAW-TEXT",
+                                                        "nodeType": 1,
+                                                        "nodeValue": "",
+                                                        "parentId": 314
+                                                      }
+                                                    ],
+                                                    "localName": "wrapper",
+                                                    "nodeId": 314,
+                                                    "nodeName": "WRAPPER",
+                                                    "nodeType": 1,
+                                                    "nodeValue": "",
+                                                    "parentId": 312
+                                                  }
+                                                ],
+                                                "localName": "text",
+                                                "nodeId": 312,
+                                                "nodeName": "TEXT",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 310
+                                              }
+                                            ],
+                                            "localName": "view",
+                                            "nodeId": 310,
+                                            "nodeName": "VIEW",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 309
+                                          },
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SettingsArchivedRowActions"
+                                            ],
+                                            "backendNodeId": 315,
+                                            "childNodeCount": 2,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "event-through",
+                                                  "false",
+                                                  "accessibility-element",
+                                                  "true",
+                                                  "accessibility-label",
+                                                  "Restore Fidelity archived row verification",
+                                                  "accessibility-traits",
+                                                  "button",
+                                                  "bindtap",
+                                                  "270:0:bindtap",
+                                                  "bindmouseup",
+                                                  "270:0:bindmouseup",
+                                                  "bindmousedown",
+                                                  "270:0:bindmousedown",
+                                                  "bindtouchstart",
+                                                  "270:0:bindtouchstart",
+                                                  "bindtouchend",
+                                                  "270:0:bindtouchend",
+                                                  "bindtouchcancel",
+                                                  "270:0:bindtouchcancel",
+                                                  "class",
+                                                  "LxButton LxButton--outline LxButton--xs"
+                                                ],
+                                                "backendNodeId": 319,
+                                                "childNodeCount": 1,
+                                                "children": [
+                                                  {
+                                                    "attributes": [
+                                                      "class",
+                                                      "LxButton__text"
+                                                    ],
+                                                    "backendNodeId": 320,
+                                                    "childNodeCount": 1,
+                                                    "children": [
+                                                      {
+                                                        "attributes": [
+                                                          "text",
+                                                          "Restore"
+                                                        ],
+                                                        "backendNodeId": 321,
+                                                        "childNodeCount": 0,
+                                                        "children": [],
+                                                        "localName": "raw-text",
+                                                        "nodeId": 321,
+                                                        "nodeName": "RAW-TEXT",
+                                                        "nodeType": 1,
+                                                        "nodeValue": "",
+                                                        "parentId": 320
+                                                      }
+                                                    ],
+                                                    "localName": "text",
+                                                    "nodeId": 320,
+                                                    "nodeName": "TEXT",
+                                                    "nodeType": 1,
+                                                    "nodeValue": "",
+                                                    "parentId": 319
+                                                  }
+                                                ],
+                                                "localName": "view",
+                                                "nodeId": 319,
+                                                "nodeName": "VIEW",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 315
+                                              },
+                                              {
+                                                "attributes": [
+                                                  "event-through",
+                                                  "false",
+                                                  "accessibility-element",
+                                                  "true",
+                                                  "accessibility-label",
+                                                  "Delete Fidelity archived row verification",
+                                                  "accessibility-traits",
+                                                  "button",
+                                                  "bindtap",
+                                                  "273:0:bindtap",
+                                                  "bindmouseup",
+                                                  "273:0:bindmouseup",
+                                                  "bindmousedown",
+                                                  "273:0:bindmousedown",
+                                                  "bindtouchstart",
+                                                  "273:0:bindtouchstart",
+                                                  "bindtouchend",
+                                                  "273:0:bindtouchend",
+                                                  "bindtouchcancel",
+                                                  "273:0:bindtouchcancel",
+                                                  "class",
+                                                  "LxButton LxButton--destructive LxButton--xs"
+                                                ],
+                                                "backendNodeId": 322,
+                                                "childNodeCount": 1,
+                                                "children": [
+                                                  {
+                                                    "attributes": [
+                                                      "class",
+                                                      "LxButton__text"
+                                                    ],
+                                                    "backendNodeId": 323,
+                                                    "childNodeCount": 1,
+                                                    "children": [
+                                                      {
+                                                        "attributes": [
+                                                          "text",
+                                                          "Delete"
+                                                        ],
+                                                        "backendNodeId": 324,
+                                                        "childNodeCount": 0,
+                                                        "children": [],
+                                                        "localName": "raw-text",
+                                                        "nodeId": 324,
+                                                        "nodeName": "RAW-TEXT",
+                                                        "nodeType": 1,
+                                                        "nodeValue": "",
+                                                        "parentId": 323
+                                                      }
+                                                    ],
+                                                    "localName": "text",
+                                                    "nodeId": 323,
+                                                    "nodeName": "TEXT",
+                                                    "nodeType": 1,
+                                                    "nodeValue": "",
+                                                    "parentId": 322
+                                                  }
+                                                ],
+                                                "localName": "view",
+                                                "nodeId": 322,
+                                                "nodeName": "VIEW",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 315
+                                              }
+                                            ],
+                                            "localName": "view",
+                                            "nodeId": 315,
+                                            "nodeName": "VIEW",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 309
+                                          }
+                                        ],
+                                        "localName": "view",
+                                        "nodeId": 309,
+                                        "nodeName": "VIEW",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 308
+                                      }
+                                    ],
+                                    "localName": "view",
+                                    "nodeId": 308,
+                                    "nodeName": "VIEW",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 305
+                                  }
+                                ],
+                                "localName": "view",
+                                "nodeId": 305,
+                                "nodeName": "VIEW",
+                                "nodeType": 1,
+                                "nodeValue": "",
+                                "parentId": 304
+                              }
+                            ],
+                            "localName": "view",
+                            "nodeId": 304,
+                            "nodeName": "VIEW",
+                            "nodeType": 1,
+                            "nodeValue": "",
+                            "parentId": 173
+                          }
+                        ],
+                        "localName": "view",
+                        "nodeId": 173,
+                        "nodeName": "VIEW",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 172
+                      }
+                    ],
+                    "localName": "scroll-view",
+                    "nodeId": 172,
+                    "nodeName": "SCROLL-VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 170
+                  }
+                ],
+                "localName": "view",
+                "nodeId": 170,
+                "nodeName": "VIEW",
+                "nodeType": 1,
+                "nodeValue": "",
+                "parentId": 13
+              }
+            ],
+            "localName": "view",
+            "nodeId": 13,
+            "nodeName": "VIEW",
+            "nodeType": 1,
+            "nodeValue": "",
+            "parentId": 10
+          }
+        ],
+        "localName": "page",
+        "nodeId": 10,
+        "nodeName": "PAGE",
+        "nodeType": 1,
+        "nodeValue": ""
+      }
+    ],
+    "localName": "",
+    "nodeId": 11,
+    "nodeName": "#document",
+    "nodeType": 9,
+    "nodeValue": ""
+  }
+}

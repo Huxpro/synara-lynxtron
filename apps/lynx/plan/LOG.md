@@ -5913,3 +5913,37 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - React Doctor fresh `bunx`与本地cache CLI均在扫描前因缺失
   `oxc-parser/src-js` / `oxlint-plugin-react-doctor`失败，未产生diagnostics；本刀不把
   tool failure伪称green，功能与bundle/verifier/audit gates仍分别独立通过。
+
+## 2026-08-06 — current-head Archived populated workflow
+
+- completion audit不再接受Archived empty-state截图代理populated branch。通过owned
+  `60462` server和canonical `thread.create`→`thread.archive`创建临时
+  `Fidelity archived row verification`，三种snapshot API均确认真实archived row；
+  未写SQLite fixture。
+- 实测发现前一版Lynx只实现Restore，而Web authority同row还拥有confirmed destructive
+  Delete。补`createDeleteArchivedThreadCommand`、host `dialogs.confirm`、canonical
+  `thread.delete`、shared pending/error owner与snapshot invalidation；Restore/Delete
+  并发时共同disabled，分别显示Restoring/Deleting。
+- populated row还暴露shared primitive残差：generic `LxButton--xs`实际为25px、
+  12px/normal，而Web为24px、10/15、7px水平padding。修复放在单一
+  `primitives.css` owner；Archived copy→actions gap从16px收敛到Web的10px，不加匿名
+  margin。final Web/Lynx content anchors exact：title `469/161/478.21875/18`、
+  description `469/181/478.21875/18`、Restore
+  `957.21875/168/53.890625/24`、Delete
+  `1019.109375/168/47.890625/24`，actions gap 8px。
+- Browser first capture实际为1280×633，按preflight判harness failure并删除；显式重设
+  viewport后runtime/visualViewport/PNG均为1280×820 DPR1，Web/Lynx page errors为空。
+  server最初默认trusted `8891`导致8921 Origin 403，按真实owner
+  `--dev-url http://localhost:8921`重启owned server后fresh sessions恢复在线。
+- exact-owned Native configured bundle `f2982a11…`，root PID71742，
+  PID-derived localhost:8903/session1，session URL为当前
+  `apps/lynx/dist/desktop/main.lynx.bundle`；root1280×788/raw2560×1576，
+  row622×58、actions110×24、12/18 title/description，console 0。
+  DevTool touch真实触发Delete，host日志确认完整`dialogsConfirm` warning；为不抢用户
+  鼠标/焦点未自动确认隐藏系统dialog，因此只声明confirm bridge reached，不扩张为
+  user-confirmed deletion pass。
+- canonical `thread.delete`清理临时thread后shell/sidebar snapshots均0；owned server/
+  Native/browser sessions退出。SQLite `cd3e1e9e…`、settings `d221bb25…`、Native KV
+  `f53a83aa…`、window `2dd961d3…` byte-exact恢复。focused Archived+Advanced
+  **6/6**，configured Lynx-for-Web与Native/Desktop builds通过；默认Native bundle已
+  重建恢复58090。证据在`shots/2026-08-06/archived-populated-current/`。

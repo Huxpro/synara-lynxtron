@@ -1,0 +1,186 @@
+{
+  "client": "native",
+  "stateId": "archived-populated-native",
+  "roles": {
+    "root": {
+      "nodeId": 170,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsPage SettingsPage--theme-light"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 788
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "panel": {
+      "nodeId": 304,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsArchivedPanel"
+      },
+      "text": "",
+      "box": {
+        "x": 456,
+        "y": 118,
+        "width": 624,
+        "height": 91
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "row": {
+      "nodeId": 309,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsArchivedRow"
+      },
+      "text": "",
+      "box": {
+        "x": 457,
+        "y": 150,
+        "width": 622,
+        "height": 58
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "title": {
+      "nodeId": 311,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "SettingsArchivedRowTitle"
+      },
+      "text": "",
+      "box": {
+        "x": 469,
+        "y": 160,
+        "width": 478,
+        "height": 18
+      },
+      "font": {
+        "family": "",
+        "size": "12px",
+        "weight": "500",
+        "lineHeight": "18px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "description": {
+      "nodeId": 312,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "SettingsArchivedRowDescription"
+      },
+      "text": "",
+      "box": {
+        "x": 469,
+        "y": 180,
+        "width": 478,
+        "height": 18
+      },
+      "font": {
+        "family": "",
+        "size": "12px",
+        "weight": "normal",
+        "lineHeight": "18px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgba(13,13,13,0.596078)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "actions": {
+      "nodeId": 315,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsArchivedRowActions"
+      },
+      "text": "",
+      "box": {
+        "x": 957,
+        "y": 167,
+        "width": 110,
+        "height": 24
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

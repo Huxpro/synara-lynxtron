@@ -67,3 +67,14 @@ export function createUnarchiveCommand(input: {
     threadId: input.threadId as never,
   };
 }
+
+export function createDeleteArchivedThreadCommand(input: {
+  readonly threadId: string;
+  readonly commandId: string;
+}) {
+  return {
+    type: 'thread.delete' as const,
+    commandId: input.commandId as never,
+    threadId: input.threadId as never,
+  };
+}

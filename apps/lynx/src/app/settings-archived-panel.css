@@ -88,7 +88,7 @@
   padding: var(--app-density-settings-row-padding-y, 10px) 12px;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 10px;
 }
 
 .SettingsArchivedRow--divided {
@@ -101,6 +101,13 @@
   flex: 1;
   flex-direction: column;
   gap: 2px;
+}
+
+.SettingsArchivedRowActions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 8px;
 }
 
 .SettingsArchivedRestoreError {

@@ -33,24 +33,39 @@ describe('Settings Archived fidelity', () => {
     expect(panelSource).not.toContain('function ArchiveIcon()');
   });
 
-  it('wires restore through the canonical command and invalidates the snapshot', () => {
+  it('wires restore and confirmed delete through canonical commands', () => {
     const panelSource = readFileSync(
       new URL('./SettingsArchivedPanel.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const logicSource = readFileSync(
+      new URL('./settingsArchived.logic.ts', import.meta.url),
       'utf8'
     );
 
     expect(panelSource).toContain('dispatchSynaraCommand(');
     expect(panelSource).toContain('createUnarchiveCommand({');
+    expect(panelSource).toContain('createDeleteArchivedThreadCommand({');
+    expect(panelSource).toContain('await dialogs.confirm(');
+    expect(panelSource).toContain(
+      'This will remove the thread and its conversation history forever.'
+    );
     expect(panelSource).toContain(
       "queryClient.invalidateQueries({ queryKey: ['sidebar-snapshot'] })"
     );
     expect(panelSource).toContain('Restore ${thread.title}');
-    expect(panelSource).not.toContain('Delete');
+    expect(panelSource).toContain('Delete ${thread.title}');
+    expect(panelSource).toContain('variant="destructive"');
+    expect(logicSource).toContain("type: 'thread.delete' as const");
   });
 
   it('matches the Web empty-state and list-row anatomy', () => {
     const styles = readFileSync(
       new URL('./settings-archived-panel.css', import.meta.url),
+      'utf8'
+    );
+    const primitiveStyles = readFileSync(
+      new URL('../components/ui/primitives.css', import.meta.url),
       'utf8'
     );
 
@@ -64,7 +79,10 @@ describe('Settings Archived fidelity', () => {
       /\.SettingsArchivedEmptyTitle,\s*\.SettingsArchivedEmptyDescription\s*\{[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;/s
     );
     expect(styles).toMatch(
-      /\.SettingsArchivedRow\s*\{[^}]*justify-content:\s*space-between;[^}]*gap:\s*16px;/s
+      /\.SettingsArchivedRow\s*\{[^}]*justify-content:\s*space-between;[^}]*gap:\s*10px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsArchivedRowActions\s*\{[^}]*flex-shrink:\s*0;[^}]*gap:\s*8px;/s
     );
     expect(styles).not.toMatch(
       /\.SettingsArchivedRow\s*\{[^}]*min-height:/s
@@ -73,5 +91,11 @@ describe('Settings Archived fidelity', () => {
       /\.SettingsArchivedRestoreError\s*\{[^}]*border-radius:\s*10px;/s
     );
     expect(styles).not.toContain('var(--radius-lg)');
+    expect(primitiveStyles).toMatch(
+      /\.LxButton--xs\s*\{[^}]*height:\s*24px;[^}]*padding-left:\s*7px;[^}]*padding-right:\s*7px;[^}]*padding-top:\s*0;[^}]*padding-bottom:\s*0;[^}]*gap:\s*4px;/s
+    );
+    expect(primitiveStyles).toMatch(
+      /\.LxButton--xs \.LxButton__text\s*\{[^}]*font-size:\s*10px;[^}]*line-height:\s*15px;/s
+    );
   });
 });
