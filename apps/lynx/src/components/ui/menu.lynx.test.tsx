@@ -116,6 +116,27 @@ describe('Lynx Menu overlay contract', () => {
     expect(onOpenChange).toHaveBeenLastCalledWith(false);
   });
 
+  it('supports explicit trigger activation without toggling menu state', () => {
+    const onActivate = rs.fn();
+    const onOpenChange = rs.fn();
+    render(
+      <Menu onOpenChange={onOpenChange}>
+        <MenuTrigger onActivate={onActivate}>
+          <text>Activate</text>
+        </MenuTrigger>
+        <MenuPopup>
+          <MenuItem onClick={() => {}}>Hidden</MenuItem>
+        </MenuPopup>
+      </Menu>
+    );
+
+    fireEvent.tap(menuTrigger());
+
+    expect(onActivate).toHaveBeenCalledTimes(1);
+    expect(onOpenChange).not.toHaveBeenCalled();
+    expect(elementTree.root?.querySelector('.LxMenuPopup')).toBeNull();
+  });
+
   it('keeps disabled triggers and items inert and unfocusable', async () => {
     const onDisabledItem = rs.fn();
     const onOpenChange = rs.fn();

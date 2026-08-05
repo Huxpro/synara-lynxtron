@@ -1,6 +1,8 @@
 import { describe, expect, it } from '@rstest/core';
 import { readFileSync } from 'node:fs';
 
+import { filterTerminalFontSuggestions } from './SettingsAppearanceCompositionElements.lynx';
+
 describe('Settings Appearance fidelity', () => {
   it('matches the shared Web section and row anatomy', () => {
     const source = readFileSync(
@@ -69,5 +71,23 @@ describe('Settings Appearance fidelity', () => {
     expect(styles).toMatch(
       /\.SharedSettingsAppearanceInputLine \.LxInput\s*\{[^}]*text-align:\s*right;/s
     );
+    expect(source).toContain('onFocus={() => setOpen(true)}');
+    expect(source).toContain('onActivate={() => setOpen(true)}');
+    expect(source).toContain("props.onChange('');");
+    expect(source).toContain('No matching suggested fonts.');
+    expect(source).toContain('<MenuItem');
+    expect(source).toContain('onClick={() => props.onChange(suggestion)}');
+    expect(styles).toMatch(
+      /\.SharedSettingsAppearanceFontTrigger,\s*\.SharedSettingsAppearanceFontInput\s*\{[^}]*width:\s*224px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedSettingsAppearanceFontPopup\s*\{[^}]*width:\s*224px;/s
+    );
+  });
+
+  it('filters the shared terminal font suggestions without restricting free-form values', () => {
+    expect(filterTerminalFontSuggestions(' fIrA ')).toEqual(['Fira Code']);
+    expect(filterTerminalFontSuggestions('')).toContain('JetBrains Mono');
+    expect(filterTerminalFontSuggestions('not-a-font')).toEqual([]);
   });
 });

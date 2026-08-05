@@ -1,22 +1,29 @@
-import type { ReactNode } from '@lynx-js/react';
+import { useState, type ReactNode } from '@lynx-js/react';
+import { TERMINAL_FONT_FAMILY_SUGGESTIONS } from '@synara-web/components/settings/SettingsAppearanceComposition.logic';
 
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import {
   DeviceLaptopIcon,
+  ChevronDownIcon,
   MoonIcon,
   SunIcon,
+  XIcon,
   type LynxIcon,
 } from '../lib/icons.lynx';
 import {
   Menu,
+  MenuItem,
   MenuPopup,
   MenuRadioGroup,
   MenuRadioItem,
   MenuTrigger,
 } from '../components/ui/menu';
 import { SettingsResetIcon } from './SettingsResetIcon.lynx';
-import { useLynxInteractiveState } from './useLynxInteractiveState';
+import {
+  lynxNestedInteractiveEventProps,
+  useLynxInteractiveState,
+} from './useLynxInteractiveState';
 import { settingRowAnchorId } from '@synara-web/settingsNavigation';
 
 type Option = { readonly value: string; readonly label: string };
@@ -26,6 +33,17 @@ const THEME_OPTION_ICONS: Readonly<Record<string, LynxIcon>> = {
   dark: MoonIcon,
   system: DeviceLaptopIcon,
 };
+
+export function filterTerminalFontSuggestions(
+  value: string
+): ReadonlyArray<string> {
+  const query = value.trim().toLowerCase();
+  return query
+    ? TERMINAL_FONT_FAMILY_SUGGESTIONS.filter((font) =>
+        font.toLowerCase().includes(query)
+      )
+    : TERMINAL_FONT_FAMILY_SUGGESTIONS;
+}
 
 export function SettingsAppearanceRootElement(props: {
   readonly children?: ReactNode;
@@ -179,13 +197,76 @@ export function SettingsAppearanceTextControlElement(props: {
   readonly ariaLabel: string;
   readonly onChange: (value: string) => void;
 }) {
+  const [open, setOpen] = useState(false);
+  const clearInteraction = useLynxInteractiveState({
+    baseClassName: 'SharedSettingsAppearanceFontAction',
+    accessibleLabel: 'Clear terminal font family',
+    onActivate: () => {
+      props.onChange('');
+      setOpen(true);
+    },
+  });
+  const suggestions = filterTerminalFontSuggestions(props.value);
   return (
-    <Input
-      value={props.value}
-      placeholder={props.placeholder}
-      accessibility-label={props.ariaLabel}
-      onChange={(event) => props.onChange(event.target.value)}
-    />
+    <Menu open={open} onOpenChange={setOpen}>
+      <MenuTrigger
+        className="SharedSettingsAppearanceFontTrigger"
+        ariaLabel={props.ariaLabel}
+        onActivate={() => setOpen(true)}
+      >
+        <view className="SharedSettingsAppearanceFontInput">
+          <Input
+            size="sm"
+            variant="soft"
+            value={props.value}
+            placeholder={props.placeholder}
+            accessibility-label={props.ariaLabel}
+            onFocus={() => setOpen(true)}
+            onChange={(event) => {
+              props.onChange(event.target.value);
+              setOpen(true);
+            }}
+          />
+          {props.value.length > 0 ? (
+            <view
+              className={clearInteraction.className}
+              aria-label="Clear terminal font family"
+              {...lynxNestedInteractiveEventProps(clearInteraction.eventProps)}
+            >
+              <XIcon size={14} color="var(--muted-foreground)" />
+            </view>
+          ) : (
+            <view className="SharedSettingsAppearanceFontAction" aria-hidden="true">
+              <ChevronDownIcon size={14} color="var(--muted-foreground)" />
+            </view>
+          )}
+        </view>
+      </MenuTrigger>
+      <MenuPopup
+        className="SharedSettingsAppearanceFontPopup"
+        align="end"
+      >
+        <scroll-view
+          className="SharedSettingsAppearanceFontList"
+          scroll-y
+        >
+          {suggestions.length > 0 ? (
+            suggestions.map((suggestion) => (
+              <MenuItem
+                key={suggestion}
+                onClick={() => props.onChange(suggestion)}
+              >
+                {suggestion}
+              </MenuItem>
+            ))
+          ) : (
+            <text className="SharedSettingsAppearanceFontEmpty">
+              No matching suggested fonts.
+            </text>
+          )}
+        </scroll-view>
+      </MenuPopup>
+    </Menu>
   );
 }
 

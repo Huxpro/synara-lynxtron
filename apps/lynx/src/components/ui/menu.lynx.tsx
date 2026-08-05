@@ -245,6 +245,7 @@ export function MenuTrigger(props: {
   className?: string;
   disabled?: boolean;
   ariaLabel?: string;
+  onActivate?: () => void;
 }) {
   const menu = useContext(MenuContext);
   const refreshAnchorRect = async () => {
@@ -269,6 +270,10 @@ export function MenuTrigger(props: {
     'background only';
     if (props.disabled) return;
     void refreshAnchorRect();
+    if (props.onActivate) {
+      props.onActivate();
+      return;
+    }
     menu.toggle();
   };
   const interaction = useLynxInteractiveState({

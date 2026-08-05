@@ -5586,6 +5586,14 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   覆盖2-row theme card、条件font-smoothing card及单行time card。数字控制同时从
   170px custom line收敛到Web `sm` soft 80px right-aligned input + 8px suffix gap，
   空编辑不再瞬间写入minimum。Web/Lynx focused tests各 **1/1**，三端build通过。
+- Appearance Terminal font此前仅是plain Input，丢失Web的suggestion autocomplete、
+  clear、no-match与popup selection。现复用shared
+  `TERMINAL_FONT_FAMILY_SUGGESTIONS`和Lynx Input/Menu primitives，补224px soft
+  input、open-on-focus/input、可滚动过滤列表、真实MenuItem选择、nested clear action及
+  empty copy；free-form输入仍不受suggestion限制。MenuTrigger新增显式activation seam，
+  不复制overlay。Appearance tests **2/2**、Menu tests **8/8**，三端build通过。
+  controlled Lynx Input在testing-library中会触发未实现的`NodesRef.invoke`，因此过滤用
+  pure test、component wiring用source contract、selection/navigation由真实Menu suite覆盖。
 - 新增icon后审计Button primitive发现Lynx无content gap，且mixed children中的label
   未自动套`LxButton__text`。补Web base/default 8px、sm 6px、xs 4px gap，并显式
   包裹Theme option label，确保icon+text typography与间距都生效。focused Settings
