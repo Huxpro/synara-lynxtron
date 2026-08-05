@@ -827,8 +827,8 @@
 
 .SettingsSearchResultTitle {
   color: var(--foreground);
-  font-size: 12px;
-  line-height: 18px;
+  font-size: 13px;
+  line-height: 20px;
 }
 
 .SettingsSearchEmpty {

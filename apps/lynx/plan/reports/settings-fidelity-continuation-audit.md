@@ -50,6 +50,7 @@ complete.
 | Settings multi-result list rhythm matches Web | broad query proves 56px groups separated by shared 2px gap, 58px pitch | PASS |
 | Settings sidebar static tone hierarchy matches Web | group labels muted/58; Back row foreground/95 with full interactive tone | PASS |
 | Settings search results use the owned remaining sidebar viewport | 704px flex viewport at 1280x820; all 12 capped results fit without the stale 610px cap | PASS |
+| Settings matched-title typography matches Web nested rows | current-head `Archived threads` resolves to 13px/20px inside the unchanged 28px row | PASS |
 | Settings sidebar search matches Web intent | shared ranking/index, real Lynx input/results/selection/row targeting, canonical section icons, Web-owned horizontal gutter, Web/Lynx filtered evidence, Native default anatomy | PASS — Native filtered text entry not claimed |
 | Populated destructive/mutation paths are visually certified without fabricated data | canonical snapshot has no managed worktree/integration/archived rows; logic/RPC tests cover the product paths and direct SQLite fixtures are forbidden | NOT APPLICABLE — no safe canonical populated state |
 | Full final heavy pass | AGENTS requires `bun fmt`, `bun lint`, `bun typecheck`; current conversation does not explicitly authorize running them | **BLOCKED BY INSTRUCTION** |

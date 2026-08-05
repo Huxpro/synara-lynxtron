@@ -63,6 +63,10 @@ the scaffold's fixed 610px cap. At 1280x820 the container spans y=98..802
 (704px); all 12 capped results fit, and the final row ends at y=792 with the
 owned 10px bottom inset.
 
+Matched setting titles now reuse Web's nested thread-row 13px typography instead
+of the Lynx-only 12px value. The retained `Archived threads` title resolves to
+13px/20px inside the unchanged 28px title row.
+
 ## Identity
 
 - Lynx-for-Web bundle:
@@ -77,6 +81,7 @@ owned 10px bottom inset.
   `676c5594…`.
 - Multi-result gap bundles: Lynx-for-Web `52d51dda…`; Native `cf15659a…`.
 - Flex-viewport bundles: Lynx-for-Web `82580d4c…`; Native `46314990…`.
+- Nested-title bundles: Lynx-for-Web `ca8155ed…`; Native `8ee57a3c…`.
 - Focused search/chrome suites: 6/6.
 - Web and Native/Desktop production builds passed with only the existing CSS
   and optional `ws` native-module warnings.

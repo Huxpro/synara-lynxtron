@@ -5454,3 +5454,6 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - Search results移除无来源`max-height:610px`，改由Settings sidebar column的剩余
   flex viewport所有。1280×820实测container y=98..802共704px，12条结果全部容纳，
   last row bottom=792并保留10px底inset。focused tests **4/4**，两端build通过。
+- Matched setting title补齐Web nested thread-row的13px typography，替换Lynx旧12px；
+  runtime实测`Archived threads`为13px/20px且title row仍28px。focused tests
+  **4/4**，两端build通过。
