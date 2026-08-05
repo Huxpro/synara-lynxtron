@@ -2648,6 +2648,8 @@
                                     "children": [
                                       {
                                         "attributes": [
+                                          "idSelector",
+                                          "setting-default-provider",
                                           "class",
                                           "SharedSettingsGeneralRow"
                                         ],
@@ -2967,6 +2969,8 @@
                                       },
                                       {
                                         "attributes": [
+                                          "idSelector",
+                                          "setting-new-threads",
                                           "class",
                                           "SharedSettingsGeneralRow SharedSettingsGeneralRow--terminal"
                                         ],
@@ -3349,6 +3353,8 @@
                                     "children": [
                                       {
                                         "attributes": [
+                                          "idSelector",
+                                          "setting-project-order",
                                           "class",
                                           "SharedSettingsGeneralRow"
                                         ],
@@ -3668,6 +3674,8 @@
                                       },
                                       {
                                         "attributes": [
+                                          "idSelector",
+                                          "setting-thread-order",
                                           "class",
                                           "SharedSettingsGeneralRow SharedSettingsGeneralRow--terminal"
                                         ],
@@ -4050,6 +4058,8 @@
                                     "children": [
                                       {
                                         "attributes": [
+                                          "idSelector",
+                                          "setting-chats",
                                           "class",
                                           "SharedSettingsGeneralRow"
                                         ],
@@ -4257,6 +4267,8 @@
                                       },
                                       {
                                         "attributes": [
+                                          "idSelector",
+                                          "setting-studio",
                                           "class",
                                           "SharedSettingsGeneralRow"
                                         ],
@@ -4464,6 +4476,8 @@
                                       },
                                       {
                                         "attributes": [
+                                          "idSelector",
+                                          "setting-workspace",
                                           "class",
                                           "SharedSettingsGeneralRow SharedSettingsGeneralRow--terminal"
                                         ],
@@ -4734,6 +4748,8 @@
                                     "children": [
                                       {
                                         "attributes": [
+                                          "idSelector",
+                                          "setting-open-by-default",
                                           "class",
                                           "SharedSettingsGeneralRow"
                                         ],
@@ -4941,6 +4957,8 @@
                                       },
                                       {
                                         "attributes": [
+                                          "idSelector",
+                                          "setting-usage",
                                           "class",
                                           "SharedSettingsGeneralRow"
                                         ],
@@ -5148,6 +5166,8 @@
                                       },
                                       {
                                         "attributes": [
+                                          "idSelector",
+                                          "setting-repository",
                                           "class",
                                           "SharedSettingsGeneralRow"
                                         ],
@@ -5355,6 +5375,8 @@
                                       },
                                       {
                                         "attributes": [
+                                          "idSelector",
+                                          "setting-pull-request",
                                           "class",
                                           "SharedSettingsGeneralRow"
                                         ],
@@ -5562,6 +5584,8 @@
                                       },
                                       {
                                         "attributes": [
+                                          "idSelector",
+                                          "setting-editor",
                                           "class",
                                           "SharedSettingsGeneralRow"
                                         ],
@@ -5769,6 +5793,8 @@
                                       },
                                       {
                                         "attributes": [
+                                          "idSelector",
+                                          "setting-recap",
                                           "class",
                                           "SharedSettingsGeneralRow"
                                         ],
@@ -5976,6 +6002,8 @@
                                       },
                                       {
                                         "attributes": [
+                                          "idSelector",
+                                          "setting-pinned-messages",
                                           "class",
                                           "SharedSettingsGeneralRow"
                                         ],
@@ -6183,6 +6211,8 @@
                                       },
                                       {
                                         "attributes": [
+                                          "idSelector",
+                                          "setting-text-markers",
                                           "class",
                                           "SharedSettingsGeneralRow"
                                         ],
@@ -6390,6 +6420,8 @@
                                       },
                                       {
                                         "attributes": [
+                                          "idSelector",
+                                          "setting-project-instructions",
                                           "class",
                                           "SharedSettingsGeneralRow"
                                         ],
@@ -6597,6 +6629,8 @@
                                       },
                                       {
                                         "attributes": [
+                                          "idSelector",
+                                          "setting-notepad",
                                           "class",
                                           "SharedSettingsGeneralRow SharedSettingsGeneralRow--terminal"
                                         ],

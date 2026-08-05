@@ -5382,3 +5382,7 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - completion audit只声明Web/Lynx-for-Web filtered interaction；Native仅认证default
   search shell/input/navigation anatomy，因为驱动真实macOS text client会抢焦点。该边界
   明确记录，不把Lynx-for-Web interaction冒充Native filtered pass。
+- 搜索结果最初只切section，未定位具体row。复用Lynx `scrollIntoView` method，并让
+  Appearance/General adapters用shared `settingRowAnchorId(title)`发布与Web一致的id。
+  runtime选择`Appearance: Time format`后，`setting-time-format` 622×61 row滚到
+  y=686并清空query。focused anchor/scroll tests **3/3**。

@@ -101,6 +101,8 @@ import { SettingsIntegrationsPanel } from './SettingsIntegrationsPanel.lynx';
 import { SettingsAppSnapPanel } from './SettingsAppSnapPanel.lynx';
 import { SettingsSearchResults } from './SettingsSearchResults.lynx';
 import { rankLynxSettingsSearchEntries } from './settingsSearch.logic';
+import { settingsSearchEntryTarget } from '@synara-web/settingsSearchIndex';
+import { scrollLynxElementIntoViewById } from '../components/ui/scrollIntoView.lynx';
 
 const SETTINGS_LOCAL_SAVE_ERROR =
   'Changes could not be saved. Your current values are still shown.';
@@ -384,13 +386,22 @@ export function SettingsPage({
   >(null);
   const [section, setSection] = useState<SettingsSectionId>(initialSection);
   const [searchQuery, setSearchQuery] = useState('');
+  const [pendingSearchTarget, setPendingSearchTarget] = useState<string | null>(
+    null
+  );
   const ready = hydrationState === 'ready';
   const searchResults = rankLynxSettingsSearchEntries(searchQuery);
 
   function selectSearchResult(entry: SettingsSearchEntry) {
     setSection(entry.section);
+    setPendingSearchTarget(settingsSearchEntryTarget(entry));
     setSearchQuery('');
   }
+  useEffect(() => {
+    if (!pendingSearchTarget || !ready) return;
+    scrollLynxElementIntoViewById(pendingSearchTarget);
+    setPendingSearchTarget(null);
+  }, [pendingSearchTarget, ready, section]);
 
   useEffect(() => {
     'background only';

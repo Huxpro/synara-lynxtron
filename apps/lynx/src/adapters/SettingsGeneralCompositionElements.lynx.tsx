@@ -14,6 +14,7 @@ import {
   MenuTrigger,
 } from '../components/ui/menu';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
+import { settingRowAnchorId } from '@synara-web/settingsNavigation';
 
 export function SettingsGeneralRootElement(props: {
   readonly children?: ReactNode;
@@ -50,6 +51,7 @@ export function SettingsGeneralRowElement(props: {
   });
   return (
     <view
+      id={settingRowAnchorId(props.title)}
       className={`SharedSettingsGeneralRow${
         props.terminal ? ' SharedSettingsGeneralRow--terminal' : ''
       }`}

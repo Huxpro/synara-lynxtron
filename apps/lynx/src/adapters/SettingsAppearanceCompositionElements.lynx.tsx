@@ -10,6 +10,7 @@ import {
   MenuTrigger,
 } from '../components/ui/menu';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
+import { settingRowAnchorId } from '@synara-web/settingsNavigation';
 
 type Option = { readonly value: string; readonly label: string };
 
@@ -51,7 +52,10 @@ export function SettingsAppearanceRowElement(props: {
     onActivate: props.onReset,
   });
   return (
-    <view className="SharedSettingsAppearanceRow">
+    <view
+      id={settingRowAnchorId(props.title)}
+      className="SharedSettingsAppearanceRow"
+    >
       <view className="SharedSettingsAppearanceRowCopy">
         <view className="SharedSettingsAppearanceTitleLine">
           <text className="SharedSettingsAppearanceRowTitle">{props.title}</text>

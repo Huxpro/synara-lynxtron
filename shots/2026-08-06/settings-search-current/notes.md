@@ -11,7 +11,9 @@ default anatomy
 - The result list replaces navigation while the query is non-empty, caps at
   12 rows, and restores navigation after selection or Escape.
 - Selecting `Archived: Archived threads` navigates memory history to the real
-  Archived panel and clears the input.
+  Archived panel and clears the input. A second runtime check selected
+  `Appearance: Time format`, found the shared `setting-time-format` anchor, and
+  scrolled its 622×61 row into the viewport at y=686.
 - Five Web-only conditional controls are omitted because they have no native
   renderer: AppSnap permissions, saved model slugs, provider updates,
   installed CLIs, and release history.
@@ -33,9 +35,9 @@ events.
 
 - Web screenshot: 1280×820.
 - Lynx-for-Web screenshot: 1280×820, staged bundle
-  `7b26cbe5b7a7d2d874fca4869b21b8e82062380c9b076df075528efe75ee1c59`.
+  `1da123d855ac7b4d3ddcd025986e41c15a6a5a5258fc9b2f4cff00f1b6030c36`.
 - Native screenshot: 2560×1576, bundle
-  `616132a2468960ae98f75d9575258cb7ecdf01923c2c50fb9ddeefba707eac98`.
+  `3a1979fc8a9200a2656141a73e90a558d511bda7d04733da35ace7d0d0421362`.
 - Native default-state required roles: light root, search shell, native input,
   and navigation row; exact-client console is empty. Native filtered interaction
   is not claimed because driving the real macOS text client would take focus.
