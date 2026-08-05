@@ -17,6 +17,10 @@ const PROVIDER_SVG: Readonly<Record<string, string>> = {
   opencode: openCodeSvg,
 };
 
+export function hasLynxProviderIcon(provider: string): boolean {
+  return PROVIDER_SVG[provider] !== undefined;
+}
+
 export function OpenAIProviderIcon({
   provider = 'codex',
 }: {

@@ -162,10 +162,15 @@
 }
 
 .SharedSettingsGeneralSelectLabel {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
   color: var(--foreground);
   font-size: var(--type-settings-row-title-size);
   font-weight: 400;
   line-height: var(--type-settings-row-title-line-height);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .SharedSettingsGeneralSelectChevron {
@@ -176,4 +181,48 @@
 
 .SharedSettingsGeneralSelectPopup {
   width: 220px;
+}
+
+.SharedSettingsGeneralProviderOption {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.SharedSettingsGeneralProviderOption .OpenAIProviderIcon,
+.SharedSettingsGeneralProviderFallback {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.SharedSettingsGeneralProviderFallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background-color: var(--muted);
+}
+
+.SharedSettingsGeneralProviderFallbackText {
+  color: var(--muted-foreground);
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 9px;
+}
+
+.SharedSettingsGeneralProviderLabel {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--foreground);
+  font-size: var(--type-settings-row-title-size);
+  font-weight: 400;
+  line-height: var(--type-settings-row-title-line-height);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

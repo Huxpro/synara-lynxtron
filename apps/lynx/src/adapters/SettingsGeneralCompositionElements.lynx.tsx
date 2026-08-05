@@ -7,6 +7,10 @@ import type {
 import { ChevronDownIcon } from '../lib/icons.lynx';
 import { Button } from '../components/ui/button';
 import {
+  OpenAIProviderIcon,
+  hasLynxProviderIcon,
+} from '../components/OpenAIProviderIcon.lynx';
+import {
   Menu,
   MenuPopup,
   MenuRadioGroup,
@@ -29,7 +33,7 @@ export function SettingsGeneralSectionElement(props: {
   readonly children?: ReactNode;
 }) {
   return (
-    <view className="SharedSettingsGeneralSection">
+    <view id={props.targetId} className="SharedSettingsGeneralSection">
       <text className="SharedSettingsGeneralSectionTitle">{props.title}</text>
       <view className="SharedSettingsGeneralCard">{props.children}</view>
     </view>
@@ -104,6 +108,26 @@ export function SettingsGeneralBooleanControlElement(props: {
   );
 }
 
+function SettingsGeneralProviderOption(props: {
+  readonly provider: string;
+  readonly label: string;
+}) {
+  return (
+    <view className="SharedSettingsGeneralProviderOption">
+      {hasLynxProviderIcon(props.provider) ? (
+        <OpenAIProviderIcon provider={props.provider} />
+      ) : (
+        <view className="SharedSettingsGeneralProviderFallback">
+          <text className="SharedSettingsGeneralProviderFallbackText">
+            {props.label.slice(0, 1).toUpperCase()}
+          </text>
+        </view>
+      )}
+      <text className="SharedSettingsGeneralProviderLabel">{props.label}</text>
+    </view>
+  );
+}
+
 export function SettingsGeneralSelectControlElement(props: {
   readonly settingKey: SettingsGeneralKey;
   readonly value: string;
@@ -114,6 +138,7 @@ export function SettingsGeneralSelectControlElement(props: {
   const selected =
     props.options.find((option) => option.value === props.value) ??
     props.options[0];
+  const provider = props.settingKey === 'defaultProvider';
 
   return (
     <Menu>
@@ -124,9 +149,16 @@ export function SettingsGeneralSelectControlElement(props: {
           aria-label={props.ariaLabel}
         >
           <view className="SharedSettingsGeneralSelectContent">
-            <text className="SharedSettingsGeneralSelectLabel">
-              {selected?.label ?? props.value}
-            </text>
+            {provider && selected ? (
+              <SettingsGeneralProviderOption
+                provider={selected.value}
+                label={selected.label}
+              />
+            ) : (
+              <text className="SharedSettingsGeneralSelectLabel">
+                {selected?.label ?? props.value}
+              </text>
+            )}
             <ChevronDownIcon
               className="SharedSettingsGeneralSelectChevron"
               size={12}
@@ -143,7 +175,14 @@ export function SettingsGeneralSelectControlElement(props: {
         <MenuRadioGroup value={props.value} onValueChange={props.onChange}>
           {props.options.map((option) => (
             <MenuRadioItem key={option.value} value={option.value}>
-              {option.label}
+              {provider ? (
+                <SettingsGeneralProviderOption
+                  provider={option.value}
+                  label={option.label}
+                />
+              ) : (
+                option.label
+              )}
             </MenuRadioItem>
           ))}
         </MenuRadioGroup>

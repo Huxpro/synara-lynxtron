@@ -5635,6 +5635,12 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   classes及muted inactive text/icon tone。Theme Pack row labels同步Web foreground/90，
   用light/dark semantic token而非whole-element opacity。focused Appearance/Theme Pack
   tests **7/7**，Lynx-for-Web/Native builds通过。
+- General `SettingsGeneralSectionElement`接受`targetId`却未写入native tree，导致
+  `environment-panel`搜索/deep link target丢失；现与Web一致落在section wrapper。
+  Default provider select同时恢复provider identity：已有六种真实SVG直接复用，
+  当前asset set未覆盖的Droid/Kilo/Pi用neutral initial badge而非错误OpenAI fallback，
+  trigger/options均14px icon + 8px gap + truncating label。focused tests **7/7**，
+  Lynx-for-Web/Native builds通过。
 - 新增icon后审计Button primitive发现Lynx无content gap，且mixed children中的label
   未自动套`LxButton__text`。补Web base/default 8px、sm 6px、xs 4px gap，并显式
   包裹Theme option label，确保icon+text typography与间距都生效。focused Settings
