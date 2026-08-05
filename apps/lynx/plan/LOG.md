@@ -5476,6 +5476,9 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - Provider item盒模型继续对齐Web：由旧6×10 padding/8px radius/min-height撑高，
   改为真实10×12 padding、10px radius、14/20 label，自然形成42px row；保留
   min-height作为下限。focused tests **3/3**，两端build通过。
+- Provider card内部rhythm原本header 12px padding且list紧贴，Web SettingsRow为
+  10×12 header、status后16px list inset、10px bottom inset。调整header/list
+  owner并保留8px item gap。focused tests **6/6**，两端build通过。
 - Provider Picker reset affordance移除文本glyph `↶`，改用已有生成
   `Undo2Icon` 14px，并将interactive owner改为可承载SVG的native `view`，保留
   accessibility label与bindtap。focused tests **3/3**，两端build通过。

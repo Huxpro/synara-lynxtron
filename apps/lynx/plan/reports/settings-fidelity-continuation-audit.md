@@ -56,6 +56,7 @@ complete.
 | Provider Picker typography matches its Web owners | standard header uses SettingsRow token; provider items use text-sm 14px/20px | PASS |
 | Provider Picker supporting copy preserves Web hierarchy | description 12px/18px; status 11px/17px with existing offsets | PASS |
 | Provider Picker item anatomy matches Web | 10×12 padding, 10px radius, 14px/20px label, 42px minimum row | PASS |
+| Provider Picker card internal rhythm matches Web | 10×12 header, 16px status-to-list inset, 10px bottom inset, 8px item gap | PASS |
 | Provider Picker reset uses real icon identity | generated `Undo2Icon` replaces text glyph while preserving native action/accessibility contract | PASS |
 | Provider Picker move controls use real icons | Native keeps explicit up/down adaptation with generated chevrons; disabled/action contracts unchanged | PASS |
 | Settings switch geometry matches Web desktop primitive | General, Provider Picker, and disabled AppSnap use 32×20 track with 16px thumb | PASS |

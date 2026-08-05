@@ -109,6 +109,12 @@ describe('Lynx Settings section labels', () => {
       /\.SharedSettingsProviderPickerStatus\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*17px;/s
     );
     expect(providerStyles).toMatch(
+      /\.SharedSettingsProviderPickerHeader\s*\{[^}]*padding:\s*10px 12px;/s
+    );
+    expect(providerStyles).toMatch(
+      /\.SharedSettingsProviderPickerList\s*\{[^}]*padding:\s*16px 12px 10px;[^}]*gap:\s*8px;/s
+    );
+    expect(providerStyles).toMatch(
       /\.SharedSettingsProviderPickerItem\s*\{[^}]*min-height:\s*42px;[^}]*padding:\s*10px 12px;[^}]*border-radius:\s*10px;/s
     );
     const providerSource = readFileSync(

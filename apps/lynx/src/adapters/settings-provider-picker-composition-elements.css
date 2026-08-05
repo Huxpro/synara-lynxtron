@@ -30,7 +30,7 @@
 
 .SharedSettingsProviderPickerHeader {
   display: flex;
-  padding: 12px;
+  padding: 10px 12px;
 }
 
 .SharedSettingsProviderPickerHeaderCopy {
@@ -83,7 +83,7 @@
 }
 
 .SharedSettingsProviderPickerList {
-  padding: 0 12px 12px;
+  padding: 16px 12px 10px;
   gap: 8px;
 }
 
