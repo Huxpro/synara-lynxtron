@@ -68,4 +68,3 @@ Native interaction result.
 - `base/`: base route, DOM, paint, screenshot, identity, and console.
 - `pressed/`: retained `ui-pressed` state and semantic fill.
 - `focus/`: retained `ui-focus` state and inset focus ring.
-
