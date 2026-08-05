@@ -7,6 +7,7 @@ import {
   ThemePackCodeThemeControlElement,
   ThemePackContrastControlElement,
   mixThemeColors,
+  readableThemeColor,
   resolveThemePackContrastKeyValue,
   resolveThemePackContrastPointerValue,
 } from './ThemePackEditorCompositionElements.lynx';
@@ -95,6 +96,27 @@ describe('ThemePack boolean interaction contract', () => {
     );
     expect(styles).toMatch(
       /\.SharedThemePackFontInput--mono \.LxInput\s*\{[^}]*font-family:\s*var\(--font-chat-code-family\);/s
+    );
+    expect(source).toContain('className="SharedThemePackColorControl"');
+    expect(source).toContain('className="SharedThemePackColorIndicator"');
+    expect(source).toContain('className="SharedThemePackColorInput"');
+    expect(source).toContain(
+      'accessibility-label={`${props.ariaLabel} hex value`}'
+    );
+    expect(styles).toMatch(
+      /\.SharedThemePackColorControl\s*\{[^}]*width:\s*176px;[^}]*height:\s*32px;[^}]*border-radius:\s*10px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedThemePackColorIndicator\s*\{[^}]*left:\s*8px;[^}]*top:\s*5px;[^}]*width:\s*20px;[^}]*height:\s*20px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedThemePackColorInput \.LxInput\s*\{[^}]*font-family:\s*var\(--font-chat-code-family\);[^}]*font-size:\s*12px;/s
+    );
+    expect(source).toContain('value={props.color.toUpperCase()}');
+    expect(readableThemeColor('#ffffff')).toBe('#1a1c1f');
+    expect(readableThemeColor('#111111')).toBe('#ffffff');
+    expect(readableThemeColor('#ffffff', 0.32)).toBe(
+      'rgba(26, 28, 31, 0.32)'
     );
   });
 

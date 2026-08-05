@@ -37,6 +37,21 @@ export function mixThemeColors(
   return `rgb(${mix(1)}, ${mix(3)}, ${mix(5)})`;
 }
 
+export function readableThemeColor(hex: string, alpha = 1): string {
+  if (!HEX_COLOR_RE.test(hex)) {
+    return alpha === 1 ? '#ffffff' : `rgba(255, 255, 255, ${alpha})`;
+  }
+  const channel = (offset: number) =>
+    Number.parseInt(hex.slice(offset, offset + 2), 16);
+  const luminance =
+    (0.299 * channel(1) + 0.587 * channel(3) + 0.114 * channel(5)) /
+    255;
+  if (luminance > 0.6) {
+    return alpha === 1 ? '#1a1c1f' : `rgba(26, 28, 31, ${alpha})`;
+  }
+  return alpha === 1 ? '#ffffff' : `rgba(255, 255, 255, ${alpha})`;
+}
+
 function CodeThemeOption(props: {
   readonly label: string;
   readonly theme: ChromeTheme;
@@ -239,6 +254,9 @@ export function ThemePackColorControlElement(props: {
   readonly onChange: (next: string) => void;
   readonly onReset?: (() => void) | undefined;
 }) {
+  const previewColor = HEX_COLOR_RE.test(props.color)
+    ? props.color.toLowerCase()
+    : '#000000';
   return (
     <view className="SharedThemePackColorLine">
       {props.onReset ? (
@@ -247,21 +265,34 @@ export function ThemePackColorControlElement(props: {
         </Button>
       ) : null}
       <view
-        className="SharedThemePackSwatch"
-        style={{ backgroundColor: props.color }}
-      />
-      <Input
-        value={props.color}
-        onChange={(event) => {
-          const next = event.target.value.trim().toLowerCase();
-          if (
-            next !== props.color.toLowerCase() &&
-            HEX_COLOR_RE.test(next)
-          ) {
-            props.onChange(next);
-          }
+        className="SharedThemePackColorControl"
+        style={{
+          backgroundColor: previewColor,
+          borderColor: readableThemeColor(previewColor, 0.32),
         }}
-      />
+      >
+        <view
+          className="SharedThemePackColorIndicator"
+          style={{ borderColor: readableThemeColor(previewColor, 0.32) }}
+          aria-hidden="true"
+        />
+        <Input
+          unstyled
+          className="SharedThemePackColorInput"
+          value={props.color.toUpperCase()}
+          accessibility-label={`${props.ariaLabel} hex value`}
+          onChange={(event) => {
+            const next = event.target.value.trim().toLowerCase();
+            if (
+              next !== props.color.toLowerCase() &&
+              HEX_COLOR_RE.test(next)
+            ) {
+              props.onChange(next);
+            }
+          }}
+          style={{ color: readableThemeColor(previewColor) }}
+        />
+      </view>
     </view>
   );
 }

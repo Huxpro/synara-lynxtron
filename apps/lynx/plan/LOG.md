@@ -5619,6 +5619,13 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   仍是28px standard button。改为显式owners：Reset 20px高、2×6 padding、11px muted；
   Import clipboard/Copy 24px高、4×8 padding、12px muted。focused tests **5/5**，
   Lynx-for-Web/Native builds通过；clipboard adaptation文案与真实行为保持一致。
+- Theme Pack color control此前是分离的30px swatch + 190px default input，视觉上与Web
+  176×32 filled trigger完全不同。现合并为176×32、10px radius的真实color-filled
+  direct-edit control，内置20px indicator、38px text inset、uppercase controlled hex、
+  chat-code 12px text，并按luminance计算可读text与32% ring；保留真实hex validation
+  与shared reset icon，不伪造当前host不存在的native color picker。focused tests
+  **5/5**，两端build通过。首次build捕获unsupported `text-transform`，改为value层
+  uppercasing后复跑仅剩既有warnings。
 - 新增icon后审计Button primitive发现Lynx无content gap，且mixed children中的label
   未自动套`LxButton__text`。补Web base/default 8px、sm 6px、xs 4px gap，并显式
   包裹Theme option label，确保icon+text typography与间距都生效。focused Settings
