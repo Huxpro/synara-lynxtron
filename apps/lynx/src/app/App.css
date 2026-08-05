@@ -32,10 +32,14 @@
 
 .SliceRoot--theme-light {
   --settings-search-surface: rgba(13, 13, 13, 0.02);
+  --settings-switch-border: rgba(13, 13, 13, 0.14);
+  --settings-switch-off: #cfcfcf;
 }
 
 .SliceRoot--theme-dark {
   --settings-search-surface: rgba(252, 252, 252, 0.02);
+  --settings-switch-border: rgba(252, 252, 252, 0.14);
+  --settings-switch-off: #454545;
 }
 
 /*

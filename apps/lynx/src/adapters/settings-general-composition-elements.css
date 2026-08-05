@@ -100,12 +100,14 @@
 .SharedSettingsGeneralSwitch {
   width: 32px;
   height: 20px;
-  padding: 2px;
+  padding: 1px;
+  border: 1px solid var(--settings-switch-border);
   border-radius: 10px;
-  background-color: var(--muted);
+  background-color: var(--settings-switch-off);
 }
 
 .SharedSettingsGeneralSwitch--on {
+  border-color: var(--color-text-accent);
   background-color: var(--color-text-accent);
 }
 
@@ -125,7 +127,7 @@
   width: 16px;
   height: 16px;
   border-radius: 8px;
-  background-color: var(--background);
+  background-color: #ffffff;
   transform: translateX(0);
 }
 

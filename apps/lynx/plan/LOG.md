@@ -5486,3 +5486,7 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   32×18 track/14px thumb，而Web desktop standard为32×20/16px。三者统一为20px
   track、16px thumb、10/8px radii与12px on-state travel；AppSnap保持disabled
   opacity。focused tests **6/6**，两端build通过。
+- Switch paint继续对齐Web：补1px border+1px inner padding，off track使用主题安全
+  20% foreground mix（light `#cfcfcf`、dark `#454545`）、border 14%，on-state
+  border/fill均accent，thumb恒白。General/Provider/AppSnap三owner统一消费语义
+  tokens。focused tests **6/6**，两端build通过。

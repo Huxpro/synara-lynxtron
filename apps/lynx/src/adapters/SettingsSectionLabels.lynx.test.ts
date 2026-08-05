@@ -85,5 +85,11 @@ describe('Lynx Settings section labels', () => {
     expect(providerStyles).toMatch(
       /\.SharedSettingsProviderPickerSwitchThumb\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;[^}]*border-radius:\s*8px;/s
     );
+    expect(providerStyles).toMatch(
+      /\.SharedSettingsProviderPickerSwitch\s*\{[^}]*padding:\s*1px;[^}]*border:\s*1px solid var\(--settings-switch-border\);[^}]*background-color:\s*var\(--settings-switch-off\);/s
+    );
+    expect(providerStyles).toMatch(
+      /\.SharedSettingsProviderPickerSwitchThumb\s*\{[^}]*background-color:\s*#ffffff;/s
+    );
   });
 });
