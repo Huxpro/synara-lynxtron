@@ -12,11 +12,18 @@ function switchElement(): Element {
 
 describe('ThemePack boolean interaction contract', () => {
   it('matches the Web two-row header and row typography', () => {
+    const source = readFileSync(
+      new URL('./ThemePackEditorCompositionElements.lynx.tsx', import.meta.url),
+      'utf8'
+    );
     const styles = readFileSync(
       new URL('./theme-pack-editor-composition-elements.css', import.meta.url),
       'utf8'
     );
 
+    expect(styles).toMatch(
+      /\.SharedThemePackRoot\s*\{[^}]*border-radius:\s*10px;/s
+    );
     expect(styles).toMatch(
       /\.SharedThemePackHeader\s*\{[^}]*height:\s*84px;[^}]*flex-wrap:\s*wrap;[^}]*padding:\s*12px 16px;/s
     );
@@ -31,6 +38,18 @@ describe('ThemePack boolean interaction contract', () => {
     );
     expect(styles).toMatch(
       /\.SharedThemePackRowLabel\s*\{[^}]*font-size:\s*14px;[^}]*font-weight:\s*400;[^}]*line-height:\s*20px;/s
+    );
+    expect(source).toContain("import { SettingsResetIcon } from './SettingsResetIcon.lynx';");
+    expect(source).toContain('<SettingsResetIcon />');
+    expect(source).not.toContain('↶');
+    expect(styles).toMatch(
+      /\.SharedThemePackSwitch\s*\{[^}]*width:\s*32px;[^}]*height:\s*20px;[^}]*padding:\s*1px;[^}]*border:\s*1px solid var\(--settings-switch-border\);[^}]*background-color:\s*var\(--settings-switch-off\);/s
+    );
+    expect(styles).toMatch(
+      /\.SharedThemePackSwitchThumb\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;[^}]*background-color:\s*#ffffff;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedThemePackSwitch--on \.SharedThemePackSwitchThumb\s*\{[^}]*transform:\s*translateX\(12px\);/s
     );
   });
 

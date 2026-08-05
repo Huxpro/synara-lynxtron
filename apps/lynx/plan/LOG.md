@@ -5594,6 +5594,10 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   不复制overlay。Appearance tests **2/2**、Menu tests **8/8**，三端build通过。
   controlled Lynx Input在testing-library中会触发未实现的`NodesRef.invoke`，因此过滤用
   pure test、component wiring用source contract、selection/navigation由真实Menu suite覆盖。
+- Theme Pack nested cards仍保留12px radius、32×18/14px旧switch与color reset文本
+  `↶`，与已统一的Settings contracts分叉。现card恢复Web rounded-lg 10px，switch统一
+  32×20/16px、semantic off/border/accent/white-thumb paint及12px travel，per-color reset
+  复用`SettingsResetIcon`。focused Settings/Theme Pack tests **8/8**，三端build通过。
 - 新增icon后审计Button primitive发现Lynx无content gap，且mixed children中的label
   未自动套`LxButton__text`。补Web base/default 8px、sm 6px、xs 4px gap，并显式
   包裹Theme option label，确保icon+text typography与间距都生效。focused Settings

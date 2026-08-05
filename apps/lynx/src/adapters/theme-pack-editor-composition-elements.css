@@ -4,7 +4,7 @@
   border-width: 1px;
   border-style: solid;
   border-color: var(--border);
-  border-radius: 12px;
+  border-radius: 10px;
   overflow: hidden;
 }
 
@@ -108,18 +108,20 @@
 
 .SharedThemePackSwitch {
   width: 32px;
-  height: 18px;
-  padding: 2px;
-  border-radius: 9px;
-  background-color: var(--muted);
+  height: 20px;
+  padding: 1px;
+  border: 1px solid var(--settings-switch-border);
+  border-radius: 10px;
+  background-color: var(--settings-switch-off);
 }
 
 .SharedThemePackSwitch--on {
+  border-color: var(--color-text-accent);
   background-color: var(--color-text-accent);
 }
 
 .SharedThemePackSwitch.ui-hover {
-  opacity: 0.88;
+  box-shadow: 0 0 0 1px var(--border);
 }
 
 .SharedThemePackSwitch.ui-focus {
@@ -127,18 +129,18 @@
 }
 
 .SharedThemePackSwitch.ui-pressed {
-  opacity: 0.64;
+  opacity: 0.8;
 }
 
 .SharedThemePackSwitchThumb {
-  width: 14px;
-  height: 14px;
-  border-radius: 7px;
-  background-color: var(--background);
+  width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  background-color: #ffffff;
 }
 
 .SharedThemePackSwitch--on .SharedThemePackSwitchThumb {
-  transform: translateX(14px);
+  transform: translateX(12px);
 }
 
 .SharedThemePackContrast {

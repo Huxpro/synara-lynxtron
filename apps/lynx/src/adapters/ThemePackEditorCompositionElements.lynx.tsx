@@ -9,6 +9,7 @@ import {
   MenuRadioItem,
   MenuTrigger,
 } from '../components/ui/menu';
+import { SettingsResetIcon } from './SettingsResetIcon.lynx';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 import type {
   ChromeTheme,
@@ -164,7 +165,7 @@ export function ThemePackColorControlElement(props: {
     <view className="SharedThemePackColorLine">
       {props.onReset ? (
         <Button size="icon-sm" variant="ghost" onClick={props.onReset}>
-          ↶
+          <SettingsResetIcon />
         </Button>
       ) : null}
       <view
