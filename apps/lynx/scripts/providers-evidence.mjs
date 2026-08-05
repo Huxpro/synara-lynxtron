@@ -25,6 +25,23 @@ function valueAt(input, dottedPath) {
   return dottedPath.split(".").reduce((value, key) => value?.[key], input);
 }
 
+function nodeAttributes(node) {
+  const attributes = {};
+  for (let index = 0; index < (node?.attributes ?? []).length; index += 2) {
+    attributes[node.attributes[index]] = node.attributes[index + 1] ?? "";
+  }
+  return attributes;
+}
+
+function flattenNodes(root, output = []) {
+  if (!root) return output;
+  output.push({ nodeName: root.nodeName, attributes: nodeAttributes(root) });
+  for (const child of root.children ?? []) flattenNodes(child, output);
+  for (const shadowRoot of root.shadowRoots ?? []) flattenNodes(shadowRoot, output);
+  if (root.contentDocument) flattenNodes(root.contentDocument, output);
+  return output;
+}
+
 export function pngDimensions(filePath) {
   const buffer = fs.readFileSync(filePath);
   if (
@@ -81,7 +98,7 @@ function validateBrowserState(errors, manifest, root, state) {
   validateImage(errors, root, state);
   const geometryPath = path.resolve(root, state.geometry);
   const errorsPath = path.resolve(root, state.errors);
-  const consolePath = path.resolve(root, state.console);
+  const consolePath = state.console ? path.resolve(root, state.console) : null;
   if (!fs.existsSync(geometryPath)) {
     errors.push(`${state.id}: missing geometry`);
     return;
@@ -95,10 +112,12 @@ function validateBrowserState(errors, manifest, root, state) {
   if (!fs.existsSync(errorsPath) || fs.statSync(errorsPath).size !== 0) {
     errors.push(`${state.id}: browser errors are not empty`);
   }
-  if (!fs.existsSync(consolePath)) {
-    errors.push(`${state.id}: missing console`);
-  } else if (consoleHasRuntimeError(fs.readFileSync(consolePath, "utf8"))) {
-    errors.push(`${state.id}: console contains runtime errors`);
+  if (consolePath) {
+    if (!fs.existsSync(consolePath)) {
+      errors.push(`${state.id}: missing console`);
+    } else if (consoleHasRuntimeError(fs.readFileSync(consolePath, "utf8"))) {
+      errors.push(`${state.id}: console contains runtime errors`);
+    }
   }
   if (state.client === "lynx" && manifest.builds.lynxWeb !== state.buildSha256) {
     errors.push(`${state.id}: Lynx-for-Web build mismatch`);
@@ -110,6 +129,7 @@ function validateNativeState(errors, manifest, root, state) {
   const capturePath = path.join(directory, "capture.json");
   const geometryPath = path.join(directory, "geometry.json");
   const stylesPath = path.join(directory, "styles.json");
+  const domPath = path.join(directory, "dom.json");
   const consolePath = path.join(directory, "console.txt");
   if (!fs.existsSync(capturePath) || !fs.existsSync(geometryPath)) {
     errors.push(`${state.id}: missing Native capture or geometry`);
@@ -161,6 +181,23 @@ function validateNativeState(errors, manifest, root, state) {
       }
     }
   }
+  if (state.expectDom) {
+    if (!fs.existsSync(domPath)) {
+      errors.push(`${state.id}: missing Native DOM`);
+    } else {
+      const nodes = flattenNodes(readJson(domPath).root);
+      for (const expected of state.expectDom) {
+        const match = nodes.some(
+          (node) =>
+            (!expected.nodeName || node.nodeName === expected.nodeName) &&
+            Object.entries(expected.attributes ?? {}).every(
+              ([name, value]) => node.attributes[name] === value,
+            ),
+        );
+        if (!match) errors.push(`${state.id}: Native DOM expectation missing`);
+      }
+    }
+  }
 }
 
 function validateStaticImageState(errors, manifest, root, state) {
@@ -182,8 +219,8 @@ export function validateProvidersEvidenceManifest(manifest, root) {
   for (const [name, value] of Object.entries(manifest.builds ?? {})) {
     validateHash(errors, `builds.${name}`, value);
   }
-  if (!Array.isArray(manifest.states) || manifest.states.length !== 13) {
-    errors.push("manifest must declare exactly 13 states");
+  if (!Array.isArray(manifest.states) || manifest.states.length !== 16) {
+    errors.push("manifest must declare exactly 16 states");
   }
   for (const state of manifest.states ?? []) {
     if (seen.has(state.id)) errors.push(`${state.id}: duplicate state id`);

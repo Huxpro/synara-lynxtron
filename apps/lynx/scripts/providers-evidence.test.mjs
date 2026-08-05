@@ -26,7 +26,7 @@ test("reads retained Providers PNG dimensions", () => {
 test("the retained Providers manifest is complete", () => {
   const result = validateProvidersEvidence(MANIFEST_PATH);
   assert.deepEqual(result.errors, []);
-  assert.equal(result.stateCount, 13);
+  assert.equal(result.stateCount, 16);
 });
 
 test("rejects Native build and interaction paint drift", () => {
@@ -38,6 +38,8 @@ test("rejects Native build and interaction paint drift", () => {
   mutated.states.find((state) => state.id === "settings-row-native-pressed").expectStyles[
     "roles.pressed.paint.opacity"
   ] = "0.5";
+  mutated.states.find((state) => state.id === "providers-opencode-native-open").expectDom[2]
+    .attributes.readonly = "true";
   mutated.builds.nativeOnline = "0".repeat(64);
   const result = validateProvidersEvidenceManifest(
     mutated,
@@ -49,5 +51,8 @@ test("rejects Native build and interaction paint drift", () => {
     result.errors.includes(
       "settings-row-native-pressed: styles.roles.pressed.paint.opacity mismatch",
     ),
+  );
+  assert(
+    result.errors.includes("providers-opencode-native-open: Native DOM expectation missing"),
   );
 });

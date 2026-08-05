@@ -109,7 +109,8 @@ complete.
 | Models includes complete Git-writing and custom-model workflows | Git writing row is terminal with exact 20px title line and no trailing divider; custom models use shared validation, canonical server settings, eight-provider editor, Add/Enter/remove/reset, immediate picker refresh, and exact Web geometry | PASS — current-head visual and real add-picker-remove proof |
 | Providers includes complete update and provider-tools workflows | `SettingsProviderToolsPanel.lynx.tsx`; real three-provider update list, nine CLI disclosures, docs, all Web override fields, canonical update/edit/reset RPCs, exact 44px tool rows, real edit-reset cleanup, and exact-owned Native closed/tools/open/focus evidence in `shots/2026-08-06/providers-native-current/` | PASS — current-head fast-loop, real mutation, and Native interaction proof; Native text entry/IME not claimed |
 | Providers current workflow covers dark / 1440 across all clients | `shots/2026-08-06/providers-dark-1440/`; Web/Lynx-for-Web exact 1440x900, Native exact 2880x1736, same real three-update snapshot, dark root, nine tool rows, empty page-error and Native console gates | PASS — current-head three-client matrix |
-| Providers current-head evidence is machine-verified | `providers-evidence.mjs` + `providers-evidence-manifest.json` validate 13 retained states across light fast-loop, Native workflows, dark/1440 matrix, and navigation interaction paint; verifier locks PNG hashes/dimensions, builds, snapshot, PID-owned session URL, consoles, geometry, and pressed/focus styles | PASS — verifier 13/13; regression tests 3/3 |
+| Providers current-head evidence is machine-verified | `providers-evidence.mjs` + `providers-evidence-manifest.json` validate 16 retained states across light fast-loop, Native workflows, dark/1440 matrix, OpenCode-specific editors, and navigation interaction paint; verifier locks PNG hashes/dimensions, builds, snapshot, PID-owned session URL, consoles, geometry, Native input/switch DOM, and pressed/focus styles | PASS — verifier 16/16; regression tests 3/3 |
+| OpenCode-specific provider overrides are rendered on all clients | Web/Lynx-for-Web/Native evidence in `shots/2026-08-06/providers-opencode-current/` covers binary path, server URL, password, and WebSocket switch without mutating values; Native locks text/text/password types, `readonly=false`, exact switch accessibility state, and empty console | PASS — provider-specific branch, no mutation |
 | Shared Button icon-label spacing matches Web | default/sm/xs gaps are 8/6/4px; mixed Appearance labels retain `LxButton__text` styling | PASS |
 | Settings large card radius resolves at runtime | the Lynx root defines shared `--radius-lg: 10px`; AppSnap, Skills, and Worktrees representative surfaces compute to 10px, while Advanced/Integrations consumers are statically covered | PASS — current-head runtime and consumer audit |
 | Settings sidebar search matches Web intent | shared ranking/index, real Lynx input/results/selection/row targeting, canonical section icons, Web-owned horizontal gutter, Web/Lynx filtered evidence, Native default anatomy | PASS — Native filtered text entry not claimed |
@@ -327,10 +328,16 @@ The retained replacement cells:
   Desktop DevTool `mouseMoved` did not emit `mouseenter`, so hover remains
   CSS/source-covered rather than falsely Native-certified.
 - Providers evidence now has a dedicated strict manifest instead of relying on
-  the older 16-state Settings continuation manifest. The verifier covers 13
+  the older 16-state Settings continuation manifest. The verifier covers 16
   retained states and rejects image/hash/dimension, bundle/snapshot/session,
-  console, geometry, disclosure, and pressed/focus paint drift. Current
-  verifier run passes 13/13; regression tests pass 3/3.
+  console, geometry, disclosure, Native input/switch DOM, and pressed/focus
+  paint drift. Current verifier run passes 16/16; regression tests pass 3/3.
+- OpenCode-specific three-client proof closes the branch that Codex cannot
+  cover. Lynx-for-Web opens a `596x429` row with `596x385` content, three
+  `572x28` fields, and a `32x20` off switch. Native exposes the same four labels,
+  text/text/password INPUT types with `readonly=false`, a `572x76` boolean
+  shell, exact `aria-checked=false` / `Off` switch semantics, and zero console
+  errors. No value was changed.
 - Settings focused continuation: 14 files, 50/50 tests.
 - AppSnap final focused check: 1 file, 2/2 tests.
 - Canonical taxonomy/explicit-owner gate: 1 file, 11/11 tests.

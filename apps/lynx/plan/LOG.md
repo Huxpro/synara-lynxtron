@@ -5875,8 +5875,16 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   因此hover继续只计CSS/source contract，不伪称Native通过。证据在
   `shots/2026-08-06/settings-row-native-interaction/`。
 - 新增Providers专用strict evidence manifest/verifier，避免旧16-state Settings
-  manifest代理更新后的workflow。当前13 states覆盖light fast-loop、Native
-  closed/tools/open/focus、dark/1440三端与navigation base/pressed/focus；逐项锁
+  manifest代理更新后的workflow。当前16 states覆盖light fast-loop、Native
+  closed/tools/open/focus、dark/1440三端、OpenCode特有editor与navigation
+  base/pressed/focus；逐项锁
   PNG hash/dimensions、Lynx/Native builds、snapshot、PID-owned session URL、console、
-  geometry、disclosure motion与pressed/focus paint。verifier **13/13**，回归测试
+  geometry、disclosure motion、Native input/switch DOM与pressed/focus paint。verifier **16/16**，回归测试
   **3/3**，可主动拒绝bundle/geometry/interaction paint漂移。
+- OpenCode特有provider-tools分支补三端实机证据，未修改任何值。Web/Lynx均显示
+  binary path、server URL、server password、OpenAI response WebSockets四项；Lynx
+  open row/content为`596x429`/`596x385`，3个input为`572x28`、switch `32x20`。
+  Native disclosure `596x385`、boolean shell `572x76`；三个INPUT为text/text/password、
+  `readonly=false`并带focus/selection/blur handlers，switch精确发布
+  `aria-checked=false`与`Off`。三端error/Native console为空，settings/SQLite未变；
+  证据在`shots/2026-08-06/providers-opencode-current/`。

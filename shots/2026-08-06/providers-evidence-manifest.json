@@ -208,6 +208,102 @@
         "roles.focused.paint.opacity": "0.95",
         "roles.focused.paint.shadow": "inset 0 0 0 1px #0169cc"
       }
+    },
+    {
+      "id": "providers-opencode-web",
+      "kind": "browser",
+      "client": "web",
+      "image": "providers-opencode-current/web/raw.png",
+      "imageSha256": "c69a55f2e98ba0db1d174a21ac7950786ae85f35283bbd001f8cf15543083407",
+      "dimensions": { "width": 1280, "height": 820 },
+      "geometry": "providers-opencode-current/web/geometry.json",
+      "errors": "providers-opencode-current/web/errors.txt",
+      "expect": {
+        "found.0.present": true,
+        "found.1.present": true,
+        "found.2.present": true,
+        "found.3.present": true,
+        "inputs.0.type": "text",
+        "inputs.1.type": "text",
+        "inputs.2.type": "password"
+      }
+    },
+    {
+      "id": "providers-opencode-lynx",
+      "kind": "browser",
+      "client": "lynx",
+      "buildSha256": "52b92766573497209b59db06104c536f23ceb8a177bf09a6bcaca942094a7c5b",
+      "image": "providers-opencode-current/lynx/raw.png",
+      "imageSha256": "8fd2d928ee55acc638a5aecb1362bf586587d429f6140ad81ac998c7c0927252",
+      "dimensions": { "width": 1280, "height": 820 },
+      "geometry": "providers-opencode-current/lynx/geometry.json",
+      "errors": "providers-opencode-current/lynx/errors.txt",
+      "console": "providers-opencode-current/lynx/console.txt",
+      "expect": {
+        "row.width": 596,
+        "row.height": 429,
+        "content.width": 596,
+        "content.height": 385,
+        "labels.0": "OpenCode binary path",
+        "labels.1": "OpenCode server URL",
+        "labels.2": "OpenCode server password",
+        "labels.3": "OpenAI response WebSockets",
+        "inputs.0.width": 572,
+        "inputs.0.height": 28,
+        "inputs.2.width": 572,
+        "switchRect.width": 32,
+        "switchRect.height": 20
+      }
+    },
+    {
+      "id": "providers-opencode-native-open",
+      "kind": "native",
+      "captureStateId": "providers-opencode-native-open",
+      "directory": "providers-opencode-current/native",
+      "imageSha256": "26cf523f6eaebbbc581443d5606a91f54368b48996f561406f564dae743c8079",
+      "dimensions": { "width": 2560, "height": 1576 },
+      "expect": {
+        "roles.disclosure.box.width": 596,
+        "roles.disclosure.box.height": 385,
+        "roles.field.box.width": 572,
+        "roles.field.box.height": 28,
+        "roles.boolean.box.width": 572,
+        "roles.boolean.box.height": 76
+      },
+      "expectDom": [
+        {
+          "nodeName": "INPUT",
+          "attributes": {
+            "placeholder": "OpenCode binary path",
+            "type": "text",
+            "readonly": "false"
+          }
+        },
+        {
+          "nodeName": "INPUT",
+          "attributes": {
+            "placeholder": "http://127.0.0.1:4096",
+            "type": "text",
+            "readonly": "false"
+          }
+        },
+        {
+          "nodeName": "INPUT",
+          "attributes": {
+            "placeholder": "OpenCode server password",
+            "type": "password",
+            "readonly": "false"
+          }
+        },
+        {
+          "nodeName": "VIEW",
+          "attributes": {
+            "accessibility-label": "OpenAI response WebSockets",
+            "aria-checked": "false",
+            "accessibility-value": "Off"
+          }
+        }
+      ]
     }
   ]
 }
