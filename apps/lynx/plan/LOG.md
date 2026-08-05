@@ -5301,3 +5301,18 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   exact-owned Native PID-derived `8903/session 1`、7 roles、console 0，owned KV
   byte-exact restored；证据位于
   `shots/2026-08-05/settings-appsnap-current/`。
+
+## 2026-08-05 — Settings continuation completion audit
+
+- Web canonical taxonomy 15项与Lynx `availableSections`/render owner逐项核对，全部可达；
+  no section silently falls through toProviders。
+- continuation focused suites **14 files / 50 tests**；AppSnap final **2/2**。
+  reuse baseline因新增graph stale后重新生成，strict pass；Settings reuse gate
+  52.89%→53.11%。style strict仍98.07%。
+- audit拒绝以旧P10 44-state manifest代理current-head新增Settings pages。当前8个
+  continuation pages只有light/1280三端证据，dark/1440仍MISSING。
+- AGENTS要求完成前`bun fmt/lint/typecheck`通过，但同时禁止未获当前对话明确授权时
+  自动运行；因此heavy pass标记BLOCKED BY INSTRUCTION，不伪称green。
+- 详细prompt→artifact checklist位于
+  `apps/lynx/plan/reports/settings-fidelity-continuation-audit.md`；active goal保持
+  incomplete，下一步补dark/1440 matrix并等待heavy-check授权。

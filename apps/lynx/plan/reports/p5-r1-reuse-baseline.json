@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-04T05:38:32.860Z",
+  "generatedAt": "2026-08-04T23:59:12.139Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -21,7 +21,7 @@
     "entries": [
       "src/app/index.tsx"
     ],
-    "modules": 499,
+    "modules": 515,
     "externalImports": [
       "@base-ui/react/autocomplete",
       "@base-ui/react/collapsible",
@@ -243,11 +243,11 @@
         "loc": 79092
       },
       "currentReuse": {
-        "modules": 236,
-        "loc": 44404,
-        "modulePercent": 60.2,
-        "locPercent": 56.14,
-        "gatePercent": 56.14
+        "modules": 237,
+        "loc": 44537,
+        "modulePercent": 60.46,
+        "locPercent": 56.31,
+        "gatePercent": 56.31
       },
       "modules": [
         {
@@ -3681,7 +3681,7 @@
           "loc": 133,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -5157,11 +5157,11 @@
         "loc": 68602
       },
       "currentReuse": {
-        "modules": 233,
-        "loc": 43836,
-        "modulePercent": 68.73,
-        "locPercent": 63.9,
-        "gatePercent": 63.9
+        "modules": 234,
+        "loc": 43969,
+        "modulePercent": 69.03,
+        "locPercent": 64.09,
+        "gatePercent": 64.09
       },
       "modules": [
         {
@@ -8204,7 +8204,7 @@
           "loc": 133,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -9230,8 +9230,8 @@
         "src/components/composer/Composer.tsx"
       ],
       "graph": {
-        "modules": 757,
-        "loc": 152080,
+        "modules": 758,
+        "loc": 152101,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -9358,8 +9358,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 654,
-          "loc": 135584
+          "modules": 655,
+          "loc": 135605
         },
         "PATCHED": {
           "modules": 1,
@@ -9375,15 +9375,15 @@
         }
       },
       "eligible": {
-        "modules": 729,
-        "loc": 143935
+        "modules": 730,
+        "loc": 143956
       },
       "currentReuse": {
-        "modules": 349,
-        "loc": 56764,
-        "modulePercent": 47.87,
-        "locPercent": 39.44,
-        "gatePercent": 39.44
+        "modules": 351,
+        "loc": 56929,
+        "modulePercent": 48.08,
+        "locPercent": 39.55,
+        "gatePercent": 39.55
       },
       "modules": [
         {
@@ -11586,13 +11586,22 @@
           ]
         },
         {
+          "path": "apps/web/src/components/chat/ProviderHealthBanner.logic.ts",
+          "loc": 32,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
+        },
+        {
           "path": "apps/web/src/components/chat/ProviderHealthBanner.tsx",
-          "loc": 58,
+          "loc": 55,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/components/chat/ChatColumnBannerFrame.tsx",
+            "apps/web/src/components/chat/ProviderHealthBanner.logic.ts",
             "apps/web/src/components/ui/alert.tsx",
             "apps/web/src/components/ui/icon-button.tsx",
             "apps/web/src/components/ui/notificationSurface.ts",
@@ -12284,7 +12293,7 @@
         },
         {
           "path": "apps/web/src/components/ChatView.tsx",
-          "loc": 10700,
+          "loc": 10692,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -12335,6 +12344,7 @@
             "apps/web/src/components/chat/MessagesTimeline.logic.ts",
             "apps/web/src/components/chat/MessagesTimeline.tsx",
             "apps/web/src/components/chat/ProjectPicker.tsx",
+            "apps/web/src/components/chat/ProviderHealthBanner.logic.ts",
             "apps/web/src/components/chat/ProviderHealthBanner.tsx",
             "apps/web/src/components/chat/ProviderModelPicker.tsx",
             "apps/web/src/components/chat/RateLimitBanner.tsx",
@@ -17419,7 +17429,7 @@
           "loc": 133,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -19225,11 +19235,11 @@
         "loc": 89321
       },
       "currentReuse": {
-        "modules": 264,
-        "loc": 47245,
-        "modulePercent": 56.9,
-        "locPercent": 52.89,
-        "gatePercent": 52.89
+        "modules": 266,
+        "loc": 47437,
+        "modulePercent": 57.33,
+        "locPercent": 53.11,
+        "gatePercent": 53.11
       },
       "modules": [
         {
@@ -19813,7 +19823,7 @@
           "loc": 59,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -23556,7 +23566,7 @@
           "loc": 133,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -25121,11 +25131,11 @@
         "loc": 95197
       },
       "currentReuse": {
-        "modules": 286,
-        "loc": 50629,
-        "modulePercent": 57.66,
-        "locPercent": 53.18,
-        "gatePercent": 53.18
+        "modules": 287,
+        "loc": 50762,
+        "modulePercent": 57.86,
+        "locPercent": 53.32,
+        "gatePercent": 53.32
       },
       "modules": [
         {
@@ -29939,7 +29949,7 @@
           "loc": 133,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -31492,11 +31502,11 @@
         "loc": 95198
       },
       "currentReuse": {
-        "modules": 286,
-        "loc": 50629,
-        "modulePercent": 57.66,
-        "locPercent": 53.18,
-        "gatePercent": 53.18
+        "modules": 287,
+        "loc": 50762,
+        "modulePercent": 57.86,
+        "locPercent": 53.32,
+        "gatePercent": 53.32
       },
       "modules": [
         {
@@ -36310,7 +36320,7 @@
           "loc": 133,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -37860,11 +37870,11 @@
         "loc": 89945
       },
       "currentReuse": {
-        "modules": 308,
-        "loc": 52415,
-        "modulePercent": 63.37,
-        "locPercent": 58.27,
-        "gatePercent": 58.27
+        "modules": 309,
+        "loc": 52548,
+        "modulePercent": 63.58,
+        "locPercent": 58.42,
+        "gatePercent": 58.42
       },
       "modules": [
         {
@@ -42364,7 +42374,7 @@
           "loc": 133,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
