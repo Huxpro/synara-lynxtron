@@ -33,7 +33,6 @@
 .SettingsWorktreesRow {
   display: flex;
   width: 100%;
-  min-height: 96px;
   padding: var(--app-density-settings-row-padding-y, 10px) 12px;
   align-items: flex-start;
   justify-content: space-between;
@@ -51,8 +50,7 @@
   flex-direction: column;
 }
 
-.SettingsWorktreesRowTitle,
-.SettingsWorktreesConversation {
+.SettingsWorktreesRowTitle {
   color: var(--foreground);
   font-size: var(--type-settings-row-title-size);
   font-weight: 500;
@@ -61,7 +59,10 @@
 
 .SettingsWorktreesPath {
   margin-top: 2px;
+  overflow: hidden;
   font-family: var(--font-mono-family);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .SettingsWorktreesConversationLabel {
@@ -70,6 +71,13 @@
   font-size: 11px;
   font-weight: 500;
   line-height: 16px;
+}
+
+.SettingsWorktreesConversation {
+  color: var(--foreground);
+  font-size: var(--type-settings-row-description-size);
+  font-weight: 400;
+  line-height: var(--type-settings-row-description-line-height);
 }
 
 .SettingsWorktreesConversationList {

@@ -63,8 +63,17 @@ describe('Settings Worktrees fidelity', () => {
     expect(styles).toMatch(
       /\.SettingsWorktreesRow\s*\{[^}]*align-items:\s*flex-start;[^}]*justify-content:\s*space-between;[^}]*gap:\s*20px;/s
     );
+    expect(styles).not.toMatch(
+      /\.SettingsWorktreesRow\s*\{[^}]*min-height:/s
+    );
     expect(styles).toMatch(
       /\.SettingsWorktreesActions\s*\{[^}]*width:\s*160px;[^}]*align-items:\s*flex-end;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsWorktreesPath\s*\{[^}]*overflow:\s*hidden;[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsWorktreesConversation\s*\{[^}]*font-size:\s*var\(--type-settings-row-description-size\);[^}]*font-weight:\s*400;[^}]*line-height:\s*var\(--type-settings-row-description-line-height\);/s
     );
   });
 });

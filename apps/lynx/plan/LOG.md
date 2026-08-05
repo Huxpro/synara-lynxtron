@@ -5670,6 +5670,10 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   用3px radius而非Web请求的5px。完成token校准，并给Model usage恢复provider identity：
   mapped providers使用14px真实SVG，asset未覆盖/unknown使用neutral badge，8px gap且
   model label继续truncate。focused tests **2/2**，Lynx-for-Web/Native builds通过。
+- Worktrees rows此前强制96px min-height，短row比Web shared list row多余留白；path也
+  不truncate，linked conversation标题错误复用500-weight row title。移除固定height，
+  path补mono ellipsis/no-wrap，conversation恢复regular Settings description
+  size/line-height。focused tests **3/3**，Lynx-for-Web/Native builds通过。
 - 新增icon后审计Button primitive发现Lynx无content gap，且mixed children中的label
   未自动套`LxButton__text`。补Web base/default 8px、sm 6px、xs 4px gap，并显式
   包裹Theme option label，确保icon+text typography与间距都生效。focused Settings
