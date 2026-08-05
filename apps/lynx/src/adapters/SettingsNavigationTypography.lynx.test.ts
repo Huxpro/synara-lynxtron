@@ -17,6 +17,9 @@ describe('Lynx Settings navigation typography', () => {
       /\.SharedSettingsNavigationGroupLabel\s*\{[^}]*font-size:\s*12px;[^}]*font-weight:\s*400;[^}]*line-height:\s*18px;[^}]*padding:\s*4px 8px;/s
     );
     expect(styles).toMatch(
+      /\.SharedSettingsNavigationGroupLabel\s*\{[^}]*opacity:\s*0\.58;/s
+    );
+    expect(styles).toMatch(
       /\.SharedSettingsNavigationButton\s*\{[^}]*opacity:\s*0\.95;/s
     );
     expect(styles).toMatch(

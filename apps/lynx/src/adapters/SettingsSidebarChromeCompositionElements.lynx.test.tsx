@@ -45,8 +45,14 @@ describe('Lynx Settings search input', () => {
     expect(styles).toMatch(
       /\.SharedSettingsSidebarBackButton\.ui-focus\s*\{[^}]*box-shadow:\s*inset 0 0 0 1px var\(--ring\);/s
     );
+    expect(styles).toMatch(
+      /\.SharedSettingsSidebarBackButton\s*\{[^}]*opacity:\s*0\.95;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedSettingsSidebarBackButton\.ui-hover,\s*\.SharedSettingsSidebarBackButton\.ui-pressed\s*\{[^}]*opacity:\s*1;/s
+    );
     expect(styles).not.toMatch(
-      /\.SharedSettingsSidebarBackButton\.ui-pressed\s*\{[^}]*opacity:/
+      /\.SharedSettingsSidebarBackButton\.ui-pressed[^{]*\{[^}]*opacity:\s*0\.8;/s
     );
   });
 });

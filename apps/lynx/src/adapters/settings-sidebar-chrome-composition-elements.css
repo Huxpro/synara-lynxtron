@@ -17,11 +17,13 @@
   min-height: 28px;
   padding: 4px 8px;
   border-radius: 8px;
+  opacity: 0.95;
 }
 
 .SharedSettingsSidebarBackButton.ui-hover,
 .SharedSettingsSidebarBackButton.ui-pressed {
   background-color: var(--sidebar-accent);
+  opacity: 1;
 }
 
 .SharedSettingsSidebarBackButton.ui-focus {

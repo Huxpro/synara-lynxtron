@@ -48,6 +48,7 @@ complete.
 | Settings search no-match state reuses Web section-label hierarchy | real no-match query resolves to 26px, 12px/400/18px, 0.58 tone | PASS |
 | Settings search internal icon/text metrics match Web `SearchInput` | 10px icon inset, 32px text inset, 10px end inset; focused source contract and builds | PASS |
 | Settings multi-result list rhythm matches Web | broad query proves 56px groups separated by shared 2px gap, 58px pitch | PASS |
+| Settings sidebar static tone hierarchy matches Web | group labels muted/58; Back row foreground/95 with full interactive tone | PASS |
 | Settings sidebar search matches Web intent | shared ranking/index, real Lynx input/results/selection/row targeting, canonical section icons, Web-owned horizontal gutter, Web/Lynx filtered evidence, Native default anatomy | PASS — Native filtered text entry not claimed |
 | Populated destructive/mutation paths are visually certified without fabricated data | canonical snapshot has no managed worktree/integration/archived rows; logic/RPC tests cover the product paths and direct SQLite fixtures are forbidden | NOT APPLICABLE — no safe canonical populated state |
 | Full final heavy pass | AGENTS requires `bun fmt`, `bun lint`, `bun typecheck`; current conversation does not explicitly authorize running them | **BLOCKED BY INSTRUCTION** |

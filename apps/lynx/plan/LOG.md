@@ -5447,3 +5447,7 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - Search results补齐Web shared nested-list `gap-0.5`即2px。真实broad query `e`
   返回12条，前三个56px group y=98/156/214，pitch稳定58px。focused tests
   **4/4**，两端build通过。
+- Settings sidebar静态tone继续对齐：group label使用muted/58，Back row idle以
+  foreground/95同步icon与label，hover/pressed恢复1。focused tests首跑抓到旧
+  “pressed不得有opacity”断言过度，改为明确要求1并禁止0.8后 **3/3**；两端build
+  通过。

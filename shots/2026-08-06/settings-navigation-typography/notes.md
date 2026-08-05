@@ -20,6 +20,9 @@ margin.
 - Web's 36px vertical offset is desktop chrome. After subtracting it, the group
   label and first row align exactly.
 - Lynx resolved style: 12px, weight 400, 18px line-height, 4px vertical padding.
+- Group labels now also match Web's muted-foreground/58 tone.
+- The Back row applies Web's foreground/95 idle hierarchy to its icon and
+  label together, restoring full tone on hover/press.
 
 ## Identity
 
@@ -27,6 +30,8 @@ margin.
   `d5d68b1f04e87c03ab7c48701fe93dd5ed79d1bcd47bda2663ec8111e3df217f`
 - Native/Desktop bundle:
   `0de6ee7f1828dde2e1e62d6666aca3dc14f259cd61d405470b83d07ccded0a3c`
+- Static-tone follow-up bundles: Lynx-for-Web `3491630c…`; Native
+  `701b6b49…`.
 - Focused navigation/search/layout tests: 5/5.
 - Web and Native/Desktop production builds passed with the existing CSS and
   optional `ws` native-module warnings only.
