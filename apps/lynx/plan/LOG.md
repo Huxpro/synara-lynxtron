@@ -5513,3 +5513,7 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   由于Lynxtron min width高于该breakpoint，Native直接用row wrap + 每项
   `calc(50% - 4px)`，保留8px gap。canonical snapshot无project rows，故只声明
   focused layout contract与build，不伪造视觉数据。focused tests **3/3**。
+- Integrations Name input高度在desktop断点已32px正确，但Lynx shared Input
+  primitive默认radius 8px，而Web所有Input用`rounded-lg` 10px。修复primitive
+  owner为10px，覆盖Settings search/Integrations等输入且局部显式10px保持一致。
+  focused input/settings tests **11/11**，两端build通过。

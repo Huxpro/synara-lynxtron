@@ -127,4 +127,15 @@ describe('Lynx Settings section labels', () => {
       /\.SharedSettingsGeneralSelectChevron\s*\{[^}]*opacity:\s*0\.8;/s
     );
   });
+
+  it('keeps the shared Input primitive on the Web control radius', () => {
+    const primitiveStyles = readFileSync(
+      new URL('../components/ui/primitives.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(primitiveStyles).toMatch(
+      /\.LxInputControl\s*\{[^}]*border-radius:\s*10px;/s
+    );
+  });
 });
