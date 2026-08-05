@@ -58,13 +58,16 @@ describe('Lynx Settings section labels', () => {
       /\.SettingsUsageCard\s*\{[^}]*gap:\s*14px;[^}]*padding:\s*16px;/s
     );
     expect(usageStyles).toMatch(
+      /\.SettingsUsage\s*\{[^}]*gap:\s*6px;/s
+    );
+    expect(usageStyles).toMatch(
       /\.SettingsUsageHeader,\s*\.SettingsUsageCardHeader\s*\{[^}]*justify-content:\s*space-between;[^}]*gap:\s*8px;/s
     );
     expect(usageStyles).toMatch(
       /\.SettingsUsageProviderIdentity\s*\{[^}]*flex:\s*1;[^}]*min-width:\s*0;[^}]*justify-content:\s*flex-start;[^}]*gap:\s*10px;/s
     );
     expect(usageStyles).toMatch(
-      /\.SettingsUsageProvider\s*\{[^}]*flex:\s*1;[^}]*min-width:\s*0;[^}]*overflow:\s*hidden;[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s
+      /\.SettingsUsageProvider\s*\{[^}]*flex:\s*1;[^}]*min-width:\s*0;[^}]*overflow:\s*hidden;[^}]*font-size:\s*14px;[^}]*font-weight:\s*600;[^}]*line-height:\s*20px;[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s
     );
     expect(usageStyles).toMatch(
       /\.SettingsUsageState\s*\{[^}]*padding:\s*14px 16px;/s
@@ -75,6 +78,13 @@ describe('Lynx Settings section labels', () => {
     const usageSource = readFileSync(
       new URL('../app/SettingsUsagePanel.tsx', import.meta.url),
       'utf8'
+    );
+    expect(usageSource).toContain('className="SettingsUsageRefresh"');
+    expect(usageStyles).toMatch(
+      /\.SettingsUsageRefresh\s*\{[^}]*width:\s*72px;[^}]*height:\s*24px;[^}]*padding:\s*0 7px;/s
+    );
+    expect(usageStyles).toMatch(
+      /\.SettingsUsageRefresh \.LxButton__text\s*\{[^}]*font-size:\s*10px;[^}]*line-height:\s*15px;/s
     );
     expect(usageSource).toContain(
       '<OpenAIProviderIcon provider={snapshot.provider} />'
@@ -144,6 +154,9 @@ describe('Lynx Settings section labels', () => {
     );
     expect(usageStyles).toMatch(
       /\.SettingsUsageSubtitle\s*\{[^}]*font-size:\s*11px;[^}]*opacity:\s*0\.8;/s
+    );
+    expect(usageStyles).toMatch(
+      /\.SettingsUsageDetail\s*\{[^}]*line-height:\s*19\.5px;/s
     );
     expect(usageSource).toContain(
       "Usage is read locally from each provider CLI's stored credentials"

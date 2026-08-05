@@ -6,7 +6,7 @@
 }
 
 .SettingsUsage {
-  gap: 12px;
+  gap: 6px;
 }
 
 .SettingsUsageHeader,
@@ -36,6 +36,17 @@
 
 .SettingsUsageCards {
   gap: 12px;
+}
+
+.SettingsUsageRefresh {
+  width: 72px;
+  height: 24px;
+  padding: 0 7px;
+}
+
+.SettingsUsageRefresh .LxButton__text {
+  font-size: 10px;
+  line-height: 15px;
 }
 
 .SettingsUsageCard,
@@ -89,6 +100,7 @@
   color: var(--foreground);
   font-size: 14px;
   font-weight: 600;
+  line-height: 20px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -268,6 +280,13 @@
 .SettingsUsageDetail,
 .SettingsUsageStateText {
   font-size: 12px;
+}
+
+.SettingsUsageDetail {
+  line-height: 19.5px;
+}
+
+.SettingsUsageStateText {
   line-height: 18px;
 }
 

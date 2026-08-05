@@ -69,18 +69,18 @@ complete.
 | Integrations project picker matches Web desktop columns | Native uses two-column flex-wrap at Lynxtron desktop widths; canonical snapshot has no safe populated visual state | PASS — focused contract, visual N/A |
 | Shared Input radius matches Web controls | Lynx `LxInputControl` uses rounded-lg / 10px across Settings inputs | PASS |
 | Shared Button radius matches Web controls | Lynx `LxButton` uses rounded-lg / 10px; explicit capsule/special variants remain owners | PASS |
-| Usage cards match Web SettingsCard anatomy | 10px radius, 16px card padding, 14px internal gap; loading state keeps 14×16 padding | PASS |
-| Usage cards preserve provider visual identity | 28px rounded provider shell with existing mapped SVG icon, border, and muted/60 surface | PASS |
-| Usage headers match Web horizontal rhythm | section and card headers use 8px gap; nested provider identity retains its distinct 10px icon/title gap | PASS |
+| Usage cards match Web SettingsCard anatomy | 10px radius, 16px card padding, 14px internal gap; current unavailable cards are exact 624×95.5 at y=150/257.5/365; loading state keeps 14×16 padding | PASS — current-head visual proof |
+| Usage cards preserve provider visual identity | 28px rounded provider shell with existing mapped SVG icon, border, muted/60 surface, and 14px/20px/600 title | PASS — current-head visual proof |
+| Usage headers match Web horizontal rhythm | root follows the shared 6px section gap; section/card headers use 8px gap; nested provider identity retains its distinct 10px icon/title gap | PASS — current-head visual proof |
 | Usage card content and header overflow match Web | content stack uses 14px rhythm; provider identity grows with min-width 0, title ellipsizes, and status pill does not shrink | PASS |
 | Usage status pills match Web semantics | ok shows plan pill only when named; needs-auth/error use 12% semantic surfaces and theme-aware text; unsupported remains muted | PASS |
-| Usage cards render real quota meters | canonical `usedPercent` drives 8px healthy/warning/danger remaining tracks rather than text-only quota summaries | PASS |
-| Usage meter rows match Web metadata and pace anatomy | shared server-limit derivation drives label + 6px pace dot, 8px track + marker, remaining/reset metadata, and optional reserve/ETA rows from real reset timing | PASS |
-| Usage stale-data warnings preserve Web semantics | otherwise-OK snapshots with `detail` retain last-good usage and show a 14px warning icon plus 12px/18px warning copy before meters | PASS |
-| Usage line list matches Web row structure | horizontal label/value rows, 2px item rhythm, 6px list gap, and 12px divider after meters | PASS |
-| Usage Refresh action matches Web identity | generated 14px refresh icon spins while fetching; label keeps shared Button typography | PASS |
+| Usage cards render real quota meters | canonical `usedPercent` drives 8px healthy/warning/danger remaining tracks rather than text-only quota summaries | PASS — source/shared-logic tests; current real snapshot had no meter branch |
+| Usage meter rows match Web metadata and pace anatomy | shared server-limit derivation drives label + 6px pace dot, 8px track + marker, remaining/reset metadata, and optional reserve/ETA rows from real reset timing | PASS — source/shared-logic tests; not screenshot-certified in current unavailable state |
+| Usage stale-data warnings preserve Web semantics | otherwise-OK snapshots with `detail` retain last-good usage and show a 14px warning icon plus 12px/18px warning copy before meters | PASS — source/focused tests; branch absent from current real snapshot |
+| Usage line list matches Web row structure | horizontal label/value rows, 2px item rhythm, 6px list gap, and 12px divider after meters | PASS — source/focused tests; branch absent from current real snapshot |
+| Usage Refresh action matches Web identity | generated 14px refresh icon spins while fetching; current trigger is exact 72×24 with 10px/15px label | PASS — current-head visual proof |
 | Usage Refresh matches Web request semantics | dedicated mutation sends `{ forceRefresh: true }`, merges partial batches with prior provider cards, and shares pending/disabled/spin state without bypassing provider cooldown safety | PASS |
-| Usage footer matches Web explanation and rhythm | full local-credentials, OAuth refresh, and CLI re-authentication copy with 11px/18px typography and 8px horizontal inset | PASS |
+| Usage footer matches Web explanation and rhythm | full local-credentials, OAuth refresh, and CLI re-authentication copy with 11px/18px typography and 8px horizontal inset; current x/y/width are exact | PASS — current-head visual proof |
 | Appearance theme controls match Web icon and switch identity | Theme preference uses generated Sun/Moon/Laptop icons; boolean switch uses normalized geometry/paint | PASS |
 | Appearance card separators match Web divide-y ownership | physical-shared terminal-row contract removes trailing dividers across fixed, conditional, and single-row cards | PASS |
 | Appearance numeric controls match Web geometry and editing | 28px soft input is 80px wide, right-aligned, separated from `px` by 8px, and ignores transient empty edits | PASS |
@@ -157,6 +157,23 @@ The retained replacement cells:
 
 ## Verification results
 
+- Current-head Usage fast harness: shared trusted `localhost:8921` origin,
+  snapshot `cd3e1e9e…`, explicit Light selection through both rendered
+  Appearance controls, `1280×820`, DPR 1. The real state contained three
+  unavailable-provider cards and visually covered header/Refresh,
+  provider/status/detail anatomy, card stacking, and footer. Retained evidence
+  and exact geometry are under `shots/2026-08-05/usage-current-head/`.
+- Current-head Usage residual repair: root gap converged from 12px to the Web
+  section's 6px; error detail from 12/18 to 12/19.5; provider title to
+  14/20/600; Refresh to 72×24 with a 10/15 label. Header, icon/title/status,
+  three 624×95.5 cards, details, and footer now share exact Web coordinates.
+  The snapshot hash stayed unchanged and both browser sessions had no page
+  errors.
+- Current-head Usage focused rerun: 1 file, 6/6 tests; Lynx-for-Web and
+  Native/Desktop production builds pass. Bundles: Lynx-for-Web `d922e7f2…`;
+  Native `4c5aef82…`. Meter/pace/stale-notice/usage-line branches were absent
+  from this real snapshot and remain explicitly source/logic-tested rather than
+  falsely screenshot-certified.
 - Current-head Appearance fast harness: shared trusted `localhost:8921` origin,
   same isolated snapshot, light theme, `1280×820`, DPR 1. The independent
   `127.0.0.1:8922` origin was correctly rejected and classified as a harness

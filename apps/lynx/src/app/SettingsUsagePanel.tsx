@@ -143,6 +143,7 @@ export function SettingsUsagePanel() {
         <Button
           size="xs"
           variant="outline"
+          className="SettingsUsageRefresh"
           disabled={isRefreshing}
           aria-label="Refresh provider usage"
           onClick={() => refreshMutation.mutate()}

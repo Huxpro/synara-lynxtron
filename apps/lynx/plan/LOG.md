@@ -5714,3 +5714,16 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   online、page errors为空。focused Appearance/Theme Pack tests **7/7**，
   Lynx-for-Web/Native builds通过；证据在
   `shots/2026-08-05/settings-current-head/`。
+- current-head Usage继续复用trusted `localhost:8921`双端harness与同一isolated
+  snapshot；通过两端真实Appearance controls显式选Light后返回Usage，避免`System`
+  在两个browser runtimes解析成不同主题。真实server state为Codex/Claude/Cursor三张
+  Unavailable cards，因此本轮视觉证据只覆盖header、Refresh、provider identity、
+  status/detail、card stack与footer，不伪称覆盖缺席的meter/pace/stale-notice branches。
+  量化发现四个owner：Usage root仍12px gap而Web section为6px；error detail 18px
+  line-height而Web `leading-relaxed`为19.5px；provider title缺20px line-height；
+  Refresh仍是80.6×25 generic Lynx xs而Web为72×24、10px/15px label。逐项校准后，
+  header `456/118/624/26`、Refresh `1008/119/72/24`、28px icon、14/20 title、
+  77.8×19 status、19.5px detail、三张624×95.5 cards（y=150/257.5/365）及
+  footer y=466.5均与Web exact。focused suite **6/6**，Lynx-for-Web/Native builds
+  通过，snapshot hash保持不变、page errors为空；证据在
+  `shots/2026-08-05/usage-current-head/`。
