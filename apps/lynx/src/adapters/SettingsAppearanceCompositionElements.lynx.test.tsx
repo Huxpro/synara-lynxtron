@@ -66,6 +66,12 @@ describe('Settings Appearance fidelity', () => {
     expect(source).toContain('role="radio"');
     expect(source).toContain('aria-checked={active}');
     expect(source).toContain('SharedSettingsAppearanceSegment--inactive');
+    expect(source).toContain(
+      "Icon ? '' : ' SharedSettingsAppearanceSegment--text-only'"
+    );
+    expect(styles).toMatch(
+      /\.SharedSettingsAppearanceSegment--text-only\s*\{[^}]*padding-left:\s*9px;[^}]*padding-right:\s*9px;/s
+    );
     expect(styles).toMatch(
       /\.SharedSettingsAppearanceSegment--inactive \.LxButton__text\s*\{[^}]*color:\s*var\(--muted-foreground\);/s
     );

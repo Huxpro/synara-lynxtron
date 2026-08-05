@@ -136,6 +136,8 @@ export function SettingsAppearanceSegmentedControlElement(props: {
             size="sm"
             variant={active ? 'secondary' : 'ghost'}
             className={`SharedSettingsAppearanceSegment${
+              Icon ? '' : ' SharedSettingsAppearanceSegment--text-only'
+            }${
               active
                 ? ' SharedSettingsAppearanceSegment--active'
                 : ' SharedSettingsAppearanceSegment--inactive'

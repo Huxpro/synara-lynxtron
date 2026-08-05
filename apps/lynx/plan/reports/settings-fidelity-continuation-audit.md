@@ -88,11 +88,11 @@ complete.
 | Appearance Theme Pack cards reuse Settings contracts | nested cards use 10px radius, 32×20/16px semantic switches, and shared generated reset icons instead of a stale 12px/18px/text-glyph fork | PASS |
 | Appearance code-theme selector preserves palette identity | trigger and menu options render real 20px `Aa` previews from surface/ink/accent data, 13px truncating labels, a 14px chevron, and accessible trigger text | PASS |
 | Appearance Theme Pack contrast matches Web's adjustable control | 176px real rail/fill with 14px thumb supports tap, mouse/touch drag, Arrow/Home/End, 0–100 accessibility values, and a 28px numeric readout | PASS |
-| Appearance Theme Pack controls self-size like Web | row controls no longer force 280px; UI/code font inputs are 224px soft controls with correct UI/mono families and accessible labels | PASS — Native import remains honestly labeled clipboard adaptation |
+| Appearance Theme Pack controls self-size like Web | row controls no longer force 280px; UI/code font inputs are 224×32 soft controls with correct UI/mono families and accessible labels; current-head cards converge to 475px versus Web 475.5px instead of accumulating 17px drift | PASS — Native import remains honestly labeled clipboard adaptation |
 | Appearance Theme Pack header actions match Web hierarchy | nested Reset is a 20px / 11px compact action; Import clipboard and Copy are 24px / 12px muted actions with explicit owners | PASS |
 | Appearance Theme Pack color controls match Web trigger anatomy | 176×32 color-filled direct-edit controls use 20px indicators, readable luminance-derived text/rings, uppercase code hex text, validation, and shared reset icons | PASS — no fake native color picker |
 | Appearance Time format select matches Web standard control | trigger and popup are 160px with a 14px chevron, 8px gap, 12px left-aligned truncating label, and accessible naming | PASS |
-| Appearance segmented controls match Web semantics and hierarchy | radiogroup/radio checked state is explicit; inactive labels/icons use muted tone; Theme Pack row labels use theme-safe foreground/90 | PASS |
+| Appearance segmented controls match Web semantics and hierarchy | radiogroup/radio checked state is explicit; inactive labels/icons use muted tone; text-only options use Web's 9px horizontal padding while icon-bearing theme options retain their exact geometry; Theme Pack row labels use theme-safe foreground/90 | PASS |
 | General deep links and provider selects preserve Web identity | `environment-panel` target is emitted; provider trigger/options use real mapped 14px SVGs or neutral initial fallbacks, 8px gaps, and truncating labels | PASS |
 | General standard selects match Web primitive tone and naming | existing 176×32 trigger keeps its geometry; 12px chevron uses 0.5 tone and the interactive Menu trigger publishes the control label | PASS |
 | Behavior and Notifications reuse shared reset identity | both shared panels consume one SettingsPage reset renderer with generated 14px Undo icon, icon-xs ghost chrome, and preserved labels | PASS |
@@ -157,6 +157,20 @@ The retained replacement cells:
 
 ## Verification results
 
+- Current-head Appearance fast harness: shared trusted `localhost:8921` origin,
+  same isolated snapshot, light theme, `1280×820`, DPR 1. The independent
+  `127.0.0.1:8922` origin was correctly rejected and classified as a harness
+  failure rather than product evidence. Retained measurements and four staged
+  screenshots are under `shots/2026-08-05/settings-current-head/`.
+- Current-head Appearance residual repair: Theme Pack font controls moved from
+  28px to the Web authority's 32px; both cards now measure 475px versus 475.5px
+  and downstream rows differ by only 1px fractional rounding. Text-only density
+  segments now match Web option widths exactly at 72.3/92/72.8px. The real
+  224px terminal-font suggestion popup opened with shared suggestions, the
+  client stayed online, and browser page errors were empty.
+- Current-head focused rerun: Appearance + Theme Pack 2 files, 7/7 tests;
+  Lynx-for-Web and Native/Desktop production builds pass. Bundles:
+  Lynx-for-Web `df1978d4…`; Native `53c91cdd…`.
 - Settings focused continuation: 14 files, 50/50 tests.
 - AppSnap final focused check: 1 file, 2/2 tests.
 - Canonical taxonomy/explicit-owner gate: 1 file, 11/11 tests.

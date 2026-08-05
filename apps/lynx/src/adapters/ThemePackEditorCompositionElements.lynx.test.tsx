@@ -89,7 +89,7 @@ describe('ThemePack boolean interaction contract', () => {
     expect(source).toContain("props.mono ? ' SharedThemePackFontInput--mono' : ''");
     expect(source).toContain('accessibility-label={props.ariaLabel}');
     expect(styles).toMatch(
-      /\.SharedThemePackFontInput\s*\{[^}]*width:\s*224px;/s
+      /\.SharedThemePackFontInput\s*\{[^}]*width:\s*224px;[^}]*height:\s*32px;/s
     );
     expect(styles).toMatch(
       /\.SharedThemePackFontInput \.LxInput\s*\{[^}]*font-family:\s*var\(--font-ui-family\);/s

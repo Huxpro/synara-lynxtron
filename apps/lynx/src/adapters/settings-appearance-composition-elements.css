@@ -113,6 +113,11 @@
   gap: 4px;
 }
 
+.SharedSettingsAppearanceSegment--text-only {
+  padding-left: 9px;
+  padding-right: 9px;
+}
+
 .SharedSettingsAppearanceSegment--inactive .LxButton__text {
   color: var(--muted-foreground);
 }

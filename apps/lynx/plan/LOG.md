@@ -5701,3 +5701,16 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   未自动套`LxButton__text`。补Web base/default 8px、sm 6px、xs 4px gap，并显式
   包裹Theme option label，确保icon+text typography与间距都生效。focused Settings
   control tests **12/12**，两端build通过。
+- current-head Appearance fast harness先捕获独立`127.0.0.1:8922` Lynx静态origin被
+  server trusted-origin gate拒绝；该离线帧判为harness failure，不留作产品证据。改为
+  通过server已配置的`localhost:8921`同源挂载Web与Lynx-for-Web后，两端共享snapshot、
+  route、light theme、`1280×820` DPR1并在线。首轮量化定位每个Theme Pack卡片少8.5px：
+  两个font controls仍为28px而Web authority为32px，跨两卡累计令后续rows提前17px。
+  font control显式32px后，Light/Dark cards均475px对Web 475.5px，`UI density`与
+  `Time and reading`只剩1px fractional rounding。随后text-only density segments
+  从每项10px horizontal padding校准为Web的9px，Compact/Comfortable/Spacious最终
+  宽度分别72.3/92/72.8px，逐项完全一致；icon-bearing theme segments保持原本精确
+  geometry。真实terminal-font popup以224px打开并显示shared suggestions，client
+  online、page errors为空。focused Appearance/Theme Pack tests **7/7**，
+  Lynx-for-Web/Native builds通过；证据在
+  `shots/2026-08-05/settings-current-head/`。
