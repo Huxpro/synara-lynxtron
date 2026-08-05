@@ -16,6 +16,7 @@
 
 .SliceRoot {
   --font-ui-family: system-ui;
+  --radius-lg: 10px;
   --type-ui-row-size: 12px;
   --type-ui-supporting-size: 11px;
   --type-ui-meta-size: 10px;

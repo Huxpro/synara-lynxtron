@@ -2,6 +2,24 @@ import { describe, expect, it } from '@rstest/core';
 import { readFileSync } from 'node:fs';
 
 describe('Lynx Settings sidebar layout', () => {
+  it('defines the shared large card radius used by native Settings owners', () => {
+    const styles = readFileSync(new URL('./App.css', import.meta.url), 'utf8');
+    const consumers = [
+      './settings-advanced-panel.css',
+      './settings-appsnap-panel.css',
+      './settings-integrations-panel.css',
+      './settings-skills-panel.css',
+      './settings-worktrees-panel.css',
+    ].map((path) => readFileSync(new URL(path, import.meta.url), 'utf8'));
+
+    expect(styles).toMatch(
+      /\.SliceRoot\s*\{[^}]*--radius-lg:\s*10px;/s
+    );
+    for (const consumer of consumers) {
+      expect(consumer).toContain('var(--radius-lg)');
+    }
+  });
+
   it('uses the Web-owned six pixel horizontal gutter', () => {
     const styles = readFileSync(new URL('./App.css', import.meta.url), 'utf8');
     const webSidebar = readFileSync(

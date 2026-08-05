@@ -107,6 +107,7 @@ complete.
 | Integrations disclosures reuse shared motion | project picker and advanced permissions use shared 220ms presence/content motion; Review publishes expanded state and a generated rotating 14px chevron | PASS |
 | Models single-row card and select wrapper match Web | Git writing row is terminal with no trailing divider; interactive trigger publishes the control label while reusing calibrated writing-model select chrome | PASS |
 | Shared Button icon-label spacing matches Web | default/sm/xs gaps are 8/6/4px; mixed Appearance labels retain `LxButton__text` styling | PASS |
+| Settings large card radius resolves at runtime | the Lynx root defines shared `--radius-lg: 10px`; AppSnap, Skills, and Worktrees representative surfaces compute to 10px, while Advanced/Integrations consumers are statically covered | PASS — current-head runtime and consumer audit |
 | Settings sidebar search matches Web intent | shared ranking/index, real Lynx input/results/selection/row targeting, canonical section icons, Web-owned horizontal gutter, Web/Lynx filtered evidence, Native default anatomy | PASS — Native filtered text entry not claimed |
 | Populated destructive/mutation paths are visually certified without fabricated data | canonical snapshot has no managed worktree/integration/archived rows; logic/RPC tests cover the product paths and direct SQLite fixtures are forbidden | NOT APPLICABLE — no safe canonical populated state |
 | Full final heavy pass | AGENTS requires `bun fmt`, `bun lint`, `bun typecheck`; current conversation does not explicitly authorize running them | **BLOCKED BY INSTRUCTION** |
@@ -157,6 +158,14 @@ The retained replacement cells:
 
 ## Verification results
 
+- Settings token-resolution audit found eleven `--radius-lg` consumers across
+  five native panels with no root definition. The shared root now owns
+  `--radius-lg: 10px`; runtime proof covers AppSnap, Skills, and Worktrees, and
+  focused consumer coverage includes Advanced and Integrations. Evidence is
+  under `shots/2026-08-05/settings-radius-token-current/`.
+- Token focused rerun: 1 file, 2/2 tests; Lynx-for-Web and Native/Desktop
+  production builds pass. Bundles: Lynx-for-Web `0ea9714c…`; Native
+  `0be7188f…`.
 - Current-head Archived fast harness: real empty state on the same snapshot,
   Light, `1280×820`, DPR 1. Position, dimensions, dashed border, generated
   icon, and 14/20 copy already matched; undefined `--radius-lg` produced a 0px

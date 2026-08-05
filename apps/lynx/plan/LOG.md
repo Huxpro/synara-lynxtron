@@ -5758,3 +5758,12 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Web-owned显式10px radius，final computed radius=10；focused suite **3/3**，
   Lynx-for-Web/Native builds通过。populated restore rows在真实snapshot缺席，未伪称
   screenshot覆盖；证据在`shots/2026-08-05/archived-current-head/`。
+- follow-up token audit确认Archived不是孤例：Advanced/AppSnap/Integrations/Skills/
+  Worktrees共11处使用`var(--radius-lg)`，但Lynx root/generated theme从未定义该token，
+  所有declaration都可能静默compute为0。修复放在单一`.SliceRoot` semantic owner：
+  `--radius-lg: 10px`，不把magic number复制到五个panels；focused regression test读取
+  五个consumer并锁root definition。真实runtime验证AppSnap hero 624×130、
+  Skills loading state 624×72、Worktrees empty state 624×72均恢复10px radius；
+  Integrations/Advanced当前state未暴露qualifying surface，明确只计静态consumer coverage。
+  focused suite **2/2**，Lynx-for-Web/Native builds通过；证据在
+  `shots/2026-08-05/settings-radius-token-current/`。
