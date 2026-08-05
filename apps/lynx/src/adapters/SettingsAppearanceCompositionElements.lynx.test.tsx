@@ -20,6 +20,10 @@ describe('Settings Appearance fidelity', () => {
       ),
       'utf8'
     );
+    const appStyles = readFileSync(
+      new URL('../app/App.css', import.meta.url),
+      'utf8'
+    );
 
     expect(styles).toMatch(
       /\.SharedSettingsAppearanceRoot\s*\{[^}]*gap:\s*24px;/s
@@ -57,6 +61,19 @@ describe('Settings Appearance fidelity', () => {
     expect(source).toContain('<text className="LxButton__text">{option.label}</text>');
     expect(styles).toMatch(
       /\.SharedSettingsAppearanceSwitch\s*\{[^}]*width:\s*32px;[^}]*height:\s*20px;[^}]*border:\s*1px solid var\(--settings-switch-border\);/s
+    );
+    expect(source).toContain('role="radiogroup"');
+    expect(source).toContain('role="radio"');
+    expect(source).toContain('aria-checked={active}');
+    expect(source).toContain('SharedSettingsAppearanceSegment--inactive');
+    expect(styles).toMatch(
+      /\.SharedSettingsAppearanceSegment--inactive \.LxButton__text\s*\{[^}]*color:\s*var\(--muted-foreground\);/s
+    );
+    expect(appStyles).toMatch(
+      /\.SliceRoot--theme-light\s*\{[^}]*--settings-row-label-strong:\s*rgba\(13,\s*13,\s*13,\s*0\.9\);/s
+    );
+    expect(appStyles).toMatch(
+      /\.SliceRoot--theme-dark\s*\{[^}]*--settings-row-label-strong:\s*rgba\(252,\s*252,\s*252,\s*0\.9\);/s
     );
     expect(source).toContain('size="sm"');
     expect(source).toContain('variant="soft"');

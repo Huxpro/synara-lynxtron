@@ -5630,6 +5630,11 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   160px标准select trigger。现trigger/popup统一160px，补14px chevron、8px gap、
   12px left-aligned truncating label及真实aria label。focused tests **2/2**，
   Lynx-for-Web/Native builds通过。
+- Appearance segmented controls此前只是普通buttons：无radiogroup/radio checked语义，
+  inactive labels/icons仍full foreground。现补group/option semantics、显式active/inactive
+  classes及muted inactive text/icon tone。Theme Pack row labels同步Web foreground/90，
+  用light/dark semantic token而非whole-element opacity。focused Appearance/Theme Pack
+  tests **7/7**，Lynx-for-Web/Native builds通过。
 - 新增icon后审计Button primitive发现Lynx无content gap，且mixed children中的label
   未自动套`LxButton__text`。补Web base/default 8px、sm 6px、xs 4px gap，并显式
   包裹Theme option label，确保icon+text typography与间距都生效。focused Settings

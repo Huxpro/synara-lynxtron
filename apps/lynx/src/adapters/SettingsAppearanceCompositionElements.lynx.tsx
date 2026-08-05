@@ -119,8 +119,13 @@ export function SettingsAppearanceSegmentedControlElement(props: {
   readonly onChange: (value: string) => void;
 }) {
   return (
-    <view className="SharedSettingsAppearanceSegments">
+    <view
+      className="SharedSettingsAppearanceSegments"
+      role="radiogroup"
+      aria-label={props.ariaLabel}
+    >
       {props.options.map((option) => {
+        const active = option.value === props.value;
         const Icon =
           props.ariaLabel === 'Theme preference'
             ? THEME_OPTION_ICONS[option.value]
@@ -129,11 +134,24 @@ export function SettingsAppearanceSegmentedControlElement(props: {
           <Button
             key={option.value}
             size="sm"
-            variant={option.value === props.value ? 'secondary' : 'ghost'}
+            variant={active ? 'secondary' : 'ghost'}
+            className={`SharedSettingsAppearanceSegment${
+              active
+                ? ' SharedSettingsAppearanceSegment--active'
+                : ' SharedSettingsAppearanceSegment--inactive'
+            }`}
+            role="radio"
+            aria-checked={active}
             aria-label={`${props.ariaLabel}: ${option.label}`}
             onClick={() => props.onChange(option.value)}
           >
-            {Icon ? <Icon size={14} color="var(--foreground)" /> : null}
+            {Icon ? (
+              <Icon
+                className="SharedSettingsAppearanceSegmentIcon"
+                size={14}
+                color={active ? 'var(--foreground)' : 'var(--muted-foreground)'}
+              />
+            ) : null}
             <text className="LxButton__text">{option.label}</text>
           </Button>
         );

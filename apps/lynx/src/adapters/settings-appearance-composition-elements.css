@@ -113,6 +113,16 @@
   gap: 4px;
 }
 
+.SharedSettingsAppearanceSegment--inactive .LxButton__text {
+  color: var(--muted-foreground);
+}
+
+.SharedSettingsAppearanceSegmentIcon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
 .SharedSettingsAppearanceSwitch {
   width: 32px;
   height: 20px;

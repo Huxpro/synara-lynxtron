@@ -40,7 +40,7 @@
 }
 
 .SharedThemePackRowLabel {
-  color: var(--foreground);
+  color: var(--settings-row-label-strong);
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;

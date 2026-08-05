@@ -36,6 +36,7 @@
   --settings-usage-warning-surface: rgba(245, 158, 11, 0.12);
   --settings-usage-warning-text: #d97706;
   --settings-provider-icon-surface: rgba(13, 13, 13, 0.024);
+  --settings-row-label-strong: rgba(13, 13, 13, 0.9);
   --settings-project-border: rgba(13, 13, 13, 0.049);
   --settings-project-selected-border: rgba(13, 13, 13, 0.3);
   --settings-project-selected-surface: rgba(13, 13, 13, 0.028);
@@ -50,6 +51,7 @@
   --settings-usage-warning-surface: rgba(251, 191, 36, 0.12);
   --settings-usage-warning-text: #fbbf24;
   --settings-provider-icon-surface: rgba(252, 252, 252, 0.004);
+  --settings-row-label-strong: rgba(252, 252, 252, 0.9);
   --settings-project-border: rgba(252, 252, 252, 0.05);
   --settings-project-selected-border: rgba(252, 252, 252, 0.3);
   --settings-project-selected-surface: rgba(252, 252, 252, 0.004);
