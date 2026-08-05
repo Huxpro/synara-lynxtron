@@ -5603,6 +5603,12 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   共享20px rounded swatch、16% mixed border、accent glyph及13px truncating label，
   同时补14px chevron与真实aria label；option row为36px/8px/10px anatomy。
   focused tests **3/3**，三端build通过。
+- Theme Pack Contrast此前退化为number input，Web authority是176px range + 28px readout。
+  当前Lynx runtime无native slider，故实现真实adjustable track：6px rail/fill、14px
+  thumb、tap/mouse-drag/touch-drag、Arrow±1/Home/End键盘语义及0–100 accessibility
+  values；pointer/key mapping抽纯函数。focused tests **5/5**，三端build通过。首次
+  Native build捕获本slice新增的unsupported `font-variant-numeric`并移除，readout改用
+  已支持的chat-code font；复跑只剩既有encode/ws warnings。
 - 新增icon后审计Button primitive发现Lynx无content gap，且mixed children中的label
   未自动套`LxButton__text`。补Web base/default 8px、sm 6px、xs 4px gap，并显式
   包裹Theme option label，确保icon+text typography与间距都生效。focused Settings

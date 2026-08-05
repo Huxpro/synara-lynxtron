@@ -1,4 +1,4 @@
-import type { ReactNode } from '@lynx-js/react';
+import { useState, type ReactNode } from '@lynx-js/react';
 
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -303,22 +303,154 @@ export function ThemePackContrastControlElement(props: {
   readonly ariaLabel: string;
   readonly onChange: (value: number) => void;
 }) {
+  const [dragging, setDragging] = useState(false);
+  const [trackRect, setTrackRect] = useState({ left: 0, width: 0 });
+  const interaction = useLynxInteractiveState({
+    baseClassName: 'SharedThemePackContrastTrack',
+    accessibleLabel: props.ariaLabel,
+    accessibilityTraits: 'adjustable',
+    accessibilityValue: String(props.value),
+    focusable: true,
+  });
+  const updateFromPointer = (event: ThemePackContrastPointerEvent) => {
+    const next = resolveThemePackContrastPointerValue(event, trackRect);
+    if (next !== null && next !== props.value) props.onChange(next);
+  };
+  const handleKeyDown = (event: {
+    readonly key: string;
+    preventDefault?: () => void;
+  }) => {
+    const next = resolveThemePackContrastKeyValue(props.value, event.key);
+    if (next === null) return;
+    event.preventDefault?.();
+    if (next !== props.value) props.onChange(next);
+  };
   return (
     <view className="SharedThemePackContrast">
-      <Input
-        type="number"
-        value={String(props.value)}
-        onChange={(event) => {
-          const value = Math.max(
-            0,
-            Math.min(100, Math.round(Number(event.target.value)))
-          );
-          if (Number.isFinite(value) && value !== props.value) {
-            props.onChange(value);
+      <view
+        className={interaction.className}
+        {...interaction.eventProps}
+        aria-label={props.ariaLabel}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={props.value}
+        bindlayoutchange={(event: ThemePackContrastLayoutEvent) => {
+          'background only';
+          const detail = event.detail ?? event.params ?? {};
+          if (
+            typeof detail.left === 'number' &&
+            typeof detail.width === 'number'
+          ) {
+            setTrackRect({ left: detail.left, width: detail.width });
           }
         }}
-      />
-      <text className="SharedThemePackContrastSuffix">0–100</text>
+        bindmousedown={(event: ThemePackContrastPointerEvent) => {
+          interaction.eventProps.bindmousedown?.();
+          setDragging(true);
+          updateFromPointer(event);
+        }}
+        bindmousemove={(event: ThemePackContrastPointerEvent) => {
+          if (dragging) updateFromPointer(event);
+        }}
+        bindmouseup={(event: ThemePackContrastPointerEvent) => {
+          updateFromPointer(event);
+          setDragging(false);
+          interaction.eventProps.bindmouseup?.();
+        }}
+        bindmouseleave={() => {
+          setDragging(false);
+          interaction.eventProps.bindmouseleave?.();
+        }}
+        bindtouchstart={(event: ThemePackContrastPointerEvent) => {
+          interaction.eventProps.bindtouchstart?.();
+          setDragging(true);
+          updateFromPointer(event);
+        }}
+        bindtouchmove={(event: ThemePackContrastPointerEvent) => {
+          if (dragging) updateFromPointer(event);
+        }}
+        bindtouchend={(event: ThemePackContrastPointerEvent) => {
+          updateFromPointer(event);
+          setDragging(false);
+          interaction.eventProps.bindtouchend?.();
+        }}
+        bindtouchcancel={() => {
+          setDragging(false);
+          interaction.eventProps.bindtouchcancel?.();
+        }}
+        bindkeydown={handleKeyDown}
+      >
+        <view className="SharedThemePackContrastRail" />
+        <view
+          className="SharedThemePackContrastFill"
+          style={{ width: `${props.value}%` }}
+        />
+        <view
+          className="SharedThemePackContrastThumb"
+          style={{ left: `${props.value}%` }}
+        />
+      </view>
+      <text className="SharedThemePackContrastValue">{props.value}</text>
     </view>
   );
+}
+
+interface ThemePackContrastPointerEvent {
+  readonly clientX?: number;
+  readonly pageX?: number;
+  readonly detail?: {
+    readonly clientX?: number;
+    readonly pageX?: number;
+  };
+  readonly touches?: readonly {
+    readonly clientX?: number;
+    readonly pageX?: number;
+  }[];
+  readonly changedTouches?: readonly {
+    readonly clientX?: number;
+    readonly pageX?: number;
+  }[];
+}
+
+interface ThemePackContrastLayoutEvent {
+  readonly detail?: {
+    readonly left?: number;
+    readonly width?: number;
+  };
+  readonly params?: {
+    readonly left?: number;
+    readonly width?: number;
+  };
+}
+
+export function resolveThemePackContrastPointerValue(
+  event: ThemePackContrastPointerEvent,
+  rect: { readonly left: number; readonly width: number }
+): number | null {
+  if (rect.width <= 0) return null;
+  const touch = event.touches?.[0] ?? event.changedTouches?.[0];
+  const x =
+    touch?.clientX ??
+    touch?.pageX ??
+    event.detail?.clientX ??
+    event.clientX ??
+    event.detail?.pageX ??
+    event.pageX;
+  if (typeof x !== 'number' || !Number.isFinite(x)) return null;
+  return Math.round(Math.max(0, Math.min(1, (x - rect.left) / rect.width)) * 100);
+}
+
+export function resolveThemePackContrastKeyValue(
+  value: number,
+  key: string
+): number | null {
+  if (key === 'Home') return 0;
+  if (key === 'End') return 100;
+  if (key === 'ArrowLeft' || key === 'ArrowDown') {
+    return Math.max(0, value - 1);
+  }
+  if (key === 'ArrowRight' || key === 'ArrowUp') {
+    return Math.min(100, value + 1);
+  }
+  return null;
 }

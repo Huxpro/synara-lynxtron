@@ -5,7 +5,10 @@ import { readFileSync } from 'node:fs';
 import {
   ThemePackBooleanControlElement,
   ThemePackCodeThemeControlElement,
+  ThemePackContrastControlElement,
   mixThemeColors,
+  resolveThemePackContrastKeyValue,
+  resolveThemePackContrastPointerValue,
 } from './ThemePackEditorCompositionElements.lynx';
 
 function switchElement(): Element {
@@ -149,5 +152,59 @@ describe('ThemePack boolean interaction contract', () => {
     fireEvent.tap(control);
     expect(onChange).toHaveBeenNthCalledWith(1, true);
     expect(onChange).toHaveBeenNthCalledWith(2, true);
+  });
+
+  it('maps contrast pointer and keyboard input to bounded values', () => {
+    expect(
+      resolveThemePackContrastPointerValue(
+        { clientX: 138 },
+        { left: 50, width: 176 }
+      )
+    ).toBe(50);
+    expect(
+      resolveThemePackContrastPointerValue(
+        { touches: [{ pageX: 300 }] },
+        { left: 50, width: 176 }
+      )
+    ).toBe(100);
+    expect(
+      resolveThemePackContrastPointerValue(
+        { pageX: 0 },
+        { left: 50, width: 176 }
+      )
+    ).toBe(0);
+    expect(resolveThemePackContrastKeyValue(50, 'ArrowRight')).toBe(51);
+    expect(resolveThemePackContrastKeyValue(0, 'ArrowLeft')).toBe(0);
+    expect(resolveThemePackContrastKeyValue(50, 'Home')).toBe(0);
+    expect(resolveThemePackContrastKeyValue(50, 'End')).toBe(100);
+    expect(resolveThemePackContrastKeyValue(50, 'Enter')).toBeNull();
+  });
+
+  it('publishes adjustable contrast semantics and keyboard changes', () => {
+    const onChange = rs.fn();
+    render(
+      <ThemePackContrastControlElement
+        value={50}
+        ariaLabel="Light theme contrast"
+        onChange={onChange}
+      />
+    );
+
+    const track = elementTree.root?.querySelector(
+      '.SharedThemePackContrastTrack'
+    );
+    if (!track) throw new Error('expected contrast track');
+    expect(track.getAttribute('focusable')).toBe('true');
+    expect(track.getAttribute('accessibility-traits')).toBe('adjustable');
+    expect(track.getAttribute('aria-valuenow')).toBe('50');
+    expect(
+      elementTree.root?.querySelector('.SharedThemePackContrastValue')
+        ?.textContent
+    ).toBe('50');
+
+    fireEvent.keydown(track, { key: 'ArrowRight' });
+    fireEvent.keydown(track, { key: 'Home' });
+    expect(onChange).toHaveBeenNthCalledWith(1, 51);
+    expect(onChange).toHaveBeenNthCalledWith(2, 0);
   });
 });

@@ -195,15 +195,74 @@
 }
 
 .SharedThemePackContrast {
-  width: 210px;
+  gap: 12px;
 }
 
-.SharedThemePackContrast .LxInputControl {
-  flex: 1;
+.SharedThemePackContrastTrack {
+  position: relative;
+  width: 176px;
+  height: 14px;
+  flex-shrink: 0;
+  border-radius: 7px;
+  overflow: visible;
 }
 
-.SharedThemePackContrastSuffix {
-  margin-left: 8px;
+.SharedThemePackContrastTrack.ui-focus {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.SharedThemePackContrastRail,
+.SharedThemePackContrastFill {
+  position: absolute;
+  left: 0;
+  top: 4px;
+  height: 6px;
+  border-radius: 3px;
+}
+
+.SharedThemePackContrastRail {
+  width: 100%;
+  background-color: var(--input);
+}
+
+.SharedThemePackContrastFill {
+  background-color: var(--primary);
+}
+
+.SharedThemePackContrastThumb {
+  position: absolute;
+  top: 0;
+  width: 14px;
+  height: 14px;
+  margin-left: -7px;
+  border: 2px solid var(--primary);
+  border-radius: 7px;
+  background-color: var(--background);
+}
+
+.SharedThemePackContrastValue {
+  width: 28px;
   color: var(--muted-foreground);
-  font-size: 10px;
+  font-family: var(--font-chat-code-family);
+  font-size: 12px;
+  text-align: right;
+}
+
+.SharedThemePackContrastTrack.ui-hover .SharedThemePackContrastThumb {
+  transform: scale(1.08);
+}
+
+.SharedThemePackContrastTrack.ui-pressed .SharedThemePackContrastThumb {
+  transform: scale(0.94);
+}
+
+.SharedThemePackContrastTrack,
+.SharedThemePackContrastThumb {
+  transition-property: box-shadow, transform;
+  transition-duration: 120ms;
+  transition-timing-function: ease-out;
+}
+
+.SharedThemePackContrastTrack {
+  color: var(--primary);
 }
