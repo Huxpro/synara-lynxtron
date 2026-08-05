@@ -6,19 +6,35 @@ function SettingsSearchResult(props: {
   readonly entry: SettingsSearchEntry;
   readonly onSelect: (entry: SettingsSearchEntry) => void;
 }) {
-  const interaction = useLynxInteractiveState({
-    baseClassName: 'SettingsSearchResult',
+  const sectionInteraction = useLynxInteractiveState({
+    baseClassName: 'SettingsSearchResultSectionRow',
+    accessibleLabel: settingsSectionLabel(props.entry.section),
+    onActivate: () => props.onSelect(props.entry),
+  });
+  const titleInteraction = useLynxInteractiveState({
+    baseClassName: 'SettingsSearchResultTitleRow',
     accessibleLabel: `${settingsSectionLabel(props.entry.section)}: ${
       props.entry.title
     }`,
     onActivate: () => props.onSelect(props.entry),
   });
   return (
-    <view className={interaction.className} {...interaction.eventProps}>
-      <text className="SettingsSearchResultSection">
-        {settingsSectionLabel(props.entry.section)}
-      </text>
-      <text className="SettingsSearchResultTitle">{props.entry.title}</text>
+    <view className="SettingsSearchResult">
+      <view
+        className={sectionInteraction.className}
+        {...sectionInteraction.eventProps}
+      >
+        <view className="SettingsSearchResultSectionIcon" />
+        <text className="SettingsSearchResultSection">
+          {settingsSectionLabel(props.entry.section)}
+        </text>
+      </view>
+      <view
+        className={titleInteraction.className}
+        {...titleInteraction.eventProps}
+      >
+        <text className="SettingsSearchResultTitle">{props.entry.title}</text>
+      </view>
     </view>
   );
 }

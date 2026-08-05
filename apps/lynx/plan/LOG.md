@@ -5386,3 +5386,6 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Appearance/General adapters用shared `settingRowAnchorId(title)`发布与Web一致的id。
   runtime选择`Appearance: Time format`后，`setting-time-format` 622×61 row滚到
   y=686并清空query。focused anchor/scroll tests **3/3**。
+- 结果视觉最初是单48px card，而Web authority为28px section row + 28px indented
+  setting row。Lynx改为同一双层56px anatomy，section/title分别有真实interaction与
+  accessible label；Web/Lynx实测均28+28。

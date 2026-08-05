@@ -763,26 +763,51 @@
 
 .SettingsSearchResult {
   display: flex;
-  min-height: 48px;
   flex-direction: column;
-  justify-content: center;
-  padding: 6px 8px;
+}
+
+.SettingsSearchResultSectionRow,
+.SettingsSearchResultTitleRow {
+  display: flex;
+  min-height: 28px;
+  align-items: center;
+  padding: 4px 8px;
   border-radius: 8px;
 }
 
-.SettingsSearchResult.ui-hover,
-.SettingsSearchResult.ui-pressed {
+.SettingsSearchResultSectionRow {
+  flex-direction: row;
+}
+
+.SettingsSearchResultTitleRow {
+  padding-left: 32px;
+}
+
+.SettingsSearchResultSectionRow.ui-hover,
+.SettingsSearchResultSectionRow.ui-pressed,
+.SettingsSearchResultTitleRow.ui-hover,
+.SettingsSearchResultTitleRow.ui-pressed {
   background-color: var(--sidebar-accent);
 }
 
-.SettingsSearchResult.ui-focus {
+.SettingsSearchResultSectionRow.ui-focus,
+.SettingsSearchResultTitleRow.ui-focus {
   box-shadow: 0 0 0 1px var(--ring);
 }
 
+.SettingsSearchResultSectionIcon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  border: 1px solid var(--muted-foreground);
+  border-radius: 4px;
+  opacity: 0.7;
+}
+
 .SettingsSearchResultSection {
-  color: var(--muted-foreground);
-  font-size: 10px;
-  line-height: 14px;
+  color: var(--foreground);
+  font-size: 12px;
+  line-height: 18px;
 }
 
 .SettingsSearchResultTitle {
