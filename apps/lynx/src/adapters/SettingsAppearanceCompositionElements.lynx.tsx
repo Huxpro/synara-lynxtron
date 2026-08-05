@@ -113,7 +113,7 @@ export function SettingsAppearanceSegmentedControlElement(props: {
             onClick={() => props.onChange(option.value)}
           >
             {Icon ? <Icon size={14} color="var(--foreground)" /> : null}
-            {option.label}
+            <text className="LxButton__text">{option.label}</text>
           </Button>
         );
       })}

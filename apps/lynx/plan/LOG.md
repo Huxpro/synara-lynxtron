@@ -5525,3 +5525,7 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Sun/Moon/Laptop icons；补生成的14px icons，仅Theme preference使用。同期发现
   Appearance boolean switch是第四套旧18/14实现，统一到32×20/16px及shared
   switch paint tokens。focused tests **7/7**，两端build通过。
+- 新增icon后审计Button primitive发现Lynx无content gap，且mixed children中的label
+  未自动套`LxButton__text`。补Web base/default 8px、sm 6px、xs 4px gap，并显式
+  包裹Theme option label，确保icon+text typography与间距都生效。focused Settings
+  control tests **12/12**，两端build通过。

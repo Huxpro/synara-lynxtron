@@ -140,5 +140,7 @@ describe('Lynx Settings section labels', () => {
     expect(primitiveStyles).toMatch(
       /\.LxButton\s*\{[^}]*border-radius:\s*10px;/s
     );
+    expect(primitiveStyles).toMatch(/\.LxButton\s*\{[^}]*gap:\s*8px;/s);
+    expect(primitiveStyles).toMatch(/\.LxButton--sm\s*\{[^}]*gap:\s*6px;/s);
   });
 });

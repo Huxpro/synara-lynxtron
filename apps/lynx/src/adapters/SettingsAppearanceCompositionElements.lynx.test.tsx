@@ -37,6 +37,7 @@ describe('Settings Appearance fidelity', () => {
     expect(source).toContain('SunIcon');
     expect(source).toContain('MoonIcon');
     expect(source).toContain('DeviceLaptopIcon');
+    expect(source).toContain('<text className="LxButton__text">{option.label}</text>');
     expect(styles).toMatch(
       /\.SharedSettingsAppearanceSwitch\s*\{[^}]*width:\s*32px;[^}]*height:\s*20px;[^}]*border:\s*1px solid var\(--settings-switch-border\);/s
     );

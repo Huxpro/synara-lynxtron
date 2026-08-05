@@ -3,6 +3,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   min-height: 32px;
   padding: 7px 12px;
   border-width: 1px;
@@ -90,10 +91,18 @@
   padding: 4px 8px;
 }
 
+.LxButton--xs {
+  gap: 4px;
+}
+
 .LxButton--sm,
 .LxButton--icon-sm {
   min-height: 28px;
   padding: 5px 10px;
+}
+
+.LxButton--sm {
+  gap: 6px;
 }
 
 .LxButton--lg,
