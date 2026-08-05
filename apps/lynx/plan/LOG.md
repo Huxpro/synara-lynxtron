@@ -5727,3 +5727,15 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   footer y=466.5均与Web exact。focused suite **6/6**，Lynx-for-Web/Native builds
   通过，snapshot hash保持不变、page errors为空；证据在
   `shots/2026-08-05/usage-current-head/`。
+- current-head Notifications在同一snapshot/light/1280×820 harness复验shared row
+  anatomy。Web保留真实browser notification switches/Test，Lynx因无toast consumer
+  与OS bridge继续显示disabled switches和两条明确unavailable status，属于诚实
+  capability delta。量化发现status此前嵌在copy column内，使首行copy由Web共同40px
+  增至62px，并把32×20 switch从Web y=171垂直居中到y=182。修复owner在shared
+  `SettingsRow` composition：supplemental status移到main layout之后，Lynx row显式
+  column flow；status继续扩row但不再参与title/description/control centering。final
+  section/card/first-row anchors exact，title `469/162/12/18/500`、description
+  `469/183/12/18/400`、switch `1035/171/32/20`与Web一致，首行无divider、第二行
+  divider保持。Web Notifications tests **2/2**、Lynx shared-row test **1/1**，
+  三端production builds通过；证据在
+  `shots/2026-08-05/notifications-current-head/`。

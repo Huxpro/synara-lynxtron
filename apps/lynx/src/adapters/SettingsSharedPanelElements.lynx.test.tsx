@@ -82,13 +82,16 @@ describe('Shared Settings panel elements', () => {
       /\.SharedSettingsCard\s*\{[^}]*border-radius:\s*10px;[^}]*background-color:\s*transparent;/s
     );
     expect(rowStyles).toMatch(
-      /\.SharedSettingsRow\s*\{[^}]*padding:\s*var\(--app-density-settings-row-padding-y,\s*0\.625rem\) 12px;/s
+      /\.SharedSettingsRow\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*column;[^}]*padding:\s*var\(--app-density-settings-row-padding-y,\s*0\.625rem\) 12px;/s
     );
     expect(rowStyles).toMatch(
       /\.SharedSettingsRowCopy\s*\{[^}]*gap:\s*2px;/s
     );
     expect(rowStyles).toMatch(
       /\.SharedSettingsRowTitleLine\s*\{[^}]*min-height:\s*20px;[^}]*gap:\s*6px;/s
+    );
+    expect(rowStyles).toMatch(
+      /\.SharedSettingsRowStatus\s*\{[^}]*width:\s*100%;[^}]*padding-top:\s*4px;/s
     );
   });
 });

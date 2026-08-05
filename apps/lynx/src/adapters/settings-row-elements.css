@@ -1,4 +1,6 @@
 .SharedSettingsRow {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   padding: var(--app-density-settings-row-padding-y, 0.625rem) 12px;
   border-top: 1px solid var(--color-border);
@@ -49,6 +51,7 @@
 }
 
 .SharedSettingsRowStatus {
+  width: 100%;
   padding-top: 4px;
 }
 

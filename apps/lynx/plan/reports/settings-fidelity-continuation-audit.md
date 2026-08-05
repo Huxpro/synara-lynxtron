@@ -96,8 +96,8 @@ complete.
 | General deep links and provider selects preserve Web identity | `environment-panel` target is emitted; provider trigger/options use real mapped 14px SVGs or neutral initial fallbacks, 8px gaps, and truncating labels | PASS |
 | General standard selects match Web primitive tone and naming | existing 176×32 trigger keeps its geometry; 12px chevron uses 0.5 tone and the interactive Menu trigger publishes the control label | PASS |
 | Behavior and Notifications reuse shared reset identity | both shared panels consume one SettingsPage reset renderer with generated 14px Undo icon, icon-xs ghost chrome, and preserved labels | PASS |
-| Shared Behavior/Notifications section and row anatomy matches Web | 12px/400/18px muted/58 labels, 6px section gap, transparent 10px cards, density-driven rows, 2px copy rhythm, 20px title lines, and correct first-row dividers | PASS |
-| Notifications reflects actual Lynx runtime capability | no toast/OS notification consumer exists; both stored preferences remain visible/resettable but controls are disabled, non-focusable, aria-disabled, and carry explicit per-row unavailable status | PASS — honest capability delta |
+| Shared Behavior/Notifications section and row anatomy matches Web | 12px/400/18px muted/58 labels, 6px section gap, transparent 10px cards, density-driven rows, 2px copy rhythm, 20px title lines, correct first-row dividers, and supplemental status outside the common control-centering layout | PASS — current-head visual proof |
+| Notifications reflects actual Lynx runtime capability | no toast/OS notification consumer exists; both stored preferences remain visible/resettable but controls are disabled, non-focusable, aria-disabled, and carry explicit per-row unavailable status without shifting their Web-common switch anchors | PASS — honest capability delta and current-head visual proof |
 | Advanced recovery details reuse shared disclosure behavior | controlled `What this does` trigger publishes expanded state, uses generated 14px chevron and shared 220ms motion/presence, then reveals the 10px inset explanation | PASS |
 | Profile stats, heatmap, and model rows match Web identity | stat values/labels use 14px/20px, heatmap cells use 5px radius, and model rows restore 14px mapped provider SVGs or neutral fallbacks with 8px gaps | PASS |
 | Worktrees rows match Web shared-list density and typography | rows have no artificial 96px minimum, mono paths truncate, and linked conversation titles use regular description typography instead of row-title weight | PASS |
@@ -157,6 +157,19 @@ The retained replacement cells:
 
 ## Verification results
 
+- Current-head Notifications fast harness: same trusted origin/snapshot,
+  explicit Light theme, `1280×820`, DPR 1. Web retained its real browser
+  notification controls; Lynx retained disabled switches and explicit
+  unavailable statuses because no notification consumer/bridge exists.
+  Evidence and exact geometry are under
+  `shots/2026-08-05/notifications-current-head/`.
+- Current-head Notifications residual repair: supplemental status moved after
+  the shared row layout, so the first switch converged from `y=182` to Web
+  `y=171` while status remained visible at `y=201`. Section/card/first-row,
+  title, description, switch, and divider ownership now match exactly.
+- Current-head Notifications focused rerun: Web 1 file, 2/2 tests; Lynx 1 file,
+  1/1 test; Web, Lynx-for-Web, and Native/Desktop production builds pass.
+  Bundles: Web `25cf40f5…`; Lynx-for-Web `dd1fcb89…`; Native `48c25db7…`.
 - Current-head Usage fast harness: shared trusted `localhost:8921` origin,
   snapshot `cd3e1e9e…`, explicit Light selection through both rendered
   Appearance controls, `1280×820`, DPR 1. The real state contained three
