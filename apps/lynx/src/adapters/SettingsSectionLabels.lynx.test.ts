@@ -70,6 +70,15 @@ describe('Lynx Settings section labels', () => {
     expect(usageSource).toContain(
       '<OpenAIProviderIcon provider={snapshot.provider} />'
     );
+    expect(usageSource).toContain(
+      "if ((snapshot.status ?? 'ok') === 'ok') return null;"
+    );
+    expect(usageStyles).toMatch(
+      /\.SettingsUsageStatus\s*\{[^}]*font-size:\s*11px;[^}]*font-weight:\s*500;[^}]*line-height:\s*11px;/s
+    );
+    expect(usageStyles).toMatch(
+      /\.SettingsUsageStatus--needs-auth\s*\{[^}]*background-color:\s*var\(--settings-usage-warning-surface\);[^}]*color:\s*var\(--settings-usage-warning-text\);/s
+    );
   });
 
   it('uses the standard row token and Web provider item typography', () => {

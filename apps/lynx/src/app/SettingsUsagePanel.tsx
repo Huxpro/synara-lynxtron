@@ -24,10 +24,8 @@ function missingSnapshot(
   };
 }
 
-function statusLabel(snapshot: ServerProviderUsageSnapshot): string {
-  if ((snapshot.status ?? 'ok') === 'ok') {
-    return snapshot.planName ?? 'Connected';
-  }
+function statusLabel(snapshot: ServerProviderUsageSnapshot): string | null {
+  if ((snapshot.status ?? 'ok') === 'ok') return null;
   if (snapshot.status === 'needs-auth') return 'Not signed in';
   if (snapshot.status === 'unsupported') return 'Unsupported';
   return 'Unavailable';
@@ -74,6 +72,7 @@ export function SettingsUsagePanel() {
         <view className="SettingsUsageCards">
           {cards.map((snapshot) => {
             const status = snapshot.status ?? 'ok';
+            const statusText = statusLabel(snapshot);
             const hasUsage =
               snapshot.limits.length > 0 || snapshot.usageLines.length > 0;
             return (
@@ -87,11 +86,13 @@ export function SettingsUsagePanel() {
                       {providerUsageDisplayName(snapshot.provider)}
                     </text>
                   </view>
-                  <text
-                    className={`SettingsUsageStatus SettingsUsageStatus--${status}`}
-                  >
-                    {statusLabel(snapshot)}
-                  </text>
+                  {statusText ? (
+                    <text
+                      className={`SettingsUsageStatus SettingsUsageStatus--${status}`}
+                    >
+                      {statusText}
+                    </text>
+                  ) : null}
                 </view>
                 {status === 'ok' && hasUsage ? (
                   <view className="SettingsUsageDetails">

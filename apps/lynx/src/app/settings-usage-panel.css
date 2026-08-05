@@ -93,14 +93,18 @@
   background-color: var(--muted);
   color: var(--muted-foreground);
   font-size: 11px;
+  font-weight: 500;
+  line-height: 11px;
 }
 
 .SettingsUsageStatus--needs-auth {
-  color: var(--warning);
+  background-color: var(--settings-usage-warning-surface);
+  color: var(--settings-usage-warning-text);
 }
 
 .SettingsUsageStatus--error {
-  color: var(--destructive);
+  background-color: var(--settings-usage-error-surface);
+  color: var(--settings-usage-error-text);
 }
 
 .SettingsUsageDetails {
