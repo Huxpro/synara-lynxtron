@@ -6,9 +6,9 @@ Status: retained Web, Lynx-for-Web, and exact-owned Native unavailable evidence
 
 - Source base: `fecffd47`
 - Lynx-for-Web bundle SHA-256:
-  `9df0fcbf792a03d6d22da33150d854fbc0c09738db4809232b637ab07a53ebc1`
+  `a5ec04ab00b88e4389560a4ade6a3454df39c5ae9731c1aa940a759b8110f18e`
 - Native bundle SHA-256:
-  `94dd2b181055e888401908b76f6ec80779c66409e1f1a4e8b5095576cc761cd6`
+  `9c9046af0771ba420078a015f0d27b7dee4b019add7ab9a63c568245f5f69373`
 - SQLite snapshot SHA-256:
   `c5313f03838f0669fc1e8cb558bf7d2d04c86b479bebc3a1559472c740db95a5`
 - Route: Settings AppSnap

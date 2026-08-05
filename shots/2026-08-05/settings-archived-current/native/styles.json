@@ -38,25 +38,7 @@
         "opacity": "1"
       }
     },
-    "header": {
-      "font": {
-        "family": "",
-        "size": "14px",
-        "weight": "normal",
-        "lineHeight": "",
-        "letterSpacing": "0px"
-      },
-      "paint": {
-        "color": "rgb(0,0,0)",
-        "background": "rgba(0,0,0,0)",
-        "borderColor": "black",
-        "borderWidth": "0px",
-        "radius": "0px",
-        "shadow": "",
-        "opacity": "1"
-      }
-    },
-    "empty": {
+    "target": {
       "font": {
         "family": "",
         "size": "14px",
@@ -70,60 +52,6 @@
         "borderColor": "black",
         "borderWidth": "0px",
         "radius": "",
-        "shadow": "",
-        "opacity": "1"
-      }
-    },
-    "icon": {
-      "font": {
-        "family": "",
-        "size": "14px",
-        "weight": "normal",
-        "lineHeight": "",
-        "letterSpacing": "0px"
-      },
-      "paint": {
-        "color": "rgba(13,13,13,0.596078)",
-        "background": "rgb(255,255,255)",
-        "borderColor": "black",
-        "borderWidth": "0px",
-        "radius": "0px",
-        "shadow": "",
-        "opacity": "1"
-      }
-    },
-    "title": {
-      "font": {
-        "family": "",
-        "size": "12px",
-        "weight": "500",
-        "lineHeight": "18px",
-        "letterSpacing": "0px"
-      },
-      "paint": {
-        "color": "rgb(13,13,13)",
-        "background": "rgba(0,0,0,0)",
-        "borderColor": "black",
-        "borderWidth": "0px",
-        "radius": "0px",
-        "shadow": "",
-        "opacity": "1"
-      }
-    },
-    "description": {
-      "font": {
-        "family": "",
-        "size": "12px",
-        "weight": "normal",
-        "lineHeight": "18px",
-        "letterSpacing": "0px"
-      },
-      "paint": {
-        "color": "rgba(13,13,13,0.596078)",
-        "background": "rgba(0,0,0,0)",
-        "borderColor": "black",
-        "borderWidth": "0px",
-        "radius": "0px",
         "shadow": "",
         "opacity": "1"
       }

@@ -1,7 +1,7 @@
 {
   "client": "native",
   "stateId": "settings-skills-light-1280",
-  "buildSha256": "82a2d3416c4b00ac8b8be1eae4d20c69cfa9a39deec7f0daeda1fffc5dc59aeb",
+  "buildSha256": "9c9046af0771ba420078a015f0d27b7dee4b019add7ab9a63c568245f5f69373",
   "snapshotSha256": "c5313f03838f0669fc1e8cb558bf7d2d04c86b479bebc3a1559472c740db95a5",
   "stateEcho": {
     "semanticRoute": "settings-skills",
@@ -10,9 +10,9 @@
     "interactionState": "populated"
   },
   "identity": {
-    "rootPid": 90594,
+    "rootPid": 46503,
     "descendantPids": [
-      90594
+      46503
     ],
     "ownedPorts": [
       8904

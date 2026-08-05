@@ -1,8 +1,8 @@
 {
   "client": "native",
   "stateId": "settings-profile-light-1280",
-  "buildSha256": "eb3aaa2e47f3c48457d9a108ad878cc9d07748c68a002c5f21416b5de507e1e1",
-  "snapshotSha256": "c8dc59aee6d79dd9c166c410beacd9ea325fcadd686b13e2ac6ceae45eca93d6",
+  "buildSha256": "9c9046af0771ba420078a015f0d27b7dee4b019add7ab9a63c568245f5f69373",
+  "snapshotSha256": "c5313f03838f0669fc1e8cb558bf7d2d04c86b479bebc3a1559472c740db95a5",
   "stateEcho": {
     "semanticRoute": "settings-profile",
     "theme": "light",
@@ -10,9 +10,9 @@
     "interactionState": "default"
   },
   "identity": {
-    "rootPid": 46581,
+    "rootPid": 45850,
     "descendantPids": [
-      46581
+      45850
     ],
     "ownedPorts": [
       8904

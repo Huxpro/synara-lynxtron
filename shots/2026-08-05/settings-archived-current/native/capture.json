@@ -1,7 +1,7 @@
 {
   "client": "native",
   "stateId": "settings-archived-light-1280",
-  "buildSha256": "2855d261583527a6e7541d4816f8f818b8439f650d05e6625e0a4283ddc2019c",
+  "buildSha256": "9c9046af0771ba420078a015f0d27b7dee4b019add7ab9a63c568245f5f69373",
   "snapshotSha256": "c5313f03838f0669fc1e8cb558bf7d2d04c86b479bebc3a1559472c740db95a5",
   "stateEcho": {
     "semanticRoute": "settings-archived",
@@ -10,9 +10,9 @@
     "interactionState": "empty"
   },
   "identity": {
-    "rootPid": 97417,
+    "rootPid": 46364,
     "descendantPids": [
-      97417
+      46364
     ],
     "ownedPorts": [
       8904

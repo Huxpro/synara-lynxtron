@@ -2563,7 +2563,7 @@
                               "class",
                               "SettingsIntegrationsPanel"
                             ],
-                            "backendNodeId": 305,
+                            "backendNodeId": 301,
                             "childNodeCount": 2,
                             "children": [
                               {
@@ -2571,7 +2571,7 @@
                                   "class",
                                   "SharedSettingsSection flex flex-col gap-1.5 not-first:mt-4"
                                 ],
-                                "backendNodeId": 306,
+                                "backendNodeId": 302,
                                 "childNodeCount": 2,
                                 "children": [
                                   {
@@ -2579,7 +2579,7 @@
                                       "class",
                                       "SharedSettingsSectionTitle px-2 py-1 text-[length:var(--app-font-size-ui,12px)] font-normal text-muted-foreground/58"
                                     ],
-                                    "backendNodeId": 307,
+                                    "backendNodeId": 303,
                                     "childNodeCount": 1,
                                     "children": [
                                       {
@@ -2587,30 +2587,30 @@
                                           "text",
                                           "Connect a coding agent"
                                         ],
-                                        "backendNodeId": 308,
+                                        "backendNodeId": 304,
                                         "childNodeCount": 0,
                                         "children": [],
                                         "localName": "raw-text",
-                                        "nodeId": 308,
+                                        "nodeId": 304,
                                         "nodeName": "RAW-TEXT",
                                         "nodeType": 1,
                                         "nodeValue": "",
-                                        "parentId": 307
+                                        "parentId": 303
                                       }
                                     ],
                                     "localName": "text",
-                                    "nodeId": 307,
+                                    "nodeId": 303,
                                     "nodeName": "TEXT",
                                     "nodeType": 1,
                                     "nodeValue": "",
-                                    "parentId": 306
+                                    "parentId": 302
                                   },
                                   {
                                     "attributes": [
                                       "class",
                                       "SharedSettingsCard overflow-hidden bg-transparent border border-[color:var(--color-border)] rounded-lg divide-y divide-[color:var(--color-border)]"
                                     ],
-                                    "backendNodeId": 309,
+                                    "backendNodeId": 305,
                                     "childNodeCount": 4,
                                     "children": [
                                       {
@@ -2618,7 +2618,7 @@
                                           "class",
                                           "SettingsIntegrationsRow"
                                         ],
-                                        "backendNodeId": 310,
+                                        "backendNodeId": 306,
                                         "childNodeCount": 2,
                                         "children": [
                                           {
@@ -2626,7 +2626,7 @@
                                               "class",
                                               "SettingsIntegrationsRowCopy"
                                             ],
-                                            "backendNodeId": 311,
+                                            "backendNodeId": 307,
                                             "childNodeCount": 2,
                                             "children": [
                                               {
@@ -2636,15 +2636,15 @@
                                                   "class",
                                                   "SettingsIntegrationsRowTitle"
                                                 ],
-                                                "backendNodeId": 312,
+                                                "backendNodeId": 308,
                                                 "childNodeCount": 0,
                                                 "children": [],
                                                 "localName": "text",
-                                                "nodeId": 312,
+                                                "nodeId": 308,
                                                 "nodeName": "TEXT",
                                                 "nodeType": 1,
                                                 "nodeValue": "",
-                                                "parentId": 311
+                                                "parentId": 307
                                               },
                                               {
                                                 "attributes": [
@@ -2653,27 +2653,27 @@
                                                   "class",
                                                   "SettingsIntegrationsRowDescription"
                                                 ],
-                                                "backendNodeId": 313,
+                                                "backendNodeId": 309,
                                                 "childNodeCount": 0,
                                                 "children": [],
                                                 "localName": "text",
-                                                "nodeId": 313,
+                                                "nodeId": 309,
                                                 "nodeName": "TEXT",
                                                 "nodeType": 1,
                                                 "nodeValue": "",
-                                                "parentId": 311
+                                                "parentId": 307
                                               }
                                             ],
                                             "localName": "view",
-                                            "nodeId": 311,
+                                            "nodeId": 307,
                                             "nodeName": "VIEW",
                                             "nodeType": 1,
                                             "nodeValue": "",
-                                            "parentId": 310
+                                            "parentId": 306
                                           },
                                           {
                                             "attributes": [],
-                                            "backendNodeId": 314,
+                                            "backendNodeId": 310,
                                             "childNodeCount": 1,
                                             "children": [
                                               {
@@ -2681,14 +2681,14 @@
                                                   "class",
                                                   "LxInputControl LxInputControl--default SettingsIntegrationsNameInput"
                                                 ],
-                                                "backendNodeId": 315,
+                                                "backendNodeId": 311,
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
                                                     "attributes": [
                                                       "ignore-focus",
                                                       "true",
-                                                      "react-ref-268-0",
+                                                      "react-ref-266-0",
                                                       "1",
                                                       "idSelector",
                                                       "",
@@ -2705,56 +2705,56 @@
                                                       "show-soft-input-on-focus",
                                                       "true",
                                                       "bindfocus",
-                                                      "268:10:",
+                                                      "266:10:",
                                                       "bindselection",
-                                                      "268:13:",
+                                                      "266:13:",
                                                       "bindblur",
-                                                      "268:11:",
+                                                      "266:11:",
                                                       "bindconfirm",
-                                                      "268:12:",
+                                                      "266:12:",
                                                       "class",
                                                       "LxInput"
                                                     ],
-                                                    "backendNodeId": 316,
+                                                    "backendNodeId": 312,
                                                     "childNodeCount": 0,
                                                     "children": [],
                                                     "localName": "input",
-                                                    "nodeId": 316,
+                                                    "nodeId": 312,
                                                     "nodeName": "INPUT",
                                                     "nodeType": 1,
                                                     "nodeValue": "",
-                                                    "parentId": 315
+                                                    "parentId": 311
                                                   }
                                                 ],
                                                 "localName": "view",
-                                                "nodeId": 315,
+                                                "nodeId": 311,
                                                 "nodeName": "VIEW",
                                                 "nodeType": 1,
                                                 "nodeValue": "",
-                                                "parentId": 314
+                                                "parentId": 310
                                               }
                                             ],
                                             "localName": "wrapper",
-                                            "nodeId": 314,
+                                            "nodeId": 310,
                                             "nodeName": "WRAPPER",
                                             "nodeType": 1,
                                             "nodeValue": "",
-                                            "parentId": 310
+                                            "parentId": 306
                                           }
                                         ],
                                         "localName": "view",
-                                        "nodeId": 310,
+                                        "nodeId": 306,
                                         "nodeName": "VIEW",
                                         "nodeType": 1,
                                         "nodeValue": "",
-                                        "parentId": 309
+                                        "parentId": 305
                                       },
                                       {
                                         "attributes": [
                                           "class",
                                           "SettingsIntegrationsRow SettingsIntegrationsRow--divided"
                                         ],
-                                        "backendNodeId": 317,
+                                        "backendNodeId": 313,
                                         "childNodeCount": 2,
                                         "children": [
                                           {
@@ -2762,7 +2762,7 @@
                                               "class",
                                               "SettingsIntegrationsRowCopy"
                                             ],
-                                            "backendNodeId": 318,
+                                            "backendNodeId": 314,
                                             "childNodeCount": 3,
                                             "children": [
                                               {
@@ -2772,15 +2772,15 @@
                                                   "class",
                                                   "SettingsIntegrationsRowTitle"
                                                 ],
-                                                "backendNodeId": 319,
+                                                "backendNodeId": 315,
                                                 "childNodeCount": 0,
                                                 "children": [],
                                                 "localName": "text",
-                                                "nodeId": 319,
+                                                "nodeId": 315,
                                                 "nodeName": "TEXT",
                                                 "nodeType": 1,
                                                 "nodeValue": "",
-                                                "parentId": 318
+                                                "parentId": 314
                                               },
                                               {
                                                 "attributes": [
@@ -2789,39 +2789,39 @@
                                                   "class",
                                                   "SettingsIntegrationsRowDescription"
                                                 ],
-                                                "backendNodeId": 320,
+                                                "backendNodeId": 316,
                                                 "childNodeCount": 0,
                                                 "children": [],
                                                 "localName": "text",
-                                                "nodeId": 320,
+                                                "nodeId": 316,
                                                 "nodeName": "TEXT",
                                                 "nodeType": 1,
                                                 "nodeValue": "",
-                                                "parentId": 318
+                                                "parentId": 314
                                               },
                                               {
                                                 "attributes": [],
-                                                "backendNodeId": 321,
+                                                "backendNodeId": 317,
                                                 "childNodeCount": 0,
                                                 "children": [],
                                                 "localName": "wrapper",
-                                                "nodeId": 321,
+                                                "nodeId": 317,
                                                 "nodeName": "WRAPPER",
                                                 "nodeType": 1,
                                                 "nodeValue": "",
-                                                "parentId": 318
+                                                "parentId": 314
                                               }
                                             ],
                                             "localName": "view",
-                                            "nodeId": 318,
+                                            "nodeId": 314,
                                             "nodeName": "VIEW",
                                             "nodeType": 1,
                                             "nodeValue": "",
-                                            "parentId": 317
+                                            "parentId": 313
                                           },
                                           {
                                             "attributes": [],
-                                            "backendNodeId": 322,
+                                            "backendNodeId": 318,
                                             "childNodeCount": 1,
                                             "children": [
                                               {
@@ -2843,31 +2843,31 @@
                                                   "aria-disabled",
                                                   "false",
                                                   "bindmouseenter",
-                                                  "270:0:bindmouseenter",
+                                                  "268:0:bindmouseenter",
                                                   "bindblur",
-                                                  "270:0:bindblur",
+                                                  "268:0:bindblur",
                                                   "bindmouseleave",
-                                                  "270:0:bindmouseleave",
+                                                  "268:0:bindmouseleave",
                                                   "bindkeydown",
-                                                  "270:0:bindkeydown",
+                                                  "268:0:bindkeydown",
                                                   "bindtap",
-                                                  "270:0:bindtap",
+                                                  "268:0:bindtap",
                                                   "bindmouseup",
-                                                  "270:0:bindmouseup",
+                                                  "268:0:bindmouseup",
                                                   "bindtouchstart",
-                                                  "270:0:bindtouchstart",
+                                                  "268:0:bindtouchstart",
                                                   "bindmousedown",
-                                                  "270:0:bindmousedown",
+                                                  "268:0:bindmousedown",
                                                   "bindtouchend",
-                                                  "270:0:bindtouchend",
+                                                  "268:0:bindtouchend",
                                                   "bindtouchcancel",
-                                                  "270:0:bindtouchcancel",
+                                                  "268:0:bindtouchcancel",
                                                   "bindfocus",
-                                                  "270:0:bindfocus",
+                                                  "268:0:bindfocus",
                                                   "class",
                                                   "SharedSettingsGeneralSwitch SharedSettingsGeneralSwitch--on"
                                                 ],
-                                                "backendNodeId": 323,
+                                                "backendNodeId": 319,
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
@@ -2875,46 +2875,46 @@
                                                       "class",
                                                       "SharedSettingsGeneralSwitchThumb"
                                                     ],
-                                                    "backendNodeId": 324,
+                                                    "backendNodeId": 320,
                                                     "childNodeCount": 0,
                                                     "children": [],
                                                     "localName": "view",
-                                                    "nodeId": 324,
+                                                    "nodeId": 320,
                                                     "nodeName": "VIEW",
                                                     "nodeType": 1,
                                                     "nodeValue": "",
-                                                    "parentId": 323
+                                                    "parentId": 319
                                                   }
                                                 ],
                                                 "localName": "view",
-                                                "nodeId": 323,
+                                                "nodeId": 319,
                                                 "nodeName": "VIEW",
                                                 "nodeType": 1,
                                                 "nodeValue": "",
-                                                "parentId": 322
+                                                "parentId": 318
                                               }
                                             ],
                                             "localName": "wrapper",
-                                            "nodeId": 322,
+                                            "nodeId": 318,
                                             "nodeName": "WRAPPER",
                                             "nodeType": 1,
                                             "nodeValue": "",
-                                            "parentId": 317
+                                            "parentId": 313
                                           }
                                         ],
                                         "localName": "view",
-                                        "nodeId": 317,
+                                        "nodeId": 313,
                                         "nodeName": "VIEW",
                                         "nodeType": 1,
                                         "nodeValue": "",
-                                        "parentId": 309
+                                        "parentId": 305
                                       },
                                       {
                                         "attributes": [
                                           "class",
                                           "SettingsIntegrationsRow SettingsIntegrationsRow--divided"
                                         ],
-                                        "backendNodeId": 325,
+                                        "backendNodeId": 321,
                                         "childNodeCount": 2,
                                         "children": [
                                           {
@@ -2922,7 +2922,7 @@
                                               "class",
                                               "SettingsIntegrationsRowCopy"
                                             ],
-                                            "backendNodeId": 326,
+                                            "backendNodeId": 322,
                                             "childNodeCount": 3,
                                             "children": [
                                               {
@@ -2932,15 +2932,15 @@
                                                   "class",
                                                   "SettingsIntegrationsRowTitle"
                                                 ],
-                                                "backendNodeId": 327,
+                                                "backendNodeId": 323,
                                                 "childNodeCount": 0,
                                                 "children": [],
                                                 "localName": "text",
-                                                "nodeId": 327,
+                                                "nodeId": 323,
                                                 "nodeName": "TEXT",
                                                 "nodeType": 1,
                                                 "nodeValue": "",
-                                                "parentId": 326
+                                                "parentId": 322
                                               },
                                               {
                                                 "attributes": [
@@ -2949,39 +2949,39 @@
                                                   "class",
                                                   "SettingsIntegrationsRowDescription"
                                                 ],
-                                                "backendNodeId": 328,
+                                                "backendNodeId": 324,
                                                 "childNodeCount": 0,
                                                 "children": [],
                                                 "localName": "text",
-                                                "nodeId": 328,
+                                                "nodeId": 324,
                                                 "nodeName": "TEXT",
                                                 "nodeType": 1,
                                                 "nodeValue": "",
-                                                "parentId": 326
+                                                "parentId": 322
                                               },
                                               {
                                                 "attributes": [],
-                                                "backendNodeId": 329,
+                                                "backendNodeId": 325,
                                                 "childNodeCount": 0,
                                                 "children": [],
                                                 "localName": "wrapper",
-                                                "nodeId": 329,
+                                                "nodeId": 325,
                                                 "nodeName": "WRAPPER",
                                                 "nodeType": 1,
                                                 "nodeValue": "",
-                                                "parentId": 326
+                                                "parentId": 322
                                               }
                                             ],
                                             "localName": "view",
-                                            "nodeId": 326,
+                                            "nodeId": 322,
                                             "nodeName": "VIEW",
                                             "nodeType": 1,
                                             "nodeValue": "",
-                                            "parentId": 325
+                                            "parentId": 321
                                           },
                                           {
                                             "attributes": [],
-                                            "backendNodeId": 330,
+                                            "backendNodeId": 326,
                                             "childNodeCount": 1,
                                             "children": [
                                               {
@@ -2995,21 +2995,21 @@
                                                   "accessibility-traits",
                                                   "button",
                                                   "bindtap",
-                                                  "272:0:bindtap",
+                                                  "270:0:bindtap",
                                                   "bindmouseup",
-                                                  "272:0:bindmouseup",
+                                                  "270:0:bindmouseup",
                                                   "bindmousedown",
-                                                  "272:0:bindmousedown",
+                                                  "270:0:bindmousedown",
                                                   "bindtouchstart",
-                                                  "272:0:bindtouchstart",
+                                                  "270:0:bindtouchstart",
                                                   "bindtouchend",
-                                                  "272:0:bindtouchend",
+                                                  "270:0:bindtouchend",
                                                   "bindtouchcancel",
-                                                  "272:0:bindtouchcancel",
+                                                  "270:0:bindtouchcancel",
                                                   "class",
                                                   "LxButton LxButton--ghost LxButton--xs"
                                                 ],
-                                                "backendNodeId": 331,
+                                                "backendNodeId": 327,
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
@@ -3017,7 +3017,7 @@
                                                       "class",
                                                       "LxButton__text"
                                                     ],
-                                                    "backendNodeId": 332,
+                                                    "backendNodeId": 328,
                                                     "childNodeCount": 1,
                                                     "children": [
                                                       {
@@ -3025,54 +3025,54 @@
                                                           "text",
                                                           "Review"
                                                         ],
-                                                        "backendNodeId": 333,
+                                                        "backendNodeId": 329,
                                                         "childNodeCount": 0,
                                                         "children": [],
                                                         "localName": "raw-text",
-                                                        "nodeId": 333,
+                                                        "nodeId": 329,
                                                         "nodeName": "RAW-TEXT",
                                                         "nodeType": 1,
                                                         "nodeValue": "",
-                                                        "parentId": 332
+                                                        "parentId": 328
                                                       }
                                                     ],
                                                     "localName": "text",
-                                                    "nodeId": 332,
+                                                    "nodeId": 328,
                                                     "nodeName": "TEXT",
                                                     "nodeType": 1,
                                                     "nodeValue": "",
-                                                    "parentId": 331
+                                                    "parentId": 327
                                                   }
                                                 ],
                                                 "localName": "view",
-                                                "nodeId": 331,
+                                                "nodeId": 327,
                                                 "nodeName": "VIEW",
                                                 "nodeType": 1,
                                                 "nodeValue": "",
-                                                "parentId": 330
+                                                "parentId": 326
                                               }
                                             ],
                                             "localName": "wrapper",
-                                            "nodeId": 330,
+                                            "nodeId": 326,
                                             "nodeName": "WRAPPER",
                                             "nodeType": 1,
                                             "nodeValue": "",
-                                            "parentId": 325
+                                            "parentId": 321
                                           }
                                         ],
                                         "localName": "view",
-                                        "nodeId": 325,
+                                        "nodeId": 321,
                                         "nodeName": "VIEW",
                                         "nodeType": 1,
                                         "nodeValue": "",
-                                        "parentId": 309
+                                        "parentId": 305
                                       },
                                       {
                                         "attributes": [
                                           "class",
                                           "SettingsIntegrationsRow SettingsIntegrationsRow--divided"
                                         ],
-                                        "backendNodeId": 334,
+                                        "backendNodeId": 330,
                                         "childNodeCount": 2,
                                         "children": [
                                           {
@@ -3080,7 +3080,7 @@
                                               "class",
                                               "SettingsIntegrationsRowCopy"
                                             ],
-                                            "backendNodeId": 335,
+                                            "backendNodeId": 331,
                                             "childNodeCount": 2,
                                             "children": [
                                               {
@@ -3090,15 +3090,15 @@
                                                   "class",
                                                   "SettingsIntegrationsRowTitle"
                                                 ],
-                                                "backendNodeId": 336,
+                                                "backendNodeId": 332,
                                                 "childNodeCount": 0,
                                                 "children": [],
                                                 "localName": "text",
-                                                "nodeId": 336,
+                                                "nodeId": 332,
                                                 "nodeName": "TEXT",
                                                 "nodeType": 1,
                                                 "nodeValue": "",
-                                                "parentId": 335
+                                                "parentId": 331
                                               },
                                               {
                                                 "attributes": [
@@ -3107,27 +3107,27 @@
                                                   "class",
                                                   "SettingsIntegrationsRowDescription"
                                                 ],
-                                                "backendNodeId": 337,
+                                                "backendNodeId": 333,
                                                 "childNodeCount": 0,
                                                 "children": [],
                                                 "localName": "text",
-                                                "nodeId": 337,
+                                                "nodeId": 333,
                                                 "nodeName": "TEXT",
                                                 "nodeType": 1,
                                                 "nodeValue": "",
-                                                "parentId": 335
+                                                "parentId": 331
                                               }
                                             ],
                                             "localName": "view",
-                                            "nodeId": 335,
+                                            "nodeId": 331,
                                             "nodeName": "VIEW",
                                             "nodeType": 1,
                                             "nodeValue": "",
-                                            "parentId": 334
+                                            "parentId": 330
                                           },
                                           {
                                             "attributes": [],
-                                            "backendNodeId": 338,
+                                            "backendNodeId": 334,
                                             "childNodeCount": 1,
                                             "children": [
                                               {
@@ -3141,21 +3141,21 @@
                                                   "accessibility-traits",
                                                   "button",
                                                   "bindtap",
-                                                  "276:0:bindtap",
+                                                  "274:0:bindtap",
                                                   "bindmouseup",
-                                                  "276:0:bindmouseup",
+                                                  "274:0:bindmouseup",
                                                   "bindmousedown",
-                                                  "276:0:bindmousedown",
+                                                  "274:0:bindmousedown",
                                                   "bindtouchstart",
-                                                  "276:0:bindtouchstart",
+                                                  "274:0:bindtouchstart",
                                                   "bindtouchend",
-                                                  "276:0:bindtouchend",
+                                                  "274:0:bindtouchend",
                                                   "bindtouchcancel",
-                                                  "276:0:bindtouchcancel",
+                                                  "274:0:bindtouchcancel",
                                                   "class",
                                                   "LxButton LxButton--default LxButton--sm"
                                                 ],
-                                                "backendNodeId": 339,
+                                                "backendNodeId": 335,
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
@@ -3163,7 +3163,7 @@
                                                       "class",
                                                       "LxButton__text"
                                                     ],
-                                                    "backendNodeId": 340,
+                                                    "backendNodeId": 336,
                                                     "childNodeCount": 1,
                                                     "children": [
                                                       {
@@ -3171,70 +3171,70 @@
                                                           "text",
                                                           "Create connection"
                                                         ],
-                                                        "backendNodeId": 341,
+                                                        "backendNodeId": 337,
                                                         "childNodeCount": 0,
                                                         "children": [],
                                                         "localName": "raw-text",
-                                                        "nodeId": 341,
+                                                        "nodeId": 337,
                                                         "nodeName": "RAW-TEXT",
                                                         "nodeType": 1,
                                                         "nodeValue": "",
-                                                        "parentId": 340
+                                                        "parentId": 336
                                                       }
                                                     ],
                                                     "localName": "text",
-                                                    "nodeId": 340,
+                                                    "nodeId": 336,
                                                     "nodeName": "TEXT",
                                                     "nodeType": 1,
                                                     "nodeValue": "",
-                                                    "parentId": 339
+                                                    "parentId": 335
                                                   }
                                                 ],
                                                 "localName": "view",
-                                                "nodeId": 339,
+                                                "nodeId": 335,
                                                 "nodeName": "VIEW",
                                                 "nodeType": 1,
                                                 "nodeValue": "",
-                                                "parentId": 338
+                                                "parentId": 334
                                               }
                                             ],
                                             "localName": "wrapper",
-                                            "nodeId": 338,
+                                            "nodeId": 334,
                                             "nodeName": "WRAPPER",
                                             "nodeType": 1,
                                             "nodeValue": "",
-                                            "parentId": 334
+                                            "parentId": 330
                                           }
                                         ],
                                         "localName": "view",
-                                        "nodeId": 334,
+                                        "nodeId": 330,
                                         "nodeName": "VIEW",
                                         "nodeType": 1,
                                         "nodeValue": "",
-                                        "parentId": 309
+                                        "parentId": 305
                                       }
                                     ],
                                     "localName": "view",
-                                    "nodeId": 309,
+                                    "nodeId": 305,
                                     "nodeName": "VIEW",
                                     "nodeType": 1,
                                     "nodeValue": "",
-                                    "parentId": 306
+                                    "parentId": 302
                                   }
                                 ],
                                 "localName": "view",
-                                "nodeId": 306,
+                                "nodeId": 302,
                                 "nodeName": "VIEW",
                                 "nodeType": 1,
                                 "nodeValue": "",
-                                "parentId": 305
+                                "parentId": 301
                               },
                               {
                                 "attributes": [
                                   "class",
                                   "SharedSettingsSection flex flex-col gap-1.5 not-first:mt-4"
                                 ],
-                                "backendNodeId": 342,
+                                "backendNodeId": 338,
                                 "childNodeCount": 2,
                                 "children": [
                                   {
@@ -3242,7 +3242,7 @@
                                       "class",
                                       "SharedSettingsSectionTitle px-2 py-1 text-[length:var(--app-font-size-ui,12px)] font-normal text-muted-foreground/58"
                                     ],
-                                    "backendNodeId": 343,
+                                    "backendNodeId": 339,
                                     "childNodeCount": 1,
                                     "children": [
                                       {
@@ -3250,30 +3250,30 @@
                                           "text",
                                           "Connected agents"
                                         ],
-                                        "backendNodeId": 344,
+                                        "backendNodeId": 340,
                                         "childNodeCount": 0,
                                         "children": [],
                                         "localName": "raw-text",
-                                        "nodeId": 344,
+                                        "nodeId": 340,
                                         "nodeName": "RAW-TEXT",
                                         "nodeType": 1,
                                         "nodeValue": "",
-                                        "parentId": 343
+                                        "parentId": 339
                                       }
                                     ],
                                     "localName": "text",
-                                    "nodeId": 343,
+                                    "nodeId": 339,
                                     "nodeName": "TEXT",
                                     "nodeType": 1,
                                     "nodeValue": "",
-                                    "parentId": 342
+                                    "parentId": 338
                                   },
                                   {
                                     "attributes": [
                                       "class",
                                       "SharedSettingsCard overflow-hidden bg-transparent border border-[color:var(--color-border)] rounded-lg divide-y divide-[color:var(--color-border)]"
                                     ],
-                                    "backendNodeId": 345,
+                                    "backendNodeId": 341,
                                     "childNodeCount": 1,
                                     "children": [
                                       {
@@ -3281,7 +3281,7 @@
                                           "class",
                                           "SettingsIntegrationsEmpty"
                                         ],
-                                        "backendNodeId": 346,
+                                        "backendNodeId": 342,
                                         "childNodeCount": 2,
                                         "children": [
                                           {
@@ -3291,15 +3291,15 @@
                                               "class",
                                               "SettingsIntegrationsRowTitle"
                                             ],
-                                            "backendNodeId": 347,
+                                            "backendNodeId": 343,
                                             "childNodeCount": 0,
                                             "children": [],
                                             "localName": "text",
-                                            "nodeId": 347,
+                                            "nodeId": 343,
                                             "nodeName": "TEXT",
                                             "nodeType": 1,
                                             "nodeValue": "",
-                                            "parentId": 346
+                                            "parentId": 342
                                           },
                                           {
                                             "attributes": [
@@ -3308,43 +3308,43 @@
                                               "class",
                                               "SettingsIntegrationsRowDescription"
                                             ],
-                                            "backendNodeId": 348,
+                                            "backendNodeId": 344,
                                             "childNodeCount": 0,
                                             "children": [],
                                             "localName": "text",
-                                            "nodeId": 348,
+                                            "nodeId": 344,
                                             "nodeName": "TEXT",
                                             "nodeType": 1,
                                             "nodeValue": "",
-                                            "parentId": 346
+                                            "parentId": 342
                                           }
                                         ],
                                         "localName": "view",
-                                        "nodeId": 346,
+                                        "nodeId": 342,
                                         "nodeName": "VIEW",
                                         "nodeType": 1,
                                         "nodeValue": "",
-                                        "parentId": 345
+                                        "parentId": 341
                                       }
                                     ],
                                     "localName": "view",
-                                    "nodeId": 345,
+                                    "nodeId": 341,
                                     "nodeName": "VIEW",
                                     "nodeType": 1,
                                     "nodeValue": "",
-                                    "parentId": 342
+                                    "parentId": 338
                                   }
                                 ],
                                 "localName": "view",
-                                "nodeId": 342,
+                                "nodeId": 338,
                                 "nodeName": "VIEW",
                                 "nodeType": 1,
                                 "nodeValue": "",
-                                "parentId": 305
+                                "parentId": 301
                               }
                             ],
                             "localName": "view",
-                            "nodeId": 305,
+                            "nodeId": 301,
                             "nodeName": "VIEW",
                             "nodeType": 1,
                             "nodeValue": "",

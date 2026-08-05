@@ -1,1 +1,1 @@
-"{\"runtime\":{\"innerWidth\":1280,\"innerHeight\":820,\"dpr\":1,\"visualWidth\":1280,\"visualHeight\":820},\"content\":{\"x\":432,\"y\":0,\"width\":672,\"height\":615},\"header\":{\"x\":456,\"y\":32,\"width\":624,\"height\":54},\"connect\":{\"x\":456,\"y\":118,\"width\":624,\"height\":349},\"firstRow\":{\"x\":457,\"y\":151,\"width\":622,\"height\":79},\"empty\":{\"x\":457,\"y\":524,\"width\":622,\"height\":58}}"
+"{\"runtime\":{\"innerWidth\":1280,\"innerHeight\":820,\"dpr\":1},\"light\":true,\"heading\":\"Integrations\"}"

@@ -5342,3 +5342,20 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   canonical `SETTINGS_SECTION_IDS`并逐项锁15个renderer marker。
 - taxonomy/owner gate **11/11**，Native/Desktop proportional build通过。当前除heavy
   checks授权外，无剩余implementation或matrix缺口。
+
+## 2026-08-05 — Settings continuation final-head evidence verifier
+
+- explicit-owner commit后，completion audit发现旧matrix bundle hash不再等于final
+  HEAD；即使视觉改动很小也不能把旧bundle证据冒充current-head。
+- final HEAD重新build：Lynx-for-Web `a5ec04ab…`、Native `9c9046af…`；16 states /
+  48 cells全部重拍。Native两批16 launches均PID-derived、console 0，owned KV/window
+  semantic compare后byte-exact restored。
+- 新`settings-continuation-evidence.mjs`强制16 states、三端stateEcho/build/snapshot、
+  PNG dimensions、Lynx host URL+target、Native dark/light root+target+bundle identity、
+  Native empty console。
+- verifier首跑真实拒绝8张`1280×633` Web frames；重设viewport并通过rendered nav重拍
+  后，test **2/2**，strict verifier **16 states / 48 cells**。这证明门禁实际覆盖目标，
+  不是只输出green status。
+- final evidence bundle identities统一为Lynx-for-Web `a5ec04ab…`、Native
+  `9c9046af…`；explicit-owner commit之后的16 states / 48 cells全部重新生成，而非只
+  修改metadata hash。

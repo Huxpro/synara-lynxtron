@@ -63,7 +63,7 @@
       }
     },
     "target": {
-      "nodeId": 305,
+      "nodeId": 301,
       "nodeName": "VIEW",
       "attributes": {
         "class": "SettingsWorktreesState"

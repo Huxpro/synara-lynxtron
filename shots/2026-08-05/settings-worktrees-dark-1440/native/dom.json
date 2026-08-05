@@ -2563,7 +2563,7 @@
                               "class",
                               "SettingsWorktreesState"
                             ],
-                            "backendNodeId": 305,
+                            "backendNodeId": 301,
                             "childNodeCount": 1,
                             "children": [
                               {
@@ -2573,19 +2573,19 @@
                                   "class",
                                   "SettingsWorktreesStateText"
                                 ],
-                                "backendNodeId": 306,
+                                "backendNodeId": 302,
                                 "childNodeCount": 0,
                                 "children": [],
                                 "localName": "text",
-                                "nodeId": 306,
+                                "nodeId": 302,
                                 "nodeName": "TEXT",
                                 "nodeType": 1,
                                 "nodeValue": "",
-                                "parentId": 305
+                                "parentId": 301
                               }
                             ],
                             "localName": "view",
-                            "nodeId": 305,
+                            "nodeId": 301,
                             "nodeName": "VIEW",
                             "nodeType": 1,
                             "nodeValue": "",

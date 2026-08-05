@@ -1,7 +1,7 @@
 {
   "client": "lynx",
   "stateId": "settings-appearance-light-1280",
-  "buildSha256": "f14f75c4b231e4c2e45a9658a032e41d587db4cbc6826eb90a58d1093d4a04ab",
+  "buildSha256": "a5ec04ab00b88e4389560a4ade6a3454df39c5ae9731c1aa940a759b8110f18e",
   "snapshotSha256": "922cef99cdabf1aa4f56ec9480eb9ce1d8ce31d2b30f75ca620da82d61712543",
   "stateEcho": {
     "semanticRoute": "settings-appearance",

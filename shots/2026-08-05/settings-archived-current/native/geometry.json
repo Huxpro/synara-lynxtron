@@ -62,37 +62,7 @@
         "opacity": "1"
       }
     },
-    "header": {
-      "nodeId": 286,
-      "nodeName": "VIEW",
-      "attributes": {
-        "class": "SharedSettingsPanelHeader"
-      },
-      "text": "",
-      "box": {
-        "x": 456,
-        "y": 32,
-        "width": 624,
-        "height": 54
-      },
-      "font": {
-        "family": "",
-        "size": "14px",
-        "weight": "normal",
-        "lineHeight": "",
-        "letterSpacing": "0px"
-      },
-      "paint": {
-        "color": "rgb(0,0,0)",
-        "background": "rgba(0,0,0,0)",
-        "borderColor": "black",
-        "borderWidth": "0px",
-        "radius": "0px",
-        "shadow": "",
-        "opacity": "1"
-      }
-    },
-    "empty": {
+    "target": {
       "nodeId": 299,
       "nodeName": "VIEW",
       "attributes": {
@@ -118,98 +88,6 @@
         "borderColor": "black",
         "borderWidth": "0px",
         "radius": "",
-        "shadow": "",
-        "opacity": "1"
-      }
-    },
-    "icon": {
-      "nodeId": 300,
-      "nodeName": "VIEW",
-      "attributes": {
-        "class": "SettingsArchivedEmptyIconShell"
-      },
-      "text": "",
-      "box": {
-        "x": 746,
-        "y": 159,
-        "width": 44,
-        "height": 44
-      },
-      "font": {
-        "family": "",
-        "size": "14px",
-        "weight": "normal",
-        "lineHeight": "",
-        "letterSpacing": "0px"
-      },
-      "paint": {
-        "color": "rgba(13,13,13,0.596078)",
-        "background": "rgb(255,255,255)",
-        "borderColor": "black",
-        "borderWidth": "0px",
-        "radius": "0px",
-        "shadow": "",
-        "opacity": "1"
-      }
-    },
-    "title": {
-      "nodeId": 301,
-      "nodeName": "TEXT",
-      "attributes": {
-        "text": "No archived threads",
-        "class": "SettingsArchivedEmptyTitle"
-      },
-      "text": "",
-      "box": {
-        "x": 710,
-        "y": 215,
-        "width": 117,
-        "height": 18
-      },
-      "font": {
-        "family": "",
-        "size": "12px",
-        "weight": "500",
-        "lineHeight": "18px",
-        "letterSpacing": "0px"
-      },
-      "paint": {
-        "color": "rgb(13,13,13)",
-        "background": "rgba(0,0,0,0)",
-        "borderColor": "black",
-        "borderWidth": "0px",
-        "radius": "0px",
-        "shadow": "",
-        "opacity": "1"
-      }
-    },
-    "description": {
-      "nodeId": 302,
-      "nodeName": "TEXT",
-      "attributes": {
-        "text": "Archived threads will appear here and can be restored to the sidebar.",
-        "class": "SettingsArchivedEmptyDescription"
-      },
-      "text": "",
-      "box": {
-        "x": 573,
-        "y": 237,
-        "width": 390,
-        "height": 18
-      },
-      "font": {
-        "family": "",
-        "size": "12px",
-        "weight": "normal",
-        "lineHeight": "18px",
-        "letterSpacing": "0px"
-      },
-      "paint": {
-        "color": "rgba(13,13,13,0.596078)",
-        "background": "rgba(0,0,0,0)",
-        "borderColor": "black",
-        "borderWidth": "0px",
-        "radius": "0px",
         "shadow": "",
         "opacity": "1"
       }

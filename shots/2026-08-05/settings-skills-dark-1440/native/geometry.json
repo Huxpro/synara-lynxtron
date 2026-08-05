@@ -33,7 +33,7 @@
       }
     },
     "content": {
-      "nodeId": 161,
+      "nodeId": 173,
       "nodeName": "VIEW",
       "attributes": {
         "class": "SettingsContentInner"
@@ -63,7 +63,7 @@
       }
     },
     "target": {
-      "nodeId": 293,
+      "nodeId": 301,
       "nodeName": "VIEW",
       "attributes": {
         "class": "SettingsSkillsPanel"

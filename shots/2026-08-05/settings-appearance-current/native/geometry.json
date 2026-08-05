@@ -2,6 +2,36 @@
   "client": "native",
   "stateId": "settings-appearance-light-1280",
   "roles": {
+    "root": {
+      "nodeId": 13,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 788
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
     "content": {
       "nodeId": 173,
       "nodeName": "VIEW",
@@ -32,37 +62,7 @@
         "opacity": "1"
       }
     },
-    "header": {
-      "nodeId": 286,
-      "nodeName": "VIEW",
-      "attributes": {
-        "class": "SharedSettingsPanelHeader"
-      },
-      "text": "",
-      "box": {
-        "x": 456,
-        "y": 32,
-        "width": 624,
-        "height": 54
-      },
-      "font": {
-        "family": "",
-        "size": "14px",
-        "weight": "normal",
-        "lineHeight": "",
-        "letterSpacing": "0px"
-      },
-      "paint": {
-        "color": "rgb(0,0,0)",
-        "background": "rgba(0,0,0,0)",
-        "borderColor": "black",
-        "borderWidth": "0px",
-        "radius": "0px",
-        "shadow": "",
-        "opacity": "1"
-      }
-    },
-    "appearanceRoot": {
+    "target": {
       "nodeId": 299,
       "nodeName": "VIEW",
       "attributes": {
@@ -86,283 +86,6 @@
         "color": "rgb(0,0,0)",
         "background": "rgba(0,0,0,0)",
         "borderColor": "black",
-        "borderWidth": "0px",
-        "radius": "0px",
-        "shadow": "",
-        "opacity": "1"
-      }
-    },
-    "sectionTitle": {
-      "nodeId": 301,
-      "nodeName": "TEXT",
-      "attributes": {
-        "class": "SharedSettingsAppearanceSectionTitle"
-      },
-      "text": "",
-      "box": {
-        "x": 456,
-        "y": 118,
-        "width": 624,
-        "height": 26
-      },
-      "font": {
-        "family": "",
-        "size": "12px",
-        "weight": "400",
-        "lineHeight": "18px",
-        "letterSpacing": "0px"
-      },
-      "paint": {
-        "color": "rgba(13,13,13,0.596078)",
-        "background": "rgba(0,0,0,0)",
-        "borderColor": "black",
-        "borderWidth": "0px",
-        "radius": "0px",
-        "shadow": "",
-        "opacity": "1"
-      }
-    },
-    "firstCard": {
-      "nodeId": 304,
-      "nodeName": "VIEW",
-      "attributes": {
-        "class": "SharedSettingsAppearanceCard"
-      },
-      "text": "",
-      "box": {
-        "x": 456,
-        "y": 150,
-        "width": 624,
-        "height": 142
-      },
-      "font": {
-        "family": "",
-        "size": "14px",
-        "weight": "normal",
-        "lineHeight": "",
-        "letterSpacing": "0px"
-      },
-      "paint": {
-        "color": "rgb(0,0,0)",
-        "background": "rgba(0,0,0,0)",
-        "borderColor": "hsla(0,0%,5%,.069)",
-        "borderWidth": "0px",
-        "radius": "0px",
-        "shadow": "",
-        "opacity": "1"
-      }
-    },
-    "firstRow": {
-      "nodeId": 305,
-      "nodeName": "VIEW",
-      "attributes": {
-        "class": "SharedSettingsAppearanceRow"
-      },
-      "text": "",
-      "box": {
-        "x": 457,
-        "y": 151,
-        "width": 622,
-        "height": 61
-      },
-      "font": {
-        "family": "",
-        "size": "14px",
-        "weight": "normal",
-        "lineHeight": "",
-        "letterSpacing": "0px"
-      },
-      "paint": {
-        "color": "rgb(0,0,0)",
-        "background": "rgba(0,0,0,0)",
-        "borderColor": "black",
-        "borderWidth": "0px",
-        "radius": "0px",
-        "shadow": "",
-        "opacity": "1"
-      }
-    },
-    "themePacks": {
-      "nodeId": 336,
-      "nodeName": "VIEW",
-      "attributes": {
-        "class": "SharedSettingsAppearanceThemePacks"
-      },
-      "text": "",
-      "box": {
-        "x": 456,
-        "y": 298,
-        "width": 624,
-        "height": 972
-      },
-      "font": {
-        "family": "",
-        "size": "14px",
-        "weight": "normal",
-        "lineHeight": "",
-        "letterSpacing": "0px"
-      },
-      "paint": {
-        "color": "rgb(0,0,0)",
-        "background": "rgba(0,0,0,0)",
-        "borderColor": "black",
-        "borderWidth": "0px",
-        "radius": "0px",
-        "shadow": "",
-        "opacity": "1"
-      }
-    },
-    "themePack": {
-      "nodeId": 337,
-      "nodeName": "VIEW",
-      "attributes": {
-        "class": "SharedThemePackRoot"
-      },
-      "text": "",
-      "box": {
-        "x": 456,
-        "y": 298,
-        "width": 624,
-        "height": 480
-      },
-      "font": {
-        "family": "",
-        "size": "14px",
-        "weight": "normal",
-        "lineHeight": "",
-        "letterSpacing": "0px"
-      },
-      "paint": {
-        "color": "rgb(0,0,0)",
-        "background": "rgba(0,0,0,0)",
-        "borderColor": "hsla(0,0%,5%,.069)",
-        "borderWidth": "0px",
-        "radius": "0px",
-        "shadow": "",
-        "opacity": "1"
-      }
-    },
-    "themePackHeader": {
-      "nodeId": 338,
-      "nodeName": "VIEW",
-      "attributes": {
-        "class": "SharedThemePackHeader"
-      },
-      "text": "",
-      "box": {
-        "x": 457,
-        "y": 299,
-        "width": 622,
-        "height": 84
-      },
-      "font": {
-        "family": "",
-        "size": "14px",
-        "weight": "normal",
-        "lineHeight": "",
-        "letterSpacing": "0px"
-      },
-      "paint": {
-        "color": "rgb(0,0,0)",
-        "background": "rgba(0,0,0,0)",
-        "borderColor": "black",
-        "borderWidth": "0px",
-        "radius": "0px",
-        "shadow": "",
-        "opacity": "1"
-      }
-    },
-    "themePackContext": {
-      "nodeId": 354,
-      "nodeName": "TEXT",
-      "attributes": {
-        "class": "SharedThemePackContext"
-      },
-      "text": "",
-      "box": {
-        "x": 457,
-        "y": 383,
-        "width": 622,
-        "height": 28
-      },
-      "font": {
-        "family": "",
-        "size": "11px",
-        "weight": "normal",
-        "lineHeight": "16px",
-        "letterSpacing": "0px"
-      },
-      "paint": {
-        "color": "rgba(13,13,13,0.596078)",
-        "background": "rgba(0,0,0,0)",
-        "borderColor": "black",
-        "borderWidth": "0px",
-        "radius": "0px",
-        "shadow": "",
-        "opacity": "1"
-      }
-    },
-    "themePackFirstRow": {
-      "nodeId": 356,
-      "nodeName": "VIEW",
-      "attributes": {
-        "class": "SharedThemePackRow"
-      },
-      "text": "",
-      "box": {
-        "x": 457,
-        "y": 411,
-        "width": 622,
-        "height": 53
-      },
-      "font": {
-        "family": "",
-        "size": "14px",
-        "weight": "normal",
-        "lineHeight": "",
-        "letterSpacing": "0px"
-      },
-      "paint": {
-        "color": "rgb(0,0,0)",
-        "background": "rgba(0,0,0,0)",
-        "borderColor": "black",
-        "borderWidth": "0px",
-        "radius": "0px",
-        "shadow": "",
-        "opacity": "1"
-      }
-    },
-    "themePackCodeSelect": {
-      "nodeId": 351,
-      "nodeName": "VIEW",
-      "attributes": {
-        "event-through": "false",
-        "bindtap": "293:0:bindtap",
-        "bindmouseup": "293:0:bindmouseup",
-        "bindmousedown": "293:0:bindmousedown",
-        "bindtouchstart": "293:0:bindtouchstart",
-        "bindtouchend": "293:0:bindtouchend",
-        "bindtouchcancel": "293:0:bindtouchcancel",
-        "class": "LxButton LxButton--outline LxButton--default SharedThemePackCodeSelect"
-      },
-      "text": "",
-      "box": {
-        "x": 473,
-        "y": 342,
-        "width": 590,
-        "height": 28
-      },
-      "font": {
-        "family": "",
-        "size": "14px",
-        "weight": "normal",
-        "lineHeight": "",
-        "letterSpacing": "0px"
-      },
-      "paint": {
-        "color": "rgb(0,0,0)",
-        "background": "rgba(0,0,0,0)",
-        "borderColor": "hsla(0,0%,5%,.069)",
         "borderWidth": "0px",
         "radius": "0px",
         "shadow": "",

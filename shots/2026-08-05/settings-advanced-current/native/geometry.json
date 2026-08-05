@@ -62,37 +62,7 @@
         "opacity": "1"
       }
     },
-    "header": {
-      "nodeId": 286,
-      "nodeName": "VIEW",
-      "attributes": {
-        "class": "SharedSettingsPanelHeader"
-      },
-      "text": "",
-      "box": {
-        "x": 456,
-        "y": 32,
-        "width": 624,
-        "height": 54
-      },
-      "font": {
-        "family": "",
-        "size": "14px",
-        "weight": "normal",
-        "lineHeight": "",
-        "letterSpacing": "0px"
-      },
-      "paint": {
-        "color": "rgb(0,0,0)",
-        "background": "rgba(0,0,0,0)",
-        "borderColor": "black",
-        "borderWidth": "0px",
-        "radius": "0px",
-        "shadow": "",
-        "opacity": "1"
-      }
-    },
-    "panel": {
+    "target": {
       "nodeId": 299,
       "nodeName": "VIEW",
       "attributes": {
@@ -114,96 +84,6 @@
       },
       "paint": {
         "color": "rgb(0,0,0)",
-        "background": "rgba(0,0,0,0)",
-        "borderColor": "black",
-        "borderWidth": "0px",
-        "radius": "0px",
-        "shadow": "",
-        "opacity": "1"
-      }
-    },
-    "keybindings": {
-      "nodeId": 304,
-      "nodeName": "VIEW",
-      "attributes": {
-        "class": "SettingsAdvancedRow SettingsAdvancedRow--keybindings"
-      },
-      "text": "",
-      "box": {
-        "x": 457,
-        "y": 150,
-        "width": 622,
-        "height": 104
-      },
-      "font": {
-        "family": "",
-        "size": "14px",
-        "weight": "normal",
-        "lineHeight": "",
-        "letterSpacing": "0px"
-      },
-      "paint": {
-        "color": "rgb(0,0,0)",
-        "background": "rgba(0,0,0,0)",
-        "borderColor": "black",
-        "borderWidth": "0px",
-        "radius": "0px",
-        "shadow": "",
-        "opacity": "1"
-      }
-    },
-    "recovery": {
-      "nodeId": 324,
-      "nodeName": "VIEW",
-      "attributes": {
-        "class": "SettingsAdvancedRecoveryDetails"
-      },
-      "text": "",
-      "box": {
-        "x": 469,
-        "y": 355,
-        "width": 490,
-        "height": 84
-      },
-      "font": {
-        "family": "",
-        "size": "14px",
-        "weight": "normal",
-        "lineHeight": "",
-        "letterSpacing": "0px"
-      },
-      "paint": {
-        "color": "rgb(0,0,0)",
-        "background": "rgba(0,0,0,0)",
-        "borderColor": "black",
-        "borderWidth": "0px",
-        "radius": "",
-        "shadow": "",
-        "opacity": "1"
-      }
-    },
-    "version": {
-      "nodeId": 338,
-      "nodeName": "TEXT",
-      "attributes": {
-        "class": "SettingsAdvancedVersion"
-      },
-      "text": "",
-      "box": {
-        "x": 995,
-        "y": 538,
-        "width": 72,
-        "height": 18
-      },
-      "font": {
-        "family": "",
-        "size": "12px",
-        "weight": "500",
-        "lineHeight": "18px",
-        "letterSpacing": "0px"
-      },
-      "paint": {
-        "color": "rgba(13,13,13,0.596078)",
         "background": "rgba(0,0,0,0)",
         "borderColor": "black",
         "borderWidth": "0px",

@@ -1,7 +1,7 @@
 {
   "client": "native",
   "stateId": "settings-advanced-dark-1440",
-  "buildSha256": "94dd2b181055e888401908b76f6ec80779c66409e1f1a4e8b5095576cc761cd6",
+  "buildSha256": "9c9046af0771ba420078a015f0d27b7dee4b019add7ab9a63c568245f5f69373",
   "snapshotSha256": "c5313f03838f0669fc1e8cb558bf7d2d04c86b479bebc3a1559472c740db95a5",
   "stateEcho": {
     "semanticRoute": "settings-advanced",
@@ -10,9 +10,9 @@
     "interactionState": "recovery-visible"
   },
   "identity": {
-    "rootPid": 58957,
+    "rootPid": 48578,
     "descendantPids": [
-      58957
+      48578
     ],
     "ownedPorts": [
       8904

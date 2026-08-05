@@ -1,0 +1,362 @@
+{
+  "version": 1,
+  "builds": {
+    "lynx": "a5ec04ab00b88e4389560a4ade6a3454df39c5ae9731c1aa940a759b8110f18e",
+    "native": "9c9046af0771ba420078a015f0d27b7dee4b019add7ab9a63c568245f5f69373"
+  },
+  "nativeBundlePath": "file:///Users/bytedance/github/synara/apps/lynx/dist/desktop/main.lynx.bundle",
+  "states": [
+    {
+      "id": "settings-profile-light-1280",
+      "directory": "settings-profile-current",
+      "semanticRoute": "settings-profile",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "default",
+      "images": {
+        "web": {
+          "width": 1280,
+          "height": 820
+        },
+        "lynx": {
+          "width": 1280,
+          "height": 820
+        },
+        "native": {
+          "width": 2560,
+          "height": 1576
+        }
+      }
+    },
+    {
+      "id": "settings-profile-dark-1440",
+      "directory": "settings-profile-dark-1440",
+      "semanticRoute": "settings-profile",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "default",
+      "images": {
+        "web": {
+          "width": 1440,
+          "height": 900
+        },
+        "lynx": {
+          "width": 1440,
+          "height": 900
+        },
+        "native": {
+          "width": 2880,
+          "height": 1736
+        }
+      }
+    },
+    {
+      "id": "settings-appearance-light-1280",
+      "directory": "settings-appearance-current",
+      "semanticRoute": "settings-appearance",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "default",
+      "images": {
+        "web": {
+          "width": 1280,
+          "height": 820
+        },
+        "lynx": {
+          "width": 1280,
+          "height": 820
+        },
+        "native": {
+          "width": 2560,
+          "height": 1576
+        }
+      }
+    },
+    {
+      "id": "settings-appearance-dark-1440",
+      "directory": "settings-appearance-dark-1440",
+      "semanticRoute": "settings-appearance",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "default",
+      "images": {
+        "web": {
+          "width": 1440,
+          "height": 900
+        },
+        "lynx": {
+          "width": 1440,
+          "height": 900
+        },
+        "native": {
+          "width": 2880,
+          "height": 1736
+        }
+      }
+    },
+    {
+      "id": "settings-appsnap-light-1280",
+      "directory": "settings-appsnap-current",
+      "semanticRoute": "settings-appsnap",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "unavailable",
+      "images": {
+        "web": {
+          "width": 1280,
+          "height": 820
+        },
+        "lynx": {
+          "width": 1280,
+          "height": 820
+        },
+        "native": {
+          "width": 2560,
+          "height": 1576
+        }
+      }
+    },
+    {
+      "id": "settings-appsnap-dark-1440",
+      "directory": "settings-appsnap-dark-1440",
+      "semanticRoute": "settings-appsnap",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "unavailable",
+      "images": {
+        "web": {
+          "width": 1440,
+          "height": 900
+        },
+        "lynx": {
+          "width": 1440,
+          "height": 900
+        },
+        "native": {
+          "width": 2880,
+          "height": 1736
+        }
+      }
+    },
+    {
+      "id": "settings-worktrees-light-1280",
+      "directory": "settings-worktrees-current",
+      "semanticRoute": "settings-worktrees",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "empty",
+      "images": {
+        "web": {
+          "width": 1280,
+          "height": 820
+        },
+        "lynx": {
+          "width": 1280,
+          "height": 820
+        },
+        "native": {
+          "width": 2560,
+          "height": 1576
+        }
+      }
+    },
+    {
+      "id": "settings-worktrees-dark-1440",
+      "directory": "settings-worktrees-dark-1440",
+      "semanticRoute": "settings-worktrees",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "empty",
+      "images": {
+        "web": {
+          "width": 1440,
+          "height": 900
+        },
+        "lynx": {
+          "width": 1440,
+          "height": 900
+        },
+        "native": {
+          "width": 2880,
+          "height": 1736
+        }
+      }
+    },
+    {
+      "id": "settings-archived-light-1280",
+      "directory": "settings-archived-current",
+      "semanticRoute": "settings-archived",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "empty",
+      "images": {
+        "web": {
+          "width": 1280,
+          "height": 820
+        },
+        "lynx": {
+          "width": 1280,
+          "height": 820
+        },
+        "native": {
+          "width": 2560,
+          "height": 1576
+        }
+      }
+    },
+    {
+      "id": "settings-archived-dark-1440",
+      "directory": "settings-archived-dark-1440",
+      "semanticRoute": "settings-archived",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "empty",
+      "images": {
+        "web": {
+          "width": 1440,
+          "height": 900
+        },
+        "lynx": {
+          "width": 1440,
+          "height": 900
+        },
+        "native": {
+          "width": 2880,
+          "height": 1736
+        }
+      }
+    },
+    {
+      "id": "settings-skills-light-1280",
+      "directory": "settings-skills-current",
+      "semanticRoute": "settings-skills",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "populated",
+      "images": {
+        "web": {
+          "width": 1280,
+          "height": 820
+        },
+        "lynx": {
+          "width": 1280,
+          "height": 820
+        },
+        "native": {
+          "width": 2560,
+          "height": 1576
+        }
+      }
+    },
+    {
+      "id": "settings-skills-dark-1440",
+      "directory": "settings-skills-dark-1440",
+      "semanticRoute": "settings-skills",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "populated",
+      "images": {
+        "web": {
+          "width": 1440,
+          "height": 900
+        },
+        "lynx": {
+          "width": 1440,
+          "height": 900
+        },
+        "native": {
+          "width": 2880,
+          "height": 1736
+        }
+      }
+    },
+    {
+      "id": "settings-integrations-light-1280",
+      "directory": "settings-integrations-current",
+      "semanticRoute": "settings-integrations",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "empty-connections",
+      "images": {
+        "web": {
+          "width": 1280,
+          "height": 820
+        },
+        "lynx": {
+          "width": 1280,
+          "height": 820
+        },
+        "native": {
+          "width": 2560,
+          "height": 1576
+        }
+      }
+    },
+    {
+      "id": "settings-integrations-dark-1440",
+      "directory": "settings-integrations-dark-1440",
+      "semanticRoute": "settings-integrations",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "empty-connections",
+      "images": {
+        "web": {
+          "width": 1440,
+          "height": 900
+        },
+        "lynx": {
+          "width": 1440,
+          "height": 900
+        },
+        "native": {
+          "width": 2880,
+          "height": 1736
+        }
+      }
+    },
+    {
+      "id": "settings-advanced-light-1280",
+      "directory": "settings-advanced-current",
+      "semanticRoute": "settings-advanced",
+      "theme": "light",
+      "density": "comfortable",
+      "interactionState": "recovery-visible",
+      "images": {
+        "web": {
+          "width": 1280,
+          "height": 820
+        },
+        "lynx": {
+          "width": 1280,
+          "height": 820
+        },
+        "native": {
+          "width": 2560,
+          "height": 1576
+        }
+      }
+    },
+    {
+      "id": "settings-advanced-dark-1440",
+      "directory": "settings-advanced-dark-1440",
+      "semanticRoute": "settings-advanced",
+      "theme": "dark",
+      "density": "comfortable",
+      "interactionState": "recovery-visible",
+      "images": {
+        "web": {
+          "width": 1440,
+          "height": 900
+        },
+        "lynx": {
+          "width": 1440,
+          "height": 900
+        },
+        "native": {
+          "width": 2880,
+          "height": 1736
+        }
+      }
+    }
+  ]
+}

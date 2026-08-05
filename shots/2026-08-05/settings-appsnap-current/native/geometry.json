@@ -62,37 +62,7 @@
         "opacity": "1"
       }
     },
-    "header": {
-      "nodeId": 286,
-      "nodeName": "VIEW",
-      "attributes": {
-        "class": "SharedSettingsPanelHeader"
-      },
-      "text": "",
-      "box": {
-        "x": 456,
-        "y": 32,
-        "width": 624,
-        "height": 54
-      },
-      "font": {
-        "family": "",
-        "size": "14px",
-        "weight": "normal",
-        "lineHeight": "",
-        "letterSpacing": "0px"
-      },
-      "paint": {
-        "color": "rgb(0,0,0)",
-        "background": "rgba(0,0,0,0)",
-        "borderColor": "black",
-        "borderWidth": "0px",
-        "radius": "0px",
-        "shadow": "",
-        "opacity": "1"
-      }
-    },
-    "panel": {
+    "target": {
       "nodeId": 299,
       "nodeName": "VIEW",
       "attributes": {
@@ -120,103 +90,6 @@
         "radius": "0px",
         "shadow": "",
         "opacity": "1"
-      }
-    },
-    "hero": {
-      "nodeId": 300,
-      "nodeName": "VIEW",
-      "attributes": {
-        "class": "SettingsAppSnapHero"
-      },
-      "text": "",
-      "box": {
-        "x": 456,
-        "y": 118,
-        "width": 624,
-        "height": 130
-      },
-      "font": {
-        "family": "",
-        "size": "14px",
-        "weight": "normal",
-        "lineHeight": "",
-        "letterSpacing": "0px"
-      },
-      "paint": {
-        "color": "rgb(0,0,0)",
-        "background": "rgba(0,0,0,0)",
-        "borderColor": "black",
-        "borderWidth": "0px",
-        "radius": "",
-        "shadow": "",
-        "opacity": "1"
-      }
-    },
-    "firstRow": {
-      "nodeId": 313,
-      "nodeName": "VIEW",
-      "attributes": {
-        "class": "SettingsAppSnapRow SettingsAppSnapRow--enable"
-      },
-      "text": "",
-      "box": {
-        "x": 457,
-        "y": 304,
-        "width": 622,
-        "height": 84
-      },
-      "font": {
-        "family": "",
-        "size": "14px",
-        "weight": "normal",
-        "lineHeight": "",
-        "letterSpacing": "0px"
-      },
-      "paint": {
-        "color": "rgb(0,0,0)",
-        "background": "rgba(0,0,0,0)",
-        "borderColor": "black",
-        "borderWidth": "0px",
-        "radius": "0px",
-        "shadow": "",
-        "opacity": "1"
-      }
-    },
-    "disabled": {
-      "nodeId": 318,
-      "nodeName": "VIEW",
-      "attributes": {
-        "aria-label": "Enable AppSnap",
-        "aria-checked": "false",
-        "aria-disabled": "true",
-        "accessibility-element": "true",
-        "accessibility-label": "Enable AppSnap",
-        "accessibility-value": "Off",
-        "accessibility-state": "",
-        "class": "SettingsAppSnapDisabledSwitch"
-      },
-      "text": "",
-      "box": {
-        "x": 1035,
-        "y": 337,
-        "width": 32,
-        "height": 18
-      },
-      "font": {
-        "family": "",
-        "size": "14px",
-        "weight": "normal",
-        "lineHeight": "",
-        "letterSpacing": "0px"
-      },
-      "paint": {
-        "color": "rgb(0,0,0)",
-        "background": "rgba(13,13,13,0.0392157)",
-        "borderColor": "black",
-        "borderWidth": "0px",
-        "radius": "0px",
-        "shadow": "",
-        "opacity": "0.5"
       }
     }
   }

@@ -6,9 +6,9 @@ Status: retained Web, Lynx-for-Web, and exact-owned Native evidence
 
 - Source base: `cfdd6db4`
 - Lynx-for-Web bundle SHA-256:
-  `f14f75c4b231e4c2e45a9658a032e41d587db4cbc6826eb90a58d1093d4a04ab`
+  `a5ec04ab00b88e4389560a4ade6a3454df39c5ae9731c1aa940a759b8110f18e`
 - Native bundle SHA-256:
-  `eb3aaa2e47f3c48457d9a108ad878cc9d07748c68a002c5f21416b5de507e1e1`
+  `9c9046af0771ba420078a015f0d27b7dee4b019add7ab9a63c568245f5f69373`
 - SQLite online-backup snapshot SHA-256:
   `c8dc59aee6d79dd9c166c410beacd9ea325fcadd686b13e2ac6ceae45eca93d6`
 - Route: Settings Profile
