@@ -1,6 +1,6 @@
 # Settings fidelity continuation audit
 
-Status: incomplete — current-head implementation complete, final matrix and
+Status: incomplete — current-head implementation and final matrix complete,
 heavy verification still pending
 
 Updated: 2026-08-05
@@ -36,7 +36,7 @@ complete.
 | Style audit current | strict check passes; 98.07% weighted coverage | PASS |
 | Exact-owned Native identity and cleanup for every new page | per-page `native/capture.json`, empty Native consoles, byte-exact KV restoration | PASS |
 | Current-head evidence is not Web fallback masquerading as Lynx | six affected Settings cells recaptured from staged bundle with stable Lynx host URL | PASS |
-| New Settings pages cover light/dark × 1280/1440 | only light/1280 retained for eight new/current pages | **MISSING** |
+| New Settings pages cover light/dark × 1280/1440 | light/1280 plus dark/1440 retained for eight continuation pages | PASS |
 | Populated destructive/mutation paths are visually certified without fabricated data | logic/RPC tests cover unavailable canonical snapshot states; no SQLite fixtures used | PARTIAL — behavior covered, visual populated states not all available |
 | Full final heavy pass | AGENTS requires `bun fmt`, `bun lint`, `bun typecheck`; current conversation does not explicitly authorize running them | **BLOCKED BY INSTRUCTION** |
 | Worktree clean and local HEAD equals origin | only isolated runtime directories may remain; final audit commit not yet pushed | PENDING |
@@ -92,19 +92,16 @@ The retained replacement cells:
 
 ## Remaining work
 
-1. Capture the continuation Settings pages in dark mode and at `1440×900`
-   against the same current-head bundle/snapshot.
-2. Review those cells for typography/material/row-rhythm regressions and close
-   any P0/P1 residuals.
-3. Run the final heavy pass only after explicit authorization permits
+1. Run the final heavy pass only after explicit authorization permits
    `bun fmt`, `bun lint`, and `bun typecheck`.
-4. Re-run this prompt-to-artifact audit, verify local/remote parity and cleanup,
+2. Re-run this prompt-to-artifact audit, verify local/remote parity and cleanup,
    then mark the active goal complete only if no MISSING/PARTIAL/PENDING rows
    remain.
 
 ## Current disposition
 
-The implementation objective has materially advanced and every canonical
-Settings section now has a real Lynx owner. The active thread goal is **not yet
-complete** because current-head dark/1440 evidence and the required heavy pass
-are still missing.
+The implementation objective has materially advanced, every canonical
+Settings section has a real Lynx owner, and the continuation pages now have
+light/1280 and dark/1440 three-client evidence. The active thread goal is **not
+yet complete** because the required heavy pass is still blocked by the current
+instruction boundary.

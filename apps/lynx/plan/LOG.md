@@ -5316,3 +5316,19 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - 详细prompt→artifact checklist位于
   `apps/lynx/plan/reports/settings-fidelity-continuation-audit.md`；active goal保持
   incomplete，下一步补dark/1440 matrix并等待heavy-check授权。
+
+## 2026-08-05 — Settings continuation dark/1440 matrix
+
+- 使用同一snapshot与最终AppSnap bundle，完成Profile/Appearance/AppSnap/Worktrees/
+  Archived/Skills/Integrations/Advanced × Web/Lynx-for-Web/Native共24 cells。
+- Web与Lynx-for-Web均为1440×900 DPR1；Native outer 1440×900、raw 2880×1736
+  DPR2。每个Native cell绑定PID-derived exact client、dark root、target role与
+  empty warning/error console。
+- Web direct-navigation两格发生system-theme remount race，preflight判为harness failure；
+  通过同一Appearance dark state下的rendered nav重拍AppSnap/Archived后，8/8 Web
+  cells均dark true且route heading正确。
+- Native batch只在进程停止后修改owned KV/window-state；batch结束时KV runtime rewrite
+  与expected dark state做递归canonical semantic comparison，确认仅key-order变化后
+  byte-exact恢复。原KV `f53a83aa…`、window `2dd961d3…`。
+- dark/1440矩阵关闭completion audit的MISSING row；当前唯一completion blocker是
+  AGENTS要求且当前对话未明确授权的`bun fmt/lint/typecheck` heavy pass。
