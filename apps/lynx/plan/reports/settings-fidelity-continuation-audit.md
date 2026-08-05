@@ -103,8 +103,8 @@ complete.
 | Worktrees rows and empty state match Web density and typography | real empty state is exact 624×70 with 24×16 padding, 10px radius, and 14px/20px copy; populated rows have no artificial 96px minimum, mono paths truncate, and linked conversation titles use regular description typography | PASS — current-head empty-state visual proof; populated rows source-tested |
 | Archived empty and list states match Web hierarchy | real empty state is exact 624×182 with 40×20 padding, dashed border, explicit 10px radius, generated 20px Archive icon, and 14px/20px copy; populated rows no longer force a 60px minimum | PASS — current-head visual proof for empty state; populated row source-tested |
 | Skills rows match Web density and provider identity | real 114-row catalog uses separate main/control and supplemental metadata owners; source/path is exact 11px/16.5px, switches share Web anchors, previous-row bottom dividers match `divide-y`, and overlapping 16px provider-copy badges use mapped 12px SVGs or neutral fallbacks | PASS — current-head populated visual proof |
-| Integrations rows and actions match Web content-driven geometry | form/connection/setup/empty rows no longer force 79px/58px minima and connected-agent action groups self-size instead of reserving 190px | PASS |
-| Integrations disclosures reuse shared motion | project picker and advanced permissions use shared 220ms presence/content motion; Review publishes expanded state and a generated rotating 14px chevron | PASS |
+| Integrations rows and actions match Web content-driven geometry | real form rows use exact 20px title lines, 12/18/500 titles, previous-row bottom dividers, and Web bounds; connection/setup/empty rows remain content-driven and action groups self-size | PASS — current-head real form proof |
+| Integrations disclosures reuse shared motion | rendered Access all opens two real projects; Review opens three permissions; both use shared 220ms presence/content motion and restore cleanly | PASS — current-head interaction proof |
 | Models includes complete Git-writing and custom-model workflows | Git writing row is terminal with exact 20px title line and no trailing divider; custom models use shared validation, canonical server settings, eight-provider editor, Add/Enter/remove/reset, immediate picker refresh, and exact Web geometry | PASS — current-head visual and real add-picker-remove proof |
 | Shared Button icon-label spacing matches Web | default/sm/xs gaps are 8/6/4px; mixed Appearance labels retain `LxButton__text` styling | PASS |
 | Settings large card radius resolves at runtime | the Lynx root defines shared `--radius-lg: 10px`; AppSnap, Skills, and Worktrees representative surfaces compute to 10px, while Advanced/Integrations consumers are statically covered | PASS — current-head runtime and consumer audit |
@@ -158,6 +158,14 @@ The retained replacement cells:
 
 ## Verification results
 
+- Current-head Integrations proof covers exact four-row form geometry, two
+  canonical project choices, three advanced permissions, and both disclosure
+  exit lifecycles. Access-all state was restored and the snapshot hash stayed
+  unchanged. Evidence is under
+  `shots/2026-08-05/integrations-current-head/`.
+- Integrations focused rerun: 1 file, 3/3 tests; Lynx-for-Web and
+  Native/Desktop builds pass. Bundles: Lynx-for-Web `d206de90…`; Native
+  `07d7db5e…`.
 - Current-head Advanced proof covers exact Keybindings/Recovery row geometry,
   24px actions, supplemental metadata, and the real disclosure lifecycle.
   Open details match Web at `469/394.5/598/42`; close retains the motion node

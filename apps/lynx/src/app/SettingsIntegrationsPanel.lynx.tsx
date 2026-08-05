@@ -252,9 +252,11 @@ export function SettingsIntegrationsPanel() {
         </SettingsSection>
       ) : (
         <SettingsSection title="Connect a coding agent">
-          <view className="SettingsIntegrationsRow">
+          <view className="SettingsIntegrationsRow SettingsIntegrationsRow--continued">
             <view className="SettingsIntegrationsRowCopy">
-              <text className="SettingsIntegrationsRowTitle">Name</text>
+              <view className="SettingsIntegrationsTitleLine">
+                <text className="SettingsIntegrationsRowTitle">Name</text>
+              </view>
               <text className="SettingsIntegrationsRowDescription">
                 How this connection appears in Synara. Works with Codex,
                 Claude, and any other MCP-capable agent.
@@ -269,11 +271,13 @@ export function SettingsIntegrationsPanel() {
             />
           </view>
 
-          <view className="SettingsIntegrationsRow SettingsIntegrationsRow--divided">
+          <view className="SettingsIntegrationsRow SettingsIntegrationsRow--continued">
             <view className="SettingsIntegrationsRowCopy">
-              <text className="SettingsIntegrationsRowTitle">
-                Access all of Synara
-              </text>
+              <view className="SettingsIntegrationsTitleLine">
+                <text className="SettingsIntegrationsRowTitle">
+                  Access all of Synara
+                </text>
+              </view>
               <text className="SettingsIntegrationsRowDescription">
                 The agent can discover and work in every project, including
                 ones you add later. Turn off to pick specific projects.
@@ -315,11 +319,13 @@ export function SettingsIntegrationsPanel() {
             />
           </view>
 
-          <view className="SettingsIntegrationsRow SettingsIntegrationsRow--divided">
+          <view className="SettingsIntegrationsRow SettingsIntegrationsRow--continued">
             <view className="SettingsIntegrationsRowCopy">
-              <text className="SettingsIntegrationsRowTitle">
-                Advanced permissions
-              </text>
+              <view className="SettingsIntegrationsTitleLine">
+                <text className="SettingsIntegrationsRowTitle">
+                  Advanced permissions
+                </text>
+              </view>
               <text className="SettingsIntegrationsRowDescription">
                 Optional access for existing tasks, shared checkouts, or
                 execution without approvals. The safe defaults are recommended.
@@ -399,11 +405,13 @@ export function SettingsIntegrationsPanel() {
             </Button>
           </view>
 
-          <view className="SettingsIntegrationsRow SettingsIntegrationsRow--divided">
+          <view className="SettingsIntegrationsRow">
             <view className="SettingsIntegrationsRowCopy">
-              <text className="SettingsIntegrationsRowTitle">
-                Create connection
-              </text>
+              <view className="SettingsIntegrationsTitleLine">
+                <text className="SettingsIntegrationsRowTitle">
+                  Create connection
+                </text>
+              </view>
               <text className="SettingsIntegrationsRowDescription">
                 The connection lasts 30 days and can be revoked at any time.
                 The next screen gives one prompt to paste into your agent.

@@ -58,10 +58,30 @@ describe('Settings Integrations fidelity', () => {
       new URL('./settings-integrations-panel.css', import.meta.url),
       'utf8'
     );
+    const panelSource = readFileSync(
+      new URL('./SettingsIntegrationsPanel.lynx.tsx', import.meta.url),
+      'utf8'
+    );
 
     expect(styles).toMatch(
       /\.SettingsIntegrationsPanel\s*\{[^}]*gap:\s*24px;/s
     );
+    expect(panelSource).toContain(
+      'className="SettingsIntegrationsTitleLine"'
+    );
+    expect(panelSource).toContain(
+      'SettingsIntegrationsRow--continued'
+    );
+    expect(styles).toMatch(
+      /\.SettingsIntegrationsTitleLine\s*\{[^}]*min-height:\s*20px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsIntegrationsRowTitle,[^}]*\{[^}]*font-weight:\s*500;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsIntegrationsRow--continued\s*\{[^}]*border-bottom:\s*1px solid var\(--border\);/s
+    );
+    expect(styles).not.toContain('SettingsIntegrationsRow--divided');
     expect(styles).toMatch(
       /\.SettingsIntegrationsRow,\s*\.SettingsIntegrationsConnection\s*\{[^}]*justify-content:\s*space-between;/s
     );

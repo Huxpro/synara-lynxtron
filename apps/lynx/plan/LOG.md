@@ -5807,3 +5807,14 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   `469/394.5/598/42`；close后closed motion+aria-hidden保留220ms再unmount。
   focused suite **3/3**，Lynx-for-Web/Native builds通过；证据在
   `shots/2026-08-05/advanced-disclosure-current/`。
+- current-head Integrations真实snapshot覆盖完整connection form、2个canonical projects、
+  3个advanced permissions与empty connected-agent list。Lynx fixed form rows此前title
+  只有18px/weight400，separator归后行top；Web为20px title line、12/18/500与前行
+  bottom divide-y，导致前三行各少2px并累计漂移。补
+  `SettingsIntegrationsTitleLine`、500 weight与continued bottom divider后，Name
+  `457/151/622/79`、Access `457/230/622/79`、Advanced `457/309/622/79`、
+  Create `457/388/622/78`及内部anchors逐项exact。真实关闭Access all打开2-project
+  grid，Review打开3 permissions；close保留closed motion/aria-hidden 220ms后unmount，
+  Access all最终恢复且snapshot hash不变。focused suite **3/3**，
+  Lynx-for-Web/Native builds通过；证据在
+  `shots/2026-08-05/integrations-current-head/`。
