@@ -5444,3 +5444,6 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - Search内部metrics继续对齐Web `SearchInput` source：icon left 10px、text inset
   32px、end inset 10px，替换Lynx旧9/28/8值；不改变已验证28px outer geometry。
   focused tests **3/3**，两端build通过。
+- Search results补齐Web shared nested-list `gap-0.5`即2px。真实broad query `e`
+  返回12条，前三个56px group y=98/156/214，pitch稳定58px。focused tests
+  **4/4**，两端build通过。

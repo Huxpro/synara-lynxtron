@@ -54,6 +54,10 @@ The no-match state now reuses the Web section-label identity instead of the old
 11px scaffold style. A real `zzzz-no-setting` query resolved to a 243x26 row at
 x=6/y=98 with 12px/400/18px typography, 4px 8px padding, and 0.58 opacity.
 
+Multiple result groups now reuse Web's shared nested-list 2px gap. A real broad
+`e` query returned 12 results; the first three 56px groups started at y=98,
+y=156, and y=214, proving a 58px pitch.
+
 ## Identity
 
 - Lynx-for-Web bundle:
@@ -66,6 +70,7 @@ x=6/y=98 with 12px/400/18px typography, 4px 8px padding, and 0.58 opacity.
   `7cf52771…`.
 - Internal-metric follow-up bundles: Lynx-for-Web `aa3f2d78…`; Native
   `676c5594…`.
+- Multi-result gap bundles: Lynx-for-Web `52d51dda…`; Native `cf15659a…`.
 - Focused search/chrome suites: 6/6.
 - Web and Native/Desktop production builds passed with only the existing CSS
   and optional `ws` native-module warnings.

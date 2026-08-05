@@ -765,8 +765,11 @@
 }
 
 .SettingsSearchResults {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   max-height: 610px;
+  gap: 2px;
 }
 
 .SettingsSearchResult {

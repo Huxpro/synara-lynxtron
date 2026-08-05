@@ -19,6 +19,9 @@ describe('Lynx Settings search result anatomy', () => {
     expect(styles).toMatch(
       /\.SettingsSearchResultTitleRow\s*\{[^}]*padding-left:\s*32px;/s
     );
+    expect(styles).toMatch(
+      /\.SettingsSearchResults\s*\{[^}]*gap:\s*2px;/s
+    );
     expect(styles).not.toMatch(
       /\.SettingsSearchResultSectionIcon\s*\{[^}]*(?:border|border-radius):/s
     );
