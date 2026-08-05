@@ -100,7 +100,7 @@ complete.
 | Notifications reflects actual Lynx runtime capability | no toast/OS notification consumer exists; both stored preferences remain visible/resettable but controls are disabled, non-focusable, aria-disabled, and carry explicit per-row unavailable status without shifting their Web-common switch anchors | PASS — honest capability delta and current-head visual proof |
 | AppSnap unavailable capability rows preserve Web anatomy | unavailable status follows the common main layout, disabled switch shares the Web baseline, all four rows are content-driven with 20px title lines and previous-row bottom dividers | PASS — honest capability delta and current-head visual proof |
 | Advanced rows and recovery details match shared Settings/disclosure behavior | keybindings/recovery main layouts, 11/16.5 metadata, and 24px actions match Web; controlled `What this does` uses a 16px trigger/chevron, exact 42px inset details, and shared 220ms motion/presence | PASS — current-head visual and interaction proof |
-| Profile stats, heatmap, and model rows match Web identity | identity uses the Web 6px name/handle subgroup and 20/28 + 24/32 typography; stat values/labels use 14px/20px in an exact 18px-radius card; heatmap uses Web weekday pads, 40 week columns, 15.0625px cells, 5px radius, and exact month anchors; model rows retain 14px mapped provider SVGs or neutral fallbacks with 8px gaps | PASS — current-head visual proof for real identity/stats/heatmap/empty state; populated model branch source-tested |
+| Profile stats, heatmap, and model rows match Web identity | identity/stats/heatmap remain exact; an isolated canonical 2:1 turn mix now proves the populated two-column model grid, 14px provider icons, 8px icon/name gap, 14/20 copy, 6px line/track rhythm, and 4px tracks across Browser and exact-owned Native | PASS — current-head populated proof in `shots/2026-08-06/profile-models-populated-current/` |
 | Worktrees rows and empty state match Web density and typography | empty state remains exact 624×70; canonical `git.createWorktree` now proves the populated row, exact 540.109375px copy/path width, 11/18 conversation label, shared 4px list rhythm, and 24px Delete action across Browser and exact-owned Native | PASS — current-head populated proof in `shots/2026-08-06/worktrees-populated-current/` |
 | Archived empty and list states match Web hierarchy | empty state remains exact 624×182; real canonical create→archive proof now covers the populated title/description plus Restore/Delete action row with exact 24px, 10/15 xs controls and 8px action gap | PASS — current-head Browser and exact-owned Native populated proof in `shots/2026-08-06/archived-populated-current/` |
 | Skills rows match Web density and provider identity | real 114-row catalog uses separate main/control and supplemental metadata owners; source/path is exact 11px/16.5px, switches share Web anchors, previous-row bottom dividers match `divide-y`, and overlapping 16px provider-copy badges use mapped 12px SVGs or neutral fallbacks | PASS — current-head populated visual proof |
@@ -411,6 +411,18 @@ The retained replacement cells:
   `2560x1576` capture retain the same internal row geometry with an empty
   console. Evidence is under
   `shots/2026-08-06/worktrees-populated-current/`.
+- Current-head populated Profile model usage was produced in a byte-cloned,
+  disposable server home through one canonical thread creation and three
+  canonical turn starts. The stats RPC returned a real 2:1 split:
+  `gpt-5.6-sol` 66.7% and `gpt-5.5` 33.3%. The mutated server and Native
+  clones were deleted after capture; the normal baseline hashes never changed.
+- The retained natural `1440x900` cell keeps both model rows visible at
+  `scrollTop=0`. Web/Lynx-for-Web model items are exact `336x30` columns with
+  a 48px gap, 14px provider icons, 20px lines, 6px line/track rhythm, and
+  `336x4` tracks. Exact-owned Native bundle `2b0aac94…`, root PID `5771`,
+  PID-derived `localhost:8904/session 1`, and `2880x1736` frame retain the same
+  geometry with an empty console. No product patch was required; evidence is
+  under `shots/2026-08-06/profile-models-populated-current/`.
 - Settings focused continuation: 14 files, 50/50 tests.
 - AppSnap final focused check: 1 file, 2/2 tests.
 - Canonical taxonomy/explicit-owner gate: 1 file, 11/11 tests.

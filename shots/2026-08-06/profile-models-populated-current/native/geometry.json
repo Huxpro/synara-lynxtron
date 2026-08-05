@@ -1,0 +1,307 @@
+{
+  "client": "native",
+  "stateId": "profile-models-populated-native-1440",
+  "roles": {
+    "root": {
+      "nodeId": 170,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsPage SettingsPage--theme-light"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 868
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "profile": {
+      "nodeId": 297,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsProfile"
+      },
+      "text": "",
+      "box": {
+        "x": 488,
+        "y": 32,
+        "width": 720,
+        "height": 833
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "section": {
+      "nodeId": 321,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsProfileSection SettingsProfileModelUsage"
+      },
+      "text": "",
+      "box": {
+        "x": 488,
+        "y": 803,
+        "width": 720,
+        "height": 62
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "models": {
+      "nodeId": 323,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsProfileModels"
+      },
+      "text": "",
+      "box": {
+        "x": 488,
+        "y": 835,
+        "width": 720,
+        "height": 30
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "model": {
+      "nodeId": 761,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsProfileModel"
+      },
+      "text": "",
+      "box": {
+        "x": 488,
+        "y": 835,
+        "width": 336,
+        "height": 30
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "line": {
+      "nodeId": 762,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsProfileModelLine"
+      },
+      "text": "",
+      "box": {
+        "x": 488,
+        "y": 835,
+        "width": 336,
+        "height": 20
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "identity": {
+      "nodeId": 763,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsProfileModelIdentity"
+      },
+      "text": "",
+      "box": {
+        "x": 488,
+        "y": 835,
+        "width": 281,
+        "height": 20
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "name": {
+      "nodeId": 765,
+      "nodeName": "TEXT",
+      "attributes": {
+        "maxlines": "1",
+        "class": "SettingsProfileModelName"
+      },
+      "text": "",
+      "box": {
+        "x": 510,
+        "y": 835,
+        "width": 259,
+        "height": 20
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "20px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "percent": {
+      "nodeId": 766,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "SettingsProfileModelPercent"
+      },
+      "text": "",
+      "box": {
+        "x": 781,
+        "y": 835,
+        "width": 43,
+        "height": 20
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "20px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgba(13,13,13,0.596078)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "track": {
+      "nodeId": 769,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsProfileModelTrack"
+      },
+      "text": "",
+      "box": {
+        "x": 488,
+        "y": 861,
+        "width": 336,
+        "height": 4
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(13,13,13,0.0392157)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

@@ -5973,3 +5973,27 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   `f53a83aa…`、window `2dd961d3…` byte-exact。focused Worktrees+Archived **6/6**、
   Worktrees final **3/3**，configured两端build通过。证据在
   `shots/2026-08-06/worktrees-populated-current/`。
+
+## 2026-08-06 — current-head Profile populated model usage
+
+- Profile populated models此前只有source contract。为不污染lifetime stats，byte-clone
+  `.p10-view`到独立60463 server，通过canonical `thread.create`和3个
+  `thread.turn.start`生成真实2:1 model mix；`stats.getProfileStats`返回
+  `gpt-5.6-sol` 2 turns/66.7%、`gpt-5.5` 1 turn/33.3%。clone无可执行Codex CLI，
+  provider delivery失败/后续quarantine发生在turn-start event durable acceptance之后；
+  Profile按真实user-originated turn event统计，未直接写SQLite。
+- 1280×820首个diagnostic screenshot中Model usage在viewport下方，按evidence gate拒绝；
+  retained改为标准natural 1440×900 DPR1，Web/Lynx scrollTop均0，两条row与tracks直接
+  可见。两端item exact `336×30`，columns gap48，icon14×14，line336×20，
+  track336×4，line→track gap6。Web identity按文字intrinsic width，Lynx identity flex；
+  name origin、right edge、percentage owner、truncation与track geometry一致，percent
+  glyph width差仅font rasterization，不patch CSS。
+- exact-owned Native configured bundle `2b0aac94…`，1440×900 outer→root1440×868/
+  raw2880×1736，root PID5771，PID-derived localhost:8904/session1。section
+  `488/803/720/62`、models `488/835/720/30`、first item `488/835/336/30`、
+  line336×20、track336×4，console 0；frame中两条model与percentage/track均可见。
+- mutated server clone与独立Native user-data clone完整删除；正常SQLite
+  `cd3e1e9e…`、settings `d221bb25…`、KV `f53a83aa…`、window `2dd961d3…`全程
+  byte-exact。Web production 8,943 modules、configured Lynx-for-Web与
+  Native/Desktop builds通过。该切片只补真实证据/审计，无产品代码churn；证据在
+  `shots/2026-08-06/profile-models-populated-current/`。
