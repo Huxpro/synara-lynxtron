@@ -5894,3 +5894,8 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   rendered reset恢复preference=true；新session advisories cache尚未刷新而暂显
   `No provider updates detected`，未误报为status refresh结果。server停止后settings
   revision写入恢复原始bytes，SQLite不变。Providers strict verifier扩至**18/18**。
+- provider picker与update filtering补真实联动：Lynx rendered `Show Claude` switch关闭后，
+  两处summary从3→2，Claude update row消失而OpenCode/Pi保留，picker显示
+  `1 provider hidden`，local storage为`hiddenProviders:[claudeAgent]`；rendered reset
+  恢复Claude/3 updates/All providers visible与空hidden list。server settings/SQLite
+  全程不变。Providers strict verifier扩至**19/19**。

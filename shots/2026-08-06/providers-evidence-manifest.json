@@ -341,6 +341,26 @@
         "toolActions.2": "Update Droid",
         "reset": true
       }
+    },
+    {
+      "id": "providers-hidden-claude-lynx",
+      "kind": "browser",
+      "client": "lynx",
+      "buildSha256": "52b92766573497209b59db06104c536f23ceb8a177bf09a6bcaca942094a7c5b",
+      "image": "providers-hidden-filter/hidden.png",
+      "imageSha256": "2c00dc41a30efb2845c12dc5019d4b49a8ebaa228a8d839ed1d20b0048297ecc",
+      "dimensions": { "width": 1280, "height": 820 },
+      "geometry": "providers-hidden-filter/hidden.json",
+      "errors": "providers-hidden-filter/errors.txt",
+      "expect": {
+        "statuses.0": "2 updates available",
+        "statuses.1": "2 updates available",
+        "rows.0": "OpenCode",
+        "rows.1": "Pi",
+        "pickerStatus": "1 provider hidden",
+        "reset": true,
+        "storageValues.0": "{\"hiddenProviders\":[\"claudeAgent\"],\"providerOrder\":[\"codex\",\"claudeAgent\",\"cursor\",\"antigravity\",\"grok\",\"droid\",\"kilo\",\"opencode\",\"pi\"]}"
+      }
     }
   ]
 }

@@ -109,9 +109,10 @@ complete.
 | Models includes complete Git-writing and custom-model workflows | Git writing row is terminal with exact 20px title line and no trailing divider; custom models use shared validation, canonical server settings, eight-provider editor, Add/Enter/remove/reset, immediate picker refresh, and exact Web geometry | PASS — current-head visual and real add-picker-remove proof |
 | Providers includes complete update and provider-tools workflows | `SettingsProviderToolsPanel.lynx.tsx`; real three-provider update list, nine CLI disclosures, docs, all Web override fields, canonical update/edit/reset RPCs, exact 44px tool rows, real edit-reset cleanup, and exact-owned Native closed/tools/open/focus evidence in `shots/2026-08-06/providers-native-current/` | PASS — current-head fast-loop, real mutation, and Native interaction proof; Native text entry/IME not claimed |
 | Providers current workflow covers dark / 1440 across all clients | `shots/2026-08-06/providers-dark-1440/`; Web/Lynx-for-Web exact 1440x900, Native exact 2880x1736, same real three-update snapshot, dark root, nine tool rows, empty page-error and Native console gates | PASS — current-head three-client matrix |
-| Providers current-head evidence is machine-verified | `providers-evidence.mjs` + `providers-evidence-manifest.json` validate 18 retained states across light fast-loop, Native workflows, dark/1440 matrix, OpenCode-specific editors, checks-off behavior, and navigation interaction paint; verifier locks PNG hashes/dimensions, builds, snapshot, PID-owned session URL, consoles, geometry, Native input/switch DOM, and pressed/focus styles | PASS — verifier 18/18; regression tests 3/3 |
+| Providers current-head evidence is machine-verified | `providers-evidence.mjs` + `providers-evidence-manifest.json` validate 19 retained states across light fast-loop, Native workflows, dark/1440 matrix, OpenCode-specific editors, checks-off and hidden-provider filtering, and navigation interaction paint; verifier locks PNG hashes/dimensions, builds, snapshot, PID-owned session URL, consoles, geometry, Native input/switch DOM, and pressed/focus styles | PASS — verifier 19/19; regression tests 3/3 |
 | OpenCode-specific provider overrides are rendered on all clients | Web/Lynx-for-Web/Native evidence in `shots/2026-08-06/providers-opencode-current/` covers binary path, server URL, password, and WebSocket switch without mutating values; Native locks text/text/password types, `readonly=false`, exact switch accessibility state, and empty console | PASS — provider-specific branch, no mutation |
 | Provider checks-off behavior matches Web and crosses the real server boundary | Lynx rendered switch mutation + Web readback in `shots/2026-08-06/providers-checks-off/`; two off summaries, hidden behind-latest list/actions, unknown-advisory actions retained, rendered reset restores preference, original settings/SQLite bytes restored | PASS — real mutation and cross-client proof |
+| Hidden providers filter update rows without changing server availability | rendered Claude visibility switch in `shots/2026-08-06/providers-hidden-filter/` changes both summaries 3→2 and removes only Claude; rendered reset restores Claude, 3 updates, and local `hiddenProviders: []`; server settings/SQLite unchanged | PASS — local projection and update-filter integration |
 | Shared Button icon-label spacing matches Web | default/sm/xs gaps are 8/6/4px; mixed Appearance labels retain `LxButton__text` styling | PASS |
 | Settings large card radius resolves at runtime | the Lynx root defines shared `--radius-lg: 10px`; AppSnap, Skills, and Worktrees representative surfaces compute to 10px, while Advanced/Integrations consumers are statically covered | PASS — current-head runtime and consumer audit |
 | Settings sidebar search matches Web intent | shared ranking/index, real Lynx input/results/selection/row targeting, canonical section icons, Web-owned horizontal gutter, Web/Lynx filtered evidence, Native default anatomy | PASS — Native filtered text entry not claimed |
@@ -329,10 +330,10 @@ The retained replacement cells:
   Desktop DevTool `mouseMoved` did not emit `mouseenter`, so hover remains
   CSS/source-covered rather than falsely Native-certified.
 - Providers evidence now has a dedicated strict manifest instead of relying on
-  the older 16-state Settings continuation manifest. The verifier covers 18
+  the older 16-state Settings continuation manifest. The verifier covers 19
   retained states and rejects image/hash/dimension, bundle/snapshot/session,
   console, geometry, disclosure, Native input/switch DOM, and pressed/focus
-  paint drift. Current verifier run passes 18/18; regression tests pass 3/3.
+  paint drift. Current verifier run passes 19/19; regression tests pass 3/3.
 - OpenCode-specific three-client proof closes the branch that Codex cannot
   cover. Lynx-for-Web opens a `596x429` row with `596x385` content, three
   `572x28` fields, and a `32x20` off switch. Native exposes the same four labels,
@@ -345,6 +346,11 @@ The retained replacement cells:
   safe unknown-advisory Update actions and exposes the real reset. The rendered
   reset restores the preference, and original settings/SQLite bytes are
   preserved.
+- Provider visibility now has a rendered integration proof: hiding Claude in
+  the local picker changes both update summaries from 3 to 2 and removes only
+  Claude from the behind-latest list while preserving OpenCode/Pi. The rendered
+  reset restores all three rows and canonical empty `hiddenProviders` storage;
+  server settings and SQLite never change.
 - Settings focused continuation: 14 files, 50/50 tests.
 - AppSnap final focused check: 1 file, 2/2 tests.
 - Canonical taxonomy/explicit-owner gate: 1 file, 11/11 tests.
