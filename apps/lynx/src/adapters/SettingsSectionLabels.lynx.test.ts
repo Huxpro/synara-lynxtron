@@ -71,13 +71,22 @@ describe('Lynx Settings section labels', () => {
       '<OpenAIProviderIcon provider={snapshot.provider} />'
     );
     expect(usageSource).toContain(
-      "if ((snapshot.status ?? 'ok') === 'ok') return null;"
+      "if ((snapshot.status ?? 'ok') === 'ok') return snapshot.planName ?? null;"
     );
     expect(usageStyles).toMatch(
       /\.SettingsUsageStatus\s*\{[^}]*font-size:\s*11px;[^}]*font-weight:\s*500;[^}]*line-height:\s*11px;/s
     );
     expect(usageStyles).toMatch(
       /\.SettingsUsageStatus--needs-auth\s*\{[^}]*background-color:\s*var\(--settings-usage-warning-surface\);[^}]*color:\s*var\(--settings-usage-warning-text\);/s
+    );
+    expect(usageSource).toContain('function remainingTone(');
+    expect(usageSource).toContain('className="SettingsUsageTrack"');
+    expect(usageSource).toContain("style={{ width: `${remainingPercent}%` }}");
+    expect(usageStyles).toMatch(
+      /\.SettingsUsageTrack\s*\{[^}]*height:\s*8px;[^}]*border-radius:\s*999px;/s
+    );
+    expect(usageStyles).toMatch(
+      /\.SettingsUsageSubtitle\s*\{[^}]*font-size:\s*11px;[^}]*opacity:\s*0\.8;/s
     );
   });
 

@@ -25,10 +25,16 @@ function missingSnapshot(
 }
 
 function statusLabel(snapshot: ServerProviderUsageSnapshot): string | null {
-  if ((snapshot.status ?? 'ok') === 'ok') return null;
+  if ((snapshot.status ?? 'ok') === 'ok') return snapshot.planName ?? null;
   if (snapshot.status === 'needs-auth') return 'Not signed in';
   if (snapshot.status === 'unsupported') return 'Unsupported';
   return 'Unavailable';
+}
+
+function remainingTone(remainingPercent: number): 'healthy' | 'warning' | 'danger' {
+  if (remainingPercent <= 10) return 'danger';
+  if (remainingPercent <= 25) return 'warning';
+  return 'healthy';
 }
 
 export function SettingsUsagePanel() {
@@ -97,17 +103,48 @@ export function SettingsUsagePanel() {
                 {status === 'ok' && hasUsage ? (
                   <view className="SettingsUsageDetails">
                     {snapshot.limits.map((limit) => (
-                      <view
-                        className="SettingsUsageLimit"
-                        key={`${snapshot.provider}:${limit.window}`}
-                      >
-                        <text className="SettingsUsageLabel">{limit.window}</text>
-                        <text className="SettingsUsageValue">
-                          {limit.usedPercent === undefined
-                            ? 'Usage reported'
-                            : `${Math.max(0, 100 - limit.usedPercent).toFixed(0)}% left`}
-                        </text>
-                      </view>
+                      (() => {
+                        const remainingPercent =
+                          limit.usedPercent === undefined
+                            ? null
+                            : Math.min(
+                                100,
+                                Math.max(0, 100 - limit.usedPercent)
+                              );
+                        return (
+                          <view
+                            className="SettingsUsageLimit"
+                            key={`${snapshot.provider}:${limit.window}`}
+                          >
+                            <view className="SettingsUsageLimitHeader">
+                              <text className="SettingsUsageLabel">
+                                {limit.window}
+                              </text>
+                              <text className="SettingsUsageValue">
+                                {remainingPercent === null
+                                  ? 'Usage reported'
+                                  : `${remainingPercent.toFixed(0)}% left`}
+                              </text>
+                            </view>
+                            {remainingPercent === null ? null : (
+                              <view
+                                className="SettingsUsageTrack"
+                                aria-label={`${limit.window} remaining`}
+                                aria-valuenow={Math.round(remainingPercent)}
+                                aria-valuemin={0}
+                                aria-valuemax={100}
+                              >
+                                <view
+                                  className={`SettingsUsageTrackFill SettingsUsageTrackFill--${remainingTone(
+                                    remainingPercent
+                                  )}`}
+                                  style={{ width: `${remainingPercent}%` }}
+                                />
+                              </view>
+                            )}
+                          </view>
+                        );
+                      })()
                     ))}
                     {snapshot.usageLines.map((line) => (
                       <view

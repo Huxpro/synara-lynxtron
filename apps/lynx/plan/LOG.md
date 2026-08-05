@@ -5530,8 +5530,13 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   muted/60 theme-safe surface与16px icon；标题gap保持10px。focused tests **6/6**，
   两端build通过。
 - Usage status pill结构原本对ok provider也显示“Connected”，而Web ok状态不显示pill；
-  现ok返回null。needs-auth/error补各自12%语义背景与theme文字色，unsupported保留
-  muted；pill补11px/500/leading-none。focused tests **6/6**，两端build通过。
+  现仅有planName时显示plan pill，无plan时隐藏。needs-auth/error补各自12%语义
+  背景与theme文字色，unsupported保留muted；pill补11px/500/leading-none。
+  focused tests **6/6**，两端build通过。
+- Usage limits此前只显示“% left”文本，丢失Web核心8px progress track。现直接使用
+  canonical `usedPercent`计算remaining，按Web阈值映射healthy/warning/danger fill，
+  保留真实ARIA progress语义；未伪造Native数据模型未携带的pace marker。subtitle补
+  muted/80 tone。focused tests **6/6**，Web/Native builds已通过。
 - Appearance Theme preference segmented buttons原本只有文字，Web明确带
   Sun/Moon/Laptop icons；补生成的14px icons，仅Theme preference使用。同期发现
   Appearance boolean switch是第四套旧18/14实现，统一到32×20/16px及shared
