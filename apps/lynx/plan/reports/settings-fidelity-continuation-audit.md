@@ -108,6 +108,7 @@ complete.
 | Integrations disclosures reuse shared motion | rendered Access all opens two real projects; Review opens three permissions; both use shared 220ms presence/content motion and restore cleanly | PASS — current-head interaction proof |
 | Models includes complete Git-writing and custom-model workflows | Git writing row is terminal with exact 20px title line and no trailing divider; custom models use shared validation, canonical server settings, eight-provider editor, Add/Enter/remove/reset, immediate picker refresh, and exact Web geometry | PASS — current-head visual and real add-picker-remove proof |
 | Providers includes complete update and provider-tools workflows | `SettingsProviderToolsPanel.lynx.tsx`; real three-provider update list, nine CLI disclosures, docs, all Web override fields, canonical update/edit/reset RPCs, exact 44px tool rows, real edit-reset cleanup, and exact-owned Native closed/tools/open/focus evidence in `shots/2026-08-06/providers-native-current/` | PASS — current-head fast-loop, real mutation, and Native interaction proof; Native text entry/IME not claimed |
+| Providers current workflow covers dark / 1440 across all clients | `shots/2026-08-06/providers-dark-1440/`; Web/Lynx-for-Web exact 1440x900, Native exact 2880x1736, same real three-update snapshot, dark root, nine tool rows, empty page-error and Native console gates | PASS — current-head three-client matrix |
 | Shared Button icon-label spacing matches Web | default/sm/xs gaps are 8/6/4px; mixed Appearance labels retain `LxButton__text` styling | PASS |
 | Settings large card radius resolves at runtime | the Lynx root defines shared `--radius-lg: 10px`; AppSnap, Skills, and Worktrees representative surfaces compute to 10px, while Advanced/Integrations consumers are statically covered | PASS — current-head runtime and consumer audit |
 | Settings sidebar search matches Web intent | shared ranking/index, real Lynx input/results/selection/row targeting, canonical section icons, Web-owned horizontal gutter, Web/Lynx filtered evidence, Native default anatomy | PASS — Native filtered text entry not claimed |
@@ -308,6 +309,14 @@ The retained replacement cells:
   INPUT nodes are editable and publish focus/blur/selection/confirm handlers.
   Every retained Native console is empty. No text was entered, so IME, paste,
   selection, and undo/redo remain explicitly outside this certification.
+- Providers dark / 1440 follow-up closes the new workflow's remaining matrix
+  gap on the same `cd3e1e9e…` three-update snapshot. Web and Lynx-for-Web are
+  exact `1440x900`; Native outer `1440x900` maps to `2880x1736`. Web/Lynx cards
+  remain within one pixel of each other, and Native retains exact `596x58`
+  update and `596x44` tool rows. The Lynx theme remount invalidated one
+  attempted route frame; retained evidence re-entered Providers through its
+  rendered navigation row after dark stabilized. Evidence is under
+  `shots/2026-08-06/providers-dark-1440/`.
 - Settings focused continuation: 14 files, 50/50 tests.
 - AppSnap final focused check: 1 file, 2/2 tests.
 - Canonical taxonomy/explicit-owner gate: 1 file, 11/11 tests.

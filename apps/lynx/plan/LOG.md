@@ -5858,3 +5858,12 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   `CODEX_HOME`只做focus tap，不输入字符，因此不伪称IME/text-entry认证。四态
   exact-owned captures的warning/error console均空，KV/window/settings/SQLite全部
   byte-exact不变；证据在`shots/2026-08-06/providers-native-current/`。
+- Providers新workflow补齐dark/1440三端矩阵，继续使用同一`cd3e1e9e…`真实三更新
+  snapshot。Web/Lynx-for-Web均精确`1440x900` DPR1，Native outer `1440x900`映射
+  root `1440x868` / raw `2880x1736`。Web Updates/Tools cards为
+  `624x337.5`/`624x496.5`，Lynx为`624x338.5`/`624x496`；Native首update/tool
+  rows为`596x58`/`596x44`，documented scrollTo后9行全部可见。Lynx选择Dark会
+  remount renderer并重置in-memory section，首个route frame判harness failure；retained
+  frame通过真实Providers navigation row重进。三端page-error/Native console gates通过，
+  KV/window/settings/SQLite byte-exact恢复，default Native bundle恢复只含58090；证据在
+  `shots/2026-08-06/providers-dark-1440/`。
