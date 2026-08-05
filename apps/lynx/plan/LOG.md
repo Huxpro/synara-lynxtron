@@ -5482,3 +5482,7 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - Native保留up/down按钮作为Web drag reordering的平台替代，但移除文本`↑/↓`，
   共用生成`ChevronDownIcon`，up方向通过固定180° transform；disabled与onMove
   contract不变。focused tests **3/3**，两端build通过。
+- Settings switch geometry审计发现General/Provider/AppSnap三套Native owner均复制
+  32×18 track/14px thumb，而Web desktop standard为32×20/16px。三者统一为20px
+  track、16px thumb、10/8px radii与12px on-state travel；AppSnap保持disabled
+  opacity。focused tests **6/6**，两端build通过。

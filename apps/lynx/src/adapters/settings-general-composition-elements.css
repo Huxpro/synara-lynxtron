@@ -99,9 +99,9 @@
 
 .SharedSettingsGeneralSwitch {
   width: 32px;
-  height: 18px;
+  height: 20px;
   padding: 2px;
-  border-radius: 9px;
+  border-radius: 10px;
   background-color: var(--muted);
 }
 
@@ -122,15 +122,15 @@
 }
 
 .SharedSettingsGeneralSwitchThumb {
-  width: 14px;
-  height: 14px;
-  border-radius: 7px;
+  width: 16px;
+  height: 16px;
+  border-radius: 8px;
   background-color: var(--background);
   transform: translateX(0);
 }
 
 .SharedSettingsGeneralSwitch--on .SharedSettingsGeneralSwitchThumb {
-  transform: translateX(14px);
+  transform: translateX(12px);
 }
 
 .SharedSettingsGeneralSelectTrigger {

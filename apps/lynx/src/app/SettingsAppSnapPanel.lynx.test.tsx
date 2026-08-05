@@ -40,7 +40,7 @@ describe('Settings AppSnap capability fidelity', () => {
       /\.SettingsAppSnapRow\s*\{[^}]*min-height:\s*79px;[^}]*justify-content:\s*space-between;/s
     );
     expect(styles).toMatch(
-      /\.SettingsAppSnapDisabledSwitch\s*\{[^}]*width:\s*32px;[^}]*height:\s*18px;[^}]*opacity:\s*0\.5;/s
+      /\.SettingsAppSnapDisabledSwitch\s*\{[^}]*width:\s*32px;[^}]*height:\s*20px;[^}]*opacity:\s*0\.5;/s
     );
     expect(styles).toMatch(
       /\.SettingsAppSnapRow--shortcut\s*\{[^}]*min-height:\s*97px;/s

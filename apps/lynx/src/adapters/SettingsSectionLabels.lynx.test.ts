@@ -79,5 +79,11 @@ describe('Lynx Settings section labels', () => {
     expect(providerSource).toContain('<ChevronDownIcon');
     expect(providerSource).not.toContain('↑');
     expect(providerSource).not.toContain('↓');
+    expect(providerStyles).toMatch(
+      /\.SharedSettingsProviderPickerSwitch\s*\{[^}]*width:\s*32px;[^}]*height:\s*20px;[^}]*border-radius:\s*10px;/s
+    );
+    expect(providerStyles).toMatch(
+      /\.SharedSettingsProviderPickerSwitchThumb\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;[^}]*border-radius:\s*8px;/s
+    );
   });
 });
