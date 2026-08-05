@@ -10,7 +10,12 @@ import { SettingsGeneralBooleanControlElement } from '../adapters/SettingsGenera
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
-import { CheckIcon } from '../lib/icons.lynx';
+import { CheckIcon, ChevronRightIcon } from '../lib/icons.lynx';
+import {
+  disclosureChevronClassName,
+  disclosureContentClassName,
+  useLynxDisclosurePresence,
+} from '../platform/motion.lynx';
 import {
   createExternalMcpIntegration,
   fetchExternalMcpIntegrations,
@@ -101,6 +106,8 @@ export function SettingsIntegrationsPanel() {
     useState<ExternalMcpCreateIntegrationResult | null>(null);
   const [pendingAction, setPendingAction] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  const projectGridPresent = useLynxDisclosurePresence(!allProjects);
+  const advancedPresent = useLynxDisclosurePresence(advancedOpen);
 
   const projects = snapshotQuery.data?.projects ?? [];
   const capabilities = buildExternalMcpCapabilities({
@@ -271,8 +278,14 @@ export function SettingsIntegrationsPanel() {
                 The agent can discover and work in every project, including
                 ones you add later. Turn off to pick specific projects.
               </text>
-              {!allProjects ? (
-                <view className="SettingsIntegrationsProjectGrid">
+              {projectGridPresent ? (
+                <view
+                  className={disclosureContentClassName(
+                    !allProjects,
+                    'SettingsIntegrationsProjectGrid'
+                  )}
+                  aria-hidden={allProjects}
+                >
                   {projects.map((project) => (
                     <ProjectChoice
                       key={project.id}
@@ -311,8 +324,14 @@ export function SettingsIntegrationsPanel() {
                 Optional access for existing tasks, shared checkouts, or
                 execution without approvals. The safe defaults are recommended.
               </text>
-              {advancedOpen ? (
-                <view className="SettingsIntegrationsAdvanced">
+              {advancedPresent ? (
+                <view
+                  className={disclosureContentClassName(
+                    advancedOpen,
+                    'SettingsIntegrationsAdvanced'
+                  )}
+                  aria-hidden={!advancedOpen}
+                >
                   {[
                     {
                       key: 'read',
@@ -365,9 +384,18 @@ export function SettingsIntegrationsPanel() {
               size="xs"
               variant="ghost"
               aria-label="Review advanced permissions"
+              aria-expanded={advancedOpen}
               onClick={() => setAdvancedOpen((current) => !current)}
             >
-              {advancedOpen ? 'Hide' : 'Review'}
+              <text className="LxButton__text">Review</text>
+              <ChevronRightIcon
+                className={disclosureChevronClassName(
+                  advancedOpen,
+                  'SettingsIntegrationsDisclosureChevron'
+                )}
+                size={14}
+                color="var(--muted-foreground)"
+              />
             </Button>
           </view>
 

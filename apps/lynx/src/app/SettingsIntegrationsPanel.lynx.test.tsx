@@ -28,6 +28,12 @@ describe('Settings Integrations fidelity', () => {
     expect(panelSource).toContain('No connected agents');
     expect(panelSource).toContain('<CheckIcon size={12}');
     expect(panelSource).not.toContain('>✓<');
+    expect(panelSource).toContain('useLynxDisclosurePresence(!allProjects)');
+    expect(panelSource).toContain('useLynxDisclosurePresence(advancedOpen)');
+    expect(panelSource).toContain('disclosureContentClassName(');
+    expect(panelSource).toContain('disclosureChevronClassName(');
+    expect(panelSource).toContain('aria-expanded={advancedOpen}');
+    expect(panelSource).toContain('<text className="LxButton__text">Review</text>');
   });
 
   it('uses safe defaults and real setup, clipboard, resume, and revoke actions', () => {
@@ -79,6 +85,9 @@ describe('Settings Integrations fidelity', () => {
     );
     expect(styles).toMatch(
       /\.SettingsIntegrationsProject--checked\s*\{[^}]*border-color:\s*var\(--settings-project-selected-border\);[^}]*background-color:\s*var\(--settings-project-selected-surface\);/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsIntegrationsDisclosureChevron\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;/s
     );
     expect(styles).not.toMatch(
       /\.SettingsIntegrationsSetup,\s*\.SettingsIntegrationsEmpty\s*\{[^}]*min-height:/s

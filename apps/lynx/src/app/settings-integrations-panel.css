@@ -122,6 +122,12 @@
   border-top: 1px solid var(--border);
 }
 
+.SettingsIntegrationsDisclosureChevron {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
 .SettingsIntegrationsPermission {
   min-height: 48px;
 }

@@ -5687,6 +5687,11 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   固定190px；Web shared rows/actions均按内容自尺寸。移除三处人工尺寸，保留density
   padding、20px row gap及action shrink contract。focused tests **3/3**，
   Lynx-for-Web/Native builds通过。
+- Integrations project picker与Advanced permissions此前条件分支直接mount/unmount，
+  且Review按钮用Hide/Review文字切换、无chevron/expanded state。两处改用
+  `useLynxDisclosurePresence` + shared 220ms content motion；Review copy保持稳定，
+  补aria-expanded与14px generated rotating chevron。focused Integrations/motion tests
+  **5/5**，Lynx-for-Web/Native builds通过。
 - 新增icon后审计Button primitive发现Lynx无content gap，且mixed children中的label
   未自动套`LxButton__text`。补Web base/default 8px、sm 6px、xs 4px gap，并显式
   包裹Theme option label，确保icon+text typography与间距都生效。focused Settings

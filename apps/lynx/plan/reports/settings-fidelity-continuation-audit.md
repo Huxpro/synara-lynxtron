@@ -104,6 +104,7 @@ complete.
 | Archived empty and list states match Web hierarchy | empty state uses generated 20px Archive icon and 14px/20px copy; populated rows no longer force a 60px minimum | PASS |
 | Skills rows match Web density and provider identity | rows/control columns self-size, source/path text truncates, and overlapping 16px provider-copy badges use mapped 12px SVGs or neutral fallbacks | PASS |
 | Integrations rows and actions match Web content-driven geometry | form/connection/setup/empty rows no longer force 79px/58px minima and connected-agent action groups self-size instead of reserving 190px | PASS |
+| Integrations disclosures reuse shared motion | project picker and advanced permissions use shared 220ms presence/content motion; Review publishes expanded state and a generated rotating 14px chevron | PASS |
 | Shared Button icon-label spacing matches Web | default/sm/xs gaps are 8/6/4px; mixed Appearance labels retain `LxButton__text` styling | PASS |
 | Settings sidebar search matches Web intent | shared ranking/index, real Lynx input/results/selection/row targeting, canonical section icons, Web-owned horizontal gutter, Web/Lynx filtered evidence, Native default anatomy | PASS — Native filtered text entry not claimed |
 | Populated destructive/mutation paths are visually certified without fabricated data | canonical snapshot has no managed worktree/integration/archived rows; logic/RPC tests cover the product paths and direct SQLite fixtures are forbidden | NOT APPLICABLE — no safe canonical populated state |
