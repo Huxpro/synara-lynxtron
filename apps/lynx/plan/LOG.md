@@ -5401,3 +5401,13 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   所有。y仍相差32px，来源是Web desktop titlebar，不做匿名补偿。focused
   search/icon/layout tests **7/7**，Web与Native/Desktop builds通过；bundle更新为
   Lynx-for-Web `4bd99536…`、Native `9acfbbe3…`。
+- global sidebar owner变更使旧16-state matrix失效，audit明确降级为PENDING而非沿用
+  旧green。重建时发现原verifier只校验snapshot hash格式，不校验同state三端一致；
+  新gate加入cross-client snapshot equality、browser sidebar/target geometry、
+  Native logical dimensions、browser page errors与Native empty console。
+- 三端先通过真实Appearance controls同步theme并预热8 routes，SQLite连续两次稳定后
+  暂停owned server，再在冻结窗口内按Light 1280与Dark 1440各捕获24 cells。
+  Light snapshot `803ae581…`、Dark `8855c7bf…`；bundle为Lynx-for-Web
+  `f2bfbb9a…`、Native `3112efe2…`。严格verifier **16 states / 48 cells**，
+  regression tests **3/3**；Native只需两次正常launch，全部PID-owned client、
+  console 0，KV/window最终byte-exact恢复。

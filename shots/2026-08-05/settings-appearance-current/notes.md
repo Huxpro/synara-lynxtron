@@ -8,9 +8,9 @@ Status: retained Web, Lynx-for-Web, and exact-owned Native evidence
 - Lynx-for-Web bundle SHA-256:
   `70e91c746395fafaab8ad83fb5d6767bd72e9f1eaddefa6c292290ec82b4beb0`
 - Native bundle SHA-256:
-  `9c9046af0771ba420078a015f0d27b7dee4b019add7ab9a63c568245f5f69373`
+  `3112efe2859746a746a7142ee11533657c1cd09b63c9aa0a77aa401dda8c337a`
 - SQLite online-backup snapshot SHA-256:
-  `922cef99cdabf1aa4f56ec9480eb9ce1d8ce31d2b30f75ca620da82d61712543`
+  `803ae581f62d065afa592fb16cdde7a6f5575d832bd1c1238658f612b6ac107d`
 - Route: Settings Appearance
 - Theme: light
 - Density: comfortable
@@ -65,3 +65,12 @@ original bytes were restored with SHA-256
 ## Lynx-for-Web correction
 
 An earlier browser capture had hit Vite's SPA fallback instead of the generated Lynx-for-Web host because the staged `/lynx` assets were missing. That evidence was invalidated. The retained frame uses the staged current-head bundle, keeps the host URL under `/lynx/index.html`, and verifies the target `X-VIEW` class after memory-history navigation.
+
+## Frozen snapshot refresh
+
+This cell was recaptured from current head while the owned Synara server was
+paused after Web, Lynx-for-Web, and Native synchronized the light theme. All
+three clients therefore reference the same SQLite online-backup snapshot
+`803ae581f62d065afa592fb16cdde7a6f5575d832bd1c1238658f612b6ac107d`. Web reconnect warnings during the deliberate freeze are harness
+evidence; no page error was retained, Lynx-for-Web had a clean console, and the
+PID-owned Native console was empty.

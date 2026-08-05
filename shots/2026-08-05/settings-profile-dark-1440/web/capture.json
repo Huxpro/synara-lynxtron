@@ -1,7 +1,7 @@
 {
   "client": "web",
   "stateId": "settings-profile-dark-1440",
-  "snapshotSha256": "c5313f03838f0669fc1e8cb558bf7d2d04c86b479bebc3a1559472c740db95a5",
+  "snapshotSha256": "8855c7bfa8d97ffbb6be04551e38c17a54ad171b0c3983261f874c0117657d5a",
   "stateEcho": {
     "semanticRoute": "settings-profile",
     "theme": "dark",
@@ -12,5 +12,5 @@
     "width": 1440,
     "height": 900
   },
-  "origin": "http://localhost:8921/settings?section=profile"
+  "origin": "http://localhost:8921"
 }

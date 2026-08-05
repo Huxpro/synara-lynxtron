@@ -1,8 +1,8 @@
 {
   "version": 1,
   "builds": {
-    "lynx": "a5ec04ab00b88e4389560a4ade6a3454df39c5ae9731c1aa940a759b8110f18e",
-    "native": "9c9046af0771ba420078a015f0d27b7dee4b019add7ab9a63c568245f5f69373"
+    "lynx": "f2bfbb9af5b8be33e9c3096a76721a541489d7201a1ad88ce9035f1a4e7b1c95",
+    "native": "3112efe2859746a746a7142ee11533657c1cd09b63c9aa0a77aa401dda8c337a"
   },
   "nativeBundlePath": "file:///Users/bytedance/github/synara/apps/lynx/dist/desktop/main.lynx.bundle",
   "states": [

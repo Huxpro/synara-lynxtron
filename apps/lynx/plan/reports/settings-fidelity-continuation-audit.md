@@ -1,7 +1,7 @@
 # Settings fidelity continuation audit
 
-Status: incomplete — current-head sidebar correction verified on the search
-slice; full Settings matrix refresh and heavy verification still pending
+Status: incomplete — current-head sidebar correction and full Settings matrix
+refresh complete; heavy verification still pending
 
 Updated: 2026-08-05
 
@@ -38,7 +38,7 @@ complete.
 | Exact-owned Native identity and cleanup for every new page | per-page `native/capture.json`, empty Native consoles, byte-exact KV restoration | PASS |
 | Current-head evidence is not Web fallback masquerading as Lynx | six affected Settings cells recaptured from staged bundle with stable Lynx host URL | PASS |
 | New Settings pages cover light/dark × 1280/1440 | light/1280 plus dark/1440 retained for eight continuation pages | PASS |
-| Continuation matrix is machine-verified against final HEAD | `settings-continuation-manifest.json`; verifier validates the previous 16-state / 48-cell bundle set, but the current-head global sidebar-gutter correction requires recapture | **PENDING — old matrix is not accepted as current-head proof** |
+| Continuation matrix is machine-verified against current implementation head | `settings-continuation-manifest.json`; strengthened verifier validates 16 states / 48 cells, same-snapshot client triples, target/sidebar geometry, logical Native dimensions, bundle identity, and runtime consoles | PASS |
 | Settings sidebar search matches Web intent | shared ranking/index, real Lynx input/results/selection/row targeting, canonical section icons, Web-owned horizontal gutter, Web/Lynx filtered evidence, Native default anatomy | PASS — Native filtered text entry not claimed |
 | Populated destructive/mutation paths are visually certified without fabricated data | canonical snapshot has no managed worktree/integration/archived rows; logic/RPC tests cover the product paths and direct SQLite fixtures are forbidden | NOT APPLICABLE — no safe canonical populated state |
 | Full final heavy pass | AGENTS requires `bun fmt`, `bun lint`, `bun typecheck`; current conversation does not explicitly authorize running them | **BLOCKED BY INSTRUCTION** |
@@ -91,12 +91,16 @@ The retained replacement cells:
 - Style audit write + strict check: pass.
 - Current production builds: Web, Lynx-for-Web, Native/Desktop pass.
 - Native consoles for all continuation cells: empty.
-- Previous full evidence verifier: 16/16 Settings states, 48/48 client cells.
-  Those cells predate the current-head global sidebar-gutter correction and are
-  retained as historical coverage, not accepted as final-head proof.
-- Verifier regression tests: 2/2; the first strict run rejected eight
+- Current-head evidence verifier: 16/16 Settings states, 48/48 client cells.
+  Light and dark batches were captured only after all three clients synchronized
+  the theme and the owned server was paused on one stable SQLite snapshot.
+- Verifier now rejects per-state cross-client snapshot drift, missing
+  browser/sidebar/target geometry, incorrect Native logical dimensions,
+  browser page errors, non-empty Native consoles, and bundle identity drift.
+- Current certification bundles: Lynx-for-Web `f2bfbb9a…`; Native
+  `3112efe2…`. Light snapshot: `803ae581…`; dark snapshot: `8855c7bf…`.
+- Verifier regression tests: 3/3; the original strict run rejected eight
   `1280×633` Web frames, which were recaptured at `1280×820`.
-- Final evidence bundles: Lynx-for-Web `a5ec04ab…`; Native `9c9046af…`.
 - Settings search/icon/layout focused suites: 7/7; real Lynx-for-Web keyboard query retained
   `archived thread`, produced one Archived result, navigated, and cleared.
 - The current-head filtered frame resolves Archived through the shared Settings
@@ -114,18 +118,16 @@ The retained replacement cells:
 
 ## Remaining work
 
-1. Rebuild and recapture the 16-state / 48-cell Settings matrix against the
-   current global sidebar geometry, then run its strict verifier.
-2. Run the final heavy pass only after explicit authorization permits
+1. Run the final heavy pass only after explicit authorization permits
    `bun fmt`, `bun lint`, and `bun typecheck`.
-3. Re-run this prompt-to-artifact audit, verify local/remote parity and cleanup,
+2. Re-run this prompt-to-artifact audit, verify local/remote parity and cleanup,
    then mark the active goal complete only if no MISSING/PARTIAL/PENDING rows
    remain.
 
 ## Current disposition
 
 The implementation objective has materially advanced and every canonical
-Settings section has a real Lynx owner. The active thread goal is **not yet
-complete** because the full matrix predates the current global sidebar
-correction and the required heavy pass remains blocked by the current
+Settings section has a real Lynx owner. The current global sidebar correction
+is covered by a fresh full matrix. The active thread goal is **not yet
+complete** because the required heavy pass remains blocked by the current
 instruction boundary.

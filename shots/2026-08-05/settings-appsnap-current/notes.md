@@ -6,11 +6,11 @@ Status: retained Web, Lynx-for-Web, and exact-owned Native unavailable evidence
 
 - Source base: `fecffd47`
 - Lynx-for-Web bundle SHA-256:
-  `a5ec04ab00b88e4389560a4ade6a3454df39c5ae9731c1aa940a759b8110f18e`
+  `f2bfbb9af5b8be33e9c3096a76721a541489d7201a1ad88ce9035f1a4e7b1c95`
 - Native bundle SHA-256:
-  `9c9046af0771ba420078a015f0d27b7dee4b019add7ab9a63c568245f5f69373`
+  `3112efe2859746a746a7142ee11533657c1cd09b63c9aa0a77aa401dda8c337a`
 - SQLite snapshot SHA-256:
-  `c5313f03838f0669fc1e8cb558bf7d2d04c86b479bebc3a1559472c740db95a5`
+  `803ae581f62d065afa592fb16cdde7a6f5575d832bd1c1238658f612b6ac107d`
 - Route: Settings AppSnap
 - Theme: light
 - Density: comfortable
@@ -76,3 +76,12 @@ primitives.
 - The Native light-theme capture changed only the owned KV file; after process
   shutdown the original bytes were restored with SHA-256
   `f53a83aac62fff4c8e7b6dac18d34ce8ffe27970a807a428fa0d9b0ba1a42474`.
+
+## Frozen snapshot refresh
+
+This cell was recaptured from current head while the owned Synara server was
+paused after Web, Lynx-for-Web, and Native synchronized the light theme. All
+three clients therefore reference the same SQLite online-backup snapshot
+`803ae581f62d065afa592fb16cdde7a6f5575d832bd1c1238658f612b6ac107d`. Web reconnect warnings during the deliberate freeze are harness
+evidence; no page error was retained, Lynx-for-Web had a clean console, and the
+PID-owned Native console was empty.

@@ -1,1 +1,1 @@
-"{\"runtime\":{\"innerWidth\":1280,\"innerHeight\":820,\"dpr\":1},\"light\":true,\"heading\":\"Worktrees\"}"
+"{\"runtime\":{\"innerWidth\":1280,\"innerHeight\":820,\"visualWidth\":1280,\"visualHeight\":820,\"dpr\":1},\"href\":\"http://localhost:8921/settings?section=worktrees\",\"dark\":false,\"light\":true,\"heading\":\"Worktrees\",\"sidebar\":{\"x\":0,\"y\":0,\"width\":256,\"height\":820},\"target\":{\"x\":456,\"y\":32,\"width\":349.296875,\"height\":28}}"

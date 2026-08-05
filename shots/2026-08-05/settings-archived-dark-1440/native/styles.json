@@ -20,7 +20,7 @@
         "opacity": "1"
       }
     },
-    "content": {
+    "sidebar": {
       "font": {
         "family": "",
         "size": "14px",
@@ -30,7 +30,7 @@
       },
       "paint": {
         "color": "rgb(0,0,0)",
-        "background": "rgba(0,0,0,0)",
+        "background": "rgb(17,17,17)",
         "borderColor": "black",
         "borderWidth": "0px",
         "radius": "0px",

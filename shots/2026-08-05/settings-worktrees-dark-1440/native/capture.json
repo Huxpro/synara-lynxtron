@@ -1,8 +1,8 @@
 {
   "client": "native",
   "stateId": "settings-worktrees-dark-1440",
-  "buildSha256": "9c9046af0771ba420078a015f0d27b7dee4b019add7ab9a63c568245f5f69373",
-  "snapshotSha256": "c5313f03838f0669fc1e8cb558bf7d2d04c86b479bebc3a1559472c740db95a5",
+  "buildSha256": "3112efe2859746a746a7142ee11533657c1cd09b63c9aa0a77aa401dda8c337a",
+  "snapshotSha256": "8855c7bfa8d97ffbb6be04551e38c17a54ad171b0c3983261f874c0117657d5a",
   "stateEcho": {
     "semanticRoute": "settings-worktrees",
     "theme": "dark",
@@ -10,9 +10,10 @@
     "interactionState": "empty"
   },
   "identity": {
-    "rootPid": 48114,
+    "rootPid": 5066,
     "descendantPids": [
-      48114
+      5066,
+      5071
     ],
     "ownedPorts": [
       8904

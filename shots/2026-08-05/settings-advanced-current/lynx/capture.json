@@ -1,7 +1,7 @@
 {
   "client": "lynx",
   "stateId": "settings-advanced-light-1280",
-  "snapshotSha256": "c5313f03838f0669fc1e8cb558bf7d2d04c86b479bebc3a1559472c740db95a5",
+  "snapshotSha256": "803ae581f62d065afa592fb16cdde7a6f5575d832bd1c1238658f612b6ac107d",
   "stateEcho": {
     "semanticRoute": "settings-advanced",
     "theme": "light",
@@ -12,6 +12,6 @@
     "width": 1280,
     "height": 820
   },
-  "origin": "http://localhost:8921/lynx/index.html?build=clean-settings",
-  "buildSha256": "a5ec04ab00b88e4389560a4ade6a3454df39c5ae9731c1aa940a759b8110f18e"
+  "origin": "http://localhost:8921/lynx/index.html?build=current-matrix",
+  "buildSha256": "f2bfbb9af5b8be33e9c3096a76721a541489d7201a1ad88ce9035f1a4e7b1c95"
 }

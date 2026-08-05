@@ -6,6 +6,7 @@ import { afterEach, test } from "node:test";
 
 import {
   pngDimensions,
+  stateSnapshotsMatch,
   validateSettingsContinuation,
 } from "./settings-continuation-evidence.mjs";
 
@@ -33,6 +34,11 @@ test("reads PNG dimensions", () => {
   const filePath = path.join(directory, "frame.png");
   writePng(filePath, 1440, 900);
   assert.deepEqual(pngDimensions(filePath), { width: 1440, height: 900 });
+});
+
+test("requires every client in a state to use the same snapshot", () => {
+  assert.equal(stateSnapshotsMatch(["a", "a", "a"]), true);
+  assert.equal(stateSnapshotsMatch(["a", "b", "a"]), false);
 });
 
 test("the retained continuation manifest is complete", () => {

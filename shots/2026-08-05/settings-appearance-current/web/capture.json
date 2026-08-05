@@ -1,7 +1,16 @@
 {
   "client": "web",
   "stateId": "settings-appearance-light-1280",
-  "snapshotSha256": "922cef99cdabf1aa4f56ec9480eb9ce1d8ce31d2b30f75ca620da82d61712543",
-  "stateEcho": { "semanticRoute": "settings-appearance", "theme": "light", "density": "comfortable", "interactionState": "default" },
-  "image": { "width": 1280, "height": 820 }
+  "snapshotSha256": "803ae581f62d065afa592fb16cdde7a6f5575d832bd1c1238658f612b6ac107d",
+  "stateEcho": {
+    "semanticRoute": "settings-appearance",
+    "theme": "light",
+    "density": "comfortable",
+    "interactionState": "default"
+  },
+  "image": {
+    "width": 1280,
+    "height": 820
+  },
+  "origin": "http://localhost:8921"
 }

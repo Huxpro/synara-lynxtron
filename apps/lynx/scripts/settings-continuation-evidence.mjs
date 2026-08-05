@@ -54,6 +54,14 @@ function validatePng(errors, prefix, filePath, expected) {
   }
 }
 
+export function stateSnapshotsMatch(snapshotSha256Values) {
+  return new Set(snapshotSha256Values).size === 1;
+}
+
+function consoleHasRuntimeError(contents) {
+  return /(?:^|\n)\[(?:error|pageerror)(?:[^\]]*)\]/i.test(contents);
+}
+
 export function validateSettingsContinuation(manifestPath) {
   const manifest = readJson(manifestPath);
   const root = path.dirname(manifestPath);
@@ -67,6 +75,7 @@ export function validateSettingsContinuation(manifestPath) {
 
   for (const state of manifest.states ?? []) {
     const prefix = state.id;
+    const stateSnapshots = [];
     if (seen.has(state.id)) errors.push(`${prefix}: duplicate state id`);
     seen.add(state.id);
     const stateDir = path.resolve(root, state.directory);
@@ -90,6 +99,7 @@ export function validateSettingsContinuation(manifestPath) {
       if (capture.client !== client) errors.push(`${prefix}.${client}: client mismatch`);
       if (capture.stateId !== state.id) errors.push(`${prefix}.${client}: stateId mismatch`);
       validateHash(errors, `${prefix}.${client}.snapshot`, capture.snapshotSha256);
+      stateSnapshots.push(capture.snapshotSha256);
       if (JSON.stringify(capture.stateEcho) !== JSON.stringify(expectedEcho)) {
         errors.push(`${prefix}.${client}: stateEcho mismatch`);
       }
@@ -114,6 +124,9 @@ export function validateSettingsContinuation(manifestPath) {
         const themeMatches =
           state.theme === "dark" ? geometry.dark === true : geometry.light !== false;
         if (!themeMatches) errors.push(`${prefix}.web: theme proof missing`);
+        if (!geometry.sidebar?.width || !geometry.target?.width) {
+          errors.push(`${prefix}.web: sidebar or target geometry missing`);
+        }
       } else if (client === "lynx") {
         if (!String(geometry.href).includes("/lynx/index.html")) {
           errors.push(`${prefix}.lynx: host URL is not Lynx-for-Web`);
@@ -122,21 +135,44 @@ export function validateSettingsContinuation(manifestPath) {
         const themeMatches =
           state.theme === "dark" ? geometry.dark === true : geometry.light === true;
         if (!themeMatches) errors.push(`${prefix}.lynx: theme proof missing`);
+        if (!geometry.sidebar?.width) errors.push(`${prefix}.lynx: sidebar geometry missing`);
       } else {
         const rootClass = geometry.roles?.root?.attributes?.class ?? "";
         if (!rootClass.includes(`SliceRoot--theme-${state.theme}`)) {
           errors.push(`${prefix}.native: root theme mismatch`);
         }
         if (!geometry.roles?.target?.box) errors.push(`${prefix}.native: target role missing`);
+        if (!geometry.roles?.sidebar?.box) errors.push(`${prefix}.native: sidebar role missing`);
+        const nativeRootBox = geometry.roles?.root?.box;
+        const expectedRoot = {
+          width: state.images.native.width / 2,
+          height: state.images.native.height / 2,
+        };
+        if (
+          nativeRootBox?.width !== expectedRoot.width ||
+          nativeRootBox?.height !== expectedRoot.height
+        ) {
+          errors.push(
+            `${prefix}.native: root ${nativeRootBox?.width ?? "?"}x${nativeRootBox?.height ?? "?"}, expected ${expectedRoot.width}x${expectedRoot.height}`,
+          );
+        }
         if (capture.identity?.session?.url !== manifest.nativeBundlePath) {
           errors.push(`${prefix}.native: bundle identity mismatch`);
         }
       }
       if (!fs.existsSync(consolePath)) {
         errors.push(`${prefix}.${client}: missing console.txt`);
-      } else if (client === "native" && fs.statSync(consolePath).size !== 0) {
-        errors.push(`${prefix}.native: console is not empty`);
+      } else {
+        const consoleContents = fs.readFileSync(consolePath, "utf8");
+        if (client === "native" && consoleContents.length !== 0) {
+          errors.push(`${prefix}.native: console is not empty`);
+        } else if (client !== "native" && consoleHasRuntimeError(consoleContents)) {
+          errors.push(`${prefix}.${client}: console contains runtime errors`);
+        }
       }
+    }
+    if (stateSnapshots.length === 3 && !stateSnapshotsMatch(stateSnapshots)) {
+      errors.push(`${prefix}: client snapshot hashes do not match`);
     }
   }
 
