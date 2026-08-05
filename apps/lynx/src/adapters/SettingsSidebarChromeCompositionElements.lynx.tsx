@@ -1,6 +1,8 @@
-import type { ReactNode } from '@lynx-js/react';
+import { useEffect, useRef, type ReactNode } from '@lynx-js/react';
+import type { InputRef } from '@lynx-js/lynx-ui';
 
 import { ArrowLeftIcon, SearchIcon } from '../lib/icons.lynx';
+import { Input } from '../components/ui/input';
 import './settings-sidebar-chrome-composition-elements.css';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 
@@ -57,19 +59,33 @@ export function SettingsSidebarSearchElement(props: {
   readonly onSubmit?: () => void;
   readonly onEscape?: () => void;
 }) {
+  const inputRef = useRef<InputRef>(null);
+  useEffect(() => {
+    if (props.value.length === 0) {
+      void inputRef.current?.setValue('').catch(() => undefined);
+    }
+  }, [props.value]);
   return (
-    <view
-      className="SharedSettingsSidebarSearchUnavailable"
-      aria-label={props.accessibleLabel}
-      aria-disabled="true"
-      focusable={false}
-    >
+    <view className="SharedSettingsSidebarSearch">
       <view className="SharedSettingsSidebarSearchIcon">
         <SearchIcon size={14} color="var(--muted-foreground)" />
       </view>
-      <text className="SharedSettingsSidebarSearchUnavailableText">
-        Search unavailable in this runtime
-      </text>
+      <Input
+        ref={inputRef}
+        className="SharedSettingsSidebarSearchInput"
+        defaultValue={props.value}
+        placeholder={props.placeholder}
+        aria-label={props.accessibleLabel}
+        confirmType="search"
+        onChange={(event) => props.onValueChange?.(event.target.value)}
+        onConfirm={props.onSubmit}
+        onKeyDown={(event) => {
+          if (event.key === 'Escape') {
+            event.stopPropagation?.();
+            props.onEscape?.();
+          }
+        }}
+      />
     </view>
   );
 }

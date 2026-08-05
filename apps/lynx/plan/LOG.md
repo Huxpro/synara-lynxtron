@@ -5362,3 +5362,23 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - completion audit不再把不存在的canonical populated worktree/integration/archived
   rows标PARTIAL：用户约束禁止直接写SQLite或伪造数据，因此这类视觉状态为N/A with
   focused behavior/RPC proof。local/remote已对齐，只剩隔离`.p10-view*`目录。
+
+## 2026-08-06 — Settings sidebar search parity
+
+- 16-state route matrix未覆盖Settings sidebar search；Lynx此前明确显示
+  `Search unavailable in this runtime`，而共享Chrome与search index都已有真实能力。
+- Lynx adapter接入native `Input`，页面复用shared fuzzy ranking与最多12项结果；
+  搜索时替换navigation，选择/Enter进入section并清空，Escape恢复navigation。
+- 明确过滤5个Web-only conditional entries：AppSnap permissions、saved model slugs、
+  provider updates、installed CLIs、release history，避免搜索命中不存在control。
+- 首次controlled native input真实逐键输入`archived thread`只保留`ad`，定位为
+  background ACK竞争；改为uncontrolled input，仅父级clear时ref setValue。clean
+  keyboard run保留完整query、唯一结果`Archived: Archived threads`，点击后进入真实
+  Archived panel并清空search。
+- `agent-browser fill`不触发Lynx custom-element input event，未作为交互证据；保留的是
+  real keyboard events。focused suites **4/4**，Native build通过，exact-owned Native
+  anatomy capture console 0，KV byte-exact restored。证据位于
+  `shots/2026-08-06/settings-search-current/`。
+- completion audit只声明Web/Lynx-for-Web filtered interaction；Native仅认证default
+  search shell/input/navigation anatomy，因为驱动真实macOS text client会抢焦点。该边界
+  明确记录，不把Lynx-for-Web interaction冒充Native filtered pass。

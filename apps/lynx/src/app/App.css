@@ -755,3 +755,45 @@
   justify-content: center;
   gap: 12px;
 }
+
+.SettingsSearchResults {
+  width: 100%;
+  max-height: 610px;
+}
+
+.SettingsSearchResult {
+  display: flex;
+  min-height: 48px;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6px 8px;
+  border-radius: 8px;
+}
+
+.SettingsSearchResult.ui-hover,
+.SettingsSearchResult.ui-pressed {
+  background-color: var(--sidebar-accent);
+}
+
+.SettingsSearchResult.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.SettingsSearchResultSection {
+  color: var(--muted-foreground);
+  font-size: 10px;
+  line-height: 14px;
+}
+
+.SettingsSearchResultTitle {
+  color: var(--foreground);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.SettingsSearchEmpty {
+  padding: 8px;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  line-height: 16px;
+}

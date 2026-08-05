@@ -1,0 +1,144 @@
+{
+  "client": "native",
+  "stateId": "settings-search-light-1280",
+  "roles": {
+    "root": {
+      "nodeId": 13,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 788
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "search": {
+      "nodeId": 182,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SharedSettingsSidebarSearch"
+      },
+      "text": "",
+      "box": {
+        "x": 18,
+        "y": 58,
+        "width": 219,
+        "height": 28
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "input": {
+      "nodeId": 186,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "LxInputControl LxInputControl--default SharedSettingsSidebarSearchInput"
+      },
+      "text": "",
+      "box": {
+        "x": 47,
+        "y": 56,
+        "width": 181,
+        "height": 32
+      },
+      "font": {
+        "family": "",
+        "size": "12px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "hsla(0,0%,5%,.069)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "navigation": {
+      "nodeId": 194,
+      "nodeName": "VIEW",
+      "attributes": {
+        "aria-selected": "true",
+        "accessibility-element": "true",
+        "accessibility-label": "General",
+        "accessibility-traits": "button",
+        "accessibility-value": "Current section",
+        "focusable": "true",
+        "aria-disabled": "false",
+        "bindmouseenter": "154:0:bindmouseenter",
+        "bindblur": "154:0:bindblur",
+        "bindmouseleave": "154:0:bindmouseleave",
+        "bindkeydown": "154:0:bindkeydown",
+        "bindtap": "154:0:bindtap",
+        "bindmouseup": "154:0:bindmouseup",
+        "bindtouchstart": "154:0:bindtouchstart",
+        "bindmousedown": "154:0:bindmousedown",
+        "bindtouchend": "154:0:bindtouchend",
+        "bindtouchcancel": "154:0:bindtouchcancel",
+        "bindfocus": "154:0:bindfocus",
+        "class": "SharedSettingsNavigationButton SharedSettingsNavigationButton--active"
+      },
+      "text": "",
+      "box": {
+        "x": 14,
+        "y": 122,
+        "width": 227,
+        "height": 28
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(13,13,13,0.0392157)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

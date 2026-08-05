@@ -74,6 +74,7 @@ import {
   writeSettingsProviderPickerProjection,
 } from '@synara-web/appSettingsStorageProjection.logic';
 import type { SettingsSectionId } from '@synara-web/settingsNavigation';
+import type { SettingsSearchEntry } from '@synara-web/settingsSearchIndex';
 import {
   DEFAULT_THEME_STATE,
   parseStoredThemeState,
@@ -98,6 +99,8 @@ import { SettingsSkillsPanel } from './SettingsSkillsPanel.lynx';
 import { SettingsAdvancedPanel } from './SettingsAdvancedPanel.lynx';
 import { SettingsIntegrationsPanel } from './SettingsIntegrationsPanel.lynx';
 import { SettingsAppSnapPanel } from './SettingsAppSnapPanel.lynx';
+import { SettingsSearchResults } from './SettingsSearchResults.lynx';
+import { rankLynxSettingsSearchEntries } from './settingsSearch.logic';
 
 const SETTINGS_LOCAL_SAVE_ERROR =
   'Changes could not be saved. Your current values are still shown.';
@@ -380,7 +383,14 @@ export function SettingsPage({
     (() => Promise<SettingsPersistOutcome | void>) | null
   >(null);
   const [section, setSection] = useState<SettingsSectionId>(initialSection);
+  const [searchQuery, setSearchQuery] = useState('');
   const ready = hydrationState === 'ready';
+  const searchResults = rankLynxSettingsSearchEntries(searchQuery);
+
+  function selectSearchResult(entry: SettingsSearchEntry) {
+    setSection(entry.section);
+    setSearchQuery('');
+  }
 
   useEffect(() => {
     'background only';
@@ -621,29 +631,43 @@ export function SettingsPage({
       <view className="SettingsSidebar">
         <SettingsSidebarChromeComposition
           onBack={onBack}
-          searchCapability="unavailable"
+          searchCapability="available"
+          searchValue={searchQuery}
+          onSearchValueChange={setSearchQuery}
+          onSubmitSearch={() => {
+            const topMatch = searchResults[0];
+            if (topMatch) selectSearchResult(topMatch);
+          }}
+          onEscapeSearch={() => setSearchQuery('')}
         />
-        <SettingsNavigationComposition
-          activeSection={section}
-          availableSections={[
-            'general',
-            'profile',
-            'appearance',
-            'notifications',
-            'behavior',
-            'appsnap',
-            'shortcuts',
-            'worktrees',
-            'archived',
-            'models',
-            'providers',
-            'skills',
-            'usage',
-            'integrations',
-            'advanced',
-          ]}
-          onSelectSection={setSection}
-        />
+        {searchQuery.trim() ? (
+          <SettingsSearchResults
+            results={searchResults}
+            onSelect={selectSearchResult}
+          />
+        ) : (
+          <SettingsNavigationComposition
+            activeSection={section}
+            availableSections={[
+              'general',
+              'profile',
+              'appearance',
+              'notifications',
+              'behavior',
+              'appsnap',
+              'shortcuts',
+              'worktrees',
+              'archived',
+              'models',
+              'providers',
+              'skills',
+              'usage',
+              'integrations',
+              'advanced',
+            ]}
+            onSelectSection={setSection}
+          />
+        )}
       </view>
 
       <scroll-view className="SettingsContent" scroll-orientation="vertical">
