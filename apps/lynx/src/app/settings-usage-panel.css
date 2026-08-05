@@ -59,6 +59,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  flex: 1;
   min-width: 0;
   justify-content: flex-start;
   gap: 10px;
@@ -82,13 +83,18 @@
 }
 
 .SettingsUsageProvider {
+  flex: 1;
   min-width: 0;
+  overflow: hidden;
   color: var(--foreground);
   font-size: 14px;
   font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .SettingsUsageStatus {
+  flex-shrink: 0;
   border-radius: 999px;
   padding: 4px 8px;
   background-color: var(--muted);
@@ -117,7 +123,7 @@
 }
 
 .SettingsUsageDetails {
-  gap: 12px;
+  gap: 14px;
 }
 
 .SettingsUsageNotice {

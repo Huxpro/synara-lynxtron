@@ -72,6 +72,7 @@ complete.
 | Usage cards match Web SettingsCard anatomy | 10px radius, 16px card padding, 14px internal gap; loading state keeps 14×16 padding | PASS |
 | Usage cards preserve provider visual identity | 28px rounded provider shell with existing mapped SVG icon, border, and muted/60 surface | PASS |
 | Usage headers match Web horizontal rhythm | section and card headers use 8px gap; nested provider identity retains its distinct 10px icon/title gap | PASS |
+| Usage card content and header overflow match Web | content stack uses 14px rhythm; provider identity grows with min-width 0, title ellipsizes, and status pill does not shrink | PASS |
 | Usage status pills match Web semantics | ok shows plan pill only when named; needs-auth/error use 12% semantic surfaces and theme-aware text; unsupported remains muted | PASS |
 | Usage cards render real quota meters | canonical `usedPercent` drives 8px healthy/warning/danger remaining tracks rather than text-only quota summaries | PASS |
 | Usage meter rows match Web metadata and pace anatomy | shared server-limit derivation drives label + 6px pace dot, 8px track + marker, remaining/reset metadata, and optional reserve/ETA rows from real reset timing | PASS |
@@ -108,6 +109,11 @@ complete.
 | Advanced | `SettingsAdvancedPanel` |
 
 No canonical navigation item falls through to the Providers fallback.
+
+The current Usage source-to-source matrix has no remaining concrete branch,
+spacing, typography, status, meter, notice, refresh, footer, or overflow
+differences. This is a source/build disposition; it does not retroactively make
+the historical full screenshot matrix cover the newer focused Usage commits.
 
 ## Evidence integrity correction
 

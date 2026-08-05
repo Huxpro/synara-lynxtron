@@ -5552,6 +5552,10 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - Usage section/card header之前被同一grouped selector设为12px gap，而Web两处均
   `gap-2` 8px；拆分owner后header统一8px，provider identity继续保留`gap-2.5`
   10px。focused tests **6/6**，两端build通过。
+- Usage card content stack此前12px，而Web `space-y-3.5`为14px；调整details owner
+  后notice/meters/lines恢复14px rhythm。Header同时补Web的`min-w-0 flex-1 +
+  truncate` title与`shrink-0` pill contract，避免长provider/plan文字相撞。
+  focused tests **6/6**，两端build通过；本轮Usage source matrix无剩余具体差异。
 - Usage line list此前沿用meter column，把label/value纵向堆叠。现拆分Meters与Lines
   owners：line header横向justify-between、item gap2、list gap6；meters与lines同时
   存在时加12px top divider。空类别不渲染container，避免无内容gap。focused tests

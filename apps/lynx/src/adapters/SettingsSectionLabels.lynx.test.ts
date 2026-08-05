@@ -61,7 +61,10 @@ describe('Lynx Settings section labels', () => {
       /\.SettingsUsageHeader,\s*\.SettingsUsageCardHeader\s*\{[^}]*justify-content:\s*space-between;[^}]*gap:\s*8px;/s
     );
     expect(usageStyles).toMatch(
-      /\.SettingsUsageProviderIdentity\s*\{[^}]*justify-content:\s*flex-start;[^}]*gap:\s*10px;/s
+      /\.SettingsUsageProviderIdentity\s*\{[^}]*flex:\s*1;[^}]*min-width:\s*0;[^}]*justify-content:\s*flex-start;[^}]*gap:\s*10px;/s
+    );
+    expect(usageStyles).toMatch(
+      /\.SettingsUsageProvider\s*\{[^}]*flex:\s*1;[^}]*min-width:\s*0;[^}]*overflow:\s*hidden;[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s
     );
     expect(usageStyles).toMatch(
       /\.SettingsUsageState\s*\{[^}]*padding:\s*14px 16px;/s
@@ -95,7 +98,7 @@ describe('Lynx Settings section labels', () => {
       "if ((snapshot.status ?? 'ok') === 'ok') return snapshot.planName ?? null;"
     );
     expect(usageStyles).toMatch(
-      /\.SettingsUsageStatus\s*\{[^}]*font-size:\s*11px;[^}]*font-weight:\s*500;[^}]*line-height:\s*11px;/s
+      /\.SettingsUsageStatus\s*\{[^}]*flex-shrink:\s*0;[^}]*font-size:\s*11px;[^}]*font-weight:\s*500;[^}]*line-height:\s*11px;/s
     );
     expect(usageStyles).toMatch(
       /\.SettingsUsageStatus--needs-auth\s*\{[^}]*background-color:\s*var\(--settings-usage-warning-surface\);[^}]*color:\s*var\(--settings-usage-warning-text\);/s
@@ -108,6 +111,9 @@ describe('Lynx Settings section labels', () => {
     );
     expect(usageStyles).toMatch(
       /\.SettingsUsageNoticeText\s*\{[^}]*color:\s*var\(--settings-usage-warning-text\);[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s
+    );
+    expect(usageStyles).toMatch(
+      /\.SettingsUsageDetails\s*\{[^}]*gap:\s*14px;/s
     );
     expect(usageSource).toContain(
       "import { deriveProviderUsageLimitDisplay } from '@synara/shared/providerUsageDisplay';"
