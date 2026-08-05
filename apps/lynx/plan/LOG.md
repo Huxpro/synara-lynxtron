@@ -5504,3 +5504,8 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - Settings源码视觉glyph扫描只剩Integrations custom checkbox的`✓`字符。改用生成
   `CheckIcon` 12px与12×12 native slot，checked状态、project selection bindtap与
   accessibility value不变。focused tests **3/3**，两端build通过。
+- Integrations project selection row本体已16×16 checkbox/4px radius正确，但row
+  仍10px horizontal padding、title 500、unchecked full border、checked 4% muted。
+  对齐Web为8×12 padding、title 400、border/70，以及checked foreground/30 +
+  muted/70；用light/dark具体语义tokens避免color-mix兼容问题。focused tests
+  **3/3**，两端build通过。
