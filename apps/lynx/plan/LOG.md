@@ -5457,3 +5457,8 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - Matched setting title补齐Web nested thread-row的13px typography，替换Lynx旧12px；
   runtime实测`Archived threads`为13px/20px且title row仍28px。focused tests
   **4/4**，两端build通过。
+- Content section labels审计发现General已使用shared token，但Appearance漏0.58 tone、
+  Provider Picker仍500 weight、Usage只写12px。三个实际对应Web
+  `SETTINGS_SECTION_LABEL_CLASS_NAME`的owner统一为12px/400/18px、4×8 padding、
+  muted/58；Profile 14px dashboard heading明确排除。focused tests **2/2**，两端
+  build通过。

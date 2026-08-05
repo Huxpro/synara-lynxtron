@@ -28,7 +28,11 @@
 }
 
 .SettingsUsageSectionTitle {
+  padding: 4px 8px;
   font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  opacity: 0.58;
 }
 
 .SettingsUsageCards {
