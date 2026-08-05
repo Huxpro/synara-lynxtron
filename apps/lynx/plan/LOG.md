@@ -5426,3 +5426,6 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   radius10、11px，surface分别为foreground 2%，border 7%。真实键盘
   `archived thread`仍唯一命中。focused tests **6/6**，证据位于
   `shots/2026-08-06/settings-search-chrome/`。
+- Search icon补齐Web `text-muted-foreground/70` tone；selector只命中available
+  search shell，避免unavailable row已有0.7 container opacity被二次衰减。focused
+  test **2/2**，两端build通过。

@@ -33,5 +33,8 @@ describe('Lynx Settings search input', () => {
     expect(styles).toMatch(
       /\.SharedSettingsSidebarBackLabel\s*\{[^}]*font-size:\s*12px;[^}]*font-weight:\s*400;[^}]*line-height:\s*18px;/s
     );
+    expect(styles).toMatch(
+      /\.SharedSettingsSidebarSearch\s*>\s*\.SharedSettingsSidebarSearchIcon\s*\{[^}]*opacity:\s*0\.7;/s
+    );
   });
 });

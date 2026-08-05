@@ -38,6 +38,10 @@ Lynx-for-Web light:
 Lynx-for-Web dark keeps the same geometry and resolves the surface to
 `rgba(252, 252, 252, 0.02)` with a 7% foreground border.
 
+The available search icon now applies Web's `text-muted-foreground/70` tone.
+The unavailable capability row retains its existing container-level opacity,
+so this correction does not double-dim that state.
+
 A real keyboard query for `archived thread` still produced exactly one result
 with accessible label `Archived: Archived threads`.
 
@@ -47,6 +51,8 @@ with accessible label `Archived: Archived threads`.
   `79d8f97fba1b10dd8517a087b6133c5de3d00dabc430124ed188e6b134703226`
 - Native/Desktop bundle:
   `7b5c664043646bc7e5f51ac7f9919c8b304cdc5804d05655a3f02d2a6578ab5c`
+- Icon-tone follow-up bundles: Lynx-for-Web `12672fce…`; Native
+  `09081f2c…`.
 - Focused search/chrome suites: 6/6.
 - Web and Native/Desktop production builds passed with only the existing CSS
   and optional `ws` native-module warnings.
