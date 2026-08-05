@@ -70,5 +70,11 @@ describe('Lynx Settings section labels', () => {
     expect(providerStyles).toMatch(
       /\.SharedSettingsProviderPickerItem\s*\{[^}]*min-height:\s*42px;[^}]*padding:\s*10px 12px;[^}]*border-radius:\s*10px;/s
     );
+    const providerSource = readFileSync(
+      new URL('./SettingsProviderPickerCompositionElements.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(providerSource).toContain('<Undo2Icon size={14}');
+    expect(providerSource).not.toContain('↶');
   });
 });

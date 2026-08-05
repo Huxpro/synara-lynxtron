@@ -5,6 +5,7 @@ import type {
 } from '@synara-web/components/settings/SettingsProviderPickerComposition.logic';
 
 import { Button } from '../components/ui/button';
+import { Undo2Icon } from '../lib/icons.lynx';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 
 function ProviderVisibilitySwitch(props: {
@@ -63,13 +64,13 @@ export function SettingsProviderPickerElement(props: {
                 {props.title}
               </text>
               {props.changed ? (
-                <text
+                <view
                   className={resetInteraction.className}
                   aria-label="Reset provider picker to default"
                   {...resetInteraction.eventProps}
                 >
-                  ↶
-                </text>
+                  <Undo2Icon size={14} color="var(--muted-foreground)" />
+                </view>
               ) : null}
             </view>
             <text className="SharedSettingsProviderPickerDescription">
