@@ -5332,3 +5332,13 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   byte-exact恢复。原KV `f53a83aa…`、window `2dd961d3…`。
 - dark/1440矩阵关闭completion audit的MISSING row；当前唯一completion blocker是
   AGENTS要求且当前对话未明确授权的`bun fmt/lint/typecheck` heavy pass。
+
+## 2026-08-05 — Settings explicit-owner completion gate
+
+- completion audit继续检查proxy risk：原`settingsNavigation.test.ts`首个case仍硬编码旧7项，
+  且`SettingsPage`末尾else会让未知section静默渲染Providers，人工taxonomy比较不足以
+  fail closed。
+- Providers改为显式`section === 'providers'`分支，未知id终止为`null`；测试现直接使用
+  canonical `SETTINGS_SECTION_IDS`并逐项锁15个renderer marker。
+- taxonomy/owner gate **11/11**，Native/Desktop proportional build通过。当前除heavy
+  checks授权外，无剩余implementation或matrix缺口。

@@ -30,6 +30,7 @@ complete.
 | Add real Integrations workflow | `fecffd47`; list/create/revoke/refresh, project scope, permissions, setup prompt | PASS |
 | Add honest AppSnap capability state | `bcd523ba`; disabled semantics and explicit missing host bridge | PASS |
 | All 15 canonical Settings sections are reachable in Lynx | `SettingsPage.tsx` `availableSections` exactly matches `SETTINGS_SECTION_IDS` | PASS |
+| Every canonical section has an explicit renderer and unknown ids fail closed | `settingsNavigation.test.ts`; explicit Providers branch and terminal `null` fallback | PASS |
 | Current focused regression suite | 14 files, 50/50 tests; AppSnap final focused suite 2/2 | PASS |
 | Current Web/Lynx-for-Web/Desktop production builds | Final AppSnap slice builds pass; expected CSS and optional `ws` native-module warnings only | PASS |
 | Reuse audit includes current graph | regenerated baseline; strict check passes; Settings gate 53.11% | PASS |
@@ -83,6 +84,7 @@ The retained replacement cells:
 
 - Settings focused continuation: 14 files, 50/50 tests.
 - AppSnap final focused check: 1 file, 2/2 tests.
+- Canonical taxonomy/explicit-owner gate: 1 file, 11/11 tests.
 - Reuse audit write + strict check: pass.
 - Style audit write + strict check: pass.
 - Current production builds: Web, Lynx-for-Web, Native/Desktop pass.

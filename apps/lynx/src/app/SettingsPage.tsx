@@ -807,7 +807,7 @@ export function SettingsPage({
                   options={modelOptions}
                   onChange={updateModels}
                 />
-              ) : (
+              ) : section === 'providers' ? (
                 <>
                   <SettingsProviderUpdateChecksComposition
                     values={providers}
@@ -820,7 +820,7 @@ export function SettingsPage({
                     onChange={updateProviderPicker}
                   />
                 </>
-              )}
+              ) : null}
               {section !== 'profile' &&
               section !== 'appsnap' &&
               section !== 'worktrees' &&

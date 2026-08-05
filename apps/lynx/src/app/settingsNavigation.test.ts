@@ -1,4 +1,5 @@
 import { describe, expect, it } from '@rstest/core';
+import { readFileSync } from 'node:fs';
 
 import { resolveSettingsNavigationCompositionGroups } from '@synara-web/components/SettingsNavigationComposition.logic';
 import { resolveSettingsPanelHeader } from '@synara-web/components/settings/SettingsPanelHeaderComposition.logic';
@@ -45,47 +46,51 @@ import {
   resolveThemePack,
   updateChromeTheme,
 } from '@synara-web/theme/theme.logic';
+import { SETTINGS_SECTION_IDS } from '@synara-web/settingsNavigation';
 
 describe('shared settings navigation projection', () => {
-  it('keeps the full canonical taxonomy and enables only implemented native panels', () => {
+  it('keeps the full canonical taxonomy available', () => {
     const groups = resolveSettingsNavigationCompositionGroups({
       activeSection: 'appearance',
-      availableSections: [
-        'general',
-        'appearance',
-        'notifications',
-        'behavior',
-        'shortcuts',
-        'models',
-        'providers',
-      ],
+      availableSections: SETTINGS_SECTION_IDS,
     });
 
     expect(groups.map((group) => group.label)).toEqual(['App', 'Synara']);
-    expect(groups.flatMap((group) => group.items).find((item) => item.id === 'appearance')).toMatchObject({
-      active: true,
-      available: true,
-    });
-    expect(groups.flatMap((group) => group.items).find((item) => item.id === 'providers')).toMatchObject({
-      active: false,
-      available: true,
-    });
-    expect(groups.flatMap((group) => group.items).find((item) => item.id === 'models')).toMatchObject({
-      active: false,
-      available: true,
-    });
-    expect(groups.flatMap((group) => group.items).find((item) => item.id === 'behavior')).toMatchObject({
-      active: false,
-      available: true,
-    });
-    expect(groups.flatMap((group) => group.items).find((item) => item.id === 'notifications')).toMatchObject({
-      active: false,
-      available: true,
-    });
-    expect(groups.flatMap((group) => group.items).find((item) => item.id === 'shortcuts')).toMatchObject({
-      active: false,
-      available: true,
-    });
+    const items = groups.flatMap((group) => group.items);
+    expect(items.map((item) => item.id)).toEqual(SETTINGS_SECTION_IDS);
+    expect(items.every((item) => item.available)).toBe(true);
+    expect(items.find((item) => item.id === 'appearance')?.active).toBe(true);
+  });
+
+  it('gives every canonical section an explicit native renderer', () => {
+    const source = readFileSync(
+      new URL('./SettingsPage.tsx', import.meta.url),
+      'utf8'
+    );
+    const ownerMarkers: Record<(typeof SETTINGS_SECTION_IDS)[number], string> = {
+      general: '<SettingsGeneralComposition',
+      profile: '<SettingsProfilePanel />',
+      appearance: '<SettingsAppearanceComposition',
+      notifications: '<SettingsNotificationsPanel',
+      behavior: '<SettingsBehaviorPanel',
+      appsnap: '<SettingsAppSnapPanel />',
+      shortcuts: '<KeyboardShortcutsSettingsComposition',
+      worktrees: '<SettingsWorktreesPanel />',
+      archived: '<SettingsArchivedPanel />',
+      models: '<SettingsGitWritingModelComposition',
+      providers: '<SettingsProviderUpdateChecksComposition',
+      skills: '<SettingsSkillsPanel />',
+      usage: '<SettingsUsagePanel />',
+      integrations: '<SettingsIntegrationsPanel />',
+      advanced: '<SettingsAdvancedPanel />',
+    };
+
+    for (const section of SETTINGS_SECTION_IDS) {
+      expect(source).toContain(`section === '${section}'`);
+      expect(source).toContain(ownerMarkers[section]);
+    }
+    expect(source).toContain("section === 'providers' ? (");
+    expect(source).toContain(') : null}');
   });
 
   it('projects the real server provider update-check preference', () => {
