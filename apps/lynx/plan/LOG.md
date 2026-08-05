@@ -5517,3 +5517,7 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   primitive默认radius 8px，而Web所有Input用`rounded-lg` 10px。修复primitive
   owner为10px，覆盖Settings search/Integrations等输入且局部显式10px保持一致。
   focused input/settings tests **11/11**，两端build通过。
+- Shared Button同样仍8px，而Web Button base `rounded-lg`为10px，影响Profile、
+  Integrations、Advanced等Settings actions。修primitive owner为10px；capsule与
+  显式special variants继续覆盖。focused Settings control suites **14/14**，两端
+  build通过。
