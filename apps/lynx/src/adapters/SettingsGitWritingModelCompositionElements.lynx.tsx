@@ -10,6 +10,7 @@ import {
   MenuRadioItem,
   MenuTrigger,
 } from '../components/ui/menu';
+import { SettingsResetIcon } from './SettingsResetIcon.lynx';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 
 export function SettingsGitWritingModelRootElement(props: {
@@ -48,13 +49,13 @@ export function SettingsGitWritingModelRowElement(props: {
         <view className="SharedSettingsGeneralRowTitleLine">
           <text className="SharedSettingsGeneralRowTitle">{props.title}</text>
           {props.changed ? (
-            <text
+            <view
               className={resetInteraction.className}
               aria-label="Reset git writing model to default"
               {...resetInteraction.eventProps}
             >
-              ↶
-            </text>
+              <SettingsResetIcon />
+            </view>
           ) : null}
         </view>
         <text className="SharedSettingsGeneralRowDescription">

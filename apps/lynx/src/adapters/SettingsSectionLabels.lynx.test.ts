@@ -74,7 +74,7 @@ describe('Lynx Settings section labels', () => {
       new URL('./SettingsProviderPickerCompositionElements.lynx.tsx', import.meta.url),
       'utf8'
     );
-    expect(providerSource).toContain('<Undo2Icon size={14}');
+    expect(providerSource).toContain('<SettingsResetIcon />');
     expect(providerSource).not.toContain('↶');
     expect(providerSource).toContain('<ChevronDownIcon');
     expect(providerSource).not.toContain('↑');
@@ -94,6 +94,27 @@ describe('Lynx Settings section labels', () => {
     expect(providerStyles).toMatch(
       /\.SharedSettingsProviderPickerSwitch\.ui-focus\s*\{[^}]*box-shadow:\s*0 0 0 2px var\(--ring\);/s
     );
+  });
+
+  it('uses one generated reset icon across Settings owners', () => {
+    const resetIcon = readFileSync(
+      new URL('./SettingsResetIcon.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const owners = [
+      './SettingsGeneralCompositionElements.lynx.tsx',
+      './SettingsAppearanceCompositionElements.lynx.tsx',
+      './SettingsGitWritingModelCompositionElements.lynx.tsx',
+      './SettingsProviderPickerCompositionElements.lynx.tsx',
+    ].map((relativePath) =>
+      readFileSync(new URL(relativePath, import.meta.url), 'utf8')
+    );
+
+    expect(resetIcon).toContain('<Undo2Icon size={14}');
+    for (const source of owners) {
+      expect(source).toContain('<SettingsResetIcon />');
+      expect(source).not.toContain('↶');
+    }
   });
 
   it('matches the Web select chevron tone', () => {

@@ -9,6 +9,7 @@ import {
   MenuRadioItem,
   MenuTrigger,
 } from '../components/ui/menu';
+import { SettingsResetIcon } from './SettingsResetIcon.lynx';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 import { settingRowAnchorId } from '@synara-web/settingsNavigation';
 
@@ -60,13 +61,13 @@ export function SettingsAppearanceRowElement(props: {
         <view className="SharedSettingsAppearanceTitleLine">
           <text className="SharedSettingsAppearanceRowTitle">{props.title}</text>
           {props.changed ? (
-            <text
+            <view
               className={resetInteraction.className}
               aria-label={`Reset ${props.resetLabel} to default`}
               {...resetInteraction.eventProps}
             >
-              ↶
-            </text>
+              <SettingsResetIcon />
+            </view>
           ) : null}
         </view>
         <text className="SharedSettingsAppearanceRowDescription">

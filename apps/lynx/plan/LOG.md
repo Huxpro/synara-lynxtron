@@ -5497,3 +5497,7 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - Standard Settings select几何、radius与surface已正确；General chevron仍0.5，
   Web shared Select默认icon tone为0.8。改为0.8并锁source contract。focused tests
   **5/5**，两端build通过。
+- Settings reset glyph残差不止Provider：General、Appearance、Git Writing也各自
+  使用`↶`。抽取共享`SettingsResetIcon`，四个owner统一生成`Undo2Icon` 14px，
+  wrapper改为20×20 native view以承载SVG，保留各自bindtap/accessibility状态。
+  focused tests **6/6**，两端build通过。

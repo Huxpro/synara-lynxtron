@@ -76,9 +76,12 @@
 
 .SharedSettingsGeneralReset {
   margin-left: 6px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--muted-foreground);
-  font-size: var(--type-ui-row-size);
-  line-height: var(--type-ui-row-line-height);
 }
 
 .SharedSettingsGeneralReset.ui-hover {
