@@ -5494,3 +5494,6 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   现复用General Native switch反馈：hover 1px border halo、focus 2px ring、pressed
   0.8；Web thumb-scale micro-motion保留为平台边界。focused tests **3/3**，两端
   build通过。
+- Standard Settings select几何、radius与surface已正确；General chevron仍0.5，
+  Web shared Select默认icon tone为0.8。改为0.8并锁source contract。focused tests
+  **5/5**，两端build通过。

@@ -95,4 +95,15 @@ describe('Lynx Settings section labels', () => {
       /\.SharedSettingsProviderPickerSwitch\.ui-focus\s*\{[^}]*box-shadow:\s*0 0 0 2px var\(--ring\);/s
     );
   });
+
+  it('matches the Web select chevron tone', () => {
+    const generalStyles = readFileSync(
+      new URL('./settings-general-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(generalStyles).toMatch(
+      /\.SharedSettingsGeneralSelectChevron\s*\{[^}]*opacity:\s*0\.8;/s
+    );
+  });
 });
