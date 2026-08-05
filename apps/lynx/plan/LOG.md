@@ -5473,3 +5473,6 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - Provider Picker supporting copy继续拆分真实owner：description按标准SettingsRow
   12/18，status按Web独立11px supporting text（17px pixel line-height）；保留既有
   2px/6px vertical offsets。focused tests **3/3**，两端build通过。
+- Provider item盒模型继续对齐Web：由旧6×10 padding/8px radius/min-height撑高，
+  改为真实10×12 padding、10px radius、14/20 label，自然形成42px row；保留
+  min-height作为下限。focused tests **3/3**，两端build通过。
