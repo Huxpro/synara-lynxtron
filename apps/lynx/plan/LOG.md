@@ -5615,6 +5615,10 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   chat-code family。focused tests **5/5**，三端build通过。Import继续明确标为
   `Import clipboard`，因为Native真实行为仍是直接读剪贴板；未用Web“Import”文案伪装
   尚未port的paste/error dialog。
+- Theme Pack Header原靠direct-child selector压缩actions，嵌套在Title里的Reset未命中，
+  仍是28px standard button。改为显式owners：Reset 20px高、2×6 padding、11px muted；
+  Import clipboard/Copy 24px高、4×8 padding、12px muted。focused tests **5/5**，
+  Lynx-for-Web/Native builds通过；clipboard adaptation文案与真实行为保持一致。
 - 新增icon后审计Button primitive发现Lynx无content gap，且mixed children中的label
   未自动套`LxButton__text`。补Web base/default 8px、sm 6px、xs 4px gap，并显式
   包裹Theme option label，确保icon+text typography与间距都生效。focused Settings

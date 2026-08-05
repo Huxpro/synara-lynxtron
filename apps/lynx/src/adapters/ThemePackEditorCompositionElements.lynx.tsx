@@ -94,7 +94,12 @@ export function ThemePackResetActionElement(props: {
   readonly onReset: () => void;
 }) {
   return (
-    <Button size="sm" variant="ghost" onClick={props.onReset}>
+    <Button
+      size="xs"
+      variant="ghost"
+      className="SharedThemePackResetAction"
+      onClick={props.onReset}
+    >
       Reset
     </Button>
   );
@@ -119,7 +124,12 @@ export function ThemePackImportActionElement(props: {
       });
   };
   return (
-    <Button size="sm" variant="ghost" onClick={importClipboard}>
+    <Button
+      size="sm"
+      variant="ghost"
+      className="SharedThemePackHeaderAction"
+      onClick={importClipboard}
+    >
       Import clipboard
     </Button>
   );
@@ -141,7 +151,12 @@ export function ThemePackCopyActionElement(props: {
       });
   };
   return (
-    <Button size="sm" variant="ghost" onClick={copy}>
+    <Button
+      size="sm"
+      variant="ghost"
+      className="SharedThemePackHeaderAction"
+      onClick={copy}
+    >
       Copy
     </Button>
   );

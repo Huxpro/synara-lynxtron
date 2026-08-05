@@ -46,6 +46,20 @@ describe('ThemePack boolean interaction contract', () => {
     expect(styles).toMatch(
       /\.SharedThemePackRowLabel\s*\{[^}]*font-size:\s*14px;[^}]*font-weight:\s*400;[^}]*line-height:\s*20px;/s
     );
+    expect(source).toContain('className="SharedThemePackResetAction"');
+    expect(source).toContain('className="SharedThemePackHeaderAction"');
+    expect(styles).toMatch(
+      /\.SharedThemePackResetAction\s*\{[^}]*min-height:\s*20px;[^}]*padding:\s*2px 6px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedThemePackResetAction \.LxButton__text\s*\{[^}]*font-size:\s*11px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedThemePackHeaderAction\s*\{[^}]*min-height:\s*24px;[^}]*padding:\s*4px 8px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedThemePackHeaderAction \.LxButton__text\s*\{[^}]*font-size:\s*12px;/s
+    );
     expect(source).toContain("import { SettingsResetIcon } from './SettingsResetIcon.lynx';");
     expect(source).toContain('<SettingsResetIcon />');
     expect(source).not.toContain('↶');
