@@ -5525,6 +5525,10 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   10px radius、16px card padding、14px internal gap；loading state仍保留Web
   14×16 padding。focused test首跑只因组合selector regex过窄失败，修正真实owner
   表达后 **6/6**；两端build通过。
+- Usage card header缺少Web 28×28 provider identity shell。复用现有
+  `OpenAIProviderIcon`完整provider mapping，补28px shell、10px radius、1px border、
+  muted/60 theme-safe surface与16px icon；标题gap保持10px。focused tests **6/6**，
+  两端build通过。
 - Appearance Theme preference segmented buttons原本只有文字，Web明确带
   Sun/Moon/Laptop icons；补生成的14px icons，仅Theme preference使用。同期发现
   Appearance boolean switch是第四套旧18/14实现，统一到32×20/16px及shared

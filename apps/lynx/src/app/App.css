@@ -31,6 +31,7 @@
 }
 
 .SliceRoot--theme-light {
+  --settings-provider-icon-surface: rgba(13, 13, 13, 0.024);
   --settings-project-border: rgba(13, 13, 13, 0.049);
   --settings-project-selected-border: rgba(13, 13, 13, 0.3);
   --settings-project-selected-surface: rgba(13, 13, 13, 0.028);
@@ -40,6 +41,7 @@
 }
 
 .SliceRoot--theme-dark {
+  --settings-provider-icon-surface: rgba(252, 252, 252, 0.004);
   --settings-project-border: rgba(252, 252, 252, 0.05);
   --settings-project-selected-border: rgba(252, 252, 252, 0.3);
   --settings-project-selected-surface: rgba(252, 252, 252, 0.004);

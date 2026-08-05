@@ -11,6 +11,7 @@
 
 .SettingsUsageHeader,
 .SettingsUsageCardHeader,
+.SettingsUsageProviderIdentity,
 .SettingsUsageLimit {
   display: flex;
   flex-direction: row;
@@ -56,7 +57,31 @@
   padding: 14px 16px;
 }
 
+.SettingsUsageProviderIdentity {
+  min-width: 0;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.SettingsUsageProviderIcon {
+  display: flex;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background-color: var(--settings-provider-icon-surface);
+}
+
+.SettingsUsageProviderIcon .OpenAIProviderIcon {
+  width: 16px;
+  height: 16px;
+}
+
 .SettingsUsageProvider {
+  min-width: 0;
   color: var(--foreground);
   font-size: 14px;
   font-weight: 600;

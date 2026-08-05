@@ -7,6 +7,7 @@ import {
 } from '@synara/shared/providerUsage';
 
 import { Button } from '../components/ui/button';
+import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
 import './settings-usage-panel.css';
 
 function missingSnapshot(
@@ -78,9 +79,14 @@ export function SettingsUsagePanel() {
             return (
               <view className="SettingsUsageCard" key={snapshot.provider}>
                 <view className="SettingsUsageCardHeader">
-                  <text className="SettingsUsageProvider">
-                    {providerUsageDisplayName(snapshot.provider)}
-                  </text>
+                  <view className="SettingsUsageProviderIdentity">
+                    <view className="SettingsUsageProviderIcon">
+                      <OpenAIProviderIcon provider={snapshot.provider} />
+                    </view>
+                    <text className="SettingsUsageProvider">
+                      {providerUsageDisplayName(snapshot.provider)}
+                    </text>
+                  </view>
                   <text
                     className={`SettingsUsageStatus SettingsUsageStatus--${status}`}
                   >

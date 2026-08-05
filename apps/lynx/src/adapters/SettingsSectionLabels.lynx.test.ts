@@ -60,6 +60,16 @@ describe('Lynx Settings section labels', () => {
     expect(usageStyles).toMatch(
       /\.SettingsUsageState\s*\{[^}]*padding:\s*14px 16px;/s
     );
+    expect(usageStyles).toMatch(
+      /\.SettingsUsageProviderIcon\s*\{[^}]*width:\s*28px;[^}]*height:\s*28px;[^}]*border-radius:\s*10px;[^}]*background-color:\s*var\(--settings-provider-icon-surface\);/s
+    );
+    const usageSource = readFileSync(
+      new URL('../app/SettingsUsagePanel.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(usageSource).toContain(
+      '<OpenAIProviderIcon provider={snapshot.provider} />'
+    );
   });
 
   it('uses the standard row token and Web provider item typography', () => {
