@@ -5441,3 +5441,6 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - Search no-match旧样式仍为11px/16px/full-muted/8px padding，Web authority复用
   Settings section label。现对齐12px/400/18px、4×8 padding、0.58 tone；真实
   `zzzz-no-setting` query实测243×26 row。focused tests **6/6**，两端build通过。
+- Search内部metrics继续对齐Web `SearchInput` source：icon left 10px、text inset
+  32px、end inset 10px，替换Lynx旧9/28/8值；不改变已验证28px outer geometry。
+  focused tests **3/3**，两端build通过。

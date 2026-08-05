@@ -42,6 +42,11 @@ The available search icon now applies Web's `text-muted-foreground/70` tone.
 The unavailable capability row retains its existing container-level opacity,
 so this correction does not double-dim that state.
 
+Internal metrics now follow the Web `SearchInput` source contract: the icon is
+10px from the control edge, text begins at 32px, and the trailing inset is
+10px. This replaces the Lynx-only 9px / 28px / 8px values without changing the
+validated 28px outer geometry.
+
 A real keyboard query for `archived thread` still produced exactly one result
 with accessible label `Archived: Archived threads`.
 
@@ -59,6 +64,8 @@ x=6/y=98 with 12px/400/18px typography, 4px 8px padding, and 0.58 opacity.
   `09081f2c…`.
 - Empty-state follow-up bundles: Lynx-for-Web `cf8a9390…`; Native
   `7cf52771…`.
+- Internal-metric follow-up bundles: Lynx-for-Web `aa3f2d78…`; Native
+  `676c5594…`.
 - Focused search/chrome suites: 6/6.
 - Web and Native/Desktop production builds passed with only the existing CSS
   and optional `ws` native-module warnings.
