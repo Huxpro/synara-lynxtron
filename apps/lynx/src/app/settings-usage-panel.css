@@ -118,6 +118,27 @@
   gap: 12px;
 }
 
+.SettingsUsageNotice {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.SettingsUsageNoticeIcon {
+  width: 14px;
+  height: 14px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.SettingsUsageNoticeText {
+  flex: 1;
+  color: var(--settings-usage-warning-text);
+  font-size: 12px;
+  line-height: 18px;
+}
+
 .SettingsUsageMeters {
   gap: 12px;
 }

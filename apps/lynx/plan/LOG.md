@@ -5545,6 +5545,10 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   pace marker、11px remaining/reset metadata及可选reserve/ETA row。现在wire schema
   已有`resetsAt`与`windowDurationMins`时显示真实pace，不再省略可推导信息。shared
   tests **4/4**、Web wrapper tests **8/8**、Lynx focused tests **6/6**；三端build通过。
+- Usage `status: ok` snapshot可携带throttle/staleness `detail`并继续显示last-good
+  quota，Web会在meters前显示warning notice；Native此前完全丢弃。现补14px生成
+  TriangleAlert icon、6px gap、12px/18px warning copy，仅在ok+hasUsage分支消费，
+  non-ok detail fallback不变。focused tests **6/6**，两端build通过。
 - Usage line list此前沿用meter column，把label/value纵向堆叠。现拆分Meters与Lines
   owners：line header横向justify-between、item gap2、list gap6；meters与lines同时
   存在时加12px top divider。空类别不渲染container，避免无内容gap。focused tests

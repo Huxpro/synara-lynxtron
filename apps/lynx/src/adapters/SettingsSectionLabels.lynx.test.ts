@@ -72,6 +72,9 @@ describe('Lynx Settings section labels', () => {
     );
     expect(usageSource).toContain('<RefreshCwIcon');
     expect(usageSource).toContain("usageQuery.isFetching ? 'animate-spin'");
+    expect(usageSource).toContain('<TriangleAlertIcon');
+    expect(usageSource).toContain('snapshot.detail?.trim()');
+    expect(usageSource).toContain('className="SettingsUsageNotice"');
     expect(usageSource).toContain(
       "if ((snapshot.status ?? 'ok') === 'ok') return snapshot.planName ?? null;"
     );
@@ -80,6 +83,15 @@ describe('Lynx Settings section labels', () => {
     );
     expect(usageStyles).toMatch(
       /\.SettingsUsageStatus--needs-auth\s*\{[^}]*background-color:\s*var\(--settings-usage-warning-surface\);[^}]*color:\s*var\(--settings-usage-warning-text\);/s
+    );
+    expect(usageStyles).toMatch(
+      /\.SettingsUsageNotice\s*\{[^}]*align-items:\s*flex-start;[^}]*gap:\s*6px;/s
+    );
+    expect(usageStyles).toMatch(
+      /\.SettingsUsageNoticeIcon\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*margin-top:\s*2px;/s
+    );
+    expect(usageStyles).toMatch(
+      /\.SettingsUsageNoticeText\s*\{[^}]*color:\s*var\(--settings-usage-warning-text\);[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s
     );
     expect(usageSource).toContain(
       "import { deriveProviderUsageLimitDisplay } from '@synara/shared/providerUsageDisplay';"

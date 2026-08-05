@@ -9,7 +9,7 @@ import { deriveProviderUsageLimitDisplay } from '@synara/shared/providerUsageDis
 
 import { Button } from '../components/ui/button';
 import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
-import { RefreshCwIcon } from '../lib/icons.lynx';
+import { RefreshCwIcon, TriangleAlertIcon } from '../lib/icons.lynx';
 import './settings-usage-panel.css';
 
 function missingSnapshot(
@@ -171,6 +171,19 @@ export function SettingsUsagePanel() {
                 </view>
                 {status === 'ok' && hasUsage ? (
                   <view className="SettingsUsageDetails">
+                    {snapshot.detail?.trim() ? (
+                      <view className="SettingsUsageNotice">
+                        <TriangleAlertIcon
+                          className="SettingsUsageNoticeIcon"
+                          size={14}
+                          color="var(--settings-usage-warning-text)"
+                          accessibilityLabel="Usage warning"
+                        />
+                        <text className="SettingsUsageNoticeText">
+                          {snapshot.detail}
+                        </text>
+                      </view>
+                    ) : null}
                     {snapshot.limits.length > 0 ? (
                       <view className="SettingsUsageMeters">
                         {snapshot.limits.map((limit) => (
