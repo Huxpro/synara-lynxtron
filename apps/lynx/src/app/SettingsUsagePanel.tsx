@@ -205,8 +205,10 @@ export function SettingsUsagePanel() {
         </view>
       )}
       <text className="SettingsUsageFootnote">
-        Usage is read from each provider CLI and fetched directly from the
-        provider.
+        Usage is read locally from each provider CLI's stored credentials and
+        fetched directly from the provider. OAuth providers may refresh
+        short-lived tokens through their official token endpoint; if a provider
+        shows “Not signed in”, re-authenticate with its CLI.
       </text>
     </view>
   );

@@ -90,6 +90,12 @@ describe('Lynx Settings section labels', () => {
     expect(usageStyles).toMatch(
       /\.SettingsUsageSubtitle\s*\{[^}]*font-size:\s*11px;[^}]*opacity:\s*0\.8;/s
     );
+    expect(usageSource).toContain(
+      "Usage is read locally from each provider CLI's stored credentials"
+    );
+    expect(usageStyles).toMatch(
+      /\.SettingsUsageFootnote\s*\{[^}]*padding:\s*0 8px;[^}]*font-size:\s*11px;[^}]*line-height:\s*18px;/s
+    );
   });
 
   it('uses the standard row token and Web provider item typography', () => {
