@@ -1,0 +1,22 @@
+{
+  "navigation": {
+    "active": {
+      "label": "General",
+      "opacity": 1
+    },
+    "inactive": {
+      "label": "Profile",
+      "opacity": 0.95
+    }
+  },
+  "searchResult": {
+    "section": {
+      "label": "Archived",
+      "opacity": 0.95
+    },
+    "title": {
+      "accessibleLabel": "Archived: Archived threads",
+      "opacity": 0.89
+    }
+  }
+}

@@ -43,6 +43,7 @@ complete.
 | Settings Back row typography matches the shared Web sidebar row | `SettingsSidebarChromeCompositionElements.lynx.test.tsx`; Lynx label inherits the same 12px/400/18px identity | PASS |
 | Settings search control uses Web's single 28px soft-input chrome | `size="sm"` + `variant="soft"`; paired resolved styles and real keyboard result in `shots/2026-08-06/settings-search-chrome/` | PASS |
 | Settings search icon tone matches Web without double-dimming unavailable state | direct-child available selector uses 0.7 opacity; unavailable row keeps only its existing container opacity | PASS |
+| Settings navigation and search-result tone hierarchy matches Web | current-head resolved opacities 1 / 0.95 / 0.89 in `shots/2026-08-06/settings-row-tone/` | PASS |
 | Settings sidebar search matches Web intent | shared ranking/index, real Lynx input/results/selection/row targeting, canonical section icons, Web-owned horizontal gutter, Web/Lynx filtered evidence, Native default anatomy | PASS — Native filtered text entry not claimed |
 | Populated destructive/mutation paths are visually certified without fabricated data | canonical snapshot has no managed worktree/integration/archived rows; logic/RPC tests cover the product paths and direct SQLite fixtures are forbidden | NOT APPLICABLE — no safe canonical populated state |
 | Full final heavy pass | AGENTS requires `bun fmt`, `bun lint`, `bun typecheck`; current conversation does not explicitly authorize running them | **BLOCKED BY INSTRUCTION** |

@@ -22,5 +22,11 @@ describe('Lynx Settings search result anatomy', () => {
     expect(styles).not.toMatch(
       /\.SettingsSearchResultSectionIcon\s*\{[^}]*(?:border|border-radius):/s
     );
+    expect(styles).toMatch(
+      /\.SettingsSearchResultSectionRow\s*\{[^}]*opacity:\s*0\.95;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsSearchResultTitleRow\s*\{[^}]*opacity:\s*0\.89;/s
+    );
   });
 });

@@ -785,10 +785,12 @@
 
 .SettingsSearchResultSectionRow {
   flex-direction: row;
+  opacity: 0.95;
 }
 
 .SettingsSearchResultTitleRow {
   padding-left: 32px;
+  opacity: 0.89;
 }
 
 .SettingsSearchResultSectionRow.ui-hover,
@@ -796,6 +798,7 @@
 .SettingsSearchResultTitleRow.ui-hover,
 .SettingsSearchResultTitleRow.ui-pressed {
   background-color: var(--sidebar-accent);
+  opacity: 1;
 }
 
 .SettingsSearchResultSectionRow.ui-focus,

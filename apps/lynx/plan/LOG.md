@@ -5429,3 +5429,7 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - Search icon补齐Web `text-muted-foreground/70` tone；selector只命中available
   search shell，避免unavailable row已有0.7 container opacity被二次衰减。focused
   test **2/2**，两端build通过。
+- Settings row hierarchy补齐Web shared sidebar tones：inactive nav与search section
+  为0.95、nested setting title为0.89，active/hover/pressed恢复1。current runtime
+  实测四个状态全部命中，且icon/label由row owner同步衰减；focused tests **4/4**，
+  证据位于`shots/2026-08-06/settings-row-tone/`。

@@ -16,5 +16,11 @@ describe('Lynx Settings navigation typography', () => {
     expect(styles).toMatch(
       /\.SharedSettingsNavigationGroupLabel\s*\{[^}]*font-size:\s*12px;[^}]*font-weight:\s*400;[^}]*line-height:\s*18px;[^}]*padding:\s*4px 8px;/s
     );
+    expect(styles).toMatch(
+      /\.SharedSettingsNavigationButton\s*\{[^}]*opacity:\s*0\.95;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedSettingsNavigationButton--active\s*\{[^}]*opacity:\s*1;/s
+    );
   });
 });
