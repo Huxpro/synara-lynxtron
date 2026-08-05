@@ -22,6 +22,12 @@ describe('Lynx Settings search result anatomy', () => {
     expect(styles).toMatch(
       /\.SettingsSearchResults\s*\{[^}]*gap:\s*2px;/s
     );
+    expect(styles).toMatch(
+      /\.SettingsSearchResults\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;/s
+    );
+    expect(styles).not.toMatch(
+      /\.SettingsSearchResults\s*\{[^}]*max-height:/
+    );
     expect(styles).not.toMatch(
       /\.SettingsSearchResultSectionIcon\s*\{[^}]*(?:border|border-radius):/s
     );

@@ -58,6 +58,11 @@ Multiple result groups now reuse Web's shared nested-list 2px gap. A real broad
 `e` query returned 12 results; the first three 56px groups started at y=98,
 y=156, and y=214, proving a 58px pitch.
 
+The result viewport now consumes the sidebar's remaining flex height instead of
+the scaffold's fixed 610px cap. At 1280x820 the container spans y=98..802
+(704px); all 12 capped results fit, and the final row ends at y=792 with the
+owned 10px bottom inset.
+
 ## Identity
 
 - Lynx-for-Web bundle:
@@ -71,6 +76,7 @@ y=156, and y=214, proving a 58px pitch.
 - Internal-metric follow-up bundles: Lynx-for-Web `aa3f2d78…`; Native
   `676c5594…`.
 - Multi-result gap bundles: Lynx-for-Web `52d51dda…`; Native `cf15659a…`.
+- Flex-viewport bundles: Lynx-for-Web `82580d4c…`; Native `46314990…`.
 - Focused search/chrome suites: 6/6.
 - Web and Native/Desktop production builds passed with only the existing CSS
   and optional `ws` native-module warnings.

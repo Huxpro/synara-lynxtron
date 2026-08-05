@@ -5451,3 +5451,6 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   foreground/95同步icon与label，hover/pressed恢复1。focused tests首跑抓到旧
   “pressed不得有opacity”断言过度，改为明确要求1并禁止0.8后 **3/3**；两端build
   通过。
+- Search results移除无来源`max-height:610px`，改由Settings sidebar column的剩余
+  flex viewport所有。1280×820实测container y=98..802共704px，12条结果全部容纳，
+  last row bottom=792并保留10px底inset。focused tests **4/4**，两端build通过。
