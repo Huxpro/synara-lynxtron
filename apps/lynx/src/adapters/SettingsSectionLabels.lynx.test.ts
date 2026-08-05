@@ -234,7 +234,7 @@ describe('Lynx Settings section labels', () => {
     );
 
     expect(generalStyles).toMatch(
-      /\.SharedSettingsGeneralSelectChevron\s*\{[^}]*opacity:\s*0\.8;/s
+      /\.SharedSettingsGeneralSelectChevron\s*\{[^}]*opacity:\s*0\.5;/s
     );
   });
 

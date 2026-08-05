@@ -142,7 +142,7 @@ export function SettingsGeneralSelectControlElement(props: {
 
   return (
     <Menu>
-      <MenuTrigger>
+      <MenuTrigger ariaLabel={props.ariaLabel}>
         <Button
           variant="outline"
           className="SharedSettingsGeneralSelectTrigger SharedSettingsGeneralSelectTrigger--general"

@@ -48,6 +48,7 @@ describe('Settings General fidelity', () => {
 
     const trigger = elementTree.root?.querySelector('.LxMenuTrigger');
     if (!trigger) throw new Error('expected provider select trigger');
+    expect(trigger.getAttribute('aria-label')).toBe('Default provider');
     fireEvent.tap(trigger);
 
     const options =
