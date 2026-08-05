@@ -26,6 +26,8 @@ describe('Settings Integrations fidelity', () => {
     expect(panelSource).toContain('Connect a coding agent');
     expect(panelSource).toContain('Connected agents');
     expect(panelSource).toContain('No connected agents');
+    expect(panelSource).toContain('<CheckIcon size={12}');
+    expect(panelSource).not.toContain('>✓<');
   });
 
   it('uses safe defaults and real setup, clipboard, resume, and revoke actions', () => {

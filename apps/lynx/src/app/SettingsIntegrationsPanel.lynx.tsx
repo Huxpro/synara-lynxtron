@@ -10,6 +10,7 @@ import { SettingsGeneralBooleanControlElement } from '../adapters/SettingsGenera
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
+import { CheckIcon } from '../lib/icons.lynx';
 import {
   createExternalMcpIntegration,
   fetchExternalMcpIntegrations,
@@ -51,7 +52,9 @@ function ProjectChoice(props: {
         }`}
       >
         {props.checked ? (
-          <text className="SettingsIntegrationsCheckmark">✓</text>
+          <view className="SettingsIntegrationsCheckmark">
+            <CheckIcon size={12} color="var(--primary-foreground)" />
+          </view>
         ) : null}
       </view>
     </view>

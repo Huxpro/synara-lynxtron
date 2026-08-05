@@ -101,8 +101,11 @@
 }
 
 .SettingsIntegrationsCheckmark {
-  color: var(--primary-foreground);
-  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
 }
 
 .SettingsIntegrationsAdvanced {
