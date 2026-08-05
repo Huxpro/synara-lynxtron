@@ -828,8 +828,10 @@
 }
 
 .SettingsSearchEmpty {
-  padding: 8px;
+  padding: 4px 8px;
   color: var(--muted-foreground);
-  font-size: 11px;
-  line-height: 16px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  opacity: 0.58;
 }

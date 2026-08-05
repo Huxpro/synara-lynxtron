@@ -28,5 +28,8 @@ describe('Lynx Settings search result anatomy', () => {
     expect(styles).toMatch(
       /\.SettingsSearchResultTitleRow\s*\{[^}]*opacity:\s*0\.89;/s
     );
+    expect(styles).toMatch(
+      /\.SettingsSearchEmpty\s*\{[^}]*padding:\s*4px 8px;[^}]*font-size:\s*12px;[^}]*font-weight:\s*400;[^}]*line-height:\s*18px;[^}]*opacity:\s*0\.58;/s
+    );
   });
 });

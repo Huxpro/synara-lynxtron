@@ -45,6 +45,10 @@ so this correction does not double-dim that state.
 A real keyboard query for `archived thread` still produced exactly one result
 with accessible label `Archived: Archived threads`.
 
+The no-match state now reuses the Web section-label identity instead of the old
+11px scaffold style. A real `zzzz-no-setting` query resolved to a 243x26 row at
+x=6/y=98 with 12px/400/18px typography, 4px 8px padding, and 0.58 opacity.
+
 ## Identity
 
 - Lynx-for-Web bundle:
@@ -53,6 +57,8 @@ with accessible label `Archived: Archived threads`.
   `7b5c664043646bc7e5f51ac7f9919c8b304cdc5804d05655a3f02d2a6578ab5c`
 - Icon-tone follow-up bundles: Lynx-for-Web `12672fce…`; Native
   `09081f2c…`.
+- Empty-state follow-up bundles: Lynx-for-Web `cf8a9390…`; Native
+  `7cf52771…`.
 - Focused search/chrome suites: 6/6.
 - Web and Native/Desktop production builds passed with only the existing CSS
   and optional `ws` native-module warnings.

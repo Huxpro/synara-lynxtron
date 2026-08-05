@@ -5438,3 +5438,6 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   淡化。active runtime实测opacity 1且semantic fill生效；Native focus/pressed无法由
   Lynx-for-Web键盘模型认证，因此只声明focused CSS contract与Native build覆盖。
   focused tests **4/4**，bundle为Lynx-for-Web `a0304988…`、Native `b4ebc2bc…`。
+- Search no-match旧样式仍为11px/16px/full-muted/8px padding，Web authority复用
+  Settings section label。现对齐12px/400/18px、4×8 padding、0.58 tone；真实
+  `zzzz-no-setting` query实测243×26 row。focused tests **6/6**，两端build通过。
