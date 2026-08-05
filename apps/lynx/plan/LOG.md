@@ -5867,3 +5867,10 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   frame通过真实Providers navigation row重进。三端page-error/Native console gates通过，
   KV/window/settings/SQLite byte-exact恢复，default Native bundle恢复只含58090；证据在
   `shots/2026-08-06/providers-dark-1440/`。
+- Settings navigation row补Native interaction证据：exact-owned `Skills` inactive row
+  base为transparent/opacity0.95；DevTool保持mousePressed时真实出现`ui-pressed`，
+  semantic fill `rgba(13,13,13,0.0392157)`且opacity=1，不整行dim；Native
+  `setFocus`后真实出现`ui-focus`与`inset 0 0 0 1px #0169cc`，geometry/route不变。
+  两态console均空、server state未变。Desktop DevTool `mouseMoved`不发布mouseenter，
+  因此hover继续只计CSS/source contract，不伪称Native通过。证据在
+  `shots/2026-08-06/settings-row-native-interaction/`。

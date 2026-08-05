@@ -1,0 +1,145 @@
+{
+  "client": "native",
+  "stateId": "settings-row-base",
+  "roles": {
+    "root": {
+      "nodeId": 13,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 788
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "navigation": {
+      "nodeId": 188,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SharedSettingsNavigation"
+      },
+      "text": "",
+      "box": {
+        "x": 6,
+        "y": 98,
+        "width": 243,
+        "height": 510
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "active": {
+      "nodeId": 258,
+      "nodeName": "VIEW",
+      "attributes": {
+        "aria-selected": "true",
+        "accessibility-element": "true",
+        "accessibility-label": "Providers",
+        "accessibility-traits": "button",
+        "accessibility-value": "Current section",
+        "focusable": "true",
+        "aria-disabled": "false",
+        "bindmouseenter": "218:0:bindmouseenter",
+        "bindblur": "218:0:bindblur",
+        "bindmouseleave": "218:0:bindmouseleave",
+        "bindkeydown": "218:0:bindkeydown",
+        "bindtap": "218:0:bindtap",
+        "bindmouseup": "218:0:bindmouseup",
+        "bindtouchstart": "218:0:bindtouchstart",
+        "bindmousedown": "218:0:bindmousedown",
+        "bindtouchend": "218:0:bindtouchend",
+        "bindtouchcancel": "218:0:bindtouchcancel",
+        "bindfocus": "218:0:bindfocus",
+        "class": "SharedSettingsNavigationButton SharedSettingsNavigationButton--active"
+      },
+      "text": "",
+      "box": {
+        "x": 6,
+        "y": 460,
+        "width": 243,
+        "height": 28
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(13,13,13,0.0392157)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "content": {
+      "nodeId": 172,
+      "nodeName": "SCROLL-VIEW",
+      "attributes": {
+        "scroll-orientation": "vertical",
+        "class": "SettingsContent"
+      },
+      "text": "",
+      "box": {
+        "x": 256,
+        "y": 0,
+        "width": 1024,
+        "height": 788
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

@@ -44,7 +44,7 @@ complete.
 | Settings search control uses Web's single 28px soft-input chrome | `size="sm"` + `variant="soft"`; paired resolved styles and real keyboard result in `shots/2026-08-06/settings-search-chrome/` | PASS |
 | Settings search icon tone matches Web without double-dimming unavailable state | direct-child available selector uses 0.7 opacity; unavailable row keeps only its existing container opacity | PASS |
 | Settings navigation and search-result tone hierarchy matches Web | current-head resolved opacities 1 / 0.95 / 0.89 in `shots/2026-08-06/settings-row-tone/` | PASS |
-| Settings row active/focus/press paint follows Web contract | active semantic fill, inset focus ring, no whole-row pressed dim; focused CSS tests and Native build | PASS — Native focus interaction not claimed |
+| Settings row active/focus/press paint follows Web contract | active semantic fill, inset focus ring, no whole-row pressed dim; focused CSS tests plus exact-owned Native `Skills` row base/pressed/focus evidence in `shots/2026-08-06/settings-row-native-interaction/` | PASS — Native pressed and focus verified; Desktop DevTool hover event not claimed |
 | Settings search no-match state reuses Web section-label hierarchy | real no-match query resolves to 26px, 12px/400/18px, 0.58 tone | PASS |
 | Settings search internal icon/text metrics match Web `SearchInput` | 10px icon inset, 32px text inset, 10px end inset; focused source contract and builds | PASS |
 | Settings multi-result list rhythm matches Web | broad query proves 56px groups separated by shared 2px gap, 58px pitch | PASS |
@@ -317,6 +317,14 @@ The retained replacement cells:
   attempted route frame; retained evidence re-entered Providers through its
   rendered navigation row after dark stabilized. Evidence is under
   `shots/2026-08-06/providers-dark-1440/`.
+- Settings navigation interaction follow-up closes the previous Native focus
+  evidence gap on the rendered inactive Skills row. Base is transparent at
+  opacity `0.95`; held press produces `ui-pressed`, semantic 3.9% foreground
+  fill, and opacity `1` without whole-row dimming; native `setFocus` produces
+  `ui-focus` with `inset 0 0 0 1px #0169cc` while preserving geometry and
+  opacity. Both exact-owned captures have empty warning/error consoles.
+  Desktop DevTool `mouseMoved` did not emit `mouseenter`, so hover remains
+  CSS/source-covered rather than falsely Native-certified.
 - Settings focused continuation: 14 files, 50/50 tests.
 - AppSnap final focused check: 1 file, 2/2 tests.
 - Canonical taxonomy/explicit-owner gate: 1 file, 11/11 tests.
