@@ -101,7 +101,7 @@ complete.
 | Advanced recovery details reuse shared disclosure behavior | controlled `What this does` trigger publishes expanded state, uses generated 14px chevron and shared 220ms motion/presence, then reveals the 10px inset explanation | PASS |
 | Profile stats, heatmap, and model rows match Web identity | identity uses the Web 6px name/handle subgroup and 20/28 + 24/32 typography; stat values/labels use 14px/20px in an exact 18px-radius card; heatmap uses Web weekday pads, 40 week columns, 15.0625px cells, 5px radius, and exact month anchors; model rows retain 14px mapped provider SVGs or neutral fallbacks with 8px gaps | PASS — current-head visual proof for real identity/stats/heatmap/empty state; populated model branch source-tested |
 | Worktrees rows match Web shared-list density and typography | rows have no artificial 96px minimum, mono paths truncate, and linked conversation titles use regular description typography instead of row-title weight | PASS |
-| Archived empty and list states match Web hierarchy | empty state uses generated 20px Archive icon and 14px/20px copy; populated rows no longer force a 60px minimum | PASS |
+| Archived empty and list states match Web hierarchy | real empty state is exact 624×182 with 40×20 padding, dashed border, explicit 10px radius, generated 20px Archive icon, and 14px/20px copy; populated rows no longer force a 60px minimum | PASS — current-head visual proof for empty state; populated row source-tested |
 | Skills rows match Web density and provider identity | rows/control columns self-size, source/path text truncates, and overlapping 16px provider-copy badges use mapped 12px SVGs or neutral fallbacks | PASS |
 | Integrations rows and actions match Web content-driven geometry | form/connection/setup/empty rows no longer force 79px/58px minima and connected-agent action groups self-size instead of reserving 190px | PASS |
 | Integrations disclosures reuse shared motion | project picker and advanced permissions use shared 220ms presence/content motion; Review publishes expanded state and a generated rotating 14px chevron | PASS |
@@ -157,6 +157,14 @@ The retained replacement cells:
 
 ## Verification results
 
+- Current-head Archived fast harness: real empty state on the same snapshot,
+  Light, `1280×820`, DPR 1. Position, dimensions, dashed border, generated
+  icon, and 14/20 copy already matched; undefined `--radius-lg` produced a 0px
+  radius. Explicit 10px ownership now matches Web. Evidence is under
+  `shots/2026-08-05/archived-current-head/`.
+- Current-head Archived focused rerun: 1 file, 3/3 tests; Lynx-for-Web and
+  Native/Desktop builds pass. Bundles: Lynx-for-Web `9c8bd30e…`; Native
+  `db62eba7…`. Populated restore rows were absent and remain source-tested.
 - Current-head Profile fast harness: same trusted origin/snapshot, Light,
   `1280×820`, DPR 1. The real state covered identity, five stat tiles, 274
   heatmap cells, insight values, and empty plugin/model sections. Populated

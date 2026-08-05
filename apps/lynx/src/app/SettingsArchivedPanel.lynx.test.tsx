@@ -55,7 +55,7 @@ describe('Settings Archived fidelity', () => {
     );
 
     expect(styles).toMatch(
-      /\.SettingsArchivedEmpty,[^}]*\.SettingsArchivedState\s*\{[^}]*padding:\s*40px 20px;[^}]*border:\s*1px dashed var\(--border\);/s
+      /\.SettingsArchivedEmpty,[^}]*\.SettingsArchivedState\s*\{[^}]*padding:\s*40px 20px;[^}]*border:\s*1px dashed var\(--border\);[^}]*border-radius:\s*10px;/s
     );
     expect(styles).toMatch(
       /\.SettingsArchivedEmptyIconShell\s*\{[^}]*width:\s*44px;[^}]*height:\s*44px;[^}]*border-radius:\s*22px;/s
@@ -69,5 +69,9 @@ describe('Settings Archived fidelity', () => {
     expect(styles).not.toMatch(
       /\.SettingsArchivedRow\s*\{[^}]*min-height:/s
     );
+    expect(styles).toMatch(
+      /\.SettingsArchivedRestoreError\s*\{[^}]*border-radius:\s*10px;/s
+    );
+    expect(styles).not.toContain('var(--radius-lg)');
   });
 });

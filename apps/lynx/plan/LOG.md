@@ -5751,3 +5751,10 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   stats radius由16补为Web computed 18px。focused Profile suite **3/3**（含weekday
   behavior test），Lynx-for-Web/Native builds通过；证据在
   `shots/2026-08-05/profile-current-head/`。
+- current-head Archived真实snapshot为空态：root `456/118/624/182`、40×20 padding、
+  dashed border、44px icon shell、20px generated Archive icon、14/20 title/description
+  均已与Web一致；唯一残差是computed radius为0。根因是Lynx theme未定义
+  `--radius-lg`，整个declaration失效。empty/loading/error与restore-error surfaces改用
+  Web-owned显式10px radius，final computed radius=10；focused suite **3/3**，
+  Lynx-for-Web/Native builds通过。populated restore rows在真实snapshot缺席，未伪称
+  screenshot覆盖；证据在`shots/2026-08-05/archived-current-head/`。
