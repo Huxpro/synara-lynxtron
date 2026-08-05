@@ -38,7 +38,8 @@ complete.
 | Exact-owned Native identity and cleanup for every new page | per-page `native/capture.json`, empty Native consoles, byte-exact KV restoration | PASS |
 | Current-head evidence is not Web fallback masquerading as Lynx | six affected Settings cells recaptured from staged bundle with stable Lynx host URL | PASS |
 | New Settings pages cover light/dark × 1280/1440 | light/1280 plus dark/1440 retained for eight continuation pages | PASS |
-| Continuation matrix is machine-verified against current implementation head | `settings-continuation-manifest.json`; strengthened verifier validates 16 states / 48 cells, same-snapshot client triples, target/sidebar geometry, logical Native dimensions, bundle identity, and runtime consoles | PASS |
+| Continuation matrix is machine-verified against the sidebar-gutter implementation head | `settings-continuation-manifest.json`; strengthened verifier validates 16 states / 48 cells, same-snapshot client triples, target/sidebar geometry, logical Native dimensions, bundle identity, and runtime consoles | PASS — historical after the focused typography slice |
+| Settings navigation group-label typography matches Web | `SettingsNavigationTypography.lynx.test.ts`; current-head Web/Lynx geometry in `shots/2026-08-06/settings-navigation-typography/` | PASS |
 | Settings sidebar search matches Web intent | shared ranking/index, real Lynx input/results/selection/row targeting, canonical section icons, Web-owned horizontal gutter, Web/Lynx filtered evidence, Native default anatomy | PASS — Native filtered text entry not claimed |
 | Populated destructive/mutation paths are visually certified without fabricated data | canonical snapshot has no managed worktree/integration/archived rows; logic/RPC tests cover the product paths and direct SQLite fixtures are forbidden | NOT APPLICABLE — no safe canonical populated state |
 | Full final heavy pass | AGENTS requires `bun fmt`, `bun lint`, `bun typecheck`; current conversation does not explicitly authorize running them | **BLOCKED BY INSTRUCTION** |
@@ -110,6 +111,9 @@ The retained replacement cells:
   geometry converged from x=14/width=227 to x=6/width=243 versus Web
   x=6/width=244; the remaining 1px is Lynx's sidebar separator. The 32px y
   difference is the Web desktop titlebar and is not patched into product CSS.
+- Settings navigation labels now match Web's 12px/400/18px typography and 26px
+  total height. The first App row is y=124 in Lynx and y=160 in Web; subtracting
+  Web's 36px desktop chrome yields exact alignment.
 - Search target runtime: `Appearance: Time format` resolved the shared
   `setting-time-format` anchor and scrolled its row into the visible content
   viewport.

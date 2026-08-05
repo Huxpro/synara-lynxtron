@@ -5411,3 +5411,8 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   `f2bfbb9a…`、Native `3112efe2…`。严格verifier **16 states / 48 cells**，
   regression tests **3/3**；Native只需两次正常launch，全部PID-owned client、
   console 0，KV/window最终byte-exact恢复。
+- fresh matrix继续量化Settings nav group label：Web为12px/400/18px、总高26px，
+  Lynx为11px/500/16px、总高24px，导致每组首行提前2px。修复共享owner而非追加
+  margin；current Lynx实测label 26px、General y=124，Web y=160扣除36px desktop
+  chrome后同为124。focused tests **5/5**，Web与Native/Desktop builds通过；
+  证据位于`shots/2026-08-06/settings-navigation-typography/`。
