@@ -5462,3 +5462,7 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   `SETTINGS_SECTION_LABEL_CLASS_NAME`的owner统一为12px/400/18px、4×8 padding、
   muted/58；Profile 14px dashboard heading明确排除。focused tests **2/2**，两端
   build通过。
+- Standard Settings card radius审计：Web统一`rounded-lg`即10px，General、
+  Provider Picker与generic card已正确，Appearance单独写12px。改回10px并新增
+  跨owner contract；Usage quota cards为独立设计不纳入。focused tests **3/3**，
+  两端build通过。

@@ -29,4 +29,23 @@ describe('Lynx Settings section labels', () => {
       );
     }
   });
+
+  it('keeps standard Settings cards on the shared Web radius', () => {
+    const generalStyles = readFileSync(
+      new URL('./settings-general-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+    const appearanceStyles = readFileSync(
+      new URL('./settings-appearance-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+    const providerStyles = readFileSync(
+      new URL('./settings-provider-picker-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+
+    for (const styles of [generalStyles, appearanceStyles, providerStyles]) {
+      expect(styles).toMatch(/Card\s*\{[^}]*border-radius:\s*10px;/s);
+    }
+  });
 });
