@@ -17,7 +17,9 @@ export function SettingsRowRootElement({
   children,
 }: ElementProps & { readonly id?: string }) {
   const isFirstRow =
-    id === 'setting-assistant-output' || id === 'setting-delete-confirmation';
+    id === 'setting-assistant-output' ||
+    id === 'setting-delete-confirmation' ||
+    id === 'setting-activity-toasts';
   return (
     <view
       id={id}

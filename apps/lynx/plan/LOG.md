@@ -5648,6 +5648,13 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   绕过已统一的Settings reset identity。抽取单一`renderSettingsResetAction`，
   两个shared panels现在共用generated `SettingsResetIcon` 14px、icon-xs ghost button
   与原accessibility label。focused settings tests **11/11**，两端build通过。
+- shared `SettingsSection/SettingsRow` adapter仍是旧视觉fork：section label 11px/650、
+  card强制background/min-height、row固定10.5px padding/3px copy gap/18px title line；
+  Notifications首行`Activity toasts`还被错误加top divider。统一为12px/400/18px、
+  muted/58、6px section gap、transparent 10px card、density-driven 12px row、
+  2px copy gap/20px title line，并补第三个first-row anchor。focused tests **12/12**，
+  Lynx-for-Web/Native builds通过；首次test因直接import Web panel绕过Rstest alias失败，
+  改为直接验证真实Lynx platform adapters后通过。
 - 新增icon后审计Button primitive发现Lynx无content gap，且mixed children中的label
   未自动套`LxButton__text`。补Web base/default 8px、sm 6px、xs 4px gap，并显式
   包裹Theme option label，确保icon+text typography与间距都生效。focused Settings

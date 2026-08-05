@@ -1,7 +1,6 @@
 .SharedSettingsRow {
   width: 100%;
-  min-height: 61px;
-  padding: 10.5px 12px;
+  padding: var(--app-density-settings-row-padding-y, 0.625rem) 12px;
   border-top: 1px solid var(--color-border);
 }
 
@@ -29,7 +28,7 @@
 .SharedSettingsRowCopy {
   flex: 1;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
 }
 
 .SharedSettingsRowTitleLine,
@@ -39,7 +38,7 @@
 }
 
 .SharedSettingsRowTitleLine {
-  min-height: 18px;
+  min-height: 20px;
   gap: 6px;
 }
 
