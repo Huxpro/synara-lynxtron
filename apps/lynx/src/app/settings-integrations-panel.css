@@ -25,7 +25,6 @@
 .SettingsIntegrationsConnection {
   display: flex;
   width: 100%;
-  min-height: 79px;
   padding: var(--app-density-settings-row-padding-y, 10px) 12px;
   align-items: center;
   justify-content: space-between;
@@ -131,7 +130,6 @@
 .SettingsIntegrationsEmpty {
   display: flex;
   flex-direction: column;
-  min-height: 58px;
   padding: 10px 12px;
   justify-content: center;
   gap: 0;
@@ -146,7 +144,6 @@
 }
 
 .SettingsIntegrationsConnectionActions {
-  width: 190px;
   flex-shrink: 0;
   justify-content: flex-end;
 }

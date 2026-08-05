@@ -57,13 +57,16 @@ describe('Settings Integrations fidelity', () => {
       /\.SettingsIntegrationsPanel\s*\{[^}]*gap:\s*24px;/s
     );
     expect(styles).toMatch(
-      /\.SettingsIntegrationsRow,\s*\.SettingsIntegrationsConnection\s*\{[^}]*min-height:\s*79px;[^}]*justify-content:\s*space-between;/s
+      /\.SettingsIntegrationsRow,\s*\.SettingsIntegrationsConnection\s*\{[^}]*justify-content:\s*space-between;/s
+    );
+    expect(styles).not.toMatch(
+      /\.SettingsIntegrationsRow,\s*\.SettingsIntegrationsConnection\s*\{[^}]*min-height:/s
     );
     expect(styles).toMatch(
       /\.SettingsIntegrationsNameInput\s*\{[^}]*width:\s*256px;/s
     );
     expect(styles).toMatch(
-      /\.SettingsIntegrationsConnectionActions\s*\{[^}]*width:\s*190px;/s
+      /\.SettingsIntegrationsConnectionActions\s*\{[^}]*flex-shrink:\s*0;[^}]*justify-content:\s*flex-end;/s
     );
     expect(styles).toMatch(
       /\.SettingsIntegrationsProject\s*\{[^}]*padding:\s*8px 12px;[^}]*border:\s*1px solid var\(--settings-project-border\);/s
@@ -77,8 +80,8 @@ describe('Settings Integrations fidelity', () => {
     expect(styles).toMatch(
       /\.SettingsIntegrationsProject--checked\s*\{[^}]*border-color:\s*var\(--settings-project-selected-border\);[^}]*background-color:\s*var\(--settings-project-selected-surface\);/s
     );
-    expect(styles).toMatch(
-      /\.SettingsIntegrationsSetup,\s*\.SettingsIntegrationsEmpty\s*\{[^}]*min-height:\s*58px;/s
+    expect(styles).not.toMatch(
+      /\.SettingsIntegrationsSetup,\s*\.SettingsIntegrationsEmpty\s*\{[^}]*min-height:/s
     );
   });
 });
