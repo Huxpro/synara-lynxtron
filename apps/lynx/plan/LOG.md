@@ -5874,3 +5874,9 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   两态console均空、server state未变。Desktop DevTool `mouseMoved`不发布mouseenter，
   因此hover继续只计CSS/source contract，不伪称Native通过。证据在
   `shots/2026-08-06/settings-row-native-interaction/`。
+- 新增Providers专用strict evidence manifest/verifier，避免旧16-state Settings
+  manifest代理更新后的workflow。当前13 states覆盖light fast-loop、Native
+  closed/tools/open/focus、dark/1440三端与navigation base/pressed/focus；逐项锁
+  PNG hash/dimensions、Lynx/Native builds、snapshot、PID-owned session URL、console、
+  geometry、disclosure motion与pressed/focus paint。verifier **13/13**，回归测试
+  **3/3**，可主动拒绝bundle/geometry/interaction paint漂移。

@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "snapshotSha256": "cd3e1e9efe5d373efd3271338eb504f94f98f5aea24a7b3df43acbb9d5e06710",
+  "builds": {
+    "lynxWeb": "52b92766573497209b59db06104c536f23ceb8a177bf09a6bcaca942094a7c5b",
+    "nativeOnline": "98083afbc10c3f6891fabcfa9b59db9d2274619a9d1b8046ea39be42a22bd780",
+    "nativeDefault": "eaf1b834841fd25fb135a59895be62f5d406ae867aaaaeedc71175703ca52dcb"
+  },
+  "nativeBundlePath": "file:///Users/bytedance/github/synara/apps/lynx/dist/desktop/main.lynx.bundle",
+  "states": [
+    {
+      "id": "providers-web-light-1280",
+      "kind": "static-image",
+      "client": "web",
+      "image": "../2026-08-05/providers-current-head/providers-web-1280x820-light.png",
+      "imageSha256": "dbaae614e132001d8d50a840272f735d5294a9f38b96c38f56f9745209f5a2e0",
+      "dimensions": { "width": 1280, "height": 820 },
+      "notes": "../2026-08-05/providers-current-head/notes.md"
+    },
+    {
+      "id": "providers-lynx-light-1280",
+      "kind": "static-image",
+      "client": "lynx",
+      "image": "../2026-08-05/providers-current-head/providers-lynx-web-1280x820-light.png",
+      "imageSha256": "7793e5f66444417db2685ebe0d0ae3302155356cbc3dbad3daf651aa35290adc",
+      "dimensions": { "width": 1280, "height": 820 },
+      "notes": "../2026-08-05/providers-current-head/notes.md"
+    },
+    {
+      "id": "providers-native-light-closed",
+      "kind": "native",
+      "captureStateId": "providers-native-closed",
+      "directory": "providers-native-current/closed",
+      "imageSha256": "d731262c1627afad1f46cdca77728ee15e17157d5707f8af2c5e74bc3c97d304",
+      "dimensions": { "width": 2560, "height": 1576 },
+      "expect": {
+        "roles.root.attributes.class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable",
+        "roles.root.box.width": 1280,
+        "roles.root.box.height": 788,
+        "roles.updates.box.width": 596,
+        "roles.updates.box.height": 58,
+        "roles.tool.box.width": 596,
+        "roles.tool.box.height": 44
+      }
+    },
+    {
+      "id": "providers-native-light-tools",
+      "kind": "native",
+      "captureStateId": "providers-native-tools",
+      "directory": "providers-native-current/tools",
+      "imageSha256": "64aaf5d009a0ccebac280fdda31c5c892a6ddc72b5d30300d5256cd2e53e4ba7",
+      "dimensions": { "width": 2560, "height": 1576 },
+      "expect": {
+        "roles.tool.box.width": 596,
+        "roles.tool.box.height": 44,
+        "roles.tool.box.y": 359
+      }
+    },
+    {
+      "id": "providers-native-light-open",
+      "kind": "native",
+      "captureStateId": "providers-native-codex-open",
+      "directory": "providers-native-current/open",
+      "imageSha256": "7b6a186607095f277467f7135b4f4087dfc1e012daa12e592124b848393fcc13",
+      "dimensions": { "width": 2560, "height": 1576 },
+      "expect": {
+        "roles.tool.box.width": 596,
+        "roles.tool.box.height": 257,
+        "roles.disclosure.box.width": 596,
+        "roles.disclosure.box.height": 213,
+        "roles.disclosure.attributes.class": "LynxDisclosureMotion LynxDisclosureMotion--open SettingsProviderToolsDisclosureContent",
+        "roles.field.box.width": 572,
+        "roles.field.box.height": 28
+      }
+    },
+    {
+      "id": "providers-native-light-focused",
+      "kind": "native",
+      "captureStateId": "providers-native-codex-home-focused",
+      "directory": "providers-native-current/focused",
+      "imageSha256": "7b6a186607095f277467f7135b4f4087dfc1e012daa12e592124b848393fcc13",
+      "dimensions": { "width": 2560, "height": 1576 },
+      "expect": {
+        "roles.tool.box.height": 257,
+        "roles.field.box.width": 572,
+        "roles.field.box.height": 28
+      }
+    },
+    {
+      "id": "providers-web-dark-1440",
+      "kind": "browser",
+      "client": "web",
+      "image": "providers-dark-1440/web/raw.png",
+      "imageSha256": "1bf728aa9ed38d6bce86254385da685f7368996393a66f0b7f958e100721410b",
+      "dimensions": { "width": 1440, "height": 900 },
+      "geometry": "providers-dark-1440/web/geometry.json",
+      "errors": "providers-dark-1440/web/errors.txt",
+      "console": "providers-dark-1440/web/console.txt",
+      "expect": {
+        "runtime.w": 1440,
+        "runtime.h": 900,
+        "runtime.dpr": 1,
+        "dark": true,
+        "updates.width": 624,
+        "updates.height": 337.5,
+        "tools.width": 624,
+        "tools.height": 496.5
+      }
+    },
+    {
+      "id": "providers-lynx-dark-1440",
+      "kind": "browser",
+      "client": "lynx",
+      "buildSha256": "52b92766573497209b59db06104c536f23ceb8a177bf09a6bcaca942094a7c5b",
+      "image": "providers-dark-1440/lynx/raw.png",
+      "imageSha256": "f38caa4b6490f1d2169c438cf774a9120d0df56c80aa43d88cb76858d17acd6b",
+      "dimensions": { "width": 1440, "height": 900 },
+      "geometry": "providers-dark-1440/lynx/geometry.json",
+      "errors": "providers-dark-1440/lynx/errors.txt",
+      "console": "providers-dark-1440/lynx/console.txt",
+      "expect": {
+        "runtime.w": 1440,
+        "runtime.h": 900,
+        "runtime.dpr": 1,
+        "rootClass": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable",
+        "cards.0.rect.width": 624,
+        "cards.0.rect.height": 338.5,
+        "cards.1.rect.width": 624,
+        "cards.1.rect.height": 496,
+        "toolRows.0.width": 596,
+        "toolRows.0.height": 44
+      }
+    },
+    {
+      "id": "providers-native-dark-1440-closed",
+      "kind": "native",
+      "directory": "providers-dark-1440/native-closed",
+      "imageSha256": "7b592f25d3a0e19a5657e6bca7035d4496c55f88166f32b44ff65178c40e57e2",
+      "dimensions": { "width": 2880, "height": 1736 },
+      "expect": {
+        "roles.root.attributes.class": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable",
+        "roles.root.box.width": 1440,
+        "roles.root.box.height": 868,
+        "roles.updates.box.width": 596,
+        "roles.updates.box.height": 58,
+        "roles.tool.box.width": 596,
+        "roles.tool.box.height": 44
+      }
+    },
+    {
+      "id": "providers-native-dark-1440-tools",
+      "kind": "native",
+      "directory": "providers-dark-1440/native-tools",
+      "imageSha256": "5e868d03a910bd3d0dd45d1dd7e0863c008086167f57507cf779d0d7040cfcc3",
+      "dimensions": { "width": 2880, "height": 1736 },
+      "expect": {
+        "roles.root.attributes.class": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable",
+        "roles.tool.box.width": 596,
+        "roles.tool.box.height": 44,
+        "roles.tool.box.y": 386
+      }
+    },
+    {
+      "id": "settings-row-native-base",
+      "kind": "native",
+      "captureStateId": "settings-row-base",
+      "directory": "settings-row-native-interaction/base",
+      "imageSha256": "2790da2ec6be05b10d1a48ff6a1055d6747c03bf247a23e4769f8f6c8e602896",
+      "dimensions": { "width": 2560, "height": 1576 },
+      "expect": {
+        "roles.navigation.box.width": 243,
+        "roles.navigation.box.height": 510,
+        "roles.active.paint.opacity": "1"
+      }
+    },
+    {
+      "id": "settings-row-native-pressed",
+      "kind": "native",
+      "captureStateId": "settings-row-pressed",
+      "directory": "settings-row-native-interaction/pressed",
+      "imageSha256": "0b1be3e57c487839420854cb9eee4ad1c968a6ea32c8b9c42a43b51e6cc062f4",
+      "dimensions": { "width": 2560, "height": 1576 },
+      "expect": {
+        "roles.pressed.attributes.class": "SharedSettingsNavigationButton ui-pressed",
+        "roles.pressed.box.width": 243,
+        "roles.pressed.box.height": 28
+      },
+      "expectStyles": {
+        "roles.pressed.paint.background": "rgba(13,13,13,0.0392157)",
+        "roles.pressed.paint.opacity": "1",
+        "roles.pressed.paint.shadow": ""
+      }
+    },
+    {
+      "id": "settings-row-native-focus",
+      "kind": "native",
+      "captureStateId": "settings-row-focus",
+      "directory": "settings-row-native-interaction/focus",
+      "imageSha256": "12ddab050dbe979e6b8f30a2af8d4a8a88110e4ce7725a65b4078df07444812f",
+      "dimensions": { "width": 2560, "height": 1576 },
+      "expect": {
+        "roles.focused.attributes.class": "SharedSettingsNavigationButton ui-focus",
+        "roles.focused.box.width": 243,
+        "roles.focused.box.height": 28
+      },
+      "expectStyles": {
+        "roles.focused.paint.background": "rgba(0,0,0,0)",
+        "roles.focused.paint.opacity": "0.95",
+        "roles.focused.paint.shadow": "inset 0 0 0 1px #0169cc"
+      }
+    }
+  ]
+}

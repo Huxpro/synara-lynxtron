@@ -29,6 +29,8 @@
     "test:evidence:perceptual": "node --test scripts/perceptual-evidence.test.mjs",
     "evidence:settings-continuation": "node scripts/settings-continuation-evidence.mjs",
     "test:evidence:settings-continuation": "node --test scripts/settings-continuation-evidence.test.mjs",
+    "evidence:providers": "node scripts/providers-evidence.mjs",
+    "test:evidence:providers": "node --test scripts/providers-evidence.test.mjs",
     "evidence:specimens": "node scripts/specimen-evidence.mjs",
     "evidence:specimens:incomplete": "node scripts/specimen-evidence.mjs --allow-incomplete",
     "test:evidence:specimens": "node --test scripts/specimen-evidence.test.mjs",
