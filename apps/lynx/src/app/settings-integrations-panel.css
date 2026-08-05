@@ -61,9 +61,17 @@
 .SettingsIntegrationsProjectGrid,
 .SettingsIntegrationsAdvanced {
   display: flex;
-  flex-direction: column;
   margin-top: 12px;
   gap: 8px;
+}
+
+.SettingsIntegrationsProjectGrid {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.SettingsIntegrationsAdvanced {
+  flex-direction: column;
 }
 
 .SettingsIntegrationsProject,
@@ -75,6 +83,7 @@
 }
 
 .SettingsIntegrationsProject {
+  width: calc(50% - 4px);
   min-height: 36px;
   padding: 8px 12px;
   border: 1px solid var(--settings-project-border);

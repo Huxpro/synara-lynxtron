@@ -69,6 +69,12 @@ describe('Settings Integrations fidelity', () => {
       /\.SettingsIntegrationsProject\s*\{[^}]*padding:\s*8px 12px;[^}]*border:\s*1px solid var\(--settings-project-border\);/s
     );
     expect(styles).toMatch(
+      /\.SettingsIntegrationsProjectGrid\s*\{[^}]*flex-direction:\s*row;[^}]*flex-wrap:\s*wrap;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsIntegrationsProject\s*\{[^}]*width:\s*calc\(50% - 4px\);/s
+    );
+    expect(styles).toMatch(
       /\.SettingsIntegrationsProject--checked\s*\{[^}]*border-color:\s*var\(--settings-project-selected-border\);[^}]*background-color:\s*var\(--settings-project-selected-surface\);/s
     );
     expect(styles).toMatch(
