@@ -5888,3 +5888,9 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   `readonly=false`并带focus/selection/blur handlers，switch精确发布
   `aria-checked=false`与`Off`。三端error/Native console为空，settings/SQLite未变；
   证据在`shots/2026-08-06/providers-opencode-current/`。
+- update checks off分支通过Lynx rendered switch执行真实server mutation，再由独立Web
+  session读取：两端均显示两处`Automatic checks off`，behind-latest list/Actions隐藏；
+  Lynx仅保留Cursor/Antigravity/Droid三个unknown-advisory安全Update，并显示reset。
+  rendered reset恢复preference=true；新session advisories cache尚未刷新而暂显
+  `No provider updates detected`，未误报为status refresh结果。server停止后settings
+  revision写入恢复原始bytes，SQLite不变。Providers strict verifier扩至**18/18**。

@@ -219,8 +219,8 @@ export function validateProvidersEvidenceManifest(manifest, root) {
   for (const [name, value] of Object.entries(manifest.builds ?? {})) {
     validateHash(errors, `builds.${name}`, value);
   }
-  if (!Array.isArray(manifest.states) || manifest.states.length !== 16) {
-    errors.push("manifest must declare exactly 16 states");
+  if (!Array.isArray(manifest.states) || manifest.states.length !== 18) {
+    errors.push("manifest must declare exactly 18 states");
   }
   for (const state of manifest.states ?? []) {
     if (seen.has(state.id)) errors.push(`${state.id}: duplicate state id`);

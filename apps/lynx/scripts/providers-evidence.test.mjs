@@ -26,7 +26,7 @@ test("reads retained Providers PNG dimensions", () => {
 test("the retained Providers manifest is complete", () => {
   const result = validateProvidersEvidence(MANIFEST_PATH);
   assert.deepEqual(result.errors, []);
-  assert.equal(result.stateCount, 16);
+  assert.equal(result.stateCount, 18);
 });
 
 test("rejects Native build and interaction paint drift", () => {

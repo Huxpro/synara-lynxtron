@@ -304,6 +304,43 @@
           }
         }
       ]
+    },
+    {
+      "id": "providers-checks-off-web",
+      "kind": "browser",
+      "client": "web",
+      "image": "providers-checks-off/web/raw.png",
+      "imageSha256": "935681f88f709c1ec52cfa32d983cee7635b93c4a4a8c82400ce90c223319c3d",
+      "dimensions": { "width": 1280, "height": 820 },
+      "geometry": "providers-checks-off/web/geometry.json",
+      "errors": "providers-checks-off/web/errors.txt",
+      "expect": {
+        "heading": "Providers",
+        "automaticOff": 2,
+        "updateRows": [],
+        "updateButtons": 0
+      }
+    },
+    {
+      "id": "providers-checks-off-lynx",
+      "kind": "browser",
+      "client": "lynx",
+      "buildSha256": "52b92766573497209b59db06104c536f23ceb8a177bf09a6bcaca942094a7c5b",
+      "image": "providers-checks-off/lynx/raw.png",
+      "imageSha256": "c50e8ce69ae8105d24418d6407c90cf70a330fbd6e2cdb03bb8574fa3a3b29be",
+      "dimensions": { "width": 1280, "height": 820 },
+      "geometry": "providers-checks-off/lynx/geometry.json",
+      "errors": "providers-checks-off/lynx/errors.txt",
+      "console": "providers-checks-off/lynx/console.txt",
+      "expect": {
+        "statuses.0": "Automatic checks off",
+        "statuses.1": "Automatic checks off",
+        "updateList": false,
+        "toolActions.0": "Update Cursor",
+        "toolActions.1": "Update Antigravity",
+        "toolActions.2": "Update Droid",
+        "reset": true
+      }
     }
   ]
 }
