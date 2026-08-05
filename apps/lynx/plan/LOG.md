@@ -5389,3 +5389,9 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - 结果视觉最初是单48px card，而Web authority为28px section row + 28px indented
   setting row。Lynx改为同一双层56px anatomy，section/title分别有真实interaction与
   accessible label；Web/Lynx实测均28+28。
+- 搜索section icon最初仍是通用bordered square，identity不匹配真实Settings nav。
+  现在navigation与search共用同一canonical icon registry，并由
+  `SETTINGS_NAV_ITEMS`把section id解析到icon；`Archived`实测为生成的
+  `ArchiveIcon`，16×16 slot位于x=22/y=104。focused search/icon tests **6/6**，
+  Web与Native/Desktop production builds通过；更新后的Lynx-for-Web bundle为
+  `e6f12d8c…`，Native bundle为`4fb46e2c…`。

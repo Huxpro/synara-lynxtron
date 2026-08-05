@@ -13,6 +13,9 @@ default anatomy
 - Each result mirrors Web's two-level hierarchy: a 28px owning-section row
   followed by a 28px indented setting row. Web and Lynx both measure 56px total
   for `Archived / Archived threads`.
+- Result section icons reuse the same canonical registry as Settings navigation.
+  The retained `Archived` result resolves to the generated Tabler `ArchiveIcon`
+  in a measured 16×16 slot, replacing the generic bordered square.
 - Selecting `Archived: Archived threads` navigates memory history to the real
   Archived panel and clears the input. A second runtime check selected
   `Appearance: Time format`, found the shared `setting-time-format` anchor, and
@@ -38,11 +41,13 @@ events.
 
 - Web screenshot: 1280×820.
 - Lynx-for-Web screenshot: 1280×820, staged bundle
-  `81b022f92ad7dfe3a6c827fc2706148f40b3f049cda83aa5a2653010b08c775a`.
-- Native screenshot: 2560×1576, bundle
+  `e6f12d8c5cdad51401a631c3d4c2a5816fbf376e75ed4ac3ae2b72c2fbaab31e`.
+- Native default-anatomy screenshot: 2560×1576, prior search slice bundle
   `ddd0793074bdd62248a2c8bff4201e3c4696a35257366d026e35352f50bdd666`.
+- Current icon-identity Native/Desktop production build:
+  `4fb46e2cf4a94262649f744e18cc4fa0e2260e7a58a999160e1c55a339f0a753`.
 - Native default-state required roles: light root, search shell, native input,
   and navigation row; exact-client console is empty. Native filtered interaction
   is not claimed because driving the real macOS text client would take focus.
-- Focused search/input suites: 4/4.
+- Focused search/icon suites: 6/6.
 - No user setting or project data changed. Owned KV was restored byte-exact.

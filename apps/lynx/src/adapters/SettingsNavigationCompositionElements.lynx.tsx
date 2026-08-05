@@ -1,23 +1,6 @@
 import type { ReactNode } from '@lynx-js/react';
 
-import {
-  AdjustmentsHorizontalIcon,
-  ArchiveIcon,
-  BellIcon,
-  BlocksIcon,
-  BrainIcon,
-  GaugeIcon,
-  GitBranchIcon,
-  KeyboardIcon,
-  PaletteIcon,
-  PlugIcon,
-  PuzzleIcon,
-  ScreenshotIcon,
-  SettingsIcon,
-  ToolsIcon,
-  UserIcon,
-  type LynxIcon,
-} from '../lib/icons.lynx';
+import { SettingsIconElement } from './SettingsIcon.lynx';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 
 type ChildrenProps = {
@@ -82,32 +65,14 @@ export function SettingsNavigationItemButtonElement(props: ChildrenProps & {
   );
 }
 
-const SETTINGS_NAVIGATION_ICONS: Readonly<Record<string, LynxIcon>> = {
-  'settings-gear-4': SettingsIcon,
-  user: UserIcon,
-  'color-palette': PaletteIcon,
-  bell: BellIcon,
-  'settings-slider-hor': AdjustmentsHorizontalIcon,
-  'screen-capture': ScreenshotIcon,
-  shortcut: KeyboardIcon,
-  'branch-simple': GitBranchIcon,
-  archive: ArchiveIcon,
-  brain: BrainIcon,
-  puzzle: PuzzleIcon,
-  'building-blocks': BlocksIcon,
-  gauge: GaugeIcon,
-  'plugin-1': PlugIcon,
-  toolbox: ToolsIcon,
-};
-
 export function SettingsNavigationIconElement(props: {
   readonly name: string;
 }) {
-  const Icon = SETTINGS_NAVIGATION_ICONS[props.name];
   return (
-    <view className="SharedSettingsNavigationIcon">
-      {Icon ? <Icon size={16} color="var(--foreground)" /> : null}
-    </view>
+    <SettingsIconElement
+      className="SharedSettingsNavigationIcon"
+      name={props.name}
+    />
   );
 }
 

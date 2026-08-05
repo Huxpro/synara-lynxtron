@@ -1,5 +1,6 @@
 import type { SettingsSearchEntry } from '@synara-web/settingsSearchIndex';
 import { settingsSectionLabel } from '@synara-web/settingsSearchIndex';
+import { SettingsIconElement } from '../adapters/SettingsIcon.lynx';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 
 function SettingsSearchResult(props: {
@@ -24,7 +25,10 @@ function SettingsSearchResult(props: {
         className={sectionInteraction.className}
         {...sectionInteraction.eventProps}
       >
-        <view className="SettingsSearchResultSectionIcon" />
+        <SettingsIconElement
+          className="SettingsSearchResultSectionIcon"
+          section={props.entry.section}
+        />
         <text className="SettingsSearchResultSection">
           {settingsSectionLabel(props.entry.section)}
         </text>
