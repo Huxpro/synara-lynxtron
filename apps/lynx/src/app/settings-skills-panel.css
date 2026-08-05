@@ -36,16 +36,7 @@
 .SettingsSkillsEmptyRow {
   display: flex;
   width: 100%;
-  min-height: 72px;
   padding: var(--app-density-settings-row-padding-y, 10px) 12px;
-}
-
-.SettingsSkillsPortableRow {
-  min-height: 120px;
-}
-
-.SettingsSkillsRow {
-  min-height: 126px;
 }
 
 .SettingsSkillsPortableRow,
@@ -95,7 +86,10 @@
 }
 
 .SettingsSkillsPath {
+  overflow: hidden;
   font-family: var(--font-mono-family);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .SettingsSkillsCube {
@@ -116,10 +110,56 @@
 
 .SettingsSkillsControl {
   display: flex;
-  width: 72px;
+  flex-shrink: 0;
   flex-direction: column;
   align-items: flex-end;
   gap: 4px;
+}
+
+.SettingsSkillsSourceLine,
+.SettingsSkillsProviderStack,
+.SettingsSkillsProviderBadge {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.SettingsSkillsSourceLine {
+  min-width: 0;
+  gap: 6px;
+}
+
+.SettingsSkillsSource {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.SettingsSkillsProviderStack {
+  flex-shrink: 0;
+}
+
+.SettingsSkillsProviderBadge {
+  width: 16px;
+  height: 16px;
+  justify-content: center;
+  border: 1px solid var(--background);
+  border-radius: 8px;
+  background-color: var(--background);
+}
+
+.SettingsSkillsProviderBadge .OpenAIProviderIcon {
+  width: 12px;
+  height: 12px;
+}
+
+.SettingsSkillsProviderFallback {
+  color: var(--muted-foreground);
+  font-size: 8px;
+  font-weight: 600;
+  line-height: 8px;
 }
 
 .SettingsSkillsSaveError {

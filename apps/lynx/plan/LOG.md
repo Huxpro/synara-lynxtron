@@ -5678,6 +5678,11 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   token而非Web 14px empty hierarchy；populated row还强制60px min-height。改用generated
   `ArchiveIcon` 20px，empty copy统一14px/20px，并移除固定row height。focused tests
   **3/3**，Lynx-for-Web/Native builds通过。
+- Skills portable/group/empty rows此前固定72/120/126px，control column固定72px，
+  与Web content-driven Settings rows不一致；source/path也不truncate，group.providers
+  数据未显示。移除固定尺寸，control按switch自宽，source/path补ellipsis；新增overlap
+  16px provider stack，mapped SVG为12px，未覆盖provider用neutral initial fallback。
+  focused tests **3/3**，Lynx-for-Web/Native builds通过。
 - 新增icon后审计Button primitive发现Lynx无content gap，且mixed children中的label
   未自动套`LxButton__text`。补Web base/default 8px、sm 6px、xs 4px gap，并显式
   包裹Theme option label，确保icon+text typography与间距都生效。focused Settings

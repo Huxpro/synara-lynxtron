@@ -5,6 +5,10 @@ import { SettingsSection } from '@synara-web/components/settings/SettingsSection
 
 import { SettingsGeneralBooleanControlElement } from '../adapters/SettingsGeneralCompositionElements.lynx';
 import {
+  OpenAIProviderIcon,
+  hasLynxProviderIcon,
+} from '../components/OpenAIProviderIcon.lynx';
+import {
   fetchServerSettings,
   fetchSkillsCatalog,
   updateServerSettings,
@@ -18,6 +22,31 @@ import {
 import { queryClient } from './queries';
 
 import './settings-skills-panel.css';
+
+function SkillProviderStack(props: {
+  readonly providers: readonly string[];
+}) {
+  if (props.providers.length === 0) return null;
+  return (
+    <view className="SettingsSkillsProviderStack">
+      {props.providers.map((provider, index) => (
+        <view
+          className="SettingsSkillsProviderBadge"
+          key={provider}
+          style={{ marginLeft: index === 0 ? '0px' : '-4px' }}
+        >
+          {hasLynxProviderIcon(provider) ? (
+            <OpenAIProviderIcon provider={provider} />
+          ) : (
+            <text className="SettingsSkillsProviderFallback">
+              {provider.slice(0, 1).toUpperCase()}
+            </text>
+          )}
+        </view>
+      ))}
+    </view>
+  );
+}
 
 export function SettingsSkillsPanel() {
   const catalogQuery = useQuery({
@@ -187,11 +216,14 @@ export function SettingsSkillsPanel() {
                   <text className="SettingsSkillsRowDescription">
                     {group.description}
                   </text>
-                  <text className="SettingsSkillsSource">
-                    {group.sources
-                      .map((source) => source.label)
-                      .join(' · ')}
-                  </text>
+                  <view className="SettingsSkillsSourceLine">
+                    <SkillProviderStack providers={group.providers} />
+                    <text className="SettingsSkillsSource">
+                      {group.sources
+                        .map((source) => source.label)
+                        .join(' · ')}
+                    </text>
+                  </view>
                   {group.sources.map((source) => (
                     <text
                       key={source.skill.path}

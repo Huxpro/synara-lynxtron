@@ -48,28 +48,39 @@ describe('Settings Skills fidelity', () => {
   });
 
   it('matches the Web portable summary and grouped-row anatomy', () => {
+    const source = readFileSync(
+      new URL('./SettingsSkillsPanel.lynx.tsx', import.meta.url),
+      'utf8'
+    );
     const styles = readFileSync(
       new URL('./settings-skills-panel.css', import.meta.url),
       'utf8'
     );
 
     expect(styles).toMatch(
-      /\.SettingsSkillsPortableRow,\s*\.SettingsSkillsRow,\s*\.SettingsSkillsEmptyRow\s*\{[^}]*min-height:\s*72px;/s
-    );
-    expect(styles).toMatch(
       /\.SettingsSkillsPanel\s*\{[^}]*gap:\s*32px;/s
     );
-    expect(styles).toMatch(
-      /\.SettingsSkillsPortableRow\s*\{[^}]*min-height:\s*120px;/s
-    );
-    expect(styles).toMatch(
-      /\.SettingsSkillsRow\s*\{[^}]*min-height:\s*126px;/s
+    expect(styles).not.toMatch(
+      /\.SettingsSkills(?:PortableRow|Row|EmptyRow)\s*\{[^}]*min-height:/s
     );
     expect(styles).toMatch(
       /\.SettingsSkillsRow\s*\{[^}]*align-items:\s*center;[^}]*justify-content:\s*space-between;[^}]*gap:\s*20px;/s
     );
     expect(styles).toMatch(
-      /\.SettingsSkillsControl\s*\{[^}]*width:\s*72px;[^}]*align-items:\s*flex-end;/s
+      /\.SettingsSkillsControl\s*\{[^}]*flex-shrink:\s*0;[^}]*align-items:\s*flex-end;/s
+    );
+    expect(source).toContain('<SkillProviderStack providers={group.providers} />');
+    expect(styles).toMatch(
+      /\.SettingsSkillsProviderBadge\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;[^}]*border-radius:\s*8px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsSkillsProviderBadge \.OpenAIProviderIcon\s*\{[^}]*width:\s*12px;[^}]*height:\s*12px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsSkillsSource\s*\{[^}]*overflow:\s*hidden;[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsSkillsPath\s*\{[^}]*overflow:\s*hidden;[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s
     );
   });
 });
