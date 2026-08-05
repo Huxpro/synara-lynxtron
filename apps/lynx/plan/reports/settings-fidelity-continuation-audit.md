@@ -33,7 +33,7 @@ complete.
 | Every canonical section has an explicit renderer and unknown ids fail closed | `settingsNavigation.test.ts`; explicit Providers branch and terminal `null` fallback | PASS |
 | Current focused regression suite | 14 files, 50/50 tests; AppSnap final focused suite 2/2 | PASS |
 | Current Web/Lynx-for-Web/Desktop production builds | Final AppSnap slice builds pass; expected CSS and optional `ws` native-module warnings only | PASS |
-| Reuse audit includes current graph | regenerated baseline; strict check passes; Settings gate 53.11% | PASS |
+| Reuse audit includes current graph | regenerated baseline; strict check passes; Settings gate 53.75% | PASS |
 | Style audit current | strict check passes; 98.07% weighted coverage | PASS |
 | Exact-owned Native identity and cleanup for every new page | per-page `native/capture.json`, empty Native consoles, byte-exact KV restoration | PASS |
 | Current-head evidence is not Web fallback masquerading as Lynx | six affected Settings cells recaptured from staged bundle with stable Lynx host URL | PASS |
@@ -107,6 +107,7 @@ complete.
 | Integrations rows and actions match Web content-driven geometry | real form rows use exact 20px title lines, 12/18/500 titles, previous-row bottom dividers, and Web bounds; connection/setup/empty rows remain content-driven and action groups self-size | PASS — current-head real form proof |
 | Integrations disclosures reuse shared motion | rendered Access all opens two real projects; Review opens three permissions; both use shared 220ms presence/content motion and restore cleanly | PASS — current-head interaction proof |
 | Models includes complete Git-writing and custom-model workflows | Git writing row is terminal with exact 20px title line and no trailing divider; custom models use shared validation, canonical server settings, eight-provider editor, Add/Enter/remove/reset, immediate picker refresh, and exact Web geometry | PASS — current-head visual and real add-picker-remove proof |
+| Providers includes complete update and provider-tools workflows | `SettingsProviderToolsPanel.lynx.tsx`; real three-provider update list, nine CLI disclosures, docs, all Web override fields, canonical update/edit/reset RPCs, exact 44px tool rows, and real edit-reset cleanup in `shots/2026-08-05/providers-current-head/` | PASS — current-head fast-loop visual and real mutation proof |
 | Shared Button icon-label spacing matches Web | default/sm/xs gaps are 8/6/4px; mixed Appearance labels retain `LxButton__text` styling | PASS |
 | Settings large card radius resolves at runtime | the Lynx root defines shared `--radius-lg: 10px`; AppSnap, Skills, and Worktrees representative surfaces compute to 10px, while Advanced/Integrations consumers are statically covered | PASS — current-head runtime and consumer audit |
 | Settings sidebar search matches Web intent | shared ranking/index, real Lynx input/results/selection/row targeting, canonical section icons, Web-owned horizontal gutter, Web/Lynx filtered evidence, Native default anatomy | PASS — Native filtered text entry not claimed |
@@ -128,7 +129,7 @@ complete.
 | Worktrees | `SettingsWorktreesPanel` |
 | Archived | `SettingsArchivedPanel` |
 | Models | shared `SettingsGitWritingModelComposition` |
-| Providers | shared provider update/picker compositions |
+| Providers | `SettingsProviderToolsPanel` plus shared provider picker |
 | Skills | `SettingsSkillsPanel` |
 | Usage | `SettingsUsagePanel` |
 | Integrations | `SettingsIntegrationsPanel` |
@@ -279,6 +280,26 @@ The retained replacement cells:
 - Current-head focused rerun: Appearance + Theme Pack 2 files, 7/7 tests;
   Lynx-for-Web and Native/Desktop production builds pass. Bundles:
   Lynx-for-Web `df1978d4…`; Native `53c91cdd…`.
+- Current-head Providers audit found an entire workflow gap rather than a
+  geometry-only residual: Lynx exposed only update-check preference plus the
+  picker, while Web also owned real update rows and nine expandable provider
+  tools. The new panel reads canonical config/settings, runs
+  `server.updateProvider`, edits every Web override through
+  `server.updateSettings`, preserves configured-password redaction, and owns
+  one complete reset. Evidence is under
+  `shots/2026-08-05/providers-current-head/`.
+- Providers current-head geometry converged to Web: Updates card
+  `624x338.5` versus `624x337.5`, three rows approximately 59px, Provider
+  tools card `624x496` versus `624x496.5`, all nine rows exactly `596x44`,
+  and open Codex disclosure/inputs exactly `596x257` and `572x28`.
+  Update-action visibility matches Web for three behind-latest and three safe
+  unknown-advisory providers.
+- A rendered `CODEX_HOME` edit committed through the real server, immediately
+  showed `Custom`, and the rendered reset removed it. The temporary path left
+  no residue; isolated `settings.json` and `state.sqlite` returned to their
+  original SHA-256 values after owned-server shutdown. Focused Providers +
+  navigation tests pass 15/15; Lynx-for-Web and Native/Desktop production
+  builds pass. Bundles: Lynx-for-Web `52b92766…`; Native `eaf1b834…`.
 - Settings focused continuation: 14 files, 50/50 tests.
 - AppSnap final focused check: 1 file, 2/2 tests.
 - Canonical taxonomy/explicit-owner gate: 1 file, 11/11 tests.

@@ -78,7 +78,7 @@ describe('shared settings navigation projection', () => {
       worktrees: '<SettingsWorktreesPanel />',
       archived: '<SettingsArchivedPanel />',
       models: '<SettingsGitWritingModelComposition',
-      providers: '<SettingsProviderUpdateChecksComposition',
+      providers: '<SettingsProviderToolsPanel',
       skills: '<SettingsSkillsPanel />',
       usage: '<SettingsUsagePanel />',
       integrations: '<SettingsIntegrationsPanel />',

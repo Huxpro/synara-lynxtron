@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-04T23:59:12.139Z",
+  "generatedAt": "2026-08-05T19:25:30.250Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -21,7 +21,7 @@
     "entries": [
       "src/app/index.tsx"
     ],
-    "modules": 515,
+    "modules": 524,
     "externalImports": [
       "@base-ui/react/autocomplete",
       "@base-ui/react/collapsible",
@@ -61,6 +61,7 @@
       "@synara/shared/chatThreads",
       "@synara/shared/commandNavigation",
       "@synara/shared/composerSlashCommands",
+      "@synara/shared/customModels",
       "@synara/shared/desktopChrome",
       "@synara/shared/formatBytes",
       "@synara/shared/git",
@@ -71,6 +72,7 @@
       "@synara/shared/pinnedMessages",
       "@synara/shared/providerMetadata",
       "@synara/shared/providerUsage",
+      "@synara/shared/providerUsageDisplay",
       "@synara/shared/sidebarSearch",
       "@synara/shared/subagents",
       "@synara/shared/text",
@@ -136,7 +138,7 @@
       ],
       "graph": {
         "modules": 401,
-        "loc": 80900,
+        "loc": 80901,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -162,6 +164,7 @@
           "@synara/shared/appSnapShortcut",
           "@synara/shared/binaryTransfer",
           "@synara/shared/chatThreads",
+          "@synara/shared/customModels",
           "@synara/shared/desktopChrome",
           "@synara/shared/errorMessages",
           "@synara/shared/git",
@@ -223,7 +226,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 333,
-          "loc": 72912
+          "loc": 72913
         },
         "PATCHED": {
           "modules": 1,
@@ -240,14 +243,14 @@
       },
       "eligible": {
         "modules": 392,
-        "loc": 79092
+        "loc": 79093
       },
       "currentReuse": {
-        "modules": 237,
-        "loc": 44537,
-        "modulePercent": 60.46,
-        "locPercent": 56.31,
-        "gatePercent": 56.31
+        "modules": 239,
+        "loc": 45060,
+        "modulePercent": 60.97,
+        "locPercent": 56.97,
+        "gatePercent": 56.97
       },
       "modules": [
         {
@@ -263,7 +266,7 @@
         },
         {
           "path": "apps/web/src/appSettings.ts",
-          "loc": 1211,
+          "loc": 1212,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -4309,7 +4312,7 @@
           "loc": 135,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -4568,7 +4571,7 @@
           "loc": 387,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/providerDiscovery.ts",
             "apps/web/src/settingsNavigation.ts"
@@ -5050,7 +5053,7 @@
       ],
       "graph": {
         "modules": 347,
-        "loc": 70387,
+        "loc": 70388,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -5076,6 +5079,7 @@
           "@synara/shared/appSnapShortcut",
           "@synara/shared/binaryTransfer",
           "@synara/shared/chatThreads",
+          "@synara/shared/customModels",
           "@synara/shared/desktopChrome",
           "@synara/shared/errorMessages",
           "@synara/shared/git",
@@ -5137,7 +5141,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 282,
-          "loc": 62443
+          "loc": 62444
         },
         "PATCHED": {
           "modules": 1,
@@ -5154,14 +5158,14 @@
       },
       "eligible": {
         "modules": 339,
-        "loc": 68602
+        "loc": 68603
       },
       "currentReuse": {
-        "modules": 234,
-        "loc": 43969,
-        "modulePercent": 69.03,
-        "locPercent": 64.09,
-        "gatePercent": 64.09
+        "modules": 235,
+        "loc": 44357,
+        "modulePercent": 69.32,
+        "locPercent": 64.66,
+        "gatePercent": 64.66
       },
       "modules": [
         {
@@ -5177,7 +5181,7 @@
         },
         {
           "path": "apps/web/src/appSettings.ts",
-          "loc": 1211,
+          "loc": 1212,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -8844,7 +8848,7 @@
           "loc": 387,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/providerDiscovery.ts",
             "apps/web/src/settingsNavigation.ts"
@@ -9230,8 +9234,8 @@
         "src/components/composer/Composer.tsx"
       ],
       "graph": {
-        "modules": 758,
-        "loc": 152101,
+        "modules": 757,
+        "loc": 151975,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -9277,6 +9281,7 @@
           "@synara/shared/chatThreads",
           "@synara/shared/composerSlashCommands",
           "@synara/shared/conversationEdit",
+          "@synara/shared/customModels",
           "@synara/shared/desktopChrome",
           "@synara/shared/editorIcons",
           "@synara/shared/errorMessages",
@@ -9291,6 +9296,7 @@
           "@synara/shared/projectContainers",
           "@synara/shared/providerMetadata",
           "@synara/shared/providerUsage",
+          "@synara/shared/providerUsageDisplay",
           "@synara/shared/sidebarSearch",
           "@synara/shared/subagents",
           "@synara/shared/terminalThreads",
@@ -9358,8 +9364,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 655,
-          "loc": 135605
+          "modules": 654,
+          "loc": 135479
         },
         "PATCHED": {
           "modules": 1,
@@ -9375,15 +9381,15 @@
         }
       },
       "eligible": {
-        "modules": 730,
-        "loc": 143956
+        "modules": 729,
+        "loc": 143830
       },
       "currentReuse": {
-        "modules": 351,
-        "loc": 56929,
-        "modulePercent": 48.08,
-        "locPercent": 39.55,
-        "gatePercent": 39.55
+        "modules": 353,
+        "loc": 57452,
+        "modulePercent": 48.42,
+        "locPercent": 39.94,
+        "gatePercent": 39.94
       },
       "modules": [
         {
@@ -9399,7 +9405,7 @@
         },
         {
           "path": "apps/web/src/appSettings.ts",
-          "loc": 1211,
+          "loc": 1212,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -17482,13 +17488,12 @@
         },
         {
           "path": "apps/web/src/lib/providerUsageDisplay.ts",
-          "loc": 131,
+          "loc": 105,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
           "dependencies": [
-            "apps/web/src/lib/rateLimits.ts",
-            "apps/web/src/lib/usagePace.ts"
+            "apps/web/src/lib/rateLimits.ts"
           ]
         },
         {
@@ -17936,14 +17941,6 @@
           ]
         },
         {
-          "path": "apps/web/src/lib/usagePace.ts",
-          "loc": 101,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
-          "dependencies": []
-        },
-        {
           "path": "apps/web/src/lib/utils.ts",
           "loc": 25,
           "classification": "SHARED",
@@ -18285,7 +18282,7 @@
           "loc": 135,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -18588,7 +18585,7 @@
           "loc": 387,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/providerDiscovery.ts",
             "apps/web/src/settingsNavigation.ts"
@@ -19122,8 +19119,8 @@
         "src/app/SettingsPage.tsx"
       ],
       "graph": {
-        "modules": 473,
-        "loc": 91129,
+        "modules": 472,
+        "loc": 90975,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -19150,6 +19147,7 @@
           "@synara/shared/appSnapShortcut",
           "@synara/shared/binaryTransfer",
           "@synara/shared/chatThreads",
+          "@synara/shared/customModels",
           "@synara/shared/desktopChrome",
           "@synara/shared/errorMessages",
           "@synara/shared/git",
@@ -19161,6 +19159,7 @@
           "@synara/shared/projectContainers",
           "@synara/shared/providerMetadata",
           "@synara/shared/providerUsage",
+          "@synara/shared/providerUsageDisplay",
           "@synara/shared/sidebarSearch",
           "@synara/shared/subagents",
           "@synara/shared/terminalThreads",
@@ -19214,8 +19213,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 400,
-          "loc": 82948
+          "modules": 399,
+          "loc": 82794
         },
         "PATCHED": {
           "modules": 1,
@@ -19231,15 +19230,15 @@
         }
       },
       "eligible": {
-        "modules": 464,
-        "loc": 89321
+        "modules": 463,
+        "loc": 89167
       },
       "currentReuse": {
-        "modules": 266,
-        "loc": 47437,
-        "modulePercent": 57.33,
-        "locPercent": 53.11,
-        "gatePercent": 53.11
+        "modules": 267,
+        "loc": 47924,
+        "modulePercent": 57.67,
+        "locPercent": 53.75,
+        "gatePercent": 53.75
       },
       "modules": [
         {
@@ -19255,7 +19254,7 @@
         },
         {
           "path": "apps/web/src/appSettings.ts",
-          "loc": 1211,
+          "loc": 1212,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -20219,7 +20218,7 @@
         },
         {
           "path": "apps/web/src/components/settings/ModelsSettingsPanel.tsx",
-          "loc": 386,
+          "loc": 360,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -20294,7 +20293,7 @@
         },
         {
           "path": "apps/web/src/components/settings/ProviderUsageSettingsPanel.tsx",
-          "loc": 211,
+          "loc": 199,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -20342,7 +20341,7 @@
         },
         {
           "path": "apps/web/src/components/settings/SettingsAppearanceComposition.tsx",
-          "loc": 248,
+          "loc": 254,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -20355,7 +20354,7 @@
         },
         {
           "path": "apps/web/src/components/settings/SettingsAppearanceCompositionElements.tsx",
-          "loc": 201,
+          "loc": 202,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -20470,7 +20469,7 @@
         },
         {
           "path": "apps/web/src/components/settings/SettingsNotificationsPanel.tsx",
-          "loc": 90,
+          "loc": 93,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -20579,7 +20578,7 @@
           "loc": 46,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/components/settings/SettingsGeneralCompositionElements.tsx",
             "apps/web/src/components/settings/SettingsProviderUpdateChecksComposition.logic.ts"
@@ -23619,13 +23618,12 @@
         },
         {
           "path": "apps/web/src/lib/providerUsageDisplay.ts",
-          "loc": 131,
+          "loc": 105,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
           "dependencies": [
-            "apps/web/src/lib/rateLimits.ts",
-            "apps/web/src/lib/usagePace.ts"
+            "apps/web/src/lib/rateLimits.ts"
           ]
         },
         {
@@ -23981,14 +23979,6 @@
           ]
         },
         {
-          "path": "apps/web/src/lib/usagePace.ts",
-          "loc": 101,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
-          "dependencies": []
-        },
-        {
           "path": "apps/web/src/lib/utils.ts",
           "loc": 25,
           "classification": "SHARED",
@@ -24240,7 +24230,7 @@
           "loc": 135,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -24524,7 +24514,7 @@
           "loc": 387,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/providerDiscovery.ts",
             "apps/web/src/settingsNavigation.ts"
@@ -25007,8 +24997,8 @@
         "src/app/FeatureListsPage.tsx"
       ],
       "graph": {
-        "modules": 507,
-        "loc": 98998,
+        "modules": 506,
+        "loc": 98872,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -25043,6 +25033,7 @@
           "@synara/shared/binaryTransfer",
           "@synara/shared/chatThreads",
           "@synara/shared/composerSlashCommands",
+          "@synara/shared/customModels",
           "@synara/shared/desktopChrome",
           "@synara/shared/errorMessages",
           "@synara/shared/formatBytes",
@@ -25055,6 +25046,7 @@
           "@synara/shared/projectContainers",
           "@synara/shared/providerMetadata",
           "@synara/shared/providerUsage",
+          "@synara/shared/providerUsageDisplay",
           "@synara/shared/sidebarSearch",
           "@synara/shared/subagents",
           "@synara/shared/terminalThreads",
@@ -25110,8 +25102,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 436,
-          "loc": 88661
+          "modules": 435,
+          "loc": 88535
         },
         "PATCHED": {
           "modules": 1,
@@ -25127,15 +25119,15 @@
         }
       },
       "eligible": {
-        "modules": 496,
-        "loc": 95197
+        "modules": 495,
+        "loc": 95071
       },
       "currentReuse": {
-        "modules": 287,
-        "loc": 50762,
-        "modulePercent": 57.86,
-        "locPercent": 53.32,
-        "gatePercent": 53.32
+        "modules": 289,
+        "loc": 51285,
+        "modulePercent": 58.38,
+        "locPercent": 53.94,
+        "gatePercent": 53.94
       },
       "modules": [
         {
@@ -25151,7 +25143,7 @@
         },
         {
           "path": "apps/web/src/appSettings.ts",
-          "loc": 1211,
+          "loc": 1212,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -30002,13 +29994,12 @@
         },
         {
           "path": "apps/web/src/lib/providerUsageDisplay.ts",
-          "loc": 131,
+          "loc": 105,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
           "dependencies": [
-            "apps/web/src/lib/rateLimits.ts",
-            "apps/web/src/lib/usagePace.ts"
+            "apps/web/src/lib/rateLimits.ts"
           ]
         },
         {
@@ -30374,14 +30365,6 @@
           ]
         },
         {
-          "path": "apps/web/src/lib/usagePace.ts",
-          "loc": 101,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
-          "dependencies": []
-        },
-        {
           "path": "apps/web/src/lib/utils.ts",
           "loc": 25,
           "classification": "SHARED",
@@ -30635,7 +30618,7 @@
           "loc": 135,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -30895,7 +30878,7 @@
           "loc": 387,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/providerDiscovery.ts",
             "apps/web/src/settingsNavigation.ts"
@@ -31378,8 +31361,8 @@
         "src/app/FeatureListsPage.tsx"
       ],
       "graph": {
-        "modules": 507,
-        "loc": 98999,
+        "modules": 506,
+        "loc": 98873,
         "externalImports": [
           "@base-ui/react/autocomplete",
           "@base-ui/react/collapsible",
@@ -31414,6 +31397,7 @@
           "@synara/shared/binaryTransfer",
           "@synara/shared/chatThreads",
           "@synara/shared/composerSlashCommands",
+          "@synara/shared/customModels",
           "@synara/shared/desktopChrome",
           "@synara/shared/errorMessages",
           "@synara/shared/formatBytes",
@@ -31426,6 +31410,7 @@
           "@synara/shared/projectContainers",
           "@synara/shared/providerMetadata",
           "@synara/shared/providerUsage",
+          "@synara/shared/providerUsageDisplay",
           "@synara/shared/sidebarSearch",
           "@synara/shared/subagents",
           "@synara/shared/terminalThreads",
@@ -31481,8 +31466,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 436,
-          "loc": 88662
+          "modules": 435,
+          "loc": 88536
         },
         "PATCHED": {
           "modules": 1,
@@ -31498,15 +31483,15 @@
         }
       },
       "eligible": {
-        "modules": 496,
-        "loc": 95198
+        "modules": 495,
+        "loc": 95072
       },
       "currentReuse": {
-        "modules": 287,
-        "loc": 50762,
-        "modulePercent": 57.86,
-        "locPercent": 53.32,
-        "gatePercent": 53.32
+        "modules": 289,
+        "loc": 51285,
+        "modulePercent": 58.38,
+        "locPercent": 53.94,
+        "gatePercent": 53.94
       },
       "modules": [
         {
@@ -31522,7 +31507,7 @@
         },
         {
           "path": "apps/web/src/appSettings.ts",
-          "loc": 1211,
+          "loc": 1212,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -36373,13 +36358,12 @@
         },
         {
           "path": "apps/web/src/lib/providerUsageDisplay.ts",
-          "loc": 131,
+          "loc": 105,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
           "dependencies": [
-            "apps/web/src/lib/rateLimits.ts",
-            "apps/web/src/lib/usagePace.ts"
+            "apps/web/src/lib/rateLimits.ts"
           ]
         },
         {
@@ -36745,14 +36729,6 @@
           ]
         },
         {
-          "path": "apps/web/src/lib/usagePace.ts",
-          "loc": 101,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
-          "dependencies": []
-        },
-        {
           "path": "apps/web/src/lib/utils.ts",
           "loc": 25,
           "classification": "SHARED",
@@ -37006,7 +36982,7 @@
           "loc": 135,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -37266,7 +37242,7 @@
           "loc": 387,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/providerDiscovery.ts",
             "apps/web/src/settingsNavigation.ts"
@@ -37750,7 +37726,7 @@
       ],
       "graph": {
         "modules": 495,
-        "loc": 91753,
+        "loc": 91754,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -37782,6 +37758,7 @@
           "@synara/shared/binaryTransfer",
           "@synara/shared/chatThreads",
           "@synara/shared/composerSlashCommands",
+          "@synara/shared/customModels",
           "@synara/shared/desktopChrome",
           "@synara/shared/errorMessages",
           "@synara/shared/git",
@@ -37850,7 +37827,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 422,
-          "loc": 82259
+          "loc": 82260
         },
         "PATCHED": {
           "modules": 1,
@@ -37867,14 +37844,14 @@
       },
       "eligible": {
         "modules": 486,
-        "loc": 89945
+        "loc": 89946
       },
       "currentReuse": {
-        "modules": 309,
-        "loc": 52548,
-        "modulePercent": 63.58,
-        "locPercent": 58.42,
-        "gatePercent": 58.42
+        "modules": 311,
+        "loc": 53071,
+        "modulePercent": 63.99,
+        "locPercent": 59,
+        "gatePercent": 59
       },
       "modules": [
         {
@@ -37890,7 +37867,7 @@
         },
         {
           "path": "apps/web/src/appSettings.ts",
-          "loc": 1211,
+          "loc": 1212,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -43073,7 +43050,7 @@
           "loc": 135,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -43356,7 +43333,7 @@
           "loc": 387,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/providerDiscovery.ts",
             "apps/web/src/settingsNavigation.ts"

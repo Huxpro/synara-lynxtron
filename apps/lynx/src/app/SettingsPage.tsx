@@ -42,7 +42,6 @@ import {
   type SettingsGitWritingModelOption,
   type SettingsGitWritingModelValues,
 } from '@synara-web/components/settings/SettingsGitWritingModelComposition.logic';
-import { SettingsProviderUpdateChecksComposition } from '@synara-web/components/settings/SettingsProviderUpdateChecksComposition';
 import {
   DEFAULT_SETTINGS_PROVIDER_UPDATE_CHECKS_VALUES,
   readSettingsProviderUpdateChecksValues,
@@ -97,6 +96,7 @@ import type {
 } from '@synara/contracts';
 import { SettingsUsagePanel } from './SettingsUsagePanel';
 import { SettingsProfilePanel } from './SettingsProfilePanel.lynx';
+import { SettingsProviderToolsPanel } from './SettingsProviderToolsPanel.lynx';
 import { SettingsArchivedPanel } from './SettingsArchivedPanel.lynx';
 import { SettingsCustomModelsPanel } from './SettingsCustomModelsPanel.lynx';
 import { SettingsWorktreesPanel } from './SettingsWorktreesPanel.lynx';
@@ -862,15 +862,26 @@ export function SettingsPage({
                 </view>
               ) : section === 'providers' ? (
                 <>
-                  <SettingsProviderUpdateChecksComposition
-                    values={providers}
-                    defaults={DEFAULT_SETTINGS_PROVIDER_UPDATE_CHECKS_VALUES}
-                    onChange={updateProviders}
-                  />
-                  <SettingsProviderPickerComposition
-                    values={providerPicker}
-                    defaults={DEFAULT_SETTINGS_PROVIDER_PICKER_VALUES}
-                    onChange={updateProviderPicker}
+                  <SettingsProviderToolsPanel
+                    hiddenProviders={providerPicker.hiddenProviders}
+                    enableProviderUpdateChecks={
+                      providers.enableProviderUpdateChecks
+                    }
+                    defaultEnableProviderUpdateChecks={
+                      DEFAULT_SETTINGS_PROVIDER_UPDATE_CHECKS_VALUES.enableProviderUpdateChecks
+                    }
+                    onEnableProviderUpdateChecksChange={(
+                      enableProviderUpdateChecks
+                    ) =>
+                      updateProviders({ enableProviderUpdateChecks })
+                    }
+                    providerPicker={
+                      <SettingsProviderPickerComposition
+                        values={providerPicker}
+                        defaults={DEFAULT_SETTINGS_PROVIDER_PICKER_VALUES}
+                        onChange={updateProviderPicker}
+                      />
+                    }
                   />
                 </>
               ) : null}

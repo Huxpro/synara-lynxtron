@@ -5827,3 +5827,25 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   status `469/359/598/16.5` exact；Shortcut/Destination/Capture sound也由内容自然
   复现Web bounds。focused suite **2/2**，Lynx-for-Web/Native builds通过；证据在
   `shots/2026-08-05/appsnap-current-head/`。
+- current-head Providers对照发现此前只有update-check preference与provider picker，
+  整个Web `Provider updates`和`Provider tools` workflow缺失。新增
+  `SettingsProviderToolsPanel`，读取真实`server.getConfig`/`server.getSettings`，
+  通过`server.updateProvider`运行带timeout的真实更新；Provider tools按Web顺序覆盖
+  九个CLI disclosure、docs、binary/home/API/server/password/agent-dir/WebSocket
+  overrides，并通过`server.updateSettings`持久化与统一reset。default command会归一化
+  为空override，Kilo/OpenCode password只显示configured语义，不回写只读redacted flag。
+- current-head Providers fast harness使用trusted `localhost:8921`同源、isolated
+  `60462` server、Light、`1280×820` DPR1与真实三条更新。量化修复两类owner：
+  update rows从错误42px横向状态改为Web `SettingsListRow`的约59px纵向title/description，
+  inset list放回Provider updates row内部16px owner；tool rows统一44px，unknown advisory
+  的Cursor/Antigravity/Droid按Web继续显示安全Update action，无版本的Codex/Grok/Kilo
+  不再泄露server error status。final Updates card `624x338.5`对Web`624x337.5`，
+  Provider tools card `624x496`对`624x496.5`，九行均`596x44`。
+- 真实Codex disclosure通过shared 220ms motion展开为`596x257`，三条docs与两个
+  `572x28` inputs齐全。rendered `CODEX_HOME`输入临时路径后真实server mutation立即
+  显示`Custom`；rendered reset清除并关闭。临时路径无残留，owned server停止后
+  `settings.json`/`state.sqlite`分别恢复原始`d221bb25…`/`cd3e1e9e…` hashes。
+  provider update RPC即使resolve也会检查目标状态的`failed/unchanged`并显示真实
+  output/message，避免把provider-level失败静默当成功。
+  focused Providers+navigation **15/15**，Lynx-for-Web/Native builds、reuse/style
+  strict checks通过；证据在`shots/2026-08-05/providers-current-head/`。

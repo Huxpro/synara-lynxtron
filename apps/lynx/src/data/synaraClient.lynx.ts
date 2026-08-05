@@ -39,6 +39,7 @@ import type {
   ServerListProviderUsageResult,
   ServerSettingsPatch,
   ServerSettingsView,
+  ServerProviderUpdateResult,
   EditorId,
   ExternalMcpCapability,
   ExternalMcpCreateIntegrationResult,
@@ -447,6 +448,12 @@ export async function updateServerSettings(
 
 export async function fetchServerConfig(): Promise<ServerConfig> {
   return transportRequest('server.getConfig', {});
+}
+
+export async function updateProvider(
+  provider: ProviderKind
+): Promise<ServerProviderUpdateResult> {
+  return transportRequest('server.updateProvider', { provider });
 }
 
 export async function openPathInEditor(input: {
