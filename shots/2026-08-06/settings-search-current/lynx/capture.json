@@ -12,6 +12,6 @@
     "width": 1280,
     "height": 820
   },
-  "origin": "http://localhost:8921/index.html?build=settings-search-icons",
-  "buildSha256": "e6f12d8c5cdad51401a631c3d4c2a5816fbf376e75ed4ac3ae2b72c2fbaab31e"
+  "origin": "http://localhost:8921/index.html?build=settings-search-gutter",
+  "buildSha256": "4bd9953643ca62fac485181ec0ad83b87ee2a154c6f62834e077a40f5e790afd"
 }

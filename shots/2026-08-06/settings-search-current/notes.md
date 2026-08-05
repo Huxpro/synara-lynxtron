@@ -16,6 +16,11 @@ default anatomy
 - Result section icons reuse the same canonical registry as Settings navigation.
   The retained `Archived` result resolves to the generated Tabler `ArchiveIcon`
   in a measured 16×16 slot, replacing the generic bordered square.
+- The Settings sidebar owner now reuses Web's 6px horizontal gutter instead of
+  the original Lynx scaffold's 14px padding. The filtered result converged from
+  x=14/width=227 to x=6/width=243; Web is x=6/width=244, with the remaining 1px
+  owned by Lynx's sidebar separator. The 32px vertical offset is Web's desktop
+  titlebar and is intentionally not compensated in product CSS.
 - Selecting `Archived: Archived threads` navigates memory history to the real
   Archived panel and clears the input. A second runtime check selected
   `Appearance: Time format`, found the shared `setting-time-format` anchor, and
@@ -41,13 +46,13 @@ events.
 
 - Web screenshot: 1280×820.
 - Lynx-for-Web screenshot: 1280×820, staged bundle
-  `e6f12d8c5cdad51401a631c3d4c2a5816fbf376e75ed4ac3ae2b72c2fbaab31e`.
+  `4bd9953643ca62fac485181ec0ad83b87ee2a154c6f62834e077a40f5e790afd`.
 - Native default-anatomy screenshot: 2560×1576, prior search slice bundle
   `ddd0793074bdd62248a2c8bff4201e3c4696a35257366d026e35352f50bdd666`.
 - Current icon-identity Native/Desktop production build:
-  `4fb46e2cf4a94262649f744e18cc4fa0e2260e7a58a999160e1c55a339f0a753`.
+  `9acfbbe3f1814a93e86bdf372ea1e61db0ad4329ad96ac9b7f67d3a752a14826`.
 - Native default-state required roles: light root, search shell, native input,
   and navigation row; exact-client console is empty. Native filtered interaction
   is not claimed because driving the real macOS text client would take focus.
-- Focused search/icon suites: 6/6.
+- Focused search/icon/layout suites: 7/7.
 - No user setting or project data changed. Owned KV was restored byte-exact.

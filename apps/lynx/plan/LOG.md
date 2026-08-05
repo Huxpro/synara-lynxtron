@@ -5395,3 +5395,9 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   `ArchiveIcon`，16×16 slot位于x=22/y=104。focused search/icon tests **6/6**，
   Web与Native/Desktop production builds通过；更新后的Lynx-for-Web bundle为
   `e6f12d8c…`，Native bundle为`4fb46e2c…`。
+- paired geometry继续发现整栏水平inset残差：Web Settings owner为`px-1.5`即6px，
+  Lynx仍继承初始scaffold的14px。修正`.SettingsSidebar` owner后，filtered result从
+  x=14/w=227收敛到x=6/w=243；Web为x=6/w=244，剩余1px由Lynx sidebar separator
+  所有。y仍相差32px，来源是Web desktop titlebar，不做匿名补偿。focused
+  search/icon/layout tests **7/7**，Web与Native/Desktop builds通过；bundle更新为
+  Lynx-for-Web `4bd99536…`、Native `9acfbbe3…`。

@@ -1,7 +1,7 @@
 # Settings fidelity continuation audit
 
-Status: incomplete — current-head implementation and final matrix complete,
-heavy verification still pending
+Status: incomplete — current-head sidebar correction verified on the search
+slice; full Settings matrix refresh and heavy verification still pending
 
 Updated: 2026-08-05
 
@@ -38,8 +38,8 @@ complete.
 | Exact-owned Native identity and cleanup for every new page | per-page `native/capture.json`, empty Native consoles, byte-exact KV restoration | PASS |
 | Current-head evidence is not Web fallback masquerading as Lynx | six affected Settings cells recaptured from staged bundle with stable Lynx host URL | PASS |
 | New Settings pages cover light/dark × 1280/1440 | light/1280 plus dark/1440 retained for eight continuation pages | PASS |
-| Continuation matrix is machine-verified against final HEAD | `settings-continuation-manifest.json`; `settings-continuation-evidence.mjs` validates 16 states / 48 cells | PASS |
-| Settings sidebar search matches Web intent | shared ranking/index, real Lynx input/results/selection/row targeting, canonical section icons, Web/Lynx filtered evidence, Native default anatomy | PASS — Native filtered text entry not claimed |
+| Continuation matrix is machine-verified against final HEAD | `settings-continuation-manifest.json`; verifier validates the previous 16-state / 48-cell bundle set, but the current-head global sidebar-gutter correction requires recapture | **PENDING — old matrix is not accepted as current-head proof** |
+| Settings sidebar search matches Web intent | shared ranking/index, real Lynx input/results/selection/row targeting, canonical section icons, Web-owned horizontal gutter, Web/Lynx filtered evidence, Native default anatomy | PASS — Native filtered text entry not claimed |
 | Populated destructive/mutation paths are visually certified without fabricated data | canonical snapshot has no managed worktree/integration/archived rows; logic/RPC tests cover the product paths and direct SQLite fixtures are forbidden | NOT APPLICABLE — no safe canonical populated state |
 | Full final heavy pass | AGENTS requires `bun fmt`, `bun lint`, `bun typecheck`; current conversation does not explicitly authorize running them | **BLOCKED BY INSTRUCTION** |
 | Worktree clean and local HEAD equals origin | finalization command verifies local HEAD equals origin; only excluded isolated `.p10-view*` runtime directories remain | PASS |
@@ -91,15 +91,21 @@ The retained replacement cells:
 - Style audit write + strict check: pass.
 - Current production builds: Web, Lynx-for-Web, Native/Desktop pass.
 - Native consoles for all continuation cells: empty.
-- Final-head evidence verifier: 16/16 Settings states, 48/48 client cells.
+- Previous full evidence verifier: 16/16 Settings states, 48/48 client cells.
+  Those cells predate the current-head global sidebar-gutter correction and are
+  retained as historical coverage, not accepted as final-head proof.
 - Verifier regression tests: 2/2; the first strict run rejected eight
   `1280×633` Web frames, which were recaptured at `1280×820`.
 - Final evidence bundles: Lynx-for-Web `a5ec04ab…`; Native `9c9046af…`.
-- Settings search/icon focused suites: 6/6; real Lynx-for-Web keyboard query retained
+- Settings search/icon/layout focused suites: 7/7; real Lynx-for-Web keyboard query retained
   `archived thread`, produced one Archived result, navigated, and cleared.
 - The current-head filtered frame resolves Archived through the shared Settings
   icon registry to the generated `ArchiveIcon`; its 16×16 slot is measured at
-  x=22/y=104 rather than represented by a generic placeholder.
+  x=14/y=104 rather than represented by a generic placeholder.
+- The Settings sidebar now uses Web's 6px horizontal owner gutter. Search result
+  geometry converged from x=14/width=227 to x=6/width=243 versus Web
+  x=6/width=244; the remaining 1px is Lynx's sidebar separator. The 32px y
+  difference is the Web desktop titlebar and is not patched into product CSS.
 - Search target runtime: `Appearance: Time format` resolved the shared
   `setting-time-format` anchor and scrolled its row into the visible content
   viewport.
@@ -108,16 +114,18 @@ The retained replacement cells:
 
 ## Remaining work
 
-1. Run the final heavy pass only after explicit authorization permits
+1. Rebuild and recapture the 16-state / 48-cell Settings matrix against the
+   current global sidebar geometry, then run its strict verifier.
+2. Run the final heavy pass only after explicit authorization permits
    `bun fmt`, `bun lint`, and `bun typecheck`.
-2. Re-run this prompt-to-artifact audit, verify local/remote parity and cleanup,
+3. Re-run this prompt-to-artifact audit, verify local/remote parity and cleanup,
    then mark the active goal complete only if no MISSING/PARTIAL/PENDING rows
    remain.
 
 ## Current disposition
 
-The implementation objective has materially advanced, every canonical
-Settings section has a real Lynx owner, and the continuation pages now have
-light/1280 and dark/1440 three-client evidence. The active thread goal is **not
-yet complete** because the required heavy pass is still blocked by the current
+The implementation objective has materially advanced and every canonical
+Settings section has a real Lynx owner. The active thread goal is **not yet
+complete** because the full matrix predates the current global sidebar
+correction and the required heavy pass remains blocked by the current
 instruction boundary.

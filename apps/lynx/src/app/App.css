@@ -706,7 +706,7 @@
   flex-direction: column;
   width: 256px;
   height: 100%;
-  padding: 18px 14px;
+  padding: 18px 6px;
   border-right: 1px solid var(--border);
   background-color: var(--app-settings-surface);
 }
