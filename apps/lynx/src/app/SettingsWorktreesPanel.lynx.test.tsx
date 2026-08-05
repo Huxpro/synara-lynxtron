@@ -58,7 +58,13 @@ describe('Settings Worktrees fidelity', () => {
     );
 
     expect(styles).toMatch(
-      /\.SettingsWorktreesState\s*\{[^}]*min-height:\s*72px;[^}]*padding:\s*24px 16px;[^}]*border:\s*1px dashed var\(--border\);/s
+      /\.SettingsWorktreesState\s*\{[^}]*padding:\s*24px 16px;[^}]*border:\s*1px dashed var\(--border\);/s
+    );
+    expect(styles).not.toMatch(
+      /\.SettingsWorktreesState\s*\{[^}]*min-height:/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsWorktreesStateText\s*\{[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;/s
     );
     expect(styles).toMatch(
       /\.SettingsWorktreesRow\s*\{[^}]*align-items:\s*flex-start;[^}]*justify-content:\s*space-between;[^}]*gap:\s*20px;/s

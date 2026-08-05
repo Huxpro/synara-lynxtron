@@ -5790,3 +5790,10 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Generation section/card/row与Custom section/card/editor/provider/input/Add全部exact。
   shared **2/2**、Web **2/2**、Lynx **15/15** tests，三端build通过；证据在
   `shots/2026-08-05/models-current-head-complete/`。
+- current-head Worktrees真实snapshot为空态。Light-state对照发现Lynx强制72px
+  minimum且copy继承12/18 Settings description token，Web shared empty state实际为
+  content-driven 70px与14/20。移除minimum并给state copy明确14/20后，root
+  `456/118/624/70`、24×16 padding、dashed border、10px radius与copy typography
+  全部exact。focused suite **3/3**，Lynx-for-Web/Native builds通过；populated
+  destructive rows在snapshot缺席，继续只计canonical RPC/focused coverage。证据在
+  `shots/2026-08-05/worktrees-current-head/`。
