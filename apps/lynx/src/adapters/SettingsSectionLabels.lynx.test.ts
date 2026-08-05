@@ -43,10 +43,23 @@ describe('Lynx Settings section labels', () => {
       new URL('./settings-provider-picker-composition-elements.css', import.meta.url),
       'utf8'
     );
+    const usageStyles = readFileSync(
+      new URL('../app/settings-usage-panel.css', import.meta.url),
+      'utf8'
+    );
 
     for (const styles of [generalStyles, appearanceStyles, providerStyles]) {
       expect(styles).toMatch(/Card\s*\{[^}]*border-radius:\s*10px;/s);
     }
+    expect(usageStyles).toMatch(
+      /\.SettingsUsageCard,\s*\.SettingsUsageState\s*\{[^}]*border-radius:\s*10px;/s
+    );
+    expect(usageStyles).toMatch(
+      /\.SettingsUsageCard\s*\{[^}]*gap:\s*14px;[^}]*padding:\s*16px;/s
+    );
+    expect(usageStyles).toMatch(
+      /\.SettingsUsageState\s*\{[^}]*padding:\s*14px 16px;/s
+    );
   });
 
   it('uses the standard row token and Web provider item typography', () => {

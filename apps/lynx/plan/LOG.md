@@ -5521,6 +5521,10 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Integrations、Advanced等Settings actions。修primitive owner为10px；capsule与
   显式special variants继续覆盖。focused Settings control suites **14/14**，两端
   build通过。
+- Usage provider cards实际复用Web `SettingsCard`，不是8px custom card。对齐为
+  10px radius、16px card padding、14px internal gap；loading state仍保留Web
+  14×16 padding。focused test首跑只因组合selector regex过窄失败，修正真实owner
+  表达后 **6/6**；两端build通过。
 - Appearance Theme preference segmented buttons原本只有文字，Web明确带
   Sun/Moon/Laptop icons；补生成的14px icons，仅Theme preference使用。同期发现
   Appearance boolean switch是第四套旧18/14实现，统一到32×20/16px及shared

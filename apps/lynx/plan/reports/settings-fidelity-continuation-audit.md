@@ -68,6 +68,7 @@ complete.
 | Integrations project picker matches Web desktop columns | Native uses two-column flex-wrap at Lynxtron desktop widths; canonical snapshot has no safe populated visual state | PASS — focused contract, visual N/A |
 | Shared Input radius matches Web controls | Lynx `LxInputControl` uses rounded-lg / 10px across Settings inputs | PASS |
 | Shared Button radius matches Web controls | Lynx `LxButton` uses rounded-lg / 10px; explicit capsule/special variants remain owners | PASS |
+| Usage cards match Web SettingsCard anatomy | 10px radius, 16px card padding, 14px internal gap; loading state keeps 14×16 padding | PASS |
 | Appearance theme controls match Web icon and switch identity | Theme preference uses generated Sun/Moon/Laptop icons; boolean switch uses normalized geometry/paint | PASS |
 | Shared Button icon-label spacing matches Web | default/sm/xs gaps are 8/6/4px; mixed Appearance labels retain `LxButton__text` styling | PASS |
 | Settings sidebar search matches Web intent | shared ranking/index, real Lynx input/results/selection/row targeting, canonical section icons, Web-owned horizontal gutter, Web/Lynx filtered evidence, Native default anatomy | PASS — Native filtered text entry not claimed |
