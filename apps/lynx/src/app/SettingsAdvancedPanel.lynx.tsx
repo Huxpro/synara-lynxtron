@@ -146,94 +146,108 @@ export function SettingsAdvancedPanel() {
 
       <SettingsSection title="Developer tools">
         <view className="SettingsAdvancedRow SettingsAdvancedRow--keybindings">
-          <view className="SettingsAdvancedRowCopy">
-            <text className="SettingsAdvancedRowTitle">Keybindings</text>
-            <text className="SettingsAdvancedRowDescription">
-              Open the persisted `keybindings.json` file to edit advanced
-              bindings directly.
-            </text>
+          <view className="SettingsAdvancedMain">
+            <view className="SettingsAdvancedRowCopy">
+              <view className="SettingsAdvancedTitleLine">
+                <text className="SettingsAdvancedRowTitle">Keybindings</text>
+              </view>
+              <text className="SettingsAdvancedRowDescription">
+                Open the persisted `keybindings.json` file to edit advanced
+                bindings directly.
+              </text>
+            </view>
+            <Button
+              size="xs"
+              variant="outline"
+              className="SettingsAdvancedAction"
+              disabled={
+                !configQuery.data?.keybindingsConfigPath ||
+                !editor ||
+                openingFile
+              }
+              aria-label="Open keybindings file"
+              onClick={() => void openKeybindings()}
+            >
+              {openingFile ? 'Opening…' : 'Open file'}
+            </Button>
+          </view>
+          <view className="SettingsAdvancedMetadata">
             <text className="SettingsAdvancedPath">
               {configQuery.data?.keybindingsConfigPath ??
                 'Resolving keybindings path…'}
             </text>
-            <text className="SettingsAdvancedRowDescription">
+            <text className="SettingsAdvancedMetadataText">
               {editor
                 ? 'Opens in your preferred editor.'
                 : 'No available editors found.'}
             </text>
           </view>
-          <Button
-            size="xs"
-            variant="outline"
-            disabled={
-              !configQuery.data?.keybindingsConfigPath ||
-              !editor ||
-              openingFile
-            }
-            aria-label="Open keybindings file"
-            onClick={() => void openKeybindings()}
-          >
-            {openingFile ? 'Opening…' : 'Open file'}
-          </Button>
         </view>
 
-        <view className="SettingsAdvancedRow SettingsAdvancedRow--divided">
-          <view className="SettingsAdvancedRowCopy">
-            <text className="SettingsAdvancedRowTitle">Recovery tools</text>
-            <text className="SettingsAdvancedRowDescription">
-              Rebuild local project indexes without clearing existing chats
-              when the local state gets out of sync.
-            </text>
-            <text className="SettingsAdvancedRowDescription">
+        <view className="SettingsAdvancedRow">
+          <view className="SettingsAdvancedMain">
+            <view className="SettingsAdvancedRowCopy">
+              <view className="SettingsAdvancedTitleLine">
+                <text className="SettingsAdvancedRowTitle">Recovery tools</text>
+              </view>
+              <text className="SettingsAdvancedRowDescription">
+                Rebuild local project indexes without clearing existing chats
+                when the local state gets out of sync.
+              </text>
+            </view>
+            <Button
+              size="xs"
+              variant="outline"
+              className="SettingsAdvancedAction"
+              disabled={!recoveryAvailable || repairing}
+              aria-label="Repair local state"
+              onClick={() => void repairState()}
+            >
+              {repairing ? 'Repairing…' : 'Repair state'}
+            </Button>
+          </view>
+          <view className="SettingsAdvancedMetadata">
+            <text className="SettingsAdvancedMetadataText">
               {recoveryAvailable
                 ? 'Visible because projects exist but no chat history is currently available.'
                 : 'Shown automatically only when recovery actions are relevant.'}
             </text>
-            {recoveryAvailable ? (
-              <view className="SettingsAdvancedRecoveryDisclosure">
-                <view
-                  className={recoveryDisclosure.className}
-                  aria-expanded={showRecoveryTools}
-                  {...recoveryDisclosure.eventProps}
-                >
-                  <text className="SettingsAdvancedRecoveryTitle">
-                    What this does
-                  </text>
-                  <ChevronRightIcon
-                    className={disclosureChevronClassName(
-                      showRecoveryTools,
-                      'SettingsAdvancedRecoveryChevron'
-                    )}
-                    size={14}
-                    color="var(--muted-foreground)"
-                  />
-                </view>
-                {recoveryDetailsPresent ? (
-                  <view
-                    className={disclosureContentClassName(
-                      showRecoveryTools,
-                      'SettingsAdvancedRecoveryDetails'
-                    )}
-                    aria-hidden={!showRecoveryTools}
-                  >
-                    <text className="SettingsAdvancedRowDescription">
-                      Rebuilds local project indexes and refreshes project
-                      snapshots. Existing chats stay in place.
-                    </text>
-                  </view>
-                ) : null}
-              </view>
-            ) : null}
           </view>
-          <Button
-            size="xs"
-            variant="outline"
-            disabled={!recoveryAvailable || repairing}
-            aria-label="Repair local state"
-            onClick={() => void repairState()}
-          >
-            {repairing ? 'Repairing…' : 'Repair state'}
-          </Button>
+          {recoveryAvailable ? (
+            <view className="SettingsAdvancedRecoveryDisclosure">
+              <view
+                className={recoveryDisclosure.className}
+                aria-expanded={showRecoveryTools}
+                {...recoveryDisclosure.eventProps}
+              >
+                <text className="SettingsAdvancedRecoveryTitle">
+                  What this does
+                </text>
+                <ChevronRightIcon
+                  className={disclosureChevronClassName(
+                    showRecoveryTools,
+                    'SettingsAdvancedRecoveryChevron'
+                  )}
+                  size={16}
+                  color="var(--muted-foreground)"
+                />
+              </view>
+              {recoveryDetailsPresent ? (
+                <view
+                  className={disclosureContentClassName(
+                    showRecoveryTools,
+                    'SettingsAdvancedRecoveryDetails'
+                  )}
+                  aria-hidden={!showRecoveryTools}
+                >
+                  <text className="SettingsAdvancedRecoveryDetailsText">
+                    Rebuilds local project indexes and refreshes project
+                    snapshots. Existing chats stay in place.
+                  </text>
+                </view>
+              ) : null}
+            </view>
+          ) : null}
         </view>
       </SettingsSection>
 

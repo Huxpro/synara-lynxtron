@@ -98,7 +98,7 @@ complete.
 | Behavior and Notifications reuse shared reset identity | both shared panels consume one SettingsPage reset renderer with generated 14px Undo icon, icon-xs ghost chrome, and preserved labels | PASS |
 | Shared Behavior/Notifications section and row anatomy matches Web | 12px/400/18px muted/58 labels, 6px section gap, transparent 10px cards, density-driven rows, 2px copy rhythm, 20px title lines, correct first-row dividers, and supplemental status outside the common control-centering layout | PASS — current-head visual proof |
 | Notifications reflects actual Lynx runtime capability | no toast/OS notification consumer exists; both stored preferences remain visible/resettable but controls are disabled, non-focusable, aria-disabled, and carry explicit per-row unavailable status without shifting their Web-common switch anchors | PASS — honest capability delta and current-head visual proof |
-| Advanced recovery details reuse shared disclosure behavior | controlled `What this does` trigger publishes expanded state, uses generated 14px chevron and shared 220ms motion/presence, then reveals the 10px inset explanation | PASS |
+| Advanced rows and recovery details match shared Settings/disclosure behavior | keybindings/recovery main layouts, 11/16.5 metadata, and 24px actions match Web; controlled `What this does` uses a 16px trigger/chevron, exact 42px inset details, and shared 220ms motion/presence | PASS — current-head visual and interaction proof |
 | Profile stats, heatmap, and model rows match Web identity | identity uses the Web 6px name/handle subgroup and 20/28 + 24/32 typography; stat values/labels use 14px/20px in an exact 18px-radius card; heatmap uses Web weekday pads, 40 week columns, 15.0625px cells, 5px radius, and exact month anchors; model rows retain 14px mapped provider SVGs or neutral fallbacks with 8px gaps | PASS — current-head visual proof for real identity/stats/heatmap/empty state; populated model branch source-tested |
 | Worktrees rows and empty state match Web density and typography | real empty state is exact 624×70 with 24×16 padding, 10px radius, and 14px/20px copy; populated rows have no artificial 96px minimum, mono paths truncate, and linked conversation titles use regular description typography | PASS — current-head empty-state visual proof; populated rows source-tested |
 | Archived empty and list states match Web hierarchy | real empty state is exact 624×182 with 40×20 padding, dashed border, explicit 10px radius, generated 20px Archive icon, and 14px/20px copy; populated rows no longer force a 60px minimum | PASS — current-head visual proof for empty state; populated row source-tested |
@@ -158,6 +158,13 @@ The retained replacement cells:
 
 ## Verification results
 
+- Current-head Advanced proof covers exact Keybindings/Recovery row geometry,
+  24px actions, supplemental metadata, and the real disclosure lifecycle.
+  Open details match Web at `469/394.5/598/42`; close retains the motion node
+  with `aria-hidden` for 220ms before unmount. Evidence is under
+  `shots/2026-08-05/advanced-disclosure-current/`.
+- Advanced focused rerun: 1 file, 3/3 tests; Lynx-for-Web and Native/Desktop
+  builds pass. Bundles: Lynx-for-Web `66c60353…`; Native `9464303d…`.
 - Current-head Worktrees real empty state now matches Web at 624×70 with
   24×16 padding, dashed border, 10px radius, and 14/20 copy. Populated rows
   remain source/RPC-tested because the snapshot contains none. Evidence is

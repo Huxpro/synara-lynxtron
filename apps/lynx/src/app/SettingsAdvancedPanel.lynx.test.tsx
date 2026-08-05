@@ -62,10 +62,22 @@ describe('Settings Advanced fidelity', () => {
       /\.SettingsAdvancedPanel\s*\{[^}]*gap:\s*24px;/s
     );
     expect(styles).toMatch(
-      /\.SettingsAdvancedRow\s*\{[^}]*min-height:\s*84px;[^}]*justify-content:\s*space-between;[^}]*gap:\s*20px;/s
+      /\.SettingsAdvancedRow\s*\{[^}]*padding:\s*var\(--app-density-settings-row-padding-y,\s*10px\) 12px;[^}]*flex-direction:\s*column;/s
     );
     expect(styles).toMatch(
-      /\.SettingsAdvancedRow--keybindings\s*\{[^}]*min-height:\s*104px;/s
+      /\.SettingsAdvancedRow--keybindings\s*\{[^}]*border-bottom:\s*1px solid var\(--border\);/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsAdvancedMain\s*\{[^}]*align-items:\s*center;[^}]*justify-content:\s*space-between;[^}]*gap:\s*20px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsAdvancedMetadata\s*\{[^}]*gap:\s*4px;[^}]*padding-top:\s*4px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsAdvancedMetadataText\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*16\.5px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsAdvancedAction\s*\{[^}]*min-height:\s*24px;[^}]*padding:\s*0 7px;/s
     );
     expect(styles).toMatch(
       /\.SettingsAdvancedRecoveryDetails\s*\{[^}]*margin-top:\s*12px;[^}]*padding:\s*12px;/s
@@ -74,13 +86,16 @@ describe('Settings Advanced fidelity', () => {
       /\.SettingsAdvancedRecoveryDisclosure\s*\{[^}]*margin-top:\s*12px;[^}]*padding-top:\s*12px;[^}]*border-top:\s*1px solid var\(--settings-project-border\);/s
     );
     expect(styles).toMatch(
-      /\.SettingsAdvancedRecoveryTrigger\s*\{[^}]*min-height:\s*20px;[^}]*justify-content:\s*space-between;/s
+      /\.SettingsAdvancedRecoveryTrigger\s*\{[^}]*height:\s*16px;[^}]*justify-content:\s*space-between;/s
     );
     expect(styles).toMatch(
-      /\.SettingsAdvancedRecoveryChevron\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;/s
+      /\.SettingsAdvancedRecoveryChevron\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;/s
     );
     expect(styles).toMatch(
       /\.SettingsAdvancedRecoveryDetails\s*\{[^}]*border-radius:\s*10px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsAdvancedRecoveryDetailsText\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s
     );
   });
 });

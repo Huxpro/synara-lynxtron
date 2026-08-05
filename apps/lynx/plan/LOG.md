@@ -5797,3 +5797,13 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   全部exact。focused suite **3/3**，Lynx-for-Web/Native builds通过；populated
   destructive rows在snapshot缺席，继续只计canonical RPC/focused coverage。证据在
   `shots/2026-08-05/worktrees-current-head/`。
+- current-head Advanced真实交互复验发现两行custom row把keybindings/recovery
+  metadata与disclosure塞在main copy内，actions按整块内容居中；generic xs为25px，
+  trigger/details也分别为20px/18px line boxes。重构为shared Settings ownership：
+  `SettingsAdvancedMain`（title/description+action）、`SettingsAdvancedMetadata`
+  sibling、disclosure child；actions校准24px/10×15，trigger/chevron 16px，details
+  copy 12/16。closed Keybindings row 102px、Recovery row 139.5px及所有actions/status/
+  trigger anchors exact。真实open使aria-expanded=true、chevron旋转90°、details
+  `469/394.5/598/42`；close后closed motion+aria-hidden保留220ms再unmount。
+  focused suite **3/3**，Lynx-for-Web/Native builds通过；证据在
+  `shots/2026-08-05/advanced-disclosure-current/`。
