@@ -260,8 +260,14 @@ export function ThemePackFontControlElement(props: {
 }) {
   return (
     <Input
+      size="sm"
+      variant="soft"
+      className={`SharedThemePackFontInput${
+        props.mono ? ' SharedThemePackFontInput--mono' : ''
+      }`}
       value={props.value}
       placeholder={props.placeholder}
+      accessibility-label={props.ariaLabel}
       onChange={(event) => {
         if (event.target.value !== props.value) {
           props.onChange(event.target.value);

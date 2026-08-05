@@ -72,17 +72,15 @@
 }
 
 .SharedThemePackRowControl {
-  width: 280px;
+  flex-shrink: 0;
   justify-content: flex-end;
 }
 
 .SharedThemePackColorLine {
-  width: 280px;
   gap: 6px;
 }
 
-.SharedThemePackColorLine .LxInputControl,
-.SharedThemePackRowControl > .LxInputControl {
+.SharedThemePackColorLine .LxInputControl {
   width: 190px;
 }
 
@@ -155,6 +153,18 @@
   min-height: 36px;
   padding: 8px;
   border-radius: 10px;
+}
+
+.SharedThemePackFontInput {
+  width: 224px;
+}
+
+.SharedThemePackFontInput .LxInput {
+  font-family: var(--font-ui-family);
+}
+
+.SharedThemePackFontInput--mono .LxInput {
+  font-family: var(--font-chat-code-family);
 }
 
 .SharedThemePackSwitch {

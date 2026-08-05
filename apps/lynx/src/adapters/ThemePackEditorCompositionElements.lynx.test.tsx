@@ -64,6 +64,24 @@ describe('ThemePack boolean interaction contract', () => {
     expect(styles).toMatch(
       /\.SharedThemePackCodeLabel\s*\{[^}]*font-size:\s*13px;[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s
     );
+    expect(styles).toMatch(
+      /\.SharedThemePackRowControl\s*\{[^}]*flex-shrink:\s*0;[^}]*justify-content:\s*flex-end;/s
+    );
+    expect(styles).not.toMatch(
+      /\.SharedThemePackRowControl\s*\{[^}]*width:\s*280px;/s
+    );
+    expect(source).toContain('className={`SharedThemePackFontInput');
+    expect(source).toContain("props.mono ? ' SharedThemePackFontInput--mono' : ''");
+    expect(source).toContain('accessibility-label={props.ariaLabel}');
+    expect(styles).toMatch(
+      /\.SharedThemePackFontInput\s*\{[^}]*width:\s*224px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedThemePackFontInput \.LxInput\s*\{[^}]*font-family:\s*var\(--font-ui-family\);/s
+    );
+    expect(styles).toMatch(
+      /\.SharedThemePackFontInput--mono \.LxInput\s*\{[^}]*font-family:\s*var\(--font-chat-code-family\);/s
+    );
   });
 
   it('renders palette previews in the code-theme trigger and options', () => {

@@ -5609,6 +5609,12 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   values；pointer/key mapping抽纯函数。focused tests **5/5**，三端build通过。首次
   Native build捕获本slice新增的unsupported `font-variant-numeric`并移除，readout改用
   已支持的chat-code font；复跑只剩既有encode/ws warnings。
+- Theme Pack row control此前固定280px，导致32px switch、216px contrast和224px font
+  controls都占用同一宽度；移除该owner后各control按Web自尺寸。UI/Code font inputs
+  统一为224px `sm` soft surface，补真实aria label，UI font用UI family、Code font用
+  chat-code family。focused tests **5/5**，三端build通过。Import继续明确标为
+  `Import clipboard`，因为Native真实行为仍是直接读剪贴板；未用Web“Import”文案伪装
+  尚未port的paste/error dialog。
 - 新增icon后审计Button primitive发现Lynx无content gap，且mixed children中的label
   未自动套`LxButton__text`。补Web base/default 8px、sm 6px、xs 4px gap，并显式
   包裹Theme option label，确保icon+text typography与间距都生效。focused Settings
