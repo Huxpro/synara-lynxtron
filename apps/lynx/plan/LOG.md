@@ -6368,3 +6368,15 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   localhost:8904/session1；real touch打开Traits并验证Fast false→true，第二次real touch
   恢复false，restored DOM明确label/pressed=false；raw2560×1576、console0。证据在
   `shots/2026-08-06/composer-fast-toggle-current/`。
+
+## 2026-08-06 — current-head Command K group label line-box closure
+
+- old Lynx group label为12/500但implicit visual line-box15。仅按Web通用text-xs源码曾
+  推断18，但current rendered Web实测权威值是12/16/500、outer box22；18px临时改动在
+  commit前纠正，final Lynx显式12/16/500、outer22。
+- focused Command **1 file / 9 tests**，configured Lynx-for-Web与
+  Native/Desktop builds通过。Web/Lynx-for-Web均通过real Search打开并精确一致。
+- exact-owned Native bundle `fd7618f8…`，root PID90786、PID-derived
+  localhost:8904/session1，real Search touch后保留label/parent，
+  raw2560×1576、console0。证据在
+  `shots/2026-08-06/command-k-label-current/`。

@@ -1,0 +1,96 @@
+{
+  "client": "native",
+  "stateId": "command-k-label-light-1280",
+  "roles": {
+    "root": {
+      "nodeId": 13,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 788
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "label": {
+      "nodeId": 196,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "LxCommandGroupLabel__text"
+      },
+      "text": "",
+      "box": {
+        "x": 370,
+        "y": 252,
+        "width": 540,
+        "height": 16
+      },
+      "font": {
+        "family": "",
+        "size": "12px",
+        "weight": "500",
+        "lineHeight": "16px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgba(13,13,13,0.596078)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "parent": {
+      "nodeId": 195,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "LxCommandGroupLabel pt-0 pb-1.5 pl-3"
+      },
+      "text": "",
+      "box": {
+        "x": 359,
+        "y": 252,
+        "width": 562,
+        "height": 21
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

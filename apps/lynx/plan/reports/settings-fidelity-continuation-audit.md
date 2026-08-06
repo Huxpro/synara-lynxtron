@@ -709,6 +709,16 @@ The retained replacement cells:
   `shots/2026-08-06/composer-fast-toggle-current/`.
 - Focused composer/menu invocation: 3 files, 12/12 tests; configured
   Lynx-for-Web and Native/Desktop production builds pass.
+- Command K group labels now explicitly match current Web at 12px/16px/500
+  instead of relying on the old 15px Native visual line box. A source-only
+  18px hypothesis was rejected by current rendered Web evidence before commit.
+- Current Web and Lynx-for-Web Suggested labels both use 12/16/500 and a 22px
+  outer box. Exact-owned Native bundle `fd7618f8…`, root PID `90786`,
+  PID-derived `localhost:8904/session 1`, and a real Search touch retained
+  label/parent roles, a 2560x1576 frame, and empty console. Evidence is under
+  `shots/2026-08-06/command-k-label-current/`.
+- Focused Command suite: 1 file, 9/9 tests; configured Lynx-for-Web and
+  Native/Desktop production builds pass.
 
 ## Remaining work
 
