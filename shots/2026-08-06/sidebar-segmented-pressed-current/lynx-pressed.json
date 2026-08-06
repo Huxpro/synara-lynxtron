@@ -1,0 +1,8 @@
+{
+  "active": true,
+  "bg": "rgba(0, 0, 0, 0)",
+  "boxShadow": "none",
+  "class": "SidebarSegmentedButton ui-pressed",
+  "color": "rgb(13, 13, 13)",
+  "opacity": "1"
+}

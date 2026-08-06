@@ -1126,6 +1126,15 @@ The retained replacement cells:
   `localhost:8902/session 1`, retains the 113x21.25 zero-border/no-shadow base
   button and an empty console. Native focused visuals are not claimed.
   Evidence is under `shots/2026-08-06/sidebar-segmented-focus-current/`.
+- Sidebar segmented pressed feedback no longer paints a separate accent block
+  over the selected material. Web keeps pressed segments transparent at
+  opacity 1; Lynx now does the same while preserving `ui-pressed` lifecycle and
+  real Studio activation.
+- Retained Web/Lynx-for-Web frames are 1280x820 with empty error logs.
+  Exact-owned Native bundle `cb21675c…`, PID-derived
+  `localhost:8902/session 1`, runs with an empty warning/error console.
+  Native transient pressed visuals are not claimed. Evidence is under
+  `shots/2026-08-06/sidebar-segmented-pressed-current/`.
 
 ## Remaining work
 

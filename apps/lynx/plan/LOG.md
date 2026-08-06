@@ -6833,3 +6833,16 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   base button113×21.25、border0、无shadow、console0。DevTool无retained keyboard
   focus command，不冒充Native focused visual proof。证据在
   `shots/2026-08-06/sidebar-segmented-focus-current/`。
+
+## 2026-08-06 — current-head Sidebar segmented pressed closure
+
+- current Web pointer-down保持segment透明、opacity1，selection feedback由thumb持有；
+  Lynx此前`.ui-pressed`额外paint `var(--accent)`，出现显著浅蓝block。
+- 删除custom pressed background。final Web/Lynx-for-Web pointer-down均transparent、
+  no shadow、opacity1；Lynx仍发布`ui-pressed`，pointer-up清除并完成真实Studio切换。
+  PNG1280×820、errors空。
+- focused **1 file / 1 test**，configured Lynx-for-Web与Native/Desktop builds通过。
+  exact-owned Native bundle `cb21675c…`，PID-derived localhost:8902/session1，
+  console0。瞬态Native pressed frame不冒充retained proof，class/release由真实Lynx
+  interaction contract与Browser pointer lifecycle闭环。证据在
+  `shots/2026-08-06/sidebar-segmented-pressed-current/`。

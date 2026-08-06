@@ -60,10 +60,6 @@
   color: var(--foreground);
 }
 
-.SidebarSegmentedButton.ui-pressed {
-  background-color: var(--accent);
-}
-
 .SidebarSegmentedLabel {
   color: var(--muted-foreground);
   font-size: 11.5px;
