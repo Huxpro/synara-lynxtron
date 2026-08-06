@@ -32,7 +32,7 @@ export function ComposerExtrasMenuTriggerHostElement(_props: {
 }) {
   return (
     <MenuTrigger
-      className="ComposerExtrasTriggerLynx"
+      className="ComposerExtrasTriggerHostLynx"
       ariaLabel="Composer extras"
     >
       <ComposerExtrasMenuTriggerElement />

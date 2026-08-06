@@ -603,6 +603,27 @@ The retained replacement cells:
   under `shots/2026-08-06/command-k-current/`.
 - Focused Command/composition suites: 2 files, 10/10 tests; configured
   Lynx-for-Web and Native/Desktop production builds pass.
+- The current-head Composer Extras recheck found two old-atlas residuals that
+  the earlier functional/state matrix did not block: the rendered Lynx trigger
+  was 32x28/radius 10 versus Web 28x28/radius 8, and the shared Lynx menu row
+  radius was 6px versus Web 8px.
+- The shared `LxMenuItem` primitive now owns the canonical 8px radius for
+  ordinary items, checkbox/radio items, and submenu triggers. Extras uses a
+  named 28x28 host plus a separate 28x28 button chrome owner; this separation
+  prevents host padding from moving the button or its centered 16px icon.
+- Final Lynx-for-Web computes a 28x28/radius-8 trigger and radius-8 Add files,
+  Plan, and Fast rows. Both final browser frames are 1280x820 with empty error
+  logs. The previously registered 142x108 versus 141.421875x106 popup
+  engine/separator rhythm remains explicit rather than hidden with a local
+  height override.
+- Exact-owned Native bundle `5e05f8af…`, root PID `45645`, PID-derived
+  `localhost:8903/session 1`, and a real Extras-trigger touch retain both host
+  and button at 28x28, a centered 16x16 icon, eight roles, a 2560x1576 frame,
+  and an empty warning/error console. Native compound `VIEW` radius is not
+  claimed because this DevTool returns 0px. Evidence is under
+  `shots/2026-08-06/extras-current/`.
+- Focused Menu/Extras suites: 2 files, 11/11 tests; configured Lynx-for-Web
+  and Native/Desktop production builds pass.
 
 ## Remaining work
 

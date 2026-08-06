@@ -6240,3 +6240,28 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Native VIEW统一返回radius0，故只声明bundle/class/interaction/screenshot/console
   直接证据，不伪称Native numeric radius。证据在
   `shots/2026-08-06/command-k-current/`。
+
+## 2026-08-06 — current-head Composer Extras chrome closure
+
+- 从旧P10 atlas结构化筛选并排除已由后续切片关闭的Sidebar、Project Picker、
+  skill/mention、Settings与transcript候选后，选择Extras做current-head复证。
+  同snapshot Web/Lynx-for-Web均通过rendered Composer extras真实click打开，served
+  bundle hash与artifact一致，viewport/PNG 1280×820，errors空。
+- 实测确认两个此前状态矩阵未block的真实残差：Web trigger 28×28/radius8，
+  Lynx 32×28/radius10；Web menu row radius8，shared Lynx `LxMenuItem` radius6。
+  row container的16px/normal仍是继承噪声，真实label已明确12px，未重复patch typography。
+- root-cause修复：shared `LxMenuItem`改为canonical radius8，覆盖普通、checkbox/radio与
+  submenu trigger；Extras增加命名28×28 host与独立28×28 button chrome owner，
+  button padding5/radius8。首次复测发现host/button共用class导致host padding把inner
+  button推移5px，随后拆成`ComposerExtrasTriggerHostLynx`与
+  `ComposerExtrasTriggerLynx`，final host/button同为407/521/28/28，icon
+  413/527/16/16，所有三行radius8。
+- popup仍是既有P9明确登记的142×108 versus Web141.421875×106 engine/separator
+  rhythm，未用匿名height override掩盖。focused Menu/Extras **2 files / 11 tests**，
+  configured Lynx-for-Web与Native/Desktop builds通过。
+- exact-owned Native configured bundle `5e05f8af…`，root PID45645、
+  PID-derived localhost:8903/session1，real touch打开Extras；host/button均28×28，
+  plus icon16×16居中，8 roles、raw2560×1576、console 0。DevTool compound VIEW
+  radius继续返回0，因此只声明source/test+Browser computed radius与Native
+  bundle/class/interaction/geometry直接证据。证据在
+  `shots/2026-08-06/extras-current/`。

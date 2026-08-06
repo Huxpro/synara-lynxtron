@@ -744,8 +744,18 @@
   color: var(--warning);
 }
 
+.ComposerExtrasTriggerHostLynx,
 .ComposerExtrasTriggerLynx {
+  width: 28px;
+  min-width: 28px;
+  height: 28px;
+  min-height: 28px;
   flex-shrink: 0;
+}
+
+.ComposerExtrasTriggerLynx {
+  padding: 5px;
+  border-radius: 8px;
 }
 
 .ComposerExtrasTriggerIconLynx,

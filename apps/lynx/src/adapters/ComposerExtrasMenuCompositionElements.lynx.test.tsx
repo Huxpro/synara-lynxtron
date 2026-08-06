@@ -1,5 +1,6 @@
 import { describe, expect, it, rs } from '@rstest/core';
 import { fireEvent, render } from '@lynx-js/react/testing-library';
+import { readFileSync } from 'node:fs';
 
 import {
   ComposerExtrasFastLabelElement,
@@ -46,5 +47,26 @@ describe('native composer attachment menu item', () => {
       elementTree.root?.querySelectorAll('.ComposerExtrasItemIconLynx')
     ).toHaveLength(3);
     expect(elementTree.root?.textContent).not.toContain('+');
+  });
+
+  it('matches the canonical trigger and menu row radii', () => {
+    const composerStyles = readFileSync(
+      new URL('../components/composer/composer.css', import.meta.url),
+      'utf8'
+    );
+    const primitiveStyles = readFileSync(
+      new URL('../components/ui/primitives.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(composerStyles).toMatch(
+      /\.ComposerExtrasTriggerHostLynx,\s*\.ComposerExtrasTriggerLynx\s*\{[^}]*width:\s*28px;[^}]*min-width:\s*28px;[^}]*height:\s*28px;[^}]*min-height:\s*28px;/s
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerExtrasTriggerLynx\s*\{[^}]*padding:\s*5px;[^}]*border-radius:\s*8px;/s
+    );
+    expect(primitiveStyles).toMatch(
+      /\.LxMenuItem\s*\{[^}]*border-radius:\s*8px;/s
+    );
   });
 });
