@@ -4,6 +4,7 @@ import {
   render,
   waitFor,
 } from '@lynx-js/react/testing-library';
+import { readFileSync } from 'node:fs';
 
 import {
   Menu,
@@ -44,6 +45,20 @@ async function openMenu(): Promise<Element> {
 }
 
 describe('Lynx Menu overlay contract', () => {
+  it('matches the shared Web option text line box', () => {
+    const primitiveStyles = readFileSync(
+      new URL('./primitives.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(primitiveStyles).toMatch(
+      /\.LxMenuItem__text\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s
+    );
+    expect(primitiveStyles).toMatch(
+      /\.LxMenuItem\s*\{[^}]*min-height:\s*32px;[^}]*padding:\s*6px 10px;/s
+    );
+  });
+
   it('normalizes global anchors into a nested Web layer viewport', () => {
     expect(
       resolveMenuCoordinates({

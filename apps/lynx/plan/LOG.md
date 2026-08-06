@@ -6502,3 +6502,20 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   catalog无cost multiplier/favourite/collapsible group header，不从source-only
   推断顺带修改。证据在
   `shots/2026-08-06/composer-model-row-text-current/`。
+
+## 2026-08-06 — current-head shared Menu item text closure
+
+- Runtime候选先被current product path否决：当前`Full access`没有真实mode
+  transition callback，composition按contract不渲染menu，不能用fixture冒充consumer。
+  转到General Settings真实`Default thread mode`：Web Select option为12/18/400、
+  row26；Lynx shared `.LxMenuItem__text`为12/normal/400、visual box15、row32。
+- shared text补18px line-height；首次复测发现7px vertical padding使row涨到34，
+  随即改为6px，final text12/18且row恢复32。focused Menu **1 file / 9 tests**、
+  configured Lynx-for-Web与Native/Desktop builds通过。
+- 一个复用旧session在Settings navigation后root blank，被判harness state pollution，
+  未留证；fresh named session同一rendered path通过。Web/Lynx-for-Web PNG1280×820、
+  errors空。
+- exact-owned Native bundle `cebcd55d…`，root PID96008、PID-derived
+  localhost:8904/session1；real Sidebar Settings→thread-mode touches后保留
+  popup/row/text。Native text12/18、box18、row206×32、raw2560×1576、console0。
+  证据在`shots/2026-08-06/settings-shared-menu-text-current/`。

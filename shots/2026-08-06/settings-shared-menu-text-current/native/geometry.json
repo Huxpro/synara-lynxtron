@@ -1,0 +1,114 @@
+{
+  "client": "native",
+  "stateId": "settings-shared-menu-text-light-1280",
+  "roles": {
+    "popup": {
+      "nodeId": 532,
+      "nodeName": "VIEW",
+      "attributes": {
+        "aria-modal": "false",
+        "role": "menu",
+        "bindkeydown": "363:4:",
+        "bindlayoutchange": "363:5:",
+        "class": "LxMenuPopup SharedSettingsGeneralSelectPopup",
+        "style": "visibility:visible;top:262px;left:847px;"
+      },
+      "text": "",
+      "box": {
+        "x": 847,
+        "y": 262,
+        "width": 220,
+        "height": 116
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "hsla(0,0%,5%,.069)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "row": {
+      "nodeId": 534,
+      "nodeName": "VIEW",
+      "attributes": {
+        "focusable": "true",
+        "role": "menuitem",
+        "bindmouseenter": "365:0:bindmouseenter",
+        "bindblur": "365:0:bindblur",
+        "bindmouseleave": "365:0:bindmouseleave",
+        "bindtap": "365:0:bindtap",
+        "bindmouseup": "365:0:bindmouseup",
+        "bindtouchstart": "365:0:bindtouchstart",
+        "bindmousedown": "365:0:bindmousedown",
+        "bindtouchend": "365:0:bindtouchend",
+        "bindtouchcancel": "365:0:bindtouchcancel",
+        "catchkeydown": "365:0:catchkeydown",
+        "bindfocus": "365:0:bindfocus",
+        "class": "LxButton LxButton--ghost LxButton--default LxMenuItem LxMenuItem--highlighted"
+      },
+      "text": "",
+      "box": {
+        "x": 854,
+        "y": 269,
+        "width": 206,
+        "height": 32
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(232,242,250)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "text": {
+      "nodeId": 536,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "LxMenuItem__text"
+      },
+      "text": "",
+      "box": {
+        "x": 865,
+        "y": 276,
+        "width": 31,
+        "height": 18
+      },
+      "font": {
+        "family": "",
+        "size": "12px",
+        "weight": "normal",
+        "lineHeight": "18px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

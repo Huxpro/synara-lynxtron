@@ -832,6 +832,24 @@ The retained replacement cells:
   `shots/2026-08-06/composer-model-row-text-current/`.
 - Focused picker contract: 1 file, 3/3 tests; configured Lynx-for-Web and
   Native/Desktop production builds pass.
+- Shared Lynx menu-item text now explicitly matches the Web option contract at
+  12px/18px/400 instead of the old 12px `normal` line box with a 15px visual
+  height. Shared vertical padding changed from 7px to 6px so the existing 32px
+  Native row contract remains unchanged after the line-height correction.
+- Current Web and a fresh Lynx-for-Web session entered General Settings and
+  opened Default thread mode through rendered controls. Web Select options and
+  Lynx MenuRadioItem text both resolve to 12/18/400; Lynx rows remain 32px.
+  Both retained screenshots are 1280x820 and browser errors empty.
+- An older reused Lynx-for-Web session blanked its root after Settings
+  navigation; that run was rejected as harness state pollution and produced no
+  retained evidence. The same path passed in a fresh named session.
+- Exact-owned Native bundle `cebcd55d…`, root PID `96008`, PID-derived
+  `localhost:8904/session 1`, and real Sidebar Settings→thread-mode touches
+  retained popup/row/text roles. Native measured text at 12px/18px with an
+  18px box and row at 206x32; raw frame is 2560x1576 and console empty.
+  Evidence is under `shots/2026-08-06/settings-shared-menu-text-current/`.
+- Focused Menu suite: 1 file, 9/9 tests; configured Lynx-for-Web and
+  Native/Desktop production builds pass.
 
 ## Remaining work
 
