@@ -1,5 +1,8 @@
 import type { ComponentProps } from "react";
 
-export function ChatSurfaceHeaderFrameElement(props: ComponentProps<"header">) {
+export function ChatSurfaceHeaderFrameElement({
+  padded: _padded,
+  ...props
+}: ComponentProps<"header"> & { readonly padded?: boolean }) {
   return <header {...props} />;
 }

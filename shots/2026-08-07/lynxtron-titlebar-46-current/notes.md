@@ -35,5 +35,14 @@ Status: retained current-head Electron authority and exact-owned Native evidence
   Final Native geometry measures the logo at 14x14 with `flex-shrink: 0`,
   x=229..243 inside the x=0..255 sidebar content edge, leaving the same 12px
   trailing gap as Electron. Warning/error console output is empty.
+- The standard chat header had one additional rem-base residual: Web
+  `sm:px-5` resolves to 20px, while Lynx resolved the same utility to 17.5px.
+  The shared composition now passes an explicit padded host contract. Web
+  consumes that prop without leaking an unknown DOM attribute; Lynx maps only
+  non-editor headers to physical 20px left/right padding.
+- Electron CDP and PID-derived Native `localhost:8905/session 1` both directly
+  measure 46px height and 20px horizontal padding. The Native content edge is
+  x=276 from the x=256 main-column origin, exactly matching Electron. The
+  final frame remains 2560x1640 and both runtime consoles are clean.
 - Cleanup: the exact-owned Native process exited after capture. Unrelated
   Lynxtron clients were not touched.

@@ -35,7 +35,10 @@ export function ChatSurfaceHeaderFrame({
     .join(" ");
 
   return (
-    <ChatSurfaceHeaderFrameElement className={frameClassName}>
+    <ChatSurfaceHeaderFrameElement
+      className={frameClassName}
+      padded={!editorRail}
+    >
       {children}
     </ChatSurfaceHeaderFrameElement>
   );

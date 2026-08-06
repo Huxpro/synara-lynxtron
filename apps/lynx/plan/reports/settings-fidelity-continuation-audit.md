@@ -1213,6 +1213,15 @@ The retained replacement cells:
   `localhost:8905/session 1`, directly measures a 14x14, flex-shrink-zero logo
   with the same 12px trailing gap and an empty console. A guessed-client
   attempt against 8903 returned no nodes and was rejected.
+- Standard chat headers also inherited the cross-runtime rem mismatch:
+  Electron's `sm:px-5` resolves to 20px while Lynx previously rendered 17.5px.
+  The shared composition now publishes an explicit padded host contract. Web
+  consumes it without emitting an unknown DOM attribute, and Lynx maps only
+  non-editor headers to physical 20px horizontal padding.
+- Current Electron CDP and exact-owned Native `localhost:8905/session 1`
+  directly measure matching 46px/20px header geometry; the Native content edge
+  starts at x=276 from the x=256 main column. Both consoles are clean and the
+  Native frame remains 2560x1640.
 
 ## Remaining work
 

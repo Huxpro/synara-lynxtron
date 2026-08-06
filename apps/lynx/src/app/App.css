@@ -35,6 +35,11 @@
   -x-app-region: drag;
 }
 
+.AppWindowDragRegion--padded {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
 .AppWindowDragRegion .LxButton,
 .AppWindowDragRegion input,
 .AppWindowDragRegion textarea {

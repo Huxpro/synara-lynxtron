@@ -6963,3 +6963,9 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - final bundle `fe48cd46…`，owned PID7226由lsof解析为localhost:8905/session1；
   先猜8903的空node attempt拒绝。final logo直接测14×14/flex-shrink0/x229..243，
   sidebar inner edge255，right gap12，raw2560×1640、console0。
+- standard chat header还有同源rem差异：Web `sm:px-5`=20px，Lynx此前17.5px。
+  shared composition新增显式`padded` host contract；Web adapter吞掉prop不泄漏DOM，
+  Lynx仅非editor header映射物理20px。
+- Web CDP与exact-owned Native bundle current-head、PID-derived
+  localhost:8905/session1均直接测header 46px/padding20；Native content x276相对main
+  origin256，raw2560×1640、两端console0。
