@@ -6989,3 +6989,8 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   final Electron/Native均popup176×192、labels24/28、items全26；Native x只因已登记
   sidebar separator左移1px，raw2560×1640、console0。证据在
   `shots/2026-08-07/sidebar-sort-menu-rhythm-current/`。
+- paired menu同时暴露shared copy漂移：Electron当前为`Last user message`/
+  `Created at`，extracted catalog仍`Recent activity`/`Date added`/`Date created`。
+  更新shared catalog并让Web monolith删除本地duplicate maps、直接消费同一options；
+  sort values/persistence语义不变。Web catalog **2/2**、Lynx focused **4/4**，
+  双build通过；final Native DOM五项文案与Electron一致，geometry保持exact、console0。

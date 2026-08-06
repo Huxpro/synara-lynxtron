@@ -91,6 +91,10 @@ import {
   type SidebarThreadSortOrder,
   useAppSettings,
 } from "../appSettings";
+import {
+  SIDEBAR_PROJECT_SORT_OPTIONS,
+  SIDEBAR_THREAD_SORT_OPTIONS,
+} from "./SidebarProjectSort.logic";
 import { isElectron } from "../env";
 import { formatRelativeTime } from "../lib/relativeTime";
 import { isMacPlatform, newCommandId, newThreadId, randomUUID } from "../lib/utils";
@@ -421,15 +425,6 @@ const SortFilterIcon = createCentralIconComponent("filter-2");
 const AddPlusIcon = createCentralIconComponent("plus-medium");
 
 const EMPTY_KEYBINDINGS: ResolvedKeybindingsConfig = [];
-const SIDEBAR_SORT_LABELS: Record<SidebarProjectSortOrder, string> = {
-  updated_at: "Last user message",
-  created_at: "Created at",
-  manual: "Manual",
-};
-const SIDEBAR_THREAD_SORT_LABELS: Record<SidebarThreadSortOrder, string> = {
-  updated_at: "Last user message",
-  created_at: "Created at",
-};
 const SIDEBAR_LIST_ANIMATION_OPTIONS = {
   duration: 180,
   easing: "ease-out",
@@ -837,13 +832,15 @@ function ProjectSortMenu({
               onProjectSortOrderChange(value as SidebarProjectSortOrder);
             }}
           >
-            {(Object.entries(SIDEBAR_SORT_LABELS) as Array<[SidebarProjectSortOrder, string]>).map(
-              ([value, label]) => (
-                <MenuRadioItem key={value} value={value} className="min-h-7 py-1 sm:text-xs">
-                  {label}
-                </MenuRadioItem>
-              ),
-            )}
+            {SIDEBAR_PROJECT_SORT_OPTIONS.map((option) => (
+              <MenuRadioItem
+                key={option.value}
+                value={option.value}
+                className="min-h-7 py-1 sm:text-xs"
+              >
+                {option.label}
+              </MenuRadioItem>
+            ))}
           </MenuRadioGroup>
         </MenuGroup>
         <MenuGroup>
@@ -874,13 +871,15 @@ function ThreadSortMenuItems({
         onThreadSortOrderChange(value as SidebarThreadSortOrder);
       }}
     >
-      {(Object.entries(SIDEBAR_THREAD_SORT_LABELS) as Array<[SidebarThreadSortOrder, string]>).map(
-        ([value, label]) => (
-          <MenuRadioItem key={value} value={value} className="min-h-7 py-1 sm:text-xs">
-            {label}
-          </MenuRadioItem>
-        ),
-      )}
+      {SIDEBAR_THREAD_SORT_OPTIONS.map((option) => (
+        <MenuRadioItem
+          key={option.value}
+          value={option.value}
+          className="min-h-7 py-1 sm:text-xs"
+        >
+          {option.label}
+        </MenuRadioItem>
+      ))}
     </MenuRadioGroup>
   );
 }

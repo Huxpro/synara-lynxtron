@@ -1246,6 +1246,14 @@ The retained replacement cells:
   all five items at 26px. Native x coordinates retain only the registered
   one-pixel sidebar separator delta. Console is empty; evidence is under
   `shots/2026-08-07/sidebar-sort-menu-rhythm-current/`.
+- The same paired menu exposed stale extracted copy. Electron's current
+  authority uses `Last user message` and `Created at`; the shared catalog still
+  carried `Recent activity`, `Date added`, and `Date created`.
+- The shared catalog now owns the current copy, and the Web monolith consumes
+  it instead of maintaining duplicate local label maps. Sort values and
+  persistence semantics are unchanged. Final Native DOM publishes the same
+  five labels as Electron while preserving the exact geometry and clean
+  console above.
 
 ## Remaining work
 

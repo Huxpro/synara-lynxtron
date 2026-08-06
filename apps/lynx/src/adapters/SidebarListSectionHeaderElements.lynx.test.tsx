@@ -130,8 +130,8 @@ describe('sidebar list section header actions', () => {
     expect(items).toHaveLength(5);
     expect(elementTree.root?.textContent).toContain('Sort projects');
     expect(elementTree.root?.textContent).toContain('Sort threads');
-    expect(elementTree.root?.textContent).toContain('Date added');
-    expect(elementTree.root?.textContent).toContain('Date created');
+    expect(elementTree.root?.textContent).toContain('Last user message');
+    expect(elementTree.root?.textContent).toContain('Created at');
   });
 
   it('persists sort choices through the canonical app-settings projection', () => {

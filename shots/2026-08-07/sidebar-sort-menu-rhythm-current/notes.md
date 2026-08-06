@@ -23,5 +23,13 @@ Status: retained current Electron and exact-owned Native evidence
   one pixel left solely because of the registered sidebar separator boundary.
   Native raw frame is 2560x1640; Electron CDP frame is 3456x2168 at DPR 2.
   Native warning/error console is empty.
+- The paired menu also exposed stale shared copy: Electron's current labels
+  are `Last user message` / `Created at`, while the extracted catalog still
+  said `Recent activity` / `Date added` / `Date created`. The shared catalog
+  now owns the current copy, and the Web monolith consumes that catalog instead
+  of maintaining duplicate local maps. Sort values and persistence semantics
+  are unchanged.
+- Final exact-owned Native DOM publishes the same five option labels as
+  Electron, retains the exact geometry above, and has an empty console.
 - Cleanup: the menu state made no preference changes, the exact-owned Native
   process exited after capture, and unrelated Lynxtron clients were untouched.
