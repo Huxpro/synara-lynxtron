@@ -6534,3 +6534,23 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   均28px，两label11/16.5（fractional box按像素取整17），raw2560×1576、
   console0。证据在
   `shots/2026-08-06/composer-footer-trigger-text-current/`。
+
+## 2026-08-06 — current-head Composer Runtime trigger identity closure
+
+- current rendered `Full access`实测Web为118.15625×28、透明1px border、
+  14px shield、11/16.5/400 orange label、12px chevron、6px gap；旧Lynx只是
+  generic Button text12/normal/500黑色、无icon/chevron、width86。
+- Lynx改为MenuTrigger内显式14px permission glyph + label + chevron anatomy，
+  light/dark accent分别`#e25505/#fe8549`。14px diamond明确登记为Native glyph
+  adaptation，不伪称Web shield。1px transparent border恢复exact Browser
+  118.15625×28 geometry。
+- 第一版通过Button `render` seam引入5条
+  `cloneElement from compiled snapshot with children is not supported`
+  Native warning；该evidence被拒绝。final去掉Button/render，纯view由外层
+  MenuTrigger持有interaction/accessibility，focused contract锁无`<Button`/
+  `render=`回归。
+- focused picker contract **1 file / 3 tests**，configured Lynx-for-Web与
+  Native/Desktop builds通过。exact-owned Native bundle `98241786…`，root
+  PID85026、PID-derived localhost:8904/session1；trigger118×28、glyph14×14、
+  label11/16.5、chevron12×12，全部orange，raw2560×1576、console0。证据在
+  `shots/2026-08-06/composer-runtime-trigger-current/`。

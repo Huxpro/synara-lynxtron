@@ -1,7 +1,6 @@
 import type { RuntimeMode } from '@synara/contracts';
 import type { ReactNode } from 'react';
 
-import { Button } from '../components/ui/button.lynx';
 import { MenuPopupBase } from '../components/ui/menu.lynx';
 
 export function ComposerRuntimeModeTriggerElement(props: {
@@ -10,19 +9,24 @@ export function ComposerRuntimeModeTriggerElement(props: {
 }) {
   const label =
     props.runtimeMode === 'full-access' ? 'Full access' : 'Default permissions';
+  const fullAccess = props.runtimeMode === 'full-access';
   return (
-    <Button
-      size="sm"
-      variant="chrome"
-      className="ComposerRuntimeTriggerLynx"
+    <view
+      className={`ComposerRuntimeTriggerLynx${
+        fullAccess ? ' ComposerRuntimeTriggerLynx--full-access' : ''
+      }`}
       aria-label={`${label} — change permissions`}
     >
-      {props.hideLabel
-        ? props.runtimeMode === 'full-access'
-          ? '◆'
-          : '◇'
-        : label}
-    </Button>
+      <text className="ComposerRuntimeTriggerPermissionGlyphLynx">
+        {fullAccess ? '◆' : '◇'}
+      </text>
+      {props.hideLabel ? null : (
+        <>
+          <text className="ComposerRuntimeTriggerLabelLynx">{label}</text>
+          <text className="ComposerRuntimeTriggerChevronLynx">⌄</text>
+        </>
+      )}
+    </view>
   );
 }
 

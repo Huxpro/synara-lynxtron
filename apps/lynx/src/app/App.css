@@ -32,6 +32,7 @@
 }
 
 .SliceRoot--theme-light {
+  --runtime-full-access-accent: #e25505;
   --settings-usage-error-surface: rgba(239, 68, 68, 0.12);
   --settings-usage-error-text: #dc2626;
   --settings-usage-warning-surface: rgba(245, 158, 11, 0.12);
@@ -47,6 +48,7 @@
 }
 
 .SliceRoot--theme-dark {
+  --runtime-full-access-accent: #fe8549;
   --settings-usage-error-surface: rgba(248, 113, 113, 0.12);
   --settings-usage-error-text: #f87171;
   --settings-usage-warning-surface: rgba(251, 191, 36, 0.12);

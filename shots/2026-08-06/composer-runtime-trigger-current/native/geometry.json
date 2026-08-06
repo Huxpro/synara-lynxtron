@@ -1,0 +1,128 @@
+{
+  "client": "native",
+  "stateId": "composer-runtime-trigger-light-1280",
+  "roles": {
+    "trigger": {
+      "nodeId": 127,
+      "nodeName": "VIEW",
+      "attributes": {
+        "aria-label": "Full access — change permissions",
+        "class": "ComposerRuntimeTriggerLynx ComposerRuntimeTriggerLynx--full-access"
+      },
+      "text": "",
+      "box": {
+        "x": 439,
+        "y": 505,
+        "width": 118,
+        "height": 28
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(226,85,5)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "glyph": {
+      "nodeId": 128,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "ComposerRuntimeTriggerPermissionGlyphLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 450,
+        "y": 512,
+        "width": 14,
+        "height": 14
+      },
+      "font": {
+        "family": "",
+        "size": "10px",
+        "weight": "normal",
+        "lineHeight": "14px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(226,85,5)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "label": {
+      "nodeId": 131,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "ComposerRuntimeTriggerLabelLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 470,
+        "y": 511,
+        "width": 58,
+        "height": 17
+      },
+      "font": {
+        "family": "",
+        "size": "11px",
+        "weight": "400",
+        "lineHeight": "16.5px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(226,85,5)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "chevron": {
+      "nodeId": 133,
+      "nodeName": "TEXT",
+      "attributes": {
+        "text": "⌄",
+        "class": "ComposerRuntimeTriggerChevronLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 534,
+        "y": 513,
+        "width": 12,
+        "height": 12
+      },
+      "font": {
+        "family": "",
+        "size": "10px",
+        "weight": "normal",
+        "lineHeight": "12px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(226,85,5)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "0.7"
+      }
+    }
+  }
+}

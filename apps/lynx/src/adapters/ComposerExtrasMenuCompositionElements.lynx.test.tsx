@@ -54,6 +54,13 @@ describe('native composer attachment menu item', () => {
       new URL('../components/composer/composer.css', import.meta.url),
       'utf8'
     );
+    const runtimeElementsSource = readFileSync(
+      new URL(
+        './ComposerRuntimeModeControlCompositionElements.lynx.tsx',
+        import.meta.url
+      ),
+      'utf8'
+    );
     const primitiveStyles = readFileSync(
       new URL('../components/ui/primitives.css', import.meta.url),
       'utf8'
@@ -67,6 +74,27 @@ describe('native composer attachment menu item', () => {
     );
     expect(composerStyles).toMatch(
       /\.ComposerExtrasItemLabelLynx > text\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerRuntimeTriggerLabelLynx\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*16\.5px;[^}]*font-weight:\s*400;/s
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerRuntimeTriggerLynx\s*\{[^}]*min-height:\s*28px;[^}]*padding:\s*4px 10px;[^}]*border:\s*1px solid transparent;[^}]*border-radius:\s*8px;/s
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerRuntimeTriggerLynx--full-access\s*\{[^}]*color:\s*var\(--runtime-full-access-accent\);/s
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerRuntimeTriggerLynx--full-access\s*\.ComposerRuntimeTriggerPermissionGlyphLynx,\s*\.ComposerRuntimeTriggerLynx--full-access \.ComposerRuntimeTriggerLabelLynx\s*\{[^}]*color:\s*var\(--runtime-full-access-accent\);/s
+    );
+    expect(runtimeElementsSource).not.toContain('<Button');
+    expect(runtimeElementsSource).not.toContain('render=');
+    expect(runtimeElementsSource).toContain(
+      'ComposerRuntimeTriggerPermissionGlyphLynx'
+    );
+    expect(runtimeElementsSource).toContain('ComposerRuntimeTriggerLabelLynx');
+    expect(runtimeElementsSource).toContain(
+      'ComposerRuntimeTriggerChevronLynx'
     );
     expect(primitiveStyles).toMatch(
       /\.LxMenuItem\s*\{[^}]*border-radius:\s*8px;/s

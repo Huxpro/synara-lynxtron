@@ -1,0 +1,37 @@
+{
+  "client": "native",
+  "stateId": "composer-runtime-trigger-light-1280",
+  "buildSha256": "982417868c67796ffb1a3b39fea16b65cd67b9d7d0bb1f07e448bbba6e6096f2",
+  "snapshotSha256": "25c6a30782bf22c2b94dfefa06c7ce50af9a53a5320c5a65375d4d70c69b6975",
+  "stateEcho": {
+    "semanticRoute": "/",
+    "theme": "light",
+    "density": "comfortable",
+    "interactionState": "landing"
+  },
+  "identity": {
+    "rootPid": 85026,
+    "descendantPids": [
+      85026,
+      85028
+    ],
+    "ownedPorts": [
+      8904
+    ],
+    "client": {
+      "id": "localhost:8904",
+      "info": {
+        "App": "@synara/lynx",
+        "appId": "0000",
+        "sdkVersion": "4.1"
+      },
+      "port": 8904
+    },
+    "session": {
+      "session_id": 1,
+      "type": "lynx",
+      "url": "file:///Users/bytedance/github/synara/apps/lynx/dist/desktop/main.lynx.bundle"
+    }
+  },
+  "consoleMessages": []
+}

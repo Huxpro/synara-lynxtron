@@ -865,6 +865,27 @@ The retained replacement cells:
   `shots/2026-08-06/composer-footer-trigger-text-current/`.
 - Focused picker contract: 1 file, 3/3 tests; configured Lynx-for-Web and
   Native/Desktop production builds pass.
+- Composer Runtime permission trigger now matches Web's full-access identity:
+  118.15625x28 transparent-border chrome, 14px leading permission affordance,
+  11px/16.5px/400 label, 12px trailing chevron, 6px internal gaps, and the
+  light `#e25505` / dark `#fe8549` semantic accent.
+- Lynx uses an explicit 14px diamond permission glyph as the named Native
+  adaptation rather than pretending to render Web's central shield icon.
+  Label, glyph, and chevron share the semantic accent and the trigger keeps its
+  existing accessibility label.
+- The first Native implementation used the Button `render` seam and produced
+  five `cloneElement from compiled snapshot with children is not supported`
+  warnings. That evidence was rejected. The final implementation uses a plain
+  inner view owned by MenuTrigger, removes Button/render entirely, and the
+  replacement Native capture has zero warning/error console messages.
+- Current Web and Lynx-for-Web trigger geometry is exact at 118.15625x28;
+  label typography and light accent are exact. Exact-owned Native bundle
+  `98241786…`, root PID `85026`, PID-derived `localhost:8904/session 1`,
+  retained trigger/glyph/label/chevron at 118x28, 14x14, 11px/16.5px, and
+  12x12 respectively; raw frame is 2560x1576 and console empty. Evidence is
+  under `shots/2026-08-06/composer-runtime-trigger-current/`.
+- Focused picker contract: 1 file, 3/3 tests; configured Lynx-for-Web and
+  Native/Desktop production builds pass.
 
 ## Remaining work
 
