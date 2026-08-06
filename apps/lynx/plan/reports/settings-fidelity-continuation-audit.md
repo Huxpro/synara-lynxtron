@@ -764,6 +764,22 @@ The retained replacement cells:
   Evidence is under `shots/2026-08-06/composer-trait-label-current/`.
 - Focused trait-picker suite: 1 file, 2/2 tests; configured Lynx-for-Web and
   Native/Desktop production builds pass.
+- Composer Extras labels now explicitly match Web's 12px/18px/400 menu-row
+  typography instead of relying on Lynx's 15px visual `normal` line box. The
+  fix stays on the dedicated child `text` owner; inherited 16px values on the
+  label wrapper remain correctly classified as container noise.
+- Current Web and Lynx-for-Web opened Extras through the rendered trigger and
+  retained 1280x820 screenshots with empty error logs. The rebuilt Lynx labels
+  all resolve to 12/18/400 while the existing 26px main-row geometry remains
+  unchanged.
+- Exact-owned Native bundle `d90f71a3…`, root PID `42725`, PID-derived
+  `localhost:8904/session 1`, and a real Extras touch retained popup/label/row
+  roles. Direct child-TEXT probes measured all three labels at 12px/18px with
+  18px boxes; DevTool serializes CSS weight 400 as the equivalent `normal`.
+  The raw frame is 2560x1576 and the warning/error console is empty. Evidence
+  is under `shots/2026-08-06/composer-extras-label-current/`.
+- Focused Extras suite: 1 file, 3/3 tests; configured Lynx-for-Web and
+  Native/Desktop production builds pass.
 
 ## Remaining work
 

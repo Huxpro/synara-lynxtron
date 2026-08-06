@@ -65,6 +65,9 @@ describe('native composer attachment menu item', () => {
     expect(composerStyles).toMatch(
       /\.ComposerExtrasTriggerLynx\s*\{[^}]*padding:\s*5px;[^}]*border-radius:\s*8px;/s
     );
+    expect(composerStyles).toMatch(
+      /\.ComposerExtrasItemLabelLynx > text\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s
+    );
     expect(primitiveStyles).toMatch(
       /\.LxMenuItem\s*\{[^}]*border-radius:\s*8px;/s
     );

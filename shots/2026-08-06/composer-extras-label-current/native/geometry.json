@@ -1,0 +1,101 @@
+{
+  "client": "native",
+  "stateId": "composer-extras-label-light-1280",
+  "roles": {
+    "popup": {
+      "nodeId": 7360,
+      "nodeName": "VIEW",
+      "attributes": {
+        "aria-modal": "false",
+        "role": "menu",
+        "bindkeydown": "4476:4:",
+        "bindlayoutchange": "4476:5:",
+        "class": "LxMenuPopup ComposerExtrasPopupLynx",
+        "style": "visibility:visible;top:393px;left:407px;"
+      },
+      "text": "",
+      "box": {
+        "x": 407,
+        "y": 393,
+        "width": 142,
+        "height": 109
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "hsla(0,0%,5%,.069)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "0 4px 18px -6px #0d0d0d11",
+        "opacity": "1"
+      }
+    },
+    "add-files": {
+      "nodeId": 7363,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "ComposerExtrasItemLabelLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 422,
+        "y": 403,
+        "width": 74,
+        "height": 18
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "row": {
+      "nodeId": 7362,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "LxMenuItem__row"
+      },
+      "text": "",
+      "box": {
+        "x": 422,
+        "y": 403,
+        "width": 112,
+        "height": 18
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

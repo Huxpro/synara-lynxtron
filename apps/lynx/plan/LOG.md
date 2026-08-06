@@ -6435,3 +6435,18 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Native header240×28、label12/16/400 opacity.45、toggle20×20、
   raw2560×1576、console0。证据在
   `shots/2026-08-06/composer-trait-label-current/`。
+
+## 2026-08-06 — current-head Composer Extras label line-box closure
+
+- shared `.LxMenuItem__text`候选继续经真实consumer检查收窄：Extras用dedicated
+  `ComposerExtrasItemLabelLynx > text`，wrapper的16px/normal是继承噪声；直接child
+  TEXT实测Web为12/18/400，旧Lynx为12/normal/400且visual line-box15。
+- dedicated text owner增加显式18px line-height，不改row geometry。focused Extras
+  **1 file / 3 tests**、configured Lynx-for-Web与Native/Desktop builds通过。
+  current Web/Lynx-for-Web均经rendered Extras trigger打开，三条Lynx label均
+  12/18/400，main rows继续26px；viewport/PNG1280×820、errors空。
+- exact-owned Native bundle `d90f71a3…`，root PID42725、PID-derived
+  localhost:8904/session1；state-idempotent real touch打开Extras，直接三个child
+  TEXT均12/18且box18。DevTool将CSS 400等价序列化为`normal`；保留
+  popup/label/row、raw2560×1576、console0。证据在
+  `shots/2026-08-06/composer-extras-label-current/`。

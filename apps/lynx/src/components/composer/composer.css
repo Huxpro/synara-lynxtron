@@ -781,6 +781,7 @@
 .ComposerExtrasItemLabelLynx > text {
   color: var(--foreground);
   font-size: 12px;
+  line-height: 18px;
 }
 
 .ComposerExtrasPopupLynx.LxMenuPopup,

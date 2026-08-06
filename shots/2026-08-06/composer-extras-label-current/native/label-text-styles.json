@@ -1,0 +1,63 @@
+{
+  "client": "localhost:8904",
+  "session": 1,
+  "labels": [
+    {
+      "nodeId": 7365,
+      "box": {
+        "x": 446,
+        "y": 403,
+        "width": 50,
+        "height": 18
+      },
+      "font": {
+        "size": "12px",
+        "lineHeight": "18px",
+        "weight": "normal",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "opacity": "1"
+      }
+    },
+    {
+      "nodeId": 7373,
+      "box": {
+        "x": 446,
+        "y": 438,
+        "width": 60,
+        "height": 18
+      },
+      "font": {
+        "size": "12px",
+        "lineHeight": "18px",
+        "weight": "normal",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "opacity": "1"
+      }
+    },
+    {
+      "nodeId": 7385,
+      "box": {
+        "x": 446,
+        "y": 474,
+        "width": 24,
+        "height": 18
+      },
+      "font": {
+        "size": "12px",
+        "lineHeight": "18px",
+        "weight": "normal",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "opacity": "1"
+      }
+    }
+  ]
+}
