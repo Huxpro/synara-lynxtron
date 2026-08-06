@@ -20,6 +20,7 @@ import {
   fetchProfileStats,
   fetchProfileTokenStats,
 } from '../data/synaraClient.lynx';
+import { ProfileUsageKindIcon } from './ProfileUsageKindIcon.lynx';
 
 import './settings-profile-panel.css';
 
@@ -388,9 +389,7 @@ function ProfileContent(props: {
                 >
                   <view className="SettingsProfilePluginIdentity">
                     <view className="SettingsProfilePluginIcon">
-                      <text className="SettingsProfilePluginIconText">
-                        {skill.kind === 'agent' ? 'A' : 'S'}
-                      </text>
+                      <ProfileUsageKindIcon kind={skill.kind} />
                     </view>
                     <text className="SettingsProfilePluginName" maxlines={1}>
                       {skill.displayName}

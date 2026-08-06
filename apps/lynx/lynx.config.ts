@@ -214,6 +214,10 @@ export default defineConfig({
         rootPath,
         '../web/public/central-icons-fill'
       ),
+      '@synara-central-icons': path.resolve(
+        rootPath,
+        '../web/public/central-icons-reversed'
+      ),
       '~/components/settings/SettingsSectionElements$': path.resolve(
         rootPath,
         './src/adapters/SettingsSectionElements.lynx.tsx'

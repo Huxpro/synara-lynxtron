@@ -6023,3 +6023,27 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   `cd3e1e9e…`、settings `d221bb25…`、KV `f53a83aa…`、window `2dd961d3…`全程
   byte-exact。Integrations logic/panel + Archived **11/11**，configured三端build通过；
   证据在`shots/2026-08-06/integrations-connected-current/`。
+
+## 2026-08-06 — current-head Profile plugin/agent rows
+
+- Most used plugins此前仍由empty snapshot代理。byte-clone normal state到独立60465
+  server，通过canonical structured turn refs生成真实rows：`$check-code` skill两次、
+  `@reviewer-agent` mention一次；stats RPC返回2 runs/1 run、2 explored/3 total。
+  provider delivery因clone无Codex CLI失败，但发生在durable turn-start acceptance之后；
+  Profile按真实structured user events统计，未直接写SQLite。
+- source/runtime审计发现Web使用exact central `building-blocks`与`agent` glyph，Lynx仍用
+  `S`/`A`文字。新增`@synara-central-icons` alias与Profile-specific raw SVG adapter，
+  theme-colorize后放入既有20px shell/12px glyph slot；不使用generic User或近似Tabler
+  图标。
+- final Web/Lynx-for-Web rows exact：右栏x872、336×20，pitch30，shell20×20，
+  glyph12×12/inset4，name x902，count right x1208，copy/count 14/20。两端1440×900
+  DPR1，errors为空。
+- exact-owned Native configured bundle `ff4f27e3…`，outer1440×900→root1440×868/
+  raw2880×1736，root PID44793，PID-derived localhost:8903/session1；first row
+  `872/575/336/20`、shell20、glyph `876/579/12/12`、name x902、count right1208，
+  console 0。generic list role命中首个复用list，未拿来支撑plugin claim；row/identity/
+  icon/glyph/name/count roles为直接证据。
+- server/native clones与owned processes/sessions全部删除；normal SQLite
+  `cd3e1e9e…`、settings `d221bb25…`、KV `f53a83aa…`、window `2dd961d3…`全程
+  byte-exact。Profile focused **3/3**、configured三端build通过；证据在
+  `shots/2026-08-06/profile-plugins-populated-current/`。

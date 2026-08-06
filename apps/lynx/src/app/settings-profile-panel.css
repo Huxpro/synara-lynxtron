@@ -331,10 +331,9 @@
   background-color: var(--muted);
 }
 
-.SettingsProfilePluginIconText {
-  color: var(--muted-foreground);
-  font-size: 10px;
-  font-weight: 600;
+.SettingsProfilePluginGlyph {
+  width: 12px;
+  height: 12px;
 }
 
 .SettingsProfilePluginName {

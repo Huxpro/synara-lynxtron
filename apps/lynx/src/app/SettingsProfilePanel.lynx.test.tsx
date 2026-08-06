@@ -83,6 +83,10 @@ describe('Settings Profile fidelity', () => {
       new URL('./SettingsProfilePanel.lynx.tsx', import.meta.url),
       'utf8'
     );
+    const usageIconSource = readFileSync(
+      new URL('./ProfileUsageKindIcon.lynx.tsx', import.meta.url),
+      'utf8'
+    );
 
     expect(styles).toMatch(
       /\.SettingsProfile\s*\{[^}]*width:\s*100%;[^}]*gap:\s*28px;/s
@@ -137,6 +141,17 @@ describe('Settings Profile fidelity', () => {
     );
     expect(styles).toMatch(
       /\.SettingsProfileModelIdentity \.OpenAIProviderIcon,\s*\.SettingsProfileProviderFallback\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;/s
+    );
+    expect(source).toContain('<ProfileUsageKindIcon kind={skill.kind} />');
+    expect(source).not.toContain("skill.kind === 'agent' ? 'A' : 'S'");
+    expect(usageIconSource).toContain(
+      "import agentSvg from '@synara-central-icons/agent.svg?raw';"
+    );
+    expect(usageIconSource).toContain(
+      "import buildingBlocksSvg from '@synara-central-icons/building-blocks.svg?raw';"
+    );
+    expect(styles).toMatch(
+      /\.SettingsProfilePluginGlyph\s*\{[^}]*width:\s*12px;[^}]*height:\s*12px;/s
     );
   });
 });

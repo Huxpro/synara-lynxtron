@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-05T22:01:26.649Z",
+  "generatedAt": "2026-08-06T00:20:36.085Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -21,7 +21,7 @@
     "entries": [
       "src/app/index.tsx"
     ],
-    "modules": 524,
+    "modules": 525,
     "externalImports": [
       "@base-ui/react/autocomplete",
       "@base-ui/react/collapsible",
@@ -48,6 +48,8 @@
       "@lynx-js/websocket/impl",
       "@pierre/diffs",
       "@pierre/diffs/react",
+      "@synara-central-icons/agent.svg?raw",
+      "@synara-central-icons/building-blocks.svg?raw",
       "@synara-provider-icons/antigravity.svg?raw",
       "@synara-provider-icons/claudeai.svg?raw",
       "@synara-provider-icons/cursor.svg?raw",

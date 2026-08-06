@@ -100,7 +100,7 @@ complete.
 | Notifications reflects actual Lynx runtime capability | no toast/OS notification consumer exists; both stored preferences remain visible/resettable but controls are disabled, non-focusable, aria-disabled, and carry explicit per-row unavailable status without shifting their Web-common switch anchors | PASS — honest capability delta and current-head visual proof |
 | AppSnap unavailable capability rows preserve Web anatomy | unavailable status follows the common main layout, disabled switch shares the Web baseline, all four rows are content-driven with 20px title lines and previous-row bottom dividers | PASS — honest capability delta and current-head visual proof |
 | Advanced rows and recovery details match shared Settings/disclosure behavior | keybindings/recovery main layouts, 11/16.5 metadata, and 24px actions match Web; controlled `What this does` uses a 16px trigger/chevron, exact 42px inset details, and shared 220ms motion/presence | PASS — current-head visual and interaction proof |
-| Profile stats, heatmap, and model rows match Web identity | identity/stats/heatmap remain exact; an isolated canonical 2:1 turn mix now proves the populated two-column model grid, 14px provider icons, 8px icon/name gap, 14/20 copy, 6px line/track rhythm, and 4px tracks across Browser and exact-owned Native | PASS — current-head populated proof in `shots/2026-08-06/profile-models-populated-current/` |
+| Profile stats, heatmap, plugin rows, and model rows match Web identity | identity/stats/heatmap remain exact; isolated canonical turn metadata now proves populated plugin/agent rows with exact central 12px glyphs in 20px shells, while a separate 2:1 turn mix proves the populated two-column model grid | PASS — current-head populated proofs in `shots/2026-08-06/profile-plugins-populated-current/` and `shots/2026-08-06/profile-models-populated-current/` |
 | Worktrees rows and empty state match Web density and typography | empty state remains exact 624×70; canonical `git.createWorktree` now proves the populated row, exact 540.109375px copy/path width, 11/18 conversation label, shared 4px list rhythm, and 24px Delete action across Browser and exact-owned Native | PASS — current-head populated proof in `shots/2026-08-06/worktrees-populated-current/` |
 | Archived empty and list states match Web hierarchy | empty state remains exact 624×182; real canonical create→archive proof now covers the populated title/description plus Restore/Delete action row with exact 24px, 10/15 xs controls and 8px action gap | PASS — current-head Browser and exact-owned Native populated proof in `shots/2026-08-06/archived-populated-current/` |
 | Skills rows match Web density and provider identity | real 114-row catalog uses separate main/control and supplemental metadata owners; source/path is exact 11px/16.5px, switches share Web anchors, previous-row bottom dividers match `divide-y`, and overlapping 16px provider-copy badges use mapped 12px SVGs or neutral fallbacks | PASS — current-head populated visual proof |
@@ -238,7 +238,9 @@ The retained replacement cells:
   plugin/model rows were absent from that snapshot; the later isolated
   canonical turn-mix proof under
   `shots/2026-08-06/profile-models-populated-current/` now screenshot-certifies
-  model rows. Plugin rows remain source-tested. Initial evidence is under
+  model rows, and structured-reference proof under
+  `shots/2026-08-06/profile-plugins-populated-current/` now screenshot-certifies
+  plugin/agent rows. Initial evidence is under
   `shots/2026-08-05/profile-current-head/`.
 - Current-head Profile residual repair: heatmap columns now include Web's
   weekday lead/tail pads (40 columns, 274 cells, 6 pads), months use each
@@ -442,6 +444,20 @@ The retained replacement cells:
   PID-derived `localhost:8904/session 1`, and `2880x1736` capture retain the
   622x136 row, top-aligned title/actions, and empty console. Evidence is under
   `shots/2026-08-06/integrations-connected-current/`.
+- Current-head populated Profile plugin/agent proof used a disposable clone and
+  canonical structured turn references. The stats RPC returned `$check-code`
+  at 2 runs and `@reviewer-agent` at 1 run. The normal lifetime-stat baseline
+  remained untouched.
+- The real state exposed an icon-identity gap hidden by the empty snapshot:
+  Lynx used `S` / `A` text while Web used exact central `building-blocks` and
+  `agent` glyphs. Lynx now reuses those exact raw SVG assets in the existing
+  20px muted shell with a 12px painted slot.
+- Final Browser rows are exact `336x20` with 30px pitch, x=902 name origin,
+  x=1208 count edge, and 14/20 typography. Exact-owned Native bundle
+  `ff4f27e3…`, root PID `44793`, PID-derived `localhost:8903/session 1`, and
+  `2880x1736` frame retain the same shell/glyph/name/count geometry with an
+  empty console. Evidence is under
+  `shots/2026-08-06/profile-plugins-populated-current/`.
 - Settings focused continuation: 14 files, 50/50 tests.
 - AppSnap final focused check: 1 file, 2/2 tests.
 - Canonical taxonomy/explicit-owner gate: 1 file, 11/11 tests.
