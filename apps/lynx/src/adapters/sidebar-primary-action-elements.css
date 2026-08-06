@@ -49,8 +49,9 @@
   margin-left: var(--app-density-row-gap, 0.5rem);
   color: inherit;
   font-size: var(--app-font-size-ui, 12px);
-  font-weight: 500;
   line-height: 18px;
+  font-weight: 400;
+  opacity: 0.89;
 }
 
 .SharedSidebarPrimaryActionTrailing {

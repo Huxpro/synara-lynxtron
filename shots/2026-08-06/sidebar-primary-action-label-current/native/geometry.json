@@ -1,0 +1,82 @@
+{
+  "client": "native",
+  "stateId": "sidebar-primary-action-label-light-1280",
+  "roles": {
+    "row": {
+      "nodeId": 77,
+      "nodeName": "VIEW",
+      "attributes": {
+        "accessibility-element": "true",
+        "accessibility-label": "Settings",
+        "accessibility-traits": "button",
+        "focusable": "true",
+        "aria-disabled": "false",
+        "bindmouseenter": "63:0:bindmouseenter",
+        "bindblur": "63:0:bindblur",
+        "bindmouseleave": "63:0:bindmouseleave",
+        "bindkeydown": "63:0:bindkeydown",
+        "bindtap": "63:0:bindtap",
+        "bindmouseup": "63:0:bindmouseup",
+        "bindtouchstart": "63:0:bindtouchstart",
+        "bindmousedown": "63:0:bindmousedown",
+        "bindtouchend": "63:0:bindtouchend",
+        "bindtouchcancel": "63:0:bindtouchcancel",
+        "bindfocus": "63:0:bindfocus",
+        "class": "SharedSidebarPrimaryActionButton"
+      },
+      "text": "",
+      "box": {
+        "x": 10,
+        "y": 746,
+        "width": 235,
+        "height": 28
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "label": {
+      "nodeId": 80,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "SharedSidebarPrimaryActionLabel"
+      },
+      "text": "",
+      "box": {
+        "x": 42,
+        "y": 751,
+        "width": 47,
+        "height": 18
+      },
+      "font": {
+        "family": "",
+        "size": "12px",
+        "weight": "400",
+        "lineHeight": "18px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "0.89"
+      }
+    }
+  }
+}

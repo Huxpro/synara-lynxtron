@@ -6624,3 +6624,17 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   raw2560×1576、console0。compound VIEW radius/border仍不冒充Native numeric
   proof。证据在
   `shots/2026-08-06/composer-picker-trigger-chrome-current/`。
+
+## 2026-08-06 — current-head Sidebar primary-action label closure
+
+- current rendered New thread/Search/Settings三项统一暴露shared label residual：
+  Web均12/18/400、foreground/89；Lynx均12/18/500、full foreground，文本宽度也因
+  weight偏大。`.SharedSidebarPrimaryActionLabel`改400并opacity.89，进入landing
+  fidelity contract；同时更新Voice改动后遗留的`useTheme` source expectation。
+- current Web/Lynx-for-Web三项label text width exact；PNG1280×820、errors空。
+  sidebar row y/width仍是此前登记的shell/separator geometry boundary，不扩大本刀。
+- focused landing fidelity **1 file / 2 tests**，configured Lynx-for-Web与
+  Native/Desktop builds通过。exact-owned Native bundle `be598d2b…`，
+  localhost:8904/session1；Settings row保留完整interaction bindings，label
+  12/18/400 opacity.89、box18，raw2560×1576、console0。证据在
+  `shots/2026-08-06/sidebar-primary-action-label-current/`。

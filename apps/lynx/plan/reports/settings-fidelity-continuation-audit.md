@@ -957,6 +957,21 @@ The retained replacement cells:
   `shots/2026-08-06/composer-picker-trigger-chrome-current/`.
 - Focused picker contract: 1 file, 3/3 tests; configured Lynx-for-Web and
   Native/Desktop production builds pass.
+- Shared sidebar primary-action labels now match Web at 12px/18px/400 and 89%
+  foreground tone instead of the old Lynx 12px/18px/500 full-tone text.
+- Current New thread, Search, and Settings labels all have exact Web text
+  widths after the weight correction; both retained PNGs are 1280x820 and
+  browser errors empty. Existing sidebar row y/width differences remain the
+  previously registered shell/separator geometry boundary, not a text-owner
+  residual.
+- Exact-owned Native bundle `be598d2b…`, root PID captured through
+  `localhost:8904/session 1`, retained an interactive Settings row and shared
+  label role. Native measured the label at 12px/18px/400, opacity 0.89, with an
+  18px box; the row retained complete accessibility/keyboard/touch bindings,
+  raw frame 2560x1576, and empty console. Evidence is under
+  `shots/2026-08-06/sidebar-primary-action-label-current/`.
+- Focused landing fidelity suite: 1 file, 2/2 tests; configured Lynx-for-Web
+  and Native/Desktop production builds pass.
 
 ## Remaining work
 
