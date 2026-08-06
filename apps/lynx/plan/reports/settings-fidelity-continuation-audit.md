@@ -66,7 +66,7 @@ complete.
 | All Settings reset affordances share real icon identity | General, Appearance, Git Writing, and Provider Picker reuse `SettingsResetIcon` / generated `Undo2Icon` | PASS |
 | Integrations checkbox uses real icon identity | generated `CheckIcon` replaces the font check glyph without changing selection semantics | PASS |
 | Integrations project selection rows match Web anatomy | 8×12 padding, 12px/400 title, border/70 and checked foreground/30 + muted/70 paints | PASS |
-| Integrations project picker matches Web desktop columns | Native uses two-column flex-wrap at Lynxtron desktop widths; canonical snapshot has no safe populated visual state | PASS — focused contract, visual N/A |
+| Integrations project picker matches Web desktop columns | rendered Access-all disclosure exposes the two canonical Home/Studio projects in the real two-column flex-wrap grid; checked styling and close lifecycle follow the shared contract | PASS — current-head visual/interaction proof in `shots/2026-08-05/integrations-current-head/` |
 | Shared Input radius matches Web controls | Lynx `LxInputControl` uses rounded-lg / 10px across Settings inputs | PASS |
 | Shared Button radius matches Web controls | Lynx `LxButton` uses rounded-lg / 10px; explicit capsule/special variants remain owners | PASS |
 | Usage cards match Web SettingsCard anatomy | 10px radius, 16px card padding, 14px internal gap; current unavailable cards are exact 624×95.5 at y=150/257.5/365; loading state keeps 14×16 padding | PASS — current-head visual proof |
@@ -228,12 +228,17 @@ The retained replacement cells:
   `shots/2026-08-05/archived-current-head/`.
 - Current-head Archived focused rerun: 1 file, 3/3 tests; Lynx-for-Web and
   Native/Desktop builds pass. Bundles: Lynx-for-Web `9c8bd30e…`; Native
-  `db62eba7…`. Populated restore rows were absent and remain source-tested.
+  `db62eba7…`. Populated restore rows were absent from that batch; the later
+  canonical create/archive proof under
+  `shots/2026-08-06/archived-populated-current/` supersedes the former
+  source-only boundary.
 - Current-head Profile fast harness: same trusted origin/snapshot, Light,
   `1280×820`, DPR 1. The real state covered identity, five stat tiles, 274
   heatmap cells, insight values, and empty plugin/model sections. Populated
-  plugin/model rows were absent and remain explicitly source-tested rather than
-  screenshot-certified. Evidence is under
+  plugin/model rows were absent from that snapshot; the later isolated
+  canonical turn-mix proof under
+  `shots/2026-08-06/profile-models-populated-current/` now screenshot-certifies
+  model rows. Plugin rows remain source-tested. Initial evidence is under
   `shots/2026-08-05/profile-current-head/`.
 - Current-head Profile residual repair: heatmap columns now include Web's
   weekday lead/tail pads (40 columns, 274 cells, 6 pads), months use each
