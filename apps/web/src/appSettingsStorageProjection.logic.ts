@@ -205,6 +205,20 @@ export function writeSettingsGeneralProjection(
   });
 }
 
+export function writeSidebarSortProjection(
+  raw: string | null,
+  values: Pick<
+    SettingsGeneralValues,
+    'sidebarProjectSortOrder' | 'sidebarThreadSortOrder'
+  >,
+): string {
+  return JSON.stringify({
+    ...parseRecord(raw),
+    sidebarProjectSortOrder: values.sidebarProjectSortOrder,
+    sidebarThreadSortOrder: values.sidebarThreadSortOrder,
+  });
+}
+
 export function readSettingsAppearanceProjection(
   appSettingsRaw: string | null,
   themeRaw: string | null,

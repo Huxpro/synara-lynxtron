@@ -14,6 +14,8 @@ import {
 import {
   DEFAULT_SIDEBAR_PROJECT_SORT_ORDER,
   DEFAULT_SIDEBAR_THREAD_SORT_ORDER,
+  type SidebarProjectSortOrderValue,
+  type SidebarThreadSortOrderValue,
 } from '@synara-web/sidebarSortDefaults';
 
 export interface SidebarProjectGroup {
@@ -40,6 +42,8 @@ export function deriveSidebarSections(input: {
   readonly threads: readonly ThreadSummary[];
   readonly persistedPinnedThreadIds?: readonly string[];
   readonly persistedPinnedProjectIds?: readonly string[];
+  readonly projectSortOrder?: SidebarProjectSortOrderValue;
+  readonly threadSortOrder?: SidebarThreadSortOrderValue;
 }): SidebarSections {
   const projects = input.projects.map((project) => ({
     ...project,
@@ -70,8 +74,10 @@ export function deriveSidebarSections(input: {
   const sections = deriveSidebarSectionCollections({
     projects: orderedProjects,
     treeThreads: threads,
-    projectSortOrder: DEFAULT_SIDEBAR_PROJECT_SORT_ORDER,
-    threadSortOrder: DEFAULT_SIDEBAR_THREAD_SORT_ORDER,
+    projectSortOrder:
+      input.projectSortOrder ?? DEFAULT_SIDEBAR_PROJECT_SORT_ORDER,
+    threadSortOrder:
+      input.threadSortOrder ?? DEFAULT_SIDEBAR_THREAD_SORT_ORDER,
     resolveProjectSection: (project) => project.kind,
   });
   const groups = sections.projectPartitions.projects.map((project) => ({

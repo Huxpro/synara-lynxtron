@@ -1,0 +1,10 @@
+23-[PC_Host] NativeModule Call: bridge.shellRendererReady {} { sendReply: [Function: sendReply] } shellRendererReady
+24-[VERBOSE:SrSVGSVG.cc(50)]: viewBox =[0.000000, 0.000000, 24.000000, 24.000000]
+25-[PC_Host] NativeModule Call: bridge.storageSet {
+26-  key: 'synara:app-settings:v1',
+27:  value: '{"uiDensity":"comfortable","chatFontSizePx":12,"terminalFontSizePx":12,"terminalFontFamily":"","enableNativeFontSmoothing":true,"timestampFormat":"locale","sidebarProjectSortOrder":"created_at","sidebarThreadSortOrder":"updated_at"}'
+28-} { sendReply: [Function: sendReply] } storageSet
+29-[PC_Host] NativeModule Call: bridge.storageSet {
+30-  key: 'synara:app-settings:v1',
+31:  value: '{"uiDensity":"comfortable","chatFontSizePx":12,"terminalFontSizePx":12,"terminalFontFamily":"","enableNativeFontSmoothing":true,"timestampFormat":"locale","sidebarProjectSortOrder":"manual","sidebarThreadSortOrder":"updated_at"}'
+32-} { sendReply: [Function: sendReply] } storageSet

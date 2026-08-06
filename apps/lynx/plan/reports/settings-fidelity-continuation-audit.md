@@ -1135,6 +1135,17 @@ The retained replacement cells:
   `localhost:8902/session 1`, runs with an empty warning/error console.
   Native transient pressed visuals are not claimed. Evidence is under
   `shots/2026-08-06/sidebar-segmented-pressed-current/`.
+- Projects Sort is now a real Lynx workflow rather than the remaining inert
+  gap. It reads/writes the canonical app-settings projection, feeds the shared
+  project/thread sorter, and exposes the same two radio groups/five choices as
+  Web.
+- Canonical projection tests pass 6/6 and Lynx sorting/action suites pass
+  15/15. Exact-owned Native bundle `faec6515…`, PID-derived
+  `localhost:8901/session 1`, opened the real menu, selected Date added,
+  persisted `created_at`, showed its checked indicator, then restored Manual
+  while preserving thread sort and unrelated settings. Native frame is
+  2560x1576 and console empty. Evidence is under
+  `shots/2026-08-07/sidebar-project-sort-current/`.
 
 ## Remaining work
 

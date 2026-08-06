@@ -1,7 +1,25 @@
+import filterSvg from '@synara-central-icons/filter-2.svg?raw';
 import plusSvg from '@synara-central-icons/plus-medium.svg?raw';
 import type { ReactNode } from '@lynx-js/react';
 
+import {
+  SIDEBAR_PROJECT_SORT_OPTIONS,
+  SIDEBAR_THREAD_SORT_OPTIONS,
+} from '@synara-web/components/SidebarProjectSort.logic';
+import type {
+  SidebarProjectSortOrderValue,
+  SidebarThreadSortOrderValue,
+} from '@synara-web/sidebarSortDefaults';
 import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
+import {
+  Menu,
+  MenuGroup,
+  MenuGroupLabel,
+  MenuPopup,
+  MenuRadioGroup,
+  MenuRadioItem,
+  MenuTrigger,
+} from '../components/ui/menu.lynx';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 import { useTheme } from './useTheme.lynx';
 import './sidebar-list-section-header-elements.css';
@@ -55,5 +73,71 @@ export function SidebarListSectionHeaderAddProjectElement(props: {
         content={colorizeLynxSvg(plusSvg, svgColors.mutedForeground)}
       />
     </view>
+  );
+}
+
+export function SidebarListSectionHeaderSortElement(props: {
+  readonly projectSortOrder: SidebarProjectSortOrderValue;
+  readonly threadSortOrder: SidebarThreadSortOrderValue;
+  readonly onProjectSortOrderChange: (
+    value: SidebarProjectSortOrderValue
+  ) => void;
+  readonly onThreadSortOrderChange: (
+    value: SidebarThreadSortOrderValue
+  ) => void;
+}) {
+  const { svgColors } = useTheme();
+  return (
+    <Menu>
+      <MenuTrigger
+        className="SharedSidebarListSectionHeaderAction"
+        ariaLabel="Sort projects"
+      >
+        <svg
+          className="SharedSidebarListSectionHeaderActionIcon"
+          content={colorizeLynxSvg(filterSvg, svgColors.mutedForeground)}
+        />
+      </MenuTrigger>
+      <MenuPopup
+        side="bottom"
+        align="end"
+        className="SharedSidebarProjectSortPopup"
+      >
+        <MenuGroup>
+          <MenuGroupLabel>Sort projects</MenuGroupLabel>
+          <MenuRadioGroup
+            value={props.projectSortOrder}
+            onValueChange={(value) =>
+              props.onProjectSortOrderChange(
+                value as SidebarProjectSortOrderValue
+              )
+            }
+          >
+            {SIDEBAR_PROJECT_SORT_OPTIONS.map((option) => (
+              <MenuRadioItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuRadioItem>
+            ))}
+          </MenuRadioGroup>
+        </MenuGroup>
+        <MenuGroup>
+          <MenuGroupLabel>Sort threads</MenuGroupLabel>
+          <MenuRadioGroup
+            value={props.threadSortOrder}
+            onValueChange={(value) =>
+              props.onThreadSortOrderChange(
+                value as SidebarThreadSortOrderValue
+              )
+            }
+          >
+            {SIDEBAR_THREAD_SORT_OPTIONS.map((option) => (
+              <MenuRadioItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuRadioItem>
+            ))}
+          </MenuRadioGroup>
+        </MenuGroup>
+      </MenuPopup>
+    </Menu>
   );
 }

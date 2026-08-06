@@ -6846,3 +6846,21 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   console0。瞬态Native pressed frame不冒充retained proof，class/release由真实Lynx
   interaction contract与Browser pointer lifecycle闭环。证据在
   `shots/2026-08-06/sidebar-segmented-pressed-current/`。
+
+## 2026-08-07 — current-head Sidebar Projects sort workflow closure
+
+- Lynx此前完全缺Projects Sort action，且`deriveSidebarSections`硬编码manual/
+  updated_at。现从canonical `synara:app-settings:v1` projection读取sort values，
+  传入shared project/thread sorter，并通过`writeSidebarSortProjection`只更新两字段、
+  保留unrelated settings。
+- shared option catalog与Web一致：projects Recent activity/Date added/Manual，
+  threads Recent activity/Date created。Lynx header现在同时有20×20 Sort/Add action；
+  Lynx-for-Web证明Sort可hover/focus。Web host不合成Native Menu Enter/tap，因此不把
+  Browser空popup冒充interaction proof。
+- canonical projection **6/6**，Lynx sorting/action **15/15**；Web/Lynx-for-Web/
+  Native builds通过。
+- exact-owned Native bundle `faec6515…`，PID-derived localhost:8901/session1；
+  supported touch真实打开两group/五radio menu，选择Date added后canonical storageSet
+  写`created_at`，重开显示check；随后选择Manual恢复`manual`并保留thread
+  `updated_at`及所有其他字段。Native frame2560×1576、console0，shutdown前已恢复。
+  证据在`shots/2026-08-07/sidebar-project-sort-current/`。

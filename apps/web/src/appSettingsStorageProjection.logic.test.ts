@@ -11,6 +11,7 @@ import {
   writeSettingsAppearanceProjection,
   writeSettingsGeneralProjection,
   writeSettingsProviderPickerProjection,
+  writeSidebarSortProjection,
 } from "./appSettingsStorageProjection.logic";
 import { DEFAULT_SETTINGS_PROVIDER_PICKER_VALUES } from "./components/settings/SettingsProviderPickerComposition.logic";
 
@@ -29,6 +30,22 @@ describe("app settings General storage projection", () => {
       chatFontSizePx: 17,
       showChatsSection: true,
       defaultProvider: "codex",
+    });
+  });
+
+  it("updates sidebar sort values without rewriting unrelated settings", () => {
+    const raw = writeSidebarSortProjection(
+      JSON.stringify({ chatFontSizePx: 17, defaultProvider: "claudeAgent" }),
+      {
+        sidebarProjectSortOrder: "created_at",
+        sidebarThreadSortOrder: "updated_at",
+      },
+    );
+    expect(JSON.parse(raw)).toEqual({
+      chatFontSizePx: 17,
+      defaultProvider: "claudeAgent",
+      sidebarProjectSortOrder: "created_at",
+      sidebarThreadSortOrder: "updated_at",
     });
   });
 

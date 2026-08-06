@@ -39,6 +39,44 @@ describe('deriveSidebarProjectGroups', () => {
     expect(groups[0].threads.map((thread) => thread.id)).toEqual(['new', 'old']);
   });
 
+  it('applies persisted project and thread sort orders', () => {
+    const sections = deriveSidebarSections({
+      projects: [
+        { id: 'older-active', kind: 'project', title: 'Older active', workspaceRoot: '/older' },
+        { id: 'newer-created', kind: 'project', title: 'Newer created', workspaceRoot: '/newer' },
+      ],
+      threads: [
+        {
+          id: 'older-created-recently-updated',
+          title: 'Updated',
+          projectId: 'older-active',
+          project: 'Older active',
+          messageCount: 1,
+          createdAt: '2026-01-01',
+          updatedAt: '2026-04-01',
+          live: false,
+        },
+        {
+          id: 'newer-created',
+          title: 'Created',
+          projectId: 'newer-created',
+          project: 'Newer created',
+          messageCount: 1,
+          createdAt: '2026-03-01',
+          updatedAt: '2026-03-01',
+          live: false,
+        },
+      ],
+      projectSortOrder: 'created_at',
+      threadSortOrder: 'created_at',
+    });
+
+    expect(sections.projectGroups.map((project) => project.id)).toEqual([
+      'newer-created',
+      'older-active',
+    ]);
+  });
+
   it('keeps threads whose project snapshot has not arrived', () => {
     const { projectGroups: groups } = deriveSidebarSections({
       projects: [],

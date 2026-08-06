@@ -50,7 +50,19 @@ import { SidebarPinnedSection } from '@synara-web/components/SidebarPinnedSectio
 import { SidebarFooterSection } from '@synara-web/components/SidebarFooterSection';
 import { SidebarSurfaceContent } from '@synara-web/components/SidebarSurfaceContent';
 import { SidebarDesktopHeader } from '@synara-web/components/SidebarDesktopHeader';
-import { SidebarListSectionHeaderAddProjectElement } from '~/components/SidebarListSectionHeaderElements';
+import {
+  APP_SETTINGS_STORAGE_KEY,
+  readSettingsGeneralProjection,
+  writeSidebarSortProjection,
+} from '@synara-web/appSettingsStorageProjection.logic';
+import {
+  type SidebarProjectSortOrderValue,
+  type SidebarThreadSortOrderValue,
+} from '@synara-web/sidebarSortDefaults';
+import {
+  SidebarListSectionHeaderAddProjectElement,
+  SidebarListSectionHeaderSortElement,
+} from '~/components/SidebarListSectionHeaderElements';
 import {
   buildThreadContextMenuItems,
   type ThreadContextMenuActionId,
@@ -77,6 +89,7 @@ import { deriveSidebarSections } from './sidebar.logic';
 import { SidebarSearchPaletteLynx } from './SidebarSearchPalette.lynx';
 import { LYNX_PRIMARY_SHORTCUT_LABELS } from './sidebarShortcuts';
 import { focusLynxElementById } from '../ui/focus.lynx';
+import { webStorage } from '../../platform/storage';
 import {
   buildNativeThreadContextCommand,
   nativeThreadContextConfirmation,
@@ -265,6 +278,9 @@ export function Sidebar({
   readonly activePath: string;
   readonly navigate: (to: string) => void;
 }) {
+  const initialSortSettings = readSettingsGeneralProjection(
+    webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
+  );
   const { data, error, isPending, refetch } = useQuery({
     queryKey: ['sidebar-snapshot'],
     queryFn: fetchSidebarSnapshot,
@@ -293,6 +309,14 @@ export function Sidebar({
   const [persistedPinnedProjectIds, setPersistedPinnedProjectIds] = useState<
     readonly string[]
   >([]);
+  const [projectSortOrder, setProjectSortOrder] =
+    useState<SidebarProjectSortOrderValue>(
+      initialSortSettings.sidebarProjectSortOrder
+    );
+  const [threadSortOrder, setThreadSortOrder] =
+    useState<SidebarThreadSortOrderValue>(
+      initialSortSettings.sidebarThreadSortOrder
+    );
   const sections = useMemo(
     () =>
       deriveSidebarSections({
@@ -300,8 +324,16 @@ export function Sidebar({
         threads: data?.threads ?? [],
         persistedPinnedThreadIds,
         persistedPinnedProjectIds,
+        projectSortOrder,
+        threadSortOrder,
       }),
-    [data, persistedPinnedProjectIds, persistedPinnedThreadIds]
+    [
+      data,
+      persistedPinnedProjectIds,
+      persistedPinnedThreadIds,
+      projectSortOrder,
+      threadSortOrder,
+    ]
   );
   const [expandedProjectCwds, setExpandedProjectCwds] =
     useState<ReadonlySet<string> | null>(null);
@@ -340,6 +372,30 @@ export function Sidebar({
       setSearchPaletteOpen(true);
     },
     [setSearchPaletteOpen]
+  );
+  const persistSidebarSortOrders = useCallback(
+    (
+      nextProjectSortOrder: SidebarProjectSortOrderValue,
+      nextThreadSortOrder: SidebarThreadSortOrderValue
+    ) => {
+      'background only';
+      setProjectSortOrder(nextProjectSortOrder);
+      setThreadSortOrder(nextThreadSortOrder);
+      void import(/* webpackMode: "eager" */ '../../platform/storage').then(
+        ({ setPersistedStorageItem, webStorage: storage }) =>
+          setPersistedStorageItem(
+            APP_SETTINGS_STORAGE_KEY,
+            writeSidebarSortProjection(
+              storage.getItem(APP_SETTINGS_STORAGE_KEY),
+              {
+                sidebarProjectSortOrder: nextProjectSortOrder,
+                sidebarThreadSortOrder: nextThreadSortOrder,
+              }
+            )
+          )
+      );
+    },
+    []
   );
   useEffect(() => {
     'background only';
@@ -784,12 +840,24 @@ export function Sidebar({
               projectCount: sections.projectGroups.length,
             })}
             headerActions={
-              <SidebarListSectionHeaderAddProjectElement
-                elementId={ADD_PROJECT_TRIGGER_ELEMENT_ID}
-                onActivate={() =>
-                  openSearchPalette('~/', ADD_PROJECT_TRIGGER_ELEMENT_ID)
-                }
-              />
+              <>
+                <SidebarListSectionHeaderSortElement
+                  projectSortOrder={projectSortOrder}
+                  threadSortOrder={threadSortOrder}
+                  onProjectSortOrderChange={(value) =>
+                    persistSidebarSortOrders(value, threadSortOrder)
+                  }
+                  onThreadSortOrderChange={(value) =>
+                    persistSidebarSortOrders(projectSortOrder, value)
+                  }
+                />
+                <SidebarListSectionHeaderAddProjectElement
+                  elementId={ADD_PROJECT_TRIGGER_ELEMENT_ID}
+                  onActivate={() =>
+                    openSearchPalette('~/', ADD_PROJECT_TRIGGER_ELEMENT_ID)
+                  }
+                />
+              </>
             }
             rows={sections.projectGroups}
             renderRow={(group) => {

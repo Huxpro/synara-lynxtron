@@ -1,0 +1,26 @@
+[
+  {
+    "box": {
+      "h": 20,
+      "w": 20,
+      "x": 197,
+      "y": 255.25
+    },
+    "class": "LxMenuTrigger SharedSidebarListSectionHeaderAction",
+    "focusable": "true",
+    "label": "Sort projects",
+    "opacity": "1"
+  },
+  {
+    "box": {
+      "h": 20,
+      "w": 20,
+      "x": 223,
+      "y": 255.25
+    },
+    "class": "SharedSidebarListSectionHeaderAction",
+    "focusable": "true",
+    "label": "Add project",
+    "opacity": "1"
+  }
+]

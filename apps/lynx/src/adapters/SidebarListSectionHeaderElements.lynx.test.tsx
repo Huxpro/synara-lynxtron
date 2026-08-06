@@ -5,6 +5,7 @@ import { readFileSync } from 'node:fs';
 import {
   SidebarListSectionHeaderAddProjectElement,
   SidebarListSectionHeaderContainerElement,
+  SidebarListSectionHeaderSortElement,
   SidebarListSectionHeaderToolbarElement,
 } from './SidebarListSectionHeaderElements.lynx';
 
@@ -85,5 +86,44 @@ describe('sidebar list section header actions', () => {
       'focusLynxElementById(searchReturnFocusElementId)'
     );
     expect(paletteSource).toContain('initialQuery={props.initialQuery}');
+  });
+
+  it('publishes project and thread sort radio groups', () => {
+    const onProjectSortOrderChange = rs.fn();
+    const onThreadSortOrderChange = rs.fn();
+    render(
+      <SidebarListSectionHeaderSortElement
+        projectSortOrder="manual"
+        threadSortOrder="updated_at"
+        onProjectSortOrderChange={onProjectSortOrderChange}
+        onThreadSortOrderChange={onThreadSortOrderChange}
+      />
+    );
+
+    const trigger = elementTree.root?.querySelector('.LxMenuTrigger');
+    if (!trigger) throw new Error('expected project sort trigger');
+    expect(trigger.getAttribute('aria-label')).toBe('Sort projects');
+    fireEvent.tap(trigger);
+
+    const items = elementTree.root?.querySelectorAll('.LxMenuItem') ?? [];
+    expect(items).toHaveLength(5);
+    expect(elementTree.root?.textContent).toContain('Sort projects');
+    expect(elementTree.root?.textContent).toContain('Sort threads');
+    expect(elementTree.root?.textContent).toContain('Date added');
+    expect(elementTree.root?.textContent).toContain('Date created');
+  });
+
+  it('persists sort choices through the canonical app-settings projection', () => {
+    const sidebarSource = readFileSync(
+      new URL('../components/sidebar/Sidebar.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(sidebarSource).toContain('readSettingsGeneralProjection(');
+    expect(sidebarSource).toContain('writeSidebarSortProjection(');
+    expect(sidebarSource).toContain(
+      'setPersistedStorageItem(\n            APP_SETTINGS_STORAGE_KEY'
+    );
+    expect(sidebarSource).toContain('projectSortOrder,');
+    expect(sidebarSource).toContain('threadSortOrder,');
   });
 });
