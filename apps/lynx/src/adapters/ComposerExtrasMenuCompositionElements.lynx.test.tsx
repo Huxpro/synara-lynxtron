@@ -105,6 +105,9 @@ describe('native composer attachment menu item', () => {
       /\.ComposerModelOptionLynx\s*\{[^}]*border-radius:\s*8px;/s
     );
     expect(composerStyles).toMatch(
+      /\.ComposerModelOptionNameLynx\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s
+    );
+    expect(composerStyles).toMatch(
       /\.ComposerModelOptionFavoriteLynx\s*\{[^}]*border-radius:\s*10\.4px;/s
     );
   });

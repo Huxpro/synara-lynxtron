@@ -815,6 +815,23 @@ The retained replacement cells:
   Evidence is under `shots/2026-08-06/composer-provider-row-current/`.
 - Focused picker contract: 1 file, 3/3 tests; configured Lynx-for-Web and
   Native/Desktop production builds pass.
+- Composer Claude model rows now match Web's 12px/18px/400 model-name
+  typography instead of the old Lynx 11px `normal` line box with a 13px
+  visual height. The existing Web 26px and Lynx 30px row heights remain their
+  respective layout/touch-target contracts.
+- Current Web and Lynx-for-Web entered the Claude model list through rendered
+  Model and Claude controls. All eight model names resolve to 12/18/400; both
+  retained screenshots are 1280x820 and browser error logs are empty.
+- Exact-owned Native bundle `7514d567…`, root PID `51936`, PID-derived
+  `localhost:8905/session 1`, and real Model→Claude touches retained popup,
+  model row, and name roles. Native measured the name at 12px/18px with an
+  18px box and the row at 248x30; raw frame is 2560x1576 and console empty.
+  The current Claude catalog has no rendered cost multiplier, favourite, or
+  collapsible group header, so those owners were not changed from source-only
+  inference. Evidence is under
+  `shots/2026-08-06/composer-model-row-text-current/`.
+- Focused picker contract: 1 file, 3/3 tests; configured Lynx-for-Web and
+  Native/Desktop production builds pass.
 
 ## Remaining work
 

@@ -6486,3 +6486,19 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   provider-name numeric Native proof；provider scoped name/right edge由current
   Lynx-for-Web + source/test闭环，Native DOM只证明结构。证据在
   `shots/2026-08-06/composer-provider-row-current/`。
+
+## 2026-08-06 — current-head Composer model row text closure
+
+- current Claude model list经rendered Model→Claude两步真实交互打开。Web八行
+  `menu-radio-item`均12/18/400、row26；Lynx八行
+  `ComposerModelOptionNameLynx`此前11/normal/400、visual box13、row30。
+- dedicated model name owner改为12/18；不压缩30px Native touch-target/layout
+  contract。focused picker contract **1 file / 3 tests**、configured
+  Lynx-for-Web与Native/Desktop builds通过。final Lynx-for-Web八行均12/18/400，
+  PNG1280×820、errors空。
+- exact-owned Native bundle `7514d567…`，root PID51936、PID-derived
+  localhost:8905/session1；real Model→Claude touches后保留popup/model row/name。
+  Native name12/18、box18、row248×30、raw2560×1576、console0。current Claude
+  catalog无cost multiplier/favourite/collapsible group header，不从source-only
+  推断顺带修改。证据在
+  `shots/2026-08-06/composer-model-row-text-current/`。

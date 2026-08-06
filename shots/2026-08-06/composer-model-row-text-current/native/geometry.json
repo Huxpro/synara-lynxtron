@@ -1,0 +1,116 @@
+{
+  "client": "native",
+  "stateId": "composer-model-row-text-light-1280",
+  "roles": {
+    "popup": {
+      "nodeId": 172,
+      "nodeName": "VIEW",
+      "attributes": {
+        "aria-modal": "false",
+        "role": "menu",
+        "bindkeydown": "135:4:",
+        "bindlayoutchange": "135:5:",
+        "class": "LxMenuPopup ComposerModelPopupLynx",
+        "style": "visibility:visible;top:211px;left:718px;"
+      },
+      "text": "",
+      "box": {
+        "x": 718,
+        "y": 211,
+        "width": 260,
+        "height": 289
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "hsla(0,0%,5%,.069)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "0 4px 18px -6px #0d0d0d11",
+        "opacity": "1"
+      }
+    },
+    "row": {
+      "nodeId": 273,
+      "nodeName": "VIEW",
+      "attributes": {
+        "aria-label": "Select Claude Fable 5",
+        "aria-selected": "false",
+        "focusable": "true",
+        "aria-disabled": "false",
+        "bindmouseenter": "222:0:bindmouseenter",
+        "bindblur": "222:0:bindblur",
+        "bindmouseleave": "222:0:bindmouseleave",
+        "bindkeydown": "222:0:bindkeydown",
+        "bindtap": "222:0:bindtap",
+        "bindmouseup": "222:0:bindmouseup",
+        "bindtouchstart": "222:0:bindtouchstart",
+        "bindmousedown": "222:0:bindmousedown",
+        "bindtouchend": "222:0:bindtouchend",
+        "bindtouchcancel": "222:0:bindtouchcancel",
+        "bindfocus": "222:0:bindfocus",
+        "class": "ComposerModelOptionLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 724,
+        "y": 247,
+        "width": 248,
+        "height": 30
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "name": {
+      "nodeId": 275,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "ComposerModelOptionNameLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 748,
+        "y": 253,
+        "width": 216,
+        "height": 18
+      },
+      "font": {
+        "family": "",
+        "size": "12px",
+        "weight": "normal",
+        "lineHeight": "18px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}
