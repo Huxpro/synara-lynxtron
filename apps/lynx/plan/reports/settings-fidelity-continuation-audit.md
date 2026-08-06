@@ -746,6 +746,24 @@ The retained replacement cells:
   `shots/2026-08-06/command-k-input-current/`.
 - Focused Command suite: 1 file, 9/9 tests; configured Lynx-for-Web and
   Native/Desktop production builds pass.
+- Composer Traits section labels now match the current Web group-label
+  contract at 12px/16px/400, 45%-muted tone, 6px/8px padding, and a 28px row
+  instead of the old Lynx 10px/600 label in a 24px custom header. The existing
+  20px Fast toggle now mirrors Web's negative block margin so it does not
+  inflate the row to 32px.
+- Source tracing rejected the initial shared `.LxMenuGroupLabel` hypothesis:
+  the canonical composer Model and Traits paths use dedicated Lynx adapters.
+  The current Claude model submenu has no rendered group label, so no
+  source-only Model or shared-menu typography change was made.
+- Current Web and Lynx-for-Web were opened through the rendered Traits control
+  and retained 1280x820 screenshots with empty error logs. Exact-owned Native
+  bundle `7743069c…`, root PID `12130`, PID-derived
+  `localhost:8904/session 1`, and a real touch retained popup/header/label/
+  toggle roles. Native measured the header at 240x28, label at 12/16/400 with
+  opacity 0.45, toggle at 20x20, raw frame at 2560x1576, and console 0.
+  Evidence is under `shots/2026-08-06/composer-trait-label-current/`.
+- Focused trait-picker suite: 1 file, 2/2 tests; configured Lynx-for-Web and
+  Native/Desktop production builds pass.
 
 ## Remaining work
 

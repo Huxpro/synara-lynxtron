@@ -438,19 +438,23 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 24px;
-  padding: 0 8px 3px;
+  min-height: 28px;
+  padding: 6px 8px;
 }
 
 .ComposerTraitSectionLabelLynx {
   color: var(--muted-foreground);
-  font-size: 10px;
-  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  opacity: 0.45;
 }
 
 .ComposerTraitFastModeToggleLynx {
   width: 20px;
   height: 20px;
+  margin-top: -4px;
+  margin-bottom: -4px;
   display: flex;
   align-items: center;
   justify-content: center;

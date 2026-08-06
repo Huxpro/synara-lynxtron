@@ -1,0 +1,146 @@
+{
+  "client": "native",
+  "stateId": "composer-trait-label-light-1280",
+  "roles": {
+    "popup": {
+      "nodeId": 172,
+      "nodeName": "VIEW",
+      "attributes": {
+        "aria-modal": "false",
+        "role": "menu",
+        "bindkeydown": "135:4:",
+        "bindlayoutchange": "135:5:",
+        "class": "LxMenuPopup ComposerTraitsPopupLynx",
+        "style": "visibility:visible;top:309px;left:795px;"
+      },
+      "text": "",
+      "box": {
+        "x": 795,
+        "y": 309,
+        "width": 260,
+        "height": 191
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "hsla(0,0%,5%,.069)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "0 4px 18px -6px #0d0d0d11",
+        "opacity": "1"
+      }
+    },
+    "header": {
+      "nodeId": 174,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "ComposerTraitSectionHeaderLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 805,
+        "y": 321,
+        "width": 240,
+        "height": 28
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "label": {
+      "nodeId": 175,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "ComposerTraitSectionLabelLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 813,
+        "y": 327,
+        "width": 32,
+        "height": 16
+      },
+      "font": {
+        "family": "",
+        "size": "12px",
+        "weight": "400",
+        "lineHeight": "16px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgba(13,13,13,0.596078)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "0.45"
+      }
+    },
+    "toggle": {
+      "nodeId": 179,
+      "nodeName": "VIEW",
+      "attributes": {
+        "aria-label": "Fast mode",
+        "aria-pressed": "false",
+        "focusable": "true",
+        "aria-disabled": "false",
+        "bindmouseenter": "138:0:bindmouseenter",
+        "bindblur": "138:0:bindblur",
+        "bindmouseleave": "138:0:bindmouseleave",
+        "bindkeydown": "138:0:bindkeydown",
+        "bindtap": "138:0:bindtap",
+        "bindmouseup": "138:0:bindmouseup",
+        "bindtouchstart": "138:0:bindtouchstart",
+        "bindmousedown": "138:0:bindmousedown",
+        "bindtouchend": "138:0:bindtouchend",
+        "bindtouchcancel": "138:0:bindtouchcancel",
+        "bindfocus": "138:0:bindfocus",
+        "class": "ComposerTraitFastModeToggleLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 1017,
+        "y": 325,
+        "width": 20,
+        "height": 20
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

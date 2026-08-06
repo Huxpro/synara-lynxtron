@@ -2,9 +2,36 @@ import { describe, expect, it } from '@rstest/core';
 import { readFileSync } from 'node:fs';
 import { render } from '@lynx-js/react/testing-library';
 
-import { ComposerTraitFastModeToggleElement } from './ComposerTraitRadioSectionCompositionElements.lynx';
+import {
+  ComposerTraitFastModeToggleElement,
+  ComposerTraitSectionElement,
+} from './ComposerTraitRadioSectionCompositionElements.lynx';
 
-describe('native composer Fast mode toggle', () => {
+describe('native composer trait picker contract', () => {
+  it('matches the shared Web group-label typography and spacing', () => {
+    const composerStyles = readFileSync(
+      new URL('../components/composer/composer.css', import.meta.url),
+      'utf8'
+    );
+
+    render(
+      <ComposerTraitSectionElement label="Effort">
+        <text>Medium</text>
+      </ComposerTraitSectionElement>
+    );
+
+    expect(
+      elementTree.root?.querySelector('.ComposerTraitSectionLabelLynx')
+        ?.textContent
+    ).toBe('Effort');
+    expect(composerStyles).toMatch(
+      /\.ComposerTraitSectionHeaderLynx\s*\{[^}]*min-height:\s*28px;[^}]*padding:\s*6px 8px;/s
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerTraitSectionLabelLynx\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;[^}]*font-weight:\s*400;[^}]*opacity:\s*0\.45;/s
+    );
+  });
+
   it('matches the shared Web geometry and accessibility identity', () => {
     const composerStyles = readFileSync(
       new URL('../components/composer/composer.css', import.meta.url),
@@ -23,7 +50,7 @@ describe('native composer Fast mode toggle', () => {
     expect(toggle.getAttribute('aria-label')).toBe('Fast mode');
     expect(toggle.getAttribute('aria-pressed')).toBe('false');
     expect(composerStyles).toMatch(
-      /\.ComposerTraitFastModeToggleLynx\s*\{[^}]*width:\s*20px;[^}]*height:\s*20px;[^}]*border-radius:\s*8px;/s
+      /\.ComposerTraitFastModeToggleLynx\s*\{[^}]*width:\s*20px;[^}]*height:\s*20px;[^}]*margin-top:\s*-4px;[^}]*margin-bottom:\s*-4px;[^}]*border-radius:\s*8px;/s
     );
   });
 });

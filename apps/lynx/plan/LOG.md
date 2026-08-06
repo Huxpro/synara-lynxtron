@@ -6416,3 +6416,22 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   localhost:8904/session1，real Search touch后保留input/textarea，
   raw2560×1576、console0。证据在
   `shots/2026-08-06/command-k-input-current/`。
+
+## 2026-08-06 — current-head Composer Traits label closure
+
+- shared Menu typography候选经consumer tracing被否决：composer Model/Traits均由
+  dedicated Lynx adapter持有label，当前Claude model submenu也没有真实group label，
+  因此没有修改未被runtime证明的`.LxMenuGroupLabel`或Model owner。
+- rendered Traits real click实测Web label为12/16/400、muted/45、padding6/8、
+  row28；旧Lynx为10/normal/600、full muted、custom header24。dedicated label/header
+  owner改为canonical contract；第一次post-patch测量发现20px Fast toggle把row撑到32，
+  随后补Web同源`-my-1`语义的上下-4px margin，final row精确28。
+- focused trait-picker **1 file / 2 tests**，configured Lynx-for-Web与
+  Native/Desktop builds通过。Web/Lynx-for-Web均经rendered Traits control打开，
+  viewport/PNG 1280×820、errors空；Lynx final为12/16/400、opacity.45、
+  padding6/8、header28。
+- exact-owned Native bundle `7743069c…`，root PID12130、PID-derived
+  localhost:8904/session1，real touch打开Traits并保留popup/header/label/toggle；
+  Native header240×28、label12/16/400 opacity.45、toggle20×20、
+  raw2560×1576、console0。证据在
+  `shots/2026-08-06/composer-trait-label-current/`。
