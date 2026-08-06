@@ -1254,6 +1254,14 @@ The retained replacement cells:
   persistence semantics are unchanged. Final Native DOM publishes the same
   five labels as Electron while preserving the exact geometry and clean
   console above.
+- Sort popup optics now reuse the validated picker material contract:
+  10.4px radius plus matching light/dark 4px/6px elevation. Native retains an
+  opaque theme-safe popover because Electron's oklab/backdrop translucency is
+  not a supported Lynx renderer contract.
+- Exact-owned Native PID `2648`, PID-derived `localhost:8905/session 1`,
+  retains the real menu in a 2560x1640 frame with an empty console. Compound
+  popup DevTool still reports zero radius/border, so no numeric Native radius
+  claim is made beyond source ownership and the retained visual frame.
 
 ## Remaining work
 

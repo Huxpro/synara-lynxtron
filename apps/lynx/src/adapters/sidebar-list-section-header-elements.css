@@ -104,6 +104,12 @@
   width: 176px;
   min-height: 0;
   padding: 4px;
+  border-radius: 10.4px;
+  box-shadow: 0 4px 18px -6px rgba(13, 13, 13, 0.07);
+}
+
+.SliceRoot--theme-dark .SharedSidebarProjectSortPopup {
+  box-shadow: 0 6px 24px -10px rgba(0, 0, 0, 0.3);
 }
 
 .SharedSidebarProjectSortPopup .LxMenuItem {

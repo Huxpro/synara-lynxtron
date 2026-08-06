@@ -6994,3 +6994,10 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   更新shared catalog并让Web monolith删除本地duplicate maps、直接消费同一options；
   sort values/persistence语义不变。Web catalog **2/2**、Lynx focused **4/4**，
   双build通过；final Native DOM五项文案与Electron一致，geometry保持exact、console0。
+- material final audit：Electron picker radius10.4且light/dark使用4px/6px elevation；
+  Native Sort仍generic radius10/no scoped shadow。Sort popup复用已验证picker radius与
+  light/dark shadow strength；Native保留opaque theme-safe popover，不伪装unsupported
+  oklab/backdrop translucency。
+- focused **4/4**、Native build通过。exact-owned PID2648→localhost:8905/session1，
+  real menu raw2560×1640、console0。compound popup DevTool仍返回radius/border0，
+  不冒充numeric Native proof。

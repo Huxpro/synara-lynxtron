@@ -31,5 +31,17 @@ Status: retained current Electron and exact-owned Native evidence
   are unchanged.
 - Final exact-owned Native DOM publishes the same five option labels as
   Electron, retains the exact geometry above, and has an empty console.
+- Material comparison found one final scoped optics fork. Electron uses a
+  10.4px picker radius and light/dark 4px/6px elevation. The Native menu still
+  inherited the generic 10px shell without a scoped elevation.
+- The Sort popup now reuses the already validated picker radius and matching
+  light/dark shadow strengths. Lynx keeps its opaque theme-safe popover
+  background because backdrop-blurred oklab translucency is not a supported
+  Native contract.
+- Exact-owned final bundle ran under PID `2648`, PID-derived
+  `localhost:8905/session 1`; the real menu frame is 2560x1640 and console is
+  empty. Compound popup DevTool still reports zero radius/border, so source
+  ownership and the retained frame are the evidence; no false numeric Native
+  radius claim is made.
 - Cleanup: the menu state made no preference changes, the exact-owned Native
   process exited after capture, and unrelated Lynxtron clients were untouched.

@@ -75,7 +75,10 @@ describe('sidebar list section header actions', () => {
       /\.SharedSidebarListSectionHeaderAction\.LxMenuTrigger\.ui-hover,\s*\.SharedSidebarListSectionHeaderAction\.LxMenuTrigger\.ui-pressed\s*\{[^}]*opacity:\s*1;/s
     );
     expect(styles).toMatch(
-      /\.SharedSidebarProjectSortPopup\s*\{[^}]*width:\s*176px;[^}]*min-height:\s*0;[^}]*padding:\s*4px;/s
+      /\.SharedSidebarProjectSortPopup\s*\{[^}]*width:\s*176px;[^}]*min-height:\s*0;[^}]*padding:\s*4px;[^}]*border-radius:\s*10\.4px;[^}]*box-shadow:\s*0 4px 18px -6px rgba\(13, 13, 13, 0\.07\);/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--theme-dark \.SharedSidebarProjectSortPopup\s*\{[^}]*box-shadow:\s*0 6px 24px -10px rgba\(0, 0, 0, 0\.3\);/s
     );
     expect(styles).toMatch(
       /\.SharedSidebarProjectSortPopup \.LxMenuItem\s*\{[^}]*min-height:\s*26px;[^}]*padding:\s*1px 10px;/s
