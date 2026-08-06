@@ -6306,3 +6306,19 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   helper绑定localhost:8904/session1重拍，real Search touch、popup/panel、
   raw2560×1576、console0。证据在
   `shots/2026-08-06/command-k-shadow-current/`。
+
+## 2026-08-06 — current-head Composer Extras popup chrome closure
+
+- shared composer picker source audit发现Extras main/sub popup仍继承generic
+  radius10/no-shadow，而Web两层均复用canonical radius10.4与Light 7% /
+  Dark 30% soft shadow。Lynx Extras scope补同一radius与双主题shadow。
+- opaque Native semantic popover继续保留：Web 70% fill依赖Lynx不支持的
+  backdrop-filter；无blur直接alpha会降低可读性，不做伪frosted。
+- current Web main/sub为141.421875×106、128×62；Lynx-for-Web为142×108、
+  128×64；两端radius/shadow一致，既有2px engine rhythm不强制改height。
+- focused Menu/Extras **2 files / 11 tests**、configured Lynx-for-Web与
+  Native/Desktop builds通过。exact-owned Native bundle `37188e48…`，
+  root PID39774、PID-derived localhost:8903/session1，real touch依次打开
+  Extras→Fast，main/sub/row、raw2560×1576、console0。一次helper参数误写
+  `--root-pid39774`在capture前退出，未生成证据；仅保留corrected helper capture。
+  证据在`shots/2026-08-06/extras-popup-chrome-current/`。

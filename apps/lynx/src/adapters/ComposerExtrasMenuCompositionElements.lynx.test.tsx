@@ -68,5 +68,14 @@ describe('native composer attachment menu item', () => {
     expect(primitiveStyles).toMatch(
       /\.LxMenuItem\s*\{[^}]*border-radius:\s*8px;/s
     );
+    expect(composerStyles).toMatch(
+      /\.ComposerExtrasPopupLynx\.LxMenuPopup\s*\{[^}]*border-radius:\s*10\.4px;[^}]*box-shadow:\s*0 4px 18px -6px rgba\(13,\s*13,\s*13,\s*0\.07\);/s
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerExtrasPopupLynx \.LxMenuSubPopup\s*\{[^}]*border-radius:\s*10\.4px;[^}]*box-shadow:\s*0 4px 18px -6px rgba\(13,\s*13,\s*13,\s*0\.07\);/s
+    );
+    expect(composerStyles).toMatch(
+      /\.SliceRoot--theme-dark \.ComposerExtrasPopupLynx\.LxMenuPopup,\s*\.SliceRoot--theme-dark \.ComposerExtrasPopupLynx \.LxMenuSubPopup\s*\{[^}]*box-shadow:\s*0 6px 24px -10px rgba\(0,\s*0,\s*0,\s*0\.3\);/s
+    );
   });
 });

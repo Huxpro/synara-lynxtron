@@ -658,6 +658,19 @@ The retained replacement cells:
   `shots/2026-08-06/command-k-shadow-current/`.
 - Focused Command suite: 1 file, 9/9 tests; configured Lynx-for-Web and
   Native/Desktop production builds pass.
+- The Extras material follow-up aligned the main and Fast submenu chrome with
+  the canonical composer picker recipe: 10.4px radius, Light 7% `0 4 18 -6`
+  shadow, and Dark 30% `0 6 24 -10` shadow. The opaque Native semantic fill is
+  retained because Web translucency requires unsupported backdrop filtering.
+- Current Web main/sub popups are 141.421875x106 and 128x62; Lynx-for-Web is
+  142x108 and 128x64. Both clients compute the same radius/shadow; the existing
+  two-pixel engine rhythm remains registered rather than forced away.
+- Exact-owned Native bundle `37188e48…`, root PID `39774`, PID-derived
+  `localhost:8903/session 1`, and real Extras→Fast touches retained main/sub
+  roles, a 2560x1576 frame, and an empty warning/error console. Evidence is
+  under `shots/2026-08-06/extras-popup-chrome-current/`.
+- Focused Menu/Extras suites: 2 files, 11/11 tests; configured Lynx-for-Web
+  and Native/Desktop production builds pass.
 
 ## Remaining work
 

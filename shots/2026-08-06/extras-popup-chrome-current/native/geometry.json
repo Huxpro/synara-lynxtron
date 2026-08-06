@@ -1,0 +1,146 @@
+{
+  "client": "native",
+  "stateId": "extras-fast-chrome-light-1280",
+  "roles": {
+    "root": {
+      "nodeId": 13,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 788
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "popup": {
+      "nodeId": 181,
+      "nodeName": "VIEW",
+      "attributes": {
+        "aria-modal": "false",
+        "role": "menu",
+        "bindkeydown": "144:4:",
+        "bindlayoutchange": "144:5:",
+        "class": "LxMenuPopup ComposerExtrasPopupLynx",
+        "style": "visibility:visible;top:393px;left:407px;"
+      },
+      "text": "",
+      "box": {
+        "x": 407,
+        "y": 393,
+        "width": 142,
+        "height": 109
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "hsla(0,0%,5%,.069)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "0 4px 18px -6px #0d0d0d11",
+        "opacity": "1"
+      }
+    },
+    "sub": {
+      "nodeId": 208,
+      "nodeName": "VIEW",
+      "attributes": {
+        "role": "menu",
+        "class": "LxMenuPopup LxMenuSubPopup"
+      },
+      "text": "",
+      "box": {
+        "x": 549,
+        "y": 463,
+        "width": 128,
+        "height": 33
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "hsla(0,0%,5%,.069)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "0 4px 18px -6px #0d0d0d11",
+        "opacity": "1"
+      }
+    },
+    "row": {
+      "nodeId": 182,
+      "nodeName": "VIEW",
+      "attributes": {
+        "focusable": "true",
+        "aria-disabled": "false",
+        "role": "menuitem",
+        "bindmouseenter": "145:0:bindmouseenter",
+        "bindblur": "145:0:bindblur",
+        "bindmouseleave": "145:0:bindmouseleave",
+        "bindtap": "145:0:bindtap",
+        "bindmouseup": "145:0:bindmouseup",
+        "bindtouchstart": "145:0:bindtouchstart",
+        "bindmousedown": "145:0:bindmousedown",
+        "bindtouchend": "145:0:bindtouchend",
+        "bindtouchcancel": "145:0:bindtouchcancel",
+        "catchkeydown": "145:0:catchkeydown",
+        "bindfocus": "145:0:bindfocus",
+        "class": "LxButton LxButton--ghost LxButton--default LxMenuItem LxMenuItem--highlighted"
+      },
+      "text": "",
+      "box": {
+        "x": 413,
+        "y": 399,
+        "width": 130,
+        "height": 26
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(232,242,250)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}
