@@ -6930,3 +6930,15 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   exact-owned Native bundle `ce8d898d…`，PID-derived localhost:8903/session1；
   logical coords按设备取整为92/212/256，row28，raw2560×1576、console0。证据在
   `shots/2026-08-07/sidebar-primary-top-rhythm-current/`。
+
+## 2026-08-07 — current-head Sidebar Sort menu label closure
+
+- Web Projects Sort group label为12/18/500，option text为12/18/400；新Lynx Sort
+  menu的option已正确，但generic group label仍10px/implicit/400。
+- scoped `.SharedSidebarProjectSortPopup .LxMenuGroupLabel`改12/18/500，不污染
+  其他generic menu。focused **1 file / 4 tests**，configured Lynx-for-Web与
+  Native/Desktop builds通过。
+- exact-owned Native bundle `ca050740…`，PID-derived localhost:8901/session1；
+  supported touch打开real menu，group label直接测12/18/500、box18，option仍
+  12/18/400，raw2560×1576、console0。证据在
+  `shots/2026-08-07/sidebar-sort-menu-label-current/`。

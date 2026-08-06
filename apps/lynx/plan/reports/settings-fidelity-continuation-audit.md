@@ -1187,6 +1187,13 @@ The retained replacement cells:
   logical positions, 28px rows, a 2560x1576 raw frame, and empty console.
   Evidence is under
   `shots/2026-08-07/sidebar-primary-top-rhythm-current/`.
+- Projects Sort group labels now match Web's 12px/18px/500 identity while
+  preserving the already-correct 12px/18px/400 option text. The correction is
+  scoped to the Sort popup rather than changing every generic menu.
+- Exact-owned Native bundle `ca050740…`, PID-derived
+  `localhost:8901/session 1`, directly measures the corrected label/option
+  hierarchy, produces a 2560x1576 frame, and has an empty console. Evidence is
+  under `shots/2026-08-07/sidebar-sort-menu-label-current/`.
 
 ## Remaining work
 

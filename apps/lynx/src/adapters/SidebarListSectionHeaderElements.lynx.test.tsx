@@ -74,6 +74,9 @@ describe('sidebar list section header actions', () => {
     expect(styles).toMatch(
       /\.SharedSidebarListSectionHeaderAction\.LxMenuTrigger\.ui-hover,\s*\.SharedSidebarListSectionHeaderAction\.LxMenuTrigger\.ui-pressed\s*\{[^}]*opacity:\s*1;/s
     );
+    expect(styles).toMatch(
+      /\.SharedSidebarProjectSortPopup \.LxMenuGroupLabel\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;[^}]*font-weight:\s*500;/s
+    );
     expect(sidebarSource).toContain(
       'elementId={ADD_PROJECT_TRIGGER_ELEMENT_ID}'
     );
