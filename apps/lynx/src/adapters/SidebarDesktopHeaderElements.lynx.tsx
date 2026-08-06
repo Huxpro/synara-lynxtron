@@ -4,5 +4,9 @@ export function SidebarDesktopHeaderRootElement(props: {
   readonly children?: ReactNode;
   readonly trafficLightGutter?: boolean;
 }) {
-  return <view className="AppSidebarTitlebar">{props.children}</view>;
+  return (
+    <view className="AppSidebarTitlebar AppWindowDragRegion">
+      {props.children}
+    </view>
+  );
 }

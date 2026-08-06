@@ -44,6 +44,7 @@ import {
 import fs from 'node:fs';
 import type { KeybindingCommand } from '@synara/contracts';
 import { handleUpdater } from './updateService';
+import { resolveShellWindowChrome } from './shellWindowChrome';
 const isDev = process.env.NODE_ENV === 'development';
 const isDevtoolEnabled =
   isDev || process.env.SYNARA_ENABLE_DEVTOOL === '1';
@@ -320,6 +321,7 @@ app.whenReady().then(() => {
     center: false,
     show: windowPresentation.showOnCreate,
     title: 'Synara',
+    ...resolveShellWindowChrome(process.platform),
     lynxPreference: {
       preload: path.join(__dirname, 'preload.js'),
     },

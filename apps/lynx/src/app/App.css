@@ -31,6 +31,16 @@
   font-family: var(--font-ui-family);
 }
 
+.AppWindowDragRegion {
+  -x-app-region: drag;
+}
+
+.AppWindowDragRegion .LxButton,
+.AppWindowDragRegion input,
+.AppWindowDragRegion textarea {
+  -x-app-region: no-drag;
+}
+
 .SliceRoot--theme-light {
   --runtime-full-access-accent: #e25505;
   --settings-usage-error-surface: rgba(239, 68, 68, 0.12);
