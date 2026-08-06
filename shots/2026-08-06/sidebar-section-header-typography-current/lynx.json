@@ -1,0 +1,15 @@
+{
+  "box": {
+    "h": 18,
+    "w": 46.28125,
+    "x": 14,
+    "y": 256
+  },
+  "class": "SharedSidebarListSectionHeaderText",
+  "color": "rgba(13, 13, 13, 0.596)",
+  "fontSize": "12px",
+  "fontWeight": "400",
+  "lineHeight": "18px",
+  "opacity": "0.58",
+  "tag": "X-TEXT"
+}

@@ -1,0 +1,15 @@
+{
+  "box": {
+    "h": 18,
+    "w": 46.28125,
+    "x": 14,
+    "y": 260.25
+  },
+  "class": "truncate",
+  "color": "oklab(0.991063 0.0000452101 0.0000197887 / 0.336627)",
+  "fontSize": "12px",
+  "fontWeight": "400",
+  "lineHeight": "18px",
+  "opacity": "1",
+  "tag": "SPAN"
+}

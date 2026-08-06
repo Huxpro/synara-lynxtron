@@ -17,8 +17,10 @@
 
 .SharedSidebarListSectionHeaderText {
   color: var(--muted-foreground);
-  font-size: var(--app-font-size-ui-xs, 10px);
-  font-weight: 600;
+  font-size: var(--app-font-size-ui, 12px);
+  line-height: 18px;
+  font-weight: 400;
+  opacity: 0.58;
 }
 
 .SharedSidebarListSectionHeaderToolbar {

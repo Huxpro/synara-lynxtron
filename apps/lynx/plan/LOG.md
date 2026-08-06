@@ -6733,3 +6733,16 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Browser PNG1280×820、errors空。exact-owned Native bundle `87db0d92…`，
   PID-derived localhost:8904/session1，raw2560×1576、warning/error console0。
   证据在`shots/2026-08-06/sidebar-primary-section-rhythm-current/`。
+
+## 2026-08-06 — current-head Sidebar section-header typography closure
+
+- current Web Projects section label复用shared section identity：12/18/400、
+  muted/58；Lynx此前为10px/implicit/600/full muted。
+- `.SharedSidebarListSectionHeaderText`改为12/18/400并在theme-safe muted color上
+  opacity.58。final Web/Lynx-for-Web直接text box均46.28125×18、typography exact；
+  PNG1280×820、browser errors空。当前snapshot无populated Pinned，不伪造第二consumer，
+  shared adapter/source contract覆盖其余consumer。
+- focused **2 files / 6 tests**，configured Lynx-for-Web与Native/Desktop builds通过。
+  exact-owned Native bundle `968dc10d…`，PID-derived localhost:8904/session1；
+  Projects TEXT直接测得12/18/400、opacity.58、box18，raw2560×1576、console0。
+  证据在`shots/2026-08-06/sidebar-section-header-typography-current/`。

@@ -29,6 +29,10 @@ describe('sidebar primary navigation shortcut', () => {
       new URL('./sidebar-primary-action-elements.css', import.meta.url),
       'utf8'
     );
+    const sectionHeaderStyles = readFileSync(
+      new URL('./sidebar-list-section-header-elements.css', import.meta.url),
+      'utf8'
+    );
 
     expect(sidebarStyles).toMatch(
       /\.AppSidebarShortcut\s*\{[^}]*height:\s*20px;[^}]*gap:\s*4px;/s
@@ -56,6 +60,9 @@ describe('sidebar primary navigation shortcut', () => {
     );
     expect(primaryActionStyles).not.toMatch(
       /\.SharedSidebarPrimaryActionButton\.ui-pressed\s*\{[^}]*opacity:/s
+    );
+    expect(sectionHeaderStyles).toMatch(
+      /\.SharedSidebarListSectionHeaderText\s*\{[^}]*font-size:\s*var\(--app-font-size-ui,\s*12px\);[^}]*line-height:\s*18px;[^}]*font-weight:\s*400;[^}]*opacity:\s*0\.58;/s
     );
     expect(sidebarSource).toContain(
       'newThreadShortcutLabel={LYNX_PRIMARY_SHORTCUT_LABELS.newThread}'

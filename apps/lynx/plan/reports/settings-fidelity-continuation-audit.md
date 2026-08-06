@@ -1056,6 +1056,16 @@ The retained replacement cells:
   bundle `87db0d92…`, PID-derived `localhost:8904/session 1`, retained a
   2560x1576 raw frame and empty warning/error console. Evidence is under
   `shots/2026-08-06/sidebar-primary-section-rhythm-current/`.
+- Sidebar list section labels now use the same shared Web identity as Settings
+  section labels: 12px/18px/400 at muted/58. Projects previously rendered in
+  Lynx at 10px/implicit/600 with full muted tone.
+- Current Web and Lynx-for-Web Projects text boxes are both 46.28125x18 with
+  exact typography; both frames are 1280x820 and error logs are empty.
+  Exact-owned Native bundle `968dc10d…`, PID-derived
+  `localhost:8904/session 1`, directly measures the TEXT at 12px/18px/400,
+  opacity 0.58, and an 18px box; raw frame is 2560x1576 and console empty.
+  Evidence is under
+  `shots/2026-08-06/sidebar-section-header-typography-current/`.
 
 ## Remaining work
 
