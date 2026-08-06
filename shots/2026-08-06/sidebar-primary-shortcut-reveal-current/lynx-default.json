@@ -1,0 +1,24 @@
+[
+  {
+    "class": "SharedSidebarPrimaryActionButton",
+    "focusVisible": false,
+    "hover": false,
+    "label": "New thread",
+    "opacity": "0",
+    "tabIndex": 0,
+    "transitionDuration": "0.15s",
+    "transitionProperty": "opacity",
+    "transitionTimingFunction": "cubic-bezier(0.4, 0, 0.2, 1)"
+  },
+  {
+    "class": "SharedSidebarPrimaryActionButton",
+    "focusVisible": false,
+    "hover": false,
+    "label": "Search",
+    "opacity": "0",
+    "tabIndex": 0,
+    "transitionDuration": "0.15s",
+    "transitionProperty": "opacity",
+    "transitionTimingFunction": "cubic-bezier(0.4, 0, 0.2, 1)"
+  }
+]

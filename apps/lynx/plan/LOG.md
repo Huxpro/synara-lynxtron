@@ -6671,3 +6671,23 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Native跟随system dark，仅用于structure/geometry/typography/runtime-clean证明；
   同主题颜色比较使用Web/Lynx-for-Web light frames。证据在
   `shots/2026-08-06/sidebar-primary-shortcut-current/`。
+
+## 2026-08-06 — current-head Sidebar shortcut reveal closure
+
+- current Web shortcut默认opacity0，row hover/focus-visible后经150ms
+  cubic-bezier(0.4,0,0.2,1)显示；上一刀Lynx anatomy虽然exact，但默认始终opacity1。
+  `.AppSidebarShortcut`补默认0与同transition，shared row `ui-hover/ui-focus`显示。
+- 第一次post-patch Browser probe诚实失败：默认已隐藏，但Playwright真实pointer hover
+  没触发Lynx `bindmouseenter`，row无`ui-hover`，不能用unit class test冒充产品通过。
+- 在Web-only host新增通用`focusable=true` → Web tab stop与composed
+  mouse/focus → `ui-hover/ui-focus` bridge；WeakSet区分host-owned tabindex/class，
+  绝不删除runtime/product已有ownership。Desktop/Lynx bundle不包含该bridge。
+- focused **2 files / 6 tests**，configured Lynx-for-Web与Native/Desktop builds通过。
+  final Lynx-for-Web真实pointer序列为default0 → New thread `ui-hover`/1 → leave0，
+  Search保持0；真实Tab也到达New thread X-VIEW并发布`ui-focus/:focus-visible`、opacity1；
+  PNG1280×820、browser errors空。
+- exact-owned Native bundle `74464b6d…`，PID-derived localhost:8904/session1；
+  default shortcut为44×20、opacity0、transition property opacity/duration150/
+  cubic-bezier exact，raw2560×1576、warning/error console0。Desktop DevTool没有可靠
+  retained mouseenter path，因此不冒充Native hover proof。证据在
+  `shots/2026-08-06/sidebar-primary-shortcut-reveal-current/`。

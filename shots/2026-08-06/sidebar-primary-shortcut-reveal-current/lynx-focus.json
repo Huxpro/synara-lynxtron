@@ -1,0 +1,8 @@
+{
+  "activeTag": "X-VIEW",
+  "class": "SharedSidebarPrimaryActionButton ui-focus",
+  "focusVisible": true,
+  "label": "New thread",
+  "opacity": "1",
+  "tabIndex": 0
+}

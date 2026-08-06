@@ -1,0 +1,12 @@
+[
+  {
+    "class": "SharedSidebarPrimaryActionButton",
+    "label": "New thread",
+    "opacity": "0"
+  },
+  {
+    "class": "SharedSidebarPrimaryActionButton",
+    "label": "Search",
+    "opacity": "0"
+  }
+]

@@ -1005,6 +1005,25 @@ The retained replacement cells:
   `shots/2026-08-06/sidebar-primary-shortcut-current/`.
 - Focused shortcut suite: 1 file, 2/2 tests; configured Lynx-for-Web and
   Native/Desktop production builds pass.
+- Sidebar shortcut reveal now matches Web's interaction hierarchy: both
+  shortcuts are opacity 0 by default and reveal on the shared row hover/focus
+  states through the exact 150ms cubic-bezier opacity transition.
+- The first Browser verification rejected a proxy-only result: CSS hid the
+  shortcut, but real Lynx-for-Web pointer hover did not publish `ui-hover`.
+  A Web-host-only bridge now maps Lynx focusability to real Web tab stops and
+  real pointer/focus events to the existing Lynx interaction classes while
+  preserving tab stops and classes owned by the runtime/product.
+- Final real Lynx-for-Web pointer evidence proves 0 -> 1 -> 0 opacity across
+  default, New thread hover, and pointer leave. Real Tab traversal also reaches
+  New thread, publishes `ui-focus` / `:focus-visible`, and reveals the keys;
+  retained frames are 1280x820 and browser errors are empty. Exact-owned Native
+  bundle `74464b6d…`,
+  PID-derived `localhost:8904/session 1`, resolves the default shortcut to
+  opacity 0 with the exact 150ms transition, raw 2560x1576, and empty
+  warning/error console. Native hover is explicitly not claimed.
+- Focused reveal suites: 2 files, 6/6 tests; configured Lynx-for-Web and
+  Native/Desktop production builds pass. Evidence is under
+  `shots/2026-08-06/sidebar-primary-shortcut-reveal-current/`.
 
 ## Remaining work
 

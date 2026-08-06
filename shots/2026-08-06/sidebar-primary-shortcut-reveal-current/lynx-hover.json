@@ -1,0 +1,14 @@
+[
+  {
+    "class": "SharedSidebarPrimaryActionButton ui-hover",
+    "hover": true,
+    "label": "New thread",
+    "opacity": "1"
+  },
+  {
+    "class": "SharedSidebarPrimaryActionButton",
+    "hover": false,
+    "label": "Search",
+    "opacity": "0"
+  }
+]

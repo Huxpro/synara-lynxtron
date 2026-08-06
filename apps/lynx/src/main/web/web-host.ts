@@ -4,6 +4,7 @@
 
 import '@lynx-js/web-core/client';
 import { setupSymmetricHost } from '@lynx-js/lynxtron/web-host';
+import { installLynxWebInteractionStateBridge } from './web-interaction-state';
 
 const bundleUrl = './main.web.bundle';
 const nodejsAdapterUrl = './nodejs-adapter-web.js';
@@ -475,7 +476,22 @@ setupSymmetricHost(lynxView, {
   },
 });
 
+const interactionBridgeController = new AbortController();
+const installInteractionBridge = () => {
+  const root = lynxView.shadowRoot as ShadowRoot | null;
+  if (!root) return false;
+  installLynxWebInteractionStateBridge(
+    root,
+    interactionBridgeController.signal
+  );
+  return true;
+};
+if (!installInteractionBridge()) {
+  lynxView.addEventListener('load', installInteractionBridge, { once: true });
+}
+
 globalThis.addEventListener('pagehide', () => {
+  interactionBridgeController.abort();
   safeClose(relaySocket);
   rejectPendingRequests(new Error('Synara relay page closed'));
 });
