@@ -927,6 +927,19 @@ The retained replacement cells:
   removed; the repeat changed-scope scan reports zero issues.
 - Focused picker contract: 1 file, 3/3 tests; configured Lynx-for-Web and
   Native/Desktop production builds pass.
+- Composer footer action spacing now matches Web's `gap-2` contract at 8px
+  instead of the old Lynx 6px. With the corrected 28px Voice control, both
+  clients place Voice at x=1063 and Send at x=1099 for an exact 8px gap.
+- Current Web and Lynx-for-Web action groups both resolve `gap: 8px`, Voice and
+  Send remain 28x28, and retained PNGs are 1280x820 with empty browser errors.
+- Exact-owned Native bundle `324d1c1d…`, root PID `51059`, PID-derived
+  `localhost:8902/session 1`, retained actions/Voice/Send roles. Native measured
+  Voice x=1063, Send x=1099, both 28x28, for an exact 8px gap; raw frame is
+  2560x1576 and console empty. The endpoint was resolved from the owned PID
+  rather than a remembered port. Evidence is under
+  `shots/2026-08-06/composer-footer-action-gap-current/`.
+- Focused picker contract: 1 file, 3/3 tests; configured Lynx-for-Web and
+  Native/Desktop production builds pass.
 
 ## Remaining work
 

@@ -118,6 +118,9 @@ describe('native composer attachment menu item', () => {
     expect(composerStyles).toMatch(
       /\.ComposerVoiceGlyphLynx\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;[^}]*flex-shrink:\s*0;/s
     );
+    expect(composerStyles).toMatch(
+      /\.ComposerFooterActionsLynx\s*\{[^}]*margin-left:\s*auto;[^}]*gap:\s*8px;/s
+    );
     const composerSource = readFileSync(
       new URL('../components/composer/Composer.lynx.tsx', import.meta.url),
       'utf8'

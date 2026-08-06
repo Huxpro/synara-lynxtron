@@ -6590,3 +6590,18 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - commit hook的React Doctor generic warning经真实changed-scope复查定位到显式
   ReactLynx `focusable`被Web DOM rule误判；plain view本就无event handlers且默认
   non-focusable，删除冗余属性后同scope复扫0 issues。
+
+## 2026-08-06 — current-head Composer footer action gap closure
+
+- Voice修到28px后暴露相邻真实spacing residual：Web footer actions为`gap-2`=8px，
+  Voice x1063、Send x1099；Lynx owner仍写死6px，Voice x1065、Send x1099。
+- `.ComposerFooterActionsLynx`改为gap8并进入focused contract。current
+  Web/Lynx-for-Web均Voice x1063、Send x1099、两者28×28、gap8；PNG1280×820、
+  errors空。parent起点/width仍受Model trigger既有2px engine rhythm影响，不与本刀
+  action spacing混淆。
+- focused picker contract **1 file / 3 tests**，configured Lynx-for-Web与
+  Native/Desktop builds通过。exact-owned Native bundle `324d1c1d…`，root
+  PID51059、PID-derived localhost:8902/session1；actions/Voice/Send保留，Native
+  x1063/x1099、gap8、raw2560×1576、console0。endpoint由owned PID动态解析，
+  未猜历史端口。证据在
+  `shots/2026-08-06/composer-footer-action-gap-current/`。
