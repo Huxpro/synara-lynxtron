@@ -6804,3 +6804,18 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   2560×1576、console0。
 - Projects Sort仍是独立shared-controller workflow gap，不用inert menu掩盖。证据在
   `shots/2026-08-06/sidebar-project-add-current/`。
+
+## 2026-08-06 — current-head Sidebar segmented label closure
+
+- current Web segmented track/button/label vertical metrics为27.25/21.25/17.25px，
+  label在button内top/bottom各2px，typography11.5/17.25/500；Lynx此前为
+  27/23/16px与3.5px inset。
+- Lynx改为exact fractional metrics。final Web/Lynx-for-Web Projects与Studio均
+  button21.25、label y55、inset2、11.5/17.25/500，active edge +4/-4保持；
+  PNG1280×820。fresh Web session出现真实provider socket error，其frame拒绝；
+  retained Web来自errors空的healthy session，Lynx errors空。
+- focused **1 file / 1 test**，configured Lynx-for-Web与Native/Desktop builds通过。
+  exact-owned Native bundle `41109f78…`，PID-derived localhost:8904/session1；
+  active button113×21.25，label computed11.5/17.25/500，box按DevTool取整18，
+  console0。non-raised screenshot无frame而拒绝，不抬窗/不循环重试。证据在
+  `shots/2026-08-06/sidebar-segmented-label-current/`。

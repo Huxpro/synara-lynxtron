@@ -1106,6 +1106,17 @@ The retained replacement cells:
   is under `shots/2026-08-06/sidebar-project-add-current/`.
 - Projects Sort remains a separate shared-controller workflow gap and is not
   represented by an inert placeholder.
+- Sidebar segmented button/label vertical metrics now match Web exactly:
+  27.25px track, 21.25px buttons, 2px label insets, and
+  11.5px/17.25px/500 typography. Projects and Studio retain their exact +4px /
+  -4px active-edge translations.
+- Healthy Web and Lynx-for-Web frames are 1280x820 with clean error logs.
+  Exact-owned Native bundle `41109f78…`, PID-derived
+  `localhost:8904/session 1`, directly measures the active button at
+  113x21.25 and computes the label at 11.5px/17.25px/500 with an empty
+  warning/error console. Its non-raised screenshot timed out and is explicitly
+  not claimed. Evidence is under
+  `shots/2026-08-06/sidebar-segmented-label-current/`.
 
 ## Remaining work
 

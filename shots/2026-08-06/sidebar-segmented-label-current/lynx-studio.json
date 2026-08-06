@@ -1,0 +1,23 @@
+{
+  "button": {
+    "h": 21.25,
+    "w": 113,
+    "x": 15,
+    "y": 53
+  },
+  "insets": {
+    "bottom": 2,
+    "top": 2
+  },
+  "label": {
+    "fontSize": "11.5px",
+    "fontWeight": "500",
+    "h": 17.25,
+    "lineHeight": "17.25px",
+    "transform": "matrix(1, 0, 0, 1, -4, 0)",
+    "w": 36.03125,
+    "x": 49.484375,
+    "y": 55
+  },
+  "text": "Studio"
+}
