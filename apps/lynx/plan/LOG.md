@@ -6159,7 +6159,10 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   第二次对比发现Web还包含真实58px project-context tray；未用placeholder补高度，而是
   新增数据驱动`EmptyThreadContextTray`：project/envMode/branch读取thread snapshot，
   Local/Worktree与branch因本runtime无selector明确disabled；Temporary是真实button，
-  发布aria/Native selected state，离开时canonical `thread.delete`并invalidate queries。
+  发布aria/Native selected state。后续completion audit发现若lifecycle由tray自己持有，
+  empty→transcript会因tray unmount误删仍active的thread；现将marker/effect提升到
+  ThreadPage，只有真正离开marked thread route才canonical `thread.delete`并invalidate
+  queries。
 - final Browser anchors收敛到engine fractional rounding：title exact
   `298/14/140.015625/18` 12/18/400，heading y407.25 vs407，composer
   `400/461.75/736/95` vs `400/462/736/95`，tray
@@ -6178,6 +6181,12 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   所有projector sequence2；settings/KV/window hashes未变。没有pre-checkpoint byte
   backup存活，因此不伪称byte-exact或静默覆写。证据与caveat在
   `shots/2026-08-06/thread-empty-current/`。
+- completion audit随后把Temporary误删风险纳入current-head gate：生命周期提升后focused
+  suite更新为**10/10**，Lynx-for-Web/Native bundles更新为`d2d2b630…`/
+  `e7fe5d1b…`，exact-owned Native root PID94071、renderer94074、
+  localhost:8903/session1。相同canonical clone与rendered navigation完成三端重拍，
+  Temporary real touch再次`false→true→false`，normal logical baseline保持
+  2 events/2 projects/0 threads/sequence2。
 
 ## 2026-08-06 — current-head project Kanban
 

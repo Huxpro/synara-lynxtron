@@ -7,9 +7,9 @@
 - Owned server: `127.0.0.1:60480`.
 - Shared origin: `http://localhost:8925`.
 - Final Lynx-for-Web bundle:
-  `97d017743c0be205f61d729a434d46c1eacb1b3ce3dc99cc974f3d7a71dfa339`.
+  `d2d2b630491771523fe0a6700799dc5cd6910934b6ef588291c3c39a0aabcfc8`.
 - Final Native bundle:
-  `ceeda1cee0e97507075046dbbaf7bd33ca94564164c39b645769cb1a574bdcba`.
+  `e7fe5d1bd75beccde720a339fb5db688a4b1915d7d794b0a407c6674a532af79`.
 
 The normal snapshot contained no durable threads or project-kind workspace.
 The retained state was produced in a disposable byte-clone:
@@ -60,10 +60,12 @@ Rather than adding a spacing placeholder, Lynx now renders a data-driven tray:
 
 Local and branch are explicitly unavailable controls in this runtime, so they
 are disabled status surfaces rather than fake interactive selectors.
-Temporary has a real lifecycle: enabling it marks the mounted thread as
-temporary and leaving the route dispatches canonical `thread.delete`, then
-invalidates thread/sidebar queries. The retained state toggled
-`false → true → false`, so the evidence thread was not deleted.
+Temporary state is owned by the mounted Thread route rather than the empty
+tray. This distinction prevents the empty→transcript transition from deleting
+the active thread when the tray unmounts after the first message. Leaving the
+marked Thread route dispatches canonical `thread.delete`, then invalidates
+thread/sidebar queries. The retained state toggled `false → true → false`, so
+the evidence thread was not deleted.
 
 ## Browser geometry
 
@@ -84,8 +86,8 @@ Both Browser PNGs are exactly `1280×820`, and page-error files are empty.
 
 ## Native
 
-- Launch root PID: `7673`.
-- Renderer PID: `7676`.
+- Launch root PID: `94071`.
+- Renderer PID: `94074`.
 - PID-derived client: `localhost:8903`.
 - Session: 1.
 - Session URL:
@@ -122,7 +124,7 @@ this report does not claim byte restoration or silently rewrite the database.
 
 ## Gates
 
-- Focused Thread/Header/branch-state suites: 3 files, 9/9.
+- Focused Thread/Header/lifecycle/state suites: 3 files, 10/10.
 - Lynx-for-Web production build: pass.
 - Native/Desktop production build: pass with existing unsupported CSS and
   optional `ws` native-module warnings.

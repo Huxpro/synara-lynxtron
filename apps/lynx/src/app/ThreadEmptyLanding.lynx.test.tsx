@@ -21,9 +21,13 @@ describe('empty Thread landing fidelity', () => {
     );
   });
 
-  it('uses a real project-context tray with temporary deletion lifecycle', () => {
+  it('uses a real project-context tray with route-owned temporary state', () => {
     const traySource = readFileSync(
       new URL('./EmptyThreadContextTray.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const lifecycleSource = readFileSync(
+      new URL('./temporaryThreadLifecycle.lynx.ts', import.meta.url),
       'utf8'
     );
     const trayStyles = readFileSync(
@@ -31,13 +35,17 @@ describe('empty Thread landing fidelity', () => {
       'utf8'
     );
 
-    expect(traySource).toContain("type: 'thread.delete'");
-    expect(traySource).toContain("'aria-pressed': temporary");
+    expect(traySource).toContain("'aria-pressed': props.temporary");
+    expect(traySource).toContain('onClick={props.onTemporaryChange}');
     expect(traySource).toContain('accessibility-state={{ disabled: true }}');
     expect(traySource).toContain(
       "props.envMode === 'local' ? 'Local' : 'Worktree'"
     );
     expect(traySource).toContain('props.branch ?? \'main\'');
+    expect(lifecycleSource).toContain("type: 'thread.delete'");
+    expect(lifecycleSource).toContain(
+      'shouldDeleteDepartingTemporaryThread('
+    );
     expect(trayStyles).toMatch(
       /\.EmptyThreadContextTray\s*\{[^}]*width:\s*736px;[^}]*min-height:\s*58px;[^}]*margin:\s*-20px auto 0;[^}]*padding:\s*24px 8px 6px;/s
     );

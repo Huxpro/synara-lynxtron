@@ -1,7 +1,7 @@
 {
   "client": "native",
   "stateId": "thread-empty-current",
-  "buildSha256": "ceeda1cee0e97507075046dbbaf7bd33ca94564164c39b645769cb1a574bdcba",
+  "buildSha256": "e7fe5d1bd75beccde720a339fb5db688a4b1915d7d794b0a407c6674a532af79",
   "snapshotSha256": "25c6a30782bf22c2b94dfefa06c7ce50af9a53a5320c5a65375d4d70c69b6975",
   "stateEcho": {
     "semanticRoute": "thread-empty",
@@ -10,9 +10,9 @@
     "interactionState": "default"
   },
   "identity": {
-    "rootPid": 7673,
+    "rootPid": 94071,
     "descendantPids": [
-      7676
+      94074
     ],
     "ownedPorts": [
       8903

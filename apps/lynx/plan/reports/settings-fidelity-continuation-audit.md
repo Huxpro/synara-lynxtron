@@ -517,7 +517,7 @@ The retained replacement cells:
   heading/composer owners. A project-copy width variant prevents the real
   project heading from wrapping. A real context tray consumes the thread
   project/envMode/branch snapshot and publishes an actual Temporary button
-  with canonical delete-on-leave behavior; Local/branch remain honestly
+  with route-owned canonical delete-on-leave behavior; Local/branch remain honestly
   disabled where the runtime has no selector UI.
 - Final Web/Lynx-for-Web anchors converge to quarter-pixel engine rounding:
   title exact, heading y 407.25/407, composer y 461.75/462, tray y 536.75/537,

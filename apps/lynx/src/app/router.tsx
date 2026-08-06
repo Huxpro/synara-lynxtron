@@ -54,6 +54,7 @@ import { resolveSettingsBackTarget } from '@synara-web/components/SidebarSetting
 import { resolveThreadPageBodyState } from './threadPageState.logic';
 import { sleepOnHost } from '../platform/timer';
 import { EmptyThreadContextTray } from './EmptyThreadContextTray.lynx';
+import { useTemporaryThreadLifecycle } from './temporaryThreadLifecycle.lynx';
 export const history = createMemoryHistory({ initialEntries: ['/'] });
 
 async function readPersistedLastThreadRoute(): Promise<LastThreadRoute | null> {
@@ -274,6 +275,8 @@ function useThreadTranscriptPolling(threadId: string) {
 
 function ThreadPage(props: { threadId: string }) {
   const { threadId } = props;
+  const { temporary, toggleTemporary } =
+    useTemporaryThreadLifecycle(threadId);
   const [providerStatuses, setProviderStatuses] = useState<
     readonly ServerProviderStatus[]
   >([]);
@@ -330,8 +333,9 @@ function ThreadPage(props: { threadId: string }) {
           <EmptyThreadContextTray
             branch={currentThread?.branch ?? null}
             envMode={currentThread?.envMode ?? 'local'}
+            onTemporaryChange={toggleTemporary}
             projectName={currentThread?.project ?? 'this folder'}
-            threadId={threadId}
+            temporary={temporary}
           />
         </CenteredEmptyLandingStack>
       ) : (
