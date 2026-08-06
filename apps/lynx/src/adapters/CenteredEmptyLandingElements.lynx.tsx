@@ -30,7 +30,11 @@ export function CenteredEmptyLandingHeadingElement({
   readonly projectName: string | null;
 }) {
   return (
-    <text className="CenteredEmptyLandingHeading">
+    <text
+      className={`CenteredEmptyLandingHeading${
+        projectName ? ' CenteredEmptyLandingHeading--project' : ''
+      }`}
+    >
       {projectName ? (
         <>
           What should we do in{' '}

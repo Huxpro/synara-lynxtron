@@ -21,6 +21,10 @@
   text-align: center;
 }
 
+.CenteredEmptyLandingHeading--project {
+  width: 400px;
+}
+
 .CenteredEmptyLandingAccent {
   color: var(--muted-foreground);
 }

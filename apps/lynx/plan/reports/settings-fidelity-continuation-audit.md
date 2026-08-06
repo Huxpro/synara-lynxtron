@@ -17,9 +17,10 @@ complete.
 
 | Requirement | Concrete evidence | Status |
 | --- | --- | --- |
-| Preserve the previously certified shell, Composer, routes, controls, and motion | The old P10 atlas is historical after the continuation changes; current-head Landing/Header and Pull Requests are refreshed below, while Thread/Kanban still require current-head route rechecks before this global row can pass | PARTIAL |
+| Preserve the previously certified shell, Composer, routes, controls, and motion | The old P10 atlas is historical after the continuation changes; current-head Landing/Header, Pull Requests, and empty Thread are refreshed below, while project Kanban still requires a current-head route recheck before this global row can pass | PARTIAL |
 | Landing shared chat-header typography matches Web on current head | `SharedChatHeaderIdentityTitle` now owns the Web 12px/18px/400 identity; current-head Web/Lynx-for-Web are exact and exact-owned Native computes the same line box in `shots/2026-08-06/landing-header-current/` | PASS |
 | Pull Requests route controls match Web on current head | Title weight, 28px route inset, 8px pills, exact filter/refresh icon identities, 16px painted slots, accessibility state, empty surface, and honest search-capability delta are covered in `shots/2026-08-06/pull-requests-current/` | PASS |
+| Empty durable Thread matches Web's centered project landing | Disposable canonical project/thread creation proves the shared centered heading/composer anatomy, real project context tray, thread snapshot status, and Native Temporary interaction in `shots/2026-08-06/thread-empty-current/` | PASS |
 | Fix provider-health banner residual | `efa9b773`, `33e3ca15`; `shots/2026-08-05/provider-health-banner-current/` | PASS |
 | Fix Kanban overview residual | `b463ff26`; `shots/2026-08-05/kanban-overview-current/` | PASS |
 | Converge Settings Appearance | `cfdd6db4`; current-head Lynx frame corrected in `52d55bf7` | PASS |
@@ -507,6 +508,28 @@ The retained replacement cells:
   touch navigation, `14/20/500` title typography, exact SVG nodes, complete
   filter accessibility naming/pressed state, and an empty warning/error
   console. Evidence is under `shots/2026-08-06/pull-requests-current/`.
+- A disposable canonical project/thread state exposed an empty-Thread branch
+  that the Landing proof could not cover. Web centered the heading, composer,
+  and 58px project-context tray as one group; Lynx kept the old
+  `ChatEmptyStateHero` and pinned its composer to the bottom at y=701.
+- Empty Thread now reuses `CenteredEmptyLandingStack` and the shared Landing
+  heading/composer owners. A project-copy width variant prevents the real
+  project heading from wrapping. A real context tray consumes the thread
+  project/envMode/branch snapshot and publishes an actual Temporary button
+  with canonical delete-on-leave behavior; Local/branch remain honestly
+  disabled where the runtime has no selector UI.
+- Final Web/Lynx-for-Web anchors converge to quarter-pixel engine rounding:
+  title exact, heading y 407.25/407, composer y 461.75/462, tray y 536.75/537,
+  and Temporary y 560.75/561. Exact-owned Native bundle `ceeda1ce…`, root PID
+  `7673`, renderer `7676`, PID-derived `localhost:8903/session 1`, and
+  `2560x1576` capture prove the title/heading, full empty group, clean console,
+  and real Temporary `false → true → false` touch interaction.
+- The normal logical snapshot remained at two events, two projects, zero
+  threads, and projector sequence 2. The external `sqlite3` audit checkpointed
+  unchanged WAL pages into the main database file, changing its byte hash
+  without changing logical data. No old byte backup survived, so the audit no
+  longer claims byte-exact SQLite restoration for this run. Evidence and the
+  caveat are under `shots/2026-08-06/thread-empty-current/`.
 - Settings focused continuation: 14 files, 50/50 tests.
 - AppSnap final focused check: 1 file, 2/2 tests.
 - Canonical taxonomy/explicit-owner gate: 1 file, 11/11 tests.
@@ -548,7 +571,7 @@ The retained replacement cells:
 
 ## Remaining work
 
-1. Refresh current-head Thread and Kanban route evidence instead
+1. Refresh current-head project Kanban route evidence instead
    of using the historical P10 atlas as a proxy; close any measured residuals.
 2. Run the final heavy pass only after explicit authorization permits
    `bun fmt`, `bun lint`, and `bun typecheck`.
@@ -559,8 +582,8 @@ The retained replacement cells:
 ## Current disposition
 
 The implementation objective has materially advanced and every canonical
-Settings section has a real Lynx owner. Landing/Header and Pull Requests now
-have current-head three-client proof rather than historical proxy evidence.
-The active thread goal is **not yet complete** because Thread/Kanban still need
-current-head route rechecks and the required heavy pass remains blocked by the
-current instruction boundary.
+Settings section has a real Lynx owner. Landing/Header, Pull Requests, and empty
+Thread now have current-head three-client proof rather than historical proxy
+evidence. The active thread goal is **not yet complete** because project Kanban
+still needs a current-head route recheck and the required heavy pass remains
+blocked by the current instruction boundary.

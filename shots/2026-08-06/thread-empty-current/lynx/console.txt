@@ -1,0 +1,16 @@
+[log] [Lynxtron Web] Configuring nodejs module with script: http://localhost:8925/lynx-current/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://localhost:8925/c08f984c-af37-42df-b1ef-02dd1da9a106
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://localhost:8925/b2a3cd66-fa1a-4135-907c-b5730b2d9509", nodejs: "blob:http://localhost:8925/c08f984c-af37-42df-b1ef-02dd1da9a106"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://localhost:8925/lynx-current/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://localhost:8925/aa7e76a3-5325-45c4-b18c-6d190c52b684
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://localhost:8925/255ade89-2416-4ecf-85d8-3531d96c1b4f", nodejs: "blob:http://localhost:8925/aa7e76a3-5325-45c4-b18c-6d190c52b684"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://localhost:8925/lynx-current/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://localhost:8925/8625fc49-4f73-4c0c-b7a5-94d5fb0e591a
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://localhost:8925/cfe1a3b2-b281-477d-8fb1-817867a28ebe", nodejs: "blob:http://localhost:8925/8625fc49-4f73-4c0c-b7a5-94d5fb0e591a"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://localhost:8925/lynx-current/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://localhost:8925/5e44ff6b-2ef6-41c0-b73d-bb1e42af12b4
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://localhost:8925/f3bd50bb-324e-43c1-b227-50299ae1c0f2", nodejs: "blob:http://localhost:8925/5e44ff6b-2ef6-41c0-b73d-bb1e42af12b4"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead

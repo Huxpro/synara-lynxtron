@@ -40,7 +40,6 @@ import { AppShellFrame } from '@synara-web/components/AppShellFrame';
 import { ChatSurfaceHeaderFrame } from '@synara-web/components/chat/ChatSurfaceHeaderFrame';
 import { ChatSurfaceHeaderIdentity } from '@synara-web/components/chat/ChatSurfaceHeaderIdentity';
 import { ComposerColumnFrameSurface } from '@synara-web/components/chat/ComposerColumnFrameSurface';
-import { ChatEmptyStateHero } from '@synara-web/components/chat/ChatEmptyStateHero';
 import { PanelStateMessage } from '@synara-web/components/chat/PanelStateMessage';
 import { LandingComposer } from '../components/composer/LandingComposer.lynx';
 import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
@@ -54,6 +53,7 @@ import { useRestoreOrCreateChatRouteController } from '@synara-web/components/us
 import { resolveSettingsBackTarget } from '@synara-web/components/SidebarSettingsBack.logic';
 import { resolveThreadPageBodyState } from './threadPageState.logic';
 import { sleepOnHost } from '../platform/timer';
+import { EmptyThreadContextTray } from './EmptyThreadContextTray.lynx';
 export const history = createMemoryHistory({ initialEntries: ['/'] });
 
 async function readPersistedLastThreadRoute(): Promise<LastThreadRoute | null> {
@@ -292,6 +292,20 @@ function ThreadPage(props: { threadId: string }) {
     error,
     rows: data,
   });
+  const composer = (
+    <ComposerColumnFrameSurface>
+      <Composer
+        threadId={threadId}
+        modelSelection={currentThread?.modelSelection}
+        runtimeMode={currentThread?.runtimeMode}
+        interactionMode={currentThread?.interactionMode}
+        sessionStatus={currentThread?.sessionStatus ?? null}
+        activeTurnId={currentThread?.activeTurnId ?? null}
+        workspaceRoot={currentThread?.workspaceRoot ?? null}
+        onProviderStatusesChange={setProviderStatuses}
+      />
+    </ComposerColumnFrameSurface>
+  );
   return (
     <view className="Page ThreadPage">
       <ChatSurfaceHeaderFrame>
@@ -310,9 +324,16 @@ function ThreadPage(props: { threadId: string }) {
           <Transcript rows={bodyState.rows} />
         </ComposerColumnFrameSurface>
       ) : bodyState.kind === 'empty' ? (
-        <view className="ThreadTranscriptState">
-          <ChatEmptyStateHero projectName={currentThread?.project} />
-        </view>
+        <CenteredEmptyLandingStack>
+          <CenteredEmptyLanding projectName={currentThread?.project} />
+          {composer}
+          <EmptyThreadContextTray
+            branch={currentThread?.branch ?? null}
+            envMode={currentThread?.envMode ?? 'local'}
+            projectName={currentThread?.project ?? 'this folder'}
+            threadId={threadId}
+          />
+        </CenteredEmptyLandingStack>
       ) : (
         <view className="ThreadTranscriptState">
           <PanelStateMessage
@@ -334,18 +355,7 @@ function ThreadPage(props: { threadId: string }) {
           </PanelStateMessage>
         </view>
       )}
-      <ComposerColumnFrameSurface>
-        <Composer
-          threadId={threadId}
-          modelSelection={currentThread?.modelSelection}
-          runtimeMode={currentThread?.runtimeMode}
-          interactionMode={currentThread?.interactionMode}
-          sessionStatus={currentThread?.sessionStatus ?? null}
-          activeTurnId={currentThread?.activeTurnId ?? null}
-          workspaceRoot={currentThread?.workspaceRoot ?? null}
-          onProviderStatusesChange={setProviderStatuses}
-        />
-      </ComposerColumnFrameSurface>
+      {bodyState.kind === 'empty' ? null : composer}
     </view>
   );
 }

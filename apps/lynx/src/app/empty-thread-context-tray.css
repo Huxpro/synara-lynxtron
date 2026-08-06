@@ -1,0 +1,74 @@
+.EmptyThreadContextTray {
+  position: relative;
+  z-index: 0;
+  display: flex;
+  width: 736px;
+  min-height: 58px;
+  margin: -20px auto 0;
+  padding: 24px 8px 6px;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  border-bottom-left-radius: 19.2px;
+  border-bottom-right-radius: 19.2px;
+  background-color: var(--color-background-elevated-secondary);
+}
+
+.EmptyThreadContextIdentity,
+.EmptyThreadContextStatus {
+  display: flex;
+  min-width: 0;
+  height: 28px;
+  padding: 4px 6px;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  border-radius: 8px;
+}
+
+.EmptyThreadContextStatus {
+  height: 25px;
+  opacity: 0.8;
+}
+
+.EmptyThreadContextIcon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+}
+
+.EmptyThreadContextLabel,
+.EmptyThreadTemporaryLabel {
+  overflow: hidden;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 16.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.EmptyThreadContextSpacer {
+  min-width: 0;
+  flex: 1;
+}
+
+.EmptyThreadTemporaryButton {
+  min-width: 102px;
+  height: 28px;
+  min-height: 28px;
+  padding: 5px 10px;
+  gap: 6px;
+  border-width: 0;
+}
+
+.EmptyThreadTemporaryIcon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.EmptyThreadTemporaryButton--active .EmptyThreadTemporaryLabel {
+  color: var(--accent-foreground);
+}

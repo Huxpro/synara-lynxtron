@@ -96,6 +96,8 @@ export interface ThreadHeaderSummary {
   readonly id: string;
   readonly title: string;
   readonly project: string;
+  readonly branch: string | null;
+  readonly envMode: 'local' | 'worktree';
   readonly provider?: ProviderKind;
   readonly modelSelection: ModelSelection;
   readonly runtimeMode: 'full-access' | 'approval-required';
@@ -337,6 +339,8 @@ export async function fetchThreadHeaderSummary(
     id: thread.id,
     title: thread.title,
     project: project?.title ?? 'Synara',
+    branch: thread.branch,
+    envMode: thread.envMode,
     provider: thread.session?.provider ?? thread.modelSelection.provider,
     modelSelection: thread.modelSelection,
     runtimeMode: thread.runtimeMode,

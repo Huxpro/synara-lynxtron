@@ -1,0 +1,51 @@
+{
+  "client": "native",
+  "semanticRoute": "thread-empty",
+  "viewport": {
+    "logicalWidth": 1280,
+    "logicalHeight": 788,
+    "dpr": 2
+  },
+  "anchors": {
+    "title": {
+      "box": {
+        "x": 296,
+        "y": 14,
+        "width": 140,
+        "height": 18
+      }
+    },
+    "heading": {
+      "box": {
+        "x": 568,
+        "y": 391,
+        "width": 400,
+        "height": 35
+      }
+    },
+    "composer": {
+      "box": {
+        "x": 400,
+        "y": 446,
+        "width": 734,
+        "height": 93
+      }
+    },
+    "tray": {
+      "box": {
+        "x": 400,
+        "y": 521,
+        "width": 720,
+        "height": 28
+      }
+    },
+    "temporary": {
+      "box": {
+        "x": 1026,
+        "y": 545,
+        "width": 82,
+        "height": 18
+      }
+    }
+  }
+}

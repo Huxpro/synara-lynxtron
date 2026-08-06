@@ -6141,3 +6141,40 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   owned processes/sessions与Native clone删除；normal SQLite `cd3e1e9e…`、settings
   `d221bb25…`、KV `f53a83aa…`、window `2dd961d3…` byte-exact。证据在
   `shots/2026-08-06/pull-requests-current/`。
+
+## 2026-08-06 — current-head empty durable Thread
+
+- normal snapshot没有durable thread/project-kind workspace。创建excluded disposable
+  Git repo与server byte-clone；Web rendered Add project dialog走真实`project.create`，
+  然后复用当前production chunk导出的`promoteThreadCreate`，其内部通过
+  `readNativeApi()`与正常WebSocket transport dispatch canonical `thread.create`。
+  clone projection确认真实`project`和`Fidelity route verification` thread；未直接写
+  SQLite row。三端均通过rendered sidebar row进入，Native先展开project再touch thread。
+- 真实empty durable thread暴露结构fork：Web用`CenteredEmptyLandingStack`将heading、
+  composer与context tray作为一组垂直居中；Lynx仍用旧`ChatEmptyStateHero`，composer
+  独立钉在bottom y701。修复不是negative margin：empty branch直接复用现有Landing
+  SSOT，nonempty/loading/error继续保留normal bottom composer。
+- project copy首次在Lynx 321px heading frame内wrap两行；新增命名
+  `CenteredEmptyLandingHeading--project` 400px owner，global Landing 321px校准不变。
+  第二次对比发现Web还包含真实58px project-context tray；未用placeholder补高度，而是
+  新增数据驱动`EmptyThreadContextTray`：project/envMode/branch读取thread snapshot，
+  Local/Worktree与branch因本runtime无selector明确disabled；Temporary是真实button，
+  发布aria/Native selected state，离开时canonical `thread.delete`并invalidate queries。
+- final Browser anchors收敛到engine fractional rounding：title exact
+  `298/14/140.015625/18` 12/18/400，heading y407.25 vs407，composer
+  `400/461.75/736/95` vs `400/462/736/95`，tray
+  `400/536.75/736/58` vs `400/537/736/58`，Temporary y560.75 vs561。
+  两端PNG 1280×820，errors空。
+- exact-owned Native configured bundle `ceeda1ce…`，root PID7673、renderer7676、
+  PID-derived localhost:8903/session1，raw2560×1576；title
+  `296/14/140/18` 12/18/400，heading400×35，完整composer/tray可见，console空。
+  real touch验证Temporary `aria-pressed false→true→false`，最终false所以cleanup时未删除
+  evidence thread。DevTool compound VIEW box model继续折叠child，未拿其值冒充outer。
+- focused Thread/Header/state suites **9/9**，configured Lynx-for-Web与
+  Native/Desktop builds通过；owned processes/sessions及整个mutated clone删除。
+- cleanup audit发现normal SQLite主文件不再是先前`cd3e…`。根因是外部`sqlite3`读取
+  live WAL DB时checkpoint unchanged WAL pages进main file；之后hash继续到
+  `25c6a307…`。逻辑数据明确未变：2 orchestration events、2 projects、0 threads、
+  所有projector sequence2；settings/KV/window hashes未变。没有pre-checkpoint byte
+  backup存活，因此不伪称byte-exact或静默覆写。证据与caveat在
+  `shots/2026-08-06/thread-empty-current/`。
