@@ -6942,3 +6942,17 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   supported touch打开real menu，group label直接测12/18/500、box18，option仍
   12/18/400，raw2560×1576、console0。证据在
   `shots/2026-08-07/sidebar-sort-menu-label-current/`。
+
+## 2026-08-07 — Lynxtron hidden-titlebar top chrome closure
+
+- Electron reference真实desktop renderer的sidebar/main drag frames均为46px。
+  Lynxtron切到macOS `hiddenInset`后，旧`.AppSidebarTitlebar`仍48px，导致左右header
+  seam差2px，sidebar内容与shared 46px traffic-light center错1px。
+- `.AppSidebarTitlebar`收敛为46px，与`CHAT_SURFACE_HEADER_HEIGHT_PX`及相邻
+  `h-[46px]`一致。window-chrome/sidebar focused **2 files / 6 tests**，
+  Native/Desktop production build通过。
+- exact-owned Native bundle `7bedabf8…`，PID64576由lsof解析为
+  localhost:8903/session1；DevTool直接测sidebar/main header均46px，
+  sidebar `-x-app-region:drag`，outer/LynxView均1280×820 logical、
+  raw2560×1640，warning/error console0。证据在
+  `shots/2026-08-07/lynxtron-titlebar-46-current/`。

@@ -1194,6 +1194,15 @@ The retained replacement cells:
   `localhost:8901/session 1`, directly measures the corrected label/option
   hierarchy, produces a 2560x1576 frame, and has an empty console. Evidence is
   under `shots/2026-08-07/sidebar-sort-menu-label-current/`.
+- After the Lynxtron shell adopted macOS `hiddenInset`, current Electron CDP
+  geometry exposed one new top-chrome residual: both Electron drag frames are
+  46px, while the Lynx sidebar titlebar still used its historical 48px height.
+- The Lynx sidebar titlebar now matches the shared 46px chat header and
+  traffic-light geometry. Exact-owned Native bundle `7bedabf8…`, PID-derived
+  `localhost:8903/session 1`, directly measures both top frames at 46px with
+  `-x-app-region: drag`, a full 1280x820 logical content/window frame, and an
+  empty warning/error console. Evidence is under
+  `shots/2026-08-07/lynxtron-titlebar-46-current/`.
 
 ## Remaining work
 

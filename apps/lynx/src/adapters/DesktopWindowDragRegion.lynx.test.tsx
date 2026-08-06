@@ -14,6 +14,10 @@ const appStyles = fs.readFileSync(
   path.resolve(__dirname, '../app/App.css'),
   'utf8'
 );
+const sidebarStyles = fs.readFileSync(
+  path.resolve(__dirname, '../components/sidebar/sidebar.css'),
+  'utf8'
+);
 
 describe('desktop window drag regions', () => {
   it('marks both shared top chrome frames as draggable', () => {
@@ -21,6 +25,12 @@ describe('desktop window drag regions', () => {
       'className="AppSidebarTitlebar AppWindowDragRegion"'
     );
     expect(chatHeaderSource).toContain('AppWindowDragRegion');
+  });
+
+  it('aligns the sidebar titlebar with the shared 46px desktop chrome', () => {
+    expect(sidebarStyles).toMatch(
+      /\.AppSidebarTitlebar\s*\{[^}]*height:\s*46px;/s
+    );
   });
 
   it('uses the Lynxtron app-region property and protects controls', () => {
