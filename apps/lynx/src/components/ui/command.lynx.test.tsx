@@ -96,6 +96,9 @@ describe('Lynx CommandItem interaction contract', () => {
     expect(primitiveStyles).toMatch(
       /\.LxCommandFooter\s*\{[^}]*flex-direction:\s*row;[^}]*justify-content:\s*space-between;[^}]*border-bottom-left-radius:\s*17px;[^}]*border-bottom-right-radius:\s*17px;/s
     );
+    expect(primitiveStyles).toMatch(
+      /\.LxCommandFooter > text\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s
+    );
   });
 
   it('accepts native textarea input without the crashing Flutter input model', () => {

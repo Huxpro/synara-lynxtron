@@ -6393,3 +6393,14 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   localhost:8905/session1，real Search touch后保留Kbd/text，
   raw2560×1576、console0。证据在
   `shots/2026-08-06/command-k-kbd-current/`。
+
+## 2026-08-06 — current-head Command K footer copy line-box closure
+
+- Web footer copy由`text-xs`解析为12/16；Lynx仅写12导致implicit line-box。
+  `.LxCommandFooter > text`增加显式16px line-height并进入Command contract。
+- focused Command **1 file / 9 tests**，configured Lynx-for-Web与
+  Native/Desktop builds通过。current Web/Lynx-for-Web左右footer文案宽度、16px高度、
+  12/16 typography完全一致。
+- exact-owned Native bundle `4dbeaf81…`，root PID34264、PID-derived
+  localhost:8904/session1，real Search touch后保留footer，raw2560×1576、console0。
+  证据在`shots/2026-08-06/command-k-footer-text-current/`。

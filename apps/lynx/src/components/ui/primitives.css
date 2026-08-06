@@ -337,6 +337,7 @@
 .LxCommandFooter > text {
   color: var(--muted-foreground);
   font-size: 12px;
+  line-height: 16px;
 }
 
 .LxDialogViewport {

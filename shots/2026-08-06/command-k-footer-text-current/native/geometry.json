@@ -1,0 +1,66 @@
+{
+  "client": "native",
+  "stateId": "command-k-footer-text-light-1280",
+  "roles": {
+    "root": {
+      "nodeId": 13,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 788
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "footer": {
+      "nodeId": 232,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "LxCommandFooter"
+      },
+      "text": "",
+      "box": {
+        "x": 353,
+        "y": 458,
+        "width": 574,
+        "height": 41
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}
