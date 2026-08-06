@@ -17,10 +17,11 @@ complete.
 
 | Requirement | Concrete evidence | Status |
 | --- | --- | --- |
-| Preserve the previously certified shell, Composer, routes, controls, and motion | The old P10 atlas is historical after the continuation changes; current-head Landing/Header, Pull Requests, and empty Thread are refreshed below, while project Kanban still requires a current-head route recheck before this global row can pass | PARTIAL |
+| Preserve the previously certified shell, Composer, routes, controls, and motion | Current-head Landing/Header, Pull Requests, empty Thread, and project Kanban are refreshed below; focused suites and production builds preserve the remaining previously certified controls and motion | PASS |
 | Landing shared chat-header typography matches Web on current head | `SharedChatHeaderIdentityTitle` now owns the Web 12px/18px/400 identity; current-head Web/Lynx-for-Web are exact and exact-owned Native computes the same line box in `shots/2026-08-06/landing-header-current/` | PASS |
 | Pull Requests route controls match Web on current head | Title weight, 28px route inset, 8px pills, exact filter/refresh icon identities, 16px painted slots, accessibility state, empty surface, and honest search-capability delta are covered in `shots/2026-08-06/pull-requests-current/` | PASS |
 | Empty durable Thread matches Web's centered project landing | Disposable canonical project/thread creation proves the shared centered heading/composer anatomy, real project context tray, thread snapshot status, and Native Temporary interaction in `shots/2026-08-06/thread-empty-current/` | PASS |
+| Project Kanban matches Web on current head | Disposable canonical project/task creation proves exact route/column geometry, title/count typography, card material/rhythm, branch glyph identity, and exact-owned Native route evidence in `shots/2026-08-06/kanban-project-current/` | PASS |
 | Fix provider-health banner residual | `efa9b773`, `33e3ca15`; `shots/2026-08-05/provider-health-banner-current/` | PASS |
 | Fix Kanban overview residual | `b463ff26`; `shots/2026-08-05/kanban-overview-current/` | PASS |
 | Converge Settings Appearance | `cfdd6db4`; current-head Lynx frame corrected in `52d55bf7` | PASS |
@@ -530,6 +531,21 @@ The retained replacement cells:
   without changing logical data. No old byte backup survived, so the audit no
   longer claims byte-exact SQLite restoration for this run. Evidence and the
   caveat are under `shots/2026-08-06/thread-empty-current/`.
+- Current-head project Kanban used a second disposable canonical project/task
+  clone. The real board exposed column title/count line-box differences,
+  oversized header padding, 8px versus Web 10px card radius, 600 versus 500
+  card title weight, stale action/meta line boxes, margin-based card rhythm,
+  and a missing 12px branch glyph.
+- The shared Kanban column/card adapters now own Web's 32px header,
+  13/19.5/500 title, 12/16 count, 10px card radius, 13/17.875/500 card title,
+  6px root rhythm, 2px meta inset, 11/16.5 metadata, and generated branch icon.
+  Final Browser columns/header/title/count are exact; the card differs only by
+  0.125px engine rounding.
+- Exact-owned Native bundle `69252f59…`, root PID `17557`, renderer `17562`,
+  PID-derived `localhost:8903/session 1`, and `2560x1576` capture prove real
+  Kanban→project touch navigation, 13/19.5/500 column typography, card title,
+  branch SVG, metadata, and an empty warning/error console. Evidence is under
+  `shots/2026-08-06/kanban-project-current/`.
 - Settings focused continuation: 14 files, 50/50 tests.
 - AppSnap final focused check: 1 file, 2/2 tests.
 - Canonical taxonomy/explicit-owner gate: 1 file, 11/11 tests.
@@ -571,19 +587,17 @@ The retained replacement cells:
 
 ## Remaining work
 
-1. Refresh current-head project Kanban route evidence instead
-   of using the historical P10 atlas as a proxy; close any measured residuals.
-2. Run the final heavy pass only after explicit authorization permits
+1. Run the final heavy pass only after explicit authorization permits
    `bun fmt`, `bun lint`, and `bun typecheck`.
-3. Re-run this prompt-to-artifact audit, verify local/remote parity and cleanup,
+2. Re-run this prompt-to-artifact audit, verify local/remote parity and cleanup,
    then mark the active goal complete only if no MISSING/PARTIAL/PENDING rows
    remain.
 
 ## Current disposition
 
 The implementation objective has materially advanced and every canonical
-Settings section has a real Lynx owner. Landing/Header, Pull Requests, and empty
-Thread now have current-head three-client proof rather than historical proxy
-evidence. The active thread goal is **not yet complete** because project Kanban
-still needs a current-head route recheck and the required heavy pass remains
-blocked by the current instruction boundary.
+Settings section has a real Lynx owner. Landing/Header, Pull Requests, empty
+Thread, and project Kanban now have current-head three-client proof rather than
+historical proxy evidence. The active thread goal is **not yet complete**
+because the required heavy pass remains blocked by the current instruction
+boundary.

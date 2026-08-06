@@ -6178,3 +6178,33 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   所有projector sequence2；settings/KV/window hashes未变。没有pre-checkpoint byte
   backup存活，因此不伪称byte-exact或静默覆写。证据与caveat在
   `shots/2026-08-06/thread-empty-current/`。
+
+## 2026-08-06 — current-head project Kanban
+
+- normal snapshot无project-kind Kanban。新建第二个excluded disposable Git repo/server
+  clone，Web rendered Add project走canonical `project.create`，production
+  `promoteThreadCreate`走canonical `thread.create`生成`Kanban fidelity task`；未直接写
+  SQLite。Web/Lynx均从rendered Kanban overview进入project，Native通过sidebar Kanban
+  与project header real touch进入。
+- current-head实测关闭多项旧atlas未block残差：column title Web13/19.5/500而Lynx
+  13/normal/600；count 16px vs15px；column header Web32px、0/6/8而Lynx35.5px、
+  4/6/12；card radius10 vs8；card title13/17.875/500 vs13/17/600；action copy
+  12/16 vs11/16；meta 11/16.5 vsnormal；Web root gap6+meta pt2，而Lynx margin7；
+  branch text前还漏Web的12px GitBranch glyph。
+- 修复全部落在shared Kanban column/card adapter owners，无fixed card height或route
+  offset：header32、title/count明确line boxes、card radius10、title500、root gap6、
+  meta pt2/11/16.5、action12/16、generated12px branch glyph+4px internal gap。
+- final Web/Lynx exact：route title `312/13/.../20` 14/20/500；三列
+  `272/606.65625/941.328125`、height746；header322.65625×32；Draft
+  `278/60.25/.../19.5` 13/19.5/500；count y62/16；card
+  `276/94/314.65625/64.375` vs64.5、radius10；card title y105/17.875/500；
+  branch glyph12×12、branch text x327/11/16.5。仅card高0.125px engine rounding。
+- exact-owned Native configured bundle `69252f59…`，root PID17557、renderer17562、
+  PID-derived localhost:8903/session1，raw2560×1576；real touch完成Kanban→project，
+  column titlecomputed13/19.5/500，card title/branch SVG/meta直接DOM可见，console空。
+  compound VIEW box-model折叠继续按tool limitation登记，不冒充outer geometry。
+- focused Kanban **3/3**，configured Lynx-for-Web/Native/Desktop builds通过。
+  clone/processes/sessions全部删除；normal state以immutable只读方式确认2 events、
+  2 projects、0 threads、projector sequence2。SQLite main-file checkpoint caveat沿用
+  empty Thread记录，不伪称byte-exact。证据在
+  `shots/2026-08-06/kanban-project-current/`。

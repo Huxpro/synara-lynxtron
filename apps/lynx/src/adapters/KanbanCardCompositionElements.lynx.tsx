@@ -8,6 +8,7 @@ import type { SidebarStatusPresentation } from '@synara-web/components/SidebarSt
 import type { KanbanColumnKey } from '@synara-web/components/kanban/kanban.logic';
 import type { KanbanDragPoint } from '@synara-web/components/kanban/kanbanDnd.logic';
 import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
+import { GitBranchIcon } from '../lib/icons.lynx';
 import {
   isNativeKanbanPrimaryPointer,
   readNativeKanbanPointer,
@@ -164,9 +165,12 @@ export function KanbanCardProviderElement(props: {
 
 export function KanbanCardBranchElement(props: { readonly label: string }) {
   return (
-    <text className="SharedKanbanCardMetaText" maxlines={1}>
-      {props.label}
-    </text>
+    <view className="SharedKanbanCardBranch">
+      <GitBranchIcon className="SharedKanbanCardBranchIcon" size={12} />
+      <text className="SharedKanbanCardMetaText" maxlines={1}>
+        {props.label}
+      </text>
+    </view>
   );
 }
 

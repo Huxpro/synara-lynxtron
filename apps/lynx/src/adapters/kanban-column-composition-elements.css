@@ -10,21 +10,24 @@
 .SharedKanbanColumnHeader {
   flex-shrink: 0;
   display: flex;
+  height: 32px;
   flex-direction: row;
   align-items: center;
-  padding: 4px 6px 12px;
+  gap: 8px;
+  padding: 0 6px 8px;
 }
 
 .SharedKanbanColumnTitle {
   color: var(--foreground);
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 500;
+  line-height: 19.5px;
 }
 
 .SharedKanbanColumnCount {
-  margin-left: 8px;
   color: var(--muted-foreground);
   font-size: 12px;
+  line-height: 16px;
 }
 
 .SharedKanbanColumnHeaderActions {

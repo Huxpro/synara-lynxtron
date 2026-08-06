@@ -1,0 +1,67 @@
+{
+  "client": "native",
+  "semanticRoute": "kanban-project",
+  "viewport": {
+    "logicalWidth": 1280,
+    "logicalHeight": 788,
+    "dpr": 2
+  },
+  "anchors": {
+    "title": {
+      "box": {
+        "x": 312,
+        "y": 13,
+        "width": 48,
+        "height": 20
+      }
+    },
+    "header": {
+      "box": {
+        "x": 272,
+        "y": 58,
+        "width": 310.66668701171875,
+        "height": 24
+      }
+    },
+    "columnTitle": {
+      "box": {
+        "x": 278,
+        "y": 60,
+        "width": 32,
+        "height": 20
+      }
+    },
+    "card": {
+      "box": {
+        "x": 276,
+        "y": 94,
+        "width": 288.66668701171875,
+        "height": 43
+      }
+    },
+    "cardTitle": {
+      "box": {
+        "x": 289,
+        "y": 105,
+        "width": 263.66668701171875,
+        "height": 18
+      }
+    },
+    "branchIcon": {
+      "box": {
+        "x": 311,
+        "y": 134,
+        "width": 12,
+        "height": 12
+      }
+    },
+    "meta": {
+      "box": {
+        "x": 327,
+        "y": 131,
+        "width": 25,
+        "height": 17
+      }
+    }
+  }
+}
