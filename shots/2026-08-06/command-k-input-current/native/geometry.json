@@ -1,0 +1,109 @@
+{
+  "client": "native",
+  "stateId": "command-k-input-light-1280",
+  "roles": {
+    "root": {
+      "nodeId": 13,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 788
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "input": {
+      "nodeId": 185,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "LxCommandInput"
+      },
+      "text": "",
+      "box": {
+        "x": 353,
+        "y": 204,
+        "width": 574,
+        "height": 48
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "textarea": {
+      "nodeId": 187,
+      "nodeName": "TEXTAREA",
+      "attributes": {
+        "accessibility-element": "true",
+        "focusable": "true",
+        "maxlength": "140",
+        "maxlines": "1",
+        "confirm-type": "search",
+        "show-soft-input-on-focus": "true",
+        "react-ref-150-0": "1",
+        "aria-label": "Search projects, threads, and actions",
+        "accessibility-label": "Search projects, threads, and actions",
+        "default-value": "",
+        "placeholder": "Search projects, threads, and actions",
+        "bindinput": "150:6:",
+        "bindconfirm": "150:7:",
+        "class": "LxCommandTextarea"
+      },
+      "text": "",
+      "box": {
+        "x": 387,
+        "y": 210,
+        "width": 530,
+        "height": 36
+      },
+      "font": {
+        "family": "",
+        "size": "12px",
+        "weight": "normal",
+        "lineHeight": "18px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

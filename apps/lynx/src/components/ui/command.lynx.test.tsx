@@ -72,6 +72,9 @@ describe('Lynx CommandItem interaction contract', () => {
     expect(commandSource).toContain('bindconfirm={() => {');
     expect(commandSource).not.toContain('<Input');
     expect(primitiveStyles).toContain('.LxCommandTextarea');
+    expect(primitiveStyles).toMatch(
+      /\.LxCommandTextarea\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s
+    );
     expect(commandSource).toContain(
       'viewportClassName="LxCommandDialogViewport"'
     );

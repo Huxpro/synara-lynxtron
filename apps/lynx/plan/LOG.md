@@ -6404,3 +6404,15 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - exact-owned Native bundle `4dbeaf81…`，root PID34264、PID-derived
   localhost:8904/session1，real Search touch后保留footer，raw2560×1576、console0。
   证据在`shots/2026-08-06/command-k-footer-text-current/`。
+
+## 2026-08-06 — current-head Command K input line-box closure
+
+- Web Command search input显式12/18；Lynx仅写12并依赖textarea implicit line-height。
+  `.LxCommandTextarea`增加显式18px并进入Command contract。
+- focused Command **1 file / 9 tests**，configured Lynx-for-Web与
+  Native/Desktop builds通过。current Web/Lynx-for-Web computed均12/18；Lynx
+  custom textarea在Browser内box为0，因此只声明computed typography。
+- exact-owned Native bundle `6657bf09…`，root PID52798、PID-derived
+  localhost:8904/session1，real Search touch后保留input/textarea，
+  raw2560×1576、console0。证据在
+  `shots/2026-08-06/command-k-input-current/`。

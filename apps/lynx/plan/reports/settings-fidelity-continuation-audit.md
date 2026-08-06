@@ -737,6 +737,15 @@ The retained replacement cells:
   `shots/2026-08-06/command-k-footer-text-current/`.
 - Focused Command suite: 1 file, 9/9 tests; configured Lynx-for-Web and
   Native/Desktop production builds pass.
+- Command search input now explicitly matches Web's 12px/18px typography
+  instead of relying on an implicit Lynx textarea line height.
+- Current Web and Lynx-for-Web input nodes both compute to 12/18. Exact-owned
+  Native bundle `6657bf09…`, root PID `52798`, PID-derived
+  `localhost:8904/session 1`, and a real Search touch retained input/textarea
+  roles, a 2560x1576 frame, and empty console. Evidence is under
+  `shots/2026-08-06/command-k-input-current/`.
+- Focused Command suite: 1 file, 9/9 tests; configured Lynx-for-Web and
+  Native/Desktop production builds pass.
 
 ## Remaining work
 
