@@ -69,6 +69,7 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
   MessageCircleIcon,
+  SettingsIcon,
 } from '../../lib/icons';
 import { useLynxInteractiveState } from '../ui/interactive-state.lynx';
 import { deriveSidebarSections } from './sidebar.logic';
@@ -924,7 +925,9 @@ export function Sidebar({
         <SidebarFooterSection
           settingsVisible={activePath !== '/settings'}
           settingsActive={activePath === '/settings'}
-          settingsIcon={<text className="AppSidebarNavGlyph">⚙</text>}
+          settingsIcon={
+            <SettingsIcon className="AppSidebarSettingsIcon" size={15} />
+          }
           onOpenSettings={() => navigate('/settings')}
         />
         <SidebarSearchPaletteLynx

@@ -33,6 +33,10 @@ describe('landing composer fidelity contract', () => {
       ),
       'utf8'
     );
+    const sidebarSource = readFileSync(
+      new URL('../sidebar/Sidebar.lynx.tsx', import.meta.url),
+      'utf8'
+    );
 
     expect(routerSource).toContain('<CenteredEmptyLandingStack>');
     expect(routerSource).toContain('<CenteredEmptyLanding />');
@@ -60,6 +64,18 @@ describe('landing composer fidelity contract', () => {
     expect(composerSource).not.toContain('resolvedTheme="light"');
     expect(sidebarPrimaryActionStyles).toMatch(
       /\.SharedSidebarPrimaryActionLabel\s*\{[^}]*font-size:\s*var\(--app-font-size-ui,\s*12px\);[^}]*line-height:\s*18px;[^}]*font-weight:\s*400;[^}]*opacity:\s*0\.89;/s
+    );
+    expect(sidebarPrimaryActionStyles).toMatch(
+      /\.SharedSidebarPrimaryActionLeading\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;[^}]*opacity:\s*0\.89;/s
+    );
+    expect(sidebarPrimaryActionStyles).toMatch(
+      /\.AppSidebarFooter \.SharedSidebarPrimaryActionLeading\s*\{[^}]*opacity:\s*0\.95;/s
+    );
+    expect(sidebarSource).not.toContain(
+      '<text className="AppSidebarNavGlyph">⚙</text>'
+    );
+    expect(sidebarSource).toContain(
+      '<SettingsIcon className="AppSidebarSettingsIcon" size={15} />'
     );
     expect(landingStyles).not.toMatch(
       /\.LandingComposerTray\s*\{[^}]*z-index:/s

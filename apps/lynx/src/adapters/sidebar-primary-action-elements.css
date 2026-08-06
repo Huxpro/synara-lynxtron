@@ -42,6 +42,11 @@
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
+  opacity: 0.89;
+}
+
+.AppSidebarFooter .SharedSidebarPrimaryActionLeading {
+  opacity: 0.95;
 }
 
 .SharedSidebarPrimaryActionLabel {

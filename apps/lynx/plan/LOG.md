@@ -6638,3 +6638,18 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   localhost:8904/session1；Settings row保留完整interaction bindings，label
   12/18/400 opacity.89、box18，raw2560×1576、console0。证据在
   `shots/2026-08-06/sidebar-primary-action-label-current/`。
+
+## 2026-08-06 — current-head Sidebar primary-action icon closure
+
+- New thread/Search current Web均15×15、leftInset8.5、foreground/89；Lynx几何已
+  exact但full foreground。Settings Web为15×15 central settings、foreground/95，
+  Lynx仍是16×19 text `⚙`、muted60。
+- shared leading owner补opacity.89，footer scope覆盖.95；Settings call site换为
+  generated `SettingsIcon` size15。current Web/Lynx-for-Web三项均15×15、
+  leftInset8.5，tone语义一致；PNG1280×820、errors空。
+- focused landing fidelity **1 file / 2 tests**，configured Lynx-for-Web与
+  Native/Desktop builds通过。exact-owned Native bundle `927d8c91…`，
+  localhost:8904/session1；footer leading16×16/opacity.95，Settings SVG15×15、
+  theme foreground raw content，raw2560×1576、console0。同class New/Search
+  numeric Native不冒充，由Browser三项+shared source contract闭环。证据在
+  `shots/2026-08-06/sidebar-primary-action-icon-current/`。

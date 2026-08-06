@@ -972,6 +972,23 @@ The retained replacement cells:
   `shots/2026-08-06/sidebar-primary-action-label-current/`.
 - Focused landing fidelity suite: 1 file, 2/2 tests; configured Lynx-for-Web
   and Native/Desktop production builds pass.
+- Shared sidebar primary-action leading icons now match Web's 15x15 optical
+  size and tone: New thread/Search use 89% inherited tone, while Settings uses
+  the footer's 95% tone. All three retain an 8.5px left inset inside 16px
+  leading shells.
+- Settings now renders the generated 15px Settings SVG instead of a 16x19 text
+  `⚙` at muted 60% tone. Current Web and Lynx-for-Web icon geometry/insets are
+  exact; both PNGs are 1280x820 and browser errors empty.
+- Exact-owned Native bundle `927d8c91…`, PID-derived
+  `localhost:8904/session 1`, retained the footer leading shell at 16x16,
+  opacity 0.95, and generated Settings icon at 15x15 with theme foreground
+  SVG content; raw frame is 2560x1576 and console empty. New thread/Search
+  numeric closure is provided by all-three current browser measurements plus
+  the shared owner/source contract; Native DOM retains the repeated leading
+  structures without an ambiguous same-class numeric claim. Evidence is under
+  `shots/2026-08-06/sidebar-primary-action-icon-current/`.
+- Focused landing fidelity suite: 1 file, 2/2 tests; configured Lynx-for-Web
+  and Native/Desktop production builds pass.
 
 ## Remaining work
 
