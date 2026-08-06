@@ -698,6 +698,17 @@ The retained replacement cells:
   under `shots/2026-08-06/composer-picker-rows-current/`.
 - Focused Menu/Extras invocation: 2 files, 11/11 tests; configured
   Lynx-for-Web and Native/Desktop production builds pass.
+- The composer Fast control now matches Web's 20x20/radius-8 geometry and
+  stable `Fast mode` accessibility label instead of the old 22x22/radius-6
+  dynamic Enable/Disable identity. Native keeps its 14px glyph adaptation.
+- Current Web and Lynx-for-Web controls are both 20x20/radius 8. Exact-owned
+  Native bundle `f9a8fb55…`, root PID `35730`, PID-derived
+  `localhost:8904/session 1`, and real Traits/Fast touches prove
+  false→true→false with restored explicit `aria-pressed=false`, a 2560x1576
+  frame, and empty console. Evidence is under
+  `shots/2026-08-06/composer-fast-toggle-current/`.
+- Focused composer/menu invocation: 3 files, 12/12 tests; configured
+  Lynx-for-Web and Native/Desktop production builds pass.
 
 ## Remaining work
 

@@ -6353,3 +6353,18 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   root PID5242、PID-derived localhost:8903/session1，real Model touch后
   popup/provider、raw2560×1576、console0。证据在
   `shots/2026-08-06/composer-picker-rows-current/`。
+
+## 2026-08-06 — current-head Composer Fast toggle closure
+
+- 剩余interactive literal审计发现Web Fast control为20×20/radius8、14px icon、
+  固定`Fast mode` label+`aria-pressed`；Lynx仍22×22/radius6且动态
+  Enable/Disable label。
+- Lynx owner改为20×20/radius8与固定label，保留14px `ϟ` Native glyph adaptation；
+  新focused adapter test锁geometry/label/false state。composer/menu focused
+  **3 files / 12 tests**，configured Lynx-for-Web与Native/Desktop builds通过。
+- current Web/Lynx-for-Web均20×20/radius8。Lynx-for-Web custom host省略false
+  `aria-pressed`属性，source/test与Native保留语义，不误报缺失。
+- exact-owned Native bundle `f9a8fb55…`，root PID35730、PID-derived
+  localhost:8904/session1；real touch打开Traits并验证Fast false→true，第二次real touch
+  恢复false，restored DOM明确label/pressed=false；raw2560×1576、console0。证据在
+  `shots/2026-08-06/composer-fast-toggle-current/`。

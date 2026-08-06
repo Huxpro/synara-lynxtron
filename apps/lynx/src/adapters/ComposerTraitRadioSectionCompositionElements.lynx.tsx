@@ -15,7 +15,7 @@ export function ComposerTraitFastModeToggleElement(props: {
   return (
     <view
       className={interaction.className}
-      aria-label={props.enabled ? 'Disable Fast mode' : 'Enable Fast mode'}
+      aria-label="Fast mode"
       aria-pressed={props.enabled}
       {...interaction.eventProps}
     >
