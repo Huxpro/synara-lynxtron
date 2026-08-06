@@ -937,12 +937,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid transparent;
   border-radius: 14px;
   background-color: var(--primary);
 }
 
 .ComposerPrimaryActionLynx--disabled {
-  opacity: 0.42;
+  opacity: 0.2;
 }
 
 .ComposerVoiceButtonLynx {
@@ -973,6 +974,12 @@
   color: var(--primary-foreground);
   font-size: 17px;
   font-weight: 700;
+}
+
+.ComposerPrimaryActionSendIconLynx {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
 
 .ComposerPrimaryActionLynx--sending .ComposerPrimaryActionGlyphLynx {

@@ -886,6 +886,24 @@ The retained replacement cells:
   under `shots/2026-08-06/composer-runtime-trigger-current/`.
 - Focused picker contract: 1 file, 3/3 tests; configured Lynx-for-Web and
   Native/Desktop production builds pass.
+- Composer disabled Send action now matches Web's 28x28 circular primary
+  control with a transparent 1px border, opacity 0.2, and the real 20x20
+  central `arrow-up` asset instead of a 17px bold text-arrow adaptation at
+  opacity 0.42.
+- The raw central icon is theme-colored with the active surface, preserving
+  contrast for custom themes. Current Web and Lynx-for-Web controls match on
+  size, fill, disabled opacity, and 20x20 icon geometry; both PNGs are
+  1280x820 and browser errors empty.
+- Exact-owned Native bundle `edc24d25…`, root PID `13040`, PID-derived
+  `localhost:8904/session 1`, retained disabled button/icon roles. Native
+  measured button 28x28 at opacity 0.2 and icon 20x20 with white arrow strokes;
+  raw frame is 2560x1576 and console empty. Compound Native VIEW radius/border
+  remains subject to the known DevTool zero-value boundary, so numeric circle
+  and transparent-border closure comes from source/test plus current
+  Lynx-for-Web. Evidence is under
+  `shots/2026-08-06/composer-send-action-current/`.
+- Focused picker contract: 1 file, 3/3 tests; configured Lynx-for-Web and
+  Native/Desktop production builds pass.
 
 ## Remaining work
 

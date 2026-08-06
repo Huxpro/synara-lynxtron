@@ -1,5 +1,8 @@
+import sendArrowSvg from '@synara-central-icons/arrow-up.svg?raw';
 import type { ReactNode } from 'react';
 
+import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
+import { useTheme } from './useTheme.lynx';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 
 interface ComposerHostElementProps {
@@ -89,6 +92,7 @@ export function ComposerPrimaryActionElement(props: {
   readonly mode: 'send' | 'sending' | 'stop';
   readonly onActivate: () => void;
 }) {
+  const { activeTheme } = useTheme();
   const isStop = props.mode === 'stop';
   const isSending = props.mode === 'sending';
   const label =
@@ -115,7 +119,13 @@ export function ComposerPrimaryActionElement(props: {
       ) : isStop ? (
         <view className="ComposerPrimaryActionStopGlyphLynx" />
       ) : (
-        <text className="ComposerPrimaryActionGlyphLynx">↑</text>
+        <svg
+          className="ComposerPrimaryActionSendIconLynx"
+          content={colorizeLynxSvg(
+            sendArrowSvg,
+            activeTheme.theme.surface
+          )}
+        />
       )}
     </view>
   );

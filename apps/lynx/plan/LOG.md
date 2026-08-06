@@ -6554,3 +6554,19 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   PID85026、PID-derived localhost:8904/session1；trigger118×28、glyph14×14、
   label11/16.5、chevron12×12，全部orange，raw2560×1576、console0。证据在
   `shots/2026-08-06/composer-runtime-trigger-current/`。
+
+## 2026-08-06 — current-head Composer Send action closure
+
+- current rendered disabled Send实测Web为28×28 circular primary、transparent
+  border1、opacity.2、真实20×20 central `arrow-up`；旧Lynx虽28×28但opacity.42，
+  使用17px/700 text `↑`，实际glyph约13.4×20。
+- Lynx改为raw `@synara-central-icons/arrow-up.svg?raw`，通过active theme surface
+  着色并渲染20×20 SVG；button补transparent border1、disabled opacity.2。
+  focused picker contract **1 file / 3 tests**，configured Lynx-for-Web与
+  Native/Desktop builds通过。Browser final button28×28/r14/border1/opacity.2、
+  icon20×20 white，PNG1280×820、errors空。
+- exact-owned Native bundle `edc24d25…`，root PID13040、PID-derived
+  localhost:8904/session1；button28×28 opacity.2、icon20×20且raw content白色stroke，
+  raw2560×1576、console0。Native compound VIEW radius/border仍按已登记DevTool
+  zero-value boundary，不冒充numeric Native proof。证据在
+  `shots/2026-08-06/composer-send-action-current/`。

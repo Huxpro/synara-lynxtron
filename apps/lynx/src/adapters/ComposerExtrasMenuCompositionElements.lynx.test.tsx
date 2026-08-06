@@ -96,6 +96,22 @@ describe('native composer attachment menu item', () => {
     expect(runtimeElementsSource).toContain(
       'ComposerRuntimeTriggerChevronLynx'
     );
+    const inputElementsSource = readFileSync(
+      new URL('./ComposerInputCompositionElements.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(inputElementsSource).toContain(
+      "import sendArrowSvg from '@synara-central-icons/arrow-up.svg?raw';"
+    );
+    expect(inputElementsSource).toContain(
+      'className="ComposerPrimaryActionSendIconLynx"'
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerPrimaryActionLynx--disabled\s*\{[^}]*opacity:\s*0\.2;/s
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerPrimaryActionSendIconLynx\s*\{[^}]*width:\s*20px;[^}]*height:\s*20px;/s
+    );
     expect(primitiveStyles).toMatch(
       /\.LxMenuItem\s*\{[^}]*border-radius:\s*8px;/s
     );
