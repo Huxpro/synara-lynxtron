@@ -1075,9 +1075,9 @@ The retained replacement cells:
   `localhost:8902/session 1`, directly measures a 122px thumb border box rather
   than the previous 2px sliver; raw frame is 2560x1576 and console empty.
   Evidence is under `shots/2026-08-06/sidebar-segmented-thumb-current/`.
-- The same audit found Lynx does not project the Web Projects Sort/Add toolbar.
-  That is a real shared-controller workflow gap, not a styling-only residual;
-  it remains explicit rather than being masked with inert buttons.
+- The same audit initially found that Lynx did not project the Web Projects
+  Sort/Add toolbar. The Add and Sort workflow closures below now supersede that
+  intermediate gap disposition.
 - Sidebar segmented material now follows Web's recessed 10px track / raised
   8px thumb hierarchy with theme-safe borders and matching light/dark shadow
   strengths. An intermediate border patch shrank the control; final Lynx
@@ -1104,8 +1104,8 @@ The retained replacement cells:
   open frame and warning/error console are clean.
   No project-create command was submitted during evidence collection. Evidence
   is under `shots/2026-08-06/sidebar-project-add-current/`.
-- Projects Sort remains a separate shared-controller workflow gap and is not
-  represented by an inert placeholder.
+- Projects Sort was retained as a separate shared-controller gap after the Add
+  slice, then closed by the canonical storage/menu workflow below.
 - Sidebar segmented button/label vertical metrics now match Web exactly:
   27.25px track, 21.25px buttons, 2px label insets, and
   11.5px/17.25px/500 typography. Projects and Studio retain their exact +4px /
