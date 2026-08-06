@@ -23,4 +23,11 @@ describe('Synara logo adapter', () => {
       "...classNames.filter((value) => value !== 'size-3.5')"
     );
   });
+
+  it('embeds the exact secondary token for the titlebar mark', () => {
+    expect(source).toContain(
+      "classNames.includes(\n    'text-[var(--color-text-foreground-secondary)]'"
+    );
+    expect(source).toContain('svgColors.secondaryForeground');
+  });
 });

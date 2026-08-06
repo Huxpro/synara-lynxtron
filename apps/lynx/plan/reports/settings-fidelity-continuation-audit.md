@@ -1222,6 +1222,17 @@ The retained replacement cells:
   directly measure matching 46px/20px header geometry; the Native content edge
   starts at x=276 from the x=256 main column. Both consoles are clean and the
   Native frame remains 2560x1640.
+- Electron paints the titlebar mark with the derived secondary foreground at
+  host opacity 0.8. Lynx previously embedded full foreground in SVG content,
+  so its mark was visibly darker despite carrying the same CSS classes.
+- A lightweight shared `resolveTextForegroundSecondary()` now owns the exact
+  derivation for CSS and non-CSS renderers. The initial full-token-builder
+  import increased the Lynx bundle by about 27kB and was rejected; the final
+  implementation adds only about 1.2kB.
+- Exact-owned Native PID `81728`, PID-derived `localhost:8903/session 1`,
+  embeds `rgba(13, 13, 13, 0.598)` in every titlebar logo path and resolves
+  14x14 at opacity 0.8, matching Electron's rounded computed value. Console is
+  empty.
 
 ## Remaining work
 

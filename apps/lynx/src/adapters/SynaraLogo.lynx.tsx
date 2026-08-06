@@ -22,6 +22,9 @@ export function SynaraLogo({
   const { svgColors } = useTheme();
   const classNames = className?.split(/\s+/).filter(Boolean) ?? [];
   const hasSharedSidebarSize = classNames.includes('size-3.5');
+  const usesSecondaryForeground = classNames.includes(
+    'text-[var(--color-text-foreground-secondary)]'
+  );
   const resolvedClassName = [
     'shrink-0',
     'text-foreground',
@@ -32,7 +35,11 @@ export function SynaraLogo({
   return (
     <svg
       className={resolvedClassName}
-      content={synaraLogoContent(svgColors.foreground)}
+      content={synaraLogoContent(
+        usesSecondaryForeground
+          ? svgColors.secondaryForeground
+          : svgColors.foreground
+      )}
       accessibility-label={ariaLabel}
       style={{
         ...(hasSharedSidebarSize ? { width: '14px', height: '14px' } : {}),

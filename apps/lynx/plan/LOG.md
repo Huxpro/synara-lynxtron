@@ -6969,3 +6969,9 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - Web CDP与exact-owned Native bundle current-head、PID-derived
   localhost:8905/session1均直接测header 46px/padding20；Native content x276相对main
   origin256，raw2560×1640、两端console0。
+- titlebar logo paint此前也不一致：Electron secondary foreground约alpha.596再乘
+  opacity.8；Lynx SVG embed full foreground再乘.8。抽轻量shared
+  `resolveTextForegroundSecondary()`供CSS token builder与Lynx SVG共用。
+- 首版引入完整resolved token builder使bundle +27kB，按performance-first拒绝；
+  final仅+约1.2kB（3063.7kB）。owned PID81728→localhost:8903/session1，
+  SVG paths embed exact rgba(13,13,13,.598)，host 14×14/opacity.8，console0。

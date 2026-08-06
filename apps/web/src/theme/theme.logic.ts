@@ -861,6 +861,14 @@ export function buildResolvedThemeTokens(
   };
 }
 
+export function resolveTextForegroundSecondary(
+  theme: ChromeTheme,
+  variant: ThemeVariant,
+): string {
+  const contrast = normalizeContrastStrength(theme.contrast, variant);
+  return formatRgba(parseHexColor(theme.ink), 0.65 + contrast * 0.1);
+}
+
 function buildComputedTheme(theme: ChromeTheme, variant: ThemeVariant) {
   const contrast = normalizeContrastStrength(theme.contrast, variant);
   const surface = parseHexColor(theme.surface);
@@ -1137,7 +1145,7 @@ function buildLightDerivedTokens(theme: ReturnType<typeof buildComputedTheme>) {
     textButtonSecondary: theme.theme.ink,
     textButtonTertiary: formatRgba(theme.ink, 0.45 + theme.contrast * 0.1),
     textForeground: theme.theme.ink,
-    textForegroundSecondary: formatRgba(theme.ink, 0.65 + theme.contrast * 0.1),
+    textForegroundSecondary: resolveTextForegroundSecondary(theme.theme, theme.variant),
     textForegroundTertiary: formatRgba(theme.ink, 0.45 + theme.contrast * 0.1),
   };
 }
@@ -1192,7 +1200,7 @@ function buildDarkDerivedTokens(theme: ReturnType<typeof buildComputedTheme>) {
     textButtonSecondary: mixHex(theme.theme.ink, theme.theme.surface, 0.7 + theme.contrast * 0.1),
     textButtonTertiary: formatRgba(theme.ink, 0.45 + theme.contrast * 0.1),
     textForeground: theme.theme.ink,
-    textForegroundSecondary: formatRgba(theme.ink, 0.65 + theme.contrast * 0.1),
+    textForegroundSecondary: resolveTextForegroundSecondary(theme.theme, theme.variant),
     textForegroundTertiary: formatRgba(theme.ink, 0.42 + theme.contrast * 0.13),
   };
 }

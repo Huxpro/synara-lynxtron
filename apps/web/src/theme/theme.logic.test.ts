@@ -18,6 +18,7 @@ import {
   parseThemeShareString,
   parseThemeShareStringForVariant,
   resolveThemePack,
+  resolveTextForegroundSecondary,
   setThemeCodeThemeId,
   updateThemePackFromShareString,
 } from "./theme.logic";
@@ -336,6 +337,15 @@ describe("code theme seeds", () => {
 });
 
 describe("buildThemeCssVariables", () => {
+  it("shares the exact secondary foreground derivation with non-CSS renderers", () => {
+    for (const variant of ["light", "dark"] as const) {
+      const pack = resolveThemePack(DEFAULT_THEME_STATE, variant);
+      expect(resolveTextForegroundSecondary(pack.theme, variant)).toBe(
+        buildResolvedThemeTokens(pack, variant).derived.textForegroundSecondary,
+      );
+    }
+  });
+
   it("keeps informative status text at normal-text contrast in both variants", () => {
     for (const variant of ["light", "dark"] as const) {
       const theme = DEFAULT_THEME_STATE.chromeThemes[variant];

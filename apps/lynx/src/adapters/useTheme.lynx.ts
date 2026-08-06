@@ -2,6 +2,7 @@ import { useEffect, useState } from '@lynx-js/react';
 import {
   DEFAULT_THEME_STATE,
   resolveThemePack,
+  resolveTextForegroundSecondary,
   resolveThemeVariant,
   serializeThemeState,
   setThemeCodeThemeId,
@@ -66,6 +67,10 @@ export function useTheme() {
     svgColors: {
       foreground: activeTheme.theme.ink,
       mutedForeground: withOpacity(activeTheme.theme.ink, 0.6),
+      secondaryForeground: resolveTextForegroundSecondary(
+        activeTheme.theme,
+        resolvedTheme
+      ),
     },
     theme: themeState.mode,
     setTheme: (mode: ThemeMode) =>

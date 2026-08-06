@@ -44,5 +44,17 @@ Status: retained current-head Electron authority and exact-owned Native evidence
   measure 46px height and 20px horizontal padding. The Native content edge is
   x=276 from the x=256 main-column origin, exactly matching Electron. The
   final frame remains 2560x1640 and both runtime consoles are clean.
+- The titlebar mark also had a paint-owner mismatch. Electron uses the derived
+  secondary foreground (`rgba(13,13,13,0.596)`) at host opacity 0.8, while the
+  Lynx SVG embedded full foreground and only applied the 0.8 host opacity.
+- A lightweight shared `resolveTextForegroundSecondary()` now owns the exact
+  light/dark derivation used by both the CSS token builder and Lynx SVG paint.
+  This avoided the rejected first implementation, which imported the complete
+  resolved-token builder and increased the Lynx bundle by about 27kB.
+- Final bundle size is 3063.7kB, about 1.2kB above the pre-tone build. Native
+  PID `81728`, PID-derived `localhost:8903/session 1`, embeds
+  `rgba(13, 13, 13, 0.598)` in every logo path and resolves 14x14 at opacity
+  0.8. Electron reports the equivalent rounded CSS color and same opacity.
+  Native warning/error console output is empty.
 - Cleanup: the exact-owned Native process exited after capture. Unrelated
   Lynxtron clients were not touched.
