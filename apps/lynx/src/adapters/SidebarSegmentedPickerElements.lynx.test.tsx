@@ -26,5 +26,8 @@ describe('sidebar segmented picker Lynx chrome', () => {
     expect(styles).toMatch(
       /\.SidebarSegmentedLabel\s*\{[^}]*font-size:\s*11\.5px;[^}]*font-weight:\s*500;[^}]*line-height:\s*17\.25px;/s
     );
+    expect(styles).not.toMatch(
+      /\.SidebarSegmentedButton\.ui-focus\s*\{[^}]*(?:border|box-shadow):/s
+    );
   });
 });

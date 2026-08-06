@@ -1117,6 +1117,15 @@ The retained replacement cells:
   warning/error console. Its non-raised screenshot timed out and is explicitly
   not claimed. Evidence is under
   `shots/2026-08-06/sidebar-segmented-label-current/`.
+- Sidebar segmented keyboard focus no longer changes layout or paints a double
+  ring. Lynx previously added a one-pixel border on top of the platform
+  outline, widening the 113px segment to 114px; platform outline ownership now
+  matches Web and preserves the exact 113x21.25 geometry.
+- Real Web and Lynx-for-Web focus-visible frames are 1280x820 with empty error
+  logs. Exact-owned Native bundle `d4ab19a7…`, PID-derived
+  `localhost:8902/session 1`, retains the 113x21.25 zero-border/no-shadow base
+  button and an empty console. Native focused visuals are not claimed.
+  Evidence is under `shots/2026-08-06/sidebar-segmented-focus-current/`.
 
 ## Remaining work
 

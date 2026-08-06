@@ -6819,3 +6819,17 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   active button113×21.25，label computed11.5/17.25/500，box按DevTool取整18，
   console0。non-raised screenshot无frame而拒绝，不抬窗/不循环重试。证据在
   `shots/2026-08-06/sidebar-segmented-label-current/`。
+
+## 2026-08-06 — current-head Sidebar segmented focus closure
+
+- 真实Tab focus暴露Lynx custom focus border与Browser默认outline叠加：按钮从
+  113×21.25变成114×21.25并出现double seam；Web只保留platform 1px auto outline，
+  尺寸不变。
+- 删除`.SidebarSegmentedButton.ui-focus` layout border，让platform focus indicator
+  单独持有ring。final Web/Lynx-for-Web均focused 113×21.25、border0、
+  box-shadow none、auto outline1；PNG1280×820、errors空。
+- focused **1 file / 1 test**，configured Lynx-for-Web与Native/Desktop builds通过。
+  exact-owned Native bundle `d4ab19a7…`，PID-derived localhost:8902/session1；
+  base button113×21.25、border0、无shadow、console0。DevTool无retained keyboard
+  focus command，不冒充Native focused visual proof。证据在
+  `shots/2026-08-06/sidebar-segmented-focus-current/`。
