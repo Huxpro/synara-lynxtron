@@ -584,6 +584,25 @@ The retained replacement cells:
   executable full scan produced no diagnostics for either changed React component:
   `apps/lynx/src/app/SettingsUsagePanel.tsx` or
   `apps/web/src/components/settings/ProviderUsageSettingsPanel.tsx`.
+- The current-head Command K recheck separated old atlas noise from real
+  residuals. Input text was already 12px and row labels were already 14/20;
+  the inherited 16px/normal container values were not text owners. The real
+  differences were the panel's 12px top corners versus Web 14px and command
+  rows' 8px radius versus Web 10px.
+- The shared Lynx Command primitive now owns 14px panel corners and 10px item
+  radius. `CommandItem` strips the shared Web-only `rounded-lg` utility while
+  preserving all other call-site classes, preventing generated utility CSS
+  from overriding the primitive. Final Lynx-for-Web computed styles are
+  exactly 14px and 10px; both final browser frames are 1280x820 with empty
+  error logs.
+- Exact-owned Native bundle `3c73de57…`, root PID `78314`, PID-derived
+  `localhost:8903/session 1`, and a real Search-control touch retained seven
+  roles, the current row class without `rounded-lg`, a 2560x1576 frame, and an
+  empty warning/error console. Native DevTool still returns 0px radius for
+  compound `VIEW` nodes, so Native numeric radius is not claimed. Evidence is
+  under `shots/2026-08-06/command-k-current/`.
+- Focused Command/composition suites: 2 files, 10/10 tests; configured
+  Lynx-for-Web and Native/Desktop production builds pass.
 
 ## Remaining work
 

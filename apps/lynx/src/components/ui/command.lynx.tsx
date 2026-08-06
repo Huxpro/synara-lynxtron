@@ -50,6 +50,14 @@ const CommandDialogOpenContext = createContext<{
   readonly onOpenChange?: (open: boolean) => void;
 }>({ open: false });
 
+function commandItemClassName(className: string | undefined): string | undefined {
+  if (!className) return className;
+  return className
+    .split(/\s+/)
+    .filter((token) => token && token !== 'rounded-lg')
+    .join(' ');
+}
+
 export function CommandDialog(props: {
   children?: ReactNode;
   open?: boolean;
@@ -318,7 +326,7 @@ export function CommandItem(props: ChildrenProps & {
   const interaction = useLynxInteractiveState({
     baseClassName: cx(
       'LxCommandItem',
-      props.className,
+      commandItemClassName(props.className),
       command.highlightedValue === props.value && 'LxCommandItem--highlighted',
       props.disabled && 'LxCommandItem--disabled'
     ),

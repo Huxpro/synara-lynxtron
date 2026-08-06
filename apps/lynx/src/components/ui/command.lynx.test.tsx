@@ -79,6 +79,12 @@ describe('Lynx CommandItem interaction contract', () => {
       /\.LxDialogViewport\.LxCommandDialogViewport\s*\{[^}]*padding-top:\s*4vh;[^}]*padding-bottom:\s*15vh;/s
     );
     expect(primitiveStyles).toMatch(
+      /\.LxCommandPanel\s*\{[^}]*border-top-left-radius:\s*14px;[^}]*border-top-right-radius:\s*14px;/s
+    );
+    expect(primitiveStyles).toMatch(
+      /\.LxCommandItem\s*\{[^}]*border-radius:\s*10px;/s
+    );
+    expect(primitiveStyles).toMatch(
       /\.LxCommandFooter\s*\{[^}]*flex-direction:\s*row;[^}]*justify-content:\s*space-between;/s
     );
   });
@@ -170,6 +176,24 @@ describe('Lynx CommandItem interaction contract', () => {
 
     fireEvent.tap(item);
     expect(onClick).toHaveBeenCalledTimes(2);
+  });
+
+  it('keeps the primitive as the single command item radius owner', () => {
+    render(
+      <Command>
+        <CommandItem
+          value="first"
+          className="cursor-pointer rounded-lg px-2.5"
+          onClick={() => {}}
+        >
+          <text>First</text>
+        </CommandItem>
+      </Command>
+    );
+
+    expect(commandItem().getAttribute('class')).toContain('cursor-pointer');
+    expect(commandItem().getAttribute('class')).toContain('px-2.5');
+    expect(commandItem().getAttribute('class')).not.toContain('rounded-lg');
   });
 
   it('keeps disabled items unfocusable and handler-free', () => {

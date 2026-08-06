@@ -6217,3 +6217,26 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   2 projects、0 threads、projector sequence2。SQLite main-file checkpoint caveat沿用
   empty Thread记录，不伪称byte-exact。证据在
   `shots/2026-08-06/kanban-project-current/`。
+
+## 2026-08-06 — current-head Command K primitive closure
+
+- 旧P10 atlas的Command K候选先经current-head同snapshot实测，不按历史值直接patch。
+  Web/Lynx-for-Web均通过rendered sidebar Search真实click打开；同源staging的served
+  bundle hash与build artifact一致，viewport/PNG均1280×820，errors空。
+- 历史input/row typography告警大部分是container继承噪声：Web input 12/18，Lynx
+  textarea已12px；Web row label 14/20，Lynx真实`X-TEXT` label也已14/20。未为这些
+  已对齐值增加重复override。
+- 两个真实primitive residual为panel top radius 12→Web14、item radius8→Web10。
+  `.LxCommandPanel`与`.LxCommandItem`已更新为14/10。第一次复测item仍为8，定位到
+  shared Web composition的`rounded-lg` utility覆盖primitive；修复放在Lynx
+  `CommandItem` adapter seam，仅过滤该radius token，保留cursor/gap/padding等classes，
+  使primitive成为single owner。final computed panel14、item10。
+- focused Command/composition suites **2 files / 10 tests**，configured
+  Lynx-for-Web与Native/Desktop production builds通过。
+- exact-owned Native configured bundle `3c73de57…`，root PID78314、
+  PID-derived localhost:8903/session1，session URL为current staged bundle。
+  `Input.emulateTouchFromMouseEvent`真实touch Search打开Command K；retained row class
+  已无`rounded-lg`，7 roles、raw2560×1576、console 0。当前DevTool对compound
+  Native VIEW统一返回radius0，故只声明bundle/class/interaction/screenshot/console
+  直接证据，不伪称Native numeric radius。证据在
+  `shots/2026-08-06/command-k-current/`。
