@@ -74,6 +74,7 @@ import {
 import { useLynxInteractiveState } from '../ui/interactive-state.lynx';
 import { deriveSidebarSections } from './sidebar.logic';
 import { SidebarSearchPaletteLynx } from './SidebarSearchPalette.lynx';
+import { LYNX_PRIMARY_SHORTCUT_LABELS } from './sidebarShortcuts';
 import { focusLynxElementById } from '../ui/focus.lynx';
 import {
   buildNativeThreadContextCommand,
@@ -661,7 +662,8 @@ export function Sidebar({
             kanbanActive={activePath === '/kanban'}
             pullRequestsActive={activePath === '/pull-requests'}
             pullRequestsBadge={pullRequestsReviewBadge}
-            searchShortcutLabel="⌘K"
+            newThreadShortcutLabel={LYNX_PRIMARY_SHORTCUT_LABELS.newThread}
+            searchShortcutLabel={LYNX_PRIMARY_SHORTCUT_LABELS.search}
             onCreateThread={() => navigate('/')}
             onCreateStudioChat={() => navigate('/studio')}
             onOpenSearch={() => setSearchPaletteOpen(true)}

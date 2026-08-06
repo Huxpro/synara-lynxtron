@@ -989,6 +989,22 @@ The retained replacement cells:
   `shots/2026-08-06/sidebar-primary-action-icon-current/`.
 - Focused landing fidelity suite: 1 file, 2/2 tests; configured Lynx-for-Web
   and Native/Desktop production builds pass.
+- Sidebar New thread and Search trailing shortcuts now use the same segmented
+  keyboard anatomy as Web. New thread was previously omitted in Lynx and
+  Search was a joined 10px `⌘K` text node; both now project from the shared
+  Lynx shortcut-label source into separate key nodes.
+- Current Web and Lynx-for-Web measurements are exact for both actions:
+  44x20 group, two 20x20 keys, 4px gap, 8px row-right inset, 12px/16px/500
+  typography, 4px radius, and matching light muted tokens. Both retained
+  browser frames are 1280x820 and browser error logs are empty.
+- Exact-owned Native bundle `3ad25303…`, PID-derived
+  `localhost:8902/session 1`, retained both 44x20 groups and all four 20x20
+  key nodes. Native resolves the keys to 12px/16px/500 and reports every
+  corner radius as 4px; the raw frame is 2560x1576 and warning/error console
+  empty. Evidence is under
+  `shots/2026-08-06/sidebar-primary-shortcut-current/`.
+- Focused shortcut suite: 1 file, 2/2 tests; configured Lynx-for-Web and
+  Native/Desktop production builds pass.
 
 ## Remaining work
 

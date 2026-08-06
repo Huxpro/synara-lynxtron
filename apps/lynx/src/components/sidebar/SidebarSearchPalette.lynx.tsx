@@ -14,9 +14,10 @@ import {
   buildNativeSearchImportThreadCreateCommand,
   buildNativeSearchProjectCreateCommand,
 } from './sidebarSearchActions.logic';
+import { LYNX_PRIMARY_SHORTCUT_LABELS } from './sidebarShortcuts';
 
 const LYNX_SEARCH_ACTIONS = buildSidebarSearchActions({
-  newChatShortcutLabel: '⌘N',
+  newChatShortcutLabel: LYNX_PRIMARY_SHORTCUT_LABELS.newThread,
   includeNewThread: true,
   includeAddProject: true,
   includeImportThread: true,

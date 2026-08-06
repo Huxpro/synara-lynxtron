@@ -23,8 +23,15 @@ export function SidebarPrimaryNavigationShortcutElement({
   readonly parts: readonly string[];
 }) {
   return (
-    <text className="AppSidebarShortcut">
-      {parts.join('')}
-    </text>
+    <view className="AppSidebarShortcut">
+      {parts.map((part, index) => (
+        <text
+          key={`${part}-${index}`}
+          className="AppSidebarShortcutKey"
+        >
+          {part}
+        </text>
+      ))}
+    </view>
   );
 }

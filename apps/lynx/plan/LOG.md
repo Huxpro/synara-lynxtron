@@ -6653,3 +6653,21 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   theme foreground raw content，raw2560×1576、console0。同class New/Search
   numeric Native不冒充，由Browser三项+shared source contract闭环。证据在
   `shots/2026-08-06/sidebar-primary-action-icon-current/`。
+
+## 2026-08-06 — current-head Sidebar primary shortcut closure
+
+- current Web的New thread/Search trailing shortcut均为44×20 group，两个20×20
+  Kbd pills、gap4、row right inset8；key为12/16/500、r4、muted foreground/background。
+  Lynx此前New thread完全漏传shortcut，Search则把parts join成10px plain `⌘K`。
+- 新增单一`LYNX_PRIMARY_SHORTCUT_LABELS`来源，Sidebar同时传New thread/Search，
+  Search palette复用同一`⌘N`；adapter改为逐part TEXT key anatomy，不再joined text。
+- focused shortcut **1 file / 2 tests**，configured Lynx-for-Web与
+  Native/Desktop builds通过。Lynx-for-Web两组final均44×20、key20×20、gap4、
+  inset8、12/16/500、r4，light tokens与Web exact；Web/Lynx PNG1280×820、
+  browser errors空。
+- exact-owned Native bundle `3ad25303…`，root/child由本轮隔离HOME持有，
+  PID-derived localhost:8902/session1；两组44×20、四个key均20×20、
+  typography12/16/500、四角r4，raw2560×1576、warning/error console0。
+  Native跟随system dark，仅用于structure/geometry/typography/runtime-clean证明；
+  同主题颜色比较使用Web/Lynx-for-Web light frames。证据在
+  `shots/2026-08-06/sidebar-primary-shortcut-current/`。
