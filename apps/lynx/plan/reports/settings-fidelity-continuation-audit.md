@@ -17,7 +17,8 @@ complete.
 
 | Requirement | Concrete evidence | Status |
 | --- | --- | --- |
-| Preserve the previously certified shell, Composer, routes, controls, and motion | Existing P10 atlas, focused suites, current production builds | PASS |
+| Preserve the previously certified shell, Composer, routes, controls, and motion | The old P10 atlas is historical after the continuation changes; current-head Landing/Header is refreshed below, while Thread/Kanban/Pull Requests still require current-head route rechecks before this global row can pass | PARTIAL |
+| Landing shared chat-header typography matches Web on current head | `SharedChatHeaderIdentityTitle` now owns the Web 12px/18px/400 identity; current-head Web/Lynx-for-Web are exact and exact-owned Native computes the same line box in `shots/2026-08-06/landing-header-current/` | PASS |
 | Fix provider-health banner residual | `efa9b773`, `33e3ca15`; `shots/2026-08-05/provider-health-banner-current/` | PASS |
 | Fix Kanban overview residual | `b463ff26`; `shots/2026-08-05/kanban-overview-current/` | PASS |
 | Converge Settings Appearance | `cfdd6db4`; current-head Lynx frame corrected in `52d55bf7` | PASS |
@@ -118,7 +119,7 @@ complete.
 | Shared Button icon-label spacing matches Web | default/sm/xs gaps are 8/6/4px; mixed Appearance labels retain `LxButton__text` styling | PASS |
 | Settings large card radius resolves at runtime | the Lynx root defines shared `--radius-lg: 10px`; AppSnap, Skills, and Worktrees representative surfaces compute to 10px, while Advanced/Integrations consumers are statically covered | PASS — current-head runtime and consumer audit |
 | Settings sidebar search matches Web intent | shared ranking/index, real Lynx input/results/selection/row targeting, canonical section icons, Web-owned horizontal gutter, Web/Lynx filtered evidence, Native default anatomy | PASS — Native filtered text entry not claimed |
-| Populated destructive/mutation paths are visually certified without fabricated data | canonical snapshot has no managed worktree/integration/archived rows; logic/RPC tests cover the product paths and direct SQLite fixtures are forbidden | NOT APPLICABLE — no safe canonical populated state |
+| Populated destructive/mutation paths are visually certified without fabricated data | reversible canonical product paths now cover Archived create/archive/delete-confirm, Worktrees create/remove, Integrations create/revoke anatomy, Profile model/plugin events, and local Usage archives in the current-head evidence directories | PASS |
 | Full final heavy pass | AGENTS requires `bun fmt`, `bun lint`, `bun typecheck`; current conversation does not explicitly authorize running them | **BLOCKED BY INSTRUCTION** |
 | Worktree clean and local HEAD equals origin | finalization command verifies local HEAD equals origin; only excluded isolated `.p10-view*` runtime directories remain | PASS |
 
@@ -472,6 +473,23 @@ The retained replacement cells:
   `localhost:8904/session 1`, and `2880x1736` capture retain the complete
   warning/meter/lines anatomy with an empty console. Evidence is under
   `shots/2026-08-06/usage-local-fallback-current/`.
+- Current-head global-shell recheck no longer treats the 2026-08-04 P10 matrix
+  as proof after the shared continuation changes. The first refreshed Landing
+  pair exposed a real shared-header line-box residual: Web `New Chat` was
+  `12/18/400` at `298/14/55.0625/18`, while Lynx inherited `normal` and rendered
+  `298/15.5/55.0625/15`. `SharedChatHeaderIdentityTitle`, consumed by both
+  Landing and Thread, now owns the explicit 18px line-height.
+- Final current-head Web/Lynx-for-Web title geometry and typography are exact.
+  The exact-owned Native bundle `0738aa52…`, root PID `28092`, descendant
+  `28096`, PID-derived `localhost:8903/session 1`, and `2560x1576` capture
+  resolve the title to `296/14/56/18` and `12/18/400`, with an empty Native
+  warning/error console. Browser page errors are empty; the only Lynx-for-Web
+  console warning is the named upstream initialization deprecation.
+- The Web retained state was reached through the rendered `Open new chat home`
+  keyboard path. Web represents that state with a client-only draft UUID while
+  preserving semantic `new-chat`; SQLite/settings hashes remained unchanged.
+  No hidden route state or fixture was injected. Evidence is under
+  `shots/2026-08-06/landing-header-current/`.
 - Settings focused continuation: 14 files, 50/50 tests.
 - AppSnap final focused check: 1 file, 2/2 tests.
 - Canonical taxonomy/explicit-owner gate: 1 file, 11/11 tests.
@@ -513,16 +531,19 @@ The retained replacement cells:
 
 ## Remaining work
 
-1. Run the final heavy pass only after explicit authorization permits
+1. Refresh current-head Thread, Kanban, and Pull Requests route evidence instead
+   of using the historical P10 atlas as a proxy; close any measured residuals.
+2. Run the final heavy pass only after explicit authorization permits
    `bun fmt`, `bun lint`, and `bun typecheck`.
-2. Re-run this prompt-to-artifact audit, verify local/remote parity and cleanup,
+3. Re-run this prompt-to-artifact audit, verify local/remote parity and cleanup,
    then mark the active goal complete only if no MISSING/PARTIAL/PENDING rows
    remain.
 
 ## Current disposition
 
 The implementation objective has materially advanced and every canonical
-Settings section has a real Lynx owner. The current global sidebar correction
-is covered by a fresh full matrix. The active thread goal is **not yet
-complete** because the required heavy pass remains blocked by the current
-instruction boundary.
+Settings section has a real Lynx owner. Landing/Header now has current-head
+three-client proof rather than historical proxy evidence. The active thread
+goal is **not yet complete** because Thread/Kanban/Pull Requests still need
+current-head route rechecks and the required heavy pass remains blocked by the
+current instruction boundary.

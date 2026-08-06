@@ -6074,3 +6074,36 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   **6/6**。clones/processes/sessions均删除，normal SQLite `cd3e1e9e…`、settings
   `d221bb25…`、KV `f53a83aa…`、window `2dd961d3…` byte-exact。证据在
   `shots/2026-08-06/usage-local-fallback-current/`。
+
+## 2026-08-06 — current-head Landing shared header
+
+- continuation completion audit不再用8月4日P10 atlas代理后续shared primitive变更后的
+  current-head shell。首个刷新对象选择高频Landing shell，使用owned `60480` server、
+  trusted同源`localhost:8925`、同一`cd3e1e9e…` snapshot、light/comfortable、
+  1280×820 DPR1。Web/Lynx-for-Web bundles分别由`VITE_WS_URL`/
+  `SYNARA_WS_URL`显式绑定60480，未复用仍占8921的旧static process。
+- paired geometry发现旧atlas曾记录但未block的真实typography residual：
+  Web `New Chat`为12/18/400、`298/14/55.0625/18`，Lynx
+  `normal` line-height导致`298/15.5/55.0625/15`。owner定位到Landing与Thread共同
+  使用的`SharedChatHeaderIdentityTitle`，不是route margin；单一owner补18px
+  line-height后Web/Lynx exact `298/14/55.0625/18`，且heading/composer/tray anchors
+  未移动。
+- Web初始恢复历史selected thread；点击New thread在无project snapshot下正确打开
+  Create project dialog，未保留。关闭dialog/toast后，通过rendered
+  `Open new chat home` focus+Enter进入真实fresh home。Web当前产品用client-only draft
+  UUID表达该semantic `new-chat`状态；SQLite/settings hashes不变，证据明确记录为
+  `new-chat-draft`，未伪称literal `/`或注入history。
+- exact-owned Native configured bundle `0738aa52…`，root PID28092、descendant
+  28096、PID-derived `localhost:8903/session1`，session URL为current
+  `apps/lynx/dist/desktop/main.lynx.bundle`；raw2560×1576。DevTool直接读取title
+  node91：box `296/14/56/18`、computed 12/18/400，warning/error console空。
+  Native 255px sidebar与整数text measurement保留既有x映射，不加补偿offset。
+- screenshot helper首次传relative path；helper切换cwd后以ENOENT fail，判为harness
+  path bug，改absolute path后成功，无产品状态改变。Lynx-for-Web仅有已知upstream
+  initialization deprecation warning，Browser errors空。
+- owned server/static/Native/browser sessions退出，本轮Native clone删除；退出后8903
+  被09:17新启动的t3code实例复用，确认PID28092/28096均已退出后未触碰新owner。
+  normal SQLite `cd3e1e9e…`、settings `d221bb25…`、KV `f53a83aa…`、window
+  `2dd961d3…` byte-exact。focused shared-header **1/1**，Web 8,943 modules、
+  configured Lynx-for-Web与Native/Desktop builds通过。证据在
+  `shots/2026-08-06/landing-header-current/`。

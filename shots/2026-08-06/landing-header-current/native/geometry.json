@@ -1,0 +1,51 @@
+{
+  "client": "native",
+  "semanticRoute": "new-chat",
+  "viewport": {
+    "logicalWidth": 1280,
+    "logicalHeight": 788,
+    "dpr": 2
+  },
+  "anchors": {
+    "sidebar": {
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 255,
+        "height": 788
+      }
+    },
+    "title": {
+      "box": {
+        "x": 296,
+        "y": 14,
+        "width": 56,
+        "height": 18
+      }
+    },
+    "heading": {
+      "box": {
+        "x": 608,
+        "y": 391,
+        "width": 321,
+        "height": 35
+      }
+    },
+    "composer": {
+      "box": {
+        "x": 400,
+        "y": 445,
+        "width": 734,
+        "height": 93
+      }
+    },
+    "projectTrigger": {
+      "box": {
+        "x": 408,
+        "y": 544,
+        "width": 108,
+        "height": 18
+      }
+    }
+  }
+}
