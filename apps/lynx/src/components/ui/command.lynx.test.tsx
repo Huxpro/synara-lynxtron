@@ -79,6 +79,9 @@ describe('Lynx CommandItem interaction contract', () => {
       /\.LxDialogViewport\.LxCommandDialogViewport\s*\{[^}]*padding-top:\s*4vh;[^}]*padding-bottom:\s*15vh;/s
     );
     expect(primitiveStyles).toMatch(
+      /\.LxDialogPopup\.LxCommandDialogPopup\s*\{[^}]*border-radius:\s*18px;/s
+    );
+    expect(primitiveStyles).toMatch(
       /\.LxCommandPanel\s*\{[^}]*border-top-left-radius:\s*14px;[^}]*border-top-right-radius:\s*14px;/s
     );
     expect(primitiveStyles).toMatch(

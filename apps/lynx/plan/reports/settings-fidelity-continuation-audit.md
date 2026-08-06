@@ -624,6 +624,16 @@ The retained replacement cells:
   `shots/2026-08-06/extras-current/`.
 - Focused Menu/Extras suites: 2 files, 11/11 tests; configured Lynx-for-Web
   and Native/Desktop production builds pass.
+- The Command K follow-up closed the remaining outer-shell radius that the
+  prior panel/item slice had not changed: Web outer dialog 18px versus Lynx
+  16px. The Command contract now locks outer/panel/item radii at 18/14/10.
+- Configured Lynx-for-Web computes exactly 18px, 14px top corners, and 10px
+  after a real Search click. Exact-owned Native bundle `1579d964…`, root PID
+  `65639`, PID-derived `localhost:8903/session 1`, and a real Search touch
+  retained four roles, a 2560x1576 frame, and an empty warning/error console.
+  Evidence is under `shots/2026-08-06/command-k-outer-current/`.
+- Focused Command suite: 1 file, 9/9 tests; configured Lynx-for-Web and
+  Native/Desktop production builds pass.
 
 ## Remaining work
 

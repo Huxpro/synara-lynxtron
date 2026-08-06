@@ -203,7 +203,7 @@
   width: 576px;
   max-height: 420px;
   border-color: var(--color-border-light, var(--border));
-  border-radius: 16px;
+  border-radius: 18px;
   background-color: var(--color-background-surface-under, var(--popover));
   padding: 0;
   overflow: hidden;

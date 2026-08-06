@@ -6265,3 +6265,17 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   radius继续返回0，因此只声明source/test+Browser computed radius与Native
   bundle/class/interaction/geometry直接证据。证据在
   `shots/2026-08-06/extras-current/`。
+
+## 2026-08-06 — current-head Command K outer shell closure
+
+- Extras之后继续检查同一旧atlas机器差异，发现上一Command K刀只关闭panel14与item10，
+  outer `LxCommandDialogPopup`仍显式16，而Web current authority为18。
+- outer owner改为18，Command focused contract同时锁outer/panel/item **18/14/10**。
+  configured Lynx-for-Web通过rendered Search real click打开后computed exact 18、
+  `14 14 0 0`、10；PNG1280×820、errors空。
+- focused Command **1 file / 9 tests**，configured Lynx-for-Web与
+  Native/Desktop builds通过。exact-owned Native bundle `1579d964…`，
+  root PID65639、PID-derived localhost:8903/session1，real Search touch后保留
+  popup/panel/item，raw2560×1576、console0。Native compound VIEW radius不宣称；
+  source/test+Browser computed与Native bundle/class/interaction共同闭环。证据在
+  `shots/2026-08-06/command-k-outer-current/`。
