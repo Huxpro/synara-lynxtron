@@ -63,7 +63,13 @@ describe('sidebar list section header actions', () => {
       /\.SharedSidebarListSectionHeader\.ui-hover\s*\.SharedSidebarListSectionHeaderAction,\s*\.SharedSidebarListSectionHeaderAction\.ui-focus\s*\{[^}]*opacity:\s*1;[^}]*pointer-events:\s*auto;/s
     );
     expect(styles).toMatch(
-      /\.SharedSidebarListSectionHeaderActionIcon\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;/s
+      /\.SharedSidebarListSectionHeaderActionIcon\s*\{[^}]*position:\s*absolute;[^}]*top:\s*3px;[^}]*left:\s*3px;[^}]*width:\s*14px;[^}]*height:\s*14px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedSidebarListSectionHeaderActionIcon--foreground\s*\{[^}]*opacity:\s*0;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedSidebarListSectionHeaderAction\.ui-hover\s*\.SharedSidebarListSectionHeaderActionIcon--foreground,\s*\.SharedSidebarListSectionHeaderAction\.ui-focus\s*\.SharedSidebarListSectionHeaderActionIcon--foreground,\s*\.SharedSidebarListSectionHeaderAction\.ui-pressed\s*\.SharedSidebarListSectionHeaderActionIcon--foreground\s*\{[^}]*opacity:\s*1;/s
     );
     expect(sidebarSource).toContain(
       'elementId={ADD_PROJECT_TRIGGER_ELEMENT_ID}'

@@ -6878,3 +6878,16 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   supported touch打开Search，active row解析dark alpha.0352941、foreground rgb252、
   opacity1，raw2560×1576、console0。证据在
   `shots/2026-08-07/sidebar-primary-active-current/`。
+
+## 2026-08-07 — current-head Sidebar Projects action icon tone closure
+
+- Web sidebar central icons通过`currentColor`继承：default muted，hover/focus
+  foreground；Lynx raw SVG此前永久embed muted stroke，parent action color变化不生效。
+- Lynx action icon改为theme-safe muted/foreground双层，default显示muted，
+  hover/focus/pressed原子切到foreground。fresh Lynx-for-Web证明两action default
+  muted1/foreground0，Sort hover和Add keyboard focus均muted0/foreground1；
+  PNG1280×820、errors空。
+- focused **1 file / 4 tests**，configured Lynx-for-Web与Native/Desktop builds通过。
+  exact-owned Native bundle `3de82b29…`，PID-derived localhost:8901/session1；
+  supported pointer press时Sort发布`ui-pressed`，muted0/foreground1，console0。
+  证据在`shots/2026-08-07/sidebar-project-action-tone-current/`。

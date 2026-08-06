@@ -1155,6 +1155,14 @@ The retained replacement cells:
   `localhost:8901/session 1`, resolves the dark active surface/foreground,
   produces a 2560x1576 frame, and has an empty console. Evidence is under
   `shots/2026-08-07/sidebar-primary-active-current/`.
+- Projects Sort/Add icons now follow Web's currentColor hierarchy instead of
+  embedding muted stroke permanently. Theme-safe muted/foreground SVG layers
+  swap on hover, focus, and pressed states.
+- Fresh Lynx-for-Web hover/focus evidence and exact-owned Native pressed
+  evidence prove muted opacity 1→0 and foreground opacity 0→1 with clean
+  consoles. Native bundle `3de82b29…` was PID-derived at
+  `localhost:8901/session 1`. Evidence is under
+  `shots/2026-08-07/sidebar-project-action-tone-current/`.
 
 ## Remaining work
 

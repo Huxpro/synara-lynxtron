@@ -28,6 +28,24 @@ interface ChildrenProps {
   readonly children?: ReactNode;
 }
 
+function SidebarListSectionHeaderActionIcon(props: {
+  readonly content: string;
+}) {
+  const { svgColors } = useTheme();
+  return (
+    <>
+      <svg
+        className="SharedSidebarListSectionHeaderActionIcon SharedSidebarListSectionHeaderActionIcon--muted"
+        content={colorizeLynxSvg(props.content, svgColors.mutedForeground)}
+      />
+      <svg
+        className="SharedSidebarListSectionHeaderActionIcon SharedSidebarListSectionHeaderActionIcon--foreground"
+        content={colorizeLynxSvg(props.content, svgColors.foreground)}
+      />
+    </>
+  );
+}
+
 export function SidebarListSectionHeaderContainerElement({ children }: ChildrenProps) {
   const interaction = useLynxInteractiveState({
     baseClassName: 'SharedSidebarListSectionHeader LynxWebHoverOwner',
@@ -56,7 +74,6 @@ export function SidebarListSectionHeaderAddProjectElement(props: {
   readonly elementId?: string;
   readonly onActivate: () => void;
 }) {
-  const { svgColors } = useTheme();
   const interaction = useLynxInteractiveState({
     baseClassName: 'SharedSidebarListSectionHeaderAction',
     accessibleLabel: 'Add project',
@@ -68,10 +85,7 @@ export function SidebarListSectionHeaderAddProjectElement(props: {
       className={interaction.className}
       {...interaction.eventProps}
     >
-      <svg
-        className="SharedSidebarListSectionHeaderActionIcon"
-        content={colorizeLynxSvg(plusSvg, svgColors.mutedForeground)}
-      />
+      <SidebarListSectionHeaderActionIcon content={plusSvg} />
     </view>
   );
 }
@@ -86,17 +100,13 @@ export function SidebarListSectionHeaderSortElement(props: {
     value: SidebarThreadSortOrderValue
   ) => void;
 }) {
-  const { svgColors } = useTheme();
   return (
     <Menu>
       <MenuTrigger
         className="SharedSidebarListSectionHeaderAction"
         ariaLabel="Sort projects"
       >
-        <svg
-          className="SharedSidebarListSectionHeaderActionIcon"
-          content={colorizeLynxSvg(filterSvg, svgColors.mutedForeground)}
-        />
+        <SidebarListSectionHeaderActionIcon content={filterSvg} />
       </MenuTrigger>
       <MenuPopup
         side="bottom"

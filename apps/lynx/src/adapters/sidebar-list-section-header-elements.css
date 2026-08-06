@@ -34,6 +34,7 @@
 }
 
 .SharedSidebarListSectionHeaderAction {
+  position: relative;
   width: 20px;
   height: 20px;
   display: flex;
@@ -65,8 +66,33 @@
 }
 
 .SharedSidebarListSectionHeaderActionIcon {
+  position: absolute;
+  top: 3px;
+  left: 3px;
   width: 14px;
   height: 14px;
+}
+
+.SharedSidebarListSectionHeaderActionIcon--foreground {
+  opacity: 0;
+}
+
+.SharedSidebarListSectionHeaderAction.ui-hover
+  .SharedSidebarListSectionHeaderActionIcon--muted,
+.SharedSidebarListSectionHeaderAction.ui-focus
+  .SharedSidebarListSectionHeaderActionIcon--muted,
+.SharedSidebarListSectionHeaderAction.ui-pressed
+  .SharedSidebarListSectionHeaderActionIcon--muted {
+  opacity: 0;
+}
+
+.SharedSidebarListSectionHeaderAction.ui-hover
+  .SharedSidebarListSectionHeaderActionIcon--foreground,
+.SharedSidebarListSectionHeaderAction.ui-focus
+  .SharedSidebarListSectionHeaderActionIcon--foreground,
+.SharedSidebarListSectionHeaderAction.ui-pressed
+  .SharedSidebarListSectionHeaderActionIcon--foreground {
+  opacity: 1;
 }
 
 .SharedSidebarProjectSortPopup {
