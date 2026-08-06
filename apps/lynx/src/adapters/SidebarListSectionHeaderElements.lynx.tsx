@@ -114,7 +114,9 @@ export function SidebarListSectionHeaderSortElement(props: {
         className="SharedSidebarProjectSortPopup"
       >
         <MenuGroup>
-          <MenuGroupLabel>Sort projects</MenuGroupLabel>
+          <MenuGroupLabel className="SharedSidebarProjectSortGroupLabel">
+            Sort projects
+          </MenuGroupLabel>
           <MenuRadioGroup
             value={props.projectSortOrder}
             onValueChange={(value) =>
@@ -131,7 +133,9 @@ export function SidebarListSectionHeaderSortElement(props: {
           </MenuRadioGroup>
         </MenuGroup>
         <MenuGroup>
-          <MenuGroupLabel>Sort threads</MenuGroupLabel>
+          <MenuGroupLabel className="SharedSidebarProjectSortGroupLabel SharedSidebarProjectSortGroupLabel--secondary">
+            Sort threads
+          </MenuGroupLabel>
           <MenuRadioGroup
             value={props.threadSortOrder}
             onValueChange={(value) =>
