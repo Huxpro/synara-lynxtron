@@ -63,6 +63,27 @@ describe('Lynx-for-Web interaction state bridge', () => {
     expect(control.classList.contains('ui-focus')).toBe(false);
   });
 
+  it('maps pointer state for explicit non-focusable hover owners', () => {
+    const host = document.createElement('div');
+    document.body.append(host);
+    const root = host.attachShadow({ mode: 'open' });
+    const owner = document.createElement('div');
+    owner.classList.add('LynxWebHoverOwner');
+    const child = document.createElement('span');
+    owner.append(child);
+    root.append(owner);
+    installLynxWebInteractionStateBridge(root);
+
+    child.dispatchEvent(
+      new MouseEvent('mouseover', { bubbles: true, composed: true })
+    );
+    expect(owner.classList.contains('ui-hover')).toBe(true);
+    child.dispatchEvent(
+      new MouseEvent('mouseout', { bubbles: true, composed: true })
+    );
+    expect(owner.classList.contains('ui-hover')).toBe(false);
+  });
+
   it('does not remove interaction classes owned by the Lynx runtime', () => {
     const { child, control } = setup();
     control.classList.add('ui-hover', 'ui-focus');

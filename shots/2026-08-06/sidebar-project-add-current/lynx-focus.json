@@ -1,0 +1,7 @@
+{
+  "class": "SharedSidebarListSectionHeaderAction ui-focus",
+  "focusVisible": true,
+  "id": "synara-sidebar-add-project-trigger",
+  "label": "Add project",
+  "opacity": "1"
+}

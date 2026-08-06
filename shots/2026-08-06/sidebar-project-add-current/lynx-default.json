@@ -1,0 +1,6 @@
+{
+  "actionClass": "SharedSidebarListSectionHeaderAction",
+  "headerClass": "SharedSidebarListSectionHeader",
+  "opacity": "0",
+  "pointerEvents": "none"
+}

@@ -1,0 +1,24 @@
+{
+  "nodeId": 81,
+  "nodeName": "VIEW",
+  "attributes": {
+    "idSelector": "synara-sidebar-add-project-trigger",
+    "accessibility-element": "true",
+    "accessibility-label": "Add project",
+    "accessibility-traits": "button",
+    "focusable": "true",
+    "aria-disabled": "false",
+    "bindmouseenter": "67:0:bindmouseenter",
+    "bindblur": "67:0:bindblur",
+    "bindmouseleave": "67:0:bindmouseleave",
+    "bindkeydown": "67:0:bindkeydown",
+    "bindtap": "67:0:bindtap",
+    "bindmouseup": "67:0:bindmouseup",
+    "bindtouchstart": "67:0:bindtouchstart",
+    "bindmousedown": "67:0:bindmousedown",
+    "bindtouchend": "67:0:bindtouchend",
+    "bindtouchcancel": "67:0:bindtouchcancel",
+    "bindfocus": "67:0:bindfocus",
+    "class": "SharedSidebarListSectionHeaderAction"
+  }
+}

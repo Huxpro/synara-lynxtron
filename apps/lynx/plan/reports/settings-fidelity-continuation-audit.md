@@ -1090,6 +1090,22 @@ The retained replacement cells:
   2560x1576 raw frame and empty console. Numeric Native border/radius remains
   outside the compound VIEW DevTool boundary. Evidence is under
   `shots/2026-08-06/sidebar-segmented-chrome-current/`.
+- Projects header now exposes a real Add project action in Lynx rather than an
+  absent toolbar. It uses the exact Web 20x20/14x14/6px `plus-medium` anatomy,
+  default-hidden hover/focus reveal, complete accessibility/input bindings,
+  and the existing filesystem browser plus canonical project command path.
+- Real Lynx-for-Web pointer hover and Tab traversal reveal/focus the hidden
+  action. Current Web authority confirms the same action geometry and reveal
+  hierarchy; Browser logs are empty.
+- Exact-owned Native bundle `9186a8a8…`, PID-derived
+  `localhost:8904/session 1`, retains the 20x20 action and complete
+  mouse/touch/key/focus bindings. Supported Native touch emulation opens the
+  production project-path dialog with `default-value="~/"`; the 2560x1576 raw
+  open frame and warning/error console are clean.
+  No project-create command was submitted during evidence collection. Evidence
+  is under `shots/2026-08-06/sidebar-project-add-current/`.
+- Projects Sort remains a separate shared-controller workflow gap and is not
+  represented by an inert placeholder.
 
 ## Remaining work
 

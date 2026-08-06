@@ -50,6 +50,7 @@ import { SidebarPinnedSection } from '@synara-web/components/SidebarPinnedSectio
 import { SidebarFooterSection } from '@synara-web/components/SidebarFooterSection';
 import { SidebarSurfaceContent } from '@synara-web/components/SidebarSurfaceContent';
 import { SidebarDesktopHeader } from '@synara-web/components/SidebarDesktopHeader';
+import { SidebarListSectionHeaderAddProjectElement } from '~/components/SidebarListSectionHeaderElements';
 import {
   buildThreadContextMenuItems,
   type ThreadContextMenuActionId,
@@ -84,6 +85,7 @@ import {
 import './sidebar.css';
 
 const SEARCH_TRIGGER_ELEMENT_ID = 'synara-sidebar-search-trigger';
+const ADD_PROJECT_TRIGGER_ELEMENT_ID = 'synara-sidebar-add-project-trigger';
 
 interface PersistedSidebarListState {
   readonly expanded: boolean;
@@ -313,6 +315,11 @@ export function Sidebar({
     Readonly<Record<string, number>>
   >({});
   const [searchOpen, setSearchOpen] = useState(false);
+  const [searchInitialQuery, setSearchInitialQuery] = useState('');
+  const [searchPaletteKey, setSearchPaletteKey] = useState(0);
+  const [searchReturnFocusElementId, setSearchReturnFocusElementId] = useState(
+    SEARCH_TRIGGER_ELEMENT_ID
+  );
   const setSearchPaletteOpen = useCallback((open: boolean) => {
     'background only';
     setSearchOpen(open);
@@ -323,8 +330,17 @@ export function Sidebar({
       .catch(() => {
         // The Web host has no native application-menu accelerators.
       });
-    if (!open) focusLynxElementById(SEARCH_TRIGGER_ELEMENT_ID);
-  }, []);
+    if (!open) focusLynxElementById(searchReturnFocusElementId);
+  }, [searchReturnFocusElementId]);
+  const openSearchPalette = useCallback(
+    (initialQuery = '', returnFocusElementId = SEARCH_TRIGGER_ELEMENT_ID) => {
+      setSearchInitialQuery(initialQuery);
+      setSearchReturnFocusElementId(returnFocusElementId);
+      setSearchPaletteKey((current) => current + 1);
+      setSearchPaletteOpen(true);
+    },
+    [setSearchPaletteOpen]
+  );
   useEffect(() => {
     'background only';
     return () => {
@@ -554,7 +570,7 @@ export function Sidebar({
               return;
             }
             if (command === 'sidebar.search') {
-              setSearchPaletteOpen(true);
+              openSearchPalette();
               return;
             }
             if (
@@ -578,7 +594,7 @@ export function Sidebar({
       active = false;
       for (const dispose of disposers) dispose();
     };
-  }, [activeThreadId, navigate, setSearchPaletteOpen, visibleThreadIds]);
+  }, [activeThreadId, navigate, openSearchPalette, visibleThreadIds]);
 
   function setProjectExtraPages(projectCwd: string, extraPages: number) {
     const key = normalizeSidebarProjectThreadListCwd(projectCwd);
@@ -666,7 +682,7 @@ export function Sidebar({
             searchShortcutLabel={LYNX_PRIMARY_SHORTCUT_LABELS.search}
             onCreateThread={() => navigate('/')}
             onCreateStudioChat={() => navigate('/studio')}
-            onOpenSearch={() => setSearchPaletteOpen(true)}
+            onOpenSearch={() => openSearchPalette()}
             onOpenKanban={() => navigate('/kanban')}
             onOpenPullRequests={() => navigate('/pull-requests')}
           />
@@ -767,6 +783,14 @@ export function Sidebar({
               error: Boolean(error) && data === undefined,
               projectCount: sections.projectGroups.length,
             })}
+            headerActions={
+              <SidebarListSectionHeaderAddProjectElement
+                elementId={ADD_PROJECT_TRIGGER_ELEMENT_ID}
+                onActivate={() =>
+                  openSearchPalette('~/', ADD_PROJECT_TRIGGER_ELEMENT_ID)
+                }
+              />
+            }
             rows={sections.projectGroups}
             renderRow={(group) => {
               const projectPagingKey = normalizeSidebarProjectThreadListCwd(
@@ -933,7 +957,9 @@ export function Sidebar({
           onOpenSettings={() => navigate('/settings')}
         />
         <SidebarSearchPaletteLynx
+          key={searchPaletteKey}
           open={searchOpen}
+          initialQuery={searchInitialQuery}
           snapshot={data}
           searchStatus={data ? 'ready' : isPending ? 'loading' : 'error'}
           searchErrorMessage={error instanceof Error ? error.message : null}

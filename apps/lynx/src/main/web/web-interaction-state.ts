@@ -2,11 +2,16 @@ const WEB_HOVER_CLASS = 'ui-hover';
 const WEB_FOCUS_CLASS = 'ui-focus';
 const LYNX_FOCUSABLE_SELECTOR = '[focusable="true"]';
 
-function interactiveElement(event: Event): HTMLElement | null {
+function interactiveElement(
+  event: Event,
+  allowHoverOwner: boolean
+): HTMLElement | null {
   for (const target of event.composedPath()) {
     if (
       target instanceof HTMLElement &&
-      target.getAttribute('focusable') === 'true'
+      (target.getAttribute('focusable') === 'true' ||
+        (allowHoverOwner &&
+          target.classList.contains('LynxWebHoverOwner')))
     ) {
       return target;
     }
@@ -79,7 +84,7 @@ export function installLynxWebInteractionStateBridge(
   root.addEventListener(
     'mouseover',
     (event) => {
-      const element = interactiveElement(event);
+      const element = interactiveElement(event, true);
       if (!element || relatedTargetIsInside(element, event as MouseEvent)) {
         return;
       }
@@ -93,7 +98,7 @@ export function installLynxWebInteractionStateBridge(
   root.addEventListener(
     'mouseout',
     (event) => {
-      const element = interactiveElement(event);
+      const element = interactiveElement(event, true);
       if (
         !element ||
         relatedTargetIsInside(element, event as MouseEvent) ||
@@ -109,7 +114,7 @@ export function installLynxWebInteractionStateBridge(
   root.addEventListener(
     'focusin',
     (event) => {
-      const element = interactiveElement(event);
+      const element = interactiveElement(event, false);
       if (!element || relatedTargetIsInside(element, event as FocusEvent)) {
         return;
       }
@@ -123,7 +128,7 @@ export function installLynxWebInteractionStateBridge(
   root.addEventListener(
     'focusout',
     (event) => {
-      const element = interactiveElement(event);
+      const element = interactiveElement(event, false);
       if (
         !element ||
         relatedTargetIsInside(element, event as FocusEvent) ||

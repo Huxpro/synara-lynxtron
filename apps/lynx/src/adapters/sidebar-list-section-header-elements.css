@@ -30,4 +30,41 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  gap: 6px;
+}
+
+.SharedSidebarListSectionHeaderAction {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  color: var(--muted-foreground);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.SharedSidebarListSectionHeader.ui-hover
+  .SharedSidebarListSectionHeaderAction,
+.SharedSidebarListSectionHeaderAction.ui-focus {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.SharedSidebarListSectionHeaderAction.ui-hover,
+.SharedSidebarListSectionHeaderAction.ui-pressed {
+  color: var(--foreground);
+  background-color: var(--sidebar-accent);
+}
+
+.SharedSidebarListSectionHeaderAction.ui-focus {
+  outline: none;
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.SharedSidebarListSectionHeaderActionIcon {
+  width: 14px;
+  height: 14px;
 }

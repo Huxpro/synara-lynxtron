@@ -1,8 +1,12 @@
 import type { ReactNode } from "react";
 
 import { SIDEBAR_SECTION_LABEL_CLASS_NAME } from "../sidebarRowStyles";
+import { createCentralIconComponent } from "../lib/central-icons";
 import { cn } from "../lib/utils";
+import { SidebarIconButton } from "./SidebarIconButton";
 import { SidebarSectionToolbar } from "./SidebarSectionToolbar";
+
+const AddPlusIcon = createCentralIconComponent("plus-medium");
 
 interface ChildrenProps {
   readonly children?: ReactNode;
@@ -30,5 +34,19 @@ export function SidebarListSectionHeaderToolbarElement({ children }: ChildrenPro
     <SidebarSectionToolbar placement="overlay" revealOnHover>
       {children}
     </SidebarSectionToolbar>
+  );
+}
+
+export function SidebarListSectionHeaderAddProjectElement(props: {
+  readonly elementId?: string;
+  readonly onActivate: () => void;
+}) {
+  return (
+    <SidebarIconButton
+      id={props.elementId}
+      icon={AddPlusIcon}
+      label="Add project"
+      onClick={props.onActivate}
+    />
   );
 }

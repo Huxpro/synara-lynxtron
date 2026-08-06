@@ -37,6 +37,7 @@ const IMPORT_PROVIDERS: readonly ImportProviderKind[] = [
 
 export function SidebarSearchPaletteLynx(props: {
   readonly open: boolean;
+  readonly initialQuery?: string;
   readonly snapshot: SidebarSnapshot | undefined;
   readonly searchStatus: 'ready' | 'loading' | 'error';
   readonly searchErrorMessage?: string | null;
@@ -144,6 +145,7 @@ export function SidebarSearchPaletteLynx(props: {
   return (
     <SidebarSearchPalette
       open={props.open}
+      initialQuery={props.initialQuery}
       mode={mode}
       onModeChange={setMode}
       onOpenChange={props.onOpenChange}

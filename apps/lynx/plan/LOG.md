@@ -6782,3 +6782,25 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   raw2560×1576、console0。compound VIEW border/radius/outer geometry仍不冒充
   numeric Native proof。证据在
   `shots/2026-08-06/sidebar-segmented-chrome-current/`。
+
+## 2026-08-06 — current-head Sidebar Projects Add action closure
+
+- Web Projects header真实有hover/focus reveal的Add project：20×20 action、
+  14×14 `plus-medium`、r6；Lynx此前整个headerActions缺失。
+- Web/Lynx Elements新增同名platform contract；Lynx复用exact central SVG、
+  accessibility + keyboard/touch bindings。controller不复制filesystem/RPC逻辑，
+  通过重挂载现有SidebarSearchPalette并initial query `~/`进入canonical browse/
+  `project.create` path；普通Search以空query重挂载。
+- 多次Browser probe因non-focusable header事件不进Web DOM、opacity transition在
+  Lynx-for-Web锁0而被拒绝。final用显式`LynxWebHoverOwner`桥接pointer class，并采用
+  immediate reveal；真实pointer hover显示20×20/14×14 action，真实Tab也聚焦hidden
+  action并显示，Browser errors空。
+- focused **2 files / 6 tests**，Web/Lynx-for-Web/Native builds通过。未提交
+  project-create，避免污染shared snapshot；command/dispatch由既有search action测试+
+  production复用路径覆盖。
+- exact-owned Native bundle `9186a8a8…`，PID-derived localhost:8904/session1；
+  20×20 action保留完整mouse/touch/key/focus bindings。受支持的Native touch emulation
+  真实打开production project-path dialog，DOM记录`default-value="~/"`，open frame
+  2560×1576、console0。
+- Projects Sort仍是独立shared-controller workflow gap，不用inert menu掩盖。证据在
+  `shots/2026-08-06/sidebar-project-add-current/`。

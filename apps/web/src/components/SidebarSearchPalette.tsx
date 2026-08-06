@@ -68,6 +68,7 @@ export type SidebarSearchPaletteMode = "search" | "import";
 
 interface SidebarSearchPaletteProps {
   open: boolean;
+  initialQuery?: string;
   mode: SidebarSearchPaletteMode;
   onModeChange: (mode: SidebarSearchPaletteMode) => void;
   onOpenChange: (open: boolean) => void;
@@ -352,8 +353,8 @@ function HighlightedText(props: { text: string; query: string; className?: strin
 
 export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
   const { activeTheme, resolvedTheme, setCodeThemeId, setTheme, theme } = useTheme();
-  const [query, setQuery] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [query, setQuery] = useState(() => props.initialQuery ?? "");
+  const [searchQuery, setSearchQuery] = useState(() => props.initialQuery ?? "");
   const [highlightedItemValue, setHighlightedItemValue] = useState<string | null>(null);
   const [importProviderState, setImportProvider] = useState<ImportProviderKind>(
     props.importProviders[0] ?? "codex",

@@ -1,0 +1,19 @@
+{
+  "action": {
+    "color": "rgba(13, 13, 13, 0.596)",
+    "h": 20,
+    "opacity": "1",
+    "pointerEvents": "auto",
+    "w": 20,
+    "x": 223,
+    "y": 255
+  },
+  "headerClass": "SharedSidebarListSectionHeader LynxWebHoverOwner ui-hover",
+  "headerHover": true,
+  "icon": {
+    "h": 14,
+    "w": 14,
+    "x": 226,
+    "y": 258
+  }
+}
