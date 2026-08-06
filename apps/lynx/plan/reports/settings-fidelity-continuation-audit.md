@@ -685,6 +685,19 @@ The retained replacement cells:
   `shots/2026-08-06/composer-picker-chrome-current/`.
 - Focused invocation resolved to 2 existing files / 11 tests; configured
   Lynx-for-Web and Native/Desktop production builds pass.
+- Composer picker option anatomy now uses the same role radii as Web:
+  provider/trait/model rows 8px, model group header/favourite control 10.4px.
+  Skeleton capsules retain 7px and were not treated as interactive rows.
+- Current Web provider/trait rows compute 8px; current Lynx-for-Web provider,
+  model, and trait rows also compute 8px. The current Claude model list had no
+  collapsible group/favourite, so those 10.4px values remain source/test rather
+  than runtime claims.
+- Exact-owned Native bundle `506762d9…`, root PID `5242`, PID-derived
+  `localhost:8903/session 1`, and a real Model-trigger touch retained
+  popup/provider roles, a 2560x1576 frame, and an empty console. Evidence is
+  under `shots/2026-08-06/composer-picker-rows-current/`.
+- Focused Menu/Extras invocation: 2 files, 11/11 tests; configured
+  Lynx-for-Web and Native/Desktop production builds pass.
 
 ## Remaining work
 

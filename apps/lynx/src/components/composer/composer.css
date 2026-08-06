@@ -407,7 +407,7 @@
 .ComposerProviderOptionLynx {
   min-height: 32px;
   padding: 4px 7px;
-  border-radius: 7px;
+  border-radius: 8px;
 }
 
 .ComposerProviderOptionLynx--disabled {
@@ -494,7 +494,7 @@
   min-height: 34px;
   align-items: center;
   padding: 5px 8px;
-  border-radius: 7px;
+  border-radius: 8px;
 }
 
 .ComposerTraitOptionLynx--active {
@@ -632,6 +632,7 @@
 .ComposerModelGroupHeaderLynx {
   min-height: 26px;
   padding: 4px 7px;
+  border-radius: 10.4px;
 }
 
 .ComposerModelGroupHeaderLynx.ui-hover,
@@ -665,7 +666,7 @@
 .ComposerModelOptionLynx {
   min-height: 30px;
   padding: 5px 8px;
-  border-radius: 7px;
+  border-radius: 8px;
 }
 
 .ComposerModelOptionLynx--active {
@@ -714,7 +715,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
+  border-radius: 10.4px;
 }
 
 .ComposerModelOptionFavoriteLynx--active {

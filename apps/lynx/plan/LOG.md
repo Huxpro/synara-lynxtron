@@ -6338,3 +6338,18 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   `3d6a37e6…`，root PID78889、PID-derived localhost:8904/session1，real Model
   trigger touch，popup/row、raw2560×1576、console0。证据在
   `shots/2026-08-06/composer-picker-chrome-current/`。
+
+## 2026-08-06 — current-head composer picker option radius closure
+
+- shared popup后继续审计interactive anatomy：Web picker option SSOT为radius8，
+  collapsible group header/favourite使用panel radius10.4；Lynx provider/trait/model
+  rows仍私有7，group无radius，favourite为6。
+- owner统一为provider/trait/model row8、group/favourite10.4；skeleton dot/line的7px
+  capsule保留，不与interactive row混淆。
+- current Web provider/trait row均8；Lynx-for-Web provider/model/trait row均8。
+  当前Claude catalog无collapsible group/favourite，后二者只声明source/test，不冒充runtime。
+- focused Menu/Extras **2 files / 11 tests**，configured Lynx-for-Web与
+  Native/Desktop builds通过。exact-owned Native bundle `506762d9…`，
+  root PID5242、PID-derived localhost:8903/session1，real Model touch后
+  popup/provider、raw2560×1576、console0。证据在
+  `shots/2026-08-06/composer-picker-rows-current/`。

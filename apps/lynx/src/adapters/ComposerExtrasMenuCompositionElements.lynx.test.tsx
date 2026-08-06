@@ -74,5 +74,20 @@ describe('native composer attachment menu item', () => {
     expect(composerStyles).toMatch(
       /\.SliceRoot--theme-dark \.ComposerModelPopupLynx\.LxMenuPopup,\s*\.SliceRoot--theme-dark \.ComposerTraitsPopupLynx\.LxMenuPopup,\s*\.SliceRoot--theme-dark \.ComposerRuntimePopupLynx\.LxMenuPopup,\s*\.SliceRoot--theme-dark \.ComposerExtrasPopupLynx\.LxMenuPopup,\s*\.SliceRoot--theme-dark \.ComposerExtrasPopupLynx \.LxMenuSubPopup\s*\{[^}]*box-shadow:\s*0 6px 24px -10px rgba\(0,\s*0,\s*0,\s*0\.3\);/s
     );
+    expect(composerStyles).toMatch(
+      /\.ComposerProviderOptionLynx\s*\{[^}]*border-radius:\s*8px;/s
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerTraitOptionLynx\s*\{[^}]*border-radius:\s*8px;/s
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerModelGroupHeaderLynx\s*\{[^}]*border-radius:\s*10\.4px;/s
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerModelOptionLynx\s*\{[^}]*border-radius:\s*8px;/s
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerModelOptionFavoriteLynx\s*\{[^}]*border-radius:\s*10\.4px;/s
+    );
   });
 });
