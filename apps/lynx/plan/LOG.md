@@ -6279,3 +6279,16 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   popup/panel/item，raw2560×1576、console0。Native compound VIEW radius不宣称；
   source/test+Browser computed与Native bundle/class/interaction共同闭环。证据在
   `shots/2026-08-06/command-k-outer-current/`。
+
+## 2026-08-06 — current-head Command K footer radius closure
+
+- 继续审查Command shell后发现footer仍固定15px，而Web canonical class是
+  `calc(var(--radius-2xl)-1px)`；当前base radius10、2xl=18，所以真实值17。
+  `.LxCommandFooter`下两角改17并进入focused contract。
+- configured Web/Lynx-for-Web均通过rendered Search real click打开，footer exact
+  `574×41`、padding12/20、radius `0 0 17 17`；PNG1280×820、errors空。
+- focused Command **1 file / 9 tests**、configured Lynx-for-Web与
+  Native/Desktop builds通过。exact-owned Native bundle `d1544c34…`，root PID89672、
+  PID-derived localhost:8903/session1，real Search touch后保留popup/footer，
+  raw2560×1576、console0。证据在
+  `shots/2026-08-06/command-k-footer-current/`。

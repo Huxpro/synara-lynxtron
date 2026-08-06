@@ -634,6 +634,18 @@ The retained replacement cells:
   Evidence is under `shots/2026-08-06/command-k-outer-current/`.
 - Focused Command suite: 1 file, 9/9 tests; configured Lynx-for-Web and
   Native/Desktop production builds pass.
+- The final Command shell audit found the footer still hardcoded to 15px while
+  Web derives `calc(var(--radius-2xl) - 1px)` = 17px from the current 10px
+  base radius. `.LxCommandFooter` now owns 17px bottom corners and the focused
+  contract locks both sides.
+- Current Web and Lynx-for-Web footer anatomy is exact at 574x41, 12px/20px
+  padding, and `0 0 17px 17px`, with 1280x820 frames and empty errors.
+  Exact-owned Native bundle `d1544c34…`, root PID `89672`, PID-derived
+  `localhost:8903/session 1`, and a real Search touch retained popup/footer,
+  a 2560x1576 frame, and an empty warning/error console. Evidence is under
+  `shots/2026-08-06/command-k-footer-current/`.
+- Focused Command suite: 1 file, 9/9 tests; configured Lynx-for-Web and
+  Native/Desktop production builds pass.
 
 ## Remaining work
 

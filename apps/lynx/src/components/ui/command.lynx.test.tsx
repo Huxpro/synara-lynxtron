@@ -88,7 +88,7 @@ describe('Lynx CommandItem interaction contract', () => {
       /\.LxCommandItem\s*\{[^}]*border-radius:\s*10px;/s
     );
     expect(primitiveStyles).toMatch(
-      /\.LxCommandFooter\s*\{[^}]*flex-direction:\s*row;[^}]*justify-content:\s*space-between;/s
+      /\.LxCommandFooter\s*\{[^}]*flex-direction:\s*row;[^}]*justify-content:\s*space-between;[^}]*border-bottom-left-radius:\s*17px;[^}]*border-bottom-right-radius:\s*17px;/s
     );
   });
 

@@ -324,8 +324,8 @@
   padding: 12px 20px;
   border-top-width: 1px;
   border-top-color: var(--border);
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
+  border-bottom-left-radius: 17px;
+  border-bottom-right-radius: 17px;
 }
 
 .LxCommandFooter > text {
