@@ -343,6 +343,7 @@
   overflow: hidden;
   color: var(--foreground);
   font-size: 11px;
+  line-height: 16.5px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -379,6 +380,10 @@
 .ComposerTraitsTriggerChevronLynx {
   color: var(--muted-foreground);
   font-size: 11px;
+}
+
+.ComposerTraitsTriggerLabelLynx {
+  line-height: 16.5px;
 }
 
 .ComposerTraitsTriggerFastLynx,

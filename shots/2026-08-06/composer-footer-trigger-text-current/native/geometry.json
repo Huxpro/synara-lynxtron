@@ -1,0 +1,162 @@
+{
+  "client": "native",
+  "stateId": "composer-footer-trigger-text-light-1280",
+  "roles": {
+    "model-trigger": {
+      "nodeId": 133,
+      "nodeName": "VIEW",
+      "attributes": {
+        "react-ref-108-0": "1",
+        "focusable": "true",
+        "aria-disabled": "false",
+        "aria-label": "Choose model",
+        "aria-haspopup": "menu",
+        "aria-expanded": "false",
+        "bindmouseenter": "108:0:bindmouseenter",
+        "bindtap": "108:0:bindtap",
+        "bindmouseup": "108:0:bindmouseup",
+        "bindtouchstart": "108:0:bindtouchstart",
+        "bindmouseleave": "108:0:bindmouseleave",
+        "bindmousedown": "108:0:bindmousedown",
+        "bindtouchend": "108:0:bindtouchend",
+        "bindblur": "108:0:bindblur",
+        "catchkeydown": "108:0:catchkeydown",
+        "bindfocus": "108:0:bindfocus",
+        "bindtouchcancel": "108:0:bindtouchcancel",
+        "bindlayoutchange": "108:0:bindlayoutchange",
+        "class": "LxMenuTrigger ComposerModelTriggerLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 885,
+        "y": 505,
+        "width": 93,
+        "height": 28
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "model-label": {
+      "nodeId": 137,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "ComposerModelTriggerLabelLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 913,
+        "y": 511,
+        "width": 44,
+        "height": 17
+      },
+      "font": {
+        "family": "",
+        "size": "11px",
+        "weight": "normal",
+        "lineHeight": "16.5px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "traits-trigger": {
+      "nodeId": 141,
+      "nodeName": "VIEW",
+      "attributes": {
+        "react-ref-116-0": "1",
+        "focusable": "true",
+        "aria-disabled": "false",
+        "aria-label": "Change effort, context, and speed",
+        "aria-haspopup": "menu",
+        "aria-expanded": "false",
+        "bindmouseenter": "116:0:bindmouseenter",
+        "bindtap": "116:0:bindtap",
+        "bindmouseup": "116:0:bindmouseup",
+        "bindtouchstart": "116:0:bindtouchstart",
+        "bindmouseleave": "116:0:bindmouseleave",
+        "bindmousedown": "116:0:bindmousedown",
+        "bindtouchend": "116:0:bindtouchend",
+        "bindblur": "116:0:bindblur",
+        "catchkeydown": "116:0:catchkeydown",
+        "bindfocus": "116:0:bindfocus",
+        "bindtouchcancel": "116:0:bindtouchcancel",
+        "bindlayoutchange": "116:0:bindlayoutchange",
+        "class": "LxMenuTrigger ComposerTraitsTriggerLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 984,
+        "y": 505,
+        "width": 71,
+        "height": 28
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "traits-label": {
+      "nodeId": 142,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "ComposerTraitsTriggerLabelLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 992,
+        "y": 511,
+        "width": 42,
+        "height": 17
+      },
+      "font": {
+        "family": "",
+        "size": "11px",
+        "weight": "normal",
+        "lineHeight": "16.5px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgba(13,13,13,0.596078)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

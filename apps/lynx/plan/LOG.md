@@ -6519,3 +6519,18 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   localhost:8904/session1；real Sidebar Settings→thread-mode touches后保留
   popup/row/text。Native text12/18、box18、row206×32、raw2560×1576、console0。
   证据在`shots/2026-08-06/settings-shared-menu-text-current/`。
+
+## 2026-08-06 — current-head Composer footer trigger text closure
+
+- current rendered landing实测Web Model/Traits label均11/16.5/400、trigger28；
+  Lynx两者此前11/normal/400、visual box13、trigger28。只给
+  `ComposerModelTriggerLabelLynx`与`ComposerTraitsTriggerLabelLynx`补16.5px，
+  不改10px chevron/meta。
+- focused picker contract **1 file / 3 tests**，configured Lynx-for-Web与
+  Native/Desktop builds通过。Lynx-for-Web两label final均11/16.5/400，
+  trigger28，PNG1280×820、errors空。
+- exact-owned Native bundle `ca441805…`，root PID21351、PID-derived
+  localhost:8904/session1；保留model/traits trigger+label。Native两trigger
+  均28px，两label11/16.5（fractional box按像素取整17），raw2560×1576、
+  console0。证据在
+  `shots/2026-08-06/composer-footer-trigger-text-current/`。

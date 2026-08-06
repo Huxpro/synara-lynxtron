@@ -850,6 +850,21 @@ The retained replacement cells:
   Evidence is under `shots/2026-08-06/settings-shared-menu-text-current/`.
 - Focused Menu suite: 1 file, 9/9 tests; configured Lynx-for-Web and
   Native/Desktop production builds pass.
+- Composer footer Model and Traits labels now explicitly match Web's
+  11px/16.5px/400 trigger typography instead of the old Lynx 11px `normal`
+  line box with a 13px visual height. The existing 28px trigger geometry is
+  unchanged.
+- Current Web and Lynx-for-Web landing controls resolve both labels to
+  11/16.5/400; both retained screenshots are 1280x820 and browser errors
+  empty.
+- Exact-owned Native bundle `ca441805…`, root PID `21351`, PID-derived
+  `localhost:8904/session 1`, retained both trigger and label roles. Native
+  measured both triggers at 28px high and both labels at 11px/16.5px; native
+  box geometry rounds the fractional line box to 17px. Raw frame is
+  2560x1576 and console empty. Evidence is under
+  `shots/2026-08-06/composer-footer-trigger-text-current/`.
+- Focused picker contract: 1 file, 3/3 tests; configured Lynx-for-Web and
+  Native/Desktop production builds pass.
 
 ## Remaining work
 
