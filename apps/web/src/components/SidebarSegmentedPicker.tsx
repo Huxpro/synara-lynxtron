@@ -9,6 +9,7 @@ import {
 } from "~/components/SidebarSegmentedPickerElements";
 import {
   resolvePendingSidebarViewSelection,
+  resolveSidebarSegmentGeometry,
   type SidebarView,
 } from "~/components/SidebarSegmentedPicker.logic";
 
@@ -74,33 +75,24 @@ export function SidebarSegmentedPicker({
   const activeIndex = views.indexOf(displayedView);
   const segmentCount = views.length;
   const activeSegment = Math.max(0, activeIndex);
-  const isFirstActive = activeSegment === 0;
-  const isLastActive = activeSegment === segmentCount - 1;
-  const cell = `(100% - 0.25rem) / ${segmentCount}`;
-  const overhang = "5px";
-  const chipLeft = isFirstActive
-    ? `calc(-1px - ${overhang})`
-    : `calc(0.125rem + ${activeSegment} * (${cell}))`;
-  const chipWidth =
-    isFirstActive || isLastActive
-      ? `calc(${cell} + 0.125rem + 1px + ${overhang})`
-      : `calc(${cell})`;
+  const segmentGeometry = resolveSidebarSegmentGeometry(
+    activeSegment,
+    segmentCount,
+  );
 
   return (
     <SidebarSegmentedPickerFrameElement>
       <SidebarSegmentedPickerTrackElement>
         <SidebarSegmentedPickerThumbElement
           hidden={activeIndex < 0}
-          left={chipLeft}
-          width={chipWidth}
+          left={segmentGeometry.left}
+          width={segmentGeometry.width}
         />
         {views.map((view, index) => {
           const active = displayedView === view;
-          const isOuterSegment = index === 0 || index === segmentCount - 1;
-          const labelShift =
-            active && isOuterSegment
-              ? `calc(${index === 0 ? "-1 * " : ""}(0.125rem + 1px + ${overhang}) / 2)`
-              : "0px";
+          const labelShift = active
+            ? resolveSidebarSegmentGeometry(index, segmentCount).labelTranslateX
+            : "0px";
           return (
             <SidebarSegmentButtonElement
               key={view}

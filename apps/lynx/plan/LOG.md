@@ -6746,3 +6746,21 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   exact-owned Native bundle `968dc10d…`，PID-derived localhost:8904/session1；
   Projects TEXT直接测得12/18/400、opacity.58、box18，raw2560×1576、console0。
   证据在`shots/2026-08-06/sidebar-section-header-typography-current/`。
+
+## 2026-08-06 — current-head Sidebar segmented thumb closure
+
+- current Web Projects-active thumb为121×28.25；Lynx此前只有2×29竖线。根因是
+  shared geometry输出nested calc + multiplication/division/rem，Browser可解析但Lynx
+  CSS parser丢掉dynamic left/width。
+- 抽取`resolveSidebarSegmentGeometry()`，输出有界精度的flat percent+px表达式。
+  两段Projects为left50%/width calc(50% + 6px)，Studio为left-6px并label -4px。
+- Web production几何不变：Projects/Studio thumb均121×28.25；Lynx-for-Web恢复为
+  121.5×29，真实Studio activation也验证left-6/label-4。Browser PNG1280×820、
+  errors空。shared logic **1 file / 3 tests**，Lynx focused仍**2 files / 6 tests**；
+  Web/Lynx-for-Web/Native builds均通过。
+- exact-owned Native bundle `2598ef81…`，PID-derived localhost:8902/session1；
+  Projects thumb border box122/content120，证明2px collapse消失，raw2560×1576、
+  console0。compound VIEW radius0继续不冒充numeric radius proof。
+- 同次audit确认Lynx未投影Web Projects Sort/Add toolbar；这是需shared controller
+  extraction的真实workflow gap，不用inert/approximate按钮掩盖。证据在
+  `shots/2026-08-06/sidebar-segmented-thumb-current/`。

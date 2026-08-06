@@ -1,0 +1,29 @@
+{
+  "active": "Projects",
+  "thumb": {
+    "bg": "rgb(16, 16, 16)",
+    "box": {
+      "h": 28.25,
+      "w": 121,
+      "x": 128,
+      "y": 49.5
+    },
+    "boxShadow": "rgba(0, 0, 0, 0.16) 0px 1px 1.5px 0px, rgba(255, 255, 255, 0.04) 0px 1px 0px 0px inset",
+    "left": "115px",
+    "radius": "8px",
+    "width": "121px"
+  },
+  "track": {
+    "bg": "rgb(16, 16, 16)",
+    "box": {
+      "h": 27.25,
+      "w": 232,
+      "x": 12,
+      "y": 50
+    },
+    "boxShadow": "rgba(0, 0, 0, 0.25) 0px 1px 2px 0px inset",
+    "left": "0px",
+    "radius": "10px",
+    "width": "232px"
+  }
+}

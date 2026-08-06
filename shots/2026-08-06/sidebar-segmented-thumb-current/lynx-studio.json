@@ -1,0 +1,19 @@
+{
+  "active": "Studio",
+  "label": {
+    "h": 16,
+    "transform": "matrix(1, 0, 0, 1, -4, 0)",
+    "w": 36.03125,
+    "x": 48.734375,
+    "y": 55.5
+  },
+  "thumb": {
+    "h": 29,
+    "left": "-6px",
+    "w": 121.5,
+    "width": "121.5px",
+    "x": 6,
+    "y": 49
+  },
+  "url": "http://localhost:10391/lynx/index.html?audit=shortcuts"
+}

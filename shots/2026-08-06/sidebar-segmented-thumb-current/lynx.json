@@ -1,0 +1,29 @@
+{
+  "active": "Projects",
+  "thumb": {
+    "bg": "rgb(255, 255, 255)",
+    "box": {
+      "h": 29,
+      "w": 121.5,
+      "x": 127.5,
+      "y": 49
+    },
+    "boxShadow": "none",
+    "left": "115.5px",
+    "radius": "7px",
+    "width": "121.5px"
+  },
+  "track": {
+    "bg": "rgba(13, 13, 13, 0.04)",
+    "box": {
+      "h": 27,
+      "w": 231,
+      "x": 12,
+      "y": 50
+    },
+    "boxShadow": "none",
+    "left": "0px",
+    "radius": "8px",
+    "width": "231px"
+  }
+}

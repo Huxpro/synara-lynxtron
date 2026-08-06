@@ -1066,6 +1066,18 @@ The retained replacement cells:
   opacity 0.58, and an 18px box; raw frame is 2560x1576 and console empty.
   Evidence is under
   `shots/2026-08-06/sidebar-section-header-typography-current/`.
+- Sidebar segmented picker active surface no longer collapses to a two-pixel
+  sliver in Lynx. Shared geometry now emits flat percent-plus-pixel expressions
+  instead of nested/multiplied `calc()` values that the Lynx CSS parser dropped.
+- Web Projects/Studio thumbs remain 121px wide; Lynx-for-Web now resolves both
+  edges to 121.5px with exact `50%` / `-6px` placement and matching outer-label
+  translation. Exact-owned Native bundle `2598ef81…`, PID-derived
+  `localhost:8902/session 1`, directly measures a 122px thumb border box rather
+  than the previous 2px sliver; raw frame is 2560x1576 and console empty.
+  Evidence is under `shots/2026-08-06/sidebar-segmented-thumb-current/`.
+- The same audit found Lynx does not project the Web Projects Sort/Add toolbar.
+  That is a real shared-controller workflow gap, not a styling-only residual;
+  it remains explicit rather than being masked with inert buttons.
 
 ## Remaining work
 
