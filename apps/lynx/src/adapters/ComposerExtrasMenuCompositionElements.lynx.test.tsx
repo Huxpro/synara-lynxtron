@@ -81,6 +81,21 @@ describe('native composer attachment menu item', () => {
       /\.ComposerProviderOptionLynx\s*\{[^}]*border-radius:\s*8px;/s
     );
     expect(composerStyles).toMatch(
+      /\.ComposerProviderOptionLynx \.ComposerModelTriggerContentLynx\s*\{[^}]*width:\s*100%;/s
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerProviderOptionLynx \.ComposerModelTriggerLabelLynx\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerProviderOptionLynx \.ComposerModelTriggerMetaLynx\s*\{[^}]*margin-left:\s*auto;[^}]*font-size:\s*11px;[^}]*line-height:\s*18px;[^}]*opacity:\s*0\.8;/s
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerProviderOptionLynx \.ComposerModelTriggerChevronLynx\s*\{[^}]*margin-left:\s*auto;/s
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerProviderOptionLynx--disabled \.ComposerModelTriggerChevronLynx\s*\{[^}]*display:\s*none;/s
+    );
+    expect(composerStyles).toMatch(
       /\.ComposerTraitOptionLynx\s*\{[^}]*border-radius:\s*8px;/s
     );
     expect(composerStyles).toMatch(

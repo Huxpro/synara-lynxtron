@@ -410,8 +410,32 @@
   border-radius: 8px;
 }
 
+.ComposerProviderOptionLynx .ComposerModelTriggerContentLynx {
+  width: 100%;
+}
+
+.ComposerProviderOptionLynx .ComposerModelTriggerLabelLynx {
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.ComposerProviderOptionLynx .ComposerModelTriggerMetaLynx {
+  margin-left: auto;
+  font-size: 11px;
+  line-height: 18px;
+  opacity: 0.8;
+}
+
+.ComposerProviderOptionLynx .ComposerModelTriggerChevronLynx {
+  margin-left: auto;
+}
+
 .ComposerProviderOptionLynx--disabled {
   opacity: 0.52;
+}
+
+.ComposerProviderOptionLynx--disabled .ComposerModelTriggerChevronLynx {
+  display: none;
 }
 
 .ComposerProviderOptionLynx.ui-hover,

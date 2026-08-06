@@ -796,6 +796,25 @@ The retained replacement cells:
   under `shots/2026-08-06/composer-trait-option-text-current/`.
 - Focused trait-picker suite: 1 file, 2/2 tests; configured Lynx-for-Web and
   Native/Desktop production builds pass.
+- Composer provider rows now separate popup typography from the compact footer
+  trigger that shares the same composition. Provider names use 12px/18px,
+  statuses use 11px/18px at 80% muted tone and align to the trailing inset,
+  while the footer model label remains 11px with its prior compact line box.
+- Disabled provider rows no longer render the composition's unconditional
+  chevron; enabled providers retain a right-aligned chevron. Current Web and
+  Lynx-for-Web both place status/chevron at the trailing inset, while the Lynx
+  32px row remains its existing Native touch-target contract versus Web's
+  26px row.
+- Exact-owned Native bundle `a6a735b5…`, root PID `28434`, PID-derived
+  `localhost:8905/session 1`, and a real Model touch retained popup/disabled
+  row/status roles. Native measured the disabled row at 248x32 and status at
+  11px/18px, opacity 0.8, with an 18px box; raw frame is 2560x1576 and console
+  empty. Native DOM proves disabled and enabled provider composition/chevron
+  structure; scoped provider-name and right-edge numeric closure comes from
+  current Lynx-for-Web plus source/test, not an ambiguous generic Native role.
+  Evidence is under `shots/2026-08-06/composer-provider-row-current/`.
+- Focused picker contract: 1 file, 3/3 tests; configured Lynx-for-Web and
+  Native/Desktop production builds pass.
 
 ## Remaining work
 

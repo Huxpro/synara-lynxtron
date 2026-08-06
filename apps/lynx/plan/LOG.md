@@ -6466,3 +6466,23 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   popup/row/label。Native label12/18、box18、weight `normal`等价CSS400，
   row240×34、raw2560×1576、console0。证据在
   `shots/2026-08-06/composer-trait-option-text-current/`。
+
+## 2026-08-06 — current-head Composer provider row closure
+
+- provider rows复用了footer trigger composition，导致Lynx popup name为11/normal、
+  status为10/normal且紧跟name；disabled provider还错误带footer chevron。current
+  Web真实值为name12/18、status11/18 muted/80并trailing对齐，disabled无chevron，
+  available submenu chevron trailing对齐。
+- scoped `.ComposerProviderOptionLynx` override使content占满row、name12/18、
+  status11/18 opacity.8 + auto trailing、enabled chevron auto trailing、disabled
+  chevron hidden；footer `GPT-5.5`仍11/normal，未被popup修复污染。Lynx-for-Web
+  final disabled status/available chevron rightGap均7px；row32保持Native touch target，
+  Web row26保持原contract。
+- focused picker contract **1 file / 3 tests**，configured Lynx-for-Web与
+  Native/Desktop builds通过。exact-owned Native bundle `a6a735b5…`，root
+  PID28434、PID-derived localhost:8905/session1；real Model touch保留
+  popup/disabled row/status，Native row248×32、status11/18 opacity.8、box18，
+  raw2560×1576、console0。generic Native name class会先命中footer，因此不冒充
+  provider-name numeric Native proof；provider scoped name/right edge由current
+  Lynx-for-Web + source/test闭环，Native DOM只证明结构。证据在
+  `shots/2026-08-06/composer-provider-row-current/`。
