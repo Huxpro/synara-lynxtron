@@ -1,0 +1,63 @@
+{
+  "gaps": {
+    "lastToProjects": 16,
+    "navTopToFirst": 4
+  },
+  "nav": {
+    "bottom": 247.25,
+    "h": 160,
+    "padding": "4px 6px 6px",
+    "w": 255,
+    "x": 0,
+    "y": 87.25
+  },
+  "projectHeader": {
+    "bottom": 283.25,
+    "h": 28,
+    "w": 243,
+    "x": 6,
+    "y": 255.25
+  },
+  "rows": [
+    {
+      "bottom": 119.25,
+      "h": 28,
+      "text": "New thread⌘N",
+      "w": 243,
+      "x": 6,
+      "y": 91.25
+    },
+    {
+      "bottom": 149.25,
+      "h": 28,
+      "text": "Search⌘K",
+      "w": 243,
+      "x": 6,
+      "y": 121.25
+    },
+    {
+      "bottom": 179.25,
+      "h": 28,
+      "text": "Kanban",
+      "w": 243,
+      "x": 6,
+      "y": 151.25
+    },
+    {
+      "bottom": 209.25,
+      "h": 28,
+      "text": "Pull requests",
+      "w": 243,
+      "x": 6,
+      "y": 181.25
+    },
+    {
+      "bottom": 239.25,
+      "h": 28,
+      "text": "Automations",
+      "w": 243,
+      "x": 6,
+      "y": 211.25
+    }
+  ]
+}

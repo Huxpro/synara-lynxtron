@@ -1179,6 +1179,14 @@ The retained replacement cells:
   frames with provider socket errors were rejected; Web geometry remains
   current-head source/owner authority. Evidence is under
   `shots/2026-08-07/sidebar-footer-frame-current/`.
+- Sidebar primary navigation now includes Web's missing 4px top padding. All
+  primary rows and the Projects header align to the current Web y positions
+  while the certified 16px section pitch remains unchanged.
+- Lynx-for-Web provides exact fractional positions; exact-owned Native bundle
+  `ce8d898d…`, PID-derived `localhost:8903/session 1`, retains the rounded
+  logical positions, 28px rows, a 2560x1576 raw frame, and empty console.
+  Evidence is under
+  `shots/2026-08-07/sidebar-primary-top-rhythm-current/`.
 
 ## Remaining work
 

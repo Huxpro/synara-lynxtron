@@ -44,7 +44,7 @@ describe('sidebar primary navigation shortcut', () => {
       /\.SharedSidebarPrimaryActionButton\.ui-hover \.AppSidebarShortcut,\s*\.SharedSidebarPrimaryActionButton\.ui-focus \.AppSidebarShortcut\s*\{[^}]*opacity:\s*1;/s
     );
     expect(sidebarStyles).toMatch(
-      /\.AppSidebarPrimaryNav\s*\{[^}]*padding:\s*0 6px 6px;[^}]*margin-bottom:\s*4px;/s
+      /\.AppSidebarPrimaryNav\s*\{[^}]*padding:\s*4px 6px 6px;[^}]*margin-bottom:\s*4px;/s
     );
     expect(sidebarStyles).not.toMatch(
       /\.AppSidebarPrimaryNav\s*\{[^}]*border-bottom:/s

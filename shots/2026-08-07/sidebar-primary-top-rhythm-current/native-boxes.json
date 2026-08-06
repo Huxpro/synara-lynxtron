@@ -1,0 +1,82 @@
+[
+  {
+    "nodeId": 34,
+    "class": "SharedSidebarPrimaryActionButton",
+    "text": "New thread⌘N"
+  },
+  {
+    "nodeId": 46,
+    "class": "SharedSidebarPrimaryActionButton",
+    "text": "Search⌘K"
+  },
+  {
+    "nodeId": 58,
+    "class": "SharedSidebarPrimaryActionButton",
+    "text": "Kanban"
+  },
+  {
+    "nodeId": 64,
+    "class": "SharedSidebarPrimaryActionButton",
+    "text": "Pull requests"
+  },
+  {
+    "nodeId": 70,
+    "class": "SharedSidebarPrimaryActionButton SharedSidebarPrimaryActionButton--disabled",
+    "text": "Automations"
+  },
+  {
+    "nodeId": 76,
+    "class": "SharedSidebarListSectionHeader LynxWebHoverOwner",
+    "text": "Projects"
+  },
+  {
+    "nodeId": 77,
+    "class": "SharedSidebarListSectionHeaderLabel",
+    "text": "Projects"
+  },
+  {
+    "nodeId": 78,
+    "class": "SharedSidebarListSectionHeaderText",
+    "text": "Projects"
+  },
+  {
+    "nodeId": 80,
+    "class": "SharedSidebarListSectionHeaderToolbar",
+    "text": ""
+  },
+  {
+    "nodeId": 82,
+    "class": "LxMenuTrigger SharedSidebarListSectionHeaderAction",
+    "text": ""
+  },
+  {
+    "nodeId": 83,
+    "class": "SharedSidebarListSectionHeaderActionIcon SharedSidebarListSectionHeaderActionIcon--muted",
+    "text": ""
+  },
+  {
+    "nodeId": 84,
+    "class": "SharedSidebarListSectionHeaderActionIcon SharedSidebarListSectionHeaderActionIcon--foreground",
+    "text": ""
+  },
+  {
+    "nodeId": 85,
+    "class": "SharedSidebarListSectionHeaderAction",
+    "text": ""
+  },
+  {
+    "nodeId": 86,
+    "class": "SharedSidebarListSectionHeaderActionIcon SharedSidebarListSectionHeaderActionIcon--muted",
+    "text": ""
+  },
+  {
+    "nodeId": 87,
+    "class": "SharedSidebarListSectionHeaderActionIcon SharedSidebarListSectionHeaderActionIcon--foreground",
+    "text": ""
+  },
+  {
+    "nodeId": 94,
+    "class": "SharedSidebarPrimaryActionButton",
+    "text": "Settings"
+  }
+]

@@ -6917,3 +6917,16 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   exact-owned Native bundle `f861bbe0…`，PID-derived localhost:8901/session1；
   padding8/border0/item margin0/row28，raw2560×1576、console0。证据在
   `shots/2026-08-07/sidebar-footer-frame-current/`。
+
+## 2026-08-07 — current-head Sidebar primary top rhythm closure
+
+- Web primary nav为px6/pt4/pb6；Lynx此前top0，导致所有primary rows与Projects
+  header在segmented picker已经对齐后仍整体早4px。
+- `.AppSidebarPrimaryNav`改为padding4/6/6。final Lynx-for-Web与current Web owner
+  inventory逐项exact：New thread91.25、Search121.25、Kanban151.25、
+  Pull requests181.25、Automations211.25、Projects255.25；top gap4，
+  Automations→Projects pitch仍16。PNG1280×820、errors空。
+- focused **1 file / 3 tests**，configured Lynx-for-Web与Native/Desktop builds通过。
+  exact-owned Native bundle `ce8d898d…`，PID-derived localhost:8903/session1；
+  logical coords按设备取整为92/212/256，row28，raw2560×1576、console0。证据在
+  `shots/2026-08-07/sidebar-primary-top-rhythm-current/`。
