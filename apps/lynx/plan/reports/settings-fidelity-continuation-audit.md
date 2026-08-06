@@ -940,6 +940,23 @@ The retained replacement cells:
   `shots/2026-08-06/composer-footer-action-gap-current/`.
 - Focused picker contract: 1 file, 3/3 tests; configured Lynx-for-Web and
   Native/Desktop production builds pass.
+- Composer Model and Traits footer triggers now match Web's chrome and internal
+  anatomy: radius 10, transparent 1px border, real 12x12 chevrons at opacity
+  0.6, Model padding 6px with 6px inner gaps, Traits padding 10px with an 8px
+  label/chevron gap, and an 8px gap between the two triggers.
+- Current Web and Lynx-for-Web geometry is exact: Model
+  `868.09375/95.15625x28`, Traits `971.25/83.75x28`, and inter-trigger gap 8px.
+  Enabled provider-row chevrons remain 12px and trailing-aligned while disabled
+  provider chevrons remain hidden; no provider picker regression was introduced.
+- Exact-owned Native bundle `35c2fc2c…`, retained Model/Traits and both
+  chevrons with rounded trigger geometry 96x28 and 84x28, 12x12 chevrons,
+  complete menu-trigger accessibility/bindings, a 2560x1576 frame, and empty
+  console. Numeric radius/border remains sourced from current Lynx-for-Web plus
+  source/test because compound Native VIEW values are zero in this DevTool.
+  Evidence is under
+  `shots/2026-08-06/composer-picker-trigger-chrome-current/`.
+- Focused picker contract: 1 file, 3/3 tests; configured Lynx-for-Web and
+  Native/Desktop production builds pass.
 
 ## Remaining work
 

@@ -1,6 +1,7 @@
 import type { ReactNode } from '@lynx-js/react';
 
 import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
+import { ChevronDownIcon } from '../lib/icons.lynx';
 
 export function ComposerModelTriggerFrameElement(props: {
   readonly children: ReactNode;
@@ -44,5 +45,5 @@ export function ComposerModelTriggerStatusLabelElement(props: {
 }
 
 export function ComposerModelTriggerChevronElement() {
-  return <text className="ComposerModelTriggerChevronLynx">⌄</text>;
+  return <ChevronDownIcon className="ComposerModelTriggerChevronLynx" size={12} />;
 }

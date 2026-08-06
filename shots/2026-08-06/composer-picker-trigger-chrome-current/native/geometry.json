@@ -1,0 +1,166 @@
+{
+  "client": "native",
+  "stateId": "composer-picker-trigger-chrome-light-1280",
+  "roles": {
+    "model": {
+      "nodeId": 137,
+      "nodeName": "VIEW",
+      "attributes": {
+        "react-ref-110-0": "1",
+        "focusable": "true",
+        "aria-disabled": "false",
+        "aria-label": "Choose model",
+        "aria-haspopup": "menu",
+        "aria-expanded": "false",
+        "bindmouseenter": "110:0:bindmouseenter",
+        "bindtap": "110:0:bindtap",
+        "bindmouseup": "110:0:bindmouseup",
+        "bindtouchstart": "110:0:bindtouchstart",
+        "bindmouseleave": "110:0:bindmouseleave",
+        "bindmousedown": "110:0:bindmousedown",
+        "bindtouchend": "110:0:bindtouchend",
+        "bindblur": "110:0:bindblur",
+        "catchkeydown": "110:0:catchkeydown",
+        "bindfocus": "110:0:bindfocus",
+        "bindtouchcancel": "110:0:bindtouchcancel",
+        "bindlayoutchange": "110:0:bindlayoutchange",
+        "class": "LxMenuTrigger ComposerModelTriggerLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 867,
+        "y": 505,
+        "width": 96,
+        "height": 28
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "model-chevron": {
+      "nodeId": 143,
+      "nodeName": "SVG",
+      "attributes": {
+        "content": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0d0d0d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-chevron-down\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M6 9l6 6l6 -6\" /> </svg>",
+        "class": "ComposerModelTriggerChevronLynx",
+        "style": "height:12px;width:12px;"
+      },
+      "text": "",
+      "box": {
+        "x": 944,
+        "y": 514,
+        "width": 12,
+        "height": 12
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgba(13,13,13,0.596078)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "0.6"
+      }
+    },
+    "traits": {
+      "nodeId": 145,
+      "nodeName": "VIEW",
+      "attributes": {
+        "react-ref-118-0": "1",
+        "focusable": "true",
+        "aria-disabled": "false",
+        "aria-label": "Change effort, context, and speed",
+        "aria-haspopup": "menu",
+        "aria-expanded": "false",
+        "bindmouseenter": "118:0:bindmouseenter",
+        "bindtap": "118:0:bindtap",
+        "bindmouseup": "118:0:bindmouseup",
+        "bindtouchstart": "118:0:bindtouchstart",
+        "bindmouseleave": "118:0:bindmouseleave",
+        "bindmousedown": "118:0:bindmousedown",
+        "bindtouchend": "118:0:bindtouchend",
+        "bindblur": "118:0:bindblur",
+        "catchkeydown": "118:0:catchkeydown",
+        "bindfocus": "118:0:bindfocus",
+        "bindtouchcancel": "118:0:bindtouchcancel",
+        "bindlayoutchange": "118:0:bindlayoutchange",
+        "class": "LxMenuTrigger ComposerTraitsTriggerLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 971,
+        "y": 505,
+        "width": 84,
+        "height": 28
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "traits-chevron": {
+      "nodeId": 148,
+      "nodeName": "SVG",
+      "attributes": {
+        "content": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0d0d0d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-chevron-down\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M6 9l6 6l6 -6\" /> </svg>",
+        "class": "ComposerTraitsTriggerChevronLynx",
+        "style": "height:12px;width:12px;"
+      },
+      "text": "",
+      "box": {
+        "x": 1032,
+        "y": 513,
+        "width": 12,
+        "height": 12
+      },
+      "font": {
+        "family": "",
+        "size": "11px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgba(13,13,13,0.596078)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "0.6"
+      }
+    }
+  }
+}

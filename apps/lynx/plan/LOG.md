@@ -6605,3 +6605,22 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   x1063/x1099、gap8、raw2560×1576、console0。endpoint由owned PID动态解析，
   未猜历史端口。证据在
   `shots/2026-08-06/composer-footer-action-gap-current/`。
+
+## 2026-08-06 — current-head Composer picker trigger chrome closure
+
+- footer全控件current-head盘点发现Model/Traits仍分叉：Web两者r10/border1，
+  Model 95.15625×28/padding6/真实12px chevron，Traits
+  83.75×28/padding10/label-chevron gap8；Lynx两者r8/no border、6px text
+  chevron，Model91.1875、Traits69.78125，二者间gap6。
+- Model/Traits改用generated `ChevronDownIcon` 12×12/opacity.6；Model
+  padding4/6 + transparent border1/r10，Traits gap8 + padding4/10 +
+  border1/r10；`ComposerModelControlLynx` gap改8。Browser final Model
+  x868.09375/95.15625、Traits x971.25/83.75、gap8，与Web exact。
+- provider panel real click复测enabled chevron12px/rightGap7、disabled
+  chevron hidden/status rightGap7，未回归上一刀。focused picker contract
+  **1 file / 3 tests**，configured Lynx-for-Web与Native/Desktop builds通过。
+- exact-owned Native bundle `35c2fc2c…`；保留Model/Traits+chevrons，Native
+  rounded geometry96×28/84×28、chevrons12×12、完整trigger bindings，
+  raw2560×1576、console0。compound VIEW radius/border仍不冒充Native numeric
+  proof。证据在
+  `shots/2026-08-06/composer-picker-trigger-chrome-current/`。

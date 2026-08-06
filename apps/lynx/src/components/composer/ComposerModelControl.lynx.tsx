@@ -30,6 +30,7 @@ import {
 } from '@synara-web/lib/modelFavorites.logic';
 import { webStorage } from '../../platform/storage';
 import { useLynxInteractiveState } from '../ui/interactive-state.lynx';
+import { ChevronDownIcon } from '../../lib/icons.lynx';
 import {
   Menu,
   MenuPopup,
@@ -411,7 +412,10 @@ export function ComposerModelControl(props: {
             {traitSelection.fastModeEnabled ? (
               <text className="ComposerTraitsTriggerFastLynx">⚡</text>
             ) : null}
-            <text className="ComposerTraitsTriggerChevronLynx">⌄</text>
+            <ChevronDownIcon
+              className="ComposerTraitsTriggerChevronLynx"
+              size={12}
+            />
           </MenuTrigger>
           <MenuPopup
             className="ComposerTraitsPopupLynx"

@@ -155,7 +155,16 @@ describe('native composer attachment menu item', () => {
       /\.ComposerModelTriggerLabelLynx\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*16\.5px;/s
     );
     expect(composerStyles).toMatch(
+      /\.ComposerModelTriggerLynx\s*\{[^}]*padding:\s*4px 6px;[^}]*border:\s*1px solid transparent;[^}]*border-radius:\s*10px;/s
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerModelControlLynx\s*\{[^}]*gap:\s*8px;/s
+    );
+    expect(composerStyles).toMatch(
       /\.ComposerTraitsTriggerLabelLynx\s*\{[^}]*line-height:\s*16\.5px;/s
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerTraitsTriggerLynx\s*\{[^}]*gap:\s*8px;[^}]*padding:\s*4px 10px;[^}]*border:\s*1px solid transparent;[^}]*border-radius:\s*10px;/s
     );
     expect(composerStyles).toMatch(
       /\.ComposerProviderOptionLynx \.ComposerModelTriggerMetaLynx\s*\{[^}]*margin-left:\s*auto;[^}]*font-size:\s*11px;[^}]*line-height:\s*18px;[^}]*opacity:\s*0\.8;/s
