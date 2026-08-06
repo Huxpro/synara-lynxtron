@@ -58,6 +58,9 @@ describe('sidebar primary navigation shortcut', () => {
     expect(primaryActionStyles).toMatch(
       /\.SharedSidebarPrimaryActionButton\.ui-pressed\s*\{[^}]*color:\s*var\(--sidebar-accent-foreground\);[^}]*background-color:\s*var\(--sidebar-accent-active\);/s
     );
+    expect(primaryActionStyles).toMatch(
+      /\.SharedSidebarPrimaryActionButton--active\s*\{[^}]*color:\s*var\(--sidebar-accent-foreground\);[^}]*background-color:\s*var\(--sidebar-accent-active\);/s
+    );
     expect(primaryActionStyles).not.toMatch(
       /\.SharedSidebarPrimaryActionButton\.ui-pressed\s*\{[^}]*opacity:/s
     );

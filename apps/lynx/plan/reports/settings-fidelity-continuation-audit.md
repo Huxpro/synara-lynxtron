@@ -1146,6 +1146,15 @@ The retained replacement cells:
   while preserving thread sort and unrelated settings. Native frame is
   2560x1576 and console empty. Evidence is under
   `shots/2026-08-07/sidebar-project-sort-current/`.
+- Sidebar primary active rows now use Web's active surface/foreground token
+  ownership rather than the ordinary hover accent. Current themes resolve the
+  two surfaces to the same numeric background, so no artificial color delta is
+  claimed.
+- Fresh Lynx-for-Web Search activation and exact-owned Native touch both retain
+  the real active class at opacity 1. Native bundle `87d0b64b…`, PID-derived
+  `localhost:8901/session 1`, resolves the dark active surface/foreground,
+  produces a 2560x1576 frame, and has an empty console. Evidence is under
+  `shots/2026-08-07/sidebar-primary-active-current/`.
 
 ## Remaining work
 

@@ -15,7 +15,8 @@
 }
 
 .SharedSidebarPrimaryActionButton--active {
-  background-color: var(--sidebar-accent);
+  color: var(--sidebar-accent-foreground);
+  background-color: var(--sidebar-accent-active);
 }
 
 .SharedSidebarPrimaryActionButton.ui-hover {

@@ -1,0 +1,11 @@
+{
+  "bg": "rgba(13, 13, 13, 0.04)",
+  "class": "SharedSidebarPrimaryActionButton SharedSidebarPrimaryActionButton--active",
+  "color": "rgb(13, 13, 13)",
+  "dialog": true,
+  "opacity": "1",
+  "vars": {
+    "active": "hsla(0,0%,5%,.04)",
+    "foreground": "#0d0d0d"
+  }
+}

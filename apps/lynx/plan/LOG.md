@@ -6864,3 +6864,17 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   写`created_at`，重开显示check；随后选择Manual恢复`manual`并保留thread
   `updated_at`及所有其他字段。Native frame2560×1576、console0，shutdown前已恢复。
   证据在`shots/2026-08-07/sidebar-project-sort-current/`。
+
+## 2026-08-07 — current-head Sidebar primary active closure
+
+- Web selected/open primary row语义owner为`sidebar-accent-active` +
+  `sidebar-accent-foreground`；Lynx此前active class复用普通hover accent。
+- Lynx active owner改为同一active surface/foreground。current light/dark tokens下
+  hover/active background数值相同，因此本刀是语义owner收敛，不捏造颜色差。
+- focused **1 file / 3 tests**，configured Lynx-for-Web与Native/Desktop builds通过。
+  fresh Lynx-for-Web真实Search activation打开Command并加active class、opacity1、
+  errors空。
+- exact-owned Native bundle `87d0b64b…`，PID-derived localhost:8901/session1；
+  supported touch打开Search，active row解析dark alpha.0352941、foreground rgb252、
+  opacity1，raw2560×1576、console0。证据在
+  `shots/2026-08-07/sidebar-primary-active-current/`。
