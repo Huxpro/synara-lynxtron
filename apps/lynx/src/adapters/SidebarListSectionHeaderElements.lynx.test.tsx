@@ -75,10 +75,16 @@ describe('sidebar list section header actions', () => {
       /\.SharedSidebarListSectionHeaderAction\.LxMenuTrigger\.ui-hover,\s*\.SharedSidebarListSectionHeaderAction\.LxMenuTrigger\.ui-pressed\s*\{[^}]*opacity:\s*1;/s
     );
     expect(styles).toMatch(
-      /\.SharedSidebarProjectSortPopup \.LxMenuGroupLabel\s*\{[^}]*padding:\s*4px 8px;[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;[^}]*font-weight:\s*500;/s
+      /\.SharedSidebarProjectSortPopup\s*\{[^}]*width:\s*176px;[^}]*min-height:\s*0;[^}]*padding:\s*4px;/s
     );
     expect(styles).toMatch(
-      /\.SharedSidebarProjectSortGroupLabel--secondary\s*\{[^}]*padding-top:\s*8px;/s
+      /\.SharedSidebarProjectSortPopup \.LxMenuItem\s*\{[^}]*min-height:\s*26px;[^}]*padding:\s*1px 10px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedSidebarProjectSortPopup \.LxMenuGroupLabel\s*\{[^}]*padding:\s*4px 8px;[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;[^}]*font-weight:\s*500;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedSidebarProjectSortPopup\s+\.SharedSidebarProjectSortGroupLabel--secondary\s*\{[^}]*padding-top:\s*8px;/s
     );
     expect(sidebarSource).toContain(
       'elementId={ADD_PROJECT_TRIGGER_ELEMENT_ID}'

@@ -6975,3 +6975,17 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - 首版引入完整resolved token builder使bundle +27kB，按performance-first拒绝；
   final仅+约1.2kB（3063.7kB）。owned PID81728→localhost:8903/session1，
   SVG paths embed exact rgba(13,13,13,.598)，host 14×14/opacity.8，console0。
+
+## 2026-08-07 — current-head Sidebar Sort menu rhythm closure
+
+- 当前Electron CDP完整authority：popup176×192，first/secondary labels 24/28，
+  五items均26，label padding4/4与8/4。旧label刀未留可靠rhythm evidence。
+- 首次exact Native实测仍为popup176×226、items32，secondary label请求8px top却被
+  equal-specificity generic规则覆盖成4px。修复严格scope到Sort popup：
+  popup padding4/min-height0、items26/padding1、label line-height16，并提升
+  secondary selector specificity。
+- focused **1 file / 4 tests**、Native/Desktop build通过。exact-owned PID28735由
+  lsof解析localhost:8903/session1；supported touch只打开menu未改变selection。
+  final Electron/Native均popup176×192、labels24/28、items全26；Native x只因已登记
+  sidebar separator左移1px，raw2560×1640、console0。证据在
+  `shots/2026-08-07/sidebar-sort-menu-rhythm-current/`。

@@ -1,0 +1,108 @@
+{
+  "menu": {
+    "text": "Sort projects\nLast user message\nCreated at\nManual\nSort threads\nLast user message\nCreated at",
+    "x": 42,
+    "y": 282,
+    "width": 176,
+    "height": 192,
+    "paddingTop": "0px",
+    "paddingBottom": "0px",
+    "fontSize": "16px",
+    "lineHeight": "24px",
+    "fontWeight": "400"
+  },
+  "groups": [
+    {
+      "label": {
+        "text": "Sort projects",
+        "x": 47,
+        "y": 287,
+        "width": 166,
+        "height": 24,
+        "paddingTop": "4px",
+        "paddingBottom": "4px",
+        "fontSize": "12px",
+        "lineHeight": "16px",
+        "fontWeight": "500"
+      },
+      "items": [
+        {
+          "text": "Last user message",
+          "x": 47,
+          "y": 311,
+          "width": 166,
+          "height": 26,
+          "paddingTop": "1px",
+          "paddingBottom": "1px",
+          "fontSize": "12px",
+          "lineHeight": "18px",
+          "fontWeight": "400"
+        },
+        {
+          "text": "Created at",
+          "x": 47,
+          "y": 337,
+          "width": 166,
+          "height": 26,
+          "paddingTop": "1px",
+          "paddingBottom": "1px",
+          "fontSize": "12px",
+          "lineHeight": "18px",
+          "fontWeight": "400"
+        },
+        {
+          "text": "Manual",
+          "x": 47,
+          "y": 363,
+          "width": 166,
+          "height": 26,
+          "paddingTop": "1px",
+          "paddingBottom": "1px",
+          "fontSize": "12px",
+          "lineHeight": "18px",
+          "fontWeight": "400"
+        }
+      ]
+    },
+    {
+      "label": {
+        "text": "Sort threads",
+        "x": 47,
+        "y": 389,
+        "width": 166,
+        "height": 28,
+        "paddingTop": "8px",
+        "paddingBottom": "4px",
+        "fontSize": "12px",
+        "lineHeight": "16px",
+        "fontWeight": "500"
+      },
+      "items": [
+        {
+          "text": "Last user message",
+          "x": 47,
+          "y": 417,
+          "width": 166,
+          "height": 26,
+          "paddingTop": "1px",
+          "paddingBottom": "1px",
+          "fontSize": "12px",
+          "lineHeight": "18px",
+          "fontWeight": "400"
+        },
+        {
+          "text": "Created at",
+          "x": 47,
+          "y": 443,
+          "width": 166,
+          "height": 26,
+          "paddingTop": "1px",
+          "paddingBottom": "1px",
+          "fontSize": "12px",
+          "lineHeight": "18px",
+          "fontWeight": "400"
+        }
+      ]
+    }
+  ]
+}

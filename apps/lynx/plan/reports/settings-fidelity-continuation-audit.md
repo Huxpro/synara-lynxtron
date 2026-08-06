@@ -1233,6 +1233,19 @@ The retained replacement cells:
   embeds `rgba(13, 13, 13, 0.598)` in every titlebar logo path and resolves
   14x14 at opacity 0.8, matching Electron's rounded computed value. Console is
   empty.
+- A fresh Sort-menu rhythm audit found that the typography-only slice had left
+  an unmeasured structural fork. Electron's real popup is 176x192 with 24/28px
+  labels and five 26px items; Native still rendered 176x226 with 32px items,
+  and equal selector specificity suppressed the secondary label's 8px top
+  padding.
+- The correction is scoped to the Sort popup: 4px shell padding, zero minimum
+  height, 26px/1px item geometry, 16px label line-height, and a
+  popup-qualified secondary label selector.
+- Current Electron CDP and exact-owned Native PID `28735`, PID-derived
+  `localhost:8903/session 1`, now match exactly at 176x192, labels 24/28, and
+  all five items at 26px. Native x coordinates retain only the registered
+  one-pixel sidebar separator delta. Console is empty; evidence is under
+  `shots/2026-08-07/sidebar-sort-menu-rhythm-current/`.
 
 ## Remaining work
 

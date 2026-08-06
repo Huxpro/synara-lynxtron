@@ -102,15 +102,23 @@
 
 .SharedSidebarProjectSortPopup {
   width: 176px;
+  min-height: 0;
+  padding: 4px;
+}
+
+.SharedSidebarProjectSortPopup .LxMenuItem {
+  min-height: 26px;
+  padding: 1px 10px;
 }
 
 .SharedSidebarProjectSortPopup .LxMenuGroupLabel {
   padding: 4px 8px;
   font-size: 12px;
-  line-height: 18px;
+  line-height: 16px;
   font-weight: 500;
 }
 
-.SharedSidebarProjectSortGroupLabel--secondary {
+.SharedSidebarProjectSortPopup
+  .SharedSidebarProjectSortGroupLabel--secondary {
   padding-top: 8px;
 }
