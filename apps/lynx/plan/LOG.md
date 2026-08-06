@@ -6891,3 +6891,14 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   exact-owned Native bundle `3de82b29…`，PID-derived localhost:8901/session1；
   supported pointer press时Sort发布`ui-pressed`，muted0/foreground1，console0。
   证据在`shots/2026-08-07/sidebar-project-action-tone-current/`。
+
+## 2026-08-07 — current-head Sidebar Projects action opacity closure
+
+- Web sidebar icon button在hover/press保持whole-control opacity1；Lynx Sort复用generic
+  `LxMenuTrigger`，hover降.9、pressed降.72。
+- 增加Projects-action scoped override，hover/pressed opacity固定1，同时保留surface/icon
+  feedback。fresh Lynx-for-Web pointer与exact-owned Native press均opacity1。
+- focused **1 file / 4 tests**，configured Lynx-for-Web与Native/Desktop builds通过。
+  exact-owned Native bundle `7cf49c8d…`，PID-derived localhost:8901/session1，
+  `ui-pressed`下opacity1、console0。证据在
+  `shots/2026-08-07/sidebar-project-action-opacity-current/`。

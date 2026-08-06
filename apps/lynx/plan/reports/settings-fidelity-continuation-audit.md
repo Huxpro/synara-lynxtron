@@ -1163,6 +1163,13 @@ The retained replacement cells:
   consoles. Native bundle `3de82b29…` was PID-derived at
   `localhost:8901/session 1`. Evidence is under
   `shots/2026-08-07/sidebar-project-action-tone-current/`.
+- Projects Sort no longer inherits generic MenuTrigger whole-control dimming.
+  Web keeps sidebar icon buttons at opacity 1; scoped Lynx hover/pressed states
+  now do the same while preserving surface/icon feedback.
+- Fresh Lynx-for-Web and exact-owned Native pressed evidence resolve opacity 1
+  with clean logs. Native bundle `7cf49c8d…` was PID-derived at
+  `localhost:8901/session 1`. Evidence is under
+  `shots/2026-08-07/sidebar-project-action-opacity-current/`.
 
 ## Remaining work
 
