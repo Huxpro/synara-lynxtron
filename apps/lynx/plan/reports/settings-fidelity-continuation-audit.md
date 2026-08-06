@@ -1078,6 +1078,18 @@ The retained replacement cells:
 - The same audit found Lynx does not project the Web Projects Sort/Add toolbar.
   That is a real shared-controller workflow gap, not a styling-only residual;
   it remains explicit rather than being masked with inert buttons.
+- Sidebar segmented material now follows Web's recessed 10px track / raised
+  8px thumb hierarchy with theme-safe borders and matching light/dark shadow
+  strengths. An intermediate border patch shrank the control; final Lynx
+  compensation restores the light Browser geometry to exact 232px track and
+  121x28 thumb dimensions.
+- Current Web dark and Lynx-for-Web light each retain valid theme-specific
+  material evidence rather than being treated as a pixel pair. Exact-owned
+  Native bundle `3375ae3d…`, PID-derived `localhost:8902/session 1`, resolves
+  the dark track/thumb fills and shadows to the Web dark contract, with a
+  2560x1576 raw frame and empty console. Numeric Native border/radius remains
+  outside the compound VIEW DevTool boundary. Evidence is under
+  `shots/2026-08-06/sidebar-segmented-chrome-current/`.
 
 ## Remaining work
 

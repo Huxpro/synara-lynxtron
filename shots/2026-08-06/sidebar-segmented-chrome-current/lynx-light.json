@@ -1,0 +1,27 @@
+{
+  "theme": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable",
+  "thumb": {
+    "bg": "rgb(255, 255, 255)",
+    "border": "1px solid rgba(13, 13, 13, 0.07)",
+    "box": {
+      "h": 28,
+      "w": 121,
+      "x": 128,
+      "y": 49.5
+    },
+    "boxShadow": "rgba(0, 0, 0, 0.04) 0px 1px 1.5px 0px, rgba(255, 255, 255, 0.5) 0px 1px 0px 0px inset",
+    "radius": "8px"
+  },
+  "track": {
+    "bg": "rgba(13, 13, 13, 0.04)",
+    "border": "1px solid rgba(13, 13, 13, 0.07)",
+    "box": {
+      "h": 27,
+      "w": 232,
+      "x": 12,
+      "y": 50
+    },
+    "boxShadow": "rgba(0, 0, 0, 0.06) 0px 1px 2px 0px inset",
+    "radius": "10px"
+  }
+}

@@ -6764,3 +6764,21 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - 同次audit确认Lynx未投影Web Projects Sort/Add toolbar；这是需shared controller
   extraction的真实workflow gap，不用inert/approximate按钮掩盖。证据在
   `shots/2026-08-06/sidebar-segmented-thumb-current/`。
+
+## 2026-08-06 — current-head Sidebar segmented chrome closure
+
+- Web material contract为recessed r10 track + raised r8 thumb；Lynx此前r8/r7，
+  无track border/inset shadow，也无thumb elevation。现用theme-safe surfaces、
+  semantic 1px borders与Web同强度light/dark shadows。
+- 第一版加border后Lynx box model把track/thumb压到231×27/120.5×27，该中间证据
+  拒绝。final以track +1px width和thumb ±1.5px overhang补偿hairline，light
+  Lynx-for-Web恢复track232×27、thumb121×28，同时r10/r8与material exact；
+  PNG1280×820、errors空。
+- current Web dark提供dark runtime authority，不把Web dark/Lynx light冒充same-theme
+  pixel pair。focused **2 files / 4 tests**，configured Lynx-for-Web与
+  Native/Desktop builds通过。
+- exact-owned Native bundle `3375ae3d…`，PID-derived localhost:8902/session1；
+  dark track解析rgb16 + 25% inset shadow，thumb rgb23 + 16%/4% shadows，
+  raw2560×1576、console0。compound VIEW border/radius/outer geometry仍不冒充
+  numeric Native proof。证据在
+  `shots/2026-08-06/sidebar-segmented-chrome-current/`。
