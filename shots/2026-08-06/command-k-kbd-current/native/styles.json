@@ -1,0 +1,60 @@
+{
+  "client": "native",
+  "stateId": "command-k-kbd-light-1280",
+  "roles": {
+    "root": {
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "kbd": {
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(13,13,13,0.0392157)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "text": {
+      "font": {
+        "family": "",
+        "size": "12px",
+        "weight": "500",
+        "lineHeight": "16px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgba(13,13,13,0.596078)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

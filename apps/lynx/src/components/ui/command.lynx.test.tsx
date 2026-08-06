@@ -91,6 +91,9 @@ describe('Lynx CommandItem interaction contract', () => {
       /\.LxCommandGroupLabel__text\s*\{[^}]*font-size:\s*12px;[^}]*font-weight:\s*500;[^}]*line-height:\s*16px;/s
     );
     expect(primitiveStyles).toMatch(
+      /\.LxKbd__text\s*\{[^}]*font-size:\s*12px;[^}]*font-weight:\s*500;[^}]*line-height:\s*16px;/s
+    );
+    expect(primitiveStyles).toMatch(
       /\.LxCommandFooter\s*\{[^}]*flex-direction:\s*row;[^}]*justify-content:\s*space-between;[^}]*border-bottom-left-radius:\s*17px;[^}]*border-bottom-right-radius:\s*17px;/s
     );
   });

@@ -719,6 +719,15 @@ The retained replacement cells:
   `shots/2026-08-06/command-k-label-current/`.
 - Focused Command suite: 1 file, 9/9 tests; configured Lynx-for-Web and
   Native/Desktop production builds pass.
+- Shared Command keyboard pills now match Web's 20x20/radius-4 shell and
+  12px/16px/500 typography instead of the old Lynx 11px implicit line box.
+- Current Web shared-Kbd and Lynx-for-Web Command-K samples resolve to the
+  same geometry/type identity. Exact-owned Native bundle `1e73100b…`, root PID
+  `14037`, PID-derived `localhost:8905/session 1`, and a real Search touch
+  retained Kbd/text roles, a 2560x1576 frame, and empty console. Evidence is
+  under `shots/2026-08-06/command-k-kbd-current/`.
+- Focused Command suite: 1 file, 9/9 tests; configured Lynx-for-Web and
+  Native/Desktop production builds pass.
 
 ## Remaining work
 

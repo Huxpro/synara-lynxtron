@@ -6380,3 +6380,16 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   localhost:8904/session1，real Search touch后保留label/parent，
   raw2560×1576、console0。证据在
   `shots/2026-08-06/command-k-label-current/`。
+
+## 2026-08-06 — current-head Command K keyboard-pill typography closure
+
+- Web shared `Kbd`为20×20/radius4、text12/16/500；Lynx box已一致但text仍11且
+  implicit line-box。`.LxKbd__text`改为显式12/16/500并进入Command contract。
+- focused Command **1 file / 9 tests**，configured Lynx-for-Web与
+  Native/Desktop builds通过。Web probe首个`data-slot=kbd`是sidebar shortcut，但与
+  Command K消费同一Web primitive；Lynx-for-Web直接测Command K Kbd，均20×20/r4、
+  12/16/500。
+- exact-owned Native bundle `1e73100b…`，root PID14037、PID-derived
+  localhost:8905/session1，real Search touch后保留Kbd/text，
+  raw2560×1576、console0。证据在
+  `shots/2026-08-06/command-k-kbd-current/`。
