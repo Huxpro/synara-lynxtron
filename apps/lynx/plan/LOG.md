@@ -6578,11 +6578,15 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Web-mask span受icon-sm padding压成14×16。
 - Lynx改为raw `@synara-central-icons/microphone.svg?raw`，active theme muted
   foreground着色；button scope固定28×28、padding5、icon16×16。Lynx仍明确
-  disabled/non-focusable/opacity.48，不复制Web enabled opacity、不伪造录音能力。
+  disabled/no-handler/opacity.48，不复制Web enabled opacity、不伪造录音能力。
 - 第一版raw SVG仍通过Button `render` seam，Native出现3条cloneElement warning；
   该证据拒绝。final改为plain disabled view，去掉Button/render。
 - focused picker contract **1 file / 3 tests**，configured Lynx-for-Web与
-  Native/Desktop builds通过。exact-owned Native bundle `c4f9f572…`，root
-  PID63842、PID-derived localhost:8904/session1；button28×28、
-  aria-disabled=true/focusable=false、mic16×16 muted，raw2560×1576、console0。
+  Native/Desktop builds通过。exact-owned Native bundle `a74ea9c5…`，root
+  PID4998、PID-derived localhost:8904/session1；button28×28、
+  aria-disabled=true且无interaction bindings、mic16×16 muted，
+  raw2560×1576、console0。
   证据在`shots/2026-08-06/composer-voice-action-current/`。
+- commit hook的React Doctor generic warning经真实changed-scope复查定位到显式
+  ReactLynx `focusable`被Web DOM rule误判；plain view本就无event handlers且默认
+  non-focusable，删除冗余属性后同scope复扫0 issues。

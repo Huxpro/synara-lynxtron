@@ -1520,7 +1520,6 @@ export function Composer({
                   className="ComposerVoiceButtonLynx"
                   aria-label="Record voice note (unavailable in Lynx for Web)"
                   aria-disabled="true"
-                  focusable={false}
                 >
                   <svg
                     className="ComposerVoiceGlyphLynx"

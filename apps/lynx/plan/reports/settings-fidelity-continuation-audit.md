@@ -908,7 +908,7 @@ The retained replacement cells:
   transparent-border chrome and real 16x16 central microphone anatomy instead
   of the old 32x28 button with a Web-mask span that visibly shrank to 14x16.
 - Voice remains honestly unavailable in Lynx: the control is a disabled,
-  non-focusable plain view with explicit unavailable labeling and opacity 0.48,
+  non-interactive plain view with explicit unavailable labeling and opacity 0.48,
   rather than copying Web's enabled opacity or inventing recording behavior.
   The microphone raw SVG uses the active theme's muted foreground.
 - The first raw-SVG implementation still used Button's `render` seam and
@@ -917,10 +917,14 @@ The retained replacement cells:
   Native capture has an empty warning/error console.
 - Current Web and Lynx-for-Web common anatomy matches at 28x28 and 16x16;
   both PNGs are 1280x820 and browser errors empty. Exact-owned Native bundle
-  `c4f9f572…`, root PID `63842`, PID-derived `localhost:8904/session 1`,
-  retained disabled/non-focusable button and microphone roles at 28x28 and
+  `a74ea9c5…`, root PID `4998`, PID-derived `localhost:8904/session 1`,
+  retained disabled/no-handler button and microphone roles at 28x28 and
   16x16; raw frame is 2560x1576 and console empty. Evidence is under
   `shots/2026-08-06/composer-voice-action-current/`.
+- React Doctor's changed-scope scan initially flagged the explicit ReactLynx
+  `focusable` property under its Web DOM rule. The plain view has no event
+  handlers and is non-focusable by default, so the redundant property was
+  removed; the repeat changed-scope scan reports zero issues.
 - Focused picker contract: 1 file, 3/3 tests; configured Lynx-for-Web and
   Native/Desktop production builds pass.
 

@@ -2667,8 +2667,6 @@
                                                                       "Record voice note (unavailable in Lynx for Web)",
                                                                       "aria-disabled",
                                                                       "true",
-                                                                      "focusable",
-                                                                      "false",
                                                                       "class",
                                                                       "ComposerVoiceButtonLynx"
                                                                     ],

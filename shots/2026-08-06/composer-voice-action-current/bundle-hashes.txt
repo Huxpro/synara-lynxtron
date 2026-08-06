@@ -1,2 +1,2 @@
-3fbf9272917ce8d7375a1aeeccdefe7e00dea5a98e5b4e45ee726dd168646cb8  apps/lynx/dist/web/main.web.bundle
-c4f9f5723a90554438cd06652062eefe2d874e6f1e62700373144eafe8a3069e  apps/lynx/dist/desktop/main.lynx.bundle
+f31b382737a0223c19857f6a7317f5d1f74875b71b478a91748817f529171a2a  apps/lynx/dist/web/main.web.bundle
+a74ea9c5b679c7a8de154391da21162de0960ea17195fe97233de3475037779b  apps/lynx/dist/desktop/main.lynx.bundle
