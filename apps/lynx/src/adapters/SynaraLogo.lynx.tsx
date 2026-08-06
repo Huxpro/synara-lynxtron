@@ -20,12 +20,24 @@ export function SynaraLogo({
   readonly 'aria-label'?: string;
 }) {
   const { svgColors } = useTheme();
+  const classNames = className?.split(/\s+/).filter(Boolean) ?? [];
+  const hasSharedSidebarSize = classNames.includes('size-3.5');
+  const resolvedClassName = [
+    'shrink-0',
+    'text-foreground',
+    ...classNames.filter((value) => value !== 'size-3.5'),
+  ]
+    .filter(Boolean)
+    .join(' ');
   return (
     <svg
-      className={className}
+      className={resolvedClassName}
       content={synaraLogoContent(svgColors.foreground)}
       accessibility-label={ariaLabel}
-      style={style}
+      style={{
+        ...(hasSharedSidebarSize ? { width: '14px', height: '14px' } : {}),
+        ...style,
+      }}
     />
   );
 }

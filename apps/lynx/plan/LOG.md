@@ -6956,3 +6956,10 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   sidebar `-x-app-region:drag`，outer/LynxView均1280×820 logical、
   raw2560×1640，warning/error console0。证据在
   `shots/2026-08-07/lynxtron-titlebar-46-current/`。
+- 同一chrome继续实测：Electron logo为14×14、right gap12；Lynx此前right
+  padding14，且`size-3.5`按Lynx 14px rem基准解析为12.25px。adapter还漏了Web
+  primitive的`shrink-0`。现titlebar trailing padding12，adapter恢复
+  `shrink-0 text-foreground`并把Web-only`size-3.5`物理映射14px。
+- final bundle `fe48cd46…`，owned PID7226由lsof解析为localhost:8905/session1；
+  先猜8903的空node attempt拒绝。final logo直接测14×14/flex-shrink0/x229..243，
+  sidebar inner edge255，right gap12，raw2560×1640、console0。

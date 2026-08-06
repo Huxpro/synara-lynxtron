@@ -29,7 +29,7 @@ describe('desktop window drag regions', () => {
 
   it('aligns the sidebar titlebar with the shared 46px desktop chrome', () => {
     expect(sidebarStyles).toMatch(
-      /\.AppSidebarTitlebar\s*\{[^}]*height:\s*46px;/s
+      /\.AppSidebarTitlebar\s*\{[^}]*height:\s*46px;[^}]*padding:\s*0 12px 0 14px;/s
     );
   });
 

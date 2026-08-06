@@ -1203,6 +1203,16 @@ The retained replacement cells:
   `-x-app-region: drag`, a full 1280x820 logical content/window frame, and an
   empty warning/error console. Evidence is under
   `shots/2026-08-07/lynxtron-titlebar-46-current/`.
+- Electron also measures its sidebar mark at 14x14 with a 12px trailing gap.
+  Lynx previously kept 14px trailing padding and resolved the shared
+  `size-3.5` token to 12.25px because its rem base differs from the Web
+  renderer; the Lynx logo adapter also omitted the shared `shrink-0` base.
+- The titlebar now uses 12px trailing padding, and the adapter preserves the
+  shared non-shrinking/foreground classes while mapping this Web size token to
+  a physical 14px. Final exact-owned bundle `fe48cd46…`, PID-derived
+  `localhost:8905/session 1`, directly measures a 14x14, flex-shrink-zero logo
+  with the same 12px trailing gap and an empty console. A guessed-client
+  attempt against 8903 returned no nodes and was rejected.
 
 ## Remaining work
 

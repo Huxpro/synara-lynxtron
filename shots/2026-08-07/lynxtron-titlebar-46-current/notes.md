@@ -13,16 +13,27 @@ Status: retained current-head Electron authority and exact-owned Native evidence
   center.
 - `.AppSidebarTitlebar` now uses 46px, matching
   `CHAT_SURFACE_HEADER_HEIGHT_PX` and the current Electron renderer.
-- Focused window-chrome and sidebar suites pass 6/6. The configured
+- The same runtime comparison found two horizontal/logo residuals. Electron
+  places the 14x14 mark 12px from the sidebar edge; Lynx used 14px right
+  padding. Lynx also interpreted the shared `size-3.5` utility against its
+  14px rem base, producing a 12.25px SVG, and the platform adapter had dropped
+  the shared `shrink-0` base class.
+- The Lynx titlebar now keeps its 14px leading ownership but uses 12px trailing
+  padding. The Synara logo adapter preserves `shrink-0 text-foreground` and
+  maps the Web-only `size-3.5` token to the same physical 14px while leaving
+  caller inline styles authoritative.
+- Focused window-chrome, sidebar, and logo suites pass. The configured
   Native/Desktop production build passes with only the existing encoder and
   optional `ws` warnings.
-- Exact-owned Native bundle
-  `7bedabf8d0477d5a47b53a944a3f004d2f91a8a59c6ae6d07fe285c31e62b6b5`
-  ran from `apps/lynx/dist/desktop/main.lynx.bundle`. Owned child PID `64576`
-  was resolved by `lsof` to `localhost:8903/session 1`.
+- The initial 46px proof used bundle `7bedabf8…`, owned PID `64576`, and
+  PID-derived `localhost:8903/session 1`. The final logo/padding proof uses
+  bundle `fe48cd46…`, owned PID `7226`, and PID-derived
+  `localhost:8905/session 1`; the earlier guessed 8903 attempt was rejected.
 - Native DevTool directly measures the sidebar titlebar and adjacent main
   header at 46px. The sidebar resolves `-x-app-region: drag`; the outer window
   and LynxView both measure 1280x820 logical pixels / 2560x1640 physical pixels.
-  Warning/error console output is empty.
+  Final Native geometry measures the logo at 14x14 with `flex-shrink: 0`,
+  x=229..243 inside the x=0..255 sidebar content edge, leaving the same 12px
+  trailing gap as Electron. Warning/error console output is empty.
 - Cleanup: the exact-owned Native process exited after capture. Unrelated
-  Lynxtron clients on 8901, 8902, and 8904 were not touched.
+  Lynxtron clients were not touched.
