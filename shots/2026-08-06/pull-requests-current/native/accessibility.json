@@ -1,0 +1,84 @@
+{
+  "refresh": {
+    "nodeId": 185,
+    "nodeName": "VIEW",
+    "attributes": [
+      "event-through",
+      "false",
+      "accessibility-element",
+      "true",
+      "accessibility-label",
+      "Refresh pull requests",
+      "accessibility-traits",
+      "button",
+      "bindtap",
+      "143:0:bindtap",
+      "bindmouseup",
+      "143:0:bindmouseup",
+      "bindmousedown",
+      "143:0:bindmousedown",
+      "bindtouchstart",
+      "143:0:bindtouchstart",
+      "bindtouchend",
+      "143:0:bindtouchend",
+      "bindtouchcancel",
+      "143:0:bindtouchcancel",
+      "class",
+      "LxButton LxButton--ghost LxButton--icon-sm SharedPrRouteRefresh"
+    ]
+  },
+  "project": {
+    "nodeId": 215,
+    "nodeName": "VIEW",
+    "attributes": [
+      "event-through",
+      "false",
+      "aria-pressed",
+      "false",
+      "accessibility-state",
+      "",
+      "accessibility-element",
+      "true",
+      "accessibility-label",
+      "Filter pull requests by project: All projects",
+      "accessibility-traits",
+      "button",
+      "bindtap",
+      "166:0:bindtap",
+      "bindmouseup",
+      "166:0:bindmouseup",
+      "bindmousedown",
+      "166:0:bindmousedown",
+      "bindtouchstart",
+      "166:0:bindtouchstart",
+      "bindtouchend",
+      "166:0:bindtouchend",
+      "bindtouchcancel",
+      "166:0:bindtouchcancel",
+      "class",
+      "LxButton LxButton--ghost LxButton--icon-sm SharedPrProjectFilterTrigger"
+    ]
+  },
+  "refreshIcon": {
+    "nodeId": 186,
+    "nodeName": "SVG",
+    "attributes": [
+      "content",
+      "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0d0d0d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-refresh\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4\" /> <path d=\"M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4\" /> </svg>",
+      "class",
+      "SharedPrRouteRefreshIcon",
+      "style",
+      "height:16px;width:16px;"
+    ]
+  },
+  "projectIcon": {
+    "nodeId": 217,
+    "nodeName": "SVG",
+    "attributes": [
+      "content",
+      "<svg width=\"24px\" height=\"24px\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><g><path d=\"M2.75 4.75H21.25\" stroke=\"#0d0d0d\" stroke-width=\"1.5\" stroke-linecap=\"round\"></path><path d=\"M8.75 19.25H15.25\" stroke=\"#0d0d0d\" stroke-width=\"1.5\" stroke-linecap=\"round\"></path><path d=\"M5.75 12H18.25\" stroke=\"#0d0d0d\" stroke-width=\"1.5\" stroke-linecap=\"round\"></path></g></svg>",
+      "class",
+      "SharedPrProjectFilterIcon"
+    ]
+  }
+}

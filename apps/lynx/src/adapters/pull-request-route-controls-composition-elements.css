@@ -19,7 +19,7 @@
   color: var(--foreground);
   font-size: 14px;
   line-height: 20px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .SharedPrRouteHeaderScope {
@@ -51,6 +51,12 @@
   height: 28px;
   min-width: 28px;
   min-height: 28px;
+  border-width: 0;
+}
+
+.SharedPrRouteRefreshIcon {
+  width: 16px;
+  height: 16px;
 }
 
 .SharedPrFilters {
@@ -79,7 +85,7 @@
 
 .SharedPrFilterPill {
   padding: 4px 10px;
-  border-radius: 6px;
+  border-radius: 8px;
 }
 
 .SharedPrFilterPill--active {
@@ -129,8 +135,37 @@
 }
 
 .SharedPrProjectFilterTrigger {
-  height: 28px;
-  min-width: 96px;
+  position: relative;
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  min-height: 24px;
+  padding: 4px;
+  border-width: 0;
+  border-radius: 6px;
+}
+
+.SharedPrProjectFilterIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.SharedPrProjectFilterIconSlot {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.SharedPrProjectFilterDot {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: var(--primary);
 }
 
 .SharedPrProjectFilterPopup {

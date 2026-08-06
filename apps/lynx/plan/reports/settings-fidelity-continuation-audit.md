@@ -17,8 +17,9 @@ complete.
 
 | Requirement | Concrete evidence | Status |
 | --- | --- | --- |
-| Preserve the previously certified shell, Composer, routes, controls, and motion | The old P10 atlas is historical after the continuation changes; current-head Landing/Header is refreshed below, while Thread/Kanban/Pull Requests still require current-head route rechecks before this global row can pass | PARTIAL |
+| Preserve the previously certified shell, Composer, routes, controls, and motion | The old P10 atlas is historical after the continuation changes; current-head Landing/Header and Pull Requests are refreshed below, while Thread/Kanban still require current-head route rechecks before this global row can pass | PARTIAL |
 | Landing shared chat-header typography matches Web on current head | `SharedChatHeaderIdentityTitle` now owns the Web 12px/18px/400 identity; current-head Web/Lynx-for-Web are exact and exact-owned Native computes the same line box in `shots/2026-08-06/landing-header-current/` | PASS |
+| Pull Requests route controls match Web on current head | Title weight, 28px route inset, 8px pills, exact filter/refresh icon identities, 16px painted slots, accessibility state, empty surface, and honest search-capability delta are covered in `shots/2026-08-06/pull-requests-current/` | PASS |
 | Fix provider-health banner residual | `efa9b773`, `33e3ca15`; `shots/2026-08-05/provider-health-banner-current/` | PASS |
 | Fix Kanban overview residual | `b463ff26`; `shots/2026-08-05/kanban-overview-current/` | PASS |
 | Converge Settings Appearance | `cfdd6db4`; current-head Lynx frame corrected in `52d55bf7` | PASS |
@@ -490,6 +491,22 @@ The retained replacement cells:
   preserving semantic `new-chat`; SQLite/settings hashes remained unchanged.
   No hidden route state or fixture was injected. Evidence is under
   `shots/2026-08-06/landing-header-current/`.
+- Current-head Pull Requests exposed several differences that the historical
+  atlas had retained without blocking: title 600 versus Web 500, 24px versus
+  28px route inset, 6px versus 8px pills, a 96px text project selector instead
+  of Web's 24px exact `filter-2` icon trigger, and a font refresh glyph instead
+  of the 16px SVG. Transparent primitive borders also consumed two pixels from
+  both intended icon slots.
+- The route/adapter owners now match the Web anatomy. Final Web/Lynx-for-Web
+  anchors are exact for the title, active pill, 28px refresh trigger and 16px
+  glyph, 24px project trigger and 16px glyph, empty title, and empty
+  description. The Lynx search row remains an explicit unavailable-capability
+  surface rather than a fake editable input.
+- Exact-owned Native bundle `e0492c80…`, root PID `6801`, renderer `6804`,
+  PID-derived `localhost:8904/session 1`, and `2560x1576` capture prove real
+  touch navigation, `14/20/500` title typography, exact SVG nodes, complete
+  filter accessibility naming/pressed state, and an empty warning/error
+  console. Evidence is under `shots/2026-08-06/pull-requests-current/`.
 - Settings focused continuation: 14 files, 50/50 tests.
 - AppSnap final focused check: 1 file, 2/2 tests.
 - Canonical taxonomy/explicit-owner gate: 1 file, 11/11 tests.
@@ -531,7 +548,7 @@ The retained replacement cells:
 
 ## Remaining work
 
-1. Refresh current-head Thread, Kanban, and Pull Requests route evidence instead
+1. Refresh current-head Thread and Kanban route evidence instead
    of using the historical P10 atlas as a proxy; close any measured residuals.
 2. Run the final heavy pass only after explicit authorization permits
    `bun fmt`, `bun lint`, and `bun typecheck`.
@@ -542,8 +559,8 @@ The retained replacement cells:
 ## Current disposition
 
 The implementation objective has materially advanced and every canonical
-Settings section has a real Lynx owner. Landing/Header now has current-head
-three-client proof rather than historical proxy evidence. The active thread
-goal is **not yet complete** because Thread/Kanban/Pull Requests still need
+Settings section has a real Lynx owner. Landing/Header and Pull Requests now
+have current-head three-client proof rather than historical proxy evidence.
+The active thread goal is **not yet complete** because Thread/Kanban still need
 current-head route rechecks and the required heavy pass remains blocked by the
 current instruction boundary.

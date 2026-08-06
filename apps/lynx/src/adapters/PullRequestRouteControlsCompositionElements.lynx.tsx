@@ -1,5 +1,6 @@
 import type { ProjectId } from '@synara/contracts';
 import type { ReactNode } from '@lynx-js/react';
+import filterSvg from '@synara-central-icons/filter-2.svg?raw';
 
 import { Button } from '../components/ui/button';
 import {
@@ -9,8 +10,11 @@ import {
   MenuRadioItem,
   MenuTrigger,
 } from '../components/ui/menu';
+import { RefreshCwIcon } from '../lib/icons.lynx';
+import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
 import './pull-request-route-controls-composition-elements.css';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
+import { useTheme } from './useTheme.lynx';
 
 type ChildrenProps = { readonly children?: ReactNode };
 
@@ -60,7 +64,12 @@ export function PullRequestRouteHeaderRefreshElement(props: {
       className="SharedPrRouteRefresh"
       onClick={props.onActivate}
     >
-      {props.refreshing ? '…' : '↻'}
+      <RefreshCwIcon
+        className={`SharedPrRouteRefreshIcon${
+          props.refreshing ? ' animate-spin' : ''
+        }`}
+        size={16}
+      />
     </Button>
   );
 }
@@ -151,15 +160,29 @@ export function PullRequestProjectFilterElement(props: {
   const selectedName =
     props.projects.find(([projectId]) => projectId === props.value)?.[1] ??
     'All projects';
+  const active = props.value !== undefined;
+  const { svgColors } = useTheme();
+  const triggerLabel = `Filter pull requests by project: ${selectedName}`;
   return (
     <Menu>
-      <MenuTrigger>
+      <MenuTrigger ariaLabel={triggerLabel}>
         <Button
-          variant="outline"
-          size="sm"
+          variant="ghost"
+          size="icon-sm"
+          aria-label={triggerLabel}
+          buttonProps={{
+            'aria-pressed': active,
+            'accessibility-state': { selected: active },
+          }}
           className="SharedPrProjectFilterTrigger"
         >
-          {selectedName}
+          <view className="SharedPrProjectFilterIconSlot">
+            <svg
+              className="SharedPrProjectFilterIcon"
+              content={colorizeLynxSvg(filterSvg, svgColors.foreground)}
+            />
+          </view>
+          {active ? <view className="SharedPrProjectFilterDot" /> : null}
         </Button>
       </MenuTrigger>
       <MenuPopup

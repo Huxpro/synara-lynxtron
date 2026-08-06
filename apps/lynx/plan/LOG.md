@@ -6107,3 +6107,37 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   `2dd961d3…` byte-exact。focused shared-header **1/1**，Web 8,943 modules、
   configured Lynx-for-Web与Native/Desktop builds通过。证据在
   `shots/2026-08-06/landing-header-current/`。
+
+## 2026-08-06 — current-head Pull Requests controls
+
+- current-head route recheck继续拒绝8月4日atlas代理。owned 60480 server与
+  localhost:8925同源、`cd3e1e9e…` snapshot、light/comfortable 1280×820 DPR1；
+  Web/Lynx均通过rendered sidebar Pull requests进入，Lynx使用可见控件中心真实
+  pointer sequence，未注入memory history或SQLite。
+- 实测确认历史frame未block的残差仍存在：title Web14/20/500而Lynx600；
+  `FeaturePageInner--pullRequests` 24px inset使filters x280而Web x284；
+  active pills radius6而Web8；project filter是96px文字按钮而Web为24px exact
+  `filter-2`图标；refresh仍用`↻`字体glyph；两个icon button又被透明1px primitive
+  border压缩16px painted slot到14px。
+- 修复全部落在route/adapter owners：title weight500、route inset28、pill radius8；
+  project trigger改24×24 ghost icon button，复用exact Central `filter-2.svg`、
+  16px slot、完整aria label/pressed/Native selected state及conditional active dot；
+  refresh复用generated `RefreshCwIcon`、28×28/16px slot；两个特例owner移除透明border。
+  Search保持真实`Search unavailable in this runtime` capability delta，未伪装editable input。
+- final Web/Lynx exact anchors：title `276/13/85.75/20` 14/20/500，All
+  `284/62/34.15625/26` radius8，refresh `1232/9/28/28`且glyph
+  `1238/15/16/16`，project `1228/102/24/24`且glyph
+  `1232/106/16/16`，empty title/description完全一致。Browser PNG均1280×820，
+  errors空。
+- exact-owned Native configured bundle `e0492c80…`，root PID6801、renderer6804、
+  PID-derived localhost:8904/session1，session URL为current bundle，raw2560×1576。
+  `Input.emulateTouchFromMouseEvent`真实进入PR；title `276/13/88/20`且computed
+  14/20/500，refresh/filter SVG DOM均16×16，project node发布完整label、
+  `aria-pressed=false`与touch/tap handlers，console空。
+- Native DevTool此版本对compound VIEW的`DOM.getBoxModel`会折叠为child bounds，
+  因此没有拿15×18/16×16返回值冒充button外框；Browser pair/CSS contract支撑外框，
+  Native只声明title、glyph、a11y、touch、screenshot与console直接证据。
+- focused PR contracts **3/3**，configured Lynx-for-Web与Native/Desktop builds通过。
+  owned processes/sessions与Native clone删除；normal SQLite `cd3e1e9e…`、settings
+  `d221bb25…`、KV `f53a83aa…`、window `2dd961d3…` byte-exact。证据在
+  `shots/2026-08-06/pull-requests-current/`。
