@@ -14,7 +14,7 @@ import { Effect } from "effect";
 
 import { ServerConfig } from "../config";
 import { buildProviderChildEnvironment, type ProviderChildKind } from "../providerChildEnvironment";
-import { loadLocalProviderUsageLines } from "../providerUsageSnapshot";
+import { loadLocalProviderUsageSnapshot } from "../providerUsageSnapshot";
 import { errorSnapshot } from "./parse";
 import { PROVIDER_USAGE_FETCHERS } from "./registry";
 import type { ProviderUsageContext } from "./types";
@@ -57,21 +57,48 @@ async function fetchProviderUsage(
     );
 }
 
+export function mergeLiveWithLocalUsage(
+  snapshot: ServerProviderUsageSnapshot,
+  localSnapshot: ServerProviderUsageSnapshot | null,
+): ServerProviderUsageSnapshot {
+  if (!localSnapshot) {
+    return snapshot;
+  }
+  const hasLocalUsage =
+    localSnapshot.limits.length > 0 || localSnapshot.usageLines.length > 0;
+  if (!hasLocalUsage) {
+    return snapshot;
+  }
+  if ((snapshot.status ?? "ok") === "ok") {
+    return {
+      ...snapshot,
+      limits:
+        snapshot.limits.length > 0 ? snapshot.limits : localSnapshot.limits,
+      usageLines: [...snapshot.usageLines, ...localSnapshot.usageLines],
+    };
+  }
+  return {
+    ...localSnapshot,
+    status: "ok",
+    detail: [
+      snapshot.detail?.trim() || "Live provider usage is unavailable.",
+      "Showing the latest usage recorded by the local CLI.",
+    ].join(" "),
+  };
+}
+
 async function enrichWithLocalUsage(
   snapshot: ServerProviderUsageSnapshot,
   ctx: ProviderUsageContext,
 ): Promise<ServerProviderUsageSnapshot> {
-  if ((snapshot.status ?? "ok") !== "ok" || !LOCAL_ARCHIVE_PROVIDERS.has(snapshot.provider)) {
+  if (!LOCAL_ARCHIVE_PROVIDERS.has(snapshot.provider)) {
     return snapshot;
   }
-  const localLines = await loadLocalProviderUsageLines({
+  const localSnapshot = await loadLocalProviderUsageSnapshot({
     provider: snapshot.provider,
     homeDir: ctx.homeDir,
   });
-  if (localLines.length === 0) {
-    return snapshot;
-  }
-  return { ...snapshot, usageLines: [...snapshot.usageLines, ...localLines] };
+  return mergeLiveWithLocalUsage(snapshot, localSnapshot);
 }
 
 /** Plain async batch fetch for supported providers. Never throws. */

@@ -6047,3 +6047,30 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   `cd3e1e9e…`、settings `d221bb25…`、KV `f53a83aa…`、window `2dd961d3…`全程
   byte-exact。Profile focused **3/3**、configured三端build通过；证据在
   `shots/2026-08-06/profile-plugins-populated-current/`。
+
+## 2026-08-06 — current-head Usage local fallback
+
+- canonical probe揭示最后一组source-only Usage branch其实有真实数据：Codex local
+  archive含96% used/4% left limit与427M/5B/101B token rows；Claude含180M/1B/2B
+  rows。live Codex/Claude/Cursor endpoints均不可达，但旧`enrichWithLocalUsage`在
+  non-ok status提前return，丢弃全部local data，UI因此误显示Unavailable。
+- 抽出server `mergeLiveWithLocalUsage`单一owner：live ok仍authoritative并补缺失local
+  fields；live fail但local limits/lines存在时返回`status:ok` last-good snapshot并附
+  `Showing the latest usage recorded by the local CLI.` warning；无local data继续保留
+  live failure。helper从lines-only升级为完整local snapshot，Codex real limit不再丢失。
+- real archive还暴露label冲突：`window:5h`却`windowDurationMins:10080`。shared
+  `deriveProviderUsageLimitDisplay`按duration归一为Weekly，Web/Lynx不再漂移。
+- populated视觉首测量化line-box累积漂移：Lynx notice18 vs Web19.5、label/value
+  normal15 vs16、meta/subtitle normal13 vs16.5。补semantic owners后final内容anchors
+  exact：warning y209/19.5、Weekly y242.5/16、track y264.5/590×8、4% left
+  y278.5/16.5、24h/7d/30d rows y322/362.5/403及subtitles y340/380.5/421。
+- Web首个query为placeholder，但rendered Refresh走真实`forceRefresh:true`后恢复同一
+  local data，保留为产品recovery evidence。Browser/PNG 1440×900 DPR1，errors为空。
+- exact-owned Native configured bundle `be3d2c08…`，outer1440×900→root1440×868/
+  raw2880×1736，root PID70562，PID-derived localhost:8904/session1；Usage owner
+  624×746、Codex card624×307、warning590×20、limit590×53、track590×8、
+  lines590×130，console 0。
+- server merge **3/3**、shared display **6/6**、Web usage **15/15**、Lynx contract
+  **6/6**。clones/processes/sessions均删除，normal SQLite `cd3e1e9e…`、settings
+  `d221bb25…`、KV `f53a83aa…`、window `2dd961d3…` byte-exact。证据在
+  `shots/2026-08-06/usage-local-fallback-current/`。

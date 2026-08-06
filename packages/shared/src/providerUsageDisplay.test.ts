@@ -8,6 +8,16 @@ import {
 import { mergeProviderUsageRefresh } from "./providerUsage";
 
 describe("providerUsageDisplay", () => {
+  it("uses the reported duration when an archived label is stale", () => {
+    expect(
+      deriveProviderUsageLimitDisplay({
+        window: "5h",
+        usedPercent: 96,
+        windowDurationMins: 10_080,
+      }).label,
+    ).toBe("Weekly");
+  });
+
   it("derives the remaining, reset, and pace metadata for a server limit", () => {
     const nowMs = Date.parse("2026-06-09T12:00:00.000Z");
 

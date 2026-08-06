@@ -98,6 +98,13 @@ function windowDurationMins(limit: ServerProviderUsageLimit): number | undefined
   return undefined;
 }
 
+function normalizedWindowLabel(limit: ServerProviderUsageLimit): string {
+  const durationMins = windowDurationMins(limit);
+  if (durationMins === 300) return "5h";
+  if (durationMins === 10_080) return "Weekly";
+  return limit.window;
+}
+
 export function deriveUsagePace(input: {
   nowMs?: number | undefined;
   remainingPercent: number;
@@ -192,7 +199,7 @@ export function deriveProviderUsageLimitDisplay(
         });
 
   return {
-    label: limit.window,
+    label: normalizedWindowLabel(limit),
     remainingPercent,
     leftText: remainingPercent === null ? "Usage reported" : `${Math.round(remainingPercent)}% left`,
     resetText: limit.resetsAt

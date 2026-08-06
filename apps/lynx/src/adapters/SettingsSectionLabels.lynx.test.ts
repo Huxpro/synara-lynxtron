@@ -120,7 +120,7 @@ describe('Lynx Settings section labels', () => {
       /\.SettingsUsageNoticeIcon\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*margin-top:\s*2px;/s
     );
     expect(usageStyles).toMatch(
-      /\.SettingsUsageNoticeText\s*\{[^}]*color:\s*var\(--settings-usage-warning-text\);[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s
+      /\.SettingsUsageNoticeText\s*\{[^}]*color:\s*var\(--settings-usage-warning-text\);[^}]*font-size:\s*12px;[^}]*line-height:\s*19\.5px;/s
     );
     expect(usageStyles).toMatch(
       /\.SettingsUsageDetails\s*\{[^}]*gap:\s*14px;/s
@@ -147,13 +147,16 @@ describe('Lynx Settings section labels', () => {
       /\.SettingsUsagePaceDot\s*\{[^}]*width:\s*6px;[^}]*height:\s*6px;[^}]*border-radius:\s*999px;/s
     );
     expect(usageStyles).toMatch(
-      /\.SettingsUsageMetaText\s*\{[^}]*font-size:\s*11px;/s
+      /\.SettingsUsageMetaText\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*16\.5px;/s
     );
     expect(usageStyles).toMatch(
       /\.SettingsUsageTrackMarkerGap\s*\{[^}]*width:\s*8px;[^}]*margin-left:\s*-4px;[^}]*padding:\s*0 3px;/s
     );
     expect(usageStyles).toMatch(
-      /\.SettingsUsageSubtitle\s*\{[^}]*font-size:\s*11px;[^}]*opacity:\s*0\.8;/s
+      /\.SettingsUsageSubtitle\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*16\.5px;[^}]*opacity:\s*0\.8;/s
+    );
+    expect(usageStyles).toMatch(
+      /\.SettingsUsageLabel,\s*\.SettingsUsageValue\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s
     );
     expect(usageStyles).toMatch(
       /\.SettingsUsageDetail\s*\{[^}]*line-height:\s*19\.5px;/s

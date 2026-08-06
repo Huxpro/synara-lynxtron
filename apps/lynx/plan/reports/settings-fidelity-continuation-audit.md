@@ -74,10 +74,10 @@ complete.
 | Usage headers match Web horizontal rhythm | root follows the shared 6px section gap; section/card headers use 8px gap; nested provider identity retains its distinct 10px icon/title gap | PASS — current-head visual proof |
 | Usage card content and header overflow match Web | content stack uses 14px rhythm; provider identity grows with min-width 0, title ellipsizes, and status pill does not shrink | PASS |
 | Usage status pills match Web semantics | ok shows plan pill only when named; needs-auth/error use 12% semantic surfaces and theme-aware text; unsupported remains muted | PASS |
-| Usage cards render real quota meters | canonical `usedPercent` drives 8px healthy/warning/danger remaining tracks rather than text-only quota summaries | PASS — source/shared-logic tests; current real snapshot had no meter branch |
-| Usage meter rows match Web metadata and pace anatomy | shared server-limit derivation drives label + 6px pace dot, 8px track + marker, remaining/reset metadata, and optional reserve/ETA rows from real reset timing | PASS — source/shared-logic tests; not screenshot-certified in current unavailable state |
-| Usage stale-data warnings preserve Web semantics | otherwise-OK snapshots with `detail` retain last-good usage and show a 14px warning icon plus 12px/18px warning copy before meters | PASS — source/focused tests; branch absent from current real snapshot |
-| Usage line list matches Web row structure | horizontal label/value rows, 2px item rhythm, 6px list gap, and 12px divider after meters | PASS — source/focused tests; branch absent from current real snapshot |
+| Usage cards render real quota meters | canonical local Codex archives now survive a live-endpoint failure and visibly drive the real 96%-used / 4%-remaining danger track | PASS — current-head three-client proof in `shots/2026-08-06/usage-local-fallback-current/` |
+| Usage meter rows match Web metadata and pace anatomy | shared display logic treats the real 10,080-minute duration as authoritative (`Weekly`), with exact label, 8px track, remaining metadata, and common pace-ready anatomy | PASS — current-head meter proof plus shared 6/6 tests |
+| Usage stale-data warnings preserve Web semantics | live endpoint errors retain real local usage under `status: ok` with an explicit last-good warning; warning icon/copy remain before meters and lines | PASS — real Codex and Claude fallback proof |
+| Usage line list matches Web row structure | real Codex and Claude 24h/7d/30d token/session rows use exact 12/16 headers, 11/16.5 subtitles, 6px list gap, and 12px divider after meters | PASS — current-head three-client visual proof |
 | Usage Refresh action matches Web identity | generated 14px refresh icon spins while fetching; current trigger is exact 72×24 with 10px/15px label | PASS — current-head visual proof |
 | Usage Refresh matches Web request semantics | dedicated mutation sends `{ forceRefresh: true }`, merges partial batches with prior provider cards, and shares pending/disabled/spin state without bypassing provider cooldown safety | PASS |
 | Usage footer matches Web explanation and rhythm | full local-credentials, OAuth refresh, and CLI re-authentication copy with 11px/18px typography and 8px horizontal inset; current x/y/width are exact | PASS — current-head visual proof |
@@ -458,6 +458,20 @@ The retained replacement cells:
   `2880x1736` frame retain the same shell/glyph/name/count geometry with an
   empty console. Evidence is under
   `shots/2026-08-06/profile-plugins-populated-current/`.
+- Current-head Usage probing found real local data that the product was
+  suppressing whenever live provider fetches failed. Codex had a 96%-used
+  limit plus 24h/7d/30d token history; Claude had three real token-history
+  lines. The server now returns those archives as explicitly warned last-good
+  data while preserving Cursor's real live failure.
+- The populated comparison also closed the remaining display gaps: a
+  10,080-minute archived window now normalizes to `Weekly`, warning copy is
+  12/19.5, labels/values are 12/16, and metadata/subtitles are 11/16.5.
+  Web/Lynx-for-Web warning, track, 4% fill, remaining metadata, and all three
+  token rows align exactly.
+- Exact-owned Native bundle `be3d2c08…`, root PID `70562`, PID-derived
+  `localhost:8904/session 1`, and `2880x1736` capture retain the complete
+  warning/meter/lines anatomy with an empty console. Evidence is under
+  `shots/2026-08-06/usage-local-fallback-current/`.
 - Settings focused continuation: 14 files, 50/50 tests.
 - AppSnap final focused check: 1 file, 2/2 tests.
 - Canonical taxonomy/explicit-owner gate: 1 file, 11/11 tests.

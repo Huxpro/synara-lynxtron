@@ -156,7 +156,7 @@
   flex: 1;
   color: var(--settings-usage-warning-text);
   font-size: 12px;
-  line-height: 18px;
+  line-height: 19.5px;
 }
 
 .SettingsUsageMeters {
@@ -255,6 +255,7 @@
 .SettingsUsageLabel,
 .SettingsUsageValue {
   font-size: 12px;
+  line-height: 16px;
 }
 
 .SettingsUsageLabel {
@@ -269,11 +270,13 @@
 .SettingsUsageMetaText {
   color: var(--muted-foreground);
   font-size: 11px;
+  line-height: 16.5px;
 }
 
 .SettingsUsageSubtitle {
   width: 100%;
   font-size: 11px;
+  line-height: 16.5px;
   opacity: 0.8;
 }
 
