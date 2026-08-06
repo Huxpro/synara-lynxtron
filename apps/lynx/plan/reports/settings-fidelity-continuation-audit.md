@@ -646,6 +646,18 @@ The retained replacement cells:
   `shots/2026-08-06/command-k-footer-current/`.
 - Focused Command suite: 1 file, 9/9 tests; configured Lynx-for-Web and
   Native/Desktop production builds pass.
+- The Command material audit found two paint layers omitted from prior
+  geometry-only closure: Web outer `shadow-lg/5` and inner `shadow-xs/5`
+  versus no Lynx shadow. The Lynx outer now owns matching 5% dual soft-lift
+  layers and the inner panel owns the matching 5% 0/1/2 hairline lift.
+- Current Web and Lynx-for-Web computed shadows match semantically; Web's
+  extra entries are transparent utility rings. Exact-owned Native bundle
+  `5238d1cc…`, root PID `17696`, PID-derived `localhost:8904/session 1`, and
+  real Search touch retained popup/panel, a 2560x1576 frame, and an empty
+  console. A failed guessed-8903 attempt was deleted. Evidence is under
+  `shots/2026-08-06/command-k-shadow-current/`.
+- Focused Command suite: 1 file, 9/9 tests; configured Lynx-for-Web and
+  Native/Desktop production builds pass.
 
 ## Remaining work
 

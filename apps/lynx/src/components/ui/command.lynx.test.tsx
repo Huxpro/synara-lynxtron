@@ -79,10 +79,10 @@ describe('Lynx CommandItem interaction contract', () => {
       /\.LxDialogViewport\.LxCommandDialogViewport\s*\{[^}]*padding-top:\s*4vh;[^}]*padding-bottom:\s*15vh;/s
     );
     expect(primitiveStyles).toMatch(
-      /\.LxDialogPopup\.LxCommandDialogPopup\s*\{[^}]*border-radius:\s*18px;/s
+      /\.LxDialogPopup\.LxCommandDialogPopup\s*\{[^}]*border-radius:\s*18px;[^}]*box-shadow:\s*0 10px 15px -3px rgba\(0,\s*0,\s*0,\s*0\.05\),\s*0 4px 6px -4px rgba\(0,\s*0,\s*0,\s*0\.05\);/s
     );
     expect(primitiveStyles).toMatch(
-      /\.LxCommandPanel\s*\{[^}]*border-top-left-radius:\s*14px;[^}]*border-top-right-radius:\s*14px;/s
+      /\.LxCommandPanel\s*\{[^}]*border-top-left-radius:\s*14px;[^}]*border-top-right-radius:\s*14px;[^}]*box-shadow:\s*0 1px 2px 0 rgba\(0,\s*0,\s*0,\s*0\.05\);/s
     );
     expect(primitiveStyles).toMatch(
       /\.LxCommandItem\s*\{[^}]*border-radius:\s*10px;/s

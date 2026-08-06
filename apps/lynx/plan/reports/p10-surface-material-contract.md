@@ -66,7 +66,8 @@ authority.
 
 - Composer default: 19.2px radius, 1px low-opacity border, one restrained
   `0 4px 18px -6px` shadow.
-- Command menu: 14px radius, no shadow, 1px border; active row 8px radius.
+- Command menu: 18px outer shell with a restrained 5% soft lift, 14px inner
+  panel with a 5% hairline lift, 1px border, and 10px active rows.
 - Project Picker: elevated/popover surface, 1px border, restrained host shadow.
 - Settings controls: opaque control surface, 10px radius, 1px 7% border.
 - Nested badges/chips/pills must sample their own background and text; parent

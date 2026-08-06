@@ -6292,3 +6292,17 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   PID-derived localhost:8903/session1，real Search touch后保留popup/footer，
   raw2560×1576、console0。证据在
   `shots/2026-08-06/command-k-footer-current/`。
+
+## 2026-08-06 — current-head Command K material lift closure
+
+- geometry closure后继续检查paint，旧retained styles与current Web均显示outer
+  `shadow-lg/5`、inner panel `shadow-xs/5`，Lynx此前两层均none。
+- outer补两层5%软阴影`0 10 15 -3`与`0 4 6 -4`，inner补5% hairline
+  `0 1 2 0`；focused contract锁定两层。Web computed多出的前四项是透明utility
+  rings，painted layers与Lynx语义exact。
+- focused Command **1 file / 9 tests**、configured Lynx-for-Web与
+  Native/Desktop builds通过。exact-owned Native bundle `5238d1cc…`，root PID17696；
+  首次手猜8903未打开popup，PID/lsof证明owned endpoint为8904，失败目录删除后以
+  helper绑定localhost:8904/session1重拍，real Search touch、popup/panel、
+  raw2560×1576、console0。证据在
+  `shots/2026-08-06/command-k-shadow-current/`。
