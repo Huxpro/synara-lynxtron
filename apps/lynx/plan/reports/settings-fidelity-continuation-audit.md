@@ -1170,6 +1170,15 @@ The retained replacement cells:
   with clean logs. Native bundle `7cf49c8d…` was PID-derived at
   `localhost:8901/session 1`. Evidence is under
   `shots/2026-08-07/sidebar-project-action-opacity-current/`.
+- Sidebar footer now matches Web's uniform 8px frame, divider-free material,
+  zero item margin, 28px Settings row, and 8px viewport bottom inset. The only
+  width delta is the registered one-pixel Lynx sidebar separator.
+- Lynx-for-Web and exact-owned Native evidence confirm the final frame with
+  clean logs. Native bundle `f861bbe0…` was PID-derived at
+  `localhost:8901/session 1` and produced a 2560x1576 raw frame. Fresh Web
+  frames with provider socket errors were rejected; Web geometry remains
+  current-head source/owner authority. Evidence is under
+  `shots/2026-08-07/sidebar-footer-frame-current/`.
 
 ## Remaining work
 

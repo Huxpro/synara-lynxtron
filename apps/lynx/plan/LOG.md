@@ -6902,3 +6902,18 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   exact-owned Native bundle `7cf49c8d…`，PID-derived localhost:8901/session1，
   `ui-pressed`下opacity1、console0。证据在
   `shots/2026-08-07/sidebar-project-action-opacity-current/`。
+
+## 2026-08-07 — current-head Sidebar footer frame closure
+
+- Web footer为uniform padding8、无top divider、menu item无额外bottom margin；
+  Settings 28px、x8、bottom inset8。Lynx此前padding8/10/12、额外divider并继承
+  primary item margin2，导致x10/w235/bottom14。
+- Lynx footer改padding8、移除divider，并footer-scope item margin0。final
+  Lynx-for-Web frame44px，Settings x8/y784/h28/bottom8；width239 vs Web240只来自
+  已登记的1px sidebar separator。PNG1280×820、Lynx errors空；fresh Web有真实
+  provider socket error而拒绝frame，Web数值使用同current-head owner inventory+
+  canonical `p-2` source。
+- focused **1 file / 3 tests**，configured Lynx-for-Web与Native/Desktop builds通过。
+  exact-owned Native bundle `f861bbe0…`，PID-derived localhost:8901/session1；
+  padding8/border0/item margin0/row28，raw2560×1576、console0。证据在
+  `shots/2026-08-07/sidebar-footer-frame-current/`。

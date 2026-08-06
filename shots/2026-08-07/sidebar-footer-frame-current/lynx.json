@@ -1,0 +1,21 @@
+{
+  "frame": {
+    "borderTop": "0px solid rgb(13, 13, 13)",
+    "h": 44,
+    "padding": "8px",
+    "w": 255,
+    "x": 0,
+    "y": 776
+  },
+  "item": {
+    "h": 28,
+    "margin": "0px"
+  },
+  "row": {
+    "bottom": 8,
+    "h": 28,
+    "w": 239,
+    "x": 8,
+    "y": 784
+  }
+}

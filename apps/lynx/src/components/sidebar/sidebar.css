@@ -351,8 +351,11 @@
 }
 
 .AppSidebarFooter {
-  padding: 8px 10px 12px;
-  border-top: 1px solid var(--sidebar-border);
+  padding: 8px;
+}
+
+.AppSidebarFooter .SharedSidebarPrimaryActionItem {
+  margin-bottom: 0;
 }
 
 /* Mirrors the Web footer stack (flex-col gap-1) beneath the shared composition. */
