@@ -1,0 +1,217 @@
+{
+  "client": "native",
+  "stateId": "integrations-connected-native",
+  "roles": {
+    "root": {
+      "nodeId": 170,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsPage SettingsPage--theme-light"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 868
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "panel": {
+      "nodeId": 302,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsIntegrationsPanel"
+      },
+      "text": "",
+      "box": {
+        "x": 536,
+        "y": 118,
+        "width": 624,
+        "height": 540
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "connection": {
+      "nodeId": 347,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsIntegrationsConnection"
+      },
+      "text": "",
+      "box": {
+        "x": 537,
+        "y": 521,
+        "width": 622,
+        "height": 136
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "copy": {
+      "nodeId": 308,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsIntegrationsRowCopy"
+      },
+      "text": "",
+      "box": {
+        "x": 549,
+        "y": 160,
+        "width": 322,
+        "height": 58
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "title": {
+      "nodeId": 349,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "SettingsIntegrationsRowTitle"
+      },
+      "text": "",
+      "box": {
+        "x": 549,
+        "y": 531,
+        "width": 438,
+        "height": 18
+      },
+      "font": {
+        "family": "",
+        "size": "12px",
+        "weight": "500",
+        "lineHeight": "18px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "description": {
+      "nodeId": 311,
+      "nodeName": "TEXT",
+      "attributes": {
+        "text": "How this connection appears in Synara. Works with Codex, Claude, and any other MCP-capable agent.",
+        "class": "SettingsIntegrationsRowDescription"
+      },
+      "text": "",
+      "box": {
+        "x": 549,
+        "y": 182,
+        "width": 322,
+        "height": 36
+      },
+      "font": {
+        "family": "",
+        "size": "12px",
+        "weight": "normal",
+        "lineHeight": "18px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgba(13,13,13,0.596078)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "actions": {
+      "nodeId": 373,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsIntegrationsConnectionActions"
+      },
+      "text": "",
+      "box": {
+        "x": 997,
+        "y": 531,
+        "width": 150,
+        "height": 24
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

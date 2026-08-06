@@ -6,6 +6,7 @@ import {
   buildExternalMcpSetupPrompt,
   describeIntegrationPermissions,
   describeIntegrationProjects,
+  formatIntegrationDate,
   integrationIsActive,
   integrationStatus,
 } from './settingsIntegrations.logic';
@@ -116,5 +117,13 @@ describe('Settings Integrations projection', () => {
     expect(prompt).toContain('synara pair abc');
     expect(prompt).toContain('"mcpServers"');
     expect(prompt).toContain('"synara_overview"');
+  });
+
+  it('matches the Web local timestamp identity for connected agents', () => {
+    expect(formatIntegrationDate(null)).toBe('Never');
+    expect(formatIntegrationDate('not-a-date')).toBe('not-a-date');
+    expect(formatIntegrationDate('2026-08-05T12:40:58')).toBe(
+      '8/5/2026, 12:40:58 PM'
+    );
   });
 });

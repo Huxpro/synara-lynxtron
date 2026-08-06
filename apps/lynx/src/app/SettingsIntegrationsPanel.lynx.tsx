@@ -29,6 +29,7 @@ import {
   buildExternalMcpSetupPrompt,
   describeIntegrationPermissions,
   describeIntegrationProjects,
+  formatIntegrationDate,
   integrationIsActive,
   integrationStatus,
 } from './settingsIntegrations.logic';
@@ -64,17 +65,6 @@ function ProjectChoice(props: {
       </view>
     </view>
   );
-}
-
-function formatDate(value: string | null): string {
-  if (!value) return 'Never';
-  const timestamp = Date.parse(value);
-  if (!Number.isFinite(timestamp)) return value;
-  const date = new Date(timestamp);
-  return `${date.getFullYear()}-${`${date.getMonth() + 1}`.padStart(
-    2,
-    '0'
-  )}-${`${date.getDate()}`.padStart(2, '0')}`;
 }
 
 export function SettingsIntegrationsPanel() {
@@ -459,9 +449,9 @@ export function SettingsIntegrationsPanel() {
                     {describeIntegrationPermissions(integration.capabilities)}
                   </text>
                   <text className="SettingsIntegrationsRowDescription">
-                    Created {formatDate(integration.createdAt)} · Last used{' '}
-                    {formatDate(integration.lastUsedAt)} · Expires{' '}
-                    {formatDate(integration.expiresAt)}
+                    Created {formatIntegrationDate(integration.createdAt)} ·
+                    Last used {formatIntegrationDate(integration.lastUsedAt)} ·
+                    Expires {formatIntegrationDate(integration.expiresAt)}
                   </text>
                 </view>
                 {active ? (

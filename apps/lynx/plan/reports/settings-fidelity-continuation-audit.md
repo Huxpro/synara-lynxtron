@@ -104,7 +104,7 @@ complete.
 | Worktrees rows and empty state match Web density and typography | empty state remains exact 624×70; canonical `git.createWorktree` now proves the populated row, exact 540.109375px copy/path width, 11/18 conversation label, shared 4px list rhythm, and 24px Delete action across Browser and exact-owned Native | PASS — current-head populated proof in `shots/2026-08-06/worktrees-populated-current/` |
 | Archived empty and list states match Web hierarchy | empty state remains exact 624×182; real canonical create→archive proof now covers the populated title/description plus Restore/Delete action row with exact 24px, 10/15 xs controls and 8px action gap | PASS — current-head Browser and exact-owned Native populated proof in `shots/2026-08-06/archived-populated-current/` |
 | Skills rows match Web density and provider identity | real 114-row catalog uses separate main/control and supplemental metadata owners; source/path is exact 11px/16.5px, switches share Web anchors, previous-row bottom dividers match `divide-y`, and overlapping 16px provider-copy badges use mapped 12px SVGs or neutral fallbacks | PASS — current-head populated visual proof |
-| Integrations rows and actions match Web content-driven geometry | real form rows use exact 20px title lines, 12/18/500 titles, previous-row bottom dividers, and Web bounds; connection/setup/empty rows remain content-driven and action groups self-size | PASS — current-head real form proof |
+| Integrations rows and actions match Web content-driven geometry | form rows retain exact Web bounds; a disposable canonical MCP connection now proves the populated row, top-aligned 24px actions, 10px copy/action gap, 436.5px copy width, and full local timestamp content across Browser and exact-owned Native | PASS — current-head connected-row proof in `shots/2026-08-06/integrations-connected-current/` |
 | Integrations disclosures reuse shared motion | rendered Access all opens two real projects; Review opens three permissions; both use shared 220ms presence/content motion and restore cleanly | PASS — current-head interaction proof |
 | Models includes complete Git-writing and custom-model workflows | Git writing row is terminal with exact 20px title line and no trailing divider; custom models use shared validation, canonical server settings, eight-provider editor, Add/Enter/remove/reset, immediate picker refresh, and exact Web geometry | PASS — current-head visual and real add-picker-remove proof |
 | Providers includes complete update and provider-tools workflows | `SettingsProviderToolsPanel.lynx.tsx`; real three-provider update list, nine CLI disclosures, docs, all Web override fields, canonical update/edit/reset RPCs, exact 44px tool rows, real edit-reset cleanup, and exact-owned Native closed/tools/open/focus evidence in `shots/2026-08-06/providers-native-current/` | PASS — current-head fast-loop, real mutation, and Native interaction proof; Native text entry/IME not claimed |
@@ -423,6 +423,20 @@ The retained replacement cells:
   PID-derived `localhost:8904/session 1`, and `2880x1736` frame retain the same
   geometry with an empty console. No product patch was required; evidence is
   under `shots/2026-08-06/profile-models-populated-current/`.
+- Current-head Connected agents proof used a disposable server clone and
+  canonical `server.createExternalMcpIntegration` to create one local,
+  unpaired 30-day connection. No external agent process or network pairing was
+  started; both clones were deleted after capture.
+- The populated row exposed a real connection-specific fork: inherited form-row
+  centering moved actions down 41px, a 20px gap reduced copy width by 10px, and
+  date-only formatting changed content/wrapping. Connected rows now own
+  top-alignment and a 10px gap while form rows retain their existing owner;
+  local timestamps preserve full Web date/time identity.
+- Final Browser copy/title/status/Resume/Revoke anchors are exact at
+  `1440x900` DPR1. Exact-owned Native bundle `79f06c20…`, root PID `76008`,
+  PID-derived `localhost:8904/session 1`, and `2880x1736` capture retain the
+  622x136 row, top-aligned title/actions, and empty console. Evidence is under
+  `shots/2026-08-06/integrations-connected-current/`.
 - Settings focused continuation: 14 files, 50/50 tests.
 - AppSnap final focused check: 1 file, 2/2 tests.
 - Canonical taxonomy/explicit-owner gate: 1 file, 11/11 tests.

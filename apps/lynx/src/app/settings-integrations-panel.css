@@ -26,9 +26,17 @@
   display: flex;
   width: 100%;
   padding: var(--app-density-settings-row-padding-y, 10px) 12px;
-  align-items: center;
   justify-content: space-between;
+}
+
+.SettingsIntegrationsRow {
+  align-items: center;
   gap: 20px;
+}
+
+.SettingsIntegrationsConnection {
+  align-items: flex-start;
+  gap: 10px;
 }
 
 .SettingsIntegrationsConnection--divided {
@@ -161,6 +169,7 @@
 .SettingsIntegrationsConnectionActions {
   flex-shrink: 0;
   justify-content: flex-end;
+  margin-top: 0;
 }
 
 .SettingsIntegrationsNotice {

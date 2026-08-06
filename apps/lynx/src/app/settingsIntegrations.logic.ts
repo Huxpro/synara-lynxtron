@@ -41,6 +41,20 @@ export function integrationIsActive(
   return !integration.revokedAt && Date.parse(integration.expiresAt) > nowMs;
 }
 
+export function formatIntegrationDate(value: string | null): string {
+  if (!value) return 'Never';
+  const timestamp = Date.parse(value);
+  if (!Number.isFinite(timestamp)) return value;
+  const date = new Date(timestamp);
+  const hours = date.getHours();
+  const displayHours = hours % 12 || 12;
+  const period = hours < 12 ? 'AM' : 'PM';
+  return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}, ${displayHours}:${`${date.getMinutes()}`.padStart(
+    2,
+    '0'
+  )}:${`${date.getSeconds()}`.padStart(2, '0')} ${period}`;
+}
+
 export function describeIntegrationProjects(
   integration: Pick<
     ExternalMcpIntegration,

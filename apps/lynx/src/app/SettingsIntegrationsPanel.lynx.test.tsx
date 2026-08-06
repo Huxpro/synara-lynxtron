@@ -92,7 +92,10 @@ describe('Settings Integrations fidelity', () => {
       /\.SettingsIntegrationsNameInput\s*\{[^}]*width:\s*256px;/s
     );
     expect(styles).toMatch(
-      /\.SettingsIntegrationsConnectionActions\s*\{[^}]*flex-shrink:\s*0;[^}]*justify-content:\s*flex-end;/s
+      /\.SettingsIntegrationsConnection\s*\{[^}]*align-items:\s*flex-start;[^}]*gap:\s*10px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsIntegrationsConnectionActions\s*\{[^}]*flex-shrink:\s*0;[^}]*justify-content:\s*flex-end;[^}]*margin-top:\s*0;/s
     );
     expect(styles).toMatch(
       /\.SettingsIntegrationsProject\s*\{[^}]*padding:\s*8px 12px;[^}]*border:\s*1px solid var\(--settings-project-border\);/s
@@ -113,4 +116,5 @@ describe('Settings Integrations fidelity', () => {
       /\.SettingsIntegrationsSetup,\s*\.SettingsIntegrationsEmpty\s*\{[^}]*min-height:/s
     );
   });
+
 });

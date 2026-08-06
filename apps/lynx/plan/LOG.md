@@ -5997,3 +5997,29 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   byte-exact。Web production 8,943 modules、configured Lynx-for-Web与
   Native/Desktop builds通过。该切片只补真实证据/审计，无产品代码churn；证据在
   `shots/2026-08-06/profile-models-populated-current/`。
+
+## 2026-08-06 — current-head Integrations connected agent
+
+- Connected agents此前只有empty-state/form proof。byte-clone normal state到独立60464
+  server，通过canonical `server.createExternalMcpIntegration`创建本地unpaired
+  `Fidelity coding agent`：all-project scope、projects:read/tasks:create/tasks:wait、
+  30-day expiry。API只签发本地pairing/stdio配置，未启动或联系外部agent；clone可整体
+  删除，未写normal SQLite。
+- real row首测暴露三项owner差异：connection继承form row center alignment，使actions
+  从Web y534下沉到y575；继承20px gap把copy压窄10px；Lynx date-only格式改了内容与
+  wrapping。拆分owner：form继续center/20px，connection独占flex-start/10px，actions
+  margin-top=0；timestamp formatter移到pure logic，保留M/D/YYYY、12-hour time、
+  seconds和AM/PM。
+- final Web/Lynx-for-Web content anchors exact：copy `549/534/436.5`，title/status
+  12/18，Resume `995.5/534/92.046875/24`，Revoke
+  `1095.546875/534/51.453125/24`，8px action gap，完整local timestamp均一致。
+  Browser/PNG 1440×900 DPR1，errors为空。
+- exact-owned Native configured bundle `79f06c20…`，outer1440×900→root1440×868/
+  raw2880×1736，root PID76008，PID-derived localhost:8904/session1；connection
+  `537/521/622/136`、title `549/531/438/18`、actions `997/531/150/24`，console 0。
+  helper的generic copy/description role命中form首实例，未拿来冒充connection evidence；
+  retained DOM subtree与connection/title/actions roles直接支撑row claims。
+- server/native clones、owned processes和browser sessions全部删除/退出；normal SQLite
+  `cd3e1e9e…`、settings `d221bb25…`、KV `f53a83aa…`、window `2dd961d3…`全程
+  byte-exact。Integrations logic/panel + Archived **11/11**，configured三端build通过；
+  证据在`shots/2026-08-06/integrations-connected-current/`。
