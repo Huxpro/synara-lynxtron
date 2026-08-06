@@ -1035,6 +1035,17 @@ The retained replacement cells:
   frame. Native focused-row visuals are explicitly not claimed because the
   target exposes no supported retained focus command. Evidence is under
   `shots/2026-08-06/sidebar-primary-focus-ring-current/`.
+- Sidebar primary-action pressed feedback now preserves Web's active-token
+  semantics without dimming the whole row. The old Lynx state reused the hover
+  surface and applied opacity 0.8; the shared owner now uses
+  `sidebar-accent-active` / `sidebar-accent-foreground` at opacity 1.
+- Real Web and Lynx-for-Web pointer-down/release evidence proves matching
+  opacity and state lifecycle; both pressed frames are 1280x820 and browser
+  errors are empty. Exact-owned Native bundle `db6de088…` contains the active
+  markers and ran with an empty warning/error console. Its non-raised window
+  emitted no screencast frame, so Native pressed visuals are explicitly not
+  claimed. Evidence is under
+  `shots/2026-08-06/sidebar-primary-pressed-current/`.
 
 ## Remaining work
 

@@ -1,0 +1,3 @@
+SharedSidebarPrimaryActionButton
+sidebar-accent-active
+sidebar-accent-foreground

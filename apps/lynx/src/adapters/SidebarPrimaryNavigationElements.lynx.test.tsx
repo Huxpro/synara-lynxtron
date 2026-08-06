@@ -45,6 +45,12 @@ describe('sidebar primary navigation shortcut', () => {
     expect(primaryActionStyles).toMatch(
       /\.SharedSidebarPrimaryActionButton\.ui-focus\s*\{[^}]*outline:\s*none;[^}]*box-shadow:\s*inset 0 0 0 1px var\(--ring\);/s
     );
+    expect(primaryActionStyles).toMatch(
+      /\.SharedSidebarPrimaryActionButton\.ui-pressed\s*\{[^}]*color:\s*var\(--sidebar-accent-foreground\);[^}]*background-color:\s*var\(--sidebar-accent-active\);/s
+    );
+    expect(primaryActionStyles).not.toMatch(
+      /\.SharedSidebarPrimaryActionButton\.ui-pressed\s*\{[^}]*opacity:/s
+    );
     expect(sidebarSource).toContain(
       'newThreadShortcutLabel={LYNX_PRIMARY_SHORTCUT_LABELS.newThread}'
     );

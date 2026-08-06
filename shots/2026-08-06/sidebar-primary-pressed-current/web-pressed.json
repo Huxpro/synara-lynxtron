@@ -1,0 +1,11 @@
+{
+  "active": true,
+  "background": "rgba(252, 252, 252, 0.04)",
+  "boxShadow": "none",
+  "color": "rgb(252, 252, 252)",
+  "opacity": "1",
+  "vars": {
+    "active": "rgba(252, 252, 252, 0.039)",
+    "foreground": "#fcfcfc"
+  }
+}

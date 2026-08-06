@@ -6706,3 +6706,18 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   localhost:8904/session1，raw2560×1576、warning/error console0。DevTool无支持的
   retained focus/key command，因此不冒充Native focused visual proof。证据在
   `shots/2026-08-06/sidebar-primary-focus-ring-current/`。
+
+## 2026-08-06 — current-head Sidebar primary pressed closure
+
+- 真实pointer-down暴露shared row pressed residual：Web保持opacity1并使用
+  `sidebar-accent-active/sidebar-accent-foreground`；Lynx复用hover surface且整行
+  opacity.8。shared pressed owner改为active tokens并删除whole-row dim。
+- current主题下hover/active background可能解析为同一数值，本刀保持Web语义owner，
+  不捏造更强颜色。真实Web/Lynx-for-Web pointer-down均opacity1，Lynx发布
+  `ui-pressed`，pointer-up正确清除；PNG1280×820、browser errors空。
+- focused **2 files / 6 tests**，configured Lynx-for-Web与Native/Desktop builds通过。
+  exact-owned Native bundle `db6de088…`，PID-derived localhost:8901/session1，
+  含primary/active token markers且warning/error console0。non-raised window没有发
+  screencast frame，该capture按harness failure拒绝且不循环重试，不冒充Native
+  pressed visual proof。证据在
+  `shots/2026-08-06/sidebar-primary-pressed-current/`。
