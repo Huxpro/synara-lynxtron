@@ -6322,3 +6322,19 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Extras→Fast，main/sub/row、raw2560×1576、console0。一次helper参数误写
   `--root-pid39774`在capture前退出，未生成证据；仅保留corrected helper capture。
   证据在`shots/2026-08-06/extras-popup-chrome-current/`。
+
+## 2026-08-06 — current-head shared composer picker chrome closure
+
+- Extras修复后继续source-to-source audit，确认Web Model/Traits/Runtime/Extras全部消费
+  `ComposerPickerMenuPopup` canonical chrome；Lynx却分叉：Model私有16%重阴影，
+  Traits/Runtime generic radius10/no-shadow，Extras刚独立校准。
+- 新shared selector统一Model/Traits/Runtime/Extras/Fast submenu为radius10.4、
+  Light 7% `0 4 18 -6`、Dark 30% `0 6 24 -10`，删除Model私有`0 8 24 / 16%`。
+  opaque Native popover继续作为无backdrop-filter的注册校正。
+- current Web Model/Traits为208×244、208×142，current Lynx-for-Web为260×300、
+  260×188；material exact，catalog/layout尺寸差保留既有contract。本轮focused命令
+  实际只解析到**2 files / 11 tests**；不存在的filename参数被Rstest忽略，不冒充4 files。
+- configured Lynx-for-Web与Native/Desktop builds通过。exact-owned Native bundle
+  `3d6a37e6…`，root PID78889、PID-derived localhost:8904/session1，real Model
+  trigger touch，popup/row、raw2560×1576、console0。证据在
+  `shots/2026-08-06/composer-picker-chrome-current/`。

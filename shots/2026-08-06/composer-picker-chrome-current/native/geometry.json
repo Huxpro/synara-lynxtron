@@ -1,0 +1,104 @@
+{
+  "client": "native",
+  "stateId": "composer-model-chrome-light-1280",
+  "roles": {
+    "root": {
+      "nodeId": 13,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 788
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "popup": {
+      "nodeId": 181,
+      "nodeName": "VIEW",
+      "attributes": {
+        "aria-modal": "false",
+        "role": "menu",
+        "bindkeydown": "144:4:",
+        "bindlayoutchange": "144:5:",
+        "class": "LxMenuPopup ComposerModelPopupLynx",
+        "style": "visibility:visible;top:200px;left:718px;"
+      },
+      "text": "",
+      "box": {
+        "x": 718,
+        "y": 200,
+        "width": 260,
+        "height": 300
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "hsla(0,0%,5%,.069)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "0 4px 18px -6px #0d0d0d11",
+        "opacity": "1"
+      }
+    },
+    "row": {
+      "nodeId": 183,
+      "nodeName": "VIEW",
+      "attributes": {
+        "aria-label": "Browse Codex models",
+        "focusable": "false",
+        "aria-disabled": "true",
+        "class": "ComposerProviderOptionLynx ComposerProviderOptionLynx--disabled"
+      },
+      "text": "",
+      "box": {
+        "x": 724,
+        "y": 206,
+        "width": 248,
+        "height": 32
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "0.52"
+      }
+    }
+  }
+}

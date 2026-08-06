@@ -671,6 +671,20 @@ The retained replacement cells:
   under `shots/2026-08-06/extras-popup-chrome-current/`.
 - Focused Menu/Extras suites: 2 files, 11/11 tests; configured Lynx-for-Web
   and Native/Desktop production builds pass.
+- The broader composer picker audit removed split material ownership. Web
+  Model, Traits, Runtime, and Extras all consume one canonical 10.4px /
+  Light-7% / Dark-30% picker chrome; Lynx Model previously used a private 16%
+  heavy shadow while Traits/Runtime inherited generic 10px/no-shadow chrome.
+- One Lynx selector now owns canonical chrome for Model, Traits, Runtime,
+  Extras, and the Fast submenu. Current Web and Lynx-for-Web Model/Traits
+  popups compute the same radius/shadow; content dimensions retain their
+  existing catalog/layout differences.
+- Exact-owned Native bundle `3d6a37e6…`, root PID `78889`, PID-derived
+  `localhost:8904/session 1`, and a real Model-trigger touch retained popup/row,
+  a 2560x1576 frame, and an empty warning/error console. Evidence is under
+  `shots/2026-08-06/composer-picker-chrome-current/`.
+- Focused invocation resolved to 2 existing files / 11 tests; configured
+  Lynx-for-Web and Native/Desktop production builds pass.
 
 ## Remaining work
 
