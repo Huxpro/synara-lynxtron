@@ -1,3 +1,4 @@
+import microphoneSvg from '@synara-central-icons/microphone.svg?raw';
 import { useEffect, useMemo, useRef, useState } from '@lynx-js/react';
 import { useQuery } from '@tanstack/react-query';
 import type {
@@ -10,7 +11,7 @@ import type {
 
 import { useComposerDraftStore } from '../../adapters/composerDraftStore.lynx';
 import { useTheme } from '../../adapters/useTheme.lynx';
-import { MicIcon } from '@synara-web/lib/icons';
+import { colorizeLynxSvg } from '../../lib/themedSvg.lynx';
 import { dialogs } from '../../platform/dialogs';
 import { onGlobalEvent } from '../../platform/bridge';
 import { clipboard as clipboardPort } from '../../platform/clipboard';
@@ -253,7 +254,7 @@ export function Composer({
   onSetInteractionMode,
   onSendSucceeded,
 }: ComposerProps) {
-  const { resolvedTheme } = useTheme();
+  const { resolvedTheme, svgColors } = useTheme();
   const textareaRef = useRef<React.ElementRef<'textarea'>>(null);
   const brandedThreadId = (draftId ?? threadId) as never;
   const draft = useComposerDraftStore(
@@ -1515,14 +1516,20 @@ export function Composer({
                 />
               ) : null}
               {emptyLanding ? (
-                <Button
+                <view
                   className="ComposerVoiceButtonLynx"
-                  variant="ghost"
-                  size="icon-sm"
-                  disabled={true}
                   aria-label="Record voice note (unavailable in Lynx for Web)"
-                  render={<MicIcon className="ComposerVoiceGlyphLynx" />}
-                />
+                  aria-disabled="true"
+                  focusable={false}
+                >
+                  <svg
+                    className="ComposerVoiceGlyphLynx"
+                    content={colorizeLynxSvg(
+                      microphoneSvg,
+                      svgColors.mutedForeground
+                    )}
+                  />
+                </view>
               ) : null}
               <ComposerPrimaryActionComposition
                 mode={

@@ -6570,3 +6570,19 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   raw2560×1576、console0。Native compound VIEW radius/border仍按已登记DevTool
   zero-value boundary，不冒充numeric Native proof。证据在
   `shots/2026-08-06/composer-send-action-current/`。
+
+## 2026-08-06 — current-head Composer Voice common-anatomy closure
+
+- Web Voice当前enabled但Lynx能力不可用，保留honest capability delta；仅比较公共
+  anatomy。Web为28×28/r8/border1、16×16 central microphone；旧Lynx为32×28，
+  Web-mask span受icon-sm padding压成14×16。
+- Lynx改为raw `@synara-central-icons/microphone.svg?raw`，active theme muted
+  foreground着色；button scope固定28×28、padding5、icon16×16。Lynx仍明确
+  disabled/non-focusable/opacity.48，不复制Web enabled opacity、不伪造录音能力。
+- 第一版raw SVG仍通过Button `render` seam，Native出现3条cloneElement warning；
+  该证据拒绝。final改为plain disabled view，去掉Button/render。
+- focused picker contract **1 file / 3 tests**，configured Lynx-for-Web与
+  Native/Desktop builds通过。exact-owned Native bundle `c4f9f572…`，root
+  PID63842、PID-derived localhost:8904/session1；button28×28、
+  aria-disabled=true/focusable=false、mic16×16 muted，raw2560×1576、console0。
+  证据在`shots/2026-08-06/composer-voice-action-current/`。
