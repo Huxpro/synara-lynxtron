@@ -25,6 +25,10 @@ describe('sidebar primary navigation shortcut', () => {
       new URL('../components/sidebar/Sidebar.lynx.tsx', import.meta.url),
       'utf8'
     );
+    const primaryActionStyles = readFileSync(
+      new URL('./sidebar-primary-action-elements.css', import.meta.url),
+      'utf8'
+    );
 
     expect(sidebarStyles).toMatch(
       /\.AppSidebarShortcut\s*\{[^}]*height:\s*20px;[^}]*gap:\s*4px;/s
@@ -37,6 +41,9 @@ describe('sidebar primary navigation shortcut', () => {
     );
     expect(sidebarStyles).toMatch(
       /\.AppSidebarShortcutKey\s*\{[^}]*width:\s*20px;[^}]*height:\s*20px;[^}]*border-radius:\s*4px;[^}]*background-color:\s*var\(--muted\);[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;[^}]*font-weight:\s*500;/s
+    );
+    expect(primaryActionStyles).toMatch(
+      /\.SharedSidebarPrimaryActionButton\.ui-focus\s*\{[^}]*outline:\s*none;[^}]*box-shadow:\s*inset 0 0 0 1px var\(--ring\);/s
     );
     expect(sidebarSource).toContain(
       'newThreadShortcutLabel={LYNX_PRIMARY_SHORTCUT_LABELS.newThread}'

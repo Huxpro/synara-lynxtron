@@ -6691,3 +6691,18 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   cubic-bezier exact，raw2560×1576、warning/error console0。Desktop DevTool没有可靠
   retained mouseenter path，因此不冒充Native hover proof。证据在
   `shots/2026-08-06/sidebar-primary-shortcut-reveal-current/`。
+
+## 2026-08-06 — current-head Sidebar primary focus ring closure
+
+- 真实keyboard focus暴露shared row residual：Web为1px inset ring且无painted outline；
+  Lynx原来是outer `0 0 0 1px` shadow，在Web tab-stop bridge启用后还叠加浏览器
+  `outline:auto`，形成外扩/double seam。
+- shared focus owner改为`outline:none` + `inset 0 0 0 1px var(--ring)`。真实Web与
+  Lynx-for-Web Tab focus均为inset 1px，Lynx outline style none；PNG1280×820、
+  browser errors空。1px row width与32px titlebar offset继续作为已登记engine boundary，
+  custom VIEW radius0不冒充numeric radius proof。
+- focused **2 files / 6 tests**，configured Lynx-for-Web与Native/Desktop builds通过。
+  exact-owned Native bundle `b7fb1f36…`含encoded inset marker，PID-derived
+  localhost:8904/session1，raw2560×1576、warning/error console0。DevTool无支持的
+  retained focus/key command，因此不冒充Native focused visual proof。证据在
+  `shots/2026-08-06/sidebar-primary-focus-ring-current/`。

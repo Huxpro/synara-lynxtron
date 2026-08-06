@@ -1,0 +1,12 @@
+{
+  "borderRadius": "8px",
+  "box": {
+    "h": 28,
+    "w": 244,
+    "x": 6,
+    "y": 91.25
+  },
+  "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(51, 134, 214, 0.63) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+  "focusVisible": true,
+  "outline": "oklab(0.608954 -0.0475467 -0.137141 / 0.189412) none 1px"
+}

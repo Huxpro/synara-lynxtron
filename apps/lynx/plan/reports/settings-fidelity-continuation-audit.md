@@ -1024,6 +1024,17 @@ The retained replacement cells:
 - Focused reveal suites: 2 files, 6/6 tests; configured Lynx-for-Web and
   Native/Desktop production builds pass. Evidence is under
   `shots/2026-08-06/sidebar-primary-shortcut-reveal-current/`.
+- Sidebar primary-action keyboard focus now matches Web's one-pixel inset-ring
+  ownership. The previous outer Lynx shadow plus browser `outline: auto` became
+  visible once the real Web tab-stop path was enabled; the shared focus owner
+  now suppresses the default outline and uses the exact inset ring.
+- Real Web and Lynx-for-Web focus-visible evidence resolves to one-pixel inset
+  shadows with no painted outline; both frames are 1280x820 and error logs are
+  empty. Exact-owned Native bundle `b7fb1f36…` contains the encoded inset-ring
+  rule, ran with an empty warning/error console, and produced a 2560x1576 raw
+  frame. Native focused-row visuals are explicitly not claimed because the
+  target exposes no supported retained focus command. Evidence is under
+  `shots/2026-08-06/sidebar-primary-focus-ring-current/`.
 
 ## Remaining work
 

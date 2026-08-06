@@ -1,0 +1,14 @@
+{
+  "borderRadius": "0px",
+  "box": {
+    "h": 28,
+    "w": 243,
+    "x": 6,
+    "y": 87
+  },
+  "boxShadow": "rgb(1, 105, 204) 0px 0px 0px 1px inset",
+  "class": "SharedSidebarPrimaryActionButton ui-focus",
+  "focusVisible": true,
+  "label": "New thread",
+  "outline": "rgb(13, 13, 13) none 3px"
+}
