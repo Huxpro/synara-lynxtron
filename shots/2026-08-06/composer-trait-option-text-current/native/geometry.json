@@ -1,0 +1,116 @@
+{
+  "client": "native",
+  "stateId": "composer-trait-option-text-light-1280",
+  "roles": {
+    "popup": {
+      "nodeId": 210,
+      "nodeName": "VIEW",
+      "attributes": {
+        "aria-modal": "false",
+        "role": "menu",
+        "bindkeydown": "150:4:",
+        "bindlayoutchange": "150:5:",
+        "class": "LxMenuPopup ComposerTraitsPopupLynx",
+        "style": "visibility:visible;top:309px;left:795px;"
+      },
+      "text": "",
+      "box": {
+        "x": 795,
+        "y": 309,
+        "width": 260,
+        "height": 191
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "hsla(0,0%,5%,.069)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "0 4px 18px -6px #0d0d0d11",
+        "opacity": "1"
+      }
+    },
+    "row": {
+      "nodeId": 220,
+      "nodeName": "VIEW",
+      "attributes": {
+        "aria-label": "Low",
+        "aria-selected": "false",
+        "focusable": "true",
+        "aria-disabled": "false",
+        "bindmouseenter": "155:0:bindmouseenter",
+        "bindblur": "155:0:bindblur",
+        "bindmouseleave": "155:0:bindmouseleave",
+        "bindkeydown": "155:0:bindkeydown",
+        "bindtap": "155:0:bindtap",
+        "bindmouseup": "155:0:bindmouseup",
+        "bindtouchstart": "155:0:bindtouchstart",
+        "bindmousedown": "155:0:bindmousedown",
+        "bindtouchend": "155:0:bindtouchend",
+        "bindtouchcancel": "155:0:bindtouchcancel",
+        "bindfocus": "155:0:bindfocus",
+        "class": "ComposerTraitOptionLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 805,
+        "y": 349,
+        "width": 240,
+        "height": 34
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "label": {
+      "nodeId": 223,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "ComposerTraitOptionLabelLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 831,
+        "y": 357,
+        "width": 206,
+        "height": 18
+      },
+      "font": {
+        "family": "",
+        "size": "12px",
+        "weight": "normal",
+        "lineHeight": "18px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

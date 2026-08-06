@@ -6450,3 +6450,19 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   TEXT均12/18且box18。DevTool将CSS 400等价序列化为`normal`；保留
   popup/label/row、raw2560×1576、console0。证据在
   `shots/2026-08-06/composer-extras-label-current/`。
+
+## 2026-08-06 — current-head Composer Traits option line-box closure
+
+- Web shared radio option明确12/18/400；current rendered四行均26px row。Lynx
+  dedicated `ComposerTraitOptionLabelLynx`此前仅12px，四行直接TEXT实测
+  12/normal/400、visual line-box15，34px row。
+- dedicated text owner补显式18px；不压缩34px Native touch-target/layout contract。
+  focused trait-picker **1 file / 2 tests**、configured Lynx-for-Web与
+  Native/Desktop builds通过。Web/Lynx-for-Web均经real Traits trigger打开，
+  四行label均12/18/400；Web row26、Lynx row34保持原contract，PNG1280×820、
+  errors空。
+- exact-owned Native bundle `7577d5c8…`，root PID87825、PID-derived
+  localhost:8905/session1；state-idempotent real touch打开Traits，保留
+  popup/row/label。Native label12/18、box18、weight `normal`等价CSS400，
+  row240×34、raw2560×1576、console0。证据在
+  `shots/2026-08-06/composer-trait-option-text-current/`。

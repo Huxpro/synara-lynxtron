@@ -538,6 +538,7 @@
 .ComposerTraitOptionLabelLynx {
   color: var(--foreground);
   font-size: 12px;
+  line-height: 18px;
 }
 
 .ComposerTraitOptionDescriptionLynx {

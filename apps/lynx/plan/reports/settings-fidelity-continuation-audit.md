@@ -780,6 +780,22 @@ The retained replacement cells:
   is under `shots/2026-08-06/composer-extras-label-current/`.
 - Focused Extras suite: 1 file, 3/3 tests; configured Lynx-for-Web and
   Native/Desktop production builds pass.
+- Composer Traits option labels now explicitly match Web's 12px/18px/400
+  picker-row typography instead of relying on Lynx's 15px visual `normal`
+  line box. The existing 34px Native row remains unchanged; it is the retained
+  touch-target/layout contract rather than an anonymous typography offset.
+- Current Web and Lynx-for-Web opened Traits through the rendered trigger.
+  All four labels resolve to 12/18/400; Web rows remain 26px and Lynx rows
+  remain 34px. Both retained screenshots are 1280x820 and both browser error
+  logs are empty.
+- Exact-owned Native bundle `7577d5c8…`, root PID `87825`, PID-derived
+  `localhost:8905/session 1`, and a state-idempotent real Traits touch retained
+  popup/row/label roles. Native measured the first label at 12px/18px with an
+  18px box and serializes CSS weight 400 as equivalent `normal`; the row is
+  240x34, raw frame 2560x1576, and warning/error console empty. Evidence is
+  under `shots/2026-08-06/composer-trait-option-text-current/`.
+- Focused trait-picker suite: 1 file, 2/2 tests; configured Lynx-for-Web and
+  Native/Desktop production builds pass.
 
 ## Remaining work
 
