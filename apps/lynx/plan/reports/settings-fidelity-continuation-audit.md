@@ -1046,6 +1046,16 @@ The retained replacement cells:
   emitted no screencast frame, so Native pressed visuals are explicitly not
   claimed. Evidence is under
   `shots/2026-08-06/sidebar-primary-pressed-current/`.
+- Sidebar primary-navigation to Projects rhythm now matches Web's exact 16px
+  visual pitch. Lynx previously accumulated 20px through 9px bottom padding
+  plus an extra one-pixel divider; the group now uses the Web 6px tail and no
+  divider while preserving its existing external margin ownership.
+- Current Web and Lynx-for-Web both measure 16px from Automations bottom to
+  Projects top; their internal margin-box split differs but the visible pitch
+  is exact. Both frames are 1280x820 with empty error logs. Exact-owned Native
+  bundle `87db0d92…`, PID-derived `localhost:8904/session 1`, retained a
+  2560x1576 raw frame and empty warning/error console. Evidence is under
+  `shots/2026-08-06/sidebar-primary-section-rhythm-current/`.
 
 ## Remaining work
 

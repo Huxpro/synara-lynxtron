@@ -1,0 +1,25 @@
+{
+  "gaps": {
+    "groupToProjects": 8,
+    "rowToGroup": 8,
+    "rowToProjects": 16
+  },
+  "group": {
+    "borderBottom": "0px solid rgb(13, 13, 13)",
+    "bottom": 243,
+    "h": 156,
+    "marginBottom": "4px",
+    "paddingBottom": "6px",
+    "y": 87
+  },
+  "projects": {
+    "h": 28,
+    "top": 251,
+    "y": 251
+  },
+  "row": {
+    "bottom": 235,
+    "h": 28,
+    "y": 207
+  }
+}

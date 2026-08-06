@@ -76,10 +76,8 @@
 }
 
 .AppSidebarPrimaryNav {
-  padding: 0 6px 9px;
-  /* Match the Web primary-navigation group → section-header rhythm. */
+  padding: 0 6px 6px;
   margin-bottom: 4px;
-  border-bottom: 1px solid var(--sidebar-border);
 }
 
 .AppSidebarNavRow {

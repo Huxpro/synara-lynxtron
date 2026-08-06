@@ -6721,3 +6721,15 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   screencast frame，该capture按harness failure拒绝且不循环重试，不冒充Native
   pressed visual proof。证据在
   `shots/2026-08-06/sidebar-primary-pressed-current/`。
+
+## 2026-08-06 — current-head Sidebar primary section rhythm closure
+
+- current Web Automations bottom→Projects top为16px，primary group bottom padding6且
+  无divider；Lynx此前为20px，来源是padding-bottom9 + 1px divider。
+- `.AppSidebarPrimaryNav`改为`padding:0 6px 6px`并移除bottom border，保留既有
+  margin-bottom4。final Web/Lynx-for-Web visual pitch均exact 16px；内部margin box
+  拆分为Web 6+10、Lynx 8+8，因host-element ownership不同，不用匿名offset强行同构。
+- focused **2 files / 6 tests**，configured Lynx-for-Web与Native/Desktop builds通过；
+  Browser PNG1280×820、errors空。exact-owned Native bundle `87db0d92…`，
+  PID-derived localhost:8904/session1，raw2560×1576、warning/error console0。
+  证据在`shots/2026-08-06/sidebar-primary-section-rhythm-current/`。
