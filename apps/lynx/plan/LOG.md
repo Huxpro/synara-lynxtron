@@ -7133,3 +7133,19 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   body854。inner随viewport分别592/762/842，Back/Search/Nav处于同一scroll tree，
   Settings main content仍由独立`SettingsContent`滚动。三档console0，证据
   `shots/2026-08-07/responsive-settings-sidebar-current/`。
+
+## 2026-08-07 — minimum-window overlay audit
+
+- Native Desktop硬下限为900x650，故`compact<768`在当前Native shell不可达；该band仍
+  服务Lynx-for-Web与未来host，不为制造Native测试而绕过产品min size。
+- generic Menu已由`resolveMenuCoordinates()`消费实测anchor/popup/viewport并双轴clamp。
+  exact-owned真实service/thread在900x650打开Composer model menu：popup
+  x472..732/y131..431，provider `SCROLL-VIEW` x478..726/y137..425。
+- Sidebar Search command dialog同尺寸popup x162..738/y103..476，results
+  `SCROLL-VIEW` x163..737/y153..429。两者均无viewport overflow，未做无意义CSS修改。
+- `Page.reload`对本地production `.lynx.bundle`留下空renderer，判定为harness failure；
+  停止旧owned PID后按原production/server/probe环境重启，PID62116由lsof精确映射
+  localhost:8903/session1，再采Composer证据。fresh warning/error console 0。
+- staged bundle `71040b02…`，两张frame均1800x1300；几何、hash与cleanup边界记录在
+  `shots/2026-08-07/responsive-overlays-current/notes.md`。environment、
+  diff/browser docks与selection-action overlays仍开放。

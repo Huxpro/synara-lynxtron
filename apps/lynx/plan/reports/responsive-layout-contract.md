@@ -92,8 +92,11 @@ separate behavior decisions and real multi-size proof:
    360px minimum squeezes the list.
 2. Settings: verify control rows, custom-model grids, profile/projects lists,
    and sidebar behavior at compact widths.
-3. Thread overlays: environment panel, diff/browser docks, menus, and selection
-   actions need viewport-clamped positioning.
+3. Thread overlays: environment panel, diff/browser docks, and selection
+   actions still need viewport-clamped positioning. The shared Menu primitive
+   already clamps measured popup coordinates to its measured viewport; Search
+   command and Composer model overlays are separately proven at the Desktop
+   minimum below.
 4. Very short windows: verify Composer, transcript, sidebar footer, and Settings
    action rows at the desktop minimum height of 650 and below on non-desktop
    hosts.
@@ -121,3 +124,20 @@ At 900x650 the scroll viewport is 604px and the final Advanced row remains
 fully visible at y614..642. The viewport grows to 774px at 820px height and
 854px at 900px height, while the main Settings content keeps its separate
 vertical scroll owner.
+
+## Overlay follow-up
+
+Desktop enforces a 900x650 minimum content size, so the shared `compact` band is
+not reachable in the current Native shell. It remains part of the cross-host
+API for Lynx-for-Web and future hosts.
+
+At the Native Desktop minimum, the real Sidebar Search command popup occupies
+x162..738/y103..476 inside the 900x650 dialog viewport. Its result
+`SCROLL-VIEW` occupies x163..737/y153..429. The real Composer model popup
+occupies x472..732/y131..431, with its provider `SCROLL-VIEW` at
+x478..726/y137..425. Neither popup overflows the viewport, and both keep their
+own vertical scroll owner.
+
+This closes generic Menu positioning plus these two high-value popup consumers;
+it does not certify environment, diff/browser docks, or selection-action
+overlays. Evidence: `shots/2026-08-07/responsive-overlays-current/`.
