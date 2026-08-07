@@ -7347,3 +7347,17 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   未保留其artifact且未停止无关process。focused **2 files / 5 tests**，
   Lynx-for-Web与Native/Desktop builds通过。证据
   `shots/2026-08-07/sidebar-seam-current/`。
+
+## 2026-08-07 — current-head Settings sidebar seam closure
+
+- Settings private sidebar保留同类错误owner：Web复用borderless 256px outer sidebar，
+  Lynx却在`.SettingsSidebar`画`border-right:1px`，Back/Search/Nav rail因此243而非244，
+  content box为255而非256。
+- 删除该border，不改变`SidebarDisclosure`宽度/motion。Lynx-for-Web真实点击Settings后
+  sidebar/body256、Back/Search region244、search shell236/content rail234，
+  Settings page x256/1024，computed border-right0。
+- exact-owned Native PID73207→localhost:8901/session1，supported touch真实进入Settings；
+  sidebar/body256、inner content244、Back/Search border244、search shell236、
+  main x256/1024，computed border-right-width0，console0。
+- focused **2 files / 8 tests**，Lynx-for-Web与Native/Desktop builds通过。证据
+  `shots/2026-08-07/settings-sidebar-seam-current/`。

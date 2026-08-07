@@ -809,7 +809,6 @@
   flex-shrink: 0;
   width: 256px;
   height: 100%;
-  border-right: 1px solid var(--border);
   background-color: var(--app-settings-surface);
 }
 

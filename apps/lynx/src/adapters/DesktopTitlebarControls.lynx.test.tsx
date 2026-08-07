@@ -119,6 +119,9 @@ describe('desktop titlebar controls', () => {
     expect(appStyles).toMatch(
       /\.SettingsSidebar\s*\{[^}]*width:\s*256px;[^}]*height:\s*100%;/s
     );
+    expect(appStyles).not.toMatch(
+      /\.SettingsSidebar\s*\{[^}]*border-right:/s
+    );
     expect(appStyles).toMatch(
       /\.SettingsSidebarTitlebar\s*\{[^}]*height:\s*46px;[^}]*padding-left:\s*14px;[^}]*padding-right:\s*14px;/s
     );

@@ -1,0 +1,50 @@
+{
+  "SettingsSidebar": [
+    {
+      "nodeId": 149,
+      "className": "SettingsSidebar"
+    }
+  ],
+  "SettingsSidebarBody": [
+    {
+      "nodeId": 151,
+      "className": "SettingsSidebarBody"
+    }
+  ],
+  "SettingsSidebarBodyInner": [
+    {
+      "nodeId": 152,
+      "className": "SettingsSidebarBodyInner"
+    }
+  ],
+  "SharedSettingsSidebarBackButton": [
+    {
+      "nodeId": 165,
+      "className": "SharedSettingsSidebarBackButton"
+    }
+  ],
+  "SharedSettingsSidebarSearchRegion": [
+    {
+      "nodeId": 170,
+      "className": "SharedSettingsSidebarSearchRegion"
+    }
+  ],
+  "SharedSettingsSidebarSearch": [
+    {
+      "nodeId": 171,
+      "className": "SharedSettingsSidebarSearch"
+    }
+  ],
+  "SettingsPage": [
+    {
+      "nodeId": 276,
+      "className": "SettingsPage SettingsPage--theme-light"
+    }
+  ],
+  "SettingsContent": [
+    {
+      "nodeId": 278,
+      "className": "SettingsContent"
+    }
+  ]
+}

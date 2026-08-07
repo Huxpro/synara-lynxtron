@@ -1,0 +1,116 @@
+{
+  "boxes": [
+    {
+      "borderRight": "0px solid rgb(13, 13, 13)",
+      "rect": [
+        0,
+        0,
+        256,
+        820
+      ],
+      "scroll": [
+        256,
+        256
+      ],
+      "selector": ".SettingsSidebar",
+      "text": "Back to appAppGeneralProfileAppearanceNotificationsBehaviorAppSnapKeyboard ShortcutsWorktreesArchive"
+    },
+    {
+      "borderRight": "0px solid rgb(13, 13, 13)",
+      "rect": [
+        0,
+        46,
+        256,
+        774
+      ],
+      "scroll": [
+        256,
+        256
+      ],
+      "selector": ".SettingsSidebarBody",
+      "text": "Back to appAppGeneralProfileAppearanceNotificationsBehaviorAppSnapKeyboard ShortcutsWorktreesArchive"
+    },
+    {
+      "borderRight": "0px solid rgb(13, 13, 13)",
+      "rect": [
+        0,
+        46,
+        256,
+        774
+      ],
+      "scroll": [
+        256,
+        256
+      ],
+      "selector": ".SettingsSidebarBodyInner",
+      "text": "Back to appAppGeneralProfileAppearanceNotificationsBehaviorAppSnapKeyboard ShortcutsWorktreesArchive"
+    },
+    {
+      "borderRight": "0px solid rgb(13, 13, 13)",
+      "rect": [
+        6,
+        52,
+        244,
+        28
+      ],
+      "scroll": [
+        244,
+        244
+      ],
+      "selector": ".SharedSettingsSidebarBackButton",
+      "text": "Back to app"
+    },
+    {
+      "borderRight": "0px solid rgb(13, 13, 13)",
+      "rect": [
+        6,
+        92,
+        244,
+        28
+      ],
+      "scroll": [
+        244,
+        244
+      ],
+      "selector": ".SharedSettingsSidebarSearchRegion",
+      "text": ""
+    },
+    null,
+    {
+      "borderRight": "0px solid rgb(13, 13, 13)",
+      "rect": [
+        256,
+        0,
+        1024,
+        820
+      ],
+      "scroll": [
+        1024,
+        1024
+      ],
+      "selector": ".SettingsPage",
+      "text": "GeneralDefault provider, thread mode, and sidebar organization.Restore defaultsLoading preferences…"
+    },
+    {
+      "borderRight": "0px solid rgb(13, 13, 13)",
+      "rect": [
+        256,
+        0,
+        1024,
+        820
+      ],
+      "scroll": [
+        1024,
+        1024
+      ],
+      "selector": ".SettingsContent",
+      "text": "GeneralDefault provider, thread mode, and sidebar organization.Restore defaultsLoading preferences…"
+    }
+  ],
+  "root": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up",
+  "viewport": {
+    "dpr": 1,
+    "innerHeight": 820,
+    "innerWidth": 1280
+  }
+}
