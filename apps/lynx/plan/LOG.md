@@ -7412,3 +7412,17 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - focused **2 files / 7 tests**，Lynx-for-Web与Native/Desktop builds通过，
   browser errors0、Native console0。证据
   `shots/2026-08-07/sidebar-top-highlight-current/`。
+
+## 2026-08-07 — dark shell material boundary reclassification
+
+- raised seam/highlight关闭后重测大面积dark shell：current Electron sidebar/main实拍
+  RGB6/7，Native sidebar为RGB17（canonical `#111111`）、shell `#101010`。差异真实但
+  不是孤立hex错误。
+- Web macOS使用translucent branch（transparent shell、72% surface mix、blur/vibrancy）；
+  Lynxtron无backdrop/vibrancy contract，generated Native sheet明确选择opaque branch。
+  把canonical Codex dark surface改成截图`#060606`会污染theme export/editor及所有host，
+  也不能复现动态desktop backdrop。
+- 因此登记为intentional host material delta，等待真实Native vibrancy或产品明确选择
+  独立opaque calibration policy；不手改generated sheet。其header引用的
+  `scripts/generate-native-theme-css.ts`当前也不在tree内，直接改产物会制造无source
+  fork。测量与disposition在`shots/2026-08-07/dark-shell-material-boundary/`。

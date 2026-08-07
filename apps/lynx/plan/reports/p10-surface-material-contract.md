@@ -107,6 +107,14 @@ intentional platform delta. Native/Lynx mouseenter and host Tab focus
 publication remain narrow interaction deltas, not material mismatches. Native
 titlebar normalization remains the named 32px crop.
 
+The remaining default dark shell fill difference is also a host material
+delta, not a local token typo. Current Electron vibrancy paints the Codex shell
+around RGB 6–7, while Native's intentional opaque projection preserves the
+canonical `#101010` / `#111111` shell/sidebar surfaces. Replacing the canonical
+theme pack with one captured backdrop color would break shared theme semantics.
+Evidence and disposition:
+`shots/2026-08-07/dark-shell-material-boundary/`.
+
 Every host shadow/material approximation is represented by an owned primitive
 or registered delta. No open P0/P1 material residual remains. Strict
 verification reports **44 states / 0 incomplete / 0 blocking** and **15

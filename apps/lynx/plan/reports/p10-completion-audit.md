@@ -265,6 +265,7 @@ Current responsive disposition:
 | Settings sidebar seam ownership | real Settings navigation: 256px sidebar, 244px Back/Search rails, 236px search shell, zero sidebar border | PASS |
 | Raised content-card seam material | ordinary routes and Settings: 14.4px left radii, theme-aware inset edge/depth, square compact/closed states | PASS |
 | Sidebar top material | ordinary and Settings sidebars share the calibrated 1px light/dark inset highlight | PASS |
+| Dark shell base fill | Electron vibrancy RGB 6–7 versus Native canonical opaque #101010/#111111 | INTENTIONAL HOST MATERIAL DELTA |
 | Environment, diff/browser docks, selection actions | no reachable Lynx product consumer to certify | OPEN PRODUCT/PLATFORM KERNEL |
 | Current-head full three-client route/theme/size/state matrix | historical P10 matrix predates later product commits | NOT RE-CERTIFIED |
 
@@ -288,6 +289,9 @@ diagnostic.
 `shots/2026-08-07/sidebar-top-highlight-current/` connects the previously
 unused sidebar material projection and records the Native dark variable
 inheritance failure plus its direct-value correction.
+`shots/2026-08-07/dark-shell-material-boundary/` records why the remaining
+large-area dark fill difference cannot be closed by copying one Electron
+backdrop sample into the canonical cross-host theme.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
