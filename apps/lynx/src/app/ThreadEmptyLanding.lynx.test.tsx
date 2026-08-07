@@ -73,5 +73,8 @@ describe('empty Thread landing fidelity', () => {
     expect(headingStyles).toMatch(
       /\.CenteredEmptyLandingHeading--project\s*\{[^}]*width:\s*400px;/s
     );
+    expect(headingStyles).toMatch(
+      /\.SliceRoot--viewport-compact \.CenteredEmptyLandingHeading\s*\{[^}]*width:\s*calc\(100% - 48px\);/s
+    );
   });
 });

@@ -221,6 +221,14 @@ The 200px body now scrolls 90px between a fully visible heading and a fully
 visible Composer; at 480px it remains non-scrolling and centered. Evidence:
 `shots/2026-08-07/responsive-short-window-current/`.
 
+Compact landing headings are also fluid. The fixed 321px ordinary and 400px
+project heading widths exceeded a 600px window's 344px main column once the
+landing frame padding was included. Compact headings now use the available
+width minus the canonical 48px inline padding; at 600px the retained heading is
+248px and remains inside the main column, while 1024px restores the calibrated
+321px width. Evidence:
+`shots/2026-08-07/responsive-landing-width-current/`.
+
 Transcript uses a shared `short=320px` height class. Below that threshold, the
 provider-health banner contracts to 44px, keeps its full accessibility label
 while hiding visual description copy, and transcript top padding is removed.

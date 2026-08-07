@@ -7262,3 +7262,15 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Lynx-for-Web与Native/Desktop builds通过，React Doctor **100/100**。page errors0，
   console仅既存web-core warning。证据
   `shots/2026-08-07/responsive-transcript-short-current/`。
+
+## 2026-08-07 — compact landing heading width
+
+- Lynx ordinary/project landing heading固定321/400px；600px window扣除fixed sidebar后
+  main仅344px，再算frame 24px双侧padding后必然有overflow。Web authority无fixed heading
+  width，由parent padding和wrap拥有。
+- compact root下统一`CenteredEmptyLandingHeading{width:calc(100%-48px)}`；600x480
+  实测heading248px/x304..552，严格落在main x256..600；1024恢复ordinary321px。
+- runtime保留ordinary heading；project-specific 400px通过同selector focused contract锁定，
+  不为截图伪造project state。focused **2 files / 5 tests**，Lynx-for-Web与
+  Native/Desktop builds通过，React Doctor **100/100**，page errors0。证据
+  `shots/2026-08-07/responsive-landing-width-current/`。

@@ -25,6 +25,10 @@
   width: 400px;
 }
 
+.SliceRoot--viewport-compact .CenteredEmptyLandingHeading {
+  width: calc(100% - 48px);
+}
+
 .CenteredEmptyLandingAccent {
   color: var(--muted-foreground);
 }
