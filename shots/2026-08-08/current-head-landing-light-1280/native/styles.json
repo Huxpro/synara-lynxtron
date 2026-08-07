@@ -1,0 +1,114 @@
+{
+  "client": "native",
+  "stateId": "sidebar-chats-hitbox-light-1280",
+  "roles": {
+    "root": {
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "sidebar": {
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "0 1px 0 inset #00000007",
+        "opacity": "1"
+      }
+    },
+    "main": {
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "1px 0 0 inset #00000014,-6.5px 0 12px -10px #00000019",
+        "opacity": "1"
+      }
+    },
+    "chatsRoot": {
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "chatsButton": {
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "chatsLabel": {
+      "font": {
+        "family": "",
+        "size": "12px",
+        "weight": "500",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgba(13,13,13,0.596078)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

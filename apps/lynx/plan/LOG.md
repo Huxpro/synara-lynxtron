@@ -7426,3 +7426,22 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   独立opaque calibration policy；不手改generated sheet。其header引用的
   `scripts/generate-native-theme-css.ts`当前也不在tree内，直接改产物会制造无source
   fork。测量与disposition在`shots/2026-08-07/dark-shell-material-boundary/`。
+
+## 2026-08-08 — current-head landing baseline and Chats hitbox
+
+- 稳定连接preflight后，用同一isolated server/origin重采Web与Lynx-for-Web
+  `1280x820 / DPR1 / light / comfortable / New Chat`。真实UI关闭provider banner与
+  Environment overlay后，sidebar/main/title精确一致，hero最大0.64px、Composer最大
+  0.75px；拒绝继续给landing focal composition加offset。
+- paired audit发现Chats文字虽都在x14，interactive anatomy并不一致：Web root px6 +
+  button px8得到x6/244x28 hitbox；Lynx用root px10 + left px4意外抵消文字位置，却把
+  hover/focus surface压成x10/236x28。final改为root 6px双侧、button 8px双侧，label
+  x14保持不变。
+- Lynx-for-Web final为x6/244x28；exact-owned Native root PID48844→child48952，
+  PID-derived `localhost:8901/session1`、exact staged bundle，Chats button
+  x6/y325/244x28、label x14，console0。首轮Native bundle仍指默认service，required
+  Chats role缺失时helper fail-closed，未保留错误metadata。
+- focused Sidebar **1 file / 3 tests**；Lynx-for-Web与Native/Desktop builds通过。
+  Browser fallback 48px header与已认证Native/Electron 46px hidden-titlebar差异登记为
+  host-presentation boundary，不回退Native chrome。证据
+  `shots/2026-08-08/current-head-landing-light-1280/`。

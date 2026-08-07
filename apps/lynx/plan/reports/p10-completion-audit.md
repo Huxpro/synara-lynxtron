@@ -292,6 +292,17 @@ inheritance failure plus its direct-value correction.
 `shots/2026-08-07/dark-shell-material-boundary/` records why the remaining
 large-area dark fill difference cannot be closed by copying one Electron
 backdrop sample into the canonical cross-host theme.
+`shots/2026-08-08/current-head-landing-light-1280/` then re-establishes a
+clean current-head same-origin New Chat Browser pair after the connection
+preflight work. Landing title, hero, and Composer common anchors remain within
+0.75px, so no focal-composition offset was added. The audit instead found and
+closed a real Chats disclosure anatomy mismatch: Lynx had preserved the label
+x-position by combining a 10px root inset with 4px left-only button padding,
+but its hover/focus hitbox was only 236px. Web, Lynx-for-Web, and exact-owned
+Native now resolve the shared hitbox to x=6/244x28 with the label still at
+x=14. The 48px Browser fallback header versus certified 46px Native/Electron
+hidden-titlebar chrome remains a named host-presentation boundary, not a local
+row offset.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

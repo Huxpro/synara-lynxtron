@@ -46,6 +46,12 @@ describe('sidebar primary navigation shortcut', () => {
     expect(sidebarStyles).toMatch(
       /\.AppSidebarPrimaryNav\s*\{[^}]*padding:\s*4px 6px 6px;[^}]*margin-bottom:\s*4px;/s
     );
+    expect(sidebarStyles).toMatch(
+      /\.SharedSidebarChatsRoot\s*\{[^}]*padding-left:\s*6px;[^}]*padding-right:\s*6px;/s
+    );
+    expect(sidebarStyles).toMatch(
+      /\.SharedSidebarChatsHeaderButton\s*\{[^}]*padding-left:\s*8px;[^}]*padding-right:\s*8px;/s
+    );
     expect(sidebarStyles).not.toMatch(
       /\.AppSidebarPrimaryNav\s*\{[^}]*border-bottom:/s
     );
