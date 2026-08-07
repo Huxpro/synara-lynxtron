@@ -281,6 +281,9 @@ Electron-authority x=42 while retaining its exact 176x192 geometry.
 `shots/2026-08-07/chat-content-seam-current/` then restores the Web raised-card
 material that the duplicate borders had previously obscured, with direct
 light/dark and open/closed/compact proof.
+Its changed-lines React Doctor rerun against parent `9ace2adc` reports zero
+errors and zero warnings; the commit hook's generic warning was not a product
+diagnostic.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

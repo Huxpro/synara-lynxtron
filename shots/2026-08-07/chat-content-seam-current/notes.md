@@ -86,6 +86,9 @@ The final Native run used isolated server `58131`, isolated
   `3 files / 16 tests`;
 - Lynx-for-Web production build: pass;
 - Native/Desktop production build: pass;
+- React Doctor changed-lines scan against parent `9ace2adc`: zero errors and
+  zero warnings. The commit hook's generic warning came from its tool fallback,
+  not a staged diagnostic;
 - browser page errors: empty;
 - final Native warning/error console: empty.
 
@@ -97,4 +100,4 @@ Artifacts:
   evidence;
 - `errors-final.txt`, `console-final.txt`, `native-console-final.json`,
   `native-session-final.json`, `native-runtime-final.json`,
-  `bundle-hashes.txt`.
+  `bundle-hashes.txt`, `react-doctor.json`.

@@ -7392,3 +7392,7 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   final overlay regression扩为 **3 files / 16 tests**；Lynx-for-Web与Native/Desktop
   builds通过，browser errors0、Native console0。证据
   `shots/2026-08-07/chat-content-seam-current/`。
+- commit hook随后输出generic React Doctor warning；使用完整父commit
+  `9ace2adc…`做真实changed-lines scan后结果为**0 errors / 0 warnings**。最初两次
+  tool run分别因Bun cache缺plugin、base ref含`^`被CLI拒绝，均无diagnostic；final
+  `react-doctor.json`明确`ok:true`，不把tool启动失败伪称green。
