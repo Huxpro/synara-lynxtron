@@ -70,6 +70,7 @@ describe('Lynx responsive layout contract', () => {
     expect(app).toContain('viewportLayoutClassName(viewportLayout)');
     expect(app).toContain('viewportBreakpointClassNames(viewportLayout)');
     expect(app).toContain('viewportHeightClassNames(viewportLayout)');
+    expect(app).toContain(".filter(Boolean)\n          .join(' ')");
     expect(app).toContain('data-viewport-width={viewportLayout.width}');
     expect(composerElement).not.toContain("maxWidth: '736px'");
     expect(composer).toContain('width: calc(100% - 24px)');

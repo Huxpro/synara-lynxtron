@@ -95,7 +95,16 @@ export function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <view
-        className={`SliceRoot ${sliceThemeClassName(themeState)} ${sliceUiDensityClassName(uiDensity)} ${viewportLayoutClassName(viewportLayout)} ${viewportBreakpointClassNames(viewportLayout)} ${viewportHeightClassNames(viewportLayout)}`}
+        className={[
+          'SliceRoot',
+          sliceThemeClassName(themeState),
+          sliceUiDensityClassName(uiDensity),
+          viewportLayoutClassName(viewportLayout),
+          viewportBreakpointClassNames(viewportLayout),
+          viewportHeightClassNames(viewportLayout),
+        ]
+          .filter(Boolean)
+          .join(' ')}
         data-viewport-width={viewportLayout.width}
         data-viewport-height={viewportLayout.height}
       >
