@@ -1,0 +1,239 @@
+{
+  "client": "native",
+  "stateId": "settings-profile-share-dark-copied",
+  "roles": {
+    "root": {
+      "nodeId": 13,
+      "nodeName": "VIEW",
+      "attributes": {
+        "data-viewport-width": "1280",
+        "data-viewport-height": "820",
+        "class": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 820
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(252,252,252)",
+        "background": "rgb(16,16,16)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "profile": {
+      "nodeId": 511,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsProfile"
+      },
+      "text": "",
+      "box": {
+        "x": 408,
+        "y": 32,
+        "width": 720,
+        "height": 823
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "share": {
+      "nodeId": 538,
+      "nodeName": "VIEW",
+      "attributes": {
+        "event-through": "false",
+        "bindtap": "345:0:bindtap",
+        "bindmouseup": "345:0:bindmouseup",
+        "bindmousedown": "345:0:bindmousedown",
+        "bindtouchstart": "345:0:bindtouchstart",
+        "bindtouchend": "345:0:bindtouchend",
+        "bindtouchcancel": "345:0:bindtouchcancel",
+        "class": "LxButton LxButton--outline LxButton--sm SettingsProfileShareAction"
+      },
+      "text": "",
+      "box": {
+        "x": 979,
+        "y": 32,
+        "width": 76,
+        "height": 28
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "hsla(0,0%,99%,.072)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "dialog": {
+      "nodeId": 982,
+      "nodeName": "VIEW",
+      "attributes": {
+        "overlap": "false",
+        "event-through": "false",
+        "aria-modal": "true",
+        "role": "dialog",
+        "flatten": "false",
+        "bindanimationstart": "765:0:bindanimationstart",
+        "bindanimationend": "765:0:bindanimationend",
+        "bindtransitionstart": "765:0:bindtransitionstart",
+        "bindtransitioncancel": "765:0:bindtransitioncancel",
+        "bindtransitionend": "765:0:bindtransitionend",
+        "bindanimationcancel": "765:0:bindanimationcancel",
+        "bindkeydown": "765:0:bindkeydown",
+        "class": "LxDialogPopup SettingsProfileShareDialog ui-closed"
+      },
+      "text": "",
+      "box": {
+        "x": 360,
+        "y": 190,
+        "width": 560,
+        "height": 440
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(252,252,252)",
+        "background": "rgb(23,23,23)",
+        "borderColor": "hsla(0,0%,99%,.072)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "preview": {
+      "nodeId": 986,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsProfileSharePreview",
+        "style": "aspect-ratio:1.954545;"
+      },
+      "text": "",
+      "box": {
+        "x": 385,
+        "y": 255,
+        "width": 510,
+        "height": 246
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "hsla(0,0%,99%,.072)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "card": {
+      "nodeId": 987,
+      "nodeName": "SVG",
+      "attributes": {
+        "content": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"860\" height=\"440\" viewBox=\"0 0 860 440\">\n<rect width=\"860\" height=\"440\" fill=\"#ffffff\"/>\n<circle cx=\"80\" cy=\"72\" r=\"32\" fill=\"#22c55e\"/>\n<text x=\"80\" y=\"79\" text-anchor=\"middle\" fill=\"#ffffff\" font-size=\"18\" font-family=\"system-ui\" font-weight=\"600\">BY</text>\n<text x=\"128\" y=\"67\" fill=\"#0f172a\" font-size=\"24\" font-family=\"system-ui\">Bytedance</text>\n<text x=\"128\" y=\"91\" fill=\"#94a3b8\" font-size=\"16\" font-family=\"system-ui\">@bytedance</text>\n<text x=\"812\" y=\"78\" text-anchor=\"end\" fill=\"#475569\" font-size=\"20\" font-family=\"system-ui\">Synara</text>\n<rect x=\"48\" y=\"148\" width=\"22\" height=\"22\" rx=\"5\" fill=\"transparent\"/><rect x=\"48\" y=\"174\" width=\"22\" height=\"22\" rx=\"5\" fill=\"transparent\"/><rect x=\"48\" y=\"200\" width=\"22\" height=\"22\" rx=\"5\" fill=\"transparent\"/><rect x=\"48\" y=\"226\" width=\"22\" height=\"22\" rx=\"5\" fill=\"transparent\"/><rect x=\"48\" y=\"252\" width=\"22\" height=\"22\" rx=\"5\" fill=\"transparent\"/><rect x=\"48\" y=\"278\" width=\"22\" height=\"22\" rx=\"5\" fill=\"transparent\"/><rect x=\"48\" y=\"304\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"74\" y=\"148\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"74\" y=\"174\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"74\" y=\"200\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"74\" y=\"226\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"74\" y=\"252\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"74\" y=\"278\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"74\" y=\"304\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"100\" y=\"148\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"100\" y=\"174\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"100\" y=\"200\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"100\" y=\"226\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"100\" y=\"252\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"100\" y=\"278\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"100\" y=\"304\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"126\" y=\"148\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"126\" y=\"174\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"126\" y=\"200\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"126\" y=\"226\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"126\" y=\"252\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"126\" y=\"278\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"126\" y=\"304\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"152\" y=\"148\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"152\" y=\"174\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"152\" y=\"200\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"152\" y=\"226\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"152\" y=\"252\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"152\" y=\"278\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"152\" y=\"304\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"178\" y=\"148\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"178\" y=\"174\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"178\" y=\"200\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"178\" y=\"226\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"178\" y=\"252\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"178\" y=\"278\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"178\" y=\"304\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"204\" y=\"148\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"204\" y=\"174\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"204\" y=\"200\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"204\" y=\"226\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"204\" y=\"252\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"204\" y=\"278\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"204\" y=\"304\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"230\" y=\"148\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"230\" y=\"174\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"230\" y=\"200\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"230\" y=\"226\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"230\" y=\"252\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"230\" y=\"278\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"230\" y=\"304\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"256\" y=\"148\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"256\" y=\"174\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"256\" y=\"200\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"256\" y=\"226\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"256\" y=\"252\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"256\" y=\"278\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"256\" y=\"304\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"282\" y=\"148\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"282\" y=\"174\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"282\" y=\"200\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"282\" y=\"226\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"282\" y=\"252\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"282\" y=\"278\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"282\" y=\"304\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"308\" y=\"148\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"308\" y=\"174\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"308\" y=\"200\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"308\" y=\"226\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"308\" y=\"252\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"308\" y=\"278\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"308\" y=\"304\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"334\" y=\"148\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"334\" y=\"174\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"334\" y=\"200\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"334\" y=\"226\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"334\" y=\"252\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"334\" y=\"278\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"334\" y=\"304\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"360\" y=\"148\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"360\" y=\"174\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"360\" y=\"200\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"360\" y=\"226\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"360\" y=\"252\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"360\" y=\"278\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"360\" y=\"304\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"386\" y=\"148\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"386\" y=\"174\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"386\" y=\"200\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"386\" y=\"226\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"386\" y=\"252\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"386\" y=\"278\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"386\" y=\"304\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"412\" y=\"148\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"412\" y=\"174\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"412\" y=\"200\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"412\" y=\"226\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"412\" y=\"252\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"412\" y=\"278\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"412\" y=\"304\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"438\" y=\"148\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"438\" y=\"174\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"438\" y=\"200\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"438\" y=\"226\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"438\" y=\"252\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"438\" y=\"278\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"438\" y=\"304\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"464\" y=\"148\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"464\" y=\"174\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"464\" y=\"200\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"464\" y=\"226\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"464\" y=\"252\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"464\" y=\"278\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"464\" y=\"304\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"490\" y=\"148\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"490\" y=\"174\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"490\" y=\"200\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"490\" y=\"226\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"490\" y=\"252\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"490\" y=\"278\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"490\" y=\"304\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"516\" y=\"148\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"516\" y=\"174\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"516\" y=\"200\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"516\" y=\"226\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"516\" y=\"252\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"516\" y=\"278\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"516\" y=\"304\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"542\" y=\"148\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"542\" y=\"174\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"542\" y=\"200\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"542\" y=\"226\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"542\" y=\"252\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"542\" y=\"278\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"542\" y=\"304\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"568\" y=\"148\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"568\" y=\"174\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"568\" y=\"200\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"568\" y=\"226\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"568\" y=\"252\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"568\" y=\"278\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"568\" y=\"304\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"594\" y=\"148\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"594\" y=\"174\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"594\" y=\"200\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"594\" y=\"226\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"594\" y=\"252\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"594\" y=\"278\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"594\" y=\"304\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"620\" y=\"148\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"620\" y=\"174\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"620\" y=\"200\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"620\" y=\"226\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"620\" y=\"252\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"620\" y=\"278\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"620\" y=\"304\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"646\" y=\"148\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"646\" y=\"174\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"646\" y=\"200\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"646\" y=\"226\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"646\" y=\"252\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"646\" y=\"278\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"646\" y=\"304\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"672\" y=\"148\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"672\" y=\"174\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"672\" y=\"200\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"672\" y=\"226\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"672\" y=\"252\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"672\" y=\"278\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"672\" y=\"304\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"698\" y=\"148\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"698\" y=\"174\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"698\" y=\"200\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"698\" y=\"226\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"698\" y=\"252\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"698\" y=\"278\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"698\" y=\"304\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"724\" y=\"148\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"724\" y=\"174\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"724\" y=\"200\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"724\" y=\"226\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"724\" y=\"252\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"724\" y=\"278\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/><rect x=\"724\" y=\"304\" width=\"22\" height=\"22\" rx=\"5\" fill=\"#eef2f6\"/>\n<g transform=\"translate(48 370)\"><text fill=\"#0f172a\" font-size=\"24\" font-family=\"system-ui\" font-weight=\"400\">—</text><text y=\"24\" fill=\"#94a3b8\" font-size=\"14\" font-family=\"system-ui\">lifetime tokens</text></g><g transform=\"translate(201 370)\"><text fill=\"#0f172a\" font-size=\"24\" font-family=\"system-ui\" font-weight=\"400\">—</text><text y=\"24\" fill=\"#94a3b8\" font-size=\"14\" font-family=\"system-ui\">peak day</text></g><g transform=\"translate(354 370)\"><text fill=\"#0f172a\" font-size=\"24\" font-family=\"system-ui\" font-weight=\"400\">0 days</text><text y=\"24\" fill=\"#94a3b8\" font-size=\"14\" font-family=\"system-ui\">current streak</text></g><g transform=\"translate(507 370)\"><text fill=\"#0f172a\" font-size=\"24\" font-family=\"system-ui\" font-weight=\"400\">0 days</text><text y=\"24\" fill=\"#94a3b8\" font-size=\"14\" font-family=\"system-ui\">longest streak</text></g><g transform=\"translate(660 370)\"><text fill=\"#0f172a\" font-size=\"24\" font-family=\"system-ui\" font-weight=\"400\">—</text><text y=\"24\" fill=\"#94a3b8\" font-size=\"14\" font-family=\"system-ui\">top provider</text></g>\n</svg>",
+        "class": "SettingsProfileShareCard"
+      },
+      "text": "",
+      "box": {
+        "x": 386,
+        "y": 256,
+        "width": 508,
+        "height": 244
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "status": {
+      "nodeId": 989,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "SettingsProfileShareStatus"
+      },
+      "text": "",
+      "box": {
+        "x": 564,
+        "y": 585,
+        "width": 153,
+        "height": 16
+      },
+      "font": {
+        "family": "",
+        "size": "12px",
+        "weight": "normal",
+        "lineHeight": "16px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgba(252,252,252,0.576471)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

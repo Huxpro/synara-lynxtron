@@ -37,6 +37,10 @@ export interface DialogsPort {
   pickFolder: () => Promise<string | null>;
   pickFiles: () => Promise<PickFilesResult>;
   pickProfileImage: () => Promise<PickedProfileImage | null>;
+  saveProfileShareCard: (input: {
+    readonly defaultFilename: string;
+    readonly svg: string;
+  }) => Promise<string | null>;
   saveFile?: (input: SaveFileInput) => Promise<string | null>;
   confirm: (message: string) => Promise<boolean>;
 }
@@ -58,6 +62,13 @@ export const dialogs: DialogsPort = {
       image: PickedProfileImage | null;
     }>('dialogsPickProfileImage');
     return res.image ?? null;
+  },
+  saveProfileShareCard: async (input) => {
+    const res = await bridgeCall<{ path: string | null }>(
+      'dialogsSaveProfileShareCard',
+      input
+    );
+    return res.path ?? null;
   },
   saveFile: async (input) => {
     const res = await bridgeCall<{ path: string | null }>('dialogsSaveFile', {

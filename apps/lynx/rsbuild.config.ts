@@ -43,6 +43,9 @@ export default defineConfig({
       ],
       output: {
         target: 'node',
+        externals: {
+          sharp: 'module sharp',
+        },
         distPath: {
           root: './dist/desktop',
         },

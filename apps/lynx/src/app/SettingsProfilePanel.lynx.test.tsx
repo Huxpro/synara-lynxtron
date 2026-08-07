@@ -67,8 +67,9 @@ describe('Settings Profile fidelity', () => {
     expect(profileSource).toContain('function formatCompact');
     expect(profileSource).not.toContain('Intl.');
     expect(profileSource).toContain('SettingsProfileStats');
-    expect(profileSource).toContain('Copy summary');
-    expect(profileSource).toContain("clipboard.writeText(summary)");
+    expect(profileSource).not.toContain('Copy summary');
+    expect(profileSource).toContain('className="SettingsProfileShareAction"');
+    expect(profileSource).toContain('className="SettingsProfileEditAction"');
     expect(profileSource).toContain('SettingsProfileHeatmap');
     expect(profileSource).toContain('Activity insights');
     expect(profileSource).toContain('Most used plugins');
@@ -127,6 +128,70 @@ describe('Settings Profile fidelity', () => {
     );
     expect(styles).toMatch(
       /\.SettingsProfileEditFooterButton\s*\{[^}]*height:\s*44px;[^}]*border-radius:\s*8px;/s
+    );
+  });
+
+  it('implements a real cross-platform Profile Share export kernel', () => {
+    const profileSource = readFileSync(
+      new URL('./SettingsProfilePanel.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const shareSource = readFileSync(
+      new URL('./profileShareCard.lynx.ts', import.meta.url),
+      'utf8'
+    );
+    const styles = readFileSync(
+      new URL('./settings-profile-panel.css', import.meta.url),
+      'utf8'
+    );
+    const clipboardSource = readFileSync(
+      new URL('../platform/clipboard.ts', import.meta.url),
+      'utf8'
+    );
+    const dialogsSource = readFileSync(
+      new URL('../platform/dialogs.ts', import.meta.url),
+      'utf8'
+    );
+    const desktopHostSource = readFileSync(
+      new URL('../main/desktop/hostServices.ts', import.meta.url),
+      'utf8'
+    );
+    const desktopMainSource = readFileSync(
+      new URL('../main/desktop/main.ts', import.meta.url),
+      'utf8'
+    );
+    const webHostSource = readFileSync(
+      new URL('../main/web/web-host.ts', import.meta.url),
+      'utf8'
+    );
+
+    expect(shareSource).toContain('PROFILE_SHARE_CARD_WIDTH = 860');
+    expect(shareSource).toContain('PROFILE_SHARE_CARD_HEIGHT = 440');
+    expect(shareSource).toContain('createProfileShareCardSvg');
+    expect(shareSource).toContain('selectProfileHeatmap');
+    expect(profileSource).toContain(
+      "import shareSvg from '@synara-central-icons/share-os.svg?raw';"
+    );
+    expect(profileSource).toContain('className="SettingsProfileShareDialog"');
+    expect(profileSource).toContain('exportProfileShareCard({ svg: shareCardSvg })');
+    expect(profileSource).toContain('dialogs.saveProfileShareCard({');
+    expect(profileSource).toContain("platformWindow.openExternal(urls[target])");
+    expect(clipboardSource).toContain("bridgeCall('profileShareExport'");
+    expect(dialogsSource).toContain("'dialogsSaveProfileShareCard'");
+    expect(desktopHostSource).toContain("await import('sharp')");
+    expect(desktopHostSource).toContain('.png()');
+    expect(desktopHostSource).toContain('clipboard.writeImage(image)');
+    expect(desktopHostSource).toContain('fs.writeFileSync(filePath, png)');
+    expect(desktopMainSource).toContain(
+      "callback.sendReply(await handleClipboard(name, data))"
+    );
+    expect(webHostSource).toContain('renderSvgToPngBlob');
+    expect(webHostSource).toContain("new ClipboardItem({ 'image/png': blob })");
+    expect(styles).toMatch(
+      /\.LxDialogPopup\.SettingsProfileShareDialog\s*\{[^}]*width:\s*560px;[^}]*border-radius:\s*24px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsProfileSharePreview\s*\{[^}]*width:\s*100%;[^}]*height:\s*246px;[^}]*border-radius:\s*16px;/s
     );
   });
 

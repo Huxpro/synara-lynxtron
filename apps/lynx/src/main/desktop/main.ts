@@ -410,7 +410,9 @@ app.whenReady().then(() => {
         } else if (name.startsWith('storage')) {
           callback.sendReply(handleStorage(name, data));
         } else if (name.startsWith('clipboard')) {
-          callback.sendReply(handleClipboard(name, data));
+          callback.sendReply(await handleClipboard(name, data));
+        } else if (name === 'profileShareExport') {
+          callback.sendReply(await handleClipboard(name, data));
         } else if (name.startsWith('attachments')) {
           callback.sendReply(await handleAttachments(name, data));
         } else if (name.startsWith('dialogs')) {

@@ -7657,3 +7657,31 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   `shots/2026-08-08/settings-profile-edit-current/`。
 - 剩余Profile Share需要真实activity-card render→PNG、clipboard/save/social composer
   kernel，继续作为独立feature slice，不用表面按钮替代。
+
+## 2026-08-08 — Settings Profile Share
+
+- Profile旧Copy summary已替换为Web真实Share+Edit action pair；Share使用exact central
+  `share-os.svg`，新增确定性860x440 SVG activity card，复用canonical stats/token
+  heatmap/edited identity/avatar/top-provider projection。dialog真实提供Copy、Save、
+  X、LinkedIn、Reddit，social action先copy再用existing shell port打开HTTPS composer。
+- Lynx-for-Web以HTMLImageElement+canvas栅格化；Native host lazy-load
+  `sharp@0.34.5`异步执行SVG→PNG Buffer，再写system clipboard或save dialog。
+  clipboard branch改为await，不阻塞Lynxtron启动/event loop。
+- 真实Native先后拒绝nativeImage base64 SVG data URL、SVG Buffer、percent-encoded
+  SVG data URL；同步`sips`又阻塞bridge。四条失败路径均已撤回，最终Sharp路径真实
+  touch Profile→Share→Copy后状态`Copied image to clipboard.`，macOS clipboard含
+  PNG/TIFF/JPEG等，retained PNG exact 860x440。
+- exact-owned Native bundle`9787137b…`，root67053→67059；并发iOS在8901、
+  t3tools在8902，PID gate正确选择owned localhost:8903/session1。dialog560x440、
+  preview510x246、card508x244、retry0、console0。
+- 为避免“workspace可用但packaged缺native module”，新增
+  `stage-sharp-runtime.mjs`，按platform复制Sharp、transitive JS、`.node`与libvips
+  到`dist/desktop/node_modules`；focused staging test从dist独立resolve并生成PNG。
+  builder显式包含这些包并unpack native binary/dylib。
+- `bun run pack`通过并生成51MB arm64 DMG；final app内存在Sharp JS、
+  `sharp-darwin-arm64.node`、libvips dylib，从packaged Resources/app独立加载Sharp
+  生成860x440 PNG成功。
+- focused Profile **1 file / 5 tests**、staging test **1/1**；Web/Native builds、
+  pack通过。uncached changed-lines React Doctor以`a3e73fbf…`为base并包含untracked
+  implementation，扫描11 files为**0 diagnostics**。证据
+  `shots/2026-08-08/settings-profile-share-current/`。

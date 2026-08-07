@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from '@lynx-js/react';
 import pencilSvg from '@synara-central-icons/pencil.svg?raw';
+import shareSvg from '@synara-central-icons/share-os.svg?raw';
 import type {
   ProfileHeatmapCell,
   ProfileStats,
@@ -35,6 +36,11 @@ import { ScreenshotIcon, Trash2 } from '../lib/icons.lynx';
 import { webStorage } from '../platform/storage';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { useTheme } from '../adapters/useTheme.lynx';
+import {
+  createProfileShareCardSvg,
+  PROFILE_SHARE_CARD_HEIGHT,
+  PROFILE_SHARE_CARD_WIDTH,
+} from './profileShareCard.lynx';
 
 import './settings-profile-panel.css';
 
@@ -181,6 +187,16 @@ function ProfileEditActionIcon() {
   );
 }
 
+function ProfileShareActionIcon() {
+  const { svgColors } = useTheme();
+  return (
+    <svg
+      className="SettingsProfileActionIcon"
+      content={colorizeLynxSvg(shareSvg, svgColors.foreground)}
+    />
+  );
+}
+
 function ProfileColorOption(props: {
   readonly active: boolean;
   readonly color: string;
@@ -311,6 +327,8 @@ function ProfileContent(props: {
     () => storedProfileValue(PROFILE_AVATAR_IMAGE_STORAGE_KEY) || null
   );
   const [editOpen, setEditOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
+  const [shareStatus, setShareStatus] = useState('');
   const [draftName, setDraftName] = useState(displayName);
   const [draftHandle, setDraftHandle] = useState(handle.replace(/^@+/, ''));
   const [draftColor, setDraftColor] = useState(avatarColor);
@@ -328,17 +346,58 @@ function ProfileContent(props: {
           : ` · ${props.stats.insights.topReasoningPercent}%`
       }`
     : '—';
-  const copySummary = () => {
+  const shareCardSvg = createProfileShareCardSvg({
+    stats: props.stats,
+    tokenStats: props.tokenStats,
+    displayName,
+    handle,
+    avatarColor,
+  });
+  const copyShareCard = () => {
     'background only';
-    const summary = [
-      `${displayName} · ${handle}`,
-      `Total prompts: ${formatNumber(props.stats.activity.totalPromptsSent)}`,
-      `Current streak: ${formatDays(props.stats.activity.currentStreakDays)}`,
-      `Longest streak: ${formatDays(props.stats.activity.longestStreakDays)}`,
-      `Most used provider: ${providerValue}`,
-    ].join('\n');
-    void import(/* webpackMode: "eager" */ '../platform/clipboard').then(
-      ({ clipboard }) => clipboard.writeText(summary)
+    setShareStatus('');
+    return import(/* webpackMode: "eager" */ '../platform/clipboard')
+      .then(({ exportProfileShareCard }) =>
+        exportProfileShareCard({ svg: shareCardSvg })
+      )
+      .then((result) => {
+        setShareStatus(
+          result.ok
+            ? 'Copied image to clipboard.'
+            : 'Image copy unavailable. Use Save instead.'
+        );
+        return result.ok;
+      })
+      .catch((error) => {
+        console.warn('[profile] share card copy failed', String(error));
+        setShareStatus('Image copy unavailable. Use Save instead.');
+        return false;
+      });
+  };
+  const saveShareCard = () => {
+    'background only';
+    setShareStatus('');
+    void import(/* webpackMode: "eager" */ '../platform/dialogs')
+      .then(({ dialogs }) =>
+        dialogs.saveProfileShareCard({
+          defaultFilename: `synara-stats-${props.stats.timezone.today}.png`,
+          svg: shareCardSvg,
+        })
+      )
+      .then((path) => setShareStatus(path ? 'Saved PNG.' : 'Save cancelled.'))
+      .catch((error) => setShareStatus(String(error)));
+  };
+  const shareTo = (target: 'x' | 'linkedin' | 'reddit') => {
+    'background only';
+    const urls = {
+      x: 'https://x.com/intent/post',
+      linkedin: 'https://www.linkedin.com/sharing/share-offsite/',
+      reddit: 'https://www.reddit.com/submit',
+    } as const;
+    void copyShareCard().then(() =>
+      import(/* webpackMode: "eager" */ '../platform/window').then(
+        ({ platformWindow }) => platformWindow.openExternal(urls[target])
+      )
     );
   };
   const openEdit = () => {
@@ -385,8 +444,17 @@ function ProfileContent(props: {
   return (
     <view className="SettingsProfile">
       <view className="SettingsProfileActions">
-        <Button variant="outline" size="sm" onClick={copySummary}>
-          Copy summary
+        <Button
+          variant="outline"
+          size="sm"
+          className="SettingsProfileShareAction"
+          onClick={() => {
+            setShareStatus('');
+            setShareOpen(true);
+          }}
+        >
+          <ProfileShareActionIcon />
+          <text className="LxButton__text">Share</text>
         </Button>
         <Button
           variant="outline"
@@ -717,6 +785,56 @@ function ProfileContent(props: {
               Save
             </Button>
           </DialogFooter>
+        </DialogPopup>
+      </Dialog>
+      <Dialog open={shareOpen} onOpenChange={setShareOpen}>
+        <DialogPopup className="SettingsProfileShareDialog">
+          <DialogTitle className="SettingsProfileShareTitle">
+            Share your activity
+          </DialogTitle>
+          <view className="SettingsProfileShareBody">
+            <view
+              className="SettingsProfileSharePreview"
+              style={{
+                aspectRatio: `${PROFILE_SHARE_CARD_WIDTH} / ${PROFILE_SHARE_CARD_HEIGHT}`,
+              }}
+            >
+              <svg
+                className="SettingsProfileShareCard"
+                content={shareCardSvg}
+              />
+            </view>
+            <view className="SettingsProfileShareActions">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => void copyShareCard()}
+              >
+                Copy
+              </Button>
+              <Button size="sm" variant="outline" onClick={saveShareCard}>
+                Save
+              </Button>
+              <Button size="sm" variant="ghost" onClick={() => shareTo('x')}>
+                X
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => shareTo('linkedin')}
+              >
+                LinkedIn
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => shareTo('reddit')}
+              >
+                Reddit
+              </Button>
+            </view>
+            <text className="SettingsProfileShareStatus">{shareStatus}</text>
+          </view>
         </DialogPopup>
       </Dialog>
     </view>

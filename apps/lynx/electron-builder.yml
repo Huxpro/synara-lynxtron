@@ -14,11 +14,18 @@ files:
   - '**/*.jsn'
   - '**/*.png'
   - '**/*.exe'
+  - 'node_modules/sharp/**/*'
+  - 'node_modules/@img/colour/**/*'
+  - 'node_modules/@img/sharp-*/**/*'
+  - 'node_modules/detect-libc/**/*'
+  - 'node_modules/semver/**/*'
 asar: true
 afterExtract: scripts/lynxtron-macos-helper-hook.mjs
 afterPack: scripts/lynxtron-macos-helper-hook.mjs
 asarUnpack:
   - statics/
+  - 'node_modules/@img/**/*.node'
+  - 'node_modules/@img/**/*.dylib'
 npmRebuild: false
 extraResources:
   - from: src/assets

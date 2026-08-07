@@ -15,6 +15,10 @@ export interface ClipboardPort {
   writeImageBlob: (blob: Blob) => Promise<void>;
 }
 
+export interface ProfileShareExportInput {
+  readonly svg: string;
+}
+
 export const clipboard: ClipboardPort = {
   writeText: async (value) => {
     if (!value) return;
@@ -35,4 +39,10 @@ export const clipboard: ClipboardPort = {
 export async function readClipboardText(): Promise<string> {
   const res = await bridgeCall<{ text: string }>('clipboardReadText');
   return res.text ?? '';
+}
+
+export async function exportProfileShareCard(
+  input: ProfileShareExportInput
+): Promise<{ readonly ok: boolean }> {
+  return bridgeCall('profileShareExport', input);
 }

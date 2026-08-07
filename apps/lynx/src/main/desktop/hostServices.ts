@@ -171,7 +171,24 @@ export function handleStorage(method: string, data: any): unknown {
 
 // --- clipboard ------------------------------------------------------------------
 
-export function handleClipboard(method: string, data: any): unknown {
+async function renderProfileShareCard(svg: string): Promise<Buffer> {
+  if (!svg.startsWith('<svg') || svg.length > 1_000_000) {
+    throw new Error('Profile share card SVG is invalid.');
+  }
+  const { default: sharp } = await import('sharp');
+  return sharp(Buffer.from(svg, 'utf8'), {
+    density: 144,
+    limitInputPixels: 860 * 440 * 4,
+  })
+    .resize(860, 440)
+    .png()
+    .toBuffer();
+}
+
+export async function handleClipboard(
+  method: string,
+  data: any
+): Promise<unknown> {
   switch (method) {
     case 'clipboardWriteText':
       clipboard.writeText(String(data.text ?? ''));
@@ -182,6 +199,15 @@ export function handleClipboard(method: string, data: any): unknown {
       const image = nativeImage.createFromDataURL(String(data.dataUrl ?? ''));
       if (image.isEmpty()) {
         return JSON.stringify({ ok: false });
+      }
+      clipboard.writeImage(image);
+      return JSON.stringify({ ok: true });
+    }
+    case 'profileShareExport': {
+      const png = await renderProfileShareCard(String(data.svg ?? ''));
+      const image = nativeImage.createFromBuffer(png);
+      if (image.isEmpty()) {
+        throw new Error('Unable to render profile share card.');
       }
       clipboard.writeImage(image);
       return JSON.stringify({ ok: true });
@@ -357,6 +383,17 @@ export async function handleDialogs(
           name: path.basename(filePath),
         },
       });
+    }
+    case 'dialogsSaveProfileShareCard': {
+      const png = await renderProfileShareCard(String(data.svg ?? ''));
+      const { canceled, filePath } = await dialog.showSaveDialog(w, {
+        title: 'Save profile activity',
+        defaultPath: String(data.defaultFilename ?? 'synara-stats.png'),
+        filters: [{ name: 'PNG image', extensions: ['png'] }],
+      });
+      if (canceled || !filePath) return JSON.stringify({ path: null });
+      fs.writeFileSync(filePath, png);
+      return JSON.stringify({ path: filePath });
     }
     case 'dialogsSaveFile': {
       const input = data ?? {};

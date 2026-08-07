@@ -7,13 +7,14 @@
   "main": "main.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development concurrently -k --prefix none \"rspeedy dev --environment lynx\" \"dev-ready-rspeedy && rsbuild dev --environment desktop\"",
-    "build": "rspeedy build --environment lynx && rsbuild build --environment desktop",
+    "build": "rspeedy build --environment lynx && rsbuild build --environment desktop && node scripts/stage-sharp-runtime.mjs",
     "start": "bun run build && lynxtron dist/desktop",
     "dev:web": "cross-env NODE_ENV=development concurrently -k --prefix node \"rspeedy dev --environment web\" \"dev-ready-rspeedy && rsbuild dev --environment web\"",
     "generate:icons": "node scripts/generate-lynx-icons.mjs",
     "build:web": "rspeedy build --environment web && rsbuild build --environment web",
     "build:probe:host-input:web": "cross-env SYNARA_HOST_INPUT_PROBE=1 rspeedy build --environment web && cross-env SYNARA_HOST_INPUT_PROBE=1 rsbuild build --environment web",
-    "build:probe:host-input:native": "cross-env SYNARA_HOST_INPUT_PROBE=1 rspeedy build --environment lynx && cross-env SYNARA_HOST_INPUT_PROBE=1 rsbuild build --environment desktop",
+    "build:probe:host-input:native": "cross-env SYNARA_HOST_INPUT_PROBE=1 rspeedy build --environment lynx && cross-env SYNARA_HOST_INPUT_PROBE=1 rsbuild build --environment desktop && node scripts/stage-sharp-runtime.mjs",
+    "stage:sharp-runtime": "node scripts/stage-sharp-runtime.mjs",
     "start:web": "npm run build:web && npx serve dist/web",
     "test": "rstest",
     "pack": "bun run build && lynxtron-builder --publish never",
@@ -36,7 +37,8 @@
     "test:evidence:specimens": "node --test scripts/specimen-evidence.test.mjs",
     "test:evidence:native-capture": "node --test scripts/native-perceptual-capture.test.mjs",
     "connection:preflight": "node scripts/connection-preflight.mjs",
-    "test:connection-preflight": "node --test scripts/connection-preflight.test.mjs"
+    "test:connection-preflight": "node --test scripts/connection-preflight.test.mjs",
+    "test:stage-sharp-runtime": "node --test scripts/stage-sharp-runtime.test.mjs"
   },
   "private": true,
   "devDependencies": {
@@ -94,6 +96,7 @@
     "remark-gfm": "^4.0.1",
     "remark-math": "^6.0.0",
     "remark-parse": "^11.0.0",
+    "sharp": "0.34.5",
     "unified": "^11.0.5",
     "url-search-params-polyfill": "^8.2.5",
     "ws": "^8.21.1",

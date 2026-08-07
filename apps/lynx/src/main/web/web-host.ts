@@ -465,6 +465,43 @@ function readTranscriptScroll(): {
   };
 }
 
+async function renderSvgToPngBlob(svg: string): Promise<Blob> {
+  if (!svg.startsWith('<svg') || svg.length > 1_000_000) {
+    throw new Error('Profile share card SVG is invalid.');
+  }
+  const sourceUrl = URL.createObjectURL(
+    new Blob([svg], { type: 'image/svg+xml' })
+  );
+  const image = new Image();
+  image.decoding = 'sync';
+  try {
+    await new Promise<void>((resolve, reject) => {
+      image.addEventListener('load', () => resolve(), { once: true });
+      image.addEventListener(
+        'error',
+        () => reject(new Error('The profile share card could not be decoded.')),
+        { once: true }
+      );
+      image.src = sourceUrl;
+    });
+    const canvas = webDocument.createElement('canvas');
+    canvas.width = image.naturalWidth;
+    canvas.height = image.naturalHeight;
+    const context = canvas.getContext('2d');
+    if (!context) throw new Error('Canvas rendering is unavailable.');
+    context.drawImage(image, 0, 0);
+    return await new Promise((resolve, reject) =>
+      canvas.toBlob(
+        (blob) =>
+          blob ? resolve(blob) : reject(new Error('PNG rendering failed.')),
+        'image/png'
+      )
+    );
+  } finally {
+    URL.revokeObjectURL(sourceUrl);
+  }
+}
+
 async function handleBridgeCall(
   method: string,
   params: Record<string, unknown> = {}
@@ -526,6 +563,14 @@ async function handleBridgeCall(
         return { text: relayClipboardText };
       }
     }
+    if (method === 'profileShareExport') {
+      const blob = await renderSvgToPngBlob(String(params.svg ?? ''));
+      if (typeof ClipboardItem !== 'function') return { ok: false };
+      await globalThis.navigator.clipboard.write([
+        new ClipboardItem({ 'image/png': blob }),
+      ]);
+      return { ok: true };
+    }
     if (method === 'dialogsPickProfileImage') {
       return await new Promise((resolve) => {
         const input = webDocument.createElement('input');
@@ -559,6 +604,21 @@ async function handleBridgeCall(
         webDocument.body.append(input);
         input.click();
       });
+    }
+    if (method === 'dialogsSaveProfileShareCard') {
+      const blob = await renderSvgToPngBlob(String(params.svg ?? ''));
+      const url = URL.createObjectURL(blob);
+      try {
+        const anchor = webDocument.createElement('a');
+        anchor.href = url;
+        anchor.download = String(
+          params.defaultFilename ?? 'synara-stats.png'
+        );
+        anchor.click();
+        return { path: anchor.download };
+      } finally {
+        URL.revokeObjectURL(url);
+      }
     }
     if (method === 'shellOpenExternal') {
       const url = String(params.url ?? '');

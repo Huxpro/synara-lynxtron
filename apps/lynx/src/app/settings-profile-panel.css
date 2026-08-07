@@ -461,6 +461,61 @@
   border-radius: 24px;
 }
 
+.LxDialogPopup.SettingsProfileShareDialog {
+  width: 560px;
+  padding: 16px;
+  border-radius: 24px;
+}
+
+.SettingsProfileShareTitle {
+  font-size: 20px;
+  line-height: 28px;
+  text-align: center;
+}
+
+.SettingsProfileShareBody {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  margin-top: 20px;
+  padding: 0 8px 12px;
+}
+
+.SettingsProfileSharePreview {
+  width: 100%;
+  height: 246px;
+  overflow: hidden;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--border);
+  border-radius: 16px;
+  background-color: #ffffff;
+}
+
+.SettingsProfileShareCard {
+  width: 100%;
+  height: 100%;
+}
+
+.SettingsProfileShareActions {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+  column-gap: 24px;
+  row-gap: 16px;
+}
+
+.SettingsProfileShareStatus {
+  min-height: 16px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+}
+
 .SettingsProfileEditTitle {
   padding: 16px 16px 0;
   font-size: 18px;
