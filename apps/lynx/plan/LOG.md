@@ -7571,3 +7571,24 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   证据`shots/2026-08-08/dark-composer-material-current/`。
 - commit hook generic warning后，真实uncached changed-lines React Doctor以父commit
   `4f116933…`扫描`apps/lynx`为**0 diagnostics**，报告已随evidence保留。
+
+## 2026-08-08 — Settings General restore-control anatomy
+
+- current-head Settings General dark pair显示Web `Restore defaults`为outline xs：
+  114.765625x24、14px Tabler Rotate2、4px gap；Lynx仍是120.671875x32 default
+  text-only按钮。两端dirty state不同只影响disabled tone，不影响该anatomy结论。
+- Lynx adapter改为`size="xs"`，嵌入本地Tabler 3.44 exact `IconRotate2`六条path，
+  icon固定14x14/opacity.8；增加唯一Restore role供Native fail-closed选取，未引入
+  新依赖或不稳定的render-slot clone。
+- Browser同服务/route/theme/density/1280x820 DPR1下，Web/Lynx按钮均
+  965.234375/32/114.765625x24，icon均973.234375/37/14x14、opacity.8、首path逐字
+  一致；Lynx label 80.765625x15。
+- 首次Native diagnostic因staged bundle仍含默认service endpoint而出现
+  `TransportStatusRetry`，按harness规则判无效并删除。final用58155 compile-time
+  endpoint重打，bundle`de3d2b01…`，root36527→36546，PID-derived
+  localhost:8901/session1；root dark 1280x820、button114x24、icon14x14/opacity.8/
+  exact path、retry node 0、console0。owned进程与`/tmp` state均已清理。
+- focused test **1 file / 2 tests**；Web、Lynx-for-Web与Native/Desktop production
+  builds通过（仅既有warning）。uncached changed-lines React Doctor以
+  `297455d3…`为base并包含untracked test，扫描2 files为**0 diagnostics**。证据
+  `shots/2026-08-08/current-head-settings-general-dark-1280/`。

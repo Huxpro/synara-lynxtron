@@ -26,3 +26,10 @@
   font-size: var(--type-settings-header-description-size);
   line-height: var(--type-settings-header-description-line-height);
 }
+
+.SharedSettingsPanelHeaderRestoreIcon {
+  width: 14px;
+  height: 14px;
+  color: var(--foreground);
+  opacity: 0.8;
+}

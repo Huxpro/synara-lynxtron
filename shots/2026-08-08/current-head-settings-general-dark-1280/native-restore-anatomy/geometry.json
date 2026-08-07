@@ -1,0 +1,167 @@
+{
+  "client": "native",
+  "stateId": "settings-general-dark-restore-anatomy",
+  "roles": {
+    "root": {
+      "nodeId": 13,
+      "nodeName": "VIEW",
+      "attributes": {
+        "data-viewport-width": "1280",
+        "data-viewport-height": "820",
+        "class": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 820
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(252,252,252)",
+        "background": "rgb(16,16,16)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "header": {
+      "nodeId": 266,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SharedSettingsPanelHeader"
+      },
+      "text": "",
+      "box": {
+        "x": 456,
+        "y": 32,
+        "width": 624,
+        "height": 54
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "button": {
+      "nodeId": 272,
+      "nodeName": "VIEW",
+      "attributes": {
+        "event-through": "false",
+        "bindtap": "233:0:bindtap",
+        "bindmouseup": "233:0:bindmouseup",
+        "bindmousedown": "233:0:bindmousedown",
+        "bindtouchstart": "233:0:bindtouchstart",
+        "bindtouchend": "233:0:bindtouchend",
+        "bindtouchcancel": "233:0:bindtouchcancel",
+        "class": "LxButton LxButton--outline LxButton--xs SharedSettingsPanelHeaderRestoreButton ui-disabled"
+      },
+      "text": "",
+      "box": {
+        "x": 966,
+        "y": 32,
+        "width": 114,
+        "height": 24
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "hsla(0,0%,99%,.072)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "0.48"
+      }
+    },
+    "icon": {
+      "nodeId": 273,
+      "nodeName": "SVG",
+      "attributes": {
+        "content": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 4.55a8 8 0 0 0 -6 14.9m0 -4.45v5h-5\"/><path d=\"M18.37 7.16l0 .01\"/><path d=\"M13 19.94l0 .01\"/><path d=\"M16.84 18.37l0 .01\"/><path d=\"M19.37 15.1l0 .01\"/><path d=\"M19.94 11l0 .01\"/></svg>",
+        "class": "SharedSettingsPanelHeaderRestoreIcon"
+      },
+      "text": "",
+      "box": {
+        "x": 974,
+        "y": 37,
+        "width": 14,
+        "height": 14
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(252,252,252)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "0.8"
+      }
+    },
+    "label": {
+      "nodeId": 274,
+      "nodeName": "TEXT",
+      "attributes": {
+        "text": "Restore defaults",
+        "class": "LxButton__text"
+      },
+      "text": "",
+      "box": {
+        "x": 992,
+        "y": 37,
+        "width": 80,
+        "height": 15
+      },
+      "font": {
+        "family": "",
+        "size": "10px",
+        "weight": "500",
+        "lineHeight": "15px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(252,252,252)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

@@ -6,6 +6,9 @@ type ChildrenProps = {
   readonly children?: ReactNode;
 };
 
+const ROTATE_CW_ICON =
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4.55a8 8 0 0 0 -6 14.9m0 -4.45v5h-5"/><path d="M18.37 7.16l0 .01"/><path d="M13 19.94l0 .01"/><path d="M16.84 18.37l0 .01"/><path d="M19.37 15.1l0 .01"/><path d="M19.94 11l0 .01"/></svg>';
+
 export function SettingsPanelHeaderRootElement(props: ChildrenProps) {
   return <view className="SharedSettingsPanelHeader">{props.children}</view>;
 }
@@ -28,11 +31,17 @@ export function SettingsPanelHeaderRestoreElement(props: {
 }) {
   return (
     <Button
+      className="SharedSettingsPanelHeaderRestoreButton"
       variant="outline"
+      size="xs"
       disabled={props.disabled}
       onClick={props.onRestore}
     >
-      Restore defaults
+      <svg
+        className="SharedSettingsPanelHeaderRestoreIcon"
+        content={ROTATE_CW_ICON}
+      />
+      <text className="LxButton__text">Restore defaults</text>
     </Button>
   );
 }
