@@ -7515,3 +7515,19 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   x52/y339/14x14，path right→down，body4→33，console0。
 - focused Sidebar+motion **2 files / 6 tests**；Lynx-for-Web与Native/Desktop builds
   通过。证据`shots/2026-08-08/sidebar-chats-chevron-current/`。
+
+## 2026-08-08 — Sidebar Pull requests icon mapping
+
+- shared Sidebar允许host传Pull requests icon；Web传`IoIosGitCompare`，Lynx却显式传
+  `MessageCircleIcon`，把compare/branch语义错误替换成chat bubble，不是engine限制。
+- 从本地`react-icons/io` 5.6.0提取exact `IoIosGitCompare` 512-viewBox path，新增窄
+  `PullRequestCompareIcon.lynx.tsx`并走既有theme SVG pipeline；shared Web composition
+  不变，Sidebar映射改用精确adapter。
+- Web/Lynx-for-Web icon均15x15、relative8.5/6.5、path `M233.9 328.1…`逐字一致；
+  row 244x28保持。absolute Y差2px仍是48/46 host chrome boundary。
+- exact-owned Native bundle`60191f4b…`，root29691→29696，
+  localhost:8901/session1；icon15/187/15x15，DOM parent accessibility-label为
+  `Pull requests`，exact path/fill#0d0d0d，console0。
+- focused新test **1 file / 2 tests**，Sidebar regression **4/4**；Lynx-for-Web与
+  Native/Desktop builds通过。证据
+  `shots/2026-08-08/sidebar-pull-request-icon-current/`。

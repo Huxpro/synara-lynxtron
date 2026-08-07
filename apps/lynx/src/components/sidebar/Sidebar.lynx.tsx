@@ -81,7 +81,6 @@ import {
 import {
   ChevronDownIcon,
   ChevronRightIcon,
-  MessageCircleIcon,
   SettingsIcon,
 } from '../../lib/icons';
 import { useLynxInteractiveState } from '../ui/interactive-state.lynx';
@@ -96,6 +95,7 @@ import {
   resolveSecondaryPointerOffset,
 } from './threadContextActions.logic';
 import './sidebar.css';
+import { PullRequestCompareIcon } from './PullRequestCompareIcon.lynx';
 
 const SEARCH_TRIGGER_ELEMENT_ID = 'synara-sidebar-search-trigger';
 const ADD_PROJECT_TRIGGER_ELEMENT_ID = 'synara-sidebar-add-project-trigger';
@@ -733,7 +733,7 @@ export function Sidebar({
             navigation={
           <SidebarPrimarySurfaceNavigation
             surface={primarySidebarSurface}
-            pullRequestIcon={MessageCircleIcon}
+            pullRequestIcon={PullRequestCompareIcon}
             searchOpen={searchOpen}
             searchElementId={SEARCH_TRIGGER_ELEMENT_ID}
             kanbanActive={activePath === '/kanban'}

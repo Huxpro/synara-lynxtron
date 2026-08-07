@@ -335,6 +335,11 @@ The final Native adapter therefore swaps right/down SVG states in one stable
 14x14 box, while Web retains its 220ms rotation. Closed/open Native evidence
 shows identical coordinates, canonical paths, real `aria-expanded` transition,
 and empty consoles.
+`shots/2026-08-08/sidebar-pull-request-icon-current/` fixes an incorrect host
+mapping rather than a stylistic approximation. Lynx had supplied a chat bubble
+where Web passes `IoIosGitCompare`. The new narrow adapter reproduces the exact
+locally installed 512-viewBox path, with Web/Lynx-for-Web identical 15x15
+geometry and exact-owned Native parent, paint, identity, and console proof.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
