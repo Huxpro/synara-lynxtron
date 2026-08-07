@@ -37,6 +37,13 @@ current Electron CDP authority
   ownership: exact-owned Native computes Toggle secondary opacity 0.75 and
   both navigation secondary layers at opacity 1, without changing disabled
   whole-control opacity.
+- Electron Toggle hover resolves to a 4% ink surface, full foreground glyph,
+  and opacity 1. Native desktop does not publish `mouseenter` from DevTool
+  `mouseMoved`, so the supported pointer-press path was used instead.
+- Native press publishes `ui-pressed`, resolves the same 4% ink surface,
+  switches secondary/foreground SVG layers from 0.75/0 to 0/1, and keeps
+  whole-control opacity 1. Release toggled the sidebar as expected; the
+  follow-up restored it to open. Console remained empty.
 - Settings intentionally retains its established real `Back to app` surface;
   this global cluster is not claimed on the separate Settings shell.
 - Sidebar visibility remains session-local and defaults open, matching the Web

@@ -7024,3 +7024,7 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   secondary。Lynx scoped Toggle secondary layer opacity.75；exact-owned Native
   PID8862→localhost:8905直接测21=.75、24/27=1，focused **4/4**、build通过、
   console0，不改变disabled whole-control opacity。
+- feedback follow-up：Electron Toggle hover为ink4% surface/full foreground/opacity1。
+  Desktop DevTool mouseMoved不发布mouseenter，故使用supported pointer press；Native
+  `ui-pressed`直接解析background rgba(13,13,13,.0392)、secondary0/foreground1、
+  whole opacity1。release后sidebar按真实action关闭，随后恢复open，console0。

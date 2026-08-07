@@ -1284,6 +1284,12 @@ The retained replacement cells:
   Native PID `8862`, PID-derived `localhost:8905/session 1`, directly computes
   0.75 / 1 / 1 for those layers with an empty console; disabled whole-control
   opacity remains independently owned.
+- Electron Toggle hover resolves to a 4% ink surface, full foreground glyph,
+  and opacity 1. Because Desktop DevTool `mouseMoved` does not publish
+  `mouseenter`, supported Native pointer press is retained instead:
+  `ui-pressed`, rgba(13,13,13,0.0392), secondary/foreground layers 0/1, and
+  whole-control opacity 1. Release exercised the real toggle and the sidebar
+  was restored open; console stayed empty.
 
 ## Remaining work
 
