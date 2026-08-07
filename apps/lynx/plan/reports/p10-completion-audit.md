@@ -345,6 +345,12 @@ project-picker icon source residual. Geometry was already converged; Lynx now
 imports Web's exact Central `folder-2.svg` instead of a generic Tabler folder.
 Browser trigger/icon geometry remains exact and Native confirms the canonical
 paths, stable tray anatomy, identity, and empty console.
+`shots/2026-08-08/dark-composer-material-current/` re-establishes dark
+current-head Composer material after the icon slices. Lynx now uses Web's dark
+Composer shadow, 10px runtime trigger radius, and secondary foreground for the
+shared folder SVG. Exact-owned Native proves the dark root, shadow, folder
+paint, identity, and empty console; Native radius is intentionally not claimed
+because the current DevTool reports `0px` for that compound view.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

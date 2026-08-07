@@ -7553,3 +7553,19 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   `shots/2026-08-08/composer-project-folder-current/`。
 - commit hook generic warning后，真实uncached changed-lines React Doctor针对父commit
   `7a3d97f0…`扫描`apps/lynx`为**0 diagnostics**，报告已随evidence保留。
+
+## 2026-08-08 — dark Composer material calibration
+
+- current-head dark pair分离出三项普通product residual：Composer仍用light
+  `0 4px 18px -6px` 7% ink shadow；runtime trigger radius8而Web10；shared folder
+  path虽正确但SVG嵌入full `#fcfcfc`，Web角色为secondary 58%。均非host vibrancy。
+- dark Composer新增Web exact `0 6px 24px -10px rgba(0,0,0,.3)`；runtime radius统一
+  10px；folder改用`svgColors.mutedForeground`。Lynx-for-Web resolved shadow/radius
+  exact，folder嵌入rgba(252,252,252,.6)，shield/chevron继续#fe8549。
+- exact-owned Native isolated KV预置真实serialized dark theme，bundle`14df3c33…`，
+  root43123→43155、localhost:8901/session1；root dark、Composer736x95/rgb23/shadow
+  `#0000004c 0 6px 24px -10px`、folder14x14/约58%、console0。DevTool对compound
+  runtime view radius仍回0，不伪称Native measured；radius由focused contract与
+  Lynx-for-Web resolved style覆盖。
+- focused Composer **2 files / 5 tests**；Lynx-for-Web与Native/Desktop builds通过。
+  证据`shots/2026-08-08/dark-composer-material-current/`。

@@ -18,6 +18,9 @@ describe('composer project picker trigger icon', () => {
     expect(source).toContain(
       'className="ComposerProjectPickerTriggerIconLynx"'
     );
+    expect(source).toContain(
+      'content={colorizeLynxSvg(folderSvg, svgColors.mutedForeground)}'
+    );
     expect(source).not.toContain(
       '<FolderIcon className="ComposerProjectPickerTriggerIconLynx"'
     );

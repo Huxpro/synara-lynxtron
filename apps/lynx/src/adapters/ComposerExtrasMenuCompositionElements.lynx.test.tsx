@@ -107,7 +107,10 @@ describe('native composer attachment menu item', () => {
       /\.ComposerRuntimeTriggerLabelLynx\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*16\.5px;[^}]*font-weight:\s*400;/s
     );
     expect(composerStyles).toMatch(
-      /\.ComposerRuntimeTriggerLynx\s*\{[^}]*min-height:\s*28px;[^}]*padding:\s*4px 10px;[^}]*border:\s*1px solid transparent;[^}]*border-radius:\s*8px;/s
+      /\.ComposerRuntimeTriggerLynx\s*\{[^}]*min-height:\s*28px;[^}]*padding:\s*4px 10px;[^}]*border:\s*1px solid transparent;[^}]*border-radius:\s*10px;/s
+    );
+    expect(composerStyles).toMatch(
+      /\.SliceRoot--theme-dark \.ComposerInputSurfaceLynx\s*\{[^}]*box-shadow:\s*0 6px 24px -10px rgba\(0,\s*0,\s*0,\s*0\.3\);/s
     );
     expect(composerStyles).toMatch(
       /\.ComposerRuntimeTriggerLynx--full-access\s*\{[^}]*color:\s*var\(--runtime-full-access-accent\);/s

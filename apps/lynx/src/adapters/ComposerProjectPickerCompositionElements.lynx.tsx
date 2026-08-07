@@ -27,12 +27,12 @@ function ComposerProjectPickerTriggerElement(props: {
   readonly secondaryLabel: string | null;
   readonly className?: string;
 }) {
-  const { activeTheme } = useTheme();
+  const { svgColors } = useTheme();
   return (
     <view className="ComposerProjectPickerTriggerContentLynx">
       <svg
         className="ComposerProjectPickerTriggerIconLynx"
-        content={colorizeLynxSvg(folderSvg, activeTheme.theme.ink)}
+        content={colorizeLynxSvg(folderSvg, svgColors.mutedForeground)}
       />
       <view className="ComposerProjectPickerTriggerCopyLynx">
         <text className="ComposerProjectPickerTriggerLabelLynx">

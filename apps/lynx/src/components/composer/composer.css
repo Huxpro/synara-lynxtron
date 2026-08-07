@@ -15,6 +15,10 @@
   box-shadow: 0 4px 18px -6px rgba(13, 13, 13, 0.07);
 }
 
+.SliceRoot--theme-dark .ComposerInputSurfaceLynx {
+  box-shadow: 0 6px 24px -10px rgba(0, 0, 0, 0.3);
+}
+
 .ComposerInputSurfaceLynx--focused {
   border-color: var(--primary);
 }
@@ -885,7 +889,7 @@
   gap: 6px;
   padding: 4px 10px;
   border: 1px solid transparent;
-  border-radius: 8px;
+  border-radius: 10px;
   background-color: transparent;
   color: var(--foreground);
 }
