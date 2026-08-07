@@ -7569,3 +7569,5 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Lynx-for-Web resolved style覆盖。
 - focused Composer **2 files / 5 tests**；Lynx-for-Web与Native/Desktop builds通过。
   证据`shots/2026-08-08/dark-composer-material-current/`。
+- commit hook generic warning后，真实uncached changed-lines React Doctor以父commit
+  `4f116933…`扫描`apps/lynx`为**0 diagnostics**，报告已随evidence保留。

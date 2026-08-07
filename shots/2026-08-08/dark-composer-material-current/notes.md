@@ -62,3 +62,7 @@ is covered by the focused source contract and Lynx-for-Web resolved style.
 
 Focused Composer tests pass 5/5. Lynx-for-Web and Native/Desktop production
 builds pass with only existing warnings.
+
+The generic commit-hook warning was followed by an uncached changed-lines
+React Doctor scan of `apps/lynx` against parent `4f116933...`; it reports zero
+diagnostics. The JSON report is retained as `react-doctor.json`.
