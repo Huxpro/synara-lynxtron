@@ -82,9 +82,7 @@
   justify-content: center;
 }
 
-@media (max-width: 640px) {
-  .SharedSettingsRowLayout {
-    flex-direction: column;
-    align-items: stretch;
-  }
+.SliceRoot--viewport-compact .SharedSettingsRowLayout {
+  flex-direction: column;
+  align-items: stretch;
 }

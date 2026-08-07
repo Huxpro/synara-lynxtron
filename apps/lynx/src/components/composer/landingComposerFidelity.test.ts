@@ -89,7 +89,7 @@ describe('landing composer fidelity contract', () => {
     expect(landingSource).toContain('interactionMode={interactionMode}');
     expect(landingStyles).not.toMatch(/\.LandingComposer\s*\{[^}]*margin-top:/s);
     expect(frameStyles).toMatch(
-      /\.ComposerColumnFrameSurfaceLynx[^}]*max-width:\s*736px;/s
+      /\.ComposerColumnFrameSurfaceLynx[^}]*width:\s*calc\(100% - 24px\);[^}]*max-width:\s*736px;/s
     );
   });
 

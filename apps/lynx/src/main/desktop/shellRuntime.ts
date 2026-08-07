@@ -23,6 +23,28 @@ export interface ShellPaths {
   readonly kvFile: string;
 }
 
+export interface ViewportProbeSize {
+  readonly width: number;
+  readonly height: number;
+}
+
+export function parseViewportProbeSequence(
+  value: string | undefined
+): readonly ViewportProbeSize[] {
+  if (!value) return [];
+  return value
+    .split(',')
+    .map((entry) => {
+      const match = entry.trim().match(/^(\d+)x(\d+)$/);
+      if (!match) return null;
+      return {
+        width: Math.max(900, Number(match[1])),
+        height: Math.max(650, Number(match[2])),
+      };
+    })
+    .filter((entry): entry is ViewportProbeSize => entry !== null);
+}
+
 export interface ShellRouteDeliveryState {
   readonly rendererReady: boolean;
   readonly pendingRoute: string | null;

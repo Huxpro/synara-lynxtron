@@ -7087,3 +7087,24 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   variant已撤回，普通Sidebar保留原即时切换；不能用视觉motion换稳定性。
 - focused **6 files / 20 tests**、Native/Desktop build通过。证据
   `shots/2026-08-07/settings-sidebar-motion-current/`。
+
+## 2026-08-07 — responsive viewport API + first adaptive shell slice
+
+- 系统能力结论：Lynx Desktop 3.5+官方提供
+  `onWindowResize(width,height)`；`SystemInfo.pixelWidth/Height`是物理屏幕而非window
+  viewport，不能做breakpoint。Lynxtron host用`getContentBounds()`提供首帧真实content
+  size，并在native `resize`发布`viewport:resize`；Lynx hook同时订阅两条event。
+- Native bundle未保留现有Settings `@media(max-width:640px)`，且Lynx
+  `matchMediaSafe()`明确为null。抽`responsiveLayout.logic.ts`为shared source of truth：
+  Web现有breakpoints改为消费同一常量，新增Web/Lynx同名`useViewportLayout`；Lynx root
+  投影`SliceRoot--viewport-{unknown|compact|medium|wide}`与numeric data attributes。
+- 首刀修复真实窄窗overflow：Composer frame删除inline 736px max-width owner，改为
+  fluid `calc(100%-24px)` + 736 cap；Empty Thread context tray同contract；Settings row
+  用root compact class取代无效Native media query。
+- exact-owned production resize链实测：persisted 1280启动后host live resize到900，
+  root从wide/1280变medium/900，证明不是cold-start proxy。900×650时sidebar固定256且
+  own scroll高560，main flex644，Composer620；1024×700时wide/main768/Composer736；
+  1440×900时sidebar256/scroll810/main1184/Composer仍736。三档console0，截图/boxes在
+  `shots/2026-08-07/responsive-shell-current/`。
+- fixed/flex/scroll ownership及remaining PR/Kanban/Settings/overlay matrix登记在
+  `plan/reports/responsive-layout-contract.md`；本次不冒充全app responsive完成。

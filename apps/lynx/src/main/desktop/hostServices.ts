@@ -451,6 +451,13 @@ export async function handleShell(
       return JSON.stringify({ ok: true });
     case 'windowGetState':
       return JSON.stringify(windowState(w));
+    case 'windowGetViewport': {
+      const bounds = w.getContentBounds();
+      return JSON.stringify({
+        width: bounds.width,
+        height: bounds.height,
+      });
+    }
     case 'shellOpenExternal': {
       const raw = String(data.url ?? '');
       let parsed: URL;

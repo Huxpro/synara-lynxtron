@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from '@lynx-js/react';
+import type { ReactNode } from '@lynx-js/react';
 
 import './composer-column-frame-surface-elements.css';
 
@@ -10,16 +10,7 @@ export function ComposerColumnFrameSurfaceElement({
   readonly className?: string;
 }) {
   return (
-    <view
-      className={`ComposerColumnFrameSurfaceLynx ${className ?? ''}`}
-      style={
-        {
-          width: '100%',
-          maxWidth: '736px',
-          alignSelf: 'center',
-        } as CSSProperties
-      }
-    >
+    <view className={`ComposerColumnFrameSurfaceLynx ${className ?? ''}`}>
       {children}
     </view>
   );

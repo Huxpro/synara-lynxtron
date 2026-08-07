@@ -6,6 +6,7 @@ import {
   dispatchRendererGlobalEvent,
   SEARCH_NAVIGATION_ACCELERATORS,
   parseSynaraDeepLink,
+  parseViewportProbeSequence,
   parseWindowState,
   reduceShellRouteDelivery,
   resolveNativeRendererCommand,
@@ -16,6 +17,17 @@ import {
 } from './shellRuntime';
 
 describe('shellRuntime', () => {
+  it('parses only explicit viewport probe sizes and honors desktop minima', () => {
+    expect(parseViewportProbeSequence(undefined)).toEqual([]);
+    expect(
+      parseViewportProbeSequence('900x650, invalid, 1024x700,640x480')
+    ).toEqual([
+      { width: 900, height: 650 },
+      { width: 1024, height: 700 },
+      { width: 900, height: 650 },
+    ]);
+  });
+
   it('uses only an explicit absolute state-directory override', () => {
     expect(resolveShellUserDataDir('/default/user-data', undefined)).toBe(
       '/default/user-data'

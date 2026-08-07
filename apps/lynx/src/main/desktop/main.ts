@@ -29,6 +29,7 @@ import {
   dispatchRendererGlobalEvent,
   migrateLegacyShellFiles,
   parseSynaraDeepLink,
+  parseViewportProbeSequence,
   readWindowState,
   reduceShellRouteDelivery,
   resolveRestoredBounds,
@@ -57,6 +58,22 @@ let mainWindow: LynxWindow | null = null;
 let searchNavigationEnabled = false;
 let routeDeliveryState: ShellRouteDeliveryState =
   INITIAL_SHELL_ROUTE_DELIVERY_STATE;
+let viewportProbeStarted = false;
+
+function startViewportProbe(w: LynxWindow): void {
+  if (viewportProbeStarted) return;
+  const sequence = parseViewportProbeSequence(
+    process.env.SYNARA_VIEWPORT_PROBE_SEQUENCE
+  );
+  if (!sequence.length) return;
+  viewportProbeStarted = true;
+  sequence.forEach((size, index) => {
+    setTimeout(() => {
+      if (w.isDestroyed()) return;
+      w.setContentSize(size.width, size.height);
+    }, 600 * (index + 1));
+  });
+}
 
 function dispatchRoute(route: string, activate = true): void {
   if (!mainWindow || mainWindow.isDestroyed()) {
@@ -354,6 +371,10 @@ app.whenReady().then(() => {
   ] as const) {
     w.on(event, () => emitWindowState(w));
   }
+  w.on('resize', () => {
+    const bounds = w.getContentBounds();
+    w.sendGlobalEvent('viewport:resize', bounds.width, bounds.height);
+  });
   installApplicationMenu(w);
   if (hostInputProbeReportPath) {
     w.on('focus', () => {
@@ -408,6 +429,7 @@ app.whenReady().then(() => {
           if (delivery.routeToDispatch) {
             w.sendGlobalEvent('shell:navigate', delivery.routeToDispatch);
           }
+          startViewportProbe(w);
           callback.sendReply(JSON.stringify({ ok: true }));
         } else if (name === 'shellSetSearchNavigationEnabled') {
           const enabled = data?.enabled === true;

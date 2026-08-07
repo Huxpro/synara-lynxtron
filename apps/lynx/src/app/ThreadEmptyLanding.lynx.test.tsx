@@ -47,7 +47,7 @@ describe('empty Thread landing fidelity', () => {
       'shouldDeleteDepartingTemporaryThread('
     );
     expect(trayStyles).toMatch(
-      /\.EmptyThreadContextTray\s*\{[^}]*width:\s*736px;[^}]*min-height:\s*58px;[^}]*margin:\s*-20px auto 0;[^}]*padding:\s*24px 8px 6px;/s
+      /\.EmptyThreadContextTray\s*\{[^}]*width:\s*calc\(100% - 24px\);[^}]*max-width:\s*736px;[^}]*min-height:\s*58px;[^}]*margin:\s*-20px auto 0;[^}]*padding:\s*24px 8px 6px;/s
     );
   });
 

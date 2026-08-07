@@ -17,6 +17,8 @@ import {
   parseStoredThemeState,
   type ThemeState,
 } from '@synara-web/theme/theme.logic';
+import { viewportLayoutClassName } from '@synara-web/responsiveLayout.logic';
+import { useViewportLayout } from '~/hooks/useViewportLayout';
 
 import { sliceUiDensityClassName } from './appDensity.logic';
 import { sliceThemeClassName } from './appTheme.logic';
@@ -60,6 +62,7 @@ export function App() {
     useState<UiDensity>(DEFAULT_UI_DENSITY);
   const [themeState, setThemeState] =
     useState<ThemeState>(DEFAULT_THEME_STATE);
+  const viewportLayout = useViewportLayout();
   const transportState = useSynaraTransportState();
 
   useEffect(() => {
@@ -88,7 +91,9 @@ export function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <view
-        className={`SliceRoot ${sliceThemeClassName(themeState)} ${sliceUiDensityClassName(uiDensity)}`}
+        className={`SliceRoot ${sliceThemeClassName(themeState)} ${sliceUiDensityClassName(uiDensity)} ${viewportLayoutClassName(viewportLayout)}`}
+        data-viewport-width={viewportLayout.width}
+        data-viewport-height={viewportLayout.height}
       >
         {transportState === 'reconnecting' || transportState === 'offline' ? (
           <view

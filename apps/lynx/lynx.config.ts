@@ -345,6 +345,10 @@ export default defineConfig({
         rootPath,
         './src/adapters/useTheme.lynx.ts'
       ),
+      '~/hooks/useViewportLayout$': path.resolve(
+        rootPath,
+        './src/hooks/useViewportLayout.lynx.ts'
+      ),
       '~/nativeApi$': path.resolve(
         rootPath,
         './src/adapters/nativeApi.lynx.ts'

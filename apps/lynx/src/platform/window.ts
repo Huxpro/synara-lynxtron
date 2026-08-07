@@ -1,6 +1,7 @@
 import 'background-only';
 
 import { bridgeCall, onGlobalEvent } from './bridge';
+import type { ViewportSize } from '@synara-web/responsiveLayout.logic';
 
 export interface DesktopWindowState {
   readonly isMaximized: boolean;
@@ -13,6 +14,8 @@ export interface WindowPort {
   readonly toggleMaximize: () => Promise<DesktopWindowState | undefined>;
   readonly close: () => Promise<void>;
   readonly getWindowState: () => Promise<DesktopWindowState | undefined>;
+  readonly getViewportSize: () => Promise<ViewportSize | undefined>;
+  readonly onViewportResize: (listener: (size: ViewportSize) => void) => () => void;
   readonly onWindowState: (listener: (state: DesktopWindowState) => void) => () => void;
   readonly openExternal: (url: string) => Promise<boolean>;
   readonly openWindow: (url: string) => void;
@@ -30,6 +33,18 @@ export const platformWindow: WindowPort = {
     await bridgeCall('windowClose');
   },
   getWindowState: () => bridgeCall('windowGetState'),
+  getViewportSize: () => bridgeCall('windowGetViewport'),
+  onViewportResize: (listener) =>
+    onGlobalEvent('viewport:resize', (width: unknown, height: unknown) => {
+      if (
+        typeof width === 'number' &&
+        Number.isFinite(width) &&
+        typeof height === 'number' &&
+        Number.isFinite(height)
+      ) {
+        listener({ width, height });
+      }
+    }),
   onWindowState: (listener) =>
     onGlobalEvent('window:state', (state: unknown) => {
       if (

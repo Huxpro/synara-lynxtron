@@ -1,0 +1,65 @@
+{
+  "client": "localhost:8902",
+  "nodes": {
+    "root": {
+      "tag": "<view class=\"SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable SliceRoot--viewport-wide\" data-viewport-width=\"1024\" data-viewport-height=\"700\">",
+      "border": [
+        0,
+        0,
+        1024,
+        0,
+        1024,
+        700,
+        0,
+        700
+      ],
+      "width": 1024,
+      "height": 700
+    },
+    "sidebar": {
+      "tag": "<view class=\"AppSidebar\">",
+      "border": [
+        0,
+        0,
+        256,
+        0,
+        256,
+        700,
+        0,
+        700
+      ],
+      "width": 255,
+      "height": 700
+    },
+    "main": {
+      "tag": "<view class=\"AppMain\">",
+      "border": [
+        256,
+        0,
+        1024,
+        0,
+        1024,
+        700,
+        256,
+        700
+      ],
+      "width": 768,
+      "height": 700
+    },
+    "composer": {
+      "tag": "<view class=\"ComposerColumnFrameSurfaceLynx mx-auto w-full min-w-0 max-w-[46rem]\">",
+      "border": [
+        272,
+        402,
+        1008,
+        402,
+        1008,
+        535,
+        272,
+        535
+      ],
+      "width": 736,
+      "height": 133
+    }
+  }
+}

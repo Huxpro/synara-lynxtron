@@ -1,14 +1,14 @@
 .ComposerColumnFrameSurfaceLynx.ComposerColumnFrameSurfaceLynx {
   display: flex;
-  width: 100%;
+  width: calc(100% - 24px);
   max-width: 736px;
   align-self: center;
   flex-direction: column;
 }
 
-@media (max-width: 736px) {
+.SliceRoot--viewport-compact
+  .ComposerColumnFrameSurfaceLynx.ComposerColumnFrameSurfaceLynx,
+.SliceRoot--viewport-medium
   .ComposerColumnFrameSurfaceLynx.ComposerColumnFrameSurfaceLynx {
-    width: 100%;
-    max-width: 100%;
-  }
+  max-width: calc(100% - 24px);
 }

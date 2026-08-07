@@ -1,0 +1,80 @@
+{
+  "client": "localhost:8902",
+  "nodes": {
+    "root": {
+      "tag": "<view class=\"SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable SliceRoot--viewport-wide\" data-viewport-width=\"1440\" data-viewport-height=\"900\">",
+      "border": [
+        0,
+        0,
+        1440,
+        0,
+        1440,
+        900,
+        0,
+        900
+      ],
+      "width": 1440,
+      "height": 900
+    },
+    "sidebar": {
+      "tag": "<view class=\"AppSidebar\">",
+      "border": [
+        0,
+        0,
+        256,
+        0,
+        256,
+        900,
+        0,
+        900
+      ],
+      "width": 255,
+      "height": 900
+    },
+    "sidebarScroll": {
+      "tag": "<scroll-view class=\"AppSidebarScroll\" scroll-orientation=\"vertical\">",
+      "border": [
+        0,
+        46,
+        255,
+        46,
+        255,
+        856,
+        0,
+        856
+      ],
+      "width": 255,
+      "height": 810
+    },
+    "main": {
+      "tag": "<view class=\"AppMain\">",
+      "border": [
+        256,
+        0,
+        1440,
+        0,
+        1440,
+        900,
+        256,
+        900
+      ],
+      "width": 1184,
+      "height": 900
+    },
+    "composer": {
+      "tag": "<view class=\"ComposerColumnFrameSurfaceLynx mx-auto w-full min-w-0 max-w-[46rem]\">",
+      "border": [
+        480,
+        502,
+        1216,
+        502,
+        1216,
+        635,
+        480,
+        635
+      ],
+      "width": 736,
+      "height": 133
+    }
+  }
+}

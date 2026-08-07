@@ -1,0 +1,80 @@
+{
+  "client": "localhost:8902",
+  "viewport": {
+    "root": {
+      "tag": "<view class=\"SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable SliceRoot--viewport-medium\" data-viewport-width=\"900\" data-viewport-height=\"650\">",
+      "width": 900,
+      "height": 650,
+      "border": [
+        0,
+        0,
+        900,
+        0,
+        900,
+        650,
+        0,
+        650
+      ]
+    },
+    "sidebar": {
+      "tag": "<view class=\"AppSidebar\">",
+      "width": 255,
+      "height": 650,
+      "border": [
+        0,
+        0,
+        256,
+        0,
+        256,
+        650,
+        0,
+        650
+      ]
+    },
+    "sidebarScroll": {
+      "tag": "<scroll-view class=\"AppSidebarScroll\" scroll-orientation=\"vertical\">",
+      "width": 255,
+      "height": 560,
+      "border": [
+        0,
+        46,
+        255,
+        46,
+        255,
+        606,
+        0,
+        606
+      ]
+    },
+    "main": {
+      "tag": "<view class=\"AppMain\">",
+      "width": 644,
+      "height": 650,
+      "border": [
+        256,
+        0,
+        900,
+        0,
+        900,
+        650,
+        256,
+        650
+      ]
+    },
+    "composer": {
+      "tag": "<view class=\"ComposerColumnFrameSurfaceLynx mx-auto w-full min-w-0 max-w-[46rem]\">",
+      "width": 620,
+      "height": 133,
+      "border": [
+        268,
+        377,
+        888,
+        377,
+        888,
+        510,
+        268,
+        510
+      ]
+    }
+  }
+}
