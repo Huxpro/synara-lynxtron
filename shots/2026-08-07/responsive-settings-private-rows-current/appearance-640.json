@@ -1,0 +1,203 @@
+{
+  "content": {
+    "clientHeight": 820,
+    "clientWidth": 640,
+    "scrollHeight": 1833,
+    "scrollWidth": 640
+  },
+  "header": "AppearanceTheme, typography, and timestamp formatting.Restore defaults",
+  "root": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable SliceRoot--viewport-compact SliceRoot--viewport-sm-up",
+  "rows": [
+    {
+      "clientWidth": 590,
+      "control": [
+        369.703125,
+        167,
+        233.296875,
+        28
+      ],
+      "copy": [
+        37,
+        161,
+        332.703125,
+        40
+      ],
+      "rect": [
+        25,
+        151,
+        590,
+        61
+      ],
+      "scrollWidth": 590,
+      "text": "ThemeChoose how Synara looks across the app.LightDarkSystem"
+    },
+    {
+      "clientWidth": 590,
+      "control": [
+        571,
+        241,
+        32,
+        20
+      ],
+      "copy": [
+        37,
+        222,
+        534,
+        58
+      ],
+      "rect": [
+        25,
+        212,
+        590,
+        78
+      ],
+      "scrollWidth": 590,
+      "text": "Use system UI fontIgnore the theme's custom UI font and render the interface with the nati"
+    },
+    {
+      "clientWidth": 590,
+      "control": [
+        357.84375,
+        1291,
+        245.15625,
+        28
+      ],
+      "copy": [
+        37,
+        1276,
+        320.84375,
+        58
+      ],
+      "rect": [
+        25,
+        1266,
+        590,
+        79
+      ],
+      "scrollWidth": 590,
+      "text": "UI densityControl spacing in the sidebar, composer, chat gutters, and settings rows withou"
+    },
+    {
+      "clientWidth": 590,
+      "control": [
+        501.671875,
+        1370,
+        101.328125,
+        28
+      ],
+      "copy": [
+        37,
+        1355,
+        464.671875,
+        58
+      ],
+      "rect": [
+        25,
+        1345,
+        590,
+        79
+      ],
+      "scrollWidth": 590,
+      "text": "Base font sizeAdjust the app text base in pixels. Chat and UI typography scale proportiona"
+    },
+    {
+      "clientWidth": 590,
+      "control": [
+        501.671875,
+        1440,
+        101.328125,
+        28
+      ],
+      "copy": [
+        37,
+        1434,
+        464.671875,
+        40
+      ],
+      "rect": [
+        25,
+        1424,
+        590,
+        61
+      ],
+      "scrollWidth": 590,
+      "text": "Terminal font sizeAdjust terminal text independently from the app and chat font size.px"
+    },
+    {
+      "clientWidth": 590,
+      "control": [
+        379,
+        1519,
+        224,
+        28
+      ],
+      "copy": [
+        37,
+        1495,
+        342,
+        76
+      ],
+      "rect": [
+        25,
+        1485,
+        590,
+        97
+      ],
+      "scrollWidth": 590,
+      "text": "Terminal fontType any monospace font installed on this device (e.g. Fira Code). Leave empt"
+    },
+    {
+      "clientWidth": 590,
+      "control": [
+        571,
+        1602,
+        32,
+        20
+      ],
+      "copy": [
+        37,
+        1592,
+        534,
+        40
+      ],
+      "rect": [
+        25,
+        1582,
+        590,
+        60
+      ],
+      "scrollWidth": 590,
+      "text": "Font smoothingUse macOS-style antialiasing for lighter, crisper text rendering."
+    },
+    {
+      "clientWidth": 590,
+      "control": [
+        443,
+        1714,
+        160,
+        32
+      ],
+      "copy": [
+        37,
+        1710,
+        406,
+        40
+      ],
+      "rect": [
+        25,
+        1700,
+        590,
+        60
+      ],
+      "scrollWidth": 590,
+      "text": "Time formatSystem default follows your browser or OS clock preference.System default"
+    }
+  ],
+  "viewport": {
+    "dpr": 1,
+    "innerHeight": 820,
+    "innerWidth": 640,
+    "vh": 820,
+    "vw": 640
+  }
+}

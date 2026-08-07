@@ -127,4 +127,36 @@ describe('Settings Appearance fidelity', () => {
     expect(filterTerminalFontSuggestions('')).toContain('JetBrains Mono');
     expect(filterTerminalFontSuggestions('not-a-font')).toEqual([]);
   });
+
+  it('stacks private Appearance rows and fluid controls at compact widths', () => {
+    const styles = readFileSync(
+      new URL('./settings-appearance-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.SharedSettingsAppearanceRow\s*\{[^}]*flex-direction:\s*column;[^}]*align-items:\s*stretch;[^}]*gap:\s*10px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.SharedSettingsAppearanceRowCopy\s*\{[^}]*padding-right:\s*0;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.SharedSettingsAppearanceControl\s*\{[^}]*width:\s*100%;[^}]*justify-content:\s*flex-start;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.SharedSettingsAppearanceFontTrigger,\s*\.SliceRoot--viewport-compact \.SharedSettingsAppearanceFontInput,\s*\.SliceRoot--viewport-compact \.SharedSettingsAppearanceSelect\s*\{[^}]*width:\s*100%;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-sm-up \.SharedSettingsAppearanceRow\s*\{[^}]*flex-direction:\s*row;[^}]*align-items:\s*center;[^}]*gap:\s*0;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-sm-up \.SharedSettingsAppearanceControl\s*\{[^}]*width:\s*auto;[^}]*justify-content:\s*flex-end;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-sm-up \.SharedSettingsAppearanceFontTrigger,\s*\.SliceRoot--viewport-sm-up \.SharedSettingsAppearanceFontInput\s*\{[^}]*width:\s*224px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-sm-up \.SharedSettingsAppearanceSelect\s*\{[^}]*width:\s*160px;/s
+    );
+  });
 });

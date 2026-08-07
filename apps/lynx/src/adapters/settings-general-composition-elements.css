@@ -231,3 +231,33 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.SliceRoot--viewport-compact .SharedSettingsGeneralRow {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+}
+
+.SliceRoot--viewport-compact .SharedSettingsGeneralRowCopy {
+  padding-right: 0;
+}
+
+.SliceRoot--viewport-compact .SharedSettingsGeneralRowControl {
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.SliceRoot--viewport-sm-up .SharedSettingsGeneralRow {
+  flex-direction: row;
+  align-items: center;
+  gap: 0;
+}
+
+.SliceRoot--viewport-sm-up .SharedSettingsGeneralRowCopy {
+  padding-right: 16px;
+}
+
+.SliceRoot--viewport-sm-up .SharedSettingsGeneralRowControl {
+  width: auto;
+  justify-content: flex-end;
+}

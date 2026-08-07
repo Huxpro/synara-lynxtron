@@ -222,6 +222,25 @@ At 600px and 640px, all three controls own the full 270px/310px row width. At
 1024px, the original 144px provider + 369px input + 69px Add anatomy returns.
 Evidence: `shots/2026-08-07/responsive-settings-custom-models-current/`.
 
+## Settings private-row follow-up
+
+General and Appearance both use Web's shared `SettingsRow`, which stacks copy
+and control below `sm=640`. Their Lynx element adapters previously kept private
+horizontal rows at every width. At 320px, Appearance's fixed controls squeezed
+copy to 16–22px and expanded rows to 707–2633px.
+
+Both adapters now stack in the compact band, remove desktop copy padding, and
+give controls the full row width. Appearance font/select controls become
+fluid. The shared `sm-up` class restores horizontal rows and the original
+224px/160px widths.
+
+At 320px, General and Appearance rows are 270px wide with no horizontal
+overflow; their copy/control rails are 246px. Appearance's representative rows
+are now 99–153px tall. At 640px, live resize restores horizontal rows; the
+590px cards, 224px terminal-font control, and 160px time-format control all fit.
+Evidence:
+`shots/2026-08-07/responsive-settings-private-rows-current/`.
+
 ## Short-window follow-up
 
 The sidebar already kept one scrollable list viewport above a fixed 44px

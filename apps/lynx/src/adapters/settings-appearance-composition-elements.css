@@ -264,3 +264,48 @@
 .SharedSettingsAppearanceThemePacks {
   gap: 12px;
 }
+
+.SliceRoot--viewport-compact .SharedSettingsAppearanceRow {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+}
+
+.SliceRoot--viewport-compact .SharedSettingsAppearanceRowCopy {
+  padding-right: 0;
+}
+
+.SliceRoot--viewport-compact .SharedSettingsAppearanceControl {
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.SliceRoot--viewport-compact .SharedSettingsAppearanceFontTrigger,
+.SliceRoot--viewport-compact .SharedSettingsAppearanceFontInput,
+.SliceRoot--viewport-compact .SharedSettingsAppearanceSelect {
+  width: 100%;
+}
+
+.SliceRoot--viewport-sm-up .SharedSettingsAppearanceRow {
+  flex-direction: row;
+  align-items: center;
+  gap: 0;
+}
+
+.SliceRoot--viewport-sm-up .SharedSettingsAppearanceRowCopy {
+  padding-right: 16px;
+}
+
+.SliceRoot--viewport-sm-up .SharedSettingsAppearanceControl {
+  width: auto;
+  justify-content: flex-end;
+}
+
+.SliceRoot--viewport-sm-up .SharedSettingsAppearanceFontTrigger,
+.SliceRoot--viewport-sm-up .SharedSettingsAppearanceFontInput {
+  width: 224px;
+}
+
+.SliceRoot--viewport-sm-up .SharedSettingsAppearanceSelect {
+  width: 160px;
+}

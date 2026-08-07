@@ -7301,3 +7301,18 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - focused **2 files / 8 tests**，Lynx-for-Web与Native/Desktop builds通过，React Doctor
   **100/100**，page errors0。证据
   `shots/2026-08-07/responsive-settings-sidebar-compact-current/`。
+
+## 2026-08-07 — compact Settings private rows
+
+- General/Appearance在Web都消费shared `SettingsRow`，其contract为`<sm`纵向stack；
+  Lynx adapters却各自保留永远横排的private row CSS。320px实测Appearance fixed
+  controls把copy压到16–22px，row膨胀为707–2633px，UI density还出现273>270 paint。
+- 两组private row统一消费shared viewport classes：compact下column/stretch、10px gap、
+  copy移除desktop右padding、control full width；Appearance 224/160px font/select改fluid。
+  `sm-up`恢复row/center、desktop padding及原fixed widths。
+- final 320px General/Appearance cards均270px且`scrollWidth===clientWidth`，copy/control
+  rail均246px；Appearance代表rows收敛为99–153px。live resize到640px命中`sm-up`，
+  rows恢复horizontal，card590px、terminal font224px、time format160px且无overflow。
+- focused **2 files / 6 tests**，Lynx-for-Web与Native/Desktop production builds
+  通过，page errors0，console仅既存web-core warning。证据
+  `shots/2026-08-07/responsive-settings-private-rows-current/`。

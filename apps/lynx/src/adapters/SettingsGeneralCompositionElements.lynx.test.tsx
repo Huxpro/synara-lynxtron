@@ -99,4 +99,27 @@ describe('Settings General fidelity', () => {
     fireEvent.tap(control);
     expect(changes).toBe(0);
   });
+
+  it('stacks private General rows at compact widths like the shared Web row', () => {
+    const styles = readFileSync(
+      new URL('./settings-general-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.SharedSettingsGeneralRow\s*\{[^}]*flex-direction:\s*column;[^}]*align-items:\s*stretch;[^}]*gap:\s*10px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.SharedSettingsGeneralRowCopy\s*\{[^}]*padding-right:\s*0;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.SharedSettingsGeneralRowControl\s*\{[^}]*width:\s*100%;[^}]*justify-content:\s*flex-start;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-sm-up \.SharedSettingsGeneralRow\s*\{[^}]*flex-direction:\s*row;[^}]*align-items:\s*center;[^}]*gap:\s*0;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-sm-up \.SharedSettingsGeneralRowControl\s*\{[^}]*width:\s*auto;[^}]*justify-content:\s*flex-end;/s
+    );
+  });
 });
