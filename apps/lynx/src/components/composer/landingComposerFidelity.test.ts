@@ -11,6 +11,10 @@ describe('landing composer fidelity contract', () => {
       new URL('./landing-composer.css', import.meta.url),
       'utf8'
     );
+    const appStyles = readFileSync(
+      new URL('../../app/App.css', import.meta.url),
+      'utf8'
+    );
     const frameStyles = readFileSync(
       new URL(
         '../../adapters/composer-column-frame-surface-elements.css',
@@ -42,6 +46,18 @@ describe('landing composer fidelity contract', () => {
     expect(routerSource).toContain('<CenteredEmptyLanding />');
     expect(routerSource).toContain('<ComposerColumnFrameSurface>');
     expect(routerSource).toContain('<LandingComposer');
+    expect(routerSource).toContain(
+      '<scroll-view\n        className="ThreadsLandingBody"\n        scroll-orientation="vertical"'
+    );
+    expect(routerSource).toContain(
+      '<view className="ThreadsLandingBodyInner">'
+    );
+    expect(appStyles).toMatch(
+      /\.ThreadsLandingBody\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;/s
+    );
+    expect(appStyles).toMatch(
+      /\.ThreadsLandingBodyInner\s*\{[^}]*min-height:\s*100%;[^}]*align-items:\s*center;/s
+    );
     expect(routerSource).toContain(
       'initialProjectId={props.initialProjectId}'
     );

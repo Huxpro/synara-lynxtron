@@ -107,9 +107,9 @@ separate behavior decisions and real multi-size proof:
    already clamps measured popup coordinates to its measured viewport; Search
    command and Composer model overlays are separately proven at the Desktop
    minimum below.
-3. Very short windows: verify Composer, transcript, sidebar footer, and Settings
-   action rows at the desktop minimum height of 650 and below on non-desktop
-   hosts.
+3. Very short windows: transcript and remaining Settings action surfaces still
+   need separate proof. Landing Composer and the sidebar footer are closed
+   below.
 
 These rows remain open; the first shell/composer slice does not certify the
 entire application as responsive.
@@ -207,3 +207,17 @@ The editor therefore uses the shared `md-up` class for its horizontal form.
 At 600px and 640px, all three controls own the full 270px/310px row width. At
 1024px, the original 144px provider + 369px input + 69px Add anatomy returns.
 Evidence: `shots/2026-08-07/responsive-settings-custom-models-current/`.
+
+## Short-window follow-up
+
+The sidebar already kept one scrollable list viewport above a fixed 44px
+Settings footer. That ownership remains correct down to a measured 200px
+height.
+
+The landing main surface did not have a scroll owner. At 900x200 its 244px
+heading/Composer stack was centered inside a 154px body and clipped at both
+edges. `ThreadsLandingBody` now owns vertical scrolling, while a
+`min-height:100%` inner wrapper preserves centering whenever the stack fits.
+The 200px body now scrolls 90px between a fully visible heading and a fully
+visible Composer; at 480px it remains non-scrolling and centered. Evidence:
+`shots/2026-08-07/responsive-short-window-current/`.

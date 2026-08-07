@@ -7231,3 +7231,18 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   React Doctor **100/100, 0 diagnostics**；page errors0，console仅既存web-core warning。
   owned sessions/58123/9002/staging/home已清理。证据
   `shots/2026-08-07/responsive-settings-custom-models-current/`。
+
+## 2026-08-07 — very-short landing scroll ownership
+
+- 900x480与900x280实测sidebar ownership已正确：list viewport随高度缩短并独立scroll，
+  Settings footer固定44px；landing heading+Composer在两档均完整且居中。
+- 900x200暴露真实裁剪：landing body仅154px，stack高244px，却被flex center到
+  y17.5..228.5，heading/Composer两端都出界且outer surface无scroll owner。
+- `ThreadsLandingBody`改为唯一vertical `scroll-view`，新增
+  `ThreadsLandingBodyInner{min-height:100%;align-items:center}`；内容可放下时仍居中，
+  超高时inner扩展。200px下scrollHeight244/client154/maxTop90，top完整显示heading，
+  bottom完整显示Composer；480px仍scrollHeight=client434。
+- focused **1 file / 2 tests**，Lynx-for-Web与Native/Desktop production builds通过；
+  React Doctor仅报告router既存line154 pure function与line250 await-loop，不指向本刀。
+  page errors0，console仅既存web-core warning。证据
+  `shots/2026-08-07/responsive-short-window-current/`。

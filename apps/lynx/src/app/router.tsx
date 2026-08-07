@@ -205,18 +205,23 @@ function ThreadsLandingPage(props: {
         status={providerHealth.status}
         onDismiss={providerHealth.dismiss}
       />
-      <view className="ThreadsLandingBody">
-        <CenteredEmptyLandingStack>
-          <CenteredEmptyLanding />
-          <ComposerColumnFrameSurface>
-            <LandingComposer
-              initialProjectId={props.initialProjectId}
-              onProviderStatusesChange={setProviderStatuses}
-              onThreadCreated={props.onThreadCreated}
-            />
-          </ComposerColumnFrameSurface>
-        </CenteredEmptyLandingStack>
-      </view>
+      <scroll-view
+        className="ThreadsLandingBody"
+        scroll-orientation="vertical"
+      >
+        <view className="ThreadsLandingBodyInner">
+          <CenteredEmptyLandingStack>
+            <CenteredEmptyLanding />
+            <ComposerColumnFrameSurface>
+              <LandingComposer
+                initialProjectId={props.initialProjectId}
+                onProviderStatusesChange={setProviderStatuses}
+                onThreadCreated={props.onThreadCreated}
+              />
+            </ComposerColumnFrameSurface>
+          </CenteredEmptyLandingStack>
+        </view>
+      </scroll-view>
     </view>
   );
 }

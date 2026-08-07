@@ -198,9 +198,14 @@
 }
 
 .ThreadsLandingBody {
-  display: flex;
   flex: 1;
   min-height: 0;
+}
+
+.ThreadsLandingBodyInner {
+  display: flex;
+  min-height: 100%;
+  align-items: center;
 }
 
 .ThreadsLandingHeaderIdentity {
