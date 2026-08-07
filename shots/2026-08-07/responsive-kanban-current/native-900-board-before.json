@@ -1,0 +1,329 @@
+{
+  "root": [
+    {
+      "border": [
+        0,
+        0,
+        900,
+        0,
+        900,
+        650,
+        0,
+        650
+      ],
+      "width": 900,
+      "height": 650,
+      "label": "Toggle thread sidebar"
+    }
+  ],
+  "main": [
+    {
+      "border": [
+        256,
+        0,
+        900,
+        0,
+        900,
+        650,
+        256,
+        650
+      ],
+      "width": 644,
+      "height": 650,
+      "label": "Streaming validation Do not use tools, Done"
+    }
+  ],
+  "columns": [
+    {
+      "border": [
+        256,
+        58,
+        900,
+        58,
+        900,
+        650,
+        256,
+        650
+      ],
+      "width": 612,
+      "height": 576,
+      "label": "Streaming validation Do not use tools, Done"
+    }
+  ],
+  "columnHosts": [
+    {
+      "border": [
+        272,
+        58,
+        468,
+        58,
+        468,
+        634,
+        272,
+        634
+      ],
+      "width": 196,
+      "height": 576,
+      "label": null
+    },
+    {
+      "border": [
+        480,
+        58,
+        676,
+        58,
+        676,
+        634,
+        480,
+        634
+      ],
+      "width": 196,
+      "height": 576,
+      "label": null
+    },
+    {
+      "border": [
+        688,
+        58,
+        884,
+        58,
+        884,
+        634,
+        688,
+        634
+      ],
+      "width": 196,
+      "height": 576,
+      "label": "Streaming validation Do not use tools, Done"
+    }
+  ],
+  "columnScrollers": [
+    {
+      "border": [
+        272,
+        90,
+        528,
+        90,
+        528,
+        634,
+        272,
+        634
+      ],
+      "width": 256,
+      "height": 544,
+      "label": null
+    },
+    {
+      "border": [
+        480,
+        90,
+        736,
+        90,
+        736,
+        634,
+        480,
+        634
+      ],
+      "width": 256,
+      "height": 544,
+      "label": null
+    },
+    {
+      "border": [
+        688,
+        90,
+        944,
+        90,
+        944,
+        634,
+        688,
+        634
+      ],
+      "width": 256,
+      "height": 544,
+      "label": "Streaming validation Do not use tools, Done"
+    }
+  ],
+  "cards": [
+    {
+      "border": [
+        692,
+        94,
+        940,
+        94,
+        940,
+        177,
+        692,
+        177
+      ],
+      "width": 222,
+      "height": 61,
+      "label": "Streaming validation Do not use tools, Done"
+    },
+    {
+      "border": [
+        705,
+        105,
+        927,
+        105,
+        927,
+        141,
+        705,
+        141
+      ],
+      "width": 222,
+      "height": 36,
+      "label": "Actions for Streaming validation Do not use tools"
+    },
+    {
+      "border": [
+        705,
+        105,
+        902,
+        105,
+        902,
+        141,
+        705,
+        141
+      ],
+      "width": 197,
+      "height": 36,
+      "label": null
+    },
+    {
+      "border": [
+        902,
+        105,
+        927,
+        105,
+        927,
+        123,
+        902,
+        123
+      ],
+      "width": 17,
+      "height": 16,
+      "label": "Actions for Streaming validation Do not use tools"
+    },
+    {
+      "border": [
+        906,
+        106,
+        923,
+        106,
+        923,
+        122,
+        906,
+        122
+      ],
+      "width": 17,
+      "height": 16,
+      "label": null
+    },
+    {
+      "border": [
+        705,
+        147,
+        927,
+        147,
+        927,
+        166,
+        705,
+        166
+      ],
+      "width": 222,
+      "height": 17,
+      "label": null
+    },
+    {
+      "border": [
+        705,
+        151,
+        719,
+        151,
+        719,
+        165,
+        705,
+        165
+      ],
+      "width": 14,
+      "height": 14,
+      "label": null
+    },
+    {
+      "border": [
+        866,
+        149,
+        927,
+        149,
+        927,
+        166,
+        866,
+        166
+      ],
+      "width": 61,
+      "height": 17,
+      "label": null
+    },
+    {
+      "border": [
+        866,
+        149,
+        880,
+        149,
+        880,
+        166,
+        866,
+        166
+      ],
+      "width": 14,
+      "height": 17,
+      "label": null
+    },
+    {
+      "border": [
+        888,
+        149,
+        927,
+        149,
+        927,
+        166,
+        888,
+        166
+      ],
+      "width": 39,
+      "height": 17,
+      "label": null
+    },
+    {
+      "border": [
+        888,
+        155,
+        894,
+        155,
+        894,
+        161,
+        888,
+        161
+      ],
+      "width": 6,
+      "height": 6,
+      "label": null
+    },
+    {
+      "border": [
+        899,
+        149,
+        927,
+        149,
+        927,
+        166,
+        899,
+        166
+      ],
+      "width": 28,
+      "height": 17,
+      "label": null
+    }
+  ]
+}

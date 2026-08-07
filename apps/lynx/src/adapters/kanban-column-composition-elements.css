@@ -1,6 +1,7 @@
 .SharedKanbanColumnRoot {
   flex: 1;
-  min-width: 256px;
+  width: 100%;
+  min-width: 0;
   min-height: 0;
   height: 100%;
   display: flex;
@@ -105,10 +106,14 @@
 
 .SharedKanbanColumnScroller {
   flex: 1;
+  width: 100%;
+  min-width: 0;
   min-height: 96px;
 }
 
 .SharedKanbanColumnCardList {
+  width: 100%;
+  min-width: 0;
   padding: 4px;
 }
 

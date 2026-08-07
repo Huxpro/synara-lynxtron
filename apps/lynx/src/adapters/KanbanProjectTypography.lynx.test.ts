@@ -51,4 +51,24 @@ describe('Kanban project typography fidelity', () => {
       '<GitBranchIcon className="SharedKanbanCardBranchIcon" size={12} />'
     );
   });
+
+  it('lets the route-owned three-column grid shrink each vertical scroller', () => {
+    const styles = readFileSync(
+      new URL('./kanban-column-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(styles).toMatch(
+      /\.SharedKanbanColumnRoot\s*\{[^}]*width:\s*100%;[^}]*min-width:\s*0;/s
+    );
+    expect(styles).not.toMatch(
+      /\.SharedKanbanColumnRoot\s*\{[^}]*min-width:\s*256px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedKanbanColumnScroller\s*\{[^}]*width:\s*100%;[^}]*min-width:\s*0;[^}]*min-height:\s*96px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedKanbanColumnCardList\s*\{[^}]*width:\s*100%;[^}]*min-width:\s*0;[^}]*padding:\s*4px;/s
+    );
+  });
 });

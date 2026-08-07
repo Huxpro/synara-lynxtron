@@ -90,15 +90,22 @@ separate behavior decisions and real multi-size proof:
 
 1. Pull Request list/detail: collapse or overlay the 50% detail dock before its
    360px minimum squeezes the list.
-2. Kanban: choose horizontal column scrolling vs stacked/filtered columns at
-   compact widths; preserve each column's vertical scroll owner.
-3. Settings: verify control rows, custom-model grids, profile/projects lists,
+2. Settings: verify control rows, custom-model grids, profile/projects lists,
    and sidebar behavior at compact widths.
-4. Thread overlays: environment panel, diff/browser docks, menus, and selection
+3. Thread overlays: environment panel, diff/browser docks, menus, and selection
    actions need viewport-clamped positioning.
-5. Very short windows: verify Composer, transcript, sidebar footer, and Settings
+4. Very short windows: verify Composer, transcript, sidebar footer, and Settings
    action rows at the desktop minimum height of 650 and below on non-desktop
    hosts.
 
 These rows remain open; the first shell/composer slice does not certify the
 entire application as responsive.
+
+## Kanban follow-up
+
+The 900px project board proved that the route-owned three-column layout was
+already the correct information architecture, but the shared column root's
+256px minimum escaped its 196px host and pushed content beyond the viewport.
+Column roots, vertical scrollers, and card lists now shrink to their route host:
+196px at 900, 237.33px at 1024, and 376px at 1440. All three columns remain
+simultaneously visible and keep independent vertical scrolling.

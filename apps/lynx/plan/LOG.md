@@ -7108,3 +7108,15 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   `shots/2026-08-07/responsive-shell-current/`。
 - fixed/flex/scroll ownership及remaining PR/Kanban/Settings/overlay matrix登记在
   `plan/reports/responsive-layout-contract.md`；本次不冒充全app responsive完成。
+
+## 2026-08-07 — responsive Kanban column ownership closure
+
+- 真实900×650 project board暴露fixed-width owner错误：route host三列各196px，但
+  shared column root保留`min-width:256px`，导致scroller最右x944、card x940，越过
+  900 viewport 40–44px；外层又没有horizontal scroll owner，因此不是可用横滚。
+- 保持既定P-18三列同时可见与per-column vertical scroll，不改信息架构；column root、
+  scroller、card list改为`width:100%;min-width:0`，由route host决定实际列宽。
+- final 900三scroller均196px且最右x884，populated card x880；1024三列237.33px/
+  right1009；1440三列376px/right1424。三档console0，真实project/header/card路径，
+  无fixture/SQLite写入。focused **2 files / 5 tests**、Native/Desktop build通过，
+  证据`shots/2026-08-07/responsive-kanban-current/`。
