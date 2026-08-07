@@ -5,7 +5,6 @@
   flex-direction: column;
   flex-shrink: 0;
   background-color: var(--sidebar);
-  border-right: 1px solid var(--sidebar-border);
 }
 
 .AppSidebarTitlebar {

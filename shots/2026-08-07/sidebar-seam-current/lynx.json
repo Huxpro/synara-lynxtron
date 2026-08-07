@@ -1,0 +1,125 @@
+{
+  "boxes": [
+    null,
+    null,
+    {
+      "borderRight": "0px solid rgb(13, 13, 13)",
+      "boxSizing": "border-box",
+      "rect": [
+        0,
+        0,
+        256,
+        820
+      ],
+      "scroll": [
+        256,
+        256
+      ],
+      "selector": ".AppSidebar",
+      "text": "StudioProjectsNew thread⌘NSearch⌘KKanbanPull requestsAutomationsProjectsLoading "
+    },
+    {
+      "borderRight": "0px solid rgb(13, 13, 13)",
+      "boxSizing": "border-box",
+      "rect": [
+        0,
+        776,
+        256,
+        44
+      ],
+      "scroll": [
+        256,
+        256
+      ],
+      "selector": ".AppSidebarFooter",
+      "text": "Settings"
+    },
+    null
+  ],
+  "root": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up",
+  "rows": [
+    {
+      "rect": [
+        6,
+        89.25,
+        244,
+        28
+      ],
+      "scroll": [
+        244,
+        244
+      ],
+      "text": "New thread⌘N"
+    },
+    {
+      "rect": [
+        6,
+        119.25,
+        244,
+        28
+      ],
+      "scroll": [
+        244,
+        244
+      ],
+      "text": "Search⌘K"
+    },
+    {
+      "rect": [
+        6,
+        149.25,
+        244,
+        28
+      ],
+      "scroll": [
+        244,
+        244
+      ],
+      "text": "Kanban"
+    },
+    {
+      "rect": [
+        6,
+        179.25,
+        244,
+        28
+      ],
+      "scroll": [
+        244,
+        244
+      ],
+      "text": "Pull requests"
+    },
+    {
+      "rect": [
+        6,
+        209.25,
+        244,
+        28
+      ],
+      "scroll": [
+        244,
+        244
+      ],
+      "text": "Automations"
+    },
+    {
+      "rect": [
+        8,
+        784,
+        240,
+        28
+      ],
+      "scroll": [
+        240,
+        240
+      ],
+      "text": "Settings"
+    }
+  ],
+  "viewport": {
+    "dpr": 1,
+    "innerHeight": 820,
+    "innerWidth": 1280
+  }
+}

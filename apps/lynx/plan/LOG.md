@@ -7332,3 +7332,18 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - 15+15 NDJSON、representative screenshot、errors/console在
   `shots/2026-08-07/responsive-settings-completion-audit/`；page errors0，console仅
   既存web-core warning。
+
+## 2026-08-07 — current-head Sidebar seam ownership closure
+
+- 历史多次登记的“Web/Lynx row width差1px”并非engine rounding：Web thread sidebar
+  明确`transparentSurface`且不画自身border，由chat content card拥有可见seam；Lynx
+  却在`.AppSidebar`本身画`border-right:1px`，border-box把全部内部consumer压窄1px。
+- 删除错误divider owner，不改变256px shell/motion。Lynx-for-Web final sidebar256、
+  footer256、primary rows244、Settings240，main仍从x256开始且seam像素连续。
+- exact-owned Native PID49722→localhost:8901/session1，session URL为current staged
+  bundle；sidebar border/content width256、primary row244、Settings row240、main
+  x256/1024，computed border-right-width 0，console0。
+- 初次target选择误中并发t3code localhost:8902，session URL gate在任何产品声明前拒绝；
+  未保留其artifact且未停止无关process。focused **2 files / 5 tests**，
+  Lynx-for-Web与Native/Desktop builds通过。证据
+  `shots/2026-08-07/sidebar-seam-current/`。

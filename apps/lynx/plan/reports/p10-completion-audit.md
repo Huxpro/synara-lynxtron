@@ -261,11 +261,15 @@ Current responsive disposition:
 | Very short implemented Settings surfaces | all 15 sections retain vertical reachability at 320x200 | PASS |
 | Very short landing/transcript behavior | landing scroll owner; Transcript certified at 280px with 200px physical-budget boundary | PASS WITH BOUNDARY |
 | Implemented generic overlays | Menu clamp plus Search command and Composer model proof at Desktop minimum | PASS |
+| Sidebar shell/seam ownership | current Lynx-for-Web and exact-owned Native: 256px sidebar, 244px primary rows, 240px footer row, zero sidebar border | PASS |
 | Environment, diff/browser docks, selection actions | no reachable Lynx product consumer to certify | OPEN PRODUCT/PLATFORM KERNEL |
 | Current-head full three-client route/theme/size/state matrix | historical P10 matrix predates later product commits | NOT RE-CERTIFIED |
 
 Evidence for the final Settings sweep:
 `shots/2026-08-07/responsive-settings-completion-audit/`.
+The previously registered one-pixel Sidebar row/separator boundary is now
+closed by `shots/2026-08-07/sidebar-seam-current/`: it was an authored border
+owner mismatch, not unavoidable engine rounding.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

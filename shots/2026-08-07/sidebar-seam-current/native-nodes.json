@@ -1,0 +1,64 @@
+{
+  "AppSidebar": [
+    {
+      "nodeId": 17,
+      "backendNodeId": 17,
+      "className": "AppSidebar",
+      "nodeName": "VIEW"
+    }
+  ],
+  "SharedSidebarPrimaryActionButton": [
+    {
+      "nodeId": 44,
+      "backendNodeId": 44,
+      "className": "SharedSidebarPrimaryActionButton",
+      "nodeName": "VIEW"
+    },
+    {
+      "nodeId": 56,
+      "backendNodeId": 56,
+      "className": "SharedSidebarPrimaryActionButton",
+      "nodeName": "VIEW"
+    },
+    {
+      "nodeId": 68,
+      "backendNodeId": 68,
+      "className": "SharedSidebarPrimaryActionButton",
+      "nodeName": "VIEW"
+    },
+    {
+      "nodeId": 74,
+      "backendNodeId": 74,
+      "className": "SharedSidebarPrimaryActionButton",
+      "nodeName": "VIEW"
+    },
+    {
+      "nodeId": 80,
+      "backendNodeId": 80,
+      "className": "SharedSidebarPrimaryActionButton SharedSidebarPrimaryActionButton--disabled",
+      "nodeName": "VIEW"
+    },
+    {
+      "nodeId": 104,
+      "backendNodeId": 104,
+      "className": "SharedSidebarPrimaryActionButton",
+      "nodeName": "VIEW"
+    }
+  ],
+  "AppSidebarFooter": [
+    {
+      "nodeId": 100,
+      "backendNodeId": 100,
+      "className": "AppSidebarFooter",
+      "nodeName": "VIEW"
+    }
+  ],
+  "AppMain": [
+    {
+      "nodeId": 109,
+      "backendNodeId": 109,
+      "className": "AppMain",
+      "nodeName": "VIEW"
+    }
+  ]
+}
