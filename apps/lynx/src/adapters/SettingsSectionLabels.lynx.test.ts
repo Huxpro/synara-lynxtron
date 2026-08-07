@@ -47,6 +47,10 @@ describe('Lynx Settings section labels', () => {
       new URL('../app/settings-usage-panel.css', import.meta.url),
       'utf8'
     );
+    const appStyles = readFileSync(
+      new URL('../app/App.css', import.meta.url),
+      'utf8'
+    );
 
     for (const styles of [generalStyles, appearanceStyles, providerStyles]) {
       expect(styles).toMatch(/Card\s*\{[^}]*border-radius:\s*10px;/s);
@@ -143,6 +147,12 @@ describe('Lynx Settings section labels', () => {
     expect(usageStyles).toMatch(
       /\.SettingsUsageTrack\s*\{[^}]*height:\s*8px;[^}]*border-radius:\s*999px;/s
     );
+    expect(usageStyles).toContain(
+      'background-color: var(--settings-usage-meter-healthy);'
+    );
+    expect(appStyles).toContain('--settings-usage-meter-healthy: #00bc7d;');
+    expect(appStyles).toContain('--settings-usage-meter-warning: #fe9a00;');
+    expect(appStyles).toContain('--settings-usage-meter-danger: #fb2c36;');
     expect(usageStyles).toMatch(
       /\.SettingsUsagePaceDot\s*\{[^}]*width:\s*6px;[^}]*height:\s*6px;[^}]*border-radius:\s*999px;/s
     );

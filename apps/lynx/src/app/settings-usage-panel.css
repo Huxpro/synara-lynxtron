@@ -241,15 +241,15 @@
 }
 
 .SettingsUsageTone--healthy {
-  background-color: var(--success);
+  background-color: var(--settings-usage-meter-healthy);
 }
 
 .SettingsUsageTone--warning {
-  background-color: var(--warning);
+  background-color: var(--settings-usage-meter-warning);
 }
 
 .SettingsUsageTone--danger {
-  background-color: var(--destructive);
+  background-color: var(--settings-usage-meter-danger);
 }
 
 .SettingsUsageLabel,

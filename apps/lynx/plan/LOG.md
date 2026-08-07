@@ -7775,3 +7775,17 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   offline文案0、DevTool warning/error 0。
 - focused Lynx **4 files / 16 tests**、Web transport **2 files / 43 tests**、
   connection preflight **2/2**、Web/Native production builds通过。
+
+## 2026-08-08 — Settings Usage dark paint
+
+- Usage dark同状态geometry已经逐项Web exact，但resolved paint仍使用generic Lynx
+  semantic colors：healthy meter `#00a240`、warning notice `#fbbf24`、error pill
+  `#f87171`，与Web Tailwind实际像素不同。
+- 使用Web当前bundle通过canvas解析OKLCH/OKLab后，增加Usage scoped meter tokens，
+  并按主题校准status/notice：dark healthy `#00bc7d`、notice
+  `rgba(255,210,48,.9)`、error surface `rgba(251,44,54,.12)`、error text
+  `#ff6467`。不改global success/warning/destructive，避免影响其他产品surface。
+- final Lynx-for-Web dark 1280×820 resolved values与Web一致；track仍为
+  `rgba(252,252,252,.008)`，所有既有Usage geometry保持exact，relay OPEN、
+  pending 0、transport error 0。
+- focused Settings labels **6/6**，Web与Native/Desktop production builds通过。

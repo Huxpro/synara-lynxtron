@@ -24,6 +24,9 @@
   --type-settings-section-label-size: 12px;
   --type-settings-row-title-size: 12px;
   --type-settings-row-description-size: 12px;
+  --settings-usage-meter-healthy: #00bc7d;
+  --settings-usage-meter-warning: #fe9a00;
+  --settings-usage-meter-danger: #fb2c36;
   width: 100%;
   height: 100%;
   background-color: var(--background);
@@ -48,10 +51,10 @@
 
 .SliceRoot--theme-light {
   --runtime-full-access-accent: #e25505;
-  --settings-usage-error-surface: rgba(239, 68, 68, 0.12);
-  --settings-usage-error-text: #dc2626;
-  --settings-usage-warning-surface: rgba(245, 158, 11, 0.12);
-  --settings-usage-warning-text: #d97706;
+  --settings-usage-error-surface: rgba(251, 44, 54, 0.12);
+  --settings-usage-error-text: #e7000b;
+  --settings-usage-warning-surface: rgba(254, 154, 0, 0.12);
+  --settings-usage-warning-text: #e17100;
   --settings-provider-icon-surface: rgba(13, 13, 13, 0.024);
   --settings-row-label-strong: rgba(13, 13, 13, 0.9);
   --settings-project-border: rgba(13, 13, 13, 0.049);
@@ -64,10 +67,10 @@
 
 .SliceRoot--theme-dark {
   --runtime-full-access-accent: #fe8549;
-  --settings-usage-error-surface: rgba(248, 113, 113, 0.12);
-  --settings-usage-error-text: #f87171;
-  --settings-usage-warning-surface: rgba(251, 191, 36, 0.12);
-  --settings-usage-warning-text: #fbbf24;
+  --settings-usage-error-surface: rgba(251, 44, 54, 0.12);
+  --settings-usage-error-text: #ff6467;
+  --settings-usage-warning-surface: rgba(254, 154, 0, 0.12);
+  --settings-usage-warning-text: rgba(255, 210, 48, 0.9);
   --settings-provider-icon-surface: rgba(252, 252, 252, 0.004);
   --settings-row-label-strong: rgba(252, 252, 252, 0.9);
   --settings-project-border: rgba(252, 252, 252, 0.05);
