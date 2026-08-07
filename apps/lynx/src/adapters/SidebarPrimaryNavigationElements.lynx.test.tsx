@@ -25,6 +25,10 @@ describe('sidebar primary navigation shortcut', () => {
       new URL('../components/sidebar/Sidebar.lynx.tsx', import.meta.url),
       'utf8'
     );
+    const chatsSource = readFileSync(
+      new URL('./SidebarChatsSectionElements.lynx.tsx', import.meta.url),
+      'utf8'
+    );
     const primaryActionStyles = readFileSync(
       new URL('./sidebar-primary-action-elements.css', import.meta.url),
       'utf8'
@@ -44,14 +48,25 @@ describe('sidebar primary navigation shortcut', () => {
       /\.SharedSidebarPrimaryActionButton\.ui-hover \.AppSidebarShortcut,\s*\.SharedSidebarPrimaryActionButton\.ui-focus \.AppSidebarShortcut\s*\{[^}]*opacity:\s*1;/s
     );
     expect(sidebarStyles).toMatch(
-      /\.AppSidebarPrimaryNav\s*\{[^}]*padding:\s*4px 6px 6px;[^}]*margin-bottom:\s*4px;/s
+      /\.AppSidebarPrimaryNav\s*\{[^}]*padding:\s*4px 6px 6px;/s
+    );
+    expect(sidebarStyles).not.toMatch(
+      /\.AppSidebarPrimaryNav\s*\{[^}]*margin-bottom:/s
     );
     expect(sidebarStyles).toMatch(
-      /\.SharedSidebarChatsRoot\s*\{[^}]*padding-left:\s*6px;[^}]*padding-right:\s*6px;/s
+      /\.SharedSidebarProjectsRoot,[^{]*\{[^}]*padding:\s*6px;/s
+    );
+    expect(sidebarStyles).toMatch(
+      /\.SharedSidebarProjectsState\s*\{[^}]*padding:\s*16px 8px 0;[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s
+    );
+    expect(sidebarStyles).toMatch(
+      /\.SharedSidebarChatsRoot\s*\{[^}]*padding:\s*4px 6px 8px;/s
     );
     expect(sidebarStyles).toMatch(
       /\.SharedSidebarChatsHeaderButton\s*\{[^}]*padding-left:\s*8px;[^}]*padding-right:\s*8px;/s
     );
+    expect(chatsSource).toContain('{present ? props.children : null}');
+    expect(chatsSource).not.toContain('if (!present) return null');
     expect(sidebarStyles).not.toMatch(
       /\.AppSidebarPrimaryNav\s*\{[^}]*border-bottom:/s
     );

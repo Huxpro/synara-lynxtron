@@ -81,7 +81,6 @@
 
 .AppSidebarPrimaryNav {
   padding: 4px 6px 6px;
-  margin-bottom: 4px;
 }
 
 .AppSidebarNavRow {
@@ -154,8 +153,7 @@
 
 .SharedSidebarProjectsRoot,
 .SharedSidebarStudioRoot {
-  padding-left: 6px;
-  padding-right: 6px;
+  padding: 6px;
 }
 
 .SharedSidebarPinnedRoot {
@@ -174,9 +172,10 @@
 
 .SharedSidebarProjectsState {
   width: 100%;
-  margin-top: 18px;
+  padding: 16px 8px 0;
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: 12px;
+  line-height: 18px;
   text-align: center;
 }
 
@@ -271,9 +270,7 @@
 }
 
 .SharedSidebarChatsRoot {
-  margin-top: 8px;
-  padding-left: 6px;
-  padding-right: 6px;
+  padding: 4px 6px 8px;
 }
 
 .SharedSidebarChatsHeader,

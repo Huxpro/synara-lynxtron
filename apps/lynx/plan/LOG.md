@@ -7445,3 +7445,24 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Browser fallback 48px header与已认证Native/Electron 46px hidden-titlebar差异登记为
   host-presentation boundary，不回退Native chrome。证据
   `shots/2026-08-08/current-head-landing-light-1280/`。
+
+## 2026-08-08 — Sidebar Projects empty-state rhythm
+
+- Chats hitbox关闭后继续拆解vertical owner：Lynx primary nav私有margin-bottom4、
+  Projects root缺Web py6、empty用11px/native line box+margin18代替12/18+pt16，
+  Chats再用margin-top8补位。多处数值互相抵消，导致Projects group短15px、Chats仍比
+  Web提前约7px。
+- final映射完整Web anatomy：primary nav只保留`4px 6px 6px` padding；Projects/Studio
+  root统一6px四边；empty改`16px 8px 0`与12/18；Chats root改`4px 6px 8px`。
+  Lynx-for-Web Projects root/header/state/Chats绝对geometry全部与Web精确一致，内部
+  header→empty 4px、empty→Chats 10px、Projects→Chats 86px。
+- final audit再发现collapsed Web仍保留4px disclosure shell；Lynx此前直接return null，
+  root只40px。改为shell常驻、children按presence卸载后，Browser/Native Chats root均
+  44px，closed body 244x4且children0。
+- exact-owned Native root75487→child75494，PID gate在并发t3code 8901存在时正确选择
+  Synara `localhost:8902/session1`；Projects 256x82、state 244x34/12px/18px、
+  Chats 244x28，三组内部距离完全一致，console0。未触碰8901。final retained bundle
+  `9fe0a2c0…`、root91369→91374、localhost:8901/session1，Chats root256x44/body244x4，
+  console0。
+- focused Sidebar **1 file / 3 tests**；Lynx-for-Web与Native/Desktop builds通过。
+  证据`shots/2026-08-08/sidebar-projects-rhythm-current/`。

@@ -55,7 +55,6 @@ export function SidebarChatsSectionBodyElement(props: {
   readonly children?: ReactNode;
 }) {
   const present = useLynxDisclosurePresence(props.expanded);
-  if (!present) return null;
   return (
     <view
       className={disclosureContentClassName(
@@ -63,7 +62,7 @@ export function SidebarChatsSectionBodyElement(props: {
         'SharedSidebarChatsBody'
       )}
     >
-      {props.children}
+      {present ? props.children : null}
     </view>
   );
 }

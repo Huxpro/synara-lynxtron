@@ -1,0 +1,37 @@
+{
+  "client": "native",
+  "stateId": "sidebar-projects-rhythm-light-1280",
+  "buildSha256": "9fe0a2c065b8688c364931803bfe0a509d543dcf69e70a7715be01b70188f06c",
+  "snapshotSha256": "423e33f197aee3aff46a4dbeab531d66a4bc40c4718847974fbb1ccf68721baa",
+  "stateEcho": {
+    "semanticRoute": "new-chat",
+    "theme": "light",
+    "density": "comfortable",
+    "interactionState": "default"
+  },
+  "identity": {
+    "rootPid": 91369,
+    "descendantPids": [
+      91369,
+      91374
+    ],
+    "ownedPorts": [
+      8901
+    ],
+    "client": {
+      "id": "localhost:8901",
+      "info": {
+        "App": "@synara/lynx",
+        "appId": "0000",
+        "sdkVersion": "4.1"
+      },
+      "port": 8901
+    },
+    "session": {
+      "session_id": 1,
+      "type": "lynx",
+      "url": "file:///Users/bytedance/github/synara/apps/lynx/dist/desktop/main.lynx.bundle"
+    }
+  },
+  "consoleMessages": []
+}

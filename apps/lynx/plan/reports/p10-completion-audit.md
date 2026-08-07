@@ -303,6 +303,18 @@ Native now resolve the shared hitbox to x=6/244x28 with the label still at
 x=14. The 48px Browser fallback header versus certified 46px Native/Electron
 hidden-titlebar chrome remains a named host-presentation boundary, not a local
 row offset.
+`shots/2026-08-08/sidebar-projects-rhythm-current/` closes the next dependent
+Sidebar residual without compensating offsets. Lynx now maps Web's complete
+vertical section anatomy: primary navigation has no private bottom margin,
+Projects/Studio roots own 6px padding, the empty state resolves to 12px/18px
+with 16px top padding, and Chats owns 4px/8px vertical padding. Web and
+Lynx-for-Web Projects root/header/state/Chats boxes match exactly; exact-owned
+Native preserves the same 4px header-to-state, 10px state-to-Chats, and 86px
+Projects-to-Chats distances. A concurrent t3code client on 8901 was rejected by
+the PID-derived target gate during an intermediate valid capture; the owned
+Synara client was 8902/session 1. Final retained Native evidence additionally
+keeps the collapsed 4px disclosure body shell with zero children, matching the
+44px Web Chats root rather than only matching its 28px button.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
