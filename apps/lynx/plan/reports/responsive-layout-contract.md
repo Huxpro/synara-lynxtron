@@ -97,21 +97,24 @@ Lynx-for-Web live resize evidence is retained separately at
 
 ## Remaining adaptation matrix
 
-The shared API is now available, but the following product surfaces still need
-separate behavior decisions and real multi-size proof:
+The shared API is now available. Implemented Settings surfaces are closed:
+all 15 real sections have no horizontal overflow at 320px, and all retain a
+vertical scroll range at 320x200. Evidence:
+`shots/2026-08-07/responsive-settings-completion-audit/`.
 
-1. Settings: verify remaining collection controls at compact widths. Profile,
-   Integrations, and Custom Models are closed below.
-2. Thread overlays: environment panel, diff/browser docks, and selection
+The remaining entries require product/platform consumers, not another generic
+responsive CSS pass:
+
+1. Thread overlays: environment panel, diff/browser docks, and selection
    actions still need viewport-clamped positioning. The shared Menu primitive
    already clamps measured popup coordinates to its measured viewport; Search
    command and Composer model overlays are separately proven at the Desktop
    minimum below.
-3. Very short windows: remaining Settings action surfaces still need separate
-   proof. Landing, sidebar footer, and Transcript are closed below.
 
-These rows remain open; the first shell/composer slice does not certify the
-entire application as responsive.
+Environment, diff/browser docks, and selection actions are not currently
+reachable Lynx product surfaces. They remain explicit product/platform kernel
+gaps and cannot be certified or fixed as responsive layout until those
+consumers exist.
 
 ## Kanban follow-up
 

@@ -242,3 +242,34 @@ The current global formatter check still reports pre-existing formatting drift
 across 640 tracked files after the required `bun fmt` command; broad unrelated
 formatter churn was restored exactly as required by `AGENTS.md`. This is a
 repository baseline fact, not an unverified P10 artifact or product defect.
+
+## 2026-08-07 current-head responsive addendum
+
+The completion result above remains the historical certification for its
+recorded commit and artifact set. It is not sufficient by itself to certify
+current HEAD: later Settings, Sidebar, overlay, route, motion, and responsive
+commits changed product code after that matrix.
+
+Current responsive disposition:
+
+| Requirement | Current-head evidence | Status |
+| --- | --- | --- |
+| Shared viewport classification and live resize | `responsive-shell-current`, `responsive-web-host-current` | PASS |
+| Native Desktop supported sizes | 900/1024/1440 shell, Kanban, PR, Settings, and overlay evidence | PASS |
+| Compact shell and route behavior | Settings overlay, PR master-detail, Kanban horizontal owner, landing width | PASS |
+| Settings compact collections and controls | all 15 real sections width-clean at 320px; focused Profile, Integrations, Models, General, Appearance evidence | PASS |
+| Very short implemented Settings surfaces | all 15 sections retain vertical reachability at 320x200 | PASS |
+| Very short landing/transcript behavior | landing scroll owner; Transcript certified at 280px with 200px physical-budget boundary | PASS WITH BOUNDARY |
+| Implemented generic overlays | Menu clamp plus Search command and Composer model proof at Desktop minimum | PASS |
+| Environment, diff/browser docks, selection actions | no reachable Lynx product consumer to certify | OPEN PRODUCT/PLATFORM KERNEL |
+| Current-head full three-client route/theme/size/state matrix | historical P10 matrix predates later product commits | NOT RE-CERTIFIED |
+
+Evidence for the final Settings sweep:
+`shots/2026-08-07/responsive-settings-completion-audit/`.
+
+Therefore current HEAD must not be described as globally P10-complete solely
+from the historical green verifier. Implemented responsive UI surfaces are
+closed, but a new complete three-client certification is still required after
+the remaining product/platform scope is explicitly resolved. The absent
+environment, diff/browser, and selection-action consumers must not be hidden
+with responsive CSS or counted as passing runtime evidence.

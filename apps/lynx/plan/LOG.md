@@ -7316,3 +7316,19 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - focused **2 files / 6 tests**，Lynx-for-Web与Native/Desktop production builds
   通过，page errors0，console仅既存web-core warning。证据
   `shots/2026-08-07/responsive-settings-private-rows-current/`。
+
+## 2026-08-07 — responsive Settings completion audit
+
+- current-head在320x820用真实navigation逐项遍历15个Settings sections；每项
+  `SettingsContent/Inner`均`scrollWidth===clientWidth===320`，rendered node scan无
+  viewport越界或自身horizontal overflow。此前“remaining Settings compact controls”
+  matrix row已由Profile/Integrations/Models/General/Appearance fixes及本轮全量scan关闭。
+- 同15 sections在320x200复扫：全部保留`maxTop>0` vertical scroll range且width-clean。
+  Appearance bottom真实达到`scrollTop=maxTop=2281`并显示final Time format control；
+  Models bottom显示Add。代表frame精确320x200。
+- 这不把environment、diff/browser docks或selection actions冒充responsive pass：它们
+  当前不是Lynx可达product surfaces，继续作为product/platform kernel gaps登记，待
+  consumer存在后才能做viewport certification。
+- 15+15 NDJSON、representative screenshot、errors/console在
+  `shots/2026-08-07/responsive-settings-completion-audit/`；page errors0，console仅
+  既存web-core warning。
