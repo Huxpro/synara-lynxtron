@@ -1,0 +1,381 @@
+[
+  {
+    "nodeId": 13,
+    "nodeName": "VIEW",
+    "className": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable SliceRoot--viewport-medium",
+    "attrs": {
+      "data-viewport-width": "900",
+      "data-viewport-height": "650",
+      "class": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable SliceRoot--viewport-medium"
+    },
+    "box": {
+      "border": [
+        0,
+        0,
+        900,
+        0,
+        900,
+        650,
+        0,
+        650
+      ],
+      "content": [
+        0,
+        0,
+        900,
+        0,
+        900,
+        650,
+        0,
+        650
+      ],
+      "height": 650,
+      "margin": [
+        0,
+        0,
+        900,
+        0,
+        900,
+        650,
+        0,
+        650
+      ],
+      "padding": [
+        0,
+        0,
+        900,
+        0,
+        900,
+        650,
+        0,
+        650
+      ],
+      "width": 900
+    }
+  },
+  {
+    "nodeId": 142,
+    "nodeName": "VIEW",
+    "className": "SharedPrRouteBody",
+    "attrs": {
+      "class": "SharedPrRouteBody"
+    },
+    "box": {
+      "border": [
+        256,
+        46,
+        900,
+        46,
+        900,
+        650,
+        256,
+        650
+      ],
+      "content": [
+        256,
+        46,
+        900,
+        46,
+        900,
+        650,
+        256,
+        650
+      ],
+      "height": 604,
+      "margin": [
+        256,
+        46,
+        900,
+        46,
+        900,
+        650,
+        256,
+        650
+      ],
+      "padding": [
+        256,
+        46,
+        900,
+        46,
+        900,
+        650,
+        256,
+        650
+      ],
+      "width": 644
+    }
+  },
+  {
+    "nodeId": 143,
+    "nodeName": "SCROLL-VIEW",
+    "className": "SharedPrRouteScroller",
+    "attrs": {
+      "scroll-orientation": "vertical",
+      "class": "SharedPrRouteScroller"
+    },
+    "box": {
+      "border": [
+        256,
+        46,
+        540,
+        46,
+        540,
+        650,
+        256,
+        650
+      ],
+      "content": [
+        256,
+        46,
+        540,
+        46,
+        540,
+        650,
+        256,
+        650
+      ],
+      "height": 604,
+      "margin": [
+        256,
+        46,
+        540,
+        46,
+        540,
+        650,
+        256,
+        650
+      ],
+      "padding": [
+        256,
+        46,
+        540,
+        46,
+        540,
+        650,
+        256,
+        650
+      ],
+      "width": 284
+    }
+  },
+  {
+    "nodeId": 200,
+    "nodeName": "VIEW",
+    "className": "SharedPrRow SharedPrRow--selected",
+    "attrs": {
+      "focusable": "false",
+      "aria-disabled": "false",
+      "bindmouseenter": "158:0:bindmouseenter",
+      "bindblur": "158:0:bindblur",
+      "bindmouseleave": "158:0:bindmouseleave",
+      "bindmouseup": "158:0:bindmouseup",
+      "bindtouchstart": "158:0:bindtouchstart",
+      "bindmousedown": "158:0:bindmousedown",
+      "bindtouchend": "158:0:bindtouchend",
+      "bindtouchcancel": "158:0:bindtouchcancel",
+      "bindfocus": "158:0:bindfocus",
+      "class": "SharedPrRow SharedPrRow--selected"
+    },
+    "box": {
+      "border": [
+        272,
+        237,
+        524,
+        237,
+        524,
+        285,
+        272,
+        285
+      ],
+      "content": [
+        272,
+        237,
+        524,
+        237,
+        524,
+        285,
+        272,
+        285
+      ],
+      "height": 48,
+      "margin": [
+        284,
+        235,
+        524,
+        235,
+        524,
+        285,
+        284,
+        285
+      ],
+      "padding": [
+        272,
+        237,
+        524,
+        237,
+        524,
+        285,
+        272,
+        285
+      ],
+      "width": 252
+    }
+  },
+  {
+    "nodeId": 2350,
+    "nodeName": "VIEW",
+    "className": "SharedPrDetailDock",
+    "attrs": {
+      "class": "SharedPrDetailDock"
+    },
+    "box": {
+      "border": [
+        540,
+        46,
+        900,
+        46,
+        900,
+        650,
+        540,
+        650
+      ],
+      "content": [
+        541,
+        46,
+        900,
+        46,
+        900,
+        650,
+        541,
+        650
+      ],
+      "height": 604,
+      "margin": [
+        540,
+        46,
+        900,
+        46,
+        900,
+        650,
+        540,
+        650
+      ],
+      "padding": [
+        541,
+        46,
+        900,
+        46,
+        900,
+        650,
+        541,
+        650
+      ],
+      "width": 359
+    }
+  },
+  {
+    "nodeId": 2351,
+    "nodeName": "VIEW",
+    "className": "SharedPrDetailDockHeader",
+    "attrs": {
+      "class": "SharedPrDetailDockHeader"
+    },
+    "box": {
+      "border": [
+        541,
+        46,
+        900,
+        46,
+        900,
+        94,
+        541,
+        94
+      ],
+      "content": [
+        549,
+        46,
+        892,
+        46,
+        892,
+        94,
+        549,
+        94
+      ],
+      "height": 48,
+      "margin": [
+        541,
+        46,
+        900,
+        46,
+        900,
+        94,
+        541,
+        94
+      ],
+      "padding": [
+        541,
+        46,
+        900,
+        46,
+        900,
+        94,
+        541,
+        94
+      ],
+      "width": 343
+    }
+  },
+  {
+    "nodeId": 2353,
+    "nodeName": "SCROLL-VIEW",
+    "className": "SharedPrDetailDockScroller",
+    "attrs": {
+      "scroll-orientation": "vertical",
+      "class": "SharedPrDetailDockScroller"
+    },
+    "box": {
+      "border": [
+        541,
+        144,
+        900,
+        144,
+        900,
+        650,
+        541,
+        650
+      ],
+      "content": [
+        541,
+        144,
+        900,
+        144,
+        900,
+        650,
+        541,
+        650
+      ],
+      "height": 506,
+      "margin": [
+        541,
+        144,
+        900,
+        144,
+        900,
+        650,
+        541,
+        650
+      ],
+      "padding": [
+        541,
+        144,
+        900,
+        144,
+        900,
+        650,
+        541,
+        650
+      ],
+      "width": 359
+    }
+  }
+]

@@ -88,16 +88,14 @@ Evidence: `shots/2026-08-07/responsive-shell-current/`.
 The shared API is now available, but the following product surfaces still need
 separate behavior decisions and real multi-size proof:
 
-1. Pull Request list/detail: collapse or overlay the 50% detail dock before its
-   360px minimum squeezes the list.
-2. Settings: verify control rows, custom-model grids, profile/projects lists,
+1. Settings: verify control rows, custom-model grids, profile/projects lists,
    and sidebar behavior at compact widths.
-3. Thread overlays: environment panel, diff/browser docks, and selection
+2. Thread overlays: environment panel, diff/browser docks, and selection
    actions still need viewport-clamped positioning. The shared Menu primitive
    already clamps measured popup coordinates to its measured viewport; Search
    command and Composer model overlays are separately proven at the Desktop
    minimum below.
-4. Very short windows: verify Composer, transcript, sidebar footer, and Settings
+3. Very short windows: verify Composer, transcript, sidebar footer, and Settings
    action rows at the desktop minimum height of 650 and below on non-desktop
    hosts.
 
@@ -141,3 +139,21 @@ own vertical scroll owner.
 This closes generic Menu positioning plus these two high-value popup consumers;
 it does not certify environment, diff/browser docks, or selection-action
 overlays. Evidence: `shots/2026-08-07/responsive-overlays-current/`.
+
+## Pull Request detail follow-up
+
+The real Web route opens its Pull Request dock as a 50/50 master-detail split.
+At the Electron reference's 1313px content width, the list and dock are each
+528px after the fixed 256px sidebar.
+
+The old Native 900px composition had only 644px after the sidebar but still
+reserved the dock's 360px minimum. That left a 284px list scroller and a 252px
+selected row. The route now projects its real selection as
+`SharedPrRouteBody--detail-open`. Compact and medium bands use a single-surface
+master-detail flow: the list viewport collapses while the dock owns the full
+644px route body, and the real Close action restores the list.
+
+Wide windows retain the Web-authority split. At 1440px the list is 592px and
+the dock is 591px plus its 1px divider. Both surfaces keep their independent
+vertical scroll owners. Evidence:
+`shots/2026-08-07/responsive-pr-detail-current/`.

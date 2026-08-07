@@ -1,0 +1,198 @@
+[
+  {
+    "query": "SharedPrRouteBody",
+    "nodeId": 133,
+    "tag": "<view class=\"SharedPrRouteBody SharedPrRouteBody--detail-open\">",
+    "box": {
+      "border": [
+        256,
+        46,
+        900,
+        46,
+        900,
+        650,
+        256,
+        650
+      ],
+      "content": [
+        256,
+        46,
+        900,
+        46,
+        900,
+        650,
+        256,
+        650
+      ],
+      "height": 604,
+      "margin": [
+        256,
+        46,
+        900,
+        46,
+        900,
+        650,
+        256,
+        650
+      ],
+      "padding": [
+        256,
+        46,
+        900,
+        46,
+        900,
+        650,
+        256,
+        650
+      ],
+      "width": 644
+    }
+  },
+  {
+    "query": "SharedPrRouteScroller",
+    "nodeId": 134,
+    "tag": "<scroll-view class=\"SharedPrRouteScroller\" scroll-orientation=\"vertical\">",
+    "box": {
+      "border": [
+        256,
+        46,
+        256,
+        46,
+        256,
+        46,
+        256,
+        46
+      ],
+      "content": [
+        256,
+        46,
+        256,
+        46,
+        256,
+        46,
+        256,
+        46
+      ],
+      "height": 0,
+      "margin": [
+        256,
+        46,
+        256,
+        46,
+        256,
+        46,
+        256,
+        46
+      ],
+      "padding": [
+        256,
+        46,
+        256,
+        46,
+        256,
+        46,
+        256,
+        46
+      ],
+      "width": 0
+    }
+  },
+  {
+    "query": "SharedPrDetailDock",
+    "nodeId": 2353,
+    "tag": "<view class=\"SharedPrDetailDock\">",
+    "box": {
+      "border": [
+        256,
+        46,
+        900,
+        46,
+        900,
+        650,
+        256,
+        650
+      ],
+      "content": [
+        256,
+        46,
+        900,
+        46,
+        900,
+        650,
+        256,
+        650
+      ],
+      "height": 604,
+      "margin": [
+        256,
+        46,
+        900,
+        46,
+        900,
+        650,
+        256,
+        650
+      ],
+      "padding": [
+        256,
+        46,
+        900,
+        46,
+        900,
+        650,
+        256,
+        650
+      ],
+      "width": 644
+    }
+  },
+  {
+    "query": "SharedPrDetailDockScroller",
+    "nodeId": 2356,
+    "tag": "<scroll-view class=\"SharedPrDetailDockScroller\" scroll-orientation=\"vertical\">",
+    "box": {
+      "border": [
+        256,
+        144,
+        900,
+        144,
+        900,
+        650,
+        256,
+        650
+      ],
+      "content": [
+        256,
+        144,
+        900,
+        144,
+        900,
+        650,
+        256,
+        650
+      ],
+      "height": 506,
+      "margin": [
+        256,
+        144,
+        900,
+        144,
+        900,
+        650,
+        256,
+        650
+      ],
+      "padding": [
+        256,
+        144,
+        900,
+        144,
+        900,
+        650,
+        256,
+        650
+      ],
+      "width": 644
+    }
+  }
+]

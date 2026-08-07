@@ -7149,3 +7149,24 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - staged bundle `71040b02…`，两张frame均1800x1300；几何、hash与cleanup边界记录在
   `shots/2026-08-07/responsive-overlays-current/notes.md`。environment、
   diff/browser docks与selection-action overlays仍开放。
+
+## 2026-08-07 — responsive Pull Request master-detail closure
+
+- 通过canonical Web `project.create`把当前真实synara repo加入Native隔离snapshot，
+  未写SQLite、未造PR fixture；Electron reference与Native都打开真实
+  `Emanuele-web04/synara#529`。Electron是composition authority但使用其现有real
+  service，不冒充same-snapshot paired cell；1313px content下list/dock精确528/528。
+- 旧Native 900x650扣除固定256px sidebar后只剩644px，dock仍保留360px min，导致list
+  scroller仅284px、selected row仅252px；不是可接受的双栏master-detail。
+- `PullRequestsPage`从真实`selectedInput`投影`SharedPrRouteBody--detail-open`。
+  compact/medium下list viewport折叠为0x0、dock完整占644x604；真实Close恢复list
+  644x604并卸载dock。wide不受影响：1440下list592、dock591+1px divider。
+- list/detail继续各自拥有vertical scroll；变的是窄窗同时可见策略，不是把scroll迁移到
+  outer window。focused **1 file / 3 tests**、Native/Desktop production build通过。
+- React Doctor扫描changed component的6条均为既存giant component、Native property、
+  async loop与chained iteration，不指向本次状态类。final bundle `a9713487…`，
+  PID77370→localhost:8903/session1，fresh warning/error console0。证据
+  `shots/2026-08-07/responsive-pr-detail-current/`。
+- cleanup：owned Native、58120/8999、named browser与临时home已删除；Electron临时
+  project走canonical `project.delete`恢复不可见，projection保留expected tombstone，
+  不声称byte-exact restore。

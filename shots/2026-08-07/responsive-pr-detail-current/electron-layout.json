@@ -1,0 +1,83 @@
+{
+  "href": "http://localhost:10054/#/pull-requests?involvement=all&state=open&selectedProjectId=6ea7b098-e06e-440c-9cb8-e36e45645fec&selectedRepo=Emanuele-web04%2Fsynara&number=529",
+  "viewport": {
+    "width": 1313,
+    "height": 852,
+    "dpr": 2
+  },
+  "dock": [
+    {
+      "x": 785,
+      "y": 0,
+      "width": 528,
+      "height": 852,
+      "top": 0,
+      "right": 1313,
+      "bottom": 852,
+      "left": 785
+    }
+  ],
+  "main": [
+    {
+      "x": 256,
+      "y": 0,
+      "width": 528,
+      "height": 852,
+      "top": 0,
+      "right": 784,
+      "bottom": 852,
+      "left": 256
+    },
+    {
+      "x": 256,
+      "y": 46,
+      "width": 528,
+      "height": 806,
+      "top": 46,
+      "right": 784,
+      "bottom": 852,
+      "left": 256
+    }
+  ],
+  "tabs": [
+    {
+      "text": "Summary",
+      "box": {
+        "x": 793,
+        "y": 56,
+        "width": 69.3125,
+        "height": 28,
+        "top": 56,
+        "right": 862.3125,
+        "bottom": 84,
+        "left": 793
+      }
+    },
+    {
+      "text": "Timeline",
+      "box": {
+        "x": 864.3125,
+        "y": 56,
+        "width": 64.15625,
+        "height": 28,
+        "top": 56,
+        "right": 928.46875,
+        "bottom": 84,
+        "left": 864.3125
+      }
+    },
+    {
+      "text": "Code",
+      "box": {
+        "x": 930.46875,
+        "y": 56,
+        "width": 47.671875,
+        "height": 28,
+        "top": 56,
+        "right": 978.140625,
+        "bottom": 84,
+        "left": 930.46875
+      }
+    }
+  ]
+}

@@ -350,6 +350,26 @@
   min-height: 0;
 }
 
+.SliceRoot--viewport-compact
+  .SharedPrRouteBody--detail-open
+  .SharedPrRouteScroller,
+.SliceRoot--viewport-medium
+  .SharedPrRouteBody--detail-open
+  .SharedPrRouteScroller {
+  display: none;
+}
+
+.SliceRoot--viewport-compact
+  .SharedPrRouteBody--detail-open
+  .SharedPrDetailDock,
+.SliceRoot--viewport-medium
+  .SharedPrRouteBody--detail-open
+  .SharedPrDetailDock {
+  width: 100%;
+  min-width: 0;
+  border-left-width: 0;
+}
+
 .SharedPrMutationError {
   color: var(--muted-foreground);
   font-size: 10px;

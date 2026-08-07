@@ -920,7 +920,11 @@ export function PullRequestsPage() {
         refreshing={isFetching}
         onRefresh={() => void refetch()}
       />
-      <view className="SharedPrRouteBody">
+      <view
+        className={`SharedPrRouteBody${
+          selectedInput ? ' SharedPrRouteBody--detail-open' : ''
+        }`}
+      >
         <scroll-view
           className="SharedPrRouteScroller"
           scroll-orientation="vertical"
