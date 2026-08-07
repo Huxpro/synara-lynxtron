@@ -53,10 +53,7 @@ export function SettingsSearchResults(props: {
     );
   }
   return (
-    <scroll-view
-      className="SettingsSearchResults"
-      scroll-orientation="vertical"
-    >
+    <view className="SettingsSearchResults">
       {props.results.map((entry) => (
         <SettingsSearchResult
           key={entry.id}
@@ -64,6 +61,6 @@ export function SettingsSearchResults(props: {
           onSelect={props.onSelect}
         />
       ))}
-    </scroll-view>
+    </view>
   );
 }

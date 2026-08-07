@@ -35,7 +35,21 @@ describe('Lynx Settings sidebar layout', () => {
       /\.SettingsSidebarTitlebar\s*\{[^}]*height:\s*46px;/s
     );
     expect(styles).toMatch(
-      /\.SettingsSidebarBody\s*\{[^}]*padding:\s*6px;/s
+      /\.SettingsSidebarBody\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;[^}]*width:\s*100%;/s
     );
+    expect(styles).toMatch(
+      /\.SettingsSidebarBodyInner\s*\{[^}]*min-height:\s*100%;[^}]*padding:\s*6px;/s
+    );
+  });
+
+  it('gives the complete Settings navigation one vertical scroll owner', () => {
+    const source = readFileSync(
+      new URL('./SettingsPage.tsx', import.meta.url),
+      'utf8'
+    );
+
+    expect(source).toContain('className="SettingsSidebarBody"');
+    expect(source).toContain('scroll-orientation="vertical"');
+    expect(source).toContain('className="SettingsSidebarBodyInner"');
   });
 });

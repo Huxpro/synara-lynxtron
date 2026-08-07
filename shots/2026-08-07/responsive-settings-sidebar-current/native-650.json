@@ -1,0 +1,51 @@
+{
+  "client": "localhost:8903",
+  "body": {
+    "tag": "<scroll-view class=\"SettingsSidebarBody\" scroll-orientation=\"vertical\">",
+    "border": [
+      0,
+      46,
+      255,
+      46,
+      255,
+      650,
+      0,
+      650
+    ],
+    "width": 255,
+    "height": 604,
+    "label": "Back to app"
+  },
+  "inner": {
+    "tag": "<view class=\"SettingsSidebarBodyInner\">",
+    "border": [
+      0,
+      46,
+      255,
+      46,
+      255,
+      650,
+      0,
+      650
+    ],
+    "width": 243,
+    "height": 592,
+    "label": "Back to app"
+  },
+  "advanced": {
+    "tag": "<view class=\"SharedSettingsNavigationButton\" aria-selected=\"false\" accessibility-element=\"true\" accessibility-label=\"Advanced\" accessibility-traits=\"button\" focusable=\"true\" aria-disabled=\"false\" bindmouseenter=\"221:0:bindmouseenter\" bindblur=\"221:0:bindblur\" bindmouseleave=\"221:0:bindmouseleave\" bindkeydown=\"221:0:bindkeydown\" bindtap=\"221:0:bindtap\" bindmouseup=\"221:0:bindmouseup\" bindtouchstart=\"221:0:bindtouchstart\" bindmousedown=\"221:0:bindmousedown\" bindtouchend=\"221:0:bindtouchend\" bindtouchcancel=\"221:0:bindtouchcancel\" bindfocus=\"221:0:bindfocus\">",
+    "border": [
+      6,
+      614,
+      249,
+      614,
+      249,
+      642,
+      6,
+      642
+    ],
+    "width": 227,
+    "height": 20,
+    "label": "Advanced"
+  }
+}

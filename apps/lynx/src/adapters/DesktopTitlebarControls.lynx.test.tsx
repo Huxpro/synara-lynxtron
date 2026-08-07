@@ -123,7 +123,10 @@ describe('desktop titlebar controls', () => {
       /\.SettingsSidebarTitlebar\s*\{[^}]*height:\s*46px;[^}]*padding-left:\s*14px;[^}]*padding-right:\s*14px;/s
     );
     expect(appStyles).toMatch(
-      /\.SettingsSidebarBody\s*\{[^}]*padding:\s*6px;/s
+      /\.SettingsSidebarBody\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;[^}]*width:\s*100%;/s
+    );
+    expect(appStyles).toMatch(
+      /\.SettingsSidebarBodyInner\s*\{[^}]*min-height:\s*100%;[^}]*padding:\s*6px;/s
     );
   });
 });

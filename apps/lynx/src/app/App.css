@@ -786,11 +786,16 @@
 }
 
 .SettingsSidebarBody {
-  display: flex;
-  flex-direction: column;
   flex: 1;
   min-height: 0;
   width: 100%;
+}
+
+.SettingsSidebarBodyInner {
+  display: flex;
+  min-height: 100%;
+  width: 100%;
+  flex-direction: column;
   padding: 6px;
 }
 

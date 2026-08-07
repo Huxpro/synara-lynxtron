@@ -109,3 +109,15 @@ already the correct information architecture, but the shared column root's
 Column roots, vertical scrollers, and card lists now shrink to their route host:
 196px at 900, 237.33px at 1024, and 376px at 1440. All three columns remain
 simultaneously visible and keep independent vertical scrolling.
+
+## Settings sidebar follow-up
+
+Settings navigation now follows the Web sidebar's single-scroll-owner model:
+the fixed 46px titlebar sits above one vertical viewport containing Back,
+Search, navigation, and search results. Search results no longer create a
+nested scroll view.
+
+At 900x650 the scroll viewport is 604px and the final Advanced row remains
+fully visible at y614..642. The viewport grows to 774px at 820px height and
+854px at 900px height, while the main Settings content keeps its separate
+vertical scroll owner.

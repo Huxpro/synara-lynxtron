@@ -689,7 +689,11 @@ export function SettingsPage({
         <view className="SettingsSidebarTitlebar AppWindowDragRegion">
           {openTitlebarControls}
         </view>
-        <view className="SettingsSidebarBody">
+        <scroll-view
+          className="SettingsSidebarBody"
+          scroll-orientation="vertical"
+        >
+          <view className="SettingsSidebarBodyInner">
           <SettingsSidebarChromeComposition
             onBack={onBack}
             searchCapability="available"
@@ -729,7 +733,8 @@ export function SettingsPage({
               onSelectSection={setSection}
             />
           )}
-        </view>
+          </view>
+        </scroll-view>
       </view>
     </SidebarDisclosure>
   );

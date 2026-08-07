@@ -28,6 +28,10 @@ describe('Lynx Settings search result anatomy', () => {
     expect(styles).not.toMatch(
       /\.SettingsSearchResults\s*\{[^}]*max-height:/
     );
+    expect(source).toContain('<view className="SettingsSearchResults">');
+    expect(source).not.toContain(
+      'className="SettingsSearchResults"\n      scroll-orientation'
+    );
     expect(styles).not.toMatch(
       /\.SettingsSearchResultSectionIcon\s*\{[^}]*(?:border|border-radius):/s
     );

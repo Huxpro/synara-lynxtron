@@ -7120,3 +7120,16 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   right1009；1440三列376px/right1424。三档console0，真实project/header/card路径，
   无fixture/SQLite写入。focused **2 files / 5 tests**、Native/Desktop build通过，
   证据`shots/2026-08-07/responsive-kanban-current/`。
+
+## 2026-08-07 — Settings sidebar short-window scroll ownership
+
+- 900×650 comfortable density实测Settings sidebar刚好临界：body y46..650，Advanced
+  y614..642，仅余8px；旧结构是plain view，未来density/新增section/更矮host会直接裁剪。
+- Web authority的`SidebarContent`由一个ScrollArea拥有Back/Search/navigation/results整块；
+  Lynx此前只有search results自带scroll，normal navigation无scroll且形成两套ownership。
+- `SettingsSidebarBody`改为唯一vertical `scroll-view`，inner继续拥有6px gutter；
+  SearchResults降为plain view，避免nested scroll。titlebar保持固定46px。
+- exact Native：650时body scroll viewport高604、Advanced完整；820时body774；900时
+  body854。inner随viewport分别592/762/842，Back/Search/Nav处于同一scroll tree，
+  Settings main content仍由独立`SettingsContent`滚动。三档console0，证据
+  `shots/2026-08-07/responsive-settings-sidebar-current/`。
