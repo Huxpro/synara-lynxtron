@@ -111,6 +111,7 @@ import { SettingsAdvancedPanel } from './SettingsAdvancedPanel.lynx';
 import { SettingsIntegrationsPanel } from './SettingsIntegrationsPanel.lynx';
 import { SettingsAppSnapPanel } from './SettingsAppSnapPanel.lynx';
 import { SettingsSearchResults } from './SettingsSearchResults.lynx';
+import { SidebarDisclosure } from './SidebarDisclosure.lynx';
 import { rankLynxSettingsSearchEntries } from './settingsSearch.logic';
 import { settingsSearchEntryTarget } from '@synara-web/settingsSearchIndex';
 import { scrollLynxElementIntoViewById } from '../components/ui/scrollIntoView.lynx';
@@ -368,14 +369,16 @@ export function SettingsPage({
   initialSection = 'general',
   onBack,
   sidebarOpen,
-  titlebarControls,
+  openTitlebarControls,
+  closedTitlebarControls,
   onThemeStateChange,
   onUiDensityChange,
 }: {
   readonly initialSection?: SettingsSectionId;
   readonly onBack: () => void;
   readonly sidebarOpen: boolean;
-  readonly titlebarControls: ReactNode;
+  readonly openTitlebarControls: ReactNode;
+  readonly closedTitlebarControls: ReactNode;
   readonly onThemeStateChange: (state: ThemeState) => void;
   readonly onUiDensityChange: (
     density: SettingsAppearanceValues['uiDensity']
@@ -680,54 +683,56 @@ export function SettingsPage({
   const persistencePresentation =
     resolveSettingsPersistencePresentation(persistenceState);
 
-  const settingsSidebar = sidebarOpen ? (
-    <view className="SettingsSidebar">
-      <view className="SettingsSidebarTitlebar AppWindowDragRegion">
-        {titlebarControls}
-      </view>
-      <view className="SettingsSidebarBody">
-        <SettingsSidebarChromeComposition
-          onBack={onBack}
-          searchCapability="available"
-          searchValue={searchQuery}
-          onSearchValueChange={setSearchQuery}
-          onSubmitSearch={() => {
-            const topMatch = searchResults[0];
-            if (topMatch) selectSearchResult(topMatch);
-          }}
-          onEscapeSearch={() => setSearchQuery('')}
-        />
-        {searchQuery.trim() ? (
-          <SettingsSearchResults
-            results={searchResults}
-            onSelect={selectSearchResult}
+  const settingsSidebar = (
+    <SidebarDisclosure open={sidebarOpen}>
+      <view className="SettingsSidebar">
+        <view className="SettingsSidebarTitlebar AppWindowDragRegion">
+          {openTitlebarControls}
+        </view>
+        <view className="SettingsSidebarBody">
+          <SettingsSidebarChromeComposition
+            onBack={onBack}
+            searchCapability="available"
+            searchValue={searchQuery}
+            onSearchValueChange={setSearchQuery}
+            onSubmitSearch={() => {
+              const topMatch = searchResults[0];
+              if (topMatch) selectSearchResult(topMatch);
+            }}
+            onEscapeSearch={() => setSearchQuery('')}
           />
-        ) : (
-          <SettingsNavigationComposition
-            activeSection={section}
-            availableSections={[
-              'general',
-              'profile',
-              'appearance',
-              'notifications',
-              'behavior',
-              'appsnap',
-              'shortcuts',
-              'worktrees',
-              'archived',
-              'models',
-              'providers',
-              'skills',
-              'usage',
-              'integrations',
-              'advanced',
-            ]}
-            onSelectSection={setSection}
-          />
-        )}
+          {searchQuery.trim() ? (
+            <SettingsSearchResults
+              results={searchResults}
+              onSelect={selectSearchResult}
+            />
+          ) : (
+            <SettingsNavigationComposition
+              activeSection={section}
+              availableSections={[
+                'general',
+                'profile',
+                'appearance',
+                'notifications',
+                'behavior',
+                'appsnap',
+                'shortcuts',
+                'worktrees',
+                'archived',
+                'models',
+                'providers',
+                'skills',
+                'usage',
+                'integrations',
+                'advanced',
+              ]}
+              onSelectSection={setSection}
+            />
+          )}
+        </view>
       </view>
-    </view>
-  ) : null;
+    </SidebarDisclosure>
+  );
 
   return (
     <AppShellFrame sidebar={settingsSidebar}>
@@ -736,7 +741,7 @@ export function SettingsPage({
           sidebarOpen ? '' : ' SettingsPage--sidebar-closed'
         }`}
       >
-        {sidebarOpen ? null : titlebarControls}
+        {sidebarOpen ? null : closedTitlebarControls}
         <scroll-view className="SettingsContent" scroll-orientation="vertical">
         <view
           className={`SettingsContentInner${

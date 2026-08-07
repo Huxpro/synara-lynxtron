@@ -466,16 +466,20 @@ export function SliceRouter({
     }
     history.push(to);
   }, []);
-  const titlebarControls = (
+  const renderTitlebarControls = (
+    placement: 'open' | 'closed'
+  ) => (
     <DesktopTitlebarControls
       canGoBack={navigation.canGoBack}
       canGoForward={navigation.canGoForward}
-      placement={sidebarOpen ? 'open' : 'closed'}
+      placement={placement}
       onGoBack={() => history.back()}
       onGoForward={() => history.forward()}
       onToggleSidebar={() => setSidebarOpen((open) => !open)}
     />
   );
+  const openTitlebarControls = renderTitlebarControls('open');
+  const closedTitlebarControls = renderTitlebarControls('closed');
   const navigateBackFromSettings = useCallback(() => {
     const target = resolveSettingsBackTarget({
       lastThreadRoute: persistedLastRoute,
@@ -539,7 +543,8 @@ export function SliceRouter({
         }
         onBack={navigateBackFromSettings}
         sidebarOpen={sidebarOpen}
-        titlebarControls={titlebarControls}
+        openTitlebarControls={openTitlebarControls}
+        closedTitlebarControls={closedTitlebarControls}
         onThemeStateChange={onThemeStateChange}
         onUiDensityChange={onUiDensityChange}
       />
@@ -582,8 +587,9 @@ export function SliceRouter({
     );
   }
 
-  const sidebar = sidebarOpen && route.pathname !== '/settings' ? (
-    <Sidebar
+  const sidebar =
+    sidebarOpen && route.pathname !== '/settings' ? (
+      <Sidebar
         activeThreadId={
           route.pathname === '/thread/$threadId' ? route.params.threadId : null
         }
@@ -591,9 +597,9 @@ export function SliceRouter({
           route.pathname === '/kanban/$projectId' ? '/kanban' : route.pathname
         }
         navigate={navigate}
-        titlebarControls={titlebarControls}
+        titlebarControls={openTitlebarControls}
       />
-  ) : null;
+    ) : null;
   if (route.pathname === '/settings') {
     return page;
   }
@@ -604,7 +610,7 @@ export function SliceRouter({
           sidebarOpen ? '' : ' AppMain--sidebar-closed'
         }`}
       >
-        {sidebarOpen ? null : titlebarControls}
+        {sidebarOpen ? null : closedTitlebarControls}
         {page}
       </view>
     </AppShellFrame>

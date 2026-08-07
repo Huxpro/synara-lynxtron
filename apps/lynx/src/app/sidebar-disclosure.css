@@ -1,0 +1,34 @@
+.SidebarDisclosure {
+  flex-shrink: 0;
+  width: 256px;
+  height: 100%;
+  overflow: hidden;
+  transition-property: width;
+  transition-duration: 220ms;
+  transition-timing-function: ease-out;
+}
+
+.SidebarDisclosure--closed {
+  width: 0;
+  pointer-events: none;
+}
+
+.SidebarDisclosureInner {
+  width: 256px;
+  height: 100%;
+  transform: translateX(0);
+  transition-property: transform;
+  transition-duration: 220ms;
+  transition-timing-function: ease-out;
+}
+
+.SidebarDisclosure--closed .SidebarDisclosureInner {
+  transform: translateX(-256px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .SidebarDisclosure,
+  .SidebarDisclosureInner {
+    transition-duration: 0.01ms;
+  }
+}

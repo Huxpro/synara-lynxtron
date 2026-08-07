@@ -1336,6 +1336,21 @@ The retained replacement cells:
   a second touch restores open. Both retained frames are 2560x1640 and console
   output is clean. Evidence is under
   `shots/2026-08-07/settings-shell-current/`.
+- Settings sidebar open/close now uses the shared 220ms disclosure timing with
+  a width-collapse shell and translating fixed-width inner surface. The exit
+  subtree is immediately accessibility-hidden, unfocusable, handler-free, and
+  its Search input is disabled/readonly before cleanup unmount.
+- Exact-owned bundle `9793e654...`, service `58090`, and PID-derived
+  `localhost:8902/session 1` prove the real Toggle path: at 28ms focusable
+  descendants are 19 -> 0, 20 descendants publish explicit false, Search is
+  disabled, cleanup unmounts the tree, and the second Toggle restores open.
+  The retained frame is 2560x1640 and console output is clean.
+- The same retained-tree technique is not safe for the larger project/thread
+  Sidebar on Lynxtron 0.0.7: all tested unmount, keep-mounted, stable-handler,
+  and parent-hidden variants reproducibly trigger a background `toLowerCase`
+  rejection and renderer reconstruction. Those variants were reverted; the
+  regular Sidebar remains instant rather than exchanging reliability for
+  motion fidelity.
 
 ## Remaining work
 

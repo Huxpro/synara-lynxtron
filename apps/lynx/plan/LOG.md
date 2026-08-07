@@ -7068,3 +7068,22 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   2560×1640，console warning/error 0。证据在
   `shots/2026-08-07/settings-shell-current/`；Electron authority在相邻
   `settings-shell-reference/`。
+
+## 2026-08-07 — Settings sidebar disclosure motion closure
+
+- Settings统一shell后补齐open/close motion：复用canonical 220ms disclosure timing，
+  256px outer width与fixed-width inner translate lockstep，reduced-motion为0.01ms。
+- exit tree不是可交互幽灵树：`LynxInteractionScope`让canonical controls立即
+  `focusable=false`/handler-free；Input两条native path都真实下发
+  disabled/readonly/focusable=false并移除input/focus/key handlers；parent同时发布
+  `aria-hidden`与`accessibility-elements-hidden`。
+- exact-owned production bundle `9793e654…`，isolated service 58090，
+  PID9246→localhost:8902/session1。real Toggle后28ms直接测19个focusable降为0、
+  20个显式false、Search disabled；cleanup后unmount，第二次touch恢复open，
+  rapid reversal不丢Settings controller state。open frame2560×1640、console0。
+- regular project/thread Sidebar也尝试同一retained-tree motion，但Lynxtron0.0.7对其复杂
+  subtree无论cleanup unmount、keep-mounted、stable/no-op handlers或parent-only hidden，
+  均稳定触发background JSRuntime `toLowerCase` rejection并反复重建renderer。全部失败
+  variant已撤回，普通Sidebar保留原即时切换；不能用视觉motion换稳定性。
+- focused **6 files / 20 tests**、Native/Desktop build通过。证据
+  `shots/2026-08-07/settings-sidebar-motion-current/`。

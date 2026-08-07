@@ -73,14 +73,22 @@ describe('desktop titlebar controls', () => {
     );
   });
 
-  it('moves the same control instance between open and closed shell ownership', () => {
+  it('keeps one action owner across distinct open and closed placements', () => {
     expect(routerSource).toContain(
-      "placement={sidebarOpen ? 'open' : 'closed'}"
+      "const renderTitlebarControls = ("
     );
     expect(routerSource).toContain(
-      "const sidebar = sidebarOpen && route.pathname !== '/settings' ? ("
+      "const openTitlebarControls = renderTitlebarControls('open')"
     );
-    expect(routerSource).toContain('{sidebarOpen ? null : titlebarControls}');
+    expect(routerSource).toContain(
+      "const closedTitlebarControls = renderTitlebarControls('closed')"
+    );
+    expect(routerSource).toContain(
+      "const sidebar =\n    sidebarOpen && route.pathname !== '/settings' ? ("
+    );
+    expect(routerSource).toContain(
+      '{sidebarOpen ? null : closedTitlebarControls}'
+    );
     expect(routerSource).toContain("AppMain--sidebar-closed");
   });
 
@@ -90,10 +98,18 @@ describe('desktop titlebar controls', () => {
       "if (route.pathname === '/settings') {\n    return ("
     );
     expect(routerSource).toContain('sidebarOpen={sidebarOpen}');
-    expect(routerSource).toContain('titlebarControls={titlebarControls}');
+    expect(routerSource).toContain(
+      'openTitlebarControls={openTitlebarControls}'
+    );
+    expect(routerSource).toContain(
+      'closedTitlebarControls={closedTitlebarControls}'
+    );
     expect(settingsSource).toContain('<AppShellFrame sidebar={settingsSidebar}>');
     expect(settingsSource).toContain(
-      '{sidebarOpen ? null : titlebarControls}'
+      '{sidebarOpen ? null : closedTitlebarControls}'
+    );
+    expect(settingsSource).toContain(
+      '<SidebarDisclosure open={sidebarOpen}>'
     );
     expect(settingsSource).toContain(
       '<SettingsSidebarChromeComposition'

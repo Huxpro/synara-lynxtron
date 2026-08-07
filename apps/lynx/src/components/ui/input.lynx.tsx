@@ -14,6 +14,7 @@ import {
 } from '@lynx-js/react';
 import type { NodesRef } from '@lynx-js/types';
 
+import { useLynxInteractionDisabled } from './interaction-scope.lynx';
 import { cx } from './shared.lynx';
 import './primitives.css';
 
@@ -168,6 +169,8 @@ const KeyboardInput = forwardRef<InputRef, KeyboardInputProps>(
       ref={inputRef}
       id={props.id}
       readonly={props.disabled || props.readonly}
+      disabled={props.disabled}
+      focusable={!props.disabled}
       ignore-focus={true}
       placeholder={props.placeholder}
       confirm-type={props.confirmType}
@@ -175,17 +178,29 @@ const KeyboardInput = forwardRef<InputRef, KeyboardInputProps>(
       input-filter={props.inputFilter}
       maxlength={props.maxLength ?? 140}
       show-soft-input-on-focus={props.showSoftInputOnFocus ?? true}
-      main-thread:bindinput={handleInput}
-      bindfocus={(event) => props.onFocus?.(event.detail.value)}
-      bindblur={(event) => props.onBlur?.(event.detail.value)}
-      bindconfirm={(event) => props.onConfirm?.(event.detail.value)}
+      main-thread:bindinput={props.disabled ? undefined : handleInput}
+      bindfocus={
+        props.disabled
+          ? undefined
+          : (event) => props.onFocus?.(event.detail.value)
+      }
+      bindblur={
+        props.disabled
+          ? undefined
+          : (event) => props.onBlur?.(event.detail.value)
+      }
+      bindconfirm={
+        props.disabled
+          ? undefined
+          : (event) => props.onConfirm?.(event.detail.value)
+      }
       bindselection={(event) =>
         props.onSelectionChange?.(
           event.detail.selectionStart,
           event.detail.selectionEnd
         )
       }
-      catchkeydown={props.onKeyDown}
+      catchkeydown={props.disabled ? undefined : props.onKeyDown}
       className={props.className}
       style={props.style}
     />
@@ -212,6 +227,8 @@ export const Input = forwardRef<InputRef, InputProps>(function Input(
   },
   forwardedRef
 ) {
+  const scopeDisabled = useLynxInteractionDisabled();
+  const resolvedDisabled = scopeDisabled || Boolean(disabled);
   const eventForValue = (value: string): LynxInputFocusEvent => ({
     target: { value },
     currentTarget: { value },
@@ -244,7 +261,7 @@ export const Input = forwardRef<InputRef, InputProps>(function Input(
         !unstyled && 'LxInputControl',
         `LxInputControl--${typeof size === 'number' ? 'default' : size}`,
         variant === 'soft' && 'LxInputControl--soft',
-        disabled && 'LxInputControl--disabled',
+        resolvedDisabled && 'LxInputControl--disabled',
         ariaInvalid && 'LxInputControl--invalid',
         className
       )}
@@ -255,7 +272,7 @@ export const Input = forwardRef<InputRef, InputProps>(function Input(
           id={props.id}
           className="LxInput"
           readonly={props.readonly}
-          disabled={disabled}
+          disabled={resolvedDisabled}
           placeholder={props.placeholder}
           type={type === 'search' ? 'text' : type}
           confirmType={type === 'search' ? 'search' : props.confirmType ?? 'send'}
@@ -277,12 +294,15 @@ export const Input = forwardRef<InputRef, InputProps>(function Input(
           {...props}
           ref={forwardedRef}
           className="LxInput"
-          readonly={disabled || props.readonly}
+          readonly={resolvedDisabled || props.readonly}
+          disabled={resolvedDisabled}
+          focusable={!resolvedDisabled}
           type={type === 'search' ? 'text' : type}
           confirmType={type === 'search' ? 'search' : props.confirmType}
-          onInput={handleInput}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
+          onInput={resolvedDisabled ? undefined : handleInput}
+          onFocus={resolvedDisabled ? undefined : handleFocus}
+          onBlur={resolvedDisabled ? undefined : handleBlur}
+          onConfirm={resolvedDisabled ? undefined : props.onConfirm}
         />
       )}
     </view>

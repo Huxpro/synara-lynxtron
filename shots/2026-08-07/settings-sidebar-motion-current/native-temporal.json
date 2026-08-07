@@ -1,0 +1,92 @@
+{
+  "clientId": "localhost:8902",
+  "session": {
+    "session_id": 1,
+    "type": "lynx",
+    "url": "file:///Users/bytedance/github/synara/apps/lynx/dist/desktop/main.lynx.bundle"
+  },
+  "bundleSha256": "9793e65400e18a589d4c684f0e6290ca93fe14110bfde114eda21ac049a94c7e",
+  "frames": [
+    {
+      "dt": -1,
+      "present": true,
+      "shellBorder": [
+        0,
+        0,
+        256,
+        0,
+        256,
+        820,
+        0,
+        820
+      ],
+      "innerBorder": [
+        0,
+        0,
+        256,
+        0,
+        256,
+        820,
+        0,
+        820
+      ],
+      "className": "SidebarDisclosure SidebarDisclosure--open",
+      "ariaHidden": "false",
+      "accessibilityElementsHidden": "false",
+      "focusableTrueCount": 19,
+      "focusableFalseCount": 1,
+      "inputDisabled": false
+    },
+    {
+      "dt": 28,
+      "present": true,
+      "shellBorder": [
+        0,
+        0,
+        256,
+        0,
+        256,
+        820,
+        0,
+        820
+      ],
+      "innerBorder": [
+        0,
+        0,
+        256,
+        0,
+        256,
+        820,
+        0,
+        820
+      ],
+      "className": "SidebarDisclosure SidebarDisclosure--closed",
+      "ariaHidden": "true",
+      "accessibilityElementsHidden": "true",
+      "focusableTrueCount": 0,
+      "focusableFalseCount": 20,
+      "inputDisabled": true
+    },
+    {
+      "dt": 374,
+      "present": false
+    },
+    {
+      "dt": 384,
+      "present": false
+    },
+    {
+      "dt": 393,
+      "present": false
+    },
+    {
+      "dt": 402,
+      "present": false
+    },
+    {
+      "dt": 411,
+      "present": false
+    }
+  ],
+  "restoredOpen": true
+}

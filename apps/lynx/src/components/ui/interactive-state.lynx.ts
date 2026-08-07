@@ -1,4 +1,5 @@
 import { useState } from '@lynx-js/react';
+import { useLynxInteractionDisabled } from './interaction-scope.lynx';
 
 export interface LynxInteractiveState {
   readonly focused: boolean;
@@ -99,13 +100,15 @@ export function useLynxInteractiveState(options: {
   readonly disabled?: boolean;
   readonly focusable?: boolean;
 } & LynxInteractiveAccessibilityOptions) {
-  const disabled = options.disabled ?? false;
+  const scopeDisabled = useLynxInteractionDisabled();
+  const disabled = scopeDisabled || (options.disabled ?? false);
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
   const [pressed, setPressed] = useState(false);
   const state = { hovered, focused, pressed };
   const clearPressed = () => setPressed(false);
   return {
+    disabled,
     className: lynxInteractiveClassName(options.baseClassName, state),
     eventProps: {
       ...lynxInteractiveAccessibilityProps(options),
