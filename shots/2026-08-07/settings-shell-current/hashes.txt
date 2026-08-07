@@ -1,0 +1,3 @@
+724e2b636d6be8a286aae67d5d862f582bbce3ac5e577c2f23a897deca1428b1  shots/2026-08-07/settings-shell-current/lynx-settings-closed.png
+057dd6ac9a5ceef7d1ded1614fcb2ac550260b121787dfa4074ce2576edd1184  shots/2026-08-07/settings-shell-current/lynx-settings-open.png
+16ffea65154041be6e750889f5320a50b85ffd8fe7e01531a0eb9c40688311b7  apps/lynx/dist/desktop/main.lynx.bundle

@@ -22,6 +22,10 @@ const desktopMainSource = fs.readFileSync(
   path.resolve(__dirname, '../main/desktop/main.ts'),
   'utf8'
 );
+const appStyles = fs.readFileSync(
+  path.resolve(__dirname, '../app/App.css'),
+  'utf8'
+);
 
 describe('desktop titlebar controls', () => {
   it('publishes real toggle, back, and forward actions', () => {
@@ -73,16 +77,37 @@ describe('desktop titlebar controls', () => {
     expect(routerSource).toContain(
       "placement={sidebarOpen ? 'open' : 'closed'}"
     );
-    expect(routerSource).toContain('const sidebar = sidebarOpen ? (');
+    expect(routerSource).toContain(
+      "const sidebar = sidebarOpen && route.pathname !== '/settings' ? ("
+    );
     expect(routerSource).toContain('{sidebarOpen ? null : titlebarControls}');
     expect(routerSource).toContain("AppMain--sidebar-closed");
   });
 
-  it('keeps Settings on its established real Back surface', () => {
+  it('keeps Settings inside the same global shell and titlebar ownership', () => {
     expect(routerSource).toContain("if (route.pathname === '/settings')");
+    expect(routerSource).not.toContain(
+      "if (route.pathname === '/settings') {\n    return ("
+    );
+    expect(routerSource).toContain('sidebarOpen={sidebarOpen}');
+    expect(routerSource).toContain('titlebarControls={titlebarControls}');
+    expect(settingsSource).toContain('<AppShellFrame sidebar={settingsSidebar}>');
+    expect(settingsSource).toContain(
+      '{sidebarOpen ? null : titlebarControls}'
+    );
     expect(settingsSource).toContain(
       '<SettingsSidebarChromeComposition'
     );
     expect(settingsSource).toContain('onBack={onBack}');
+    expect(settingsSource).not.toContain('showBack={false}');
+    expect(appStyles).toMatch(
+      /\.SettingsSidebar\s*\{[^}]*width:\s*256px;[^}]*height:\s*100%;/s
+    );
+    expect(appStyles).toMatch(
+      /\.SettingsSidebarTitlebar\s*\{[^}]*height:\s*46px;[^}]*padding-left:\s*14px;[^}]*padding-right:\s*14px;/s
+    );
+    expect(appStyles).toMatch(
+      /\.SettingsSidebarBody\s*\{[^}]*padding:\s*6px;/s
+    );
   });
 });

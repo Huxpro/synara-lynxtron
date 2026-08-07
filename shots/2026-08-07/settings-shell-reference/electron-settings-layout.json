@@ -1,0 +1,285 @@
+{
+  "target": {
+    "id": "2E728FCE23D2CD7226844E8BE4735179",
+    "title": "Synara (Dev)",
+    "url": "http://localhost:10054/#/settings"
+  },
+  "open": {
+    "href": "http://localhost:10054/#/settings",
+    "viewport": {
+      "innerWidth": 1728,
+      "innerHeight": 1084,
+      "dpr": 2,
+      "visualWidth": 1728,
+      "visualHeight": 1084
+    },
+    "controls": {
+      "Toggle thread sidebar": {
+        "tag": "BUTTON",
+        "className": "[&_svg,&_[data-slot=central-icon]]:-mx-0.5 relative inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap border font-medium text-[length:var(--app-font-size-ui,12px)] outline-none pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 focus-visible:ring-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 sm:text-[length:var(--app-font-size-ui,12px)] [&_svg:not([class*='opacity-'])]:opacity-80 [&_[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4.5 [&_[data-slot=central-icon]:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 sm:[&_[data-slot=central-icon]:not([class*='size-'])]:size-4 [&_svg,&_[data-slot=central-icon]]:pointer-events-none [&_svg,&_[data-slot=central-icon]]:shrink-0 rounded-sm sm:size-6 not-in-data-[slot=input-group]:[&_svg:not([class*='size-'])]:size-4 sm:not-in-data-[slot=input-group]:[&_svg:not([class*='size-'])]:size-3.5 not-in-data-[slot=input-group]:[&_[data-slot=central-icon]:not([class*='size-'])]:size-3.5 border-transparent bg-transparent focus-visible:ring-[color:var(--color-border-focus)]/60 focus-visible:ring-offset-0 [:hover,[data-pressed]]:bg-[var(--color-background-button-secondary-hover)] [:hover,[data-pressed]]:text-[var(--color-text-foreground)] data-pressed:bg-[var(--color-background-button-secondary)] data-pressed:text-[var(--color-text-foreground)] size-7 shrink-0 text-muted-foreground/75 hover:text-foreground",
+        "rect": {
+          "x": 90,
+          "y": 11,
+          "width": 24,
+          "height": 24,
+          "right": 114,
+          "bottom": 35
+        },
+        "disabled": false
+      },
+      "Back": {
+        "tag": "BUTTON",
+        "className": "[&_svg,&_[data-slot=central-icon]]:-mx-0.5 relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap border font-medium text-[length:var(--app-font-size-ui,12px)] outline-none pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 focus-visible:ring-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 sm:text-[length:var(--app-font-size-ui,12px)] [&_svg:not([class*='opacity-'])]:opacity-80 [&_[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4.5 [&_[data-slot=central-icon]:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 sm:[&_[data-slot=central-icon]:not([class*='size-'])]:size-4 [&_svg,&_[data-slot=central-icon]]:pointer-events-none [&_svg,&_[data-slot=central-icon]]:shrink-0 sm:size-7 border-transparent bg-transparent text-[var(--color-text-foreground-secondary)] focus-visible:ring-[color:var(--color-border-focus)]/60 focus-visible:ring-offset-0 [:hover,[data-pressed]]:bg-[var(--color-background-button-secondary-hover)] [:hover,[data-pressed]]:text-[var(--color-text-foreground)] data-pressed:bg-[var(--color-background-button-secondary)] data-pressed:text-[var(--color-text-foreground)] size-8 rounded-lg",
+        "rect": {
+          "x": 116,
+          "y": 9,
+          "width": 28,
+          "height": 28,
+          "right": 144,
+          "bottom": 37
+        },
+        "disabled": false
+      },
+      "Forward": {
+        "tag": "BUTTON",
+        "className": "[&_svg,&_[data-slot=central-icon]]:-mx-0.5 relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap border font-medium text-[length:var(--app-font-size-ui,12px)] outline-none pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 focus-visible:ring-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 sm:text-[length:var(--app-font-size-ui,12px)] [&_svg:not([class*='opacity-'])]:opacity-80 [&_[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4.5 [&_[data-slot=central-icon]:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 sm:[&_[data-slot=central-icon]:not([class*='size-'])]:size-4 [&_svg,&_[data-slot=central-icon]]:pointer-events-none [&_svg,&_[data-slot=central-icon]]:shrink-0 sm:size-7 border-transparent bg-transparent text-[var(--color-text-foreground-secondary)] focus-visible:ring-[color:var(--color-border-focus)]/60 focus-visible:ring-offset-0 [:hover,[data-pressed]]:bg-[var(--color-background-button-secondary-hover)] [:hover,[data-pressed]]:text-[var(--color-text-foreground)] data-pressed:bg-[var(--color-background-button-secondary)] data-pressed:text-[var(--color-text-foreground)] size-8 rounded-lg",
+        "rect": {
+          "x": 146,
+          "y": 9,
+          "width": 28,
+          "height": 28,
+          "right": 174,
+          "bottom": 37
+        },
+        "disabled": true
+      },
+      "Back to app": null
+    },
+    "search": {
+      "tag": "INPUT",
+      "className": "font-system-ui h-full w-full min-w-0 rounded-[inherit] border-0 bg-transparent outline-none placeholder:text-muted-foreground/72 [transition:background-color_5000000s_ease-in-out_0s] px-2.5 py-1 text-[length:var(--app-font-size-ui-sm,11px)] sm:text-[length:var(--app-font-size-ui-sm,11px)]",
+      "rect": {
+        "x": 11,
+        "y": 95.5,
+        "width": 234,
+        "height": 21,
+        "right": 245,
+        "bottom": 116.5
+      },
+      "disabled": false
+    },
+    "headings": {
+      "settings": null,
+      "general": {
+        "tag": "SPAN",
+        "className": "truncate",
+        "rect": {
+          "x": 38,
+          "y": 163,
+          "width": 43.8984375,
+          "height": 18,
+          "right": 81.8984375,
+          "bottom": 181
+        },
+        "disabled": false
+      }
+    },
+    "containers": [
+      {
+        "className": "group/sidebar-wrapper flex min-h-svh w-full has-data-[variant=inset]:bg-sidebar bg-[var(--app-shell-background)]",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1728,
+          "height": 1084,
+          "right": 1728,
+          "bottom": 1084
+        }
+      },
+      {
+        "className": "chat-content-card-backing relative flex h-svh min-h-0 min-w-0 flex-1",
+        "rect": {
+          "x": 256,
+          "y": 0,
+          "width": 1472,
+          "height": 1084,
+          "right": 1728,
+          "bottom": 1084
+        }
+      },
+      {
+        "className": "mx-auto w-full px-6 py-8 max-w-2xl",
+        "rect": {
+          "x": 651,
+          "y": 0,
+          "width": 672,
+          "height": 1481,
+          "right": 1323,
+          "bottom": 1481
+        }
+      }
+    ]
+  },
+  "closed": {
+    "href": "http://localhost:10054/#/settings",
+    "viewport": {
+      "innerWidth": 1728,
+      "innerHeight": 1084,
+      "dpr": 2,
+      "visualWidth": 1728,
+      "visualHeight": 1084
+    },
+    "controls": {
+      "Toggle thread sidebar": {
+        "tag": "BUTTON",
+        "className": "[&_svg,&_[data-slot=central-icon]]:-mx-0.5 relative inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap border font-medium text-[length:var(--app-font-size-ui,12px)] outline-none pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 focus-visible:ring-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 sm:text-[length:var(--app-font-size-ui,12px)] [&_svg:not([class*='opacity-'])]:opacity-80 [&_[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4.5 [&_[data-slot=central-icon]:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 sm:[&_[data-slot=central-icon]:not([class*='size-'])]:size-4 [&_svg,&_[data-slot=central-icon]]:pointer-events-none [&_svg,&_[data-slot=central-icon]]:shrink-0 rounded-sm sm:size-6 not-in-data-[slot=input-group]:[&_svg:not([class*='size-'])]:size-4 sm:not-in-data-[slot=input-group]:[&_svg:not([class*='size-'])]:size-3.5 not-in-data-[slot=input-group]:[&_[data-slot=central-icon]:not([class*='size-'])]:size-3.5 border-transparent bg-transparent focus-visible:ring-[color:var(--color-border-focus)]/60 focus-visible:ring-offset-0 [:hover,[data-pressed]]:bg-[var(--color-background-button-secondary-hover)] [:hover,[data-pressed]]:text-[var(--color-text-foreground)] data-pressed:bg-[var(--color-background-button-secondary)] data-pressed:text-[var(--color-text-foreground)] size-7 shrink-0 text-muted-foreground/75 hover:text-foreground",
+        "rect": {
+          "x": 90,
+          "y": 11,
+          "width": 24,
+          "height": 24,
+          "right": 114,
+          "bottom": 35
+        },
+        "disabled": false
+      },
+      "Back": {
+        "tag": "BUTTON",
+        "className": "[&_svg,&_[data-slot=central-icon]]:-mx-0.5 relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap border font-medium text-[length:var(--app-font-size-ui,12px)] outline-none pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 focus-visible:ring-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 sm:text-[length:var(--app-font-size-ui,12px)] [&_svg:not([class*='opacity-'])]:opacity-80 [&_[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4.5 [&_[data-slot=central-icon]:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 sm:[&_[data-slot=central-icon]:not([class*='size-'])]:size-4 [&_svg,&_[data-slot=central-icon]]:pointer-events-none [&_svg,&_[data-slot=central-icon]]:shrink-0 sm:size-7 border-transparent bg-transparent text-[var(--color-text-foreground-secondary)] focus-visible:ring-[color:var(--color-border-focus)]/60 focus-visible:ring-offset-0 [:hover,[data-pressed]]:bg-[var(--color-background-button-secondary-hover)] [:hover,[data-pressed]]:text-[var(--color-text-foreground)] data-pressed:bg-[var(--color-background-button-secondary)] data-pressed:text-[var(--color-text-foreground)] size-8 rounded-lg",
+        "rect": {
+          "x": 116,
+          "y": 9,
+          "width": 28,
+          "height": 28,
+          "right": 144,
+          "bottom": 37
+        },
+        "disabled": false
+      },
+      "Forward": {
+        "tag": "BUTTON",
+        "className": "[&_svg,&_[data-slot=central-icon]]:-mx-0.5 relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap border font-medium text-[length:var(--app-font-size-ui,12px)] outline-none pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 focus-visible:ring-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 sm:text-[length:var(--app-font-size-ui,12px)] [&_svg:not([class*='opacity-'])]:opacity-80 [&_[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4.5 [&_[data-slot=central-icon]:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 sm:[&_[data-slot=central-icon]:not([class*='size-'])]:size-4 [&_svg,&_[data-slot=central-icon]]:pointer-events-none [&_svg,&_[data-slot=central-icon]]:shrink-0 sm:size-7 border-transparent bg-transparent text-[var(--color-text-foreground-secondary)] focus-visible:ring-[color:var(--color-border-focus)]/60 focus-visible:ring-offset-0 [:hover,[data-pressed]]:bg-[var(--color-background-button-secondary-hover)] [:hover,[data-pressed]]:text-[var(--color-text-foreground)] data-pressed:bg-[var(--color-background-button-secondary)] data-pressed:text-[var(--color-text-foreground)] size-8 rounded-lg",
+        "rect": {
+          "x": 146,
+          "y": 9,
+          "width": 28,
+          "height": 28,
+          "right": 174,
+          "bottom": 37
+        },
+        "disabled": true
+      },
+      "Back to app": null
+    },
+    "search": null,
+    "headings": {
+      "settings": null,
+      "general": {
+        "tag": "H1",
+        "className": "text-[length:var(--type-settings-header-title-size)] leading-[var(--type-settings-header-title-line-height)] tracking-[var(--type-settings-header-title-letter-spacing)] font-medium text-foreground",
+        "rect": {
+          "x": 547,
+          "y": 32,
+          "width": 363.8828125,
+          "height": 28,
+          "right": 910.8828125,
+          "bottom": 60
+        },
+        "disabled": false
+      }
+    },
+    "containers": [
+      {
+        "className": "group/sidebar-wrapper flex min-h-svh w-full has-data-[variant=inset]:bg-sidebar bg-[var(--app-shell-background)]",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1728,
+          "height": 1084,
+          "right": 1728,
+          "bottom": 1084
+        }
+      },
+      {
+        "className": "chat-content-card-backing relative flex h-svh min-h-0 min-w-0 flex-1",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1728,
+          "height": 1084,
+          "right": 1728,
+          "bottom": 1084
+        }
+      },
+      {
+        "className": "mx-auto w-full px-6 py-8 max-w-2xl",
+        "rect": {
+          "x": 523,
+          "y": 0,
+          "width": 672,
+          "height": 1481,
+          "right": 1195,
+          "bottom": 1481
+        }
+      }
+    ]
+  },
+  "restored": {
+    "href": "http://localhost:10054/#/settings",
+    "search": {
+      "tag": "INPUT",
+      "className": "font-system-ui h-full w-full min-w-0 rounded-[inherit] border-0 bg-transparent outline-none placeholder:text-muted-foreground/72 [transition:background-color_5000000s_ease-in-out_0s] px-2.5 py-1 text-[length:var(--app-font-size-ui-sm,11px)] sm:text-[length:var(--app-font-size-ui-sm,11px)]",
+      "rect": {
+        "x": 11,
+        "y": 95.5,
+        "width": 234,
+        "height": 21,
+        "right": 245,
+        "bottom": 116.5
+      },
+      "disabled": false
+    },
+    "controls": {
+      "Toggle thread sidebar": {
+        "tag": "BUTTON",
+        "className": "[&_svg,&_[data-slot=central-icon]]:-mx-0.5 relative inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap border font-medium text-[length:var(--app-font-size-ui,12px)] outline-none pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 focus-visible:ring-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 sm:text-[length:var(--app-font-size-ui,12px)] [&_svg:not([class*='opacity-'])]:opacity-80 [&_[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4.5 [&_[data-slot=central-icon]:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 sm:[&_[data-slot=central-icon]:not([class*='size-'])]:size-4 [&_svg,&_[data-slot=central-icon]]:pointer-events-none [&_svg,&_[data-slot=central-icon]]:shrink-0 rounded-sm sm:size-6 not-in-data-[slot=input-group]:[&_svg:not([class*='size-'])]:size-4 sm:not-in-data-[slot=input-group]:[&_svg:not([class*='size-'])]:size-3.5 not-in-data-[slot=input-group]:[&_[data-slot=central-icon]:not([class*='size-'])]:size-3.5 border-transparent bg-transparent focus-visible:ring-[color:var(--color-border-focus)]/60 focus-visible:ring-offset-0 [:hover,[data-pressed]]:bg-[var(--color-background-button-secondary-hover)] [:hover,[data-pressed]]:text-[var(--color-text-foreground)] data-pressed:bg-[var(--color-background-button-secondary)] data-pressed:text-[var(--color-text-foreground)] size-7 shrink-0 text-muted-foreground/75 hover:text-foreground",
+        "rect": {
+          "x": 90,
+          "y": 11,
+          "width": 24,
+          "height": 24,
+          "right": 114,
+          "bottom": 35
+        },
+        "disabled": false
+      },
+      "Back": {
+        "tag": "BUTTON",
+        "className": "[&_svg,&_[data-slot=central-icon]]:-mx-0.5 relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap border font-medium text-[length:var(--app-font-size-ui,12px)] outline-none pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 focus-visible:ring-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 sm:text-[length:var(--app-font-size-ui,12px)] [&_svg:not([class*='opacity-'])]:opacity-80 [&_[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4.5 [&_[data-slot=central-icon]:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 sm:[&_[data-slot=central-icon]:not([class*='size-'])]:size-4 [&_svg,&_[data-slot=central-icon]]:pointer-events-none [&_svg,&_[data-slot=central-icon]]:shrink-0 sm:size-7 border-transparent bg-transparent text-[var(--color-text-foreground-secondary)] focus-visible:ring-[color:var(--color-border-focus)]/60 focus-visible:ring-offset-0 [:hover,[data-pressed]]:bg-[var(--color-background-button-secondary-hover)] [:hover,[data-pressed]]:text-[var(--color-text-foreground)] data-pressed:bg-[var(--color-background-button-secondary)] data-pressed:text-[var(--color-text-foreground)] size-8 rounded-lg",
+        "rect": {
+          "x": 116,
+          "y": 9,
+          "width": 28,
+          "height": 28,
+          "right": 144,
+          "bottom": 37
+        },
+        "disabled": false
+      },
+      "Forward": {
+        "tag": "BUTTON",
+        "className": "[&_svg,&_[data-slot=central-icon]]:-mx-0.5 relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap border font-medium text-[length:var(--app-font-size-ui,12px)] outline-none pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 focus-visible:ring-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 sm:text-[length:var(--app-font-size-ui,12px)] [&_svg:not([class*='opacity-'])]:opacity-80 [&_[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4.5 [&_[data-slot=central-icon]:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 sm:[&_[data-slot=central-icon]:not([class*='size-'])]:size-4 [&_svg,&_[data-slot=central-icon]]:pointer-events-none [&_svg,&_[data-slot=central-icon]]:shrink-0 sm:size-7 border-transparent bg-transparent text-[var(--color-text-foreground-secondary)] focus-visible:ring-[color:var(--color-border-focus)]/60 focus-visible:ring-offset-0 [:hover,[data-pressed]]:bg-[var(--color-background-button-secondary-hover)] [:hover,[data-pressed]]:text-[var(--color-text-foreground)] data-pressed:bg-[var(--color-background-button-secondary)] data-pressed:text-[var(--color-text-foreground)] size-8 rounded-lg",
+        "rect": {
+          "x": 146,
+          "y": 9,
+          "width": 28,
+          "height": 28,
+          "right": 174,
+          "bottom": 37
+        },
+        "disabled": true
+      },
+      "Back to app": null
+    }
+  }
+}

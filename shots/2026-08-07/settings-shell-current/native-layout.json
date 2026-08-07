@@ -1,0 +1,30 @@
+{
+  "runtime": {
+    "launchRootPid": 85750,
+    "lynxtronPid": 85752,
+    "client": "localhost:8903",
+    "sessionId": 1,
+    "sessionUrl": "file:///Users/bytedance/github/synara/apps/lynx/dist/desktop/main.lynx.bundle",
+    "servicePid": 66023,
+    "serviceUrl": "ws://127.0.0.1:58090",
+    "backgroundLaunch": true
+  },
+  "bundleSha256": "16ffea65154041be6e750889f5320a50b85ffd8fe7e01531a0eb9c40688311b7",
+  "open": {
+    "page": [0, 0, 1280, 820],
+    "settingsSidebar": [0, 0, 256, 820],
+    "settingsTitlebar": [0, 0, 256, 46],
+    "settingsBody": [0, 46, 256, 820],
+    "backRowBorderQuad": [6, 52, 249, 52, 249, 80, 6, 80],
+    "titlebarControlsBorderQuad": [90, 9, 174, 9, 174, 37, 90, 37],
+    "contentBorderQuad": [432, 0, 1104, 0, 1104, 1521, 432, 1521]
+  },
+  "closed": {
+    "page": [0, 0, 1280, 820],
+    "settingsSidebarNodeCount": 0,
+    "titlebarControlsBorderQuad": [90, 0, 174, 0, 174, 46, 90, 46],
+    "contentBorderQuad": [304, 0, 976, 0, 976, 1521, 304, 1521]
+  },
+  "restoredOpen": true,
+  "consoleErrorsOrWarnings": []
+}

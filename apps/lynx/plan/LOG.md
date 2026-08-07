@@ -7046,3 +7046,25 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   isolated real service、canonical OpenCode thread、8个真实models、Big Pickle、
   CDP19321与3456×2168 final frame；Codex missing/Claude unauthenticated保留真实状态，
   未造fixture或直接写SQLite。
+
+## 2026-08-07 — current-head Settings shell ownership correction
+
+- 旧结论“Settings保持独立shell、不属于global cluster”已被当前Electron runtime推翻。
+  真实`#/settings` open态仍显示全局Toggle/Back/Forward x90/116/146，并由同一256px
+  shell sidebar承载Settings navigation；closed态sidebar退出、controls留在主面。
+- 首轮aria-only probe误报`Back to app`不存在，因为Web按钮没有aria-label。button-text
+  复核直接测得Back row x6/y52/244×28，Search input content x11/y95.5/234×21；
+  因此保留真实Back row，只修复global controls与shell ownership，不做错误删减。
+- Lynx `/settings`不再在router提前return旧独立双栏。`SettingsPage`现在保持单一
+  controller/state owner，同时返回`AppShellFrame`：open注入Settings sidebar与46px
+  titlebar controls，closed移除sidebar并迁移同一controls；section/search/pending save
+  不因toggle remount。
+- focused Lynx **3 files / 8 tests**、shared Web composition **2/2**、Native/Desktop
+  production build通过。exact staged bundle `16ffea65…`，isolated service PID66023，
+  background launch PID85752由lsof精确映射localhost:8903/session1。
+- Native open直接测titlebar y0..46、controls x90..174/y9..37、Back row
+  x6..249/y52..80、content x432..1104；supported real touch关闭后sidebar nodes=0、
+  controls x90..174/y0..46、content x304..976，第二次touch恢复open。open/closed帧均
+  2560×1640，console warning/error 0。证据在
+  `shots/2026-08-07/settings-shell-current/`；Electron authority在相邻
+  `settings-shell-reference/`。

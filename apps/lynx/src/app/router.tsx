@@ -530,20 +530,21 @@ export function SliceRouter({
     };
   }, []);
 
+  let page: React.ReactNode;
   if (route.pathname === '/settings') {
-    return (
+    page = (
       <SettingsPage
         initialSection={
           (route.params.section as SettingsSectionId | undefined) ?? 'general'
         }
         onBack={navigateBackFromSettings}
+        sidebarOpen={sidebarOpen}
+        titlebarControls={titlebarControls}
         onThemeStateChange={onThemeStateChange}
         onUiDensityChange={onUiDensityChange}
       />
     );
-  }
-  let page: React.ReactNode;
-  if (route.pathname === '/thread/$threadId') {
+  } else if (route.pathname === '/thread/$threadId') {
     page = (
       <ThreadPage
         key={route.params.threadId}
@@ -581,7 +582,7 @@ export function SliceRouter({
     );
   }
 
-  const sidebar = sidebarOpen ? (
+  const sidebar = sidebarOpen && route.pathname !== '/settings' ? (
     <Sidebar
         activeThreadId={
           route.pathname === '/thread/$threadId' ? route.params.threadId : null
@@ -593,6 +594,9 @@ export function SliceRouter({
         titlebarControls={titlebarControls}
       />
   ) : null;
+  if (route.pathname === '/settings') {
+    return page;
+  }
   return (
     <AppShellFrame sidebar={sidebar}>
       <view

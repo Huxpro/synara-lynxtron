@@ -1,7 +1,13 @@
-import { useEffect, useRef, useState } from '@lynx-js/react';
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from '@lynx-js/react';
 
 import { SettingsNavigationComposition } from '@synara-web/components/SettingsNavigationComposition';
 import { SettingsSidebarChromeComposition } from '@synara-web/components/settings/SettingsSidebarChromeComposition';
+import { AppShellFrame } from '@synara-web/components/AppShellFrame';
 import { SettingsAppearanceComposition } from '@synara-web/components/settings/SettingsAppearanceComposition';
 import {
   settingsAppearanceValuesEqual,
@@ -361,11 +367,15 @@ async function persistThemeState(themeState: ThemeState): Promise<void> {
 export function SettingsPage({
   initialSection = 'general',
   onBack,
+  sidebarOpen,
+  titlebarControls,
   onThemeStateChange,
   onUiDensityChange,
 }: {
   readonly initialSection?: SettingsSectionId;
   readonly onBack: () => void;
+  readonly sidebarOpen: boolean;
+  readonly titlebarControls: ReactNode;
   readonly onThemeStateChange: (state: ThemeState) => void;
   readonly onUiDensityChange: (
     density: SettingsAppearanceValues['uiDensity']
@@ -670,9 +680,12 @@ export function SettingsPage({
   const persistencePresentation =
     resolveSettingsPersistencePresentation(persistenceState);
 
-  return (
-    <view className={`SettingsPage SettingsPage--theme-${resolvedTheme}`}>
-      <view className="SettingsSidebar">
+  const settingsSidebar = sidebarOpen ? (
+    <view className="SettingsSidebar">
+      <view className="SettingsSidebarTitlebar AppWindowDragRegion">
+        {titlebarControls}
+      </view>
+      <view className="SettingsSidebarBody">
         <SettingsSidebarChromeComposition
           onBack={onBack}
           searchCapability="available"
@@ -713,8 +726,18 @@ export function SettingsPage({
           />
         )}
       </view>
+    </view>
+  ) : null;
 
-      <scroll-view className="SettingsContent" scroll-orientation="vertical">
+  return (
+    <AppShellFrame sidebar={settingsSidebar}>
+      <view
+        className={`SettingsPage SettingsPage--theme-${resolvedTheme}${
+          sidebarOpen ? '' : ' SettingsPage--sidebar-closed'
+        }`}
+      >
+        {sidebarOpen ? null : titlebarControls}
+        <scroll-view className="SettingsContent" scroll-orientation="vertical">
         <view
           className={`SettingsContentInner${
             section === 'profile' ? ' SettingsContentInner--profile' : ''
@@ -938,7 +961,8 @@ export function SettingsPage({
             </view>
           )}
         </view>
-      </scroll-view>
-    </view>
+        </scroll-view>
+      </view>
+    </AppShellFrame>
   );
 }

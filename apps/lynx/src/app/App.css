@@ -757,6 +757,8 @@
 .SettingsPage {
   display: flex;
   flex-direction: row;
+  flex: 1;
+  min-width: 0;
   width: 100%;
   height: 100%;
   background-color: var(--app-settings-surface);
@@ -765,15 +767,36 @@
 .SettingsSidebar {
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
   width: 256px;
   height: 100%;
-  padding: 18px 6px;
   border-right: 1px solid var(--border);
   background-color: var(--app-settings-surface);
 }
 
+.SettingsSidebarTitlebar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-shrink: 0;
+  width: 100%;
+  height: 46px;
+  padding-left: 14px;
+  padding-right: 14px;
+}
+
+.SettingsSidebarBody {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  padding: 6px;
+}
+
 .SettingsContent {
   flex: 1;
+  min-width: 0;
   height: 100%;
   background-color: var(--app-settings-surface);
 }

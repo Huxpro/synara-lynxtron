@@ -1316,6 +1316,26 @@ The retained replacement cells:
   state, CDP `19321`, and a 3456x2168 focus-safe final frame. Real missing
   Codex/Claude authentication states remain visible rather than being replaced
   with fixtures.
+- The earlier statement that Settings intentionally remained outside the global
+  titlebar cluster is superseded by current runtime evidence. Electron
+  `#/settings` keeps Toggle/Back/Forward at x90/116/146 in both sidebar states,
+  with Settings navigation occupying the same 256px shell sidebar.
+- An aria-only probe also incorrectly reported no `Back to app` row. The real
+  Web button has no aria-label; a button-text probe measures it at
+  x6/y52/244x28, followed by the Search field. The correction therefore keeps
+  the real Back row and changes shell ownership rather than deleting it.
+- Lynx Settings now owns one persistent controller inside `AppShellFrame`.
+  Open state injects a 46px Settings titlebar plus the shared Back/Search/nav
+  sidebar; closed state removes that sidebar and moves the same global controls
+  to the main surface. Search, section, hydration, and pending saves are not
+  remounted by the toggle.
+- Exact-owned Native PID `85752`, PID-derived `localhost:8903/session 1`, and
+  real isolated service PID `66023` prove open controls x90..174/y9..37, Back
+  row x6..249/y52..80, and content x432..1104. Supported real touch closes the
+  sidebar, leaves controls x90..174/y0..46, and recenters content to x304..976;
+  a second touch restores open. Both retained frames are 2560x1640 and console
+  output is clean. Evidence is under
+  `shots/2026-08-07/settings-shell-current/`.
 
 ## Remaining work
 
