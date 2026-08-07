@@ -7698,3 +7698,18 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   掩盖。focused AppSnap **1 file / 2 tests**，Web/Native builds通过；uncached
   changed-lines Doctor以`13ec016b…`为base为**0 diagnostics**。证据
   `shots/2026-08-08/settings-appsnap-copy-current/`。
+
+## 2026-08-08 — Settings Keyboard Shortcuts divider rhythm
+
+- Keyboard Shortcuts card/row outer boxes原已一致，但内部content偏1px：Web header为
+  11/16.5 + bottom divider，Lynx为11/17.5且无divider；Web row拥有bottom divider，
+  Lynx row拥有top divider。两组补偿让outer height碰巧相同，却把首行title下移1px。
+- final仅迁移真实owner：header line-height16.5并加bottom divider，rows改bottom
+  divider，last-child移除；不改row height/padding或加local offset。
+- Lynx-for-Web final header457/163/622x33.5、text469/171/54.296875x16.5、
+  first row457/196.5/622x59、title469/206.5/538x18，均Web exact；header/row border
+  分别0/1，last row0/0，connection diagnostics空。
+- focused **1/1**；Lynx-for-Web与Native/Desktop builds通过，Sharp runtime staging
+  继续通过。uncached changed-lines Doctor以`b5c50ebc…`为base并包含new test为
+  **0 diagnostics**。证据
+  `shots/2026-08-08/settings-keyboard-divider-current/`。
