@@ -1,0 +1,15 @@
+{
+  "cls": "SettingsPage SettingsPage--theme-light SettingsPage--sidebar-open",
+  "radii": [
+    "14.4px",
+    "14.4px"
+  ],
+  "rect": [
+    256,
+    0,
+    1024,
+    820
+  ],
+  "root": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up",
+  "shadow": "rgba(0, 0, 0, 0.08) 1px 0px 0px 0px inset, rgba(0, 0, 0, 0.1) -6.5px 0px 12px -10px"
+}

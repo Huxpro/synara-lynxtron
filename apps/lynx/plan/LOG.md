@@ -7374,3 +7374,21 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   rendered-element click仅用于geometry setup，Native real touch继续提供interaction proof。
   browser errors0、Native console0，未改变sort preference。证据
   `shots/2026-08-07/sidebar-separator-downstream-audit/`。
+
+## 2026-08-07 — current-head raised chat content seam
+
+- 删除重复sidebar border后暴露高面积material residual：Web普通routes与Settings均把
+  content作为raised card，拥有14.4px左圆角、theme-aware inset edge与近边depth；
+  Lynx `.AppMain`/`.SettingsPage`仍是平面矩形，light下整条seam完全融成白底。
+- router/Settings显式投影`--sidebar-open|closed`，shared CSS仅在`md-up + open`应用
+  左圆角、light black8%/dark white3% edge、light10%/dark36% shadow和clip；dark edge
+  按Electron实拍校准而非机械复制名义8% token；closed与compact保持square/no-shadow。
+- final Lynx-for-Web：ordinary light/dark open x256/1024、r14.4与双shadow；closed
+  x0/1280/r0/no-shadow；compact600仍r0/no-shadow。Settings dark open同recipe，
+  closed归零。pixel samples直接证明edge/depth被paint。
+- exact-owned final Native PID59534→localhost:8901/session1：普通light/dark（dark经真实
+  Settings→Appearance→Dark→Back）和Settings light open均保留14.4px与双shadow；
+  Settings real Toggle closed归零且宽1280。focused **1 file / 4 tests**，
+  final overlay regression扩为 **3 files / 16 tests**；Lynx-for-Web与Native/Desktop
+  builds通过，browser errors0、Native console0。证据
+  `shots/2026-08-07/chat-content-seam-current/`。

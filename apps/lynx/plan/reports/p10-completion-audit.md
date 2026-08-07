@@ -263,6 +263,7 @@ Current responsive disposition:
 | Implemented generic overlays | Menu clamp plus Search command and Composer model proof at Desktop minimum | PASS |
 | Sidebar shell/seam ownership | current Lynx-for-Web and exact-owned Native: 256px sidebar, 244px primary rows, 240px footer row, zero sidebar border | PASS |
 | Settings sidebar seam ownership | real Settings navigation: 256px sidebar, 244px Back/Search rails, 236px search shell, zero sidebar border | PASS |
+| Raised content-card seam material | ordinary routes and Settings: 14.4px left radii, theme-aware inset edge/depth, square compact/closed states | PASS |
 | Environment, diff/browser docks, selection actions | no reachable Lynx product consumer to certify | OPEN PRODUCT/PLATFORM KERNEL |
 | Current-head full three-client route/theme/size/state matrix | historical P10 matrix predates later product commits | NOT RE-CERTIFIED |
 
@@ -277,6 +278,9 @@ The same private Settings-sidebar owner is closed by
 dependent historical residuals also close without local patches: primary rows
 are 244px and the real Native Project Sort popup returns from x=41 to the
 Electron-authority x=42 while retaining its exact 176x192 geometry.
+`shots/2026-08-07/chat-content-seam-current/` then restores the Web raised-card
+material that the duplicate borders had previously obscured, with direct
+light/dark and open/closed/compact proof.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

@@ -89,7 +89,16 @@ describe('desktop titlebar controls', () => {
     expect(routerSource).toContain(
       '{sidebarOpen ? null : closedTitlebarControls}'
     );
-    expect(routerSource).toContain("AppMain--sidebar-closed");
+    expect(routerSource).toContain(
+      "className={`AppMain AppMain--sidebar-${"
+    );
+    expect(routerSource).toContain("sidebarOpen ? 'open' : 'closed'");
+    expect(appStyles).toMatch(
+      /\.SliceRoot--viewport-md-up \.AppMain--sidebar-open,\s*\.SliceRoot--viewport-md-up \.SettingsPage--sidebar-open\s*\{[^}]*border-top-left-radius:\s*14\.4px;[^}]*border-bottom-left-radius:\s*14\.4px;[^}]*box-shadow:\s*inset 1px 0 0 rgba\(0,\s*0,\s*0,\s*0\.08\),\s*-6\.5px 0 12px -10px rgba\(0,\s*0,\s*0,\s*0\.1\);[^}]*overflow:\s*hidden;/s
+    );
+    expect(appStyles).toMatch(
+      /\.SliceRoot--theme-dark\.SliceRoot--viewport-md-up \.AppMain--sidebar-open,\s*\.SliceRoot--theme-dark\.SliceRoot--viewport-md-up \.SettingsPage--sidebar-open\s*\{[^}]*box-shadow:\s*inset 1px 0 0 rgba\(255,\s*255,\s*255,\s*0\.03\),\s*-6\.5px 0 12px -10px rgba\(0,\s*0,\s*0,\s*0\.36\);/s
+    );
   });
 
   it('keeps Settings inside the same global shell and titlebar ownership', () => {
@@ -107,6 +116,9 @@ describe('desktop titlebar controls', () => {
     expect(settingsSource).toContain('<AppShellFrame sidebar={settingsSidebar}>');
     expect(settingsSource).toContain(
       '{sidebarOpen ? null : closedTitlebarControls}'
+    );
+    expect(settingsSource).toContain(
+      "SettingsPage--sidebar-${\n          sidebarOpen ? 'open' : 'closed'"
     );
     expect(settingsSource).toContain(
       '<SidebarDisclosure open={sidebarOpen}>'

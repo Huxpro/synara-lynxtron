@@ -70,6 +70,13 @@ authority.
   panel with a 5% hairline lift, 1px border, and 10px active rows.
 - Project Picker: elevated/popover surface, 1px border, restrained host shadow.
 - Settings controls: opaque control surface, 10px radius, 1px 7% border.
+- Sidebar/content seam: the sidebar remains borderless; ordinary chat routes
+  and Settings own one raised content card with 14.4px left radii, a
+  theme-aware inset edge, and restrained near-edge depth. Native dark uses a
+  measured 3% white edge rather than the nominal Web 8% token because the
+  current Electron painted seam is substantially softer. The recipe only
+  applies to open desktop (`md-up`) layouts; compact and sidebar-closed surfaces
+  stay square and shadowless.
 - Nested badges/chips/pills must sample their own background and text; parent
   card parity is not sufficient.
 - Native titlebar is outside product content and is normalized by the named
@@ -85,6 +92,8 @@ Current-build material proof includes:
 - selected, pressed, disabled, focused, loading, error, success, and empty
   dispositions in the strict specimen manifest;
 - a semantic mention chip sample and command-row painted-bound metrics;
+- current Lynx-for-Web and exact-owned Native ordinary/Settings content seams:
+  `shots/2026-08-07/chat-content-seam-current/`;
 - empty Native warning/error consoles for retained runtime frames.
 
 The Project Picker host-local-folder capability is registered as a P3

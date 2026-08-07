@@ -1,0 +1,16 @@
+{
+  "cls": "AppMain AppMain--sidebar-open",
+  "radii": [
+    "0px",
+    "0px"
+  ],
+  "rect": [
+    256,
+    0,
+    344,
+    820
+  ],
+  "root": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable SliceRoot--viewport-compact",
+  "shadow": "none",
+  "sidebar": true
+}

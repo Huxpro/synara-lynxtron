@@ -742,8 +742,8 @@ export function SettingsPage({
   return (
     <AppShellFrame sidebar={settingsSidebar}>
       <view
-        className={`SettingsPage SettingsPage--theme-${resolvedTheme}${
-          sidebarOpen ? '' : ' SettingsPage--sidebar-closed'
+        className={`SettingsPage SettingsPage--theme-${resolvedTheme} SettingsPage--sidebar-${
+          sidebarOpen ? 'open' : 'closed'
         }`}
       >
         {sidebarOpen ? null : closedTitlebarControls}

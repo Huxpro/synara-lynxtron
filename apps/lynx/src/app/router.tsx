@@ -611,8 +611,8 @@ export function SliceRouter({
   return (
     <AppShellFrame sidebar={sidebar}>
       <view
-        className={`AppMain${
-          sidebarOpen ? '' : ' AppMain--sidebar-closed'
+        className={`AppMain AppMain--sidebar-${
+          sidebarOpen ? 'open' : 'closed'
         }`}
       >
         {sidebarOpen ? null : closedTitlebarControls}
