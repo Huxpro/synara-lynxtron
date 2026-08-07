@@ -83,6 +83,10 @@ describe('Settings Appearance fidelity', () => {
     );
     expect(source).toContain('size="sm"');
     expect(source).toContain('variant="soft"');
+    expect(source).toContain('size={16}');
+    expect(styles).toMatch(
+      /\.SharedSettingsAppearanceSegmentIcon\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;[^}]*margin-left:\s*-1px;[^}]*margin-right:\s*-1px;[^}]*opacity:\s*0\.8;/s
+    );
     expect(source).toContain('const value = event.target.value.trim();');
     expect(source).toContain('if (value) props.onChange(Number(value));');
     expect(styles).toMatch(

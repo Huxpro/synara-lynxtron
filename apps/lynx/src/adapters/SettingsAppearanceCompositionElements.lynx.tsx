@@ -150,7 +150,7 @@ export function SettingsAppearanceSegmentedControlElement(props: {
             {Icon ? (
               <Icon
                 className="SharedSettingsAppearanceSegmentIcon"
-                size={14}
+                size={16}
                 color={active ? 'var(--foreground)' : 'var(--muted-foreground)'}
               />
             ) : null}

@@ -1,0 +1,152 @@
+[
+  {
+    "nodeId": 528,
+    "content": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"rgba(252, 252, 252, 0.6)\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-sun\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M8 12a4 4 0 1 0 8 0a4 4 0 1 0 -8 0\" /> <path d=\"M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7\" /> </svg>",
+    "box": {
+      "border": [
+        841,
+        173,
+        857,
+        173,
+        857,
+        189,
+        841,
+        189
+      ],
+      "content": [
+        841,
+        173,
+        857,
+        173,
+        857,
+        189,
+        841,
+        189
+      ],
+      "height": 16,
+      "margin": [
+        842,
+        173,
+        856,
+        173,
+        856,
+        189,
+        842,
+        189
+      ],
+      "padding": [
+        841,
+        173,
+        857,
+        173,
+        857,
+        189,
+        841,
+        189
+      ],
+      "width": 16
+    },
+    "opacity": "0.8",
+    "color": "rgb(0,0,0)"
+  },
+  {
+    "nodeId": 532,
+    "content": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#fcfcfc\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-moon\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454l0 .008\" /> </svg>",
+    "box": {
+      "border": [
+        917,
+        173,
+        933,
+        173,
+        933,
+        189,
+        917,
+        189
+      ],
+      "content": [
+        917,
+        173,
+        933,
+        173,
+        933,
+        189,
+        917,
+        189
+      ],
+      "height": 16,
+      "margin": [
+        918,
+        173,
+        932,
+        173,
+        932,
+        189,
+        918,
+        189
+      ],
+      "padding": [
+        917,
+        173,
+        933,
+        173,
+        933,
+        189,
+        917,
+        189
+      ],
+      "width": 16
+    },
+    "opacity": "0.8",
+    "color": "rgb(0,0,0)"
+  },
+  {
+    "nodeId": 536,
+    "content": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"rgba(252, 252, 252, 0.6)\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-device-laptop\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M3 19l18 0\" /> <path d=\"M5 7a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v8a1 1 0 0 1 -1 1h-12a1 1 0 0 1 -1 -1l0 -8\" /> </svg>",
+    "box": {
+      "border": [
+        991,
+        173,
+        1007,
+        173,
+        1007,
+        189,
+        991,
+        189
+      ],
+      "content": [
+        991,
+        173,
+        1007,
+        173,
+        1007,
+        189,
+        991,
+        189
+      ],
+      "height": 16,
+      "margin": [
+        992,
+        173,
+        1006,
+        173,
+        1006,
+        189,
+        992,
+        189
+      ],
+      "padding": [
+        991,
+        173,
+        1007,
+        173,
+        1007,
+        189,
+        991,
+        189
+      ],
+      "width": 16
+    },
+    "opacity": "0.8",
+    "color": "rgb(0,0,0)"
+  }
+]

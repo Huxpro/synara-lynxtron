@@ -7597,3 +7597,21 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Browser reload后114.765625x24/icon14x14/path均不变、resolved radius exact 6px、
   connection diagnostics空。focused **2/2**、Lynx-for-Web与Native/Desktop builds
   通过；该单属性刀复用上一刀exact-owned Native anatomy，不重复启动Native。
+
+## 2026-08-08 — Settings Appearance theme icon anatomy
+
+- Appearance Theme segmented buttons外框原已exact，但Web图标视觉盒为16x16、opacity.8、
+  `-mx-0.5`保留14px layout slot；Lynx为14x14/full opacity。按钮geometry巧合一致，
+  实际glyph仍更小更重。
+- generated Sun/Moon/DeviceLaptop改为16px，class增加左右-1px margin与opacity.8；
+  Browser三按钮外框/label保持不动，三枚icon坐标与Web exact：
+  843.703125/919/992.09375、y173、16x16、opacity.8。
+- exact-owned Native isolated-service bundle`541268e4…`，root78666→78672；
+  无关iOS client在8901，PID gate正确选择owned localhost:8902/session1。真实DevTool
+  touch命中Appearance nav node181/center128,232；三枚icon Native均16x16/y173/
+  opacity.8，retry node0、console0。owned进程与`/tmp` state已清理。
+- focused Appearance **1 file / 3 tests**；Lynx-for-Web与Native/Desktop builds通过。
+  uncached changed-lines React Doctor以`8885a142…`为base为**0 diagnostics**。证据
+  `shots/2026-08-08/settings-appearance-theme-icons-current/`。
+- Appearance既有下游1px vertical drift未随图标修复变化，故不错误归因；Profile仍有
+  独立feature residual：Web是真实Share/Edit dialogs，Lynx仍为旧Copy summary action。
