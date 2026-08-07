@@ -7725,3 +7725,18 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - focused Custom Models **2/2**；Lynx-for-Web与Native/Desktop builds、Sharp staging
   通过。uncached changed-lines Doctor以`71fcad16…`为base为**0 diagnostics**。证据
   `shots/2026-08-08/settings-model-provider-radius-current/`。
+
+## 2026-08-08 — Settings provider icon coverage
+
+- Providers audit发现Lynx provider map缺Droid/Kilo/Pi，Settings identity fallback把
+  首字母当可见glyph，形成`DDroid`/`KKilo`/`PPi`，且与其余provider SVG视觉系统
+  不一致。Web已有三枚canonical paths。
+- 将Web authoritative Droid/Kilo/Pi SVG加入shared provider asset目录并扩展
+  `OpenAIProviderIcon` map；所有existing consumer共同获得真实图标，不加Settings-only
+  hide hack。
+- Lynx-for-Web final三枚均14x14，viewBox分别67x65、100x100、800x800，
+  fallback count0，text恢复Droid/Kilo/Pi，connection diagnostics空。
+- focused provider **2 files / 5 tests**；Lynx-for-Web与Native/Desktop builds、
+  Sharp staging通过。uncached changed-lines Doctor以`3d5ff02d…`为base并包含new
+  test/assets为**0 diagnostics**。证据
+  `shots/2026-08-08/settings-provider-icons-current/`。
