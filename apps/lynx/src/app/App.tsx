@@ -17,7 +17,10 @@ import {
   parseStoredThemeState,
   type ThemeState,
 } from '@synara-web/theme/theme.logic';
-import { viewportLayoutClassName } from '@synara-web/responsiveLayout.logic';
+import {
+  viewportBreakpointClassNames,
+  viewportLayoutClassName,
+} from '@synara-web/responsiveLayout.logic';
 import { useViewportLayout } from '~/hooks/useViewportLayout';
 
 import { sliceUiDensityClassName } from './appDensity.logic';
@@ -91,7 +94,7 @@ export function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <view
-        className={`SliceRoot ${sliceThemeClassName(themeState)} ${sliceUiDensityClassName(uiDensity)} ${viewportLayoutClassName(viewportLayout)}`}
+        className={`SliceRoot ${sliceThemeClassName(themeState)} ${sliceUiDensityClassName(uiDensity)} ${viewportLayoutClassName(viewportLayout)} ${viewportBreakpointClassNames(viewportLayout)}`}
         data-viewport-width={viewportLayout.width}
         data-viewport-height={viewportLayout.height}
       >

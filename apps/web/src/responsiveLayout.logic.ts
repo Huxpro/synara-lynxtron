@@ -54,3 +54,14 @@ export function resolveViewportLayout(size: ViewportSize): ViewportLayout {
 export function viewportLayoutClassName(layout: ViewportLayout): string {
   return `SliceRoot--viewport-${layout.band}`;
 }
+
+export function viewportBreakpointClassNames(layout: ViewportLayout): string {
+  if (layout.width <= 0) return "";
+  return (Object.entries(VIEWPORT_BREAKPOINTS) as Array<
+    [ViewportBreakpoint, number]
+  >)
+    .filter(([, minimumWidth]) => layout.width >= minimumWidth)
+    .sort((left, right) => left[1] - right[1])
+    .map(([breakpoint]) => `SliceRoot--viewport-${breakpoint}-up`)
+    .join(" ");
+}

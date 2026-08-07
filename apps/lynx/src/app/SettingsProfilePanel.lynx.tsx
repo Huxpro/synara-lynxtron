@@ -170,11 +170,14 @@ export function heatmapMonthLabels(
 }
 
 function StatTile(props: {
+  readonly index: number;
   readonly label: string;
   readonly value: string;
 }) {
   return (
-    <view className="SettingsProfileStat">
+    <view
+      className={`SettingsProfileStat SettingsProfileStat--${props.index}`}
+    >
       <text className="SettingsProfileStatValue">{props.value}</text>
       <text className="SettingsProfileStatLabel">{props.label}</text>
     </view>
@@ -275,6 +278,7 @@ function ProfileContent(props: {
 
       <view className="SettingsProfileStats">
         <StatTile
+          index={0}
           label="Lifetime tokens"
           value={
             props.tokensPending
@@ -283,6 +287,7 @@ function ProfileContent(props: {
           }
         />
         <StatTile
+          index={1}
           label="Peak day"
           value={
             props.tokensPending
@@ -291,14 +296,17 @@ function ProfileContent(props: {
           }
         />
         <StatTile
+          index={2}
           label="Total prompts"
           value={formatNumber(props.stats.activity.totalPromptsSent)}
         />
         <StatTile
+          index={3}
           label="Current streak"
           value={formatDays(props.stats.activity.currentStreakDays)}
         />
         <StatTile
+          index={4}
           label="Longest streak"
           value={formatDays(props.stats.activity.longestStreakDays)}
         />

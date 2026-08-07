@@ -88,13 +88,14 @@
   width: 100%;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: 18px;
 }
 
 .SettingsProfileStat {
-  width: 20%;
+  width: 50%;
   min-width: 0;
   display: flex;
   flex-direction: column;
@@ -105,6 +106,17 @@
 }
 
 .SettingsProfileStat:first-child {
+  border-left-width: 0;
+}
+
+.SettingsProfileStat--2,
+.SettingsProfileStat--3,
+.SettingsProfileStat--4 {
+  border-top: 1px solid var(--border);
+}
+
+.SettingsProfileStat--2,
+.SettingsProfileStat--4 {
   border-left-width: 0;
 }
 
@@ -219,12 +231,12 @@
 .SettingsProfileColumns {
   width: 100%;
   display: flex;
-  flex-direction: row;
-  gap: 48px;
+  flex-direction: column;
+  gap: 28px;
 }
 
 .SettingsProfileColumn {
-  width: calc((100% - 48px) / 2);
+  width: 100%;
   min-width: 0;
   gap: 12px;
 }
@@ -351,8 +363,47 @@
 }
 
 .SettingsProfileModel {
-  width: calc((100% - 48px) / 2);
+  width: 100%;
   gap: 6px;
+}
+
+.SliceRoot--viewport-sm-up .SettingsProfileStat {
+  width: 33.3333%;
+}
+
+.SliceRoot--viewport-sm-up .SettingsProfileStat--2,
+.SliceRoot--viewport-sm-up .SettingsProfileStat--4 {
+  border-left-width: 1px;
+}
+
+.SliceRoot--viewport-sm-up .SettingsProfileStat--2 {
+  border-top-width: 0;
+}
+
+.SliceRoot--viewport-sm-up .SettingsProfileStat--3 {
+  border-left-width: 0;
+}
+
+.SliceRoot--viewport-sm-up .SettingsProfileModel {
+  width: calc((100% - 48px) / 2);
+}
+
+.SliceRoot--viewport-md-up .SettingsProfileColumns {
+  flex-direction: row;
+  gap: 48px;
+}
+
+.SliceRoot--viewport-md-up .SettingsProfileColumn {
+  width: calc((100% - 48px) / 2);
+}
+
+.SliceRoot--viewport-lg-up .SettingsProfileStat {
+  width: 20%;
+  border-top-width: 0;
+}
+
+.SliceRoot--viewport-lg-up .SettingsProfileStat--3 {
+  border-left-width: 1px;
 }
 
 .SettingsProfileModelName {

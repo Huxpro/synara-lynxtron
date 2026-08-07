@@ -36,6 +36,10 @@
 - Lynx projects the result as
   `SliceRoot--viewport-{unknown|compact|medium|wide}` plus numeric
   `data-viewport-width/height`, giving CSS and DevTool one auditable contract.
+- Lynx also projects cumulative
+  `SliceRoot--viewport-{sm|md|lg|xl|2xl|3xl|4xl}-up` classes from the same
+  shared breakpoint table. Feature CSS can therefore reproduce a canonical
+  Web `sm` or `md` transition without inventing a platform-local threshold.
 
 ## Layout ownership
 
@@ -96,8 +100,9 @@ Lynx-for-Web live resize evidence is retained separately at
 The shared API is now available, but the following product surfaces still need
 separate behavior decisions and real multi-size proof:
 
-1. Settings: verify control rows, custom-model grids, profile/projects lists,
-   and sidebar behavior at compact widths.
+1. Settings: verify custom-model, integrations/project, and remaining
+   collection controls at compact widths. Profile collections are closed
+   below.
 2. Thread overlays: environment panel, diff/browser docks, and selection
    actions still need viewport-clamped positioning. The shared Menu primitive
    already clamps measured popup coordinates to its measured viewport; Search
@@ -165,3 +170,16 @@ Wide windows retain the Web-authority split. At 1440px the list is 592px and
 the dock is 591px plus its 1px divider. Both surfaces keep their independent
 vertical scroll owners. Evidence:
 `shots/2026-08-07/responsive-pr-detail-current/`.
+
+## Settings Profile follow-up
+
+Profile now follows the Web breakpoint contract through shared cumulative root
+classes. Stat tiles use 2 columns below 640px, 3 columns from `sm=640`, and 5
+columns from `lg=1024`. Activity insights and plugin usage stack until
+`md=768`; model usage stacks until `sm=640`.
+
+Real Lynx-for-Web geometry proves the transitions: 600px yields two 147px stat
+columns and full-width insight columns; 640px yields three 111.3px stat
+columns; 1024px restores five 143.6px stat columns and two 336px insight
+columns with the canonical 48px gap. Evidence:
+`shots/2026-08-07/responsive-settings-profile-current/`.

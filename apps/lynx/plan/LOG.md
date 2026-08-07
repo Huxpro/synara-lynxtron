@@ -7184,3 +7184,22 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   data attributes同步更新；两张PNG尺寸精确、page errors 0，console仅既存web-core
   deprecated initialization warning。focused **1 file / 2 tests**、Lynx-for-Web
   production build通过。证据`shots/2026-08-07/responsive-web-host-current/`。
+
+## 2026-08-07 — responsive Settings Profile collections
+
+- 修复Web host后首次真实compact Profile测量：640x820下Settings sidebar固定256px，
+  content viewport384px、Profile rail336px；旧stats仍单行5列，每格仅66.8px，
+  insights/plugins仍双144px列，明显违背Web `2→sm3→lg5`与`md`双列contract。
+- shared `responsiveLayout.logic.ts`新增cumulative
+  `SliceRoot--viewport-{sm|md|lg|xl|2xl|3xl|4xl}-up` root classes，直接消费既有Web
+  breakpoint SSOT；feature CSS不再写私有pixel threshold。
+- Profile stats默认2列、sm起3列、lg起5列；insights/plugins默认单列、md起双列；
+  models默认单列、sm起双列。stat index class显式拥有2/3/5列divider matrix，避免复杂
+  selector与Lynx兼容风险。
+- real RPC/empty-home Lynx-for-Web：600px为两列147px、640px为三列111.3px、
+  1024px为五列143.6px；insights由compact full-width stack恢复为wide两列336px+
+  48px gap。empty snapshot无model rows，不冒充runtime populated proof，CSS contract锁定。
+- Web focused **1 file / 3 tests**、Lynx focused **2 files / 5 tests**；
+  Lynx-for-Web与Native/Desktop production builds通过，React Doctor changed scope
+  **100/100, 0 diagnostics**。证据
+  `shots/2026-08-07/responsive-settings-profile-current/`。

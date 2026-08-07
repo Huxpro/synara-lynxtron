@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   resolveViewportLayout,
+  viewportBreakpointClassNames,
   viewportLayoutClassName,
   VIEWPORT_BREAKPOINTS,
 } from "./responsiveLayout.logic";
@@ -21,5 +22,19 @@ describe("responsive viewport layout", () => {
     expect(
       viewportLayoutClassName(resolveViewportLayout({ width: 900, height: 650 })),
     ).toBe("SliceRoot--viewport-medium");
+  });
+
+  it("projects cumulative Web breakpoint classes for user-space responsive CSS", () => {
+    expect(
+      viewportBreakpointClassNames(resolveViewportLayout({ width: 639, height: 700 })),
+    ).toBe("");
+    expect(
+      viewportBreakpointClassNames(resolveViewportLayout({ width: 640, height: 700 })),
+    ).toBe("SliceRoot--viewport-sm-up");
+    expect(
+      viewportBreakpointClassNames(resolveViewportLayout({ width: 1024, height: 700 })),
+    ).toBe(
+      "SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up",
+    );
   });
 });

@@ -111,6 +111,15 @@ describe('Settings Profile fidelity', () => {
       /\.SettingsProfileStats\s*\{[^}]*border-radius:\s*18px;/s
     );
     expect(styles).toMatch(
+      /\.SettingsProfileStat\s*\{[^}]*width:\s*50%;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-sm-up \.SettingsProfileStat\s*\{[^}]*width:\s*33\.3333%;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-lg-up \.SettingsProfileStat\s*\{[^}]*width:\s*20%;/s
+    );
+    expect(styles).toMatch(
       /\.SettingsProfileStatValue,\s*\.SettingsProfileStatLabel\s*\{[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;/s
     );
     expect(styles).toMatch(
@@ -132,7 +141,16 @@ describe('Settings Profile fidelity', () => {
       /\.SettingsProfileHeatmapCell--pad\s*\{[^}]*background-color:\s*transparent;[^}]*opacity:\s*1;/s
     );
     expect(styles).toMatch(
-      /\.SettingsProfileColumns\s*\{[^}]*gap:\s*48px;/s
+      /\.SettingsProfileColumns\s*\{[^}]*flex-direction:\s*column;[^}]*gap:\s*28px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-md-up \.SettingsProfileColumns\s*\{[^}]*flex-direction:\s*row;[^}]*gap:\s*48px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsProfileModel\s*\{[^}]*width:\s*100%;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-sm-up \.SettingsProfileModel\s*\{[^}]*width:\s*calc\(\(100% - 48px\) \/ 2\);/s
     );
     expect(source).toContain('<ProfileProviderIcon provider={entry.provider} />');
     expect(source).toContain('hasLynxProviderIcon(props.provider)');
