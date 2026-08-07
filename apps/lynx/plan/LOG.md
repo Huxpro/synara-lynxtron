@@ -7615,3 +7615,21 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   `shots/2026-08-08/settings-appearance-theme-icons-current/`。
 - Appearance既有下游1px vertical drift未随图标修复变化，故不错误归因；Profile仍有
   独立feature residual：Web是真实Share/Edit dialogs，Lynx仍为旧Copy summary action。
+
+## 2026-08-08 — Settings Appearance theme-pack rhythm
+
+- 精确child边界定位Appearance首个vertical drift owner：header/首card/gap均exact；
+  Web两个theme pack各475.5px、aggregate963px，Lynx各475px、aggregate962px，
+  导致UI density及后续内容整体提前1px。
+- 每个pack首个差异是context copy：Web 11/16.5 + bottom12→28.5px；Lynx
+  11/16 + bottom12→28px。两个pack各丢0.5px，正好累计1px。修复只把
+  `.SharedThemePackContext`改为16.5px，不加downstream offset或固定pack高度。
+- Browser reload后两个context28.5、两个pack475.5、group963、第二pack y784.5，
+  UI density title回到Web exact y1278，connection diagnostics空。
+- exact-owned Native isolated-service bundle`aeb2d225…`，root90994→91000，
+  PID-derived localhost:8902/session1；真实touch进入Appearance，两个context
+  computed line-height均16.5px、retry0、console0。Native DevTool box model量化为
+  whole logical pixels（context29/pack476），故不伪称Native half-pixel measured。
+- focused ThemePack **1 file / 5 tests**；Lynx-for-Web与Native/Desktop builds通过；
+  uncached changed-lines React Doctor以`fd596435…`为base为**0 diagnostics**。证据
+  `shots/2026-08-08/settings-appearance-theme-pack-rhythm-current/`。

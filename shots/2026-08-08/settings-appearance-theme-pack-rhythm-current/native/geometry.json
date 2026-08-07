@@ -1,0 +1,188 @@
+{
+  "client": "native",
+  "stateId": "settings-appearance-theme-pack-rhythm-dark",
+  "roles": {
+    "root": {
+      "nodeId": 13,
+      "nodeName": "VIEW",
+      "attributes": {
+        "data-viewport-width": "1280",
+        "data-viewport-height": "820",
+        "class": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 820
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(252,252,252)",
+        "background": "rgb(16,16,16)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "appearance": {
+      "nodeId": 517,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SharedSettingsAppearanceRoot"
+      },
+      "text": "",
+      "box": {
+        "x": 456,
+        "y": 118,
+        "width": 624,
+        "height": 1645
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "group": {
+      "nodeId": 558,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SharedSettingsAppearanceThemePacks"
+      },
+      "text": "",
+      "box": {
+        "x": 456,
+        "y": 297,
+        "width": 624,
+        "height": 964
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "pack": {
+      "nodeId": 559,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SharedThemePackRoot"
+      },
+      "text": "",
+      "box": {
+        "x": 456,
+        "y": 297,
+        "width": 624,
+        "height": 476
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "hsla(0,0%,99%,.072)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "context": {
+      "nodeId": 580,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "SharedThemePackContext"
+      },
+      "text": "",
+      "box": {
+        "x": 457,
+        "y": 382,
+        "width": 622,
+        "height": 29
+      },
+      "font": {
+        "family": "",
+        "size": "11px",
+        "weight": "normal",
+        "lineHeight": "16.5px",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgba(252,252,252,0.576471)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "density": {
+      "nodeId": 522,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SharedSettingsAppearanceCard"
+      },
+      "text": "",
+      "box": {
+        "x": 456,
+        "y": 150,
+        "width": 624,
+        "height": 141
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "hsla(0,0%,99%,.072)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

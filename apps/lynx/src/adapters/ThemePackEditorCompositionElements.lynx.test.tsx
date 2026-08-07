@@ -45,6 +45,9 @@ describe('ThemePack boolean interaction contract', () => {
       /\.SharedThemePackTitle\s*\{[^}]*font-size:\s*14px;[^}]*font-weight:\s*500;[^}]*line-height:\s*20px;/s
     );
     expect(styles).toMatch(
+      /\.SharedThemePackContext\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*16\.5px;/s
+    );
+    expect(styles).toMatch(
       /\.SharedThemePackRowLabel\s*\{[^}]*color:\s*var\(--settings-row-label-strong\);[^}]*font-size:\s*14px;[^}]*font-weight:\s*400;[^}]*line-height:\s*20px;/s
     );
     expect(source).toContain('className="SharedThemePackResetAction"');

@@ -1,0 +1,274 @@
+[
+  {
+    "nodeId": 522,
+    "class": "SharedSettingsAppearanceCard",
+    "text": "",
+    "box": [
+      456,
+      150,
+      1080,
+      150,
+      1080,
+      291,
+      456,
+      291
+    ],
+    "lineHeight": "",
+    "fontSize": "14px"
+  },
+  {
+    "nodeId": 558,
+    "class": "SharedSettingsAppearanceThemePacks",
+    "text": "",
+    "box": [
+      456,
+      297,
+      1080,
+      297,
+      1080,
+      1261,
+      456,
+      1261
+    ],
+    "lineHeight": "",
+    "fontSize": "14px"
+  },
+  {
+    "nodeId": 729,
+    "class": "SharedSettingsAppearanceCard",
+    "text": "",
+    "box": [
+      456,
+      1267,
+      1080,
+      1267,
+      1080,
+      1645,
+      456,
+      1645
+    ],
+    "lineHeight": "",
+    "fontSize": "14px"
+  },
+  {
+    "nodeId": 810,
+    "class": "SharedSettingsAppearanceCard",
+    "text": "",
+    "box": [
+      456,
+      1701,
+      1080,
+      1701,
+      1080,
+      1763,
+      456,
+      1763
+    ],
+    "lineHeight": "",
+    "fontSize": "14px"
+  },
+  {
+    "nodeId": 559,
+    "class": "SharedThemePackRoot",
+    "text": "",
+    "box": [
+      456,
+      297,
+      1080,
+      297,
+      1080,
+      773,
+      456,
+      773
+    ],
+    "lineHeight": "",
+    "fontSize": "14px"
+  },
+  {
+    "nodeId": 644,
+    "class": "SharedThemePackRoot",
+    "text": "",
+    "box": [
+      456,
+      785,
+      1080,
+      785,
+      1080,
+      1261,
+      456,
+      1261
+    ],
+    "lineHeight": "",
+    "fontSize": "14px"
+  },
+  {
+    "nodeId": 580,
+    "class": "SharedThemePackContext",
+    "text": "",
+    "box": [
+      457,
+      382,
+      1079,
+      382,
+      1079,
+      411,
+      457,
+      411
+    ],
+    "lineHeight": "16.5px",
+    "fontSize": "11px"
+  },
+  {
+    "nodeId": 665,
+    "class": "SharedThemePackContext",
+    "text": "",
+    "box": [
+      457,
+      870,
+      1079,
+      870,
+      1079,
+      899,
+      457,
+      899
+    ],
+    "lineHeight": "16.5px",
+    "fontSize": "11px"
+  },
+  {
+    "nodeId": 526,
+    "class": "SharedSettingsAppearanceRowTitle",
+    "text": "",
+    "box": [
+      469,
+      162,
+      509,
+      162,
+      509,
+      180,
+      469,
+      180
+    ],
+    "lineHeight": "18px",
+    "fontSize": "12px"
+  },
+  {
+    "nodeId": 550,
+    "class": "SharedSettingsAppearanceRowTitle",
+    "text": "",
+    "box": [
+      469,
+      223,
+      579,
+      223,
+      579,
+      241,
+      469,
+      241
+    ],
+    "lineHeight": "18px",
+    "fontSize": "12px"
+  },
+  {
+    "nodeId": 733,
+    "class": "SharedSettingsAppearanceRowTitle",
+    "text": "",
+    "box": [
+      469,
+      1279,
+      528,
+      1279,
+      528,
+      1297,
+      469,
+      1297
+    ],
+    "lineHeight": "18px",
+    "fontSize": "12px"
+  },
+  {
+    "nodeId": 752,
+    "class": "SharedSettingsAppearanceRowTitle",
+    "text": "",
+    "box": [
+      469,
+      1358,
+      550,
+      1358,
+      550,
+      1376,
+      469,
+      1376
+    ],
+    "lineHeight": "18px",
+    "fontSize": "12px"
+  },
+  {
+    "nodeId": 767,
+    "class": "SharedSettingsAppearanceRowTitle",
+    "text": "",
+    "box": [
+      469,
+      1437,
+      571,
+      1437,
+      571,
+      1455,
+      469,
+      1455
+    ],
+    "lineHeight": "18px",
+    "fontSize": "12px"
+  },
+  {
+    "nodeId": 782,
+    "class": "SharedSettingsAppearanceRowTitle",
+    "text": "",
+    "box": [
+      469,
+      1498,
+      545,
+      1498,
+      545,
+      1516,
+      469,
+      1516
+    ],
+    "lineHeight": "18px",
+    "fontSize": "12px"
+  },
+  {
+    "nodeId": 798,
+    "class": "SharedSettingsAppearanceRowTitle",
+    "text": "",
+    "box": [
+      469,
+      1595,
+      560,
+      1595,
+      560,
+      1613,
+      469,
+      1613
+    ],
+    "lineHeight": "18px",
+    "fontSize": "12px"
+  },
+  {
+    "nodeId": 814,
+    "class": "SharedSettingsAppearanceRowTitle",
+    "text": "",
+    "box": [
+      469,
+      1713,
+      539,
+      1713,
+      539,
+      1731,
+      469,
+      1731
+    ],
+    "lineHeight": "18px",
+    "fontSize": "12px"
+  }
+]
