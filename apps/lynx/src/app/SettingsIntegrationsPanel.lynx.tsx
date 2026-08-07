@@ -261,138 +261,143 @@ export function SettingsIntegrationsPanel() {
             />
           </view>
 
-          <view className="SettingsIntegrationsRow SettingsIntegrationsRow--continued">
-            <view className="SettingsIntegrationsRowCopy">
-              <view className="SettingsIntegrationsTitleLine">
-                <text className="SettingsIntegrationsRowTitle">
-                  Access all of Synara
+          <view className="SettingsIntegrationsRow SettingsIntegrationsRow--continued SettingsIntegrationsRow--disclosure">
+            <view className="SettingsIntegrationsRowHeader">
+              <view className="SettingsIntegrationsRowCopy">
+                <view className="SettingsIntegrationsTitleLine">
+                  <text className="SettingsIntegrationsRowTitle">
+                    Access all of Synara
+                  </text>
+                </view>
+                <text className="SettingsIntegrationsRowDescription">
+                  The agent can discover and work in every project, including
+                  ones you add later. Turn off to pick specific projects.
                 </text>
               </view>
-              <text className="SettingsIntegrationsRowDescription">
-                The agent can discover and work in every project, including
-                ones you add later. Turn off to pick specific projects.
-              </text>
-              {projectGridPresent ? (
-                <view
-                  className={disclosureContentClassName(
-                    !allProjects,
-                    'SettingsIntegrationsProjectGrid'
-                  )}
-                  aria-hidden={allProjects}
-                >
-                  {projects.map((project) => (
-                    <ProjectChoice
-                      key={project.id}
-                      title={project.title}
-                      checked={selectedProjectIds.includes(project.id)}
-                      onChange={() =>
-                        setSelectedProjectIds((current) =>
-                          current.includes(project.id)
-                            ? current.filter((id) => id !== project.id)
-                            : [...current, project.id]
-                        )
-                      }
-                    />
-                  ))}
-                  {projects.length === 0 ? (
-                    <text className="SettingsIntegrationsRowDescription">
-                      No projects are available.
-                    </text>
-                  ) : null}
-                </view>
-              ) : null}
+              <SettingsGeneralBooleanControlElement
+                checked={allProjects}
+                ariaLabel="Access all of Synara"
+                onChange={setAllProjects}
+              />
             </view>
-            <SettingsGeneralBooleanControlElement
-              checked={allProjects}
-              ariaLabel="Access all of Synara"
-              onChange={setAllProjects}
-            />
+            {projectGridPresent ? (
+              <view
+                className={disclosureContentClassName(
+                  !allProjects,
+                  'SettingsIntegrationsProjectGrid'
+                )}
+                aria-hidden={allProjects}
+              >
+                {projects.map((project) => (
+                  <ProjectChoice
+                    key={project.id}
+                    title={project.title}
+                    checked={selectedProjectIds.includes(project.id)}
+                    onChange={() =>
+                      setSelectedProjectIds((current) =>
+                        current.includes(project.id)
+                          ? current.filter((id) => id !== project.id)
+                          : [...current, project.id]
+                      )
+                    }
+                  />
+                ))}
+                {projects.length === 0 ? (
+                  <text className="SettingsIntegrationsRowDescription">
+                    No projects are available.
+                  </text>
+                ) : null}
+              </view>
+            ) : null}
           </view>
 
-          <view className="SettingsIntegrationsRow SettingsIntegrationsRow--continued">
-            <view className="SettingsIntegrationsRowCopy">
-              <view className="SettingsIntegrationsTitleLine">
-                <text className="SettingsIntegrationsRowTitle">
-                  Advanced permissions
+          <view className="SettingsIntegrationsRow SettingsIntegrationsRow--continued SettingsIntegrationsRow--disclosure">
+            <view className="SettingsIntegrationsRowHeader">
+              <view className="SettingsIntegrationsRowCopy">
+                <view className="SettingsIntegrationsTitleLine">
+                  <text className="SettingsIntegrationsRowTitle">
+                    Advanced permissions
+                  </text>
+                </view>
+                <text className="SettingsIntegrationsRowDescription">
+                  Optional access for existing tasks, shared checkouts, or
+                  execution without approvals. The safe defaults are
+                  recommended.
                 </text>
               </view>
-              <text className="SettingsIntegrationsRowDescription">
-                Optional access for existing tasks, shared checkouts, or
-                execution without approvals. The safe defaults are recommended.
-              </text>
-              {advancedPresent ? (
-                <view
-                  className={disclosureContentClassName(
+              <Button
+                size="xs"
+                variant="ghost"
+                aria-label="Review advanced permissions"
+                aria-expanded={advancedOpen}
+                onClick={() => setAdvancedOpen((current) => !current)}
+              >
+                <text className="LxButton__text">Review</text>
+                <ChevronRightIcon
+                  className={disclosureChevronClassName(
                     advancedOpen,
-                    'SettingsIntegrationsAdvanced'
+                    'SettingsIntegrationsDisclosureChevron'
                   )}
-                  aria-hidden={!advancedOpen}
-                >
-                  {[
-                    {
-                      key: 'read',
-                      title: 'Read other project tasks',
-                      description:
-                        'Without this permission, the agent can read only tasks it creates.',
-                      checked: allowProjectRead,
-                      onChange: setAllowProjectRead,
-                    },
-                    {
-                      key: 'local',
-                      title: 'Use the shared local checkout',
-                      description:
-                        'High impact. Tasks may modify the checkout you are actively using.',
-                      checked: allowLocal,
-                      onChange: setAllowLocal,
-                    },
-                    {
-                      key: 'full',
-                      title: 'Run without approval prompts',
-                      description:
-                        'High impact. The agent may start full-access execution.',
-                      checked: allowFullAccess,
-                      onChange: setAllowFullAccess,
-                    },
-                  ].map((permission) => (
-                    <view
-                      key={permission.key}
-                      className="SettingsIntegrationsPermission"
-                    >
-                      <view className="SettingsIntegrationsRowCopy">
-                        <text className="SettingsIntegrationsPermissionTitle">
-                          {permission.title}
-                        </text>
-                        <text className="SettingsIntegrationsRowDescription">
-                          {permission.description}
-                        </text>
-                      </view>
-                      <SettingsGeneralBooleanControlElement
-                        checked={permission.checked}
-                        ariaLabel={permission.title}
-                        onChange={permission.onChange}
-                      />
-                    </view>
-                  ))}
-                </view>
-              ) : null}
+                  size={14}
+                  color="var(--muted-foreground)"
+                />
+              </Button>
             </view>
-            <Button
-              size="xs"
-              variant="ghost"
-              aria-label="Review advanced permissions"
-              aria-expanded={advancedOpen}
-              onClick={() => setAdvancedOpen((current) => !current)}
-            >
-              <text className="LxButton__text">Review</text>
-              <ChevronRightIcon
-                className={disclosureChevronClassName(
+            {advancedPresent ? (
+              <view
+                className={disclosureContentClassName(
                   advancedOpen,
-                  'SettingsIntegrationsDisclosureChevron'
+                  'SettingsIntegrationsAdvanced'
                 )}
-                size={14}
-                color="var(--muted-foreground)"
-              />
-            </Button>
+                aria-hidden={!advancedOpen}
+              >
+                {[
+                  {
+                    key: 'read',
+                    title: 'Read other project tasks',
+                    description:
+                      'Without this permission, the agent can read only tasks it creates.',
+                    checked: allowProjectRead,
+                    onChange: setAllowProjectRead,
+                  },
+                  {
+                    key: 'local',
+                    title: 'Use the shared local checkout',
+                    description:
+                      'High impact. Tasks may modify the checkout you are actively using instead of an isolated worktree.',
+                    checked: allowLocal,
+                    onChange: setAllowLocal,
+                  },
+                  {
+                    key: 'full',
+                    title: 'Run without approval prompts',
+                    description:
+                      'High impact. The external agent may start full-access execution without asking you to approve tool actions.',
+                    checked: allowFullAccess,
+                    onChange: setAllowFullAccess,
+                  },
+                ].map((permission) => (
+                  <view
+                    key={permission.key}
+                    className="SettingsIntegrationsPermission"
+                  >
+                    <view className="SettingsIntegrationsRowCopy">
+                      <text className="SettingsIntegrationsPermissionTitle">
+                        {permission.title}
+                      </text>
+                        <text className="SettingsIntegrationsPermissionDescription">
+                        {permission.description}
+                      </text>
+                    </view>
+                    <SettingsGeneralBooleanControlElement
+                      checked={permission.checked}
+                      ariaLabel={permission.title}
+                      onChange={permission.onChange}
+                    />
+                  </view>
+                ))}
+              </view>
+            ) : null}
           </view>
 
           <view className="SettingsIntegrationsRow">

@@ -34,6 +34,20 @@
   gap: 20px;
 }
 
+.SettingsIntegrationsRow--disclosure {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+}
+
+.SettingsIntegrationsRowHeader {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
 .SettingsIntegrationsConnection {
   align-items: flex-start;
   gap: 10px;
@@ -70,6 +84,17 @@
   line-height: var(--type-settings-row-title-line-height);
 }
 
+.SettingsIntegrationsPermissionTitle,
+.SettingsIntegrationsProjectTitle {
+  line-height: 16px;
+}
+
+.SettingsIntegrationsPermissionDescription {
+  color: var(--muted-foreground);
+  font-size: 11px;
+  line-height: 17.875px;
+}
+
 .SettingsIntegrationsNameInput {
   width: 100%;
 }
@@ -100,7 +125,7 @@
 
 .SettingsIntegrationsProject {
   width: 100%;
-  min-height: 36px;
+  min-height: 34px;
   padding: 8px 12px;
   border: 1px solid var(--settings-project-border);
   border-radius: var(--radius-lg);
@@ -139,6 +164,10 @@
   align-items: stretch;
 }
 
+.SliceRoot--viewport-compact .SettingsIntegrationsRowHeader {
+  align-items: stretch;
+}
+
 .SliceRoot--viewport-sm-up .SettingsIntegrationsNameInput {
   width: 256px;
 }
@@ -150,16 +179,19 @@
 .SettingsIntegrationsAdvanced {
   padding-top: 12px;
   border-top: 1px solid var(--border);
+  gap: 16px;
 }
 
 .SettingsIntegrationsDisclosureChevron {
   width: 14px;
   height: 14px;
+  margin-left: 4px;
   flex-shrink: 0;
 }
 
 .SettingsIntegrationsPermission {
-  min-height: 48px;
+  align-items: flex-start;
+  gap: 16px;
 }
 
 .SettingsIntegrationsSetup,
@@ -168,7 +200,7 @@
   flex-direction: column;
   padding: 10px 12px;
   justify-content: center;
-  gap: 0;
+  gap: 2px;
 }
 
 .SettingsIntegrationsSetupActions,

@@ -7789,3 +7789,22 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   `rgba(252,252,252,.008)`，所有既有Usage geometry保持exact，relay OPEN、
   pending 0、transport error 0。
 - focused Settings labels **6/6**，Web与Native/Desktop production builds通过。
+
+## 2026-08-08 — Settings Integrations disclosure anatomy
+
+- same-service dark 1280×820将双方真实切到Access all Off、Home/Studio可见、
+  Advanced Open、三项permission Off后，Lynx第一section比Web高8.5px。根因不是
+  shell offset：Lynx把project grid与advanced permissions嵌在左侧copy列，只有
+  509px宽，Review也按整个expanded copy垂直居中；Web把disclosure作为header下方
+  full-width sibling。
+- 重构两个disclosure row为`SettingsIntegrationsRowHeader`加full-width content，
+  保持shared 220ms motion；project/permission内容恢复598px，Review回到header。
+  同时恢复Web完整high-impact文案，并按Web nested owner校准project 34px、
+  permission 12/16 title + 11/17.875 description、16px rhythm、chevron margin与
+  empty row 2px copy gap。
+- final双方第一section均456/118/624×577.5，第二section均456/719.5/624×92；
+  四rows、两project cards、advanced 469/435/598×170.5、三permission rows、
+  Review 994.15625/382/72.84375×24、empty row均逐项exact。relay OPEN、
+  pending 0、transport error 0。
+- focused Integrations **2 files / 8 tests**，Web与Native/Desktop production
+  builds通过。
