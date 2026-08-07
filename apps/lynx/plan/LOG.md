@@ -7218,3 +7218,16 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   React Doctor **100/100, 0 diagnostics**；page errors0，console仅既存web-core warning。
   owned sessions/58122/9001/staging/home已清理。证据
   `shots/2026-08-07/responsive-settings-integrations-current/`。
+
+## 2026-08-07 — responsive Settings Custom Models editor
+
+- Web custom-model form为`flex-col sm:flex-row`；Lynx旧实现始终横排144px provider+
+  flexible slug+69px Add。直接用`sm-up`首轮实测640px时因fixed Settings sidebar仍占
+  256px，slug input仅剩81px，证明viewport Web breakpoint不能机械复制。
+- 最终editor默认column/stretch，provider/input/Add在600分别270px、640分别310px；
+  shared `md-up`才恢复row/center与144px/remaining/69px。1024实测input369px，wide
+  anatomy不变。
+- focused **2 files / 4 tests**，Lynx-for-Web与Native/Desktop production builds通过，
+  React Doctor **100/100, 0 diagnostics**；page errors0，console仅既存web-core warning。
+  owned sessions/58123/9002/staging/home已清理。证据
+  `shots/2026-08-07/responsive-settings-custom-models-current/`。

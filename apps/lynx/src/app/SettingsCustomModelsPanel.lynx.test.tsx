@@ -69,13 +69,25 @@ describe('Settings Custom Models fidelity', () => {
       /\.SettingsCustomModelsEditor\s*\{[^}]*margin-top:\s*16px;[^}]*padding-top:\s*16px;[^}]*border-top:\s*1px solid var\(--border\);/s
     );
     expect(styles).toMatch(
-      /\.SettingsCustomModelsProviderTrigger\s*\{[^}]*width:\s*144px;[^}]*height:\s*28px;/s
+      /\.SettingsCustomModelsEditorRow\s*\{[^}]*flex-direction:\s*column;[^}]*align-items:\s*stretch;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsCustomModelsProviderTrigger\s*\{[^}]*width:\s*100%;[^}]*height:\s*28px;/s
     );
     expect(styles).toMatch(
       /\.SettingsCustomModelsInput\s*\{[^}]*height:\s*28px;[^}]*flex:\s*1;/s
     );
     expect(styles).toMatch(
-      /\.SettingsCustomModelsAdd\s*\{[^}]*width:\s*69px;[^}]*height:\s*32px;[^}]*gap:\s*8px;[^}]*padding:\s*7px 12px;/s
+      /\.SettingsCustomModelsAdd\s*\{[^}]*width:\s*100%;[^}]*height:\s*32px;[^}]*gap:\s*8px;[^}]*padding:\s*7px 12px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-md-up \.SettingsCustomModelsEditorRow\s*\{[^}]*flex-direction:\s*row;[^}]*align-items:\s*center;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-md-up \.SettingsCustomModelsProviderTrigger\s*\{[^}]*width:\s*144px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-md-up \.SettingsCustomModelsAdd\s*\{[^}]*width:\s*69px;/s
     );
     expect(styles).toMatch(
       /\.SettingsCustomModelsListRow\s*\{[^}]*min-height:\s*36px;[^}]*padding:\s*8px 12px;/s

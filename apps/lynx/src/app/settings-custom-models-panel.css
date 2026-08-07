@@ -78,11 +78,13 @@
 
 .SettingsCustomModelsEditorRow {
   width: 100%;
+  flex-direction: column;
+  align-items: stretch;
   gap: 8px;
 }
 
 .SettingsCustomModelsProviderTrigger {
-  width: 144px;
+  width: 100%;
   height: 28px;
   justify-content: flex-start;
   gap: 8px;
@@ -117,11 +119,24 @@
 }
 
 .SettingsCustomModelsAdd {
-  width: 69px;
+  width: 100%;
   height: 32px;
   flex-shrink: 0;
   gap: 8px;
   padding: 7px 12px;
+}
+
+.SliceRoot--viewport-md-up .SettingsCustomModelsEditorRow {
+  flex-direction: row;
+  align-items: center;
+}
+
+.SliceRoot--viewport-md-up .SettingsCustomModelsProviderTrigger {
+  width: 144px;
+}
+
+.SliceRoot--viewport-md-up .SettingsCustomModelsAdd {
+  width: 69px;
 }
 
 .SettingsCustomModelsError {

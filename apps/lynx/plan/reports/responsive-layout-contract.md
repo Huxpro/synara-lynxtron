@@ -100,8 +100,8 @@ Lynx-for-Web live resize evidence is retained separately at
 The shared API is now available, but the following product surfaces still need
 separate behavior decisions and real multi-size proof:
 
-1. Settings: verify custom-model and remaining collection controls at compact
-   widths. Profile and Integrations collections are closed below.
+1. Settings: verify remaining collection controls at compact widths. Profile,
+   Integrations, and Custom Models are closed below.
 2. Thread overlays: environment panel, diff/browser docks, and selection
    actions still need viewport-clamped positioning. The shared Menu primitive
    already clamps measured popup coordinates to its measured viewport; Search
@@ -195,3 +195,15 @@ Real Lynx-for-Web geometry with four canonical projects proves the transition:
 input and two 151px project columns; 1024px preserves the wide horizontal rows
 and two 269px project columns. Evidence:
 `shots/2026-08-07/responsive-settings-integrations-current/`.
+
+## Settings Custom Models follow-up
+
+The custom-model editor stacks provider, slug input, and Add action while the
+Settings content rail is narrow. Because the 256px Settings sidebar remains
+visible, the Web viewport-level `sm` transition was too early for this
+composition: a measured 640px window left only an 81px slug input.
+
+The editor therefore uses the shared `md-up` class for its horizontal form.
+At 600px and 640px, all three controls own the full 270px/310px row width. At
+1024px, the original 144px provider + 369px input + 69px Add anatomy returns.
+Evidence: `shots/2026-08-07/responsive-settings-custom-models-current/`.
