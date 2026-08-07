@@ -76,6 +76,26 @@ The final retained run rebuilt Native/Desktop with the isolated service URL:
 The owned app and temporary `/tmp` state were removed after capture. Existing
 `.p10-view*` state was read only and left untouched.
 
+## Radius follow-up
+
+The anatomy pass exposed one remaining local style residual: Web resolves the
+`xs` outline button to a 6px radius while Lynx inherited the generic 10px
+button radius. The unique restore-button class now owns `border-radius: 6px`;
+global buttons and the 10px Settings select controls are unchanged.
+
+After rebuilding and reloading the same Browser cell:
+
+- button geometry remained `965.234375,32,114.765625x24`;
+- icon geometry remained `973.234375,37,14x14`;
+- icon opacity/path remained exact;
+- Lynx resolved radius changed from 10px to the Web-exact 6px;
+- connection diagnostics remained empty.
+
+The follow-up screenshot is `lynx-after-restore-radius.png` at `1280x820`.
+Focused tests, Lynx-for-Web build, and Native/Desktop build passed. This
+single-property follow-up reused the immediately preceding exact-owned Native
+anatomy proof instead of paying for another Native launch.
+
 ## Verification
 
 - Focused Rstest: 1 file, 2 tests passed.

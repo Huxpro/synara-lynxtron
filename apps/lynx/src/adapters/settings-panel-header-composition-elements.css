@@ -33,3 +33,7 @@
   color: var(--foreground);
   opacity: 0.8;
 }
+
+.SharedSettingsPanelHeaderRestoreButton {
+  border-radius: 6px;
+}

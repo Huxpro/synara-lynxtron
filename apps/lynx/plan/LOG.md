@@ -7592,3 +7592,8 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   builds通过（仅既有warning）。uncached changed-lines React Doctor以
   `297455d3…`为base并包含untracked test，扫描2 files为**0 diagnostics**。证据
   `shots/2026-08-08/current-head-settings-general-dark-1280/`。
+- 紧邻follow-up继续收敛Restore局部radius：Web xs为6px，Lynx仍继承global
+  Button 10px。唯一Restore class现显式6px，不改全局Button或Settings select；
+  Browser reload后114.765625x24/icon14x14/path均不变、resolved radius exact 6px、
+  connection diagnostics空。focused **2/2**、Lynx-for-Web与Native/Desktop builds
+  通过；该单属性刀复用上一刀exact-owned Native anatomy，不重复启动Native。

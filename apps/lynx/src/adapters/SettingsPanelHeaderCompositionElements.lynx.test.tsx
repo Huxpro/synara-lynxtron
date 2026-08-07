@@ -35,6 +35,9 @@ describe('native settings panel header restore control', () => {
     expect(styles).toMatch(
       /\.SharedSettingsPanelHeaderRestoreIcon\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*opacity:\s*0\.8;/s
     );
+    expect(styles).toMatch(
+      /\.SharedSettingsPanelHeaderRestoreButton\s*\{[^}]*border-radius:\s*6px;/s
+    );
   });
 
   it('preserves restore activation and disabled behavior', () => {
