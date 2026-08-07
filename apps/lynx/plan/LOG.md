@@ -7032,3 +7032,7 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Toggle修为16；随后实测发现CSS rotate让Back box飞到x94/y-13，改用Electron同源
   独立IoIos Back path，删除transform。final PID16427→exact client，layers直接测
   16/16/24/24/24/24且Back x118..142、Forward x148..172，console0。
+- closed route-owner audit：Landing/Thread shared frame、Kanban与Pull Requests三类
+  header均真实关闭sidebar并直接测content x212；Update无top header，Settings保留独立
+  Back/navigation shell。一次DevTool transient no-response后按PID同client重试，最终
+  sidebar恢复open。

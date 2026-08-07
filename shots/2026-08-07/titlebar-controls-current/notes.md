@@ -19,6 +19,10 @@ current Electron CDP authority
   fixed top-left cluster at x=90 and the sidebar column is removed. Standard
   main headers reserve a 212px leading inset, matching Electron's closed-state
   title position.
+- Closed-state inset was exercised on each distinct current Lynx header owner:
+  Landing/Thread's shared chat frame, Kanban, and Pull Requests all resolve
+  their main header content edge to x=212. Update has no top header, while
+  Settings intentionally retains its separate Back/navigation shell.
 - The sidebar-hidden glyph uses the exact central icon. Back/Forward use the
   exact `IoIosArrowRoundBack` / `IoIosArrowRoundForward` paths from the
   Electron reference. Two rejected intermediates were not retained: the

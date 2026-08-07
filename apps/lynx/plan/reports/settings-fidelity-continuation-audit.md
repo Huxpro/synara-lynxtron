@@ -1296,6 +1296,12 @@ The retained replacement cells:
   rejected; final code uses the distinct Electron `IoIosArrowRoundBack` path.
   Exact-owned PID `16427` directly measures all six SVG layers at 16/16 and
   24/24/24/24 in the correct x/y slots with an empty console.
+- Closed-sidebar coverage is not limited to the Kanban proof: real Native
+  toggles directly measure x=212 content edges for the Landing/Thread shared
+  chat frame and Pull Requests header as well. Update has no top header;
+  Settings keeps its intentionally separate Back/navigation shell. A transient
+  DevTool no-response was retried against the same PID-owned client, and the
+  final sidebar state was restored open.
 
 ## Remaining work
 
