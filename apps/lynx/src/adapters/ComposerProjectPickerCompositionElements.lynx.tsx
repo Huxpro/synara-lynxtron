@@ -1,3 +1,4 @@
+import folderSvg from '@synara-central-icons/folder-2.svg?raw';
 import type { SpaceIconName } from '@synara/contracts';
 import type { ReactNode } from '@lynx-js/react';
 
@@ -5,7 +6,6 @@ import {
   BlocksIcon,
   BrainIcon,
   DeviceLaptopIcon,
-  FolderIcon,
   PaletteIcon,
   PlusIcon,
   RefreshCwIcon,
@@ -19,15 +19,21 @@ import {
   MenuTrigger,
 } from '../components/ui/menu.lynx';
 import { useLynxInteractiveState } from '../components/ui/interactive-state.lynx';
+import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
+import { useTheme } from './useTheme.lynx';
 
 function ComposerProjectPickerTriggerElement(props: {
   readonly primaryLabel: string;
   readonly secondaryLabel: string | null;
   readonly className?: string;
 }) {
+  const { activeTheme } = useTheme();
   return (
     <view className="ComposerProjectPickerTriggerContentLynx">
-      <FolderIcon className="ComposerProjectPickerTriggerIconLynx" size={14} />
+      <svg
+        className="ComposerProjectPickerTriggerIconLynx"
+        content={colorizeLynxSvg(folderSvg, activeTheme.theme.ink)}
+      />
       <view className="ComposerProjectPickerTriggerCopyLynx">
         <text className="ComposerProjectPickerTriggerLabelLynx">
           {props.primaryLabel}

@@ -340,6 +340,11 @@ mapping rather than a stylistic approximation. Lynx had supplied a chat bubble
 where Web passes `IoIosGitCompare`. The new narrow adapter reproduces the exact
 locally installed 512-viewBox path, with Web/Lynx-for-Web identical 15x15
 geometry and exact-owned Native parent, paint, identity, and console proof.
+`shots/2026-08-08/composer-project-folder-current/` closes the landing
+project-picker icon source residual. Geometry was already converged; Lynx now
+imports Web's exact Central `folder-2.svg` instead of a generic Tabler folder.
+Browser trigger/icon geometry remains exact and Native confirms the canonical
+paths, stable tray anatomy, identity, and empty console.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

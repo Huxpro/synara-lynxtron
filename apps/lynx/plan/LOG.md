@@ -7534,3 +7534,20 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - commit hook输出generic React Doctor warning；对父commit `6e5b42fa…`执行真实
   `--project apps/lynx --scope lines --base ... --no-cache`后为**0 diagnostics**，
   因此没有changed-line React回归。
+
+## 2026-08-08 — Composer project folder icon
+
+- landing project tray整体geometry已经收敛：Composer736x95、tray736x58、Browser
+  trigger122.859375x28、icon14x14/relative7,7；剩余差异是Web用Central
+  `folder-2.svg`，Lynx用generic Tabler FolderIcon。
+- adapter改为从既有`@synara-central-icons/folder-2.svg?raw`导入同一asset并走theme
+  SVG pipeline；`ComposerProjectPickerTriggerIconLynx`显式拥有14x14/flex-none，
+  不再依赖旧generated component inline size。
+- Browser两端trigger/icon geometry exact，path `M9.13202 3.75`与
+  `M2.75 12.75V11.75`一致。exact-owned Native bundle`fc01fccf…`，
+  root83486→83493、localhost:8901/session1；tray736x58、trigger122x28、
+  icon14x14、canonical path/#0d0d0d、console0。
+- focused test首轮因读取general composer CSS而正确失败；修正到真实owner
+  `landing-composer.css`并补flex-shrink contract后**1/1**。Lynx-for-Web与
+  Native/Desktop builds通过。证据
+  `shots/2026-08-08/composer-project-folder-current/`。
