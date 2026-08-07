@@ -46,7 +46,7 @@ import type {
   ExternalMcpIntegration,
 } from '@synara/contracts';
 import { createWebSocket, resolveDefaultSocketUrl, type WebSocketLike } from '../platform/net.socket';
-import { onGlobalEvent } from '../platform/bridge';
+import { bridgeCall, onGlobalEvent } from '../platform/bridge';
 import { sleepOnHost } from '../platform/timer';
 import {
   createRpcSocketManager,
@@ -174,6 +174,25 @@ function openSocket(url: string): Promise<WebSocketLike> {
   });
 }
 
+let nativeSocketUrlPromise: Promise<string> | null = null;
+
+async function resolveNativeSocketUrl(): Promise<string> {
+  nativeSocketUrlPromise ??= bridgeCall<{ readonly wsUrl?: unknown }>(
+    'runtimeGetSynaraWsUrl'
+  )
+    .then((result) => {
+      const wsUrl = typeof result?.wsUrl === 'string' ? result.wsUrl.trim() : '';
+      if (!wsUrl) return resolveDefaultSocketUrl(null);
+      const parsed = new URL(wsUrl);
+      if (parsed.protocol !== 'ws:' && parsed.protocol !== 'wss:') {
+        throw new Error('Synara runtime endpoint must use ws: or wss:');
+      }
+      return parsed.origin;
+    })
+    .catch(() => resolveDefaultSocketUrl(null));
+  return nativeSocketUrlPromise;
+}
+
 function createManager(
   connect: () => Promise<WebSocketLike>,
   maxReconnectAttempts = MAX_RECONNECT_ATTEMPTS
@@ -189,17 +208,17 @@ function createManager(
     maxReconnectDelayMs: MAX_RECONNECT_DELAY_MS,
     offlineRetryDelayMs: OFFLINE_RETRY_DELAY_MS,
     closeWhenIdle: true,
+    autoReconnectOnFailure: true,
   });
 }
 
-async function negotiate(): Promise<{
+async function negotiate(baseUrl: string): Promise<{
   readonly protocolEpoch: number;
   readonly negotiatedRevision: number;
   readonly serverInstanceId: string;
 }> {
   const manager = createManager(
-    () =>
-      openSocket(withPath(resolveDefaultSocketUrl(null), PROTOCOL.bootstrapPath)),
+    () => openSocket(withPath(baseUrl, PROTOCOL.bootstrapPath)),
     0
   );
   try {
@@ -216,8 +235,9 @@ async function negotiate(): Promise<{
 }
 
 async function openFeatureSocket(): Promise<WebSocketLike> {
-  const compatibility = await negotiate();
-  const url = withQuery(withPath(resolveDefaultSocketUrl(null), PROTOCOL.featurePath), {
+  const baseUrl = await resolveNativeSocketUrl();
+  const compatibility = await negotiate(baseUrl);
+  const url = withQuery(withPath(baseUrl, PROTOCOL.featurePath), {
     'x-synara-client-build': CLIENT_BUILD,
     'x-synara-protocol-epoch': String(compatibility.protocolEpoch),
     'x-synara-protocol-revision': String(compatibility.negotiatedRevision),

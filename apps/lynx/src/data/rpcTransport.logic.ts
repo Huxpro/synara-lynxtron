@@ -143,9 +143,12 @@ export function createRpcSocketManager(input: {
   readonly offlineRetryDelayMs?: number;
   readonly now?: () => number;
   readonly closeWhenIdle?: boolean;
+  readonly autoReconnectOnFailure?: boolean;
 }) {
   let activeSocket: RpcTransportSocket | null = null;
   let connectionPromise: Promise<RpcTransportSocket> | null = null;
+  let recoveryPromise: Promise<void> | null = null;
+  let recoveryGeneration = 0;
   let disposed = false;
   let everConnected = false;
   let offlineUntilMs = 0;
@@ -159,15 +162,52 @@ export function createRpcSocketManager(input: {
     for (const listener of listeners) listener(state);
   };
 
+  const retire = (socket: RpcTransportSocket) => {
+    if (activeSocket !== socket) return;
+    activeSocket = null;
+    connectionPromise = null;
+    publishState('idle');
+    safeClose(socket);
+  };
+
+  const startBackgroundRecovery = () => {
+    if (
+      !input.autoReconnectOnFailure ||
+      disposed ||
+      activeSocket ||
+      recoveryPromise
+    ) {
+      return;
+    }
+    const generation = ++recoveryGeneration;
+    const pending = (async () => {
+      while (!disposed && generation === recoveryGeneration && !activeSocket) {
+        if (state === 'offline') {
+          await input.sleep(input.offlineRetryDelayMs ?? 0);
+          if (disposed || generation !== recoveryGeneration || activeSocket) return;
+        }
+        try {
+          await getSocket();
+          return;
+        } catch {
+          // connectWithBackoff publishes the actionable state. Keep retrying
+          // after the offline window so recovery never depends on a UI poll.
+        }
+      }
+    })();
+    recoveryPromise = pending;
+    void pending.finally(() => {
+      if (recoveryPromise === pending) recoveryPromise = null;
+    });
+  };
+
   const invalidate = (socket: RpcTransportSocket, error: Error) => {
     if (activeSocket !== socket) return;
     activeSocket = null;
     connectionPromise = null;
-    // A closed socket is invalid, but no reconnect attempt exists until the
-    // next caller asks for data. Keep that idle gap distinct from an active,
-    // bounded reconnect attempt so the UI does not flicker between polls.
-    publishState('idle');
+    publishState(input.autoReconnectOnFailure ? 'reconnecting' : 'idle');
     safeClose(socket);
+    startBackgroundRecovery();
   };
 
   const contextFor = (socket: RpcTransportSocket) => {
@@ -209,6 +249,7 @@ export function createRpcSocketManager(input: {
     offlineUntilMs =
       (input.now?.() ?? Date.now()) + (input.offlineRetryDelayMs ?? 0);
     publishState('offline');
+    startBackgroundRecovery();
     throw lastError ?? new RpcTransportError('connection failed');
   };
 
@@ -317,7 +358,7 @@ export function createRpcSocketManager(input: {
         // CLOSE_WAIT. Retire the raw facade socket from the client side as
         // soon as its final response settles so the host releases the FD.
         context.failed = true;
-        invalidate(socket, new RpcTransportError('socket retired after response'));
+        retire(socket);
       }
     });
   };
@@ -348,6 +389,7 @@ export function createRpcSocketManager(input: {
     },
     dispose(): void {
       disposed = true;
+      recoveryGeneration += 1;
       const socket = activeSocket;
       activeSocket = null;
       connectionPromise = null;

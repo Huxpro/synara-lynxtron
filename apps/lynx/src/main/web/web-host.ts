@@ -277,6 +277,20 @@ function rejectPendingRequests(error: Error): void {
   relayPending.clear();
 }
 
+function invalidateRelaySocket(socket: WebSocket, baseUrl: string, error: Error): void {
+  if (relaySocket && relaySocket !== socket) {
+    safeClose(socket);
+    return;
+  }
+  if (relaySocket === socket) {
+    relaySocket = null;
+    relaySocketBaseUrl = null;
+  }
+  safeClose(socket);
+  rejectPendingRequests(error);
+  startRelayRecovery(baseUrl);
+}
+
 async function openFeatureSocket(baseUrl: string): Promise<WebSocket> {
   const compatibility = await negotiate(baseUrl);
   const query = new URLSearchParams({
@@ -308,16 +322,19 @@ async function openFeatureSocket(baseUrl: string): Promise<WebSocket> {
   };
   socket.onerror = () => {
     relayLastTransportError = 'Synara relay socket failed';
-    rejectPendingRequests(new Error('Synara relay socket failed'));
+    invalidateRelaySocket(
+      socket,
+      baseUrl,
+      new Error('Synara relay socket failed')
+    );
   };
   socket.onclose = () => {
-    if (relaySocket === socket) {
-      relaySocket = null;
-      relaySocketBaseUrl = null;
-      startRelayRecovery(baseUrl);
-    }
     relayLastTransportError = 'Synara relay socket closed';
-    rejectPendingRequests(new Error('Synara relay socket closed'));
+    invalidateRelaySocket(
+      socket,
+      baseUrl,
+      new Error('Synara relay socket closed')
+    );
   };
   return socket;
 }
@@ -367,6 +384,9 @@ async function ensureRelaySocket(baseUrl: string): Promise<WebSocket> {
   relayReadyBaseUrl = baseUrl;
   try {
     const socket = await pending;
+    if (socket.readyState !== WebSocket.OPEN) {
+      throw new Error('Synara relay socket closed while connecting');
+    }
     relaySocket = socket;
     relaySocketBaseUrl = baseUrl;
     return socket;
@@ -397,11 +417,11 @@ async function synaraRpc(
   return new Promise((resolve, reject) => {
     const timer = setTimeout(() => {
       relayPending.delete(id);
-      reject(
-        new Error(
-          `Synara RPC ${tag} timed out after ${RPC_REQUEST_TIMEOUT_MS}ms`
-        )
+      const error = new Error(
+        `Synara RPC ${tag} timed out after ${RPC_REQUEST_TIMEOUT_MS}ms`
       );
+      reject(error);
+      invalidateRelaySocket(socket, baseUrl, error);
     }, RPC_REQUEST_TIMEOUT_MS);
     relayPending.set(id, { tag, resolve, reject, timer });
     try {
@@ -411,7 +431,11 @@ async function synaraRpc(
     } catch (error) {
       relayPending.delete(id);
       clearTimeout(timer);
-      reject(new Error(`Synara RPC ${tag} send failed: ${describeError(error)}`));
+      const transportError = new Error(
+        `Synara RPC ${tag} send failed: ${describeError(error)}`
+      );
+      reject(transportError);
+      invalidateRelaySocket(socket, baseUrl, transportError);
     }
   });
 }

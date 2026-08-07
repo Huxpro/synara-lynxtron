@@ -37,6 +37,7 @@ import {
   resolveShellUserDataDir,
   SHELL_CAPABILITIES,
 } from './shellRuntime';
+import { resolveSynaraWsUrl } from './runtimeEndpoint.logic';
 import {
   resolveAttachmentUploadPayload,
   validatePickedFileForUpload,
@@ -103,12 +104,7 @@ function attachmentHttpUrl(
   route: string,
   query: Readonly<Record<string, string>> = {}
 ): URL {
-  const socketUrl = new URL(
-    process.env.SYNARA_WS_URL ?? 'ws://127.0.0.1:58090'
-  );
-  if (socketUrl.protocol !== 'ws:' && socketUrl.protocol !== 'wss:') {
-    throw new Error('Attachment endpoint requires a ws:// or wss:// Synara URL.');
-  }
+  const socketUrl = new URL(resolveSynaraWsUrl(process.env.SYNARA_WS_URL));
   socketUrl.protocol = socketUrl.protocol === 'wss:' ? 'https:' : 'http:';
   socketUrl.pathname = route;
   socketUrl.search = '';

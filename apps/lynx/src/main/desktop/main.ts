@@ -21,6 +21,7 @@ import {
   handleStorage,
   ensureWsEcho,
 } from './hostServices';
+import { resolveSynaraWsUrl } from './runtimeEndpoint.logic';
 import path from 'path';
 import {
   appendShellLog,
@@ -407,6 +408,12 @@ app.whenReady().then(() => {
           callback.sendReply('');
         } else if (name == 'getAppVersion') {
           callback.sendReply(app.getVersion());
+        } else if (name === 'runtimeGetSynaraWsUrl') {
+          callback.sendReply(
+            JSON.stringify({
+              wsUrl: resolveSynaraWsUrl(process.env.SYNARA_WS_URL),
+            })
+          );
         } else if (name.startsWith('storage')) {
           callback.sendReply(handleStorage(name, data));
         } else if (name.startsWith('clipboard')) {

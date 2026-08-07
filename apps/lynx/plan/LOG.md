@@ -7752,3 +7752,26 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - focused Skills **3/3**；Lynx-for-Web与Native/Desktop builds、Sharp staging通过。
   uncached changed-lines Doctor以`147cf5b7…`为base为**0 diagnostics**。证据
   `shots/2026-08-08/settings-skills-row-gap-current/`。
+
+## 2026-08-08 — Cross-client service connection recovery
+
+- Native RPC manager在socket failure后原先退回idle，必须等待下一次query才重连；
+  现以opt-in background recovery持续执行bounded backoff/offline cooldown，正常
+  request完成后的主动socket retirement仍保持idle，不制造重连循环。
+- Lynx-for-Web relay现在在error/send failure/request timeout时淘汰坏socket并启动
+  单飞恢复；旧socket迟到的terminal event不会清空新socket的pending requests，
+  connect完成前也再次确认`OPEN`。
+- Native endpoint不再只依赖bundle内编译值。Desktop Host通过
+  `runtimeGetSynaraWsUrl`返回校验后的runtime ws/wss origin，UI每次新transport
+  generation使用该endpoint完成bootstrap与feature negotiation；旧Host仍回退
+  build-time/default endpoint。
+- 真实kill/restart演练中Lynx-for-Web未刷新页面即从attempt 1进入恢复循环，并在
+  server恢复后于attempt 34回到OPEN、pending 0、transport error清零。演练同时发现
+  Turbo parallel supervision会在单个server退出时连带停止Vite；最终harness改为
+  独立受管server与Vite，避免把process-tree failure误报为产品连接失败。
+- final preflight的Web/Lynx-for-Web/Native均negotiated server instance
+  `0a735352-e0f2-401b-ad08-28939d9f0a67`、snapshot sequence 2。exact-owned
+  Native PID63096由PID-derived localhost:8903验证，Host runtime bridge实际调用，
+  offline文案0、DevTool warning/error 0。
+- focused Lynx **4 files / 16 tests**、Web transport **2 files / 43 tests**、
+  connection preflight **2/2**、Web/Native production builds通过。

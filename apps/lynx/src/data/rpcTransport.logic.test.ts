@@ -68,6 +68,7 @@ function managerFor(input: {
   readonly offlineRetryDelayMs?: number;
   readonly now?: () => number;
   readonly closeWhenIdle?: boolean;
+  readonly autoReconnectOnFailure?: boolean;
 }) {
   let sequence = 0;
   const timeouts = controlledTimeouts();
@@ -85,6 +86,7 @@ function managerFor(input: {
       offlineRetryDelayMs: input.offlineRetryDelayMs,
       now: input.now,
       closeWhenIdle: input.closeWhenIdle,
+      autoReconnectOnFailure: input.autoReconnectOnFailure,
     }),
   };
 }
@@ -179,6 +181,41 @@ describe('rpc transport manager', () => {
     expect(manager.getState()).toBe('connected');
   });
 
+  it('recovers a failed active socket without waiting for another request', async () => {
+    const first = new FakeSocket();
+    const second = new FakeSocket();
+    const sockets = [first, second];
+    let attempts = 0;
+    const { manager } = managerFor({
+      connect: async () => {
+        attempts += 1;
+        return sockets.shift() ?? second;
+      },
+      autoReconnectOnFailure: true,
+    });
+
+    const initial = manager.request<{ snapshotSequence: number }>(
+      'orchestration.getSnapshot',
+      {}
+    );
+    await flushUntil(() => first.sent.length === 1);
+    first.succeedLast({ snapshotSequence: 41 });
+    await expect(initial).resolves.toEqual({ snapshotSequence: 41 });
+
+    first.emit('close');
+    expect(manager.getState()).toBe('reconnecting');
+    await flushUntil(() => attempts === 2);
+    expect(manager.getState()).toBe('connected');
+
+    const recovered = manager.request<{ snapshotSequence: number }>(
+      'orchestration.getSnapshot',
+      {}
+    );
+    await flushUntil(() => second.sent.length === 1);
+    second.succeedLast({ snapshotSequence: 42 });
+    await expect(recovered).resolves.toEqual({ snapshotSequence: 42 });
+  });
+
   it('holds offline between bounded retry windows, then recovers', async () => {
     const recoveredSocket = new FakeSocket();
     let now = 1_000;
@@ -224,6 +261,7 @@ describe('rpc transport manager', () => {
     const { manager } = managerFor({
       connect: async () => socket,
       closeWhenIdle: true,
+      autoReconnectOnFailure: true,
     });
     const pending = manager.request<{ ok: true }>(
       'orchestration.getSnapshot',
