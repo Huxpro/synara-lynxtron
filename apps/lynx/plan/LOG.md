@@ -7042,3 +7042,7 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   **2 files / 16 tests**、Native/Desktop build通过。未发送系统快捷键抢焦点；证据为
   menu source、canonical command allowlist、renderer event subscription与既有real
   pointer history flow。
+- Electron reference正式retain到`shots/2026-08-07/electron-reference-live/`：
+  isolated real service、canonical OpenCode thread、8个真实models、Big Pickle、
+  CDP19321与3456×2168 final frame；Codex missing/Claude unauthenticated保留真实状态，
+  未造fixture或直接写SQLite。

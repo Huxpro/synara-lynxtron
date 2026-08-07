@@ -1310,6 +1310,12 @@ The retained replacement cells:
   focus; source registration, canonical command routing, renderer
   subscriptions, and the already retained real pointer history flow cover the
   contract.
+- The desktop visual authority is now retained under
+  `shots/2026-08-07/electron-reference-live/`: isolated Electron service,
+  canonical OpenCode thread, real eight-model catalog, `Big Pickle` renderer
+  state, CDP `19321`, and a 3456x2168 focus-safe final frame. Real missing
+  Codex/Claude authentication states remain visible rather than being replaced
+  with fixtures.
 
 ## Remaining work
 
