@@ -7288,3 +7288,16 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - focused **2 files / 11 tests**，Lynx-for-Web与Native/Desktop builds通过；React Doctor
   仍为FeatureLists既存6条，不指向新scroll owner。page errors0，console仅既存warning。
   证据`shots/2026-08-07/responsive-kanban-compact-current/`。
+
+## 2026-08-07 — compact Settings sidebar overlay
+
+- Web `<md` sidebar使用Sheet overlay；Lynx旧shell始终预留256px。400px实测main仅144px、
+  content rail96px、General header高182px，虽无CSS overflow但不可用。
+- `SharedAppShellFrame`改relative；compact下其direct `SidebarDisclosure` absolute
+  x0/y0/z50，不改变已验证的motion、interaction-hidden与cleanup。main立即拥有full width。
+- 400px open：sidebar256 overlay、page/content400、header352x74；真实Toggle关闭后sidebar
+  unmount、content仍400、toggle x90..114可达。900px不命中compact overlay，sidebar256+
+  content644恢复正常split。
+- focused **2 files / 8 tests**，Lynx-for-Web与Native/Desktop builds通过，React Doctor
+  **100/100**，page errors0。证据
+  `shots/2026-08-07/responsive-settings-sidebar-compact-current/`。

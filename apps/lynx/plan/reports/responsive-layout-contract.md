@@ -141,6 +141,14 @@ fully visible at y614..642. The viewport grows to 774px at 820px height and
 854px at 900px height, while the main Settings content keeps its separate
 vertical scroll owner.
 
+Below `md=768`, Settings follows the Web mobile-shell authority: the existing
+SidebarDisclosure overlays the full-width main content instead of reserving
+256px. At 400px the open sidebar remains 256px while Settings content owns all
+400px behind it; the real Toggle closes the overlay and remains reachable.
+At 900px the sidebar returns to normal split ownership and content uses 644px.
+Evidence:
+`shots/2026-08-07/responsive-settings-sidebar-compact-current/`.
+
 ## Overlay follow-up
 
 Desktop enforces a 900x650 minimum content size, so the shared `compact` band is

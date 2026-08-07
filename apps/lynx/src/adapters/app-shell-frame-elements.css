@@ -1,7 +1,15 @@
 .SharedAppShellFrame {
+  position: relative;
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: row;
   background-color: var(--app-shell-background, var(--background));
+}
+
+.SliceRoot--viewport-compact .SharedAppShellFrame > .SidebarDisclosure {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 50;
 }

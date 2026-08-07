@@ -52,4 +52,18 @@ describe('Lynx Settings sidebar layout', () => {
     expect(source).toContain('scroll-orientation="vertical"');
     expect(source).toContain('className="SettingsSidebarBodyInner"');
   });
+
+  it('overlays the Settings sidebar instead of squeezing compact content', () => {
+    const shellStyles = readFileSync(
+      new URL('../adapters/app-shell-frame-elements.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(shellStyles).toMatch(
+      /\.SharedAppShellFrame\s*\{[^}]*position:\s*relative;/s
+    );
+    expect(shellStyles).toMatch(
+      /\.SliceRoot--viewport-compact \.SharedAppShellFrame > \.SidebarDisclosure\s*\{[^}]*position:\s*absolute;[^}]*left:\s*0;[^}]*top:\s*0;[^}]*z-index:\s*50;/s
+    );
+  });
 });
