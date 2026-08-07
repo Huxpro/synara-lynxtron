@@ -58,3 +58,8 @@ The final capture uses the stable unique icon class.
 Focused tests pass 2/2, the Sidebar regression suite passes 4/4, and
 Lynx-for-Web plus Native/Desktop production builds pass with only existing
 warnings.
+
+The commit hook printed its generic React Doctor warning. A real
+changed-lines scan against parent `6e5b42fa...` with project `apps/lynx`,
+uncached line scope, and no score reports zero diagnostics. The JSON report is
+retained as `react-doctor.json`.

@@ -7531,3 +7531,6 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - focused新test **1 file / 2 tests**，Sidebar regression **4/4**；Lynx-for-Web与
   Native/Desktop builds通过。证据
   `shots/2026-08-08/sidebar-pull-request-icon-current/`。
+- commit hook输出generic React Doctor warning；对父commit `6e5b42fa…`执行真实
+  `--project apps/lynx --scope lines --base ... --no-cache`后为**0 diagnostics**，
+  因此没有changed-line React回归。
