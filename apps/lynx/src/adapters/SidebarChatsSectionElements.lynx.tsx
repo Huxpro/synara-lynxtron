@@ -7,11 +7,11 @@ import {
 
 import { useLynxInteractiveState } from '../components/ui/interactive-state.lynx';
 import {
-  disclosureChevronClassName,
   disclosureContentClassName,
   useLynxDisclosurePresence,
 } from '../platform/motion.lynx';
 import { useLynxSystemStateAnnouncement } from '../platform/system-state-announcement.lynx';
+import { ChevronDownIcon, ChevronRightIcon } from '../lib/icons.lynx';
 
 export function SidebarChatsSectionRootElement(props: {
   readonly children?: ReactNode;
@@ -36,14 +36,19 @@ export function SidebarChatsSectionHeaderElement(props: {
         {...interaction.eventProps}
       >
         <text className="SharedSidebarChatsLabel">Chats</text>
-        <text
-          className={disclosureChevronClassName(
-            props.expanded,
-            'SharedSidebarChatsChevron'
-          )}
-        >
-          ›
-        </text>
+        {props.expanded ? (
+          <ChevronDownIcon
+            className="LynxDisclosureChevron SharedSidebarChatsChevron"
+            color="var(--muted-foreground)"
+            size={14}
+          />
+        ) : (
+          <ChevronRightIcon
+            className="LynxDisclosureChevron SharedSidebarChatsChevron"
+            color="var(--muted-foreground)"
+            size={14}
+          />
+        )}
       </view>
       {props.toolbar}
     </view>

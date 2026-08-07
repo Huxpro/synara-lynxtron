@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 
 import { SidebarPrimaryNavigationShortcutElement } from './SidebarPrimaryNavigationElements.lynx';
 import { SidebarPrimaryActionButtonElement } from './SidebarPrimaryActionElements.lynx';
+import { SidebarChatsSectionHeaderElement } from './SidebarChatsSectionElements.lynx';
 
 describe('sidebar primary navigation shortcut', () => {
   it('renders each shortcut part as a separate key pill', () => {
@@ -64,6 +65,9 @@ describe('sidebar primary navigation shortcut', () => {
     );
     expect(sidebarStyles).toMatch(
       /\.SharedSidebarChatsHeaderButton\s*\{[^}]*padding-left:\s*8px;[^}]*padding-right:\s*8px;/s
+    );
+    expect(sidebarStyles).toMatch(
+      /\.SharedSidebarChatsChevron\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*flex-shrink:\s*0;[^}]*margin-left:\s*4px;[^}]*opacity:\s*0\.79;/s
     );
     expect(chatsSource).toContain('{present ? props.children : null}');
     expect(chatsSource).not.toContain('if (!present) return null');
@@ -135,5 +139,33 @@ describe('sidebar primary navigation shortcut', () => {
     expect(row.getAttribute('class')).toContain('ui-hover');
     fireEvent.focus(row);
     expect(row.getAttribute('class')).toContain('ui-focus');
+  });
+
+  it('uses stable shared SVG states for the Chats disclosure', () => {
+    const { rerender } = render(
+      <SidebarChatsSectionHeaderElement
+        expanded={false}
+        onActivate={() => undefined}
+      />
+    );
+
+    let chevron = elementTree.root?.querySelector(
+      '.SharedSidebarChatsChevron'
+    );
+    expect(chevron?.nodeName).toBe('SVG');
+    expect(chevron?.textContent).toBe('');
+    expect(chevron?.getAttribute('content')).toContain('M9 6l6 6l-6 6');
+
+    rerender(
+      <SidebarChatsSectionHeaderElement
+        expanded
+        onActivate={() => undefined}
+      />
+    );
+    chevron = elementTree.root?.querySelector('.SharedSidebarChatsChevron');
+    expect(chevron?.getAttribute('content')).toContain('M6 9l6 6l6 -6');
+    expect(chevron?.getAttribute('class')).not.toContain(
+      'LynxDisclosureChevron--open'
+    );
   });
 });

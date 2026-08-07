@@ -299,9 +299,11 @@
 }
 
 .SharedSidebarChatsChevron {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
   margin-left: 4px;
-  color: var(--muted-foreground);
-  font-size: 13px;
+  opacity: 0.79;
 }
 
 .SharedSidebarChatsBody {

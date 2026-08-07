@@ -327,6 +327,14 @@ Unicode chevron approximation. Lynx now consumes its existing generated Tabler
 `chevron-down` SVG, preserving Web's exact 12x12 box, trigger-relative
 coordinates, opacity, and permission color. Exact-owned Native confirms the
 canonical path and absence of `⌄` text with an empty console.
+`shots/2026-08-08/sidebar-chats-chevron-current/` replaces the Sidebar Chats
+text `›` with the shared Tabler icon family. Real Native touch also exposed an
+engine boundary: Lynxtron rotates SVGs around their top-left origin and ignores
+both keyword and percentage center origins, producing a 14px open-state jump.
+The final Native adapter therefore swaps right/down SVG states in one stable
+14x14 box, while Web retains its 220ms rotation. Closed/open Native evidence
+shows identical coordinates, canonical paths, real `aria-expanded` transition,
+and empty consoles.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

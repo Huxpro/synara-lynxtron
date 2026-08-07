@@ -7498,3 +7498,20 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   opacity.7、orange stroke，console0。
 - focused Composer **1 file / 4 tests**；Lynx-for-Web与Native/Desktop builds通过。
   证据`shots/2026-08-08/composer-runtime-chevron-current/`。
+
+## 2026-08-08 — Sidebar Chats disclosure chevron
+
+- Web shared DisclosureChevron为Tabler right 14x14、gap4、muted79%、220ms rotate；
+  Lynx仍为text `›`（5.71875x16），shape/baseline/paint均不同。
+- 首版换同源SVG并保留rotate后，real Native touch暴露open x52→x38，整块左跳14px。
+  先后尝试shared `transform-origin:center`与`50% 50%`，Lynxtron 0.0.7均忽略；
+  两版都被真实closed/open evidence拒绝并撤回。
+- final Native correction用同一generated icon family固定slot swap：closed
+  ChevronRight、open ChevronDown，均14x14/gap4/muted79%；Web继续保留rotate，
+  不用local translate掩盖engine boundary。
+- Browser closed Web/Lynx分别relative x44.796875/45.625、y7，subpixel text advance
+  <1px。exact-owned Native bundle`bc15d22d…`，root97635→97644，
+  localhost:8901/session1；real touch后aria-expanded true，closed/open chevron均
+  x52/y339/14x14，path right→down，body4→33，console0。
+- focused Sidebar+motion **2 files / 6 tests**；Lynx-for-Web与Native/Desktop builds
+  通过。证据`shots/2026-08-08/sidebar-chats-chevron-current/`。

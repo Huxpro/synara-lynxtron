@@ -1,0 +1,205 @@
+{
+  "client": "native",
+  "stateId": "sidebar-chats-chevron-open-light-1280",
+  "roles": {
+    "root": {
+      "nodeId": 13,
+      "nodeName": "VIEW",
+      "attributes": {
+        "data-viewport-width": "1280",
+        "data-viewport-height": "820",
+        "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 820
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "sidebar": {
+      "nodeId": 17,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "AppSidebar"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 256,
+        "height": 820
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "0 1px 0 inset #00000007",
+        "opacity": "1"
+      }
+    },
+    "chatsButton": {
+      "nodeId": 134,
+      "nodeName": "VIEW",
+      "attributes": {
+        "aria-expanded": "true",
+        "focusable": "true",
+        "aria-disabled": "false",
+        "bindmouseenter": "109:0:bindmouseenter",
+        "bindblur": "109:0:bindblur",
+        "bindmouseleave": "109:0:bindmouseleave",
+        "bindkeydown": "109:0:bindkeydown",
+        "bindtap": "109:0:bindtap",
+        "bindmouseup": "109:0:bindmouseup",
+        "bindtouchstart": "109:0:bindtouchstart",
+        "bindmousedown": "109:0:bindmousedown",
+        "bindtouchend": "109:0:bindtouchend",
+        "bindtouchcancel": "109:0:bindtouchcancel",
+        "bindfocus": "109:0:bindfocus",
+        "class": "SharedSidebarChatsHeaderButton"
+      },
+      "text": "",
+      "box": {
+        "x": 6,
+        "y": 332,
+        "width": 244,
+        "height": 28
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "chatsLabel": {
+      "nodeId": 135,
+      "nodeName": "TEXT",
+      "attributes": {
+        "text": "Chats",
+        "class": "SharedSidebarChatsLabel"
+      },
+      "text": "",
+      "box": {
+        "x": 14,
+        "y": 339,
+        "width": 34,
+        "height": 15
+      },
+      "font": {
+        "family": "",
+        "size": "12px",
+        "weight": "500",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgba(13,13,13,0.596078)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "chevron": {
+      "nodeId": 203,
+      "nodeName": "SVG",
+      "attributes": {
+        "content": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"rgba(13, 13, 13, 0.6)\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-chevron-down\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M6 9l6 6l6 -6\" /> </svg>",
+        "class": "LynxDisclosureChevron SharedSidebarChatsChevron",
+        "style": "height:14px;width:14px;"
+      },
+      "text": "",
+      "box": {
+        "x": 52,
+        "y": 339,
+        "width": 14,
+        "height": 14
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "0.79"
+      }
+    },
+    "chatsBody": {
+      "nodeId": 139,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "LynxDisclosureMotion LynxDisclosureMotion--open SharedSidebarChatsBody"
+      },
+      "text": "",
+      "box": {
+        "x": 6,
+        "y": 360,
+        "width": 244,
+        "height": 33
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}
