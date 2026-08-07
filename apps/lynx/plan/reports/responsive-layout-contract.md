@@ -122,6 +122,13 @@ Column roots, vertical scrollers, and card lists now shrink to their route host:
 196px at 900, 237.33px at 1024, and 376px at 1440. All three columns remain
 simultaneously visible and keep independent vertical scrolling.
 
+Below the medium band, the board follows the Web authority instead of crushing
+columns further: `KanbanScroller` owns horizontal scrolling and each column
+returns to a 256px minimum. At 600px the 344px route viewport scrolls across an
+824px rail, including a real 248px card; at 900px the rail collapses back to the
+644px viewport and all three 196px columns remain visible. Evidence:
+`shots/2026-08-07/responsive-kanban-compact-current/`.
+
 ## Settings sidebar follow-up
 
 Settings navigation now follows the Web sidebar's single-scroll-owner model:

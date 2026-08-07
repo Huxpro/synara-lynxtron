@@ -7274,3 +7274,17 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   不为截图伪造project state。focused **2 files / 5 tests**，Lynx-for-Web与
   Native/Desktop builds通过，React Doctor **100/100**，page errors0。证据
   `shots/2026-08-07/responsive-landing-width-current/`。
+
+## 2026-08-07 — compact Kanban horizontal ownership
+
+- Web project board用`overflow-x-auto`+每列`min-w-64`；Lynx 900px三列缩到196px是可用，
+  但若继续外推到600px会只剩约98px，破坏card/column信息密度。
+- `KanbanScroller`改为horizontal `scroll-view`；compact下columns rail固定824px
+  （3×256+2×12 gap+32 padding），column host flex-none/256。medium/wide继续前一刀
+  equal-width contract，不引入横滚。
+- canonical commands创建真实project/thread。600px route client344/scroll824/max480，
+  三列均256、真实card248，首尾frame证明可达；900px client=scroll644、三列196、
+  无horizontal scroll。
+- focused **2 files / 11 tests**，Lynx-for-Web与Native/Desktop builds通过；React Doctor
+  仍为FeatureLists既存6条，不指向新scroll owner。page errors0，console仅既存warning。
+  证据`shots/2026-08-07/responsive-kanban-compact-current/`。

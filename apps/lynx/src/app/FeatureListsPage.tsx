@@ -644,7 +644,10 @@ export function KanbanProjectPage({
           }
         />
       ) : (
-        <view className="KanbanScroller">
+        <scroll-view
+          className="KanbanScroller"
+          scroll-orientation="horizontal"
+        >
           {routeState.refreshIssue ? (
             <KanbanStateComposition
               kind={
@@ -702,7 +705,7 @@ export function KanbanProjectPage({
               );
             })}
           </view>
-        </view>
+        </scroll-view>
       )}
       {nativeDrag ? (
         <view

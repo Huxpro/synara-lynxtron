@@ -71,4 +71,25 @@ describe('Kanban project typography fidelity', () => {
       /\.SharedKanbanColumnCardList\s*\{[^}]*width:\s*100%;[^}]*min-width:\s*0;[^}]*padding:\s*4px;/s
     );
   });
+
+  it('uses horizontal scrolling instead of crushing compact columns', () => {
+    const appStyles = readFileSync(
+      new URL('../app/App.css', import.meta.url),
+      'utf8'
+    );
+    const source = readFileSync(
+      new URL('../app/FeatureListsPage.tsx', import.meta.url),
+      'utf8'
+    );
+
+    expect(source).toContain(
+      '<scroll-view\n          className="KanbanScroller"\n          scroll-orientation="horizontal"'
+    );
+    expect(appStyles).toMatch(
+      /\.SliceRoot--viewport-compact \.KanbanColumns\s*\{[^}]*width:\s*824px;/s
+    );
+    expect(appStyles).toMatch(
+      /\.SliceRoot--viewport-compact \.KanbanColumnHost\s*\{[^}]*flex:\s*none;[^}]*width:\s*256px;[^}]*min-width:\s*256px;/s
+    );
+  });
 });

@@ -449,6 +449,16 @@
   border-radius: 12px;
 }
 
+.SliceRoot--viewport-compact .KanbanColumns {
+  width: 824px;
+}
+
+.SliceRoot--viewport-compact .KanbanColumnHost {
+  flex: none;
+  width: 256px;
+  min-width: 256px;
+}
+
 .KanbanColumnHost--drag-valid {
   background-color: color-mix(in srgb, var(--primary) 5%, transparent);
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--primary) 28%, transparent);
