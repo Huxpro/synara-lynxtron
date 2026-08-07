@@ -7551,3 +7551,5 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   `landing-composer.css`并补flex-shrink contract后**1/1**。Lynx-for-Web与
   Native/Desktop builds通过。证据
   `shots/2026-08-08/composer-project-folder-current/`。
+- commit hook generic warning后，真实uncached changed-lines React Doctor针对父commit
+  `7a3d97f0…`扫描`apps/lynx`为**0 diagnostics**，报告已随evidence保留。

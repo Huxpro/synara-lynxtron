@@ -62,3 +62,7 @@ contract was added there.
 
 Focused test passes 1/1. Lynx-for-Web and Native/Desktop production builds pass
 with only existing warnings.
+
+The commit hook printed its generic React Doctor warning. An uncached
+changed-lines scan of `apps/lynx` against parent `7a3d97f0...` reports zero
+diagnostics. The report is retained as `react-doctor.json`.
