@@ -29,6 +29,10 @@
   `useViewportLayout()` subscribes to browser resize. Lynx
   `useViewportLayout()` hydrates from native content bounds and subscribes to
   both resize event sources.
+- Lynx-for-Web implements the same host-facing contract: `windowGetViewport`
+  reads the browser content viewport and browser resize publishes
+  `viewport:resize`. The fast harness therefore exercises the same user-space
+  hook and root classes instead of remaining in the `unknown` band.
 - Lynx projects the result as
   `SliceRoot--viewport-{unknown|compact|medium|wide}` plus numeric
   `data-viewport-width/height`, giving CSS and DevTool one auditable contract.
@@ -82,6 +86,10 @@ than only cold-start classification. All retained cells have clean
 warning/error consoles.
 
 Evidence: `shots/2026-08-07/responsive-shell-current/`.
+
+Lynx-for-Web live resize evidence is retained separately at
+`shots/2026-08-07/responsive-web-host-current/`: one page changed from
+`compact/640x820` to `wide/1024x820`, including numeric root attributes.
 
 ## Remaining adaptation matrix
 

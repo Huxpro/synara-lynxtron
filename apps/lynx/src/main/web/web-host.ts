@@ -391,6 +391,12 @@ async function handleBridgeCall(
       }
       return null;
     }
+    if (method === 'windowGetViewport') {
+      return {
+        width: globalThis.innerWidth,
+        height: globalThis.innerHeight,
+      };
+    }
     if (method === 'storageDump') {
       return { entries: readStorageEntries() };
     }
@@ -490,7 +496,16 @@ if (!installInteractionBridge()) {
   lynxView.addEventListener('load', installInteractionBridge, { once: true });
 }
 
+const publishViewportSize = () => {
+  lynxView.sendGlobalEvent?.('viewport:resize', [
+    globalThis.innerWidth,
+    globalThis.innerHeight,
+  ]);
+};
+globalThis.addEventListener('resize', publishViewportSize);
+
 globalThis.addEventListener('pagehide', () => {
+  globalThis.removeEventListener('resize', publishViewportSize);
   interactionBridgeController.abort();
   safeClose(relaySocket);
   rejectPendingRequests(new Error('Synara relay page closed'));

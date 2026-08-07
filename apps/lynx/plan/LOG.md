@@ -7170,3 +7170,17 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - cleanup：owned Native、58120/8999、named browser与临时home已删除；Electron临时
   project走canonical `project.delete`恢复不可见，projection保留expected tombstone，
   不声称byte-exact restore。
+
+## 2026-08-07 — Lynx-for-Web viewport host parity
+
+- compact Settings预检发现640x820 browser viewport下root仍是
+  `SliceRoot--viewport-unknown`；不是Profile CSS本身，而是Web host缺少Desktop已有的
+  `windowGetViewport`与`viewport:resize` contract，导致所有user-space responsive规则
+  在fast loop失效。
+- `web-host.ts`现在从`innerWidth/innerHeight`响应`windowGetViewport`，监听browser
+  resize并通过`lynxView.sendGlobalEvent('viewport:resize', [width,height])`发布，pagehide
+  清理listener。Lynx hook与root class无需平台分叉。
+- 同一named browser session实测live `640x820 compact → 1024x820 wide`，numeric
+  data attributes同步更新；两张PNG尺寸精确、page errors 0，console仅既存web-core
+  deprecated initialization warning。focused **1 file / 2 tests**、Lynx-for-Web
+  production build通过。证据`shots/2026-08-07/responsive-web-host-current/`。

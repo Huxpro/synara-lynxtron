@@ -15,6 +15,10 @@ describe('Lynx responsive layout contract', () => {
       new URL('../main/desktop/hostServices.ts', import.meta.url),
       'utf8'
     );
+    const webHost = readFileSync(
+      new URL('../main/web/web-host.ts', import.meta.url),
+      'utf8'
+    );
 
     expect(hook).toContain(
       "useLynxGlobalEventListener('onWindowResize', update)"
@@ -28,6 +32,14 @@ describe('Lynx responsive layout contract', () => {
     expect(host).toContain('w.setContentSize(size.width, size.height)');
     expect(services).toContain("case 'windowGetViewport'");
     expect(services).toContain('w.getContentBounds()');
+    expect(webHost).toContain("if (method === 'windowGetViewport')");
+    expect(webHost).toContain("lynxView.sendGlobalEvent?.('viewport:resize'");
+    expect(webHost).toContain(
+      "globalThis.addEventListener('resize', publishViewportSize)"
+    );
+    expect(webHost).toContain(
+      "globalThis.removeEventListener('resize', publishViewportSize)"
+    );
   });
 
   it('projects root viewport classes and replaces unsupported media-query layout', () => {
