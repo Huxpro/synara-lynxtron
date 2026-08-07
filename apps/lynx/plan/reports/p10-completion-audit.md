@@ -273,6 +273,10 @@ closed by `shots/2026-08-07/sidebar-seam-current/`: it was an authored border
 owner mismatch, not unavoidable engine rounding.
 The same private Settings-sidebar owner is closed by
 `shots/2026-08-07/settings-sidebar-seam-current/`.
+`shots/2026-08-07/sidebar-separator-downstream-audit/` confirms the two
+dependent historical residuals also close without local patches: primary rows
+are 244px and the real Native Project Sort popup returns from x=41 to the
+Electron-authority x=42 while retaining its exact 176x192 geometry.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

@@ -7361,3 +7361,16 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   main x256/1024，computed border-right-width0，console0。
 - focused **2 files / 8 tests**，Lynx-for-Web与Native/Desktop builds通过。证据
   `shots/2026-08-07/settings-sidebar-seam-current/`。
+
+## 2026-08-07 — Sidebar separator downstream residual audit
+
+- 重扫current notes发现Primary top rhythm与Project Sort popup仍把1px差异登记为
+  separator boundary。shared seam删除后无需局部offset：Lynx-for-Web primary rows
+  已由243恢复244，Settings row由239恢复240。
+- Sort popup诊断同样自动闭环：Lynx-for-Web anchor x198/20，popup x42/176x192；
+  exact-owned Native PID83655→localhost:8901/session1，supported touch打开真实menu，
+  popup x42..218/y282..474，精确176x192，与Electron authority x42一致。
+- Lynx-for-Web pointer click未发布custom Menu event，拒绝作为interaction evidence；
+  rendered-element click仅用于geometry setup，Native real touch继续提供interaction proof。
+  browser errors0、Native console0，未改变sort preference。证据
+  `shots/2026-08-07/sidebar-separator-downstream-audit/`。

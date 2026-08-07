@@ -1,0 +1,67 @@
+{
+  "anchor": {
+    "rect": [
+      198,
+      257.25,
+      20,
+      20
+    ],
+    "text": ""
+  },
+  "popup": {
+    "rect": [
+      42,
+      281,
+      176,
+      192
+    ],
+    "text": "Sort projectsLast user messageCreated atManualSort threadsLast user messageCreated at"
+  },
+  "primary": [
+    [
+      6,
+      89.25,
+      244,
+      28
+    ],
+    [
+      6,
+      119.25,
+      244,
+      28
+    ],
+    [
+      6,
+      149.25,
+      244,
+      28
+    ],
+    [
+      6,
+      179.25,
+      244,
+      28
+    ],
+    [
+      6,
+      209.25,
+      244,
+      28
+    ],
+    [
+      8,
+      784,
+      240,
+      28
+    ]
+  ],
+  "sidebar": {
+    "rect": [
+      0,
+      0,
+      256,
+      820
+    ],
+    "text": "StudioProjectsNew thread⌘NSearch⌘KKanbanPull requestsAutomationsProjectsSort projectsLast user messageCreated atManualSort threadsLast user messageCreated atServer unavailableSettings"
+  }
+}
