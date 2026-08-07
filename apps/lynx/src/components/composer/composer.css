@@ -903,13 +903,10 @@
   color: var(--runtime-full-access-accent);
 }
 
-.ComposerRuntimeTriggerPermissionGlyphLynx {
+.ComposerRuntimeTriggerPermissionIconLynx {
   width: 14px;
   height: 14px;
-  color: var(--foreground);
-  font-size: 10px;
-  line-height: 14px;
-  text-align: center;
+  flex-shrink: 0;
 }
 
 .ComposerRuntimeTriggerLabelLynx {
@@ -920,7 +917,7 @@
 }
 
 .ComposerRuntimeTriggerLynx--full-access
-  .ComposerRuntimeTriggerPermissionGlyphLynx,
+  .ComposerRuntimeTriggerPermissionIconLynx,
 .ComposerRuntimeTriggerLynx--full-access .ComposerRuntimeTriggerLabelLynx {
   color: var(--runtime-full-access-accent);
 }

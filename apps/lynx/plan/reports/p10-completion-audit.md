@@ -315,6 +315,13 @@ the PID-derived target gate during an intermediate valid capture; the owned
 Synara client was 8902/session 1. Final retained Native evidence additionally
 keeps the collapsed 4px disclosure body shell with zero children, matching the
 44px Web Chats root rather than only matching its 28px button.
+`shots/2026-08-08/composer-permission-icon-current/` closes a remaining
+high-salience Composer icon approximation. Lynx no longer renders Unicode
+diamonds for runtime permissions; it imports Web's canonical
+`shield-access.svg` through the shared central-icon alias and existing
+theme-aware SVG pipeline. Web and Lynx-for-Web now share the exact 14x14 shield
+box and trigger-relative coordinates, while exact-owned Native confirms the
+canonical path and light accent paint with an empty console.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

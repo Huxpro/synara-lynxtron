@@ -8,6 +8,7 @@ import {
   ComposerExtrasMenuTriggerElement,
   ComposerExtrasPlanLabelElement,
 } from './ComposerExtrasMenuCompositionElements.lynx';
+import { ComposerRuntimeModeTriggerElement } from './ComposerRuntimeModeControlCompositionElements.lynx';
 
 describe('native composer attachment menu item', () => {
   it('opens the host picker only when the capability is available', () => {
@@ -49,6 +50,29 @@ describe('native composer attachment menu item', () => {
     expect(elementTree.root?.textContent).not.toContain('+');
   });
 
+  it('uses the shared shield access icon instead of a Unicode approximation', () => {
+    render(
+      <>
+        <ComposerRuntimeModeTriggerElement
+          hideLabel={false}
+          runtimeMode="full-access"
+        />
+        <ComposerRuntimeModeTriggerElement
+          hideLabel={false}
+          runtimeMode="approval-required"
+        />
+      </>
+    );
+
+    expect(
+      elementTree.root?.querySelectorAll(
+        '.ComposerRuntimeTriggerPermissionIconLynx'
+      )
+    ).toHaveLength(2);
+    expect(elementTree.root?.textContent).not.toContain('◆');
+    expect(elementTree.root?.textContent).not.toContain('◇');
+  });
+
   it('matches the canonical trigger and menu row radii', () => {
     const composerStyles = readFileSync(
       new URL('../components/composer/composer.css', import.meta.url),
@@ -85,12 +109,20 @@ describe('native composer attachment menu item', () => {
       /\.ComposerRuntimeTriggerLynx--full-access\s*\{[^}]*color:\s*var\(--runtime-full-access-accent\);/s
     );
     expect(composerStyles).toMatch(
-      /\.ComposerRuntimeTriggerLynx--full-access\s*\.ComposerRuntimeTriggerPermissionGlyphLynx,\s*\.ComposerRuntimeTriggerLynx--full-access \.ComposerRuntimeTriggerLabelLynx\s*\{[^}]*color:\s*var\(--runtime-full-access-accent\);/s
+      /\.ComposerRuntimeTriggerLynx--full-access\s*\.ComposerRuntimeTriggerPermissionIconLynx,\s*\.ComposerRuntimeTriggerLynx--full-access \.ComposerRuntimeTriggerLabelLynx\s*\{[^}]*color:\s*var\(--runtime-full-access-accent\);/s
     );
     expect(runtimeElementsSource).not.toContain('<Button');
     expect(runtimeElementsSource).not.toContain('render=');
     expect(runtimeElementsSource).toContain(
-      'ComposerRuntimeTriggerPermissionGlyphLynx'
+      "import shieldAccessSvg from '@synara-central-icons/shield-access.svg?raw';"
+    );
+    expect(runtimeElementsSource).toContain(
+      'ComposerRuntimeTriggerPermissionIconLynx'
+    );
+    expect(runtimeElementsSource).not.toContain("'◆'");
+    expect(runtimeElementsSource).not.toContain("'◇'");
+    expect(composerStyles).toMatch(
+      /\.ComposerRuntimeTriggerPermissionIconLynx\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*flex-shrink:\s*0;/s
     );
     expect(runtimeElementsSource).toContain('ComposerRuntimeTriggerLabelLynx');
     expect(runtimeElementsSource).toContain(

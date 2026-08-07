@@ -7466,3 +7466,21 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   console0。
 - focused Sidebar **1 file / 3 tests**；Lynx-for-Web与Native/Desktop builds通过。
   证据`shots/2026-08-08/sidebar-projects-rhythm-current/`。
+
+## 2026-08-08 — Composer permission shield
+
+- current Web `Full access` trigger使用shared
+  `central-icons-reversed/shield-access.svg` 14x14 mask；Lynx仍用Unicode `◆/◇`，
+  slot尺寸接近但paint形状错误，是高显著icon residual。
+- Lynx adapter改为直接从既有`@synara-central-icons` alias导入同一
+  `shield-access.svg?raw`并走`colorizeLynxSvg`；full access light/dark分别使用
+  canonical `#e25505/#fe8549`，default permissions使用active theme ink。未复制/重画
+  asset，旧glyph class与字符已删除。
+- Web/Lynx-for-Web trigger均118.15625x28；shield均14x14、relative x11/y7；
+  label58.15625x16.5 relative x31/y5.75；chevron12x12 relative x95.15625/y8。
+  Lynx SVG content含canonical `M3.75 7.07405` path与`#e25505`。
+- exact-owned Native bundle `9d89fa33…`，root17253→child17258，
+  PID-derived localhost:8902/session1；trigger118x28、shield14x14 relative11/7，
+  canonical path/paint存在、旧glyph absent、console0。
+- focused Composer **1 file / 4 tests**；Lynx-for-Web与Native/Desktop builds通过。
+  证据`shots/2026-08-08/composer-permission-icon-current/`。
