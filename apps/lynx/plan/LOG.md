@@ -7484,3 +7484,17 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   canonical path/paint存在、旧glyph absent、console0。
 - focused Composer **1 file / 4 tests**；Lynx-for-Web与Native/Desktop builds通过。
   证据`shots/2026-08-08/composer-permission-icon-current/`。
+
+## 2026-08-08 — Composer runtime chevron
+
+- shield关闭后相邻affordance仍不一致：Web为Tabler `chevron-down` 12x12/stroke2/
+  opacity.7，Lynx为10px Unicode `⌄`。box碰巧相同，但shape/baseline/paint system不同。
+- Lynx改用既有generated `ChevronDownIcon`，复用permission color与12px slot；删除
+  text-only font/line-height/alignment及冗余CSS color owner，不新增asset。
+- Lynx-for-Web保持trigger118.15625x28、shield relative11/7、label31/5.75、
+  chevron95.15625/8；SVG含`icon-tabler-chevron-down`与`M6 9l6 6l6 -6`，无Unicode。
+- exact-owned Native bundle `7b8e47a2…`，root48309→child48319，
+  PID-derived localhost:8901/session1；chevron534/529/12x12、relative95/8、
+  opacity.7、orange stroke，console0。
+- focused Composer **1 file / 4 tests**；Lynx-for-Web与Native/Desktop builds通过。
+  证据`shots/2026-08-08/composer-runtime-chevron-current/`。

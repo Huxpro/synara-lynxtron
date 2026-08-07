@@ -322,6 +322,11 @@ diamonds for runtime permissions; it imports Web's canonical
 theme-aware SVG pipeline. Web and Lynx-for-Web now share the exact 14x14 shield
 box and trigger-relative coordinates, while exact-owned Native confirms the
 canonical path and light accent paint with an empty console.
+`shots/2026-08-08/composer-runtime-chevron-current/` removes the adjacent
+Unicode chevron approximation. Lynx now consumes its existing generated Tabler
+`chevron-down` SVG, preserving Web's exact 12x12 box, trigger-relative
+coordinates, opacity, and permission color. Exact-owned Native confirms the
+canonical path and absence of `⌄` text with an empty console.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

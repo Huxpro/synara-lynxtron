@@ -69,8 +69,12 @@ describe('native composer attachment menu item', () => {
         '.ComposerRuntimeTriggerPermissionIconLynx'
       )
     ).toHaveLength(2);
+    expect(
+      elementTree.root?.querySelectorAll('.ComposerRuntimeTriggerChevronLynx')
+    ).toHaveLength(2);
     expect(elementTree.root?.textContent).not.toContain('◆');
     expect(elementTree.root?.textContent).not.toContain('◇');
+    expect(elementTree.root?.textContent).not.toContain('⌄');
   });
 
   it('matches the canonical trigger and menu row radii', () => {
@@ -125,8 +129,10 @@ describe('native composer attachment menu item', () => {
       /\.ComposerRuntimeTriggerPermissionIconLynx\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*flex-shrink:\s*0;/s
     );
     expect(runtimeElementsSource).toContain('ComposerRuntimeTriggerLabelLynx');
-    expect(runtimeElementsSource).toContain(
-      'ComposerRuntimeTriggerChevronLynx'
+    expect(runtimeElementsSource).toContain('<ChevronDownIcon');
+    expect(runtimeElementsSource).not.toContain('>⌄</text>');
+    expect(composerStyles).toMatch(
+      /\.ComposerRuntimeTriggerChevronLynx\s*\{[^}]*width:\s*12px;[^}]*height:\s*12px;[^}]*flex-shrink:\s*0;[^}]*opacity:\s*0\.7;/s
     );
     const inputElementsSource = readFileSync(
       new URL('./ComposerInputCompositionElements.lynx.tsx', import.meta.url),

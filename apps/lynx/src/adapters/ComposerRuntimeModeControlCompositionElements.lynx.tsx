@@ -3,6 +3,7 @@ import type { RuntimeMode } from '@synara/contracts';
 import type { ReactNode } from 'react';
 
 import { MenuPopupBase } from '../components/ui/menu.lynx';
+import { ChevronDownIcon } from '../lib/icons.lynx';
 import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
 import { useTheme } from './useTheme.lynx';
 
@@ -33,7 +34,11 @@ export function ComposerRuntimeModeTriggerElement(props: {
       {props.hideLabel ? null : (
         <>
           <text className="ComposerRuntimeTriggerLabelLynx">{label}</text>
-          <text className="ComposerRuntimeTriggerChevronLynx">⌄</text>
+          <ChevronDownIcon
+            className="ComposerRuntimeTriggerChevronLynx"
+            color={iconColor}
+            size={12}
+          />
         </>
       )}
     </view>
