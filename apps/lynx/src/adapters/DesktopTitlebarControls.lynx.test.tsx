@@ -48,6 +48,9 @@ describe('desktop titlebar controls', () => {
     expect(styles).toMatch(
       /\.DesktopTitlebarControls\s*\{[^}]*gap:\s*2px;[^}]*-x-app-region:\s*no-drag;/s
     );
+    expect(styles).toMatch(
+      /\.DesktopTitlebarControl--toggle\s+\.DesktopTitlebarControlIcon--secondary\s*\{[^}]*opacity:\s*0\.75;/s
+    );
   });
 
   it('moves the same control instance between open and closed shell ownership', () => {

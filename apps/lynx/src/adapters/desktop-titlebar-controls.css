@@ -61,6 +61,11 @@
   opacity: 0;
 }
 
+.DesktopTitlebarControl--toggle
+  .DesktopTitlebarControlIcon--secondary {
+  opacity: 0.75;
+}
+
 .DesktopTitlebarControl.ui-hover,
 .DesktopTitlebarControl.ui-pressed {
   background-color: var(--sidebar-accent);

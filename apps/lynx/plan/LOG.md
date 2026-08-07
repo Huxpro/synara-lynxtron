@@ -7015,8 +7015,12 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   首版误用curved reply `arrow-rounded`已拒绝未保留。Settings保持独立真实
   `Back to app`，不冒充global cluster覆盖。
 - focused history/controls **2 files / 6 tests**，Native/Desktop build通过。
-  exact-owned final bundle `5410f093…`，PID4727→localhost:8903/session1；真实touch完成
+  exact-owned final bundle `4b2b5d54…`，PID4727→localhost:8903/session1；真实touch完成
   Landing→Kanban→Back→Forward→close→reopen，final sidebar restored。
   open/closed均x90/116/146与24/28/28，closed header content x212，
   frames2560×1640、console0。sidebar visibility session-local/default open，无新持久化
   schema。证据`shots/2026-08-07/titlebar-controls-current/`。
+- default tone follow-up：Electron Toggle glyph为secondary×.75，Back/Forward保持full
+  secondary。Lynx scoped Toggle secondary layer opacity.75；exact-owned Native
+  PID8862→localhost:8905直接测21=.75、24/27=1，focused **4/4**、build通过、
+  console0，不改变disabled whole-control opacity。

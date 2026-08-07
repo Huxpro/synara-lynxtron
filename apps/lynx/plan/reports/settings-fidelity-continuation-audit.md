@@ -1279,6 +1279,11 @@ The retained replacement cells:
   frames are 2560x1640, and console is empty. Sidebar visibility remains
   session-local/default-open; no hidden persistence contract was invented.
   Evidence is under `shots/2026-08-07/titlebar-controls-current/`.
+- Default control tone also matches Electron: Toggle's secondary SVG layer is
+  75% while Back/Forward retain the full secondary foreground. Exact-owned
+  Native PID `8862`, PID-derived `localhost:8905/session 1`, directly computes
+  0.75 / 1 / 1 for those layers with an empty console; disabled whole-control
+  opacity remains independently owned.
 
 ## Remaining work
 

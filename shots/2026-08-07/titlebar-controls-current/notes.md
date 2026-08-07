@@ -32,6 +32,11 @@ current Electron CDP authority
 - Open and closed control geometry is identical to Electron:
   x=90/116/146 and 24/28/28px. Closed Kanban header content begins at x=212.
   Both retained frames are 2560x1640 and warning/error console output is empty.
+- Electron gives the Toggle glyph an additional 75% muted tone while Back and
+  Forward keep the full secondary foreground. Lynx now mirrors that layer
+  ownership: exact-owned Native computes Toggle secondary opacity 0.75 and
+  both navigation secondary layers at opacity 1, without changing disabled
+  whole-control opacity.
 - Settings intentionally retains its established real `Back to app` surface;
   this global cluster is not claimed on the separate Settings shell.
 - Sidebar visibility remains session-local and defaults open, matching the Web
