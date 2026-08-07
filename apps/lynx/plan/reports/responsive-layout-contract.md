@@ -100,9 +100,8 @@ Lynx-for-Web live resize evidence is retained separately at
 The shared API is now available, but the following product surfaces still need
 separate behavior decisions and real multi-size proof:
 
-1. Settings: verify custom-model, integrations/project, and remaining
-   collection controls at compact widths. Profile collections are closed
-   below.
+1. Settings: verify custom-model and remaining collection controls at compact
+   widths. Profile and Integrations collections are closed below.
 2. Thread overlays: environment panel, diff/browser docks, and selection
    actions still need viewport-clamped positioning. The shared Menu primitive
    already clamps measured popup coordinates to its measured viewport; Search
@@ -183,3 +182,16 @@ columns and full-width insight columns; 640px yields three 111.3px stat
 columns; 1024px restores five 143.6px stat columns and two 336px insight
 columns with the canonical 48px gap. Evidence:
 `shots/2026-08-07/responsive-settings-profile-current/`.
+
+## Settings Integrations follow-up
+
+Integrations now follows its Web `sm` behavior. Below 640px, its route-owned
+form rows stack vertically, the connection name input fills the available
+width, and project selection is one column. From `sm=640`, the input returns to
+256px and projects return to two columns.
+
+Real Lynx-for-Web geometry with four canonical projects proves the transition:
+600px yields a 270px input and four 270px project rows; 640px yields a 256px
+input and two 151px project columns; 1024px preserves the wide horizontal rows
+and two 269px project columns. Evidence:
+`shots/2026-08-07/responsive-settings-integrations-current/`.

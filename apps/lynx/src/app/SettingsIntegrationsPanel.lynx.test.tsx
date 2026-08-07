@@ -89,7 +89,10 @@ describe('Settings Integrations fidelity', () => {
       /\.SettingsIntegrationsRow,\s*\.SettingsIntegrationsConnection\s*\{[^}]*min-height:/s
     );
     expect(styles).toMatch(
-      /\.SettingsIntegrationsNameInput\s*\{[^}]*width:\s*256px;/s
+      /\.SettingsIntegrationsNameInput\s*\{[^}]*width:\s*100%;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-sm-up \.SettingsIntegrationsNameInput\s*\{[^}]*width:\s*256px;/s
     );
     expect(styles).toMatch(
       /\.SettingsIntegrationsConnection\s*\{[^}]*align-items:\s*flex-start;[^}]*gap:\s*10px;/s
@@ -104,7 +107,13 @@ describe('Settings Integrations fidelity', () => {
       /\.SettingsIntegrationsProjectGrid\s*\{[^}]*flex-direction:\s*row;[^}]*flex-wrap:\s*wrap;/s
     );
     expect(styles).toMatch(
-      /\.SettingsIntegrationsProject\s*\{[^}]*width:\s*calc\(50% - 4px\);/s
+      /\.SettingsIntegrationsProject\s*\{[^}]*width:\s*100%;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-sm-up \.SettingsIntegrationsProject\s*\{[^}]*width:\s*calc\(50% - 4px\);/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.SettingsIntegrationsRow\s*\{[^}]*flex-direction:\s*column;[^}]*align-items:\s*stretch;/s
     );
     expect(styles).toMatch(
       /\.SettingsIntegrationsProject--checked\s*\{[^}]*border-color:\s*var\(--settings-project-selected-border\);[^}]*background-color:\s*var\(--settings-project-selected-surface\);/s

@@ -7203,3 +7203,18 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Lynx-for-Web与Native/Desktop production builds通过，React Doctor changed scope
   **100/100, 0 diagnostics**。证据
   `shots/2026-08-07/responsive-settings-profile-current/`。
+
+## 2026-08-07 — responsive Settings Integrations collections
+
+- Web authority的Integrations name input为`w-full sm:w-64`，project grid为单列
+  `sm:grid-cols-2`；Lynx旧实现固定256px input、无条件双列project cards，且其route-owned
+  rows没有消费generic SettingsRow compact stack。
+- 同一owner收敛：compact下custom rows改column/stretch、name input 100%、project card
+  100%；shared `sm-up`恢复input 256px与card `calc(50%-4px)`，不新增私有breakpoint。
+- canonical Web Create Project dialog真实加入synara/vue-lynx，加server Home/Studio共4个
+  project；rendered Access-all switch关闭后，Lynx-for-Web实测600px为270px input+
+  四个270px单列cards，640px为256px input+两列151px，1024px保持wide rows+两列269px。
+- focused **2 files / 5 tests**，Lynx-for-Web与Native/Desktop production builds通过，
+  React Doctor **100/100, 0 diagnostics**；page errors0，console仅既存web-core warning。
+  owned sessions/58122/9001/staging/home已清理。证据
+  `shots/2026-08-07/responsive-settings-integrations-current/`。
