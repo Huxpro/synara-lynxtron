@@ -1,0 +1,89 @@
+.DesktopTitlebarControls {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2px;
+  -x-app-region: no-drag;
+}
+
+.DesktopTitlebarControls--open {
+  margin-left: 76px;
+}
+
+.DesktopTitlebarControls--closed {
+  position: fixed;
+  left: 90px;
+  top: 0;
+  z-index: 80;
+  height: 46px;
+}
+
+.DesktopTitlebarControl {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background-color: transparent;
+  color: var(--color-text-foreground-secondary);
+}
+
+.DesktopTitlebarControl--toggle {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+}
+
+.DesktopTitlebarControl--navigation {
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+}
+
+.DesktopTitlebarControl--back .DesktopTitlebarControlIcon {
+  transform: rotate(180deg);
+}
+
+.DesktopTitlebarControlIcon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.DesktopTitlebarControl--navigation .DesktopTitlebarControlIcon {
+  left: 2px;
+  top: 2px;
+}
+
+.DesktopTitlebarControlIcon--foreground {
+  opacity: 0;
+}
+
+.DesktopTitlebarControl.ui-hover,
+.DesktopTitlebarControl.ui-pressed {
+  background-color: var(--sidebar-accent);
+  color: var(--foreground);
+}
+
+.DesktopTitlebarControl.ui-hover .DesktopTitlebarControlIcon--secondary,
+.DesktopTitlebarControl.ui-pressed .DesktopTitlebarControlIcon--secondary,
+.DesktopTitlebarControl.ui-focus .DesktopTitlebarControlIcon--secondary {
+  opacity: 0;
+}
+
+.DesktopTitlebarControl.ui-hover .DesktopTitlebarControlIcon--foreground,
+.DesktopTitlebarControl.ui-pressed .DesktopTitlebarControlIcon--foreground,
+.DesktopTitlebarControl.ui-focus .DesktopTitlebarControlIcon--foreground {
+  opacity: 1;
+}
+
+.DesktopTitlebarControl.ui-focus {
+  outline: none;
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.DesktopTitlebarControl--disabled {
+  opacity: 0.64;
+}

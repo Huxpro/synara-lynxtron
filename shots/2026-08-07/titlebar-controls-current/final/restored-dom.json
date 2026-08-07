@@ -1,0 +1,2364 @@
+{
+  "compress": false,
+  "root": {
+    "attributes": [],
+    "backendNodeId": 11,
+    "childNodeCount": 1,
+    "children": [
+      {
+        "attributes": [],
+        "backendNodeId": 10,
+        "childNodeCount": 1,
+        "children": [
+          {
+            "attributes": [
+              "class",
+              "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+            ],
+            "backendNodeId": 13,
+            "childNodeCount": 2,
+            "children": [
+              {
+                "attributes": [
+                  "class",
+                  "TransportStatusNotice TransportStatusNotice--reconnecting"
+                ],
+                "backendNodeId": 318,
+                "childNodeCount": 2,
+                "children": [
+                  {
+                    "attributes": [
+                      "accessibility-element",
+                      "true",
+                      "accessibility-traits",
+                      "updating",
+                      "accessibility-label",
+                      "Reconnecting to Synara",
+                      "class",
+                      "TransportStatusNoticeText"
+                    ],
+                    "backendNodeId": 319,
+                    "childNodeCount": 1,
+                    "children": [
+                      {
+                        "attributes": [
+                          "text",
+                          "Reconnecting…"
+                        ],
+                        "backendNodeId": 321,
+                        "childNodeCount": 0,
+                        "children": [],
+                        "localName": "raw-text",
+                        "nodeId": 321,
+                        "nodeName": "RAW-TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 319
+                      }
+                    ],
+                    "localName": "text",
+                    "nodeId": 319,
+                    "nodeName": "TEXT",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 318
+                  },
+                  {
+                    "attributes": [],
+                    "backendNodeId": 320,
+                    "childNodeCount": 0,
+                    "children": [],
+                    "localName": "wrapper",
+                    "nodeId": 320,
+                    "nodeName": "WRAPPER",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 318
+                  }
+                ],
+                "localName": "view",
+                "nodeId": 318,
+                "nodeName": "VIEW",
+                "nodeType": 1,
+                "nodeValue": "",
+                "parentId": 13
+              },
+              {
+                "attributes": [
+                  "class",
+                  "SharedAppShellFrame"
+                ],
+                "backendNodeId": 16,
+                "childNodeCount": 2,
+                "children": [
+                  {
+                    "attributes": [
+                      "class",
+                      "AppSidebar"
+                    ],
+                    "backendNodeId": 226,
+                    "childNodeCount": 3,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "AppSidebarTitlebar AppWindowDragRegion"
+                        ],
+                        "backendNodeId": 227,
+                        "childNodeCount": 2,
+                        "children": [
+                          {
+                            "attributes": [
+                              "class",
+                              "DesktopTitlebarControls DesktopTitlebarControls--open"
+                            ],
+                            "backendNodeId": 228,
+                            "childNodeCount": 3,
+                            "children": [
+                              {
+                                "attributes": [
+                                  "aria-label",
+                                  "Toggle thread sidebar",
+                                  "accessibility-element",
+                                  "true",
+                                  "accessibility-label",
+                                  "Toggle thread sidebar",
+                                  "accessibility-traits",
+                                  "button",
+                                  "focusable",
+                                  "true",
+                                  "aria-disabled",
+                                  "false",
+                                  "bindmouseenter",
+                                  "180:0:bindmouseenter",
+                                  "bindblur",
+                                  "180:0:bindblur",
+                                  "bindmouseleave",
+                                  "180:0:bindmouseleave",
+                                  "bindkeydown",
+                                  "180:0:bindkeydown",
+                                  "bindtap",
+                                  "180:0:bindtap",
+                                  "bindmouseup",
+                                  "180:0:bindmouseup",
+                                  "bindtouchstart",
+                                  "180:0:bindtouchstart",
+                                  "bindmousedown",
+                                  "180:0:bindmousedown",
+                                  "bindtouchend",
+                                  "180:0:bindtouchend",
+                                  "bindtouchcancel",
+                                  "180:0:bindtouchcancel",
+                                  "bindfocus",
+                                  "180:0:bindfocus",
+                                  "class",
+                                  "DesktopTitlebarControl DesktopTitlebarControl--toggle"
+                                ],
+                                "backendNodeId": 229,
+                                "childNodeCount": 2,
+                                "children": [
+                                  {
+                                    "attributes": [
+                                      "content",
+                                      "<svg width=\"24px\" height=\"24px\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><g><path d=\"M2.75 6.75C2.75 5.64543 3.64543 4.75 4.75 4.75H19.25C20.3546 4.75 21.25 5.64543 21.25 6.75V17.25C21.25 18.3546 20.3546 19.25 19.25 19.25H4.75C3.64543 19.25 2.75 18.3546 2.75 17.25V6.75Z\" stroke=\"rgba(13, 13, 13, 0.598)\" stroke-width=\"1.5\" stroke-linejoin=\"round\"></path><path d=\"M6.25 8.25V15.75\" stroke=\"rgba(13, 13, 13, 0.598)\" stroke-width=\"1.5\" stroke-linecap=\"round\"></path></g></svg>",
+                                      "class",
+                                      "DesktopTitlebarControlIcon DesktopTitlebarControlIcon--secondary"
+                                    ],
+                                    "backendNodeId": 230,
+                                    "childNodeCount": 0,
+                                    "children": [],
+                                    "localName": "svg",
+                                    "nodeId": 230,
+                                    "nodeName": "SVG",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 229
+                                  },
+                                  {
+                                    "attributes": [
+                                      "content",
+                                      "<svg width=\"24px\" height=\"24px\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><g><path d=\"M2.75 6.75C2.75 5.64543 3.64543 4.75 4.75 4.75H19.25C20.3546 4.75 21.25 5.64543 21.25 6.75V17.25C21.25 18.3546 20.3546 19.25 19.25 19.25H4.75C3.64543 19.25 2.75 18.3546 2.75 17.25V6.75Z\" stroke=\"#0d0d0d\" stroke-width=\"1.5\" stroke-linejoin=\"round\"></path><path d=\"M6.25 8.25V15.75\" stroke=\"#0d0d0d\" stroke-width=\"1.5\" stroke-linecap=\"round\"></path></g></svg>",
+                                      "class",
+                                      "DesktopTitlebarControlIcon DesktopTitlebarControlIcon--foreground"
+                                    ],
+                                    "backendNodeId": 231,
+                                    "childNodeCount": 0,
+                                    "children": [],
+                                    "localName": "svg",
+                                    "nodeId": 231,
+                                    "nodeName": "SVG",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 229
+                                  }
+                                ],
+                                "localName": "view",
+                                "nodeId": 229,
+                                "nodeName": "VIEW",
+                                "nodeType": 1,
+                                "nodeValue": "",
+                                "parentId": 228
+                              },
+                              {
+                                "attributes": [
+                                  "aria-label",
+                                  "Back",
+                                  "accessibility-element",
+                                  "true",
+                                  "accessibility-label",
+                                  "Back",
+                                  "accessibility-traits",
+                                  "button",
+                                  "focusable",
+                                  "true",
+                                  "aria-disabled",
+                                  "false",
+                                  "bindmouseenter",
+                                  "181:0:bindmouseenter",
+                                  "bindblur",
+                                  "181:0:bindblur",
+                                  "bindmouseleave",
+                                  "181:0:bindmouseleave",
+                                  "bindkeydown",
+                                  "181:0:bindkeydown",
+                                  "bindtap",
+                                  "181:0:bindtap",
+                                  "bindmouseup",
+                                  "181:0:bindmouseup",
+                                  "bindtouchstart",
+                                  "181:0:bindtouchstart",
+                                  "bindmousedown",
+                                  "181:0:bindmousedown",
+                                  "bindtouchend",
+                                  "181:0:bindtouchend",
+                                  "bindtouchcancel",
+                                  "181:0:bindtouchcancel",
+                                  "bindfocus",
+                                  "181:0:bindfocus",
+                                  "class",
+                                  "DesktopTitlebarControl DesktopTitlebarControl--navigation DesktopTitlebarControl--back"
+                                ],
+                                "backendNodeId": 232,
+                                "childNodeCount": 2,
+                                "children": [
+                                  {
+                                    "attributes": [
+                                      "content",
+                                      "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\" fill=\"rgba(13, 13, 13, 0.598)\"><path d=\"M295.6 163.7c-5.1 5-5.1 13.3-.1 18.4l60.8 60.9H124.9c-7.1 0-12.9 5.8-12.9 13s5.8 13 12.9 13h231.3l-60.8 60.9c-5 5.1-4.9 13.3.1 18.4 5.1 5 13.2 5 18.3-.1l82.4-83c1.1-1.2 2-2.5 2.7-4.1.7-1.6 1-3.3 1-5 0-3.4-1.3-6.6-3.7-9.1l-82.4-83c-4.9-5.2-13.1-5.3-18.2-.3z\"/></svg>",
+                                      "class",
+                                      "DesktopTitlebarControlIcon DesktopTitlebarControlIcon--secondary"
+                                    ],
+                                    "backendNodeId": 233,
+                                    "childNodeCount": 0,
+                                    "children": [],
+                                    "localName": "svg",
+                                    "nodeId": 233,
+                                    "nodeName": "SVG",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 232
+                                  },
+                                  {
+                                    "attributes": [
+                                      "content",
+                                      "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\" fill=\"#0d0d0d\"><path d=\"M295.6 163.7c-5.1 5-5.1 13.3-.1 18.4l60.8 60.9H124.9c-7.1 0-12.9 5.8-12.9 13s5.8 13 12.9 13h231.3l-60.8 60.9c-5 5.1-4.9 13.3.1 18.4 5.1 5 13.2 5 18.3-.1l82.4-83c1.1-1.2 2-2.5 2.7-4.1.7-1.6 1-3.3 1-5 0-3.4-1.3-6.6-3.7-9.1l-82.4-83c-4.9-5.2-13.1-5.3-18.2-.3z\"/></svg>",
+                                      "class",
+                                      "DesktopTitlebarControlIcon DesktopTitlebarControlIcon--foreground"
+                                    ],
+                                    "backendNodeId": 234,
+                                    "childNodeCount": 0,
+                                    "children": [],
+                                    "localName": "svg",
+                                    "nodeId": 234,
+                                    "nodeName": "SVG",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 232
+                                  }
+                                ],
+                                "localName": "view",
+                                "nodeId": 232,
+                                "nodeName": "VIEW",
+                                "nodeType": 1,
+                                "nodeValue": "",
+                                "parentId": 228
+                              },
+                              {
+                                "attributes": [
+                                  "aria-label",
+                                  "Forward",
+                                  "accessibility-element",
+                                  "true",
+                                  "accessibility-label",
+                                  "Forward",
+                                  "accessibility-traits",
+                                  "button",
+                                  "focusable",
+                                  "false",
+                                  "aria-disabled",
+                                  "true",
+                                  "class",
+                                  "DesktopTitlebarControl DesktopTitlebarControl--navigation DesktopTitlebarControl--disabled"
+                                ],
+                                "backendNodeId": 235,
+                                "childNodeCount": 2,
+                                "children": [
+                                  {
+                                    "attributes": [
+                                      "content",
+                                      "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\" fill=\"rgba(13, 13, 13, 0.598)\"><path d=\"M295.6 163.7c-5.1 5-5.1 13.3-.1 18.4l60.8 60.9H124.9c-7.1 0-12.9 5.8-12.9 13s5.8 13 12.9 13h231.3l-60.8 60.9c-5 5.1-4.9 13.3.1 18.4 5.1 5 13.2 5 18.3-.1l82.4-83c1.1-1.2 2-2.5 2.7-4.1.7-1.6 1-3.3 1-5 0-3.4-1.3-6.6-3.7-9.1l-82.4-83c-4.9-5.2-13.1-5.3-18.2-.3z\"/></svg>",
+                                      "class",
+                                      "DesktopTitlebarControlIcon DesktopTitlebarControlIcon--secondary"
+                                    ],
+                                    "backendNodeId": 236,
+                                    "childNodeCount": 0,
+                                    "children": [],
+                                    "localName": "svg",
+                                    "nodeId": 236,
+                                    "nodeName": "SVG",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 235
+                                  },
+                                  {
+                                    "attributes": [
+                                      "content",
+                                      "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\" fill=\"#0d0d0d\"><path d=\"M295.6 163.7c-5.1 5-5.1 13.3-.1 18.4l60.8 60.9H124.9c-7.1 0-12.9 5.8-12.9 13s5.8 13 12.9 13h231.3l-60.8 60.9c-5 5.1-4.9 13.3.1 18.4 5.1 5 13.2 5 18.3-.1l82.4-83c1.1-1.2 2-2.5 2.7-4.1.7-1.6 1-3.3 1-5 0-3.4-1.3-6.6-3.7-9.1l-82.4-83c-4.9-5.2-13.1-5.3-18.2-.3z\"/></svg>",
+                                      "class",
+                                      "DesktopTitlebarControlIcon DesktopTitlebarControlIcon--foreground"
+                                    ],
+                                    "backendNodeId": 237,
+                                    "childNodeCount": 0,
+                                    "children": [],
+                                    "localName": "svg",
+                                    "nodeId": 237,
+                                    "nodeName": "SVG",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 235
+                                  }
+                                ],
+                                "localName": "view",
+                                "nodeId": 235,
+                                "nodeName": "VIEW",
+                                "nodeType": 1,
+                                "nodeValue": "",
+                                "parentId": 228
+                              }
+                            ],
+                            "localName": "view",
+                            "nodeId": 228,
+                            "nodeName": "VIEW",
+                            "nodeType": 1,
+                            "nodeValue": "",
+                            "parentId": 227
+                          },
+                          {
+                            "attributes": [
+                              "content",
+                              "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 470 504\" fill=\"none\"><path d=\"M2.65188 2.1899C-0.630695 5.47248 -0.995426 113.797 2.28715 121.821C3.74607 125.104 35.8423 149.906 74.5038 176.531C148.179 227.958 159.121 237.806 170.428 260.054L177.358 273.914L194.135 252.76C203.254 241.088 212.372 228.323 214.196 224.311C228.055 197.685 220.396 158.659 196.324 132.763C181.735 117.08 23.0768 4.37828 11.4054 1.09571C8.12283 0.366249 4.1108 0.73098 2.65188 2.1899Z\" fill=\"rgba(13, 13, 13, 0.598)\" /><path d=\"M467.348 1.45943C470.631 4.74201 470.995 113.067 467.713 121.091C466.254 124.374 434.158 149.175 395.496 175.801C321.821 227.228 310.879 237.075 299.572 259.324L292.642 273.184L275.865 252.029C266.746 240.358 257.628 227.592 255.804 223.58C241.945 196.955 249.604 157.929 273.676 132.033C288.265 116.35 446.923 3.64782 458.595 0.365241C461.877 -0.36422 465.889 0.000510871 467.348 1.45943Z\" fill=\"rgba(13, 13, 13, 0.598)\" /><path d=\"M217.479 291.602C187.396 324.802 187 326.002 187 420.002V494.002C187 499.525 191.477 504.002 197 504.002H234.5H272C277.523 504.002 282 499.525 282 494.002V418.002C282 351.202 280.812 329.602 276.458 322.002C269.729 310.002 239.25 274.002 236.083 274.002C234.5 274.002 226.187 282.002 217.479 291.602Z\" fill=\"rgba(13, 13, 13, 0.598)\" /></svg>",
+                              "accessibility-label",
+                              "Synara",
+                              "class",
+                              "shrink-0 text-foreground SharedSidebarDesktopLogo pointer-events-none ml-auto text-[var(--color-text-foreground-secondary)] opacity-80",
+                              "style",
+                              "height:14px;width:14px;"
+                            ],
+                            "backendNodeId": 238,
+                            "childNodeCount": 0,
+                            "children": [],
+                            "localName": "svg",
+                            "nodeId": 238,
+                            "nodeName": "SVG",
+                            "nodeType": 1,
+                            "nodeValue": "",
+                            "parentId": 227
+                          }
+                        ],
+                        "localName": "view",
+                        "nodeId": 227,
+                        "nodeName": "VIEW",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 226
+                      },
+                      {
+                        "attributes": [
+                          "scroll-orientation",
+                          "vertical",
+                          "class",
+                          "AppSidebarScroll"
+                        ],
+                        "backendNodeId": 239,
+                        "childNodeCount": 1,
+                        "children": [
+                          {
+                            "attributes": [
+                              "class",
+                              "AppSidebarScrollInner"
+                            ],
+                            "backendNodeId": 240,
+                            "childNodeCount": 2,
+                            "children": [
+                              {
+                                "attributes": [
+                                  "class",
+                                  "SidebarSegmentedFrame"
+                                ],
+                                "backendNodeId": 241,
+                                "childNodeCount": 1,
+                                "children": [
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SidebarSegmentedTrack"
+                                    ],
+                                    "backendNodeId": 242,
+                                    "childNodeCount": 3,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "class",
+                                          "SidebarSegmentedThumb",
+                                          "style",
+                                          "width:calc(50% + 6px);left:50%;"
+                                        ],
+                                        "backendNodeId": 243,
+                                        "childNodeCount": 0,
+                                        "children": [],
+                                        "localName": "view",
+                                        "nodeId": 243,
+                                        "nodeName": "VIEW",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 242
+                                      },
+                                      {
+                                        "attributes": [
+                                          "aria-pressed",
+                                          "false",
+                                          "focusable",
+                                          "true",
+                                          "aria-disabled",
+                                          "false",
+                                          "bindmouseleave",
+                                          "188:0:bindmouseleave",
+                                          "bindkeydown",
+                                          "188:0:bindkeydown",
+                                          "bindtap",
+                                          "188:0:bindtap",
+                                          "bindmousedown",
+                                          "188:0:bindmousedown",
+                                          "bindtouchstart",
+                                          "188:0:bindtouchstart",
+                                          "bindmouseup",
+                                          "188:0:bindmouseup",
+                                          "bindtouchend",
+                                          "188:0:bindtouchend",
+                                          "bindtouchcancel",
+                                          "188:0:bindtouchcancel",
+                                          "bindfocus",
+                                          "188:0:bindfocus",
+                                          "bindblur",
+                                          "188:0:bindblur",
+                                          "bindmouseenter",
+                                          "188:0:bindmouseenter",
+                                          "class",
+                                          "SidebarSegmentedButton"
+                                        ],
+                                        "backendNodeId": 244,
+                                        "childNodeCount": 1,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SidebarSegmentedLabel",
+                                              "style",
+                                              "transform:translateX(0px);"
+                                            ],
+                                            "backendNodeId": 245,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "text",
+                                                  "Studio"
+                                                ],
+                                                "backendNodeId": 246,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "raw-text",
+                                                "nodeId": 246,
+                                                "nodeName": "RAW-TEXT",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 245
+                                              }
+                                            ],
+                                            "localName": "text",
+                                            "nodeId": 245,
+                                            "nodeName": "TEXT",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 244
+                                          }
+                                        ],
+                                        "localName": "view",
+                                        "nodeId": 244,
+                                        "nodeName": "VIEW",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 242
+                                      },
+                                      {
+                                        "attributes": [
+                                          "aria-pressed",
+                                          "true",
+                                          "focusable",
+                                          "true",
+                                          "aria-disabled",
+                                          "false",
+                                          "bindmouseleave",
+                                          "191:0:bindmouseleave",
+                                          "bindkeydown",
+                                          "191:0:bindkeydown",
+                                          "bindtap",
+                                          "191:0:bindtap",
+                                          "bindmousedown",
+                                          "191:0:bindmousedown",
+                                          "bindtouchstart",
+                                          "191:0:bindtouchstart",
+                                          "bindmouseup",
+                                          "191:0:bindmouseup",
+                                          "bindtouchend",
+                                          "191:0:bindtouchend",
+                                          "bindtouchcancel",
+                                          "191:0:bindtouchcancel",
+                                          "bindfocus",
+                                          "191:0:bindfocus",
+                                          "bindblur",
+                                          "191:0:bindblur",
+                                          "bindmouseenter",
+                                          "191:0:bindmouseenter",
+                                          "class",
+                                          "SidebarSegmentedButton SidebarSegmentedButton--active"
+                                        ],
+                                        "backendNodeId": 247,
+                                        "childNodeCount": 1,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SidebarSegmentedLabel",
+                                              "style",
+                                              "transform:translateX(4px);"
+                                            ],
+                                            "backendNodeId": 248,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "text",
+                                                  "Projects"
+                                                ],
+                                                "backendNodeId": 249,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "raw-text",
+                                                "nodeId": 249,
+                                                "nodeName": "RAW-TEXT",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 248
+                                              }
+                                            ],
+                                            "localName": "text",
+                                            "nodeId": 248,
+                                            "nodeName": "TEXT",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 247
+                                          }
+                                        ],
+                                        "localName": "view",
+                                        "nodeId": 247,
+                                        "nodeName": "VIEW",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 242
+                                      }
+                                    ],
+                                    "localName": "view",
+                                    "nodeId": 242,
+                                    "nodeName": "VIEW",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 241
+                                  }
+                                ],
+                                "localName": "view",
+                                "nodeId": 241,
+                                "nodeName": "VIEW",
+                                "nodeType": 1,
+                                "nodeValue": "",
+                                "parentId": 240
+                              },
+                              {
+                                "attributes": [
+                                  "class",
+                                  "AppSidebarSurfaceEnter"
+                                ],
+                                "backendNodeId": 250,
+                                "childNodeCount": 2,
+                                "children": [
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "AppSidebarPrimaryNav"
+                                    ],
+                                    "backendNodeId": 251,
+                                    "childNodeCount": 5,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "class",
+                                          "SharedSidebarPrimaryActionItem"
+                                        ],
+                                        "backendNodeId": 252,
+                                        "childNodeCount": 1,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "accessibility-element",
+                                              "true",
+                                              "accessibility-label",
+                                              "New thread",
+                                              "accessibility-traits",
+                                              "button",
+                                              "focusable",
+                                              "true",
+                                              "aria-disabled",
+                                              "false",
+                                              "bindmouseenter",
+                                              "197:0:bindmouseenter",
+                                              "bindblur",
+                                              "197:0:bindblur",
+                                              "bindmouseleave",
+                                              "197:0:bindmouseleave",
+                                              "bindkeydown",
+                                              "197:0:bindkeydown",
+                                              "bindtap",
+                                              "197:0:bindtap",
+                                              "bindmouseup",
+                                              "197:0:bindmouseup",
+                                              "bindtouchstart",
+                                              "197:0:bindtouchstart",
+                                              "bindmousedown",
+                                              "197:0:bindmousedown",
+                                              "bindtouchend",
+                                              "197:0:bindtouchend",
+                                              "bindtouchcancel",
+                                              "197:0:bindtouchcancel",
+                                              "bindfocus",
+                                              "197:0:bindfocus",
+                                              "class",
+                                              "SharedSidebarPrimaryActionButton"
+                                            ],
+                                            "backendNodeId": 253,
+                                            "childNodeCount": 3,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "class",
+                                                  "SharedSidebarPrimaryActionLeading"
+                                                ],
+                                                "backendNodeId": 254,
+                                                "childNodeCount": 1,
+                                                "children": [
+                                                  {
+                                                    "attributes": [
+                                                      "aria-hidden",
+                                                      "true",
+                                                      "data-slot",
+                                                      "central-icon",
+                                                      "class",
+                                                      "inline-block bg-current size-[15px] shrink-0",
+                                                      "style",
+                                                      "mask-clip:[0];mask-origin:[0];mask-composite:[0];mask-repeat:[[1,1]];mask-size:[[2,-34,2,-34]];mask-position:[[36,-36,36,-36]];mask-image:[1,\"/central-icons-reversed/compose-pencil.svg\"];"
+                                                    ],
+                                                    "backendNodeId": 255,
+                                                    "childNodeCount": 0,
+                                                    "children": [],
+                                                    "localName": "span",
+                                                    "nodeId": 255,
+                                                    "nodeName": "SPAN",
+                                                    "nodeType": 1,
+                                                    "nodeValue": "",
+                                                    "parentId": 254
+                                                  }
+                                                ],
+                                                "localName": "view",
+                                                "nodeId": 254,
+                                                "nodeName": "VIEW",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 253
+                                              },
+                                              {
+                                                "attributes": [
+                                                  "class",
+                                                  "SharedSidebarPrimaryActionLabel"
+                                                ],
+                                                "backendNodeId": 256,
+                                                "childNodeCount": 1,
+                                                "children": [
+                                                  {
+                                                    "attributes": [
+                                                      "text",
+                                                      "New thread"
+                                                    ],
+                                                    "backendNodeId": 257,
+                                                    "childNodeCount": 0,
+                                                    "children": [],
+                                                    "localName": "raw-text",
+                                                    "nodeId": 257,
+                                                    "nodeName": "RAW-TEXT",
+                                                    "nodeType": 1,
+                                                    "nodeValue": "",
+                                                    "parentId": 256
+                                                  }
+                                                ],
+                                                "localName": "text",
+                                                "nodeId": 256,
+                                                "nodeName": "TEXT",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 253
+                                              },
+                                              {
+                                                "attributes": [
+                                                  "class",
+                                                  "SharedSidebarPrimaryActionTrailing"
+                                                ],
+                                                "backendNodeId": 258,
+                                                "childNodeCount": 1,
+                                                "children": [
+                                                  {
+                                                    "attributes": [
+                                                      "class",
+                                                      "AppSidebarShortcut"
+                                                    ],
+                                                    "backendNodeId": 259,
+                                                    "childNodeCount": 2,
+                                                    "children": [
+                                                      {
+                                                        "attributes": [
+                                                          "class",
+                                                          "AppSidebarShortcutKey"
+                                                        ],
+                                                        "backendNodeId": 260,
+                                                        "childNodeCount": 1,
+                                                        "children": [
+                                                          {
+                                                            "attributes": [
+                                                              "text",
+                                                              "⌘"
+                                                            ],
+                                                            "backendNodeId": 261,
+                                                            "childNodeCount": 0,
+                                                            "children": [],
+                                                            "localName": "raw-text",
+                                                            "nodeId": 261,
+                                                            "nodeName": "RAW-TEXT",
+                                                            "nodeType": 1,
+                                                            "nodeValue": "",
+                                                            "parentId": 260
+                                                          }
+                                                        ],
+                                                        "localName": "text",
+                                                        "nodeId": 260,
+                                                        "nodeName": "TEXT",
+                                                        "nodeType": 1,
+                                                        "nodeValue": "",
+                                                        "parentId": 259
+                                                      },
+                                                      {
+                                                        "attributes": [
+                                                          "class",
+                                                          "AppSidebarShortcutKey"
+                                                        ],
+                                                        "backendNodeId": 262,
+                                                        "childNodeCount": 1,
+                                                        "children": [
+                                                          {
+                                                            "attributes": [
+                                                              "text",
+                                                              "N"
+                                                            ],
+                                                            "backendNodeId": 263,
+                                                            "childNodeCount": 0,
+                                                            "children": [],
+                                                            "localName": "raw-text",
+                                                            "nodeId": 263,
+                                                            "nodeName": "RAW-TEXT",
+                                                            "nodeType": 1,
+                                                            "nodeValue": "",
+                                                            "parentId": 262
+                                                          }
+                                                        ],
+                                                        "localName": "text",
+                                                        "nodeId": 262,
+                                                        "nodeName": "TEXT",
+                                                        "nodeType": 1,
+                                                        "nodeValue": "",
+                                                        "parentId": 259
+                                                      }
+                                                    ],
+                                                    "localName": "view",
+                                                    "nodeId": 259,
+                                                    "nodeName": "VIEW",
+                                                    "nodeType": 1,
+                                                    "nodeValue": "",
+                                                    "parentId": 258
+                                                  }
+                                                ],
+                                                "localName": "view",
+                                                "nodeId": 258,
+                                                "nodeName": "VIEW",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 253
+                                              }
+                                            ],
+                                            "localName": "view",
+                                            "nodeId": 253,
+                                            "nodeName": "VIEW",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 252
+                                          }
+                                        ],
+                                        "localName": "view",
+                                        "nodeId": 252,
+                                        "nodeName": "VIEW",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 251
+                                      },
+                                      {
+                                        "attributes": [
+                                          "class",
+                                          "SharedSidebarPrimaryActionItem"
+                                        ],
+                                        "backendNodeId": 264,
+                                        "childNodeCount": 1,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "idSelector",
+                                              "synara-sidebar-search-trigger",
+                                              "accessibility-element",
+                                              "true",
+                                              "accessibility-label",
+                                              "Search",
+                                              "accessibility-traits",
+                                              "button",
+                                              "focusable",
+                                              "true",
+                                              "aria-disabled",
+                                              "false",
+                                              "bindmouseenter",
+                                              "209:0:bindmouseenter",
+                                              "bindblur",
+                                              "209:0:bindblur",
+                                              "bindmouseleave",
+                                              "209:0:bindmouseleave",
+                                              "bindkeydown",
+                                              "209:0:bindkeydown",
+                                              "bindtap",
+                                              "209:0:bindtap",
+                                              "bindmouseup",
+                                              "209:0:bindmouseup",
+                                              "bindtouchstart",
+                                              "209:0:bindtouchstart",
+                                              "bindmousedown",
+                                              "209:0:bindmousedown",
+                                              "bindtouchend",
+                                              "209:0:bindtouchend",
+                                              "bindtouchcancel",
+                                              "209:0:bindtouchcancel",
+                                              "bindfocus",
+                                              "209:0:bindfocus",
+                                              "class",
+                                              "SharedSidebarPrimaryActionButton"
+                                            ],
+                                            "backendNodeId": 265,
+                                            "childNodeCount": 3,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "class",
+                                                  "SharedSidebarPrimaryActionLeading"
+                                                ],
+                                                "backendNodeId": 266,
+                                                "childNodeCount": 1,
+                                                "children": [
+                                                  {
+                                                    "attributes": [
+                                                      "aria-hidden",
+                                                      "true",
+                                                      "data-slot",
+                                                      "central-icon",
+                                                      "class",
+                                                      "inline-block bg-current size-[15px] shrink-0",
+                                                      "style",
+                                                      "mask-clip:[0];mask-origin:[0];mask-composite:[0];mask-repeat:[[1,1]];mask-size:[[2,-34,2,-34]];mask-position:[[36,-36,36,-36]];mask-image:[1,\"/central-icons-reversed/magnifying-glass.svg\"];"
+                                                    ],
+                                                    "backendNodeId": 267,
+                                                    "childNodeCount": 0,
+                                                    "children": [],
+                                                    "localName": "span",
+                                                    "nodeId": 267,
+                                                    "nodeName": "SPAN",
+                                                    "nodeType": 1,
+                                                    "nodeValue": "",
+                                                    "parentId": 266
+                                                  }
+                                                ],
+                                                "localName": "view",
+                                                "nodeId": 266,
+                                                "nodeName": "VIEW",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 265
+                                              },
+                                              {
+                                                "attributes": [
+                                                  "class",
+                                                  "SharedSidebarPrimaryActionLabel"
+                                                ],
+                                                "backendNodeId": 268,
+                                                "childNodeCount": 1,
+                                                "children": [
+                                                  {
+                                                    "attributes": [
+                                                      "text",
+                                                      "Search"
+                                                    ],
+                                                    "backendNodeId": 269,
+                                                    "childNodeCount": 0,
+                                                    "children": [],
+                                                    "localName": "raw-text",
+                                                    "nodeId": 269,
+                                                    "nodeName": "RAW-TEXT",
+                                                    "nodeType": 1,
+                                                    "nodeValue": "",
+                                                    "parentId": 268
+                                                  }
+                                                ],
+                                                "localName": "text",
+                                                "nodeId": 268,
+                                                "nodeName": "TEXT",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 265
+                                              },
+                                              {
+                                                "attributes": [
+                                                  "class",
+                                                  "SharedSidebarPrimaryActionTrailing"
+                                                ],
+                                                "backendNodeId": 270,
+                                                "childNodeCount": 1,
+                                                "children": [
+                                                  {
+                                                    "attributes": [
+                                                      "class",
+                                                      "AppSidebarShortcut"
+                                                    ],
+                                                    "backendNodeId": 271,
+                                                    "childNodeCount": 2,
+                                                    "children": [
+                                                      {
+                                                        "attributes": [
+                                                          "class",
+                                                          "AppSidebarShortcutKey"
+                                                        ],
+                                                        "backendNodeId": 272,
+                                                        "childNodeCount": 1,
+                                                        "children": [
+                                                          {
+                                                            "attributes": [
+                                                              "text",
+                                                              "⌘"
+                                                            ],
+                                                            "backendNodeId": 273,
+                                                            "childNodeCount": 0,
+                                                            "children": [],
+                                                            "localName": "raw-text",
+                                                            "nodeId": 273,
+                                                            "nodeName": "RAW-TEXT",
+                                                            "nodeType": 1,
+                                                            "nodeValue": "",
+                                                            "parentId": 272
+                                                          }
+                                                        ],
+                                                        "localName": "text",
+                                                        "nodeId": 272,
+                                                        "nodeName": "TEXT",
+                                                        "nodeType": 1,
+                                                        "nodeValue": "",
+                                                        "parentId": 271
+                                                      },
+                                                      {
+                                                        "attributes": [
+                                                          "class",
+                                                          "AppSidebarShortcutKey"
+                                                        ],
+                                                        "backendNodeId": 274,
+                                                        "childNodeCount": 1,
+                                                        "children": [
+                                                          {
+                                                            "attributes": [
+                                                              "text",
+                                                              "K"
+                                                            ],
+                                                            "backendNodeId": 275,
+                                                            "childNodeCount": 0,
+                                                            "children": [],
+                                                            "localName": "raw-text",
+                                                            "nodeId": 275,
+                                                            "nodeName": "RAW-TEXT",
+                                                            "nodeType": 1,
+                                                            "nodeValue": "",
+                                                            "parentId": 274
+                                                          }
+                                                        ],
+                                                        "localName": "text",
+                                                        "nodeId": 274,
+                                                        "nodeName": "TEXT",
+                                                        "nodeType": 1,
+                                                        "nodeValue": "",
+                                                        "parentId": 271
+                                                      }
+                                                    ],
+                                                    "localName": "view",
+                                                    "nodeId": 271,
+                                                    "nodeName": "VIEW",
+                                                    "nodeType": 1,
+                                                    "nodeValue": "",
+                                                    "parentId": 270
+                                                  }
+                                                ],
+                                                "localName": "view",
+                                                "nodeId": 270,
+                                                "nodeName": "VIEW",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 265
+                                              }
+                                            ],
+                                            "localName": "view",
+                                            "nodeId": 265,
+                                            "nodeName": "VIEW",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 264
+                                          }
+                                        ],
+                                        "localName": "view",
+                                        "nodeId": 264,
+                                        "nodeName": "VIEW",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 251
+                                      },
+                                      {
+                                        "attributes": [
+                                          "class",
+                                          "SharedSidebarPrimaryActionItem"
+                                        ],
+                                        "backendNodeId": 276,
+                                        "childNodeCount": 1,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "accessibility-element",
+                                              "true",
+                                              "accessibility-label",
+                                              "Kanban",
+                                              "accessibility-traits",
+                                              "button",
+                                              "accessibility-value",
+                                              "Current page",
+                                              "focusable",
+                                              "true",
+                                              "aria-disabled",
+                                              "false",
+                                              "bindmouseenter",
+                                              "221:0:bindmouseenter",
+                                              "bindblur",
+                                              "221:0:bindblur",
+                                              "bindmouseleave",
+                                              "221:0:bindmouseleave",
+                                              "bindkeydown",
+                                              "221:0:bindkeydown",
+                                              "bindtap",
+                                              "221:0:bindtap",
+                                              "bindmouseup",
+                                              "221:0:bindmouseup",
+                                              "bindtouchstart",
+                                              "221:0:bindtouchstart",
+                                              "bindmousedown",
+                                              "221:0:bindmousedown",
+                                              "bindtouchend",
+                                              "221:0:bindtouchend",
+                                              "bindtouchcancel",
+                                              "221:0:bindtouchcancel",
+                                              "bindfocus",
+                                              "221:0:bindfocus",
+                                              "class",
+                                              "SharedSidebarPrimaryActionButton SharedSidebarPrimaryActionButton--active"
+                                            ],
+                                            "backendNodeId": 277,
+                                            "childNodeCount": 2,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "class",
+                                                  "SharedSidebarPrimaryActionLeading"
+                                                ],
+                                                "backendNodeId": 278,
+                                                "childNodeCount": 1,
+                                                "children": [
+                                                  {
+                                                    "attributes": [
+                                                      "aria-hidden",
+                                                      "true",
+                                                      "data-slot",
+                                                      "central-icon",
+                                                      "class",
+                                                      "inline-block bg-current size-[15px] shrink-0",
+                                                      "style",
+                                                      "mask-clip:[0];mask-origin:[0];mask-composite:[0];mask-repeat:[[1,1]];mask-size:[[2,-34,2,-34]];mask-position:[[36,-36,36,-36]];mask-image:[1,\"/central-icons-reversed/columns-3-wide.svg\"];"
+                                                    ],
+                                                    "backendNodeId": 279,
+                                                    "childNodeCount": 0,
+                                                    "children": [],
+                                                    "localName": "span",
+                                                    "nodeId": 279,
+                                                    "nodeName": "SPAN",
+                                                    "nodeType": 1,
+                                                    "nodeValue": "",
+                                                    "parentId": 278
+                                                  }
+                                                ],
+                                                "localName": "view",
+                                                "nodeId": 278,
+                                                "nodeName": "VIEW",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 277
+                                              },
+                                              {
+                                                "attributes": [
+                                                  "class",
+                                                  "SharedSidebarPrimaryActionLabel"
+                                                ],
+                                                "backendNodeId": 280,
+                                                "childNodeCount": 1,
+                                                "children": [
+                                                  {
+                                                    "attributes": [
+                                                      "text",
+                                                      "Kanban"
+                                                    ],
+                                                    "backendNodeId": 281,
+                                                    "childNodeCount": 0,
+                                                    "children": [],
+                                                    "localName": "raw-text",
+                                                    "nodeId": 281,
+                                                    "nodeName": "RAW-TEXT",
+                                                    "nodeType": 1,
+                                                    "nodeValue": "",
+                                                    "parentId": 280
+                                                  }
+                                                ],
+                                                "localName": "text",
+                                                "nodeId": 280,
+                                                "nodeName": "TEXT",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 277
+                                              }
+                                            ],
+                                            "localName": "view",
+                                            "nodeId": 277,
+                                            "nodeName": "VIEW",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 276
+                                          }
+                                        ],
+                                        "localName": "view",
+                                        "nodeId": 276,
+                                        "nodeName": "VIEW",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 251
+                                      },
+                                      {
+                                        "attributes": [
+                                          "class",
+                                          "SharedSidebarPrimaryActionItem"
+                                        ],
+                                        "backendNodeId": 282,
+                                        "childNodeCount": 1,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "accessibility-element",
+                                              "true",
+                                              "accessibility-label",
+                                              "Pull requests",
+                                              "accessibility-traits",
+                                              "button",
+                                              "focusable",
+                                              "true",
+                                              "aria-disabled",
+                                              "false",
+                                              "bindmouseenter",
+                                              "227:0:bindmouseenter",
+                                              "bindblur",
+                                              "227:0:bindblur",
+                                              "bindmouseleave",
+                                              "227:0:bindmouseleave",
+                                              "bindkeydown",
+                                              "227:0:bindkeydown",
+                                              "bindtap",
+                                              "227:0:bindtap",
+                                              "bindmouseup",
+                                              "227:0:bindmouseup",
+                                              "bindtouchstart",
+                                              "227:0:bindtouchstart",
+                                              "bindmousedown",
+                                              "227:0:bindmousedown",
+                                              "bindtouchend",
+                                              "227:0:bindtouchend",
+                                              "bindtouchcancel",
+                                              "227:0:bindtouchcancel",
+                                              "bindfocus",
+                                              "227:0:bindfocus",
+                                              "class",
+                                              "SharedSidebarPrimaryActionButton"
+                                            ],
+                                            "backendNodeId": 283,
+                                            "childNodeCount": 2,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "class",
+                                                  "SharedSidebarPrimaryActionLeading"
+                                                ],
+                                                "backendNodeId": 284,
+                                                "childNodeCount": 1,
+                                                "children": [
+                                                  {
+                                                    "attributes": [
+                                                      "content",
+                                                      "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0d0d0d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-message-circle\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M3 20l1.3 -3.9c-2.324 -3.437 -1.426 -7.872 2.1 -10.374c3.526 -2.501 8.59 -2.296 11.845 .48c3.255 2.777 3.695 7.266 1.029 10.501c-2.666 3.235 -7.615 4.215 -11.574 2.293l-4.7 1\" /> </svg>",
+                                                      "class",
+                                                      "size-[15px] shrink-0",
+                                                      "style",
+                                                      "height:16px;width:16px;"
+                                                    ],
+                                                    "backendNodeId": 285,
+                                                    "childNodeCount": 0,
+                                                    "children": [],
+                                                    "localName": "svg",
+                                                    "nodeId": 285,
+                                                    "nodeName": "SVG",
+                                                    "nodeType": 1,
+                                                    "nodeValue": "",
+                                                    "parentId": 284
+                                                  }
+                                                ],
+                                                "localName": "view",
+                                                "nodeId": 284,
+                                                "nodeName": "VIEW",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 283
+                                              },
+                                              {
+                                                "attributes": [
+                                                  "class",
+                                                  "SharedSidebarPrimaryActionLabel"
+                                                ],
+                                                "backendNodeId": 286,
+                                                "childNodeCount": 1,
+                                                "children": [
+                                                  {
+                                                    "attributes": [
+                                                      "text",
+                                                      "Pull requests"
+                                                    ],
+                                                    "backendNodeId": 287,
+                                                    "childNodeCount": 0,
+                                                    "children": [],
+                                                    "localName": "raw-text",
+                                                    "nodeId": 287,
+                                                    "nodeName": "RAW-TEXT",
+                                                    "nodeType": 1,
+                                                    "nodeValue": "",
+                                                    "parentId": 286
+                                                  }
+                                                ],
+                                                "localName": "text",
+                                                "nodeId": 286,
+                                                "nodeName": "TEXT",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 283
+                                              }
+                                            ],
+                                            "localName": "view",
+                                            "nodeId": 283,
+                                            "nodeName": "VIEW",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 282
+                                          }
+                                        ],
+                                        "localName": "view",
+                                        "nodeId": 282,
+                                        "nodeName": "VIEW",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 251
+                                      },
+                                      {
+                                        "attributes": [
+                                          "class",
+                                          "SharedSidebarPrimaryActionItem"
+                                        ],
+                                        "backendNodeId": 288,
+                                        "childNodeCount": 1,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "accessibility-state",
+                                              "",
+                                              "accessibility-element",
+                                              "true",
+                                              "accessibility-label",
+                                              "Automations",
+                                              "accessibility-traits",
+                                              "button",
+                                              "focusable",
+                                              "false",
+                                              "aria-disabled",
+                                              "true",
+                                              "class",
+                                              "SharedSidebarPrimaryActionButton SharedSidebarPrimaryActionButton--disabled"
+                                            ],
+                                            "backendNodeId": 289,
+                                            "childNodeCount": 2,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "class",
+                                                  "SharedSidebarPrimaryActionLeading"
+                                                ],
+                                                "backendNodeId": 290,
+                                                "childNodeCount": 1,
+                                                "children": [
+                                                  {
+                                                    "attributes": [
+                                                      "aria-hidden",
+                                                      "true",
+                                                      "data-slot",
+                                                      "central-icon",
+                                                      "class",
+                                                      "inline-block bg-current size-[15px] shrink-0",
+                                                      "style",
+                                                      "mask-clip:[0];mask-origin:[0];mask-composite:[0];mask-repeat:[[1,1]];mask-size:[[2,-34,2,-34]];mask-position:[[36,-36,36,-36]];mask-image:[1,\"/central-icons-reversed/clock.svg\"];"
+                                                    ],
+                                                    "backendNodeId": 291,
+                                                    "childNodeCount": 0,
+                                                    "children": [],
+                                                    "localName": "span",
+                                                    "nodeId": 291,
+                                                    "nodeName": "SPAN",
+                                                    "nodeType": 1,
+                                                    "nodeValue": "",
+                                                    "parentId": 290
+                                                  }
+                                                ],
+                                                "localName": "view",
+                                                "nodeId": 290,
+                                                "nodeName": "VIEW",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 289
+                                              },
+                                              {
+                                                "attributes": [
+                                                  "class",
+                                                  "SharedSidebarPrimaryActionLabel"
+                                                ],
+                                                "backendNodeId": 292,
+                                                "childNodeCount": 1,
+                                                "children": [
+                                                  {
+                                                    "attributes": [
+                                                      "text",
+                                                      "Automations"
+                                                    ],
+                                                    "backendNodeId": 293,
+                                                    "childNodeCount": 0,
+                                                    "children": [],
+                                                    "localName": "raw-text",
+                                                    "nodeId": 293,
+                                                    "nodeName": "RAW-TEXT",
+                                                    "nodeType": 1,
+                                                    "nodeValue": "",
+                                                    "parentId": 292
+                                                  }
+                                                ],
+                                                "localName": "text",
+                                                "nodeId": 292,
+                                                "nodeName": "TEXT",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 289
+                                              }
+                                            ],
+                                            "localName": "view",
+                                            "nodeId": 289,
+                                            "nodeName": "VIEW",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 288
+                                          }
+                                        ],
+                                        "localName": "view",
+                                        "nodeId": 288,
+                                        "nodeName": "VIEW",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 251
+                                      }
+                                    ],
+                                    "localName": "view",
+                                    "nodeId": 251,
+                                    "nodeName": "VIEW",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 250
+                                  },
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SharedSidebarProjectsRoot"
+                                    ],
+                                    "backendNodeId": 294,
+                                    "childNodeCount": 2,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "focusable",
+                                          "false",
+                                          "aria-disabled",
+                                          "false",
+                                          "bindmouseenter",
+                                          "239:0:bindmouseenter",
+                                          "bindblur",
+                                          "239:0:bindblur",
+                                          "bindmouseleave",
+                                          "239:0:bindmouseleave",
+                                          "bindmouseup",
+                                          "239:0:bindmouseup",
+                                          "bindtouchstart",
+                                          "239:0:bindtouchstart",
+                                          "bindmousedown",
+                                          "239:0:bindmousedown",
+                                          "bindtouchend",
+                                          "239:0:bindtouchend",
+                                          "bindtouchcancel",
+                                          "239:0:bindtouchcancel",
+                                          "bindfocus",
+                                          "239:0:bindfocus",
+                                          "class",
+                                          "SharedSidebarListSectionHeader LynxWebHoverOwner"
+                                        ],
+                                        "backendNodeId": 295,
+                                        "childNodeCount": 2,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSidebarListSectionHeaderLabel"
+                                            ],
+                                            "backendNodeId": 296,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "class",
+                                                  "SharedSidebarListSectionHeaderText"
+                                                ],
+                                                "backendNodeId": 297,
+                                                "childNodeCount": 1,
+                                                "children": [
+                                                  {
+                                                    "attributes": [
+                                                      "text",
+                                                      "Projects"
+                                                    ],
+                                                    "backendNodeId": 298,
+                                                    "childNodeCount": 0,
+                                                    "children": [],
+                                                    "localName": "raw-text",
+                                                    "nodeId": 298,
+                                                    "nodeName": "RAW-TEXT",
+                                                    "nodeType": 1,
+                                                    "nodeValue": "",
+                                                    "parentId": 297
+                                                  }
+                                                ],
+                                                "localName": "text",
+                                                "nodeId": 297,
+                                                "nodeName": "TEXT",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 296
+                                              }
+                                            ],
+                                            "localName": "view",
+                                            "nodeId": 296,
+                                            "nodeName": "VIEW",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 295
+                                          },
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSidebarListSectionHeaderToolbar"
+                                            ],
+                                            "backendNodeId": 299,
+                                            "childNodeCount": 2,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "class",
+                                                  "LxMenuRoot"
+                                                ],
+                                                "backendNodeId": 300,
+                                                "childNodeCount": 1,
+                                                "children": [
+                                                  {
+                                                    "attributes": [
+                                                      "react-ref-244-0",
+                                                      "1",
+                                                      "focusable",
+                                                      "true",
+                                                      "aria-disabled",
+                                                      "false",
+                                                      "aria-label",
+                                                      "Sort projects",
+                                                      "aria-haspopup",
+                                                      "menu",
+                                                      "aria-expanded",
+                                                      "false",
+                                                      "bindmouseenter",
+                                                      "244:0:bindmouseenter",
+                                                      "bindtap",
+                                                      "244:0:bindtap",
+                                                      "bindmouseup",
+                                                      "244:0:bindmouseup",
+                                                      "bindtouchstart",
+                                                      "244:0:bindtouchstart",
+                                                      "bindmouseleave",
+                                                      "244:0:bindmouseleave",
+                                                      "bindmousedown",
+                                                      "244:0:bindmousedown",
+                                                      "bindtouchend",
+                                                      "244:0:bindtouchend",
+                                                      "bindblur",
+                                                      "244:0:bindblur",
+                                                      "catchkeydown",
+                                                      "244:0:catchkeydown",
+                                                      "bindfocus",
+                                                      "244:0:bindfocus",
+                                                      "bindtouchcancel",
+                                                      "244:0:bindtouchcancel",
+                                                      "bindlayoutchange",
+                                                      "244:0:bindlayoutchange",
+                                                      "class",
+                                                      "LxMenuTrigger SharedSidebarListSectionHeaderAction"
+                                                    ],
+                                                    "backendNodeId": 301,
+                                                    "childNodeCount": 2,
+                                                    "children": [
+                                                      {
+                                                        "attributes": [
+                                                          "content",
+                                                          "<svg width=\"24px\" height=\"24px\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><g><path d=\"M2.75 4.75H21.25\" stroke=\"rgba(13, 13, 13, 0.6)\" stroke-width=\"1.5\" stroke-linecap=\"round\"></path><path d=\"M8.75 19.25H15.25\" stroke=\"rgba(13, 13, 13, 0.6)\" stroke-width=\"1.5\" stroke-linecap=\"round\"></path><path d=\"M5.75 12H18.25\" stroke=\"rgba(13, 13, 13, 0.6)\" stroke-width=\"1.5\" stroke-linecap=\"round\"></path></g></svg>",
+                                                          "class",
+                                                          "SharedSidebarListSectionHeaderActionIcon SharedSidebarListSectionHeaderActionIcon--muted"
+                                                        ],
+                                                        "backendNodeId": 302,
+                                                        "childNodeCount": 0,
+                                                        "children": [],
+                                                        "localName": "svg",
+                                                        "nodeId": 302,
+                                                        "nodeName": "SVG",
+                                                        "nodeType": 1,
+                                                        "nodeValue": "",
+                                                        "parentId": 301
+                                                      },
+                                                      {
+                                                        "attributes": [
+                                                          "content",
+                                                          "<svg width=\"24px\" height=\"24px\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><g><path d=\"M2.75 4.75H21.25\" stroke=\"#0d0d0d\" stroke-width=\"1.5\" stroke-linecap=\"round\"></path><path d=\"M8.75 19.25H15.25\" stroke=\"#0d0d0d\" stroke-width=\"1.5\" stroke-linecap=\"round\"></path><path d=\"M5.75 12H18.25\" stroke=\"#0d0d0d\" stroke-width=\"1.5\" stroke-linecap=\"round\"></path></g></svg>",
+                                                          "class",
+                                                          "SharedSidebarListSectionHeaderActionIcon SharedSidebarListSectionHeaderActionIcon--foreground"
+                                                        ],
+                                                        "backendNodeId": 303,
+                                                        "childNodeCount": 0,
+                                                        "children": [],
+                                                        "localName": "svg",
+                                                        "nodeId": 303,
+                                                        "nodeName": "SVG",
+                                                        "nodeType": 1,
+                                                        "nodeValue": "",
+                                                        "parentId": 301
+                                                      }
+                                                    ],
+                                                    "localName": "view",
+                                                    "nodeId": 301,
+                                                    "nodeName": "VIEW",
+                                                    "nodeType": 1,
+                                                    "nodeValue": "",
+                                                    "parentId": 300
+                                                  }
+                                                ],
+                                                "localName": "view",
+                                                "nodeId": 300,
+                                                "nodeName": "VIEW",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 299
+                                              },
+                                              {
+                                                "attributes": [
+                                                  "idSelector",
+                                                  "synara-sidebar-add-project-trigger",
+                                                  "accessibility-element",
+                                                  "true",
+                                                  "accessibility-label",
+                                                  "Add project",
+                                                  "accessibility-traits",
+                                                  "button",
+                                                  "focusable",
+                                                  "true",
+                                                  "aria-disabled",
+                                                  "false",
+                                                  "bindmouseenter",
+                                                  "247:0:bindmouseenter",
+                                                  "bindblur",
+                                                  "247:0:bindblur",
+                                                  "bindmouseleave",
+                                                  "247:0:bindmouseleave",
+                                                  "bindkeydown",
+                                                  "247:0:bindkeydown",
+                                                  "bindtap",
+                                                  "247:0:bindtap",
+                                                  "bindmouseup",
+                                                  "247:0:bindmouseup",
+                                                  "bindtouchstart",
+                                                  "247:0:bindtouchstart",
+                                                  "bindmousedown",
+                                                  "247:0:bindmousedown",
+                                                  "bindtouchend",
+                                                  "247:0:bindtouchend",
+                                                  "bindtouchcancel",
+                                                  "247:0:bindtouchcancel",
+                                                  "bindfocus",
+                                                  "247:0:bindfocus",
+                                                  "class",
+                                                  "SharedSidebarListSectionHeaderAction"
+                                                ],
+                                                "backendNodeId": 304,
+                                                "childNodeCount": 2,
+                                                "children": [
+                                                  {
+                                                    "attributes": [
+                                                      "content",
+                                                      "<svg width=\"24px\" height=\"24px\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><g><path d=\"M12 5.25V12M12 12V18.75M12 12H5.25M12 12H18.75\" stroke=\"rgba(13, 13, 13, 0.6)\" stroke-width=\"1.5\" stroke-linecap=\"round\"></path></g></svg>",
+                                                      "class",
+                                                      "SharedSidebarListSectionHeaderActionIcon SharedSidebarListSectionHeaderActionIcon--muted"
+                                                    ],
+                                                    "backendNodeId": 305,
+                                                    "childNodeCount": 0,
+                                                    "children": [],
+                                                    "localName": "svg",
+                                                    "nodeId": 305,
+                                                    "nodeName": "SVG",
+                                                    "nodeType": 1,
+                                                    "nodeValue": "",
+                                                    "parentId": 304
+                                                  },
+                                                  {
+                                                    "attributes": [
+                                                      "content",
+                                                      "<svg width=\"24px\" height=\"24px\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><g><path d=\"M12 5.25V12M12 12V18.75M12 12H5.25M12 12H18.75\" stroke=\"#0d0d0d\" stroke-width=\"1.5\" stroke-linecap=\"round\"></path></g></svg>",
+                                                      "class",
+                                                      "SharedSidebarListSectionHeaderActionIcon SharedSidebarListSectionHeaderActionIcon--foreground"
+                                                    ],
+                                                    "backendNodeId": 306,
+                                                    "childNodeCount": 0,
+                                                    "children": [],
+                                                    "localName": "svg",
+                                                    "nodeId": 306,
+                                                    "nodeName": "SVG",
+                                                    "nodeType": 1,
+                                                    "nodeValue": "",
+                                                    "parentId": 304
+                                                  }
+                                                ],
+                                                "localName": "view",
+                                                "nodeId": 304,
+                                                "nodeName": "VIEW",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 299
+                                              }
+                                            ],
+                                            "localName": "view",
+                                            "nodeId": 299,
+                                            "nodeName": "VIEW",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 295
+                                          }
+                                        ],
+                                        "localName": "view",
+                                        "nodeId": 295,
+                                        "nodeName": "VIEW",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 294
+                                      },
+                                      {
+                                        "attributes": [
+                                          "accessibility-element",
+                                          "true",
+                                          "accessibility-label",
+                                          "Loading projects...",
+                                          "accessibility-traits",
+                                          "updating",
+                                          "class",
+                                          "SharedSidebarProjectsState"
+                                        ],
+                                        "backendNodeId": 307,
+                                        "childNodeCount": 1,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "text",
+                                              "Loading projects..."
+                                            ],
+                                            "backendNodeId": 308,
+                                            "childNodeCount": 0,
+                                            "children": [],
+                                            "localName": "raw-text",
+                                            "nodeId": 308,
+                                            "nodeName": "RAW-TEXT",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 307
+                                          }
+                                        ],
+                                        "localName": "text",
+                                        "nodeId": 307,
+                                        "nodeName": "TEXT",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 294
+                                      }
+                                    ],
+                                    "localName": "view",
+                                    "nodeId": 294,
+                                    "nodeName": "VIEW",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 250
+                                  }
+                                ],
+                                "localName": "view",
+                                "nodeId": 250,
+                                "nodeName": "VIEW",
+                                "nodeType": 1,
+                                "nodeValue": "",
+                                "parentId": 240
+                              }
+                            ],
+                            "localName": "view",
+                            "nodeId": 240,
+                            "nodeName": "VIEW",
+                            "nodeType": 1,
+                            "nodeValue": "",
+                            "parentId": 239
+                          }
+                        ],
+                        "localName": "scroll-view",
+                        "nodeId": 239,
+                        "nodeName": "SCROLL-VIEW",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 226
+                      },
+                      {
+                        "attributes": [
+                          "class",
+                          "AppSidebarFooter"
+                        ],
+                        "backendNodeId": 309,
+                        "childNodeCount": 1,
+                        "children": [
+                          {
+                            "attributes": [
+                              "class",
+                              "AppSidebarFooterStack"
+                            ],
+                            "backendNodeId": 310,
+                            "childNodeCount": 1,
+                            "children": [
+                              {
+                                "attributes": [
+                                  "class",
+                                  "AppSidebarFooterRow"
+                                ],
+                                "backendNodeId": 311,
+                                "childNodeCount": 1,
+                                "children": [
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SharedSidebarPrimaryActionItem"
+                                    ],
+                                    "backendNodeId": 312,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "accessibility-element",
+                                          "true",
+                                          "accessibility-label",
+                                          "Settings",
+                                          "accessibility-traits",
+                                          "button",
+                                          "focusable",
+                                          "true",
+                                          "aria-disabled",
+                                          "false",
+                                          "bindmouseenter",
+                                          "256:0:bindmouseenter",
+                                          "bindblur",
+                                          "256:0:bindblur",
+                                          "bindmouseleave",
+                                          "256:0:bindmouseleave",
+                                          "bindkeydown",
+                                          "256:0:bindkeydown",
+                                          "bindtap",
+                                          "256:0:bindtap",
+                                          "bindmouseup",
+                                          "256:0:bindmouseup",
+                                          "bindtouchstart",
+                                          "256:0:bindtouchstart",
+                                          "bindmousedown",
+                                          "256:0:bindmousedown",
+                                          "bindtouchend",
+                                          "256:0:bindtouchend",
+                                          "bindtouchcancel",
+                                          "256:0:bindtouchcancel",
+                                          "bindfocus",
+                                          "256:0:bindfocus",
+                                          "class",
+                                          "SharedSidebarPrimaryActionButton"
+                                        ],
+                                        "backendNodeId": 313,
+                                        "childNodeCount": 2,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSidebarPrimaryActionLeading"
+                                            ],
+                                            "backendNodeId": 314,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "content",
+                                                  "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0d0d0d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-settings\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065\" /> <path d=\"M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0\" /> </svg>",
+                                                  "class",
+                                                  "AppSidebarSettingsIcon",
+                                                  "style",
+                                                  "height:15px;width:15px;"
+                                                ],
+                                                "backendNodeId": 315,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "svg",
+                                                "nodeId": 315,
+                                                "nodeName": "SVG",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 314
+                                              }
+                                            ],
+                                            "localName": "view",
+                                            "nodeId": 314,
+                                            "nodeName": "VIEW",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 313
+                                          },
+                                          {
+                                            "attributes": [
+                                              "class",
+                                              "SharedSidebarPrimaryActionLabel"
+                                            ],
+                                            "backendNodeId": 316,
+                                            "childNodeCount": 1,
+                                            "children": [
+                                              {
+                                                "attributes": [
+                                                  "text",
+                                                  "Settings"
+                                                ],
+                                                "backendNodeId": 317,
+                                                "childNodeCount": 0,
+                                                "children": [],
+                                                "localName": "raw-text",
+                                                "nodeId": 317,
+                                                "nodeName": "RAW-TEXT",
+                                                "nodeType": 1,
+                                                "nodeValue": "",
+                                                "parentId": 316
+                                              }
+                                            ],
+                                            "localName": "text",
+                                            "nodeId": 316,
+                                            "nodeName": "TEXT",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 313
+                                          }
+                                        ],
+                                        "localName": "view",
+                                        "nodeId": 313,
+                                        "nodeName": "VIEW",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 312
+                                      }
+                                    ],
+                                    "localName": "view",
+                                    "nodeId": 312,
+                                    "nodeName": "VIEW",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 311
+                                  }
+                                ],
+                                "localName": "view",
+                                "nodeId": 311,
+                                "nodeName": "VIEW",
+                                "nodeType": 1,
+                                "nodeValue": "",
+                                "parentId": 310
+                              }
+                            ],
+                            "localName": "view",
+                            "nodeId": 310,
+                            "nodeName": "VIEW",
+                            "nodeType": 1,
+                            "nodeValue": "",
+                            "parentId": 309
+                          }
+                        ],
+                        "localName": "view",
+                        "nodeId": 309,
+                        "nodeName": "VIEW",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 226
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 226,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 16
+                  },
+                  {
+                    "attributes": [
+                      "class",
+                      "AppMain"
+                    ],
+                    "backendNodeId": 109,
+                    "childNodeCount": 1,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "FeaturePage FeaturePage--overview"
+                        ],
+                        "backendNodeId": 189,
+                        "childNodeCount": 2,
+                        "children": [
+                          {
+                            "attributes": [
+                              "class",
+                              "SharedKanbanRouteHeader"
+                            ],
+                            "backendNodeId": 190,
+                            "childNodeCount": 1,
+                            "children": [
+                              {
+                                "attributes": [
+                                  "class",
+                                  "SharedKanbanRouteHeaderRow"
+                                ],
+                                "backendNodeId": 191,
+                                "childNodeCount": 4,
+                                "children": [
+                                  {
+                                    "attributes": [
+                                      "maxlines",
+                                      "1",
+                                      "class",
+                                      "SharedKanbanRouteTitle"
+                                    ],
+                                    "backendNodeId": 192,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "text",
+                                          "Kanban"
+                                        ],
+                                        "backendNodeId": 193,
+                                        "childNodeCount": 0,
+                                        "children": [],
+                                        "localName": "raw-text",
+                                        "nodeId": 193,
+                                        "nodeName": "RAW-TEXT",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 192
+                                      }
+                                    ],
+                                    "localName": "text",
+                                    "nodeId": 192,
+                                    "nodeName": "TEXT",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 191
+                                  },
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SharedKanbanRouteCount"
+                                    ],
+                                    "backendNodeId": 194,
+                                    "childNodeCount": 2,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "text",
+                                          "0"
+                                        ],
+                                        "backendNodeId": 195,
+                                        "childNodeCount": 0,
+                                        "children": [],
+                                        "localName": "raw-text",
+                                        "nodeId": 195,
+                                        "nodeName": "RAW-TEXT",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 194
+                                      },
+                                      {
+                                        "attributes": [
+                                          "text",
+                                          " tasks"
+                                        ],
+                                        "backendNodeId": 196,
+                                        "childNodeCount": 0,
+                                        "children": [],
+                                        "localName": "raw-text",
+                                        "nodeId": 196,
+                                        "nodeName": "RAW-TEXT",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 194
+                                      }
+                                    ],
+                                    "localName": "text",
+                                    "nodeId": 194,
+                                    "nodeName": "TEXT",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 191
+                                  },
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SharedKanbanRouteSpacer"
+                                    ],
+                                    "backendNodeId": 197,
+                                    "childNodeCount": 0,
+                                    "children": [],
+                                    "localName": "view",
+                                    "nodeId": 197,
+                                    "nodeName": "VIEW",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 191
+                                  },
+                                  {
+                                    "attributes": [
+                                      "aria-label",
+                                      "New task",
+                                      "focusable",
+                                      "false",
+                                      "aria-disabled",
+                                      "true",
+                                      "class",
+                                      "SharedKanbanRouteNewTask SharedKanbanRouteNewTask--disabled"
+                                    ],
+                                    "backendNodeId": 198,
+                                    "childNodeCount": 2,
+                                    "children": [
+                                      {
+                                        "attributes": [],
+                                        "backendNodeId": 199,
+                                        "childNodeCount": 1,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "content",
+                                              "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0d0d0d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-plus\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M12 5l0 14\" /> <path d=\"M5 12l14 0\" /> </svg>",
+                                              "class",
+                                              "SharedKanbanRouteNewTaskIcon",
+                                              "style",
+                                              "height:14px;width:14px;"
+                                            ],
+                                            "backendNodeId": 201,
+                                            "childNodeCount": 0,
+                                            "children": [],
+                                            "localName": "svg",
+                                            "nodeId": 201,
+                                            "nodeName": "SVG",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 199
+                                          }
+                                        ],
+                                        "localName": "wrapper",
+                                        "nodeId": 199,
+                                        "nodeName": "WRAPPER",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 198
+                                      },
+                                      {
+                                        "attributes": [
+                                          "text",
+                                          "New task",
+                                          "class",
+                                          "SharedKanbanRouteNewTaskText"
+                                        ],
+                                        "backendNodeId": 200,
+                                        "childNodeCount": 0,
+                                        "children": [],
+                                        "localName": "text",
+                                        "nodeId": 200,
+                                        "nodeName": "TEXT",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 198
+                                      }
+                                    ],
+                                    "localName": "view",
+                                    "nodeId": 198,
+                                    "nodeName": "VIEW",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 191
+                                  }
+                                ],
+                                "localName": "view",
+                                "nodeId": 191,
+                                "nodeName": "VIEW",
+                                "nodeType": 1,
+                                "nodeValue": "",
+                                "parentId": 190
+                              }
+                            ],
+                            "localName": "view",
+                            "nodeId": 190,
+                            "nodeName": "VIEW",
+                            "nodeType": 1,
+                            "nodeValue": "",
+                            "parentId": 189
+                          },
+                          {
+                            "attributes": [
+                              "class",
+                              "SharedKanbanState SharedKanbanState--page"
+                            ],
+                            "backendNodeId": 202,
+                            "childNodeCount": 2,
+                            "children": [
+                              {
+                                "attributes": [
+                                  "accessibility-element",
+                                  "true",
+                                  "accessibility-label",
+                                  "Loading Kanban projects",
+                                  "accessibility-traits",
+                                  "updating",
+                                  "class",
+                                  "SharedKanbanStateCopy"
+                                ],
+                                "backendNodeId": 203,
+                                "childNodeCount": 2,
+                                "children": [
+                                  {
+                                    "attributes": [
+                                      "accessibility-element",
+                                      "false",
+                                      "class",
+                                      "SharedKanbanStateTitle"
+                                    ],
+                                    "backendNodeId": 204,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "text",
+                                          "Loading projects…"
+                                        ],
+                                        "backendNodeId": 207,
+                                        "childNodeCount": 0,
+                                        "children": [],
+                                        "localName": "raw-text",
+                                        "nodeId": 207,
+                                        "nodeName": "RAW-TEXT",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 204
+                                      }
+                                    ],
+                                    "localName": "text",
+                                    "nodeId": 204,
+                                    "nodeName": "TEXT",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 203
+                                  },
+                                  {
+                                    "attributes": [],
+                                    "backendNodeId": 205,
+                                    "childNodeCount": 0,
+                                    "children": [],
+                                    "localName": "wrapper",
+                                    "nodeId": 205,
+                                    "nodeName": "WRAPPER",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 203
+                                  }
+                                ],
+                                "localName": "view",
+                                "nodeId": 203,
+                                "nodeName": "VIEW",
+                                "nodeType": 1,
+                                "nodeValue": "",
+                                "parentId": 202
+                              },
+                              {
+                                "attributes": [],
+                                "backendNodeId": 206,
+                                "childNodeCount": 0,
+                                "children": [],
+                                "localName": "wrapper",
+                                "nodeId": 206,
+                                "nodeName": "WRAPPER",
+                                "nodeType": 1,
+                                "nodeValue": "",
+                                "parentId": 202
+                              }
+                            ],
+                            "localName": "view",
+                            "nodeId": 202,
+                            "nodeName": "VIEW",
+                            "nodeType": 1,
+                            "nodeValue": "",
+                            "parentId": 189
+                          }
+                        ],
+                        "localName": "view",
+                        "nodeId": 189,
+                        "nodeName": "VIEW",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 109
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 109,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 16
+                  }
+                ],
+                "localName": "view",
+                "nodeId": 16,
+                "nodeName": "VIEW",
+                "nodeType": 1,
+                "nodeValue": "",
+                "parentId": 13
+              }
+            ],
+            "localName": "view",
+            "nodeId": 13,
+            "nodeName": "VIEW",
+            "nodeType": 1,
+            "nodeValue": "",
+            "parentId": 10
+          }
+        ],
+        "localName": "page",
+        "nodeId": 10,
+        "nodeName": "PAGE",
+        "nodeType": 1,
+        "nodeValue": ""
+      }
+    ],
+    "localName": "",
+    "nodeId": 11,
+    "nodeName": "#document",
+    "nodeType": 9,
+    "nodeValue": ""
+  }
+}

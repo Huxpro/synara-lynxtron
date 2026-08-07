@@ -55,6 +55,11 @@ import { resolveThreadPageBodyState } from './threadPageState.logic';
 import { sleepOnHost } from '../platform/timer';
 import { EmptyThreadContextTray } from './EmptyThreadContextTray.lynx';
 import { useTemporaryThreadLifecycle } from './temporaryThreadLifecycle.lynx';
+import { DesktopTitlebarControls } from '../adapters/DesktopTitlebarControls.lynx';
+import {
+  resolveMemoryNavigationState,
+  type MemoryNavigationState,
+} from './routerHistory.logic';
 export const history = createMemoryHistory({ initialEntries: ['/'] });
 
 async function readPersistedLastThreadRoute(): Promise<LastThreadRoute | null> {
@@ -143,6 +148,17 @@ export function useRoute(): RouteState {
     });
   }, []);
   return route;
+}
+
+function useMemoryNavigationState(): MemoryNavigationState {
+  const readState = () =>
+    resolveMemoryNavigationState({
+      length: history.length,
+      state: history.location.state,
+    });
+  const [navigation, setNavigation] = useState(readState);
+  useEffect(() => history.subscribe(() => setNavigation(readState())), []);
+  return navigation;
 }
 
 function useProviderHealthBanner(
@@ -372,6 +388,8 @@ export function SliceRouter({
   readonly onUiDensityChange: (density: UiDensity) => void;
 }) {
   const route = useRoute();
+  const navigation = useMemoryNavigationState();
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const {
     data: routeThreads,
     isPending: routeThreadsPending,
@@ -448,6 +466,16 @@ export function SliceRouter({
     }
     history.push(to);
   }, []);
+  const titlebarControls = (
+    <DesktopTitlebarControls
+      canGoBack={navigation.canGoBack}
+      canGoForward={navigation.canGoForward}
+      placement={sidebarOpen ? 'open' : 'closed'}
+      onGoBack={() => history.back()}
+      onGoForward={() => history.forward()}
+      onToggleSidebar={() => setSidebarOpen((open) => !open)}
+    />
+  );
   const navigateBackFromSettings = useCallback(() => {
     const target = resolveSettingsBackTarget({
       lastThreadRoute: persistedLastRoute,
@@ -534,7 +562,7 @@ export function SliceRouter({
     );
   }
 
-  const sidebar = (
+  const sidebar = sidebarOpen ? (
     <Sidebar
         activeThreadId={
           route.pathname === '/thread/$threadId' ? route.params.threadId : null
@@ -543,11 +571,19 @@ export function SliceRouter({
           route.pathname === '/kanban/$projectId' ? '/kanban' : route.pathname
         }
         navigate={navigate}
+        titlebarControls={titlebarControls}
       />
-  );
+  ) : null;
   return (
     <AppShellFrame sidebar={sidebar}>
-      <view className="AppMain">{page}</view>
+      <view
+        className={`AppMain${
+          sidebarOpen ? '' : ' AppMain--sidebar-closed'
+        }`}
+      >
+        {sidebarOpen ? null : titlebarControls}
+        {page}
+      </view>
     </AppShellFrame>
   );
 }

@@ -273,10 +273,12 @@ export function Sidebar({
   activeThreadId,
   activePath,
   navigate,
+  titlebarControls,
 }: {
   readonly activeThreadId: string | null;
   readonly activePath: string;
   readonly navigate: (to: string) => void;
+  readonly titlebarControls?: ReactNode;
 }) {
   const initialSortSettings = readSettingsGeneralProjection(
     webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
@@ -715,7 +717,10 @@ export function Sidebar({
 
   return (
     <view className="AppSidebar">
-          <SidebarDesktopHeader />
+          <SidebarDesktopHeader
+            leadingControls={titlebarControls}
+            trafficLightGutter
+          />
           <SidebarSurfaceContent
             surfaceKey={primarySidebarSurface}
             picker={

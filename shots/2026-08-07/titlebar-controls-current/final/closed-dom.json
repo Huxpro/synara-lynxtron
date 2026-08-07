@@ -1,0 +1,694 @@
+{
+  "compress": false,
+  "root": {
+    "attributes": [],
+    "backendNodeId": 11,
+    "childNodeCount": 1,
+    "children": [
+      {
+        "attributes": [],
+        "backendNodeId": 10,
+        "childNodeCount": 1,
+        "children": [
+          {
+            "attributes": [
+              "class",
+              "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable"
+            ],
+            "backendNodeId": 13,
+            "childNodeCount": 2,
+            "children": [
+              {
+                "attributes": [
+                  "class",
+                  "TransportStatusNotice TransportStatusNotice--reconnecting"
+                ],
+                "backendNodeId": 164,
+                "childNodeCount": 2,
+                "children": [
+                  {
+                    "attributes": [
+                      "accessibility-element",
+                      "true",
+                      "accessibility-traits",
+                      "updating",
+                      "accessibility-label",
+                      "Reconnecting to Synara",
+                      "class",
+                      "TransportStatusNoticeText"
+                    ],
+                    "backendNodeId": 165,
+                    "childNodeCount": 1,
+                    "children": [
+                      {
+                        "attributes": [
+                          "text",
+                          "Reconnecting…"
+                        ],
+                        "backendNodeId": 167,
+                        "childNodeCount": 0,
+                        "children": [],
+                        "localName": "raw-text",
+                        "nodeId": 167,
+                        "nodeName": "RAW-TEXT",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 165
+                      }
+                    ],
+                    "localName": "text",
+                    "nodeId": 165,
+                    "nodeName": "TEXT",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 164
+                  },
+                  {
+                    "attributes": [],
+                    "backendNodeId": 166,
+                    "childNodeCount": 0,
+                    "children": [],
+                    "localName": "wrapper",
+                    "nodeId": 166,
+                    "nodeName": "WRAPPER",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 164
+                  }
+                ],
+                "localName": "view",
+                "nodeId": 164,
+                "nodeName": "VIEW",
+                "nodeType": 1,
+                "nodeValue": "",
+                "parentId": 13
+              },
+              {
+                "attributes": [
+                  "class",
+                  "SharedAppShellFrame"
+                ],
+                "backendNodeId": 16,
+                "childNodeCount": 1,
+                "children": [
+                  {
+                    "attributes": [
+                      "class",
+                      "AppMain AppMain--sidebar-closed"
+                    ],
+                    "backendNodeId": 109,
+                    "childNodeCount": 2,
+                    "children": [
+                      {
+                        "attributes": [
+                          "class",
+                          "DesktopTitlebarControls DesktopTitlebarControls--closed"
+                        ],
+                        "backendNodeId": 208,
+                        "childNodeCount": 3,
+                        "children": [
+                          {
+                            "attributes": [
+                              "aria-label",
+                              "Toggle thread sidebar",
+                              "accessibility-element",
+                              "true",
+                              "accessibility-label",
+                              "Toggle thread sidebar",
+                              "accessibility-traits",
+                              "button",
+                              "focusable",
+                              "true",
+                              "aria-disabled",
+                              "false",
+                              "bindmouseenter",
+                              "166:0:bindmouseenter",
+                              "bindblur",
+                              "166:0:bindblur",
+                              "bindmouseleave",
+                              "166:0:bindmouseleave",
+                              "bindkeydown",
+                              "166:0:bindkeydown",
+                              "bindtap",
+                              "166:0:bindtap",
+                              "bindmouseup",
+                              "166:0:bindmouseup",
+                              "bindtouchstart",
+                              "166:0:bindtouchstart",
+                              "bindmousedown",
+                              "166:0:bindmousedown",
+                              "bindtouchend",
+                              "166:0:bindtouchend",
+                              "bindtouchcancel",
+                              "166:0:bindtouchcancel",
+                              "bindfocus",
+                              "166:0:bindfocus",
+                              "class",
+                              "DesktopTitlebarControl DesktopTitlebarControl--toggle"
+                            ],
+                            "backendNodeId": 209,
+                            "childNodeCount": 2,
+                            "children": [
+                              {
+                                "attributes": [
+                                  "content",
+                                  "<svg width=\"24px\" height=\"24px\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><g><path d=\"M2.75 6.75C2.75 5.64543 3.64543 4.75 4.75 4.75H19.25C20.3546 4.75 21.25 5.64543 21.25 6.75V17.25C21.25 18.3546 20.3546 19.25 19.25 19.25H4.75C3.64543 19.25 2.75 18.3546 2.75 17.25V6.75Z\" stroke=\"rgba(13, 13, 13, 0.598)\" stroke-width=\"1.5\" stroke-linejoin=\"round\"></path><path d=\"M6.25 8.25V15.75\" stroke=\"rgba(13, 13, 13, 0.598)\" stroke-width=\"1.5\" stroke-linecap=\"round\"></path></g></svg>",
+                                  "class",
+                                  "DesktopTitlebarControlIcon DesktopTitlebarControlIcon--secondary"
+                                ],
+                                "backendNodeId": 210,
+                                "childNodeCount": 0,
+                                "children": [],
+                                "localName": "svg",
+                                "nodeId": 210,
+                                "nodeName": "SVG",
+                                "nodeType": 1,
+                                "nodeValue": "",
+                                "parentId": 209
+                              },
+                              {
+                                "attributes": [
+                                  "content",
+                                  "<svg width=\"24px\" height=\"24px\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><g><path d=\"M2.75 6.75C2.75 5.64543 3.64543 4.75 4.75 4.75H19.25C20.3546 4.75 21.25 5.64543 21.25 6.75V17.25C21.25 18.3546 20.3546 19.25 19.25 19.25H4.75C3.64543 19.25 2.75 18.3546 2.75 17.25V6.75Z\" stroke=\"#0d0d0d\" stroke-width=\"1.5\" stroke-linejoin=\"round\"></path><path d=\"M6.25 8.25V15.75\" stroke=\"#0d0d0d\" stroke-width=\"1.5\" stroke-linecap=\"round\"></path></g></svg>",
+                                  "class",
+                                  "DesktopTitlebarControlIcon DesktopTitlebarControlIcon--foreground"
+                                ],
+                                "backendNodeId": 211,
+                                "childNodeCount": 0,
+                                "children": [],
+                                "localName": "svg",
+                                "nodeId": 211,
+                                "nodeName": "SVG",
+                                "nodeType": 1,
+                                "nodeValue": "",
+                                "parentId": 209
+                              }
+                            ],
+                            "localName": "view",
+                            "nodeId": 209,
+                            "nodeName": "VIEW",
+                            "nodeType": 1,
+                            "nodeValue": "",
+                            "parentId": 208
+                          },
+                          {
+                            "attributes": [
+                              "aria-label",
+                              "Back",
+                              "accessibility-element",
+                              "true",
+                              "accessibility-label",
+                              "Back",
+                              "accessibility-traits",
+                              "button",
+                              "focusable",
+                              "true",
+                              "aria-disabled",
+                              "false",
+                              "bindmouseenter",
+                              "167:0:bindmouseenter",
+                              "bindblur",
+                              "167:0:bindblur",
+                              "bindmouseleave",
+                              "167:0:bindmouseleave",
+                              "bindkeydown",
+                              "167:0:bindkeydown",
+                              "bindtap",
+                              "167:0:bindtap",
+                              "bindmouseup",
+                              "167:0:bindmouseup",
+                              "bindtouchstart",
+                              "167:0:bindtouchstart",
+                              "bindmousedown",
+                              "167:0:bindmousedown",
+                              "bindtouchend",
+                              "167:0:bindtouchend",
+                              "bindtouchcancel",
+                              "167:0:bindtouchcancel",
+                              "bindfocus",
+                              "167:0:bindfocus",
+                              "class",
+                              "DesktopTitlebarControl DesktopTitlebarControl--navigation DesktopTitlebarControl--back"
+                            ],
+                            "backendNodeId": 212,
+                            "childNodeCount": 2,
+                            "children": [
+                              {
+                                "attributes": [
+                                  "content",
+                                  "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\" fill=\"rgba(13, 13, 13, 0.598)\"><path d=\"M295.6 163.7c-5.1 5-5.1 13.3-.1 18.4l60.8 60.9H124.9c-7.1 0-12.9 5.8-12.9 13s5.8 13 12.9 13h231.3l-60.8 60.9c-5 5.1-4.9 13.3.1 18.4 5.1 5 13.2 5 18.3-.1l82.4-83c1.1-1.2 2-2.5 2.7-4.1.7-1.6 1-3.3 1-5 0-3.4-1.3-6.6-3.7-9.1l-82.4-83c-4.9-5.2-13.1-5.3-18.2-.3z\"/></svg>",
+                                  "class",
+                                  "DesktopTitlebarControlIcon DesktopTitlebarControlIcon--secondary"
+                                ],
+                                "backendNodeId": 213,
+                                "childNodeCount": 0,
+                                "children": [],
+                                "localName": "svg",
+                                "nodeId": 213,
+                                "nodeName": "SVG",
+                                "nodeType": 1,
+                                "nodeValue": "",
+                                "parentId": 212
+                              },
+                              {
+                                "attributes": [
+                                  "content",
+                                  "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\" fill=\"#0d0d0d\"><path d=\"M295.6 163.7c-5.1 5-5.1 13.3-.1 18.4l60.8 60.9H124.9c-7.1 0-12.9 5.8-12.9 13s5.8 13 12.9 13h231.3l-60.8 60.9c-5 5.1-4.9 13.3.1 18.4 5.1 5 13.2 5 18.3-.1l82.4-83c1.1-1.2 2-2.5 2.7-4.1.7-1.6 1-3.3 1-5 0-3.4-1.3-6.6-3.7-9.1l-82.4-83c-4.9-5.2-13.1-5.3-18.2-.3z\"/></svg>",
+                                  "class",
+                                  "DesktopTitlebarControlIcon DesktopTitlebarControlIcon--foreground"
+                                ],
+                                "backendNodeId": 214,
+                                "childNodeCount": 0,
+                                "children": [],
+                                "localName": "svg",
+                                "nodeId": 214,
+                                "nodeName": "SVG",
+                                "nodeType": 1,
+                                "nodeValue": "",
+                                "parentId": 212
+                              }
+                            ],
+                            "localName": "view",
+                            "nodeId": 212,
+                            "nodeName": "VIEW",
+                            "nodeType": 1,
+                            "nodeValue": "",
+                            "parentId": 208
+                          },
+                          {
+                            "attributes": [
+                              "aria-label",
+                              "Forward",
+                              "accessibility-element",
+                              "true",
+                              "accessibility-label",
+                              "Forward",
+                              "accessibility-traits",
+                              "button",
+                              "focusable",
+                              "false",
+                              "aria-disabled",
+                              "true",
+                              "class",
+                              "DesktopTitlebarControl DesktopTitlebarControl--navigation DesktopTitlebarControl--disabled"
+                            ],
+                            "backendNodeId": 215,
+                            "childNodeCount": 2,
+                            "children": [
+                              {
+                                "attributes": [
+                                  "content",
+                                  "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\" fill=\"rgba(13, 13, 13, 0.598)\"><path d=\"M295.6 163.7c-5.1 5-5.1 13.3-.1 18.4l60.8 60.9H124.9c-7.1 0-12.9 5.8-12.9 13s5.8 13 12.9 13h231.3l-60.8 60.9c-5 5.1-4.9 13.3.1 18.4 5.1 5 13.2 5 18.3-.1l82.4-83c1.1-1.2 2-2.5 2.7-4.1.7-1.6 1-3.3 1-5 0-3.4-1.3-6.6-3.7-9.1l-82.4-83c-4.9-5.2-13.1-5.3-18.2-.3z\"/></svg>",
+                                  "class",
+                                  "DesktopTitlebarControlIcon DesktopTitlebarControlIcon--secondary"
+                                ],
+                                "backendNodeId": 216,
+                                "childNodeCount": 0,
+                                "children": [],
+                                "localName": "svg",
+                                "nodeId": 216,
+                                "nodeName": "SVG",
+                                "nodeType": 1,
+                                "nodeValue": "",
+                                "parentId": 215
+                              },
+                              {
+                                "attributes": [
+                                  "content",
+                                  "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\" fill=\"#0d0d0d\"><path d=\"M295.6 163.7c-5.1 5-5.1 13.3-.1 18.4l60.8 60.9H124.9c-7.1 0-12.9 5.8-12.9 13s5.8 13 12.9 13h231.3l-60.8 60.9c-5 5.1-4.9 13.3.1 18.4 5.1 5 13.2 5 18.3-.1l82.4-83c1.1-1.2 2-2.5 2.7-4.1.7-1.6 1-3.3 1-5 0-3.4-1.3-6.6-3.7-9.1l-82.4-83c-4.9-5.2-13.1-5.3-18.2-.3z\"/></svg>",
+                                  "class",
+                                  "DesktopTitlebarControlIcon DesktopTitlebarControlIcon--foreground"
+                                ],
+                                "backendNodeId": 217,
+                                "childNodeCount": 0,
+                                "children": [],
+                                "localName": "svg",
+                                "nodeId": 217,
+                                "nodeName": "SVG",
+                                "nodeType": 1,
+                                "nodeValue": "",
+                                "parentId": 215
+                              }
+                            ],
+                            "localName": "view",
+                            "nodeId": 215,
+                            "nodeName": "VIEW",
+                            "nodeType": 1,
+                            "nodeValue": "",
+                            "parentId": 208
+                          }
+                        ],
+                        "localName": "view",
+                        "nodeId": 208,
+                        "nodeName": "VIEW",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 109
+                      },
+                      {
+                        "attributes": [
+                          "class",
+                          "FeaturePage FeaturePage--overview"
+                        ],
+                        "backendNodeId": 189,
+                        "childNodeCount": 2,
+                        "children": [
+                          {
+                            "attributes": [
+                              "class",
+                              "SharedKanbanRouteHeader"
+                            ],
+                            "backendNodeId": 190,
+                            "childNodeCount": 1,
+                            "children": [
+                              {
+                                "attributes": [
+                                  "class",
+                                  "SharedKanbanRouteHeaderRow"
+                                ],
+                                "backendNodeId": 191,
+                                "childNodeCount": 4,
+                                "children": [
+                                  {
+                                    "attributes": [
+                                      "maxlines",
+                                      "1",
+                                      "class",
+                                      "SharedKanbanRouteTitle"
+                                    ],
+                                    "backendNodeId": 192,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "text",
+                                          "Kanban"
+                                        ],
+                                        "backendNodeId": 193,
+                                        "childNodeCount": 0,
+                                        "children": [],
+                                        "localName": "raw-text",
+                                        "nodeId": 193,
+                                        "nodeName": "RAW-TEXT",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 192
+                                      }
+                                    ],
+                                    "localName": "text",
+                                    "nodeId": 192,
+                                    "nodeName": "TEXT",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 191
+                                  },
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SharedKanbanRouteCount"
+                                    ],
+                                    "backendNodeId": 194,
+                                    "childNodeCount": 2,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "text",
+                                          "0"
+                                        ],
+                                        "backendNodeId": 195,
+                                        "childNodeCount": 0,
+                                        "children": [],
+                                        "localName": "raw-text",
+                                        "nodeId": 195,
+                                        "nodeName": "RAW-TEXT",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 194
+                                      },
+                                      {
+                                        "attributes": [
+                                          "text",
+                                          " tasks"
+                                        ],
+                                        "backendNodeId": 196,
+                                        "childNodeCount": 0,
+                                        "children": [],
+                                        "localName": "raw-text",
+                                        "nodeId": 196,
+                                        "nodeName": "RAW-TEXT",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 194
+                                      }
+                                    ],
+                                    "localName": "text",
+                                    "nodeId": 194,
+                                    "nodeName": "TEXT",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 191
+                                  },
+                                  {
+                                    "attributes": [
+                                      "class",
+                                      "SharedKanbanRouteSpacer"
+                                    ],
+                                    "backendNodeId": 197,
+                                    "childNodeCount": 0,
+                                    "children": [],
+                                    "localName": "view",
+                                    "nodeId": 197,
+                                    "nodeName": "VIEW",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 191
+                                  },
+                                  {
+                                    "attributes": [
+                                      "aria-label",
+                                      "New task",
+                                      "focusable",
+                                      "false",
+                                      "aria-disabled",
+                                      "true",
+                                      "class",
+                                      "SharedKanbanRouteNewTask SharedKanbanRouteNewTask--disabled"
+                                    ],
+                                    "backendNodeId": 198,
+                                    "childNodeCount": 2,
+                                    "children": [
+                                      {
+                                        "attributes": [],
+                                        "backendNodeId": 199,
+                                        "childNodeCount": 1,
+                                        "children": [
+                                          {
+                                            "attributes": [
+                                              "content",
+                                              "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0d0d0d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-plus\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M12 5l0 14\" /> <path d=\"M5 12l14 0\" /> </svg>",
+                                              "class",
+                                              "SharedKanbanRouteNewTaskIcon",
+                                              "style",
+                                              "height:14px;width:14px;"
+                                            ],
+                                            "backendNodeId": 201,
+                                            "childNodeCount": 0,
+                                            "children": [],
+                                            "localName": "svg",
+                                            "nodeId": 201,
+                                            "nodeName": "SVG",
+                                            "nodeType": 1,
+                                            "nodeValue": "",
+                                            "parentId": 199
+                                          }
+                                        ],
+                                        "localName": "wrapper",
+                                        "nodeId": 199,
+                                        "nodeName": "WRAPPER",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 198
+                                      },
+                                      {
+                                        "attributes": [
+                                          "text",
+                                          "New task",
+                                          "class",
+                                          "SharedKanbanRouteNewTaskText"
+                                        ],
+                                        "backendNodeId": 200,
+                                        "childNodeCount": 0,
+                                        "children": [],
+                                        "localName": "text",
+                                        "nodeId": 200,
+                                        "nodeName": "TEXT",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 198
+                                      }
+                                    ],
+                                    "localName": "view",
+                                    "nodeId": 198,
+                                    "nodeName": "VIEW",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 191
+                                  }
+                                ],
+                                "localName": "view",
+                                "nodeId": 191,
+                                "nodeName": "VIEW",
+                                "nodeType": 1,
+                                "nodeValue": "",
+                                "parentId": 190
+                              }
+                            ],
+                            "localName": "view",
+                            "nodeId": 190,
+                            "nodeName": "VIEW",
+                            "nodeType": 1,
+                            "nodeValue": "",
+                            "parentId": 189
+                          },
+                          {
+                            "attributes": [
+                              "class",
+                              "SharedKanbanState SharedKanbanState--page"
+                            ],
+                            "backendNodeId": 202,
+                            "childNodeCount": 2,
+                            "children": [
+                              {
+                                "attributes": [
+                                  "accessibility-element",
+                                  "true",
+                                  "accessibility-label",
+                                  "Loading Kanban projects",
+                                  "accessibility-traits",
+                                  "updating",
+                                  "class",
+                                  "SharedKanbanStateCopy"
+                                ],
+                                "backendNodeId": 203,
+                                "childNodeCount": 2,
+                                "children": [
+                                  {
+                                    "attributes": [
+                                      "accessibility-element",
+                                      "false",
+                                      "class",
+                                      "SharedKanbanStateTitle"
+                                    ],
+                                    "backendNodeId": 204,
+                                    "childNodeCount": 1,
+                                    "children": [
+                                      {
+                                        "attributes": [
+                                          "text",
+                                          "Loading projects…"
+                                        ],
+                                        "backendNodeId": 207,
+                                        "childNodeCount": 0,
+                                        "children": [],
+                                        "localName": "raw-text",
+                                        "nodeId": 207,
+                                        "nodeName": "RAW-TEXT",
+                                        "nodeType": 1,
+                                        "nodeValue": "",
+                                        "parentId": 204
+                                      }
+                                    ],
+                                    "localName": "text",
+                                    "nodeId": 204,
+                                    "nodeName": "TEXT",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 203
+                                  },
+                                  {
+                                    "attributes": [],
+                                    "backendNodeId": 205,
+                                    "childNodeCount": 0,
+                                    "children": [],
+                                    "localName": "wrapper",
+                                    "nodeId": 205,
+                                    "nodeName": "WRAPPER",
+                                    "nodeType": 1,
+                                    "nodeValue": "",
+                                    "parentId": 203
+                                  }
+                                ],
+                                "localName": "view",
+                                "nodeId": 203,
+                                "nodeName": "VIEW",
+                                "nodeType": 1,
+                                "nodeValue": "",
+                                "parentId": 202
+                              },
+                              {
+                                "attributes": [],
+                                "backendNodeId": 206,
+                                "childNodeCount": 0,
+                                "children": [],
+                                "localName": "wrapper",
+                                "nodeId": 206,
+                                "nodeName": "WRAPPER",
+                                "nodeType": 1,
+                                "nodeValue": "",
+                                "parentId": 202
+                              }
+                            ],
+                            "localName": "view",
+                            "nodeId": 202,
+                            "nodeName": "VIEW",
+                            "nodeType": 1,
+                            "nodeValue": "",
+                            "parentId": 189
+                          }
+                        ],
+                        "localName": "view",
+                        "nodeId": 189,
+                        "nodeName": "VIEW",
+                        "nodeType": 1,
+                        "nodeValue": "",
+                        "parentId": 109
+                      }
+                    ],
+                    "localName": "view",
+                    "nodeId": 109,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 16
+                  }
+                ],
+                "localName": "view",
+                "nodeId": 16,
+                "nodeName": "VIEW",
+                "nodeType": 1,
+                "nodeValue": "",
+                "parentId": 13
+              }
+            ],
+            "localName": "view",
+            "nodeId": 13,
+            "nodeName": "VIEW",
+            "nodeType": 1,
+            "nodeValue": "",
+            "parentId": 10
+          }
+        ],
+        "localName": "page",
+        "nodeId": 10,
+        "nodeName": "PAGE",
+        "nodeType": 1,
+        "nodeValue": ""
+      }
+    ],
+    "localName": "",
+    "nodeId": 11,
+    "nodeName": "#document",
+    "nodeType": 9,
+    "nodeValue": ""
+  }
+}

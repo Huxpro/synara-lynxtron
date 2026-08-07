@@ -1262,6 +1262,23 @@ The retained replacement cells:
   retains the real menu in a 2560x1640 frame with an empty console. Compound
   popup DevTool still reports zero radius/border, so no numeric Native radius
   claim is made beyond source ownership and the retained visual frame.
+- Lynxtron's titlebar now exposes the real Electron control anatomy instead of
+  logo-only chrome. Toggle is a functional 24x24/r6 control; Back and Forward
+  are functional 28x28/r10 memory-history controls with real disabled state.
+- The same cluster moves between the open sidebar and a fixed closed-sidebar
+  host position. Exact-owned Native PID `4727`, PID-derived
+  `localhost:8903/session 1`, matches Electron at x=90/116/146 and
+  24/28/28px in both placements; the closed main-header content begins at
+  x=212.
+- Supported touch proved Landing -> Kanban -> Back -> Forward -> close sidebar
+  -> reopen sidebar, ending with the sidebar restored. The exact Electron
+  round-arrow path is used; an unrelated curved reply glyph was rejected.
+  Settings keeps its separate real `Back to app` surface and is not falsely
+  claimed as part of this global cluster.
+- Focused history/controls tests pass 6/6, production build passes, retained
+  frames are 2560x1640, and console is empty. Sidebar visibility remains
+  session-local/default-open; no hidden persistence contract was invented.
+  Evidence is under `shots/2026-08-07/titlebar-controls-current/`.
 
 ## Remaining work
 

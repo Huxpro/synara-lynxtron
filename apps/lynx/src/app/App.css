@@ -147,6 +147,12 @@
   background-color: var(--background);
 }
 
+.AppMain--sidebar-closed .AppWindowDragRegion--padded,
+.AppMain--sidebar-closed .SharedKanbanRouteHeader,
+.AppMain--sidebar-closed .SharedPrRouteHeader {
+  padding-left: 212px;
+}
+
 .TransportStatusNotice {
   position: absolute;
   top: 8px;

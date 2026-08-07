@@ -7001,3 +7001,22 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - focused **4/4**、Native build通过。exact-owned PID2648→localhost:8905/session1，
   real menu raw2560×1640、console0。compound popup DevTool仍返回radius/border0，
   不冒充numeric Native proof。
+
+## 2026-08-07 — current-head Lynxtron titlebar controls closure
+
+- Electron open-sidebar controls实测：Toggle x90/y11/24/r6，Back
+  x116/y9/28/r10，Forward x146/y9/28/r10，gap2，disabled opacity.64。
+  Lynx此前仅logo，缺真实toggle/history controls。
+- 新cluster不是inert：Toggle真实移除/恢复sidebar column；Back/Forward直接调用既有
+  TanStack memory history，并由`__TSR_index`+length计算disabled/focusable。
+  同一component在open时位于traffic-light gutter后，closed时fixed x90；closed
+  standard headers leading inset212。
+- Toggle复用exact central icon；Back/Forward使用Electron同源IoIos round-arrow path。
+  首版误用curved reply `arrow-rounded`已拒绝未保留。Settings保持独立真实
+  `Back to app`，不冒充global cluster覆盖。
+- focused history/controls **2 files / 6 tests**，Native/Desktop build通过。
+  exact-owned final bundle `5410f093…`，PID4727→localhost:8903/session1；真实touch完成
+  Landing→Kanban→Back→Forward→close→reopen，final sidebar restored。
+  open/closed均x90/116/146与24/28/28，closed header content x212，
+  frames2560×1640、console0。sidebar visibility session-local/default open，无新持久化
+  schema。证据`shots/2026-08-07/titlebar-controls-current/`。
