@@ -8,6 +8,10 @@ export const VIEWPORT_BREAKPOINTS = {
   xl: 1280,
 } as const;
 
+export const VIEWPORT_HEIGHT_BREAKPOINTS = {
+  short: 320,
+} as const;
+
 export type ViewportBreakpoint = keyof typeof VIEWPORT_BREAKPOINTS;
 export type ViewportLayoutBand = "unknown" | "compact" | "medium" | "wide";
 
@@ -64,4 +68,11 @@ export function viewportBreakpointClassNames(layout: ViewportLayout): string {
     .sort((left, right) => left[1] - right[1])
     .map(([breakpoint]) => `SliceRoot--viewport-${breakpoint}-up`)
     .join(" ");
+}
+
+export function viewportHeightClassNames(layout: ViewportLayout): string {
+  if (layout.height <= 0) return "";
+  return layout.height < VIEWPORT_HEIGHT_BREAKPOINTS.short
+    ? "SliceRoot--viewport-short-height"
+    : "";
 }

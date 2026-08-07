@@ -107,9 +107,8 @@ separate behavior decisions and real multi-size proof:
    already clamps measured popup coordinates to its measured viewport; Search
    command and Composer model overlays are separately proven at the Desktop
    minimum below.
-3. Very short windows: transcript and remaining Settings action surfaces still
-   need separate proof. Landing Composer and the sidebar footer are closed
-   below.
+3. Very short windows: remaining Settings action surfaces still need separate
+   proof. Landing, sidebar footer, and Transcript are closed below.
 
 These rows remain open; the first shell/composer slice does not certify the
 entire application as responsive.
@@ -221,3 +220,12 @@ edges. `ThreadsLandingBody` now owns vertical scrolling, while a
 The 200px body now scrolls 90px between a fully visible heading and a fully
 visible Composer; at 480px it remains non-scrolling and centered. Evidence:
 `shots/2026-08-07/responsive-short-window-current/`.
+
+Transcript uses a shared `short=320px` height class. Below that threshold, the
+provider-health banner contracts to 44px, keeps its full accessibility label
+while hiding visual description copy, and transcript top padding is removed.
+At 280px the real message list grows from 43px to 95px while the 95px Composer
+remains intact; at 480px the original 80px banner and 243px list remain
+unchanged. A 200px diagnostic frame is retained as a physical budget boundary,
+not a supported normal layout. Evidence:
+`shots/2026-08-07/responsive-transcript-short-current/`.

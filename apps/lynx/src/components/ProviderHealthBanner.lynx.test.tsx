@@ -60,5 +60,11 @@ describe("Native ProviderHealthBanner", () => {
     expect(styles).toMatch(
       /\.ProviderHealthBanner\s*\{[^}]*width:\s*736px;[^}]*height:\s*68px;[^}]*padding:\s*12px 40px 12px 14px;[^}]*border-radius:\s*18px;/s,
     );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height \.ProviderHealthBannerFrame\s*\{[^}]*height:\s*44px;[^}]*padding-top:\s*4px;/s,
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height \.ProviderHealthBannerDescription\s*\{[^}]*display:\s*none;/s,
+    );
   });
 });

@@ -3,7 +3,9 @@ import { describe, expect, it } from "vitest";
 import {
   resolveViewportLayout,
   viewportBreakpointClassNames,
+  viewportHeightClassNames,
   viewportLayoutClassName,
+  VIEWPORT_HEIGHT_BREAKPOINTS,
   VIEWPORT_BREAKPOINTS,
 } from "./responsiveLayout.logic";
 
@@ -36,5 +38,15 @@ describe("responsive viewport layout", () => {
     ).toBe(
       "SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up",
     );
+  });
+
+  it("projects a short-height class without changing width bands", () => {
+    expect(VIEWPORT_HEIGHT_BREAKPOINTS.short).toBe(320);
+    expect(
+      viewportHeightClassNames(resolveViewportLayout({ width: 900, height: 319 })),
+    ).toBe("SliceRoot--viewport-short-height");
+    expect(
+      viewportHeightClassNames(resolveViewportLayout({ width: 900, height: 320 })),
+    ).toBe("");
   });
 });

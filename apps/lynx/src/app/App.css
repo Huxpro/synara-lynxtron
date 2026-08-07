@@ -269,6 +269,10 @@
   padding-top: 16px;
 }
 
+.SliceRoot--viewport-short-height .ThreadTranscriptColumn {
+  padding-top: 0;
+}
+
 .ThreadTranscriptState {
   display: flex;
   flex: 1;

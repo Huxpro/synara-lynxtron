@@ -89,3 +89,23 @@
   width: 14px;
   height: 14px;
 }
+
+.SliceRoot--viewport-short-height .ProviderHealthBannerFrame {
+  height: 44px;
+  padding-top: 4px;
+}
+
+.SliceRoot--viewport-short-height .ProviderHealthBanner {
+  height: 40px;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.SliceRoot--viewport-short-height .ProviderHealthBannerDescription {
+  display: none;
+}
+
+.SliceRoot--viewport-short-height .ProviderHealthBannerDismiss {
+  top: 8px;
+}

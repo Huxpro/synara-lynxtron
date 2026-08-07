@@ -7246,3 +7246,19 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   React Doctor仅报告router既存line154 pure function与line250 await-loop，不指向本刀。
   page errors0，console仅既存web-core warning。证据
   `shots/2026-08-07/responsive-short-window-current/`。
+
+## 2026-08-07 — short-height Transcript budget
+
+- 通过canonical orchestration commands创建真实Home thread与user message，provider真实
+  失败状态保留；未写SQLite fixture。900x200旧布局：header46+banner80+composer73–95+
+  transcript padding16把native list压成0px；280px也仅43px。
+- shared responsive SSOT新增`short=320px` height class。short下provider banner frame
+  80→44，视觉description隐藏但完整title/message保留在accessibility label，dismiss保留；
+  transcript top padding16→0。宽度band不变。
+- 280px实测list提升到95px、scrollHeight521且Composer完整95px；480px不命中short class，
+  原banner80/list243/composer95完全保持。200px诊断提升到15px但登记为三层固定surface的
+  physical budget boundary，不通过隐藏核心Composer冒充支持。
+- Web focused **1 file / 4 tests**、Lynx focused **3 files / 10 tests**；
+  Lynx-for-Web与Native/Desktop builds通过，React Doctor **100/100**。page errors0，
+  console仅既存web-core warning。证据
+  `shots/2026-08-07/responsive-transcript-short-current/`。
