@@ -21,6 +21,9 @@ describe('Settings AppSnap capability fidelity', () => {
     expect(panelSource).toContain(
       'runtime does not expose the screen-capture, permission, or global'
     );
+    expect(panelSource).toContain('device until you send the message.');
+    expect(panelSource).toContain('in the last minute, and');
+    expect(panelSource).toContain('consecutive snaps stay together.');
     expect(panelSource).toContain('Unavailable in this runtime');
     expect(panelSource).toContain('accessibility-state={{ disabled: true }}');
     expect(panelSource).not.toContain('onChange=');

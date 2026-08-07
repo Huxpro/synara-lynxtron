@@ -17,7 +17,8 @@ export function SettingsAppSnapPanel() {
           <text className="SettingsAppSnapRowDescription">
             Press your two-key shortcut while any app is frontmost. Synara
             captures that window as an image, brings itself forward, and
-            attaches the snap to a task composer.
+            attaches the snap to a task composer — the capture stays on this
+            device until you send the message.
           </text>
           <text className="SettingsAppSnapUnavailable">
             AppSnap requires the Synara desktop app on macOS. This Lynxtron
@@ -77,8 +78,9 @@ export function SettingsAppSnapPanel() {
               <text className="SettingsAppSnapRowTitle">Destination</text>
             </view>
             <text className="SettingsAppSnapRowDescription">
-              Snaps join the task you interacted with recently; otherwise
-              Synara opens a fresh task with the capture attached.
+              Snaps join the task you interacted with in the last minute, and
+              consecutive snaps stay together. Otherwise Synara opens a fresh
+              task with the capture attached.
             </text>
           </view>
           <text className="SettingsAppSnapValue">Automatic</text>

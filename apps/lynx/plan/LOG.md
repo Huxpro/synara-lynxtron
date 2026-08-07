@@ -7685,3 +7685,16 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   pack通过。uncached changed-lines React Doctor以`a3e73fbf…`为base并包含untracked
   implementation，扫描11 files为**0 diagnostics**。证据
   `shots/2026-08-08/settings-profile-share-current/`。
+
+## 2026-08-08 — Settings AppSnap shared copy
+
+- AppSnap Lynx capability boundary本身正确，但shared product copy被截短：hero缺少
+  capture发送前只留本机的privacy句，Destination缺少last-minute target window与
+  consecutive-snap grouping。两者描述产品行为，不等于宣称Lynx当前具备capture。
+- 恢复Web authoritative完整文案，同时保留screen-capture/permission/global shortcut
+  unavailable说明与disabled controls；不添加假Preview action。
+- same-service dark 1280x820 DPR1下完整隐私句和destination句均真实渲染，
+  connection diagnostics空。hero比Web高来自额外真实capability paragraph，不用offset
+  掩盖。focused AppSnap **1 file / 2 tests**，Web/Native builds通过；uncached
+  changed-lines Doctor以`13ec016b…`为base为**0 diagnostics**。证据
+  `shots/2026-08-08/settings-appsnap-copy-current/`。
