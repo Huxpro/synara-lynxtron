@@ -84,6 +84,7 @@ export const SHELL_CAPABILITIES = {
 
 const NATIVE_RENDERER_COMMANDS = new Set<KeybindingCommand>([
   'chat.new',
+  'sidebar.toggle',
   'sidebar.search',
   'chat.visible.previous',
   'chat.visible.next',

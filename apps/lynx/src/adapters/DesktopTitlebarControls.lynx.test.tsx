@@ -18,6 +18,10 @@ const settingsSource = fs.readFileSync(
   path.resolve(__dirname, '../app/SettingsPage.tsx'),
   'utf8'
 );
+const desktopMainSource = fs.readFileSync(
+  path.resolve(__dirname, '../main/desktop/main.ts'),
+  'utf8'
+);
 
 describe('desktop titlebar controls', () => {
   it('publishes real toggle, back, and forward actions', () => {
@@ -34,6 +38,11 @@ describe('desktop titlebar controls', () => {
     expect(source).toContain('M295.6 163.7');
     expect(source).toContain('M216.4 163.7');
     expect(source).not.toContain('arrow-rounded.svg');
+    expect(desktopMainSource).toContain("accelerator: 'CmdOrCtrl+B'");
+    expect(desktopMainSource).toContain("accelerator: 'CmdOrCtrl+['");
+    expect(desktopMainSource).toContain("accelerator: 'CmdOrCtrl+]'");
+    expect(routerSource).toContain("'shell:navigate-history'");
+    expect(routerSource).toContain("command === 'sidebar.toggle'");
     expect(styles).not.toContain(
       '.DesktopTitlebarControl--back .DesktopTitlebarControlIcon'
     );

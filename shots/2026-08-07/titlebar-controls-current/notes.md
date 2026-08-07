@@ -54,6 +54,11 @@ current Electron CDP authority
   follow-up restored it to open. Console remained empty.
 - Settings intentionally retains its established real `Back to app` surface;
   this global cluster is not claimed on the separate Settings shell.
+- The host View menu registers the matching keyboard contract: Cmd/Ctrl+B for
+  canonical `sidebar.toggle`, Cmd/Ctrl+[ for Back, and Cmd/Ctrl+] for Forward.
+  Renderer subscriptions route those events to the same sidebar state and
+  memory history used by the rendered controls. System accelerators were not
+  fired in background verification because that would steal focus.
 - Sidebar visibility remains session-local and defaults open, matching the Web
   provider's default. No new persistence schema or hidden preference was added.
 - Cleanup: the exact-owned Native process exited after capture and unrelated

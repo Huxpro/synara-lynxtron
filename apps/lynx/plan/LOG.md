@@ -7036,3 +7036,9 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   header均真实关闭sidebar并直接测content x212；Update无top header，Settings保留独立
   Back/navigation shell。一次DevTool transient no-response后按PID同client重试，最终
   sidebar恢复open。
+- keyboard integration：host View menu新增canonical `sidebar.toggle` CmdOrCtrl+B，
+  Back CmdOrCtrl+[、Forward CmdOrCtrl+]；前者走既有`shell:command`，后两者走
+  `shell:navigate-history`并调用同一memory history。focused shell/controls
+  **2 files / 16 tests**、Native/Desktop build通过。未发送系统快捷键抢焦点；证据为
+  menu source、canonical command allowlist、renderer event subscription与既有real
+  pointer history flow。

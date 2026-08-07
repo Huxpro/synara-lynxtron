@@ -110,6 +110,9 @@ describe('shellRuntime', () => {
 
   it('uses canonical keybinding command ids for every Native renderer shortcut', () => {
     expect(resolveNativeRendererCommand('chat.new')).toBe('chat.new');
+    expect(resolveNativeRendererCommand('sidebar.toggle')).toBe(
+      'sidebar.toggle'
+    );
     expect(resolveNativeRendererCommand('sidebar.search')).toBe(
       'sidebar.search'
     );

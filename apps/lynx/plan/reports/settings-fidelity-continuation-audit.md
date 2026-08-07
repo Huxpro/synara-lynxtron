@@ -1302,6 +1302,14 @@ The retained replacement cells:
   Settings keeps its intentionally separate Back/navigation shell. A transient
   DevTool no-response was retried against the same PID-owned client, and the
   final sidebar state was restored open.
+- Native host keyboard integration now matches the visible controls:
+  Cmd/Ctrl+B dispatches canonical `sidebar.toggle`, while Cmd/Ctrl+[ and
+  Cmd/Ctrl+] dispatch Back/Forward to the same memory history. Focused
+  shell/controls tests pass 16/16 and production build passes. System
+  accelerators were not fired during background verification to avoid stealing
+  focus; source registration, canonical command routing, renderer
+  subscriptions, and the already retained real pointer history flow cover the
+  contract.
 
 ## Remaining work
 

@@ -491,15 +491,32 @@ export function SliceRouter({
   useEffect(() => {
     'background only';
     let cancelled = false;
-    let dispose: (() => void) | null = null;
+    let disposeNavigate: (() => void) | null = null;
+    let disposeHistory: (() => void) | null = null;
+    let disposeCommand: (() => void) | null = null;
     void import(/* webpackMode: "eager" */ '../platform/bridge').then(
       ({ bridgeCall, onGlobalEvent }) => {
         if (cancelled) return;
-        dispose = onGlobalEvent('shell:navigate', (target: unknown) => {
+        disposeNavigate = onGlobalEvent('shell:navigate', (target: unknown) => {
           if (typeof target === 'string' && target.startsWith('/')) {
             history.push(target);
           }
         });
+        disposeHistory = onGlobalEvent(
+          'shell:navigate-history',
+          (direction: unknown) => {
+            if (direction === 'back') history.back();
+            if (direction === 'forward') history.forward();
+          }
+        );
+        disposeCommand = onGlobalEvent(
+          'shell:command',
+          (command: unknown) => {
+            if (command === 'sidebar.toggle') {
+              setSidebarOpen((open) => !open);
+            }
+          }
+        );
         void bridgeCall('shellRendererReady').catch(() => {
           // The Lynx Web host has no desktop shell route queue.
         });
@@ -507,7 +524,9 @@ export function SliceRouter({
     );
     return () => {
       cancelled = true;
-      dispose?.();
+      disposeNavigate?.();
+      disposeHistory?.();
+      disposeCommand?.();
     };
   }, []);
 

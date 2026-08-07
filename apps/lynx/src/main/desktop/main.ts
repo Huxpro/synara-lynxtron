@@ -181,6 +181,21 @@ function installApplicationMenu(w: LynxWindow): void {
           accelerator: 'CmdOrCtrl+L',
           click: () => dispatchShellCommand('composer.focus.toggle'),
         },
+        {
+          label: 'Toggle Sidebar',
+          accelerator: 'CmdOrCtrl+B',
+          click: () => dispatchShellCommand('sidebar.toggle'),
+        },
+        {
+          label: 'Back',
+          accelerator: 'CmdOrCtrl+[',
+          click: () => dispatchShellEvent('shell:navigate-history', 'back'),
+        },
+        {
+          label: 'Forward',
+          accelerator: 'CmdOrCtrl+]',
+          click: () => dispatchShellEvent('shell:navigate-history', 'forward'),
+        },
         ...buildSearchNavigationMenuItems(searchNavigationEnabled, (event) =>
           dispatchShellEvent('shell:search-key', event)
         ),
