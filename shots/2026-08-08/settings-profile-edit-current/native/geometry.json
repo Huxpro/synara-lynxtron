@@ -1,0 +1,166 @@
+{
+  "client": "native",
+  "stateId": "settings-profile-edit-dark-persisted",
+  "roles": {
+    "root": {
+      "nodeId": 13,
+      "nodeName": "VIEW",
+      "attributes": {
+        "data-viewport-width": "1280",
+        "data-viewport-height": "820",
+        "class": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 820
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(252,252,252)",
+        "background": "rgb(16,16,16)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "profile": {
+      "nodeId": 511,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsProfile"
+      },
+      "text": "",
+      "box": {
+        "x": 408,
+        "y": 32,
+        "width": 720,
+        "height": 823
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "actions": {
+      "nodeId": 512,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsProfileActions"
+      },
+      "text": "",
+      "box": {
+        "x": 408,
+        "y": 32,
+        "width": 720,
+        "height": 28
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "edit": {
+      "nodeId": 541,
+      "nodeName": "VIEW",
+      "attributes": {
+        "event-through": "false",
+        "bindtap": "348:0:bindtap",
+        "bindmouseup": "348:0:bindmouseup",
+        "bindmousedown": "348:0:bindmousedown",
+        "bindtouchstart": "348:0:bindtouchstart",
+        "bindtouchend": "348:0:bindtouchend",
+        "bindtouchcancel": "348:0:bindtouchcancel",
+        "class": "LxButton LxButton--outline LxButton--sm SettingsProfileEditAction"
+      },
+      "text": "",
+      "box": {
+        "x": 1063,
+        "y": 32,
+        "width": 65,
+        "height": 28
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "hsla(0,0%,99%,.072)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "avatar": {
+      "nodeId": 514,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsProfileAvatar",
+        "style": "background-color:#3b82f6;"
+      },
+      "text": "",
+      "box": {
+        "x": 736,
+        "y": 88,
+        "width": 64,
+        "height": 64
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(59,130,246)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "0 1px 3px #0000001e",
+        "opacity": "1"
+      }
+    }
+  }
+}

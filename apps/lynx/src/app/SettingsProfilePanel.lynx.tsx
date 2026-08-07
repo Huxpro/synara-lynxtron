@@ -1,4 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
+import { useState } from '@lynx-js/react';
+import pencilSvg from '@synara-central-icons/pencil.svg?raw';
 import type {
   ProfileHeatmapCell,
   ProfileStats,
@@ -13,6 +15,13 @@ import {
 
 import { Button } from '../components/ui/button';
 import {
+  Dialog,
+  DialogFooter,
+  DialogPopup,
+  DialogTitle,
+} from '../components/ui/dialog.lynx';
+import { Input } from '../components/ui/input.lynx';
+import {
   OpenAIProviderIcon,
   hasLynxProviderIcon,
 } from '../components/OpenAIProviderIcon.lynx';
@@ -21,10 +30,29 @@ import {
   fetchProfileTokenStats,
 } from '../data/synaraClient.lynx';
 import { ProfileUsageKindIcon } from './ProfileUsageKindIcon.lynx';
+import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
+import { ScreenshotIcon, Trash2 } from '../lib/icons.lynx';
+import { webStorage } from '../platform/storage';
+import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
+import { useTheme } from '../adapters/useTheme.lynx';
 
 import './settings-profile-panel.css';
 
 const PROFILE_HEATMAP_COLUMNS = 40;
+const PROFILE_NAME_STORAGE_KEY = 'synara:profile:name:v1';
+const PROFILE_HANDLE_STORAGE_KEY = 'synara:profile:handle:v1';
+const PROFILE_AVATAR_COLOR_STORAGE_KEY = 'synara:profile:avatarColor:v1';
+const PROFILE_AVATAR_IMAGE_STORAGE_KEY = 'synara:profile:avatarImage:v1';
+const PROFILE_AVATAR_COLORS = [
+  '#22c55e',
+  '#3b82f6',
+  '#8b5cf6',
+  '#ec4899',
+  '#f59e0b',
+  '#ef4444',
+  '#14b8a6',
+  '#64748b',
+] as const;
 const PROFILE_MONTHS = [
   'Jan',
   'Feb',
@@ -130,6 +158,50 @@ function capitalize(value: string): string {
   return value.length > 0 ? `${value[0]!.toUpperCase()}${value.slice(1)}` : value;
 }
 
+export function normalizeProfileHandle(value: string): string {
+  const bare = value.trim().replace(/^@+/, '').replace(/\s+/g, '');
+  return bare ? `@${bare}` : '';
+}
+
+function storedProfileValue(key: string): string {
+  return webStorage.getItem(key)?.trim() ?? '';
+}
+
+function persistProfileValue(key: string, value: string): void {
+  webStorage.setItem(key, value);
+}
+
+function ProfileEditActionIcon() {
+  const { svgColors } = useTheme();
+  return (
+    <svg
+      className="SettingsProfileActionIcon"
+      content={colorizeLynxSvg(pencilSvg, svgColors.foreground)}
+    />
+  );
+}
+
+function ProfileColorOption(props: {
+  readonly active: boolean;
+  readonly color: string;
+  readonly onSelect: () => void;
+}) {
+  const interaction = useLynxInteractiveState({
+    baseClassName: `SettingsProfileColorOption${
+      props.active ? ' SettingsProfileColorOption--active' : ''
+    }`,
+    accessibleLabel: `Use ${props.color}`,
+    onActivate: props.onSelect,
+  });
+  return (
+    <view
+      className={interaction.className}
+      style={{ backgroundColor: props.color }}
+      {...interaction.eventProps}
+    />
+  );
+}
+
 export function heatmapColumns(
   cells: readonly ProfileHeatmapCell[]
 ): readonly (readonly ProfileHeatmapSlot[])[] {
@@ -224,7 +296,26 @@ function ProfileContent(props: {
   const modelUsage = selectProfileModelUsage(props.stats, props.tokenStats);
   const activityColumns = heatmapColumns(heatmap.cells);
   const activityMonths = heatmapMonthLabels(activityColumns);
-  const displayName = toDisplayName(props.stats.identity.homeDirBasename);
+  const defaultName = toDisplayName(props.stats.identity.homeDirBasename);
+  const defaultHandle = props.stats.identity.defaultHandle;
+  const [displayName, setDisplayName] = useState(
+    () => storedProfileValue(PROFILE_NAME_STORAGE_KEY) || defaultName
+  );
+  const [handle, setHandle] = useState(
+    () => normalizeProfileHandle(storedProfileValue(PROFILE_HANDLE_STORAGE_KEY)) || defaultHandle
+  );
+  const [avatarColor, setAvatarColor] = useState(
+    () => storedProfileValue(PROFILE_AVATAR_COLOR_STORAGE_KEY) || PROFILE_AVATAR_COLORS[0]
+  );
+  const [avatarImage, setAvatarImage] = useState(
+    () => storedProfileValue(PROFILE_AVATAR_IMAGE_STORAGE_KEY) || null
+  );
+  const [editOpen, setEditOpen] = useState(false);
+  const [draftName, setDraftName] = useState(displayName);
+  const [draftHandle, setDraftHandle] = useState(handle.replace(/^@+/, ''));
+  const [draftColor, setDraftColor] = useState(avatarColor);
+  const [draftImage, setDraftImage] = useState<string | null>(avatarImage);
+  const [editError, setEditError] = useState<string | null>(null);
   const providerValue = topProvider.provider
     ? `${providerLabel(topProvider.provider)}${
         topProvider.percent === null ? '' : ` · ${topProvider.percent}%`
@@ -240,7 +331,7 @@ function ProfileContent(props: {
   const copySummary = () => {
     'background only';
     const summary = [
-      `${displayName} · ${props.stats.identity.defaultHandle}`,
+      `${displayName} · ${handle}`,
       `Total prompts: ${formatNumber(props.stats.activity.totalPromptsSent)}`,
       `Current streak: ${formatDays(props.stats.activity.currentStreakDays)}`,
       `Longest streak: ${formatDays(props.stats.activity.longestStreakDays)}`,
@@ -250,6 +341,46 @@ function ProfileContent(props: {
       ({ clipboard }) => clipboard.writeText(summary)
     );
   };
+  const openEdit = () => {
+    setDraftName(displayName);
+    setDraftHandle(handle.replace(/^@+/, ''));
+    setDraftColor(avatarColor);
+    setDraftImage(avatarImage);
+    setEditError(null);
+    setEditOpen(true);
+  };
+  const saveEdit = () => {
+    const nextName = draftName.trim() || defaultName;
+    const nextHandle = normalizeProfileHandle(draftHandle) || defaultHandle;
+    setDisplayName(nextName);
+    setHandle(nextHandle);
+    setAvatarColor(draftColor);
+    setAvatarImage(draftImage);
+    persistProfileValue(
+      PROFILE_NAME_STORAGE_KEY,
+      nextName === defaultName ? '' : nextName
+    );
+    persistProfileValue(
+      PROFILE_HANDLE_STORAGE_KEY,
+      nextHandle === defaultHandle ? '' : nextHandle
+    );
+    persistProfileValue(
+      PROFILE_AVATAR_COLOR_STORAGE_KEY,
+      draftColor === PROFILE_AVATAR_COLORS[0] ? '' : draftColor
+    );
+    persistProfileValue(PROFILE_AVATAR_IMAGE_STORAGE_KEY, draftImage ?? '');
+    setEditOpen(false);
+  };
+  const pickProfileImage = () => {
+    'background only';
+    setEditError(null);
+    void import(/* webpackMode: "eager" */ '../platform/dialogs')
+      .then(({ dialogs }) => dialogs.pickProfileImage())
+      .then((image) => {
+        if (image?.dataUrl) setDraftImage(image.dataUrl);
+      })
+      .catch((error) => setEditError(String(error)));
+  };
 
   return (
     <view className="SettingsProfile">
@@ -257,18 +388,38 @@ function ProfileContent(props: {
         <Button variant="outline" size="sm" onClick={copySummary}>
           Copy summary
         </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          className="SettingsProfileEditAction"
+          onClick={openEdit}
+        >
+          <ProfileEditActionIcon />
+          <text className="LxButton__text">Edit</text>
+        </Button>
       </view>
       <view className="SettingsProfileIdentity">
-        <view className="SettingsProfileAvatar">
-          <text className="SettingsProfileAvatarText">
-            {props.stats.identity.initials}
-          </text>
+        <view
+          className="SettingsProfileAvatar"
+          style={{ backgroundColor: avatarColor }}
+        >
+          {avatarImage ? (
+            <image
+              className="SettingsProfileAvatarImage"
+              src={avatarImage}
+              mode="aspectFill"
+            />
+          ) : (
+            <text className="SettingsProfileAvatarText">
+              {props.stats.identity.initials}
+            </text>
+          )}
         </view>
         <view className="SettingsProfileIdentityCopy">
           <text className="SettingsProfileName">{displayName}</text>
           <view className="SettingsProfileHandleLine">
             <text className="SettingsProfileHandle">
-              {props.stats.identity.defaultHandle}
+              {handle}
             </text>
             <text className="SettingsProfileDot">·</text>
             <text className="SettingsProfileBadge">Synara</text>
@@ -454,6 +605,120 @@ function ProfileContent(props: {
           )}
         </view>
       </view>
+      <Dialog open={editOpen} onOpenChange={setEditOpen}>
+        <DialogPopup
+          showCloseButton={false}
+          className="SettingsProfileEditDialog"
+        >
+          <DialogTitle className="SettingsProfileEditTitle">
+            Edit profile
+          </DialogTitle>
+          <view className="SettingsProfileEditBody">
+            <view
+              className="SettingsProfileEditAvatar"
+              style={{ backgroundColor: draftColor }}
+            >
+              {draftImage ? (
+                <image
+                  className="SettingsProfileEditAvatarImage"
+                  src={draftImage}
+                  mode="aspectFill"
+                />
+              ) : (
+                <text className="SettingsProfileEditAvatarText">
+                  {props.stats.identity.initials}
+                </text>
+              )}
+            </view>
+            <view className="SettingsProfilePhotoActions">
+              <Button
+                size="xs"
+                variant="outline"
+                className="SettingsProfilePhotoAction"
+                onClick={pickProfileImage}
+              >
+                <ScreenshotIcon size={14} />
+                <text className="LxButton__text">
+                  {draftImage ? 'Replace photo' : 'Upload photo'}
+                </text>
+              </Button>
+              {draftImage ? (
+                <Button
+                  size="xs"
+                  variant="ghost"
+                  className="SettingsProfilePhotoAction"
+                  onClick={() => setDraftImage(null)}
+                >
+                  <Trash2 size={14} />
+                  <text className="LxButton__text">Remove</text>
+                </Button>
+              ) : null}
+            </view>
+            <view className="SettingsProfileColorOptions">
+              {PROFILE_AVATAR_COLORS.map((color) => (
+                <ProfileColorOption
+                  key={color}
+                  active={draftColor === color}
+                  color={color}
+                  onSelect={() => setDraftColor(color)}
+                />
+              ))}
+            </view>
+            {draftImage ? (
+              <text className="SettingsProfilePhotoHint">
+                Colors apply when no photo is set.
+              </text>
+            ) : null}
+            {editError ? (
+              <text className="SettingsProfileEditError">{editError}</text>
+            ) : null}
+            <view className="SettingsProfileEditFields">
+              <view className="SettingsProfileEditField">
+                <text className="SettingsProfileEditLabel">Display name</text>
+                <Input
+                  size="sm"
+                  value={draftName}
+                  placeholder="Your name"
+                  accessibility-label="Display name"
+                  onChange={(event) => setDraftName(event.target.value)}
+                />
+              </view>
+              <view className="SettingsProfileEditField">
+                <text className="SettingsProfileEditLabel">Username</text>
+                <view className="SettingsProfileHandleInput">
+                  <text className="SettingsProfileHandlePrefix">@</text>
+                  <Input
+                    unstyled
+                    value={draftHandle}
+                    placeholder="username"
+                    accessibility-label="Username"
+                    onChange={(event) =>
+                      setDraftHandle(
+                        event.target.value.replace(/^@+/, '').replace(/\s+/g, '')
+                      )
+                    }
+                  />
+                </view>
+              </view>
+            </view>
+          </view>
+          <DialogFooter className="SettingsProfileEditFooter">
+            <Button
+              variant="ghost"
+              className="SettingsProfileEditFooterButton"
+              onClick={() => setEditOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              className="SettingsProfileEditFooterButton"
+              onClick={saveEdit}
+            >
+              Save
+            </Button>
+          </DialogFooter>
+        </DialogPopup>
+      </Dialog>
     </view>
   );
 }

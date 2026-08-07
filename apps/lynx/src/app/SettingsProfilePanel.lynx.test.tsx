@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import {
   heatmapColumns,
   heatmapMonthLabels,
+  normalizeProfileHandle,
 } from './SettingsProfilePanel.lynx';
 
 describe('Settings Profile fidelity', () => {
@@ -72,6 +73,61 @@ describe('Settings Profile fidelity', () => {
     expect(profileSource).toContain('Activity insights');
     expect(profileSource).toContain('Most used plugins');
     expect(profileSource).toContain('Model usage');
+  });
+
+  it('implements the canonical local Edit profile contract', () => {
+    const profileSource = readFileSync(
+      new URL('./SettingsProfilePanel.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const styles = readFileSync(
+      new URL('./settings-profile-panel.css', import.meta.url),
+      'utf8'
+    );
+    const dialogSource = readFileSync(
+      new URL('../platform/dialogs.ts', import.meta.url),
+      'utf8'
+    );
+    const desktopHostSource = readFileSync(
+      new URL('../main/desktop/hostServices.ts', import.meta.url),
+      'utf8'
+    );
+    const webHostSource = readFileSync(
+      new URL('../main/web/web-host.ts', import.meta.url),
+      'utf8'
+    );
+
+    expect(normalizeProfileHandle(' @@hello world ')).toBe('@helloworld');
+    expect(normalizeProfileHandle('   ')).toBe('');
+    expect(profileSource).toContain("'synara:profile:name:v1'");
+    expect(profileSource).toContain("'synara:profile:handle:v1'");
+    expect(profileSource).toContain("'synara:profile:avatarColor:v1'");
+    expect(profileSource).toContain("'synara:profile:avatarImage:v1'");
+    expect(profileSource).toContain('className="SettingsProfileEditAction"');
+    expect(profileSource).toContain('className="SettingsProfileEditDialog"');
+    expect(profileSource).toContain('<ProfileColorOption');
+    expect(profileSource).toContain('dialogs.pickProfileImage()');
+    expect(profileSource).toContain('mode="aspectFill"');
+    expect(profileSource).toContain(
+      "import pencilSvg from '@synara-central-icons/pencil.svg?raw';"
+    );
+    expect(dialogSource).toContain('pickProfileImage: () =>');
+    expect(desktopHostSource).toContain("case 'dialogsPickProfileImage':");
+    expect(desktopHostSource).toContain('nativeImage.createFromPath(filePath)');
+    expect(desktopHostSource).toContain('image.resize({');
+    expect(webHostSource).toContain("method === 'dialogsPickProfileImage'");
+    expect(styles).toMatch(
+      /\.LxDialogPopup\.SettingsProfileEditDialog\s*\{[^}]*width:\s*500px;[^}]*border-radius:\s*24px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsProfileEditAvatar\s*\{[^}]*width:\s*80px;[^}]*height:\s*80px;[^}]*border-radius:\s*40px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsProfileColorOption\s*\{[^}]*width:\s*20px;[^}]*height:\s*20px;[^}]*border-radius:\s*10px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsProfileEditFooterButton\s*\{[^}]*height:\s*44px;[^}]*border-radius:\s*8px;/s
+    );
   });
 
   it('matches the Web first-screen profile anatomy', () => {

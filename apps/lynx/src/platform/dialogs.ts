@@ -28,9 +28,15 @@ export interface PickFilesResult {
   readonly files: ReadonlyArray<PickedFile>;
 }
 
+export interface PickedProfileImage {
+  readonly dataUrl: string;
+  readonly name: string;
+}
+
 export interface DialogsPort {
   pickFolder: () => Promise<string | null>;
   pickFiles: () => Promise<PickFilesResult>;
+  pickProfileImage: () => Promise<PickedProfileImage | null>;
   saveFile?: (input: SaveFileInput) => Promise<string | null>;
   confirm: (message: string) => Promise<boolean>;
 }
@@ -46,6 +52,12 @@ export const dialogs: DialogsPort = {
       files: Array.isArray(res.files) ? res.files : [],
       errors: Array.isArray(res.errors) ? res.errors : [],
     };
+  },
+  pickProfileImage: async () => {
+    const res = await bridgeCall<{
+      image: PickedProfileImage | null;
+    }>('dialogsPickProfileImage');
+    return res.image ?? null;
   },
   saveFile: async (input) => {
     const res = await bridgeCall<{ path: string | null }>('dialogsSaveFile', {

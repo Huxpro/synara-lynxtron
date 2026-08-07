@@ -318,6 +318,46 @@ export async function handleDialogs(
       }
       return JSON.stringify({ files, errors });
     }
+    case 'dialogsPickProfileImage': {
+      const { canceled, filePaths } = await dialog.showOpenDialog(w, {
+        title: 'Choose profile photo',
+        properties: ['openFile'],
+        filters: [
+          {
+            name: 'Images',
+            extensions: ['png', 'jpg', 'jpeg', 'webp', 'gif'],
+          },
+        ],
+      });
+      if (canceled || filePaths.length === 0) {
+        return JSON.stringify({ image: null });
+      }
+      const filePath = fs.realpathSync(filePaths[0]!);
+      const stat = fs.statSync(filePath);
+      if (!stat.isFile() || stat.size > 10 * 1024 * 1024) {
+        throw new Error('Profile photo must be an image smaller than 10MB.');
+      }
+      const image = nativeImage.createFromPath(filePath);
+      if (image.isEmpty()) {
+        throw new Error('Unable to decode that profile photo.');
+      }
+      const size = image.getSize();
+      const scale = Math.min(1, 256 / Math.max(size.width, size.height));
+      const resized =
+        scale < 1
+          ? image.resize({
+              width: Math.max(1, Math.round(size.width * scale)),
+              height: Math.max(1, Math.round(size.height * scale)),
+              quality: 'good',
+            })
+          : image;
+      return JSON.stringify({
+        image: {
+          dataUrl: resized.toDataURL(),
+          name: path.basename(filePath),
+        },
+      });
+    }
     case 'dialogsSaveFile': {
       const input = data ?? {};
       const { canceled, filePath } = await dialog.showSaveDialog(w, {

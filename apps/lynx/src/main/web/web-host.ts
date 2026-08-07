@@ -526,6 +526,40 @@ async function handleBridgeCall(
         return { text: relayClipboardText };
       }
     }
+    if (method === 'dialogsPickProfileImage') {
+      return await new Promise((resolve) => {
+        const input = webDocument.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/png,image/jpeg,image/webp,image/gif';
+        input.style.display = 'none';
+        const finish = (image: { dataUrl: string; name: string } | null) => {
+          input.remove();
+          resolve({ image });
+        };
+        input.addEventListener(
+          'change',
+          () => {
+            const file = input.files?.[0];
+            if (!file || file.size > 10 * 1024 * 1024) {
+              finish(null);
+              return;
+            }
+            const reader = new FileReader();
+            reader.addEventListener('load', () => {
+              finish({
+                dataUrl: String(reader.result ?? ''),
+                name: file.name,
+              });
+            });
+            reader.addEventListener('error', () => finish(null));
+            reader.readAsDataURL(file);
+          },
+          { once: true }
+        );
+        webDocument.body.append(input);
+        input.click();
+      });
+    }
     if (method === 'shellOpenExternal') {
       const url = String(params.url ?? '');
       let parsed: URL;

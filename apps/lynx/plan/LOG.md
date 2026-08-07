@@ -7633,3 +7633,27 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - focused ThemePack **1 file / 5 tests**；Lynx-for-Web与Native/Desktop builds通过；
   uncached changed-lines React Doctor以`fd596435…`为base为**0 diagnostics**。证据
   `shots/2026-08-08/settings-appearance-theme-pack-rhythm-current/`。
+
+## 2026-08-08 — Settings Profile Edit
+
+- Profile audit确认Web顶部为真实Share+Edit，Lynx仍只有旧Copy summary。该slice只闭环
+  可完整实现的Edit，不把Copy summary改名伪装Share，也不宣称PNG export存在。
+- 新增Web exact central pencil Edit action、controlled Lynx Dialog、draft-on-open、
+  Cancel discard/Save commit、display name/username、handle normalize、8色选择和头像
+  upload/replace/remove；复用Web四个canonical `synara:profile:*:v1` storage keys，
+  default值持久化为空以保留server-derived fallback。
+- 新增窄`dialogsPickProfileImage` port：Native过滤图片/10MB、`nativeImage`解码并将
+  longest edge压到≤256px PNG data URL；Lynx-for-Web用isolated file input。
+  Profile用native `<image mode="aspectFill">`消费同一data URL。
+- Lynx-for-Web真实控件选blue→Save后dialog关闭、avatar变`rgb(59,130,246)`、同Web key
+  写入`#3b82f6`；full reload后仍保留，Edit geometry exact
+  1063.546875/32/64.453125x28，connection diagnostics空。
+- exact-owned Native真实touch完成Profile→Edit→blue→Save，KV写入四个canonical keys；
+  同isolated state完整restart后bundle`6da86167…`、root15271→15276、
+  PID-derived localhost:8902/session1，avatar736/88/64x64且blue、Edit65x28、
+  retry0、console0。owned进程与`/tmp` state已清理。
+- focused Profile **1 file / 4 tests**；Lynx-for-Web与Native/Desktop builds通过；
+  uncached changed-lines React Doctor以`6ddbdc6c…`为base为**0 diagnostics**。证据
+  `shots/2026-08-08/settings-profile-edit-current/`。
+- 剩余Profile Share需要真实activity-card render→PNG、clipboard/save/social composer
+  kernel，继续作为独立feature slice，不用表面按钮替代。

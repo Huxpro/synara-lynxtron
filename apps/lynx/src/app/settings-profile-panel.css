@@ -20,6 +20,15 @@
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
+  gap: 8px;
+}
+
+.SettingsProfileActionIcon {
+  width: 16px;
+  height: 16px;
+  margin-left: -1px;
+  margin-right: -1px;
+  opacity: 0.8;
 }
 
 .SettingsProfileIdentity {
@@ -51,6 +60,12 @@
   font-size: 20px;
   font-weight: 600;
   line-height: 28px;
+}
+
+.SettingsProfileAvatarImage,
+.SettingsProfileEditAvatarImage {
+  width: 100%;
+  height: 100%;
 }
 
 .SettingsProfileName {
@@ -438,4 +453,181 @@
   font-size: 14px;
   line-height: 20px;
   text-align: center;
+}
+
+.LxDialogPopup.SettingsProfileEditDialog {
+  width: 500px;
+  padding: 0;
+  border-radius: 24px;
+}
+
+.SettingsProfileEditTitle {
+  padding: 16px 16px 0;
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.SettingsProfileEditBody {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px 0;
+}
+
+.SettingsProfileEditAvatar {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 40px;
+}
+
+.SettingsProfileEditAvatarText {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+}
+
+.SettingsProfilePhotoActions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.SettingsProfilePhotoAction {
+  gap: 6px;
+}
+
+.SettingsProfileColorOptions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.SettingsProfileColorOption {
+  width: 20px;
+  height: 20px;
+  border-width: 0;
+  border-radius: 10px;
+}
+
+.SettingsProfileColorOption--active {
+  border-width: 2px;
+  border-style: solid;
+  border-color: var(--foreground);
+  box-shadow: 0 0 0 2px var(--popover);
+}
+
+.SettingsProfileColorOption.ui-hover {
+  transform: scale(1.1);
+}
+
+.SettingsProfileColorOption.ui-focus {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.SettingsProfileColorOption.ui-pressed {
+  transform: scale(0.94);
+}
+
+.SettingsProfilePhotoHint,
+.SettingsProfileEditError {
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+}
+
+.SettingsProfilePhotoHint {
+  color: var(--muted-foreground);
+}
+
+.SettingsProfileEditError {
+  color: var(--destructive);
+}
+
+.SettingsProfileEditFields {
+  width: 100%;
+  overflow: hidden;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--border);
+  border-radius: 12px;
+}
+
+.SettingsProfileEditField {
+  min-height: 60px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 14px;
+}
+
+.SettingsProfileEditField + .SettingsProfileEditField {
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: var(--border);
+}
+
+.SettingsProfileEditLabel {
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.SettingsProfileEditField > .LxInputControl,
+.SettingsProfileHandleInput {
+  width: 224px;
+  height: 36px;
+  border-radius: 12px;
+}
+
+.SettingsProfileHandleInput {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--border);
+  background-color: var(--input);
+}
+
+.SettingsProfileHandlePrefix {
+  padding-left: 10px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.SettingsProfileHandleInput .LxInput {
+  flex: 1;
+  min-width: 0;
+  height: 34px;
+  padding-left: 2px;
+  padding-right: 10px;
+  color: var(--foreground);
+  font-size: 12px;
+}
+
+.LxDialogFooter.SettingsProfileEditFooter {
+  gap: 8px;
+  margin-top: 0;
+  padding: 16px;
+}
+
+.SettingsProfileEditFooterButton {
+  height: 44px;
+  min-height: 44px;
+  padding-left: 16px;
+  padding-right: 16px;
+  border-radius: 8px;
 }
