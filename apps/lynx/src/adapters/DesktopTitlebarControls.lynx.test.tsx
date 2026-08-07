@@ -32,7 +32,11 @@ describe('desktop titlebar controls', () => {
       'onToggleSidebar={() => setSidebarOpen((open) => !open)}'
     );
     expect(source).toContain('M295.6 163.7');
+    expect(source).toContain('M216.4 163.7');
     expect(source).not.toContain('arrow-rounded.svg');
+    expect(styles).not.toContain(
+      '.DesktopTitlebarControl--back .DesktopTitlebarControlIcon'
+    );
   });
 
   it('matches the Electron control geometry and closed traffic-light inset', () => {
@@ -41,6 +45,9 @@ describe('desktop titlebar controls', () => {
     );
     expect(styles).toMatch(
       /\.DesktopTitlebarControl--toggle\s*\{[^}]*width:\s*24px;[^}]*height:\s*24px;[^}]*border-radius:\s*6px;/s
+    );
+    expect(styles).toMatch(
+      /\.DesktopTitlebarControl--toggle \.DesktopTitlebarControlIcon\s*\{[^}]*left:\s*4px;[^}]*top:\s*4px;[^}]*width:\s*16px;[^}]*height:\s*16px;/s
     );
     expect(styles).toMatch(
       /\.DesktopTitlebarControl--navigation\s*\{[^}]*width:\s*28px;[^}]*height:\s*28px;[^}]*border-radius:\s*10px;/s

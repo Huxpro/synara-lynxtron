@@ -1290,6 +1290,12 @@ The retained replacement cells:
   `ui-pressed`, rgba(13,13,13,0.0392), secondary/foreground layers 0/1, and
   whole-control opacity 1. Release exercised the real toggle and the sidebar
   was restored open; console stayed empty.
+- Internal icon geometry now matches as well: Toggle uses the exact centered
+  16x16 central icon and Back/Forward use 24x24 SVGs. A CSS-rotated Back
+  intermediate moved outside its button under Lynx transform semantics and was
+  rejected; final code uses the distinct Electron `IoIosArrowRoundBack` path.
+  Exact-owned PID `16427` directly measures all six SVG layers at 16/16 and
+  24/24/24/24 in the correct x/y slots with an empty console.
 
 ## Remaining work
 

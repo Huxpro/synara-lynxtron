@@ -1,1 +1,1 @@
-e982b7c128f917ebec889fa881ec4df874183f3abdaf34f290f6e5898151a93b  apps/lynx/dist/desktop/main.lynx.bundle
+e00497fc29f397a71d068ac1c0c695bd50c985cdb26bec049aeaae46ebfd7e43  apps/lynx/dist/desktop/main.lynx.bundle

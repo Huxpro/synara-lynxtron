@@ -40,16 +40,19 @@
   border-radius: 10px;
 }
 
-.DesktopTitlebarControl--back .DesktopTitlebarControlIcon {
-  transform: rotate(180deg);
-}
-
 .DesktopTitlebarControlIcon {
   position: absolute;
   left: 0;
   top: 0;
   width: 24px;
   height: 24px;
+}
+
+.DesktopTitlebarControl--toggle .DesktopTitlebarControlIcon {
+  left: 4px;
+  top: 4px;
+  width: 16px;
+  height: 16px;
 }
 
 .DesktopTitlebarControl--navigation .DesktopTitlebarControlIcon {

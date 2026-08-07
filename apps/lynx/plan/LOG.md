@@ -7028,3 +7028,7 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Desktop DevTool mouseMoved不发布mouseenter，故使用supported pointer press；Native
   `ui-pressed`直接解析background rgba(13,13,13,.0392)、secondary0/foreground1、
   whole opacity1。release后sidebar按真实action关闭，随后恢复open，console0。
+- internal glyph audit：Electron Toggle 16×16、Back/Forward 24×24。Lynx初版统一24，
+  Toggle修为16；随后实测发现CSS rotate让Back box飞到x94/y-13，改用Electron同源
+  独立IoIos Back path，删除transform。final PID16427→exact client，layers直接测
+  16/16/24/24/24/24且Back x118..142、Forward x148..172，console0。

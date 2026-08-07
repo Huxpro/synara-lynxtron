@@ -7,6 +7,9 @@ current Electron CDP authority
 - Electron's open-sidebar cluster directly measures Toggle 24x24/r6 at
   x=90,y=11, Back 28x28/r10 at x=116,y=9, and Forward 28x28/r10 at
   x=146,y=9. Disabled navigation opacity is 0.64.
+- Internal glyph geometry is also exact: Electron Toggle uses a centered
+  16x16 central icon while Back/Forward use 24x24 SVGs. Lynx now resolves the
+  same 16/24/24 geometry at x=94/118/148.
 - Lynx previously rendered only the titlebar logo. The new control cluster is
   functional rather than decorative: Toggle changes real sidebar layout state;
   Back and Forward call the existing TanStack memory history and derive
@@ -17,9 +20,10 @@ current Electron CDP authority
   main headers reserve a 212px leading inset, matching Electron's closed-state
   title position.
 - The sidebar-hidden glyph uses the exact central icon. Back/Forward use the
-  exact `IoIosArrowRoundForward` path from the Electron reference; Back rotates
-  the same path 180 degrees. The rejected first implementation used the
-  unrelated curved `arrow-rounded` reply glyph and was not retained.
+  exact `IoIosArrowRoundBack` / `IoIosArrowRoundForward` paths from the
+  Electron reference. Two rejected intermediates were not retained: the
+  unrelated curved `arrow-rounded` reply glyph, then CSS rotation whose Lynx
+  transform origin moved Back to x=94,y=-13.
 - Focused history/controls tests pass 6/6. Native/Desktop production build
   passes with only the existing encoder and optional `ws` warnings.
 - Exact-owned final bundle
