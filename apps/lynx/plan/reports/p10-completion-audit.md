@@ -264,6 +264,7 @@ Current responsive disposition:
 | Sidebar shell/seam ownership | current Lynx-for-Web and exact-owned Native: 256px sidebar, 244px primary rows, 240px footer row, zero sidebar border | PASS |
 | Settings sidebar seam ownership | real Settings navigation: 256px sidebar, 244px Back/Search rails, 236px search shell, zero sidebar border | PASS |
 | Raised content-card seam material | ordinary routes and Settings: 14.4px left radii, theme-aware inset edge/depth, square compact/closed states | PASS |
+| Sidebar top material | ordinary and Settings sidebars share the calibrated 1px light/dark inset highlight | PASS |
 | Environment, diff/browser docks, selection actions | no reachable Lynx product consumer to certify | OPEN PRODUCT/PLATFORM KERNEL |
 | Current-head full three-client route/theme/size/state matrix | historical P10 matrix predates later product commits | NOT RE-CERTIFIED |
 
@@ -284,6 +285,9 @@ light/dark and open/closed/compact proof.
 Its changed-lines React Doctor rerun against parent `9ace2adc` reports zero
 errors and zero warnings; the commit hook's generic warning was not a product
 diagnostic.
+`shots/2026-08-07/sidebar-top-highlight-current/` connects the previously
+unused sidebar material projection and records the Native dark variable
+inheritance failure plus its direct-value correction.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

@@ -62,6 +62,12 @@ describe('sidebar primary navigation shortcut', () => {
       /\.AppSidebar\s*\{[^}]*border-right:/s
     );
     expect(sidebarStyles).toMatch(
+      /\.AppSidebar\s*\{[^}]*box-shadow:\s*inset 0 1px 0 rgba\(0,\s*0,\s*0,\s*0\.03\);/s
+    );
+    expect(sidebarStyles).toMatch(
+      /\.SliceRoot--theme-dark \.AppSidebar\s*\{[^}]*box-shadow:\s*inset 0 1px 0 rgba\(255,\s*255,\s*255,\s*0\.025\);/s
+    );
+    expect(sidebarStyles).toMatch(
       /\.AppSidebarShortcutKey\s*\{[^}]*width:\s*20px;[^}]*height:\s*20px;[^}]*border-radius:\s*4px;[^}]*background-color:\s*var\(--muted\);[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;[^}]*font-weight:\s*500;/s
     );
     expect(primaryActionStyles).toMatch(

@@ -827,6 +827,11 @@
   width: 256px;
   height: 100%;
   background-color: var(--app-settings-surface);
+  box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.03);
+}
+
+.SliceRoot--theme-dark .SettingsSidebar {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
 }
 
 .SettingsSidebarTitlebar {

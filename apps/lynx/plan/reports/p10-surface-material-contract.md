@@ -77,6 +77,10 @@ authority.
   current Electron painted seam is substantially softer. The recipe only
   applies to open desktop (`md-up`) layouts; compact and sidebar-closed surfaces
   stay square and shadowless.
+- Sidebar top material: ordinary and Settings sidebars share one 1px inset top
+  highlight. Native uses direct light/dark values (`black 3%` / `white 2.5%`)
+  because class-scoped custom-property inheritance does not reliably update the
+  dark value.
 - Nested badges/chips/pills must sample their own background and text; parent
   card parity is not sufficient.
 - Native titlebar is outside product content and is normalized by the named
@@ -94,6 +98,8 @@ Current-build material proof includes:
 - a semantic mention chip sample and command-row painted-bound metrics;
 - current Lynx-for-Web and exact-owned Native ordinary/Settings content seams:
   `shots/2026-08-07/chat-content-seam-current/`;
+- current ordinary/Settings sidebar top highlights:
+  `shots/2026-08-07/sidebar-top-highlight-current/`;
 - empty Native warning/error consoles for retained runtime frames.
 
 The Project Picker host-local-folder capability is registered as a P3

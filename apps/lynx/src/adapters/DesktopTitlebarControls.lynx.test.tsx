@@ -135,6 +135,12 @@ describe('desktop titlebar controls', () => {
       /\.SettingsSidebar\s*\{[^}]*border-right:/s
     );
     expect(appStyles).toMatch(
+      /\.SettingsSidebar\s*\{[^}]*box-shadow:\s*inset 0 1px 0 rgba\(0,\s*0,\s*0,\s*0\.03\);/s
+    );
+    expect(appStyles).toMatch(
+      /\.SliceRoot--theme-dark \.SettingsSidebar\s*\{[^}]*box-shadow:\s*inset 0 1px 0 rgba\(255,\s*255,\s*255,\s*0\.025\);/s
+    );
+    expect(appStyles).toMatch(
       /\.SettingsSidebarTitlebar\s*\{[^}]*height:\s*46px;[^}]*padding-left:\s*14px;[^}]*padding-right:\s*14px;/s
     );
     expect(appStyles).toMatch(

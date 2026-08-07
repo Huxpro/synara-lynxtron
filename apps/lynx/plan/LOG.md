@@ -7396,3 +7396,19 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   `9ace2adc…`做真实changed-lines scan后结果为**0 errors / 0 warnings**。最初两次
   tool run分别因Bun cache缺plugin、base ref含`^`被CLI拒绝，均无diagnostic；final
   `react-doctor.json`明确`ok:true`，不把tool启动失败伪称green。
+
+## 2026-08-07 — current-head Sidebar top material
+
+- Web ordinary/Settings sidebar共同消费1px inset top highlight；generated Native theme
+  已投影light black3%/dark white2.5%，但`.AppSidebar`与`.SettingsSidebar`均未消费，
+  两套sidebar因此是完全平面fill。
+- 首版接`var(--app-sidebar-shadow)`后Lynx-for-Web light/dark都正确，但exact Native
+  dark仍解析light black3%，直接复现class-scoped custom-property inheritance boundary。
+  final改为theme-scoped direct values，不伪称变量继承可用。
+- final Lynx-for-Web普通/Settings均为light black3%、dark white2.4%；exact-owned
+  Native PID17000→localhost:8901/session1，light均`#00000007`、真实
+  Settings→Appearance→Dark后两者均`#ffffff06`，Back返回普通sidebar保持一致。
+  pixel samples显示light top247/248 vs body255、dark top23 vs body17。
+- focused **2 files / 7 tests**，Lynx-for-Web与Native/Desktop builds通过，
+  browser errors0、Native console0。证据
+  `shots/2026-08-07/sidebar-top-highlight-current/`。
