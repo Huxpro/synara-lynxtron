@@ -7740,3 +7740,15 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Sharp staging通过。uncached changed-lines Doctor以`3d5ff02d…`为base并包含new
   test/assets为**0 diagnostics**。证据
   `shots/2026-08-08/settings-provider-icons-current/`。
+
+## 2026-08-08 — Settings Skills row width
+
+- Skills首anchors一致但Shared skills section Lynx14202px vs Web14166px，115 rows累计
+  36px。row shell/metadata rhythm已正确，真实owner是copy→control horizontal gap：
+  Web10px，Lynx20px，导致部分长description多换行。
+- `.SettingsSkillsMain` scoped gap改10px；不改row height、line-height或section
+  offset。final section456/300.5/624x14166 exact；first five row heights
+  123.5/213.5/159.5/123.5/141.5逐项Web exact，connection diagnostics空。
+- focused Skills **3/3**；Lynx-for-Web与Native/Desktop builds、Sharp staging通过。
+  uncached changed-lines Doctor以`147cf5b7…`为base为**0 diagnostics**。证据
+  `shots/2026-08-08/settings-skills-row-gap-current/`。

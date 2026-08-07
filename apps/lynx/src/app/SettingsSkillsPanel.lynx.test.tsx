@@ -75,7 +75,7 @@ describe('Settings Skills fidelity', () => {
     );
     expect(styles).not.toContain('SettingsSkillsRow--divided');
     expect(styles).toMatch(
-      /\.SettingsSkillsMain\s*\{[^}]*align-items:\s*center;[^}]*justify-content:\s*space-between;[^}]*gap:\s*20px;/s
+      /\.SettingsSkillsMain\s*\{[^}]*align-items:\s*center;[^}]*justify-content:\s*space-between;[^}]*gap:\s*10px;/s
     );
     expect(styles).toMatch(
       /\.SettingsSkillsMetadata\s*\{[^}]*flex-direction:\s*column;[^}]*gap:\s*4px;[^}]*padding-top:\s*4px;/s
