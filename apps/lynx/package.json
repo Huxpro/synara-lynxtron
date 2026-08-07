@@ -34,7 +34,9 @@
     "evidence:specimens": "node scripts/specimen-evidence.mjs",
     "evidence:specimens:incomplete": "node scripts/specimen-evidence.mjs --allow-incomplete",
     "test:evidence:specimens": "node --test scripts/specimen-evidence.test.mjs",
-    "test:evidence:native-capture": "node --test scripts/native-perceptual-capture.test.mjs"
+    "test:evidence:native-capture": "node --test scripts/native-perceptual-capture.test.mjs",
+    "connection:preflight": "node scripts/connection-preflight.mjs",
+    "test:connection-preflight": "node --test scripts/connection-preflight.test.mjs"
   },
   "private": true,
   "devDependencies": {

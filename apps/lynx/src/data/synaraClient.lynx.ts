@@ -46,6 +46,7 @@ import type {
   ExternalMcpIntegration,
 } from '@synara/contracts';
 import { createWebSocket, resolveDefaultSocketUrl, type WebSocketLike } from '../platform/net.socket';
+import { onGlobalEvent } from '../platform/bridge';
 import { sleepOnHost } from '../platform/timer';
 import {
   createRpcSocketManager,
@@ -127,6 +128,7 @@ const MAX_RECONNECT_ATTEMPTS = 6;
 const INITIAL_RECONNECT_DELAY_MS = 250;
 const MAX_RECONNECT_DELAY_MS = 2_000;
 const OFFLINE_RETRY_DELAY_MS = 5_000;
+const TRANSPORT_STATE_EVENT = 'synara:transport-state';
 
 let requestSequence = 0;
 
@@ -235,6 +237,25 @@ function setRelayState(state: RpcTransportState): void {
   if (relayState === state) return;
   relayState = state;
   for (const listener of relayStateListeners) listener(state);
+}
+
+if (IS_WEB_RELAY_MODE) {
+  onGlobalEvent(TRANSPORT_STATE_EVENT, (state: unknown) => {
+    if (
+      state !== 'connected' &&
+      state !== 'reconnecting' &&
+      state !== 'offline'
+    ) {
+      return;
+    }
+    if (state === 'connected') {
+      relayEverConnected = true;
+      relayOfflineUntilMs = 0;
+    } else if (state === 'offline') {
+      relayOfflineUntilMs = Date.now() + OFFLINE_RETRY_DELAY_MS;
+    }
+    setRelayState(state);
+  });
 }
 
 function describeRelayError(error: unknown): string {

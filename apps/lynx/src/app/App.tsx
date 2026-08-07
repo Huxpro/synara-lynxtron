@@ -1,6 +1,6 @@
 // P2-V1 vertical slice shell: providers + router outlet.
 
-import { useEffect, useState } from '@lynx-js/react';
+import { useEffect, useRef, useState } from '@lynx-js/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 
 import {
@@ -29,6 +29,7 @@ import { sliceThemeClassName } from './appTheme.logic';
 import { queryClient } from './queries';
 import { SliceRouter } from './router';
 import { retryActiveSynaraQueries } from './transportRetry.logic';
+import { shouldRefetchAfterTransportRecovery } from './transportRecovery.logic';
 import {
   setLynxThemeState,
   subscribeLynxThemeState,
@@ -68,6 +69,7 @@ export function App() {
     useState<ThemeState>(DEFAULT_THEME_STATE);
   const viewportLayout = useViewportLayout();
   const transportState = useSynaraTransportState();
+  const previousTransportStateRef = useRef(transportState);
 
   useEffect(() => {
     'background only';
@@ -91,6 +93,14 @@ export function App() {
     'background only';
     return subscribeLynxThemeState(setThemeState);
   }, []);
+  useEffect(() => {
+    'background only';
+    const previous = previousTransportStateRef.current;
+    previousTransportStateRef.current = transportState;
+    if (shouldRefetchAfterTransportRecovery(previous, transportState)) {
+      void retryActiveSynaraQueries(queryClient);
+    }
+  }, [transportState]);
 
   return (
     <QueryClientProvider client={queryClient}>

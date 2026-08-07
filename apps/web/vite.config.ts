@@ -12,6 +12,8 @@ import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import { defineConfig, type Plugin } from "vite";
 import pkg from "./package.json" with { type: "json" };
 
+import { lynxDevSurfacePlugin } from "./lynxDevSurface";
+
 const port = Number(process.env.PORT ?? 5733);
 const sourcemapEnv = process.env.SYNARA_WEB_SOURCEMAP?.trim().toLowerCase();
 
@@ -117,6 +119,10 @@ export default defineConfig({
     }),
     tailwindcss(),
     centralIconPrunePlugin(),
+    lynxDevSurfacePlugin({
+      lynxDistDir: path.resolve(import.meta.dirname, "../lynx/dist/web"),
+      wsUrl: process.env.VITE_WS_URL ?? "",
+    }),
   ],
   optimizeDeps: {
     include: [

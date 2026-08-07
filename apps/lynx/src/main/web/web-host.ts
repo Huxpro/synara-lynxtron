@@ -5,6 +5,7 @@
 import '@lynx-js/web-core/client';
 import { setupSymmetricHost } from '@lynx-js/lynxtron/web-host';
 import { installLynxWebInteractionStateBridge } from './web-interaction-state';
+import { resolveWebRelayEndpoint } from './webRelayEndpoint.logic';
 
 const bundleUrl = './main.web.bundle';
 const nodejsAdapterUrl = './nodejs-adapter-web.js';
@@ -26,6 +27,8 @@ const RPC_REQUEST_TIMEOUT_MS = 60_000;
 const MAX_RECONNECT_ATTEMPTS = 6;
 const INITIAL_RECONNECT_DELAY_MS = 250;
 const MAX_RECONNECT_DELAY_MS = 2_000;
+const OFFLINE_RETRY_DELAY_MS = 5_000;
+const TRANSPORT_STATE_EVENT = 'synara:transport-state';
 const STORAGE_PREFIX = 'synara.lynx.';
 const PROTOCOL = {
   epoch: 1,
@@ -66,6 +69,49 @@ let relayClipboardText = '';
 const relayPending = new Map<string, PendingRelayRequest>();
 let transcriptScrollElement: HTMLElement | null = null;
 let transcriptPreviousScrollTop: number | null = null;
+let relayLastTransportError: string | null = null;
+let relayLastRpcError: string | null = null;
+let relayConnectionAttempts = 0;
+let relayRecoveryGeneration = 0;
+let relayRecoveryActive = false;
+let publishRelayTransportState:
+  | ((state: 'connected' | 'reconnecting' | 'offline') => void)
+  | null = null;
+
+interface LynxWebRuntimeConfig {
+  readonly wsUrl?: unknown;
+}
+
+function buildTimeSynaraWsUrl(): unknown {
+  if (typeof process === 'undefined') return undefined;
+  return process.env.SYNARA_WS_URL;
+}
+
+declare global {
+  var __SYNARA_LYNX_RUNTIME__: LynxWebRuntimeConfig | undefined;
+  var __SYNARA_LYNX_RELAY_DIAGNOSTICS__:
+    | (() => {
+        readonly configuredBaseUrl: string;
+        readonly activeBaseUrl: string | null;
+        readonly readyBaseUrl: string | null;
+        readonly socketState: number | null;
+        readonly connectionAttempts: number;
+        readonly pendingRequests: number;
+        readonly lastTransportError: string | null;
+        readonly lastRpcError: string | null;
+      })
+    | undefined;
+}
+
+function configuredRelayBaseUrl(): string {
+  return normalizeSynaraWsUrl(
+    resolveWebRelayEndpoint(
+      globalThis.__SYNARA_LYNX_RUNTIME__?.wsUrl,
+      buildTimeSynaraWsUrl(),
+      DEFAULT_SYNARA_WS_URL
+    )
+  );
+}
 
 function normalizeSynaraWsUrl(value: unknown): string {
   const candidate = String(value ?? '').trim() || DEFAULT_SYNARA_WS_URL;
@@ -91,6 +137,34 @@ function safeClose(socket: WebSocket | null): void {
   } catch {
     // The socket is already unusable.
   }
+}
+
+function cancelRelayRecovery(): void {
+  relayRecoveryGeneration += 1;
+  relayRecoveryActive = false;
+}
+
+function startRelayRecovery(baseUrl: string): void {
+  if (relayRecoveryActive) return;
+  const generation = ++relayRecoveryGeneration;
+  relayRecoveryActive = true;
+
+  void (async () => {
+    while (generation === relayRecoveryGeneration) {
+      publishRelayTransportState?.('reconnecting');
+      try {
+        await ensureRelaySocket(baseUrl);
+        if (generation !== relayRecoveryGeneration) return;
+        relayRecoveryActive = false;
+        publishRelayTransportState?.('connected');
+        return;
+      } catch {
+        if (generation !== relayRecoveryGeneration) return;
+        publishRelayTransportState?.('offline');
+        await sleep(OFFLINE_RETRY_DELAY_MS);
+      }
+    }
+  })();
 }
 
 function connectWithPath(baseUrl: string, path: string): Promise<WebSocket> {
@@ -220,25 +294,29 @@ async function openFeatureSocket(baseUrl: string): Promise<WebSocket> {
     relayPending.delete(message.requestId);
     clearTimeout(pending.timer);
     if (message.exit._tag === 'Success') {
+      relayLastRpcError = null;
       pending.resolve(message.exit.value);
       return;
     }
-    pending.reject(
-      new SynaraRpcResponseError(
-        `Synara RPC ${pending.tag} failed: ${JSON.stringify(
-          message.exit.cause
-        )}`
-      )
+    const error = new SynaraRpcResponseError(
+      `Synara RPC ${pending.tag} failed: ${JSON.stringify(
+        message.exit.cause
+      )}`
     );
+    relayLastRpcError = error.message;
+    pending.reject(error);
   };
   socket.onerror = () => {
+    relayLastTransportError = 'Synara relay socket failed';
     rejectPendingRequests(new Error('Synara relay socket failed'));
   };
   socket.onclose = () => {
     if (relaySocket === socket) {
       relaySocket = null;
       relaySocketBaseUrl = null;
+      startRelayRecovery(baseUrl);
     }
+    relayLastTransportError = 'Synara relay socket closed';
     rejectPendingRequests(new Error('Synara relay socket closed'));
   };
   return socket;
@@ -247,10 +325,14 @@ async function openFeatureSocket(baseUrl: string): Promise<WebSocket> {
 async function connectWithBackoff(baseUrl: string): Promise<WebSocket> {
   let lastError: Error | null = null;
   for (let attempt = 0; attempt <= MAX_RECONNECT_ATTEMPTS; attempt += 1) {
+    relayConnectionAttempts += 1;
     try {
-      return await openFeatureSocket(baseUrl);
+      const socket = await openFeatureSocket(baseUrl);
+      relayLastTransportError = null;
+      return socket;
     } catch (error) {
       lastError = error instanceof Error ? error : new Error(String(error));
+      relayLastTransportError = lastError.message;
       if (attempt >= MAX_RECONNECT_ATTEMPTS) break;
       await sleep(
         Math.min(
@@ -274,6 +356,7 @@ async function ensureRelaySocket(baseUrl: string): Promise<WebSocket> {
   if (relayReady && relayReadyBaseUrl === baseUrl) return relayReady;
 
   if (relaySocketBaseUrl && relaySocketBaseUrl !== baseUrl) {
+    cancelRelayRecovery();
     safeClose(relaySocket);
     relaySocket = null;
     relaySocketBaseUrl = null;
@@ -300,7 +383,13 @@ async function synaraRpc(
   tagValue: unknown,
   payload: unknown
 ): Promise<unknown> {
-  const baseUrl = normalizeSynaraWsUrl(baseUrlValue);
+  const baseUrl = normalizeSynaraWsUrl(
+    resolveWebRelayEndpoint(
+      globalThis.__SYNARA_LYNX_RUNTIME__?.wsUrl,
+      baseUrlValue,
+      DEFAULT_SYNARA_WS_URL
+    )
+  );
   const tag = String(tagValue ?? '').trim();
   if (!tag) throw new Error('Synara RPC tag is required');
   const socket = await ensureRelaySocket(baseUrl);
@@ -457,6 +546,14 @@ async function handleBridgeCall(
     }
     return null;
   } catch (error) {
+    if (error instanceof SynaraRpcResponseError) {
+      relayLastRpcError = describeError(error);
+    } else {
+      relayLastTransportError = describeError(error);
+      if (method === 'synaraRpc') {
+        startRelayRecovery(configuredRelayBaseUrl());
+      }
+    }
     return {
       error: describeError(error),
       errorKind: error instanceof SynaraRpcResponseError ? 'rpc' : 'transport',
@@ -472,6 +569,21 @@ webDocument.body.innerHTML = `
 </lynx-view>`;
 
 const lynxView = webDocument.getElementById('root-view') as any;
+
+publishRelayTransportState = (state) => {
+  lynxView.sendGlobalEvent?.(TRANSPORT_STATE_EVENT, [state]);
+};
+
+globalThis.__SYNARA_LYNX_RELAY_DIAGNOSTICS__ = () => ({
+  configuredBaseUrl: configuredRelayBaseUrl(),
+  activeBaseUrl: relaySocketBaseUrl,
+  readyBaseUrl: relayReadyBaseUrl,
+  socketState: relaySocket?.readyState ?? null,
+  connectionAttempts: relayConnectionAttempts,
+  pendingRequests: relayPending.size,
+  lastTransportError: relayLastTransportError,
+  lastRpcError: relayLastRpcError,
+});
 
 setupSymmetricHost(lynxView, {
   bridge: {
