@@ -7808,3 +7808,21 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   pending 0、transport error 0。
 - focused Integrations **2 files / 8 tests**，Web与Native/Desktop production
   builds通过。
+
+## 2026-08-08 — Settings Advanced release history
+
+- Advanced同状态dark 1280×820确认Developer tools本身已收敛；此前Web probe命中
+  collapsed disclosure的hidden DOM，真实点击展开后双方section均
+  456/118/624×329.5，Recovery row均457/253/622×193.5，details均
+  469/394.5/598×42。
+- About仍有明确功能缺口：Lynx只有Version，Web还有可操作Release history。现直接
+  复用Web canonical `WHATS_NEW_ENTRIES`与`sortEntriesByVersionDesc`，新增Lynx-native
+  可滚动dialog；55个版本均可达，版本行可展开features/details，Close真实关闭。
+- About恢复Web两行anatomy与divider ownership；final section
+  456/417.5/624×173、Version row61、Release row78均exact。UI version从内部
+  `0.5.5-lynx.0`规范化为canonical产品版本`0.5.5`。View release history按钮仅剩
+  2px字体引擎文字度量差，不加硬宽度掩盖。
+- Lynx-for-Web真实打开dialog为512×620、55 entries；展开0.5.5得到5项features，
+  第一项为Antigravity joins Synara，随后Close使dialog移除。relay OPEN、pending 0、
+  transport error 0。
+- focused Advanced **2 files / 6 tests**，Web与Native/Desktop production builds通过。

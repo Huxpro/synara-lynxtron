@@ -29,7 +29,9 @@ describe('Settings Advanced fidelity', () => {
     expect(panelSource).toContain('Keybindings');
     expect(panelSource).toContain('Recovery tools');
     expect(panelSource).toContain('Version');
-    expect(panelSource).not.toContain('View release history');
+    expect(panelSource).toContain('View release history');
+    expect(panelSource).toContain('WHATS_NEW_ENTRIES');
+    expect(panelSource).toContain('sortEntriesByVersionDesc');
   });
 
   it('uses host confirmation and refreshes state after repair', () => {
@@ -96,6 +98,12 @@ describe('Settings Advanced fidelity', () => {
     );
     expect(styles).toMatch(
       /\.SettingsAdvancedRecoveryDetailsText\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsAdvancedRow--version\s*\{[^}]*border-bottom:\s*1px solid var\(--border\);/s
+    );
+    expect(styles).toMatch(
+      /\.LxDialogPopup\.SettingsAdvancedReleaseDialog\s*\{[^}]*width:\s*512px;[^}]*max-height:\s*620px;/s
     );
   });
 });

@@ -3,8 +3,18 @@ import { useQuery } from '@tanstack/react-query';
 import { SettingsSection } from '@synara-web/components/settings/SettingsSection';
 import { createAllThreadsMessagelessSelector } from '@synara-web/storeSelectors';
 import { useStore } from '@synara-web/store';
+import { WHATS_NEW_ENTRIES } from '@synara-web/whatsNew/entries';
+import { sortEntriesByVersionDesc } from '@synara-web/whatsNew/logic';
 
 import { Button } from '../components/ui/button';
+import {
+  Dialog,
+  DialogDescription,
+  DialogFooter,
+  DialogPanel,
+  DialogPopup,
+  DialogTitle,
+} from '../components/ui/dialog';
 import { ChevronRightIcon } from '../lib/icons.lynx';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import {
@@ -49,6 +59,8 @@ export function SettingsAdvancedPanel() {
   const [openingFile, setOpeningFile] = useState(false);
   const [repairing, setRepairing] = useState(false);
   const [showRecoveryTools, setShowRecoveryTools] = useState(false);
+  const [releaseHistoryOpen, setReleaseHistoryOpen] = useState(false);
+  const [expandedRelease, setExpandedRelease] = useState<string | null>(null);
   const [notice, setNotice] = useState<{
     readonly intent: 'success' | 'error';
     readonly message: string;
@@ -252,18 +264,129 @@ export function SettingsAdvancedPanel() {
       </SettingsSection>
 
       <SettingsSection title="About">
-        <view className="SettingsAdvancedRow">
-          <view className="SettingsAdvancedRowCopy">
-            <text className="SettingsAdvancedRowTitle">Version</text>
-            <text className="SettingsAdvancedRowDescription">
-              Current application version.
+        <view className="SettingsAdvancedRow SettingsAdvancedRow--version">
+          <view className="SettingsAdvancedMain">
+            <view className="SettingsAdvancedRowCopy">
+              <view className="SettingsAdvancedTitleLine">
+                <text className="SettingsAdvancedRowTitle">Version</text>
+              </view>
+              <text className="SettingsAdvancedRowDescription">
+                Current application version.
+              </text>
+            </view>
+            <text className="SettingsAdvancedVersion">
+              {advancedAppVersion()}
             </text>
           </view>
-          <text className="SettingsAdvancedVersion">
-            {advancedAppVersion()}
-          </text>
+        </view>
+        <view className="SettingsAdvancedRow SettingsAdvancedRow--release">
+          <view className="SettingsAdvancedMain">
+            <view className="SettingsAdvancedRowCopy">
+              <view className="SettingsAdvancedTitleLine">
+                <text className="SettingsAdvancedRowTitle">
+                  Release history
+                </text>
+              </view>
+              <text className="SettingsAdvancedRowDescription">
+                A running log of every update, newest first. Same notes the
+                post-update dialog shows, kept here so you can revisit them any
+                time.
+              </text>
+            </view>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => setReleaseHistoryOpen(true)}
+            >
+              View release history
+            </Button>
+          </view>
         </view>
       </SettingsSection>
+
+      <Dialog
+        open={releaseHistoryOpen}
+        onOpenChange={setReleaseHistoryOpen}
+      >
+        <DialogPopup className="SettingsAdvancedReleaseDialog">
+          <view className="SettingsAdvancedReleaseHeader">
+            <DialogTitle>Release history</DialogTitle>
+            <DialogDescription>
+              Every curated release, newest first.
+            </DialogDescription>
+          </view>
+          <DialogPanel className="SettingsAdvancedReleasePanel">
+            <view className="SettingsAdvancedReleaseList">
+              {sortEntriesByVersionDesc(WHATS_NEW_ENTRIES).map((entry) => {
+                const open = expandedRelease === entry.version;
+                return (
+                  <view
+                    key={entry.version}
+                    className="SettingsAdvancedReleaseEntry"
+                  >
+                    <view
+                      className="SettingsAdvancedReleaseTrigger"
+                      accessibility-element
+                      accessibility-label={`Version ${entry.version}, ${entry.date}`}
+                      accessibility-traits="button"
+                      accessibility-value={open ? 'Expanded' : 'Collapsed'}
+                      bindtap={() =>
+                        setExpandedRelease((current) =>
+                          current === entry.version ? null : entry.version
+                        )
+                      }
+                    >
+                      <view className="SettingsAdvancedReleaseIdentity">
+                        <text className="SettingsAdvancedReleaseVersion">
+                          {entry.version}
+                        </text>
+                        <text className="SettingsAdvancedReleaseDate">
+                          {entry.date}
+                        </text>
+                      </view>
+                      <ChevronRightIcon
+                        className={disclosureChevronClassName(
+                          open,
+                          'SettingsAdvancedReleaseChevron'
+                        )}
+                        size={16}
+                        color="var(--muted-foreground)"
+                      />
+                    </view>
+                    {open ? (
+                      <view className="SettingsAdvancedReleaseFeatures">
+                        {entry.features.map((feature) => (
+                          <view
+                            key={feature.id}
+                            className="SettingsAdvancedReleaseFeature"
+                          >
+                            <text className="SettingsAdvancedReleaseFeatureTitle">
+                              {feature.title}
+                            </text>
+                            <text className="SettingsAdvancedReleaseFeatureDescription">
+                              {feature.description}
+                            </text>
+                            {feature.details ? (
+                              <text className="SettingsAdvancedReleaseFeatureDetails">
+                                {feature.details}
+                              </text>
+                            ) : null}
+                          </view>
+                        ))}
+                      </view>
+                    ) : null}
+                  </view>
+                );
+              })}
+            </view>
+          </DialogPanel>
+          <DialogFooter>
+            <Button size="sm" onClick={() => setReleaseHistoryOpen(false)}>
+              Close
+            </Button>
+          </DialogFooter>
+        </DialogPopup>
+      </Dialog>
     </view>
   );
 }

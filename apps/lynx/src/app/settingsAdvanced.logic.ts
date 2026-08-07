@@ -18,6 +18,8 @@ export function shouldOfferRecoveryTools(input: {
   return input.threadCount === 0 || input.allThreadsMessageless;
 }
 
-export function advancedAppVersion(): string {
-  return process.env.SYNARA_APP_VERSION || '0.0.0';
+export function advancedAppVersion(
+  configuredVersion = process.env.SYNARA_APP_VERSION
+): string {
+  return (configuredVersion || '0.0.0').split('-')[0] || '0.0.0';
 }
