@@ -72,7 +72,7 @@ describe('Settings Custom Models fidelity', () => {
       /\.SettingsCustomModelsEditorRow\s*\{[^}]*flex-direction:\s*column;[^}]*align-items:\s*stretch;/s
     );
     expect(styles).toMatch(
-      /\.SettingsCustomModelsProviderTrigger\s*\{[^}]*width:\s*100%;[^}]*height:\s*28px;/s
+      /\.SettingsCustomModelsProviderTrigger\s*\{[^}]*width:\s*100%;[^}]*height:\s*28px;[^}]*border-radius:\s*8px;/s
     );
     expect(styles).toMatch(
       /\.SettingsCustomModelsInput\s*\{[^}]*height:\s*28px;[^}]*flex:\s*1;/s

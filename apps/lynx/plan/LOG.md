@@ -7713,3 +7713,15 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   继续通过。uncached changed-lines Doctor以`b5c50ebc…`为base并包含new test为
   **0 diagnostics**。证据
   `shots/2026-08-08/settings-keyboard-divider-current/`。
+
+## 2026-08-08 — Settings Models provider radius
+
+- Models整体sections/card/control geometry已一致；唯一普通residual是Custom Models
+  provider select：Web144x28/r8，Lynx144x28但继承generic r10。相邻input与Add正确
+  为r10，不能改global button。
+- scoped `.SettingsCustomModelsProviderTrigger`改8px。final provider
+  469/372/144x28/r8 exact；input621/372/369x28/r10与Add998/370/69x32/r10均不变，
+  connection diagnostics空。
+- focused Custom Models **2/2**；Lynx-for-Web与Native/Desktop builds、Sharp staging
+  通过。uncached changed-lines Doctor以`71fcad16…`为base为**0 diagnostics**。证据
+  `shots/2026-08-08/settings-model-provider-radius-current/`。
