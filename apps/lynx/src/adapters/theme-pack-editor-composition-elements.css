@@ -200,6 +200,10 @@
   width: 58.265625px;
 }
 
+.SharedThemePackImportSubmit.ui-disabled {
+  opacity: 0.64;
+}
+
 .SliceRoot--viewport-compact .SharedThemePackImportViewport {
   align-items: flex-end;
   padding-top: 48px;

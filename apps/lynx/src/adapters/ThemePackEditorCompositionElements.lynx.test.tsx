@@ -170,6 +170,9 @@ describe('ThemePack boolean interaction contract', () => {
       /\.SharedThemePackImportSubmit\s*\{[^}]*width:\s*58\.265625px;/s
     );
     expect(styles).toMatch(
+      /\.SharedThemePackImportSubmit\.ui-disabled\s*\{[^}]*opacity:\s*0\.64;/s
+    );
+    expect(styles).toMatch(
       /\.SharedThemePackImportError\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s
     );
     expect(styles).toMatch(

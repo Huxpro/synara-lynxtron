@@ -52,6 +52,7 @@ Concrete success criteria:
 | Placeholder tone | Web and Lynx internal textarea placeholders resolve to foreground/50: light `rgba(13,13,13,.5)`, dark `rgba(252,252,252,.5)` | PASS |
 | Focus border optics | Web control and Lynx textarea resolve to foreground/30 in both themes instead of the blue `--ring`; textarea geometry remains `412x94` | PASS |
 | Header typography and code anatomy | Lynx title now resolves foreground/600; description resolves muted foreground; inline `codex-theme-v1:` chip matches Web at `116x20`, `2px 4px`, radius 4, code font | PASS |
+| Disabled Import paint | Empty-value submit uses Web's local disabled opacity `0.64` instead of the generic Lynx `0.48`; button geometry remains exact | PASS |
 | Connection provenance | Three-client preflight resolved server instance `bec7ebc4-3a45-4cc3-9f91-bc5aab3f1064`, snapshot 0; relay had no transport/RPC error | PASS |
 | Screenshot dimensions | Web and Lynx retained diagnostic frames were each measured as `1280x820` | PASS |
 | Focused regression coverage | 3 files / 21 tests pass, including success and parser-error dialog behavior | PASS |
@@ -246,6 +247,19 @@ full header mean max-channel difference from `18.86` to `6.87` in light mode
 and from `13.03` to `8.02` in dark mode. Title-only light difference fell from
 `18.85` to `1.93`. The remaining pixels are dominated by cross-engine text
 rasterization rather than an uncovered token or geometry owner.
+
+## Disabled action
+
+The next connected diff cluster covered the complete disabled Import button.
+Web's shared Button contract uses `disabled:opacity-64`, while the generic Lynx
+primitive uses `0.48`. Changing the global primitive would affect unrelated
+controls, so the Import submit owns a local `0.64` disabled override.
+
+Resolved light and dark runtime styles both report `opacity: 0.64` with the
+unchanged `788.734375,490.25,58.265625x28` button box. In the exact button
+region, changed pixels fell from `86.34%` to `31.83%` in light and `31.72%` in
+dark. Mean max-channel difference fell from `50.18` to `31.54` in light and
+from `46.37` to `28.27` in dark.
 
 ## Residuals and disposition
 
