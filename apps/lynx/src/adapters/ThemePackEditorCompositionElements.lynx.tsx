@@ -171,6 +171,7 @@ export function ThemePackImportActionElement(props: {
       >
         <DialogPopup
           className="SharedThemePackImportDialog"
+          viewportClassName="SharedThemePackImportViewport"
           showCloseButton={false}
         >
           <DialogClose className="SharedThemePackImportClose">

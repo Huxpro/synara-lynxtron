@@ -41,6 +41,8 @@ Concrete success criteria:
 | Close control anatomy | Web and Lynx root `28x28` at `827,297.75`, radius 10; icon `16x16` at `833,303.75` | PASS |
 | Invalid-state geometry | Web and Lynx dialog `448x266.5`; error `414x16` at `433,462.25`; footer `446x52` at `417,490.25` | PASS |
 | Error clearing | Editing the invalid value removes the error immediately and returns the dialog to `448x242.5` | PASS |
+| Compact base dialog | At `320x640`, Web and Lynx use a bottom sheet `320x301.5`, textarea `286x94`, 32px full-width stacked actions, and a 32px close control | PASS |
+| Compact invalid dialog | Web and Lynx use `320x341.5`; wrapped error `288x32`; footer stays pinned at `y=544` | PASS |
 | Light material | Dialog `rgb(255,255,255)`, ink `rgb(13,13,13)`, 7% semantic border, radius 22 | PASS |
 | Dark material | Dialog `rgb(23,23,23)`, ink `rgb(252,252,252)`, 7% semantic border, radius 22 | PASS |
 | Connection provenance | Three-client preflight resolved server instance `bec7ebc4-3a45-4cc3-9f91-bc5aab3f1064`, snapshot 0; relay had no transport/RPC error | PASS |
@@ -87,6 +89,29 @@ At `1280x820`, both clients now resolve:
 Changing the textarea after the error removes the error node and restores the
 stable base dialog to `416,288.75,448x242.5`. The same geometry and
 `rgb(224,46,42)` destructive tone were verified after a real switch to dark.
+
+## Compact layout
+
+The desktop modal cannot simply shrink at compact widths. Web switches to a
+bottom sheet with a 48px top budget, square edges, a vertically reversed footer,
+and full-width 32px actions. Lynx now owns the same behavior through the
+explicit `SharedThemePackImportViewport` class rather than copying Web's
+`:has()` selector into the Lynx CSS subset.
+
+At `320x640`, both clients resolve the base state to:
+
+- dialog `0,338.5,320x301.5`;
+- description `16,384,288x48`;
+- textarea `17,437,286x94`;
+- footer `0,544,320x96`;
+- Import `16,556,288x32`;
+- Cancel `16,596,288x32`;
+- Close `280,347.5,32x32`.
+
+The wrapped invalid state is also exact: dialog `0,298.5,320x341.5`, error
+`16,500,288x32`, and the footer remains pinned at `0,544,320x96`. A real dark
+switch retained the same geometry with `rgb(23,23,23)` surface, 7% semantic
+border, and the shared destructive error tone.
 
 The first Lynx capture measured the dialog at 98% scale because it sampled the
 entrance transition. It was rejected; the stable post-transition frame above

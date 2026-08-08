@@ -76,6 +76,9 @@ describe('ThemePack boolean interaction contract', () => {
     );
     expect(source).toContain('className="SharedThemePackImportDialog"');
     expect(source).toContain('showCloseButton={false}');
+    expect(source).toContain(
+      'viewportClassName="SharedThemePackImportViewport"'
+    );
     expect(source).toContain('className="SharedThemePackImportClose"');
     expect(source).toContain('className="SharedThemePackImportCloseIcon"');
     expect(source).toContain('accessibility-label="Theme share string"');
@@ -106,6 +109,15 @@ describe('ThemePack boolean interaction contract', () => {
     );
     expect(styles).toMatch(
       /\.SharedThemePackImportError\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.SharedThemePackImportViewport\s*\{[^}]*align-items:\s*flex-end;[^}]*padding-top:\s*48px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.LxDialogPopup\.SharedThemePackImportDialog\s*\{[^}]*width:\s*100%;[^}]*max-width:\s*none;[^}]*max-height:\s*calc\(100vh - 48px\);[^}]*border-right-width:\s*0;[^}]*border-bottom-width:\s*0;[^}]*border-left-width:\s*0;[^}]*border-radius:\s*0;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.SharedThemePackImportFooter\s*\{[^}]*height:\s*96px;[^}]*flex-direction:\s*column-reverse;/s
     );
     expect(source).toContain("import { SettingsResetIcon } from './SettingsResetIcon.lynx';");
     expect(source).toContain('<SettingsResetIcon />');
