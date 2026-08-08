@@ -260,6 +260,7 @@ function useThreadTranscriptPolling(threadId: string) {
               current.error === null &&
               current.summary?.id === summary?.id &&
               current.summary?.title === summary?.title &&
+              current.summary?.projectId === summary?.projectId &&
               current.summary?.project === summary?.project &&
               current.summary?.provider === summary?.provider &&
               current.summary?.runtimeMode === summary?.runtimeMode &&
@@ -405,6 +406,7 @@ function ThreadPage(props: { threadId: string }) {
         <EnvironmentPanel
           open={environmentOpen}
           threadId={threadId}
+          projectId={currentThread.projectId}
           provider={currentThread.provider ?? 'codex'}
           recapRevision={threadRecapRevision(
             data ?? [],

@@ -53,6 +53,13 @@ describe('Lynx Environment panel', () => {
       "import arrowUpRightSvg from '@synara-central-icons/arrow-up-right.svg?raw'"
     );
     expect(panelSource).toContain('Could not open repository');
+    expect(panelSource).toContain('useProjectInstructionsStore.persist.rehydrate()');
+    expect(panelSource).toContain('state.instructionsByProjectId[props.projectId]');
+    expect(panelSource).toContain('setInstructions(props.projectId as never, next)');
+    expect(panelSource).toContain('mergeProjectInstructionsIntoThreadNotes({');
+    expect(panelSource).toContain('copiedNotesRef.current ?? props.notes');
+    expect(panelSource).toContain('Architecture notes, conventions, repo links');
+    expect(panelSource).toContain('Append to notepad');
     expect(panelSource).toContain('resolveThreadRecapIdleMs({');
     expect(panelSource).toContain('fetchThreadRecapSummary(props.threadId)');
     expect(panelSource).toContain('prepareThreadRecap(props.threadId)');
@@ -118,6 +125,12 @@ describe('Lynx Environment panel', () => {
     );
     expect(styles).toMatch(
       /\.EnvironmentRepositoryRow\s*\{[^}]*width:\s*100%;[^}]*border-radius:\s*10px;/s
+    );
+    expect(styles).toMatch(
+      /\.EnvironmentInstructionsInput\s*\{[^}]*min-height:\s*68px;[^}]*padding:\s*8px 12px;[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s
+    );
+    expect(styles).toMatch(
+      /\.EnvironmentInstructionsCopy\s*\{[^}]*min-height:\s*24px;[^}]*gap:\s*4px;[^}]*padding:\s*0 7px;/s
     );
   });
 });

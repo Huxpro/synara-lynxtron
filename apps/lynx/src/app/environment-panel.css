@@ -465,6 +465,54 @@
   opacity: 0.35;
 }
 
+.EnvironmentInstructions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 2px 8px 4px;
+}
+
+.EnvironmentInstructionsInput {
+  width: 100%;
+  min-height: 68px;
+  max-height: 128px;
+  padding: 8px 12px;
+  border: 1px solid var(--settings-project-border);
+  border-radius: 10px;
+  background-color: transparent;
+  color: var(--foreground);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.EnvironmentInstructionsCopy {
+  display: flex;
+  min-height: 24px;
+  align-self: flex-start;
+  align-items: center;
+  gap: 4px;
+  padding: 0 7px;
+  border-radius: 8px;
+}
+
+.EnvironmentInstructionsCopy.ui-hover,
+.EnvironmentInstructionsCopy.ui-focus,
+.EnvironmentInstructionsCopy.ui-pressed {
+  background-color: var(--accent);
+}
+
+.EnvironmentInstructionsCopyLabel {
+  color: var(--foreground);
+  font-size: 10px;
+  line-height: 15px;
+}
+
+.EnvironmentInstructionsStatus {
+  color: var(--destructive);
+  font-size: 10px;
+  line-height: 15px;
+}
+
 .EnvironmentSectionLabel,
 .EnvironmentDisclosureLabel {
   color: var(--muted-foreground);

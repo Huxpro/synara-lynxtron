@@ -6,6 +6,10 @@ import {
   type ProviderKind,
 } from '@synara/contracts';
 import {
+  mergeProjectInstructionsIntoThreadNotes,
+  useProjectInstructionsStore,
+} from '@synara-web/projectInstructionsStore';
+import {
   providerUsageDisplayName,
   providerUsageNeedsAuthDetail,
 } from '@synara/shared/providerUsage';
@@ -25,6 +29,7 @@ import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
 import { ChatMarkdown } from '../components/markdown/ChatMarkdown.lynx';
 import {
   ChevronDownIcon,
+  CopyIcon,
   DeviceLaptopIcon,
   GitBranchIcon,
   RefreshCwIcon,
@@ -528,6 +533,210 @@ function EnvironmentRecap(props: {
   );
 }
 
+function EnvironmentProjectInstructions(props: {
+  readonly notes: string;
+  readonly projectId: string;
+  readonly threadId: string;
+}) {
+  const textareaRef = useRef<React.ElementRef<'textarea'>>(null);
+  const storedInstructions = useProjectInstructionsStore(
+    (state) => state.instructionsByProjectId[props.projectId] ?? ''
+  );
+  const setInstructions = useProjectInstructionsStore(
+    (state) => state.setInstructions
+  );
+  const [value, setValue] = useState(storedInstructions);
+  const [open, setOpen] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
+  const [copyState, setCopyState] = useState<'idle' | 'saving' | 'error'>(
+    'idle'
+  );
+  const valueRef = useRef(value);
+  const committedRef = useRef(storedInstructions);
+  const copiedNotesRef = useRef<string | null>(null);
+  const saveGenerationRef = useRef(0);
+  const focusedRef = useRef(false);
+
+  useEffect(() => {
+    'background only';
+    let active = true;
+    void useProjectInstructionsStore.persist.rehydrate().then(() => {
+      if (!active) return;
+      const next =
+        useProjectInstructionsStore.getState().instructionsByProjectId[
+          props.projectId
+        ] ?? '';
+      valueRef.current = next;
+      committedRef.current = next;
+      setValue(next);
+      setOpen(next.trim().length > 0);
+      setHydrated(true);
+      textareaRef.current
+        ?.invoke({ method: 'setValue', params: { value: next } })
+        .exec();
+    });
+    return () => {
+      active = false;
+    };
+  }, [props.projectId]);
+
+  useEffect(() => {
+    if (
+      hydrated &&
+      !focusedRef.current &&
+      valueRef.current === committedRef.current &&
+      storedInstructions !== valueRef.current
+    ) {
+      valueRef.current = storedInstructions;
+      committedRef.current = storedInstructions;
+      setValue(storedInstructions);
+      textareaRef.current
+        ?.invoke({
+          method: 'setValue',
+          params: { value: storedInstructions },
+        })
+        .exec();
+    }
+  }, [hydrated, storedInstructions]);
+
+  useEffect(() => {
+    if (copiedNotesRef.current === props.notes) {
+      copiedNotesRef.current = null;
+    }
+  }, [props.notes]);
+
+  function flushInstructions() {
+    'background only';
+    saveGenerationRef.current += 1;
+    const next = valueRef.current;
+    if (next === committedRef.current) return;
+    setInstructions(props.projectId as never, next);
+    committedRef.current = next;
+  }
+
+  function scheduleInstructionsSave() {
+    'background only';
+    const generation = ++saveGenerationRef.current;
+    void sleepOnHost(500).then(() => {
+      if (saveGenerationRef.current === generation) flushInstructions();
+    });
+  }
+
+  async function copyToNotepad() {
+    'background only';
+    if (copyState === 'saving') return;
+    flushInstructions();
+    const currentNotes = copiedNotesRef.current ?? props.notes;
+    const nextNotes = mergeProjectInstructionsIntoThreadNotes({
+      threadNotes: currentNotes,
+      projectInstructions: valueRef.current,
+    });
+    if (nextNotes === currentNotes) return;
+    setCopyState('saving');
+    try {
+      await dispatchSynaraCommand({
+        type: 'thread.meta.update',
+        commandId: environmentCommandId() as never,
+        threadId: props.threadId as never,
+        notes: nextNotes,
+      });
+      copiedNotesRef.current = nextNotes;
+      setCopyState('idle');
+    } catch {
+      setCopyState('error');
+    }
+  }
+
+  const disclosure = useLynxInteractiveState({
+    baseClassName: 'EnvironmentDisclosure',
+    accessibleLabel: 'Project instructions',
+    accessibilityValue: open ? 'Expanded' : 'Collapsed',
+    onActivate: () => setOpen((current) => !current),
+  });
+  const copyInteraction = useLynxInteractiveState({
+    baseClassName: 'EnvironmentInstructionsCopy',
+    accessibleLabel:
+      props.notes.trim().length === 0
+        ? 'Copy project instructions to notepad'
+        : 'Append project instructions to notepad',
+    disabled: value.trim().length === 0 || copyState === 'saving',
+    onActivate: () => void copyToNotepad(),
+  });
+
+  return (
+    <view className="EnvironmentSection">
+      <view
+        className={disclosure.className}
+        aria-expanded={open}
+        {...disclosure.eventProps}
+      >
+        <text className="EnvironmentDisclosureLabel">
+          Project instructions
+        </text>
+        <ChevronDownIcon
+          className={`EnvironmentDisclosureChevron${
+            open ? ' EnvironmentDisclosureChevron--open' : ''
+          }`}
+          size={12}
+          color="var(--muted-foreground)"
+        />
+      </view>
+      {open ? (
+        <view className="EnvironmentInstructions">
+          <textarea
+            ref={textareaRef}
+            className="EnvironmentInstructionsInput"
+            aria-label="Project instructions"
+            accessibility-element
+            accessibility-label="Project instructions"
+            focusable
+            default-value={value}
+            placeholder="Architecture notes, conventions, repo links"
+            maxlength={THREAD_NOTES_MAX_CHARS}
+            maxlines={8}
+            enable-scroll-bar
+            bindfocus={() => {
+              focusedRef.current = true;
+            }}
+            bindinput={(event) => {
+              'background only';
+              valueRef.current = event.detail.value;
+              setValue(event.detail.value);
+              scheduleInstructionsSave();
+            }}
+            bindblur={() => {
+              'background only';
+              focusedRef.current = false;
+              flushInstructions();
+            }}
+          />
+          {value.trim().length > 0 ? (
+            <view
+              className={copyInteraction.className}
+              {...copyInteraction.eventProps}
+            >
+              <CopyIcon
+                size={14}
+                color="var(--foreground)"
+              />
+              <text className="EnvironmentInstructionsCopyLabel">
+                {props.notes.trim().length === 0
+                  ? 'Copy to notepad'
+                  : 'Append to notepad'}
+              </text>
+            </view>
+          ) : null}
+          {copyState === 'error' ? (
+            <text className="EnvironmentInstructionsStatus">
+              Could not update notepad
+            </text>
+          ) : null}
+        </view>
+      ) : null}
+    </view>
+  );
+}
+
 function EnvironmentNotepad(props: {
   readonly notes: string;
   readonly threadId: string;
@@ -692,6 +901,7 @@ export function EnvironmentPanel(props: {
   readonly notes: string;
   readonly onOpenSettings: () => void;
   readonly open: boolean;
+  readonly projectId: string;
   readonly provider: ProviderKind;
   readonly recapRevision: string;
   readonly threadId: string;
@@ -797,6 +1007,14 @@ export function EnvironmentPanel(props: {
                 workspaceRoot={props.workspaceRoot}
               />
             ) : null}
+
+            <view className="EnvironmentDivider" />
+            <EnvironmentProjectInstructions
+              key={props.projectId}
+              projectId={props.projectId}
+              threadId={props.threadId}
+              notes={props.notes}
+            />
 
             <view className="EnvironmentDivider" />
             <EnvironmentNotepad

@@ -7970,3 +7970,32 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   production builds通过。证据在
   `shots/2026-08-08/environment-repository-current/`；最终staged bundle SHA-256为
   `6fa0329534bbfae2fe5a4512911d543eb32d69438992b1f1373ab4bc80712e33`。
+
+### Environment Project Instructions follow-up
+
+- 直接复用Web `useProjectInstructionsStore`与
+  `mergeProjectInstructionsIntoThreadNotes`，保持同一
+  `synara:project-instructions:v1` schema、notes clamp、exact-block去重语义；Lynx
+  component在App storage mirror ready后显式`persist.rehydrate()`，避免store模块初始化
+  早于host storage hydration而丢失reload值。
+- Section按Web规则：有instructions默认展开、空值默认折叠；textarea透明border、
+  12px/18px、500ms autosave、blur flush。projectId作为component key与pending payload
+  owner，切project不会把旧draft写到新project。Copy/Append走shared merge后调用
+  canonical`thread.meta.update`；pending-local-notes echo避免server旧轮询窗口内重复点击
+  造成duplicate block。
+- 同源fixture project/thread sequences26/27。namespaced Web harness backend预置
+  `Prefer small focused changes.`后，Lynx真实rehydrate自动展开；真实input改为
+  `Prefer small focused changes. Keep RPC paths typed.`，900ms内shared persisted store
+  更新。真实`Copy to notepad`使server detail notes一致、snapshot sequence28；随后
+  `Append to notepad`保持notes与sequence28不变，证明exact-block去重。full reload后
+  value与open state恢复。
+- final geometry：header987/310/274×24.5、body987/334.5/274×92、copy
+  995/398.5/124.5×24。relay最终OPEN/attempt1/pending0、transport/rpc error均null；
+  1280×820/DPR1 frame与page errors clean，console仅已知初始化deprecated warning。
+- namespaced storage key删除；fixture canonical`thread.delete` sequence29与
+  `project.delete` sequence30，active projections0；browser session关闭。focused
+  Environment/recap **2 files / 5 tests**、shared instructions merge **7/7**、Web与
+  Native/Desktop production builds通过。证据在
+  `shots/2026-08-08/environment-instructions-current/`；最终staged bundle
+  SHA-256为
+  `b7cbff329697ce661dfbac8947e43555d1b8bf02d6636c22f224c54c4df4b627`。

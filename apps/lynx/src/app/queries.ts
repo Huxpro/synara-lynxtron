@@ -102,6 +102,7 @@ export interface WorktreeThreadSummary {
 export interface ThreadHeaderSummary {
   readonly id: string;
   readonly title: string;
+  readonly projectId: string;
   readonly project: string;
   readonly branch: string | null;
   readonly envMode: 'local' | 'worktree';
@@ -362,6 +363,7 @@ export async function fetchThreadHeaderSummary(
   return {
     id: thread.id,
     title: thread.title,
+    projectId: thread.projectId,
     project: project?.title ?? 'Synara',
     branch: thread.branch,
     envMode: thread.envMode,
