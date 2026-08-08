@@ -66,6 +66,83 @@
   font-size: 12px;
 }
 
+.LxDialogPopup.SharedThemePackImportDialog {
+  width: 448px;
+  max-width: calc(100vw - 32px);
+  padding: 0;
+  border-radius: 22px;
+  overflow: hidden;
+}
+
+.SharedThemePackImportHeader {
+  gap: 6px;
+  margin-bottom: 0;
+  padding: 16px 16px 4px;
+}
+
+.SharedThemePackImportTitle {
+  display: block;
+  height: 22.5px;
+  font-size: 18px;
+  line-height: 22.5px;
+}
+
+.SharedThemePackImportDescription {
+  display: block;
+  min-height: 32px;
+  margin-top: 0;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.SharedThemePackImportPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 16px;
+  overflow: visible;
+}
+
+.SharedThemePackImportTextarea {
+  display: block;
+  width: calc(100% - 2px);
+  height: 94px;
+  margin: 1px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background-color: transparent;
+  color: var(--foreground);
+  font-family: var(--font-chat-code-family);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.SharedThemePackImportTextarea:focus {
+  border-color: var(--ring);
+}
+
+.SharedThemePackImportError {
+  color: var(--destructive);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.SharedThemePackImportFooter {
+  height: 52px;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 12px 16px;
+}
+
+.SharedThemePackImportCancel {
+  width: 59.65625px;
+}
+
+.SharedThemePackImportSubmit {
+  width: 58.265625px;
+}
+
 .SharedThemePackHeader > .LxMenuRoot {
   width: 100%;
 }

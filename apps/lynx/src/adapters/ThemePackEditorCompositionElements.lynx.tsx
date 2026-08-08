@@ -1,6 +1,13 @@
 import { useState, type ReactNode } from '@lynx-js/react';
 
 import { Button } from '../components/ui/button';
+import {
+  Dialog,
+  DialogFooter,
+  DialogHeader,
+  DialogPanel,
+  DialogPopup,
+} from '../components/ui/dialog';
 import { Input } from '../components/ui/input';
 import { ChevronDownIcon } from '../lib/icons.lynx';
 import {
@@ -124,29 +131,94 @@ export function ThemePackImportActionElement(props: {
   readonly variant: ThemeVariant;
   readonly onImport: (value: string) => void;
 }) {
-  const importClipboard = () => {
-    'background only';
-    void import(/* webpackMode: "eager" */ '../platform/clipboard')
-      .then(({ readClipboardText }) => readClipboardText())
-      .then((value) => {
-        props.onImport(value);
-      })
-      .catch((error) => {
-        console.warn(
-          `[settings] ${props.variant} theme clipboard import failed`,
-          String(error)
-        );
-      });
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const close = () => {
+    setOpen(false);
+    setValue('');
+    setError(null);
+  };
+  const submit = () => {
+    try {
+      props.onImport(value);
+      close();
+    } catch (cause) {
+      setError(
+        cause instanceof Error
+          ? cause.message
+          : 'Unable to import that theme string.'
+      );
+    }
   };
   return (
-    <Button
-      size="sm"
-      variant="ghost"
-      className="SharedThemePackHeaderAction"
-      onClick={importClipboard}
-    >
-      Import clipboard
-    </Button>
+    <>
+      <Button
+        size="sm"
+        variant="ghost"
+        className="SharedThemePackHeaderAction SharedThemePackImportTrigger"
+        onClick={() => setOpen(true)}
+      >
+        Import
+      </Button>
+      <Dialog
+        open={open}
+        onOpenChange={(nextOpen) => {
+          if (nextOpen) setOpen(true);
+          else close();
+        }}
+      >
+        <DialogPopup className="SharedThemePackImportDialog">
+          <DialogHeader className="SharedThemePackImportHeader">
+            <text className="SharedThemePackImportTitle">
+              Import {props.variant} theme
+            </text>
+            <text className="SharedThemePackImportDescription">
+              Paste a codex-theme-v1: share string. The embedded variant must
+              match {props.variant}, and the selected code theme must exist for
+              that variant.
+            </text>
+          </DialogHeader>
+          <DialogPanel className="SharedThemePackImportPanel">
+            <textarea
+              className="SharedThemePackImportTextarea"
+              aria-label="Theme share string"
+              accessibility-element
+              accessibility-label="Theme share string"
+              focusable
+              default-value={value}
+              placeholder='codex-theme-v1:{"codeThemeId":"linear",...}'
+              maxlines={5}
+              bindinput={(event) => {
+                setValue(event.detail.value);
+                setError(null);
+              }}
+            />
+            {error ? (
+              <text className="SharedThemePackImportError">{error}</text>
+            ) : null}
+          </DialogPanel>
+          <DialogFooter className="SharedThemePackImportFooter">
+            <Button
+              size="sm"
+              variant="outline"
+              className="SharedThemePackImportCancel"
+              onClick={close}
+            >
+              Cancel
+            </Button>
+            <Button
+              size="sm"
+              className="SharedThemePackImportSubmit"
+              disabled={value.trim().length === 0}
+              onClick={submit}
+            >
+              Import
+            </Button>
+          </DialogFooter>
+        </DialogPopup>
+      </Dialog>
+    </>
   );
 }
 

@@ -1,11 +1,12 @@
-import { describe, expect, it, rs } from '@rstest/core';
-import { fireEvent, render } from '@lynx-js/react/testing-library';
+import { beforeEach, describe, expect, it, rs } from '@rstest/core';
+import { fireEvent, render, waitFor } from '@lynx-js/react/testing-library';
 import { readFileSync } from 'node:fs';
 
 import {
   ThemePackBooleanControlElement,
   ThemePackCodeThemeControlElement,
   ThemePackContrastControlElement,
+  ThemePackImportActionElement,
   mixThemeColors,
   readableThemeColor,
   resolveThemePackContrastKeyValue,
@@ -17,6 +18,15 @@ function switchElement(): Element {
   if (!element) throw new Error('expected ThemePack boolean control');
   return element;
 }
+
+beforeEach(() => {
+  Object.assign(lynx, {
+    requestAnimationFrame(callback: () => void) {
+      callback();
+      return 0;
+    },
+  });
+});
 
 describe('ThemePack boolean interaction contract', () => {
   it('matches the Web two-row header and row typography', () => {
@@ -63,6 +73,27 @@ describe('ThemePack boolean interaction contract', () => {
     );
     expect(styles).toMatch(
       /\.SharedThemePackHeaderAction \.LxButton__text\s*\{[^}]*font-size:\s*12px;/s
+    );
+    expect(source).toContain('className="SharedThemePackImportDialog"');
+    expect(source).toContain('accessibility-label="Theme share string"');
+    expect(source).not.toContain('Import clipboard');
+    expect(styles).toMatch(
+      /\.LxDialogPopup\.SharedThemePackImportDialog\s*\{[^}]*width:\s*448px;[^}]*max-width:\s*calc\(100vw - 32px\);[^}]*padding:\s*0;[^}]*border-radius:\s*22px;[^}]*overflow:\s*hidden;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedThemePackImportTitle\s*\{[^}]*display:\s*block;[^}]*height:\s*22\.5px;[^}]*font-size:\s*18px;[^}]*line-height:\s*22\.5px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedThemePackImportDescription\s*\{[^}]*display:\s*block;[^}]*min-height:\s*32px;[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedThemePackImportTextarea\s*\{[^}]*display:\s*block;[^}]*width:\s*calc\(100% - 2px\);[^}]*height:\s*94px;[^}]*margin:\s*1px;[^}]*padding:\s*8px 10px;[^}]*border-radius:\s*10px;[^}]*font-family:\s*var\(--font-chat-code-family\);[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedThemePackImportCancel\s*\{[^}]*width:\s*59\.65625px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedThemePackImportSubmit\s*\{[^}]*width:\s*58\.265625px;/s
     );
     expect(source).toContain("import { SettingsResetIcon } from './SettingsResetIcon.lynx';");
     expect(source).toContain('<SettingsResetIcon />');
@@ -121,6 +152,94 @@ describe('ThemePack boolean interaction contract', () => {
     expect(readableThemeColor('#ffffff', 0.32)).toBe(
       'rgba(26, 28, 31, 0.32)'
     );
+  });
+
+  it('imports through an editable confirmation dialog', async () => {
+    const onImport = rs.fn();
+    render(
+      <ThemePackImportActionElement variant="light" onImport={onImport} />
+    );
+
+    fireEvent.tap(
+      elementTree.root?.querySelector('.SharedThemePackImportTrigger')!
+    );
+    const textarea = await waitFor(() => {
+      const current = elementTree.root?.querySelector(
+        '.SharedThemePackImportTextarea'
+      );
+      expect(current).not.toBeNull();
+      return current!;
+    });
+    const submit = elementTree.root?.querySelector(
+      '.SharedThemePackImportSubmit'
+    );
+    fireEvent.tap(submit!);
+    expect(onImport).not.toHaveBeenCalled();
+
+    textarea.dispatchEvent(
+      new CustomEvent('bindEvent:input', {
+        bubbles: true,
+        detail: { value: 'codex-theme-v1:valid' },
+      })
+    );
+    await waitFor(() =>
+      expect(
+        elementTree.root?.querySelector('.SharedThemePackImportTextarea')
+          ?.getAttribute('default-value')
+      ).toBe('codex-theme-v1:valid')
+    );
+    fireEvent.tap(
+      elementTree.root?.querySelector('.SharedThemePackImportSubmit')!
+    );
+
+    expect(onImport).toHaveBeenCalledWith('codex-theme-v1:valid');
+    await waitFor(() =>
+      expect(
+        elementTree.root?.querySelector('.SharedThemePackImportDialog')
+      ).toBeNull()
+    );
+  });
+
+  it('keeps invalid imports editable and displays the parser error', async () => {
+    const onImport = rs.fn(() => {
+      throw new Error('Embedded theme variant must match dark.');
+    });
+    render(
+      <ThemePackImportActionElement variant="dark" onImport={onImport} />
+    );
+
+    fireEvent.tap(
+      elementTree.root?.querySelector('.SharedThemePackImportTrigger')!
+    );
+    const textarea = await waitFor(() =>
+      elementTree.root?.querySelector('.SharedThemePackImportTextarea')
+    );
+    textarea!.dispatchEvent(
+      new CustomEvent('bindEvent:input', {
+        bubbles: true,
+        detail: { value: 'codex-theme-v1:wrong' },
+      })
+    );
+    await waitFor(() =>
+      expect(
+        elementTree.root?.querySelector('.SharedThemePackImportTextarea')
+          ?.getAttribute('default-value')
+      ).toBe('codex-theme-v1:wrong')
+    );
+    fireEvent.tap(
+      elementTree.root?.querySelector('.SharedThemePackImportSubmit')!
+    );
+
+    expect(onImport).toHaveBeenCalledWith('codex-theme-v1:wrong');
+    await waitFor(() => {
+      expect(
+        elementTree.root?.querySelector('.SharedThemePackImportDialog')
+      ).not.toBeNull();
+      expect(
+        elementTree.root?.querySelector('.SharedThemePackImportError')
+          ?.textContent
+      ).toBe('Embedded theme variant must match dark.');
+    });
   });
 
   it('renders palette previews in the code-theme trigger and options', () => {
