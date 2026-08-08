@@ -4,6 +4,7 @@ import type {
   ClientOrchestrationCommand,
   FilesystemBrowseInput,
   FilesystemBrowseResult,
+  GitHubRepositoryResult,
   ModelSelection,
   OrchestrationImportThreadInput,
   OrchestrationImportThreadResult,
@@ -513,6 +514,12 @@ export async function openPathInEditor(input: {
   readonly editor: EditorId;
 }): Promise<void> {
   await transportRequest('shell.openInEditor', input);
+}
+
+export async function fetchGitHubRepository(
+  cwd: string
+): Promise<GitHubRepositoryResult> {
+  return transportRequest('git.githubRepository', { cwd });
 }
 
 export async function repairSynaraState(): Promise<OrchestrationReadModel> {

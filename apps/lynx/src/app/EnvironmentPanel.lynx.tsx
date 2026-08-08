@@ -17,6 +17,8 @@ import {
 import settingsSvg from '@synara-central-icons/settings-gear-4.svg?raw';
 import windowSvg from '@synara-central-icons/window.svg?raw';
 import globeSvg from '@synara-central-icons/globe.svg?raw';
+import githubSvg from '@synara-central-icons/github.svg?raw';
+import arrowUpRightSvg from '@synara-central-icons/arrow-up-right.svg?raw';
 import stopSvg from '@synara-central-icons/stop.svg?raw';
 
 import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
@@ -35,11 +37,13 @@ import {
   fetchAllProviderUsage,
   fetchLocalServers,
   fetchServerConfig,
+  fetchGitHubRepository,
   openPathInEditor,
   stopLocalServer,
 } from '../data/synaraClient.lynx';
 import { webStorage } from '../platform/storage';
 import { sleepOnHost } from '../platform/timer';
+import { platformWindow } from '../platform/window';
 import {
   Menu,
   MenuItem,
@@ -359,6 +363,74 @@ function EnvironmentEditor(props: {
       </Menu>
       {openError ? (
         <text className="EnvironmentEditorError">{openError}</text>
+      ) : null}
+    </view>
+  );
+}
+
+function EnvironmentRepository(props: {
+  readonly open: boolean;
+  readonly workspaceRoot: string;
+}) {
+  const [openError, setOpenError] = useState(false);
+  const repositoryQuery = useQuery({
+    queryKey: ['environment-github-repository', props.workspaceRoot],
+    queryFn: () => {
+      'background only';
+      return fetchGitHubRepository(props.workspaceRoot);
+    },
+    enabled: props.open,
+    staleTime: 5 * 60_000,
+  });
+  const repository = repositoryQuery.data?.repository ?? null;
+  const interaction = useLynxInteractiveState({
+    baseClassName: 'EnvironmentRepositoryRow',
+    accessibleLabel: repository
+      ? `Open ${repository.nameWithOwner} on GitHub`
+      : 'GitHub repository unavailable',
+    disabled: repository === null,
+    onActivate: repository
+      ? () => {
+          'background only';
+          setOpenError(false);
+          void platformWindow.openExternal(repository.url).then(
+            (opened) => setOpenError(!opened),
+            () => setOpenError(true)
+          );
+        }
+      : undefined,
+  });
+
+  if (!repository) return null;
+
+  return (
+    <view className="EnvironmentLabeledSection">
+      <view className="EnvironmentDivider" />
+      <EnvironmentSectionLabel>Repository</EnvironmentSectionLabel>
+      <view className={interaction.className} {...interaction.eventProps}>
+        <EnvironmentRow
+          icon={
+            <svg
+              className="EnvironmentCanonicalIcon"
+              content={colorizeLynxSvg(githubSvg, 'var(--foreground)')}
+            />
+          }
+          label={repository.nameWithOwner}
+          trailingIcon={
+            <svg
+              className="EnvironmentRepositoryExternalIcon"
+              content={colorizeLynxSvg(
+                arrowUpRightSvg,
+                'var(--muted-foreground)'
+              )}
+            />
+          }
+        />
+      </view>
+      {openError ? (
+        <text className="EnvironmentRepositoryError">
+          Could not open repository
+        </text>
       ) : null}
     </view>
   );
@@ -705,6 +777,13 @@ export function EnvironmentPanel(props: {
 
             {props.workspaceRoot ? (
               <EnvironmentEditor
+                open={props.open}
+                workspaceRoot={props.workspaceRoot}
+              />
+            ) : null}
+
+            {props.workspaceRoot ? (
+              <EnvironmentRepository
                 open={props.open}
                 workspaceRoot={props.workspaceRoot}
               />

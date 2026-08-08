@@ -43,6 +43,16 @@ describe('Lynx Environment panel', () => {
       panelSource.indexOf('webStorage.setItem(LAST_EDITOR_STORAGE_KEY, editor)')
     );
     expect(panelSource).toContain('Open in ${activeOption.label}');
+    expect(panelSource).toContain('fetchGitHubRepository(props.workspaceRoot)');
+    expect(panelSource).toContain('platformWindow.openExternal(repository.url)');
+    expect(panelSource).toContain('repository.nameWithOwner');
+    expect(panelSource).toContain(
+      "import githubSvg from '@synara-central-icons/github.svg?raw'"
+    );
+    expect(panelSource).toContain(
+      "import arrowUpRightSvg from '@synara-central-icons/arrow-up-right.svg?raw'"
+    );
+    expect(panelSource).toContain('Could not open repository');
     expect(panelSource).toContain('resolveThreadRecapIdleMs({');
     expect(panelSource).toContain('fetchThreadRecapSummary(props.threadId)');
     expect(panelSource).toContain('prepareThreadRecap(props.threadId)');
@@ -61,7 +71,6 @@ describe('Lynx Environment panel', () => {
     expect(panelSource).toContain('THREAD_NOTES_MAX_CHARS');
     expect(panelSource).toContain('EnvironmentNotepadInput');
     expect(panelSource).not.toContain('Changes');
-    expect(panelSource).not.toContain('GitHub');
   });
 
   it('matches the Web overlay footprint and row rhythm', () => {
@@ -106,6 +115,9 @@ describe('Lynx Environment panel', () => {
     );
     expect(styles).toMatch(
       /\.EnvironmentRecapSkeletonLine\s*\{[^}]*height:\s*10px;[^}]*border-radius:\s*4px;/s
+    );
+    expect(styles).toMatch(
+      /\.EnvironmentRepositoryRow\s*\{[^}]*width:\s*100%;[^}]*border-radius:\s*10px;/s
     );
   });
 });

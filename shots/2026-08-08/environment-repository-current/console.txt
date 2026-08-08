@@ -1,0 +1,8 @@
+[log] [Lynxtron Web] Configuring nodejs module with script: http://localhost:8998/lynx/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://localhost:8998/dc6778d8-9cfe-4811-9de4-4a9fb098047d
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://localhost:8998/89a6a962-2732-4c59-9f43-13f3b0a63453", nodejs: "blob:http://localhost:8998/dc6778d8-9cfe-4811-9de4-4a9fb098047d"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://localhost:8998/lynx/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://localhost:8998/e928d4c0-be5a-46de-ae9e-68fd8cbff88b
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://localhost:8998/43ffec29-3b5b-48b5-9675-1fccef3b5dd7", nodejs: "blob:http://localhost:8998/e928d4c0-be5a-46de-ae9e-68fd8cbff88b"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead

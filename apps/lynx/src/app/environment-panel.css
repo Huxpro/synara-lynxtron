@@ -374,6 +374,29 @@
   line-height: 15px;
 }
 
+.EnvironmentRepositoryRow {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.EnvironmentRepositoryRow.ui-hover,
+.EnvironmentRepositoryRow.ui-focus,
+.EnvironmentRepositoryRow.ui-pressed {
+  background-color: var(--accent);
+}
+
+.EnvironmentRepositoryError {
+  margin: 0 8px 2px 32px;
+  color: var(--destructive);
+  font-size: 10px;
+  line-height: 15px;
+}
+
+.EnvironmentRepositoryExternalIcon {
+  width: 12px;
+  height: 12px;
+}
+
 .EnvironmentRecapSection {
   display: flex;
   flex-direction: column;

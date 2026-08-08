@@ -7948,3 +7948,25 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Native/Desktop production builds通过。证据在
   `shots/2026-08-08/environment-recap-current/`；最终staged bundle SHA-256为
   `a95e7d44c1c41d0128cc2aed27c132da1e18ed8505425ef78eecce6b090b814f`。
+
+### Environment Repository follow-up
+
+- 复用Web的`git.githubRepository`协议与`platformWindow.openExternal`host port，
+  仅当真实RPC返回primary repository时渲染Repository section；无remote、不在git repo
+  或RPC失败时不展示假行。外链失败保留row并显示`Could not open repository`。
+- 当前真实synara workspace RPC返回primary `Huxpro/synara-lynxtron`与第二remote
+  `Emanuele-web04/synara`。Lynx-for-Web section使用primary name，row
+  987/336.5/274×26；leading复用canonical Central GitHub SVG
+  995/341.5/16×16，trailing复用canonical Arrow Up Right
+  1241/343.5/12×12，accessibility label为
+  `Open Huxpro/synara-lynxtron on GitHub`。
+- 为避免抢用户焦点，retained evidence不实际打开浏览器；host openExternal port在
+  Settings等现有产品路径已验证，本slice锁定typed call与可见失败状态。最终relay
+  OPEN、attempt1、pending0、transport/rpc error均null；1280×820/DPR1 frame与
+  page errors clean，console仅已知Lynx Web初始化deprecated warning。
+- canonical project/thread fixture sequences22/23，按记录ID
+  `thread.delete` sequence24与`project.delete` sequence25，active projections 0；
+  browser session已关闭。focused Environment **3/3**、Web与Native/Desktop
+  production builds通过。证据在
+  `shots/2026-08-08/environment-repository-current/`；最终staged bundle SHA-256为
+  `6fa0329534bbfae2fe5a4512911d543eb32d69438992b1f1373ab4bc80712e33`。
