@@ -181,53 +181,55 @@ export function ThemePackImportActionElement(props: {
               accessibilityLabel="Close"
             />
           </DialogClose>
-          <DialogHeader className="SharedThemePackImportHeader">
-            <text className="SharedThemePackImportTitle">
-              Import {props.variant} theme
-            </text>
-            <text className="SharedThemePackImportDescription">
-              Paste a codex-theme-v1: share string. The embedded variant must
-              match {props.variant}, and the selected code theme must exist for
-              that variant.
-            </text>
-          </DialogHeader>
-          <DialogPanel className="SharedThemePackImportPanel">
-            <textarea
-              className="SharedThemePackImportTextarea"
-              aria-label="Theme share string"
-              accessibility-element
-              accessibility-label="Theme share string"
-              focusable
-              default-value={value}
-              placeholder='codex-theme-v1:{"codeThemeId":"linear",...}'
-              maxlines={5}
-              bindinput={(event) => {
-                setValue(event.detail.value);
-                setError(null);
-              }}
-            />
-            {error ? (
-              <text className="SharedThemePackImportError">{error}</text>
-            ) : null}
-          </DialogPanel>
-          <DialogFooter className="SharedThemePackImportFooter">
-            <Button
-              size="sm"
-              variant="outline"
-              className="SharedThemePackImportCancel"
-              onClick={close}
-            >
-              Cancel
-            </Button>
-            <Button
-              size="sm"
-              className="SharedThemePackImportSubmit"
-              disabled={value.trim().length === 0}
-              onClick={submit}
-            >
-              Import
-            </Button>
-          </DialogFooter>
+          <scroll-view className="SharedThemePackImportScroll" scroll-y>
+            <DialogHeader className="SharedThemePackImportHeader">
+              <text className="SharedThemePackImportTitle">
+                Import {props.variant} theme
+              </text>
+              <text className="SharedThemePackImportDescription">
+                Paste a codex-theme-v1: share string. The embedded variant must
+                match {props.variant}, and the selected code theme must exist
+                for that variant.
+              </text>
+            </DialogHeader>
+            <DialogPanel className="SharedThemePackImportPanel">
+              <textarea
+                className="SharedThemePackImportTextarea"
+                aria-label="Theme share string"
+                accessibility-element
+                accessibility-label="Theme share string"
+                focusable
+                default-value={value}
+                placeholder='codex-theme-v1:{"codeThemeId":"linear",...}'
+                maxlines={5}
+                bindinput={(event) => {
+                  setValue(event.detail.value);
+                  setError(null);
+                }}
+              />
+              {error ? (
+                <text className="SharedThemePackImportError">{error}</text>
+              ) : null}
+            </DialogPanel>
+            <DialogFooter className="SharedThemePackImportFooter">
+              <Button
+                size="sm"
+                variant="outline"
+                className="SharedThemePackImportCancel"
+                onClick={close}
+              >
+                Cancel
+              </Button>
+              <Button
+                size="sm"
+                className="SharedThemePackImportSubmit"
+                disabled={value.trim().length === 0}
+                onClick={submit}
+              >
+                Import
+              </Button>
+            </DialogFooter>
+          </scroll-view>
         </DialogPopup>
       </Dialog>
     </>

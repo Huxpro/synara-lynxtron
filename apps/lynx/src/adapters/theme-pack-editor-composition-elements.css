@@ -93,6 +93,17 @@
   color: var(--muted-foreground);
 }
 
+.SharedThemePackImportScroll {
+  width: 100%;
+  max-height: 100%;
+}
+
+.SharedThemePackImportHeader,
+.SharedThemePackImportPanel,
+.SharedThemePackImportFooter {
+  flex-shrink: 0;
+}
+
 .SharedThemePackImportHeader {
   gap: 6px;
   margin-bottom: 0;

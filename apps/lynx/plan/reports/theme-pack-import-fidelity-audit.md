@@ -44,6 +44,7 @@ Concrete success criteria:
 | Compact base dialog | At `320x640`, Web and Lynx use a bottom sheet `320x301.5`, textarea `286x94`, 32px full-width stacked actions, and a 32px close control | PASS |
 | Compact invalid dialog | Web and Lynx use `320x341.5`; wrapped error `288x32`; footer stays pinned at `y=544` | PASS |
 | Compact breakpoint | Both clients use the bottom sheet through 639px and switch to the centered 448px modal at exactly 640px | PASS |
+| Very-short reachability | Lynx uses a real scroll owner at `320x200`; base max scroll 150 and invalid max scroll 190 expose both actions | PASS — INTENTIONAL CORRECTNESS DELTA |
 | Light material | Dialog `rgb(255,255,255)`, ink `rgb(13,13,13)`, 7% semantic border, radius 22 | PASS |
 | Dark material | Dialog `rgb(23,23,23)`, ink `rgb(252,252,252)`, 7% semantic border, radius 22 | PASS |
 | Connection provenance | Three-client preflight resolved server instance `bec7ebc4-3a45-4cc3-9f91-bc5aab3f1064`, snapshot 0; relay had no transport/RPC error | PASS |
@@ -126,6 +127,26 @@ without changing global viewport classification:
 
 The matrix was exercised through live viewport changes while the dialog stayed
 open, covering the responsive transition rather than only cold-start classes.
+
+### Very-short boundary
+
+At `320x200`, the 48px mobile top budget leaves a 152px popup viewport. Web
+keeps its 96.5px header and 96px footer but exposes no functioning scroll
+owner: content extends below the viewport and `scrollTop` remains zero, leaving
+Cancel unreachable. This is an authority bug and is not copied.
+
+Lynx wraps the complete header/panel/footer stack in
+`SharedThemePackImportScroll`, while the Close control remains fixed above it:
+
+- base content `301px`, viewport `151px`, max scroll `150`;
+- invalid content `341px`, max scroll `190`;
+- at max scroll, Submit is `y=115.5..147.5` and Cancel is
+  `y=155.5..187.5`;
+- invalid error remains visible at `y=59.5..91.5`.
+
+The scroll wrapper has max scroll zero at `320x640` and `1280x820`; all prior
+base geometry remains exact at both sizes. The very-short divergence is
+therefore a bounded reachability improvement, not a general layout fork.
 
 The first Lynx capture measured the dialog at 98% scale because it sampled the
 entrance transition. It was rejected; the stable post-transition frame above

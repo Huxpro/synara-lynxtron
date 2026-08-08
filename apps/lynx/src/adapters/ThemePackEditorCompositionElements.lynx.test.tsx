@@ -81,6 +81,9 @@ describe('ThemePack boolean interaction contract', () => {
     );
     expect(source).toContain('className="SharedThemePackImportClose"');
     expect(source).toContain('className="SharedThemePackImportCloseIcon"');
+    expect(source).toContain(
+      'className="SharedThemePackImportScroll" scroll-y'
+    );
     expect(source).toContain('accessibility-label="Theme share string"');
     expect(source).not.toContain('Import clipboard');
     expect(styles).toMatch(
@@ -91,6 +94,12 @@ describe('ThemePack boolean interaction contract', () => {
     );
     expect(styles).toMatch(
       /\.SharedThemePackImportCloseIcon\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;[^}]*color:\s*var\(--muted-foreground\);/s
+    );
+    expect(styles).toMatch(
+      /\.SharedThemePackImportScroll\s*\{[^}]*width:\s*100%;[^}]*max-height:\s*100%;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedThemePackImportHeader,\s*\.SharedThemePackImportPanel,\s*\.SharedThemePackImportFooter\s*\{[^}]*flex-shrink:\s*0;/s
     );
     expect(styles).toMatch(
       /\.SharedThemePackImportTitle\s*\{[^}]*display:\s*block;[^}]*height:\s*22\.5px;[^}]*font-size:\s*18px;[^}]*line-height:\s*22\.5px;/s
