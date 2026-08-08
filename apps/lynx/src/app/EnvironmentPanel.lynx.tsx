@@ -3,6 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import {
   THREAD_NOTES_MAX_CHARS,
   type EditorId,
+  type GitPullRequestCheck,
+  type OrchestrationThreadPullRequest,
   type PinnedMessage,
   type ProviderKind,
   type ThreadMarker,
@@ -18,6 +20,11 @@ import {
 } from '@synara-web/threadMarkers';
 import { isThreadMarkerAvailable } from '@synara/shared/threadMarkers';
 import {
+  PULL_REQUEST_CHECK_STATUS_LABELS,
+  summarizePullRequestChecks,
+  summarizePullRequestComments,
+} from '@synara-web/components/pullRequest/pullRequestSummary.logic';
+import {
   providerUsageDisplayName,
   providerUsageNeedsAuthDetail,
 } from '@synara/shared/providerUsage';
@@ -31,9 +38,14 @@ import windowSvg from '@synara-central-icons/window.svg?raw';
 import globeSvg from '@synara-central-icons/globe.svg?raw';
 import githubSvg from '@synara-central-icons/github.svg?raw';
 import arrowUpRightSvg from '@synara-central-icons/arrow-up-right.svg?raw';
+import bubbleAlertSvg from '@synara-central-icons/bubble-alert.svg?raw';
+import circleCheckSvg from '@synara-central-icons/circle-check.svg?raw';
 import checkmarkSvg from '@synara-central-icons/checkmark-2-small.svg?raw';
+import differenceSvg from '@synara-central-icons/difference-modified.svg?raw';
 import editSvg from '@synara-central-icons/edit-small-2.svg?raw';
 import closeSvg from '@synara-central-icons/close-circle-dashed.svg?raw';
+import mergeConflictSvg from '@synara-central-icons/merge-conflict.svg?raw';
+import pullRequestSvg from '@synara-central-icons/pull-request.svg?raw';
 import stopSvg from '@synara-central-icons/stop.svg?raw';
 
 import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
@@ -54,6 +66,7 @@ import {
   fetchLocalServers,
   fetchServerConfig,
   fetchGitHubRepository,
+  fetchGitPullRequestSnapshot,
   openPathInEditor,
   stopLocalServer,
 } from '../data/synaraClient.lynx';
@@ -448,6 +461,322 @@ function EnvironmentRepository(props: {
           Could not open repository
         </text>
       ) : null}
+    </view>
+  );
+}
+
+function pullRequestCheckColor(check: GitPullRequestCheck): string {
+  if (check.status === 'failure' || check.status === 'cancelled') {
+    return 'var(--destructive)';
+  }
+  if (check.status === 'success') return 'var(--settings-usage-meter-healthy)';
+  return 'var(--muted-foreground)';
+}
+
+function EnvironmentPullRequest(props: {
+  readonly open: boolean;
+  readonly pullRequest: OrchestrationThreadPullRequest;
+  readonly workspaceRoot: string;
+}) {
+  const { svgColors } = useTheme();
+  const [checksOpen, setChecksOpen] = useState(false);
+  const [commentsOpen, setCommentsOpen] = useState(false);
+  const [snapshotState, setSnapshotState] = useState<{
+    readonly data: Awaited<ReturnType<typeof fetchGitPullRequestSnapshot>> | null;
+    readonly error: boolean;
+    readonly pending: boolean;
+  }>({
+    data: null,
+    error: false,
+    pending: true,
+  });
+  const [refreshGeneration, setRefreshGeneration] = useState(0);
+
+  useEffect(() => {
+    'background only';
+    if (!props.open) return;
+    let cancelled = false;
+    const generation = refreshGeneration;
+    async function pollPullRequest() {
+      'background only';
+      let first = true;
+      while (!cancelled) {
+        if (first) {
+          setSnapshotState((current) => ({
+            ...current,
+            error: false,
+            pending: true,
+          }));
+        }
+        try {
+          const data = await fetchGitPullRequestSnapshot({
+            cwd: props.workspaceRoot,
+            reference: props.pullRequest.url,
+          });
+          if (!cancelled) {
+            setSnapshotState({ data, error: false, pending: false });
+          }
+        } catch {
+          if (!cancelled) {
+            setSnapshotState((current) => ({
+              data: current.data,
+              error: true,
+              pending: false,
+            }));
+          }
+        }
+        first = false;
+        if (!cancelled) await sleepOnHost(60_000);
+      }
+    }
+    void pollPullRequest();
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    props.open,
+    props.pullRequest.url,
+    props.workspaceRoot,
+    refreshGeneration,
+  ]);
+
+  const livePullRequest = snapshotState.data?.pullRequest ?? props.pullRequest;
+  const checks = snapshotState.data?.checks ?? [];
+  const comments = snapshotState.data?.comments ?? [];
+  const checksSummary = summarizePullRequestChecks(checks);
+  const commentsSummary = summarizePullRequestComments(
+    comments.length,
+    snapshotState.data?.commentsTruncated ?? false
+  );
+  const diffLabel = [
+    `+${livePullRequest.additions ?? 0}`,
+    `−${livePullRequest.deletions ?? 0}`,
+    livePullRequest.changedFiles == null
+      ? null
+      : `${livePullRequest.changedFiles} file${
+          livePullRequest.changedFiles === 1 ? '' : 's'
+        }`,
+  ]
+    .filter(Boolean)
+    .join(' ');
+  const openUrl = (url: string) => {
+    'background only';
+    void platformWindow.openExternal(url);
+  };
+
+  return (
+    <view className="EnvironmentLabeledSection">
+      <view className="EnvironmentDivider" />
+      <EnvironmentSectionLabel>Pull request</EnvironmentSectionLabel>
+      <view
+        className="EnvironmentRepositoryRow"
+        bindtap={() => openUrl(livePullRequest.url)}
+        accessibility-element
+        accessibility-label={`Open pull request #${livePullRequest.number}`}
+      >
+        <EnvironmentRow
+          icon={
+            <svg
+              className="EnvironmentCanonicalIcon"
+              content={colorizeLynxSvg(pullRequestSvg, svgColors.foreground)}
+            />
+          }
+          label={`#${livePullRequest.number} ${livePullRequest.title}`}
+          trailing={
+            livePullRequest.isDraft ? 'Draft' : null
+          }
+          trailingIcon={
+            <svg
+              className="EnvironmentRepositoryExternalIcon"
+              content={colorizeLynxSvg(
+                arrowUpRightSvg,
+                svgColors.mutedForeground
+              )}
+            />
+          }
+        />
+      </view>
+      <view
+        className="EnvironmentRepositoryRow"
+        bindtap={() => openUrl(`${livePullRequest.url}/files`)}
+        accessibility-element
+        accessibility-label={`Open changes for pull request #${livePullRequest.number}`}
+      >
+        <EnvironmentRow
+          icon={
+            <svg
+              className="EnvironmentCanonicalIcon"
+              content={colorizeLynxSvg(differenceSvg, svgColors.foreground)}
+            />
+          }
+          label={diffLabel}
+          trailingIcon={
+            <svg
+              className="EnvironmentRepositoryExternalIcon"
+              content={colorizeLynxSvg(
+                arrowUpRightSvg,
+                svgColors.mutedForeground
+              )}
+            />
+          }
+        />
+      </view>
+      {livePullRequest.mergeability === 'conflicting' ? (
+        <view
+          className="EnvironmentRepositoryRow"
+          bindtap={() => openUrl(livePullRequest.url)}
+          accessibility-element
+          accessibility-label={`Conflicts with ${livePullRequest.baseBranch}`}
+        >
+          <EnvironmentRow
+            icon={
+              <svg
+                className="EnvironmentCanonicalIcon"
+                content={colorizeLynxSvg(
+                  mergeConflictSvg,
+                  'var(--destructive)'
+                )}
+              />
+            }
+            label={`Conflicts with ${livePullRequest.baseBranch}`}
+            trailingIcon={
+              <svg
+                className="EnvironmentRepositoryExternalIcon"
+                content={colorizeLynxSvg(
+                  arrowUpRightSvg,
+                  svgColors.mutedForeground
+                )}
+              />
+            }
+          />
+        </view>
+      ) : null}
+      <Menu open={checksOpen} onOpenChange={setChecksOpen}>
+        <MenuTrigger
+          ariaLabel={snapshotState.pending ? 'Loading checks' : checksSummary.label}
+          className="EnvironmentPullRequestMenuTrigger"
+          disabled={snapshotState.pending}
+          onActivate={
+            snapshotState.error
+              ? () => setRefreshGeneration((current) => current + 1)
+              : undefined
+          }
+        >
+          <EnvironmentRow
+            icon={
+              snapshotState.error ? (
+                <RefreshCwIcon
+                  size={16}
+                  color="var(--destructive)"
+                />
+              ) : (
+                <svg
+                  className="EnvironmentCanonicalIcon"
+                  content={colorizeLynxSvg(
+                    checksSummary.tone === 'failure'
+                      ? bubbleAlertSvg
+                      : circleCheckSvg,
+                    checksSummary.tone === 'failure'
+                      ? 'var(--destructive)'
+                      : svgColors.mutedForeground
+                  )}
+                />
+              )
+            }
+            label={
+              snapshotState.pending
+                ? 'Loading checks…'
+                : snapshotState.error
+                  ? "Couldn't load PR data"
+                  : checksSummary.label
+            }
+            trailingIcon={
+              <ChevronDownIcon
+                size={12}
+                color="var(--muted-foreground)"
+              />
+            }
+          />
+        </MenuTrigger>
+        <MenuPopup
+          align="start"
+          side="bottom"
+          className="EnvironmentPullRequestPopup"
+        >
+          {checks.length === 0 ? (
+            <text className="EnvironmentPullRequestEmpty">
+              No checks reported for this PR.
+            </text>
+          ) : (
+            <view className="EnvironmentPullRequestList">
+              {checks.map((check, index) => (
+                <MenuItem
+                  className="EnvironmentPullRequestCheck"
+                  disabled={!check.url}
+                  key={`${check.name}-${index}`}
+                  onClick={check.url ? () => openUrl(check.url!) : undefined}
+                >
+                  <view
+                    className="EnvironmentPullRequestCheckDot"
+                    style={{ backgroundColor: pullRequestCheckColor(check) }}
+                  />
+                  <text className="EnvironmentPullRequestCheckName">
+                    {check.name}
+                  </text>
+                  <text className="EnvironmentPullRequestCheckStatus">
+                    {PULL_REQUEST_CHECK_STATUS_LABELS[check.status]}
+                  </text>
+                </MenuItem>
+              ))}
+            </view>
+          )}
+        </MenuPopup>
+      </Menu>
+      <Menu open={commentsOpen} onOpenChange={setCommentsOpen}>
+        <MenuTrigger
+          ariaLabel={commentsSummary}
+          className="EnvironmentPullRequestMenuTrigger"
+          disabled={snapshotState.pending}
+        >
+          <EnvironmentRow
+            icon={
+              <svg
+                className="EnvironmentCanonicalIcon"
+                content={colorizeLynxSvg(
+                  bubbleAlertSvg,
+                  svgColors.mutedForeground
+                )}
+              />
+            }
+            label={
+              snapshotState.data?.commentsError
+                ? 'Comments unavailable'
+                : commentsSummary
+            }
+            trailingIcon={
+              <ChevronDownIcon
+                size={12}
+                color="var(--muted-foreground)"
+              />
+            }
+          />
+        </MenuTrigger>
+        <MenuPopup
+          align="start"
+          side="bottom"
+          className="EnvironmentPullRequestPopup"
+        >
+          <text className="EnvironmentPullRequestEmpty">
+            {snapshotState.data?.commentsError
+              ? `Couldn't load review comments: ${snapshotState.data.commentsError}`
+              : comments.length === 0
+                ? 'No unresolved review comments.'
+                : `${comments.length} unresolved review comment${
+                    comments.length === 1 ? '' : 's'
+                  }`}
+          </text>
+        </MenuPopup>
+      </Menu>
     </view>
   );
 }
@@ -1454,6 +1783,7 @@ export function EnvironmentPanel(props: {
   readonly pinnedMessageTextById: Readonly<Record<string, string>>;
   readonly projectId: string;
   readonly provider: ProviderKind;
+  readonly pullRequest: OrchestrationThreadPullRequest | null;
   readonly recapRevision: string;
   readonly threadId: string;
   readonly threadMarkers: readonly ThreadMarker[];
@@ -1547,6 +1877,14 @@ export function EnvironmentPanel(props: {
             {props.workspaceRoot ? (
               <EnvironmentRepository
                 open={props.open}
+                workspaceRoot={props.workspaceRoot}
+              />
+            ) : null}
+
+            {props.workspaceRoot && props.pullRequest?.state === 'open' ? (
+              <EnvironmentPullRequest
+                open={props.open}
+                pullRequest={props.pullRequest}
                 workspaceRoot={props.workspaceRoot}
               />
             ) : null}

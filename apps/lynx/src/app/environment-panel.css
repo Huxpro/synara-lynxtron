@@ -397,6 +397,77 @@
   height: 12px;
 }
 
+.EnvironmentPullRequestMenuTrigger {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.EnvironmentPullRequestMenuTrigger.ui-hover,
+.EnvironmentPullRequestMenuTrigger.ui-focus,
+.EnvironmentPullRequestMenuTrigger.ui-pressed {
+  background-color: var(--accent);
+  opacity: 1;
+}
+
+.LxMenuPopup.EnvironmentPullRequestPopup {
+  width: 288px;
+  min-width: 288px;
+  max-height: 320px;
+  padding: 6px;
+}
+
+.EnvironmentPullRequestList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.EnvironmentPullRequestCheck {
+  min-height: 28px;
+  padding: 4px 8px;
+}
+
+.EnvironmentPullRequestCheck .LxMenuItem__text {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.EnvironmentPullRequestCheckDot {
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  border-radius: 999px;
+}
+
+.EnvironmentPullRequestCheckName {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  color: var(--foreground);
+  font-size: 12px;
+  line-height: 18px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.EnvironmentPullRequestCheckStatus {
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  font-size: 10px;
+  line-height: 15px;
+}
+
+.EnvironmentPullRequestEmpty {
+  padding: 12px;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  line-height: 16.5px;
+  text-align: center;
+}
+
 .EnvironmentRecapSection {
   display: flex;
   flex-direction: column;

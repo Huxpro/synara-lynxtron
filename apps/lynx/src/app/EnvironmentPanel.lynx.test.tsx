@@ -57,6 +57,15 @@ describe('Lynx Environment panel', () => {
       "import arrowUpRightSvg from '@synara-central-icons/arrow-up-right.svg?raw'"
     );
     expect(panelSource).toContain('Could not open repository');
+    expect(panelSource).toContain('fetchGitPullRequestSnapshot({');
+    expect(panelSource).toContain('async function pollPullRequest()');
+    expect(panelSource).toContain('await sleepOnHost(60_000)');
+    expect(panelSource).toContain('setRefreshGeneration((current) => current + 1)');
+    expect(panelSource).toContain('summarizePullRequestChecks(checks)');
+    expect(panelSource).toContain('summarizePullRequestComments(');
+    expect(panelSource).toContain('Conflicts with ${livePullRequest.baseBranch}');
+    expect(panelSource).toContain('No unresolved review comments.');
+    expect(queriesSource).toContain('lastKnownPr: thread.lastKnownPr ?? null');
     expect(panelSource).toContain('useProjectInstructionsStore.persist.rehydrate()');
     expect(panelSource).toContain('state.instructionsByProjectId[props.projectId]');
     expect(panelSource).toContain('setInstructions(props.projectId as never, next)');
@@ -159,6 +168,9 @@ describe('Lynx Environment panel', () => {
     );
     expect(styles).toMatch(
       /\.EnvironmentMarkerSwatch\s*\{[^}]*width:\s*10px;[^}]*height:\s*10px;[^}]*border-radius:\s*999px;/s
+    );
+    expect(styles).toMatch(
+      /\.LxMenuPopup\.EnvironmentPullRequestPopup\s*\{[^}]*width:\s*288px;[^}]*max-height:\s*320px;[^}]*padding:\s*6px;/s
     );
   });
 });

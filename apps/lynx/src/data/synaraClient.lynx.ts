@@ -5,6 +5,7 @@ import type {
   FilesystemBrowseInput,
   FilesystemBrowseResult,
   GitHubRepositoryResult,
+  GitPullRequestSnapshotResult,
   ModelSelection,
   OrchestrationImportThreadInput,
   OrchestrationImportThreadResult,
@@ -520,6 +521,13 @@ export async function fetchGitHubRepository(
   cwd: string
 ): Promise<GitHubRepositoryResult> {
   return transportRequest('git.githubRepository', { cwd });
+}
+
+export async function fetchGitPullRequestSnapshot(input: {
+  readonly cwd: string;
+  readonly reference: string;
+}): Promise<GitPullRequestSnapshotResult> {
+  return transportRequest('git.pullRequestSnapshot', input);
 }
 
 export async function repairSynaraState(): Promise<OrchestrationReadModel> {

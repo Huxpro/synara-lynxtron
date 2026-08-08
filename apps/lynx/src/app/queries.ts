@@ -5,6 +5,7 @@ import { QueryClient } from '@tanstack/react-query';
 import type {
   MessageId,
   ModelSelection,
+  OrchestrationThreadPullRequest,
   PinnedMessage,
   ProjectId,
   ProviderKind,
@@ -123,6 +124,7 @@ export interface ThreadHeaderSummary {
   readonly pinnedRevision: string;
   readonly threadMarkers: readonly ThreadMarker[];
   readonly markerRevision: string;
+  readonly lastKnownPr: OrchestrationThreadPullRequest | null;
 }
 
 export interface ThreadRecapSummary {
@@ -397,6 +399,7 @@ export async function fetchThreadHeaderSummary(
     pinnedRevision: JSON.stringify(thread.pinnedMessages ?? []),
     threadMarkers: thread.threadMarkers ?? [],
     markerRevision: JSON.stringify(thread.threadMarkers ?? []),
+    lastKnownPr: thread.lastKnownPr ?? null,
   };
 }
 

@@ -271,6 +271,7 @@ function useThreadTranscriptPolling(threadId: string) {
               current.summary?.workspaceRoot === summary?.workspaceRoot &&
               current.summary?.pinnedRevision === summary?.pinnedRevision &&
               current.summary?.markerRevision === summary?.markerRevision &&
+              current.summary?.lastKnownPr?.url === summary?.lastKnownPr?.url &&
               current.summary?.notes === summary?.notes
                 ? current
                 : {
@@ -422,6 +423,7 @@ function ThreadPage(props: { threadId: string }) {
           pinnedMessages={currentThread.pinnedMessages}
           pinnedMessageTextById={currentThread.pinnedMessageTextById}
           threadMarkers={currentThread.threadMarkers}
+          pullRequest={currentThread.lastKnownPr}
           provider={currentThread.provider ?? 'codex'}
           recapRevision={threadRecapRevision(
             data ?? [],

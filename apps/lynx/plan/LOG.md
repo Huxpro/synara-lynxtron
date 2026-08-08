@@ -8053,3 +8053,25 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   证据在`shots/2026-08-08/environment-markers-current/`；最终staged bundle
   SHA-256为
   `2703dcbcb017b505a664cd64798007be1c57207313be33c7382401c11f7a5438`。
+
+### Environment Pull Request follow-up
+
+- 当前fork无open PR，故从upstream读取真实open PR并创建可回收detached worktree
+  `/tmp/synara-pr-540`，不修改当前branch。Server对该worktree的
+  `git.pullRequestSnapshot`真实返回PR #540：title、open/non-draft、conflicting、
+  +681/−130/19 files、9 checks（1 failure）、0 unresolved comments。
+- Thread detail投影`lastKnownPr`，Environment只在open PR时渲染。Section包含真实
+  title外链、files外链、conflict row、checks summary/menu和comments summary/menu；
+  checks复用shared summary/status labels及canonical PR/diff/conflict/check icons，
+  popup 288×282、9 rows均274×28。
+- 首轮mounted React Query observer在页面reconnect/并发refresh下出现真实瞬时失败，
+  即使同一RPC脚本成功；按connection reliability要求改成一个serialized host polling
+  loop，initial/retry/60s refresh均不并发。最终真实UI稳定显示`1 failing check`和
+  `No comments`，relay OPEN/attempt1/pending0、transport/rpc error均null。
+- retained frame 1280×820/DPR1，page errors clean，console仅已知初始化warning。
+  checks菜单9项真实name/status全部展示；comments空态不伪造review data。
+- fixture project/thread sequences58/59，canonical delete60/61，active projections0；
+  browser session、临时worktree和local PR ref均清理。focused Environment/recap
+  **2 files / 5 tests**、Web与Native/Desktop production builds通过。证据在
+  `shots/2026-08-08/environment-pr-current/`；最终staged bundle SHA-256为
+  `1ddf803302985813250c1320034e7db6571e9778c96607ed2d32e67329b9aafa`。
