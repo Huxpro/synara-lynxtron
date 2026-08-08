@@ -53,6 +53,7 @@ Concrete success criteria:
 | Focus border optics | Web control and Lynx textarea resolve to foreground/30 in both themes instead of the blue `--ring`; textarea geometry remains `412x94` | PASS |
 | Textarea border ownership | Lynx now mirrors Web's `414x96` bordered control around a borderless `412x94` textarea; focus/blur projects the 30% border onto the outer owner | PASS |
 | Header typography and code anatomy | Lynx title now resolves foreground/600; description resolves muted foreground; inline `codex-theme-v1:` chip matches Web at `116x20`, `2px 4px`, radius 4, code font | PASS |
+| Close icon tone | Generated Lynx X icon now receives the real muted color prop plus Web's 0.8 SVG opacity instead of relying on a dead CSS `color` declaration | PASS |
 | Disabled Import paint | Empty-value submit uses Web's local disabled opacity `0.64` instead of the generic Lynx `0.48`; button geometry remains exact | PASS |
 | Connection provenance | Three-client preflight resolved server instance `bec7ebc4-3a45-4cc3-9f91-bc5aab3f1064`, snapshot 0; relay had no transport/RPC error | PASS |
 | Screenshot dimensions | Web and Lynx retained diagnostic frames were each measured as `1280x820` | PASS |
@@ -269,6 +270,20 @@ unchanged `788.734375,490.25,58.265625x28` button box. In the exact button
 region, changed pixels fell from `86.34%` to `31.83%` in light and `31.72%` in
 dark. Mean max-channel difference fell from `50.18` to `31.54` in light and
 from `46.37` to `28.27` in dark.
+
+## Close icon tone
+
+The close glyph shape and `16x16` box were already exact, but its generated
+SVG ignored the adapter's CSS `color` declaration. `createLynxIcon` resolves
+only its `color` prop before embedding SVG content, so the glyph painted at full
+foreground.
+
+The action now passes `color="var(--muted-foreground)"` and the Web Button SVG
+opacity `0.8` directly to the icon. Runtime SVG content resolves to
+`rgba(13,13,13,.6)` in light and `rgba(252,252,252,.6)` in dark, with outer
+opacity `0.8`. The close crop changed ratio fell from `16.05%` to `0%` in light
+and to `4.94%` in dark; neither final crop has any channel difference above
+16.
 
 ## Residuals and disposition
 

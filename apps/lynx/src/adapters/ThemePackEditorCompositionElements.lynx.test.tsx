@@ -107,6 +107,8 @@ describe('ThemePack boolean interaction contract', () => {
     );
     expect(source).toContain('className="SharedThemePackImportClose"');
     expect(source).toContain('className="SharedThemePackImportCloseIcon"');
+    expect(source).toContain('color="var(--muted-foreground)"');
+    expect(source).toContain('style={{ opacity: 0.8 }}');
     expect(source).toContain(
       'className="SharedThemePackImportScroll" scroll-y'
     );
@@ -122,7 +124,7 @@ describe('ThemePack boolean interaction contract', () => {
       /\.SharedThemePackImportClose\s*\{[^}]*position:\s*absolute;[^}]*right:\s*8px;[^}]*top:\s*8px;[^}]*width:\s*28px;[^}]*height:\s*28px;[^}]*display:\s*flex;[^}]*align-items:\s*center;[^}]*justify-content:\s*center;[^}]*padding:\s*0;[^}]*border-radius:\s*10px;/s
     );
     expect(styles).toMatch(
-      /\.SharedThemePackImportCloseIcon\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;[^}]*color:\s*var\(--muted-foreground\);/s
+      /\.SharedThemePackImportCloseIcon\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;/s
     );
     expect(styles).toMatch(
       /\.SharedThemePackImportScroll\s*\{[^}]*width:\s*100%;[^}]*max-height:\s*100%;/s

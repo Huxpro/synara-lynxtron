@@ -182,7 +182,9 @@ export function ThemePackImportActionElement(props: {
           <DialogClose className="SharedThemePackImportClose">
             <XIcon
               className="SharedThemePackImportCloseIcon"
+              color="var(--muted-foreground)"
               size={16}
+              style={{ opacity: 0.8 }}
               accessibilityLabel="Close"
             />
           </DialogClose>
