@@ -10,6 +10,9 @@ import { resolveWebRelayEndpoint } from './webRelayEndpoint.logic';
 
 const bundleUrl = './main.web.bundle';
 const nodejsAdapterUrl = './nodejs-adapter-web.js';
+const LYNX_WEB_STYLE_RULES = [
+  '.SharedThemePackImportTextarea::part(textarea) { box-sizing: border-box; width: 100%; height: 100%; padding: 0; }',
+];
 const webDocument = globalThis.document;
 webDocument.documentElement.style.width = '100%';
 webDocument.documentElement.style.height = '100%';
@@ -745,6 +748,7 @@ webDocument.body.innerHTML = `
 </lynx-view>`;
 
 const lynxView = webDocument.getElementById('root-view') as any;
+lynxView.injectStyleRules = LYNX_WEB_STYLE_RULES;
 
 publishRelayTransportState = (state) => {
   lynxView.sendGlobalEvent?.(TRANSPORT_STATE_EVENT, [state]);

@@ -148,7 +148,7 @@ describe('ThemePack boolean interaction contract', () => {
       /\.SharedThemePackImportTextareaControl\s*\{[^}]*width:\s*100%;[^}]*height:\s*96px;[^}]*border:\s*1px solid var\(--border\);[^}]*border-radius:\s*10px;[^}]*background-color:\s*transparent;[^}]*overflow:\s*hidden;/s
     );
     expect(styles).toMatch(
-      /\.SharedThemePackImportTextarea\s*\{[^}]*display:\s*block;[^}]*width:\s*100%;[^}]*height:\s*94px;[^}]*margin:\s*0;[^}]*padding:\s*7px 9px;[^}]*border-width:\s*0;[^}]*border-radius:\s*10px;[^}]*font-family:\s*var\(--font-chat-code-family\);[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s
+      /\.SharedThemePackImportTextarea\s*\{[^}]*display:\s*block;[^}]*width:\s*100%;[^}]*height:\s*94px;[^}]*margin:\s*0;[^}]*padding:\s*8px 10px;[^}]*border-width:\s*0;[^}]*border-radius:\s*10px;[^}]*font-family:\s*var\(--font-ui-family\);[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s
     );
     expect(source).toContain(
       'placeholder-color="var(--theme-pack-import-placeholder)"'

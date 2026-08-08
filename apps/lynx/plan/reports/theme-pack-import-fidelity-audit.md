@@ -52,6 +52,7 @@ Concrete success criteria:
 | Placeholder tone | Web and Lynx internal textarea placeholders resolve to foreground/50: light `rgba(13,13,13,.5)`, dark `rgba(252,252,252,.5)` | PASS |
 | Focus border optics | Web control and Lynx textarea resolve to foreground/30 in both themes instead of the blue `--ring`; textarea geometry remains `412x94` | PASS |
 | Textarea border ownership | Lynx now mirrors Web's `414x96` bordered control around a borderless `412x94` textarea; focus/blur projects the 30% border onto the outer owner | PASS |
+| Textarea runtime typography | Native host uses Web's `12px/18px` system UI and `8px 10px` padding; Lynx-for-Web uses official `injectStyleRules` to prevent Web Elements from applying the host padding twice | PASS |
 | Header typography and code anatomy | Lynx title now resolves foreground/600; description resolves muted foreground; inline `codex-theme-v1:` chip matches Web at `116x20`, `2px 4px`, radius 4, code font | PASS |
 | Close icon tone | Generated Lynx X icon now receives the real muted color prop plus Web's 0.8 SVG opacity instead of relying on a dead CSS `color` declaration | PASS |
 | Disabled Import paint | Empty-value submit uses Web's local disabled opacity `0.64` instead of the generic Lynx `0.48`; button geometry remains exact | PASS |
@@ -232,6 +233,24 @@ inner padding `7px 9px`. Native `bindfocus` / `bindblur` project the focused
 class to the outer control. The exact textarea-region changed ratio fell from
 `9.95%` to `9.32%` in light and from `9.96%` to `9.35%` in dark; mean
 max-channel difference fell from `6.57` to `6.07` and from `6.72` to `6.17`.
+
+Runtime inspection also corrected a misleading source-level assumption. Web's
+`font-chat-code text-[11px]` class is attached to the Textarea control wrapper,
+while the inner textarea resolves to `12px/18px`, the system UI stack, and
+`8px 10px` padding. The Lynx host now owns those same values.
+
+Lynx-for-Web's `x-textarea` inherits the host padding into its shadow textarea,
+which otherwise applies the padding twice. The Web host uses LynxView's
+official `injectStyleRules` hook to inject one narrowly scoped
+`.SharedThemePackImportTextarea::part(textarea)` normalization into the
+LynxView shadow root. The Desktop/Lynx bundle does not contain this Web-only
+rule. The final textarea-region changed ratio fell from `6.74%` to `4.99%` in
+light and from `6.77%` to `4.97%` in dark; mean max-channel difference fell
+from `4.19` to `2.39` and from `4.41` to `2.53`.
+
+Artifact inspection confirms the selector is present in `web-host.js`, absent
+from both `dist/desktop/main.js` and `main.lynx.bundle`, and the restored
+default Web bundle contains only the product endpoint `58090`.
 
 ## Header typography
 

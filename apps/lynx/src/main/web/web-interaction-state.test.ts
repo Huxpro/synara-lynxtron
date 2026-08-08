@@ -1,4 +1,5 @@
 import { describe, expect, it } from '@rstest/core';
+import { readFileSync } from 'node:fs';
 
 import { installLynxWebInteractionStateBridge } from './web-interaction-state';
 
@@ -16,6 +17,20 @@ function setup() {
 }
 
 describe('Lynx-for-Web interaction state bridge', () => {
+  it('normalizes the Web Elements textarea shadow part through LynxView injection', () => {
+    const source = readFileSync(
+      new URL('./web-host.ts', import.meta.url),
+      'utf8'
+    );
+
+    expect(source).toContain(
+      "'.SharedThemePackImportTextarea::part(textarea) { box-sizing: border-box; width: 100%; height: 100%; padding: 0; }'"
+    );
+    expect(source).toContain(
+      'lynxView.injectStyleRules = LYNX_WEB_STYLE_RULES'
+    );
+  });
+
   it('maps Lynx focusability to Web tab stops without taking explicit ownership', async () => {
     const { control } = setup();
     expect(control.tabIndex).toBe(0);
