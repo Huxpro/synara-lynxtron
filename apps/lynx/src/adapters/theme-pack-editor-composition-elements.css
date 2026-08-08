@@ -72,6 +72,11 @@
   padding: 0;
   border-radius: 22px;
   overflow: hidden;
+  box-shadow: 0 16px 50px -12px rgba(0, 0, 0, 0.34);
+}
+
+.SliceRoot--theme-dark .LxDialogPopup.SharedThemePackImportDialog {
+  box-shadow: 0 16px 50px -12px rgba(0, 0, 0, 0.7);
 }
 
 .SharedThemePackImportClose {

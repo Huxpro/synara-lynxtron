@@ -46,6 +46,7 @@ Concrete success criteria:
 | Compact breakpoint | Both clients use the bottom sheet through 639px and switch to the centered 448px modal at exactly 640px | PASS |
 | Very-short reachability | Lynx uses a real scroll owner at `320x200`; base max scroll 150 and invalid max scroll 190 expose both actions | PASS — INTENTIONAL CORRECTNESS DELTA |
 | Focus restoration | Shared `DialogTrigger` registers one exact selector; success, Cancel, Close, and Escape all invoke native `setFocus` on dismissal | PASS |
+| Dialog elevation | Light uses 34% and dark uses 70% `0 16px 50px -12px` shadow, matching Web | PASS |
 | Light material | Dialog `rgb(255,255,255)`, ink `rgb(13,13,13)`, 7% semantic border, radius 22 | PASS |
 | Dark material | Dialog `rgb(23,23,23)`, ink `rgb(252,252,252)`, 7% semantic border, radius 22 | PASS |
 | Connection provenance | Three-client preflight resolved server instance `bec7ebc4-3a45-4cc3-9f91-bc5aab3f1064`, snapshot 0; relay had no transport/RPC error | PASS |
@@ -168,6 +169,19 @@ Each path selects the generated `.LxDialogTrigger--N` and invokes
 which dropped Button text and shrank the header action to 18px in the
 Lynx-for-Web runtime; that variant was rejected. The final children-based
 composition preserves the prior exact `56.265625x25` Import geometry and text.
+
+## Elevation
+
+The shared backdrop already matched Web at 60% black, but the Lynx Import popup
+had no elevation. The popup now uses the current Web authority directly:
+
+- light: `0 16px 50px -12px rgba(0,0,0,0.34)`;
+- dark: `0 16px 50px -12px rgba(0,0,0,0.7)`.
+
+Both values were verified from resolved runtime styles after real Appearance
+theme changes. Compact sheets retain the same nominal shadow, as Web does, but
+their bottom/full-width placement clips it naturally; `320x640` geometry
+remains `0,338.5,320x301.5`.
 
 The first Lynx capture measured the dialog at 98% scale because it sampled the
 entrance transition. It was rejected; the stable post-transition frame above
