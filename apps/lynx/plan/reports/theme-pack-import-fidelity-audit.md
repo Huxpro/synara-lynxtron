@@ -49,6 +49,8 @@ Concrete success criteria:
 | Dialog elevation | Light uses 34% and dark uses 70% `0 16px 50px -12px` shadow, matching Web | PASS |
 | Light material | Dialog `rgb(255,255,255)`, ink `rgb(13,13,13)`, 7% semantic border, radius 22 | PASS |
 | Dark material | Dialog `rgb(23,23,23)`, ink `rgb(252,252,252)`, 7% semantic border, radius 22 | PASS |
+| Placeholder tone | Web and Lynx internal textarea placeholders resolve to foreground/50: light `rgba(13,13,13,.5)`, dark `rgba(252,252,252,.5)` | PASS |
+| Focus border optics | Web control and Lynx textarea resolve to foreground/30 in both themes instead of the blue `--ring`; textarea geometry remains `412x94` | PASS |
 | Connection provenance | Three-client preflight resolved server instance `bec7ebc4-3a45-4cc3-9f91-bc5aab3f1064`, snapshot 0; relay had no transport/RPC error | PASS |
 | Screenshot dimensions | Web and Lynx retained diagnostic frames were each measured as `1280x820` | PASS |
 | Focused regression coverage | 3 files / 21 tests pass, including success and parser-error dialog behavior | PASS |
@@ -186,6 +188,36 @@ remains `0,338.5,320x301.5`.
 The first Lynx capture measured the dialog at 98% scale because it sampled the
 entrance transition. It was rejected; the stable post-transition frame above
 is the retained geometry.
+
+## Textarea optics
+
+The remaining focused-state mismatch was inside the Import textarea rather
+than the dialog shell:
+
+- Web renders placeholder text at `foreground/50`; Lynx inherited full-strength
+  foreground because the native `placeholder-color` contract was not supplied.
+- Web focuses the textarea control with `foreground/30`; Lynx used the semantic
+  blue `--ring`.
+
+The Lynx adapter now publishes
+`placeholder-color="var(--theme-pack-import-placeholder)"`. Theme-scoped values
+are attached directly to the `x-textarea` host so the Web Elements shadow
+textarea consumes them through its internal `--placeholder-color` bridge:
+
+- light placeholder `rgba(13,13,13,.5)`;
+- dark placeholder `rgba(252,252,252,.5)`.
+
+Focused borders use matching theme-scoped 30% foreground values. Resolved
+runtime evidence in
+`shots/2026-08-09/theme-pack-import-optics/resolved-optics.json` confirms:
+
+- Web placeholder `foreground/50` and outer control border `foreground/30`;
+- Lynx shadow `<textarea>::placeholder` exact 50% foreground;
+- Lynx focused host border exact 30% foreground;
+- unchanged `434,371.25,412x94` textarea geometry in light and dark;
+- one relay connection, no pending requests, and no transport or RPC errors.
+
+All four retained frames are exactly `1280x820`.
 
 ## Residuals and disposition
 

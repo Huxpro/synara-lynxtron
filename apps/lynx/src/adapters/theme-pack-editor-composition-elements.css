@@ -153,8 +153,20 @@
   line-height: 18px;
 }
 
-.SharedThemePackImportTextarea:focus {
-  border-color: var(--ring);
+.SliceRoot--theme-light .SharedThemePackImportTextarea {
+  --theme-pack-import-placeholder: rgba(13, 13, 13, 0.5);
+}
+
+.SliceRoot--theme-dark .SharedThemePackImportTextarea {
+  --theme-pack-import-placeholder: rgba(252, 252, 252, 0.5);
+}
+
+.SliceRoot--theme-light .SharedThemePackImportTextarea:focus {
+  border-color: rgba(13, 13, 13, 0.3);
+}
+
+.SliceRoot--theme-dark .SharedThemePackImportTextarea:focus {
+  border-color: rgba(252, 252, 252, 0.3);
 }
 
 .SharedThemePackImportError {

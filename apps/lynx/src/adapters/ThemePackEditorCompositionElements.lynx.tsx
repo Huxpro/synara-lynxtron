@@ -204,6 +204,7 @@ export function ThemePackImportActionElement(props: {
                 focusable
                 default-value={value}
                 placeholder='codex-theme-v1:{"codeThemeId":"linear",...}'
+                placeholder-color="var(--theme-pack-import-placeholder)"
                 maxlines={5}
                 bindinput={(event) => {
                   setValue(event.detail.value);

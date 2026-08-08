@@ -1,0 +1,224 @@
+{
+  "cells": [
+    {
+      "kind": "web",
+      "theme": "light",
+      "data": {
+        "rootClass": "",
+        "ta": {
+          "tag": "TEXTAREA",
+          "rect": {
+            "x": 434,
+            "y": 371.25,
+            "width": 412,
+            "height": 94,
+            "top": 371.25,
+            "right": 846,
+            "bottom": 465.25,
+            "left": 434
+          },
+          "attr": null,
+          "color": "rgb(13, 13, 13)",
+          "border": "rgba(13, 13, 13, 0.07)",
+          "placeholder": "oklab(0.159065 0.00000723451 0.00000317395 / 0.5)",
+          "custom": "",
+          "internal": ""
+        },
+        "control": {
+          "tag": "SPAN",
+          "rect": {
+            "x": 433,
+            "y": 370.25,
+            "width": 414,
+            "height": 96,
+            "top": 370.25,
+            "right": 847,
+            "bottom": 466.25,
+            "left": 433
+          },
+          "border": "oklab(0.159065 0.00000723451 0.00000317395 / 0.3)"
+        },
+        "shadowNodes": [],
+        "active": "TEXTAREA"
+      },
+      "errors": []
+    },
+    {
+      "kind": "web",
+      "theme": "dark",
+      "data": {
+        "rootClass": "dark",
+        "ta": {
+          "tag": "TEXTAREA",
+          "rect": {
+            "x": 434,
+            "y": 371.25,
+            "width": 412,
+            "height": 94,
+            "top": 371.25,
+            "right": 846,
+            "bottom": 465.25,
+            "left": 434
+          },
+          "attr": null,
+          "color": "rgb(252, 252, 252)",
+          "border": "rgba(252, 252, 252, 0.07)",
+          "placeholder": "oklab(0.991063 0.0000452101 0.0000197887 / 0.5)",
+          "custom": "",
+          "internal": ""
+        },
+        "control": {
+          "tag": "SPAN",
+          "rect": {
+            "x": 433,
+            "y": 370.25,
+            "width": 414,
+            "height": 96,
+            "top": 370.25,
+            "right": 847,
+            "bottom": 466.25,
+            "left": 433
+          },
+          "border": "oklab(0.991063 0.0000452101 0.0000197887 / 0.3)"
+        },
+        "shadowNodes": [],
+        "active": "TEXTAREA"
+      },
+      "errors": []
+    },
+    {
+      "kind": "lynx",
+      "theme": "light",
+      "data": {
+        "tag": "X-TEXTAREA",
+        "rect": {
+          "x": 434,
+          "y": 371.25,
+          "width": 412,
+          "height": 94,
+          "top": 371.25,
+          "right": 846,
+          "bottom": 465.25,
+          "left": 434
+        },
+        "attr": "var(--theme-pack-import-placeholder)",
+        "color": "rgb(13, 13, 13)",
+        "border": "rgba(13, 13, 13, 0.3)",
+        "placeholder": "rgb(13, 13, 13)",
+        "custom": "hsla(0,0%,5%,.5)",
+        "internalVar": "",
+        "internal": [
+          {
+            "tag": "STYLE",
+            "cls": "",
+            "color": "rgb(13, 13, 13)",
+            "display": "none",
+            "text": "\n  #textarea:focus,\n  #textarea:focus-visible {\n    border: inherit;\n    outline: inherit;\n  }\n",
+            "placeholder": "rgb(13, 13, 13)"
+          },
+          {
+            "tag": "FORM",
+            "cls": "",
+            "color": "rgb(13, 13, 13)",
+            "display": "contents",
+            "text": "\n  \n",
+            "placeholder": "rgb(13, 13, 13)"
+          }
+        ],
+        "active": true
+      },
+      "root": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up",
+      "diag": {
+        "configuredBaseUrl": "ws://127.0.0.1:58161",
+        "activeBaseUrl": "ws://127.0.0.1:58161",
+        "readyBaseUrl": null,
+        "socketState": 1,
+        "connectionAttempts": 1,
+        "pendingRequests": 0,
+        "recentRpcTags": [
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "server.getSettings",
+          "server.getConfig"
+        ],
+        "rendererReadyRoute": "/settings/appearance",
+        "lastTransportError": null,
+        "lastRpcError": null
+      },
+      "errors": []
+    },
+    {
+      "kind": "lynx",
+      "theme": "dark",
+      "data": {
+        "tag": "X-TEXTAREA",
+        "rect": {
+          "x": 434,
+          "y": 371.25,
+          "width": 412,
+          "height": 94,
+          "top": 371.25,
+          "right": 846,
+          "bottom": 465.25,
+          "left": 434
+        },
+        "attr": "var(--theme-pack-import-placeholder)",
+        "color": "rgb(252, 252, 252)",
+        "border": "rgba(252, 252, 252, 0.3)",
+        "placeholder": "rgb(252, 252, 252)",
+        "custom": "hsla(0,0%,99%,.5)",
+        "internalVar": "",
+        "internal": [
+          {
+            "tag": "STYLE",
+            "cls": "",
+            "color": "rgb(252, 252, 252)",
+            "display": "none",
+            "text": "\n  #textarea:focus,\n  #textarea:focus-visible {\n    border: inherit;\n    outline: inherit;\n  }\n",
+            "placeholder": "rgb(252, 252, 252)"
+          },
+          {
+            "tag": "FORM",
+            "cls": "",
+            "color": "rgb(252, 252, 252)",
+            "display": "contents",
+            "text": "\n  \n",
+            "placeholder": "rgb(252, 252, 252)"
+          }
+        ],
+        "active": true
+      },
+      "root": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up",
+      "diag": {
+        "configuredBaseUrl": "ws://127.0.0.1:58161",
+        "activeBaseUrl": "ws://127.0.0.1:58161",
+        "readyBaseUrl": null,
+        "socketState": 1,
+        "connectionAttempts": 1,
+        "pendingRequests": 0,
+        "recentRpcTags": [
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "server.getSettings",
+          "server.getConfig"
+        ],
+        "rendererReadyRoute": "/settings/appearance",
+        "lastTransportError": null,
+        "lastRpcError": null
+      },
+      "errors": []
+    }
+  ],
+  "lynxInternalPlaceholder": {
+    "light": {
+      "placeholder": "rgba(13, 13, 13, 0.5)",
+      "custom": "hsla(0,0%,5%,.5)",
+      "inline": "--placeholder-color: var(--theme-pack-import-placeholder) !important;"
+    },
+    "dark": {
+      "placeholder": "rgba(252, 252, 252, 0.5)",
+      "custom": "hsla(0,0%,99%,.5)",
+      "inline": "--placeholder-color: var(--theme-pack-import-placeholder) !important;"
+    }
+  }
+}

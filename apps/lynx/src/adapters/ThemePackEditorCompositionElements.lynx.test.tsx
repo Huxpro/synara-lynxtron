@@ -139,6 +139,24 @@ describe('ThemePack boolean interaction contract', () => {
     expect(styles).toMatch(
       /\.SharedThemePackImportTextarea\s*\{[^}]*display:\s*block;[^}]*width:\s*calc\(100% - 2px\);[^}]*height:\s*94px;[^}]*margin:\s*1px;[^}]*padding:\s*8px 10px;[^}]*border-radius:\s*10px;[^}]*font-family:\s*var\(--font-chat-code-family\);[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s
     );
+    expect(source).toContain(
+      'placeholder-color="var(--theme-pack-import-placeholder)"'
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--theme-light \.SharedThemePackImportTextarea\s*\{[^}]*--theme-pack-import-placeholder:\s*rgba\(13,\s*13,\s*13,\s*0\.5\);/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--theme-dark \.SharedThemePackImportTextarea\s*\{[^}]*--theme-pack-import-placeholder:\s*rgba\(252,\s*252,\s*252,\s*0\.5\);/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--theme-light \.SharedThemePackImportTextarea:focus\s*\{[^}]*border-color:\s*rgba\(13,\s*13,\s*13,\s*0\.3\);/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--theme-dark \.SharedThemePackImportTextarea:focus\s*\{[^}]*border-color:\s*rgba\(252,\s*252,\s*252,\s*0\.3\);/s
+    );
+    expect(styles).not.toMatch(
+      /\.SharedThemePackImportTextarea:focus\s*\{[^}]*var\(--ring\)/s
+    );
     expect(styles).toMatch(
       /\.SharedThemePackImportCancel\s*\{[^}]*width:\s*59\.65625px;/s
     );
