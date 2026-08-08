@@ -190,9 +190,12 @@ export function ThemePackImportActionElement(props: {
                 Import {props.variant} theme
               </text>
               <text className="SharedThemePackImportDescription">
-                Paste a codex-theme-v1: share string. The embedded variant must
-                match {props.variant}, and the selected code theme must exist
-                for that variant.
+                Paste a{' '}
+                <text className="SharedThemePackImportCode">
+                  codex-theme-v1:
+                </text>{' '}
+                share string. The embedded variant must match {props.variant},
+                and the selected code theme must exist for that variant.
               </text>
             </DialogHeader>
             <DialogPanel className="SharedThemePackImportPanel">

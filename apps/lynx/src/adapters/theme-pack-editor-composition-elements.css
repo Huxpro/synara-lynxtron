@@ -118,7 +118,9 @@
 .SharedThemePackImportTitle {
   display: block;
   height: 22.5px;
+  color: var(--foreground);
   font-size: 18px;
+  font-weight: 600;
   line-height: 22.5px;
 }
 
@@ -126,8 +128,16 @@
   display: block;
   min-height: 32px;
   margin-top: 0;
+  color: var(--muted-foreground);
   font-size: 12px;
   line-height: 16px;
+}
+
+.SharedThemePackImportCode {
+  padding: 2px 4px;
+  border-radius: 4px;
+  background-color: var(--muted);
+  font-family: var(--font-chat-code-family);
 }
 
 .SharedThemePackImportPanel {

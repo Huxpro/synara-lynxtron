@@ -131,10 +131,16 @@ describe('ThemePack boolean interaction contract', () => {
       /\.SharedThemePackImportHeader,\s*\.SharedThemePackImportPanel,\s*\.SharedThemePackImportFooter\s*\{[^}]*flex-shrink:\s*0;/s
     );
     expect(styles).toMatch(
-      /\.SharedThemePackImportTitle\s*\{[^}]*display:\s*block;[^}]*height:\s*22\.5px;[^}]*font-size:\s*18px;[^}]*line-height:\s*22\.5px;/s
+      /\.SharedThemePackImportTitle\s*\{[^}]*display:\s*block;[^}]*height:\s*22\.5px;[^}]*color:\s*var\(--foreground\);[^}]*font-size:\s*18px;[^}]*font-weight:\s*600;[^}]*line-height:\s*22\.5px;/s
     );
     expect(styles).toMatch(
-      /\.SharedThemePackImportDescription\s*\{[^}]*display:\s*block;[^}]*min-height:\s*32px;[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s
+      /\.SharedThemePackImportDescription\s*\{[^}]*display:\s*block;[^}]*min-height:\s*32px;[^}]*color:\s*var\(--muted-foreground\);[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s
+    );
+    expect(source).toContain(
+      '<text className="SharedThemePackImportCode">'
+    );
+    expect(styles).toMatch(
+      /\.SharedThemePackImportCode\s*\{[^}]*padding:\s*2px 4px;[^}]*border-radius:\s*4px;[^}]*background-color:\s*var\(--muted\);[^}]*font-family:\s*var\(--font-chat-code-family\);/s
     );
     expect(styles).toMatch(
       /\.SharedThemePackImportTextarea\s*\{[^}]*display:\s*block;[^}]*width:\s*calc\(100% - 2px\);[^}]*height:\s*94px;[^}]*margin:\s*1px;[^}]*padding:\s*8px 10px;[^}]*border-radius:\s*10px;[^}]*font-family:\s*var\(--font-chat-code-family\);[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s

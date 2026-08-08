@@ -51,6 +51,7 @@ Concrete success criteria:
 | Dark material | Dialog `rgb(23,23,23)`, ink `rgb(252,252,252)`, 7% semantic border, radius 22 | PASS |
 | Placeholder tone | Web and Lynx internal textarea placeholders resolve to foreground/50: light `rgba(13,13,13,.5)`, dark `rgba(252,252,252,.5)` | PASS |
 | Focus border optics | Web control and Lynx textarea resolve to foreground/30 in both themes instead of the blue `--ring`; textarea geometry remains `412x94` | PASS |
+| Header typography and code anatomy | Lynx title now resolves foreground/600; description resolves muted foreground; inline `codex-theme-v1:` chip matches Web at `116x20`, `2px 4px`, radius 4, code font | PASS |
 | Connection provenance | Three-client preflight resolved server instance `bec7ebc4-3a45-4cc3-9f91-bc5aab3f1064`, snapshot 0; relay had no transport/RPC error | PASS |
 | Screenshot dimensions | Web and Lynx retained diagnostic frames were each measured as `1280x820` | PASS |
 | Focused regression coverage | 3 files / 21 tests pass, including success and parser-error dialog behavior | PASS |
@@ -218,6 +219,33 @@ runtime evidence in
 - one relay connection, no pending requests, and no transport or RPC errors.
 
 All four retained frames are exactly `1280x820`.
+
+## Header typography
+
+A pixel-region audit after the textarea fix found the next high-signal
+residual in the dialog header. The Lynx adapter used raw `<text>` nodes instead
+of `DialogTitle` / Web paragraph primitives, but had not re-declared their
+typography:
+
+- the title painted with the engine default black and no explicit semibold
+  weight;
+- the description inherited full-strength foreground instead of muted
+  foreground;
+- `codex-theme-v1:` was plain text instead of Web's inline code chip.
+
+The adapter now owns the equivalent source-level contract:
+
+- title `foreground`, `18px/22.5px`, weight `600`;
+- description `muted-foreground`, `12px/16px`;
+- nested inline code text with `2px 4px` padding, radius `4px`, `--muted`
+  background, and the shared code font.
+
+The final code chip is exact at `477.734375,332.25,116x20`; dialog, description,
+and textarea geometry remain unchanged. Stable region comparison reduced the
+full header mean max-channel difference from `18.86` to `6.87` in light mode
+and from `13.03` to `8.02` in dark mode. Title-only light difference fell from
+`18.85` to `1.93`. The remaining pixels are dominated by cross-engine text
+rasterization rather than an uncovered token or geometry owner.
 
 ## Residuals and disposition
 
