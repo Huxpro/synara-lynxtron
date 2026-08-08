@@ -97,10 +97,13 @@ describe('desktop titlebar controls', () => {
     );
     expect(routerSource).toContain("sidebarOpen ? 'open' : 'closed'");
     expect(appStyles).toMatch(
-      /\.SliceRoot--viewport-md-up \.AppMain--sidebar-open,\s*\.SliceRoot--viewport-md-up \.SettingsPage--sidebar-open\s*\{[^}]*border-top-left-radius:\s*14\.4px;[^}]*border-bottom-left-radius:\s*14\.4px;[^}]*box-shadow:\s*inset 1px 0 0 rgba\(0,\s*0,\s*0,\s*0\.08\),\s*-6\.5px 0 12px -10px rgba\(0,\s*0,\s*0,\s*0\.1\);[^}]*overflow:\s*hidden;/s
+      /\.SliceRoot--viewport-md-up \.AppMain--sidebar-open\s*\{[^}]*border-top-left-radius:\s*14\.4px;[^}]*border-bottom-left-radius:\s*14\.4px;[^}]*box-shadow:\s*inset 1px 0 0 rgba\(0,\s*0,\s*0,\s*0\.08\),\s*-6\.5px 0 12px -10px rgba\(0,\s*0,\s*0,\s*0\.1\);[^}]*overflow:\s*hidden;/s
     );
     expect(appStyles).toMatch(
-      /\.SliceRoot--theme-dark\.SliceRoot--viewport-md-up \.AppMain--sidebar-open,\s*\.SliceRoot--theme-dark\.SliceRoot--viewport-md-up \.SettingsPage--sidebar-open\s*\{[^}]*box-shadow:\s*inset 1px 0 0 rgba\(255,\s*255,\s*255,\s*0\.03\),\s*-6\.5px 0 12px -10px rgba\(0,\s*0,\s*0,\s*0\.36\);/s
+      /\.SliceRoot--theme-dark\.SliceRoot--viewport-md-up \.AppMain--sidebar-open\s*\{[^}]*box-shadow:\s*inset 1px 0 0 rgba\(255,\s*255,\s*255,\s*0\.03\),\s*-6\.5px 0 12px -10px rgba\(0,\s*0,\s*0,\s*0\.36\);/s
+    );
+    expect(appStyles).not.toMatch(
+      /\.SettingsPage--sidebar-open\s*\{[^}]*(?:border-radius|box-shadow):/s
     );
   });
 
