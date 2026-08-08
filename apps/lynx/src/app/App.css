@@ -934,7 +934,7 @@
   min-height: 100%;
   width: 100%;
   flex-direction: column;
-  padding: 6px;
+  padding: 8px 6px 6px;
 }
 
 .SettingsContent {

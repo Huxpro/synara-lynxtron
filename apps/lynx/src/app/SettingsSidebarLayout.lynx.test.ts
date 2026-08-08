@@ -20,7 +20,7 @@ describe('Lynx Settings sidebar layout', () => {
     }
   });
 
-  it('keeps the titlebar separate from the Web-owned six pixel navigation gutter', () => {
+  it('keeps the titlebar separate from the Web-owned navigation gutter', () => {
     const styles = readFileSync(new URL('./App.css', import.meta.url), 'utf8');
     const webSidebar = readFileSync(
       new URL(
@@ -38,7 +38,7 @@ describe('Lynx Settings sidebar layout', () => {
       /\.SettingsSidebarBody\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;[^}]*width:\s*100%;/s
     );
     expect(styles).toMatch(
-      /\.SettingsSidebarBodyInner\s*\{[^}]*min-height:\s*100%;[^}]*padding:\s*6px;/s
+      /\.SettingsSidebarBodyInner\s*\{[^}]*min-height:\s*100%;[^}]*padding:\s*8px 6px 6px;/s
     );
   });
 
