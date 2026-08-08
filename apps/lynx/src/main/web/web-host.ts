@@ -45,11 +45,18 @@ interface RpcExit {
     | { readonly _tag: 'Failure'; readonly cause?: unknown };
 }
 
+interface RpcChunk {
+  readonly _tag: 'Chunk';
+  readonly requestId: string;
+  readonly values: readonly unknown[];
+}
+
 interface PendingRelayRequest {
   readonly tag: string;
   readonly resolve: (value: unknown) => void;
   readonly reject: (error: Error) => void;
-  readonly timer: ReturnType<typeof setTimeout>;
+  readonly timer: ReturnType<typeof setTimeout> | null;
+  readonly chunks?: unknown[];
 }
 
 class SynaraRpcResponseError extends Error {
@@ -201,10 +208,10 @@ function connectWithPath(baseUrl: string, path: string): Promise<WebSocket> {
   });
 }
 
-function parseExit(data: unknown): RpcExit | null {
+function parseResponse(data: unknown): RpcExit | RpcChunk | null {
   try {
-    const parsed = JSON.parse(String(data)) as RpcExit;
-    return parsed?._tag === 'Exit' ? parsed : null;
+    const parsed = JSON.parse(String(data)) as RpcExit | RpcChunk;
+    return parsed?._tag === 'Exit' || parsed?._tag === 'Chunk' ? parsed : null;
   } catch {
     return null;
   }
@@ -223,8 +230,8 @@ async function negotiate(baseUrl: string): Promise<{
         reject(new Error('Synara bootstrap negotiation timed out'));
       }, SOCKET_OPEN_TIMEOUT_MS);
       socket.onmessage = (event) => {
-        const message = parseExit(event.data);
-        if (!message || message.requestId !== id) return;
+        const message = parseResponse(event.data);
+        if (!message || message._tag !== 'Exit' || message.requestId !== id) return;
         clearTimeout(timer);
         if (message.exit._tag === 'Success') {
           resolve(
@@ -271,7 +278,7 @@ async function negotiate(baseUrl: string): Promise<{
 
 function rejectPendingRequests(error: Error): void {
   for (const pending of relayPending.values()) {
-    clearTimeout(pending.timer);
+    if (pending.timer !== null) clearTimeout(pending.timer);
     pending.reject(error);
   }
   relayPending.clear();
@@ -301,15 +308,35 @@ async function openFeatureSocket(baseUrl: string): Promise<WebSocket> {
   });
   const socket = await connectWithPath(baseUrl, `/ws?${query}`);
   socket.onmessage = (event) => {
-    const message = parseExit(event.data);
+    const message = parseResponse(event.data);
     if (!message) return;
     const pending = relayPending.get(message.requestId);
     if (!pending) return;
+    if (message._tag === 'Chunk') {
+      pending.chunks?.push(...message.values);
+      try {
+        socket.send(
+          JSON.stringify({
+            _tag: 'Ack',
+            requestId: message.requestId,
+          })
+        );
+      } catch (error) {
+        const transportError = new Error(
+          `Synara RPC ${pending.tag} acknowledgement failed: ${describeError(
+            error
+          )}`
+        );
+        relayLastTransportError = transportError.message;
+        invalidateRelaySocket(socket, baseUrl, transportError);
+      }
+      return;
+    }
     relayPending.delete(message.requestId);
-    clearTimeout(pending.timer);
+    if (pending.timer !== null) clearTimeout(pending.timer);
     if (message.exit._tag === 'Success') {
       relayLastRpcError = null;
-      pending.resolve(message.exit.value);
+      pending.resolve(pending.chunks ?? message.exit.value);
       return;
     }
     const error = new SynaraRpcResponseError(
@@ -401,7 +428,8 @@ async function ensureRelaySocket(baseUrl: string): Promise<WebSocket> {
 async function synaraRpc(
   baseUrlValue: unknown,
   tagValue: unknown,
-  payload: unknown
+  payload: unknown,
+  stream = false
 ): Promise<unknown> {
   const baseUrl = normalizeSynaraWsUrl(
     resolveWebRelayEndpoint(
@@ -415,15 +443,23 @@ async function synaraRpc(
   const socket = await ensureRelaySocket(baseUrl);
   const id = String(++relaySequence);
   return new Promise((resolve, reject) => {
-    const timer = setTimeout(() => {
-      relayPending.delete(id);
-      const error = new Error(
-        `Synara RPC ${tag} timed out after ${RPC_REQUEST_TIMEOUT_MS}ms`
-      );
-      reject(error);
-      invalidateRelaySocket(socket, baseUrl, error);
-    }, RPC_REQUEST_TIMEOUT_MS);
-    relayPending.set(id, { tag, resolve, reject, timer });
+    const timer = stream
+      ? undefined
+      : setTimeout(() => {
+          relayPending.delete(id);
+          const error = new Error(
+            `Synara RPC ${tag} timed out after ${RPC_REQUEST_TIMEOUT_MS}ms`
+          );
+          reject(error);
+          invalidateRelaySocket(socket, baseUrl, error);
+        }, RPC_REQUEST_TIMEOUT_MS);
+    relayPending.set(id, {
+      tag,
+      resolve,
+      reject,
+      timer: timer ?? null,
+      ...(stream ? { chunks: [] } : {}),
+    });
     try {
       socket.send(
         JSON.stringify({ _tag: 'Request', id, tag, payload, headers: [] })
@@ -533,6 +569,9 @@ async function handleBridgeCall(
   try {
     if (method === 'synaraRpc') {
       return await synaraRpc(params.baseUrl, params.tag, params.payload);
+    }
+    if (method === 'synaraRpcStream') {
+      return await synaraRpc(params.baseUrl, params.tag, params.payload, true);
     }
     if (method === 'timerSleep') {
       const milliseconds = Number(params.milliseconds ?? 0);
@@ -668,7 +707,7 @@ async function handleBridgeCall(
       relayLastRpcError = describeError(error);
     } else {
       relayLastTransportError = describeError(error);
-      if (method === 'synaraRpc') {
+      if (method === 'synaraRpc' || method === 'synaraRpcStream') {
         startRelayRecovery(configuredRelayBaseUrl());
       }
     }

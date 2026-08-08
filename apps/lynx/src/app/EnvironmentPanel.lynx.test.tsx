@@ -56,6 +56,13 @@ describe('Lynx Environment panel', () => {
     expect(panelSource).toContain('await checkoutGitBranch({ cwd: props.workspaceRoot, branch })');
     expect(panelSource).toContain("type: 'thread.meta.update'");
     expect(panelSource).toContain('Switch branches from the worktree environment controls.');
+    expect(panelSource).toContain('resolveQuickAction(');
+    expect(panelSource).toContain('requiresDefaultBranchConfirmation(');
+    expect(panelSource).toContain('resolveDefaultBranchActionDialogCopy({');
+    expect(panelSource).toContain('await runGitStackedAction({');
+    expect(panelSource).toContain('await dialogs.confirm(');
+    expect(panelSource).toContain('<Dialog open={dialogOpen}');
+    expect(panelSource).toContain('Commit message (optional)');
     expect(panelSource).not.toContain('EnvironmentChangesPopup');
     expect(panelSource).not.toContain('EnvironmentChangesFilePath');
     expect(panelSource).toContain('stopLocalServer({');
@@ -186,6 +193,12 @@ describe('Lynx Environment panel', () => {
       /\.LxMenuPopup\.EnvironmentBranchPopup\s*\{[^}]*width:\s*224px;[^}]*max-height:\s*320px;[^}]*padding:\s*4px;/s
     );
     expect(styles).toMatch(
+      /\.LxDialogPopup\.EnvironmentGitActionDialog\s*\{[^}]*width:\s*min\(520px,\s*calc\(100vw - 32px\)\);[^}]*border-radius:\s*18px;/s
+    );
+    expect(styles).toMatch(
+      /\.EnvironmentGitActionMessage\s*\{[^}]*min-height:\s*72px;[^}]*border-radius:\s*10px;[^}]*background-color:\s*transparent;[^}]*color:\s*var\(--foreground\);/s
+    );
+    expect(styles).toMatch(
       /\.EnvironmentLocalServerStop\s*\{[^}]*width:\s*24px;[^}]*height:\s*24px;[^}]*padding:\s*0;/s
     );
     expect(styles).toMatch(
@@ -234,6 +247,7 @@ describe('Lynx Environment panel', () => {
     const orderedSections = [
       '<EnvironmentChanges',
       '<EnvironmentBranch',
+      '<EnvironmentGitAction',
       '<EnvironmentLocalServers',
       '<EnvironmentSectionLabel>Usage',
       '<EnvironmentRepository',

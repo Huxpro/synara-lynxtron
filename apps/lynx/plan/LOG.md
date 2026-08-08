@@ -8211,3 +8211,35 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   production builds均通过；最终Web/Native bundle SHA-256分别为
   `9d1e6232339e64bba105aaa8f6b7a15fb1863ec0966da430c987591e8cd83c8f`和
   `684495863547daf9d886aba21e886a29a74e46c85efb0c8c3056674b7d1b7932`。
+
+### Environment Git quick action
+
+- Web authority中的`Commit and Push`不是普通按钮：它依赖共享Git状态决策、default
+  branch确认、changed-file review、stream progress/result与失败恢复。没有直接把
+  `git.runStackedAction`接到row上；Lynx复用
+  `resolveQuickAction`、`requiresDefaultBranchConfirmation`、
+  `resolveDefaultBranchActionDialogCopy`和`summarizeGitResult`。
+- 补齐Effect RPC stream wire：`Chunk.values`按序投递，每个Chunk发送
+  `Ack { requestId }`解除server backpressure，最终`Exit`settle；Native manager与
+  Lynx-for-Web relay共用相同语义。缺ACK的首轮真实probe只收到第一chunk并保持
+  pending，Git未变；补ACK后focused transport/Environment suites **4 files / 18
+  tests**通过。
+- 隔离`/tmp/synara-git-action-fixture`使用`feature/fidelity`、dirty
+  `action.txt`且没有任何remote。共享resolver真实显示`Commit`而不是误导性的
+  `Commit and Push`；rendered dialog输入`Verify Lynx git action`并执行后，Git HEAD
+  为`71d4d7a838af1bfaa3d28c86e635e9f8ed8ee115`、subject精确匹配、working tree
+  clean、remote列表为空，relay OPEN/attempt1/pending0/error null。
+- 第二个未提交edit只用于paired主题证据；light/dark均为900×650，row/dialog几何
+  不变，summary/file/message surfaces通过`--secondary`/`--background`/`--border`/
+  `--foreground`自动切换，page errors0。证据在
+  `shots/2026-08-08/environment-git-action-current/`。
+- fixture canonical delete sequences93/94，snapshot94 active threads0；named browser
+  session和临时repo均清理。完整Web advanced Git menu（file exclusion、commit on
+  new branch、pull、显式push/PR rows与live phase UI）仍明确是后续slice，不用本次
+  quick-action成功冒充全功能完成。stream RPC显式不使用普通60s client timeout，
+  允许长pre-commit hooks；ACK发送失败会原子reject并触发socket recovery。focused
+  **4 files / 18 tests**、三端connection
+  preflight snapshot94、Web与Native/Desktop production builds均通过；最终
+  Web/Native bundle SHA-256分别为
+  `b320b0e97ac3ce9fbaf5fb96e58938fa9468b5b301e4f8b53127d6407b97fd8c`和
+  `a3414ac088321a190ed4e875b80c929b0ac40ee6ebb8ee14f80221c7ef428486`。

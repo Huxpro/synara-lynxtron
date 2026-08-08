@@ -24,11 +24,18 @@ interface RpcExit {
     | { readonly _tag: 'Failure'; readonly cause?: unknown };
 }
 
+interface RpcChunk {
+  readonly _tag: 'Chunk';
+  readonly requestId: string;
+  readonly values: readonly unknown[];
+}
+
 interface PendingRpc {
   readonly tag: string;
   readonly cancelTimeout: () => void;
   readonly resolve: (value: unknown) => void;
   readonly reject: (error: Error) => void;
+  readonly onChunk?: (value: unknown) => void;
 }
 
 interface RpcSocketContext {
@@ -276,7 +283,9 @@ export function createRpcSocketManager(input: {
   const requestOnSocket = <A,>(
     socket: RpcTransportSocket,
     tag: string,
-    payload: unknown
+    payload: unknown,
+    onChunk?: (value: unknown) => void,
+    timeoutMs: number | null = input.requestTimeoutMs
   ): Promise<A> => {
     const context = contextFor(socket);
     if (context.failed) {
@@ -294,18 +303,22 @@ export function createRpcSocketManager(input: {
         context.pending.clear();
         invalidate(socket, error);
       };
-      const cancelTimeout = input.startTimeout(input.requestTimeoutMs, () => {
-        failTransport(
-          new RpcTransportError(
-            `Synara RPC ${tag} timed out after ${input.requestTimeoutMs}ms`
-          )
-        );
-      });
+      const cancelTimeout =
+        timeoutMs === null
+          ? () => undefined
+          : input.startTimeout(timeoutMs, () => {
+              failTransport(
+                new RpcTransportError(
+                  `Synara RPC ${tag} timed out after ${timeoutMs}ms`
+                )
+              );
+            });
       context.pending.set(id, {
         tag,
         cancelTimeout,
         resolve: (value) => resolve(value as A),
         reject,
+        ...(onChunk ? { onChunk } : {}),
       });
       try {
         socket.send(
@@ -330,16 +343,41 @@ export function createRpcSocketManager(input: {
   const attachResponseListener = (socket: RpcTransportSocket) => {
     socket.addEventListener('message', (event: { data?: unknown }) => {
       if (typeof event.data !== 'string') return;
-      let response: RpcExit;
+      let response: RpcExit | RpcChunk;
       try {
-        response = JSON.parse(event.data) as RpcExit;
+        response = JSON.parse(event.data) as RpcExit | RpcChunk;
       } catch {
         return;
       }
-      if (response._tag !== 'Exit') return;
       const context = contexts.get(socket);
       const pending = context?.pending.get(response.requestId);
       if (!pending) return;
+      if (response._tag === 'Chunk') {
+        for (const value of response.values) pending.onChunk?.(value);
+        try {
+          socket.send(
+            JSON.stringify({
+              _tag: 'Ack',
+              requestId: response.requestId,
+            })
+          );
+        } catch (error) {
+          const transportError = new RpcTransportError(
+            `Synara RPC ${pending.tag} acknowledgement failed: ${describeError(
+              error
+            )}`
+          );
+          context!.failed = true;
+          for (const request of context!.pending.values()) {
+            request.cancelTimeout();
+            request.reject(transportError);
+          }
+          context!.pending.clear();
+          invalidate(socket, transportError);
+        }
+        return;
+      }
+      if (response._tag !== 'Exit') return;
       context?.pending.delete(response.requestId);
       pending.cancelTimeout();
       if (response.exit._tag === 'Success') {
@@ -379,6 +417,21 @@ export function createRpcSocketManager(input: {
       const socket = await getSocket();
       ensureResponseListener(socket);
       return requestOnSocket<A>(socket, tag, payload);
+    },
+    async requestStream<A>(
+      tag: string,
+      payload: unknown,
+      onChunk: (value: A) => void
+    ): Promise<void> {
+      const socket = await getSocket();
+      ensureResponseListener(socket);
+      await requestOnSocket<void>(
+        socket,
+        tag,
+        payload,
+        (value) => onChunk(value as A),
+        null
+      );
     },
     getState(): RpcTransportState {
       return state;

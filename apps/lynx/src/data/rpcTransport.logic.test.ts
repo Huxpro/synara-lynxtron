@@ -31,7 +31,7 @@ class FakeSocket implements RpcTransportSocket {
   }
 
   succeedLast(value: unknown): void {
-    const request = JSON.parse(this.sent.at(-1) ?? '{}') as { id?: string };
+    const request = this.lastRequest();
     this.emit('message', {
       data: JSON.stringify({
         _tag: 'Exit',
@@ -39,6 +39,25 @@ class FakeSocket implements RpcTransportSocket {
         exit: { _tag: 'Success', value },
       }),
     });
+  }
+
+  chunkLast(...values: unknown[]): void {
+    const request = this.lastRequest();
+    this.emit('message', {
+      data: JSON.stringify({
+        _tag: 'Chunk',
+        requestId: request.id,
+        values,
+      }),
+    });
+  }
+
+  private lastRequest(): { id?: string } {
+    for (const frame of this.sent.toReversed()) {
+      const parsed = JSON.parse(frame) as { _tag?: string; id?: string };
+      if (parsed._tag === 'Request') return parsed;
+    }
+    return {};
   }
 }
 
@@ -55,6 +74,9 @@ function controlledTimeouts() {
   };
   return {
     startTimeout,
+    get size() {
+      return callbacks.length;
+    },
     fireNext() {
       callbacks.shift()?.();
     },
@@ -272,5 +294,35 @@ describe('rpc transport manager', () => {
     await expect(pending).resolves.toEqual({ ok: true });
     expect(socket.closed).toBe(true);
     expect(manager.getState()).toBe('idle');
+  });
+
+  it('delivers stream chunks in order and settles on the final exit', async () => {
+    const socket = new FakeSocket();
+    const { manager, timeouts } = managerFor({
+      connect: async () => socket,
+      closeWhenIdle: true,
+    });
+    const chunks: unknown[] = [];
+    const pending = manager.requestStream(
+      'git.runStackedAction',
+      { action: 'commit' },
+      (value) => chunks.push(value)
+    );
+    await flushUntil(() => socket.sent.length === 1);
+    expect(timeouts.size).toBe(0);
+    socket.chunkLast({ kind: 'action_started' }, { kind: 'phase_started' });
+    expect(JSON.parse(socket.sent.at(-1) ?? '{}')).toEqual({
+      _tag: 'Ack',
+      requestId: '1',
+    });
+    socket.chunkLast({ kind: 'action_finished', result: { action: 'commit' } });
+    expect(chunks).toEqual([
+      { kind: 'action_started' },
+      { kind: 'phase_started' },
+      { kind: 'action_finished', result: { action: 'commit' } },
+    ]);
+    socket.succeedLast(undefined);
+    await expect(pending).resolves.toBeUndefined();
+    expect(socket.closed).toBe(true);
   });
 });

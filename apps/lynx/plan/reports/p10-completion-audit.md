@@ -267,6 +267,7 @@ Current responsive disposition:
 | Sidebar top material | ordinary and Settings sidebars share the calibrated 1px light/dark inset highlight | PASS |
 | Dark shell base fill | Electron vibrancy RGB 6–7 versus Native canonical opaque #101010/#111111 | INTENTIONAL HOST MATERIAL DELTA |
 | Environment | reachable current-head consumer; paired light/dark Browser geometry/material proof at 900x650 | PASS IN BROWSER; NATIVE CURRENT-HEAD SCREENCAST NOT CERTIFIED |
+| Environment Git quick action | shared Web decision logic, streamed commit mutation, default-branch confirmation, and paired light/dark dialog evidence | PASS FOR QUICK ACTION; ADVANCED GIT MENU REMAINS PARTIAL |
 | Diff/browser docks, selection actions | working-tree Diff Dock is reachable and keeps its Web split contract; Browser/explorer and selection-action consumers remain absent | PARTIAL PRODUCT/PLATFORM KERNEL |
 | Current-head full three-client route/theme/size/state matrix | historical P10 matrix predates later product commits | NOT RE-CERTIFIED |
 

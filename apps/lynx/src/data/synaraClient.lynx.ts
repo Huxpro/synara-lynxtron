@@ -8,6 +8,9 @@ import type {
   GitPullRequestSnapshotResult,
   GitReadWorkingTreeDiffResult,
   GitListBranchesResult,
+  GitActionProgressEvent,
+  GitRunStackedActionInput,
+  GitRunStackedActionResult,
   GitStatusResult,
   ModelSelection,
   OrchestrationImportThreadInput,
@@ -298,13 +301,14 @@ interface RelayBridgeError extends Error {
 }
 
 function relayBridgeRequest<A>(
+  method: 'synaraRpc' | 'synaraRpcStream',
   tag: string,
   payload: unknown
 ): Promise<A> {
   return new Promise((resolve, reject) => {
     try {
       NativeModules.bridge.call(
-        'synaraRpc',
+        method,
         {
           tag,
           payload,
@@ -346,7 +350,34 @@ async function relayRequest<A>(tag: string, payload: unknown): Promise<A> {
   }
 
   try {
-    const result = await relayBridgeRequest<A>(tag, payload);
+    const result = await relayBridgeRequest<A>('synaraRpc', tag, payload);
+    relayEverConnected = true;
+    relayOfflineUntilMs = 0;
+    setRelayState('connected');
+    return result;
+  } catch (error) {
+    if (error instanceof Error && error.name === 'SynaraRpcResponseError') {
+      relayEverConnected = true;
+      relayOfflineUntilMs = 0;
+      setRelayState('connected');
+      throw error;
+    }
+    throw new RpcTransportError(
+      `Synara RPC ${tag} failed: ${describeRelayError(error)}`
+    );
+  }
+}
+
+async function relayStreamRequest<A>(
+  tag: string,
+  payload: unknown
+): Promise<readonly A[]> {
+  try {
+    const result = await relayBridgeRequest<readonly A[]>(
+      'synaraRpcStream',
+      tag,
+      payload
+    );
     relayEverConnected = true;
     relayOfflineUntilMs = 0;
     setRelayState('connected');
@@ -552,6 +583,35 @@ export async function checkoutGitBranch(input: {
   readonly branch: string;
 }): Promise<void> {
   await transportRequest('git.checkout', input);
+}
+
+export async function runGitStackedAction(
+  input: GitRunStackedActionInput
+): Promise<GitRunStackedActionResult> {
+  let result: GitRunStackedActionResult | null = null;
+  const accept = (event: GitActionProgressEvent) => {
+    if (event.kind === 'action_finished') result = event.result;
+  };
+  if (IS_WEB_RELAY_MODE) {
+    for (const event of await relayStreamRequest<GitActionProgressEvent>(
+      'git.runStackedAction',
+      input
+    )) {
+      accept(event);
+    }
+  } else {
+    await featureManager.requestStream<GitActionProgressEvent>(
+      'git.runStackedAction',
+      input,
+      accept
+    );
+  }
+  if (!result) {
+    throw new RpcTransportError(
+      'Git action stream completed without a final result'
+    );
+  }
+  return result;
 }
 
 export async function repairSynaraState(): Promise<OrchestrationReadModel> {

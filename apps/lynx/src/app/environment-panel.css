@@ -245,6 +245,129 @@
   color: var(--destructive);
 }
 
+.EnvironmentGitActionTrigger {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.EnvironmentGitActionTrigger.ui-hover,
+.EnvironmentGitActionTrigger.ui-focus,
+.EnvironmentGitActionTrigger.ui-pressed {
+  background-color: var(--accent);
+  opacity: 1;
+}
+
+.EnvironmentGitActionTrigger--disabled {
+  opacity: 0.55;
+}
+
+.EnvironmentGitActionStatus {
+  padding: 0 8px 4px 32px;
+  color: var(--muted-foreground);
+  font-size: 10px;
+  line-height: 15px;
+}
+
+.EnvironmentGitActionStatus--success {
+  color: var(--settings-usage-meter-healthy);
+}
+
+.EnvironmentGitActionStatus--error,
+.EnvironmentGitActionDialogError {
+  color: var(--destructive);
+}
+
+.LxDialogPopup.EnvironmentGitActionDialog {
+  width: min(520px, calc(100vw - 32px));
+  max-height: min(620px, calc(100vh - 32px));
+  border-radius: 18px;
+}
+
+.EnvironmentGitActionDialogPanel {
+  gap: 12px;
+}
+
+.EnvironmentGitActionSummary {
+  display: flex;
+  min-height: 42px;
+  padding: 10px 12px;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background-color: var(--secondary);
+}
+
+.EnvironmentGitActionSummaryLabel {
+  color: var(--muted-foreground);
+  font-size: 11px;
+  line-height: 16.5px;
+}
+
+.EnvironmentGitActionSummaryValue {
+  min-width: 0;
+  flex: 1;
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.EnvironmentGitActionFiles {
+  width: 100%;
+  height: 180px;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background-color: var(--background);
+}
+
+.EnvironmentGitActionFile {
+  display: flex;
+  min-height: 28px;
+  padding: 4px 8px;
+  align-items: center;
+  gap: 8px;
+  border-radius: 8px;
+}
+
+.EnvironmentGitActionFilePath {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  color: var(--foreground);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 16.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.EnvironmentGitActionFileStats {
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 15px;
+}
+
+.EnvironmentGitActionMessage {
+  width: 100%;
+  min-height: 72px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background-color: transparent;
+  color: var(--foreground);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.EnvironmentGitActionDialogError {
+  font-size: 11px;
+  line-height: 16.5px;
+}
+
 .EnvironmentLocalServersTrigger {
   width: 100%;
   border-radius: 10px;

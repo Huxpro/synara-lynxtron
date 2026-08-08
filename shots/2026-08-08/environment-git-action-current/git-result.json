@@ -1,0 +1,7 @@
+{
+  "head": "71d4d7a838af1bfaa3d28c86e635e9f8ed8ee115",
+  "subject": "Verify Lynx git action",
+  "branch": "feature/fidelity",
+  "status": "# branch.oid 71d4d7a838af1bfaa3d28c86e635e9f8ed8ee115\n# branch.head feature/fidelity\n1 .M N... 100644 100644 100644 294186e497a23bf3fbfde12aacc7f720f668fe9a 294186e497a23bf3fbfde12aacc7f720f668fe9a action.txt",
+  "remotes": ""
+}

@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState } from '@lynx-js/react';
+import { useEffect, useMemo, useRef, useState } from '@lynx-js/react';
 import { useQuery } from '@tanstack/react-query';
 import {
   THREAD_NOTES_MAX_CHARS,
   type EditorId,
   type GitPullRequestCheck,
+  type GitStackedAction,
+  type GitStatusResult,
   type OrchestrationThreadPullRequest,
   type PinnedMessage,
   type ProviderKind,
@@ -47,6 +49,7 @@ import closeSvg from '@synara-central-icons/close-circle-dashed.svg?raw';
 import mergeConflictSvg from '@synara-central-icons/merge-conflict.svg?raw';
 import pullRequestSvg from '@synara-central-icons/pull-request.svg?raw';
 import stopSvg from '@synara-central-icons/stop.svg?raw';
+import pushSvg from '@synara-central-icons/cloud-simple-upload.svg?raw';
 
 import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
 import { ChatMarkdown } from '../components/markdown/ChatMarkdown.lynx';
@@ -62,6 +65,12 @@ import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
 import { useTheme } from '../adapters/useTheme.lynx';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import {
+  resolveDefaultBranchActionDialogCopy,
+  requiresDefaultBranchConfirmation,
+  resolveQuickAction,
+  summarizeGitResult,
+} from '@synara-web/components/GitActionsControl.logic';
+import {
   dispatchSynaraCommand,
   fetchAllProviderUsage,
   fetchLocalServers,
@@ -72,11 +81,22 @@ import {
   fetchGitBranches,
   openPathInEditor,
   checkoutGitBranch,
+  runGitStackedAction,
   stopLocalServer,
 } from '../data/synaraClient.lynx';
 import { webStorage } from '../platform/storage';
 import { sleepOnHost } from '../platform/timer';
 import { platformWindow } from '../platform/window';
+import { dialogs } from '../platform/dialogs';
+import {
+  Dialog,
+  DialogDescription,
+  DialogFooter,
+  DialogPanel,
+  DialogPopup,
+  DialogTitle,
+} from '../components/ui/dialog.lynx';
+import { Button } from '../components/ui/button.lynx';
 import {
   Menu,
   MenuItem,
@@ -300,6 +320,7 @@ function EnvironmentLocalServers() {
 function EnvironmentChanges(props: {
   readonly onOpenViewer: () => void;
   readonly open: boolean;
+  readonly onStatusChange: (status: GitStatusResult | null) => void;
   readonly workspaceRoot: string;
 }) {
   const [refreshGeneration, setRefreshGeneration] = useState(0);
@@ -326,7 +347,10 @@ function EnvironmentChanges(props: {
         }
         try {
           const data = await fetchGitStatus(props.workspaceRoot);
-          if (!cancelled) setStatusState({ data, error: false, pending: false });
+          if (!cancelled) {
+            setStatusState({ data, error: false, pending: false });
+            props.onStatusChange(data);
+          }
         } catch {
           if (!cancelled) {
             setStatusState((current) => ({
@@ -408,6 +432,228 @@ function EnvironmentChanges(props: {
         }
       />
     </view>
+  );
+}
+
+function EnvironmentGitAction(props: {
+  readonly branch: string | null;
+  readonly gitStatus: GitStatusResult | null;
+  readonly open: boolean;
+  readonly onCompleted: () => void;
+  readonly workspaceRoot: string;
+}) {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [commitMessage, setCommitMessage] = useState('');
+  const [running, setRunning] = useState(false);
+  const [resultLabel, setResultLabel] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const branchesQuery = useQuery({
+    queryKey: ['environment-git-action-branches', props.workspaceRoot],
+    queryFn: () => {
+      'background only';
+      return fetchGitBranches(props.workspaceRoot);
+    },
+    enabled: props.open,
+    staleTime: 15_000,
+  });
+  const branchList = branchesQuery.data;
+  const defaultBranch =
+    branchList?.branches.find(
+      (branch) => !branch.isRemote && branch.isDefault
+    )?.name ?? null;
+  const activeBranch = props.gitStatus?.branch ?? props.branch;
+  const isDefaultBranch =
+    activeBranch !== null &&
+    (activeBranch === defaultBranch ||
+      (defaultBranch === null &&
+        (activeBranch === 'main' || activeBranch === 'master')));
+  const quickAction = useMemo(
+    () =>
+      resolveQuickAction(
+        props.gitStatus,
+        running,
+        isDefaultBranch,
+        branchList?.hasOriginRemote ?? false,
+        false,
+        defaultBranch
+      ),
+    [
+      branchList?.hasOriginRemote,
+      defaultBranch,
+      isDefaultBranch,
+      props.gitStatus,
+      running,
+    ]
+  );
+  const runnableAction =
+    quickAction.kind === 'run_action' ? quickAction.action ?? null : null;
+  const files = props.gitStatus?.workingTree.files ?? [];
+
+  async function runAction(action: GitStackedAction): Promise<void> {
+    'background only';
+    if (!props.gitStatus || running) return;
+    if (
+      requiresDefaultBranchConfirmation(action, isDefaultBranch) &&
+      activeBranch
+    ) {
+      const copy = resolveDefaultBranchActionDialogCopy({
+        action,
+        branchName: activeBranch,
+        includesCommit:
+          action === 'commit_push' || action === 'commit_push_pr',
+      });
+      const confirmed = await dialogs.confirm(
+        `${copy.title}\n\n${copy.description}`
+      );
+      if (!confirmed) return;
+    }
+    setRunning(true);
+    setError(null);
+    setResultLabel(null);
+    try {
+      const result = await runGitStackedAction({
+        actionId: environmentCommandId(),
+        cwd: props.workspaceRoot,
+        action,
+        ...(commitMessage.trim()
+          ? { commitMessage: commitMessage.trim() }
+          : {}),
+      });
+      const summary = summarizeGitResult(result);
+      setResultLabel(
+        summary.description
+          ? `${summary.title}: ${summary.description}`
+          : summary.title
+      );
+      setDialogOpen(false);
+      setCommitMessage('');
+      props.onCompleted();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Git action failed.');
+    } finally {
+      setRunning(false);
+    }
+  }
+
+  const interaction = useLynxInteractiveState({
+    baseClassName: `EnvironmentGitActionTrigger${
+      quickAction.disabled ? ' EnvironmentGitActionTrigger--disabled' : ''
+    }`,
+    accessibleLabel: quickAction.disabled
+      ? `${quickAction.label} unavailable`
+      : quickAction.label,
+    disabled: quickAction.disabled,
+    onActivate: () => {
+      if (!runnableAction) return;
+      if (
+        runnableAction === 'commit' ||
+        runnableAction === 'commit_push' ||
+        runnableAction === 'commit_push_pr'
+      ) {
+        setDialogOpen(true);
+      } else {
+        void runAction(runnableAction);
+      }
+    },
+  });
+
+  return (
+    <>
+      <view
+        className={interaction.className}
+        {...interaction.eventProps}
+      >
+        <EnvironmentRow
+          icon={
+            <svg
+              className="EnvironmentCanonicalIcon"
+              content={colorizeLynxSvg(pushSvg, 'var(--foreground)')}
+            />
+          }
+          label={running ? 'Working…' : quickAction.label}
+        />
+      </view>
+      {resultLabel ? (
+        <text className="EnvironmentGitActionStatus EnvironmentGitActionStatus--success">
+          {resultLabel}
+        </text>
+      ) : error ? (
+        <text className="EnvironmentGitActionStatus EnvironmentGitActionStatus--error">
+          {error}
+        </text>
+      ) : quickAction.hint ? (
+        <text className="EnvironmentGitActionStatus">
+          {quickAction.hint}
+        </text>
+      ) : null}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogPopup className="EnvironmentGitActionDialog">
+          <DialogTitle>Commit changes</DialogTitle>
+          <DialogDescription>
+            Review the changed files and optionally provide a commit message.
+          </DialogDescription>
+          <DialogPanel className="EnvironmentGitActionDialogPanel">
+            <view className="EnvironmentGitActionSummary">
+              <text className="EnvironmentGitActionSummaryLabel">Branch</text>
+              <text className="EnvironmentGitActionSummaryValue">
+                {activeBranch ?? 'Detached HEAD'}
+              </text>
+              <text className="EnvironmentGitActionSummaryLabel">Files</text>
+              <text className="EnvironmentGitActionSummaryValue">
+                {files.length}
+              </text>
+            </view>
+            <scroll-view
+              className="EnvironmentGitActionFiles"
+              scroll-y
+              enable-scroll-bar
+            >
+              {files.map((file) => (
+                <view className="EnvironmentGitActionFile" key={file.path}>
+                  <text className="EnvironmentGitActionFilePath">
+                    {file.path}
+                  </text>
+                  <text className="EnvironmentGitActionFileStats">
+                    +{file.insertions} −{file.deletions}
+                  </text>
+                </view>
+              ))}
+            </scroll-view>
+            <textarea
+              className="EnvironmentGitActionMessage"
+              value={commitMessage}
+              placeholder="Commit message (optional)"
+              maxlength={10_000}
+              bindinput={(event) =>
+                setCommitMessage(event.detail.value.slice(0, 10_000))
+              }
+            />
+            {error ? (
+              <text className="EnvironmentGitActionDialogError">{error}</text>
+            ) : null}
+          </DialogPanel>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={running}
+              onClick={() => setDialogOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              size="sm"
+              disabled={running || files.length === 0 || !runnableAction}
+              onClick={() => {
+                if (runnableAction) void runAction(runnableAction);
+              }}
+            >
+              {running ? 'Working…' : quickAction.label}
+            </Button>
+          </DialogFooter>
+        </DialogPopup>
+      </Dialog>
+    </>
   );
 }
 
@@ -2029,6 +2275,8 @@ export function EnvironmentPanel(props: {
   readonly workspaceRoot: string | null;
 }) {
   const { svgColors } = useTheme();
+  const [gitStatus, setGitStatus] = useState<GitStatusResult | null>(null);
+  const [gitRefreshGeneration, setGitRefreshGeneration] = useState(0);
   const usageQuery = useQuery({
     queryKey: ['environment-provider-usage', props.provider],
     queryFn: () => {
@@ -2084,7 +2332,9 @@ export function EnvironmentPanel(props: {
               <EnvironmentChanges
                 onOpenViewer={props.onOpenChanges}
                 open={props.open}
+                onStatusChange={setGitStatus}
                 workspaceRoot={props.workspaceRoot}
+                key={`changes-${gitRefreshGeneration}`}
               />
             ) : null}
 
@@ -2099,6 +2349,18 @@ export function EnvironmentPanel(props: {
             ) : null}
             {props.workspaceRoot ? (
               <text className="EnvironmentWorkspace">{props.workspaceRoot}</text>
+            ) : null}
+
+            {props.workspaceRoot ? (
+              <EnvironmentGitAction
+                branch={props.branch}
+                gitStatus={gitStatus}
+                open={props.open}
+                workspaceRoot={props.workspaceRoot}
+                onCompleted={() =>
+                  setGitRefreshGeneration((current) => current + 1)
+                }
+              />
             ) : null}
 
             <EnvironmentLocalServers />

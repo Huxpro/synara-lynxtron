@@ -145,6 +145,34 @@ isolated 900x650 window-state schema was corrected. That harness failure is
 recorded as not certified, not misreported as a product regression or a Native
 pixel-parity pass.
 
+The next Environment slice restores the high-frequency safe Git action without
+copying only the Web row chrome:
+
+- Lynx reuses Web's `resolveQuickAction`,
+  `requiresDefaultBranchConfirmation`,
+  `resolveDefaultBranchActionDialogCopy`, and `summarizeGitResult`;
+- the transport now implements Effect RPC stream `Chunk` delivery, per-chunk
+  `Ack`, final `Exit` settlement, timeout, and reconnect behavior on both Native
+  and Lynx-for-Web;
+- a dirty feature branch with no `origin` resolves to **Commit**, opens a real
+  changed-file/optional-message dialog, and commits through
+  `git.runStackedAction` without attempting a push;
+- push-capable default-branch actions retain the shared confirmation copy
+  before any mutation.
+
+The isolated proof committed `action.txt` as
+`71d4d7a838af1bfaa3d28c86e635e9f8ed8ee115` with subject
+`Verify Lynx git action`; the repo had no remotes, so no push was possible or
+attempted. A second uncommitted edit was used only to retain the same dialog in
+light and dark. Both themes keep identical geometry and use semantic
+background/border/foreground tokens. Evidence:
+`shots/2026-08-08/environment-git-action-current/`.
+
+This does not claim the complete Web advanced Git menu. Per-file exclusion,
+commit-on-new-branch, pull, explicit push/PR menu rows, and live per-phase
+progress presentation remain separate product slices. The quick action is
+state-safe and real; unsupported advanced paths are not silently exposed.
+
 ## Kanban follow-up
 
 The 900px project board proved that the route-owned three-column layout was

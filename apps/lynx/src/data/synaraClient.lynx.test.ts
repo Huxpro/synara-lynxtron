@@ -20,4 +20,25 @@ describe('Lynx Synara relay state', () => {
     expect(relayRequest).not.toContain("setRelayState('offline')");
     expect(relayRequest).toContain("setRelayState('connected')");
   });
+
+  it('keeps streamed RPC backpressure and completion explicit on Web', () => {
+    const hostSource = readFileSync(
+      new URL('../main/web/web-host.ts', import.meta.url),
+      'utf8'
+    );
+    const clientSource = readFileSync(
+      new URL('./synaraClient.lynx.ts', import.meta.url),
+      'utf8'
+    );
+
+    expect(hostSource).toContain("message._tag === 'Chunk'");
+    expect(hostSource).toContain("_tag: 'Ack'");
+    expect(hostSource).toContain('const timer = stream');
+    expect(hostSource).toContain('? undefined');
+    expect(clientSource).toContain("'synaraRpcStream'");
+    expect(clientSource).toContain("event.kind === 'action_finished'");
+    expect(clientSource).toContain(
+      "'Git action stream completed without a final result'"
+    );
+  });
 });
