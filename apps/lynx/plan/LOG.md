@@ -7839,3 +7839,8 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   `31985b258d1b39540c465ed85f1177b247d11dd4e71bf212ed435145a62ebadb`，
   PID20661→localhost:8903；55 triggers、first478×44、accessibility Expanded、
   current feature nodes存在、console0。owned 8903已停止，iOS8901/t3tools8902未触碰。
+- scoped material follow-up继续对齐Web resolved paint/typography：popup r22与
+  dark 0/16/50/-12 shadow、title16/24、description12/16、footer52px + 12×16 padding、
+  Close黑色12/18。Lynx-for-Web全部resolved exact，Close仅剩2px字体引擎文字度量差；
+  不加硬宽度。final Native bundle `d8dcc604…`，PID67220→8903，inner popup
+  510×624.390625、console0；owned进程已停止。

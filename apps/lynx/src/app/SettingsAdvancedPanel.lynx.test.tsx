@@ -103,13 +103,16 @@ describe('Settings Advanced fidelity', () => {
       /\.SettingsAdvancedRow--version\s*\{[^}]*border-bottom:\s*1px solid var\(--border\);/s
     );
     expect(styles).toMatch(
-      /\.LxDialogPopup\.SettingsAdvancedReleaseDialog\s*\{[^}]*width:\s*512px;[^}]*height:\s*626\.390625px;/s
+      /\.LxDialogPopup\.SettingsAdvancedReleaseDialog\s*\{[^}]*width:\s*512px;[^}]*height:\s*626\.390625px;[^}]*border-radius:\s*22px;[^}]*box-shadow:\s*0 16px 50px -12px rgba\(0,\s*0,\s*0,\s*0\.7\);/s
     );
     expect(styles).toMatch(
       /\.SettingsAdvancedReleaseTrigger\s*\{[^}]*height:\s*44px;[^}]*padding:\s*12px 0;/s
     );
     expect(styles).toMatch(
       /\.SettingsAdvancedReleaseFeatures\s*\{[^}]*padding:\s*0 4px 16px 24px;[^}]*gap:\s*24px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsAdvancedReleaseDialog \.LxDialogFooter\s*\{[^}]*height:\s*52px;[^}]*padding:\s*12px 16px;/s
     );
   });
 });

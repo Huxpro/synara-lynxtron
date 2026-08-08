@@ -177,13 +177,17 @@ the historical full screenshot matrix cover the newer focused Usage commits.
   resolves to an inner 510×624.390625 box (the 1px border on each side yields
   Web's 512×626.390625 outer box).
 - Final Native bundle:
-  `31985b258d1b39540c465ed85f1177b247d11dd4e71bf212ed435145a62ebadb`.
+  `d8dcc6044e3ea9b1aa0e6e7916fce47d003371a6cad8104716bc273a5f6583cc`.
   Usage, Integrations, and Advanced were reached through real touch; the
   runtime console had zero warnings/errors. The owned 8903 process was stopped;
   unrelated iOS 8901 and t3tools 8902 clients were untouched. A final
   exact-owned PID `20661` rerun after the accordion calibration proved 55
   44px triggers, `Version 0.5.5, Jul 17` expanded by default, current-release
-  feature content, and an empty warning/error console.
+  feature content, and an empty warning/error console. A final scoped material
+  follow-up aligns the Web 22px popup radius, dark 0/16/50/-12 shadow,
+  16/24 title, 12/16 description, 52px padded footer, and black 12/18 Close
+  label; exact-owned PID `67220` retained the 510×624.390625 inner popup and
+  a clean console.
 
 ## Evidence integrity correction
 
