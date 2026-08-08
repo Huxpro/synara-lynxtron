@@ -321,6 +321,11 @@
   gap: 12px;
 }
 
+.EnvironmentGitActionFooter {
+  height: auto;
+  flex-wrap: wrap;
+}
+
 .EnvironmentGitActionSummary {
   display: flex;
   min-height: 42px;

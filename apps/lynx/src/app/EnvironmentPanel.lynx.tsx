@@ -440,6 +440,7 @@ function EnvironmentGitAction(props: {
   readonly gitStatus: GitStatusResult | null;
   readonly open: boolean;
   readonly onCompleted: () => void;
+  readonly threadId: string;
   readonly workspaceRoot: string;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -518,7 +519,10 @@ function EnvironmentGitAction(props: {
     });
   }
 
-  async function runAction(action: GitStackedAction): Promise<void> {
+  async function runAction(
+    action: GitStackedAction,
+    options: { readonly featureBranch?: boolean } = {}
+  ): Promise<void> {
     'background only';
     if (!props.gitStatus || running) return;
     if (
@@ -544,6 +548,7 @@ function EnvironmentGitAction(props: {
         actionId: environmentCommandId(),
         cwd: props.workspaceRoot,
         action,
+        ...(options.featureBranch ? { featureBranch: true } : {}),
         ...(commitMessage.trim()
           ? { commitMessage: commitMessage.trim() }
           : {}),
@@ -552,6 +557,15 @@ function EnvironmentGitAction(props: {
           : {}),
       });
       const summary = summarizeGitResult(result);
+      if (result.branch.status === 'created' && result.branch.name) {
+        await dispatchSynaraCommand({
+          type: 'thread.meta.update',
+          commandId: environmentCommandId() as never,
+          threadId: props.threadId as never,
+          branch: result.branch.name,
+          createBranchFlowCompleted: true,
+        });
+      }
       setResultLabel(
         summary.description
           ? `${summary.title}: ${summary.description}`
@@ -799,7 +813,7 @@ function EnvironmentGitAction(props: {
               <text className="EnvironmentGitActionDialogError">{error}</text>
             ) : null}
           </DialogPanel>
-          <DialogFooter>
+          <DialogFooter className="EnvironmentGitActionFooter">
             <Button
               variant="outline"
               size="sm"
@@ -810,6 +824,14 @@ function EnvironmentGitAction(props: {
               }}
             >
               Cancel
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={running || noneSelected}
+              onClick={() => void runAction('commit', { featureBranch: true })}
+            >
+              Commit on new branch
             </Button>
             <Button
               size="sm"
@@ -2530,6 +2552,7 @@ export function EnvironmentPanel(props: {
                 branch={props.branch}
                 gitStatus={gitStatus}
                 open={props.open}
+                threadId={props.threadId}
                 workspaceRoot={props.workspaceRoot}
                 onCompleted={() =>
                   setGitRefreshGeneration((current) => current + 1)

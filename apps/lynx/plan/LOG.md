@@ -8287,3 +8287,23 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   SHA-256分别为
   `e804c76e0f15ce53e85f3210c04e55d2d1bae83238a106484cafb8d3f73d03ea`和
   `a770064131ca8a1bff8c7842d8976b5961968b55e37387866041c2f14e0e1e96`。
+
+### Environment commit on new branch
+
+- 复用server `featureBranch:true` transaction，不在Lynx重新实现branch命名/冲突逻辑。
+  commit dialog新增`Commit on new branch`；Git action成功返回created branch后才dispatch
+  canonical `thread.meta.update`同步branch并设`createBranchFlowCompleted=true`。
+- 隔离repo从`main`开始，rendered dialog输入`Feature branch commit`并点击新branch
+  action。Git创建`feature/feature-branch-commit`，commit
+  `761d63ebdcec495d44c1729b74d195a6e4064ca6`，main保持
+  `ba68247355ed0a0c51de06c7e0731344e8bd6b67`不变；thread detail snapshot109
+  同步相同branch且flow completed为true。
+- 当前Lynx dialog较窄，三按钮footer使用真实flex-wrap而非缩小文字/固定宽度；light/dark
+  均保留同一footer geometry和语义surface。证据在
+  `shots/2026-08-08/environment-git-new-branch-current/`。
+- fixture canonical delete sequences110/111，snapshot111 active threads0；session和
+  临时repo清理。pull execution与live phase progress仍是后续slice。focused
+  **4 files / 18 tests**、三端connection preflight snapshot111、Web与
+  Native/Desktop production builds均通过；最终Web/Native bundle SHA-256分别为
+  `045266b3601f6307ee3946cdbb89743d5fa897f3b0787172d7de91756c3c3ead`和
+  `d9be95065f35ed68dd19e60caf154320ccf64b34dba1e00ff76c913a8192a5a0`。

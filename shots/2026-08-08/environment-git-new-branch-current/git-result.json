@@ -1,0 +1,7 @@
+{
+  "branch": "feature/feature-branch-commit",
+  "head": "761d63ebdcec495d44c1729b74d195a6e4064ca6",
+  "subject": "Feature branch commit",
+  "main": "ba68247355ed0a0c51de06c7e0731344e8bd6b67",
+  "status": "# branch.oid 761d63ebdcec495d44c1729b74d195a6e4064ca6\n# branch.head feature/feature-branch-commit"
+}

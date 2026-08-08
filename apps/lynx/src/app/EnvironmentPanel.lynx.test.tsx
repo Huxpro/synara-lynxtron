@@ -75,6 +75,12 @@ describe('Lynx Environment panel', () => {
     expect(panelSource).toContain("allSelected ? 'Exclude all' : 'Include all'");
     expect(panelSource).toContain('EnvironmentGitActionFile--excluded');
     expect(panelSource).toContain('disabled={running || noneSelected || !dialogAction}');
+    expect(panelSource).toContain(
+      "void runAction('commit', { featureBranch: true })"
+    );
+    expect(panelSource).toContain("result.branch.status === 'created'");
+    expect(panelSource).toContain('createBranchFlowCompleted: true');
+    expect(panelSource).toContain('threadId={props.threadId}');
     expect(panelSource).not.toContain('EnvironmentChangesPopup');
     expect(panelSource).not.toContain('EnvironmentChangesFilePath');
     expect(panelSource).toContain('stopLocalServer({');
@@ -221,6 +227,9 @@ describe('Lynx Environment panel', () => {
     );
     expect(styles).toMatch(
       /\.EnvironmentGitActionFile--excluded\s*\{[^}]*opacity:\s*0\.55;/s
+    );
+    expect(styles).toMatch(
+      /\.EnvironmentGitActionFooter\s*\{[^}]*height:\s*auto;[^}]*flex-wrap:\s*wrap;/s
     );
     expect(styles).toMatch(
       /\.EnvironmentLocalServerStop\s*\{[^}]*width:\s*24px;[^}]*height:\s*24px;[^}]*padding:\s*0;/s

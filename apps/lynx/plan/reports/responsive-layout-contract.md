@@ -189,9 +189,23 @@ A real two-file repo excluded `two.txt`, committed only `one.txt` as
 checkbox/file materials. Evidence:
 `shots/2026-08-08/environment-git-file-selection-current/`.
 
-This still does not claim every Web advanced Git workflow. Commit-on-new-branch,
-pull execution, and live per-phase progress presentation remain separate
-product slices. The shared menu state, file selection, and safe commit path are
+Commit-on-new-branch now delegates to the same server-owned `featureBranch`
+transaction as Web. The server generates or derives a collision-safe branch,
+creates it from the current HEAD, applies the selected-file commit, and returns
+the branch name. Lynx updates canonical thread metadata only after that Git
+transaction succeeds.
+
+The isolated proof started on `main`, created
+`feature/feature-branch-commit`, committed `Feature branch commit` as
+`761d63ebdcec495d44c1729b74d195a6e4064ca6`, left `main` at
+`ba68247355ed0a0c51de06c7e0731344e8bd6b67`, and projected the same branch plus
+`createBranchFlowCompleted=true` into the thread snapshot. The three-button
+footer wraps safely in the current Lynx dialog and is retained in light/dark.
+Evidence: `shots/2026-08-08/environment-git-new-branch-current/`.
+
+This still does not claim every Web advanced Git workflow. Pull execution and
+live per-phase progress presentation remain separate product slices. The
+shared menu state, file selection, safe commit, and new-branch transaction are
 real; unsupported advanced mutations are not silently enabled.
 
 ## Kanban follow-up
