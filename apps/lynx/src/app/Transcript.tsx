@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from '@lynx-js/react';
 
+import { PROVIDER_SEND_TURN_MAX_ATTACHMENTS } from '@synara/contracts';
 import { resolveAssistantMessageDisplayText } from '@synara-web/components/chat/MessagesTimeline.logic';
 // Same transcript typography math the Web bubbles use (font-size, line-height,
 // footer size), so both targets derive geometry from one source instead of
@@ -18,7 +19,12 @@ import { CollapsedWorkComposition } from '@synara-web/components/chat/CollapsedW
 import { TimelineStatusRowComposition } from '@synara-web/components/chat/TimelineStatusRowComposition';
 
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
+import { useComposerDraftStore } from '../adapters/composerDraftStore.lynx';
 import { ChatMarkdown } from '../components/markdown/ChatMarkdown';
+import {
+  createAssistantSelectionAttachment,
+  getAssistantSelectionValidationError,
+} from '@synara-web/lib/assistantSelections';
 import { bridgeCall } from '../platform/bridge';
 import type { ThreadTranscriptRow } from './queries';
 import {
@@ -74,7 +80,13 @@ function TranscriptWorkEntries({
   );
 }
 
-function TranscriptMessage({ row }: { row: MessageTranscriptRow }) {
+function TranscriptMessage({
+  row,
+  threadId,
+}: {
+  row: MessageTranscriptRow;
+  threadId: string;
+}) {
   const { message } = row;
   const isUser = message.role === 'user';
   const [collapsedWorkOpen, setCollapsedWorkOpen] = useState(false);
@@ -89,6 +101,33 @@ function TranscriptMessage({ row }: { row: MessageTranscriptRow }) {
   const assistantText = isUser
     ? null
     : resolveAssistantMessageDisplayText(row);
+  const draftAttachmentCount = useComposerDraftStore((state) => {
+    const draft = state.draftsByThreadId[threadId];
+    return (draft?.files.length ?? 0) + (draft?.assistantSelections.length ?? 0);
+  });
+  const assistantSelectionUnavailable =
+    assistantText === null ||
+    getAssistantSelectionValidationError({
+      assistantMessageId: message.id,
+      text: assistantText ?? '',
+    }) !== null ||
+    draftAttachmentCount >= PROVIDER_SEND_TURN_MAX_ATTACHMENTS;
+  const addAssistantSelection = useComposerDraftStore(
+    (state) => state.addAssistantSelection
+  );
+  const addToChat = useLynxInteractiveState({
+    baseClassName: 'TranscriptAssistantAddToChat',
+    accessibleLabel: 'Reference whole assistant message',
+    disabled: assistantSelectionUnavailable,
+    onActivate: () => {
+      if (assistantText === null) return;
+      const selection = createAssistantSelectionAttachment({
+        assistantMessageId: message.id,
+        text: assistantText,
+      });
+      if (selection) addAssistantSelection(threadId, selection);
+    },
+  });
   if (message.role === 'system') {
     return (
       <view className="TranscriptMessageRow TranscriptMessageRowStatus">
@@ -140,8 +179,20 @@ function TranscriptMessage({ row }: { row: MessageTranscriptRow }) {
       <MessageAssistantRowComposition>
         <TranscriptWorkEntries entries={leadingWorkEntries} />
         {assistantText === null ? null : (
-          <view style={getChatTranscriptTextStyle() as Record<string, string>}>
-            <ChatMarkdown text={assistantText} />
+          <view className="TranscriptAssistantContent">
+            <view style={getChatTranscriptTextStyle() as Record<string, string>}>
+              <ChatMarkdown text={assistantText} />
+            </view>
+            <view
+              className={`${addToChat.className}${
+                addToChat.disabled ? ' ui-disabled' : ''
+              }`}
+              {...addToChat.eventProps}
+            >
+              <text className="TranscriptAssistantAddToChatText">
+                Reference whole message
+              </text>
+            </view>
           </view>
         )}
         <TranscriptWorkEntries entries={inlineWorkEntries} />
@@ -150,9 +201,15 @@ function TranscriptMessage({ row }: { row: MessageTranscriptRow }) {
   );
 }
 
-function TranscriptRowContent({ row }: { row: ThreadTranscriptRow }) {
+function TranscriptRowContent({
+  row,
+  threadId,
+}: {
+  row: ThreadTranscriptRow;
+  threadId: string;
+}) {
   if (row.kind === 'message') {
-    return <TranscriptMessage row={row} />;
+    return <TranscriptMessage row={row} threadId={threadId} />;
   }
   if (row.kind === 'work') {
     return (
@@ -205,9 +262,11 @@ export interface TranscriptController {
 
 export function Transcript({
   rows,
+  threadId,
   onController,
 }: {
   readonly rows: readonly ThreadTranscriptRow[];
+  readonly threadId: string;
   readonly onController?: (controller: TranscriptController | null) => void;
 }) {
   const listRef = useRef<React.ElementRef<'list'>>(null);
@@ -367,7 +426,7 @@ export function Transcript({
             key={row.id}
             estimated-main-axis-size-px={estimateTranscriptRowMainAxisSize(row)}
           >
-            <TranscriptRowContent row={row} />
+            <TranscriptRowContent row={row} threadId={threadId} />
           </list-item>
         ))}
         <list-item

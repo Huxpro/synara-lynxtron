@@ -8352,3 +8352,35 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - 正确顺序已登记：先接persisted draft→reference chip/remove→canonical
   `ChatAssistantSelectionAttachment` send，再增加明确标为whole-message的fallback；
   真正range selection继续作为host/engine gap，不把fallback冒充pixel/UX parity。
+
+### Whole-message assistant reference fallback
+
+- Lynx draft store新增persisted、fail-closed的`assistantSelections`，运行时与hydrate均复用
+  shared normalization，按assistant message/text去重并遵守shared attachment上限；
+  Composer显示/remove shared reference summary，成功send后与file attachments一起进入
+  canonical `thread.turn.start`。
+- assistant row新增明确文案`Reference whole message`，不冒充Web任意range selection；
+  空、超过4,000字符、或draft已达attachment上限时禁用。真正DOM
+  `Selection`/`Range`与floating toolbar仍是host/engine gap。
+- theming从source-level确认：`ThemeState`经`resolveSliceThemeVariant`投影
+  `SliceRoot--theme-light|dark`，新action只消费generated semantic tokens，没有
+  light/dark分叉颜色。Lynx-for-Web 1280×820/DPR1实测light为`#fff/#0d0d0d`，
+  dark为`#101010/#fcfcfc`；hover/active/focus token均随root class解析，两张PNG尺寸
+  均为1280×820。
+- canonical handoff fixture提供真实projection中的assistant message；
+  `thread.turn.start`后server用户消息保留完整`assistant-selection` attachment
+  （assistantMessageId与text均匹配）。复用server的Codex adapter因进程PATH缺少
+  `codex`而在provider start失败，此环境失败不影响已持久化message contract，也未被
+  报成provider成功。
+- exact-owned Native production PID47016、bundle session
+  `file:///Users/bytedance/github/synara/apps/lynx/dist/desktop/main.lynx.bundle`、
+  localhost:8903，DevTool console warning/error为空；Native DevTool DOM返回空且
+  screencast超时，Lynx-for-Web `click→tap` bridge也未驱动rendered bindtap，因此本次
+  不声称Native/Lynx-for-Web点击cell或range-selection pixel parity。focused
+  **3 files / 24 tests**、Web与Native/Desktop production builds通过；最终Web/Native
+  bundle SHA-256分别为
+  `47a910175e80ebca217c69fcdf1cdff7e462d707c2e112579ef447d75419bcb3`和
+  `369fe286844b22deda6f4cb9e8ce6e6811614b052e7b63e82cff663ef0c10cc2`。
+- fixture通过canonical delete生成tombstones，snapshot135中live project/thread均为0；
+  named browser session与owned Native client 8903均关闭，未触碰8901/8902或既有
+  58155/8998进程。

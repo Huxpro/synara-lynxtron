@@ -6,13 +6,16 @@
 // transition here while the heavier graph remains a background split.
 
 import { create } from 'zustand';
-import type {
-  ModelSelection,
-  ProviderMentionReference,
-  ProviderSkillReference,
+import {
+  PROVIDER_SEND_TURN_MAX_ATTACHMENTS,
+  type ChatAssistantSelectionAttachment,
+  type ModelSelection,
+  type ProviderMentionReference,
+  type ProviderSkillReference,
 } from '@synara/contracts';
 
 import { updateComposerDraftPrompt } from '@synara-web/composerDraftPrompt.logic';
+import { normalizeAssistantSelectionAttachment } from '@synara-web/lib/assistantSelections';
 import {
   filterPromptProviderMentionReferences,
   filterPromptSkillReferences,
@@ -27,6 +30,7 @@ export const LYNX_COMPOSER_DRAFT_STORAGE_KEY =
   'synara.lynx.composer-drafts:v1';
 
 interface LynxComposerDraft {
+  readonly assistantSelections: ReadonlyArray<ChatAssistantSelectionAttachment>;
   readonly files: ReadonlyArray<NativeComposerFileAttachment>;
   readonly mentions: ReadonlyArray<ProviderMentionReference>;
   readonly modelSelection?: ModelSelection;
@@ -37,6 +41,10 @@ interface LynxComposerDraft {
 
 interface LynxComposerDraftStoreState {
   readonly draftsByThreadId: Record<string, LynxComposerDraft>;
+  readonly addAssistantSelection: (
+    threadId: string,
+    selection: ChatAssistantSelectionAttachment
+  ) => void;
   readonly addPastedText: (threadId: string, pastedText: PastedTextDraft) => void;
   readonly addFiles: (
     threadId: string,
@@ -45,6 +53,7 @@ interface LynxComposerDraftStoreState {
   readonly clearDraft: (threadId: string) => void;
   readonly removePastedText: (threadId: string, pastedTextId: string) => void;
   readonly removeFile: (threadId: string, fileId: string) => void;
+  readonly removeAssistantSelections: (threadId: string) => void;
   readonly setModelSelection: (
     threadId: string,
     modelSelection: ModelSelection
@@ -64,6 +73,36 @@ function isStringRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
+function parseAssistantSelections(
+  value: unknown
+): ChatAssistantSelectionAttachment[] {
+  if (!Array.isArray(value)) return [];
+  const selections: ChatAssistantSelectionAttachment[] = [];
+  for (const candidate of value) {
+    if (
+      !isStringRecord(candidate) ||
+      candidate.type !== 'assistant-selection' ||
+      typeof candidate.id !== 'string' ||
+      candidate.id.trim().length === 0 ||
+      typeof candidate.assistantMessageId !== 'string' ||
+      typeof candidate.text !== 'string'
+    ) {
+      continue;
+    }
+    const normalized = normalizeAssistantSelectionAttachment({
+      assistantMessageId: candidate.assistantMessageId,
+      text: candidate.text,
+    });
+    if (!normalized) continue;
+    selections.push({
+      type: 'assistant-selection',
+      id: candidate.id,
+      ...normalized,
+    });
+  }
+  return selections;
+}
+
 export function parsePersistedLynxComposerDrafts(
   raw: string | null
 ): Record<string, LynxComposerDraft> {
@@ -77,6 +116,9 @@ export function parsePersistedLynxComposerDrafts(
         continue;
       }
       drafts[threadId] = {
+        assistantSelections: parseAssistantSelections(
+          candidate.assistantSelections
+        ),
         files: Array.isArray(candidate.files)
           ? (candidate.files as NativeComposerFileAttachment[])
           : [],
@@ -104,12 +146,20 @@ export function parsePersistedLynxComposerDrafts(
 }
 
 function emptyDraft(): LynxComposerDraft {
-  return { files: [], mentions: [], pastedTexts: [], prompt: '', skills: [] };
+  return {
+    assistantSelections: [],
+    files: [],
+    mentions: [],
+    pastedTexts: [],
+    prompt: '',
+    skills: [],
+  };
 }
 
 function shouldRemoveDraft(draft: LynxComposerDraft): boolean {
   return (
     draft.prompt.length === 0 &&
+    draft.assistantSelections.length === 0 &&
     draft.files.length === 0 &&
     draft.mentions.length === 0 &&
     draft.pastedTexts.length === 0 &&
@@ -142,6 +192,43 @@ function modelSelectionsEqual(
 export const useComposerDraftStore = create<LynxComposerDraftStoreState>()(
   (set) => ({
     draftsByThreadId: {},
+    addAssistantSelection: (threadId, selection) =>
+      set((state) => {
+        const current = state.draftsByThreadId[threadId] ?? emptyDraft();
+        const normalized = normalizeAssistantSelectionAttachment(selection);
+        if (
+          !normalized ||
+          current.files.length + current.assistantSelections.length >=
+            PROVIDER_SEND_TURN_MAX_ATTACHMENTS
+        ) {
+          return state;
+        }
+        if (
+          current.assistantSelections.some(
+            (entry) =>
+              entry.assistantMessageId === normalized.assistantMessageId &&
+              entry.text === normalized.text
+          )
+        ) {
+          return state;
+        }
+        return {
+          draftsByThreadId: {
+            ...state.draftsByThreadId,
+            [threadId]: {
+              ...current,
+              assistantSelections: [
+                ...current.assistantSelections,
+                {
+                  type: 'assistant-selection',
+                  id: selection.id,
+                  ...normalized,
+                },
+              ],
+            },
+          },
+        };
+      }),
     addFiles: (threadId, files) =>
       set((state) => {
         if (files.length === 0) return state;
@@ -184,6 +271,7 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()(
         const draftsByThreadId = { ...state.draftsByThreadId };
         if (current.modelSelection) {
           draftsByThreadId[threadId] = {
+            assistantSelections: [],
             files: [],
             mentions: [],
             modelSelection: current.modelSelection,
@@ -220,6 +308,19 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()(
         const files = current.files.filter((file) => file.id !== fileId);
         if (files.length === current.files.length) return state;
         const nextDraft = { ...current, files };
+        const draftsByThreadId = { ...state.draftsByThreadId };
+        if (shouldRemoveDraft(nextDraft)) {
+          delete draftsByThreadId[threadId];
+        } else {
+          draftsByThreadId[threadId] = nextDraft;
+        }
+        return { draftsByThreadId };
+      }),
+    removeAssistantSelections: (threadId) =>
+      set((state) => {
+        const current = state.draftsByThreadId[threadId];
+        if (!current || current.assistantSelections.length === 0) return state;
+        const nextDraft = { ...current, assistantSelections: [] };
         const draftsByThreadId = { ...state.draftsByThreadId };
         if (shouldRemoveDraft(nextDraft)) {
           delete draftsByThreadId[threadId];

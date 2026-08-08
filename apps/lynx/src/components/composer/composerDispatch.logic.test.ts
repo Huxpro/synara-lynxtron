@@ -170,6 +170,41 @@ describe('composer dispatch logic', () => {
     });
   });
 
+  it('carries assistant message references into the canonical turn command', () => {
+    const command = buildComposerTurnStartCommand({
+      attachments: [
+        {
+          type: 'assistant-selection',
+          id: 'selection-1',
+          assistantMessageId: 'assistant-message-1',
+          text: 'The complete assistant response.',
+        },
+      ],
+      commandId: 'command-selection',
+      createdAt: '2026-08-08T12:00:00.000Z',
+      interactionMode: 'default',
+      messageId: 'message-selection',
+      modelSelection: { provider: 'codex', model: 'gpt-5.6-sol' },
+      runtimeMode: 'full-access',
+      text: 'Continue from this response',
+      threadId: 'thread-1',
+    });
+
+    expect(command).toMatchObject({
+      type: 'thread.turn.start',
+      message: {
+        attachments: [
+          {
+            type: 'assistant-selection',
+            id: 'selection-1',
+            assistantMessageId: 'assistant-message-1',
+            text: 'The complete assistant response.',
+          },
+        ],
+      },
+    });
+  });
+
   it('includes the active turn id only when the server exposes one', () => {
     const base = {
       commandId: 'command-1',

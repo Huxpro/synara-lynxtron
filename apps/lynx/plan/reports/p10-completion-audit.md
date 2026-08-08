@@ -269,7 +269,7 @@ Current responsive disposition:
 | Environment | reachable current-head consumer; paired light/dark Browser geometry/material proof at 900x650 | PASS IN BROWSER; NATIVE CURRENT-HEAD SCREENCAST NOT CERTIFIED |
 | Environment Git actions | stable menu, selectable-file/new-branch commits, safe pull, streamed live progress, metadata sync, confirmation, and paired themes | PASS |
 | Diff/browser docks, selection actions | working-tree Diff Dock is reachable and keeps its Web split contract; Browser/explorer and selection-action consumers remain absent | PARTIAL PRODUCT/PLATFORM KERNEL |
-| Native transcript selection | Web requires DOM Selection/Range; Lynx assistant-selection draft/display/send seam is absent | AUDITED GAP — DO NOT CLAIM WHOLE-MESSAGE OR PROMPT-TEXT FALLBACK AS PARITY |
+| Native transcript selection | Web requires DOM Selection/Range; Lynx now persists, displays, removes, and sends canonical assistant-selection attachments through an explicitly labeled whole-message fallback | PARTIAL — WHOLE-MESSAGE REFERENCE WORKS; RANGE SELECTION REMAINS AN AUDITED HOST/ENGINE GAP |
 | Current-head full three-client route/theme/size/state matrix | historical P10 matrix predates later product commits | NOT RE-CERTIFIED |
 
 Evidence for the final Settings sweep:

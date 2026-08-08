@@ -384,6 +384,7 @@ function ThreadPage(props: { threadId: string }) {
         <ComposerColumnFrameSurface className="ThreadTranscriptColumn">
           <Transcript
             rows={bodyState.rows}
+            threadId={threadId}
             onController={registerTranscriptController}
           />
         </ComposerColumnFrameSurface>

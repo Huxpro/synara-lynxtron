@@ -260,6 +260,10 @@ export function Composer({
   const draft = useComposerDraftStore(
     (state) => state.draftsByThreadId[brandedThreadId]?.prompt ?? ''
   );
+  const assistantSelections = useComposerDraftStore(
+    (state) =>
+      state.draftsByThreadId[brandedThreadId]?.assistantSelections ?? []
+  );
   const pastedTexts = useComposerDraftStore(
     (state) =>
       state.draftsByThreadId[brandedThreadId]?.pastedTexts ??
@@ -295,6 +299,9 @@ export function Composer({
     (state) => state.removePastedText
   );
   const removeFile = useComposerDraftStore((state) => state.removeFile);
+  const removeAssistantSelections = useComposerDraftStore(
+    (state) => state.removeAssistantSelections
+  );
   const setPrompt = useComposerDraftStore((state) => state.setPrompt);
   const setModelSelection = useComposerDraftStore(
     (state) => state.setModelSelection
@@ -1171,7 +1178,7 @@ export function Composer({
           await stagedFiles.runWithDispatch((attachments) =>
             dispatchSynaraCommand(
               buildComposerTurnStartCommand({
-                attachments,
+                attachments: [...attachments, ...assistantSelections],
                 commandId: createComposerDispatchId('command'),
                 createdAt: new Date().toISOString(),
                 interactionMode,
@@ -1296,14 +1303,16 @@ export function Composer({
           />
         ) : null}
         <ComposerReferenceAttachmentsComposition
-          assistantSelections={[]}
+          assistantSelections={assistantSelections}
           fileComments={[]}
           pastedTexts={pastedTexts}
           files={files}
           images={[]}
           nonPersistedImageIdSet={EMPTY_NON_PERSISTED_IMAGE_IDS}
           onExpandImage={() => undefined}
-          onRemoveAssistantSelections={() => undefined}
+          onRemoveAssistantSelections={() =>
+            removeAssistantSelections(brandedThreadId)
+          }
           onRemoveFileComments={() => undefined}
           onRemovePastedText={(pastedTextId) => {
             'background only';

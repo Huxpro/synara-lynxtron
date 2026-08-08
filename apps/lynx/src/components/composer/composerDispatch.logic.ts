@@ -1,5 +1,5 @@
 import type {
-  ChatFileAttachment,
+  ChatAttachment,
   ClientOrchestrationCommand,
   ModelSelection,
   ProviderInteractionMode,
@@ -29,7 +29,7 @@ export async function runComposerSendTransaction(input: {
 }
 
 export function buildComposerTurnStartCommand(input: {
-  readonly attachments?: ReadonlyArray<ChatFileAttachment>;
+  readonly attachments?: ReadonlyArray<ChatAttachment>;
   readonly commandId: string;
   readonly createdAt: string;
   readonly interactionMode: ProviderInteractionMode;

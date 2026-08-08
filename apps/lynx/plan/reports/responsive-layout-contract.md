@@ -117,24 +117,17 @@ ReactLynx text nodes do not expose an equivalent readable range/event contract
 in the current engine, so a floating arbitrary-text **Add to chat** action
 cannot be claimed on Native yet.
 
-Lynx also does not yet have a partial fallback that can honestly be called the
-same feature: its composer draft store has no `assistantSelections` field, the
-reference attachment composition receives an empty array, and the turn-start
-transaction only stages file attachments. Adding a message button without
-closing all four seams would either inject raw XML into the prompt or render a
-chip that is never sent.
+Lynx now closes the canonical attachment seam: the draft store persists and
+validates `assistantSelections`, Composer renders/removes the shared reference
+summary, and turn-start sends `ChatAssistantSelectionAttachment` alongside
+files. Assistant rows expose a separate `Reference whole message` fallback;
+invalid/oversized messages and drafts at the shared attachment limit are
+disabled.
 
-The implementation order is therefore explicit:
-
-1. add persisted `assistantSelections` to the Lynx draft domain;
-2. render/remove the shared reference attachment;
-3. include `ChatAssistantSelectionAttachment` in the canonical turn command;
-4. only then add a reachable message-level fallback, clearly labeled as a
-   whole-message reference rather than arbitrary highlighted text;
-5. keep true range selection registered as a host/engine capability gap.
-
-This is an audited platform/product boundary, not a completed selection-action
-cell.
+This fallback is intentionally not presented as the same interaction as Web's
+arbitrary range selection. True range selection and its floating action remain
+a host/engine capability gap, while whole-message referencing is a completed
+partial product surface.
 
 ## Environment and Diff Dock follow-up
 

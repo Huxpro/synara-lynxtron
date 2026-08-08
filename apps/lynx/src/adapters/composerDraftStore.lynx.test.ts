@@ -1,5 +1,7 @@
 import { beforeEach, describe, expect, it } from '@rstest/core';
 
+import { PROVIDER_SEND_TURN_MAX_ATTACHMENTS } from '@synara/contracts';
+import { createAssistantSelectionAttachment } from '@synara-web/lib/assistantSelections';
 import { createPastedTextDraft } from '@synara-web/lib/composerPastedText';
 import {
   LYNX_COMPOSER_DRAFT_STORAGE_KEY,
@@ -26,6 +28,7 @@ describe('Lynx composer draft attachment subset', () => {
     expect(
       useComposerDraftStore.getState().draftsByThreadId['thread-1']
     ).toEqual({
+      assistantSelections: [],
       files: [],
       mentions: [],
       prompt: '',
@@ -69,6 +72,7 @@ describe('Lynx composer draft attachment subset', () => {
     expect(
       useComposerDraftStore.getState().draftsByThreadId['thread-1']
     ).toEqual({
+      assistantSelections: [],
       files: [],
       mentions: [],
       prompt: '',
@@ -79,6 +83,122 @@ describe('Lynx composer draft attachment subset', () => {
         model: 'gpt-5.6-sol',
       },
     });
+  });
+
+  it('persists, deduplicates, and removes whole-message assistant references', () => {
+    const selection = createAssistantSelectionAttachment({
+      assistantMessageId: 'assistant-1',
+      text: '\n  Complete response  \n',
+    });
+    expect(selection).not.toBeNull();
+    if (!selection) return;
+
+    const store = useComposerDraftStore.getState();
+    store.addAssistantSelection('thread-1', selection);
+    useComposerDraftStore.getState().addAssistantSelection('thread-1', {
+      ...selection,
+      id: 'duplicate-id',
+    });
+
+    expect(
+      useComposerDraftStore.getState().draftsByThreadId['thread-1']
+        ?.assistantSelections
+    ).toEqual([
+      {
+        ...selection,
+        text: 'Complete response',
+      },
+    ]);
+    expect(
+      parsePersistedLynxComposerDrafts(
+        webStorage.getItem(LYNX_COMPOSER_DRAFT_STORAGE_KEY)
+      )['thread-1']?.assistantSelections
+    ).toEqual([
+      {
+        ...selection,
+        text: 'Complete response',
+      },
+    ]);
+
+    useComposerDraftStore.getState().removeAssistantSelections('thread-1');
+    expect(
+      useComposerDraftStore.getState().draftsByThreadId['thread-1']
+    ).toBeUndefined();
+  });
+
+  it('drops malformed and oversized assistant references during hydration', () => {
+    const raw = JSON.stringify({
+      valid: {
+        prompt: '',
+        assistantSelections: [
+          {
+            type: 'assistant-selection',
+            id: 'selection-1',
+            assistantMessageId: ' assistant-1 ',
+            text: '\nValid reference\n',
+          },
+          {
+            type: 'assistant-selection',
+            id: '',
+            assistantMessageId: 'assistant-2',
+            text: 'missing id',
+          },
+          {
+            type: 'assistant-selection',
+            id: 'selection-too-long',
+            assistantMessageId: 'assistant-3',
+            text: 'x'.repeat(4_001),
+          },
+          {
+            type: 'file',
+            id: 'wrong-type',
+            assistantMessageId: 'assistant-4',
+            text: 'wrong type',
+          },
+        ],
+        skills: [],
+        mentions: [],
+        files: [],
+        pastedTexts: [],
+      },
+    });
+
+    expect(
+      parsePersistedLynxComposerDrafts(raw).valid?.assistantSelections
+    ).toEqual([
+      {
+        type: 'assistant-selection',
+        id: 'selection-1',
+        assistantMessageId: 'assistant-1',
+        text: 'Valid reference',
+      },
+    ]);
+  });
+
+  it('normalizes runtime references and enforces the shared attachment limit', () => {
+    const store = useComposerDraftStore.getState();
+    for (let index = 0; index < PROVIDER_SEND_TURN_MAX_ATTACHMENTS + 1; index += 1) {
+      store.addAssistantSelection('thread-1', {
+        type: 'assistant-selection',
+        id: `selection-${index}`,
+        assistantMessageId: ` assistant-${index} `,
+        text: `\nReference ${index}\n`,
+      });
+    }
+
+    const selections =
+      useComposerDraftStore.getState().draftsByThreadId['thread-1']
+        ?.assistantSelections ?? [];
+    expect(selections).toHaveLength(PROVIDER_SEND_TURN_MAX_ATTACHMENTS);
+    expect(selections[0]).toMatchObject({
+      assistantMessageId: 'assistant-0',
+      text: 'Reference 0',
+    });
+    expect(selections).not.toContainEqual(
+      expect.objectContaining({
+        assistantMessageId: `assistant-${PROVIDER_SEND_TURN_MAX_ATTACHMENTS}`,
+      })
+    );
   });
 
   it('keeps picked-file capabilities until removal or successful clear', () => {
@@ -193,6 +313,7 @@ describe('Lynx composer draft attachment subset', () => {
       )
     ).toEqual({
       valid: {
+        assistantSelections: [],
         prompt: 'keep',
         skills: [],
         mentions: [],
