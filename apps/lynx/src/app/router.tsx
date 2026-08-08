@@ -24,6 +24,7 @@ import {
   fetchThreadTranscriptRows,
   fetchThreads,
 } from './queries';
+import { threadRecapRevision } from './environmentRecap.logic';
 import { Transcript } from './Transcript';
 import { SettingsPage } from './SettingsPage';
 import { UpdatePage } from './UpdatePage';
@@ -265,6 +266,7 @@ function useThreadTranscriptPolling(threadId: string) {
               current.summary?.interactionMode === summary?.interactionMode &&
               current.summary?.sessionStatus === summary?.sessionStatus &&
               current.summary?.activeTurnId === summary?.activeTurnId &&
+              current.summary?.latestTurnState === summary?.latestTurnState &&
               current.summary?.workspaceRoot === summary?.workspaceRoot &&
               current.summary?.notes === summary?.notes
                 ? current
@@ -404,6 +406,10 @@ function ThreadPage(props: { threadId: string }) {
           open={environmentOpen}
           threadId={threadId}
           provider={currentThread.provider ?? 'codex'}
+          recapRevision={threadRecapRevision(
+            data ?? [],
+            currentThread.latestTurnState
+          )}
           branch={currentThread.branch}
           envMode={currentThread.envMode}
           workspaceRoot={currentThread.workspaceRoot}

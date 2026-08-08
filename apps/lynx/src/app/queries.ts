@@ -42,6 +42,13 @@ import {
   projectSidebarSearchProject,
   projectSidebarSearchThreads,
 } from '@synara-web/components/SidebarSearchProjection.logic';
+import { webStorage } from '../platform/storage';
+import {
+  deriveThreadRecapSource,
+  persistThreadRecapCache,
+  readPersistedThreadRecapCache,
+  upsertPersistedThreadRecap,
+} from '@synara-web/lib/threadRecap';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -104,8 +111,24 @@ export interface ThreadHeaderSummary {
   readonly interactionMode: 'default' | 'plan';
   readonly sessionStatus: string | null;
   readonly activeTurnId: string | null;
+  readonly latestTurnState: string | null;
   readonly workspaceRoot: string | null;
   readonly notes: string;
+}
+
+export interface ThreadRecapSummary {
+  readonly coveredMessageId: string | null;
+  readonly sourceSignature: string;
+  readonly text: string;
+  readonly updatedAt: string;
+}
+
+export interface ThreadRecapPlan {
+  readonly currentState: string;
+  readonly existing: ThreadRecapSummary | null;
+  readonly latestMessageId: string | null;
+  readonly newMaterial: string;
+  readonly sourceSignature: string;
 }
 
 export interface SidebarSnapshot {
@@ -348,6 +371,7 @@ export async function fetchThreadHeaderSummary(
     interactionMode: thread.interactionMode,
     sessionStatus: thread.session?.status ?? null,
     activeTurnId: thread.session?.activeTurnId ?? null,
+    latestTurnState: thread.latestTurn?.state ?? null,
     workspaceRoot: project?.workspaceRoot ?? null,
     notes: thread.notes ?? '',
   };
@@ -424,6 +448,99 @@ export async function fetchThreadTranscriptRows(
     rows,
   });
   return rows;
+}
+
+export async function fetchThreadRecapSummary(
+  threadId: string
+): Promise<ThreadRecapSummary | null> {
+  'background only';
+  const cache = readPersistedThreadRecapCache(webStorage);
+  return cache[threadId as keyof typeof cache] ?? null;
+}
+
+export async function prepareThreadRecap(
+  threadId: string
+): Promise<ThreadRecapPlan | null> {
+  'background only';
+  const [
+    { fetchSynaraThreadDetailSnapshot },
+    { useStore },
+    { getThreadFromState },
+  ] = await Promise.all([
+    import(/* webpackMode: "eager" */ '../data/synaraClient'),
+    import(/* webpackMode: "eager" */ '@synara-web/store'),
+    import(/* webpackMode: "eager" */ '@synara-web/threadDerivation'),
+  ]);
+  const snapshot = await fetchSynaraThreadDetailSnapshot(threadId);
+  if (!snapshot) return null;
+  useStore
+    .getState()
+    .syncServerThreadDetail(
+      snapshot.thread as Parameters<ReturnType<typeof useStore.getState>['syncServerThreadDetail']>[0]
+    );
+  const thread = getThreadFromState(
+    useStore.getState(),
+    threadId as Parameters<typeof getThreadFromState>[1]
+  );
+  if (!thread) return null;
+  const cache = readPersistedThreadRecapCache(webStorage);
+  const existing = cache[threadId] ?? null;
+  const hasStreamingAssistant = thread.messages.some(
+    (message) => message.role === 'assistant' && message.streaming
+  );
+  if (thread.latestTurn?.state === 'running' || hasStreamingAssistant) {
+    return null;
+  }
+  const source = deriveThreadRecapSource({
+    thread,
+    previousCoveredMessageId: existing?.coveredMessageId ?? null,
+    hasPreviousRecap: Boolean(existing?.text),
+  });
+  if (!source.hasNewMaterial || existing?.sourceSignature === source.signature) {
+    return null;
+  }
+  return {
+    currentState: source.currentState,
+    existing,
+    latestMessageId: source.latestMessageId,
+    newMaterial: source.newMaterial,
+    sourceSignature: source.signature,
+  };
+}
+
+export async function generatePreparedThreadRecap(input: {
+  readonly cwd: string;
+  readonly plan: ThreadRecapPlan;
+  readonly threadId: string;
+}): Promise<ThreadRecapSummary> {
+  'background only';
+  const { generateThreadRecap } = await import(
+    /* webpackMode: "eager" */ '../data/synaraClient'
+  );
+  const cache = readPersistedThreadRecapCache(webStorage);
+  const result = await generateThreadRecap({
+    cwd: input.cwd,
+    newMaterial: input.plan.newMaterial,
+    currentState: input.plan.currentState,
+    ...(input.plan.existing?.text
+      ? { previousRecap: input.plan.existing.text }
+      : {}),
+  });
+  const persisted = {
+    text: result.recap,
+    coveredMessageId: input.plan.latestMessageId,
+    sourceSignature: input.plan.sourceSignature,
+    updatedAt: new Date().toISOString(),
+  };
+  persistThreadRecapCache(
+    upsertPersistedThreadRecap(
+      cache,
+      input.threadId as Parameters<typeof upsertPersistedThreadRecap>[1],
+      persisted
+    ),
+    webStorage
+  );
+  return persisted;
 }
 
 export async function fetchPullRequests(input: {

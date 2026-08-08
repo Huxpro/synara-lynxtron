@@ -20,6 +20,7 @@ import globeSvg from '@synara-central-icons/globe.svg?raw';
 import stopSvg from '@synara-central-icons/stop.svg?raw';
 
 import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
+import { ChatMarkdown } from '../components/markdown/ChatMarkdown.lynx';
 import {
   ChevronDownIcon,
   DeviceLaptopIcon,
@@ -52,11 +53,17 @@ import {
   LAST_EDITOR_STORAGE_KEY,
   resolveEnvironmentEditor,
 } from './environmentEditor.logic';
+import { resolveThreadRecapIdleMs } from '@synara-web/lib/threadRecap';
+import {
+  fetchThreadRecapSummary,
+  generatePreparedThreadRecap,
+  prepareThreadRecap,
+  type ThreadRecapSummary,
+} from './queries';
 
 import './environment-panel.css';
 
 const NOTES_SAVE_DELAY_MS = 500;
-
 function environmentCommandId(): string {
   return `lynx-environment-${Date.now()}-${Math.random()
     .toString(16)
@@ -357,6 +364,98 @@ function EnvironmentEditor(props: {
   );
 }
 
+function EnvironmentRecap(props: {
+  readonly open: boolean;
+  readonly revision: string;
+  readonly threadId: string;
+  readonly workspaceRoot: string;
+}) {
+  const [generatedRecap, setGeneratedRecap] =
+    useState<ThreadRecapSummary | null>(null);
+  const [generationState, setGenerationState] = useState<
+    'idle' | 'pending' | 'error'
+  >('idle');
+  const generationRef = useRef(0);
+  const cachedRecapQuery = useQuery({
+    queryKey: ['environment-thread-recap', props.threadId],
+    queryFn: () => {
+      'background only';
+      return fetchThreadRecapSummary(props.threadId);
+    },
+    enabled: props.open,
+  });
+  const recap = generatedRecap ?? cachedRecapQuery.data ?? null;
+  const recapIdleMs = resolveThreadRecapIdleMs({
+    hasExistingRecap: Boolean(recap?.text),
+  });
+
+  useEffect(() => {
+    'background only';
+    if (!props.open) {
+      generationRef.current += 1;
+      setGenerationState('idle');
+      return;
+    }
+    const generation = ++generationRef.current;
+    void prepareThreadRecap(props.threadId).then(async (plan) => {
+      if (!plan || generationRef.current !== generation) return;
+      await sleepOnHost(recapIdleMs);
+      if (generationRef.current !== generation) return;
+      setGenerationState('pending');
+      try {
+        const next = await generatePreparedThreadRecap({
+          cwd: props.workspaceRoot,
+          plan,
+          threadId: props.threadId,
+        });
+        if (generationRef.current !== generation) return;
+        if (next) setGeneratedRecap(next);
+        setGenerationState('idle');
+      } catch {
+        if (generationRef.current === generation) {
+          setGenerationState('error');
+        }
+      }
+    });
+    return () => {
+      if (generationRef.current === generation) generationRef.current += 1;
+    };
+  }, [
+    props.open,
+    props.revision,
+    props.threadId,
+    props.workspaceRoot,
+    recapIdleMs,
+  ]);
+
+  if (!recap && generationState !== 'pending') return null;
+
+  return (
+    <view className="EnvironmentRecapSection">
+      <view className="EnvironmentDivider" />
+      <EnvironmentSectionLabel>Recap</EnvironmentSectionLabel>
+      {recap ? (
+        <view className="EnvironmentRecapContent">
+          <ChatMarkdown
+            className="EnvironmentRecapMarkdown"
+            text={recap.text}
+          />
+          {generationState === 'error' ? (
+            <text className="EnvironmentRecapStatus">
+              Could not refresh recap
+            </text>
+          ) : null}
+        </view>
+      ) : (
+        <view className="EnvironmentRecapSkeleton" aria-hidden="true">
+          <view className="EnvironmentRecapSkeletonLine" />
+          <view className="EnvironmentRecapSkeletonLine EnvironmentRecapSkeletonLine--short" />
+        </view>
+      )}
+    </view>
+  );
+}
+
 function EnvironmentNotepad(props: {
   readonly notes: string;
   readonly threadId: string;
@@ -522,6 +621,7 @@ export function EnvironmentPanel(props: {
   readonly onOpenSettings: () => void;
   readonly open: boolean;
   readonly provider: ProviderKind;
+  readonly recapRevision: string;
   readonly threadId: string;
   readonly workspaceRoot: string | null;
 }) {
@@ -606,6 +706,15 @@ export function EnvironmentPanel(props: {
             {props.workspaceRoot ? (
               <EnvironmentEditor
                 open={props.open}
+                workspaceRoot={props.workspaceRoot}
+              />
+            ) : null}
+
+            {props.workspaceRoot ? (
+              <EnvironmentRecap
+                open={props.open}
+                revision={props.recapRevision}
+                threadId={props.threadId}
                 workspaceRoot={props.workspaceRoot}
               />
             ) : null}

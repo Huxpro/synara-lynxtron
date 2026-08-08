@@ -374,6 +374,74 @@
   line-height: 15px;
 }
 
+.EnvironmentRecapSection {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.EnvironmentRecapContent,
+.EnvironmentRecapSkeleton {
+  margin: 0 8px 6px;
+}
+
+.EnvironmentRecapMarkdown {
+  color: var(--muted-foreground);
+  font-size: var(--type-composer-editor-size);
+  line-height: var(--type-composer-editor-line-height);
+  opacity: 0.4;
+}
+
+.EnvironmentRecapMarkdown .MdParagraph,
+.EnvironmentRecapMarkdown .MdListMarker {
+  color: var(--muted-foreground);
+  font-size: var(--type-composer-editor-size);
+  line-height: var(--type-composer-editor-line-height);
+}
+
+.EnvironmentRecapMarkdown .MdParagraph,
+.EnvironmentRecapMarkdown .MdList {
+  margin-top: 0;
+  margin-bottom: 4px;
+}
+
+.EnvironmentRecapMarkdown .MdParagraph:last-child,
+.EnvironmentRecapMarkdown .MdList:last-child {
+  margin-bottom: 0;
+}
+
+.EnvironmentRecapMarkdown .MdStrong {
+  color: var(--muted-foreground);
+  font-weight: 500;
+}
+
+.EnvironmentRecapStatus {
+  margin-top: 4px;
+  color: var(--destructive);
+  font-size: 10px;
+  line-height: 15px;
+}
+
+.EnvironmentRecapSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 4px 0;
+}
+
+.EnvironmentRecapSkeletonLine {
+  width: 100%;
+  height: 10px;
+  border-radius: 4px;
+  background-color: var(--accent);
+  opacity: 0.45;
+}
+
+.EnvironmentRecapSkeletonLine--short {
+  width: 80%;
+  opacity: 0.35;
+}
+
 .EnvironmentSectionLabel,
 .EnvironmentDisclosureLabel {
   color: var(--muted-foreground);

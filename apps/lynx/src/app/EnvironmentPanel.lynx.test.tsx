@@ -11,7 +11,6 @@ describe('Lynx Environment panel', () => {
       new URL('./EnvironmentPanel.lynx.tsx', import.meta.url),
       'utf8'
     );
-
     expect(routerSource).toContain('<EnvironmentToggle');
     expect(routerSource).toContain('<EnvironmentPanel');
     expect(routerSource).toContain('className="ThreadHeaderControls"');
@@ -24,6 +23,10 @@ describe('Lynx Environment panel', () => {
   it('uses only sections backed by real current capabilities', () => {
     const panelSource = readFileSync(
       new URL('./EnvironmentPanel.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const queriesSource = readFileSync(
+      new URL('./queries.ts', import.meta.url),
       'utf8'
     );
 
@@ -40,6 +43,20 @@ describe('Lynx Environment panel', () => {
       panelSource.indexOf('webStorage.setItem(LAST_EDITOR_STORAGE_KEY, editor)')
     );
     expect(panelSource).toContain('Open in ${activeOption.label}');
+    expect(panelSource).toContain('resolveThreadRecapIdleMs({');
+    expect(panelSource).toContain('fetchThreadRecapSummary(props.threadId)');
+    expect(panelSource).toContain('prepareThreadRecap(props.threadId)');
+    expect(panelSource).toContain('await generatePreparedThreadRecap({');
+    expect(panelSource).toContain('<ChatMarkdown');
+    expect(queriesSource).toContain('deriveThreadRecapSource({');
+    expect(queriesSource).toContain("thread.latestTurn?.state === 'running'");
+    expect(queriesSource).toContain('export async function prepareThreadRecap(');
+    expect(queriesSource).toContain('export async function generatePreparedThreadRecap(');
+    expect(queriesSource).toContain('generateThreadRecap({');
+    expect(queriesSource).toContain('readPersistedThreadRecapCache(webStorage)');
+    expect(queriesSource).toContain('persistThreadRecapCache(');
+    expect(queriesSource).toContain('webStorage\n  );');
+    expect(queriesSource).toContain('upsertPersistedThreadRecap(');
     expect(panelSource).toContain("type: 'thread.meta.update'");
     expect(panelSource).toContain('THREAD_NOTES_MAX_CHARS');
     expect(panelSource).toContain('EnvironmentNotepadInput');
@@ -83,6 +100,12 @@ describe('Lynx Environment panel', () => {
     );
     expect(styles).toMatch(
       /\.EnvironmentEditorOption\s*\{[^}]*min-height:\s*26px;[^}]*padding:\s*1px 8px;[^}]*border-radius:\s*8px;/s
+    );
+    expect(styles).toMatch(
+      /\.EnvironmentRecapMarkdown\s*\{[^}]*font-size:\s*var\(--type-composer-editor-size\);[^}]*line-height:\s*var\(--type-composer-editor-line-height\);[^}]*opacity:\s*0\.4;/s
+    );
+    expect(styles).toMatch(
+      /\.EnvironmentRecapSkeletonLine\s*\{[^}]*height:\s*10px;[^}]*border-radius:\s*4px;/s
     );
   });
 });

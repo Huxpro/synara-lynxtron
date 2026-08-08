@@ -7919,3 +7919,32 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   证据在`shots/2026-08-08/environment-editor-current/`；最终staged bundle
   SHA-256为
   `d2465e74c23dcaa8c1e99d452c060aa6137f39992f4674057b703f35e4bb431a`。
+
+### Environment Recap follow-up
+
+- 复用Web `threadRecap`的source derivation、bounded cache schema、12s首次/35s刷新
+  idle policy与typed `server.generateThreadRecap`，不在Lynx另造摘要规则。Lynx query
+  显式注入自身`webStorage` port（shared helper默认`isBrowser=false`会返回null），缓存仍
+  使用产品key `synara:thread-recaps:v1`；Web harness的`synara.lynx.`仅是backend
+  namespace，不进入产品逻辑。
+- 调度拆成prepare/generate两段：prepare先读取真实detail snapshot、归一化thread并
+  拒绝running/streaming、empty、duplicate source；只有存在新material才在idle后显示
+  pending skeleton并调用模型。message-only revision只统计真实message count/id/text/
+  streaming与latest turn state，tool/work rows不触发重复生成；新revision会取消旧plan，
+  防止过时摘要覆盖新transcript。失败保留existing recap并显示refresh error。
+- 同源`58155` server instance `0a735352-e0f2-401b-ad08-28939d9f0a67`，canonical
+  project/thread fixture sequences18/19。Lynx storage cache真实渲染并跨full reload恢复：
+  overlay968/46/312×774、surface980/58/288×750、Recap section987/299/274×102、
+  body995/336.5/258×58.5；最终按Web composer token收敛到12px/19.5px、muted body
+  opacity0.4。删除cache后保持空thread panel打开13s，`EnvironmentRecap*`节点始终0，
+  cache仍null，证明无无意义skeleton闪烁。
+- retained frame 1280×820/DPR1，page errors为空；console仅已知Lynx Web初始化
+  deprecated warning。capture时relay OPEN、attempt1、pending0、transport/rpc error
+  均null。当前server无可工作的Codex CLI，因此不冒充model generation success；
+  typed RPC/shared source/cache/failure-retention由source与shared 14/14 tests覆盖。
+- fixture按记录ID canonical`thread.delete` sequence20与`project.delete` sequence21，
+  active projections 0；namespaced cache和browser session均清理。focused
+  Environment/recap **2 files / 5 tests**、shared recap **14/14**、Web与
+  Native/Desktop production builds通过。证据在
+  `shots/2026-08-08/environment-recap-current/`；最终staged bundle SHA-256为
+  `a95e7d44c1c41d0128cc2aed27c132da1e18ed8505425ef78eecce6b090b814f`。

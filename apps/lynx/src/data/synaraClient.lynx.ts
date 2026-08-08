@@ -34,6 +34,8 @@ import type {
   ProviderListSkillsResult,
   ProviderSkillsCatalogResult,
   ServerConfig,
+  ServerGenerateThreadRecapInput,
+  ServerGenerateThreadRecapResult,
   ServerListWorktreesResult,
   ServerListProviderUsageInput,
   ServerListProviderUsageResult,
@@ -492,6 +494,12 @@ export async function updateServerSettings(
 
 export async function fetchServerConfig(): Promise<ServerConfig> {
   return transportRequest('server.getConfig', {});
+}
+
+export async function generateThreadRecap(
+  input: ServerGenerateThreadRecapInput
+): Promise<ServerGenerateThreadRecapResult> {
+  return transportRequest('server.generateThreadRecap', input);
 }
 
 export async function updateProvider(
