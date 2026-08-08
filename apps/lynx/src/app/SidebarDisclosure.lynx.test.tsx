@@ -78,6 +78,9 @@ describe('Lynx sidebar disclosure', () => {
       /\.SidebarDisclosure--closed \.SidebarDisclosureInner\s*\{[^}]*transform:\s*translateX\(-100%\);/s
     );
     expect(styles).toMatch(
+      /\.SidebarDisclosure--resizing,\s*\.SidebarDisclosure--resizing \.SidebarDisclosureInner\s*\{[^}]*transition-duration:\s*0ms;/s
+    );
+    expect(styles).toMatch(
       /\.SidebarResizeSash\s*\{[^}]*right:\s*-3px;[^}]*width:\s*10px;[^}]*background-color:\s*rgba\(128,\s*128,\s*128,\s*0\.02\);[^}]*cursor:\s*col-resize;/s
     );
     expect(styles).toMatch(
@@ -109,11 +112,14 @@ describe('Lynx sidebar disclosure', () => {
         detail: { button: 0, buttons: 1, clientX: 256 },
       })
     );
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         elementTree.root?.querySelector('.SidebarResizeOverlay')
-      ).not.toBeNull()
-    );
+      ).not.toBeNull();
+      expect(shell?.getAttribute('class')).toContain(
+        'SidebarDisclosure--resizing'
+      );
+    });
     const overlay = elementTree.root?.querySelector('.SidebarResizeOverlay');
     fireEvent(
       overlay!,
@@ -129,11 +135,14 @@ describe('Lynx sidebar disclosure', () => {
       overlay!,
       new CustomEvent('bindEvent:mouseup', { bubbles: true })
     );
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         elementTree.root?.querySelector('.SidebarResizeOverlay')
-      ).toBeNull()
-    );
+      ).toBeNull();
+      expect(shell?.getAttribute('class')).not.toContain(
+        'SidebarDisclosure--resizing'
+      );
+    });
     expect(webStorage.getItem('chat_thread_sidebar_width')).toBe('320');
 
     rerender(

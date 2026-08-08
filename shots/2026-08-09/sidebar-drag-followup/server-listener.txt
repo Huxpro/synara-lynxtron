@@ -1,0 +1,2 @@
+COMMAND  PID      USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+bun     2730 bytedance    9u  IPv4 0xf082d7dfea27cf14      0t0  TCP 127.0.0.1:58160 (LISTEN)

@@ -13,14 +13,16 @@ Working Tree Diff and Pull Request Detail right-panel contracts.
 | Ordinary sidebar resizes | `SliceRouter` always wraps `Sidebar` in `SidebarDisclosure`; rendered Rstest drag changes 256→320 and persists | PASS |
 | Settings sidebar resizes | `SettingsPage` uses the same `SidebarDisclosure`; both internal sidebars are width `100%` | PASS |
 | Open/close remains correct | Existing 220ms disclosure remains; rendered close→open test restores persisted 320px | PASS |
+| Drag tracks the pointer without disclosure lag | `SidebarDisclosure--resizing` disables width/transform transitions only while the shared sash session is active, then restores the 220ms open/close motion | PASS |
 | Desktop bounds protect content | Shared 208px sidebar minimum and 640px content minimum; 900px viewport resolves 260+640, 1024 resolves 384+640 | PASS |
 | Compact behavior remains correct | 600px viewport resolves 588px offcanvas over a full 600px main surface and removes the resize sash | PASS |
-| Different widths preserve fidelity | 1280px light/dark evidence at 208, 320 and 384; shell, inner sidebar and main widths agree; no horizontal sidebar overflow | PASS |
+| Different widths preserve fidelity | Refreshed 1280×820 light/dark evidence at 256, 320 and 384 for ordinary and Settings sidebars; shell, inner sidebar and main widths agree; all 12 PNGs are exactly 1280×820 | PASS |
 | Different scroll positions preserve fidelity | ordinary sidebar top/mid/bottom at 0/111/221 with fixed 46px titlebar and 44px footer; Settings 900×320 mid/bottom at 164/328 | PASS |
-| Light and dark both verified | identical geometry; generated semantic theme tokens own sash focus and existing sidebar material | PASS |
+| Light and dark both verified | Refreshed 12-cell matrix has identical geometry, zero page/transport errors and one connection attempt per page; generated semantic theme tokens still own sash focus and sidebar material | PASS |
 | Tests cover behavior, not only source strings | Lynx rendered drag/overlay/persistence/open-close test; pure pointer/bounds tests; Web shared math and existing Sidebar tests | PASS |
 | Production builds | `build:web` and Native/Desktop `build` pass with existing known warnings | PASS |
 | Native evidence is not overstated | exact-owned Native bundle/client/console verified; current SDK did not expose DOM/screencast and injected drag did not persist, so Native pointer drag is not claimed | RECORDED LIMIT |
+| Lynx-for-Web pointer evidence is not overstated | Chromium real mouse reaches the visible `x-view` sash, but the current Web Elements runtime does not publish the ReactLynx `bindmousedown` path; browser drag is therefore not claimed. Rendered Lynx event tests remain the behavior contract and Native is the certification boundary. | RECORDED LIMIT |
 | Cleanup | canonical fixture cleanup snapshot 215: live projects 0, live threads 0; owned sessions/processes/harness removed | PASS |
 | PR Detail right-panel resize | shared right-panel primitive; real 1440 default/drag/min/max and 900 single-surface matrix | PASS |
 | Working Tree Diff resize | shared primitive, 320–720 bounds and synchronized ThreadPage padding | PASS — runtime content cell limited by current loading thread |
@@ -29,6 +31,13 @@ Working Tree Diff and Pull Request Detail right-panel contracts.
 
 - The resize verifier covers both left-sidebar consumers because both now use
   the same `SidebarDisclosure` owner.
+- The 2026-08-09 follow-up matrix is under
+  `shots/2026-08-09/sidebar-drag-followup/`. It confirms ordinary and Settings
+  geometry at 256/320/384 in both themes, while the earlier populated fixture
+  remains the retained top/mid/bottom scroll evidence.
+- The follow-up also found and fixed a pointer-lag source that the original
+  static-width screenshots could not reveal: the disclosure's 220ms width
+  transition was still active during each drag frame.
 - Environment is a popover, not a sidebar. Diff Dock and Pull Request Detail
   use their own right-panel rules rather than the 208/640 left-sidebar contract.
 - The active thread goal remains broader than this slice: future fidelity work

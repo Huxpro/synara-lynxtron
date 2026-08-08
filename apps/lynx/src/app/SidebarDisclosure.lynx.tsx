@@ -116,7 +116,7 @@ export function SidebarDisclosure(props: {
         revealed
           ? ' SidebarDisclosure--open'
           : ' SidebarDisclosure--closed'
-      }`}
+      }${dragging ? ' SidebarDisclosure--resizing' : ''}`}
       aria-hidden={!interactive}
       accessibility-elements-hidden={!interactive}
       style={{ width: `${revealed ? width : 0}px` }}

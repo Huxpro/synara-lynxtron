@@ -1,0 +1,821 @@
+[
+  {
+    "kind": "ordinary",
+    "theme": "light",
+    "width": 256,
+    "data": {
+      "root": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up",
+      "shell": {
+        "x": 0,
+        "y": 0,
+        "width": 256,
+        "height": 820
+      },
+      "sidebar": {
+        "x": 0,
+        "y": 0,
+        "width": 256,
+        "height": 820
+      },
+      "main": {
+        "x": 256,
+        "y": 0,
+        "width": 1024,
+        "height": 820
+      },
+      "sash": {
+        "x": 249,
+        "y": 0,
+        "width": 10,
+        "height": 820
+      },
+      "scroll": {
+        "box": {
+          "x": 0,
+          "y": 46,
+          "width": 256,
+          "height": 730
+        },
+        "top": 0,
+        "height": 730,
+        "client": 730
+      },
+      "diag": {
+        "configuredBaseUrl": "ws://127.0.0.1:58160",
+        "activeBaseUrl": "ws://127.0.0.1:58160",
+        "readyBaseUrl": null,
+        "socketState": 1,
+        "connectionAttempts": 1,
+        "pendingRequests": 1,
+        "recentRpcTags": [
+          "orchestration.getSidebarShellSnapshot",
+          "server.getConfig",
+          "provider.getComposerCapabilities",
+          "provider.getComposerCapabilities",
+          "provider.getComposerCapabilities",
+          "provider.getComposerCapabilities",
+          "provider.getComposerCapabilities",
+          "pullRequests.list",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "filesystem.browse",
+          "provider.listModels",
+          "server.getConfig"
+        ],
+        "rendererReadyRoute": null,
+        "lastTransportError": null,
+        "lastRpcError": null
+      }
+    },
+    "dimensions": "/Users/bytedance/github/synara/shots/2026-08-09/sidebar-drag-followup/ordinary-light-256.png\n  pixelWidth: 1280\n  pixelHeight: 820",
+    "errors": []
+  },
+  {
+    "kind": "ordinary",
+    "theme": "light",
+    "width": 320,
+    "data": {
+      "root": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up",
+      "shell": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 820
+      },
+      "sidebar": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 820
+      },
+      "main": {
+        "x": 320,
+        "y": 0,
+        "width": 960,
+        "height": 820
+      },
+      "sash": {
+        "x": 313,
+        "y": 0,
+        "width": 10,
+        "height": 820
+      },
+      "scroll": {
+        "box": {
+          "x": 0,
+          "y": 46,
+          "width": 320,
+          "height": 730
+        },
+        "top": 0,
+        "height": 730,
+        "client": 730
+      },
+      "diag": {
+        "configuredBaseUrl": "ws://127.0.0.1:58160",
+        "activeBaseUrl": null,
+        "readyBaseUrl": "ws://127.0.0.1:58160",
+        "socketState": null,
+        "connectionAttempts": 1,
+        "pendingRequests": 0,
+        "recentRpcTags": [
+          "orchestration.getSidebarShellSnapshot",
+          "server.getConfig",
+          "provider.getComposerCapabilities",
+          "provider.getComposerCapabilities",
+          "provider.getComposerCapabilities",
+          "provider.getComposerCapabilities",
+          "provider.getComposerCapabilities",
+          "pullRequests.list",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot"
+        ],
+        "rendererReadyRoute": null,
+        "lastTransportError": null,
+        "lastRpcError": null
+      }
+    },
+    "dimensions": "/Users/bytedance/github/synara/shots/2026-08-09/sidebar-drag-followup/ordinary-light-320.png\n  pixelWidth: 1280\n  pixelHeight: 820",
+    "errors": []
+  },
+  {
+    "kind": "ordinary",
+    "theme": "light",
+    "width": 384,
+    "data": {
+      "root": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up",
+      "shell": {
+        "x": 0,
+        "y": 0,
+        "width": 384,
+        "height": 820
+      },
+      "sidebar": {
+        "x": 0,
+        "y": 0,
+        "width": 384,
+        "height": 820
+      },
+      "main": {
+        "x": 384,
+        "y": 0,
+        "width": 896,
+        "height": 820
+      },
+      "sash": {
+        "x": 377,
+        "y": 0,
+        "width": 10,
+        "height": 820
+      },
+      "scroll": {
+        "box": {
+          "x": 0,
+          "y": 46,
+          "width": 384,
+          "height": 730
+        },
+        "top": 0,
+        "height": 730,
+        "client": 730
+      },
+      "diag": {
+        "configuredBaseUrl": "ws://127.0.0.1:58160",
+        "activeBaseUrl": "ws://127.0.0.1:58160",
+        "readyBaseUrl": null,
+        "socketState": 1,
+        "connectionAttempts": 1,
+        "pendingRequests": 1,
+        "recentRpcTags": [
+          "orchestration.getSidebarShellSnapshot",
+          "server.getConfig",
+          "provider.getComposerCapabilities",
+          "provider.getComposerCapabilities",
+          "provider.getComposerCapabilities",
+          "provider.getComposerCapabilities",
+          "provider.getComposerCapabilities",
+          "pullRequests.list",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "filesystem.browse",
+          "provider.listModels",
+          "server.getConfig"
+        ],
+        "rendererReadyRoute": null,
+        "lastTransportError": null,
+        "lastRpcError": null
+      }
+    },
+    "dimensions": "/Users/bytedance/github/synara/shots/2026-08-09/sidebar-drag-followup/ordinary-light-384.png\n  pixelWidth: 1280\n  pixelHeight: 820",
+    "errors": []
+  },
+  {
+    "kind": "ordinary",
+    "theme": "dark",
+    "width": 256,
+    "data": {
+      "root": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up",
+      "shell": {
+        "x": 0,
+        "y": 0,
+        "width": 256,
+        "height": 820
+      },
+      "sidebar": {
+        "x": 0,
+        "y": 0,
+        "width": 256,
+        "height": 820
+      },
+      "main": {
+        "x": 256,
+        "y": 0,
+        "width": 1024,
+        "height": 820
+      },
+      "sash": {
+        "x": 249,
+        "y": 0,
+        "width": 10,
+        "height": 820
+      },
+      "scroll": {
+        "box": {
+          "x": 0,
+          "y": 46,
+          "width": 256,
+          "height": 730
+        },
+        "top": 0,
+        "height": 730,
+        "client": 730
+      },
+      "diag": {
+        "configuredBaseUrl": "ws://127.0.0.1:58160",
+        "activeBaseUrl": "ws://127.0.0.1:58160",
+        "readyBaseUrl": null,
+        "socketState": 1,
+        "connectionAttempts": 1,
+        "pendingRequests": 1,
+        "recentRpcTags": [
+          "orchestration.getSidebarShellSnapshot",
+          "server.getConfig",
+          "provider.getComposerCapabilities",
+          "provider.getComposerCapabilities",
+          "provider.getComposerCapabilities",
+          "provider.getComposerCapabilities",
+          "provider.getComposerCapabilities",
+          "pullRequests.list",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "filesystem.browse",
+          "provider.listModels",
+          "server.getConfig"
+        ],
+        "rendererReadyRoute": null,
+        "lastTransportError": null,
+        "lastRpcError": null
+      }
+    },
+    "dimensions": "/Users/bytedance/github/synara/shots/2026-08-09/sidebar-drag-followup/ordinary-dark-256.png\n  pixelWidth: 1280\n  pixelHeight: 820",
+    "errors": []
+  },
+  {
+    "kind": "ordinary",
+    "theme": "dark",
+    "width": 320,
+    "data": {
+      "root": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up",
+      "shell": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 820
+      },
+      "sidebar": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 820
+      },
+      "main": {
+        "x": 320,
+        "y": 0,
+        "width": 960,
+        "height": 820
+      },
+      "sash": {
+        "x": 313,
+        "y": 0,
+        "width": 10,
+        "height": 820
+      },
+      "scroll": {
+        "box": {
+          "x": 0,
+          "y": 46,
+          "width": 320,
+          "height": 730
+        },
+        "top": 0,
+        "height": 730,
+        "client": 730
+      },
+      "diag": {
+        "configuredBaseUrl": "ws://127.0.0.1:58160",
+        "activeBaseUrl": "ws://127.0.0.1:58160",
+        "readyBaseUrl": null,
+        "socketState": 1,
+        "connectionAttempts": 1,
+        "pendingRequests": 1,
+        "recentRpcTags": [
+          "orchestration.getSidebarShellSnapshot",
+          "server.getConfig",
+          "provider.getComposerCapabilities",
+          "provider.getComposerCapabilities",
+          "provider.getComposerCapabilities",
+          "provider.getComposerCapabilities",
+          "provider.getComposerCapabilities",
+          "pullRequests.list",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "filesystem.browse",
+          "provider.listModels",
+          "server.getConfig"
+        ],
+        "rendererReadyRoute": null,
+        "lastTransportError": null,
+        "lastRpcError": null
+      }
+    },
+    "dimensions": "/Users/bytedance/github/synara/shots/2026-08-09/sidebar-drag-followup/ordinary-dark-320.png\n  pixelWidth: 1280\n  pixelHeight: 820",
+    "errors": []
+  },
+  {
+    "kind": "ordinary",
+    "theme": "dark",
+    "width": 384,
+    "data": {
+      "root": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up",
+      "shell": {
+        "x": 0,
+        "y": 0,
+        "width": 384,
+        "height": 820
+      },
+      "sidebar": {
+        "x": 0,
+        "y": 0,
+        "width": 384,
+        "height": 820
+      },
+      "main": {
+        "x": 384,
+        "y": 0,
+        "width": 896,
+        "height": 820
+      },
+      "sash": {
+        "x": 377,
+        "y": 0,
+        "width": 10,
+        "height": 820
+      },
+      "scroll": {
+        "box": {
+          "x": 0,
+          "y": 46,
+          "width": 384,
+          "height": 730
+        },
+        "top": 0,
+        "height": 730,
+        "client": 730
+      },
+      "diag": {
+        "configuredBaseUrl": "ws://127.0.0.1:58160",
+        "activeBaseUrl": "ws://127.0.0.1:58160",
+        "readyBaseUrl": null,
+        "socketState": 1,
+        "connectionAttempts": 1,
+        "pendingRequests": 0,
+        "recentRpcTags": [
+          "orchestration.getSidebarShellSnapshot",
+          "server.getConfig",
+          "provider.getComposerCapabilities",
+          "provider.getComposerCapabilities",
+          "provider.getComposerCapabilities",
+          "provider.getComposerCapabilities",
+          "provider.getComposerCapabilities",
+          "pullRequests.list",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "filesystem.browse",
+          "provider.listModels",
+          "server.getConfig"
+        ],
+        "rendererReadyRoute": null,
+        "lastTransportError": null,
+        "lastRpcError": "Synara RPC provider.listModels failed: [{\"_tag\":\"Fail\",\"error\":{\"_tag\":\"WsRpcError\",\"message\":\"Provider adapter request failed (codex) for model/list: Codex CLI version check failed. Error: codex not found in PATH\",\"cause\":{\"message\":\"Provider adapter request failed (codex) for model/list: Codex CLI version check failed. Error: codex not found in PATH\",\"name\":\"Error\"}}}]"
+      }
+    },
+    "dimensions": "/Users/bytedance/github/synara/shots/2026-08-09/sidebar-drag-followup/ordinary-dark-384.png\n  pixelWidth: 1280\n  pixelHeight: 820",
+    "errors": []
+  },
+  {
+    "kind": "settings",
+    "theme": "light",
+    "width": 256,
+    "data": {
+      "root": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up",
+      "shell": {
+        "x": 0,
+        "y": 0,
+        "width": 256,
+        "height": 820
+      },
+      "sidebar": {
+        "x": 0,
+        "y": 0,
+        "width": 256,
+        "height": 820
+      },
+      "main": {
+        "x": 256,
+        "y": 0,
+        "width": 1024,
+        "height": 820
+      },
+      "sash": {
+        "x": 249,
+        "y": 0,
+        "width": 10,
+        "height": 820
+      },
+      "scroll": {
+        "box": {
+          "x": 0,
+          "y": 46,
+          "width": 256,
+          "height": 774
+        },
+        "top": 0,
+        "height": 774,
+        "client": 774
+      },
+      "diag": {
+        "configuredBaseUrl": "ws://127.0.0.1:58160",
+        "activeBaseUrl": "ws://127.0.0.1:58160",
+        "readyBaseUrl": null,
+        "socketState": 1,
+        "connectionAttempts": 1,
+        "pendingRequests": 0,
+        "recentRpcTags": [
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "server.getSettings",
+          "server.getConfig"
+        ],
+        "rendererReadyRoute": "/settings/general",
+        "lastTransportError": null,
+        "lastRpcError": null
+      }
+    },
+    "dimensions": "/Users/bytedance/github/synara/shots/2026-08-09/sidebar-drag-followup/settings-light-256.png\n  pixelWidth: 1280\n  pixelHeight: 820",
+    "errors": []
+  },
+  {
+    "kind": "settings",
+    "theme": "light",
+    "width": 320,
+    "data": {
+      "root": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up",
+      "shell": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 820
+      },
+      "sidebar": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 820
+      },
+      "main": {
+        "x": 320,
+        "y": 0,
+        "width": 960,
+        "height": 820
+      },
+      "sash": {
+        "x": 313,
+        "y": 0,
+        "width": 10,
+        "height": 820
+      },
+      "scroll": {
+        "box": {
+          "x": 0,
+          "y": 46,
+          "width": 320,
+          "height": 774
+        },
+        "top": 0,
+        "height": 774,
+        "client": 774
+      },
+      "diag": {
+        "configuredBaseUrl": "ws://127.0.0.1:58160",
+        "activeBaseUrl": "ws://127.0.0.1:58160",
+        "readyBaseUrl": null,
+        "socketState": 1,
+        "connectionAttempts": 1,
+        "pendingRequests": 0,
+        "recentRpcTags": [
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "server.getSettings",
+          "server.getConfig"
+        ],
+        "rendererReadyRoute": "/settings/general",
+        "lastTransportError": null,
+        "lastRpcError": null
+      }
+    },
+    "dimensions": "/Users/bytedance/github/synara/shots/2026-08-09/sidebar-drag-followup/settings-light-320.png\n  pixelWidth: 1280\n  pixelHeight: 820",
+    "errors": []
+  },
+  {
+    "kind": "settings",
+    "theme": "light",
+    "width": 384,
+    "data": {
+      "root": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up",
+      "shell": {
+        "x": 0,
+        "y": 0,
+        "width": 384,
+        "height": 820
+      },
+      "sidebar": {
+        "x": 0,
+        "y": 0,
+        "width": 384,
+        "height": 820
+      },
+      "main": {
+        "x": 384,
+        "y": 0,
+        "width": 896,
+        "height": 820
+      },
+      "sash": {
+        "x": 377,
+        "y": 0,
+        "width": 10,
+        "height": 820
+      },
+      "scroll": {
+        "box": {
+          "x": 0,
+          "y": 46,
+          "width": 384,
+          "height": 774
+        },
+        "top": 0,
+        "height": 774,
+        "client": 774
+      },
+      "diag": {
+        "configuredBaseUrl": "ws://127.0.0.1:58160",
+        "activeBaseUrl": "ws://127.0.0.1:58160",
+        "readyBaseUrl": null,
+        "socketState": 1,
+        "connectionAttempts": 1,
+        "pendingRequests": 0,
+        "recentRpcTags": [
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "server.getSettings",
+          "server.getConfig"
+        ],
+        "rendererReadyRoute": "/settings/general",
+        "lastTransportError": null,
+        "lastRpcError": null
+      }
+    },
+    "dimensions": "/Users/bytedance/github/synara/shots/2026-08-09/sidebar-drag-followup/settings-light-384.png\n  pixelWidth: 1280\n  pixelHeight: 820",
+    "errors": []
+  },
+  {
+    "kind": "settings",
+    "theme": "dark",
+    "width": 256,
+    "data": {
+      "root": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up",
+      "shell": {
+        "x": 0,
+        "y": 0,
+        "width": 256,
+        "height": 820
+      },
+      "sidebar": {
+        "x": 0,
+        "y": 0,
+        "width": 256,
+        "height": 820
+      },
+      "main": {
+        "x": 256,
+        "y": 0,
+        "width": 1024,
+        "height": 820
+      },
+      "sash": {
+        "x": 249,
+        "y": 0,
+        "width": 10,
+        "height": 820
+      },
+      "scroll": {
+        "box": {
+          "x": 0,
+          "y": 46,
+          "width": 256,
+          "height": 774
+        },
+        "top": 0,
+        "height": 774,
+        "client": 774
+      },
+      "diag": {
+        "configuredBaseUrl": "ws://127.0.0.1:58160",
+        "activeBaseUrl": "ws://127.0.0.1:58160",
+        "readyBaseUrl": null,
+        "socketState": 1,
+        "connectionAttempts": 1,
+        "pendingRequests": 0,
+        "recentRpcTags": [
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "server.getSettings",
+          "server.getConfig"
+        ],
+        "rendererReadyRoute": "/settings/general",
+        "lastTransportError": null,
+        "lastRpcError": null
+      }
+    },
+    "dimensions": "/Users/bytedance/github/synara/shots/2026-08-09/sidebar-drag-followup/settings-dark-256.png\n  pixelWidth: 1280\n  pixelHeight: 820",
+    "errors": []
+  },
+  {
+    "kind": "settings",
+    "theme": "dark",
+    "width": 320,
+    "data": {
+      "root": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up",
+      "shell": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 820
+      },
+      "sidebar": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 820
+      },
+      "main": {
+        "x": 320,
+        "y": 0,
+        "width": 960,
+        "height": 820
+      },
+      "sash": {
+        "x": 313,
+        "y": 0,
+        "width": 10,
+        "height": 820
+      },
+      "scroll": {
+        "box": {
+          "x": 0,
+          "y": 46,
+          "width": 320,
+          "height": 774
+        },
+        "top": 0,
+        "height": 774,
+        "client": 774
+      },
+      "diag": {
+        "configuredBaseUrl": "ws://127.0.0.1:58160",
+        "activeBaseUrl": "ws://127.0.0.1:58160",
+        "readyBaseUrl": null,
+        "socketState": 1,
+        "connectionAttempts": 1,
+        "pendingRequests": 0,
+        "recentRpcTags": [
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "server.getSettings",
+          "server.getConfig"
+        ],
+        "rendererReadyRoute": "/settings/general",
+        "lastTransportError": null,
+        "lastRpcError": null
+      }
+    },
+    "dimensions": "/Users/bytedance/github/synara/shots/2026-08-09/sidebar-drag-followup/settings-dark-320.png\n  pixelWidth: 1280\n  pixelHeight: 820",
+    "errors": []
+  },
+  {
+    "kind": "settings",
+    "theme": "dark",
+    "width": 384,
+    "data": {
+      "root": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up",
+      "shell": {
+        "x": 0,
+        "y": 0,
+        "width": 384,
+        "height": 820
+      },
+      "sidebar": {
+        "x": 0,
+        "y": 0,
+        "width": 384,
+        "height": 820
+      },
+      "main": {
+        "x": 384,
+        "y": 0,
+        "width": 896,
+        "height": 820
+      },
+      "sash": {
+        "x": 377,
+        "y": 0,
+        "width": 10,
+        "height": 820
+      },
+      "scroll": {
+        "box": {
+          "x": 0,
+          "y": 46,
+          "width": 384,
+          "height": 774
+        },
+        "top": 0,
+        "height": 774,
+        "client": 774
+      },
+      "diag": {
+        "configuredBaseUrl": "ws://127.0.0.1:58160",
+        "activeBaseUrl": "ws://127.0.0.1:58160",
+        "readyBaseUrl": null,
+        "socketState": 1,
+        "connectionAttempts": 1,
+        "pendingRequests": 0,
+        "recentRpcTags": [
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "server.getSettings",
+          "server.getConfig"
+        ],
+        "rendererReadyRoute": "/settings/general",
+        "lastTransportError": null,
+        "lastRpcError": null
+      }
+    },
+    "dimensions": "/Users/bytedance/github/synara/shots/2026-08-09/sidebar-drag-followup/settings-dark-384.png\n  pixelWidth: 1280\n  pixelHeight: 820",
+    "errors": []
+  }
+]

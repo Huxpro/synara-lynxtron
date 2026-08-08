@@ -26,6 +26,11 @@
   transform: translateX(-100%);
 }
 
+.SidebarDisclosure--resizing,
+.SidebarDisclosure--resizing .SidebarDisclosureInner {
+  transition-duration: 0ms;
+}
+
 .SidebarResizeSash {
   position: absolute;
   top: 0;
