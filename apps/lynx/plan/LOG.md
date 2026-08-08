@@ -7892,3 +7892,30 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   focused Environment **3/3**、Web build、Native/Desktop final build与preflight gate
   均通过；最终staged bundle SHA-256为
   `7a42282e7ade88380bc47b4b1d44a4e528e085d9065bc01c222d5e0854e38a72`。
+
+### Environment Editor follow-up
+
+- 对照Web `EnvironmentEditorSection`与已有server contracts后，接入真实外部Editor
+  picker，而非disabled placeholder：`server.getConfig`提供installed editors，
+  shared `EDITORS`保持产品顺序/文案，`synara:last-editor`沿用Web偏好key，
+  `shell.openInEditor`接当前thread workspace root。无workspace或无installed editor时
+  section不渲染；失败会保留panel并显示可见错误。in-app Editor view与brand-specific
+  native icons仍明确未接，不冒充完成。
+- Web authority现有browser test真实点击`Open in VS Code`与menu option，并断言
+  `shell.openInEditor` payload为`cwd=/repo/project, editor=vscode`。Lynx-for-Web在同一
+  `58155` server instance `0a735352-e0f2-401b-ad08-28939d9f0a67`、snapshot sequence
+  15、1280×820/DPR1下，经canonical project/thread fixture渲染真实`Open in Cursor`。
+- 首轮实测发现generic button border/padding把预期26px option撑成28px；按Web normal
+  picker token修为1px vertical padding后，final popup为176×192，7个options均
+  166×26，顺序`Cursor/Trae/VS Code/Ghostty/Terminal/Xcode/File Manager`，trigger
+  保持274×26、panel保持overlay 968/46/312×774与surface 980/58/288×750。
+- retained frame为1280×820，page errors为空；console仅已知Lynx Web初始化deprecated
+  warning。relay为OPEN、attempt1、pending0、transport/rpc error均null。为避免打扰
+  用户，Lynx evidence只展开menu、不实际拉起外部app；真实RPC action由上述Web authority
+  test覆盖。fixture按记录ID走canonical`thread.delete` sequence16与`project.delete`
+  sequence17清理，active projection均0；browser session已关闭。
+- focused Environment/editor **2 files / 5 tests**、Web authority browser **1/1**、
+  Lynx-for-Web与Native/Desktop production builds、三端connection preflight均通过。
+  证据在`shots/2026-08-08/environment-editor-current/`；最终staged bundle
+  SHA-256为
+  `d2465e74c23dcaa8c1e99d452c060aa6137f39992f4674057b703f35e4bb431a`。

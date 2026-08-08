@@ -32,12 +32,19 @@ describe('Lynx Environment panel', () => {
     expect(panelSource).toContain('stopLocalServer({');
     expect(panelSource).toContain('localServerPrimaryLabel(server)');
     expect(panelSource).toContain('localServerAddressLabel(server)');
+    expect(panelSource).toContain('fetchServerConfig()');
+    expect(panelSource).toContain('environmentEditorOptions(');
+    expect(panelSource).toContain('webStorage.setItem(LAST_EDITOR_STORAGE_KEY, editor)');
+    expect(panelSource).toContain('await openPathInEditor({');
+    expect(panelSource.indexOf('await openPathInEditor({')).toBeLessThan(
+      panelSource.indexOf('webStorage.setItem(LAST_EDITOR_STORAGE_KEY, editor)')
+    );
+    expect(panelSource).toContain('Open in ${activeOption.label}');
     expect(panelSource).toContain("type: 'thread.meta.update'");
     expect(panelSource).toContain('THREAD_NOTES_MAX_CHARS');
     expect(panelSource).toContain('EnvironmentNotepadInput');
     expect(panelSource).not.toContain('Changes');
     expect(panelSource).not.toContain('GitHub');
-    expect(panelSource).not.toContain('Open in editor');
   });
 
   it('matches the Web overlay footprint and row rhythm', () => {
@@ -70,6 +77,12 @@ describe('Lynx Environment panel', () => {
     );
     expect(styles).toMatch(
       /\.EnvironmentLocalServerStop\s*\{[^}]*width:\s*24px;[^}]*height:\s*24px;[^}]*padding:\s*0;/s
+    );
+    expect(styles).toMatch(
+      /\.LxMenuPopup\.EnvironmentEditorPopup\s*\{[^}]*width:\s*176px;[^}]*min-height:\s*0;[^}]*padding:\s*4px;/s
+    );
+    expect(styles).toMatch(
+      /\.EnvironmentEditorOption\s*\{[^}]*min-height:\s*26px;[^}]*padding:\s*1px 8px;[^}]*border-radius:\s*8px;/s
     );
   });
 });

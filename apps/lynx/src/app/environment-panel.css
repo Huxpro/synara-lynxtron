@@ -304,6 +304,16 @@
   white-space: nowrap;
 }
 
+.EnvironmentRowTrailingIcon {
+  display: flex;
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.6;
+}
+
 .EnvironmentWorkspace {
   margin: -2px 8px 2px 32px;
   overflow: hidden;
@@ -319,6 +329,49 @@
   height: 1px;
   margin: 4px 0;
   background-color: var(--settings-project-border);
+}
+
+.EnvironmentLabeledSection {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.EnvironmentEditorTrigger {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.EnvironmentEditorTrigger.ui-hover,
+.EnvironmentEditorTrigger.ui-focus,
+.EnvironmentEditorTrigger.ui-pressed {
+  background-color: var(--accent);
+  opacity: 1;
+}
+
+.LxMenuPopup.EnvironmentEditorPopup {
+  width: 176px;
+  min-width: 176px;
+  min-height: 0;
+  padding: 4px;
+}
+
+.EnvironmentEditorOption {
+  min-height: 26px;
+  padding: 1px 8px;
+  border-radius: 8px;
+}
+
+.EnvironmentEditorOption .LxMenuItem__text {
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.EnvironmentEditorError {
+  margin: 0 8px 2px 32px;
+  color: var(--destructive);
+  font-size: 10px;
+  line-height: 15px;
 }
 
 .EnvironmentSectionLabel,

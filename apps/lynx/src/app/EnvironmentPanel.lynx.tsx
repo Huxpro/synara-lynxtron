@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from '@lynx-js/react';
 import { useQuery } from '@tanstack/react-query';
 import {
   THREAD_NOTES_MAX_CHARS,
+  type EditorId,
   type ProviderKind,
 } from '@synara/contracts';
 import {
@@ -19,8 +20,12 @@ import globeSvg from '@synara-central-icons/globe.svg?raw';
 import stopSvg from '@synara-central-icons/stop.svg?raw';
 
 import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
-import { ChevronDownIcon, GitBranchIcon } from '../lib/icons.lynx';
-import { RefreshCwIcon } from '../lib/icons.lynx';
+import {
+  ChevronDownIcon,
+  DeviceLaptopIcon,
+  GitBranchIcon,
+  RefreshCwIcon,
+} from '../lib/icons.lynx';
 import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
 import { useTheme } from '../adapters/useTheme.lynx';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
@@ -28,15 +33,25 @@ import {
   dispatchSynaraCommand,
   fetchAllProviderUsage,
   fetchLocalServers,
+  fetchServerConfig,
+  openPathInEditor,
   stopLocalServer,
 } from '../data/synaraClient.lynx';
+import { webStorage } from '../platform/storage';
 import { sleepOnHost } from '../platform/timer';
 import {
   Menu,
   MenuItem,
   MenuPopup,
+  MenuRadioGroup,
+  MenuRadioItem,
   MenuTrigger,
 } from '../components/ui/menu.lynx';
+import {
+  environmentEditorOptions,
+  LAST_EDITOR_STORAGE_KEY,
+  resolveEnvironmentEditor,
+} from './environmentEditor.logic';
 
 import './environment-panel.css';
 
@@ -78,6 +93,7 @@ export function EnvironmentToggle(props: {
 function EnvironmentRow(props: {
   readonly icon: React.ReactNode;
   readonly label: string;
+  readonly trailingIcon?: React.ReactNode;
   readonly trailing?: string | null;
 }) {
   return (
@@ -86,6 +102,9 @@ function EnvironmentRow(props: {
       <text className="EnvironmentRowLabel">{props.label}</text>
       {props.trailing ? (
         <text className="EnvironmentRowTrailing">{props.trailing}</text>
+      ) : null}
+      {props.trailingIcon ? (
+        <view className="EnvironmentRowTrailingIcon">{props.trailingIcon}</view>
       ) : null}
     </view>
   );
@@ -225,6 +244,116 @@ function EnvironmentLocalServers() {
         )}
       </MenuPopup>
     </Menu>
+  );
+}
+
+function EnvironmentEditor(props: {
+  readonly open: boolean;
+  readonly workspaceRoot: string;
+}) {
+  const configQuery = useQuery({
+    queryKey: ['server-config'],
+    queryFn: () => {
+      'background only';
+      return fetchServerConfig();
+    },
+    enabled: props.open,
+  });
+  const options = environmentEditorOptions(
+    configQuery.data?.availableEditors ?? []
+  );
+  const [preferredEditor, setPreferredEditor] = useState<EditorId | null>(() =>
+    resolveEnvironmentEditor(
+      options,
+      webStorage.getItem(LAST_EDITOR_STORAGE_KEY)
+    )
+  );
+  const [openingEditor, setOpeningEditor] = useState<EditorId | null>(null);
+  const [openError, setOpenError] = useState<string | null>(null);
+  const resolvedEditor = resolveEnvironmentEditor(
+    options,
+    preferredEditor ?? webStorage.getItem(LAST_EDITOR_STORAGE_KEY)
+  );
+  const activeOption =
+    options.find((option) => option.value === resolvedEditor) ?? null;
+
+  async function openEditor(editor: EditorId) {
+    'background only';
+    if (openingEditor !== null) return;
+    setOpeningEditor(editor);
+    setOpenError(null);
+    try {
+      await openPathInEditor({
+        cwd: props.workspaceRoot,
+        editor,
+      });
+      setPreferredEditor(editor);
+      webStorage.setItem(LAST_EDITOR_STORAGE_KEY, editor);
+    } catch (error) {
+      setOpenError(
+        error instanceof Error ? error.message : `Could not open ${editor}.`
+      );
+    } finally {
+      setOpeningEditor(null);
+    }
+  }
+
+  if (configQuery.isPending || options.length === 0 || !activeOption) {
+    return null;
+  }
+
+  return (
+    <view className="EnvironmentLabeledSection">
+      <view className="EnvironmentDivider" />
+      <EnvironmentSectionLabel>Editor</EnvironmentSectionLabel>
+      <Menu>
+        <MenuTrigger
+          ariaLabel={`Open in ${activeOption.label}`}
+          className="EnvironmentEditorTrigger"
+          disabled={openingEditor !== null}
+        >
+          <EnvironmentRow
+            icon={
+              <DeviceLaptopIcon
+                size={16}
+                color="var(--foreground)"
+              />
+            }
+            label={`Open in ${activeOption.label}`}
+            trailingIcon={
+              <ChevronDownIcon
+                size={12}
+                color="var(--muted-foreground)"
+              />
+            }
+          />
+        </MenuTrigger>
+        <MenuPopup
+          align="start"
+          side="bottom"
+          className="EnvironmentEditorPopup"
+        >
+          <MenuRadioGroup
+            value={resolvedEditor ?? undefined}
+            onValueChange={(value) => void openEditor(value as EditorId)}
+          >
+            {options.map((option) => (
+              <MenuRadioItem
+                className="EnvironmentEditorOption"
+                disabled={openingEditor !== null}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </MenuRadioItem>
+            ))}
+          </MenuRadioGroup>
+        </MenuPopup>
+      </Menu>
+      {openError ? (
+        <text className="EnvironmentEditorError">{openError}</text>
+      ) : null}
+    </view>
   );
 }
 
@@ -473,6 +602,13 @@ export function EnvironmentPanel(props: {
               label={providerUsageDisplayName(props.provider)}
               trailing={usageQuery.isPending ? 'Loading…' : usageLabel}
             />
+
+            {props.workspaceRoot ? (
+              <EnvironmentEditor
+                open={props.open}
+                workspaceRoot={props.workspaceRoot}
+              />
+            ) : null}
 
             <view className="EnvironmentDivider" />
             <EnvironmentNotepad
