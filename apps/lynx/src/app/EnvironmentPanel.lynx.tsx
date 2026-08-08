@@ -1992,6 +1992,13 @@ export function EnvironmentPanel(props: {
               </view>
             </view>
 
+            {props.workspaceRoot ? (
+              <EnvironmentChanges
+                open={props.open}
+                workspaceRoot={props.workspaceRoot}
+              />
+            ) : null}
+
             <EnvironmentRow
               icon={
                 <GitBranchIcon
@@ -2006,13 +2013,6 @@ export function EnvironmentPanel(props: {
               <text className="EnvironmentWorkspace">{props.workspaceRoot}</text>
             ) : null}
 
-            {props.workspaceRoot ? (
-              <EnvironmentChanges
-                open={props.open}
-                workspaceRoot={props.workspaceRoot}
-              />
-            ) : null}
-
             <EnvironmentLocalServers />
 
             <view className="EnvironmentDivider" />
@@ -2024,13 +2024,6 @@ export function EnvironmentPanel(props: {
               label={providerUsageDisplayName(props.provider)}
               trailing={usageQuery.isPending ? 'Loading…' : usageLabel}
             />
-
-            {props.workspaceRoot ? (
-              <EnvironmentEditor
-                open={props.open}
-                workspaceRoot={props.workspaceRoot}
-              />
-            ) : null}
 
             {props.workspaceRoot ? (
               <EnvironmentRepository
@@ -2048,6 +2041,13 @@ export function EnvironmentPanel(props: {
             ) : null}
 
             {props.workspaceRoot ? (
+              <EnvironmentEditor
+                open={props.open}
+                workspaceRoot={props.workspaceRoot}
+              />
+            ) : null}
+
+            {props.workspaceRoot ? (
               <EnvironmentRecap
                 open={props.open}
                 revision={props.recapRevision}
@@ -2055,14 +2055,6 @@ export function EnvironmentPanel(props: {
                 workspaceRoot={props.workspaceRoot}
               />
             ) : null}
-
-            <view className="EnvironmentDivider" />
-            <EnvironmentProjectInstructions
-              key={props.projectId}
-              projectId={props.projectId}
-              threadId={props.threadId}
-              notes={props.notes}
-            />
 
             {props.pinnedMessages.length > 0 ? (
               <>
@@ -2087,6 +2079,14 @@ export function EnvironmentPanel(props: {
                 />
               </>
             ) : null}
+
+            <view className="EnvironmentDivider" />
+            <EnvironmentProjectInstructions
+              key={props.projectId}
+              projectId={props.projectId}
+              threadId={props.threadId}
+              notes={props.notes}
+            />
 
             <view className="EnvironmentDivider" />
             <EnvironmentNotepad

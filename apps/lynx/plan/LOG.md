@@ -8093,3 +8093,21 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Native/Desktop production builds通过。证据在
   `shots/2026-08-08/environment-changes-current/`；最终staged bundle SHA-256为
   `75f448f60cc86372acb1be9ebbdd5616a9c844e5a930e12e828e83fc775655c0`。
+
+### Environment composition order follow-up
+
+- 功能sections逐项接入后做整体composition audit，发现Lynx把Branch放在Changes前、
+  Editor放在Repository/PR前、Instructions放在Pinned/Markers前，均偏离Web authority。
+  仅重排presentation composition，不改任何数据/RPC/state逻辑，final order锁定为：
+  Changes→Branch→Local Servers→Usage→Repository→PR→Editor→Recap→Pinned→Markers
+  →Project Instructions→Notepad。
+- 新增source-order focused contract，包含所有optional sections；组合fixture真实渲染
+  适用subsequence Changes→Branch→Local Servers→Usage→Repository→Editor
+  →Instructions→Notepad。direct-child projection中optional section各自拥有leading
+  divider，无adjacent/doubled rules。
+- canonical fixture sequences66/67，delete68/69，active projections0；1280×820/DPR1
+  retained frame、relay OPEN/attempt1/pending0、transport/rpc error null，page errors
+  clean。focused Environment **4/4**、Web与Native/Desktop production builds通过。
+  证据在`shots/2026-08-08/environment-order-current/`；最终staged bundle
+  SHA-256为
+  `04a1e710efa6b69f8e6d6b0f41a9d8a56355ca2b7718e774ec9baf149a6f9763`。

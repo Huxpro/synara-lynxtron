@@ -1,0 +1,1 @@
+"{\n  \"configuredBaseUrl\": \"ws://127.0.0.1:58155\",\n  \"activeBaseUrl\": \"ws://127.0.0.1:58155\",\n  \"readyBaseUrl\": null,\n  \"socketState\": 1,\n  \"connectionAttempts\": 1,\n  \"pendingRequests\": 0,\n  \"lastTransportError\": null,\n  \"lastRpcError\": null\n}"

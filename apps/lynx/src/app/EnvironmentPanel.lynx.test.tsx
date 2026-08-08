@@ -180,4 +180,34 @@ describe('Lynx Environment panel', () => {
       /\.LxMenuPopup\.EnvironmentPullRequestPopup\s*\{[^}]*width:\s*288px;[^}]*max-height:\s*320px;[^}]*padding:\s*6px;/s
     );
   });
+
+  it('keeps sections in the Web authority order', () => {
+    const panelSource = readFileSync(
+      new URL('./EnvironmentPanel.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const renderSource = panelSource.slice(
+      panelSource.indexOf('<view className="EnvironmentContent">')
+    );
+    const orderedSections = [
+      '<EnvironmentChanges',
+      'label={props.branch',
+      '<EnvironmentLocalServers',
+      '<EnvironmentSectionLabel>Usage',
+      '<EnvironmentRepository',
+      '<EnvironmentPullRequest',
+      '<EnvironmentEditor',
+      '<EnvironmentRecap',
+      '<EnvironmentPinned',
+      '<EnvironmentMarkers',
+      '<EnvironmentProjectInstructions',
+      '<EnvironmentNotepad',
+    ];
+    let previousIndex = -1;
+    for (const section of orderedSections) {
+      const index = renderSource.indexOf(section);
+      expect(index).toBeGreaterThan(previousIndex);
+      previousIndex = index;
+    }
+  });
 });
