@@ -270,6 +270,7 @@ function useThreadTranscriptPolling(threadId: string) {
               current.summary?.latestTurnState === summary?.latestTurnState &&
               current.summary?.workspaceRoot === summary?.workspaceRoot &&
               current.summary?.pinnedRevision === summary?.pinnedRevision &&
+              current.summary?.markerRevision === summary?.markerRevision &&
               current.summary?.notes === summary?.notes
                 ? current
                 : {
@@ -420,6 +421,7 @@ function ThreadPage(props: { threadId: string }) {
           projectId={currentThread.projectId}
           pinnedMessages={currentThread.pinnedMessages}
           pinnedMessageTextById={currentThread.pinnedMessageTextById}
+          threadMarkers={currentThread.threadMarkers}
           provider={currentThread.provider ?? 'codex'}
           recapRevision={threadRecapRevision(
             data ?? [],

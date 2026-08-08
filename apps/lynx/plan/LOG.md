@@ -8028,3 +8028,28 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   证据在`shots/2026-08-08/environment-pinned-current/`；最终staged bundle
   SHA-256为
   `9c045bba7326ed74e0667cf8243afc6e94b73e77e7e59900df2b184b1030b6b3`。
+
+### Environment Markers follow-up
+
+- Detail projection补`threadMarkers`与stable revision；Environment复用shared
+  `isThreadMarkerAvailable`/`normalizeThreadMarkerLabel`和Web
+  `deriveThreadMarkerLabel`，严格按message range+selectedText判availability。Marker
+  row复用已验证的checkbox/edit/remove/jump kernel，并加入10px yellow/blue/green/pink
+  swatch；available marker可jump，unavailable marker禁止jump但仍可rename/remove。
+- 父级持有串行optimistic marker list与rollback error，三类mutation发canonical
+  marker done/label/remove commands。每行独立component拥有interaction hooks，避免
+  map内hook顺序随marker数量变化。
+- Canonical fixture：project45、source46、handoff target48、两个marker49/50。
+  真实assistant message中`real assistant message` range被判available并显示green；
+  selectedText `stale!`与message不匹配的历史marker被判unavailable并显示pink。
+  available marker真实done并回显checked/strike；unavailable marker rename为
+  `Recovered marker (unavailable)`后真实remove，仅一row保留。
+- rows274×32、checkbox14×14、swatch10×10、actions24×24。relay最终
+  OPEN/attempt1/pending0、transport/rpc error均null；1280×820 frame/page errors
+  clean，console仅已知初始化warning。
+- fixture target/source/project canonical delete sequences55/56/57，active
+  projections0；browser session关闭。focused Environment/recap **2 files / 5 tests**、
+  shared marker availability **4/4**、Web与Native/Desktop production builds通过。
+  证据在`shots/2026-08-08/environment-markers-current/`；最终staged bundle
+  SHA-256为
+  `2703dcbcb017b505a664cd64798007be1c57207313be33c7382401c11f7a5438`。

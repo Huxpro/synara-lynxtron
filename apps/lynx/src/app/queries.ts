@@ -8,6 +8,7 @@ import type {
   PinnedMessage,
   ProjectId,
   ProviderKind,
+  ThreadMarker,
   PullRequestDetail,
   PullRequestDetailInput,
   PullRequestDiffResult,
@@ -120,6 +121,8 @@ export interface ThreadHeaderSummary {
   readonly pinnedMessages: readonly PinnedMessage[];
   readonly pinnedMessageTextById: Readonly<Record<string, string>>;
   readonly pinnedRevision: string;
+  readonly threadMarkers: readonly ThreadMarker[];
+  readonly markerRevision: string;
 }
 
 export interface ThreadRecapSummary {
@@ -392,6 +395,8 @@ export async function fetchThreadHeaderSummary(
         .map((message) => [message.id as MessageId, message.text])
     ),
     pinnedRevision: JSON.stringify(thread.pinnedMessages ?? []),
+    threadMarkers: thread.threadMarkers ?? [],
+    markerRevision: JSON.stringify(thread.threadMarkers ?? []),
   };
 }
 

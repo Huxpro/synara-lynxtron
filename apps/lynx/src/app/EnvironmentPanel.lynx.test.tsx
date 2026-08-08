@@ -73,6 +73,12 @@ describe('Lynx Environment panel', () => {
     expect(queriesSource).toContain('pinnedMessageTextById: Object.fromEntries(');
     expect(transcriptSource).toContain('function scrollToMessage(messageId: string)');
     expect(transcriptSource).toContain("row.kind === 'message' && row.message.id === messageId");
+    expect(panelSource).toContain('function EnvironmentMarkerRow(');
+    expect(panelSource).toContain('isThreadMarkerAvailable(props.marker, props.messageText)');
+    expect(panelSource).toContain("type: 'thread.marker.done.set'");
+    expect(panelSource).toContain("type: 'thread.marker.label.set'");
+    expect(panelSource).toContain("type: 'thread.marker.remove'");
+    expect(queriesSource).toContain('threadMarkers: thread.threadMarkers ?? []');
     expect(panelSource).toContain('resolveThreadRecapIdleMs({');
     expect(panelSource).toContain('fetchThreadRecapSummary(props.threadId)');
     expect(panelSource).toContain('prepareThreadRecap(props.threadId)');
@@ -150,6 +156,9 @@ describe('Lynx Environment panel', () => {
     );
     expect(styles).toMatch(
       /\.EnvironmentPinnedCheckbox\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*border-radius:\s*4px;/s
+    );
+    expect(styles).toMatch(
+      /\.EnvironmentMarkerSwatch\s*\{[^}]*width:\s*10px;[^}]*height:\s*10px;[^}]*border-radius:\s*999px;/s
     );
   });
 });

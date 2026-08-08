@@ -552,6 +552,30 @@
   height: 10px;
 }
 
+.EnvironmentMarkerSwatch {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  border-radius: 999px;
+}
+
+.EnvironmentMarkerSwatch--yellow {
+  background-color: rgba(255, 174, 0, 0.2);
+}
+
+.EnvironmentMarkerSwatch--blue {
+  border: 1px solid var(--muted-foreground);
+  background-color: transparent;
+}
+
+.EnvironmentMarkerSwatch--green {
+  background-color: #34d399;
+}
+
+.EnvironmentMarkerSwatch--pink {
+  background-color: #f472b6;
+}
+
 .EnvironmentPinnedLabel {
   display: flex;
   min-width: 0;
