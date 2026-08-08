@@ -193,6 +193,39 @@
   height: 32px;
 }
 
+.SliceRoot--viewport-sm-up .SharedThemePackImportViewport {
+  align-items: center;
+  padding-top: 0;
+}
+
+.SliceRoot--viewport-sm-up .LxDialogPopup.SharedThemePackImportDialog {
+  width: 448px;
+  max-width: calc(100vw - 32px);
+  max-height: 80%;
+  border-width: 1px;
+  border-radius: 22px;
+}
+
+.SliceRoot--viewport-sm-up .SharedThemePackImportFooter {
+  height: 52px;
+  flex-direction: row;
+}
+
+.SliceRoot--viewport-sm-up .SharedThemePackImportCancel {
+  width: 59.65625px;
+  height: 28px;
+}
+
+.SliceRoot--viewport-sm-up .SharedThemePackImportSubmit {
+  width: 58.265625px;
+  height: 28px;
+}
+
+.SliceRoot--viewport-sm-up .SharedThemePackImportClose {
+  width: 28px;
+  height: 28px;
+}
+
 .SharedThemePackHeader > .LxMenuRoot {
   width: 100%;
 }

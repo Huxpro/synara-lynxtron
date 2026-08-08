@@ -43,6 +43,7 @@ Concrete success criteria:
 | Error clearing | Editing the invalid value removes the error immediately and returns the dialog to `448x242.5` | PASS |
 | Compact base dialog | At `320x640`, Web and Lynx use a bottom sheet `320x301.5`, textarea `286x94`, 32px full-width stacked actions, and a 32px close control | PASS |
 | Compact invalid dialog | Web and Lynx use `320x341.5`; wrapped error `288x32`; footer stays pinned at `y=544` | PASS |
+| Compact breakpoint | Both clients use the bottom sheet through 639px and switch to the centered 448px modal at exactly 640px | PASS |
 | Light material | Dialog `rgb(255,255,255)`, ink `rgb(13,13,13)`, 7% semantic border, radius 22 | PASS |
 | Dark material | Dialog `rgb(23,23,23)`, ink `rgb(252,252,252)`, 7% semantic border, radius 22 | PASS |
 | Connection provenance | Three-client preflight resolved server instance `bec7ebc4-3a45-4cc3-9f91-bc5aab3f1064`, snapshot 0; relay had no transport/RPC error | PASS |
@@ -112,6 +113,19 @@ The wrapped invalid state is also exact: dialog `0,298.5,320x341.5`, error
 `16,500,288x32`, and the footer remains pinned at `0,544,320x96`. A real dark
 switch retained the same geometry with `rgb(23,23,23)` surface, 7% semantic
 border, and the shared destructive error tone.
+
+Web's `max-sm` contract ends below 640px, while Lynx's broader
+`viewport-compact` band continues to 767px. Applying the sheet solely from the
+compact band incorrectly produced a full-width bottom sheet at 700px. The
+explicit `SliceRoot--viewport-sm-up` override now restores the desktop modal
+without changing global viewport classification:
+
+- 639px: both dialogs `0,354.5,639x285.5` bottom sheets;
+- 640px: both dialogs `96,198.75,448x242.5` centered modals;
+- 700px: both dialogs `126,198.75,448x242.5` centered modals.
+
+The matrix was exercised through live viewport changes while the dialog stayed
+open, covering the responsive transition rather than only cold-start classes.
 
 The first Lynx capture measured the dialog at 98% scale because it sampled the
 entrance transition. It was rejected; the stable post-transition frame above
