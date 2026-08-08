@@ -1,0 +1,100 @@
+.DiffDock {
+  position: absolute;
+  top: 46px;
+  right: 0;
+  bottom: 0;
+  z-index: 18;
+  display: flex;
+  width: 50%;
+  max-width: 720px;
+  min-width: 420px;
+  flex-direction: column;
+  border-left: 1px solid var(--border);
+  background-color: var(--background);
+}
+
+.DiffDockHeader {
+  display: flex;
+  height: 44px;
+  min-height: 44px;
+  padding: 0 12px;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+
+.DiffDockIdentity {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.DiffDockTitle {
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.DiffDockStats {
+  color: var(--muted-foreground);
+  font-size: 11px;
+  line-height: 16.5px;
+}
+
+.DiffDockClose {
+  display: flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.DiffDockClose.ui-hover,
+.DiffDockClose.ui-focus,
+.DiffDockClose.ui-pressed {
+  background-color: var(--accent);
+}
+
+.DiffDockScroller {
+  width: 100%;
+  height: 100%;
+  padding: 12px;
+}
+
+.DiffDockState {
+  display: flex;
+  min-height: 180px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.DiffDockStateText {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.DiffDockRetry {
+  display: flex;
+  height: 28px;
+  padding: 0 10px;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.DiffDockRetry.ui-hover,
+.DiffDockRetry.ui-focus,
+.DiffDockRetry.ui-pressed {
+  background-color: var(--accent);
+}
+
+.DiffDockRetryText {
+  color: var(--foreground);
+  font-size: 12px;
+  line-height: 18px;
+}

@@ -55,6 +55,7 @@ import { resolveSettingsBackTarget } from '@synara-web/components/SidebarSetting
 import { resolveThreadPageBodyState } from './threadPageState.logic';
 import { sleepOnHost } from '../platform/timer';
 import { EmptyThreadContextTray } from './EmptyThreadContextTray.lynx';
+import { DiffDock } from './DiffDock.lynx';
 import {
   EnvironmentPanel,
   EnvironmentToggle,
@@ -313,6 +314,7 @@ function ThreadPage(props: { threadId: string }) {
     readonly ServerProviderStatus[]
   >([]);
   const [environmentOpen, setEnvironmentOpen] = useState(false);
+  const [diffOpen, setDiffOpen] = useState(false);
   const transcriptControllerRef = useRef<TranscriptController | null>(null);
   const registerTranscriptController = useCallback(
     (controller: TranscriptController | null) => {
@@ -436,12 +438,21 @@ function ThreadPage(props: { threadId: string }) {
           onJumpToPinnedMessage={(messageId) =>
             transcriptControllerRef.current?.scrollToMessage(messageId)
           }
+          onOpenChanges={() => {
+            setEnvironmentOpen(false);
+            setDiffOpen(true);
+          }}
           onOpenSettings={() => {
             setEnvironmentOpen(false);
             history.push('/settings/general');
           }}
         />
       ) : null}
+      <DiffDock
+        open={diffOpen}
+        workspaceRoot={currentThread?.workspaceRoot ?? null}
+        onClose={() => setDiffOpen(false)}
+      />
     </view>
   );
 }

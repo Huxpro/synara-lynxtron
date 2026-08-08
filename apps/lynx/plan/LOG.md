@@ -8111,3 +8111,22 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   证据在`shots/2026-08-08/environment-order-current/`；最终staged bundle
   SHA-256为
   `04a1e710efa6b69f8e6d6b0f41a9d8a56355ca2b7718e774ec9baf149a6f9763`。
+
+### Working-tree Diff Dock kernel
+
+- 复用已有Lynx-native portable unified-diff projection：
+  `buildPullRequestCodeView` + `PullRequestCodeComposition`，不另写parser/render语义。
+  新`DiffDock`由Environment Changes row真实打开，关闭Environment overlay后在chat右侧
+  渲染50%宽/720 cap dock；typed `git.readWorkingTreeDiff(scope=workingTree)`读取
+  patch，支持loading/error/retry、file collapse与120-line增量展示。
+- 当前真实working tree投影98 renderable files、+1892/−1。dock
+  768/46/512×774，header44px，code root487px；真实file headers463×36。通过pointer
+  展开首file后，hunk与addition rows均按18px line height渲染，证明不是只展示
+  status/file list，而是真实patch viewer。
+- capture relay OPEN/attempt1/pending0、transport/rpc error null；1280×820/DPR1
+  frame/page errors clean，console仅已知初始化warning。
+- fixture sequences70/71，canonical delete72/73，active projections0；browser
+  session关闭。focused Environment/recap **2 files / 6 tests**、Web与
+  Native/Desktop production builds通过。证据在
+  `shots/2026-08-08/diff-dock-current/`；最终staged bundle SHA-256为
+  `5b18adf10e44200089c0990d15bf5c989707ad606317ba1ded02e4b54cd9c917`。

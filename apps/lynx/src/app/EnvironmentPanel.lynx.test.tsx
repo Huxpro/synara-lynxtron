@@ -33,6 +33,10 @@ describe('Lynx Environment panel', () => {
       new URL('./Transcript.tsx', import.meta.url),
       'utf8'
     );
+    const diffDockSource = readFileSync(
+      new URL('./DiffDock.lynx.tsx', import.meta.url),
+      'utf8'
+    );
 
     expect(panelSource).toContain('fetchAllProviderUsage({})');
     expect(panelSource).toContain('fetchLocalServers()');
@@ -93,6 +97,10 @@ describe('Lynx Environment panel', () => {
     expect(panelSource).toContain("type: 'thread.marker.label.set'");
     expect(panelSource).toContain("type: 'thread.marker.remove'");
     expect(queriesSource).toContain('threadMarkers: thread.threadMarkers ?? []');
+    expect(panelSource).toContain('onOpenViewer={props.onOpenChanges}');
+    expect(diffDockSource).toContain('fetchWorkingTreeDiff(props.workspaceRoot!)');
+    expect(diffDockSource).toContain('buildPullRequestCodeView(');
+    expect(diffDockSource).toContain('<PullRequestCodeComposition');
     expect(panelSource).toContain('resolveThreadRecapIdleMs({');
     expect(panelSource).toContain('fetchThreadRecapSummary(props.threadId)');
     expect(panelSource).toContain('prepareThreadRecap(props.threadId)');

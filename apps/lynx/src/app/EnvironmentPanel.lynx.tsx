@@ -289,6 +289,7 @@ function EnvironmentLocalServers() {
 }
 
 function EnvironmentChanges(props: {
+  readonly onOpenViewer: () => void;
   readonly open: boolean;
   readonly workspaceRoot: string;
 }) {
@@ -360,7 +361,7 @@ function EnvironmentChanges(props: {
         onActivate={
           statusState.error
             ? () => setRefreshGeneration((current) => current + 1)
-            : undefined
+            : props.onOpenViewer
         }
       >
         <EnvironmentRow
@@ -1929,6 +1930,7 @@ export function EnvironmentPanel(props: {
   readonly notes: string;
   readonly onOpenSettings: () => void;
   readonly onJumpToPinnedMessage: (messageId: string) => void;
+  readonly onOpenChanges: () => void;
   readonly open: boolean;
   readonly pinnedMessages: readonly PinnedMessage[];
   readonly pinnedMessageTextById: Readonly<Record<string, string>>;
@@ -1994,6 +1996,7 @@ export function EnvironmentPanel(props: {
 
             {props.workspaceRoot ? (
               <EnvironmentChanges
+                onOpenViewer={props.onOpenChanges}
                 open={props.open}
                 workspaceRoot={props.workspaceRoot}
               />

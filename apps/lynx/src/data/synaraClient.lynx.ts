@@ -6,6 +6,7 @@ import type {
   FilesystemBrowseResult,
   GitHubRepositoryResult,
   GitPullRequestSnapshotResult,
+  GitReadWorkingTreeDiffResult,
   GitStatusResult,
   ModelSelection,
   OrchestrationImportThreadInput,
@@ -533,6 +534,15 @@ export async function fetchGitPullRequestSnapshot(input: {
 
 export async function fetchGitStatus(cwd: string): Promise<GitStatusResult> {
   return transportRequest('git.status', { cwd });
+}
+
+export async function fetchWorkingTreeDiff(
+  cwd: string
+): Promise<GitReadWorkingTreeDiffResult> {
+  return transportRequest('git.readWorkingTreeDiff', {
+    cwd,
+    scope: 'workingTree',
+  });
 }
 
 export async function repairSynaraState(): Promise<OrchestrationReadModel> {
