@@ -7844,3 +7844,6 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Close黑色12/18。Lynx-for-Web全部resolved exact，Close仅剩2px字体引擎文字度量差；
   不加硬宽度。final Native bundle `d8dcc604…`，PID67220→8903，inner popup
   510×624.390625、console0；owned进程已停止。
+- 继续追根后确认2px并非字体度量：Web sm按钮每侧9px，Lynx generic sm每侧10px。
+  Release row action与dialog Close改为scoped 9px padding；final两端分别exact
+  136.5×28与52.53125×28，relay OPEN、pending0、transport error0。

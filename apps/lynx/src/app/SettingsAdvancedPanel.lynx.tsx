@@ -298,6 +298,7 @@ export function SettingsAdvancedPanel() {
             <Button
               size="sm"
               variant="outline"
+              className="SettingsAdvancedReleaseAction"
               onClick={() => setReleaseHistoryOpen(true)}
             >
               View release history
@@ -393,7 +394,11 @@ export function SettingsAdvancedPanel() {
             </view>
           </DialogPanel>
           <DialogFooter>
-            <Button size="sm" onClick={() => setReleaseHistoryOpen(false)}>
+            <Button
+              size="sm"
+              className="SettingsAdvancedReleaseClose"
+              onClick={() => setReleaseHistoryOpen(false)}
+            >
               Close
             </Button>
           </DialogFooter>

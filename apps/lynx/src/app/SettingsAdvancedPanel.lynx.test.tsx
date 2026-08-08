@@ -114,5 +114,8 @@ describe('Settings Advanced fidelity', () => {
     expect(styles).toMatch(
       /\.SettingsAdvancedReleaseDialog \.LxDialogFooter\s*\{[^}]*height:\s*52px;[^}]*padding:\s*12px 16px;/s
     );
+    expect(styles).toMatch(
+      /\.SettingsAdvancedReleaseAction,\s*\.SettingsAdvancedReleaseClose\s*\{[^}]*padding-left:\s*9px;[^}]*padding-right:\s*9px;/s
+    );
   });
 });

@@ -188,6 +188,10 @@ the historical full screenshot matrix cover the newer focused Usage commits.
   16/24 title, 12/16 description, 52px padded footer, and black 12/18 Close
   label; exact-owned PID `67220` retained the 510×624.390625 inner popup and
   a clean console.
+- The final button-width recheck traced the remaining 2px to generic Lynx
+  `sm` padding (10px per side) versus Web's 9px. Scoped Release action/Close
+  padding now yields exact 136.5×28 and 52.53125×28 controls without fixed
+  widths or typography offsets.
 
 ## Evidence integrity correction
 
