@@ -208,6 +208,11 @@
   width: 58.265625px;
 }
 
+.SharedThemePackImportCancel .LxButton__text,
+.SharedThemePackImportSubmit .LxButton__text {
+  font-weight: 400;
+}
+
 .SharedThemePackImportSubmit.ui-disabled {
   opacity: 0.64;
 }

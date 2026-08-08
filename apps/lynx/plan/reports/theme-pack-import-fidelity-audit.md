@@ -55,6 +55,7 @@ Concrete success criteria:
 | Header typography and code anatomy | Lynx title now resolves foreground/600; description resolves muted foreground; inline `codex-theme-v1:` chip matches Web at `116x20`, `2px 4px`, radius 4, code font | PASS |
 | Close icon tone | Generated Lynx X icon now receives the real muted color prop plus Web's 0.8 SVG opacity instead of relying on a dead CSS `color` declaration | PASS |
 | Disabled Import paint | Empty-value submit uses Web's local disabled opacity `0.64` instead of the generic Lynx `0.48`; button geometry remains exact | PASS |
+| Footer action typography | Cancel and Import labels use Web dialog actions' weight `400` instead of generic Lynx Button weight `500` | PASS |
 | Connection provenance | Three-client preflight resolved server instance `bec7ebc4-3a45-4cc3-9f91-bc5aab3f1064`, snapshot 0; relay had no transport/RPC error | PASS |
 | Screenshot dimensions | Web and Lynx retained diagnostic frames were each measured as `1280x820` | PASS |
 | Focused regression coverage | 3 files / 21 tests pass, including success and parser-error dialog behavior | PASS |
@@ -270,6 +271,13 @@ unchanged `788.734375,490.25,58.265625x28` button box. In the exact button
 region, changed pixels fell from `86.34%` to `31.83%` in light and `31.72%` in
 dark. Mean max-channel difference fell from `50.18` to `31.54` in light and
 from `46.37` to `28.27` in dark.
+
+Both footer action labels now also match Web's `font-normal` dialog override.
+Resolved Cancel and Import weights are `400` in both themes. Cancel mean
+max-channel difference fell from `30.94` to `28.99` in light and from `32.62`
+to `30.32` in dark. The disabled Import region, including the prior opacity
+repair, fell from `86.34%` changed pixels to `30.70%` in light and `30.65%` in
+dark.
 
 ## Close icon tone
 
