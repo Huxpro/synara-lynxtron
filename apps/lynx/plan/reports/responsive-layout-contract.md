@@ -168,10 +168,19 @@ light and dark. Both themes keep identical geometry and use semantic
 background/border/foreground tokens. Evidence:
 `shots/2026-08-08/environment-git-action-current/`.
 
-This does not claim the complete Web advanced Git menu. Per-file exclusion,
-commit-on-new-branch, pull, explicit push/PR menu rows, and live per-phase
-progress presentation remain separate product slices. The quick action is
-state-safe and real; unsupported advanced paths are not silently exposed.
+The follow-up now also restores Web's stable **Commit and Push** menu entry.
+`buildMenuItems` owns the menu rows and disabled states: a clean no-remote
+branch shows Commit/Push/Create PR unavailable; a dirty no-remote branch
+enables only Commit and keeps Commit & push, Push, and Create PR disabled.
+The trigger stays available so users can inspect the real state instead of
+seeing a dead or misleading row. The 240px popup and 28px rows are identical
+in light/dark, with material supplied by the shared menu semantic tokens.
+Evidence: `shots/2026-08-08/environment-git-menu-current/`.
+
+This still does not claim every Web advanced Git workflow. Per-file exclusion,
+commit-on-new-branch, pull execution, and live per-phase progress presentation
+remain separate product slices. The shared menu state and safe commit path are
+real; unsupported advanced mutations are not silently enabled.
 
 ## Kanban follow-up
 

@@ -65,9 +65,9 @@ import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
 import { useTheme } from '../adapters/useTheme.lynx';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import {
+  buildMenuItems,
   resolveDefaultBranchActionDialogCopy,
   requiresDefaultBranchConfirmation,
-  resolveQuickAction,
   summarizeGitResult,
 } from '@synara-web/components/GitActionsControl.logic';
 import {
@@ -442,7 +442,11 @@ function EnvironmentGitAction(props: {
   readonly onCompleted: () => void;
   readonly workspaceRoot: string;
 }) {
+  const [menuOpen, setMenuOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogAction, setDialogAction] = useState<GitStackedAction | null>(
+    null
+  );
   const [commitMessage, setCommitMessage] = useState('');
   const [running, setRunning] = useState(false);
   const [resultLabel, setResultLabel] = useState<string | null>(null);
@@ -467,14 +471,13 @@ function EnvironmentGitAction(props: {
     (activeBranch === defaultBranch ||
       (defaultBranch === null &&
         (activeBranch === 'main' || activeBranch === 'master')));
-  const quickAction = useMemo(
+  const menuItems = useMemo(
     () =>
-      resolveQuickAction(
+      buildMenuItems(
         props.gitStatus,
         running,
-        isDefaultBranch,
         branchList?.hasOriginRemote ?? false,
-        false,
+        isDefaultBranch,
         defaultBranch
       ),
     [
@@ -485,8 +488,10 @@ function EnvironmentGitAction(props: {
       running,
     ]
   );
-  const runnableAction =
-    quickAction.kind === 'run_action' ? quickAction.action ?? null : null;
+  const hasRunnableCommitPushAction = menuItems.some(
+    (item) =>
+      (item.id === 'commit_push' || item.id === 'push') && !item.disabled
+  );
   const files = props.gitStatus?.workingTree.files ?? [];
 
   async function runAction(action: GitStackedAction): Promise<void> {
@@ -526,6 +531,7 @@ function EnvironmentGitAction(props: {
           : summary.title
       );
       setDialogOpen(false);
+      setDialogAction(null);
       setCommitMessage('');
       props.onCompleted();
     } catch (cause) {
@@ -535,44 +541,83 @@ function EnvironmentGitAction(props: {
     }
   }
 
-  const interaction = useLynxInteractiveState({
-    baseClassName: `EnvironmentGitActionTrigger${
-      quickAction.disabled ? ' EnvironmentGitActionTrigger--disabled' : ''
-    }`,
-    accessibleLabel: quickAction.disabled
-      ? `${quickAction.label} unavailable`
-      : quickAction.label,
-    disabled: quickAction.disabled,
-    onActivate: () => {
-      if (!runnableAction) return;
-      if (
-        runnableAction === 'commit' ||
-        runnableAction === 'commit_push' ||
-        runnableAction === 'commit_push_pr'
-      ) {
-        setDialogOpen(true);
-      } else {
-        void runAction(runnableAction);
+  function selectMenuItem(item: (typeof menuItems)[number]): void {
+    'background only';
+    if (item.disabled) return;
+    if (item.kind === 'open_pr') {
+      if (props.gitStatus?.pr?.url) {
+        void platformWindow.openExternal(props.gitStatus.pr.url);
       }
-    },
-  });
+      return;
+    }
+    const action = item.dialogAction;
+    if (!action) return;
+    if (action === 'commit' || action === 'commit_push') {
+      setDialogAction(action);
+      setDialogOpen(true);
+      return;
+    }
+    void runAction(action);
+  }
 
   return (
     <>
-      <view
-        className={interaction.className}
-        {...interaction.eventProps}
-      >
-        <EnvironmentRow
-          icon={
-            <svg
-              className="EnvironmentCanonicalIcon"
-              content={colorizeLynxSvg(pushSvg, 'var(--foreground)')}
-            />
-          }
-          label={running ? 'Working…' : quickAction.label}
-        />
-      </view>
+      <Menu open={menuOpen} onOpenChange={setMenuOpen}>
+        <MenuTrigger
+          ariaLabel="Commit and Push"
+          className={`EnvironmentGitActionTrigger${
+            running || !hasRunnableCommitPushAction
+              ? ' EnvironmentGitActionTrigger--disabled'
+              : ''
+          }`}
+        >
+          <EnvironmentRow
+            icon={
+              <svg
+                className="EnvironmentCanonicalIcon"
+                content={colorizeLynxSvg(pushSvg, 'var(--foreground)')}
+              />
+            }
+            label={running ? 'Working…' : 'Commit and Push'}
+            trailingIcon={
+              <ChevronDownIcon
+                size={12}
+                color="var(--muted-foreground)"
+              />
+            }
+          />
+        </MenuTrigger>
+        <MenuPopup
+          align="start"
+          side="bottom"
+          className="EnvironmentGitActionPopup"
+        >
+          <text className="EnvironmentGitActionMenuLabel">Git actions</text>
+          {menuItems.length === 0 ? (
+            <text className="EnvironmentGitActionMenuState">
+              Git status is unavailable.
+            </text>
+          ) : (
+            menuItems.map((item) => (
+              <MenuItem
+                className="EnvironmentGitActionMenuItem"
+                disabled={item.disabled}
+                key={item.id}
+                onClick={() => selectMenuItem(item)}
+                trailing={
+                  item.disabled ? (
+                    <text className="EnvironmentGitActionMenuUnavailable">
+                      Unavailable
+                    </text>
+                  ) : undefined
+                }
+              >
+                {item.label}
+              </MenuItem>
+            ))
+          )}
+        </MenuPopup>
+      </Menu>
       {resultLabel ? (
         <text className="EnvironmentGitActionStatus EnvironmentGitActionStatus--success">
           {resultLabel}
@@ -581,12 +626,14 @@ function EnvironmentGitAction(props: {
         <text className="EnvironmentGitActionStatus EnvironmentGitActionStatus--error">
           {error}
         </text>
-      ) : quickAction.hint ? (
-        <text className="EnvironmentGitActionStatus">
-          {quickAction.hint}
-        </text>
       ) : null}
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+      <Dialog
+        open={dialogOpen}
+        onOpenChange={(open) => {
+          setDialogOpen(open);
+          if (!open) setDialogAction(null);
+        }}
+      >
         <DialogPopup className="EnvironmentGitActionDialog">
           <DialogTitle>Commit changes</DialogTitle>
           <DialogDescription>
@@ -637,18 +684,25 @@ function EnvironmentGitAction(props: {
               variant="outline"
               size="sm"
               disabled={running}
-              onClick={() => setDialogOpen(false)}
+              onClick={() => {
+                setDialogOpen(false);
+                setDialogAction(null);
+              }}
             >
               Cancel
             </Button>
             <Button
               size="sm"
-              disabled={running || files.length === 0 || !runnableAction}
+              disabled={running || files.length === 0 || !dialogAction}
               onClick={() => {
-                if (runnableAction) void runAction(runnableAction);
+                if (dialogAction) void runAction(dialogAction);
               }}
             >
-              {running ? 'Working…' : quickAction.label}
+              {running
+                ? 'Working…'
+                : dialogAction === 'commit_push'
+                  ? 'Commit & push'
+                  : 'Commit'}
             </Button>
           </DialogFooter>
         </DialogPopup>

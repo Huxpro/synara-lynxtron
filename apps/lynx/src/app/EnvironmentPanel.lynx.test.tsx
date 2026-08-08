@@ -56,13 +56,18 @@ describe('Lynx Environment panel', () => {
     expect(panelSource).toContain('await checkoutGitBranch({ cwd: props.workspaceRoot, branch })');
     expect(panelSource).toContain("type: 'thread.meta.update'");
     expect(panelSource).toContain('Switch branches from the worktree environment controls.');
-    expect(panelSource).toContain('resolveQuickAction(');
+    expect(panelSource).toContain('buildMenuItems(');
     expect(panelSource).toContain('requiresDefaultBranchConfirmation(');
     expect(panelSource).toContain('resolveDefaultBranchActionDialogCopy({');
     expect(panelSource).toContain('await runGitStackedAction({');
     expect(panelSource).toContain('await dialogs.confirm(');
-    expect(panelSource).toContain('<Dialog open={dialogOpen}');
+    expect(panelSource).toContain('<Dialog');
+    expect(panelSource).toContain('open={dialogOpen}');
     expect(panelSource).toContain('Commit message (optional)');
+    expect(panelSource).toContain('ariaLabel="Commit and Push"');
+    expect(panelSource).toContain("label={running ? 'Working…' : 'Commit and Push'}");
+    expect(panelSource).toContain('Git actions');
+    expect(panelSource).toContain('Unavailable');
     expect(panelSource).not.toContain('EnvironmentChangesPopup');
     expect(panelSource).not.toContain('EnvironmentChangesFilePath');
     expect(panelSource).toContain('stopLocalServer({');
@@ -194,6 +199,12 @@ describe('Lynx Environment panel', () => {
     );
     expect(styles).toMatch(
       /\.LxDialogPopup\.EnvironmentGitActionDialog\s*\{[^}]*width:\s*min\(520px,\s*calc\(100vw - 32px\)\);[^}]*border-radius:\s*18px;/s
+    );
+    expect(styles).toMatch(
+      /\.LxMenuPopup\.EnvironmentGitActionPopup\s*\{[^}]*width:\s*240px;[^}]*max-height:\s*320px;[^}]*padding:\s*4px;/s
+    );
+    expect(styles).toMatch(
+      /\.EnvironmentGitActionMenuItem\s*\{[^}]*min-height:\s*28px;[^}]*padding:\s*4px 8px;/s
     );
     expect(styles).toMatch(
       /\.EnvironmentGitActionMessage\s*\{[^}]*min-height:\s*72px;[^}]*border-radius:\s*10px;[^}]*background-color:\s*transparent;[^}]*color:\s*var\(--foreground\);/s

@@ -261,6 +261,40 @@
   opacity: 0.55;
 }
 
+.LxMenuPopup.EnvironmentGitActionPopup {
+  width: 240px;
+  min-width: 240px;
+  max-height: 320px;
+  padding: 4px;
+}
+
+.EnvironmentGitActionMenuLabel {
+  min-height: 24px;
+  padding: 4px 8px;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 16.5px;
+}
+
+.EnvironmentGitActionMenuItem {
+  min-height: 28px;
+  padding: 4px 8px;
+}
+
+.EnvironmentGitActionMenuUnavailable {
+  color: var(--muted-foreground);
+  font-size: 10px;
+  line-height: 15px;
+}
+
+.EnvironmentGitActionMenuState {
+  padding: 8px;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  line-height: 16.5px;
+}
+
 .EnvironmentGitActionStatus {
   padding: 0 8px 4px 32px;
   color: var(--muted-foreground);

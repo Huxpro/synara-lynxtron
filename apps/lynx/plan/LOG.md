@@ -8243,3 +8243,25 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Web/Native bundle SHA-256分别为
   `b320b0e97ac3ce9fbaf5fb96e58938fa9468b5b301e4f8b53127d6407b97fd8c`和
   `a3414ac088321a190ed4e875b80c929b0ac40ee6ebb8ee14f80221c7ef428486`。
+
+### Environment Git actions menu
+
+- Web authority的Environment row始终叫`Commit and Push`并保持可打开，action
+  availability属于popup rows而不是trigger。Lynx现在复用`buildMenuItems`生成
+  Commit / Commit & push / Push / Create PR，不再把动态quick-action label直接放在row。
+- clean、feature branch、无remote的真实repo中，240px popup为3个28px disabled rows；
+  写入未提交改动并等待同一15s status poll后，Commit变为enabled/highlighted，
+  Commit & push、Push、Create PR保持disabled，证明不会因视觉fidelity误开放网络动作。
+- light/dark均在900×650通过真实Appearance切换验证：trigger 274×26、popup
+  240px、rows 230×28完全一致，surface/border/highlight通过shared menu tokens切换，
+  page errors0。证据在`shots/2026-08-08/environment-git-menu-current/`。
+- fixture canonical delete sequences97/98，snapshot98 active threads0；named browser
+  session和临时repo均清理。file exclusion、commit on new branch、pull execution与
+  live phase progress仍是后续slice，不用menu state parity冒充全部高级Git功能完成。
+  首次dark截图因session viewport转场产出900×563白帧且0 nodes，被evidence gate拒绝；
+  replacement使用独立current-repo thread，先验证900×650、dark root和6个目标nodes
+  再截图，canonical cleanup sequences101/102、snapshot102 active threads0。
+  focused **4 files / 18 tests**、三端connection preflight snapshot102、Web与
+  Native/Desktop production builds均通过；最终Web/Native bundle SHA-256分别为
+  `34da6a0d7a96c29aff8fca1cebb768756cfacffafba5bbcc26db7ee6e498e009`和
+  `603487d8bd7cc81c45c933f0869e995dba22d7c64e257fcced42042eff679be7`。
