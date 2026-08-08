@@ -45,6 +45,7 @@ Concrete success criteria:
 | Compact invalid dialog | Web and Lynx use `320x341.5`; wrapped error `288x32`; footer stays pinned at `y=544` | PASS |
 | Compact breakpoint | Both clients use the bottom sheet through 639px and switch to the centered 448px modal at exactly 640px | PASS |
 | Very-short reachability | Lynx uses a real scroll owner at `320x200`; base max scroll 150 and invalid max scroll 190 expose both actions | PASS — INTENTIONAL CORRECTNESS DELTA |
+| Focus restoration | Shared `DialogTrigger` registers one exact selector; success, Cancel, Close, and Escape all invoke native `setFocus` on dismissal | PASS |
 | Light material | Dialog `rgb(255,255,255)`, ink `rgb(13,13,13)`, 7% semantic border, radius 22 | PASS |
 | Dark material | Dialog `rgb(23,23,23)`, ink `rgb(252,252,252)`, 7% semantic border, radius 22 | PASS |
 | Connection provenance | Three-client preflight resolved server instance `bec7ebc4-3a45-4cc3-9f91-bc5aab3f1064`, snapshot 0; relay had no transport/RPC error | PASS |
@@ -147,6 +148,26 @@ Lynx wraps the complete header/panel/footer stack in
 The scroll wrapper has max scroll zero at `320x640` and `1280x820`; all prior
 base geometry remains exact at both sizes. The very-short divergence is
 therefore a bounded reachability improvement, not a general layout fork.
+
+## Focus restoration
+
+The original Lynx action manually toggled Dialog state from a sibling Button,
+so the shared Dialog never registered a trigger selector and could not restore
+keyboard focus after dismissal. The action now renders the exact same button
+inside `DialogTrigger`; it does not call the focus bridge directly.
+
+Focused tests verify all four dismissal paths:
+
+- valid Import submit;
+- Cancel;
+- the 16px Close control;
+- Escape.
+
+Each path selects the generated `.LxDialogTrigger--N` and invokes
+`setFocus({ focus: true })`. A first attempt used `DialogTrigger render=...`,
+which dropped Button text and shrank the header action to 18px in the
+Lynx-for-Web runtime; that variant was rejected. The final children-based
+composition preserves the prior exact `56.265625x25` Import geometry and text.
 
 The first Lynx capture measured the dialog at 98% scale because it sampled the
 entrance transition. It was rejected; the stable post-transition frame above

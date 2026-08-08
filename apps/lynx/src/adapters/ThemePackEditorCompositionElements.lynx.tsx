@@ -8,6 +8,7 @@ import {
   DialogHeader,
   DialogPanel,
   DialogPopup,
+  DialogTrigger,
 } from '../components/ui/dialog';
 import { Input } from '../components/ui/input';
 import { ChevronDownIcon, XIcon } from '../lib/icons.lynx';
@@ -153,22 +154,24 @@ export function ThemePackImportActionElement(props: {
     }
   };
   return (
-    <>
-      <Button
-        size="sm"
-        variant="ghost"
-        className="SharedThemePackHeaderAction SharedThemePackImportTrigger"
-        onClick={() => setOpen(true)}
+    <Dialog
+      open={open}
+      onOpenChange={(nextOpen) => {
+        if (nextOpen) setOpen(true);
+        else close();
+      }}
+    >
+      <DialogTrigger
+        className="SharedThemePackImportTriggerHost"
       >
-        Import
-      </Button>
-      <Dialog
-        open={open}
-        onOpenChange={(nextOpen) => {
-          if (nextOpen) setOpen(true);
-          else close();
-        }}
-      >
+        <Button
+          size="sm"
+          variant="ghost"
+          className="SharedThemePackHeaderAction SharedThemePackImportTrigger"
+        >
+          Import
+        </Button>
+      </DialogTrigger>
         <DialogPopup
           className="SharedThemePackImportDialog"
           viewportClassName="SharedThemePackImportViewport"
@@ -231,8 +234,7 @@ export function ThemePackImportActionElement(props: {
             </DialogFooter>
           </scroll-view>
         </DialogPopup>
-      </Dialog>
-    </>
+    </Dialog>
   );
 }
 

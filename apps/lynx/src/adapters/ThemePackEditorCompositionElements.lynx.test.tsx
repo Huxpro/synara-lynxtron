@@ -19,13 +19,35 @@ function switchElement(): Element {
   return element;
 }
 
+const focusSelect = rs.fn();
+const focusInvoke = rs.fn();
+const focusExec = rs.fn();
+
 beforeEach(() => {
   Object.assign(lynx, {
     requestAnimationFrame(callback: () => void) {
       callback();
       return 0;
     },
+    createSelectorQuery() {
+      return {
+        select(selector: string) {
+          focusSelect(selector);
+          return this;
+        },
+        invoke(payload: unknown) {
+          focusInvoke(payload);
+          return this;
+        },
+        exec() {
+          focusExec();
+        },
+      };
+    },
   });
+  focusSelect.mockClear();
+  focusInvoke.mockClear();
+  focusExec.mockClear();
 });
 
 describe('ThemePack boolean interaction contract', () => {
@@ -76,6 +98,10 @@ describe('ThemePack boolean interaction contract', () => {
     );
     expect(source).toContain('className="SharedThemePackImportDialog"');
     expect(source).toContain('showCloseButton={false}');
+    expect(source).toContain('<DialogTrigger');
+    expect(source).toContain(
+      'className="SharedThemePackImportTriggerHost"'
+    );
     expect(source).toContain(
       'viewportClassName="SharedThemePackImportViewport"'
     );
@@ -203,7 +229,7 @@ describe('ThemePack boolean interaction contract', () => {
     );
 
     fireEvent.tap(
-      elementTree.root?.querySelector('.SharedThemePackImportTrigger')!
+      elementTree.root?.querySelector('.SharedThemePackImportTriggerHost')!
     );
     const textarea = await waitFor(() => {
       const current = elementTree.root?.querySelector(
@@ -240,6 +266,14 @@ describe('ThemePack boolean interaction contract', () => {
         elementTree.root?.querySelector('.SharedThemePackImportDialog')
       ).toBeNull()
     );
+    await waitFor(() => expect(focusSelect).toHaveBeenCalledTimes(1));
+    expect(focusSelect.mock.calls[0]?.[0]).toMatch(
+      /^\.LxDialogTrigger--\d+$/
+    );
+    expect(focusInvoke).toHaveBeenCalledWith({
+      method: 'setFocus',
+      params: { focus: true },
+    });
   });
 
   it('keeps invalid imports editable and displays the parser error', async () => {
@@ -251,7 +285,7 @@ describe('ThemePack boolean interaction contract', () => {
     );
 
     fireEvent.tap(
-      elementTree.root?.querySelector('.SharedThemePackImportTrigger')!
+      elementTree.root?.querySelector('.SharedThemePackImportTriggerHost')!
     );
     const textarea = await waitFor(() =>
       elementTree.root?.querySelector('.SharedThemePackImportTextarea')
@@ -282,6 +316,58 @@ describe('ThemePack boolean interaction contract', () => {
           ?.textContent
       ).toBe('Embedded theme variant must match dark.');
     });
+  });
+
+  it('restores trigger focus after Cancel, Close, and Escape', async () => {
+    const { rerender } = render(
+      <ThemePackImportActionElement variant="light" onImport={() => {}} />
+    );
+    const open = async () => {
+      fireEvent.tap(
+        elementTree.root?.querySelector('.SharedThemePackImportTriggerHost')!
+      );
+      await waitFor(() =>
+        expect(
+          elementTree.root?.querySelector('.SharedThemePackImportDialog')
+        ).not.toBeNull()
+      );
+    };
+    const expectRestored = async () => {
+      await waitFor(() => expect(focusSelect).toHaveBeenCalledTimes(1));
+      expect(focusSelect.mock.calls[0]?.[0]).toMatch(
+        /^\.LxDialogTrigger--\d+$/
+      );
+      expect(focusInvoke).toHaveBeenCalledWith({
+        method: 'setFocus',
+        params: { focus: true },
+      });
+      focusSelect.mockClear();
+      focusInvoke.mockClear();
+      focusExec.mockClear();
+    };
+
+    await open();
+    fireEvent.tap(
+      elementTree.root?.querySelector('.SharedThemePackImportCancel')!
+    );
+    await expectRestored();
+
+    await open();
+    fireEvent.tap(
+      elementTree.root?.querySelector('.SharedThemePackImportClose')!
+    );
+    await expectRestored();
+
+    await open();
+    fireEvent.keydown(
+      elementTree.root?.querySelector('.SharedThemePackImportDialog')!,
+      { key: 'Escape' }
+    );
+    await expectRestored();
+
+    rerender(
+      <ThemePackImportActionElement variant="light" onImport={() => {}} />
+    );
   });
 
   it('renders palette previews in the code-theme trigger and options', () => {
