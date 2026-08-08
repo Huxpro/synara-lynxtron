@@ -8340,3 +8340,15 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Native/Desktop production builds均通过；最终Web/Native bundle SHA-256分别为
   `cac02eb2b9d619cf4eed55437f5f06bc3eb656671d5ed783067ac053eac89c4e`和
   `cf44ecac6d2dea70d43fcddd86d50a287771e1bd7d06092b2555be1d39d0290a`。
+
+### Native selection-action audit
+
+- Web transcript/code selection依赖DOM `Selection`/`Range`、rendered-node ownership与
+  selection rect；当前ReactLynx text nodes没有等价可读range/event contract，不能真实
+  实现任意高亮片段的floating `Add to chat`。
+- Lynx Composer当前也不能诚实做whole-message fallback：draft store没有
+  `assistantSelections`，reference composition传空数组，turn-start只组合file
+  attachments。只加按钮会产生“不显示/不发送”或raw prompt XML假功能。
+- 正确顺序已登记：先接persisted draft→reference chip/remove→canonical
+  `ChatAssistantSelectionAttachment` send，再增加明确标为whole-message的fallback；
+  真正range selection继续作为host/engine gap，不把fallback冒充pixel/UX parity。

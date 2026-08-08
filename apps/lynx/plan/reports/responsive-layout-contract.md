@@ -109,6 +109,33 @@ below. Browser/explorer docks and selection actions remain explicit
 product/platform kernel gaps; they cannot be certified or fixed as responsive
 layout until those consumers exist.
 
+### Selection-action boundary
+
+The current Web transcript/code-selection workflow depends on DOM
+`Selection`/`Range`, rendered-node ownership, and selection rectangles.
+ReactLynx text nodes do not expose an equivalent readable range/event contract
+in the current engine, so a floating arbitrary-text **Add to chat** action
+cannot be claimed on Native yet.
+
+Lynx also does not yet have a partial fallback that can honestly be called the
+same feature: its composer draft store has no `assistantSelections` field, the
+reference attachment composition receives an empty array, and the turn-start
+transaction only stages file attachments. Adding a message button without
+closing all four seams would either inject raw XML into the prompt or render a
+chip that is never sent.
+
+The implementation order is therefore explicit:
+
+1. add persisted `assistantSelections` to the Lynx draft domain;
+2. render/remove the shared reference attachment;
+3. include `ChatAssistantSelectionAttachment` in the canonical turn command;
+4. only then add a reachable message-level fallback, clearly labeled as a
+   whole-message reference rather than arbitrary highlighted text;
+5. keep true range selection registered as a host/engine capability gap.
+
+This is an audited platform/product boundary, not a completed selection-action
+cell.
+
 ## Environment and Diff Dock follow-up
 
 Environment now follows the Web source hierarchy instead of a fixed
