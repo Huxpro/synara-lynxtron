@@ -39,6 +39,8 @@ Concrete success criteria:
 | Lynx light geometry | Exact same four stable boxes at `1280x820`, DPR 1 | PASS |
 | Lynx dark geometry | Exact same four stable boxes at `1280x820`, DPR 1 | PASS |
 | Close control anatomy | Web and Lynx root `28x28` at `827,297.75`, radius 10; icon `16x16` at `833,303.75` | PASS |
+| Invalid-state geometry | Web and Lynx dialog `448x266.5`; error `414x16` at `433,462.25`; footer `446x52` at `417,490.25` | PASS |
+| Error clearing | Editing the invalid value removes the error immediately and returns the dialog to `448x242.5` | PASS |
 | Light material | Dialog `rgb(255,255,255)`, ink `rgb(13,13,13)`, 7% semantic border, radius 22 | PASS |
 | Dark material | Dialog `rgb(23,23,23)`, ink `rgb(252,252,252)`, 7% semantic border, radius 22 | PASS |
 | Connection provenance | Three-client preflight resolved server instance `bec7ebc4-3a45-4cc3-9f91-bc5aab3f1064`, snapshot 0; relay had no transport/RPC error | PASS |
@@ -65,6 +67,26 @@ At `1280x820`, after the 200ms dialog entrance settled:
 | Import | `788.734375,490.25,58.265625x28` | exact |
 | Close | `827,297.75,28x28` | exact |
 | Close icon | `833,303.75,16x16` | exact |
+
+## Invalid state
+
+Submitting `not-a-theme` through each rendered textarea produces the shared
+parser error `Theme share string must start with codex-theme-v1:`. The first
+Lynx implementation used an 18px line box while Web uses 16px, making the
+dialog two pixels too tall and shifting its centered top by one pixel. The
+error owner now uses `12px/16px`; no dialog-level offset or fixed error-state
+height was added.
+
+At `1280x820`, both clients now resolve:
+
+- dialog `416,276.75,448x266.5`;
+- textarea `434,359.25,412x94`;
+- error `433,462.25,414x16`;
+- footer `417,490.25,446x52`.
+
+Changing the textarea after the error removes the error node and restores the
+stable base dialog to `416,288.75,448x242.5`. The same geometry and
+`rgb(224,46,42)` destructive tone were verified after a real switch to dark.
 
 The first Lynx capture measured the dialog at 98% scale because it sampled the
 entrance transition. It was rejected; the stable post-transition frame above

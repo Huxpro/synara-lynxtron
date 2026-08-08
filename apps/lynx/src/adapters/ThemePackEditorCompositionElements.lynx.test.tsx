@@ -104,6 +104,9 @@ describe('ThemePack boolean interaction contract', () => {
     expect(styles).toMatch(
       /\.SharedThemePackImportSubmit\s*\{[^}]*width:\s*58\.265625px;/s
     );
+    expect(styles).toMatch(
+      /\.SharedThemePackImportError\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s
+    );
     expect(source).toContain("import { SettingsResetIcon } from './SettingsResetIcon.lynx';");
     expect(source).toContain('<SettingsResetIcon />');
     expect(source).not.toContain('↶');
