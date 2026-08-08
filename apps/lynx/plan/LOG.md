@@ -8265,3 +8265,25 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Native/Desktop production builds均通过；最终Web/Native bundle SHA-256分别为
   `34da6a0d7a96c29aff8fca1cebb768756cfacffafba5bbcc26db7ee6e498e009`和
   `603487d8bd7cc81c45c933f0869e995dba22d7c64e257fcced42042eff679be7`。
+
+### Environment Git file selection
+
+- commit dialog复用Web的`excludedFiles`集合语义：Edit/Done切换，all/mixed/none
+  14px checkbox，排除row仍可见并显示`Excluded`，summary显示`1 of 2`；只有非全选时
+  才向`git.runStackedAction`发送`filePaths`。Cancel、dialog close与成功都会清空
+  selection，避免下一次commit泄漏旧状态。
+- 隔离repo同时修改`one.txt`与`two.txt`；rendered UI排除`two.txt`后提交
+  `Commit selected file`。Git权威结果为commit
+  `223a13e708685e39433a4e43993d22e123d7e577`且`git show --name-only`只有
+  `one.txt`，working tree仍仅保留`two.txt`，证明不是视觉checkbox而是真实partial
+  commit transaction。
+- 再修改`one.txt`只用于主题证据；light/dark均900×650、`1 of 2`、row/checkbox
+  geometry一致，background/border/foreground通过语义tokens切换，page errors0。
+  证据在`shots/2026-08-08/environment-git-file-selection-current/`。
+- fixture canonical delete sequences105/106，snapshot106 active threads0；named
+  session与临时repo均清理。commit on new branch、pull execution和live phase
+  progress仍是后续slice。focused **4 files / 18 tests**、三端connection preflight
+  snapshot106、Web与Native/Desktop production builds均通过；最终Web/Native bundle
+  SHA-256分别为
+  `e804c76e0f15ce53e85f3210c04e55d2d1bae83238a106484cafb8d3f73d03ea`和
+  `a770064131ca8a1bff8c7842d8976b5961968b55e37387866041c2f14e0e1e96`。

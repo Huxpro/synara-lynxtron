@@ -448,6 +448,10 @@ function EnvironmentGitAction(props: {
     null
   );
   const [commitMessage, setCommitMessage] = useState('');
+  const [editingFiles, setEditingFiles] = useState(false);
+  const [excludedFiles, setExcludedFiles] = useState<ReadonlySet<string>>(
+    new Set()
+  );
   const [running, setRunning] = useState(false);
   const [resultLabel, setResultLabel] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -493,6 +497,26 @@ function EnvironmentGitAction(props: {
       (item.id === 'commit_push' || item.id === 'push') && !item.disabled
   );
   const files = props.gitStatus?.workingTree.files ?? [];
+  const selectedFiles = files.filter((file) => !excludedFiles.has(file.path));
+  const allSelected = excludedFiles.size === 0;
+  const noneSelected = selectedFiles.length === 0;
+
+  function resetDialogState(): void {
+    setDialogAction(null);
+    setCommitMessage('');
+    setEditingFiles(false);
+    setExcludedFiles(new Set());
+    setError(null);
+  }
+
+  function toggleFile(path: string): void {
+    setExcludedFiles((current) => {
+      const next = new Set(current);
+      if (next.has(path)) next.delete(path);
+      else next.add(path);
+      return next;
+    });
+  }
 
   async function runAction(action: GitStackedAction): Promise<void> {
     'background only';
@@ -523,6 +547,9 @@ function EnvironmentGitAction(props: {
         ...(commitMessage.trim()
           ? { commitMessage: commitMessage.trim() }
           : {}),
+        ...(!allSelected
+          ? { filePaths: selectedFiles.map((file) => file.path) }
+          : {}),
       });
       const summary = summarizeGitResult(result);
       setResultLabel(
@@ -531,8 +558,7 @@ function EnvironmentGitAction(props: {
           : summary.title
       );
       setDialogOpen(false);
-      setDialogAction(null);
-      setCommitMessage('');
+      resetDialogState();
       props.onCompleted();
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Git action failed.');
@@ -631,7 +657,7 @@ function EnvironmentGitAction(props: {
         open={dialogOpen}
         onOpenChange={(open) => {
           setDialogOpen(open);
-          if (!open) setDialogAction(null);
+          if (!open) resetDialogState();
         }}
       >
         <DialogPopup className="EnvironmentGitActionDialog">
@@ -647,21 +673,115 @@ function EnvironmentGitAction(props: {
               </text>
               <text className="EnvironmentGitActionSummaryLabel">Files</text>
               <text className="EnvironmentGitActionSummaryValue">
-                {files.length}
+                {allSelected
+                  ? `${files.length}`
+                  : `${selectedFiles.length} of ${files.length}`}
               </text>
+              <Button
+                variant="ghost"
+                size="xs"
+                disabled={running || files.length === 0}
+                onClick={() => setEditingFiles((current) => !current)}
+              >
+                {editingFiles ? 'Done' : 'Edit'}
+              </Button>
             </view>
+            {editingFiles && files.length > 0 ? (
+              <view
+                className="EnvironmentGitActionSelectAll"
+                accessibility-element
+                accessibility-label={
+                  allSelected ? 'Exclude all files' : 'Include all files'
+                }
+                accessibility-traits="button"
+                aria-checked={allSelected}
+                bindtap={() =>
+                  setExcludedFiles(
+                    allSelected
+                      ? new Set(files.map((file) => file.path))
+                      : new Set()
+                  )
+                }
+              >
+                <view
+                  className={`EnvironmentGitActionCheckbox${
+                    allSelected
+                      ? ' EnvironmentGitActionCheckbox--checked'
+                      : noneSelected
+                        ? ''
+                        : ' EnvironmentGitActionCheckbox--mixed'
+                  }`}
+                >
+                  {allSelected ? (
+                    <svg
+                      className="EnvironmentGitActionCheckboxIcon"
+                      content={colorizeLynxSvg(
+                        checkmarkSvg,
+                        'var(--primary-foreground)'
+                      )}
+                    />
+                  ) : noneSelected ? null : (
+                    <view className="EnvironmentGitActionCheckboxMixedBar" />
+                  )}
+                </view>
+                <text className="EnvironmentGitActionSelectAllLabel">
+                  {allSelected ? 'Exclude all' : 'Include all'}
+                </text>
+              </view>
+            ) : null}
             <scroll-view
               className="EnvironmentGitActionFiles"
               scroll-y
               enable-scroll-bar
             >
               {files.map((file) => (
-                <view className="EnvironmentGitActionFile" key={file.path}>
+                <view
+                  className={`EnvironmentGitActionFile${
+                    excludedFiles.has(file.path)
+                      ? ' EnvironmentGitActionFile--excluded'
+                      : ''
+                  }`}
+                  key={file.path}
+                  accessibility-element={editingFiles}
+                  accessibility-label={
+                    editingFiles
+                      ? `${
+                          excludedFiles.has(file.path) ? 'Include' : 'Exclude'
+                        } ${file.path}`
+                      : undefined
+                  }
+                  accessibility-traits={editingFiles ? 'button' : undefined}
+                  aria-checked={!excludedFiles.has(file.path)}
+                  bindtap={
+                    editingFiles ? () => toggleFile(file.path) : undefined
+                  }
+                >
+                  {editingFiles ? (
+                    <view
+                      className={`EnvironmentGitActionCheckbox${
+                        excludedFiles.has(file.path)
+                          ? ''
+                          : ' EnvironmentGitActionCheckbox--checked'
+                      }`}
+                    >
+                      {!excludedFiles.has(file.path) ? (
+                        <svg
+                          className="EnvironmentGitActionCheckboxIcon"
+                          content={colorizeLynxSvg(
+                            checkmarkSvg,
+                            'var(--primary-foreground)'
+                          )}
+                        />
+                      ) : null}
+                    </view>
+                  ) : null}
                   <text className="EnvironmentGitActionFilePath">
                     {file.path}
                   </text>
                   <text className="EnvironmentGitActionFileStats">
-                    +{file.insertions} −{file.deletions}
+                    {excludedFiles.has(file.path)
+                      ? 'Excluded'
+                      : `+${file.insertions} −${file.deletions}`}
                   </text>
                 </view>
               ))}
@@ -686,14 +806,14 @@ function EnvironmentGitAction(props: {
               disabled={running}
               onClick={() => {
                 setDialogOpen(false);
-                setDialogAction(null);
+                resetDialogState();
               }}
             >
               Cancel
             </Button>
             <Button
               size="sm"
-              disabled={running || files.length === 0 || !dialogAction}
+              disabled={running || noneSelected || !dialogAction}
               onClick={() => {
                 if (dialogAction) void runAction(dialogAction);
               }}

@@ -347,6 +347,60 @@
   line-height: 18px;
 }
 
+.EnvironmentGitActionSelectAll {
+  display: flex;
+  min-height: 28px;
+  padding: 4px 8px;
+  align-items: center;
+  gap: 8px;
+  border-radius: 8px;
+}
+
+.EnvironmentGitActionSelectAll.ui-hover,
+.EnvironmentGitActionSelectAll.ui-focus,
+.EnvironmentGitActionSelectAll.ui-pressed {
+  background-color: var(--accent);
+}
+
+.EnvironmentGitActionSelectAllLabel {
+  color: var(--foreground);
+  font-size: 11px;
+  line-height: 16.5px;
+}
+
+.EnvironmentGitActionCheckbox {
+  display: flex;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.EnvironmentGitActionCheckbox--checked {
+  border-color: var(--primary);
+  background-color: var(--primary);
+}
+
+.EnvironmentGitActionCheckbox--mixed {
+  border-color: var(--primary);
+  background-color: var(--primary);
+}
+
+.EnvironmentGitActionCheckboxMixedBar {
+  width: 6px;
+  height: 1px;
+  background-color: var(--primary-foreground);
+}
+
+.EnvironmentGitActionCheckboxIcon {
+  width: 10px;
+  height: 10px;
+}
+
 .EnvironmentGitActionFiles {
   width: 100%;
   height: 180px;
@@ -363,6 +417,17 @@
   align-items: center;
   gap: 8px;
   border-radius: 8px;
+}
+
+.EnvironmentGitActionFile--excluded {
+  opacity: 0.55;
+}
+
+.EnvironmentGitActionFile.ui-hover,
+.EnvironmentGitActionFile.ui-focus,
+.EnvironmentGitActionFile.ui-pressed {
+  background-color: var(--accent);
+  opacity: 1;
 }
 
 .EnvironmentGitActionFilePath {

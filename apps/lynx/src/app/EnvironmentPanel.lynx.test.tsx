@@ -68,6 +68,13 @@ describe('Lynx Environment panel', () => {
     expect(panelSource).toContain("label={running ? 'Working…' : 'Commit and Push'}");
     expect(panelSource).toContain('Git actions');
     expect(panelSource).toContain('Unavailable');
+    expect(panelSource).toContain('const [excludedFiles, setExcludedFiles]');
+    expect(panelSource).toContain('const selectedFiles = files.filter(');
+    expect(panelSource).toContain('{ filePaths: selectedFiles.map((file) => file.path) }');
+    expect(panelSource).toContain("editingFiles ? 'Done' : 'Edit'");
+    expect(panelSource).toContain("allSelected ? 'Exclude all' : 'Include all'");
+    expect(panelSource).toContain('EnvironmentGitActionFile--excluded');
+    expect(panelSource).toContain('disabled={running || noneSelected || !dialogAction}');
     expect(panelSource).not.toContain('EnvironmentChangesPopup');
     expect(panelSource).not.toContain('EnvironmentChangesFilePath');
     expect(panelSource).toContain('stopLocalServer({');
@@ -208,6 +215,12 @@ describe('Lynx Environment panel', () => {
     );
     expect(styles).toMatch(
       /\.EnvironmentGitActionMessage\s*\{[^}]*min-height:\s*72px;[^}]*border-radius:\s*10px;[^}]*background-color:\s*transparent;[^}]*color:\s*var\(--foreground\);/s
+    );
+    expect(styles).toMatch(
+      /\.EnvironmentGitActionCheckbox\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*border-radius:\s*4px;/s
+    );
+    expect(styles).toMatch(
+      /\.EnvironmentGitActionFile--excluded\s*\{[^}]*opacity:\s*0\.55;/s
     );
     expect(styles).toMatch(
       /\.EnvironmentLocalServerStop\s*\{[^}]*width:\s*24px;[^}]*height:\s*24px;[^}]*padding:\s*0;/s

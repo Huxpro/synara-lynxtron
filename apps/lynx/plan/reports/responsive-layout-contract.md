@@ -177,9 +177,21 @@ seeing a dead or misleading row. The 240px popup and 28px rows are identical
 in light/dark, with material supplied by the shared menu semantic tokens.
 Evidence: `shots/2026-08-08/environment-git-menu-current/`.
 
-This still does not claim every Web advanced Git workflow. Per-file exclusion,
-commit-on-new-branch, pull execution, and live per-phase progress presentation
-remain separate product slices. The shared menu state and safe commit path are
+The commit dialog now also shares Web's file-selection transaction. Edit/Done
+reveals 14px checkboxes, select-all supports all/mixed/none, excluded rows stay
+visible with explicit status, and `filePaths` is sent only when the selection
+is narrower than the whole worktree. Closing, cancelling, and success all
+reset selection state.
+
+A real two-file repo excluded `two.txt`, committed only `one.txt` as
+`223a13e708685e39433a4e43993d22e123d7e577` (`Commit selected file`), and left
+`two.txt` dirty. Light/dark retained the same `1 of 2` geometry and semantic
+checkbox/file materials. Evidence:
+`shots/2026-08-08/environment-git-file-selection-current/`.
+
+This still does not claim every Web advanced Git workflow. Commit-on-new-branch,
+pull execution, and live per-phase progress presentation remain separate
+product slices. The shared menu state, file selection, and safe commit path are
 real; unsupported advanced mutations are not silently enabled.
 
 ## Kanban follow-up
