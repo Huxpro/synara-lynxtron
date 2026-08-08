@@ -115,7 +115,7 @@ describe('ThemePack boolean interaction contract', () => {
     expect(source).toContain('accessibility-label="Theme share string"');
     expect(source).not.toContain('Import clipboard');
     expect(styles).toMatch(
-      /\.LxDialogPopup\.SharedThemePackImportDialog\s*\{[^}]*width:\s*448px;[^}]*max-width:\s*calc\(100vw - 32px\);[^}]*padding:\s*0;[^}]*border-radius:\s*22px;[^}]*overflow:\s*hidden;[^}]*box-shadow:\s*0 16px 50px -12px rgba\(0,\s*0,\s*0,\s*0\.34\);/s
+      /\.LxDialogPopup\.SharedThemePackImportDialog\s*\{[^}]*width:\s*448px;[^}]*max-width:\s*calc\(100vw - 32px\);[^}]*padding:\s*0;[^}]*border-color:\s*var\(--color-border-light\);[^}]*border-radius:\s*22px;[^}]*overflow:\s*visible;[^}]*box-shadow:\s*0 16px 50px -12px rgba\(0,\s*0,\s*0,\s*0\.34\);/s
     );
     expect(styles).toMatch(
       /\.SliceRoot--theme-dark \.LxDialogPopup\.SharedThemePackImportDialog\s*\{[^}]*box-shadow:\s*0 16px 50px -12px rgba\(0,\s*0,\s*0,\s*0\.7\);/s

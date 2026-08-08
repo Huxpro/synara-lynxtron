@@ -49,6 +49,7 @@ Concrete success criteria:
 | Dialog elevation | Light uses 34% and dark uses 70% `0 16px 50px -12px` shadow, matching Web | PASS |
 | Light material | Dialog `rgb(255,255,255)`, ink `rgb(13,13,13)`, 7% semantic border, radius 22 | PASS |
 | Dark material | Dialog `rgb(23,23,23)`, ink `rgb(252,252,252)`, 7% semantic border, radius 22 | PASS |
+| Dialog border and shadow ownership | Popup uses Web's `--color-border-light` (6% light / 4.7% dark) and visible overflow so the matching lift shadow is not clipped | PASS |
 | Placeholder tone | Web and Lynx internal textarea placeholders resolve to foreground/50: light `rgba(13,13,13,.5)`, dark `rgba(252,252,252,.5)` | PASS |
 | Focus border optics | Web control and Lynx textarea resolve to foreground/30 in both themes instead of the blue `--ring`; textarea geometry remains `412x94` | PASS |
 | Textarea border ownership | Lynx now mirrors Web's `414x96` bordered control around a borderless `412x94` textarea; focus/blur projects the 30% border onto the outer owner | PASS |
@@ -195,6 +196,15 @@ remains `0,338.5,320x301.5`.
 The first Lynx capture measured the dialog at 98% scale because it sampled the
 entrance transition. It was rejected; the stable post-transition frame above
 is the retained geometry.
+
+The final current-head material audit found two generic-dialog inheritances:
+Lynx used the stronger 7% `--border`, while Web uses
+`--color-border-light`; Lynx also clipped the matching shadow with
+`overflow:hidden`. The Theme Pack popup now resolves to Web's 6% light and
+4.7% dark border values and visible overflow. In a `480x290` popup-plus-shadow
+crop, changed pixels fell from `8.92%` to `8.31%` in light and from `8.88%` to
+`8.25%` in dark. The connected bottom-shadow cluster fell from 900 to 490
+pixels in light and from an `818x2` band to a `412x1` band in dark.
 
 ## Textarea optics
 
