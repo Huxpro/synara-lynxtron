@@ -31,11 +31,19 @@ describe('Lynx-for-Web initial route harness', () => {
     expect(hostSource).toContain(
       "resolveWebInitialRoute(globalThis.location.search)"
     );
-    expect(hostSource).toContain("if (method === 'shellRendererReady')");
+    expect(
+      hostSource.indexOf(
+        "pendingInitialRoute = resolveWebInitialRoute(globalThis.location.search)"
+      )
+    ).toBeLessThan(hostSource.indexOf('webDocument.body.innerHTML = `'));
     expect(hostSource).toContain(
+      "init-data='${JSON.stringify({ initialRoute: pendingInitialRoute })}'"
+    );
+    expect(hostSource).toContain("if (method === 'shellRendererReady')");
+    expect(hostSource).toContain('return { ok: true, route }');
+    expect(hostSource).not.toContain(
       "lynxView.sendGlobalEvent?.('shell:navigate', [route])"
     );
-    expect(hostSource).toContain('globalThis.setTimeout(() => {');
     expect(hostSource).not.toContain(
       "lynxView.addEventListener('load', publishInitialRoute"
     );

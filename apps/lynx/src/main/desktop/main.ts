@@ -436,11 +436,10 @@ app.whenReady().then(() => {
             type: 'renderer-ready',
           });
           routeDeliveryState = delivery.state;
-          if (delivery.routeToDispatch) {
-            w.sendGlobalEvent('shell:navigate', delivery.routeToDispatch);
-          }
           startViewportProbe(w);
-          callback.sendReply(JSON.stringify({ ok: true }));
+          callback.sendReply(
+            JSON.stringify({ ok: true, route: delivery.routeToDispatch })
+          );
         } else if (name === 'shellSetSearchNavigationEnabled') {
           const enabled = data?.enabled === true;
           if (searchNavigationEnabled !== enabled) {
@@ -493,15 +492,21 @@ app.whenReady().then(() => {
   if (savedState?.maximized) w.maximize();
   if (savedState?.fullscreen) w.setFullScreen(true);
   flushWindowState();
-  if (isDev) {
-    w.loadURL('http://localhost:5971/main.lynx.bundle');
-  } else {
-    w.loadFile(LYNX_BUNDLE_PATH);
-  }
   const startupRoute =
     routeDeliveryState.pendingRoute ?? routeFromArguments(process.argv);
   if (startupRoute) {
-    dispatchRoute(startupRoute, !isBackgroundLaunch);
+    routeDeliveryState = reduceShellRouteDelivery(routeDeliveryState, {
+      type: 'route-requested',
+      route: startupRoute,
+    }).state;
+  }
+  const loadOptions = {
+    data: { initialRoute: startupRoute },
+  };
+  if (isDev) {
+    w.loadURL('http://localhost:5971/main.lynx.bundle', loadOptions);
+  } else {
+    w.loadFile(LYNX_BUNDLE_PATH, loadOptions);
   }
   w.on('close', () => {
     flushWindowState();

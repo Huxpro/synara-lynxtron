@@ -76,6 +76,7 @@ let relaySequence = 0;
 // the real Clipboard API first.
 let relayClipboardText = '';
 const relayPending = new Map<string, PendingRelayRequest>();
+const relayRecentRpcTags: string[] = [];
 let transcriptScrollElement: HTMLElement | null = null;
 let transcriptPreviousScrollTop: number | null = null;
 let relayLastTransportError: string | null = null;
@@ -84,6 +85,7 @@ let relayConnectionAttempts = 0;
 let relayRecoveryGeneration = 0;
 let relayRecoveryActive = false;
 let pendingInitialRoute: string | null = null;
+let lastRendererReadyRoute: string | null = null;
 let publishRelayTransportState:
   | ((state: 'connected' | 'reconnecting' | 'offline') => void)
   | null = null;
@@ -108,6 +110,8 @@ declare global {
         readonly socketState: number | null;
         readonly connectionAttempts: number;
         readonly pendingRequests: number;
+        readonly recentRpcTags: readonly string[];
+        readonly rendererReadyRoute: string | null;
         readonly lastTransportError: string | null;
         readonly lastRpcError: string | null;
       })
@@ -445,6 +449,8 @@ async function synaraRpc(
   );
   const tag = String(tagValue ?? '').trim();
   if (!tag) throw new Error('Synara RPC tag is required');
+  relayRecentRpcTags.push(tag);
+  if (relayRecentRpcTags.length > 40) relayRecentRpcTags.shift();
   const socket = await ensureRelaySocket(baseUrl);
   const id = String(++relaySequence);
   return new Promise((resolve, reject) => {
@@ -594,12 +600,8 @@ async function handleBridgeCall(
     if (method === 'shellRendererReady') {
       const route = pendingInitialRoute;
       pendingInitialRoute = null;
-      if (route) {
-        globalThis.setTimeout(() => {
-          lynxView.sendGlobalEvent?.('shell:navigate', [route]);
-        }, 0);
-      }
-      return { ok: true };
+      lastRendererReadyRoute = route;
+      return { ok: true, route };
     }
     if (method === 'storageDump') {
       return { entries: readStorageEntries() };
@@ -733,15 +735,16 @@ async function handleBridgeCall(
   }
 }
 
+pendingInitialRoute = resolveWebInitialRoute(globalThis.location.search);
 webDocument.body.innerHTML = `
 <lynx-view
   id="root-view"
   style="height:100vh; width:100vw;"
+  init-data='${JSON.stringify({ initialRoute: pendingInitialRoute })}'
   url="${bundleUrl}">
 </lynx-view>`;
 
 const lynxView = webDocument.getElementById('root-view') as any;
-pendingInitialRoute = resolveWebInitialRoute(globalThis.location.search);
 
 publishRelayTransportState = (state) => {
   lynxView.sendGlobalEvent?.(TRANSPORT_STATE_EVENT, [state]);
@@ -757,6 +760,8 @@ globalThis.__SYNARA_LYNX_RELAY_DIAGNOSTICS__ = () => ({
   socketState: relaySocket?.readyState ?? null,
   connectionAttempts: relayConnectionAttempts,
   pendingRequests: relayPending.size,
+  recentRpcTags: [...relayRecentRpcTags],
+  rendererReadyRoute: lastRendererReadyRoute,
   lastTransportError: relayLastTransportError,
   lastRpcError: relayLastRpcError,
 });

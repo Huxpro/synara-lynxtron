@@ -1,8 +1,8 @@
 # Explorer Dock completion audit
 
-Status: implementation, contracts, production builds, and real project RPCs
-pass. Live light/dark pixel certification remains blocked by the current thread
-hydration path and is not claimed.
+Status: implementation, contracts, production builds, real project RPCs, and
+thread bootstrap hydration pass. Live light/dark interaction certification is
+still blocked by the Lynx-for-Web activation bridge and is not claimed.
 
 ## Prompt-to-artifact checklist
 
@@ -23,7 +23,8 @@ hydration path and is not claimed.
 | Production builds | Native/Desktop, Lynx-for-Web, and Web original production builds pass | PASS |
 | Native identity and console | Exact-owned PID `94395`, client `localhost:8903`, App `@synara/lynx`, session URL points at `apps/lynx/dist/desktop/main.lynx.bundle`; error/warning console is empty | PASS |
 | Native bundle identity | Staged and output bundle hashes match: `89e44c076dd06131f019143f4a7083164473dfbf4aa589be1cec087288a72598` | PASS |
-| Live Explorer light/dark matrix | Lynx-for-Web and Native both remain on `Loading conversation…` for the canonical fixture although the same server returns a complete thread detail snapshot and healthy RPC relay state | BLOCKED — no pixel-pass claim |
+| Thread bootstrap hydration | Host route is supplied through Lynx `initData`; App prefetches the initial thread before leaving the hydration shell; canonical fixture rendered its real title, workspace, empty state, and enabled Files control | PASS |
+| Live Explorer light/dark matrix | The rendered Files control receives Web hover/focus state, but trusted mouse click and keyboard Enter do not reach its Lynx `bindtap`/`bindkeydown` handler | BLOCKED — no interaction or pixel-pass claim |
 | Native DOM/screenshot tooling | Current Lynx SDK returns `{}` for `DOM.getDocument` and no DevTool screencast frame; CoreGraphics confirms the owned 1280×820 window but cannot replace exact LynxView capture | RECORDED LIMIT |
 
 ## Scope boundary
@@ -31,5 +32,5 @@ hydration path and is not claimed.
 - This is the first real Explorer slice, not full Web Explorer parity.
 - Directory expansion, image/PDF preview, file references, ask-why, comments,
   and syntax-highlighted rich preview remain future work.
-- The thread hydration blocker must be resolved before retaining Explorer
-  light/dark screenshots or claiming pixel parity.
+- The Lynx-for-Web activation bridge must be resolved before retaining Explorer
+  light/dark interaction screenshots or claiming pixel parity.

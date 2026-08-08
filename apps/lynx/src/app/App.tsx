@@ -1,6 +1,6 @@
 // P2-V1 vertical slice shell: providers + router outlet.
 
-import { useEffect, useRef, useState } from '@lynx-js/react';
+import { useEffect, useInitData, useRef, useState } from '@lynx-js/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 
 import {
@@ -26,7 +26,11 @@ import { useViewportLayout } from '~/hooks/useViewportLayout';
 
 import { sliceUiDensityClassName } from './appDensity.logic';
 import { sliceThemeClassName } from './appTheme.logic';
-import { queryClient } from './queries';
+import {
+  fetchThreadHeaderSummary,
+  fetchThreadTranscriptRows,
+  queryClient,
+} from './queries';
 import { SliceRouter } from './router';
 import { retryActiveSynaraQueries } from './transportRetry.logic';
 import { shouldRefetchAfterTransportRecovery } from './transportRecovery.logic';
@@ -62,7 +66,18 @@ async function readPersistedAppearance(): Promise<{
 }
 
 export function App() {
+  const initData = useInitData() as { readonly initialRoute?: unknown };
+  const initialRoute =
+    typeof initData.initialRoute === 'string' &&
+    initData.initialRoute.startsWith('/')
+      ? initData.initialRoute
+      : null;
   const [storageReady, setStorageReady] = useState(false);
+  const [initialThreadBootstrap, setInitialThreadBootstrap] = useState<{
+    readonly data: Awaited<ReturnType<typeof fetchThreadTranscriptRows>>;
+    readonly summary: Awaited<ReturnType<typeof fetchThreadHeaderSummary>>;
+    readonly threadId: string;
+  } | null>(null);
   const [uiDensity, setUiDensity] =
     useState<UiDensity>(DEFAULT_UI_DENSITY);
   const [themeState, setThemeState] =
@@ -74,10 +89,26 @@ export function App() {
   useEffect(() => {
     'background only';
     let active = true;
-    void readPersistedAppearance().then((value) => {
+    const threadMatch = initialRoute?.match(/^\/thread\/([^/]+)$/);
+    void Promise.all([
+      readPersistedAppearance(),
+      threadMatch
+        ? Promise.all([
+            fetchThreadTranscriptRows(threadMatch[1]),
+            fetchThreadHeaderSummary(threadMatch[1]),
+          ]).catch(() => null)
+        : null,
+    ]).then(([appearance, thread]) => {
       if (!active) return;
-      setUiDensity(value.uiDensity);
-      setThemeState(value.themeState);
+      setUiDensity(appearance.uiDensity);
+      setThemeState(appearance.themeState);
+      if (threadMatch && thread) {
+        setInitialThreadBootstrap({
+          data: thread[0],
+          summary: thread[1],
+          threadId: threadMatch[1],
+        });
+      }
       setStorageReady(true);
     });
     return () => {
@@ -154,6 +185,8 @@ export function App() {
         ) : null}
         {storageReady ? (
           <SliceRouter
+            initialRoute={initialRoute}
+            initialThreadBootstrap={initialThreadBootstrap}
             onThemeStateChange={setThemeState}
             onUiDensityChange={setUiDensity}
           />

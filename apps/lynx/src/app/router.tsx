@@ -150,14 +150,19 @@ function parseRoute(pathname: string): RouteState {
   return { pathname: '/', params: {} };
 }
 
-export function useRoute(): RouteState {
-  const [route, setRoute] = useState<RouteState>(() => parseRoute(history.location.pathname));
+export function useRoute(initialPathname: string | null = null): readonly [
+  RouteState,
+  (route: RouteState) => void,
+] {
+  const [route, setRoute] = useState<RouteState>(() =>
+    parseRoute(initialPathname ?? history.location.pathname)
+  );
   useEffect(() => {
     return history.subscribe(({ location }) => {
       setRoute(parseRoute(location.pathname));
     });
   }, []);
-  return route;
+  return [route, setRoute] as const;
 }
 
 function useMemoryNavigationState(): MemoryNavigationState {
@@ -236,82 +241,14 @@ function ThreadsLandingPage(props: {
   );
 }
 
-function useThreadTranscriptPolling(threadId: string) {
-  const [state, setState] = useState<{
-    readonly data: Awaited<ReturnType<typeof fetchThreadTranscriptRows>> | undefined;
-    readonly error: unknown;
-    readonly isPending: boolean;
-    readonly summary: Awaited<ReturnType<typeof fetchThreadHeaderSummary>>;
-  }>({
-    data: undefined,
-    error: null,
-    isPending: true,
-    summary: undefined,
-  });
-
-  useEffect(() => {
-    'background only';
-    let cancelled = false;
-
-    async function pollTranscript() {
-      'background only';
-      while (!cancelled) {
-        try {
-          const rows = await fetchThreadTranscriptRows(threadId);
-          const summary = await fetchThreadHeaderSummary(threadId);
-          if (!cancelled) {
-            setState((current) =>
-              current.data === rows &&
-              current.error === null &&
-              current.summary?.id === summary?.id &&
-              current.summary?.title === summary?.title &&
-              current.summary?.projectId === summary?.projectId &&
-              current.summary?.project === summary?.project &&
-              current.summary?.provider === summary?.provider &&
-              current.summary?.runtimeMode === summary?.runtimeMode &&
-              current.summary?.interactionMode === summary?.interactionMode &&
-              current.summary?.sessionStatus === summary?.sessionStatus &&
-              current.summary?.activeTurnId === summary?.activeTurnId &&
-              current.summary?.latestTurnState === summary?.latestTurnState &&
-              current.summary?.workspaceRoot === summary?.workspaceRoot &&
-              current.summary?.pinnedRevision === summary?.pinnedRevision &&
-              current.summary?.markerRevision === summary?.markerRevision &&
-              current.summary?.lastKnownPr?.url === summary?.lastKnownPr?.url &&
-              current.summary?.notes === summary?.notes
-                ? current
-                : {
-                    data: rows,
-                    error: null,
-                    isPending: false,
-                    summary,
-                  }
-            );
-          }
-        } catch (error) {
-          if (!cancelled) {
-            setState((current) => ({
-              data: current.data,
-              error,
-              isPending: false,
-              summary: current.summary,
-            }));
-          }
-        }
-        if (!cancelled) await sleepOnHost(500);
-      }
-    }
-
-    void pollTranscript();
-    return () => {
-      cancelled = true;
-    };
-  }, [threadId]);
-
-  return state;
-}
-
-function ThreadPage(props: { threadId: string }) {
-  const { threadId } = props;
+function ThreadPage(props: {
+  readonly currentThread: Awaited<ReturnType<typeof fetchThreadHeaderSummary>>;
+  readonly data: Awaited<ReturnType<typeof fetchThreadTranscriptRows>> | undefined;
+  readonly error: unknown;
+  readonly isPending: boolean;
+  readonly threadId: string;
+}) {
+  const { currentThread, data, error, isPending, threadId } = props;
   const { temporary, toggleTemporary } =
     useTemporaryThreadLifecycle(threadId);
   const [providerStatuses, setProviderStatuses] = useState<
@@ -332,12 +269,6 @@ function ThreadPage(props: { threadId: string }) {
     },
     []
   );
-  const {
-    data,
-    error,
-    isPending,
-    summary: currentThread,
-  } = useThreadTranscriptPolling(threadId);
   const providerHealth = useProviderHealthBanner(
     currentThread?.provider ?? 'codex',
     providerStatuses
@@ -525,13 +456,21 @@ function ThreadPage(props: { threadId: string }) {
 }
 
 export function SliceRouter({
+  initialRoute,
+  initialThreadBootstrap,
   onThemeStateChange,
   onUiDensityChange,
 }: {
+  readonly initialRoute: string | null;
+  readonly initialThreadBootstrap: {
+    readonly data: Awaited<ReturnType<typeof fetchThreadTranscriptRows>>;
+    readonly summary: Awaited<ReturnType<typeof fetchThreadHeaderSummary>>;
+    readonly threadId: string;
+  } | null;
   readonly onThemeStateChange: (state: ThemeState) => void;
   readonly onUiDensityChange: (density: UiDensity) => void;
 }) {
-  const route = useRoute();
+  const [route, setRoute] = useRoute(initialRoute);
   const navigation = useMemoryNavigationState();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const {
@@ -542,6 +481,39 @@ export function SliceRouter({
     queryFn: fetchThreads,
     refetchInterval: 5_000,
   });
+  const activeThreadId =
+    route.pathname === '/thread/$threadId'
+      ? route.params.threadId
+      : initialRoute
+        ? parseRoute(initialRoute).params.threadId ?? null
+        : null;
+  const {
+    data: activeThreadData,
+    error: activeThreadError,
+    isPending: activeThreadPending,
+  } = useQuery({
+    queryKey: ['thread-detail', activeThreadId],
+    queryFn: async () => {
+      'background only';
+      const threadId = activeThreadId;
+      if (!threadId) throw new Error('Thread detail requires a thread id.');
+      const [data, summary] = await Promise.all([
+        fetchThreadTranscriptRows(threadId),
+        fetchThreadHeaderSummary(threadId),
+      ]);
+      return { data, summary };
+    },
+    enabled: activeThreadId !== null,
+    refetchInterval: 500,
+    retry: false,
+  });
+  const resolvedActiveThreadData =
+    activeThreadData ??
+    (initialThreadBootstrap?.threadId === activeThreadId
+      ? initialThreadBootstrap
+      : undefined);
+  const resolvedActiveThreadPending =
+    resolvedActiveThreadData === undefined && activeThreadPending;
   const [persistedLastRoute, setPersistedLastRoute] =
     useState<LastThreadRoute | null>(null);
   const [lastRouteHydrated, setLastRouteHydrated] = useState(false);
@@ -665,9 +637,19 @@ export function SliceRouter({
             }
           }
         );
-        void bridgeCall('shellRendererReady').catch(() => {
-          // The Lynx Web host has no desktop shell route queue.
-        });
+        void bridgeCall<{ readonly route?: unknown }>('shellRendererReady')
+          .then((reply) => {
+            if (
+              typeof reply?.route === 'string' &&
+              reply.route.startsWith('/')
+            ) {
+              setRoute(parseRoute(reply.route));
+              history.replace(reply.route);
+            }
+          })
+          .catch(() => {
+            // A host without route delivery still renders the default route.
+          });
       }
     );
     return () => {
@@ -676,7 +658,7 @@ export function SliceRouter({
       disposeHistory?.();
       disposeCommand?.();
     };
-  }, []);
+  }, [setRoute]);
 
   let page: React.ReactNode;
   if (route.pathname === '/settings') {
@@ -697,6 +679,10 @@ export function SliceRouter({
     page = (
       <ThreadPage
         key={route.params.threadId}
+        currentThread={resolvedActiveThreadData?.summary}
+        data={resolvedActiveThreadData?.data}
+        error={activeThreadError}
+        isPending={resolvedActiveThreadPending}
         threadId={route.params.threadId}
       />
     );
