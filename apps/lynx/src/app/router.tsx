@@ -54,6 +54,10 @@ import { resolveSettingsBackTarget } from '@synara-web/components/SidebarSetting
 import { resolveThreadPageBodyState } from './threadPageState.logic';
 import { sleepOnHost } from '../platform/timer';
 import { EmptyThreadContextTray } from './EmptyThreadContextTray.lynx';
+import {
+  EnvironmentPanel,
+  EnvironmentToggle,
+} from './EnvironmentPanel.lynx';
 import { useTemporaryThreadLifecycle } from './temporaryThreadLifecycle.lynx';
 import { DesktopTitlebarControls } from '../adapters/DesktopTitlebarControls.lynx';
 import {
@@ -261,7 +265,8 @@ function useThreadTranscriptPolling(threadId: string) {
               current.summary?.interactionMode === summary?.interactionMode &&
               current.summary?.sessionStatus === summary?.sessionStatus &&
               current.summary?.activeTurnId === summary?.activeTurnId &&
-              current.summary?.workspaceRoot === summary?.workspaceRoot
+              current.summary?.workspaceRoot === summary?.workspaceRoot &&
+              current.summary?.notes === summary?.notes
                 ? current
                 : {
                     data: rows,
@@ -301,6 +306,7 @@ function ThreadPage(props: { threadId: string }) {
   const [providerStatuses, setProviderStatuses] = useState<
     readonly ServerProviderStatus[]
   >([]);
+  const [environmentOpen, setEnvironmentOpen] = useState(false);
   const {
     data,
     error,
@@ -331,13 +337,25 @@ function ThreadPage(props: { threadId: string }) {
     </ComposerColumnFrameSurface>
   );
   return (
-    <view className="Page ThreadPage">
+    <view
+      className={`Page ThreadPage${
+        environmentOpen ? ' ThreadPage--environment-open' : ''
+      }`}
+    >
       <ChatSurfaceHeaderFrame>
-        <ChatSurfaceHeaderIdentity
-          title={currentThread?.title ?? 'Thread'}
-          icon={<OpenAIProviderIcon provider={currentThread?.provider} />}
-          iconTitle={currentThread?.project ?? 'Synara'}
-        />
+        <view className="ThreadHeaderIdentity">
+          <ChatSurfaceHeaderIdentity
+            title={currentThread?.title ?? 'Thread'}
+            icon={<OpenAIProviderIcon provider={currentThread?.provider} />}
+            iconTitle={currentThread?.project ?? 'Synara'}
+          />
+        </view>
+        <view className="ThreadHeaderControls">
+          <EnvironmentToggle
+            open={environmentOpen}
+            onChange={setEnvironmentOpen}
+          />
+        </view>
       </ChatSurfaceHeaderFrame>
       <ProviderHealthBanner
         status={providerHealth.status}
@@ -381,6 +399,21 @@ function ThreadPage(props: { threadId: string }) {
         </view>
       )}
       {bodyState.kind === 'empty' ? null : composer}
+      {currentThread ? (
+        <EnvironmentPanel
+          open={environmentOpen}
+          threadId={threadId}
+          provider={currentThread.provider ?? 'codex'}
+          branch={currentThread.branch}
+          envMode={currentThread.envMode}
+          workspaceRoot={currentThread.workspaceRoot}
+          notes={currentThread.notes}
+          onOpenSettings={() => {
+            setEnvironmentOpen(false);
+            history.push('/settings/general');
+          }}
+        />
+      ) : null}
     </view>
   );
 }

@@ -105,6 +105,7 @@ export interface ThreadHeaderSummary {
   readonly sessionStatus: string | null;
   readonly activeTurnId: string | null;
   readonly workspaceRoot: string | null;
+  readonly notes: string;
 }
 
 export interface SidebarSnapshot {
@@ -348,6 +349,7 @@ export async function fetchThreadHeaderSummary(
     sessionStatus: thread.session?.status ?? null,
     activeTurnId: thread.session?.activeTurnId ?? null,
     workspaceRoot: project?.workspaceRoot ?? null,
+    notes: thread.notes ?? '',
   };
 }
 

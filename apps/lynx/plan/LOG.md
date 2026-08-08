@@ -7847,3 +7847,28 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - 继续追根后确认2px并非字体度量：Web sm按钮每侧9px，Lynx generic sm每侧10px。
   Release row action与dialog Close改为scoped 9px padding；final两端分别exact
   136.5×28与52.53125×28，relay OPEN、pending0、transport error0。
+
+## 2026-08-08 — Environment panel first real kernel
+
+- completion audit明确Environment/diff/browser/selection仍是未实现product kernels。
+  先审计selection可行性：当前`@lynx-js/types 4.1.0`的`text-selection`虽支持Web，
+  但`bindselectionchange`/`getSelectedText`只标Android/iOS，不支持PC；因此不在
+  Lynxtron伪造transcript selection action。
+- Environment第一阶段只接当前真实能力：thread header 28px canonical Window toggle、
+  312px docked content inset、288px top-right overlay、branch/env/workspace summary、
+  provider Usage RPC与server-synced Notepad。未接Changes/GitHub/PR/Editor等行不显示，
+  不用disabled placeholder冒充。
+- `ThreadHeaderSummary`补`notes`并沿现有500ms detail polling接server echo。Notepad用
+  canonical`thread.meta.update`、500ms debounce、blur flush、serialized in-flight写、
+  queued retry、可见失败状态与pending-local-echo保护，避免旧snapshot覆盖刚保存值。
+- disposable thread全部通过RPC创建/删除。Lynx-for-Web真实pointer打开panel：
+  overlay968/46/312×774、surface980/58/288×750、两行274×26、Codex`100% left`；
+  textarea真实输入`Environment note verified`与`Echo race stays stable`均写入SQLite，
+  fresh reload恢复，超过三轮polling不回滚。
+- Native production build通过，startup deep link加载同一disposable thread；toggle
+  DOM为28×28、canonical Window path、`-x-app-region:no-drag`、panel代码与console
+  clean。右缘`Input.emulateTouchFromMouseEvent`未触发toggle（左侧titlebar对照可触发），
+  因此Native open interaction明确不宣称。owned 8903停止、fixture projection清理为0，
+  iOS8901/t3tools8902未触碰。
+- focused Environment/thread state **2 files / 8 tests**，Web与Native/Desktop production
+  builds通过。
