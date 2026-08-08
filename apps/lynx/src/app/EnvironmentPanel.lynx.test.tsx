@@ -46,7 +46,7 @@ describe('Lynx Environment panel', () => {
       /\.ThreadHeaderControls\s*\{[^}]*-x-app-region:\s*no-drag;/s
     );
     expect(styles).toMatch(
-      /\.EnvironmentToggle\s*\{[^}]*width:\s*28px;[^}]*min-width:\s*28px;[^}]*height:\s*28px;[^}]*box-sizing:\s*border-box;[^}]*padding:\s*0;/s
+      /\.EnvironmentToggle\s*\{[^}]*width:\s*28px;[^}]*min-width:\s*28px;[^}]*height:\s*28px;[^}]*box-sizing:\s*border-box;[^}]*padding:\s*0;[^}]*-x-app-region:\s*no-drag;/s
     );
     expect(styles).toMatch(
       /\.EnvironmentOverlay\s*\{[^}]*right:\s*0;[^}]*padding:\s*12px;[^}]*transition:[^}]*220ms ease-out/s

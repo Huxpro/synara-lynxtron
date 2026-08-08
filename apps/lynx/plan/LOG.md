@@ -7861,14 +7861,18 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - `ThreadHeaderSummary`补`notes`并沿现有500ms detail polling接server echo。Notepad用
   canonical`thread.meta.update`、500ms debounce、blur flush、serialized in-flight写、
   queued retry、可见失败状态与pending-local-echo保护，避免旧snapshot覆盖刚保存值。
+  实测server projection约2s后settle，UI跨三轮500ms polling始终保持新值，最终SQLite
+  与UI同为`Echo race stays stable`。
 - disposable thread全部通过RPC创建/删除。Lynx-for-Web真实pointer打开panel：
   overlay968/46/312×774、surface980/58/288×750、两行274×26、Codex`100% left`；
   textarea真实输入`Environment note verified`与`Echo race stays stable`均写入SQLite，
   fresh reload恢复，超过三轮polling不回滚。
 - Native production build通过，startup deep link加载同一disposable thread；toggle
-  DOM为28×28、canonical Window path、`-x-app-region:no-drag`、panel代码与console
-  clean。右缘`Input.emulateTouchFromMouseEvent`未触发toggle（左侧titlebar对照可触发），
-  因此Native open interaction明确不宣称。owned 8903停止、fixture projection清理为0，
+  DOM为28×28、canonical Window path、节点自身resolved
+  `-x-app-region:no-drag`、panel代码与console clean。先在1440、再由host probe缩到
+  1280×820，中心与内缩坐标的`Input.emulateTouchFromMouseEvent`均未触发toggle；
+  左侧titlebar对照可触发，故这是当前Native synthetic-input/右侧header边界，open
+  interaction明确不宣称。owned 8903停止、fixtures projection均清理为0，
   iOS8901/t3tools8902未触碰。
 - focused Environment/thread state **2 files / 8 tests**，Web与Native/Desktop production
   builds通过。
