@@ -9,11 +9,14 @@ import { buildPullRequestCodeView } from '@synara-web/components/pullRequest/pul
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { RefreshCwIcon, XIcon } from '../lib/icons.lynx';
 import { fetchWorkingTreeDiff } from '../data/synaraClient.lynx';
+import { ResizableRightPanel } from './ResizableRightPanel.lynx';
 
 import './diff-dock.css';
 
 export function DiffDock(props: {
+  readonly availableWidth: number;
   readonly onClose: () => void;
+  readonly onWidthChange: (width: number) => void;
   readonly open: boolean;
   readonly workspaceRoot: string | null;
 }) {
@@ -74,7 +77,20 @@ export function DiffDock(props: {
   if (!props.open) return null;
 
   return (
-    <view className="DiffDock">
+    <ResizableRightPanel
+      availableWidth={props.availableWidth}
+      className="DiffDock"
+      defaultWidth={
+        props.availableWidth > 0
+          ? Math.round(props.availableWidth / 2)
+          : 640
+      }
+      maxWidth={720}
+      minimumMainWidth={320}
+      minWidth={320}
+      onWidthChange={props.onWidthChange}
+      resizable
+    >
       <view className="DiffDockHeader">
         <view className="DiffDockIdentity">
           <text className="DiffDockTitle">Changes</text>
@@ -143,6 +159,6 @@ export function DiffDock(props: {
           />
         )}
       </scroll-view>
-    </view>
+    </ResizableRightPanel>
   );
 }

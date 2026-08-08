@@ -32,9 +32,15 @@ describe('Pull Request responsive layout', () => {
       new URL('./App.css', import.meta.url),
       'utf8'
     );
+    const source = readFileSync(
+      new URL('./FeatureListsPage.tsx', import.meta.url),
+      'utf8'
+    );
 
     expect(styles).toMatch(
-      /\.SharedPrDetailDock\s*\{[^}]*width:\s*50%;[^}]*min-width:\s*360px;/s
+      /\.SharedPrDetailDock\s*\{[^}]*width:\s*50%;[^}]*min-width:\s*416px;/s
     );
+    expect(source).toContain('minWidth={416}');
+    expect(source).not.toContain('pull_requests_detail_panel_width');
   });
 });

@@ -316,6 +316,8 @@ function ThreadPage(props: { threadId: string }) {
   >([]);
   const [environmentOpen, setEnvironmentOpen] = useState(false);
   const [diffOpen, setDiffOpen] = useState(false);
+  const [threadPageWidth, setThreadPageWidth] = useState(0);
+  const [diffDockWidth, setDiffDockWidth] = useState<number | null>(null);
   const transcriptControllerRef = useRef<TranscriptController | null>(null);
   const registerTranscriptController = useCallback(
     (controller: TranscriptController | null) => {
@@ -361,6 +363,17 @@ function ThreadPage(props: { threadId: string }) {
       }${diffOpen ? ' ThreadPage--diff-open' : ''}${
         providerHealthVisible ? ' ThreadPage--provider-health-visible' : ''
       }`}
+      bindlayoutchange={(event: {
+        readonly detail?: { readonly width?: number };
+      }) => {
+        const width = event.detail?.width;
+        if (typeof width === 'number' && width > 0) setThreadPageWidth(width);
+      }}
+      style={
+        diffOpen && diffDockWidth !== null
+          ? { paddingRight: `${diffDockWidth}px` }
+          : undefined
+      }
     >
       <ChatSurfaceHeaderFrame>
         <view className="ThreadHeaderIdentity">
@@ -446,6 +459,7 @@ function ThreadPage(props: { threadId: string }) {
           }
           onOpenChanges={() => {
             setEnvironmentOpen(false);
+            setDiffDockWidth(null);
             setDiffOpen(true);
           }}
           onOpenSettings={() => {
@@ -455,9 +469,14 @@ function ThreadPage(props: { threadId: string }) {
         />
       ) : null}
       <DiffDock
+        availableWidth={threadPageWidth}
         open={diffOpen}
         workspaceRoot={currentThread?.workspaceRoot ?? null}
-        onClose={() => setDiffOpen(false)}
+        onClose={() => {
+          setDiffOpen(false);
+          setDiffDockWidth(null);
+        }}
+        onWidthChange={setDiffDockWidth}
       />
     </view>
   );

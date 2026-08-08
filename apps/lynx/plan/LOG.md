@@ -8450,3 +8450,24 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - fixture canonical cleanup snapshot215：live projects0、live threads0；两个
   named Browser sessions、owned Native和临时public harness均清理，未触碰其他
   Lynx clients。
+
+### Resizable right panels
+
+- 新增`ResizableRightPanel`统一右侧panel的mouse/touch、10px左sash、1px主题线、
+  全屏overlay、buttons=0 missed-mouseup和consumer-owned bounds；不错误复用左侧
+  sidebar的208/640规则。可选storage只留给真正需要persist的embedded panels。
+- Pull Request Detail严格跟Web `RightDock`：wide每次open恢复50/50，min416，列表至少
+  320；medium/compact继续单surface master-detail且不显示sash。真实1440×900：
+  default list/dock 592/592，drag后512/672，floor为768/416，max为320/864；
+  dark reload/reopen恢复592/592。900×650 medium为dock644、list隐藏、sash absent。
+- Working Tree Diff Dock复用同一primitive，但保留现有overlay语义：default50%、
+  min320、max720、main至少320。ThreadPage的padding由同一resolved width回调更新，
+  避免panel宽度变化后留下50%空白；close/reopen清空session width并回到半宽。
+- rendered Rstest真实mousedown→mousemove→mouseup把right panel 640拖到720并验证
+  overlay lifecycle及optional persistence。PR真实Lynx-for-Web row和sash交互完成上述
+  矩阵；Working Tree thread在当前server快照停留`Loading conversation…`，因此该
+  consumer只声明shared rendered behavior、source/layout contract和production build，
+  不冒充runtime diff-content截图。
+- focused **3 files / 9 tests**和Native/Desktop production build通过。fixture canonical
+  cleanup snapshot219：live project0、live thread0；named sessions和临时public
+  harness已删除。

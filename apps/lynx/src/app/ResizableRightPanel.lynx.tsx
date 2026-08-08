@@ -1,0 +1,161 @@
+import { useEffect, useRef, useState, type ReactNode } from '@lynx-js/react';
+
+import {
+  clampSidebarWidth,
+  sidebarWidthFromPointer,
+} from '@synara-web/components/sidebarResize.logic';
+import { useViewportLayout } from '../hooks/useViewportLayout.lynx';
+import { webStorage } from '../platform/storage';
+import {
+  isLynxSidebarPrimaryPointer,
+  readLynxSidebarButtons,
+  readLynxSidebarPointerX,
+  type LynxSidebarPointerEvent,
+} from './sidebarResize.lynx.logic';
+import './resizable-right-panel.css';
+
+interface RightPanelResizeSession {
+  readonly startWidth: number;
+  readonly startX: number;
+  readonly width: number;
+}
+
+function readPersistedWidth(
+  storageKey: string | undefined
+): number | null {
+  if (!storageKey) return null;
+  try {
+    const raw = webStorage.getItem(storageKey);
+    if (!raw) return null;
+    const value = JSON.parse(raw) as unknown;
+    return typeof value === 'number' && Number.isFinite(value) ? value : null;
+  } catch {
+    return null;
+  }
+}
+
+export function ResizableRightPanel(props: {
+  readonly availableWidth: number;
+  readonly children: ReactNode;
+  readonly className: string;
+  readonly defaultWidth: number;
+  readonly maxWidth?: number | undefined;
+  readonly minimumMainWidth: number;
+  readonly minWidth: number;
+  readonly onWidthChange?: ((width: number) => void) | undefined;
+  readonly resizable: boolean;
+  readonly storageKey?: string | undefined;
+}) {
+  const viewport = useViewportLayout();
+  const [persistedWidth, setPersistedWidth] = useState(() =>
+    readPersistedWidth(props.storageKey)
+  );
+  const [dragging, setDragging] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const sessionRef = useRef<RightPanelResizeSession | null>(null);
+  const availableWidth =
+    props.availableWidth > 0 ? props.availableWidth : viewport.width;
+  const width = clampSidebarWidth(
+    persistedWidth ?? props.defaultWidth,
+    {
+      maxWidth: props.maxWidth,
+      minWidth: props.minWidth,
+      minimumContentWidth: props.minimumMainWidth,
+      viewportWidth: availableWidth,
+    }
+  );
+  const canResize =
+    props.resizable &&
+    !viewport.compact &&
+    !viewport.medium &&
+    availableWidth > props.minWidth;
+
+  useEffect(() => {
+    if (canResize) props.onWidthChange?.(width);
+  }, [canResize, props.onWidthChange, width]);
+
+  const stopResize = () => {
+    const session = sessionRef.current;
+    sessionRef.current = null;
+    setDragging(false);
+    if (!session) return;
+    setPersistedWidth(session.width);
+    if (props.storageKey) {
+      webStorage.setItem(props.storageKey, JSON.stringify(session.width));
+    }
+  };
+  const startResize = (event: LynxSidebarPointerEvent) => {
+    if (!canResize || !isLynxSidebarPrimaryPointer(event)) return;
+    const startX = readLynxSidebarPointerX(event);
+    if (startX === null) return;
+    sessionRef.current = { startWidth: width, startX, width };
+    setDragging(true);
+  };
+  const moveResize = (event: LynxSidebarPointerEvent) => {
+    const session = sessionRef.current;
+    if (!session) return;
+    if (readLynxSidebarButtons(event) === 0) {
+      stopResize();
+      return;
+    }
+    const currentX = readLynxSidebarPointerX(event);
+    if (currentX === null) return;
+    const nextWidth = clampSidebarWidth(
+      sidebarWidthFromPointer({
+        currentX,
+        side: 'right',
+        startWidth: session.startWidth,
+        startX: session.startX,
+      }),
+      {
+        maxWidth: props.maxWidth,
+        minWidth: props.minWidth,
+        minimumContentWidth: props.minimumMainWidth,
+        viewportWidth: availableWidth,
+      }
+    );
+    sessionRef.current = { ...session, width: nextWidth };
+    setPersistedWidth(nextWidth);
+  };
+
+  return (
+    <view
+      className={props.className}
+      style={canResize ? { width: `${width}px` } : undefined}
+    >
+      {canResize ? (
+        <view
+          className={`RightPanelResizeSash${
+            hovered ? ' ui-hover' : ''
+          }${dragging ? ' RightPanelResizeSash--dragging' : ''}`}
+          aria-label="Resize panel"
+          accessibility-element={true}
+          accessibility-label="Resize panel"
+          accessibility-traits="adjustable"
+          bindmousedown={startResize}
+          bindmousemove={moveResize}
+          bindmouseup={stopResize}
+          bindmouseenter={() => setHovered(true)}
+          bindmouseleave={() => setHovered(false)}
+          bindtouchstart={startResize}
+          bindtouchmove={moveResize}
+          bindtouchend={stopResize}
+          bindtouchcancel={stopResize}
+        >
+          <view className="RightPanelResizeSashLine" />
+        </view>
+      ) : null}
+      {props.children}
+      {dragging ? (
+        <view
+          className="RightPanelResizeOverlay"
+          bindmousemove={moveResize}
+          bindmouseup={stopResize}
+          bindtouchmove={moveResize}
+          bindtouchend={stopResize}
+          bindtouchcancel={stopResize}
+        />
+      ) : null}
+    </view>
+  );
+}

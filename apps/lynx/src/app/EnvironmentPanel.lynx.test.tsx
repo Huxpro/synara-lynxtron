@@ -41,6 +41,10 @@ describe('Lynx Environment panel', () => {
       new URL('./DiffDock.lynx.tsx', import.meta.url),
       'utf8'
     );
+    const routerSource = readFileSync(
+      new URL('./router.tsx', import.meta.url),
+      'utf8'
+    );
     const appStyles = readFileSync(
       new URL('./App.css', import.meta.url),
       'utf8'
@@ -148,6 +152,14 @@ describe('Lynx Environment panel', () => {
     expect(diffDockSource).toContain('fetchWorkingTreeDiff(props.workspaceRoot!)');
     expect(diffDockSource).toContain('buildPullRequestCodeView(');
     expect(diffDockSource).toContain('<PullRequestCodeComposition');
+    expect(diffDockSource).toContain('<ResizableRightPanel');
+    expect(diffDockSource).toContain('maxWidth={720}');
+    expect(routerSource).toContain(
+      "diffOpen && diffDockWidth !== null"
+    );
+    expect(routerSource).toContain(
+      "{ paddingRight: `${diffDockWidth}px` }"
+    );
     expect(appStyles).toMatch(
       /\.ThreadPage--diff-open\s*\{[^}]*padding-right:\s*50%;/s
     );

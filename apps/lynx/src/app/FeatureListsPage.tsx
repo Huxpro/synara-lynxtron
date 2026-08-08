@@ -94,6 +94,7 @@ import {
   resolveKanbanOverviewRouteState,
   resolveKanbanProjectRouteState,
 } from './kanbanRouteState.logic';
+import { ResizableRightPanel } from './ResizableRightPanel.lynx';
 
 export function ProjectsPage({ navigate }: { readonly navigate: (to: string) => void }) {
   const { data, error, isPending, isFetching, refetch } = useQuery({
@@ -763,6 +764,7 @@ export function PullRequestsPage() {
   const [rawVisibleLineCount, setRawVisibleLineCount] = useState(
     PULL_REQUEST_DIFF_INITIAL_LINE_COUNT
   );
+  const [routeBodyWidth, setRouteBodyWidth] = useState(0);
   const [lastFailedAction, setLastFailedAction] =
     useState<PullRequestActionInput | null>(null);
   const actionGateRef = useRef(createPullRequestActionGate());
@@ -928,6 +930,12 @@ export function PullRequestsPage() {
         className={`SharedPrRouteBody${
           selectedInput ? ' SharedPrRouteBody--detail-open' : ''
         }`}
+        bindlayoutchange={(event: {
+          readonly detail?: { readonly width?: number };
+        }) => {
+          const width = event.detail?.width;
+          if (typeof width === 'number' && width > 0) setRouteBodyWidth(width);
+        }}
       >
         <scroll-view
           className="SharedPrRouteScroller"
@@ -1003,7 +1011,16 @@ export function PullRequestsPage() {
           </view>
         </scroll-view>
         {selectedInput ? (
-          <view className="SharedPrDetailDock">
+          <ResizableRightPanel
+            availableWidth={routeBodyWidth}
+            className="SharedPrDetailDock"
+            defaultWidth={
+              routeBodyWidth > 0 ? Math.round(routeBodyWidth / 2) : 512
+            }
+            minimumMainWidth={320}
+            minWidth={416}
+            resizable
+          >
             <view className="SharedPrDetailDockHeader">
               <PullRequestDetailTabsComposition
                 activeTab={activeDetailTab}
@@ -1114,7 +1131,7 @@ export function PullRequestsPage() {
                 )
               ) : null}
             </scroll-view>
-          </view>
+          </ResizableRightPanel>
         ) : null}
       </view>
     </view>

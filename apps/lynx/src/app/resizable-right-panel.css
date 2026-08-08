@@ -1,0 +1,37 @@
+.RightPanelResizeSash {
+  position: absolute;
+  left: -5px;
+  top: 0;
+  z-index: 60;
+  width: 10px;
+  height: 100%;
+  background-color: rgba(128, 128, 128, 0.02);
+  cursor: col-resize;
+  -x-app-region: no-drag;
+}
+
+.RightPanelResizeSashLine {
+  position: absolute;
+  left: 5px;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  background-color: var(--border);
+}
+
+.RightPanelResizeSash.ui-hover .RightPanelResizeSashLine,
+.RightPanelResizeSash--dragging .RightPanelResizeSashLine {
+  background-color: var(--color-border-focus);
+}
+
+.RightPanelResizeOverlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 2000;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(128, 128, 128, 0.02);
+  cursor: col-resize;
+  -x-app-region: no-drag;
+}

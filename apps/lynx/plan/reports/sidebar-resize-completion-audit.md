@@ -1,8 +1,7 @@
 # Sidebar reload and resize completion audit
 
-Status: complete for the ordinary and Settings left sidebars. Right-side
-Diff/PR docks are separate panel surfaces with different constraints and are
-not counted as left sidebars in this audit.
+Status: complete for ordinary and Settings left sidebars, plus the distinct
+Working Tree Diff and Pull Request Detail right-panel contracts.
 
 ## Prompt-to-artifact checklist
 
@@ -23,14 +22,15 @@ not counted as left sidebars in this audit.
 | Production builds | `build:web` and Native/Desktop `build` pass with existing known warnings | PASS |
 | Native evidence is not overstated | exact-owned Native bundle/client/console verified; current SDK did not expose DOM/screencast and injected drag did not persist, so Native pointer drag is not claimed | RECORDED LIMIT |
 | Cleanup | canonical fixture cleanup snapshot 215: live projects 0, live threads 0; owned sessions/processes/harness removed | PASS |
+| PR Detail right-panel resize | shared right-panel primitive; real 1440 default/drag/min/max and 900 single-surface matrix | PASS |
+| Working Tree Diff resize | shared primitive, 320–720 bounds and synchronized ThreadPage padding | PASS — runtime content cell limited by current loading thread |
 
 ## Coverage notes
 
 - The resize verifier covers both left-sidebar consumers because both now use
   the same `SidebarDisclosure` owner.
 - Environment is a popover, not a sidebar. Diff Dock and Pull Request Detail
-  are right-side panels with independent minimum/default rules; treating them
-  as the 208/640 left-sidebar contract would be incorrect.
+  use their own right-panel rules rather than the 208/640 left-sidebar contract.
 - The active thread goal remains broader than this slice: future fidelity work
   may add dedicated right-panel resizing without changing the completed
   left-sidebar contract.
