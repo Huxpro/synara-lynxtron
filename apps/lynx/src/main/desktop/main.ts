@@ -246,6 +246,7 @@ function installApplicationMenu(w: LynxWindow): void {
         },
         { type: 'separator' },
         { role: 'reload' },
+        { role: 'forceReload' },
         ...(isDev ? [{ role: 'toggleDevTools' }] : []),
       ],
     },
