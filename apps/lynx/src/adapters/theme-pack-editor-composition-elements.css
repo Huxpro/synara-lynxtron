@@ -148,13 +148,22 @@
   overflow: visible;
 }
 
+.SharedThemePackImportTextareaControl {
+  width: 100%;
+  height: 96px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background-color: transparent;
+  overflow: hidden;
+}
+
 .SharedThemePackImportTextarea {
   display: block;
-  width: calc(100% - 2px);
+  width: 100%;
   height: 94px;
-  margin: 1px;
-  padding: 8px 10px;
-  border: 1px solid var(--border);
+  margin: 0;
+  padding: 7px 9px;
+  border-width: 0;
   border-radius: 10px;
   background-color: transparent;
   color: var(--foreground);
@@ -171,11 +180,11 @@
   --theme-pack-import-placeholder: rgba(252, 252, 252, 0.5);
 }
 
-.SliceRoot--theme-light .SharedThemePackImportTextarea:focus {
+.SliceRoot--theme-light .SharedThemePackImportTextareaControl--focused {
   border-color: rgba(13, 13, 13, 0.3);
 }
 
-.SliceRoot--theme-dark .SharedThemePackImportTextarea:focus {
+.SliceRoot--theme-dark .SharedThemePackImportTextareaControl--focused {
   border-color: rgba(252, 252, 252, 0.3);
 }
 

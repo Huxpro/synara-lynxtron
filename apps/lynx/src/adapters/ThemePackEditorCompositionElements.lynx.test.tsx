@@ -143,7 +143,10 @@ describe('ThemePack boolean interaction contract', () => {
       /\.SharedThemePackImportCode\s*\{[^}]*padding:\s*2px 4px;[^}]*border-radius:\s*4px;[^}]*background-color:\s*var\(--muted\);[^}]*font-family:\s*var\(--font-chat-code-family\);/s
     );
     expect(styles).toMatch(
-      /\.SharedThemePackImportTextarea\s*\{[^}]*display:\s*block;[^}]*width:\s*calc\(100% - 2px\);[^}]*height:\s*94px;[^}]*margin:\s*1px;[^}]*padding:\s*8px 10px;[^}]*border-radius:\s*10px;[^}]*font-family:\s*var\(--font-chat-code-family\);[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s
+      /\.SharedThemePackImportTextareaControl\s*\{[^}]*width:\s*100%;[^}]*height:\s*96px;[^}]*border:\s*1px solid var\(--border\);[^}]*border-radius:\s*10px;[^}]*background-color:\s*transparent;[^}]*overflow:\s*hidden;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedThemePackImportTextarea\s*\{[^}]*display:\s*block;[^}]*width:\s*100%;[^}]*height:\s*94px;[^}]*margin:\s*0;[^}]*padding:\s*7px 9px;[^}]*border-width:\s*0;[^}]*border-radius:\s*10px;[^}]*font-family:\s*var\(--font-chat-code-family\);[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s
     );
     expect(source).toContain(
       'placeholder-color="var(--theme-pack-import-placeholder)"'
@@ -155,13 +158,13 @@ describe('ThemePack boolean interaction contract', () => {
       /\.SliceRoot--theme-dark \.SharedThemePackImportTextarea\s*\{[^}]*--theme-pack-import-placeholder:\s*rgba\(252,\s*252,\s*252,\s*0\.5\);/s
     );
     expect(styles).toMatch(
-      /\.SliceRoot--theme-light \.SharedThemePackImportTextarea:focus\s*\{[^}]*border-color:\s*rgba\(13,\s*13,\s*13,\s*0\.3\);/s
+      /\.SliceRoot--theme-light \.SharedThemePackImportTextareaControl--focused\s*\{[^}]*border-color:\s*rgba\(13,\s*13,\s*13,\s*0\.3\);/s
     );
     expect(styles).toMatch(
-      /\.SliceRoot--theme-dark \.SharedThemePackImportTextarea:focus\s*\{[^}]*border-color:\s*rgba\(252,\s*252,\s*252,\s*0\.3\);/s
+      /\.SliceRoot--theme-dark \.SharedThemePackImportTextareaControl--focused\s*\{[^}]*border-color:\s*rgba\(252,\s*252,\s*252,\s*0\.3\);/s
     );
     expect(styles).not.toMatch(
-      /\.SharedThemePackImportTextarea:focus\s*\{[^}]*var\(--ring\)/s
+      /\.SharedThemePackImportTextarea(?:Control--focused|:focus)\s*\{[^}]*var\(--ring\)/s
     );
     expect(styles).toMatch(
       /\.SharedThemePackImportCancel\s*\{[^}]*width:\s*59\.65625px;/s
@@ -273,6 +276,33 @@ describe('ThemePack boolean interaction contract', () => {
     );
     fireEvent.tap(submit!);
     expect(onImport).not.toHaveBeenCalled();
+
+    textarea.dispatchEvent(
+      new CustomEvent('bindEvent:focus', {
+        bubbles: true,
+        detail: { value: '' },
+      })
+    );
+    await waitFor(() =>
+      expect(
+        elementTree.root?.querySelector(
+          '.SharedThemePackImportTextareaControl--focused'
+        )
+      ).not.toBeNull()
+    );
+    textarea.dispatchEvent(
+      new CustomEvent('bindEvent:blur', {
+        bubbles: true,
+        detail: { value: '' },
+      })
+    );
+    await waitFor(() =>
+      expect(
+        elementTree.root?.querySelector(
+          '.SharedThemePackImportTextareaControl--focused'
+        )
+      ).toBeNull()
+    );
 
     textarea.dispatchEvent(
       new CustomEvent('bindEvent:input', {

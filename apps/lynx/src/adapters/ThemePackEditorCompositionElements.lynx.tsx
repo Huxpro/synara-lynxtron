@@ -136,10 +136,12 @@ export function ThemePackImportActionElement(props: {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [focused, setFocused] = useState(false);
   const close = () => {
     setOpen(false);
     setValue('');
     setError(null);
+    setFocused(false);
   };
   const submit = () => {
     try {
@@ -199,21 +201,29 @@ export function ThemePackImportActionElement(props: {
               </text>
             </DialogHeader>
             <DialogPanel className="SharedThemePackImportPanel">
-              <textarea
-                className="SharedThemePackImportTextarea"
-                aria-label="Theme share string"
-                accessibility-element
-                accessibility-label="Theme share string"
-                focusable
-                default-value={value}
-                placeholder='codex-theme-v1:{"codeThemeId":"linear",...}'
-                placeholder-color="var(--theme-pack-import-placeholder)"
-                maxlines={5}
-                bindinput={(event) => {
-                  setValue(event.detail.value);
-                  setError(null);
-                }}
-              />
+              <view
+                className={`SharedThemePackImportTextareaControl${
+                  focused ? ' SharedThemePackImportTextareaControl--focused' : ''
+                }`}
+              >
+                <textarea
+                  className="SharedThemePackImportTextarea"
+                  aria-label="Theme share string"
+                  accessibility-element
+                  accessibility-label="Theme share string"
+                  focusable
+                  default-value={value}
+                  placeholder='codex-theme-v1:{"codeThemeId":"linear",...}'
+                  placeholder-color="var(--theme-pack-import-placeholder)"
+                  maxlines={5}
+                  bindfocus={() => setFocused(true)}
+                  bindblur={() => setFocused(false)}
+                  bindinput={(event) => {
+                    setValue(event.detail.value);
+                    setError(null);
+                  }}
+                />
+              </view>
               {error ? (
                 <text className="SharedThemePackImportError">{error}</text>
               ) : null}

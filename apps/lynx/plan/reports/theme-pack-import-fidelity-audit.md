@@ -51,6 +51,7 @@ Concrete success criteria:
 | Dark material | Dialog `rgb(23,23,23)`, ink `rgb(252,252,252)`, 7% semantic border, radius 22 | PASS |
 | Placeholder tone | Web and Lynx internal textarea placeholders resolve to foreground/50: light `rgba(13,13,13,.5)`, dark `rgba(252,252,252,.5)` | PASS |
 | Focus border optics | Web control and Lynx textarea resolve to foreground/30 in both themes instead of the blue `--ring`; textarea geometry remains `412x94` | PASS |
+| Textarea border ownership | Lynx now mirrors Web's `414x96` bordered control around a borderless `412x94` textarea; focus/blur projects the 30% border onto the outer owner | PASS |
 | Header typography and code anatomy | Lynx title now resolves foreground/600; description resolves muted foreground; inline `codex-theme-v1:` chip matches Web at `116x20`, `2px 4px`, radius 4, code font | PASS |
 | Disabled Import paint | Empty-value submit uses Web's local disabled opacity `0.64` instead of the generic Lynx `0.48`; button geometry remains exact | PASS |
 | Connection provenance | Three-client preflight resolved server instance `bec7ebc4-3a45-4cc3-9f91-bc5aab3f1064`, snapshot 0; relay had no transport/RPC error | PASS |
@@ -220,6 +221,14 @@ runtime evidence in
 - one relay connection, no pending requests, and no transport or RPC errors.
 
 All four retained frames are exactly `1280x820`.
+
+The final structure also matches Web's paint ownership rather than only its
+color. A `414x96` `SharedThemePackImportTextareaControl` owns the border and
+radius, while the inner textarea is `412x94`, borderless, and uses the Web
+inner padding `7px 9px`. Native `bindfocus` / `bindblur` project the focused
+class to the outer control. The exact textarea-region changed ratio fell from
+`9.95%` to `9.32%` in light and from `9.96%` to `9.35%` in dark; mean
+max-channel difference fell from `6.57` to `6.07` and from `6.72` to `6.17`.
 
 ## Header typography
 
