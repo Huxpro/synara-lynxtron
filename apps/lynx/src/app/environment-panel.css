@@ -513,6 +513,112 @@
   line-height: 15px;
 }
 
+.EnvironmentPinnedList {
+  display: flex;
+  flex-direction: column;
+}
+
+.EnvironmentPinnedRow {
+  display: flex;
+  min-height: 26px;
+  padding: 4px 8px;
+  align-items: center;
+  gap: 6px;
+  border-radius: 10px;
+}
+
+.EnvironmentPinnedRow.ui-hover {
+  background-color: var(--accent);
+}
+
+.EnvironmentPinnedCheckbox {
+  display: flex;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.EnvironmentPinnedCheckbox--checked {
+  border-color: var(--foreground);
+  background-color: var(--foreground);
+}
+
+.EnvironmentPinnedCheckIcon {
+  width: 10px;
+  height: 10px;
+}
+
+.EnvironmentPinnedLabel {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+}
+
+.EnvironmentPinnedLabelText {
+  overflow: hidden;
+  color: var(--foreground);
+  font-size: 12px;
+  line-height: 18px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.EnvironmentPinnedLabel--done .EnvironmentPinnedLabelText,
+.EnvironmentPinnedLabel--unavailable .EnvironmentPinnedLabelText {
+  color: var(--muted-foreground);
+  opacity: 0.55;
+}
+
+.EnvironmentPinnedLabel--done .EnvironmentPinnedLabelText {
+  text-decoration: line-through;
+}
+
+.EnvironmentPinnedEdit {
+  min-width: 0;
+  height: 24px;
+  flex: 1;
+  padding: 2px 4px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.EnvironmentPinnedAction {
+  display: flex;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  opacity: 0.6;
+}
+
+.EnvironmentPinnedAction.ui-hover,
+.EnvironmentPinnedAction.ui-focus,
+.EnvironmentPinnedAction.ui-pressed {
+  background-color: var(--accent);
+  opacity: 1;
+}
+
+.EnvironmentPinnedActionIcon {
+  width: 12px;
+  height: 12px;
+}
+
+.EnvironmentPinnedError {
+  color: var(--destructive);
+  font-size: 10px;
+  line-height: 15px;
+}
+
 .EnvironmentSectionLabel,
 .EnvironmentDisclosureLabel {
   color: var(--muted-foreground);

@@ -199,7 +199,17 @@ function TranscriptRowContent({ row }: { row: ThreadTranscriptRow }) {
   );
 }
 
-export function Transcript({ rows }: { readonly rows: readonly ThreadTranscriptRow[] }) {
+export interface TranscriptController {
+  readonly scrollToMessage: (messageId: string) => void;
+}
+
+export function Transcript({
+  rows,
+  onController,
+}: {
+  readonly rows: readonly ThreadTranscriptRow[];
+  readonly onController?: (controller: TranscriptController | null) => void;
+}) {
   const listRef = useRef<React.ElementRef<'list'>>(null);
   const pinnedRef = useRef(true);
   const [pinned, setPinned] = useState(true);
@@ -212,6 +222,26 @@ export function Transcript({ rows }: { readonly rows: readonly ThreadTranscriptR
       ?.invoke({
         method: 'scrollToPosition',
         params,
+      })
+      .exec();
+  }
+
+  function scrollToMessage(messageId: string) {
+    'background only';
+    const index = rows.findIndex(
+      (row) => row.kind === 'message' && row.message.id === messageId
+    );
+    if (index < 0) return;
+    pinnedRef.current = false;
+    setPinned(false);
+    listRef.current
+      ?.invoke({
+        method: 'scrollToPosition',
+        params: {
+          index,
+          offset: 0,
+          smooth: true,
+        },
       })
       .exec();
   }
@@ -300,6 +330,11 @@ export function Transcript({ rows }: { readonly rows: readonly ThreadTranscriptR
       if (timeoutId !== null) clearTimeout(timeoutId);
     };
   }, []);
+
+  useEffect(() => {
+    onController?.({ scrollToMessage });
+    return () => onController?.(null);
+  }, [onController, rows]);
 
   function jumpToLatest() {
     'background only';

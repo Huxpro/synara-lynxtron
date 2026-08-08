@@ -7999,3 +7999,32 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   `shots/2026-08-08/environment-instructions-current/`；最终staged bundle
   SHA-256为
   `b7cbff329697ce661dfbac8947e43555d1b8bf02d6636c22f224c54c4df4b627`。
+
+### Environment Pinned follow-up
+
+- Detail projection增加server-synced`pinnedMessages`、仅真实user/assistant message文本
+  map与stable revision；Environment复用Web `displayLabelFor`/`normalizePinLabel`，实现
+  14px checkbox、auto label、done strike、inline rename、24px unpin与visible rollback
+  error。三类mutation直接发canonical pinned-message commands，并以local optimistic
+  state+server echo串行收敛。
+- Transcript新增最小controller：按真实message row id查index并调用native list
+  `scrollToPosition`；tool/work rows不会成为jump target。controller由ThreadPage ref转给
+  Environment，不把list ref或完整transcript跨层暴露。首版map内调用interaction hook
+  在验证前即被自审发现并抽为独立`EnvironmentPinnedRow`，避免pin数量变化破坏hook顺序。
+- Canonical fixture：project sequence31、source thread32、target
+  `thread.handoff.create`到35，真实imported user/assistant messages；assistant pin36、
+  user pin37。UI从assistant正文派生label，checkbox真实done并回显checked/strike，
+  rename为`Verified pinned context`，user pin真实unpin后仅一row。row
+  987/437.5/274×32，checkbox14×14，actions24×24。
+- jump action真实进入controller，但两消息fixture的`scrollHeight===clientHeight===583`
+  无可滚动范围，故不冒充visible offset pass；wiring与message-only index由focused
+  source contract覆盖，后续长transcript可补host可观察证据。
+- retained frame 1280×820/DPR1。Composer model discovery曾留下缺Codex CLI的历史
+  rpc error，使用真实Local Servers成功refresh后relay最终OPEN/attempt1/pending0、
+  transport/rpc error均null；page errors clean，console仅已知初始化warning。
+- fixture target/source/project canonical delete sequences42/43/44，active
+  projections0；browser session关闭。focused Environment/recap **2 files / 5 tests**、
+  shared/Web pin helpers **25/25**、Web与Native/Desktop production builds通过。
+  证据在`shots/2026-08-08/environment-pinned-current/`；最终staged bundle
+  SHA-256为
+  `9c045bba7326ed74e0667cf8243afc6e94b73e77e7e59900df2b184b1030b6b3`。

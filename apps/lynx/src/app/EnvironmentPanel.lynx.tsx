@@ -3,12 +3,14 @@ import { useQuery } from '@tanstack/react-query';
 import {
   THREAD_NOTES_MAX_CHARS,
   type EditorId,
+  type PinnedMessage,
   type ProviderKind,
 } from '@synara/contracts';
 import {
   mergeProjectInstructionsIntoThreadNotes,
   useProjectInstructionsStore,
 } from '@synara-web/projectInstructionsStore';
+import { displayLabelFor, normalizePinLabel } from '@synara-web/pinnedMessages';
 import {
   providerUsageDisplayName,
   providerUsageNeedsAuthDetail,
@@ -23,6 +25,9 @@ import windowSvg from '@synara-central-icons/window.svg?raw';
 import globeSvg from '@synara-central-icons/globe.svg?raw';
 import githubSvg from '@synara-central-icons/github.svg?raw';
 import arrowUpRightSvg from '@synara-central-icons/arrow-up-right.svg?raw';
+import checkmarkSvg from '@synara-central-icons/checkmark-2-small.svg?raw';
+import editSvg from '@synara-central-icons/edit-small-2.svg?raw';
+import closeSvg from '@synara-central-icons/close-circle-dashed.svg?raw';
 import stopSvg from '@synara-central-icons/stop.svg?raw';
 
 import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
@@ -737,6 +742,269 @@ function EnvironmentProjectInstructions(props: {
   );
 }
 
+function EnvironmentPinnedRow(props: {
+  readonly busy: boolean;
+  readonly error: boolean;
+  readonly messageText: string | undefined;
+  readonly onDoneChange: (done: boolean) => void;
+  readonly onJump: () => void;
+  readonly onRemove: () => void;
+  readonly onRename: (label: string | null) => void;
+  readonly pin: PinnedMessage;
+}) {
+  const { svgColors } = useTheme();
+  const [editing, setEditing] = useState(false);
+  const [draftLabel, setDraftLabel] = useState('');
+  const editInputRef = useRef<React.ElementRef<'input'>>(null);
+  const available = props.messageText !== undefined;
+  const resolvedLabel = displayLabelFor(props.pin, props.messageText);
+  const label =
+    resolvedLabel.length > 0 ? resolvedLabel : '(message unavailable)';
+  const done = props.pin.done === true;
+
+  useEffect(() => {
+    if (!editing) return;
+    editInputRef.current
+      ?.invoke({ method: 'focus', params: {} })
+      .exec();
+  }, [editing]);
+
+  function beginRename() {
+    setDraftLabel(resolvedLabel);
+    setEditing(true);
+  }
+
+  function commitRename() {
+    const nextLabel = normalizePinLabel(draftLabel);
+    setEditing(false);
+    if ((props.pin.label ?? null) !== nextLabel) props.onRename(nextLabel);
+  }
+
+  const checkbox = useLynxInteractiveState({
+    baseClassName: `EnvironmentPinnedCheckbox${
+      done ? ' EnvironmentPinnedCheckbox--checked' : ''
+    }`,
+    accessibleLabel: done ? 'Mark not done' : 'Mark done',
+    disabled: props.busy,
+    onActivate: () => props.onDoneChange(!done),
+  });
+  const labelInteraction = useLynxInteractiveState({
+    baseClassName: `EnvironmentPinnedLabel${
+      done ? ' EnvironmentPinnedLabel--done' : ''
+    }${available ? '' : ' EnvironmentPinnedLabel--unavailable'}`,
+    accessibleLabel: available
+      ? `Jump to pinned message: ${label}`
+      : `Pinned message unavailable: ${label}`,
+    disabled: !available || props.busy,
+    onActivate: available ? props.onJump : undefined,
+  });
+  const rename = useLynxInteractiveState({
+    baseClassName: 'EnvironmentPinnedAction',
+    accessibleLabel: `Rename pinned message: ${label}`,
+    disabled: props.busy,
+    onActivate: beginRename,
+  });
+  const remove = useLynxInteractiveState({
+    baseClassName: 'EnvironmentPinnedAction',
+    accessibleLabel: `Unpin message: ${label}`,
+    disabled: props.busy,
+    onActivate: props.onRemove,
+  });
+
+  return (
+    <view className="EnvironmentPinnedRow">
+      <view
+        className={checkbox.className}
+        aria-checked={done}
+        {...checkbox.eventProps}
+      >
+        {done ? (
+          <svg
+            className="EnvironmentPinnedCheckIcon"
+            content={colorizeLynxSvg(checkmarkSvg, svgColors.foreground)}
+          />
+        ) : null}
+      </view>
+      {editing ? (
+        <input
+          ref={editInputRef}
+          className="EnvironmentPinnedEdit"
+          aria-label="Pinned message label"
+          accessibility-element
+          accessibility-label="Pinned message label"
+          focusable
+          default-value={draftLabel}
+          maxlength={80}
+          bindinput={(event) => setDraftLabel(event.detail.value)}
+          bindblur={commitRename}
+          bindconfirm={commitRename}
+        />
+      ) : (
+        <view
+          className={labelInteraction.className}
+          {...labelInteraction.eventProps}
+        >
+          <text className="EnvironmentPinnedLabelText">{label}</text>
+        </view>
+      )}
+      <view className={rename.className} {...rename.eventProps}>
+        <svg
+          className="EnvironmentPinnedActionIcon"
+          content={colorizeLynxSvg(editSvg, svgColors.mutedForeground)}
+        />
+      </view>
+      <view className={remove.className} {...remove.eventProps}>
+        <svg
+          className="EnvironmentPinnedActionIcon"
+          content={colorizeLynxSvg(closeSvg, svgColors.mutedForeground)}
+        />
+      </view>
+      {props.error ? (
+        <text className="EnvironmentPinnedError">Could not save</text>
+      ) : null}
+    </view>
+  );
+}
+
+function EnvironmentPinned(props: {
+  readonly messageTextById: Readonly<Record<string, string>>;
+  readonly onJump: (messageId: string) => void;
+  readonly pins: readonly PinnedMessage[];
+  readonly threadId: string;
+}) {
+  const [open, setOpen] = useState(true);
+  const [pins, setPins] = useState<readonly PinnedMessage[]>(props.pins);
+  const [busyMessageId, setBusyMessageId] = useState<string | null>(null);
+  const [errorMessageId, setErrorMessageId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (busyMessageId === null) setPins(props.pins);
+  }, [busyMessageId, props.pins]);
+
+  async function dispatchPinCommand(
+    messageId: string,
+    nextPins: readonly PinnedMessage[],
+    command:
+      | {
+          readonly type: 'thread.pinned-message.remove';
+          readonly messageId: never;
+        }
+      | {
+          readonly type: 'thread.pinned-message.done.set';
+          readonly messageId: never;
+          readonly done: boolean;
+        }
+      | {
+          readonly type: 'thread.pinned-message.label.set';
+          readonly messageId: never;
+          readonly label: string | null;
+        }
+  ) {
+    'background only';
+    if (busyMessageId !== null) return;
+    const previous = pins;
+    setPins(nextPins);
+    setBusyMessageId(messageId);
+    setErrorMessageId(null);
+    try {
+      await dispatchSynaraCommand({
+        ...command,
+        commandId: environmentCommandId() as never,
+        threadId: props.threadId as never,
+      });
+    } catch {
+      setPins(previous);
+      setErrorMessageId(messageId);
+    } finally {
+      setBusyMessageId(null);
+    }
+  }
+
+  const disclosure = useLynxInteractiveState({
+    baseClassName: 'EnvironmentDisclosure',
+    accessibleLabel: 'Pinned',
+    accessibilityValue: open ? 'Expanded' : 'Collapsed',
+    onActivate: () => setOpen((current) => !current),
+  });
+
+  if (pins.length === 0) return null;
+
+  return (
+    <view className="EnvironmentSection">
+      <view
+        className={disclosure.className}
+        aria-expanded={open}
+        {...disclosure.eventProps}
+      >
+        <text className="EnvironmentDisclosureLabel">Pinned</text>
+        <ChevronDownIcon
+          className={`EnvironmentDisclosureChevron${
+            open ? ' EnvironmentDisclosureChevron--open' : ''
+          }`}
+          size={12}
+          color="var(--muted-foreground)"
+        />
+      </view>
+      {open ? (
+        <view className="EnvironmentPinnedList">
+          {pins.map((pin) => (
+            <EnvironmentPinnedRow
+              busy={busyMessageId !== null}
+              error={errorMessageId === pin.messageId}
+              key={pin.messageId}
+              messageText={props.messageTextById[pin.messageId]}
+              pin={pin}
+              onJump={() => props.onJump(pin.messageId)}
+              onDoneChange={(done) =>
+                void dispatchPinCommand(
+                  pin.messageId,
+                  pins.map((candidate) =>
+                    candidate.messageId === pin.messageId
+                      ? { ...candidate, done }
+                      : candidate
+                  ),
+                  {
+                    type: 'thread.pinned-message.done.set',
+                    messageId: pin.messageId as never,
+                    done,
+                  }
+                )
+              }
+              onRename={(label) =>
+                void dispatchPinCommand(
+                  pin.messageId,
+                  pins.map((candidate) =>
+                    candidate.messageId === pin.messageId
+                      ? { ...candidate, label }
+                      : candidate
+                  ),
+                  {
+                    type: 'thread.pinned-message.label.set',
+                    messageId: pin.messageId as never,
+                    label,
+                  }
+                )
+              }
+              onRemove={() =>
+                void dispatchPinCommand(
+                  pin.messageId,
+                  pins.filter(
+                    (candidate) => candidate.messageId !== pin.messageId
+                  ),
+                  {
+                    type: 'thread.pinned-message.remove',
+                    messageId: pin.messageId as never,
+                  }
+                )
+              }
+            />
+          ))}
+        </view>
+      ) : null}
+    </view>
+  );
+}
+
 function EnvironmentNotepad(props: {
   readonly notes: string;
   readonly threadId: string;
@@ -900,7 +1168,10 @@ export function EnvironmentPanel(props: {
   readonly envMode: 'local' | 'worktree';
   readonly notes: string;
   readonly onOpenSettings: () => void;
+  readonly onJumpToPinnedMessage: (messageId: string) => void;
   readonly open: boolean;
+  readonly pinnedMessages: readonly PinnedMessage[];
+  readonly pinnedMessageTextById: Readonly<Record<string, string>>;
   readonly projectId: string;
   readonly provider: ProviderKind;
   readonly recapRevision: string;
@@ -1015,6 +1286,18 @@ export function EnvironmentPanel(props: {
               threadId={props.threadId}
               notes={props.notes}
             />
+
+            {props.pinnedMessages.length > 0 ? (
+              <>
+                <view className="EnvironmentDivider" />
+                <EnvironmentPinned
+                  messageTextById={props.pinnedMessageTextById}
+                  onJump={props.onJumpToPinnedMessage}
+                  pins={props.pinnedMessages}
+                  threadId={props.threadId}
+                />
+              </>
+            ) : null}
 
             <view className="EnvironmentDivider" />
             <EnvironmentNotepad

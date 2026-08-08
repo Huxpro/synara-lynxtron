@@ -3,7 +3,9 @@
 
 import { QueryClient } from '@tanstack/react-query';
 import type {
+  MessageId,
   ModelSelection,
+  PinnedMessage,
   ProjectId,
   ProviderKind,
   PullRequestDetail,
@@ -115,6 +117,9 @@ export interface ThreadHeaderSummary {
   readonly latestTurnState: string | null;
   readonly workspaceRoot: string | null;
   readonly notes: string;
+  readonly pinnedMessages: readonly PinnedMessage[];
+  readonly pinnedMessageTextById: Readonly<Record<string, string>>;
+  readonly pinnedRevision: string;
 }
 
 export interface ThreadRecapSummary {
@@ -376,6 +381,17 @@ export async function fetchThreadHeaderSummary(
     latestTurnState: thread.latestTurn?.state ?? null,
     workspaceRoot: project?.workspaceRoot ?? null,
     notes: thread.notes ?? '',
+    pinnedMessages: thread.pinnedMessages ?? [],
+    pinnedMessageTextById: Object.fromEntries(
+      thread.messages
+        .filter(
+          (message) =>
+            (message.role === 'user' || message.role === 'assistant') &&
+            message.text.trim().length > 0
+        )
+        .map((message) => [message.id as MessageId, message.text])
+    ),
+    pinnedRevision: JSON.stringify(thread.pinnedMessages ?? []),
   };
 }
 

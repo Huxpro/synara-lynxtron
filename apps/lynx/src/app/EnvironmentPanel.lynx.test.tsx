@@ -29,6 +29,10 @@ describe('Lynx Environment panel', () => {
       new URL('./queries.ts', import.meta.url),
       'utf8'
     );
+    const transcriptSource = readFileSync(
+      new URL('./Transcript.tsx', import.meta.url),
+      'utf8'
+    );
 
     expect(panelSource).toContain('fetchAllProviderUsage({})');
     expect(panelSource).toContain('fetchLocalServers()');
@@ -60,6 +64,15 @@ describe('Lynx Environment panel', () => {
     expect(panelSource).toContain('copiedNotesRef.current ?? props.notes');
     expect(panelSource).toContain('Architecture notes, conventions, repo links');
     expect(panelSource).toContain('Append to notepad');
+    expect(panelSource).toContain('function EnvironmentPinnedRow(');
+    expect(panelSource).toContain("type: 'thread.pinned-message.done.set'");
+    expect(panelSource).toContain("type: 'thread.pinned-message.label.set'");
+    expect(panelSource).toContain("type: 'thread.pinned-message.remove'");
+    expect(panelSource).toContain('displayLabelFor(props.pin, props.messageText)');
+    expect(queriesSource).toContain('pinnedMessages: thread.pinnedMessages ?? []');
+    expect(queriesSource).toContain('pinnedMessageTextById: Object.fromEntries(');
+    expect(transcriptSource).toContain('function scrollToMessage(messageId: string)');
+    expect(transcriptSource).toContain("row.kind === 'message' && row.message.id === messageId");
     expect(panelSource).toContain('resolveThreadRecapIdleMs({');
     expect(panelSource).toContain('fetchThreadRecapSummary(props.threadId)');
     expect(panelSource).toContain('prepareThreadRecap(props.threadId)');
@@ -131,6 +144,12 @@ describe('Lynx Environment panel', () => {
     );
     expect(styles).toMatch(
       /\.EnvironmentInstructionsCopy\s*\{[^}]*min-height:\s*24px;[^}]*gap:\s*4px;[^}]*padding:\s*0 7px;/s
+    );
+    expect(styles).toMatch(
+      /\.EnvironmentPinnedRow\s*\{[^}]*min-height:\s*26px;[^}]*padding:\s*4px 8px;[^}]*gap:\s*6px;/s
+    );
+    expect(styles).toMatch(
+      /\.EnvironmentPinnedCheckbox\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*border-radius:\s*4px;/s
     );
   });
 });

@@ -10,7 +10,7 @@
 // and rendered by hand here (see synara-lynx plan 04 pattern P-08).
 
 import { createMemoryHistory } from '@tanstack/history';
-import { useCallback, useEffect, useState } from '@lynx-js/react';
+import { useCallback, useEffect, useRef, useState } from '@lynx-js/react';
 import { useQuery } from '@tanstack/react-query';
 import type { ProviderKind, ServerProviderStatus } from '@synara/contracts';
 import type { UiDensity } from '@synara-web/lib/appDensity';
@@ -25,7 +25,7 @@ import {
   fetchThreads,
 } from './queries';
 import { threadRecapRevision } from './environmentRecap.logic';
-import { Transcript } from './Transcript';
+import { Transcript, type TranscriptController } from './Transcript';
 import { SettingsPage } from './SettingsPage';
 import { UpdatePage } from './UpdatePage';
 import {
@@ -269,6 +269,7 @@ function useThreadTranscriptPolling(threadId: string) {
               current.summary?.activeTurnId === summary?.activeTurnId &&
               current.summary?.latestTurnState === summary?.latestTurnState &&
               current.summary?.workspaceRoot === summary?.workspaceRoot &&
+              current.summary?.pinnedRevision === summary?.pinnedRevision &&
               current.summary?.notes === summary?.notes
                 ? current
                 : {
@@ -310,6 +311,13 @@ function ThreadPage(props: { threadId: string }) {
     readonly ServerProviderStatus[]
   >([]);
   const [environmentOpen, setEnvironmentOpen] = useState(false);
+  const transcriptControllerRef = useRef<TranscriptController | null>(null);
+  const registerTranscriptController = useCallback(
+    (controller: TranscriptController | null) => {
+      transcriptControllerRef.current = controller;
+    },
+    []
+  );
   const {
     data,
     error,
@@ -366,7 +374,10 @@ function ThreadPage(props: { threadId: string }) {
       />
       {bodyState.kind === 'transcript' ? (
         <ComposerColumnFrameSurface className="ThreadTranscriptColumn">
-          <Transcript rows={bodyState.rows} />
+          <Transcript
+            rows={bodyState.rows}
+            onController={registerTranscriptController}
+          />
         </ComposerColumnFrameSurface>
       ) : bodyState.kind === 'empty' ? (
         <CenteredEmptyLandingStack>
@@ -407,6 +418,8 @@ function ThreadPage(props: { threadId: string }) {
           open={environmentOpen}
           threadId={threadId}
           projectId={currentThread.projectId}
+          pinnedMessages={currentThread.pinnedMessages}
+          pinnedMessageTextById={currentThread.pinnedMessageTextById}
           provider={currentThread.provider ?? 'codex'}
           recapRevision={threadRecapRevision(
             data ?? [],
@@ -416,6 +429,9 @@ function ThreadPage(props: { threadId: string }) {
           envMode={currentThread.envMode}
           workspaceRoot={currentThread.workspaceRoot}
           notes={currentThread.notes}
+          onJumpToPinnedMessage={(messageId) =>
+            transcriptControllerRef.current?.scrollToMessage(messageId)
+          }
           onOpenSettings={() => {
             setEnvironmentOpen(false);
             history.push('/settings/general');
