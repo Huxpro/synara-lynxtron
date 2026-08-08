@@ -30,6 +30,7 @@ export interface LynxSidebarPointerEvent {
 
 export interface LynxSidebarResizeSession {
   readonly moved: boolean;
+  readonly side: 'left' | 'right';
   readonly startWidth: number;
   readonly startX: number;
   readonly width: number;
@@ -99,11 +100,13 @@ export function resolveLynxSidebarWidth(input: {
 }
 
 export function createLynxSidebarResizeSession(input: {
+  readonly side?: 'left' | 'right';
   readonly startWidth: number;
   readonly startX: number;
 }): LynxSidebarResizeSession {
   return {
     moved: false,
+    side: input.side ?? 'left',
     startWidth: input.startWidth,
     startX: input.startX,
     width: input.startWidth,
@@ -112,6 +115,9 @@ export function createLynxSidebarResizeSession(input: {
 
 export function moveLynxSidebarResizeSession(input: {
   readonly event: LynxSidebarPointerEvent;
+  readonly maxWidth?: number;
+  readonly minimumContentWidth?: number;
+  readonly minWidth?: number;
   readonly session: LynxSidebarResizeSession;
   readonly viewportWidth: number;
 }): LynxSidebarResizeMoveResult {
@@ -122,14 +128,22 @@ export function moveLynxSidebarResizeSession(input: {
   if (currentX === null) return { kind: 'ignored' };
   const requestedWidth = sidebarWidthFromPointer({
     currentX,
-    side: 'left',
+    side: input.session.side,
     startWidth: input.session.startWidth,
     startX: input.session.startX,
   });
-  const width = resolveLynxSidebarWidth({
-    requestedWidth,
-    viewportWidth: input.viewportWidth,
-  });
+  const width =
+    input.minWidth === undefined
+      ? resolveLynxSidebarWidth({
+          requestedWidth,
+          viewportWidth: input.viewportWidth,
+        })
+      : clampSidebarWidth(requestedWidth, {
+          maxWidth: input.maxWidth,
+          minWidth: input.minWidth,
+          minimumContentWidth: input.minimumContentWidth,
+          viewportWidth: input.viewportWidth,
+        });
   return {
     kind: 'moved',
     session: {

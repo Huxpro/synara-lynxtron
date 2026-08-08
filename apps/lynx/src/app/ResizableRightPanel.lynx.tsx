@@ -1,24 +1,17 @@
 import { useEffect, useRef, useState, type ReactNode } from '@lynx-js/react';
 
-import {
-  clampSidebarWidth,
-  sidebarWidthFromPointer,
-} from '@synara-web/components/sidebarResize.logic';
+import { clampSidebarWidth } from '@synara-web/components/sidebarResize.logic';
 import { useViewportLayout } from '../hooks/useViewportLayout.lynx';
 import { webStorage } from '../platform/storage';
 import {
+  createLynxSidebarResizeSession,
   isLynxSidebarPrimaryPointer,
-  readLynxSidebarButtons,
+  moveLynxSidebarResizeSession,
   readLynxSidebarPointerX,
   type LynxSidebarPointerEvent,
+  type LynxSidebarResizeSession,
 } from './sidebarResize.lynx.logic';
 import './resizable-right-panel.css';
-
-interface RightPanelResizeSession {
-  readonly startWidth: number;
-  readonly startX: number;
-  readonly width: number;
-}
 
 function readPersistedWidth(
   storageKey: string | undefined
@@ -52,7 +45,7 @@ export function ResizableRightPanel(props: {
   );
   const [dragging, setDragging] = useState(false);
   const [hovered, setHovered] = useState(false);
-  const sessionRef = useRef<RightPanelResizeSession | null>(null);
+  const sessionRef = useRef<LynxSidebarResizeSession | null>(null);
   const availableWidth =
     props.availableWidth > 0 ? props.availableWidth : viewport.width;
   const width = clampSidebarWidth(
@@ -71,7 +64,7 @@ export function ResizableRightPanel(props: {
     availableWidth > props.minWidth;
 
   useEffect(() => {
-    if (canResize) props.onWidthChange?.(width);
+    props.onWidthChange?.(canResize ? width : 0);
   }, [canResize, props.onWidthChange, width]);
 
   const stopResize = () => {
@@ -88,34 +81,31 @@ export function ResizableRightPanel(props: {
     if (!canResize || !isLynxSidebarPrimaryPointer(event)) return;
     const startX = readLynxSidebarPointerX(event);
     if (startX === null) return;
-    sessionRef.current = { startWidth: width, startX, width };
+    sessionRef.current = createLynxSidebarResizeSession({
+      side: 'right',
+      startWidth: width,
+      startX,
+    });
     setDragging(true);
   };
   const moveResize = (event: LynxSidebarPointerEvent) => {
     const session = sessionRef.current;
     if (!session) return;
-    if (readLynxSidebarButtons(event) === 0) {
+    const result = moveLynxSidebarResizeSession({
+      event,
+      maxWidth: props.maxWidth,
+      minimumContentWidth: props.minimumMainWidth,
+      minWidth: props.minWidth,
+      session,
+      viewportWidth: availableWidth,
+    });
+    if (result.kind === 'ended-missed-mouseup') {
       stopResize();
       return;
     }
-    const currentX = readLynxSidebarPointerX(event);
-    if (currentX === null) return;
-    const nextWidth = clampSidebarWidth(
-      sidebarWidthFromPointer({
-        currentX,
-        side: 'right',
-        startWidth: session.startWidth,
-        startX: session.startX,
-      }),
-      {
-        maxWidth: props.maxWidth,
-        minWidth: props.minWidth,
-        minimumContentWidth: props.minimumMainWidth,
-        viewportWidth: availableWidth,
-      }
-    );
-    sessionRef.current = { ...session, width: nextWidth };
-    setPersistedWidth(nextWidth);
+    if (result.kind !== 'moved') return;
+    sessionRef.current = result.session;
+    setPersistedWidth(result.session.width);
   };
 
   return (

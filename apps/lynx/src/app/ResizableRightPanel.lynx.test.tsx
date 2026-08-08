@@ -5,8 +5,11 @@ import { readFileSync } from 'node:fs';
 import { ResizableRightPanel } from './ResizableRightPanel.lynx';
 import { webStorage } from '../platform/storage';
 
+let viewportWidth = 1280;
+
 describe('Lynx resizable right panels', () => {
   beforeEach(() => {
+    viewportWidth = 1280;
     Object.defineProperty(globalThis, 'NativeModules', {
       configurable: true,
       value: {
@@ -19,7 +22,7 @@ describe('Lynx resizable right panels', () => {
             callback(
               JSON.stringify(
                 method === 'windowGetViewport'
-                  ? { width: 1280, height: 820 }
+                  ? { width: viewportWidth, height: 820 }
                   : method === 'storageDump'
                     ? { entries: {} }
                     : { ok: true }
@@ -110,5 +113,41 @@ describe('Lynx resizable right panels', () => {
     expect(styles).toMatch(
       /\.SliceRoot--viewport-medium\s+\.SharedPrRouteBody--detail-open\s+\.SharedPrDetailDock\s*\{[^}]*width:\s*100%;[^}]*min-width:\s*0;/s
     );
+  });
+
+  it('clears parent layout width when a viewport breakpoint disables resizing', async () => {
+    const widths: number[] = [];
+    const onWidthChange = (width: number) => widths.push(width);
+    const { rerender } = render(
+      <ResizableRightPanel
+        availableWidth={1280}
+        className="PanelProbe"
+        defaultWidth={640}
+        minimumMainWidth={320}
+        minWidth={320}
+        onWidthChange={onWidthChange}
+        resizable
+      >
+        <view className="PanelContent" />
+      </ResizableRightPanel>
+    );
+
+    await waitFor(() => expect(widths.at(-1)).toBe(640));
+    viewportWidth = 700;
+    rerender(
+      <ResizableRightPanel
+        key="compact"
+        availableWidth={700}
+        className="PanelProbe"
+        defaultWidth={350}
+        minimumMainWidth={320}
+        minWidth={320}
+        onWidthChange={onWidthChange}
+        resizable
+      >
+        <view className="PanelContent" />
+      </ResizableRightPanel>
+    );
+    await waitFor(() => expect(widths.at(-1)).toBe(0));
   });
 });

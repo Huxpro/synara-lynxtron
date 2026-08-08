@@ -46,6 +46,7 @@ describe('Lynx sidebar resize logic', () => {
       kind: 'moved',
       session: {
         moved: true,
+        side: 'left',
         startWidth: 256,
         startX: 256,
         width: 320,
@@ -58,5 +59,32 @@ describe('Lynx sidebar resize logic', () => {
         viewportWidth: 1280,
       })
     ).toEqual({ kind: 'ended-missed-mouseup' });
+  });
+
+  it('shares right-edge direction and custom panel bounds', () => {
+    const session = createLynxSidebarResizeSession({
+      side: 'right',
+      startWidth: 640,
+      startX: 640,
+    });
+    expect(
+      moveLynxSidebarResizeSession({
+        event: { clientX: 560, buttons: 1 },
+        maxWidth: 700,
+        minimumContentWidth: 320,
+        minWidth: 416,
+        session,
+        viewportWidth: 1280,
+      })
+    ).toEqual({
+      kind: 'moved',
+      session: {
+        moved: true,
+        side: 'right',
+        startWidth: 640,
+        startX: 640,
+        width: 700,
+      },
+    });
   });
 });
