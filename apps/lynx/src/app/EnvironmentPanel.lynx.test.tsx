@@ -15,6 +15,10 @@ describe('Lynx Environment panel', () => {
     expect(routerSource).toContain('<EnvironmentPanel');
     expect(routerSource).toContain('className="ThreadHeaderControls"');
     expect(routerSource).toContain('ThreadPage--environment-open');
+    expect(routerSource).toContain('ThreadPage--provider-health-visible');
+    expect(routerSource).toContain(
+      'resolveProviderHealthBannerPresentation(providerHealth.status)'
+    );
     expect(panelSource).toContain('useLynxInteractiveState({');
     expect(panelSource).toContain('Toggle environment panel');
     expect(panelSource).toContain("import windowSvg from '@synara-central-icons/window.svg?raw'");
@@ -145,10 +149,22 @@ describe('Lynx Environment panel', () => {
       /\.EnvironmentToggle\s*\{[^}]*width:\s*28px;[^}]*min-width:\s*28px;[^}]*height:\s*28px;[^}]*box-sizing:\s*border-box;[^}]*padding:\s*0;[^}]*-x-app-region:\s*no-drag;/s
     );
     expect(styles).toMatch(
-      /\.EnvironmentOverlay\s*\{[^}]*right:\s*0;[^}]*padding:\s*12px;[^}]*transition:[^}]*220ms ease-out/s
+      /\.EnvironmentOverlay\s*\{[^}]*right:\s*0;[^}]*flex-direction:\s*column;[^}]*padding:\s*12px;[^}]*transition:[^}]*220ms ease-out/s
     );
     expect(styles).toMatch(
-      /\.EnvironmentSurface\s*\{[^}]*width:\s*288px;[^}]*border-radius:\s*18px;/s
+      /\.ThreadPage--provider-health-visible \.EnvironmentOverlay\s*\{[^}]*top:\s*126px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ThreadPage--provider-health-visible\s+\.EnvironmentOverlay\s*\{[^}]*top:\s*90px;/s
+    );
+    expect(styles).toMatch(
+      /\.EnvironmentSurface\s*\{[^}]*width:\s*288px;[^}]*border-radius:\s*18px;[^}]*box-shadow:\s*0 4px 18px -6px rgba\(13,\s*13,\s*13,\s*0\.07\);/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--theme-dark \.EnvironmentSurface\s*\{[^}]*box-shadow:\s*0 6px 24px -10px rgba\(0,\s*0,\s*0,\s*0\.3\);/s
+    );
+    expect(styles).toMatch(
+      /\.EnvironmentScroller\s*\{[^}]*width:\s*100%;[^}]*max-height:\s*100%;/s
     );
     expect(styles).toMatch(
       /\.EnvironmentContent\s*\{[^}]*gap:\s*2px;[^}]*padding:\s*6px;/s

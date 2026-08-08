@@ -266,7 +266,8 @@ Current responsive disposition:
 | Raised content-card seam material | ordinary routes and Settings: 14.4px left radii, theme-aware inset edge/depth, square compact/closed states | PASS |
 | Sidebar top material | ordinary and Settings sidebars share the calibrated 1px light/dark inset highlight | PASS |
 | Dark shell base fill | Electron vibrancy RGB 6–7 versus Native canonical opaque #101010/#111111 | INTENTIONAL HOST MATERIAL DELTA |
-| Environment, diff/browser docks, selection actions | no reachable Lynx product consumer to certify | OPEN PRODUCT/PLATFORM KERNEL |
+| Environment | reachable current-head consumer; paired light/dark Browser geometry/material proof at 900x650 | PASS IN BROWSER; NATIVE CURRENT-HEAD SCREENCAST NOT CERTIFIED |
+| Diff/browser docks, selection actions | working-tree Diff Dock is reachable and keeps its Web split contract; Browser/explorer and selection-action consumers remain absent | PARTIAL PRODUCT/PLATFORM KERNEL |
 | Current-head full three-client route/theme/size/state matrix | historical P10 matrix predates later product commits | NOT RE-CERTIFIED |
 
 Evidence for the final Settings sweep:

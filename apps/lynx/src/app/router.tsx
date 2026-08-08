@@ -332,6 +332,8 @@ function ThreadPage(props: { threadId: string }) {
     currentThread?.provider ?? 'codex',
     providerStatuses
   );
+  const providerHealthVisible =
+    resolveProviderHealthBannerPresentation(providerHealth.status) !== null;
   const bodyState = resolveThreadPageBodyState({
     isPending,
     error,
@@ -355,7 +357,9 @@ function ThreadPage(props: { threadId: string }) {
     <view
       className={`Page ThreadPage${
         environmentOpen ? ' ThreadPage--environment-open' : ''
-      }${diffOpen ? ' ThreadPage--diff-open' : ''}`}
+      }${diffOpen ? ' ThreadPage--diff-open' : ''}${
+        providerHealthVisible ? ' ThreadPage--provider-health-visible' : ''
+      }`}
     >
       <ChatSurfaceHeaderFrame>
         <view className="ThreadHeaderIdentity">

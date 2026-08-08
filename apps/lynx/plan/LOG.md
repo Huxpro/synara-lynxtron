@@ -8181,3 +8181,33 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   `shots/2026-08-08/branch-picker-stable-relay/`。focused tests **2 files / 5
   tests**、Web与Native/Desktop production builds通过；最终staged bundle SHA-256
   为`e7cc198099a1367d03115b25588803589b4e946096002d12cc41db333ca97580`。
+
+### Environment light/dark source parity
+
+- 先从Web authority和共享theme源码审计，而不是只在light截图上调CSS：
+  Web/Lynx共用`ThemeState`、`THEME_STORAGE_KEY`和Appearance产品控件；Lynx根节点以
+  `SliceRoot--theme-light|dark`选择generated native semantic tokens。Environment
+  继续只消费`--popover`/`--border`/foreground语义，没有新增单主题硬编码布局。
+- 900×650真实同snapshot paired run发现三个容器残差：Lynx从固定46px开始而Web在
+  provider-health banner后从126px开始；overlay漏了Web的column方向，导致card被拉满；
+  light/dark shadow仍是早期过重的16/50版本。ThreadPage现在从共享presentation状态投影
+  `ThreadPage--provider-health-visible`，normal/short banner分别使用126/90px锚点；
+  overlay补`flex-direction:column`，card恢复真实内容驱动高度。
+- light最终Web/Lynx都为x600/y138/288px、18px radius、white surface、7% dark border与
+  `0 4px 18px -6px` 7% foreground shadow；dark同几何，surface `rgb(23,23,23)`、
+  7% white border与`0 6px 24px -10px rgba(0,0,0,.3)`。Lynx 423px与Web
+  428.5px高度差来自两端当前真实section集合不同，不用固定高度伪造。
+- Web theme经真实Appearance radio从System→Dark→System恢复；Lynx经同一产品路径
+  Dark→Light恢复。两session page errors均0，relay OPEN/attempt1/pending0/error null。
+  paired evidence在`shots/2026-08-08/responsive-environment-diff-current/`。
+- disposable fixture通过canonical thread/project delete sequences89/90清理，snapshot90
+  中thread已purge、project为正常soft-delete tombstone、active threads0；两个named
+  browser sessions与全部owned `/tmp`目录均删除。
+- exact-owned Native使用isolated user data、正确versioned 900×650 window state、
+  background `showInactive()`、PID41034→localhost:8903/session1；production build通过，
+  但官方PID-gated helper仍因没有DevTool screencast frame fail closed。未把该harness
+  failure冒充Native pixel pass，也未触碰unrelated 8901/8902 clients。focused
+  Environment **4/4**、三端connection preflight snapshot90、Web与Native/Desktop
+  production builds均通过；最终Web/Native bundle SHA-256分别为
+  `9d1e6232339e64bba105aaa8f6b7a15fb1863ec0966da430c987591e8cd83c8f`和
+  `684495863547daf9d886aba21e886a29a74e46c85efb0c8c3056674b7d1b7932`。

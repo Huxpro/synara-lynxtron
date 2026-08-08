@@ -103,18 +103,47 @@ vertical scroll range at 320x200. Evidence:
 `shots/2026-08-07/responsive-settings-completion-audit/`.
 
 The remaining entries require product/platform consumers, not another generic
-responsive CSS pass:
+responsive CSS pass. Environment and the working-tree Diff Dock are now
+reachable Lynx product surfaces. Their first current-head audit is recorded
+below. Browser/explorer docks and selection actions remain explicit
+product/platform kernel gaps; they cannot be certified or fixed as responsive
+layout until those consumers exist.
 
-1. Thread overlays: environment panel, diff/browser docks, and selection
-   actions still need viewport-clamped positioning. The shared Menu primitive
-   already clamps measured popup coordinates to its measured viewport; Search
-   command and Composer model overlays are separately proven at the Desktop
-   minimum below.
+## Environment and Diff Dock follow-up
 
-Environment, diff/browser docks, and selection actions are not currently
-reachable Lynx product surfaces. They remain explicit product/platform kernel
-gaps and cannot be certified or fixed as responsive layout until those
-consumers exist.
+Environment now follows the Web source hierarchy instead of a fixed
+header-relative approximation:
+
+- the panel starts after the real provider-health banner when that banner is
+  visible, and returns to the 46px header edge after dismissal;
+- the overlay owns Web's missing column direction, so the 288px card is
+  content-driven rather than stretched to the full available height;
+- light uses the Web 7% foreground `0 4px 18px -6px` shadow and dark uses the
+  Web `0 6px 24px -10px rgba(0,0,0,.3)` shadow;
+- both themes keep the same x/y/width/radius/border contract and consume the
+  shared `ThemeState` plus generated native semantic tokens.
+
+At 900x650 with the real provider warning, Web and Lynx-for-Web both place the
+wrapper at x588/y126/312x524 and the card at x600/y138/288px wide with an 18px
+radius. Light resolves to white plus a 7% dark border/shadow; dark resolves to
+rgb(23,23,23), a 7% white border, and the 30% black shadow. Lynx's 423px card
+versus Web's 428.5px is explained by the clients' current real section sets
+(Web exposes Commit and Push plus Editor view; Lynx exposes Usage), not a
+theme or container offset.
+
+The working-tree Diff Dock remains the Web-authority split surface rather than
+copying the Pull Request route's separate narrow master-detail policy. Its
+existing wide 50/50 behavior is preserved; this slice does not claim the
+unimplemented Browser dock or selection-action surfaces.
+
+Evidence:
+`shots/2026-08-08/responsive-environment-diff-current/`.
+The paired Browser cells are current-build and page-error clean. The exact-owned
+Native production build passed, but the PID-derived `localhost:8903/session 1`
+did not emit a DevTool screencast frame under `showInactive()` even after the
+isolated 900x650 window-state schema was corrected. That harness failure is
+recorded as not certified, not misreported as a product regression or a Native
+pixel-parity pass.
 
 ## Kanban follow-up
 
