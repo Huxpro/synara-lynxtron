@@ -7826,3 +7826,16 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   第一项为Antigravity joins Synara，随后Close使dialog移除。relay OPEN、pending 0、
   transport error 0。
 - focused Advanced **2 files / 6 tests**，Web与Native/Desktop production builds通过。
+
+### Release history fidelity follow-up
+
+- 与Web原版dialog直接对比后，将首版functional列表继续校准为canonical
+  `ChangelogAccordion` anatomy：popup outer 512×626.390625、header64、panel
+  508.390625、44px trigger、chevron→date→Version→update count顺序、40% separators、
+  current 0.5.5默认展开、24px feature left inset与Web title/body/details typography。
+- Lynx-for-Web final popup/header/panel/first row逐项Web exact，55 entries、首版5项；
+  blank lifecycle发生一次并通过fresh host URL恢复，未作为产品失败。
+- final exact-owned Native bundle
+  `31985b258d1b39540c465ed85f1177b247d11dd4e71bf212ed435145a62ebadb`，
+  PID20661→localhost:8903；55 triggers、first478×44、accessibility Expanded、
+  current feature nodes存在、console0。owned 8903已停止，iOS8901/t3tools8902未触碰。

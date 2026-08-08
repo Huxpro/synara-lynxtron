@@ -1,9 +1,10 @@
 # Settings fidelity continuation audit
 
-Status: incomplete — current-head sidebar correction and full Settings matrix
-refresh complete; heavy verification still pending
+Status: incomplete — current-head Settings residual sweep is implemented and
+latest Usage/Integrations/Advanced Native batch is complete; the heavyweight
+workspace verification gate remains unavailable under the current instruction
 
-Updated: 2026-08-06
+Updated: 2026-08-08
 
 Objective: continue closing UI fidelity issues found after the previous P10
 audit, with real product behavior and current-head Web → Lynx-for-Web → Native
@@ -104,6 +105,7 @@ complete.
 | Notifications reflects actual Lynx runtime capability | no toast/OS notification consumer exists; both stored preferences remain visible/resettable but controls are disabled, non-focusable, aria-disabled, and carry explicit per-row unavailable status without shifting their Web-common switch anchors | PASS — honest capability delta and current-head visual proof |
 | AppSnap unavailable capability rows preserve Web anatomy | unavailable status follows the common main layout, disabled switch shares the Web baseline, all four rows are content-driven with 20px title lines and previous-row bottom dividers | PASS — honest capability delta and current-head visual proof |
 | Advanced rows and recovery details match shared Settings/disclosure behavior | keybindings/recovery main layouts, 11/16.5 metadata, and 24px actions match Web; controlled `What this does` uses a 16px trigger/chevron, exact 42px inset details, and shared 220ms motion/presence | PASS — current-head visual and interaction proof |
+| Advanced exposes the canonical Release history workflow | `1d096228` plus current follow-up; About has exact Version/Release rows, canonical `0.5.5`, and a real 55-entry native dialog sourced from Web changelog data | PASS — Lynx-for-Web and exact-owned Native interaction proof |
 | Profile stats, heatmap, plugin rows, and model rows match Web identity | identity/stats/heatmap remain exact; isolated canonical turn metadata now proves populated plugin/agent rows with exact central 12px glyphs in 20px shells, while a separate 2:1 turn mix proves the populated two-column model grid | PASS — current-head populated proofs in `shots/2026-08-06/profile-plugins-populated-current/` and `shots/2026-08-06/profile-models-populated-current/` |
 | Worktrees rows and empty state match Web density and typography | empty state remains exact 624×70; canonical `git.createWorktree` now proves the populated row, exact 540.109375px copy/path width, 11/18 conversation label, shared 4px list rhythm, and 24px Delete action across Browser and exact-owned Native | PASS — current-head populated proof in `shots/2026-08-06/worktrees-populated-current/` |
 | Archived empty and list states match Web hierarchy | empty state remains exact 624×182; real canonical create→archive proof now covers the populated title/description plus Restore/Delete action row with exact 24px, 10/15 xs controls and 8px action gap | PASS — current-head Browser and exact-owned Native populated proof in `shots/2026-08-06/archived-populated-current/` |
@@ -152,6 +154,36 @@ The current Usage source-to-source matrix has no remaining concrete branch,
 spacing, typography, status, meter, notice, refresh, footer, or overflow
 differences. This is a source/build disposition; it does not retroactively make
 the historical full screenshot matrix cover the newer focused Usage commits.
+
+## 2026-08-08 current-head addendum
+
+- Usage dark paint: `7084d56e` aligns the resolved healthy meter, warning
+  notice, error pill, and track paint with the current Web bundle while keeping
+  all previously exact geometry. The same-snapshot Lynx-for-Web cell is the
+  paint authority. The latest exact-owned Native snapshot did not expose the
+  weekly meter, so Native route reachability and clean runtime are retained
+  without misrepresenting that different state as meter evidence.
+- Integrations disclosures: `9962bf8a` moves project and permission disclosures
+  out of the copy column into full-width siblings, restores complete
+  high-impact copy, and aligns nested project/permission typography and rhythm.
+  The synchronized fast-loop section, row, project, permission, Review, and
+  empty-state bounds are exact. Exact-owned Native PID `76376`, resolved to
+  `localhost:8903`, used real touch to open both disclosures.
+- Advanced Release history: `1d096228` adds the missing canonical changelog
+  workflow. The follow-up aligns the native accordion with Web's 512×626.390625
+  popup, 64px header, 508.390625 panel, 44px trigger rows, separator list,
+  current-version default expansion, and feature typography. The exact-owned
+  Native dialog contains 55 releases, exposes the first 0.5.5 feature, and
+  resolves to an inner 510×624.390625 box (the 1px border on each side yields
+  Web's 512×626.390625 outer box).
+- Final Native bundle:
+  `31985b258d1b39540c465ed85f1177b247d11dd4e71bf212ed435145a62ebadb`.
+  Usage, Integrations, and Advanced were reached through real touch; the
+  runtime console had zero warnings/errors. The owned 8903 process was stopped;
+  unrelated iOS 8901 and t3tools 8902 clients were untouched. A final
+  exact-owned PID `20661` rerun after the accordion calibration proved 55
+  44px triggers, `Version 0.5.5, Jul 17` expanded by default, current-release
+  feature content, and an empty warning/error console.
 
 ## Evidence integrity correction
 

@@ -60,7 +60,9 @@ export function SettingsAdvancedPanel() {
   const [repairing, setRepairing] = useState(false);
   const [showRecoveryTools, setShowRecoveryTools] = useState(false);
   const [releaseHistoryOpen, setReleaseHistoryOpen] = useState(false);
-  const [expandedRelease, setExpandedRelease] = useState<string | null>(null);
+  const [expandedRelease, setExpandedRelease] = useState<string | null>(
+    advancedAppVersion()
+  );
   const [notice, setNotice] = useState<{
     readonly intent: 'success' | 'error';
     readonly message: string;
@@ -317,12 +319,19 @@ export function SettingsAdvancedPanel() {
           </view>
           <DialogPanel className="SettingsAdvancedReleasePanel">
             <view className="SettingsAdvancedReleaseList">
-              {sortEntriesByVersionDesc(WHATS_NEW_ENTRIES).map((entry) => {
+              {sortEntriesByVersionDesc(WHATS_NEW_ENTRIES).map((entry, index, entries) => {
                 const open = expandedRelease === entry.version;
+                const featureLabel = `${entry.features.length} ${
+                  entry.features.length === 1 ? 'update' : 'updates'
+                }`;
                 return (
                   <view
                     key={entry.version}
-                    className="SettingsAdvancedReleaseEntry"
+                    className={`SettingsAdvancedReleaseEntry${
+                      index < entries.length - 1
+                        ? ' SettingsAdvancedReleaseEntry--divided'
+                        : ''
+                    }`}
                   >
                     <view
                       className="SettingsAdvancedReleaseTrigger"
@@ -336,14 +345,6 @@ export function SettingsAdvancedPanel() {
                         )
                       }
                     >
-                      <view className="SettingsAdvancedReleaseIdentity">
-                        <text className="SettingsAdvancedReleaseVersion">
-                          {entry.version}
-                        </text>
-                        <text className="SettingsAdvancedReleaseDate">
-                          {entry.date}
-                        </text>
-                      </view>
                       <ChevronRightIcon
                         className={disclosureChevronClassName(
                           open,
@@ -352,6 +353,17 @@ export function SettingsAdvancedPanel() {
                         size={16}
                         color="var(--muted-foreground)"
                       />
+                      <view className="SettingsAdvancedReleaseIdentity">
+                        <text className="SettingsAdvancedReleaseDate">
+                          {entry.date}
+                        </text>
+                        <text className="SettingsAdvancedReleaseVersion">
+                          Version {entry.version}
+                        </text>
+                        <text className="SettingsAdvancedReleaseCount">
+                          ({featureLabel})
+                        </text>
+                      </view>
                     </view>
                     {open ? (
                       <view className="SettingsAdvancedReleaseFeatures">
