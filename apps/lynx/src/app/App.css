@@ -883,7 +883,7 @@
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-  width: 256px;
+  width: 100%;
   height: 100%;
   background-color: var(--app-settings-surface);
   box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.03);

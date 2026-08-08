@@ -23,6 +23,10 @@ import { Schema } from "effect";
 
 import { isBrowser } from "~/platform/env";
 import { raf, cancelRaf } from "~/platform/frame";
+import {
+  clampSidebarWidth,
+  sidebarWidthFromPointer,
+} from "~/components/sidebarResize.logic";
 const SIDEBAR_COOKIE_NAME = "sidebar_state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
 const SIDEBAR_WIDTH = "16rem";
@@ -420,10 +424,6 @@ function SidebarHeaderTrigger({
   return <SidebarTrigger className={className} onClick={onClick} {...props} />;
 }
 
-function clampSidebarWidth(width: number, options: SidebarResolvedResizableOptions): number {
-  return Math.max(options.minWidth, Math.min(width, options.maxWidth));
-}
-
 function SidebarRail({
   placement = "sidebar-shell",
   className,
@@ -552,17 +552,17 @@ function SidebarRail({
       if (!resizeState || resizeState.pointerId !== event.pointerId || !resolvedResizable) return;
 
       event.preventDefault();
-      const delta =
-        resizeState.side === "right"
-          ? resizeState.startX - event.clientX
-          : event.clientX - resizeState.startX;
+      const nextUnclampedWidth = sidebarWidthFromPointer({
+        currentX: event.clientX,
+        side: resizeState.side,
+        startWidth: resizeState.startWidth,
+        startX: resizeState.startX,
+      });
+      const delta = nextUnclampedWidth - resizeState.startWidth;
       if (Math.abs(delta) > 2) {
         resizeState.moved = true;
       }
-      resizeState.pendingWidth = clampSidebarWidth(
-        resizeState.startWidth + delta,
-        resolvedResizable,
-      );
+      resizeState.pendingWidth = clampSidebarWidth(nextUnclampedWidth, resolvedResizable);
       if (resizeState.rafId !== null) {
         return;
       }

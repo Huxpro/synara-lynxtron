@@ -8414,3 +8414,39 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   通过。
 - fixture project canonical delete于snapshot137生成tombstone；named browser、
   owned Native、临时static server和`apps/web/public/lynx-pr-search-harness`均清理。
+
+### Resizable left sidebars
+
+- Web原版`SidebarRail`的resize math抽到physical-shared
+  `components/sidebarResize.logic.ts`：default256、min208、主内容min640、
+  `chat_thread_sidebar_width`持久化key、左右pointer delta与viewport clamp只有一份
+  source。Web原SidebarRail与Lynx同时消费，Web仍保留`16rem`默认语义。
+- 普通Sidebar不再open时直接mount/closed时null；与Settings一样统一进入
+  `SidebarDisclosure`。该owner负责220ms disclosure、动态inline width、
+  persisted restore、10px sash、1px focus line和全屏drag overlay；内部
+  `.AppSidebar`/`.SettingsSidebar`都改为100%，不再各自锁死256px。
+- Lynx pointer logic参考`~/github/lynxtron-examples/lynxtron-go`的SplitContainer：
+  mouse/touch双路径、2px movement阈值、buttons=0 missed-mouseup保护、非完全透明
+  sash/overlay保证Lynx hit-test。rendered Rstest真实mousedown→mousemove→mouseup把
+  256拖到320、overlay正确mount/unmount、width落到shared storage；closed→open后
+  320恢复。
+- canonical 3 projects×12 threads fixture，snapshot176。1280×820实测：
+  208/320/384三档shell/sidebar/main分别为
+  `208/208/1072`、`320/320/960`、`384/384/896`；sash始终10px跨全高，
+  sidebar无横向overflow。light/dark geometry完全一致。
+- 普通Sidebar scrollHeight951/client730；top0、mid111、bottom221均保持titlebar
+  `y0/h46`与footer`y776/h44`固定，且中/底部能看到后续project/thread rows。
+  Settings共享同一384 persisted width；900×320短窗的scrollHeight602/client274，
+  mid164和bottom328分别覆盖Profile→Models及Worktrees→Advanced，titlebar与content
+  anchor不移动。
+- breakpoint重载验证：600 compact忽略desktop width并成为588px offcanvas、main仍
+  600px且无sash；900 Desktop minimum把stored384 clamp为260，保留640主内容；
+  1024恢复384+640。compact过程不覆盖stored384。
+- exact-owned Native production PID4370→8903/session1、bundle identity和clean
+  DevTool console确认；`Input.emulateTouchFromMouseEvent`在当前无DOM SDK下未产生
+  storage写入，因此未把Native pointer drag冒充通过。Lynx focused **3 files /
+  11 tests**、Web shared resize **2 files / 10 tests**、Web和Native/Desktop
+  production builds通过。
+- fixture canonical cleanup snapshot215：live projects0、live threads0；两个
+  named Browser sessions、owned Native和临时public harness均清理，未触碰其他
+  Lynx clients。

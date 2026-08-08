@@ -62,6 +62,7 @@ import {
 } from './EnvironmentPanel.lynx';
 import { useTemporaryThreadLifecycle } from './temporaryThreadLifecycle.lynx';
 import { DesktopTitlebarControls } from '../adapters/DesktopTitlebarControls.lynx';
+import { SidebarDisclosure } from './SidebarDisclosure.lynx';
 import {
   resolveMemoryNavigationState,
   type MemoryNavigationState,
@@ -670,17 +671,19 @@ export function SliceRouter({
   }
 
   const sidebar =
-    sidebarOpen && route.pathname !== '/settings' ? (
-      <Sidebar
-        activeThreadId={
-          route.pathname === '/thread/$threadId' ? route.params.threadId : null
-        }
-        activePath={
-          route.pathname === '/kanban/$projectId' ? '/kanban' : route.pathname
-        }
-        navigate={navigate}
-        titlebarControls={openTitlebarControls}
-      />
+    route.pathname !== '/settings' ? (
+      <SidebarDisclosure open={sidebarOpen}>
+        <Sidebar
+          activeThreadId={
+            route.pathname === '/thread/$threadId' ? route.params.threadId : null
+          }
+          activePath={
+            route.pathname === '/kanban/$projectId' ? '/kanban' : route.pathname
+          }
+          navigate={navigate}
+          titlebarControls={openTitlebarControls}
+        />
+      </SidebarDisclosure>
     ) : null;
   if (route.pathname === '/settings') {
     return page;

@@ -84,7 +84,10 @@ describe('desktop titlebar controls', () => {
       "const closedTitlebarControls = renderTitlebarControls('closed')"
     );
     expect(routerSource).toContain(
-      "const sidebar =\n    sidebarOpen && route.pathname !== '/settings' ? ("
+      "const sidebar =\n    route.pathname !== '/settings' ? ("
+    );
+    expect(routerSource).toContain(
+      '<SidebarDisclosure open={sidebarOpen}>'
     );
     expect(routerSource).toContain(
       '{sidebarOpen ? null : closedTitlebarControls}'
@@ -129,7 +132,7 @@ describe('desktop titlebar controls', () => {
     expect(settingsSource).toContain('onBack={onBack}');
     expect(settingsSource).not.toContain('showBack={false}');
     expect(appStyles).toMatch(
-      /\.SettingsSidebar\s*\{[^}]*width:\s*256px;[^}]*height:\s*100%;/s
+      /\.SettingsSidebar\s*\{[^}]*width:\s*100%;[^}]*height:\s*100%;/s
     );
     expect(appStyles).not.toMatch(
       /\.SettingsSidebar\s*\{[^}]*border-right:/s

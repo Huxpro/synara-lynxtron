@@ -51,16 +51,17 @@ import {
   useSidebar,
 } from "~/components/ui/sidebar";
 import type { SidebarResizableOptions } from "~/components/ui/sidebar";
+import {
+  THREAD_MAIN_CONTENT_MIN_WIDTH,
+  THREAD_SIDEBAR_MIN_WIDTH,
+  THREAD_SIDEBAR_WIDTH_STORAGE_KEY,
+} from "~/components/sidebarResize.logic";
 import { cn } from "~/lib/utils";
 
 import { getNavigatorPlatform } from "~/platform/env";
 import { getDesktopBridge } from "~/platform/desktopBridge";
 import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
 const EMPTY_KEYBINDINGS: ResolvedKeybindingsConfig = [];
-const THREAD_SIDEBAR_WIDTH_STORAGE_KEY = "chat_thread_sidebar_width";
-const THREAD_SIDEBAR_MIN_WIDTH = 13 * 16;
-const THREAD_MAIN_CONTENT_MIN_WIDTH = 40 * 16;
-
 // Single source of truth for the thread sidebar resize behavior. Shared by <Sidebar>
 // and the detached content-seam <SidebarRail> (via SidebarInstanceProvider) so the
 // drag handle keeps working even though the rail lives outside <Sidebar> (above the card).
