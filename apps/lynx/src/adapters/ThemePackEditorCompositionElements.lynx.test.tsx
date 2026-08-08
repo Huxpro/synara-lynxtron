@@ -169,10 +169,10 @@ describe('ThemePack boolean interaction contract', () => {
       /\.SharedThemePackImportTextarea(?:Control--focused|:focus)\s*\{[^}]*var\(--ring\)/s
     );
     expect(styles).toMatch(
-      /\.SharedThemePackImportCancel\s*\{[^}]*width:\s*59\.65625px;/s
+      /\.SharedThemePackImportCancel\s*\{[^}]*width:\s*59\.65625px;[^}]*border-radius:\s*6px;/s
     );
     expect(styles).toMatch(
-      /\.SharedThemePackImportSubmit\s*\{[^}]*width:\s*58\.265625px;/s
+      /\.SharedThemePackImportSubmit\s*\{[^}]*width:\s*58\.265625px;[^}]*border-radius:\s*6px;/s
     );
     expect(styles).toMatch(
       /\.SharedThemePackImportCancel \.LxButton__text,\s*\.SharedThemePackImportSubmit \.LxButton__text\s*\{[^}]*font-weight:\s*400;/s

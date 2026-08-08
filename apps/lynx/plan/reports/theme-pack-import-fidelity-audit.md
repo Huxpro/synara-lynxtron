@@ -56,6 +56,7 @@ Concrete success criteria:
 | Close icon tone | Generated Lynx X icon now receives the real muted color prop plus Web's 0.8 SVG opacity instead of relying on a dead CSS `color` declaration | PASS |
 | Disabled Import paint | Empty-value submit uses Web's local disabled opacity `0.64` instead of the generic Lynx `0.48`; button geometry remains exact | PASS |
 | Footer action typography | Cancel and Import labels use Web dialog actions' weight `400` instead of generic Lynx Button weight `500` | PASS |
+| Footer action radius | Cancel and Import use Web Dialog's local `rounded-md` / `6px` radius instead of generic Lynx Button `10px` | PASS |
 | Connection provenance | Three-client preflight resolved server instance `bec7ebc4-3a45-4cc3-9f91-bc5aab3f1064`, snapshot 0; relay had no transport/RPC error | PASS |
 | Screenshot dimensions | Web and Lynx retained diagnostic frames were each measured as `1280x820` | PASS |
 | Focused regression coverage | 3 files / 21 tests pass, including success and parser-error dialog behavior | PASS |
@@ -278,6 +279,13 @@ max-channel difference fell from `30.94` to `28.99` in light and from `32.62`
 to `30.32` in dark. The disabled Import region, including the prior opacity
 repair, fell from `86.34%` changed pixels to `30.70%` in light and `30.65%` in
 dark.
+
+The same Web dialog override applies `rounded-md`; both Lynx actions now
+resolve to `6px` without changing their established `59.65625x28` and
+`58.265625x28` boxes. The final whole-dialog changed ratio is `11.41%` in
+light and `11.30%` in dark. Remaining connected components are concentrated in
+cross-element border rasterization and text glyphs; no unresolved action
+radius, size, placement, weight, opacity, or semantic-color owner remains.
 
 ## Close icon tone
 

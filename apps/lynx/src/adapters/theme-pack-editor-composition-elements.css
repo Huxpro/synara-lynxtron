@@ -202,10 +202,12 @@
 
 .SharedThemePackImportCancel {
   width: 59.65625px;
+  border-radius: 6px;
 }
 
 .SharedThemePackImportSubmit {
   width: 58.265625px;
+  border-radius: 6px;
 }
 
 .SharedThemePackImportCancel .LxButton__text,
