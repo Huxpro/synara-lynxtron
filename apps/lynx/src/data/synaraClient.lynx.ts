@@ -26,6 +26,12 @@ import type {
   OrchestrationSession,
   OrchestrationThreadActivity,
   ProjectId,
+  ProjectListDirectoriesInput,
+  ProjectListDirectoriesResult,
+  ProjectReadFileInput,
+  ProjectReadFileResult,
+  ProjectSearchEntriesInput,
+  ProjectSearchEntriesResult,
   PullRequestDetail,
   PullRequestDetailInput,
   PullRequestDiffResult,
@@ -523,6 +529,30 @@ export async function browseFilesystem(
   input: FilesystemBrowseInput
 ): Promise<FilesystemBrowseResult> {
   return transportRequest<FilesystemBrowseResult>('filesystem.browse', input);
+}
+
+export async function listProjectDirectories(
+  input: ProjectListDirectoriesInput
+): Promise<ProjectListDirectoriesResult> {
+  return transportRequest<ProjectListDirectoriesResult>(
+    'projects.listDirectories',
+    input
+  );
+}
+
+export async function searchProjectEntries(
+  input: ProjectSearchEntriesInput
+): Promise<ProjectSearchEntriesResult> {
+  return transportRequest<ProjectSearchEntriesResult>(
+    'projects.searchEntries',
+    input
+  );
+}
+
+export async function readProjectFile(
+  input: ProjectReadFileInput
+): Promise<ProjectReadFileResult> {
+  return transportRequest<ProjectReadFileResult>('projects.readFile', input);
 }
 
 export async function importSynaraThread(

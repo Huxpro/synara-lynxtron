@@ -155,10 +155,10 @@ describe('Lynx Environment panel', () => {
     expect(diffDockSource).toContain('<ResizableRightPanel');
     expect(diffDockSource).toContain('maxWidth={720}');
     expect(routerSource).toContain(
-      "diffOpen && diffDockWidth !== null"
+      "(diffOpen || explorerOpen) && rightDockWidth !== null"
     );
     expect(routerSource).toContain(
-      "{ paddingRight: `${diffDockWidth}px` }"
+      "{ paddingRight: `${rightDockWidth}px` }"
     );
     expect(appStyles).toMatch(
       /\.ThreadPage--diff-open\s*\{[^}]*padding-right:\s*50%;/s

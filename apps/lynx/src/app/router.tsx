@@ -56,6 +56,7 @@ import { resolveThreadPageBodyState } from './threadPageState.logic';
 import { sleepOnHost } from '../platform/timer';
 import { EmptyThreadContextTray } from './EmptyThreadContextTray.lynx';
 import { DiffDock } from './DiffDock.lynx';
+import { ExplorerDock } from './ExplorerDock.lynx';
 import {
   EnvironmentPanel,
   EnvironmentToggle,
@@ -63,6 +64,8 @@ import {
 import { useTemporaryThreadLifecycle } from './temporaryThreadLifecycle.lynx';
 import { DesktopTitlebarControls } from '../adapters/DesktopTitlebarControls.lynx';
 import { SidebarDisclosure } from './SidebarDisclosure.lynx';
+import { FolderIcon } from '../lib/icons.lynx';
+import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import {
   resolveMemoryNavigationState,
   type MemoryNavigationState,
@@ -316,8 +319,12 @@ function ThreadPage(props: { threadId: string }) {
   >([]);
   const [environmentOpen, setEnvironmentOpen] = useState(false);
   const [diffOpen, setDiffOpen] = useState(false);
+  const [explorerOpen, setExplorerOpen] = useState(false);
   const [threadPageWidth, setThreadPageWidth] = useState(0);
   const [diffDockWidth, setDiffDockWidth] = useState<number | null>(null);
+  const [explorerDockWidth, setExplorerDockWidth] = useState<number | null>(
+    null
+  );
   const transcriptControllerRef = useRef<TranscriptController | null>(null);
   const registerTranscriptController = useCallback(
     (controller: TranscriptController | null) => {
@@ -342,6 +349,19 @@ function ThreadPage(props: { threadId: string }) {
     error,
     rows: data,
   });
+  const explorerToggle = useLynxInteractiveState({
+    baseClassName: 'ThreadFilesToggle',
+    accessibleLabel: 'Toggle files panel',
+    disabled: !currentThread?.workspaceRoot,
+    onActivate: () => {
+      setEnvironmentOpen(false);
+      setDiffOpen(false);
+      setDiffDockWidth(null);
+      setExplorerDockWidth(null);
+      setExplorerOpen((open) => !open);
+    },
+  });
+  const rightDockWidth = explorerOpen ? explorerDockWidth : diffDockWidth;
   const composer = (
     <ComposerColumnFrameSurface>
       <Composer
@@ -361,6 +381,8 @@ function ThreadPage(props: { threadId: string }) {
       className={`Page ThreadPage${
         environmentOpen ? ' ThreadPage--environment-open' : ''
       }${diffOpen ? ' ThreadPage--diff-open' : ''}${
+        explorerOpen ? ' ThreadPage--explorer-open' : ''
+      }${
         providerHealthVisible ? ' ThreadPage--provider-health-visible' : ''
       }`}
       bindlayoutchange={(event: {
@@ -370,8 +392,8 @@ function ThreadPage(props: { threadId: string }) {
         if (typeof width === 'number' && width > 0) setThreadPageWidth(width);
       }}
       style={
-        diffOpen && diffDockWidth !== null
-          ? { paddingRight: `${diffDockWidth}px` }
+        (diffOpen || explorerOpen) && rightDockWidth !== null
+          ? { paddingRight: `${rightDockWidth}px` }
           : undefined
       }
     >
@@ -384,6 +406,14 @@ function ThreadPage(props: { threadId: string }) {
           />
         </view>
         <view className="ThreadHeaderControls">
+          <view
+            className={`${explorerToggle.className}${
+              explorerOpen ? ' ThreadFilesToggle--active' : ''
+            }${explorerToggle.disabled ? ' ui-disabled' : ''}`}
+            {...explorerToggle.eventProps}
+          >
+            <FolderIcon size={16} color="var(--muted-foreground)" />
+          </view>
           <EnvironmentToggle
             open={environmentOpen}
             onChange={setEnvironmentOpen}
@@ -459,6 +489,8 @@ function ThreadPage(props: { threadId: string }) {
           }
           onOpenChanges={() => {
             setEnvironmentOpen(false);
+            setExplorerOpen(false);
+            setExplorerDockWidth(null);
             setDiffDockWidth(null);
             setDiffOpen(true);
           }}
@@ -477,6 +509,16 @@ function ThreadPage(props: { threadId: string }) {
           setDiffDockWidth(null);
         }}
         onWidthChange={setDiffDockWidth}
+      />
+      <ExplorerDock
+        availableWidth={threadPageWidth}
+        open={explorerOpen}
+        workspaceRoot={currentThread?.workspaceRoot ?? null}
+        onWidthChange={setExplorerDockWidth}
+        onClose={() => {
+          setExplorerOpen(false);
+          setExplorerDockWidth(null);
+        }}
       />
     </view>
   );

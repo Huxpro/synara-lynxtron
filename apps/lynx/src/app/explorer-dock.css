@@ -1,0 +1,172 @@
+.ExplorerDock {
+  position: absolute;
+  top: 46px;
+  right: 0;
+  bottom: 0;
+  z-index: 18;
+  display: flex;
+  width: 50%;
+  min-width: 480px;
+  max-width: 960px;
+  flex-direction: column;
+  border-left: 1px solid var(--border);
+  background-color: var(--background);
+}
+
+.ExplorerDockHeader {
+  display: flex;
+  height: 44px;
+  min-height: 44px;
+  padding: 0 12px;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+
+.ExplorerDockTitle {
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.ExplorerDockClose {
+  display: flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.ExplorerDockClose.ui-hover,
+.ExplorerDockClose.ui-focus,
+.ExplorerDockClose.ui-pressed {
+  background-color: var(--accent);
+}
+
+.ExplorerDockBody {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: row;
+}
+
+.ExplorerDockSidebar {
+  display: flex;
+  width: 240px;
+  min-width: 240px;
+  min-height: 0;
+  flex-direction: column;
+  border-right: 1px solid var(--border);
+}
+
+.ExplorerDockSearch {
+  position: relative;
+  display: flex;
+  padding: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.ExplorerDockSearchInput {
+  width: 100%;
+  min-width: 0;
+  height: 28px;
+  padding-left: 32px;
+}
+
+.ExplorerDockSearchIcon {
+  position: absolute;
+  left: 18px;
+  top: 15px;
+  z-index: 1;
+  width: 14px;
+  height: 14px;
+  opacity: 0.7;
+}
+
+.ExplorerDockEntries,
+.ExplorerDockPreviewScroll {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+}
+
+.ExplorerDockEntries {
+  padding: 4px;
+}
+
+.ExplorerDockEntry {
+  display: flex;
+  min-height: 36px;
+  padding: 4px 8px;
+  align-items: center;
+  gap: 8px;
+  border-radius: 8px;
+}
+
+.ExplorerDockEntry.ui-hover,
+.ExplorerDockEntry.ui-focus,
+.ExplorerDockEntry.ui-pressed,
+.ExplorerDockEntry--selected {
+  background-color: var(--secondary);
+}
+
+.ExplorerDockFileGlyph {
+  width: 14px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  text-align: center;
+}
+
+.ExplorerDockEntryCopy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.ExplorerDockEntryName {
+  color: var(--foreground);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.ExplorerDockEntryPath {
+  color: var(--muted-foreground);
+  font-size: 10px;
+  line-height: 14px;
+}
+
+.ExplorerDockPreview {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  padding: 12px;
+}
+
+.ExplorerDockState {
+  margin: auto;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.ExplorerDockState--error {
+  color: var(--destructive);
+}
+
+.ExplorerDockCode {
+  color: var(--foreground);
+  font-family: var(--font-mono-family);
+  font-size: 11px;
+  line-height: 17px;
+  white-space: pre-wrap;
+}
+
+.ExplorerDockTruncated {
+  margin-top: 12px;
+  color: var(--muted-foreground);
+  font-size: 10px;
+}

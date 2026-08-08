@@ -292,6 +292,27 @@
   flex: 1;
 }
 
+.ThreadFilesToggle {
+  display: flex;
+  width: 28px;
+  min-width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.ThreadFilesToggle.ui-hover,
+.ThreadFilesToggle.ui-focus,
+.ThreadFilesToggle.ui-pressed,
+.ThreadFilesToggle--active {
+  background-color: var(--secondary);
+}
+
+.ThreadFilesToggle.ui-disabled {
+  opacity: 0.4;
+}
+
 .ThreadTranscriptColumn {
   display: flex;
   flex: 1;
