@@ -8075,3 +8075,21 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   **2 files / 5 tests**、Web与Native/Desktop production builds通过。证据在
   `shots/2026-08-08/environment-pr-current/`；最终staged bundle SHA-256为
   `1ddf803302985813250c1320034e7db6571e9778c96607ed2d32e67329b9aafa`。
+
+### Environment Changes follow-up
+
+- Environment顶部接入typed `git.status`与一个serialized 15s host polling loop，
+  显示Web同构`Changes` row、working-tree总insertions/deletions和scrollable file list；
+  error row可真实retry，不使用mounted query observer并发refresh。
+- 当前真实synara workspace扫描124 files，capture时+1889/−1。trigger
+  987/140/274×26；popup987/170/288×356；内部list994/201/274×318且
+  scrollHeight3718，124项均28px并展示真实path/+/-，大工作树无panel overflow。
+- 本slice只完成Environment摘要/file list，不把尚未实现的完整Lynx diff viewer/
+  right-dock冒充完成。
+- retained frame 1280×820/DPR1，relay最终OPEN/attempt1/pending0、
+  transport/rpc error均null，page errors clean，console仅已知初始化warning。
+- fixture project/thread sequences62/63，canonical delete64/65，active projections0；
+  browser session关闭。focused Environment/recap **2 files / 5 tests**、Web与
+  Native/Desktop production builds通过。证据在
+  `shots/2026-08-08/environment-changes-current/`；最终staged bundle SHA-256为
+  `75f448f60cc86372acb1be9ebbdd5616a9c844e5a930e12e828e83fc775655c0`。

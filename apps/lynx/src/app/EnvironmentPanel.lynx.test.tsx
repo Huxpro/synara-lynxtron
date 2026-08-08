@@ -36,6 +36,11 @@ describe('Lynx Environment panel', () => {
 
     expect(panelSource).toContain('fetchAllProviderUsage({})');
     expect(panelSource).toContain('fetchLocalServers()');
+    expect(panelSource).toContain('fetchGitStatus(props.workspaceRoot)');
+    expect(panelSource).toContain('async function pollGitStatus()');
+    expect(panelSource).toContain('await sleepOnHost(15_000)');
+    expect(panelSource).toContain('file.insertions');
+    expect(panelSource).toContain('file.deletions');
     expect(panelSource).toContain('stopLocalServer({');
     expect(panelSource).toContain('localServerPrimaryLabel(server)');
     expect(panelSource).toContain('localServerAddressLabel(server)');
@@ -105,7 +110,6 @@ describe('Lynx Environment panel', () => {
     expect(panelSource).toContain("type: 'thread.meta.update'");
     expect(panelSource).toContain('THREAD_NOTES_MAX_CHARS');
     expect(panelSource).toContain('EnvironmentNotepadInput');
-    expect(panelSource).not.toContain('Changes');
   });
 
   it('matches the Web overlay footprint and row rhythm', () => {
@@ -135,6 +139,9 @@ describe('Lynx Environment panel', () => {
     expect(styles).toContain('padding-right: 312px;');
     expect(styles).toMatch(
       /\.LxMenuPopup\.EnvironmentLocalServersPopup\s*\{[^}]*width:\s*288px;[^}]*padding:\s*6px;/s
+    );
+    expect(styles).toMatch(
+      /\.LxMenuPopup\.EnvironmentChangesPopup\s*\{[^}]*width:\s*288px;[^}]*max-height:\s*360px;[^}]*padding:\s*6px;/s
     );
     expect(styles).toMatch(
       /\.EnvironmentLocalServerStop\s*\{[^}]*width:\s*24px;[^}]*height:\s*24px;[^}]*padding:\s*0;/s

@@ -152,6 +152,85 @@
   height: 16px;
 }
 
+.EnvironmentChangesTrigger {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.EnvironmentChangesTrigger.ui-hover,
+.EnvironmentChangesTrigger.ui-focus,
+.EnvironmentChangesTrigger.ui-pressed {
+  background-color: var(--accent);
+  opacity: 1;
+}
+
+.LxMenuPopup.EnvironmentChangesPopup {
+  width: 288px;
+  min-width: 288px;
+  max-height: 360px;
+  padding: 6px;
+}
+
+.EnvironmentChangesHeader {
+  display: flex;
+  min-height: 24px;
+  padding: 2px 8px 4px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.EnvironmentChangesHeaderText,
+.EnvironmentChangesStats {
+  color: var(--muted-foreground);
+  font-size: 10px;
+  line-height: 15px;
+}
+
+.EnvironmentChangesList {
+  display: flex;
+  width: 100%;
+  max-height: 318px;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.EnvironmentChangesFile {
+  display: flex;
+  min-height: 28px;
+  padding: 5px 8px;
+  align-items: center;
+  gap: 8px;
+  border-radius: 8px;
+}
+
+.EnvironmentChangesFilePath {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  color: var(--foreground);
+  font-family: var(--font-mono-family);
+  font-size: 11px;
+  line-height: 16.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.EnvironmentChangesFileStats {
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  font-size: 10px;
+  line-height: 15px;
+}
+
+.EnvironmentChangesEmpty {
+  padding: 12px;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  line-height: 16.5px;
+  text-align: center;
+}
+
 .EnvironmentLocalServersTrigger {
   width: 100%;
   border-radius: 10px;

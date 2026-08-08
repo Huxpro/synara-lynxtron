@@ -67,6 +67,7 @@ import {
   fetchServerConfig,
   fetchGitHubRepository,
   fetchGitPullRequestSnapshot,
+  fetchGitStatus,
   openPathInEditor,
   stopLocalServer,
 } from '../data/synaraClient.lynx';
@@ -281,6 +282,156 @@ function EnvironmentLocalServers() {
               </view>
             ))}
           </view>
+        )}
+      </MenuPopup>
+    </Menu>
+  );
+}
+
+function EnvironmentChanges(props: {
+  readonly open: boolean;
+  readonly workspaceRoot: string;
+}) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [refreshGeneration, setRefreshGeneration] = useState(0);
+  const [statusState, setStatusState] = useState<{
+    readonly data: Awaited<ReturnType<typeof fetchGitStatus>> | null;
+    readonly error: boolean;
+    readonly pending: boolean;
+  }>({ data: null, error: false, pending: true });
+
+  useEffect(() => {
+    'background only';
+    if (!props.open) return;
+    let cancelled = false;
+    async function pollGitStatus() {
+      'background only';
+      let first = true;
+      while (!cancelled) {
+        if (first) {
+          setStatusState((current) => ({
+            ...current,
+            error: false,
+            pending: true,
+          }));
+        }
+        try {
+          const data = await fetchGitStatus(props.workspaceRoot);
+          if (!cancelled) setStatusState({ data, error: false, pending: false });
+        } catch {
+          if (!cancelled) {
+            setStatusState((current) => ({
+              data: current.data,
+              error: true,
+              pending: false,
+            }));
+          }
+        }
+        first = false;
+        if (!cancelled) await sleepOnHost(15_000);
+      }
+    }
+    void pollGitStatus();
+    return () => {
+      cancelled = true;
+    };
+  }, [props.open, props.workspaceRoot, refreshGeneration]);
+
+  const status = statusState.data;
+  const files = status?.workingTree.files ?? [];
+  const stats = status?.workingTree;
+  const trailing =
+    stats && status?.hasWorkingTreeChanges
+      ? `+${stats.insertions} −${stats.deletions}`
+      : null;
+
+  return (
+    <Menu open={menuOpen} onOpenChange={setMenuOpen}>
+      <MenuTrigger
+        ariaLabel={
+          statusState.error
+            ? 'Retry changes'
+            : status?.hasWorkingTreeChanges
+              ? `${files.length} changed file${files.length === 1 ? '' : 's'}`
+              : 'No changes'
+        }
+        className="EnvironmentChangesTrigger"
+        disabled={statusState.pending}
+        onActivate={
+          statusState.error
+            ? () => setRefreshGeneration((current) => current + 1)
+            : undefined
+        }
+      >
+        <EnvironmentRow
+          icon={
+            statusState.error ? (
+              <RefreshCwIcon
+                size={16}
+                color="var(--destructive)"
+              />
+            ) : (
+              <svg
+                className="EnvironmentCanonicalIcon"
+                content={colorizeLynxSvg(
+                  differenceSvg,
+                  'var(--foreground)'
+                )}
+              />
+            )
+          }
+          label={
+            statusState.pending
+              ? 'Loading changes…'
+              : statusState.error
+                ? "Couldn't load changes"
+                : 'Changes'
+          }
+          trailing={trailing}
+          trailingIcon={
+            statusState.error ? null : (
+              <ChevronDownIcon
+                size={12}
+                color="var(--muted-foreground)"
+              />
+            )
+          }
+        />
+      </MenuTrigger>
+      <MenuPopup
+        align="start"
+        side="bottom"
+        className="EnvironmentChangesPopup"
+      >
+        <view className="EnvironmentChangesHeader">
+          <text className="EnvironmentChangesHeaderText">
+            {files.length === 0
+              ? 'No working tree changes'
+              : `${files.length} changed file${files.length === 1 ? '' : 's'}`}
+          </text>
+          {trailing ? (
+            <text className="EnvironmentChangesStats">{trailing}</text>
+          ) : null}
+        </view>
+        {files.length === 0 ? (
+          <text className="EnvironmentChangesEmpty">
+            Working tree is clean.
+          </text>
+        ) : (
+          <scroll-view
+            className="EnvironmentChangesList"
+            scroll-y
+            enable-scroll-bar
+          >
+            {files.map((file) => (
+              <view className="EnvironmentChangesFile" key={file.path}>
+                <text className="EnvironmentChangesFilePath">{file.path}</text>
+                <text className="EnvironmentChangesFileStats">
+                  +{file.insertions} −{file.deletions}
+                </text>
+              </view>
+            ))}
+          </scroll-view>
         )}
       </MenuPopup>
     </Menu>
@@ -1853,6 +2004,13 @@ export function EnvironmentPanel(props: {
             />
             {props.workspaceRoot ? (
               <text className="EnvironmentWorkspace">{props.workspaceRoot}</text>
+            ) : null}
+
+            {props.workspaceRoot ? (
+              <EnvironmentChanges
+                open={props.open}
+                workspaceRoot={props.workspaceRoot}
+              />
             ) : null}
 
             <EnvironmentLocalServers />
