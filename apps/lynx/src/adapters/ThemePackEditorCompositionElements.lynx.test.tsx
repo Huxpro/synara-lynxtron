@@ -75,10 +75,19 @@ describe('ThemePack boolean interaction contract', () => {
       /\.SharedThemePackHeaderAction \.LxButton__text\s*\{[^}]*font-size:\s*12px;/s
     );
     expect(source).toContain('className="SharedThemePackImportDialog"');
+    expect(source).toContain('showCloseButton={false}');
+    expect(source).toContain('className="SharedThemePackImportClose"');
+    expect(source).toContain('className="SharedThemePackImportCloseIcon"');
     expect(source).toContain('accessibility-label="Theme share string"');
     expect(source).not.toContain('Import clipboard');
     expect(styles).toMatch(
       /\.LxDialogPopup\.SharedThemePackImportDialog\s*\{[^}]*width:\s*448px;[^}]*max-width:\s*calc\(100vw - 32px\);[^}]*padding:\s*0;[^}]*border-radius:\s*22px;[^}]*overflow:\s*hidden;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedThemePackImportClose\s*\{[^}]*position:\s*absolute;[^}]*right:\s*8px;[^}]*top:\s*8px;[^}]*width:\s*28px;[^}]*height:\s*28px;[^}]*display:\s*flex;[^}]*align-items:\s*center;[^}]*justify-content:\s*center;[^}]*padding:\s*0;[^}]*border-radius:\s*10px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedThemePackImportCloseIcon\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;[^}]*color:\s*var\(--muted-foreground\);/s
     );
     expect(styles).toMatch(
       /\.SharedThemePackImportTitle\s*\{[^}]*display:\s*block;[^}]*height:\s*22\.5px;[^}]*font-size:\s*18px;[^}]*line-height:\s*22\.5px;/s

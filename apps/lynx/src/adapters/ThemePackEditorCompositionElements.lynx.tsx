@@ -3,13 +3,14 @@ import { useState, type ReactNode } from '@lynx-js/react';
 import { Button } from '../components/ui/button';
 import {
   Dialog,
+  DialogClose,
   DialogFooter,
   DialogHeader,
   DialogPanel,
   DialogPopup,
 } from '../components/ui/dialog';
 import { Input } from '../components/ui/input';
-import { ChevronDownIcon } from '../lib/icons.lynx';
+import { ChevronDownIcon, XIcon } from '../lib/icons.lynx';
 import {
   Menu,
   MenuPopup,
@@ -168,7 +169,17 @@ export function ThemePackImportActionElement(props: {
           else close();
         }}
       >
-        <DialogPopup className="SharedThemePackImportDialog">
+        <DialogPopup
+          className="SharedThemePackImportDialog"
+          showCloseButton={false}
+        >
+          <DialogClose className="SharedThemePackImportClose">
+            <XIcon
+              className="SharedThemePackImportCloseIcon"
+              size={16}
+              accessibilityLabel="Close"
+            />
+          </DialogClose>
           <DialogHeader className="SharedThemePackImportHeader">
             <text className="SharedThemePackImportTitle">
               Import {props.variant} theme

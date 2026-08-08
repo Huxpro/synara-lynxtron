@@ -38,6 +38,7 @@ Concrete success criteria:
 | Web geometry authority | Dialog `448x242.5`; textarea `412x94`; Cancel `59.65625x28`; Import `58.265625x28` | PASS |
 | Lynx light geometry | Exact same four stable boxes at `1280x820`, DPR 1 | PASS |
 | Lynx dark geometry | Exact same four stable boxes at `1280x820`, DPR 1 | PASS |
+| Close control anatomy | Web and Lynx root `28x28` at `827,297.75`, radius 10; icon `16x16` at `833,303.75` | PASS |
 | Light material | Dialog `rgb(255,255,255)`, ink `rgb(13,13,13)`, 7% semantic border, radius 22 | PASS |
 | Dark material | Dialog `rgb(23,23,23)`, ink `rgb(252,252,252)`, 7% semantic border, radius 22 | PASS |
 | Connection provenance | Three-client preflight resolved server instance `bec7ebc4-3a45-4cc3-9f91-bc5aab3f1064`, snapshot 0; relay had no transport/RPC error | PASS |
@@ -62,6 +63,8 @@ At `1280x820`, after the 200ms dialog entrance settled:
 | Footer | `417,478.25,446x52` | `417,478.25,446x52` |
 | Cancel | `721.078125,490.25,59.65625x28` | exact |
 | Import | `788.734375,490.25,58.265625x28` | exact |
+| Close | `827,297.75,28x28` | exact |
+| Close icon | `833,303.75,16x16` | exact |
 
 The first Lynx capture measured the dialog at 98% scale because it sampled the
 entrance transition. It was rejected; the stable post-transition frame above
@@ -71,6 +74,14 @@ is the retained geometry.
 
 - Native textarea, IME, selection, paste, undo/redo, and keyboard routing remain
   a required Native batch boundary.
+- A fresh exact-owned Native attempt identified PID `34313`, PID-derived
+  `localhost:8902/session 1`, the current staged bundle URL, and an empty
+  warning/error console. `DOM.getDocument` still returned `{}` and DevTool
+  screencast timed out, so Native dialog pixels/input remain harness-blocked
+  rather than being promoted from Browser evidence.
+- Lynx-for-Web did not publish `mouseenter` to the custom `DialogClose` root.
+  No dead hover CSS is retained; pointer-hover publication remains part of the
+  known host mouse-event boundary.
 - The current React Doctor warning for `accessibility-element` is a DOM-rule
   false positive. Removing it would regress Lynx native accessibility.
 - This slice closes one concrete current-head residual. It does not establish
