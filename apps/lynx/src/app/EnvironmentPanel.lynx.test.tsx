@@ -57,9 +57,12 @@ describe('Lynx Environment panel', () => {
     expect(panelSource).toContain("type: 'thread.meta.update'");
     expect(panelSource).toContain('Switch branches from the worktree environment controls.');
     expect(panelSource).toContain('buildMenuItems(');
+    expect(panelSource).toContain('resolvePullActionAvailability({');
     expect(panelSource).toContain('requiresDefaultBranchConfirmation(');
     expect(panelSource).toContain('resolveDefaultBranchActionDialogCopy({');
     expect(panelSource).toContain('await runGitStackedAction({');
+    expect(panelSource).toContain('await pullGitBranch(props.workspaceRoot)');
+    expect(panelSource).toContain('Git pull failed.');
     expect(panelSource).toContain('await dialogs.confirm(');
     expect(panelSource).toContain('<Dialog');
     expect(panelSource).toContain('open={dialogOpen}');
@@ -67,6 +70,7 @@ describe('Lynx Environment panel', () => {
     expect(panelSource).toContain('ariaLabel="Commit and Push"');
     expect(panelSource).toContain("label={running ? 'Working…' : 'Commit and Push'}");
     expect(panelSource).toContain('Git actions');
+    expect(panelSource).toContain('Pull');
     expect(panelSource).toContain('Unavailable');
     expect(panelSource).toContain('const [excludedFiles, setExcludedFiles]');
     expect(panelSource).toContain('const selectedFiles = files.filter(');

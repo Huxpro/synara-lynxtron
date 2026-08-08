@@ -6,6 +6,7 @@ import type {
   FilesystemBrowseResult,
   GitHubRepositoryResult,
   GitPullRequestSnapshotResult,
+  GitPullResult,
   GitReadWorkingTreeDiffResult,
   GitListBranchesResult,
   GitActionProgressEvent,
@@ -563,6 +564,10 @@ export async function fetchGitPullRequestSnapshot(input: {
 
 export async function fetchGitStatus(cwd: string): Promise<GitStatusResult> {
   return transportRequest('git.status', { cwd });
+}
+
+export async function pullGitBranch(cwd: string): Promise<GitPullResult> {
+  return transportRequest('git.pull', { cwd });
 }
 
 export async function fetchWorkingTreeDiff(

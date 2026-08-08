@@ -8307,3 +8307,21 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Native/Desktop production builds均通过；最终Web/Native bundle SHA-256分别为
   `045266b3601f6307ee3946cdbb89743d5fa897f3b0787172d7de91756c3c3ead`和
   `d9be95065f35ed68dd19e60caf154320ccf64b34dba1e00ff76c913a8192a5a0`。
+
+### Environment Pull
+
+- 菜单新增Pull但复用Web `resolvePullActionAvailability`：detached、no-upstream、
+  diverged、up-to-date均disabled并给出hint，只有behind且不diverged时可执行typed
+  `git.pull`。完成后复用同一Git status refresh。
+- 本地bare remote隔离验证：fixture先fetch到behind1，rendered menu中只有Pull enabled；
+  点击后local HEAD与origin/main均为
+  `5ba2a64f7e507473f656d6296654c62422a0f84c`，status不再behind，relay
+  OPEN/pending0/error null，全程无外网。
+- light/dark菜单均保留Pull row与相同geometry，up-to-date后disabled状态通过语义tokens
+  切换。证据在`shots/2026-08-08/environment-git-pull-current/`。
+- fixture canonical delete sequences114/115，snapshot115 active threads0；三个临时
+  repos与session清理。live phase progress仍是最后一个明确Git UI缺口。focused
+  **4 files / 18 tests**、三端connection preflight snapshot115、Web与
+  Native/Desktop production builds均通过；最终Web/Native bundle SHA-256分别为
+  `fab559e1a37fdc493bb7b905ffdba48e8f9ef894f5ead3524025ecfab76a4204`和
+  `4c8e290a04cdd37a4d7b2909d28b3cfd1ba6df6e0f6973fd15458352c98095d4`。

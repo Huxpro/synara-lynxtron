@@ -295,6 +295,13 @@
   line-height: 16.5px;
 }
 
+.EnvironmentGitActionMenuHint {
+  padding: 6px 8px;
+  color: var(--muted-foreground);
+  font-size: 10px;
+  line-height: 15px;
+}
+
 .EnvironmentGitActionStatus {
   padding: 0 8px 4px 32px;
   color: var(--muted-foreground);

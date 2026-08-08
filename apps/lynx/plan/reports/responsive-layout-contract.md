@@ -203,10 +203,17 @@ The isolated proof started on `main`, created
 footer wraps safely in the current Lynx dialog and is retained in light/dark.
 Evidence: `shots/2026-08-08/environment-git-new-branch-current/`.
 
-This still does not claim every Web advanced Git workflow. Pull execution and
-live per-phase progress presentation remain separate product slices. The
-shared menu state, file selection, safe commit, and new-branch transaction are
-real; unsupported advanced mutations are not silently enabled.
+Pull now reuses Web's `resolvePullActionAvailability` and the typed `git.pull`
+RPC. Detached, no-upstream, diverged, and already-current states stay disabled
+with a concrete hint; only a strictly behind, non-diverged branch can execute.
+A local bare-remote proof fast-forwarded fixture HEAD to
+`5ba2a64f7e507473f656d6296654c62422a0f84c`, exactly matching `origin/main`,
+and returned relay pending to zero. Evidence:
+`shots/2026-08-08/environment-git-pull-current/`.
+
+Live per-phase progress presentation remains a separate product slice. The
+shared menu state, file selection, safe commit, new-branch transaction, and
+pull workflow are real; unsupported progress UI is not silently claimed.
 
 ## Kanban follow-up
 

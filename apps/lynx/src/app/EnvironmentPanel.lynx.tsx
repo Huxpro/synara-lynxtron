@@ -66,6 +66,7 @@ import { useTheme } from '../adapters/useTheme.lynx';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import {
   buildMenuItems,
+  resolvePullActionAvailability,
   resolveDefaultBranchActionDialogCopy,
   requiresDefaultBranchConfirmation,
   summarizeGitResult,
@@ -78,6 +79,7 @@ import {
   fetchGitHubRepository,
   fetchGitPullRequestSnapshot,
   fetchGitStatus,
+  pullGitBranch,
   fetchGitBranches,
   openPathInEditor,
   checkoutGitBranch,
@@ -493,6 +495,10 @@ function EnvironmentGitAction(props: {
       running,
     ]
   );
+  const pullAvailability = resolvePullActionAvailability({
+    gitStatus: props.gitStatus,
+    isBusy: running,
+  });
   const hasRunnableCommitPushAction = menuItems.some(
     (item) =>
       (item.id === 'commit_push' || item.id === 'push') && !item.disabled
@@ -581,6 +587,27 @@ function EnvironmentGitAction(props: {
     }
   }
 
+  async function runPull(): Promise<void> {
+    'background only';
+    if (!pullAvailability.canRun || running) return;
+    setRunning(true);
+    setError(null);
+    setResultLabel(null);
+    try {
+      const result = await pullGitBranch(props.workspaceRoot);
+      setResultLabel(
+        result.status === 'pulled'
+          ? `Pulled ${result.upstreamBranch ?? result.branch}`
+          : 'Branch is already up to date'
+      );
+      props.onCompleted();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Git pull failed.');
+    } finally {
+      setRunning(false);
+    }
+  }
+
   function selectMenuItem(item: (typeof menuItems)[number]): void {
     'background only';
     if (item.disabled) return;
@@ -638,23 +665,44 @@ function EnvironmentGitAction(props: {
               Git status is unavailable.
             </text>
           ) : (
-            menuItems.map((item) => (
+            <>
+              {menuItems.map((item) => (
+                <MenuItem
+                  className="EnvironmentGitActionMenuItem"
+                  disabled={item.disabled}
+                  key={item.id}
+                  onClick={() => selectMenuItem(item)}
+                  trailing={
+                    item.disabled ? (
+                      <text className="EnvironmentGitActionMenuUnavailable">
+                        Unavailable
+                      </text>
+                    ) : undefined
+                  }
+                >
+                  {item.label}
+                </MenuItem>
+              ))}
               <MenuItem
                 className="EnvironmentGitActionMenuItem"
-                disabled={item.disabled}
-                key={item.id}
-                onClick={() => selectMenuItem(item)}
+                disabled={!pullAvailability.canRun}
+                onClick={() => void runPull()}
                 trailing={
-                  item.disabled ? (
+                  !pullAvailability.canRun ? (
                     <text className="EnvironmentGitActionMenuUnavailable">
                       Unavailable
                     </text>
                   ) : undefined
                 }
               >
-                {item.label}
+                Pull
               </MenuItem>
-            ))
+              {!pullAvailability.canRun && pullAvailability.hint ? (
+                <text className="EnvironmentGitActionMenuHint">
+                  {pullAvailability.hint}
+                </text>
+              ) : null}
+            </>
           )}
         </MenuPopup>
       </Menu>
