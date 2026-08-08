@@ -66,7 +66,10 @@ describe('Lynx sidebar disclosure', () => {
     expect(source).toContain('className="SidebarResizeOverlay"');
     expect(source).toContain('accessibility-label="Resize Sidebar"');
     expect(styles).toMatch(
-      /\.SidebarDisclosure\s*\{[^}]*position:\s*relative;[^}]*transition-duration:\s*220ms;/s
+      /\.SidebarDisclosure\s*\{[^}]*position:\s*relative;[^}]*overflow:\s*visible;[^}]*transition-duration:\s*220ms;/s
+    );
+    expect(styles).toMatch(
+      /\.SidebarDisclosureInner\s*\{[^}]*overflow:\s*hidden;/s
     );
     expect(styles).toMatch(
       /\.SidebarDisclosure--closed\s*\{[^}]*width:\s*0;[^}]*pointer-events:\s*none;/s

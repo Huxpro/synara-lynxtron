@@ -2,7 +2,7 @@
   position: relative;
   flex-shrink: 0;
   height: 100%;
-  overflow: hidden;
+  overflow: visible;
   transition-property: width;
   transition-duration: 220ms;
   transition-timing-function: ease-out;
@@ -15,6 +15,7 @@
 
 .SidebarDisclosureInner {
   height: 100%;
+  overflow: hidden;
   transform: translateX(0);
   transition-property: transform;
   transition-duration: 220ms;
