@@ -188,6 +188,52 @@
   color: var(--destructive);
 }
 
+.EnvironmentBranchTrigger {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.EnvironmentBranchTrigger.ui-hover,
+.EnvironmentBranchTrigger.ui-focus,
+.EnvironmentBranchTrigger.ui-pressed {
+  background-color: var(--accent);
+  opacity: 1;
+}
+
+.LxMenuPopup.EnvironmentBranchPopup {
+  width: 224px;
+  min-width: 224px;
+  max-height: 320px;
+  padding: 4px;
+}
+
+.EnvironmentBranchList {
+  display: flex;
+  flex-direction: column;
+}
+
+.EnvironmentBranchOption {
+  min-height: 28px;
+  padding: 4px 8px;
+}
+
+.EnvironmentBranchCheck {
+  width: 12px;
+  height: 12px;
+}
+
+.EnvironmentBranchState,
+.EnvironmentBranchError {
+  padding: 10px;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  line-height: 16.5px;
+}
+
+.EnvironmentBranchError {
+  color: var(--destructive);
+}
+
 .EnvironmentLocalServersTrigger {
   width: 100%;
   border-radius: 10px;

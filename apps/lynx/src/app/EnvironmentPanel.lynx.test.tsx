@@ -48,6 +48,10 @@ describe('Lynx Environment panel', () => {
     expect(panelSource).toContain('async function pollGitStatus()');
     expect(panelSource).toContain('await sleepOnHost(15_000)');
     expect(panelSource).toContain('onOpenViewer={props.onOpenChanges}');
+    expect(panelSource).toContain('fetchGitBranches(props.workspaceRoot)');
+    expect(panelSource).toContain('await checkoutGitBranch({ cwd: props.workspaceRoot, branch })');
+    expect(panelSource).toContain("type: 'thread.meta.update'");
+    expect(panelSource).toContain('Switch branches from the worktree environment controls.');
     expect(panelSource).not.toContain('EnvironmentChangesPopup');
     expect(panelSource).not.toContain('EnvironmentChangesFilePath');
     expect(panelSource).toContain('stopLocalServer({');
@@ -163,6 +167,9 @@ describe('Lynx Environment panel', () => {
       /\.EnvironmentChangesDeletion\s*\{[^}]*color:\s*var\(--destructive\);/s
     );
     expect(styles).toMatch(
+      /\.LxMenuPopup\.EnvironmentBranchPopup\s*\{[^}]*width:\s*224px;[^}]*max-height:\s*320px;[^}]*padding:\s*4px;/s
+    );
+    expect(styles).toMatch(
       /\.EnvironmentLocalServerStop\s*\{[^}]*width:\s*24px;[^}]*height:\s*24px;[^}]*padding:\s*0;/s
     );
     expect(styles).toMatch(
@@ -210,7 +217,7 @@ describe('Lynx Environment panel', () => {
     );
     const orderedSections = [
       '<EnvironmentChanges',
-      'label={props.branch',
+      '<EnvironmentBranch',
       '<EnvironmentLocalServers',
       '<EnvironmentSectionLabel>Usage',
       '<EnvironmentRepository',

@@ -8157,3 +8157,27 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   relay OPEN/pending0/error null。fixture cleanup snapshot81、active projections0。
 - focused Environment **4/4**、Native/Desktop production build通过；staged bundle
   SHA-256 `e826c50ced92f3cad03231d395b007e74ede91eecd3e528ba465d37cbd8bf8bb`。
+
+### Environment branch picker and relay stability
+
+- Environment Branch从静态row升级为真实local branch picker：typed
+  `git.listBranches`只展示local branches，checkout成功后再提交canonical
+  `thread.meta.update(branch)`；checkout失败保持原branch，worktree环境明确禁用切换。
+- 在隔离`/tmp/synara-branch-fixture`创建`main`与`feature/fidelity`。真实pointer
+  interaction打开菜单并选择`feature/fidelity`后，Git HEAD与
+  `orchestration.getThreadDetailSnapshot`均返回`feature/fidelity`，snapshot sequence
+  从83推进到84。
+- 验证中复现Environment请求触发顶部`Reconnecting…`，但server health正常且feature
+  socket持续ESTABLISHED。根因是Lynx Web RPC wrapper把每次普通请求都无条件发布为
+  `reconnecting`；现由Web relay socket lifecycle唯一负责连接状态，普通RPC不再伪造
+  reconnect/offline，并新增focused source contract防回归。
+- 修复后打开branch菜单时relay始终OPEN、connection attempts保持1；请求settle后
+  pending0、transport/rpc error均null。连续5轮串行connection preflight共15 probes
+  （Web、Lynx-for-Web、Lynxtron-native）全部命中server instance
+  `0a735352-e0f2-401b-ad08-28939d9f0a67`与snapshot84。
+- retained Lynx-for-Web frame为1280×820/DPR1，page errors clean。fixture canonical
+  delete sequences85/86，thread已purge、project soft-delete tombstone有效、active
+  threads0；隔离browser session与临时repo均清理。证据在
+  `shots/2026-08-08/branch-picker-stable-relay/`。focused tests **2 files / 5
+  tests**、Web与Native/Desktop production builds通过；最终staged bundle SHA-256
+  为`e7cc198099a1367d03115b25588803589b4e946096002d12cc41db333ca97580`。

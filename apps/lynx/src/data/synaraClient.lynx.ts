@@ -7,6 +7,7 @@ import type {
   GitHubRepositoryResult,
   GitPullRequestSnapshotResult,
   GitReadWorkingTreeDiffResult,
+  GitListBranchesResult,
   GitStatusResult,
   ModelSelection,
   OrchestrationImportThreadInput,
@@ -344,7 +345,6 @@ async function relayRequest<A>(tag: string, payload: unknown): Promise<A> {
     throw new RpcTransportError('Synara is offline; reconnect cooling down');
   }
 
-  setRelayState(relayEverConnected ? 'reconnecting' : 'connecting');
   try {
     const result = await relayBridgeRequest<A>(tag, payload);
     relayEverConnected = true;
@@ -358,8 +358,6 @@ async function relayRequest<A>(tag: string, payload: unknown): Promise<A> {
       setRelayState('connected');
       throw error;
     }
-    relayOfflineUntilMs = Date.now() + OFFLINE_RETRY_DELAY_MS;
-    setRelayState('offline');
     throw new RpcTransportError(
       `Synara RPC ${tag} failed: ${describeRelayError(error)}`
     );
@@ -543,6 +541,17 @@ export async function fetchWorkingTreeDiff(
     cwd,
     scope: 'workingTree',
   });
+}
+
+export async function fetchGitBranches(cwd: string): Promise<GitListBranchesResult> {
+  return transportRequest('git.listBranches', { cwd });
+}
+
+export async function checkoutGitBranch(input: {
+  readonly cwd: string;
+  readonly branch: string;
+}): Promise<void> {
+  await transportRequest('git.checkout', input);
 }
 
 export async function repairSynaraState(): Promise<OrchestrationReadModel> {

@@ -52,6 +52,7 @@ import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
 import { ChatMarkdown } from '../components/markdown/ChatMarkdown.lynx';
 import {
   ChevronDownIcon,
+  CheckIcon,
   CopyIcon,
   DeviceLaptopIcon,
   GitBranchIcon,
@@ -68,7 +69,9 @@ import {
   fetchGitHubRepository,
   fetchGitPullRequestSnapshot,
   fetchGitStatus,
+  fetchGitBranches,
   openPathInEditor,
+  checkoutGitBranch,
   stopLocalServer,
 } from '../data/synaraClient.lynx';
 import { webStorage } from '../platform/storage';
@@ -405,6 +408,120 @@ function EnvironmentChanges(props: {
         }
       />
     </view>
+  );
+}
+
+function EnvironmentBranch(props: {
+  readonly branch: string | null;
+  readonly envMode: 'local' | 'worktree';
+  readonly open: boolean;
+  readonly threadId: string;
+  readonly workspaceRoot: string;
+}) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [switchingBranch, setSwitchingBranch] = useState<string | null>(null);
+  const [error, setError] = useState(false);
+  const branchesQuery = useQuery({
+    queryKey: ['environment-git-branches', props.workspaceRoot],
+    queryFn: () => {
+      'background only';
+      return fetchGitBranches(props.workspaceRoot);
+    },
+    enabled: props.open,
+    staleTime: 15_000,
+  });
+  const branches = (branchesQuery.data?.branches ?? []).filter(
+    (branch) => !branch.isRemote
+  );
+  const checkoutDisabled =
+    props.envMode === 'worktree' || switchingBranch !== null;
+
+  async function switchBranch(branch: string) {
+    'background only';
+    if (checkoutDisabled || branch === props.branch) return;
+    setSwitchingBranch(branch);
+    setError(false);
+    try {
+      await checkoutGitBranch({ cwd: props.workspaceRoot, branch });
+      await dispatchSynaraCommand({
+        type: 'thread.meta.update',
+        commandId: environmentCommandId() as never,
+        threadId: props.threadId as never,
+        branch,
+      });
+      await branchesQuery.refetch();
+      setMenuOpen(false);
+    } catch {
+      setError(true);
+    } finally {
+      setSwitchingBranch(null);
+    }
+  }
+
+  return (
+    <Menu open={menuOpen} onOpenChange={setMenuOpen}>
+      <MenuTrigger
+        ariaLabel="Choose branch"
+        className="EnvironmentBranchTrigger"
+        disabled={branchesQuery.isPending}
+      >
+        <EnvironmentRow
+          icon={
+            <GitBranchIcon
+              size={16}
+              color="var(--foreground)"
+            />
+          }
+          label={props.branch ?? 'No branch'}
+          trailing={props.envMode === 'worktree' ? 'Worktree' : 'Local'}
+          trailingIcon={
+            <ChevronDownIcon
+              size={12}
+              color="var(--muted-foreground)"
+            />
+          }
+        />
+      </MenuTrigger>
+      <MenuPopup
+        align="start"
+        side="bottom"
+        className="EnvironmentBranchPopup"
+      >
+        {props.envMode === 'worktree' ? (
+          <text className="EnvironmentBranchState">
+            Switch branches from the worktree environment controls.
+          </text>
+        ) : branches.length === 0 ? (
+          <text className="EnvironmentBranchState">
+            No local branches found.
+          </text>
+        ) : (
+          <view className="EnvironmentBranchList">
+            {branches.map((branch) => (
+              <MenuItem
+                className="EnvironmentBranchOption"
+                closeOnClick={false}
+                disabled={switchingBranch !== null}
+                key={branch.name}
+                onClick={() => void switchBranch(branch.name)}
+                trailing={
+                  branch.name === props.branch ? (
+                    <CheckIcon className="EnvironmentBranchCheck" />
+                  ) : undefined
+                }
+              >
+                {branch.name}
+              </MenuItem>
+            ))}
+          </view>
+        )}
+        {error ? (
+          <text className="EnvironmentBranchError">
+            Could not switch branch
+          </text>
+        ) : null}
+      </MenuPopup>
+    </Menu>
   );
 }
 
@@ -1971,16 +2088,15 @@ export function EnvironmentPanel(props: {
               />
             ) : null}
 
-            <EnvironmentRow
-              icon={
-                <GitBranchIcon
-                  size={16}
-                  color="var(--foreground)"
-                />
-              }
-              label={props.branch ?? 'No branch'}
-              trailing={props.envMode === 'worktree' ? 'Worktree' : 'Local'}
-            />
+            {props.workspaceRoot ? (
+              <EnvironmentBranch
+                branch={props.branch}
+                envMode={props.envMode}
+                open={props.open}
+                threadId={props.threadId}
+                workspaceRoot={props.workspaceRoot}
+              />
+            ) : null}
             {props.workspaceRoot ? (
               <text className="EnvironmentWorkspace">{props.workspaceRoot}</text>
             ) : null}
