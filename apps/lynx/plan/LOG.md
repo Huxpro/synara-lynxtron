@@ -8146,3 +8146,14 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Environment **4/4**、Web与Native/Desktop production builds通过。证据在
   `shots/2026-08-08/diff-dock-layout-current/`；最终staged bundle SHA-256为
   `c92104b059df7baba030774259b263ef99da44501e59485e334eaf436b1cfe67`。
+
+### Changes direct-row polish
+
+- Diff Dock落地后删除已不可达的旧Changes file-list popup及整套重复CSS；Changes恢复
+  Web authority的直接row，点击只打开真实dock。stats拆成green addition/red deletion，
+  不再用单色字符串；loading/error retry语义保留。
+- 真实working tree settle后row为274×26，`+1718`解析`rgb(0,188,125)`，
+  `−149`解析`rgb(224,46,42)`。一次真实click后DiffDock count1、旧popup count0；
+  relay OPEN/pending0/error null。fixture cleanup snapshot81、active projections0。
+- focused Environment **4/4**、Native/Desktop production build通过；staged bundle
+  SHA-256 `e826c50ced92f3cad03231d395b007e74ede91eecd3e528ba465d37cbd8bf8bb`。

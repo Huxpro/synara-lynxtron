@@ -135,6 +135,7 @@ function EnvironmentRow(props: {
   readonly icon: React.ReactNode;
   readonly label: string;
   readonly trailingIcon?: React.ReactNode;
+  readonly trailingContent?: React.ReactNode;
   readonly trailing?: string | null;
 }) {
   return (
@@ -143,6 +144,11 @@ function EnvironmentRow(props: {
       <text className="EnvironmentRowLabel">{props.label}</text>
       {props.trailing ? (
         <text className="EnvironmentRowTrailing">{props.trailing}</text>
+      ) : null}
+      {props.trailingContent ? (
+        <view className="EnvironmentRowTrailingContent">
+          {props.trailingContent}
+        </view>
       ) : null}
       {props.trailingIcon ? (
         <view className="EnvironmentRowTrailingIcon">{props.trailingIcon}</view>
@@ -293,7 +299,6 @@ function EnvironmentChanges(props: {
   readonly open: boolean;
   readonly workspaceRoot: string;
 }) {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [refreshGeneration, setRefreshGeneration] = useState(0);
   const [statusState, setStatusState] = useState<{
     readonly data: Awaited<ReturnType<typeof fetchGitStatus>> | null;
@@ -341,101 +346,65 @@ function EnvironmentChanges(props: {
   const status = statusState.data;
   const files = status?.workingTree.files ?? [];
   const stats = status?.workingTree;
-  const trailing =
-    stats && status?.hasWorkingTreeChanges
-      ? `+${stats.insertions} −${stats.deletions}`
-      : null;
-
   return (
-    <Menu open={menuOpen} onOpenChange={setMenuOpen}>
-      <MenuTrigger
-        ariaLabel={
-          statusState.error
-            ? 'Retry changes'
-            : status?.hasWorkingTreeChanges
-              ? `${files.length} changed file${files.length === 1 ? '' : 's'}`
-              : 'No changes'
-        }
-        className="EnvironmentChangesTrigger"
-        disabled={statusState.pending}
-        onActivate={
-          statusState.error
+    <view
+      className={`EnvironmentChangesTrigger${
+        statusState.pending ? ' EnvironmentChangesTrigger--disabled' : ''
+      }`}
+      accessibility-element
+      accessibility-label={
+        statusState.error
+          ? 'Retry changes'
+          : status?.hasWorkingTreeChanges
+            ? `${files.length} changed file${files.length === 1 ? '' : 's'}`
+            : 'No changes'
+      }
+      bindtap={
+        statusState.pending
+          ? undefined
+          : statusState.error
             ? () => setRefreshGeneration((current) => current + 1)
             : props.onOpenViewer
+      }
+    >
+      <EnvironmentRow
+        icon={
+          statusState.error ? (
+            <RefreshCwIcon
+              size={16}
+              color="var(--destructive)"
+            />
+          ) : (
+            <svg
+              className="EnvironmentCanonicalIcon"
+              content={colorizeLynxSvg(
+                differenceSvg,
+                'var(--foreground)'
+              )}
+            />
+          )
         }
-      >
-        <EnvironmentRow
-          icon={
-            statusState.error ? (
-              <RefreshCwIcon
-                size={16}
-                color="var(--destructive)"
-              />
-            ) : (
-              <svg
-                className="EnvironmentCanonicalIcon"
-                content={colorizeLynxSvg(
-                  differenceSvg,
-                  'var(--foreground)'
-                )}
-              />
-            )
-          }
-          label={
-            statusState.pending
-              ? 'Loading changes…'
-              : statusState.error
-                ? "Couldn't load changes"
-                : 'Changes'
-          }
-          trailing={trailing}
-          trailingIcon={
-            statusState.error ? null : (
-              <ChevronDownIcon
-                size={12}
-                color="var(--muted-foreground)"
-              />
-            )
-          }
-        />
-      </MenuTrigger>
-      <MenuPopup
-        align="start"
-        side="bottom"
-        className="EnvironmentChangesPopup"
-      >
-        <view className="EnvironmentChangesHeader">
-          <text className="EnvironmentChangesHeaderText">
-            {files.length === 0
-              ? 'No working tree changes'
-              : `${files.length} changed file${files.length === 1 ? '' : 's'}`}
-          </text>
-          {trailing ? (
-            <text className="EnvironmentChangesStats">{trailing}</text>
-          ) : null}
-        </view>
-        {files.length === 0 ? (
-          <text className="EnvironmentChangesEmpty">
-            Working tree is clean.
-          </text>
-        ) : (
-          <scroll-view
-            className="EnvironmentChangesList"
-            scroll-y
-            enable-scroll-bar
-          >
-            {files.map((file) => (
-              <view className="EnvironmentChangesFile" key={file.path}>
-                <text className="EnvironmentChangesFilePath">{file.path}</text>
-                <text className="EnvironmentChangesFileStats">
-                  +{file.insertions} −{file.deletions}
-                </text>
-              </view>
-            ))}
-          </scroll-view>
-        )}
-      </MenuPopup>
-    </Menu>
+        label={
+          statusState.pending
+            ? 'Loading changes…'
+            : statusState.error
+              ? "Couldn't load changes"
+              : 'Changes'
+        }
+        trailingContent={
+          stats && status?.hasWorkingTreeChanges ? (
+            <>
+              <text className="EnvironmentChangesAddition">
+                +{stats.insertions}
+              </text>
+              <text className="EnvironmentChangesDeletion">
+                −{stats.deletions}
+              </text>
+            </>
+          ) : null
+        }
+      />
+    </view>
   );
 }
 

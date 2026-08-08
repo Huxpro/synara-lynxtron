@@ -47,8 +47,9 @@ describe('Lynx Environment panel', () => {
     expect(panelSource).toContain('fetchGitStatus(props.workspaceRoot)');
     expect(panelSource).toContain('async function pollGitStatus()');
     expect(panelSource).toContain('await sleepOnHost(15_000)');
-    expect(panelSource).toContain('file.insertions');
-    expect(panelSource).toContain('file.deletions');
+    expect(panelSource).toContain('onOpenViewer={props.onOpenChanges}');
+    expect(panelSource).not.toContain('EnvironmentChangesPopup');
+    expect(panelSource).not.toContain('EnvironmentChangesFilePath');
     expect(panelSource).toContain('stopLocalServer({');
     expect(panelSource).toContain('localServerPrimaryLabel(server)');
     expect(panelSource).toContain('localServerAddressLabel(server)');
@@ -156,7 +157,10 @@ describe('Lynx Environment panel', () => {
       /\.LxMenuPopup\.EnvironmentLocalServersPopup\s*\{[^}]*width:\s*288px;[^}]*padding:\s*6px;/s
     );
     expect(styles).toMatch(
-      /\.LxMenuPopup\.EnvironmentChangesPopup\s*\{[^}]*width:\s*288px;[^}]*max-height:\s*360px;[^}]*padding:\s*6px;/s
+      /\.EnvironmentChangesAddition\s*\{[^}]*color:\s*var\(--settings-usage-meter-healthy\);/s
+    );
+    expect(styles).toMatch(
+      /\.EnvironmentChangesDeletion\s*\{[^}]*color:\s*var\(--destructive\);/s
     );
     expect(styles).toMatch(
       /\.EnvironmentLocalServerStop\s*\{[^}]*width:\s*24px;[^}]*height:\s*24px;[^}]*padding:\s*0;/s
