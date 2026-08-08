@@ -8130,3 +8130,19 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Native/Desktop production builds通过。证据在
   `shots/2026-08-08/diff-dock-current/`；最终staged bundle SHA-256为
   `5b18adf10e44200089c0990d15bf5c989707ad606317ba1ded02e4b54cd9c917`。
+
+### Diff Dock 50/50 layout ownership
+
+- Web `RightDock` authority每次open测量chat shell并设exact 50/50。首版Lynx dock虽为
+  50% absolute surface，但chat仍在其下方，是overlay而非真实split。`ThreadPage`
+  现在用`ThreadPage--diff-open`保留50% right content inset，dock仍固定right/50%，
+  两者共享同一owner而非用视觉遮挡冒充。
+- 1280×820：App main/thread shell x256 width1024，chat reservation512，dock
+  x768 width512；header identity由956缩至444。900×650：main644，chat322，
+  dock x578 width322；dock scroller321×560且scrollHeight4478。两尺寸均无overlap，
+  exact 50/50与Web authority一致。
+- canonical fixture cleanup snapshot77、active projections0；relay最终
+  OPEN/attempt1/pending0、transport/rpc error null，page errors clean。focused
+  Environment **4/4**、Web与Native/Desktop production builds通过。证据在
+  `shots/2026-08-08/diff-dock-layout-current/`；最终staged bundle SHA-256为
+  `c92104b059df7baba030774259b263ef99da44501e59485e334eaf436b1cfe67`。

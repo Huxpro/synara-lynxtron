@@ -282,6 +282,10 @@
   padding: 0;
 }
 
+.ThreadPage--diff-open {
+  padding-right: 50%;
+}
+
 .ThreadHeaderIdentity {
   display: flex;
   min-width: 0;

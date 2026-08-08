@@ -37,6 +37,10 @@ describe('Lynx Environment panel', () => {
       new URL('./DiffDock.lynx.tsx', import.meta.url),
       'utf8'
     );
+    const appStyles = readFileSync(
+      new URL('./App.css', import.meta.url),
+      'utf8'
+    );
 
     expect(panelSource).toContain('fetchAllProviderUsage({})');
     expect(panelSource).toContain('fetchLocalServers()');
@@ -101,6 +105,9 @@ describe('Lynx Environment panel', () => {
     expect(diffDockSource).toContain('fetchWorkingTreeDiff(props.workspaceRoot!)');
     expect(diffDockSource).toContain('buildPullRequestCodeView(');
     expect(diffDockSource).toContain('<PullRequestCodeComposition');
+    expect(appStyles).toMatch(
+      /\.ThreadPage--diff-open\s*\{[^}]*padding-right:\s*50%;/s
+    );
     expect(panelSource).toContain('resolveThreadRecapIdleMs({');
     expect(panelSource).toContain('fetchThreadRecapSummary(props.threadId)');
     expect(panelSource).toContain('prepareThreadRecap(props.threadId)');

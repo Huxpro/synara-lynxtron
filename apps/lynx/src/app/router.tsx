@@ -355,7 +355,7 @@ function ThreadPage(props: { threadId: string }) {
     <view
       className={`Page ThreadPage${
         environmentOpen ? ' ThreadPage--environment-open' : ''
-      }`}
+      }${diffOpen ? ' ThreadPage--diff-open' : ''}`}
     >
       <ChatSurfaceHeaderFrame>
         <view className="ThreadHeaderIdentity">
