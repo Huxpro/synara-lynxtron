@@ -68,7 +68,12 @@ describe('Lynx Environment panel', () => {
     expect(panelSource).toContain('open={dialogOpen}');
     expect(panelSource).toContain('Commit message (optional)');
     expect(panelSource).toContain('ariaLabel="Commit and Push"');
-    expect(panelSource).toContain("label={running ? 'Working…' : 'Commit and Push'}");
+    expect(panelSource).toContain(
+      "label={running ? progressLabel ?? 'Working…' : 'Commit and Push'}"
+    );
+    expect(panelSource).toContain("event.kind === 'phase_started'");
+    expect(panelSource).toContain("event.kind === 'hook_started'");
+    expect(panelSource).toContain("event.kind === 'hook_output'");
     expect(panelSource).toContain('Git actions');
     expect(panelSource).toContain('Pull');
     expect(panelSource).toContain('Unavailable');

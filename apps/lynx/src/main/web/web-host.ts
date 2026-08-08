@@ -29,6 +29,7 @@ const INITIAL_RECONNECT_DELAY_MS = 250;
 const MAX_RECONNECT_DELAY_MS = 2_000;
 const OFFLINE_RETRY_DELAY_MS = 5_000;
 const TRANSPORT_STATE_EVENT = 'synara:transport-state';
+const GIT_ACTION_PROGRESS_EVENT = 'synara:git-action-progress';
 const STORAGE_PREFIX = 'synara.lynx.';
 const PROTOCOL = {
   epoch: 1,
@@ -84,6 +85,7 @@ let relayRecoveryActive = false;
 let publishRelayTransportState:
   | ((state: 'connected' | 'reconnecting' | 'offline') => void)
   | null = null;
+let publishRelayGitActionProgress: ((event: unknown) => void) | null = null;
 
 interface LynxWebRuntimeConfig {
   readonly wsUrl?: unknown;
@@ -314,6 +316,7 @@ async function openFeatureSocket(baseUrl: string): Promise<WebSocket> {
     if (!pending) return;
     if (message._tag === 'Chunk') {
       pending.chunks?.push(...message.values);
+      for (const value of message.values) publishRelayGitActionProgress?.(value);
       try {
         socket.send(
           JSON.stringify({
@@ -729,6 +732,9 @@ const lynxView = webDocument.getElementById('root-view') as any;
 
 publishRelayTransportState = (state) => {
   lynxView.sendGlobalEvent?.(TRANSPORT_STATE_EVENT, [state]);
+};
+publishRelayGitActionProgress = (event) => {
+  lynxView.sendGlobalEvent?.(GIT_ACTION_PROGRESS_EVENT, [event]);
 };
 
 globalThis.__SYNARA_LYNX_RELAY_DIAGNOSTICS__ = () => ({

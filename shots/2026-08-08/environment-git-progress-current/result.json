@@ -1,0 +1,6 @@
+{
+  "observedBeforeCompletion": "Committing...",
+  "head": "56f507c7ce450dc2982bc60e096b55e952736bd5",
+  "subject": "Progress commit",
+  "hook": "pre-commit emitted hook-running and slept 2s"
+}

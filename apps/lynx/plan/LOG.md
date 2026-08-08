@@ -8325,3 +8325,18 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Native/Desktop production builds均通过；最终Web/Native bundle SHA-256分别为
   `fab559e1a37fdc493bb7b905ffdba48e8f9ef894f5ead3524025ecfab76a4204`和
   `4c8e290a04cdd37a4d7b2909d28b3cfd1ba6df6e0f6973fd15458352c98095d4`。
+
+### Environment Git live progress
+
+- Native stream callback与Lynx-for-Web `synara:git-action-progress` global event都按
+  `actionId`隔离，实时投影phase label、hook start/output与failure；结束result仍由
+  stream `action_finished`唯一结算，不把progress事件当完成信号。
+- 隔离repo安装真实pre-commit hook，输出`hook-running`并sleep 2s。点击rendered
+  Commit后，在Git commit完成前UI已显示`Committing...`；随后commit subject为
+  `Progress commit`，证明不是事后静态toast。证据在
+  `shots/2026-08-08/environment-git-progress-current/`。
+- fixture canonical delete sequences118/119，snapshot119；session与临时repo清理。
+  focused **4 files / 18 tests**、三端connection preflight snapshot119、Web与
+  Native/Desktop production builds均通过；最终Web/Native bundle SHA-256分别为
+  `cac02eb2b9d619cf4eed55437f5f06bc3eb656671d5ed783067ac053eac89c4e`和
+  `cf44ecac6d2dea70d43fcddd86d50a287771e1bd7d06092b2555be1d39d0290a`。

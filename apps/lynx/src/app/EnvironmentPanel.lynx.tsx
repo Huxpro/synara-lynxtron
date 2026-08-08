@@ -456,6 +456,7 @@ function EnvironmentGitAction(props: {
     new Set()
   );
   const [running, setRunning] = useState(false);
+  const [progressLabel, setProgressLabel] = useState<string | null>(null);
   const [resultLabel, setResultLabel] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const branchesQuery = useQuery({
@@ -547,11 +548,13 @@ function EnvironmentGitAction(props: {
       if (!confirmed) return;
     }
     setRunning(true);
+    setProgressLabel('Running git action…');
     setError(null);
     setResultLabel(null);
     try {
+      const actionId = environmentCommandId();
       const result = await runGitStackedAction({
-        actionId: environmentCommandId(),
+        actionId,
         cwd: props.workspaceRoot,
         action,
         ...(options.featureBranch ? { featureBranch: true } : {}),
@@ -561,6 +564,16 @@ function EnvironmentGitAction(props: {
         ...(!allSelected
           ? { filePaths: selectedFiles.map((file) => file.path) }
           : {}),
+      }, (event) => {
+        if (event.actionId !== actionId) return;
+        if (event.kind === 'phase_started') setProgressLabel(event.label);
+        else if (event.kind === 'hook_started') {
+          setProgressLabel(`Running ${event.hookName}…`);
+        } else if (event.kind === 'hook_output') {
+          setProgressLabel(event.text);
+        } else if (event.kind === 'action_failed') {
+          setProgressLabel(event.message);
+        }
       });
       const summary = summarizeGitResult(result);
       if (result.branch.status === 'created' && result.branch.name) {
@@ -584,6 +597,7 @@ function EnvironmentGitAction(props: {
       setError(cause instanceof Error ? cause.message : 'Git action failed.');
     } finally {
       setRunning(false);
+      setProgressLabel(null);
     }
   }
 
@@ -645,7 +659,7 @@ function EnvironmentGitAction(props: {
                 content={colorizeLynxSvg(pushSvg, 'var(--foreground)')}
               />
             }
-            label={running ? 'Working…' : 'Commit and Push'}
+            label={running ? progressLabel ?? 'Working…' : 'Commit and Push'}
             trailingIcon={
               <ChevronDownIcon
                 size={12}
@@ -714,6 +728,8 @@ function EnvironmentGitAction(props: {
         <text className="EnvironmentGitActionStatus EnvironmentGitActionStatus--error">
           {error}
         </text>
+      ) : running && progressLabel ? (
+        <text className="EnvironmentGitActionStatus">{progressLabel}</text>
       ) : null}
       <Dialog
         open={dialogOpen}

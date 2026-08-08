@@ -211,9 +211,13 @@ A local bare-remote proof fast-forwarded fixture HEAD to
 and returned relay pending to zero. Evidence:
 `shots/2026-08-08/environment-git-pull-current/`.
 
-Live per-phase progress presentation remains a separate product slice. The
-shared menu state, file selection, safe commit, new-branch transaction, and
-pull workflow are real; unsupported progress UI is not silently claimed.
+Live per-phase progress now follows the Effect RPC stream in real time. Native
+delivers chunks directly; Lynx-for-Web publishes the same chunks through a
+global event keyed by `actionId`. Phase labels, hook start, hook output, and
+failure messages update only the matching action. A real pre-commit hook that
+printed output and slept for two seconds exposed `Committing...` before the
+commit completed, then produced the expected commit. Evidence:
+`shots/2026-08-08/environment-git-progress-current/`.
 
 ## Kanban follow-up
 

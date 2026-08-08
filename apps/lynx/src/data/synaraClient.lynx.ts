@@ -143,6 +143,7 @@ const INITIAL_RECONNECT_DELAY_MS = 250;
 const MAX_RECONNECT_DELAY_MS = 2_000;
 const OFFLINE_RETRY_DELAY_MS = 5_000;
 const TRANSPORT_STATE_EVENT = 'synara:transport-state';
+const GIT_ACTION_PROGRESS_EVENT = 'synara:git-action-progress';
 
 let requestSequence = 0;
 
@@ -266,6 +267,10 @@ let relayState: RpcTransportState = 'idle';
 let relayEverConnected = false;
 let relayOfflineUntilMs = 0;
 const relayStateListeners = new Set<(state: RpcTransportState) => void>();
+const gitActionProgressListeners = new Map<
+  string,
+  (event: GitActionProgressEvent) => void
+>();
 
 function setRelayState(state: RpcTransportState): void {
   if (relayState === state) return;
@@ -289,6 +294,19 @@ if (IS_WEB_RELAY_MODE) {
       relayOfflineUntilMs = Date.now() + OFFLINE_RETRY_DELAY_MS;
     }
     setRelayState(state);
+  });
+  onGlobalEvent(GIT_ACTION_PROGRESS_EVENT, (event: unknown) => {
+    if (
+      !event ||
+      typeof event !== 'object' ||
+      !('actionId' in event) ||
+      typeof event.actionId !== 'string'
+    ) {
+      return;
+    }
+    gitActionProgressListeners.get(event.actionId)?.(
+      event as GitActionProgressEvent
+    );
   });
 }
 
@@ -591,24 +609,33 @@ export async function checkoutGitBranch(input: {
 }
 
 export async function runGitStackedAction(
-  input: GitRunStackedActionInput
+  input: GitRunStackedActionInput,
+  onProgress?: (event: GitActionProgressEvent) => void
 ): Promise<GitRunStackedActionResult> {
   let result: GitRunStackedActionResult | null = null;
   const accept = (event: GitActionProgressEvent) => {
     if (event.kind === 'action_finished') result = event.result;
   };
   if (IS_WEB_RELAY_MODE) {
-    for (const event of await relayStreamRequest<GitActionProgressEvent>(
-      'git.runStackedAction',
-      input
-    )) {
-      accept(event);
+    if (onProgress) gitActionProgressListeners.set(input.actionId, onProgress);
+    try {
+      for (const event of await relayStreamRequest<GitActionProgressEvent>(
+        'git.runStackedAction',
+        input
+      )) {
+        accept(event);
+      }
+    } finally {
+      gitActionProgressListeners.delete(input.actionId);
     }
   } else {
     await featureManager.requestStream<GitActionProgressEvent>(
       'git.runStackedAction',
       input,
-      accept
+      (event) => {
+        onProgress?.(event);
+        accept(event);
+      }
     );
   }
   if (!result) {
@@ -744,6 +771,7 @@ export async function setSynaraPullRequestPinned(
 export async function disposeSynaraClient(): Promise<void> {
   if (IS_WEB_RELAY_MODE) {
     relayStateListeners.clear();
+    gitActionProgressListeners.clear();
     relayOfflineUntilMs = 0;
     setRelayState('idle');
     return;

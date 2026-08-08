@@ -33,9 +33,11 @@ describe('Lynx Synara relay state', () => {
 
     expect(hostSource).toContain("message._tag === 'Chunk'");
     expect(hostSource).toContain("_tag: 'Ack'");
+    expect(hostSource).toContain('publishRelayGitActionProgress?.(value)');
     expect(hostSource).toContain('const timer = stream');
     expect(hostSource).toContain('? undefined');
     expect(clientSource).toContain("'synaraRpcStream'");
+    expect(clientSource).toContain('gitActionProgressListeners.get(event.actionId)');
     expect(clientSource).toContain("event.kind === 'action_finished'");
     expect(clientSource).toContain(
       "'Git action stream completed without a final result'"
