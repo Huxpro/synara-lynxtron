@@ -7876,3 +7876,19 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   iOS8901/t3tools8902未触碰。
 - focused Environment/thread state **2 files / 8 tests**，Web与Native/Desktop production
   builds通过。
+
+### Environment Local Servers follow-up
+
+- 复用现有`server.listLocalServers`/`server.stopLocalServer`协议与shared
+  `localServerPrimaryLabel`/`localServerAddressLabel`，在Environment加入Web同构
+  Local Servers row+Menu：count/busy、288px popup、refresh、running dot、title/address、
+  24px stop action；只允许`isStoppable`进程执行stop。
+- 临时`python3 -m http.server 58888`通过真实process monitor识别为
+  `Directory listing for / · localhost:58888`。当时环境共有7个dev listeners；popup
+  逐项展示且fixture准确位于最后一行。真实pointer按其24×24 Stop后进入Scanning，
+  server mutation/refetch settle后listener释放、fixture row移除、count7→6，其他6个
+  进程保持不动，relay pending0/transport error0。
+- fixture server由产品Stop结束，disposable thread走canonical delete并确认projection0。
+  focused Environment **3/3**、Web build、Native/Desktop final build与preflight gate
+  均通过；最终staged bundle SHA-256为
+  `7a42282e7ade88380bc47b4b1d44a4e528e085d9065bc01c222d5e0854e38a72`。

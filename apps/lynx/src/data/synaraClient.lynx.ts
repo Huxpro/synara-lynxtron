@@ -37,6 +37,9 @@ import type {
   ServerListWorktreesResult,
   ServerListProviderUsageInput,
   ServerListProviderUsageResult,
+  ServerListLocalServersResult,
+  ServerStopLocalServerInput,
+  ServerStopLocalServerResult,
   ServerSettingsPatch,
   ServerSettingsView,
   ServerProviderUpdateResult,
@@ -568,6 +571,22 @@ export async function fetchAllProviderUsage(
 ): Promise<ServerListProviderUsageResult> {
   return transportRequest<ServerListProviderUsageResult>(
     'server.listProviderUsage',
+    input
+  );
+}
+
+export async function fetchLocalServers(): Promise<ServerListLocalServersResult> {
+  return transportRequest<ServerListLocalServersResult>(
+    'server.listLocalServers',
+    {}
+  );
+}
+
+export async function stopLocalServer(
+  input: ServerStopLocalServerInput
+): Promise<ServerStopLocalServerResult> {
+  return transportRequest<ServerStopLocalServerResult>(
+    'server.stopLocalServer',
     input
   );
 }

@@ -9,19 +9,34 @@ import {
   providerUsageNeedsAuthDetail,
 } from '@synara/shared/providerUsage';
 import { deriveProviderUsageLimitDisplay } from '@synara/shared/providerUsageDisplay';
+import {
+  localServerAddressLabel,
+  localServerPrimaryLabel,
+} from '@synara/shared/localServers';
 import settingsSvg from '@synara-central-icons/settings-gear-4.svg?raw';
 import windowSvg from '@synara-central-icons/window.svg?raw';
+import globeSvg from '@synara-central-icons/globe.svg?raw';
+import stopSvg from '@synara-central-icons/stop.svg?raw';
 
 import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
 import { ChevronDownIcon, GitBranchIcon } from '../lib/icons.lynx';
+import { RefreshCwIcon } from '../lib/icons.lynx';
 import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
 import { useTheme } from '../adapters/useTheme.lynx';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import {
   dispatchSynaraCommand,
   fetchAllProviderUsage,
+  fetchLocalServers,
+  stopLocalServer,
 } from '../data/synaraClient.lynx';
 import { sleepOnHost } from '../platform/timer';
+import {
+  Menu,
+  MenuItem,
+  MenuPopup,
+  MenuTrigger,
+} from '../components/ui/menu.lynx';
 
 import './environment-panel.css';
 
@@ -78,6 +93,139 @@ function EnvironmentRow(props: {
 
 function EnvironmentSectionLabel({ children }: { readonly children: string }) {
   return <text className="EnvironmentSectionLabel">{children}</text>;
+}
+
+function EnvironmentLocalServers() {
+  const { svgColors } = useTheme();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [stoppingPid, setStoppingPid] = useState<number | null>(null);
+  const localServersQuery = useQuery({
+    queryKey: ['environment-local-servers'],
+    queryFn: () => {
+      'background only';
+      return fetchLocalServers();
+    },
+    refetchInterval: menuOpen ? 5_000 : false,
+  });
+  const servers = localServersQuery.data?.servers ?? [];
+  const countLabel = `${servers.length}`;
+
+  async function stop(server: (typeof servers)[number]) {
+    'background only';
+    if (!server.isStoppable || stoppingPid !== null) return;
+    setStoppingPid(server.pid);
+    try {
+      await stopLocalServer({
+        pid: server.pid,
+        port: server.ports[0] ?? 1,
+      });
+      await localServersQuery.refetch();
+    } finally {
+      setStoppingPid(null);
+    }
+  }
+
+  return (
+    <Menu open={menuOpen} onOpenChange={setMenuOpen}>
+      <MenuTrigger
+        ariaLabel="Local Servers"
+        className="EnvironmentLocalServersTrigger"
+      >
+        <EnvironmentRow
+          icon={
+            <svg
+              className="EnvironmentCanonicalIcon"
+              content={colorizeLynxSvg(globeSvg, svgColors.foreground)}
+            />
+          }
+          label="Local Servers"
+          trailing={localServersQuery.isFetching ? 'Scanning…' : countLabel}
+        />
+      </MenuTrigger>
+      <MenuPopup
+        align="start"
+        side="bottom"
+        className="EnvironmentLocalServersPopup"
+      >
+        <view className="EnvironmentLocalServersHeader">
+          <text className="EnvironmentLocalServersHeaderText">
+            {localServersQuery.isPending
+              ? 'Scanning ports…'
+              : servers.length === 0
+                ? 'No servers running'
+                : `${servers.length} server${
+                    servers.length === 1 ? '' : 's'
+                  } running`}
+          </text>
+          <MenuItem
+            className="EnvironmentLocalServersRefresh"
+            closeOnClick={false}
+            disabled={localServersQuery.isFetching}
+            onClick={() => void localServersQuery.refetch()}
+          >
+            <RefreshCwIcon
+              size={12}
+              color="var(--muted-foreground)"
+            />
+          </MenuItem>
+        </view>
+        {localServersQuery.isPending ? (
+          <text className="EnvironmentLocalServersEmpty">
+            Scanning local ports
+          </text>
+        ) : localServersQuery.isError ? (
+          <text className="EnvironmentLocalServersEmpty">
+            Couldn't scan local ports
+          </text>
+        ) : servers.length === 0 ? (
+          <text className="EnvironmentLocalServersEmpty">
+            Local dev servers will appear here.
+          </text>
+        ) : (
+          <view className="EnvironmentLocalServersList">
+            {servers.map((server) => (
+              <view className="EnvironmentLocalServerRow" key={server.id}>
+                <view className="EnvironmentLocalServerStatus">
+                  <view className="EnvironmentLocalServerStatusDot" />
+                </view>
+                <view className="EnvironmentLocalServerCopy">
+                  <text className="EnvironmentLocalServerTitle">
+                    {localServerPrimaryLabel(server)}
+                  </text>
+                  <text className="EnvironmentLocalServerAddress">
+                    {localServerAddressLabel(server)}
+                  </text>
+                </view>
+                <MenuItem
+                  className="EnvironmentLocalServerStop"
+                  closeOnClick={false}
+                  disabled={!server.isStoppable || stoppingPid !== null}
+                  onClick={() => void stop(server)}
+                >
+                  {stoppingPid === server.pid ? (
+                    <RefreshCwIcon
+                      size={14}
+                      color="var(--muted-foreground)"
+                    />
+                  ) : (
+                    <svg
+                      className="EnvironmentLocalServerStopIcon"
+                      content={colorizeLynxSvg(
+                        stopSvg,
+                        server.isStoppable
+                          ? 'var(--destructive)'
+                          : svgColors.mutedForeground
+                      )}
+                    />
+                  )}
+                </MenuItem>
+              </view>
+            ))}
+          </view>
+        )}
+      </MenuPopup>
+    </Menu>
+  );
 }
 
 function EnvironmentNotepad(props: {
@@ -313,6 +461,8 @@ export function EnvironmentPanel(props: {
             {props.workspaceRoot ? (
               <text className="EnvironmentWorkspace">{props.workspaceRoot}</text>
             ) : null}
+
+            <EnvironmentLocalServers />
 
             <view className="EnvironmentDivider" />
             <EnvironmentSectionLabel>Usage</EnvironmentSectionLabel>

@@ -28,6 +28,10 @@ describe('Lynx Environment panel', () => {
     );
 
     expect(panelSource).toContain('fetchAllProviderUsage({})');
+    expect(panelSource).toContain('fetchLocalServers()');
+    expect(panelSource).toContain('stopLocalServer({');
+    expect(panelSource).toContain('localServerPrimaryLabel(server)');
+    expect(panelSource).toContain('localServerAddressLabel(server)');
     expect(panelSource).toContain("type: 'thread.meta.update'");
     expect(panelSource).toContain('THREAD_NOTES_MAX_CHARS');
     expect(panelSource).toContain('EnvironmentNotepadInput');
@@ -61,5 +65,11 @@ describe('Lynx Environment panel', () => {
       /\.EnvironmentRow\s*\{[^}]*min-height:\s*26px;[^}]*padding:\s*4px 8px;[^}]*gap:\s*8px;/s
     );
     expect(styles).toContain('padding-right: 312px;');
+    expect(styles).toMatch(
+      /\.LxMenuPopup\.EnvironmentLocalServersPopup\s*\{[^}]*width:\s*288px;[^}]*padding:\s*6px;/s
+    );
+    expect(styles).toMatch(
+      /\.EnvironmentLocalServerStop\s*\{[^}]*width:\s*24px;[^}]*height:\s*24px;[^}]*padding:\s*0;/s
+    );
   });
 });
