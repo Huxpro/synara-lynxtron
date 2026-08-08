@@ -117,6 +117,39 @@ describe('buildCanonicalSlicePullRequestList', () => {
     expect(list.entries).toEqual([authored]);
     expect(list.grouped).toBeNull();
   });
+
+  it('uses the shared free-text matcher without changing canonical ordering', () => {
+    const branchMatch = {
+      ...makePullRequest('unrelated title', false, false),
+      headBranch: 'feature/Search-Fidelity',
+      author: { login: 'reviewer', name: 'Reviewer', avatarUrl: null },
+    };
+    const numberMatch = {
+      ...makePullRequest('number match', true, false),
+      number: 350,
+    };
+    const snapshot = {
+      viewer: 'viewer',
+      entries: [branchMatch, numberMatch],
+    };
+
+    expect(
+      buildCanonicalSlicePullRequestList(
+        snapshot,
+        'all',
+        '  SEARCH-fidelity '
+      ).entries
+    ).toEqual([branchMatch]);
+    expect(
+      buildCanonicalSlicePullRequestList(snapshot, 'all', '#350').entries
+    ).toEqual([numberMatch]);
+    expect(
+      buildCanonicalSlicePullRequestList(snapshot, 'all', 'reviewer').entries
+    ).toEqual([branchMatch]);
+    expect(
+      buildCanonicalSlicePullRequestList(snapshot, 'all', 'no match').entries
+    ).toEqual([]);
+  });
 });
 
 describe('createPullRequestActionGate', () => {

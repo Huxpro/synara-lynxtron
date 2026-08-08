@@ -46,7 +46,7 @@ describe('pull request route controls fidelity', () => {
     expect(source).not.toContain("{props.refreshing ? '…' : '↻'}");
   });
 
-  it('preserves the honest search capability delta', () => {
+  it('maps the Web search control to the shared Lynx input primitive', () => {
     const source = readFileSync(
       new URL(
         './PullRequestRouteControlsCompositionElements.lynx.tsx',
@@ -54,8 +54,38 @@ describe('pull request route controls fidelity', () => {
       ),
       'utf8'
     );
+    const styles = readFileSync(
+      new URL(
+        './pull-request-route-controls-composition-elements.css',
+        import.meta.url
+      ),
+      'utf8'
+    );
+    const routeSource = readFileSync(
+      new URL('../app/FeatureListsPage.tsx', import.meta.url),
+      'utf8'
+    );
 
-    expect(source).toContain('Search unavailable in this runtime');
+    expect(source).toContain("import { Input } from '../components/ui/input';");
+    expect(source).toContain('<SearchIcon size={14}');
+    expect(source).toContain('className="SharedPrSearchInput"');
+    expect(source).toContain('type="search"');
+    expect(source).toContain('defaultValue={props.value}');
+    expect(source).not.toContain('value={props.value}');
+    expect(source).toContain(
+      'onChange={(event) => props.onChange(event.target.value)}'
+    );
+    expect(source).toContain("if (event.key === 'Escape')");
+    expect(styles).toMatch(
+      /\.SharedPrSearchInput\s*\{[^}]*height:\s*28px;[^}]*padding-left:\s*32px;[^}]*border-radius:\s*10px;[^}]*font-size:\s*12px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrSearchIcon\s*\{[^}]*left:\s*10px;[^}]*top:\s*7px;[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*opacity:\s*0\.7;/s
+    );
+    expect(routeSource).toContain("const [searchQuery, setSearchQuery] = useState('')");
+    expect(routeSource).toContain('searchQuery={searchQuery}');
+    expect(routeSource).toContain('searchCapability="editable"');
+    expect(routeSource).toContain('setSearchQuery(value)');
   });
 
   it('uses the Web route inset instead of a local filter offset', () => {

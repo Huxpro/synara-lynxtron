@@ -6,6 +6,7 @@ import { buildKanbanBoard } from '@synara-web/components/kanban/kanban.logic';
 import {
   filterPullRequestEntriesByInvolvement,
   groupPullRequestEntriesByInvolvement,
+  matchesPullRequestSearchQuery,
   orderPullRequestEntriesPinnedFirst,
   type PullRequestListGroup,
 } from '@synara-web/components/pullRequest/pullRequestList.logic';
@@ -98,15 +99,19 @@ export function createPullRequestActionGate(): PullRequestActionGate {
 
 export function buildCanonicalSlicePullRequestList(
   snapshot: PullRequestSnapshot | undefined,
-  involvement: PullRequestInvolvement = 'all'
+  involvement: PullRequestInvolvement = 'all',
+  searchQuery = ''
 ): CanonicalSlicePullRequestList {
   if (!snapshot) return EMPTY_PULL_REQUEST_LIST;
+  const normalizedQuery = searchQuery.trim().toLowerCase();
   const entries = orderPullRequestEntriesPinnedFirst(
     coalescePullRequestListEntries(
       filterPullRequestEntriesByInvolvement(
         snapshot.entries,
         snapshot.viewer,
         involvement
+      ).filter((entry) =>
+        matchesPullRequestSearchQuery(entry, normalizedQuery)
       )
     )
   );

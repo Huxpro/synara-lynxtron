@@ -1,8 +1,10 @@
 import type { ProjectId } from '@synara/contracts';
-import type { ReactNode } from '@lynx-js/react';
+import { useEffect, useRef, type ReactNode } from '@lynx-js/react';
+import type { InputRef } from '@lynx-js/lynx-ui';
 import filterSvg from '@synara-central-icons/filter-2.svg?raw';
 
 import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
 import {
   Menu,
   MenuPopup,
@@ -10,7 +12,7 @@ import {
   MenuRadioItem,
   MenuTrigger,
 } from '../components/ui/menu';
-import { RefreshCwIcon } from '../lib/icons.lynx';
+import { RefreshCwIcon, SearchIcon } from '../lib/icons.lynx';
 import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
 import './pull-request-route-controls-composition-elements.css';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
@@ -135,11 +137,34 @@ export function PullRequestSearchElement(props: {
   readonly placeholder: string;
   readonly onChange: (value: string) => void;
 }) {
+  const inputRef = useRef<InputRef>(null);
+  useEffect(() => {
+    if (props.value.length === 0) {
+      void inputRef.current?.setValue('').catch(() => undefined);
+    }
+  }, [props.value]);
   return (
-    <view className="SharedPrSearchUnavailable">
-      <text className="SharedPrSearchUnavailableText">
-        Search unavailable in this runtime
-      </text>
+    <view className="SharedPrSearch">
+      <view className="SharedPrSearchIcon">
+        <SearchIcon size={14} color="var(--muted-foreground)" />
+      </view>
+      <Input
+        ref={inputRef}
+        className="SharedPrSearchInput"
+        size="sm"
+        variant="soft"
+        type="search"
+        defaultValue={props.value}
+        placeholder={props.placeholder}
+        aria-label={props.placeholder}
+        onChange={(event) => props.onChange(event.target.value)}
+        onKeyDown={(event) => {
+          if (event.key === 'Escape') {
+            event.stopPropagation?.();
+            props.onChange('');
+          }
+        }}
+      />
     </view>
   );
 }

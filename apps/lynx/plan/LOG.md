@@ -8384,3 +8384,33 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - fixture通过canonical delete生成tombstones，snapshot135中live project/thread均为0；
   named browser session与owned Native client 8903均关闭，未触碰8901/8902或既有
   58155/8998进程。
+
+### Pull Requests search
+
+- Pull Requests不再显示`Search unavailable in this runtime`占位。Lynx adapter复用
+  shared `Input` primitive、14px Search icon和Web `sm`/soft anatomy；输入使用与
+  Settings一致的uncontrolled native value路径，避免每个按键进入受控ACK锁，Escape
+  清空query。
+- list projection没有复制Web搜索算法：`buildCanonicalSlicePullRequestList`直接复用
+  `matchesPullRequestSearchQuery`，在canonical involvement/coalesce/pinned排序前按
+  title、repository、head branch、`#number`/number和author过滤。
+- 为避免Lynx-for-Web依赖flaky sidebar pointer setup，Web host新增严格白名单
+  `?route=` harness入口；route仅在renderer的`shellRendererReady` bridge reply后的
+  下一macrotask发送，避免route首屏RPC与ready callback重入导致payload丢失。该入口
+  只存在Web host，Desktop bundle不包含。
+- canonical project指向真实`Emanuele-web04/synara` remote，`pullRequests.list`
+  返回50条公开PR、viewer `Huxpro`、errors0。真实rendered HTML input键盘输入
+  `#511`后只保留`feat: per-provider default Git writing models...`，相邻
+  `Diff view upgrades`消失。
+- light/dark均为1280×820/DPR1：search control
+  `x284/y100/936×28`，icon `x294/y107/14×14`，radius10/font12完全一致；
+  light/dark surfaces分别为`rgba(13,13,13,.04)`与
+  `rgba(252,252,252,.027)`，relay OPEN/attempt1/pending0/error null。两张PNG均
+  1280×820。
+- exact-owned Native通过正式`synara://pull-requests`启动，PID34850→8903/session1、
+  production bundle和clean DevTool console已确认；当前SDK的DOM与screencast接口仍
+  失效，ScreenCaptureKit只返回透明GPU surface，因此未把Native pixel/typing cell
+  冒充通过。focused **3 files / 13 tests**、Web与Native/Desktop production builds
+  通过。
+- fixture project canonical delete于snapshot137生成tombstone；named browser、
+  owned Native、临时static server和`apps/web/public/lynx-pr-search-harness`均清理。

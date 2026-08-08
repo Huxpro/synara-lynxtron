@@ -5,6 +5,7 @@
 import '@lynx-js/web-core/client';
 import { setupSymmetricHost } from '@lynx-js/lynxtron/web-host';
 import { installLynxWebInteractionStateBridge } from './web-interaction-state';
+import { resolveWebInitialRoute } from './webInitialRoute.logic';
 import { resolveWebRelayEndpoint } from './webRelayEndpoint.logic';
 
 const bundleUrl = './main.web.bundle';
@@ -82,6 +83,7 @@ let relayLastRpcError: string | null = null;
 let relayConnectionAttempts = 0;
 let relayRecoveryGeneration = 0;
 let relayRecoveryActive = false;
+let pendingInitialRoute: string | null = null;
 let publishRelayTransportState:
   | ((state: 'connected' | 'reconnecting' | 'offline') => void)
   | null = null;
@@ -589,6 +591,16 @@ async function handleBridgeCall(
         height: globalThis.innerHeight,
       };
     }
+    if (method === 'shellRendererReady') {
+      const route = pendingInitialRoute;
+      pendingInitialRoute = null;
+      if (route) {
+        globalThis.setTimeout(() => {
+          lynxView.sendGlobalEvent?.('shell:navigate', [route]);
+        }, 0);
+      }
+      return { ok: true };
+    }
     if (method === 'storageDump') {
       return { entries: readStorageEntries() };
     }
@@ -729,6 +741,7 @@ webDocument.body.innerHTML = `
 </lynx-view>`;
 
 const lynxView = webDocument.getElementById('root-view') as any;
+pendingInitialRoute = resolveWebInitialRoute(globalThis.location.search);
 
 publishRelayTransportState = (state) => {
   lynxView.sendGlobalEvent?.(TRANSPORT_STATE_EVENT, [state]);

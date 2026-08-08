@@ -751,6 +751,7 @@ export function PullRequestsPage() {
     useState<PullRequestInvolvement>('all');
   const [state, setState] = useState<PullRequestState>('open');
   const [projectId, setProjectId] = useState<ProjectId | undefined>();
+  const [searchQuery, setSearchQuery] = useState('');
   const [selectedInput, setSelectedInput] =
     useState<PullRequestDetailInput | null>(null);
   const [activeDetailTab, setActiveDetailTab] =
@@ -849,8 +850,8 @@ export function PullRequestsPage() {
     },
   });
   const list = useMemo(
-    () => buildCanonicalSlicePullRequestList(data, involvement),
-    [data, involvement]
+    () => buildCanonicalSlicePullRequestList(data, involvement, searchQuery),
+    [data, involvement, searchQuery]
   );
   const codeView = useMemo(
     () =>
@@ -938,8 +939,12 @@ export function PullRequestsPage() {
               state={state}
               projectId={projectId}
               projects={projects}
-              searchQuery=""
-              searchCapability="unavailable"
+              searchQuery={searchQuery}
+              searchCapability="editable"
+              onSearchChange={(value) => {
+                closeDetail();
+                setSearchQuery(value);
+              }}
               onInvolvementChange={(nextInvolvement) => {
                 closeDetail();
                 setInvolvement(nextInvolvement);

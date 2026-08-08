@@ -116,16 +116,50 @@
   gap: 8px;
 }
 
+.SharedPrSearch,
 .SharedPrSearchUnavailable {
   min-width: 0;
   height: 28px;
   flex: 1;
+}
+
+.SharedPrSearch {
+  position: relative;
+  display: flex;
+}
+
+.SharedPrSearchInput {
+  width: 100%;
+  min-width: 0;
+  min-height: 28px;
+  height: 28px;
+  flex: 1;
+  padding-left: 32px;
+  padding-right: 10px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+.SharedPrSearchIcon {
+  position: absolute;
+  left: 10px;
+  top: 7px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  opacity: 0.7;
+}
+
+.SharedPrSearchUnavailable {
   display: flex;
   justify-content: center;
   padding: 0 10px;
   border: 1px solid var(--border);
-  border-radius: 6px;
-  background-color: var(--background);
+  border-radius: 10px;
+  background-color: var(--secondary);
 }
 
 .SharedPrSearchUnavailableText {
