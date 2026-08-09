@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from '@lynx-js/react';
+import botSvg from '@synara-central-icons/robot.svg?raw';
+import toolSvg from '@synara-central-icons/zap.svg?raw';
 
 import { PROVIDER_SEND_TURN_MAX_ATTACHMENTS } from '@synara/contracts';
 import { resolveAssistantMessageDisplayText } from '@synara-web/components/chat/MessagesTimeline.logic';
@@ -19,7 +21,10 @@ import { CollapsedWorkComposition } from '@synara-web/components/chat/CollapsedW
 import { TimelineStatusRowComposition } from '@synara-web/components/chat/TimelineStatusRowComposition';
 
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
+import { useTheme } from '../adapters/useTheme.lynx';
 import { useComposerDraftStore } from '../adapters/composerDraftStore.lynx';
+import { CheckIcon, CircleAlertIcon } from '../lib/icons.lynx';
+import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
 import { ChatMarkdown } from '../components/markdown/ChatMarkdown';
 import {
   createAssistantSelectionAttachment,
@@ -47,11 +52,25 @@ const SCROLL_EVENT_SOURCE = 2;
 const TRANSCRIPT_BOTTOM_CONTENT_INSET_PX = 80;
 const IS_WEB_RELAY_MODE = process.env.SYNARA_LYNX_WEB_RELAY === '1';
 
-function statusIcon(tone: 'thinking' | 'tool' | 'info' | 'error'): string {
-  if (tone === 'error') return '!';
-  if (tone === 'tool') return '›';
-  if (tone === 'thinking') return '…';
-  return '✓';
+function TranscriptStatusIcon(props: {
+  readonly tone: 'thinking' | 'tool' | 'info' | 'error';
+}) {
+  const { svgColors } = useTheme();
+  if (props.tone === 'error') {
+    return <CircleAlertIcon className="TranscriptStatusIcon" size={13} />;
+  }
+  if (props.tone === 'info') {
+    return <CheckIcon className="TranscriptStatusIcon" size={13} />;
+  }
+  return (
+    <svg
+      className="TranscriptStatusIcon"
+      content={colorizeLynxSvg(
+        props.tone === 'thinking' ? botSvg : toolSvg,
+        svgColors.mutedForeground
+      )}
+    />
+  );
 }
 
 function TranscriptWorkEntry({ entry }: { entry: WorkLogEntry }) {
@@ -59,7 +78,7 @@ function TranscriptWorkEntry({ entry }: { entry: WorkLogEntry }) {
     <TimelineStatusRowComposition
       displayText={entry.detail ? `${entry.label} ${entry.detail}` : entry.label}
       fontSizePx={12}
-      icon={<text className="TranscriptStatusIcon">{statusIcon(entry.tone)}</text>}
+      icon={<TranscriptStatusIcon tone={entry.tone} />}
       tone={entry.tone}
     />
   );

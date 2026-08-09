@@ -789,9 +789,10 @@
 }
 
 .TranscriptStatusIcon {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
   color: var(--muted-foreground);
-  font-size: 13px;
-  font-weight: 700;
 }
 
 .TranscriptWorkEntries {
