@@ -1,0 +1,9 @@
+server ws: ws://127.0.0.1:58670
+web origin: http://localhost:9433
+server pid: 14265
+web pid: 14266
+server instance: 7bbd508b-2284-4c49-82d0-311fdba09be6
+fixture snapshot sequence: 2
+project: project-env-final
+thread: thread-env-final
+workspace: /Users/bytedance/github/synara

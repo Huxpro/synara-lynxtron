@@ -11,8 +11,67 @@ describe('Lynx Environment panel', () => {
       new URL('./EnvironmentPanel.lynx.tsx', import.meta.url),
       'utf8'
     );
+    const appSource = readFileSync(
+      new URL('./App.tsx', import.meta.url),
+      'utf8'
+    );
+    const bootstrapSource = readFileSync(
+      new URL('./environmentBootstrap.lynx.ts', import.meta.url),
+      'utf8'
+    );
     expect(routerSource).toContain('<EnvironmentToggle');
     expect(routerSource).toContain('<EnvironmentPanel');
+    expect(routerSource).toContain(
+      'const [environmentOpen, setEnvironmentOpen] = useState(\n    initialEnvironmentOpen'
+    );
+    expect(appSource).toContain(
+      'await fetchEnvironmentBootstrapData(summary.workspaceRoot)'
+    );
+    expect(bootstrapSource).toContain(
+      'const ENVIRONMENT_BOOTSTRAP_TIMEOUT_MS = 3_000'
+    );
+    expect(bootstrapSource.match(/await Promise\.all\(\[/g)).toHaveLength(2);
+    expect(bootstrapSource).not.toContain('fetchAllProviderUsage');
+    expect(routerSource).toContain(
+      'matchingInitialThreadBootstrap?.environment'
+    );
+    expect(panelSource).toContain(
+      'initialData: EnvironmentBootstrapData | null'
+    );
+    expect(panelSource).toContain(
+      'initialStatus={props.initialData?.gitStatus ?? null}'
+    );
+    expect(panelSource).toContain(
+      'props.initialData?.gitStatusLoaded === true'
+    );
+    expect(panelSource).toContain(
+      'error: props.initialLoadCompleted && props.initialStatus === null'
+    );
+    expect(panelSource).toContain(
+      'initialBranches={props.initialData?.branches ?? null}'
+    );
+    expect(panelSource).toContain(
+      'initialData={props.initialData?.localServers ?? null}'
+    );
+    expect(panelSource).toContain(
+      'initialRepository={props.initialData?.repository ?? null}'
+    );
+    expect(panelSource).toContain(
+      'initialConfig={props.initialData?.config ?? null}'
+    );
+    expect(panelSource).toContain(
+      'const liveQueriesEnabled = props.open && !props.bootstrapOnly'
+    );
+    expect(panelSource.match(/open=\{liveQueriesEnabled\}/g)).toHaveLength(7);
+    expect(routerSource).toContain(
+      'initialEnvironmentOpen && environmentData !== null'
+    );
+    expect(panelSource).toContain(
+      "? 'Usage is currently unavailable.'"
+    );
+    expect(panelSource).toContain(
+      '!props.bootstrapOnly ? ('
+    );
     expect(routerSource).toContain('className="ThreadHeaderControls"');
     expect(routerSource).toContain('ThreadPage--environment-open');
     expect(routerSource).toContain('ThreadPage--provider-health-visible');
@@ -107,6 +166,11 @@ describe('Lynx Environment panel', () => {
       panelSource.indexOf('webStorage.setItem(LAST_EDITOR_STORAGE_KEY, editor)')
     );
     expect(panelSource).toContain('Open in ${activeOption.label}');
+    expect(panelSource).toContain('accessibility-label="Editor view"');
+    expect(panelSource).toContain('label="Editor view"');
+    expect(routerSource).toContain(
+      'onOpenEditorView={() => setExplorerVisibility(true)}'
+    );
     expect(panelSource).toContain('fetchGitHubRepository(props.workspaceRoot)');
     expect(panelSource).toContain('platformWindow.openExternal(repository.url)');
     expect(panelSource).toContain('repository.nameWithOwner');

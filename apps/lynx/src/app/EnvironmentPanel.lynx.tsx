@@ -119,6 +119,7 @@ import {
   prepareThreadRecap,
   type ThreadRecapSummary,
 } from './queries';
+import type { EnvironmentBootstrapData } from './environmentBootstrap.lynx';
 
 import './environment-panel.css';
 
@@ -186,7 +187,10 @@ function EnvironmentSectionLabel({ children }: { readonly children: string }) {
   return <text className="EnvironmentSectionLabel">{children}</text>;
 }
 
-function EnvironmentLocalServers() {
+function EnvironmentLocalServers(props: {
+  readonly bootstrapOnly: boolean;
+  readonly initialData: EnvironmentBootstrapData['localServers'];
+}) {
   const { svgColors } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
   const [stoppingPid, setStoppingPid] = useState<number | null>(null);
@@ -196,7 +200,9 @@ function EnvironmentLocalServers() {
       'background only';
       return fetchLocalServers();
     },
-    refetchInterval: menuOpen ? 5_000 : false,
+    enabled: !props.bootstrapOnly,
+    refetchInterval: !props.bootstrapOnly && menuOpen ? 5_000 : false,
+    initialData: props.initialData ?? undefined,
   });
   const servers = localServersQuery.data?.servers ?? [];
   const countLabel = `${servers.length}`;
@@ -320,6 +326,9 @@ function EnvironmentLocalServers() {
 }
 
 function EnvironmentChanges(props: {
+  readonly bootstrapOnly: boolean;
+  readonly initialLoadCompleted: boolean;
+  readonly initialStatus: GitStatusResult | null;
   readonly onOpenViewer: () => void;
   readonly open: boolean;
   readonly onStatusChange: (status: GitStatusResult | null) => void;
@@ -330,11 +339,15 @@ function EnvironmentChanges(props: {
     readonly data: Awaited<ReturnType<typeof fetchGitStatus>> | null;
     readonly error: boolean;
     readonly pending: boolean;
-  }>({ data: null, error: false, pending: true });
+  }>({
+    data: props.initialStatus,
+    error: props.initialLoadCompleted && props.initialStatus === null,
+    pending: !props.initialLoadCompleted && props.initialStatus === null,
+  });
 
   useEffect(() => {
     'background only';
-    if (!props.open) return;
+    if (!props.open || props.bootstrapOnly) return;
     let cancelled = false;
     async function pollGitStatus() {
       'background only';
@@ -370,7 +383,12 @@ function EnvironmentChanges(props: {
     return () => {
       cancelled = true;
     };
-  }, [props.open, props.workspaceRoot, refreshGeneration]);
+  }, [
+    props.bootstrapOnly,
+    props.open,
+    props.workspaceRoot,
+    refreshGeneration,
+  ]);
 
   const status = statusState.data;
   const files = status?.workingTree.files ?? [];
@@ -919,7 +937,9 @@ function EnvironmentGitAction(props: {
 
 function EnvironmentBranch(props: {
   readonly branch: string | null;
+  readonly bootstrapOnly: boolean;
   readonly envMode: 'local' | 'worktree';
+  readonly initialBranches: EnvironmentBootstrapData['branches'];
   readonly open: boolean;
   readonly threadId: string;
   readonly workspaceRoot: string;
@@ -933,7 +953,8 @@ function EnvironmentBranch(props: {
       'background only';
       return fetchGitBranches(props.workspaceRoot);
     },
-    enabled: props.open,
+    enabled: props.open && !props.bootstrapOnly,
+    initialData: props.initialBranches ?? undefined,
     staleTime: 15_000,
   });
   const branches = (branchesQuery.data?.branches ?? []).filter(
@@ -1032,6 +1053,9 @@ function EnvironmentBranch(props: {
 }
 
 function EnvironmentEditor(props: {
+  readonly bootstrapOnly: boolean;
+  readonly initialConfig: EnvironmentBootstrapData['config'];
+  readonly onOpenEditorView: () => void;
   readonly open: boolean;
   readonly workspaceRoot: string;
 }) {
@@ -1041,7 +1065,8 @@ function EnvironmentEditor(props: {
       'background only';
       return fetchServerConfig();
     },
-    enabled: props.open,
+    enabled: props.open && !props.bootstrapOnly,
+    initialData: props.initialConfig ?? undefined,
   });
   const options = environmentEditorOptions(
     configQuery.data?.availableEditors ?? []
@@ -1090,6 +1115,23 @@ function EnvironmentEditor(props: {
     <view className="EnvironmentLabeledSection">
       <view className="EnvironmentDivider" />
       <EnvironmentSectionLabel>Editor</EnvironmentSectionLabel>
+      <view
+        className="EnvironmentEditorTrigger"
+        accessibility-element
+        accessibility-label="Editor view"
+        accessibility-traits="button"
+        bindtap={props.onOpenEditorView}
+      >
+        <EnvironmentRow
+          icon={
+            <DeviceLaptopIcon
+              size={16}
+              color="var(--foreground)"
+            />
+          }
+          label="Editor view"
+        />
+      </view>
       <Menu>
         <MenuTrigger
           ariaLabel={`Open in ${activeOption.label}`}
@@ -1142,6 +1184,8 @@ function EnvironmentEditor(props: {
 }
 
 function EnvironmentRepository(props: {
+  readonly bootstrapOnly: boolean;
+  readonly initialRepository: EnvironmentBootstrapData['repository'];
   readonly open: boolean;
   readonly workspaceRoot: string;
 }) {
@@ -1152,7 +1196,8 @@ function EnvironmentRepository(props: {
       'background only';
       return fetchGitHubRepository(props.workspaceRoot);
     },
-    enabled: props.open,
+    enabled: props.open && !props.bootstrapOnly,
+    initialData: props.initialRepository ?? undefined,
     staleTime: 5 * 60_000,
   });
   const repository = repositoryQuery.data?.repository ?? null;
@@ -2518,11 +2563,14 @@ function EnvironmentNotepad(props: {
 
 export function EnvironmentPanel(props: {
   readonly branch: string | null;
+  readonly bootstrapOnly: boolean;
+  readonly initialData: EnvironmentBootstrapData | null;
   readonly envMode: 'local' | 'worktree';
   readonly notes: string;
   readonly onOpenSettings: () => void;
   readonly onJumpToPinnedMessage: (messageId: string) => void;
   readonly onOpenChanges: () => void;
+  readonly onOpenEditorView: () => void;
   readonly open: boolean;
   readonly pinnedMessages: readonly PinnedMessage[];
   readonly pinnedMessageTextById: Readonly<Record<string, string>>;
@@ -2535,6 +2583,7 @@ export function EnvironmentPanel(props: {
   readonly workspaceRoot: string | null;
 }) {
   const { svgColors } = useTheme();
+  const liveQueriesEnabled = props.open && !props.bootstrapOnly;
   const [gitStatus, setGitStatus] = useState<GitStatusResult | null>(null);
   const [gitRefreshGeneration, setGitRefreshGeneration] = useState(0);
   const usageQuery = useQuery({
@@ -2544,7 +2593,7 @@ export function EnvironmentPanel(props: {
       return fetchAllProviderUsage({});
     },
     staleTime: 30_000,
-    enabled: props.open,
+    enabled: liveQueriesEnabled,
   });
   const usage = usageQuery.data?.find(
     (snapshot) => snapshot.provider === props.provider
@@ -2590,8 +2639,13 @@ export function EnvironmentPanel(props: {
 
             {props.workspaceRoot ? (
               <EnvironmentChanges
+                bootstrapOnly={props.bootstrapOnly}
+                initialLoadCompleted={
+                  props.initialData?.gitStatusLoaded === true
+                }
+                initialStatus={props.initialData?.gitStatus ?? null}
                 onOpenViewer={props.onOpenChanges}
-                open={props.open}
+                open={liveQueriesEnabled}
                 onStatusChange={setGitStatus}
                 workspaceRoot={props.workspaceRoot}
                 key={`changes-${gitRefreshGeneration}`}
@@ -2601,8 +2655,10 @@ export function EnvironmentPanel(props: {
             {props.workspaceRoot ? (
               <EnvironmentBranch
                 branch={props.branch}
+                bootstrapOnly={props.bootstrapOnly}
                 envMode={props.envMode}
-                open={props.open}
+                initialBranches={props.initialData?.branches ?? null}
+                open={liveQueriesEnabled}
                 threadId={props.threadId}
                 workspaceRoot={props.workspaceRoot}
               />
@@ -2615,7 +2671,7 @@ export function EnvironmentPanel(props: {
               <EnvironmentGitAction
                 branch={props.branch}
                 gitStatus={gitStatus}
-                open={props.open}
+                open={liveQueriesEnabled}
                 threadId={props.threadId}
                 workspaceRoot={props.workspaceRoot}
                 onCompleted={() =>
@@ -2624,28 +2680,41 @@ export function EnvironmentPanel(props: {
               />
             ) : null}
 
-            <EnvironmentLocalServers />
-
-            <view className="EnvironmentDivider" />
-            <EnvironmentSectionLabel>Usage</EnvironmentSectionLabel>
-            <EnvironmentRow
-              icon={
-                <OpenAIProviderIcon provider={props.provider} />
-              }
-              label={providerUsageDisplayName(props.provider)}
-              trailing={usageQuery.isPending ? 'Loading…' : usageLabel}
+            <EnvironmentLocalServers
+              bootstrapOnly={props.bootstrapOnly}
+              initialData={props.initialData?.localServers ?? null}
             />
+
+            {!props.bootstrapOnly ? (
+              <>
+                <view className="EnvironmentDivider" />
+                <EnvironmentSectionLabel>Usage</EnvironmentSectionLabel>
+                <EnvironmentRow
+                  icon={
+                    <OpenAIProviderIcon provider={props.provider} />
+                  }
+                  label={providerUsageDisplayName(props.provider)}
+                  trailing={
+                    usageQuery.isPending
+                      ? 'Usage is currently unavailable.'
+                      : usageLabel
+                  }
+                />
+              </>
+            ) : null}
 
             {props.workspaceRoot ? (
               <EnvironmentRepository
-                open={props.open}
+                bootstrapOnly={props.bootstrapOnly}
+                initialRepository={props.initialData?.repository ?? null}
+                open={liveQueriesEnabled}
                 workspaceRoot={props.workspaceRoot}
               />
             ) : null}
 
             {props.workspaceRoot && props.pullRequest?.state === 'open' ? (
               <EnvironmentPullRequest
-                open={props.open}
+                open={liveQueriesEnabled}
                 pullRequest={props.pullRequest}
                 workspaceRoot={props.workspaceRoot}
               />
@@ -2653,14 +2722,17 @@ export function EnvironmentPanel(props: {
 
             {props.workspaceRoot ? (
               <EnvironmentEditor
-                open={props.open}
+                bootstrapOnly={props.bootstrapOnly}
+                initialConfig={props.initialData?.config ?? null}
+                onOpenEditorView={props.onOpenEditorView}
+                open={liveQueriesEnabled}
                 workspaceRoot={props.workspaceRoot}
               />
             ) : null}
 
             {props.workspaceRoot ? (
               <EnvironmentRecap
-                open={props.open}
+                open={liveQueriesEnabled}
                 revision={props.recapRevision}
                 threadId={props.threadId}
                 workspaceRoot={props.workspaceRoot}

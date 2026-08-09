@@ -18,7 +18,11 @@ Date: 2026-08-09
 | Verify page-error gate | `web-errors.json` and `lynx-errors.json` contain empty error arrays | PASS |
 | Verify focused tests | Environment + thread polling + Web interaction bridge: 3 files / 17 tests | PASS |
 | Verify production builds | Lynx-for-Web and Native/Desktop production builds pass; known encoder and optional `ws` warnings only | PASS |
-| Loaded Environment data and top/middle/bottom scroll parity | nested Git/local-server/usage owners do not publish RPC in the current ReactLynx/Web Elements runtime; no loaded/scroll pass is claimed | RECORDED SDK LIMIT |
+| Load Environment data without destabilizing the relay | initial-open fast loop uses two bounded two-request batches for branches/local servers and config/repository; it excludes the measured >8s usage request and remote-fetching Git status; one relay connection, zero Environment duplicate RPCs, zero retained transport errors | PASS WITH RELIABILITY BOUNDARY |
+| Match current Editor composition | Lynx adds Web's real `Editor view` row and opens the existing Explorer dock through `setExplorerVisibility(true)`; external editor picker remains below it | PASS |
+| Verify top/middle/bottom scroll geometry | paired light/dark 1280x480 cells: exact 288x330 surface at x=980/y=138, 328px viewport, Web 0/82/164 and Lynx 0/75/149 top/mid/bottom positions | PASS FOR STATIC GEOMETRY |
+| Verify real wheel publication | Chromium wheel over the Lynx-for-Web custom element does not update the nested scroll-view; programmatic positions are retained for visual evidence only | RECORDED WEB ELEMENTS LIMIT |
+| Preserve honest Git/usage failure states | bootstrap avoids the measured remote Git fetch timeout and >8s usage request; Git shows retryable `Couldn't load changes`, and the unavailable Usage row is omitted to match current Web composition | PASS — 15px content-height delta remains from absent Git stats |
 | Native certification | blocked by the separately documented Lynxtron snapshot parser issue | BLOCKED BY SDK |
 
 ## Result
@@ -31,6 +35,11 @@ at the host boundary without changing Native CSS or behavior.
 
 Retained evidence is under
 `shots/2026-08-09/environment-fast-loop-current/`. The evidence deliberately
-does not promote nested Environment data loading or scroll positions to PASS;
-those remain tied to the current ReactLynx/Web Elements owner limitation and
-the Native SDK blocker.
+keeps the original shell matrix. The loaded-data continuation is under
+`shots/2026-08-09/environment-loaded-current/`: all four screenshots are
+1280x480, all four page-error arrays are empty, and both themes retain the
+same shell and scroll geometry. Lynx-for-Web now renders real branch, local
+server, repository, editor, project-instruction, and notepad content. The
+remaining 15px content-height delta is the explicit retryable Git-status row
+instead of Web's live change statistics; waiting on the remote-fetching Git
+request would violate the connection reliability objective.

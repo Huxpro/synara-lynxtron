@@ -28,6 +28,7 @@ import {
   fetchThreads,
 } from './queries';
 import { threadRecapRevision } from './environmentRecap.logic';
+import type { EnvironmentBootstrapData } from './environmentBootstrap.lynx';
 import { Transcript, type TranscriptController } from './Transcript';
 import { SettingsPage } from './SettingsPage';
 import { UpdatePage } from './UpdatePage';
@@ -248,6 +249,7 @@ function ThreadPage(props: {
   readonly currentThread: Awaited<ReturnType<typeof fetchThreadHeaderSummary>>;
   readonly data: Awaited<ReturnType<typeof fetchThreadTranscriptRows>> | undefined;
   readonly error: unknown;
+  readonly environmentData: EnvironmentBootstrapData | null;
   readonly explorerEntries: Awaited<
     ReturnType<typeof fetchExplorerEntries>
   >['entries'];
@@ -271,6 +273,7 @@ function ThreadPage(props: {
     currentThread,
     data,
     error,
+    environmentData,
     explorerEntries,
     explorerEntriesError,
     explorerEntriesPending,
@@ -451,6 +454,10 @@ function ThreadPage(props: {
       {bodyState.kind === 'empty' ? null : composer}
       {currentThread ? (
         <EnvironmentPanel
+          bootstrapOnly={
+            initialEnvironmentOpen && environmentData !== null
+          }
+          initialData={environmentData}
           open={environmentOpen}
           threadId={threadId}
           projectId={currentThread.projectId}
@@ -477,6 +484,7 @@ function ThreadPage(props: {
             setDiffDockWidth(null);
             setDiffOpen(true);
           }}
+          onOpenEditorView={() => setExplorerVisibility(true)}
           onOpenSettings={() => {
             setEnvironmentOpen(false);
             history.push('/settings/general');
@@ -534,6 +542,7 @@ export function SliceRouter({
   readonly initialRoute: string | null;
   readonly initialThreadBootstrap: {
     readonly data: Awaited<ReturnType<typeof fetchThreadTranscriptRows>>;
+    readonly environment: EnvironmentBootstrapData | null;
     readonly explorerEntries: {
       readonly value: Awaited<ReturnType<typeof fetchExplorerEntries>> | null;
       readonly error: boolean;
@@ -613,7 +622,13 @@ export function SliceRouter({
               () => ({ value: null, error: true })
             )
           : { value: null, error: false };
-      return { data, explorerEntries, explorerFile, summary };
+      return {
+        data,
+        environment: null,
+        explorerEntries,
+        explorerFile,
+        summary,
+      };
     },
     enabled: activeThreadId !== null,
     refetchInterval: 500,
@@ -626,6 +641,10 @@ export function SliceRouter({
   const resolvedActiveThreadData = activeThreadData
     ? {
         ...activeThreadData,
+        environment:
+          activeThreadData.environment ??
+          matchingInitialThreadBootstrap?.environment ??
+          null,
         explorerEntries:
           activeThreadData.explorerEntries.value ||
           activeThreadData.explorerEntries.error
@@ -813,6 +832,7 @@ export function SliceRouter({
         key={route.params.threadId}
         currentThread={resolvedActiveThreadData?.summary}
         data={resolvedActiveThreadData?.data}
+        environmentData={resolvedActiveThreadData?.environment ?? null}
         error={activeThreadError}
         explorerEntries={
           resolvedActiveThreadData?.explorerEntries.value?.entries ?? []

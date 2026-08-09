@@ -27,6 +27,10 @@ import { useViewportLayout } from '~/hooks/useViewportLayout';
 import { sliceUiDensityClassName } from './appDensity.logic';
 import { sliceThemeClassName } from './appTheme.logic';
 import {
+  fetchEnvironmentBootstrapData,
+  type EnvironmentBootstrapData,
+} from './environmentBootstrap.lynx';
+import {
   fetchExplorerEntries,
   fetchExplorerFile,
   fetchThreadHeaderSummary,
@@ -99,6 +103,7 @@ export function App() {
   const [storageReady, setStorageReady] = useState(false);
   const [initialThreadBootstrap, setInitialThreadBootstrap] = useState<{
     readonly data: Awaited<ReturnType<typeof fetchThreadTranscriptRows>>;
+    readonly environment: EnvironmentBootstrapData | null;
     readonly explorerEntries: {
       readonly value: Awaited<ReturnType<typeof fetchExplorerEntries>> | null;
       readonly error: boolean;
@@ -149,8 +154,13 @@ export function App() {
                       () => ({ value: null, error: true })
                     )
                   : { value: null, error: false };
+              const environment =
+                initialEnvironmentOpen && summary?.workspaceRoot
+                  ? await fetchEnvironmentBootstrapData(summary.workspaceRoot)
+                  : null;
               return {
                 data,
+                environment,
                 explorerEntries,
                 explorerFile,
                 summary,
