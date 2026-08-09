@@ -54,7 +54,7 @@ describe('Lynx Explorer dock', () => {
     expect(queriesSource).toContain('relativePath: input.relativePath');
     expect(routerSource).toContain('fetchExplorerDirectory({');
     expect(routerSource).toContain(
-      "[...explorerExpandedDirectories].sort().join('\\0')"
+      'Array.from(explorerExpandedDirectories).toSorted()'
     );
     expect(routerSource).toContain('explorerDirectories,');
     expect(appSource).toContain(

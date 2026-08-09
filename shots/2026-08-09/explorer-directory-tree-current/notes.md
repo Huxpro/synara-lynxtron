@@ -1,7 +1,7 @@
 # Explorer directory tree current-head evidence
 
-- Isolated server: `ws://127.0.0.1:58870`; trusted Lynx-for-Web origin: `http://127.0.0.1:9514`; server instance `9c3d61da-3ea5-4ccc-9075-34381f56faac`.
-- Canonical RPC-created `project-tree-final` / `thread-tree-final` use workspace `/private/tmp/synara-explorer-tree-final`.
+- Isolated server: `ws://127.0.0.1:58870`; trusted Lynx-for-Web origin: `http://127.0.0.1:9514`; server instance `382d0709-27ea-472e-91a0-fb977a4e1593`.
+- Canonical RPC-created `project-tree-final2` / `thread-tree-final2` use workspace `/private/tmp/synara-explorer-tree-final`.
 - One named browser session `explorer-tree-final`, viewport `1280x820`, DPR 1.
 - Real low-level mouse clicks expanded `src`, then `src/nested`, then collapsed `src`.
 - URL target state used Web-only repeated `explorerExpanded` parameters; Native keeps the original `bindtap` controller.

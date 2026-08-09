@@ -29,7 +29,10 @@ import {
   fetchThreads,
   type ExplorerEntriesResult,
 } from './queries';
-import { toggleExpandedDirectory } from './explorerTree.logic';
+import {
+  projectExplorerDirectories,
+  toggleExpandedDirectory,
+} from './explorerTree.logic';
 import { threadRecapRevision } from './environmentRecap.logic';
 import type { EnvironmentBootstrapData } from './environmentBootstrap.lynx';
 import { Transcript, type TranscriptController } from './Transcript';
@@ -616,6 +619,8 @@ export function SliceRouter({
     );
   const previousExplorerThreadIdRef = useRef(activeThreadId);
   const explorerTrimmedQuery = explorerQuery.trim();
+  const explorerExpandedDirectoryPaths =
+    Array.from(explorerExpandedDirectories).toSorted();
   const {
     data: activeThreadData,
     error: activeThreadError,
@@ -627,7 +632,7 @@ export function SliceRouter({
       activeThreadId,
       explorerTrimmedQuery,
       explorerSelectedPath,
-      [...explorerExpandedDirectories].sort().join('\0'),
+      explorerExpandedDirectoryPaths.join('\0'),
     ],
     queryFn: async () => {
       'background only';
@@ -659,7 +664,7 @@ export function SliceRouter({
       const explorerDirectories =
         summary?.workspaceRoot && explorerTrimmedQuery.length === 0
           ? await Promise.all(
-              [...explorerExpandedDirectories].sort().map(async (path) => {
+              explorerExpandedDirectoryPaths.map(async (path) => {
                 try {
                   const result = await fetchExplorerDirectory({
                     workspaceRoot: summary.workspaceRoot!,
@@ -713,15 +718,11 @@ export function SliceRouter({
     : matchingInitialThreadBootstrap ?? undefined;
   const resolvedActiveThreadPending =
     resolvedActiveThreadData === undefined && activeThreadPending;
-  const explorerDirectoryData = Object.fromEntries(
-    (resolvedActiveThreadData?.explorerDirectories ?? [])
-      .filter((entry) => !entry[2])
-      .map(([path, entries]) => [path, entries])
-  ) as Readonly<Record<string, ExplorerEntriesResult['entries']>>;
-  const explorerDirectoryErrors = new Set(
-    (resolvedActiveThreadData?.explorerDirectories ?? [])
-      .filter((entry) => entry[2])
-      .map(([path]) => path)
+  const {
+    entriesByPath: explorerDirectoryData,
+    errorPaths: explorerDirectoryErrors,
+  } = projectExplorerDirectories(
+    resolvedActiveThreadData?.explorerDirectories ?? []
   );
   const explorerDirectoryPending = new Set(
     activeThreadFetching
