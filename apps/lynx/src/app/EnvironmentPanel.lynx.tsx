@@ -1,4 +1,10 @@
-import { useEffect, useMemo, useRef, useState } from '@lynx-js/react';
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from '@lynx-js/react';
 import { useQuery } from '@tanstack/react-query';
 import {
   THREAD_NOTES_MAX_CHARS,
@@ -56,6 +62,7 @@ import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
 import { ChatMarkdown } from '../components/markdown/ChatMarkdown.lynx';
 import {
   ChevronDownIcon,
+  ChevronRightIcon,
   CheckIcon,
   CopyIcon,
   DeviceLaptopIcon,
@@ -65,6 +72,11 @@ import {
 import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
 import { useTheme } from '../adapters/useTheme.lynx';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
+import {
+  disclosureChevronClassName,
+  disclosureContentClassName,
+  useLynxDisclosurePresence,
+} from '../platform/motion.lynx';
 import {
   buildMenuItems,
   resolvePullActionAvailability,
@@ -123,6 +135,53 @@ import {
 import type { EnvironmentBootstrapData } from './environmentBootstrap.lynx';
 
 import './environment-panel.css';
+
+function EnvironmentDisclosureHeader(props: {
+  readonly label: string;
+  readonly open: boolean;
+  readonly onOpenChange: (open: boolean) => void;
+}) {
+  const interaction = useLynxInteractiveState({
+    baseClassName: 'EnvironmentDisclosure',
+    accessibleLabel: props.label,
+    accessibilityValue: props.open ? 'Expanded' : 'Collapsed',
+    onActivate: () => props.onOpenChange(!props.open),
+  });
+  return (
+    <view
+      className={interaction.className}
+      aria-expanded={props.open}
+      {...interaction.eventProps}
+    >
+      <text className="EnvironmentDisclosureLabel">{props.label}</text>
+      <ChevronRightIcon
+        className={disclosureChevronClassName(
+          props.open,
+          'EnvironmentDisclosureChevron'
+        )}
+        size={12}
+        color="var(--muted-foreground)"
+      />
+    </view>
+  );
+}
+
+function EnvironmentDisclosureContent(props: {
+  readonly children: ReactNode;
+  readonly className: string;
+  readonly open: boolean;
+}) {
+  const present = useLynxDisclosurePresence(props.open);
+  if (!present) return null;
+  return (
+    <view
+      className={disclosureContentClassName(props.open, props.className)}
+      aria-hidden={!props.open}
+    >
+      {props.children}
+    </view>
+  );
+}
 
 const NOTES_SAVE_DELAY_MS = 500;
 function environmentCommandId(): string {
@@ -1787,12 +1846,6 @@ function EnvironmentProjectInstructions(props: {
     }
   }
 
-  const disclosure = useLynxInteractiveState({
-    baseClassName: 'EnvironmentDisclosure',
-    accessibleLabel: 'Project instructions',
-    accessibilityValue: open ? 'Expanded' : 'Collapsed',
-    onActivate: () => setOpen((current) => !current),
-  });
   const copyInteraction = useLynxInteractiveState({
     baseClassName: 'EnvironmentInstructionsCopy',
     accessibleLabel:
@@ -1805,24 +1858,15 @@ function EnvironmentProjectInstructions(props: {
 
   return (
     <view className="EnvironmentSection">
-      <view
-        className={disclosure.className}
-        aria-expanded={open}
-        {...disclosure.eventProps}
+      <EnvironmentDisclosureHeader
+        label="Project instructions"
+        open={open}
+        onOpenChange={setOpen}
+      />
+      <EnvironmentDisclosureContent
+        className="EnvironmentInstructions"
+        open={open}
       >
-        <text className="EnvironmentDisclosureLabel">
-          Project instructions
-        </text>
-        <ChevronDownIcon
-          className={`EnvironmentDisclosureChevron${
-            open ? ' EnvironmentDisclosureChevron--open' : ''
-          }`}
-          size={12}
-          color="var(--muted-foreground)"
-        />
-      </view>
-      {open ? (
-        <view className="EnvironmentInstructions">
           <textarea
             ref={textareaRef}
             className="EnvironmentInstructionsInput"
@@ -1871,8 +1915,7 @@ function EnvironmentProjectInstructions(props: {
               Could not update notepad
             </text>
           ) : null}
-        </view>
-      ) : null}
+      </EnvironmentDisclosureContent>
     </view>
   );
 }
@@ -2055,33 +2098,19 @@ function EnvironmentPinned(props: {
     }
   }
 
-  const disclosure = useLynxInteractiveState({
-    baseClassName: 'EnvironmentDisclosure',
-    accessibleLabel: 'Pinned',
-    accessibilityValue: open ? 'Expanded' : 'Collapsed',
-    onActivate: () => setOpen((current) => !current),
-  });
-
   if (pins.length === 0) return null;
 
   return (
     <view className="EnvironmentSection">
-      <view
-        className={disclosure.className}
-        aria-expanded={open}
-        {...disclosure.eventProps}
+      <EnvironmentDisclosureHeader
+        label="Pinned"
+        open={open}
+        onOpenChange={setOpen}
+      />
+      <EnvironmentDisclosureContent
+        className="EnvironmentPinnedList"
+        open={open}
       >
-        <text className="EnvironmentDisclosureLabel">Pinned</text>
-        <ChevronDownIcon
-          className={`EnvironmentDisclosureChevron${
-            open ? ' EnvironmentDisclosureChevron--open' : ''
-          }`}
-          size={12}
-          color="var(--muted-foreground)"
-        />
-      </view>
-      {open ? (
-        <view className="EnvironmentPinnedList">
           {pins.map((pin) => (
             <EnvironmentPinnedRow
               busy={busyMessageId !== null}
@@ -2134,8 +2163,7 @@ function EnvironmentPinned(props: {
               }
             />
           ))}
-        </view>
-      ) : null}
+      </EnvironmentDisclosureContent>
     </view>
   );
 }
@@ -2323,33 +2351,19 @@ function EnvironmentMarkers(props: {
     }
   }
 
-  const disclosure = useLynxInteractiveState({
-    baseClassName: 'EnvironmentDisclosure',
-    accessibleLabel: 'Markers',
-    accessibilityValue: open ? 'Expanded' : 'Collapsed',
-    onActivate: () => setOpen((current) => !current),
-  });
-
   if (markers.length === 0) return null;
 
   return (
     <view className="EnvironmentSection">
-      <view
-        className={disclosure.className}
-        aria-expanded={open}
-        {...disclosure.eventProps}
+      <EnvironmentDisclosureHeader
+        label="Markers"
+        open={open}
+        onOpenChange={setOpen}
+      />
+      <EnvironmentDisclosureContent
+        className="EnvironmentPinnedList"
+        open={open}
       >
-        <text className="EnvironmentDisclosureLabel">Markers</text>
-        <ChevronDownIcon
-          className={`EnvironmentDisclosureChevron${
-            open ? ' EnvironmentDisclosureChevron--open' : ''
-          }`}
-          size={12}
-          color="var(--muted-foreground)"
-        />
-      </view>
-      {open ? (
-        <view className="EnvironmentPinnedList">
           {markers.map((marker) => (
             <EnvironmentMarkerRow
               busy={busyMarkerId !== null}
@@ -2408,8 +2422,7 @@ function EnvironmentMarkers(props: {
               }
             />
           ))}
-        </view>
-      ) : null}
+      </EnvironmentDisclosureContent>
     </view>
   );
 }
@@ -2512,31 +2525,17 @@ function EnvironmentNotepad(props: {
     });
   }
 
-  const disclosure = useLynxInteractiveState({
-    baseClassName: 'EnvironmentDisclosure',
-    accessibleLabel: 'Notepad',
-    accessibilityValue: open ? 'Expanded' : 'Collapsed',
-    onActivate: () => setOpen((current) => !current),
-  });
-
   return (
     <view className="EnvironmentSection">
-      <view
-        className={disclosure.className}
-        aria-expanded={open}
-        {...disclosure.eventProps}
+      <EnvironmentDisclosureHeader
+        label="Notepad"
+        open={open}
+        onOpenChange={setOpen}
+      />
+      <EnvironmentDisclosureContent
+        className="EnvironmentNotepad"
+        open={open}
       >
-        <text className="EnvironmentDisclosureLabel">Notepad</text>
-        <ChevronDownIcon
-          className={`EnvironmentDisclosureChevron${
-            open ? ' EnvironmentDisclosureChevron--open' : ''
-          }`}
-          size={12}
-          color="var(--muted-foreground)"
-        />
-      </view>
-      {open ? (
-        <view className="EnvironmentNotepad">
           <textarea
             ref={textareaRef}
             className="EnvironmentNotepadInput"
@@ -2566,8 +2565,7 @@ function EnvironmentNotepad(props: {
           >
             {saveState === 'error' ? 'Could not save' : ''}
           </text>
-        </view>
-      ) : null}
+      </EnvironmentDisclosureContent>
     </view>
   );
 }

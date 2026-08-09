@@ -2,6 +2,30 @@ import { describe, expect, it } from '@rstest/core';
 import { readFileSync } from 'node:fs';
 
 describe('Lynx Environment panel', () => {
+  it('reuses the shared disclosure motion for every expandable section', () => {
+    const panelSource = readFileSync(
+      new URL('./EnvironmentPanel.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+
+    expect(panelSource).toContain('function EnvironmentDisclosureHeader(');
+    expect(panelSource).toContain('function EnvironmentDisclosureContent(');
+    expect(panelSource).toContain('useLynxDisclosurePresence(props.open)');
+    expect(panelSource).toContain('disclosureContentClassName(');
+    expect(panelSource).toContain('disclosureChevronClassName(');
+    expect(panelSource).toContain('<ChevronRightIcon');
+    expect(panelSource).not.toContain('EnvironmentDisclosureChevron--open');
+    expect(panelSource).not.toMatch(
+      /<ChevronDownIcon[\s\S]{0,120}EnvironmentDisclosureChevron/
+    );
+    expect(
+      panelSource.match(/<EnvironmentDisclosureHeader/g)
+    ).toHaveLength(4);
+    expect(
+      panelSource.match(/<EnvironmentDisclosureContent/g)
+    ).toHaveLength(4);
+  });
+
   it('connects the real thread header toggle and mounted panel', () => {
     const routerSource = readFileSync(
       new URL('./router.tsx', import.meta.url),
