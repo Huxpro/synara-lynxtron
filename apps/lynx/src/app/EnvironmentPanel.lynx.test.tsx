@@ -87,6 +87,10 @@ describe('Lynx Environment panel', () => {
     expect(panelSource).toContain('useLynxInteractiveState({');
     expect(panelSource).toContain('Toggle environment panel');
     expect(panelSource).toContain("import windowSvg from '@synara-central-icons/window.svg?raw'");
+    expect(panelSource).toContain("from '@synara/shared/pinnedMessages'");
+    expect(panelSource).toContain("from '@synara/shared/threadMarkers'");
+    expect(panelSource).not.toContain("from '@synara-web/pinnedMessages'");
+    expect(panelSource).not.toContain("from '@synara-web/threadMarkers'");
   });
 
   it('uses only sections backed by real current capabilities', () => {

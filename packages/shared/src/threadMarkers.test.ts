@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   addThreadMarker,
+  deriveThreadMarkerLabel,
   isThreadMarkerAvailable,
   normalizeThreadMarkerLabel,
   removeThreadMarker,
@@ -30,6 +31,14 @@ const marker = (id: string, overrides: Partial<ThreadMarker> = {}): ThreadMarker
 });
 
 describe("threadMarkers", () => {
+  it("derives marker labels without depending on Web dispatch modules", () => {
+    expect(deriveThreadMarkerLabel(marker("a", { selectedText: "**important**   text" }))).toBe(
+      "important text",
+    );
+    expect(deriveThreadMarkerLabel(marker("a", { selectedText: "  ` `  " }))).toBe("Marked text");
+    expect(deriveThreadMarkerLabel(marker("a", { selectedText: "x".repeat(80) }))).toHaveLength(60);
+  });
+
   it("adds and removes markers without duplicating ids or exact ranges", () => {
     const markers = [marker("a")];
     const added = addThreadMarker(markers, marker("b", { startOffset: 24, endOffset: 31 }));

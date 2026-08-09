@@ -8,6 +8,21 @@ import {
   type ThreadMarkerId,
 } from "@synara/contracts";
 
+const INLINE_EMPHASIS_PATTERN = /[*_`~]+/g;
+
+export function deriveThreadMarkerLabel(marker: ThreadMarker): string {
+  const cleaned = marker.selectedText
+    .replace(INLINE_EMPHASIS_PATTERN, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (cleaned.length === 0) {
+    return "Marked text";
+  }
+  return cleaned.length > THREAD_MARKER_LABEL_MAX_CHARS
+    ? `${cleaned.slice(0, THREAD_MARKER_LABEL_MAX_CHARS - 1)}…`
+    : cleaned;
+}
+
 function keepExistingMarkers(markers: readonly ThreadMarker[]): ThreadMarker[] {
   return markers as ThreadMarker[];
 }

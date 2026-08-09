@@ -3,7 +3,6 @@
 // Layer: Chat transcript selection actions and Environment panel.
 
 import {
-  THREAD_MARKER_LABEL_MAX_CHARS,
   type MessageId,
   type ThreadId,
   type ThreadMarker,
@@ -11,27 +10,15 @@ import {
   type ThreadMarkerId,
   type ThreadMarkerStyle,
 } from "@synara/contracts";
-import { normalizeThreadMarkerLabel } from "@synara/shared/threadMarkers";
+import {
+  deriveThreadMarkerLabel,
+  normalizeThreadMarkerLabel,
+} from "@synara/shared/threadMarkers";
 
 import { newCommandId } from "./lib/utils";
 import { readNativeApi } from "./nativeApi";
 
-const INLINE_EMPHASIS_PATTERN = /[*_`~]+/g;
-
-export { normalizeThreadMarkerLabel };
-
-export function deriveThreadMarkerLabel(marker: ThreadMarker): string {
-  const cleaned = marker.selectedText
-    .replace(INLINE_EMPHASIS_PATTERN, "")
-    .replace(/\s+/g, " ")
-    .trim();
-  if (cleaned.length === 0) {
-    return "Marked text";
-  }
-  return cleaned.length > THREAD_MARKER_LABEL_MAX_CHARS
-    ? `${cleaned.slice(0, THREAD_MARKER_LABEL_MAX_CHARS - 1)}…`
-    : cleaned;
-}
+export { deriveThreadMarkerLabel, normalizeThreadMarkerLabel };
 
 async function dispatchMarkerCommand(
   command:

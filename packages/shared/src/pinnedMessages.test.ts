@@ -5,6 +5,8 @@ import { describe, expect, it } from "vitest";
 import {
   addPinnedMessage,
   clampThreadNotes,
+  derivePinLabel,
+  displayLabelFor,
   isMessagePinned,
   normalizePinLabel,
   removePinnedMessage,
@@ -25,6 +27,15 @@ const pin = (id: string, overrides: Partial<PinnedMessage> = {}): PinnedMessage 
 });
 
 describe("pinnedMessages", () => {
+  it("derives display labels without depending on Web dispatch modules", () => {
+    expect(derivePinLabel("\n## **Important** update\nMore detail")).toBe("Important update");
+    expect(derivePinLabel("   ")).toBe("");
+    expect(derivePinLabel("x".repeat(80))).toHaveLength(60);
+    expect(displayLabelFor(pin("a", { label: " Custom " }), "ignored")).toBe("Custom");
+    expect(displayLabelFor(pin("a"), "### Generated label")).toBe("Generated label");
+    expect(displayLabelFor(pin("a"), undefined)).toBe("");
+  });
+
   it("detects membership in existing pin lists", () => {
     expect(isMessagePinned([pin("a"), pin("b")], m("b"))).toBe(true);
     expect(isMessagePinned([pin("a")], m("z"))).toBe(false);

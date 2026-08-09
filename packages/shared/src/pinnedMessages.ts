@@ -9,6 +9,39 @@ import {
   type PinnedMessage,
 } from "@synara/contracts";
 
+const LEADING_BLOCK_MARKER_PATTERN = /^\s*(?:#{1,6}\s+|>+\s*|[-*+]\s+|\d+[.)]\s+)/;
+const INLINE_EMPHASIS_PATTERN = /[*_`~]+/g;
+
+export function derivePinLabel(messageText: string): string {
+  const normalized = messageText.replace(/\r\n/g, "\n");
+  let firstLine = "";
+  for (const rawLine of normalized.split("\n")) {
+    const candidate = rawLine.replace(LEADING_BLOCK_MARKER_PATTERN, "").trim();
+    if (candidate.length > 0) {
+      firstLine = candidate;
+      break;
+    }
+  }
+  const cleaned = firstLine.replace(INLINE_EMPHASIS_PATTERN, "").replace(/\s+/g, " ").trim();
+  if (cleaned.length === 0) {
+    return "";
+  }
+  return cleaned.length > PINNED_MESSAGE_LABEL_MAX_CHARS
+    ? `${cleaned.slice(0, PINNED_MESSAGE_LABEL_MAX_CHARS - 1)}…`
+    : cleaned;
+}
+
+export function displayLabelFor(
+  pin: PinnedMessage,
+  messageText: string | undefined,
+): string {
+  const override = pin.label?.trim();
+  if (override) {
+    return override;
+  }
+  return messageText === undefined ? "" : derivePinLabel(messageText);
+}
+
 // Preserve no-op references while keeping mutation helpers typed as mutable-array outputs.
 function keepExistingPins(pins: readonly PinnedMessage[]): PinnedMessage[] {
   return pins as PinnedMessage[];

@@ -3,7 +3,6 @@
 // Layer: Chat environment panel + message timeline helpers.
 
 import {
-  PINNED_MESSAGE_LABEL_MAX_CHARS,
   type MessageId,
   type PinnedMessage,
   type ThreadId,
@@ -11,6 +10,8 @@ import {
 import {
   addPinnedMessage,
   clampThreadNotes,
+  derivePinLabel,
+  displayLabelFor,
   isMessagePinned,
   normalizePinLabel,
   removePinnedMessage,
@@ -23,51 +24,13 @@ import {
 import { newCommandId } from "./lib/utils";
 import { readNativeApi } from "./nativeApi";
 
-// Strip the most common leading block markers (headings, list bullets, blockquotes)
-// and inline emphasis so an auto-derived label reads as plain prose.
-const LEADING_BLOCK_MARKER_PATTERN = /^\s*(?:#{1,6}\s+|>+\s*|[-*+]\s+|\d+[.)]\s+)/;
-const INLINE_EMPHASIS_PATTERN = /[*_`~]+/g;
-
-/**
- * Derive a human-readable label from a pinned message's text: the first non-empty
- * line, lightly de-marked and truncated. Returns "" when there is no usable text.
- */
-export function derivePinLabel(messageText: string): string {
-  const normalized = messageText.replace(/\r\n/g, "\n");
-  let firstLine = "";
-  for (const rawLine of normalized.split("\n")) {
-    const candidate = rawLine.replace(LEADING_BLOCK_MARKER_PATTERN, "").trim();
-    if (candidate.length > 0) {
-      firstLine = candidate;
-      break;
-    }
-  }
-  if (firstLine.length === 0) {
-    return "";
-  }
-  const cleaned = firstLine.replace(INLINE_EMPHASIS_PATTERN, "").replace(/\s+/g, " ").trim();
-  if (cleaned.length === 0) {
-    return "";
-  }
-  return cleaned.length > PINNED_MESSAGE_LABEL_MAX_CHARS
-    ? `${cleaned.slice(0, PINNED_MESSAGE_LABEL_MAX_CHARS - 1)}…`
-    : cleaned;
-}
-
-/**
- * Resolve the label to render for a pin: an explicit user override wins, otherwise
- * the auto-derived label from the message text. Returns "" when the message text is
- * unavailable and there is no override (callers render their own fallback).
- */
-export function displayLabelFor(pin: PinnedMessage, messageText: string | undefined): string {
-  const override = pin.label?.trim();
-  if (override) {
-    return override;
-  }
-  return messageText === undefined ? "" : derivePinLabel(messageText);
-}
-
-export { clampThreadNotes, isMessagePinned, normalizePinLabel };
+export {
+  clampThreadNotes,
+  derivePinLabel,
+  displayLabelFor,
+  isMessagePinned,
+  normalizePinLabel,
+};
 
 export function addPin(
   pins: readonly PinnedMessage[] | undefined,

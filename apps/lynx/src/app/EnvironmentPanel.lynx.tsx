@@ -16,12 +16,12 @@ import {
   mergeProjectInstructionsIntoThreadNotes,
   useProjectInstructionsStore,
 } from '@synara-web/projectInstructionsStore';
-import { displayLabelFor, normalizePinLabel } from '@synara-web/pinnedMessages';
+import { displayLabelFor, normalizePinLabel } from '@synara/shared/pinnedMessages';
 import {
   deriveThreadMarkerLabel,
+  isThreadMarkerAvailable,
   normalizeThreadMarkerLabel,
-} from '@synara-web/threadMarkers';
-import { isThreadMarkerAvailable } from '@synara/shared/threadMarkers';
+} from '@synara/shared/threadMarkers';
 import {
   PULL_REQUEST_CHECK_STATUS_LABELS,
   summarizePullRequestChecks,
