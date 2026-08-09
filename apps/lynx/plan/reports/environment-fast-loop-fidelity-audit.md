@@ -12,7 +12,7 @@ Date: 2026-08-09
 | Make Environment open/close reachable in fast loop | trusted pointer click on `EnvironmentToggle` writes idempotent `environment=open|closed` URL target; focused click/Enter/disabled tests | PASS |
 | Preserve Native behavior | Native bundle contains no Web URL marker or Web-host style rule; Native keeps original `bindtap` path | PASS |
 | Match open panel shell in dark mode | paired dark 1280x820 screenshots: exact x/y, 312px overlay, 288px surface, radius 18, border, padding, gap, and title box | PASS |
-| Verify light appearance after the final host rule | final recapture produced a blank frame and was rejected; no light pixel pass is claimed | INVALID EVIDENCE — NOT RETAINED |
+| Verify light shell appearance after the final host rule | fresh isolated 58620/9321 harness, canonical product-route click, nonblank paired 1280x820 frames, matching x/y/width/radius/background/foreground | PASS — loaded-content height remains under recorded SDK limit |
 | Verify narrow layout | paired 900x700 dark screenshots and runtime dimensions | PASS |
 | Correct Lynx-for-Web scroll-view stretch | Environment-scoped `injectStyleRules` override removes Web Elements' `flex:1;height:100%` default while retaining max-height overflow boundary | PASS |
 | Verify page-error gate | `web-errors.json` and `lynx-errors.json` contain empty error arrays | PASS |
