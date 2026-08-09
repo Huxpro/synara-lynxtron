@@ -458,6 +458,11 @@ This is covered by the focused source contract and both production builds; a
 fresh dark Web comparison was rejected after the browser harness repeatedly
 navigated to `about:blank`, so no runtime dark-cell claim is attached to this
 single-property follow-up.
+The release-row chevron now also passes the shared 14px anatomy directly to
+the generated icon instead of letting an inline 16px size override its CSS
+slot. Current Lynx-for-Web runtime measurement keeps the trigger at
+`478x44`, resolves the chevron to `14x14`, moves the identity start to the
+Web-authoritative x=427, and preserves the 90-degree open transform.
 The Explorer tree follow-up aligns Native directory expansion with Web's
 `CollapsiblePanel` behavior. Each recursive entry is now a stable component
 with shared 220ms ChevronRight/content motion and explicit `aria-expanded`;

@@ -72,7 +72,7 @@ function ReleaseHistoryEntry(props: {
             props.open,
             'SettingsAdvancedReleaseChevron'
           )}
-          size={16}
+          size={14}
           color="var(--muted-foreground)"
         />
         <view className="SettingsAdvancedReleaseIdentity">

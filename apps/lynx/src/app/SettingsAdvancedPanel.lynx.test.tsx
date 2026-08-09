@@ -54,6 +54,9 @@ describe('Settings Advanced fidelity', () => {
       'useLynxDisclosurePresence(props.open)'
     );
     expect(panelSource).toContain('<ReleaseHistoryEntry');
+    expect(panelSource).toContain(
+      "'SettingsAdvancedReleaseChevron'\n          )}\n          size={14}"
+    );
     expect(panelSource).not.toContain('bindtap={() =>\n                        setExpandedRelease');
     expect(panelSource).not.toContain('{open ? (');
     expect(panelSource).toContain('aria-expanded={showRecoveryTools}');
