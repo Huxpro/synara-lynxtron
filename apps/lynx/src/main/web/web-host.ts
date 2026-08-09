@@ -12,6 +12,7 @@ const bundleUrl = './main.web.bundle';
 const nodejsAdapterUrl = './nodejs-adapter-web.js';
 const LYNX_WEB_STYLE_RULES = [
   '.SharedThemePackImportTextarea::part(textarea) { box-sizing: border-box; width: 100%; height: 100%; padding: 0; }',
+  '.EnvironmentScroller { flex: 0 1 auto; height: auto; min-height: 0; max-height: 100%; }',
 ];
 const webDocument = globalThis.document;
 webDocument.documentElement.style.width = '100%';
@@ -739,6 +740,8 @@ async function handleBridgeCall(
 }
 
 pendingInitialRoute = resolveWebInitialRoute(globalThis.location.search);
+const initialEnvironmentOpen =
+  new URLSearchParams(globalThis.location.search).get('environment') === 'open';
 const initialExplorerOpen =
   new URLSearchParams(globalThis.location.search).get('explorer') === 'open';
 const initialExplorerPath =
@@ -757,6 +760,7 @@ webDocument.body.innerHTML = `
   id="root-view"
   style="height:100vh; width:100vw;"
   init-data='${JSON.stringify({
+    initialEnvironmentOpen,
     initialExplorerOpen,
     initialExplorerPath,
     initialExplorerQuery,
@@ -808,6 +812,14 @@ const installInteractionBridge = () => {
     (activation) => {
       const url = new URL(globalThis.location.href);
       url.searchParams.set('explorer', activation.open ? 'open' : 'closed');
+      globalThis.location.replace(url);
+    },
+    (activation) => {
+      const url = new URL(globalThis.location.href);
+      url.searchParams.set(
+        'environment',
+        activation.open ? 'open' : 'closed'
+      );
       globalThis.location.replace(url);
     },
     (navigation) => {

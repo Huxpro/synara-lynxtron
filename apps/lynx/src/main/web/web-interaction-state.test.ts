@@ -5,6 +5,7 @@ import { installLynxWebInteractionStateBridge } from './web-interaction-state';
 
 function setup(
   onExplorerActivation?: (activation: { readonly open: boolean }) => void,
+  onEnvironmentActivation?: (activation: { readonly open: boolean }) => void,
   onExplorerNavigation?: (navigation: {
     readonly path?: string;
     readonly query?: string;
@@ -26,6 +27,7 @@ function setup(
     root,
     undefined,
     onExplorerActivation,
+    onEnvironmentActivation,
     onExplorerNavigation,
     onRightPanelResize
   );
@@ -55,9 +57,31 @@ describe('Lynx-for-Web interaction state bridge', () => {
     expect(activations).toEqual([true, false]);
   });
 
+  it('forwards enabled Environment click and keyboard activation as idempotent target state', () => {
+    const activations: boolean[] = [];
+    const { control } = setup(undefined, (activation) =>
+      activations.push(activation.open)
+    );
+    control.classList.add('EnvironmentToggle');
+
+    control.click();
+    control.classList.add('EnvironmentToggle--open');
+    control.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        key: 'Enter',
+      })
+    );
+    control.setAttribute('aria-disabled', 'true');
+    control.click();
+
+    expect(activations).toEqual([true, false]);
+  });
+
   it('forwards file selection and search submission without activating directories', () => {
     const navigations: Array<{ path?: string; query?: string }> = [];
-    const { control } = setup(undefined, (navigation) =>
+    const { control } = setup(undefined, undefined, (navigation) =>
       navigations.push(navigation)
     );
     control.classList.add('ExplorerDockEntry');
@@ -95,7 +119,7 @@ describe('Lynx-for-Web interaction state bridge', () => {
 
   it('resizes a right panel from the sash and reports the clamped width', () => {
     const resizes: Array<{ panel: string; width: number }> = [];
-    const { control } = setup(undefined, undefined, (resize) =>
+    const { control } = setup(undefined, undefined, undefined, (resize) =>
       resizes.push(resize)
     );
     const root = control.getRootNode() as ShadowRoot;
@@ -150,6 +174,9 @@ describe('Lynx-for-Web interaction state bridge', () => {
     );
     expect(source).toContain(
       'lynxView.injectStyleRules = LYNX_WEB_STYLE_RULES'
+    );
+    expect(source).toContain(
+      "'.EnvironmentScroller { flex: 0 1 auto; height: auto; min-height: 0; max-height: 100%; }'"
     );
   });
 

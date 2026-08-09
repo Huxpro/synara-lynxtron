@@ -1,5 +1,6 @@
 const WEB_HOVER_CLASS = 'ui-hover';
 const WEB_FOCUS_CLASS = 'ui-focus';
+const ENVIRONMENT_TOGGLE_SELECTOR = '.EnvironmentToggle';
 const EXPLORER_TOGGLE_SELECTOR = '.ThreadFilesToggle';
 const EXPLORER_ENTRY_SELECTOR = '.ExplorerDockEntry';
 const EXPLORER_SEARCH_SELECTOR = '.ExplorerDockSearchInput';
@@ -7,6 +8,10 @@ const RIGHT_PANEL_RESIZE_SASH_SELECTOR = '.RightPanelResizeSash';
 const LYNX_FOCUSABLE_SELECTOR = '[focusable="true"]';
 
 export interface LynxWebExplorerActivation {
+  readonly open: boolean;
+}
+
+export interface LynxWebEnvironmentActivation {
   readonly open: boolean;
 }
 
@@ -51,6 +56,9 @@ export function installLynxWebInteractionStateBridge(
   root: ShadowRoot,
   signal?: AbortSignal,
   onExplorerActivation?: (activation: LynxWebExplorerActivation) => void,
+  onEnvironmentActivation?: (
+    activation: LynxWebEnvironmentActivation
+  ) => void,
   onExplorerNavigation?: (navigation: LynxWebExplorerNavigation) => void,
   onRightPanelResize?: (resize: LynxWebRightPanelResize) => void
 ): void {
@@ -261,6 +269,25 @@ export function installLynxWebInteractionStateBridge(
         });
         return;
       }
+      const environmentToggle = event
+        .composedPath()
+        .find(
+          (target): target is HTMLElement =>
+            target instanceof HTMLElement &&
+            target.matches(ENVIRONMENT_TOGGLE_SELECTOR)
+        );
+      if (
+        environmentToggle &&
+        environmentToggle.getAttribute('aria-disabled') !== 'true' &&
+        onEnvironmentActivation
+      ) {
+        onEnvironmentActivation({
+          open: !environmentToggle.classList.contains(
+            'EnvironmentToggle--open'
+          ),
+        });
+        return;
+      }
       const entry = event
         .composedPath()
         .find(
@@ -301,6 +328,31 @@ export function installLynxWebInteractionStateBridge(
       event.preventDefault();
       onExplorerActivation({
         open: !element.classList.contains('ThreadFilesToggle--active'),
+      });
+    },
+    listenerOptions
+  );
+  root.addEventListener(
+    'keydown',
+    (event) => {
+      if (
+        !onEnvironmentActivation ||
+        !(event instanceof KeyboardEvent) ||
+        (event.key !== 'Enter' && event.key !== ' ' && event.key !== 'Spacebar')
+      ) {
+        return;
+      }
+      const element = event
+        .composedPath()
+        .find(
+          (target): target is HTMLElement =>
+            target instanceof HTMLElement &&
+            target.matches(ENVIRONMENT_TOGGLE_SELECTOR)
+        );
+      if (!element || element.getAttribute('aria-disabled') === 'true') return;
+      event.preventDefault();
+      onEnvironmentActivation({
+        open: !element.classList.contains('EnvironmentToggle--open'),
       });
     },
     listenerOptions

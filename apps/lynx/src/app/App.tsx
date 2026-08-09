@@ -69,12 +69,14 @@ async function readPersistedAppearance(): Promise<{
 
 export function App() {
   const initData = useInitData() as {
+    readonly initialEnvironmentOpen?: unknown;
     readonly initialExplorerOpen?: unknown;
     readonly initialExplorerPath?: unknown;
     readonly initialExplorerQuery?: unknown;
     readonly initialExplorerWidth?: unknown;
     readonly initialRoute?: unknown;
   };
+  const initialEnvironmentOpen = initData.initialEnvironmentOpen === true;
   const initialRoute =
     typeof initData.initialRoute === 'string' &&
     initData.initialRoute.startsWith('/')
@@ -242,6 +244,7 @@ export function App() {
         ) : null}
         {storageReady ? (
           <SliceRouter
+            initialEnvironmentOpen={initialEnvironmentOpen}
             initialRoute={initialRoute}
             initialThreadBootstrap={initialThreadBootstrap}
             initialExplorerOpen={initialExplorerOpen}

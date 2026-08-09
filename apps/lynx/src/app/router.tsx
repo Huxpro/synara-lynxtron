@@ -258,6 +258,7 @@ function ThreadPage(props: {
   readonly explorerFilePending: boolean;
   readonly explorerQuery: string;
   readonly explorerSelectedPath: string | null;
+  readonly initialEnvironmentOpen: boolean;
   readonly initialExplorerWidth: number | null;
   readonly initialExplorerOpen: boolean;
   readonly isPending: boolean;
@@ -278,6 +279,7 @@ function ThreadPage(props: {
     explorerFilePending,
     explorerQuery,
     explorerSelectedPath,
+    initialEnvironmentOpen,
     initialExplorerWidth,
     initialExplorerOpen,
     isPending,
@@ -291,7 +293,9 @@ function ThreadPage(props: {
   const [providerStatuses, setProviderStatuses] = useState<
     readonly ServerProviderStatus[]
   >([]);
-  const [environmentOpen, setEnvironmentOpen] = useState(false);
+  const [environmentOpen, setEnvironmentOpen] = useState(
+    initialEnvironmentOpen
+  );
   const [diffOpen, setDiffOpen] = useState(false);
   const [explorerOpen, setExplorerOpen] = useState(initialExplorerOpen);
   const [threadPageWidth, setThreadPageWidth] = useState(0);
@@ -515,6 +519,7 @@ function ThreadPage(props: {
 }
 
 export function SliceRouter({
+  initialEnvironmentOpen,
   initialRoute,
   initialThreadBootstrap,
   initialExplorerOpen,
@@ -525,6 +530,7 @@ export function SliceRouter({
   onThemeStateChange,
   onUiDensityChange,
 }: {
+  readonly initialEnvironmentOpen: boolean;
   readonly initialRoute: string | null;
   readonly initialThreadBootstrap: {
     readonly data: Awaited<ReturnType<typeof fetchThreadTranscriptRows>>;
@@ -824,6 +830,7 @@ export function SliceRouter({
         }
         explorerQuery={explorerQuery}
         explorerSelectedPath={explorerSelectedPath}
+        initialEnvironmentOpen={initialEnvironmentOpen}
         initialExplorerWidth={initialExplorerWidth}
         initialExplorerOpen={initialExplorerOpen}
         isPending={resolvedActiveThreadPending}
