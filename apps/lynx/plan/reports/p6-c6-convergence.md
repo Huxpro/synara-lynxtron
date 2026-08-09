@@ -244,9 +244,12 @@ classified without widening EXCLUSIVE:
 - **Projects/Kanban:** Web DnD, optimistic mutation, draft/terminal state and
   route orchestration remain eligible. Overview/header/board/columns/cards are
   shared; native is explicitly read-only.
-- **Pull Requests:** Web Timeline/Code/diff/review/merge/search kernels and
-  route orchestration remain eligible. List/row/states/filters/Summary/tabs/
-  capability/close anatomy are shared; native is honestly read-only.
+- **Pull Requests:** list/row/states/filters/Summary/tabs/capability/close
+  anatomy are shared; current Lynx route also owns real Timeline projection,
+  typed `pullRequests.diff` Code data, portable file/line rendering,
+  loading/error/retry/truncation/expand states, pinning, and primary
+  merge/close/reopen actions. GitHub review-comment mutation remains a separate
+  capability boundary rather than a missing Timeline/Code tab.
 
 No diagnostic reachability, unused import, type-only credit, copied JSX or
 expanded EXCLUSIVE classification is used to improve these values.

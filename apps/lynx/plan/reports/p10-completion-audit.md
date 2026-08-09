@@ -269,6 +269,7 @@ Current responsive disposition:
 | Environment | reachable current-head consumer; paired light/dark Browser geometry/material proof at 900x650 | PASS IN BROWSER; NATIVE CURRENT-HEAD SCREENCAST NOT CERTIFIED |
 | Environment Git actions | stable menu, selectable-file/new-branch commits, safe pull, streamed live progress, metadata sync, confirmation, and paired themes | PASS |
 | Diff / Explorer docks and source actions | working-tree Diff Dock and filesystem-backed Explorer are reachable; Explorer covers tree/search, rich source/Markdown/image/PDF fallback, whole-file references, ask-why, and accessible per-line local comments that persist and serialize into the shared composer contract | PASS — CURRENT PRODUCT SURFACES |
+| Pull Request Timeline / Code | selected PR detail exposes Summary/Timeline/Code; Timeline projects real detail commits/comments, while Code fetches typed `pullRequests.diff` data on demand and covers portable files, line numbers, loading/error/retry/truncation/expand states | PASS — CURRENT PRODUCT SURFACES |
 | Native arbitrary range selection | whole-message transcript references and source line comments are complete; arbitrary DOM-style text range selection still requires a host/engine selection kernel | PARTIAL — EXPLICIT HOST/ENGINE GAP |
 | Current-head full three-client route/theme/size/state matrix | historical P10 matrix predates later product commits | NOT RE-CERTIFIED |
 
