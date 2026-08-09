@@ -221,9 +221,12 @@
 
 .ComposerProjectPickerCheckLynx {
   width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
   color: var(--foreground);
-  font-size: 11px;
 }
 
 .ComposerProjectPickerFooterLynx {

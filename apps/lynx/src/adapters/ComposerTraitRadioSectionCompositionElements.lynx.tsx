@@ -1,5 +1,6 @@
 import type { ReactNode } from '@lynx-js/react';
 
+import { CheckIcon } from '../lib/icons.lynx';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 
 export function ComposerTraitFastModeToggleElement(props: {
@@ -87,9 +88,9 @@ export function ComposerTraitRadioItemElement(props: {
       aria-selected={props.active}
       {...interaction.eventProps}
     >
-      <text className="ComposerTraitOptionCheckLynx">
-        {props.active ? '✓' : ''}
-      </text>
+      <view className="ComposerTraitOptionCheckLynx">
+        {props.active ? <CheckIcon size={12} /> : null}
+      </view>
       <view className="ComposerTraitOptionCopyLynx">
         <text className="ComposerTraitOptionLabelLynx">
           {props.label}

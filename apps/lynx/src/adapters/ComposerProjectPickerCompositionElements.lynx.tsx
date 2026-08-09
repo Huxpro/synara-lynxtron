@@ -5,6 +5,7 @@ import type { ReactNode } from '@lynx-js/react';
 import {
   BlocksIcon,
   BrainIcon,
+  CheckIcon,
   DeviceLaptopIcon,
   PaletteIcon,
   PlusIcon,
@@ -183,9 +184,9 @@ export function ComposerProjectPickerOptionElement(props: {
             </text>
           ) : null}
         </view>
-        <text className="ComposerProjectPickerCheckLynx">
-          {props.selected ? '✓' : ''}
-        </text>
+        <view className="ComposerProjectPickerCheckLynx">
+          {props.selected ? <CheckIcon size={12} /> : null}
+        </view>
       </view>
     </MenuItem>
   );

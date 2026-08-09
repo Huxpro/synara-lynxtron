@@ -33,6 +33,12 @@ describe('native composer trait picker contract', () => {
     expect(composerStyles).toMatch(
       /\.ComposerTraitOptionLabelLynx\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s
     );
+    const source = readFileSync(
+      new URL('./ComposerTraitRadioSectionCompositionElements.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(source).toContain('<CheckIcon size={12} />');
+    expect(source).not.toContain("{props.active ? '✓' : ''}");
   });
 
   it('matches the shared Web geometry and accessibility identity', () => {
