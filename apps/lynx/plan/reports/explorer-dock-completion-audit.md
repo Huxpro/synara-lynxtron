@@ -179,8 +179,8 @@ explicitly rejected rather than reused.
 
 `shots/2026-08-10/explorer-comments-current/` closes the actionable source
 comment gap without claiming DOM range selection. Each syntax line owns an
-accessible 34px gutter control. Activating `Comment on line 5` opens the same
-`Local comment` / `Comment on line 5` / `Request change` / Cancel / Comment
+accessible 34px gutter control. Activating `Comment on line 1` opens the same
+`Local comment` / `Comment on line 1` / `Request change` / Cancel / Comment
 anatomy as Web directly below the active line, with a semantic accent band.
 
 The implementation reuses `apps/web/src/lib/fileComments.ts` as the only
@@ -192,7 +192,7 @@ They are not converted into a guessed wire attachment or inserted into the
 visible prompt text.
 
 The retained light/dark frames are both `1280x820`, have identical
-`451x135 @ (807,232)` editor geometry, six named line controls, the active
+`451x135 @ (807,164)` editor geometry, six named line controls, the active
 line-5 band, current TypeScript tokens, and empty page-error logs. A real mouse
 click reached the line gutter and the existing Web-only compatibility layer
 represented the idempotent `explorerCommentLine=5` init target; Native keeps

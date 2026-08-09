@@ -466,9 +466,9 @@
 }
 
 .ExplorerDockCommentBadgeMark {
+  width: 10px;
+  height: 11px;
   color: var(--muted-foreground);
-  font-size: 10px;
-  font-weight: 700;
 }
 
 .ExplorerDockCommentTitle {

@@ -21,6 +21,10 @@ describe('Explorer file comment editor', () => {
     expect(
       elementTree.root?.querySelector('.ExplorerDockCommentTarget')?.textContent
     ).toBe('Comment on line 5');
+    expect(
+      elementTree.root?.querySelector('.ExplorerDockCommentBadgeMark')
+        ?.getAttribute('accessibility-label')
+    ).toBe('Synara');
     const textarea = elementTree.root?.querySelector(
       '.ExplorerDockCommentInput'
     );

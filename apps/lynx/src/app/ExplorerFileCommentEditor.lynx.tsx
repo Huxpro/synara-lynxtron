@@ -5,6 +5,7 @@ import {
   formatFileCommentRange,
   normalizeFileCommentText,
 } from '@synara-web/lib/fileComments';
+import { SynaraLogo } from '~/components/SynaraLogo';
 import { Button } from '../components/ui/button';
 
 export function ExplorerFileCommentEditor(props: {
@@ -23,7 +24,10 @@ export function ExplorerFileCommentEditor(props: {
       <view className="ExplorerDockCommentHeader">
         <view className="ExplorerDockCommentIdentity">
           <view className="ExplorerDockCommentBadge">
-            <text className="ExplorerDockCommentBadgeMark">S</text>
+            <SynaraLogo
+              className="ExplorerDockCommentBadgeMark"
+              aria-label="Synara"
+            />
           </view>
           <text className="ExplorerDockCommentTitle">Local comment</text>
         </view>
