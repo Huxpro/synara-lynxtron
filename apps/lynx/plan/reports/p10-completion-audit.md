@@ -268,6 +268,7 @@ Current responsive disposition:
 | Dark shell base fill | Electron vibrancy RGB 6–7 versus Native canonical opaque #101010/#111111 | INTENTIONAL HOST MATERIAL DELTA |
 | Environment | reachable current-head consumer; paired light/dark Browser geometry/material proof at 900x650 | PASS IN BROWSER; NATIVE CURRENT-HEAD SCREENCAST NOT CERTIFIED |
 | Environment Git actions | stable menu, selectable-file/new-branch commits, safe pull, streamed live progress, metadata sync, confirmation, and paired themes | PASS |
+| Environment row interaction | Changes/retry, commit-file selection, Editor view, and pull-request external rows share one interactive-state owner for tap, Enter/Space, hover, pressed, focus, disabled, and checked semantics instead of raw tap-only handlers | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
 | Kanban task creation | overview header, per-project overview action, project header, and Draft-column action open a compact Lynx-native task dialog with Web's `Send as draft` switch and `Create task` action; draft mode persists a typed `thread.create` plus composer draft, immediate mode additionally dispatches typed `thread.turn.start`, and provider failure preserves the real Draft card | PASS — CURRENT PRODUCT SURFACES |
 | Kanban icon identity | route Back, overview project disclosure, and all New task entry points use generated Arrow/Chevron/Plus SVGs; Draft/In Progress/Done status marks reproduce Web's exact 14×14 paths; card pin/worktree/fork/attachment/PR metadata use the same filled-pin, split-arrow, fork, paperclip, and shared PR-state assets as Web instead of text approximations | PASS — CURRENT PRODUCT SURFACES |
 | Composer voice capability | Lynx has no microphone-capture host bridge; current head follows Web's capability gate by omitting the unavailable control instead of rendering a permanently disabled fake microphone. The historical 28×28 disabled-control evidence remains provenance for the superseded implementation, not current-head UI | PASS — HONEST HOST BOUNDARY |
@@ -446,6 +447,15 @@ semantics change. The focused Explorer suite passes (2/2), both production
 bundles build, `git diff --check` passes, and React Doctor 0.9.11 reports zero
 diagnostics against `4924448c`. Visual re-certification remains part of the
 pending current-head matrix.
+The Environment interaction follow-up connects row CSS states to real shared
+interaction behavior. Changes/retry, commit-file include/exclude, Editor view,
+and pull-request external-link rows now use one `EnvironmentInteractiveRow`
+owner for tap, Enter/Space, hover, pressed, focus, disabled, and checked
+semantics. Existing polling, retry, file-selection, editor-view, and external
+URL actions are unchanged. The focused Environment suite passes (6/6), both
+production bundles build, `git diff --check` passes, and React Doctor 0.9.11
+reports zero new diagnostics against `e3e026e6`. Visual re-certification
+remains part of the pending current-head matrix.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

@@ -243,6 +243,31 @@ function EnvironmentRow(props: {
   );
 }
 
+function EnvironmentInteractiveRow(props: {
+  readonly accessibleLabel?: string;
+  readonly ariaChecked?: boolean;
+  readonly baseClassName: string;
+  readonly children: ReactNode;
+  readonly disabled?: boolean;
+  readonly onActivate?: () => void;
+}) {
+  const interaction = useLynxInteractiveState({
+    baseClassName: props.baseClassName,
+    accessibleLabel: props.accessibleLabel,
+    disabled: props.disabled,
+    onActivate: props.onActivate,
+  });
+  return (
+    <view
+      className={interaction.className}
+      aria-checked={props.ariaChecked}
+      {...interaction.eventProps}
+    >
+      {props.children}
+    </view>
+  );
+}
+
 function EnvironmentSectionLabel({ children }: { readonly children: string }) {
   return <text className="EnvironmentSectionLabel">{children}</text>;
 }
@@ -453,26 +478,22 @@ function EnvironmentChanges(props: {
   const status = statusState.data;
   const files = status?.workingTree.files ?? [];
   const stats = status?.workingTree;
+  const accessibleLabel = statusState.error
+    ? 'Retry changes'
+    : status?.hasWorkingTreeChanges
+      ? `${files.length} changed file${files.length === 1 ? '' : 's'}`
+      : 'No changes';
+  const activate = statusState.error
+    ? () => setRefreshGeneration((current) => current + 1)
+    : props.onOpenViewer;
   return (
-    <view
-      className={`EnvironmentChangesTrigger${
+    <EnvironmentInteractiveRow
+      baseClassName={`EnvironmentChangesTrigger${
         statusState.pending ? ' EnvironmentChangesTrigger--disabled' : ''
       }`}
-      accessibility-element
-      accessibility-label={
-        statusState.error
-          ? 'Retry changes'
-          : status?.hasWorkingTreeChanges
-            ? `${files.length} changed file${files.length === 1 ? '' : 's'}`
-            : 'No changes'
-      }
-      bindtap={
-        statusState.pending
-          ? undefined
-          : statusState.error
-            ? () => setRefreshGeneration((current) => current + 1)
-            : props.onOpenViewer
-      }
+      accessibleLabel={accessibleLabel}
+      disabled={statusState.pending}
+      onActivate={activate}
     >
       <EnvironmentRow
         icon={
@@ -511,7 +532,7 @@ function EnvironmentChanges(props: {
           ) : null
         }
       />
-    </view>
+    </EnvironmentInteractiveRow>
   );
 }
 
@@ -843,15 +864,13 @@ function EnvironmentGitAction(props: {
               </Button>
             </view>
             {editingFiles && files.length > 0 ? (
-              <view
-                className="EnvironmentGitActionSelectAll"
-                accessibility-element
-                accessibility-label={
+              <EnvironmentInteractiveRow
+                baseClassName="EnvironmentGitActionSelectAll"
+                accessibleLabel={
                   allSelected ? 'Exclude all files' : 'Include all files'
                 }
-                accessibility-traits="button"
-                aria-checked={allSelected}
-                bindtap={() =>
+                ariaChecked={allSelected}
+                onActivate={() =>
                   setExcludedFiles(
                     allSelected
                       ? new Set(files.map((file) => file.path))
@@ -883,7 +902,7 @@ function EnvironmentGitAction(props: {
                 <text className="EnvironmentGitActionSelectAllLabel">
                   {allSelected ? 'Exclude all' : 'Include all'}
                 </text>
-              </view>
+              </EnvironmentInteractiveRow>
             ) : null}
             <scroll-view
               className="EnvironmentGitActionFiles"
@@ -891,24 +910,24 @@ function EnvironmentGitAction(props: {
               enable-scroll-bar
             >
               {files.map((file) => (
-                <view
-                  className={`EnvironmentGitActionFile${
+                <EnvironmentInteractiveRow
+                  baseClassName={`EnvironmentGitActionFile${
                     excludedFiles.has(file.path)
                       ? ' EnvironmentGitActionFile--excluded'
                       : ''
                   }`}
                   key={file.path}
-                  accessibility-element={editingFiles}
-                  accessibility-label={
+                  accessibleLabel={
                     editingFiles
                       ? `${
                           excludedFiles.has(file.path) ? 'Include' : 'Exclude'
                         } ${file.path}`
                       : undefined
                   }
-                  accessibility-traits={editingFiles ? 'button' : undefined}
-                  aria-checked={!excludedFiles.has(file.path)}
-                  bindtap={
+                  ariaChecked={
+                    editingFiles ? !excludedFiles.has(file.path) : undefined
+                  }
+                  onActivate={
                     editingFiles ? () => toggleFile(file.path) : undefined
                   }
                 >
@@ -939,7 +958,7 @@ function EnvironmentGitAction(props: {
                       ? 'Excluded'
                       : `+${file.insertions} −${file.deletions}`}
                   </text>
-                </view>
+                </EnvironmentInteractiveRow>
               ))}
             </scroll-view>
             <textarea
@@ -1185,12 +1204,10 @@ function EnvironmentEditor(props: {
     <view className="EnvironmentLabeledSection">
       <view className="EnvironmentDivider" />
       <EnvironmentSectionLabel>Editor</EnvironmentSectionLabel>
-      <view
-        className="EnvironmentEditorTrigger"
-        accessibility-element
-        accessibility-label="Editor view"
-        accessibility-traits="button"
-        bindtap={props.onOpenEditorView}
+      <EnvironmentInteractiveRow
+        baseClassName="EnvironmentEditorTrigger"
+        accessibleLabel="Editor view"
+        onActivate={props.onOpenEditorView}
       >
         <EnvironmentRow
           icon={
@@ -1201,7 +1218,7 @@ function EnvironmentEditor(props: {
           }
           label="Editor view"
         />
-      </view>
+      </EnvironmentInteractiveRow>
       <Menu>
         <MenuTrigger
           ariaLabel={`Open in ${activeOption.label}`}
@@ -1427,11 +1444,10 @@ function EnvironmentPullRequest(props: {
     <view className="EnvironmentLabeledSection">
       <view className="EnvironmentDivider" />
       <EnvironmentSectionLabel>Pull request</EnvironmentSectionLabel>
-      <view
-        className="EnvironmentRepositoryRow"
-        bindtap={() => openUrl(livePullRequest.url)}
-        accessibility-element
-        accessibility-label={`Open pull request #${livePullRequest.number}`}
+      <EnvironmentInteractiveRow
+        baseClassName="EnvironmentRepositoryRow"
+        accessibleLabel={`Open pull request #${livePullRequest.number}`}
+        onActivate={() => openUrl(livePullRequest.url)}
       >
         <EnvironmentRow
           icon={
@@ -1454,12 +1470,11 @@ function EnvironmentPullRequest(props: {
             />
           }
         />
-      </view>
-      <view
-        className="EnvironmentRepositoryRow"
-        bindtap={() => openUrl(`${livePullRequest.url}/files`)}
-        accessibility-element
-        accessibility-label={`Open changes for pull request #${livePullRequest.number}`}
+      </EnvironmentInteractiveRow>
+      <EnvironmentInteractiveRow
+        baseClassName="EnvironmentRepositoryRow"
+        accessibleLabel={`Open changes for pull request #${livePullRequest.number}`}
+        onActivate={() => openUrl(`${livePullRequest.url}/files`)}
       >
         <EnvironmentRow
           icon={
@@ -1479,13 +1494,12 @@ function EnvironmentPullRequest(props: {
             />
           }
         />
-      </view>
+      </EnvironmentInteractiveRow>
       {livePullRequest.mergeability === 'conflicting' ? (
-        <view
-          className="EnvironmentRepositoryRow"
-          bindtap={() => openUrl(livePullRequest.url)}
-          accessibility-element
-          accessibility-label={`Conflicts with ${livePullRequest.baseBranch}`}
+        <EnvironmentInteractiveRow
+          baseClassName="EnvironmentRepositoryRow"
+          accessibleLabel={`Conflicts with ${livePullRequest.baseBranch}`}
+          onActivate={() => openUrl(livePullRequest.url)}
         >
           <EnvironmentRow
             icon={
@@ -1508,7 +1522,7 @@ function EnvironmentPullRequest(props: {
               />
             }
           />
-        </view>
+        </EnvironmentInteractiveRow>
       ) : null}
       <Menu open={checksOpen} onOpenChange={setChecksOpen}>
         <MenuTrigger

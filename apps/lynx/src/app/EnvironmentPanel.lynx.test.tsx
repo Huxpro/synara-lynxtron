@@ -26,6 +26,30 @@ describe('Lynx Environment panel', () => {
     ).toHaveLength(4);
   });
 
+  it('routes actionable rows through the shared keyboard and focus interaction state', () => {
+    const panelSource = readFileSync(
+      new URL('./EnvironmentPanel.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+
+    expect(panelSource).toContain('function EnvironmentInteractiveRow(');
+    expect(panelSource).toContain(
+      "baseClassName: props.baseClassName"
+    );
+    expect(panelSource).toContain('disabled: props.disabled');
+    expect(panelSource).toContain('aria-checked={props.ariaChecked}');
+    expect(panelSource).toContain(
+      'baseClassName="EnvironmentGitActionSelectAll"'
+    );
+    expect(panelSource).toContain(
+      'baseClassName="EnvironmentEditorTrigger"'
+    );
+    expect(panelSource).toContain(
+      'baseClassName="EnvironmentRepositoryRow"'
+    );
+    expect(panelSource).not.toContain('bindtap=');
+  });
+
   it('connects the real thread header toggle and mounted panel', () => {
     const routerSource = readFileSync(
       new URL('./router.tsx', import.meta.url),
@@ -207,7 +231,7 @@ describe('Lynx Environment panel', () => {
       panelSource.indexOf('webStorage.setItem(LAST_EDITOR_STORAGE_KEY, editor)')
     );
     expect(panelSource).toContain('Open in ${activeOption.label}');
-    expect(panelSource).toContain('accessibility-label="Editor view"');
+    expect(panelSource).toContain('accessibleLabel="Editor view"');
     expect(panelSource).toContain('label="Editor view"');
     expect(routerSource).toContain(
       'onOpenEditorView={() => setExplorerVisibility(true)}'
