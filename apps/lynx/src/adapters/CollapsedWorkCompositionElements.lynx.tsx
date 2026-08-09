@@ -1,5 +1,6 @@
 import type { ReactNode } from '@lynx-js/react';
 
+import { ChevronRightIcon } from '../lib/icons.lynx';
 import './collapsed-work-composition-elements.css';
 import {
   disclosureChevronClassName,
@@ -47,14 +48,13 @@ export function CollapsedWorkLabelElement(props: ChildrenProps) {
 
 export function CollapsedWorkChevronElement(props: { readonly open: boolean }) {
   return (
-    <text
+    <ChevronRightIcon
       className={disclosureChevronClassName(
         props.open,
         'SharedCollapsedWorkChevron'
       )}
-    >
-      ›
-    </text>
+      size={12}
+    />
   );
 }
 

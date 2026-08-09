@@ -28,14 +28,17 @@
   opacity: 0.72;
 }
 
-.SharedCollapsedWorkLabel,
-.SharedCollapsedWorkChevron {
+.SharedCollapsedWorkLabel {
   color: var(--muted-foreground);
   font-size: 12px;
   line-height: 18px;
 }
 
 .SharedCollapsedWorkChevron {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  color: var(--muted-foreground);
   opacity: 0.72;
 }
 
