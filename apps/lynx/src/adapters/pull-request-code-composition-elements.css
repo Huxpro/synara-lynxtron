@@ -72,8 +72,13 @@
 
 .SharedPrCodeFileChevron {
   width: 10px;
+  height: 10px;
+  flex-shrink: 0;
   color: var(--muted-foreground);
-  font-size: 10px;
+}
+
+.SharedPrCodeDisclosure {
+  width: 100%;
 }
 
 .SharedPrCodeFilePath {

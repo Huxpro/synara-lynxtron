@@ -1,6 +1,12 @@
 import type { ReactNode } from '@lynx-js/react';
 
 import type { PullRequestDiffLineKind } from '@synara-web/components/pullRequest/pullRequestCode.logic';
+import { ChevronRightIcon } from '../lib/icons.lynx';
+import {
+  disclosureChevronClassName,
+  disclosureContentClassName,
+  useLynxDisclosurePresence,
+} from '../platform/motion.lynx';
 import './pull-request-code-composition-elements.css';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 
@@ -54,19 +60,47 @@ export function PullRequestCodeFileHeaderElement(props: {
 }) {
   const interaction = useLynxInteractiveState({
     baseClassName: 'SharedPrCodeFileHeader',
+    accessibleLabel: `${props.expanded ? 'Collapse' : 'Expand'} ${props.path}`,
+    accessibilityValue: props.expanded ? 'Expanded' : 'Collapsed',
     onActivate: props.onActivate,
   });
   return (
-    <view className={interaction.className} {...interaction.eventProps}>
-      <text className="SharedPrCodeFileChevron">
-        {props.expanded ? '▾' : '▸'}
-      </text>
+    <view
+      className={interaction.className}
+      aria-expanded={props.expanded}
+      {...interaction.eventProps}
+    >
+      <ChevronRightIcon
+        className={disclosureChevronClassName(
+          props.expanded,
+          'SharedPrCodeFileChevron'
+        )}
+        size={10}
+      />
       <text className="SharedPrCodeFilePath">{props.path}</text>
       {props.previousPath ? (
         <text className="SharedPrCodeFilePrevious">from {props.previousPath}</text>
       ) : null}
       <text className="SharedPrCodeStatsAddition">+{props.additions}</text>
       <text className="SharedPrCodeStatsDeletion">-{props.deletions}</text>
+    </view>
+  );
+}
+
+export function PullRequestCodeDisclosureElement(
+  props: ChildrenProps & { readonly expanded: boolean }
+) {
+  const present = useLynxDisclosurePresence(props.expanded);
+  if (!present) return null;
+  return (
+    <view
+      className={disclosureContentClassName(
+        props.expanded,
+        'SharedPrCodeDisclosure'
+      )}
+      aria-hidden={!props.expanded}
+    >
+      {props.children}
     </view>
   );
 }

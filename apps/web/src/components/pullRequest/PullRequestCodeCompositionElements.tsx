@@ -2,6 +2,8 @@
 
 import type { ReactNode } from "react";
 
+import { DisclosureChevron } from "~/components/ui/DisclosureChevron";
+import { DisclosureRegion } from "~/components/ui/DisclosureRegion";
 import { cn } from "~/lib/utils";
 import type { PullRequestDiffLineKind } from "./pullRequestCode.logic";
 
@@ -46,14 +48,26 @@ export function PullRequestCodeFileHeaderElement(props: {
   readonly onActivate: () => void;
 }) {
   return (
-    <button type="button" className="flex w-full items-center gap-2 bg-muted/35 px-3 py-2 text-left text-xs" onClick={props.onActivate}>
-      <span aria-hidden>{props.expanded ? "▾" : "▸"}</span>
+    <button
+      type="button"
+      className="flex w-full items-center gap-2 bg-muted/35 px-3 py-2 text-left text-xs"
+      aria-expanded={props.expanded}
+      aria-label={`${props.expanded ? "Collapse" : "Expand"} ${props.path}`}
+      onClick={props.onActivate}
+    >
+      <DisclosureChevron open={props.expanded} className="size-2.5 shrink-0 text-muted-foreground" />
       <span className="min-w-0 flex-1 truncate font-mono">{props.path}</span>
       {props.previousPath ? <span className="truncate text-muted-foreground">from {props.previousPath}</span> : null}
       <span className="text-success">+{props.additions}</span>
       <span className="text-destructive">-{props.deletions}</span>
     </button>
   );
+}
+
+export function PullRequestCodeDisclosureElement(
+  props: ChildrenProps & { readonly expanded: boolean },
+) {
+  return <DisclosureRegion open={props.expanded}>{props.children}</DisclosureRegion>;
 }
 
 export function PullRequestCodeLinesElement(props: ChildrenProps) {

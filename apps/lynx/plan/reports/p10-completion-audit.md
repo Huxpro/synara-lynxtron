@@ -288,6 +288,7 @@ Current responsive disposition:
 | Pull Request comments | Summary exposes a Lynx-native GitHub comment composer backed by typed `pullRequests.comment`; it enforces the shared 65,536-character contract, preserves drafts on failure, prevents rapid duplicate submission, handles Enter/Shift+Enter/IME correctly, and revalidates detail/list data after settled mutations | PASS — CURRENT PRODUCT SURFACES |
 | Pull Request row icon identity | open/draft/conflicting/merged/closed rows resolve through the shared PR-state presentation and render the matching Central assets; pin controls use Web's outline/filled pin rule instead of Unicode circles | PASS — CURRENT PRODUCT SURFACES |
 | Pull Request Summary disclosure | Description, Checks, and Comments reuse the shared 220ms ease-out presence/content motion plus rotating 14px ChevronRight identity, including reduced-motion behavior, instead of instant unmounting and text chevrons | PASS — CURRENT PRODUCT SURFACES |
+| Pull Request Code disclosure | portable diff file headers expose named expanded/collapsed state and use the shared ChevronRight identity; Web and Lynx file bodies now stay on the canonical 220ms disclosure path instead of instant conditional mount plus `▸/▾` text glyphs | PASS — SHARED PRODUCT COMPOSITION; VISUAL RE-CERTIFICATION PENDING |
 | Native arbitrary range selection | whole-message transcript references and source line comments are complete; arbitrary DOM-style text range selection still requires a host/engine selection kernel | PARTIAL — EXPLICIT HOST/ENGINE GAP |
 | Current-head full three-client route/theme/size/state matrix | historical P10 matrix predates later product commits | NOT RE-CERTIFIED |
 
@@ -406,6 +407,16 @@ Focused renderer/interaction tests, both production builds, `git diff
 --check`, and React Doctor 0.9.11 against `8871eb92` pass with zero
 diagnostics; this remains implementation evidence pending the full visual
 matrix.
+The Pull Request Code follow-up fixes the remaining shared diff-file disclosure
+that bypassed the repository-wide toggle contract. Both Web and Lynx now use
+the shared ChevronRight identity, named `aria-expanded` state, and canonical
+220ms disclosure wrappers; Lynx preserves closing content through the existing
+presence helper. Diff parsing, visible-line pagination, and route-owned
+expanded keys are unchanged. Focused Lynx capability/disclosure tests and Web
+diff-logic tests pass (6 assertions total), both production bundles build,
+`git diff --check` passes, and React Doctor 0.9.11 reports zero diagnostics for
+both `apps/lynx` and `apps/web` against `f7398e67`. Visual re-certification
+remains part of the pending current-head matrix.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

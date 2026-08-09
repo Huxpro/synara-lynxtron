@@ -1,6 +1,7 @@
 // Physical shared source for portable PR diff status, file order, headers and line anatomy.
 
 import {
+  PullRequestCodeDisclosureElement,
   PullRequestCodeFileElement,
   PullRequestCodeFileHeaderElement,
   PullRequestCodeLineElement,
@@ -69,17 +70,19 @@ export function PullRequestCodeComposition(props: {
               expanded
               onActivate={() => {}}
             />
-            <PullRequestCodeLinesElement>
-              {props.view.lines.slice(0, props.rawVisibleLineCount).map((line) => (
-                <PullRequestCodeLineElement key={line.id} {...line} />
-              ))}
-            </PullRequestCodeLinesElement>
-            {props.rawVisibleLineCount < props.view.lines.length ? (
-              <PullRequestCodeMoreElement
-                label={`Show ${Math.min(PULL_REQUEST_DIFF_MORE_LINE_COUNT, props.view.lines.length - props.rawVisibleLineCount)} more lines`}
-                onActivate={props.onShowMoreRaw}
-              />
-            ) : null}
+            <PullRequestCodeDisclosureElement expanded>
+              <PullRequestCodeLinesElement>
+                {props.view.lines.slice(0, props.rawVisibleLineCount).map((line) => (
+                  <PullRequestCodeLineElement key={line.id} {...line} />
+                ))}
+              </PullRequestCodeLinesElement>
+              {props.rawVisibleLineCount < props.view.lines.length ? (
+                <PullRequestCodeMoreElement
+                  label={`Show ${Math.min(PULL_REQUEST_DIFF_MORE_LINE_COUNT, props.view.lines.length - props.rawVisibleLineCount)} more lines`}
+                  onActivate={props.onShowMoreRaw}
+                />
+              ) : null}
+            </PullRequestCodeDisclosureElement>
           </PullRequestCodeFileElement>
         </>
       ) : (
@@ -102,8 +105,7 @@ export function PullRequestCodeComposition(props: {
                   expanded={isExpanded}
                   onActivate={() => props.onToggleFile(file.key)}
                 />
-                {isExpanded ? (
-                  <>
+                <PullRequestCodeDisclosureElement expanded={isExpanded}>
                     <PullRequestCodeLinesElement>
                       {file.lines.slice(0, visibleLineCount).map((line) => (
                         <PullRequestCodeLineElement key={line.id} {...line} />
@@ -115,8 +117,7 @@ export function PullRequestCodeComposition(props: {
                         onActivate={() => props.onShowMoreFile(file.key)}
                       />
                     ) : null}
-                  </>
-                ) : null}
+                </PullRequestCodeDisclosureElement>
               </PullRequestCodeFileElement>
             );
           })}
