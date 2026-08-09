@@ -192,7 +192,7 @@ They are not converted into a guessed wire attachment or inserted into the
 visible prompt text.
 
 The retained light/dark frames are both `1280x820`, have identical
-`451x135 @ (807,164)` editor geometry, six named line controls, the active
+`440x135 @ (807,164)` editor geometry, six named line controls, the active
 line-5 band, current TypeScript tokens, and empty page-error logs. A real mouse
 click reached the line gutter and the existing Web-only compatibility layer
 represented the idempotent `explorerCommentLine=5` init target; Native keeps

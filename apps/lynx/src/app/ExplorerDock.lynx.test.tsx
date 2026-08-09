@@ -153,6 +153,9 @@ describe('Lynx Explorer dock', () => {
       /\.ExplorerDockEntry\s*\{[^}]*min-height:\s*28px;[^}]*padding:\s*4px 8px;/s
     );
     expect(styles).toMatch(
+      /\.ExplorerDockCommentEditor\s*\{[^}]*width:\s*440px;[^}]*min-width:\s*240px;[^}]*max-width:\s*calc\(100% - 44px\);/s
+    );
+    expect(styles).toMatch(
       /\.ExplorerDockPreview\s*\{[^}]*flex:\s*1;[^}]*min-width:\s*0;[^}]*flex-direction:\s*column;/s
     );
     expect(styles).toMatch(

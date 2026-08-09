@@ -427,7 +427,9 @@
 
 .ExplorerDockCommentEditor {
   display: flex;
+  width: 440px;
   min-width: 240px;
+  max-width: calc(100% - 44px);
   margin: 5px 10px 8px 34px;
   padding: 12px 14px;
   flex-direction: column;

@@ -9,7 +9,7 @@
 - A real pointer click on the line-5 gutter produced the idempotent
   `explorerCommentLine=5` target and rendered the product editor.
 - Both themes expose six named `Comment on line N` controls, the active line-1
-  accent band, and identical `451x135 @ (807,164)` editor geometry.
+  accent band, and identical `440x135 @ (807,164)` editor geometry.
 - Editor copy matches Web: `Local comment`, `Comment on line 5`,
   `Request change`, Cancel, Comment. Both screenshots are exactly 1280x820 and
   page-errors.txt is empty.
