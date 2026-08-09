@@ -12,14 +12,14 @@
   "summary": {
     "classes": 2275,
     "customClasses": 77,
-    "surfaceWeighted": 14160,
-    "totalWeighted": 13231,
-    "coveredWeighted": 12975,
+    "surfaceWeighted": 14161,
+    "totalWeighted": 13232,
+    "coveredWeighted": 12976,
     "coveragePercent": 98.07,
     "status": {
       "GENERATED": {
         "classes": 1108,
-        "weighted": 11042
+        "weighted": 11043
       },
       "PATCHED": {
         "classes": 574,
@@ -35,7 +35,7 @@
       },
       "CUSTOM": {
         "classes": 77,
-        "weighted": 116
+        "weighted": 115
       }
     },
     "runtime": {
@@ -2507,7 +2507,6 @@
         "apps/web/src/components/chat/DockPaneHeader.tsx",
         "apps/web/src/components/chat/FileAttachmentChip.tsx",
         "apps/web/src/components/chat/FileDiffHeader.tsx",
-        "apps/web/src/components/chat/FileEntryIcon.tsx",
         "apps/web/src/components/chat/GitPanel.tsx",
         "apps/web/src/components/chat/MessageTrail.tsx",
         "apps/web/src/components/chat/MessagesTimeline.tsx",
@@ -2547,6 +2546,7 @@
         "apps/web/src/components/ui/input.tsx",
         "apps/web/src/components/ui/label.tsx",
         "apps/web/src/components/ui/textarea.tsx",
+        "apps/web/src/file-icons.ts",
         "apps/web/src/routes/-automations.shared.tsx",
         "apps/web/src/routes/__root.tsx",
         "apps/web/src/routes/_chat.tsx",
@@ -9451,6 +9451,32 @@
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
     {
+      "token": "min-w-44",
+      "occurrences": 9,
+      "files": [
+        "apps/web/src/components/Sidebar.tsx",
+        "apps/web/src/components/SidebarListSectionHeaderElements.tsx",
+        "apps/web/src/components/chat/ChatHeader.tsx",
+        "apps/web/src/components/chat/ComposerRuntimeModeControlCompositionElements.tsx",
+        "apps/web/src/components/chat/OpenInPicker.tsx",
+        "apps/web/src/components/chat/RightDock.tsx",
+        "apps/web/src/components/chat/environment/EnvironmentEditorSection.tsx",
+        "apps/web/src/components/settings/ThemePackEditorCompositionElements.tsx"
+      ],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
       "token": "mt-3",
       "occurrences": 9,
       "files": [
@@ -9915,31 +9941,6 @@
         "threads-shell"
       ],
       "runtime": false,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "min-w-44",
-      "occurrences": 8,
-      "files": [
-        "apps/web/src/components/Sidebar.tsx",
-        "apps/web/src/components/chat/ChatHeader.tsx",
-        "apps/web/src/components/chat/ComposerRuntimeModeControlCompositionElements.tsx",
-        "apps/web/src/components/chat/OpenInPicker.tsx",
-        "apps/web/src/components/chat/RightDock.tsx",
-        "apps/web/src/components/chat/environment/EnvironmentEditorSection.tsx",
-        "apps/web/src/components/settings/ThemePackEditorCompositionElements.tsx"
-      ],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -17190,13 +17191,16 @@
       "token": "text-[#22c55e]",
       "occurrences": 3,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "GENERATED",
@@ -19351,22 +19355,6 @@
         "apps/web/src/components/ChatMarkdown.tsx"
       ],
       "screens": [
-        "pull-requests",
-        "thread"
-      ],
-      "runtime": true,
-      "status": "CUSTOM",
-      "reason": "project component class; covered by authored CSS, not the utility denominator"
-    },
-    {
-      "token": "code-brackets",
-      "occurrences": 2,
-      "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
-      ],
-      "screens": [
-        "kanban",
-        "projects",
         "pull-requests",
         "thread"
       ],
@@ -23137,13 +23125,16 @@
       "token": "text-[#94a3b8]",
       "occurrences": 2,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "GENERATED",
@@ -23153,13 +23144,16 @@
       "token": "text-[#f59e0b]",
       "occurrences": 2,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "GENERATED",
@@ -29518,13 +29512,16 @@
       "token": "calendar-days",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "CUSTOM",
@@ -29916,6 +29913,25 @@
       "occurrences": 1,
       "files": [
         "apps/web/src/components/chat/chatSurfaceHeaderStyles.ts"
+      ],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "CUSTOM",
+      "reason": "project component class; covered by authored CSS, not the utility denominator"
+    },
+    {
+      "token": "code-brackets",
+      "occurrences": 1,
+      "files": [
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
@@ -33207,13 +33223,16 @@
       "token": "file-jpg",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "CUSTOM",
@@ -33223,13 +33242,16 @@
       "token": "file-pdf",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "CUSTOM",
@@ -33239,13 +33261,16 @@
       "token": "file-png",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "CUSTOM",
@@ -33255,13 +33280,16 @@
       "token": "file-text",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "CUSTOM",
@@ -33271,13 +33299,16 @@
       "token": "file-zip",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "CUSTOM",
@@ -37312,13 +37343,16 @@
       "token": "image-alt-text",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "CUSTOM",
@@ -40563,13 +40597,16 @@
       "token": "page-text",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "CUSTOM",
@@ -42156,13 +42193,16 @@
       "token": "settings-gear-1",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "CUSTOM",
@@ -44025,13 +44065,16 @@
       "token": "text-[#3178c6]",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "GENERATED",
@@ -44041,13 +44084,16 @@
       "token": "text-[#3776ab]",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "GENERATED",
@@ -44057,13 +44103,16 @@
       "token": "text-[#38bdf8]",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "GENERATED",
@@ -44073,13 +44122,16 @@
       "token": "text-[#42b883]",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "GENERATED",
@@ -44089,13 +44141,16 @@
       "token": "text-[#4ade80]",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "GENERATED",
@@ -44119,13 +44174,16 @@
       "token": "text-[#61dafb]",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "GENERATED",
@@ -44135,13 +44193,16 @@
       "token": "text-[#659ad2]",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "GENERATED",
@@ -44151,13 +44212,16 @@
       "token": "text-[#6cb6ff]",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "GENERATED",
@@ -44167,13 +44231,16 @@
       "token": "text-[#777bb4]",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "GENERATED",
@@ -44183,13 +44250,16 @@
       "token": "text-[#9ca3af]",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "GENERATED",
@@ -44199,13 +44269,16 @@
       "token": "text-[#a78bfa]",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "GENERATED",
@@ -44215,13 +44288,16 @@
       "token": "text-[#c084fc]",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "GENERATED",
@@ -44231,13 +44307,16 @@
       "token": "text-[#cb3837]",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "GENERATED",
@@ -44247,13 +44326,16 @@
       "token": "text-[#dea584]",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "GENERATED",
@@ -44263,13 +44345,16 @@
       "token": "text-[#ef4444]",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "GENERATED",
@@ -44279,13 +44364,16 @@
       "token": "text-[#f05032]",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "GENERATED",
@@ -44309,13 +44397,16 @@
       "token": "text-[#f4d7a1]",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "GENERATED",
@@ -44325,13 +44416,16 @@
       "token": "text-[#f5c542]",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "GENERATED",
@@ -44341,13 +44435,16 @@
       "token": "text-[#f7df1e]",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "GENERATED",
@@ -44357,13 +44454,16 @@
       "token": "text-[#f89820]",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "GENERATED",
@@ -44373,13 +44473,16 @@
       "token": "text-[#f97316]",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "GENERATED",
@@ -44389,13 +44492,16 @@
       "token": "text-[#ff3e00]",
       "occurrences": 1,
       "files": [
-        "apps/web/src/components/chat/FileEntryIcon.tsx"
+        "apps/web/src/file-icons.ts"
       ],
       "screens": [
         "kanban",
         "projects",
         "pull-requests",
-        "thread"
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
       ],
       "runtime": true,
       "status": "GENERATED",
