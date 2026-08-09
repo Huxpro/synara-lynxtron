@@ -4,8 +4,18 @@ import type {
   PullRequestState,
 } from '@synara/contracts';
 import type { ReactNode } from '@lynx-js/react';
+import draftSvg from '@synara-central-icons/draft.svg?raw';
+import mergeConflictSvg from '@synara-central-icons/merge-conflict.svg?raw';
+import mergedSvg from '@synara-central-icons/merged-simple.svg?raw';
+import pinFilledSvg from '@synara-central-icons-fill/pin.svg?raw';
+import pinSvg from '@synara-central-icons/pin.svg?raw';
+import pullRequestClosedSvg from '@synara-central-icons/request-closed.svg?raw';
+import pullRequestSvg from '@synara-central-icons/pull-request.svg?raw';
+import { resolvePrStatePresentation } from '@synara-web/components/pullRequest/pullRequestStatePresentation.logic';
 
+import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
 import './pull-request-row-composition-elements.css';
+import { useTheme } from './useTheme.lynx';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 
 type ChildrenProps = { readonly children?: ReactNode };
@@ -49,35 +59,48 @@ export function PullRequestRowActionElement(
   );
 }
 
-function statePresentation(
-  state: PullRequestState,
-  draft: boolean,
-  mergeability?: GitPullRequestMergeability
-) {
-  if (draft && state === 'open') return { glyph: '◌', tone: 'draft' };
-  if (state === 'open' && mergeability === 'conflicting') {
-    return { glyph: '!', tone: 'conflicting' };
-  }
-  if (state === 'open') return { glyph: '↗', tone: 'open' };
-  if (state === 'merged') return { glyph: '◆', tone: 'merged' };
-  return { glyph: '×', tone: 'closed' };
-}
+const PR_STATE_SVGS = {
+  draft: draftSvg,
+  'merge-conflict': mergeConflictSvg,
+  'merged-simple': mergedSvg,
+  'pull-request': pullRequestSvg,
+  'pull-request-closed': pullRequestClosedSvg,
+} as const;
 
 export function PullRequestRowStateElement(props: {
   readonly state: PullRequestState;
   readonly isDraft: boolean;
   readonly mergeability?: GitPullRequestMergeability | undefined;
 }) {
-  const presentation = statePresentation(
-    props.state,
-    props.isDraft,
-    props.mergeability
-  );
+  const { resolvedTheme, svgColors } = useTheme();
+  const presentation = resolvePrStatePresentation({
+    state: props.state,
+    isDraft: props.isDraft,
+    mergeability: props.mergeability,
+  });
+  const color =
+    presentation.iconKind === 'pull-request'
+      ? '#00a240'
+      : presentation.iconKind === 'merged-simple'
+        ? '#5e6ad2'
+        : presentation.iconKind === 'merge-conflict'
+          ? resolvedTheme === 'dark'
+            ? '#e3433f'
+            : '#e02e2a'
+          : svgColors.mutedForeground;
   return (
     <view
-      className={`SharedPrState SharedPrState--${presentation.tone}`}
+      className={`SharedPrState SharedPrState--${presentation.iconKind}`}
+      accessibility-element
+      accessibility-label={presentation.label}
     >
-      <text className="SharedPrStateGlyph">{presentation.glyph}</text>
+      <svg
+        className="SharedPrStateIcon"
+        content={colorizeLynxSvg(
+          PR_STATE_SVGS[presentation.iconKind],
+          color
+        )}
+      />
     </view>
   );
 }
@@ -158,6 +181,7 @@ export function PullRequestRowPinElement(props: {
   readonly pinned: boolean;
   readonly onActivate: () => void;
 }) {
+  const { svgColors } = useTheme();
   const interaction = useLynxInteractiveState({
     baseClassName: 'SharedPrPin',
     accessibleLabel: props.label,
@@ -171,7 +195,13 @@ export function PullRequestRowPinElement(props: {
       aria-pressed={props.pinned}
       {...interaction.eventProps}
     >
-      <text className="SharedPrPinGlyph">{props.pinned ? '●' : '○'}</text>
+      <svg
+        className="SharedPrPinIcon"
+        content={colorizeLynxSvg(
+          props.pinned ? pinFilledSvg : pinSvg,
+          props.pinned ? svgColors.foreground : svgColors.mutedForeground
+        )}
+      />
     </view>
   );
 }

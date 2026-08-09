@@ -11,8 +11,8 @@ import type { GitPullRequestMergeability, PullRequestState } from "@synara/contr
 import { cn } from "~/lib/utils";
 import {
   PR_STATE_PRESENTATION_ICONS,
-  resolvePrStatePresentation,
-} from "./pullRequestStatePresentation";
+} from "./pullRequestStatePresentation.icons";
+import { resolvePrStatePresentation } from "./pullRequestStatePresentation.logic";
 
 const SIZE_CLASS_NAME = {
   sm: "size-4",

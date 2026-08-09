@@ -44,26 +44,10 @@
   margin-right: 12px;
 }
 
-.SharedPrStateGlyph {
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.SharedPrState--open .SharedPrStateGlyph {
-  color: var(--success);
-}
-
-.SharedPrState--draft .SharedPrStateGlyph,
-.SharedPrState--closed .SharedPrStateGlyph {
-  color: var(--muted-foreground);
-}
-
-.SharedPrState--merged .SharedPrStateGlyph {
-  color: var(--accent-foreground);
-}
-
-.SharedPrState--conflicting .SharedPrStateGlyph {
-  color: var(--destructive);
+.SharedPrStateIcon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
 }
 
 .SharedPrCopy {
@@ -187,7 +171,8 @@
   box-shadow: 0 0 0 1px var(--ring);
 }
 
-.SharedPrPinGlyph {
-  color: var(--muted-foreground);
-  font-size: 12px;
+.SharedPrPinIcon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
 }

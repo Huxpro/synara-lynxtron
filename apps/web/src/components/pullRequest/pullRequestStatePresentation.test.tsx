@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 
 import {
   PR_STATE_PRESENTATION_ICONS,
-  resolvePrStatePresentation,
-} from "./pullRequestStatePresentation";
+} from "./pullRequestStatePresentation.icons";
+import { resolvePrStatePresentation } from "./pullRequestStatePresentation.logic";
 
 describe("resolvePrStatePresentation", () => {
   it("gives every state a dedicated glyph from the shared icon map", () => {

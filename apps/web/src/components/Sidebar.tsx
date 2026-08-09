@@ -26,9 +26,11 @@ import {
 import { createCentralIconComponent } from "~/lib/central-icons";
 import {
   PR_STATE_PRESENTATION_ICONS,
+} from "~/components/pullRequest/pullRequestStatePresentation.icons";
+import {
   resolvePrStatePresentation,
   type PrStatePresentation,
-} from "~/components/pullRequest/pullRequestStatePresentation";
+} from "~/components/pullRequest/pullRequestStatePresentation.logic";
 import { PinStatusIcon, pinActionLabel } from "~/lib/pin";
 import { ensureNativeApi } from "~/nativeApi";
 import { autoAnimate } from "@formkit/auto-animate";

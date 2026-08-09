@@ -27,7 +27,7 @@ import { resolveThreadEnvironmentPresentation } from "~/lib/threadEnvironment";
 import { formatRelativeTime } from "~/lib/relativeTime";
 import { formatElapsed } from "../../session-logic";
 import { resolveThreadStatusPill } from "../Sidebar.logic";
-import { resolvePrStatePresentation } from "../pullRequest/pullRequestStatePresentation";
+import { resolvePrStatePresentation } from "../pullRequest/pullRequestStatePresentation.logic";
 import {
   KANBAN_COLUMN_LABELS,
   kanbanThreadCardId,

@@ -8,8 +8,8 @@ import type { ReactNode } from "react";
 import { ProviderIcon } from "../ProviderIcon";
 import {
   PR_STATE_PRESENTATION_ICONS,
-  type PrStatePresentation,
-} from "../pullRequest/pullRequestStatePresentation";
+} from "../pullRequest/pullRequestStatePresentation.icons";
+import type { PrStatePresentation } from "../pullRequest/pullRequestStatePresentation.logic";
 import { PR_FINE_TEXT_CLASS_NAME } from "../pullRequest/pullRequestText";
 import type { SidebarStatusPresentation } from "../SidebarStatus.logic";
 import { RAISED_SURFACE_CHROME_CLASS_NAME } from "../chat/composerPickerStyles";
