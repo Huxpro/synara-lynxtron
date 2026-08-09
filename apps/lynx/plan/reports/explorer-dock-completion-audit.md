@@ -28,6 +28,7 @@ file preview, responsive layout, and light/dark Lynx-for-Web evidence pass.
 | Live Explorer populated data | Canonical fixture rendered `docs`, `src`, and `README.md`; relay diagnostics included `projects.listDirectories`. Trusted README selection included `projects.readFile` and rendered the expected Markdown. Search `populated` + Enter included `projects.searchEntries`, returned only `src/populated.ts`, and its trusted selection rendered the source text | PASS |
 | Directory expansion | Canonical nested fixture expanded `src` then `src/nested` through real rendered mouse input, issued one lazy `projects.listDirectories` request per level, rendered `tree.ts` and `deep.ts`, and collapsed the parent without exposing descendants | PASS |
 | Tree row fidelity | Tree rows now match Web's 28px single-line anatomy, use the shared disclosure chevron motion, and indent root/child/grandchild content at 8/22/36px instead of duplicating names as `docsdocs` / `srcsrc` | PASS |
+| File icon identity | Lynx consumes Web's canonical `getFileIconName` and shared color resolver, renders the exact Central SVG family for every mapped type, and falls back to `code-brackets` only for unknown types | PASS |
 | Live Explorer light/dark populated matrix | At `1280×820`, DPR 1, both themes render three entries, selected `README.md`, a `512×774` dock, `240px` sidebar, `239×685` entries scroll area, `271×730` preview, and `247×706` preview scroller. Light resolves the dock to `rgb(255,255,255)` / `rgb(13,13,13)`; dark resolves to `rgb(16,16,16)` / `rgb(252,252,252)`. Both PNGs are exactly `1280×820` | PASS |
 | Narrow Explorer geometry | At `900×700`, DPR 1, the dock clamps to `580px` (`900 - 320px` minimum main content), keeps a `240px` sidebar and `339px` preview, restores matching `padding-right:580px`, preserves the selected README preview, and exports an exact `900×700` PNG | PASS |
 | Explorer drag resizing | At `1280×820`, the Web-compatible sash path changed the dock from `640px` to `760px` through a trusted pointer drag. The target width survived the page refresh and `ThreadPage` restored matching `padding-right:760px`; Native retains the shared `createLynxSidebarResizeSession` path | PASS |
@@ -55,3 +56,19 @@ The Web-only host compatibility layer represents expanded targets with repeated
 ReactLynx `bindtap`; the Desktop bundle retains the original live `bindtap`
 state path. Light and dark `1280x820` evidence has identical 28px row geometry,
 8/22/36px indentation, empty page-error files, and three directory-list RPCs.
+
+## File-icon continuation
+
+`shots/2026-08-09/explorer-file-icons-current/` replaces the `▤` text
+placeholder with the same Central icon identity and extension colors used by
+Web. The pure icon-name and color tables now have one owner in
+`apps/web/src/file-icons.ts`; Web keeps its Tailwind utility classes while Lynx
+embeds the matching static SVG and resolves theme-semantic colors through the
+existing Lynx palette.
+
+The retained fixture proves JSON `#f5c542`, TypeScript `#3178c6`, unknown Go
+fallback `#9ca3af`, Markdown `#6cb6ff`, and PDF `#ef4444` at the unchanged
+28px row rhythm in both light and dark. The full static Central mapping adds
+about 118KB to the uncompressed Lynx bundle; that explicit cost avoids silently
+misrepresenting known Python, image, archive, document, media, and framework
+files as generic code.

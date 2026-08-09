@@ -8,6 +8,86 @@
 // Generic bracket glyph used whenever a file type has no dedicated Central icon.
 const DEFAULT_FILE_ICON = "code-brackets";
 
+const FILE_ICON_COLOR_BY_ICON_NAME = new Map<string, string>([
+  ["audio", "#38bdf8"],
+  ["bun", "#f4d7a1"],
+  ["calendar-days", "#f59e0b"],
+  ["c", "#659ad2"],
+  ["cmd", "#4ade80"],
+  ["code-brackets", "#9ca3af"],
+  ["file-jpg", "#22c55e"],
+  ["file-pdf", "#ef4444"],
+  ["file-png", "#22c55e"],
+  ["file-text", "#94a3b8"],
+  ["file-zip", "#f97316"],
+  ["git", "#f05032"],
+  ["image-alt-text", "#22c55e"],
+  ["java", "#f89820"],
+  ["javascript", "#f7df1e"],
+  ["json", "#f5c542"],
+  ["lock", "#f59e0b"],
+  ["markdown", "#6cb6ff"],
+  ["npm", "#cb3837"],
+  ["page-text", "#94a3b8"],
+  ["php", "#777bb4"],
+  ["phyton", "#3776ab"],
+  ["react", "#61dafb"],
+  ["rust", "#dea584"],
+  ["settings-gear-1", "#a78bfa"],
+  ["svelte", "#ff3e00"],
+  ["typescript", "#3178c6"],
+  ["vercel", "var(--foreground)"],
+  ["video", "#c084fc"],
+  ["vue", "#42b883"],
+]);
+
+const FILE_ICON_COLOR_CLASS_BY_ICON_NAME = new Map<string, string>([
+  ["audio", "text-[#38bdf8]"],
+  ["bun", "text-[#f4d7a1]"],
+  ["calendar-days", "text-[#f59e0b]"],
+  ["c", "text-[#659ad2]"],
+  ["cmd", "text-[#4ade80]"],
+  ["code-brackets", "text-[#9ca3af]"],
+  ["file-jpg", "text-[#22c55e]"],
+  ["file-pdf", "text-[#ef4444]"],
+  ["file-png", "text-[#22c55e]"],
+  ["file-text", "text-[#94a3b8]"],
+  ["file-zip", "text-[#f97316]"],
+  ["git", "text-[#f05032]"],
+  ["image-alt-text", "text-[#22c55e]"],
+  ["java", "text-[#f89820]"],
+  ["javascript", "text-[#f7df1e]"],
+  ["json", "text-[#f5c542]"],
+  ["lock", "text-[#f59e0b]"],
+  ["markdown", "text-[#6cb6ff]"],
+  ["npm", "text-[#cb3837]"],
+  ["page-text", "text-[#94a3b8]"],
+  ["php", "text-[#777bb4]"],
+  ["phyton", "text-[#3776ab]"],
+  ["react", "text-[#61dafb]"],
+  ["rust", "text-[#dea584]"],
+  ["settings-gear-1", "text-[#a78bfa]"],
+  ["svelte", "text-[#ff3e00]"],
+  ["typescript", "text-[#3178c6]"],
+  ["vercel", "text-foreground"],
+  ["video", "text-[#c084fc]"],
+  ["vue", "text-[#42b883]"],
+]);
+
+export function getFileIconColor(iconName: string): string {
+  return (
+    FILE_ICON_COLOR_BY_ICON_NAME.get(iconName) ??
+    FILE_ICON_COLOR_BY_ICON_NAME.get(DEFAULT_FILE_ICON)!
+  );
+}
+
+export function getFileIconColorClassName(iconName: string): string {
+  return (
+    FILE_ICON_COLOR_CLASS_BY_ICON_NAME.get(iconName) ??
+    FILE_ICON_COLOR_CLASS_BY_ICON_NAME.get(DEFAULT_FILE_ICON)!
+  );
+}
+
 // Lookup keys come from untrusted text (chat content, attachment names), so the
 // tables must be Maps: a plain-object lookup for `constructor` or `__proto__` walks
 // the prototype chain and returns an inherited member instead of an icon name.

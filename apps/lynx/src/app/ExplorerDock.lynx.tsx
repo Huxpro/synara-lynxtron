@@ -1,6 +1,7 @@
 import type { ProjectReadFileResult } from '@synara/contracts';
 
 import { ChatMarkdown } from '../components/markdown/ChatMarkdown';
+import { FileEntryIcon } from '../components/FileEntryIcon.lynx';
 import { Input } from '../components/ui/input';
 import {
   ChevronRightIcon,
@@ -66,7 +67,10 @@ function ExplorerEntryRow(props: {
           color="var(--muted-foreground)"
         />
       ) : (
-        <text className="ExplorerDockFileGlyph">▤</text>
+        <FileEntryIcon
+          className="ExplorerDockFileIcon"
+          pathValue={props.entry.path}
+        />
       )}
       <view className="ExplorerDockEntryCopy">
         <text className="ExplorerDockEntryName">

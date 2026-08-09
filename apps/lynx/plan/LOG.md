@@ -8489,3 +8489,19 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   focused **5 files / 18 tests**、Lynx-for-Web与Native/Desktop production builds、
   React Doctor changed-scope **0 issues**通过；证据在
   `shots/2026-08-09/explorer-directory-tree-current/`。
+
+### Explorer file icon fidelity
+
+- Explorer file rows不再用文本`▤`冒充文件类型。Lynx新增窄
+  `FileEntryIcon.lynx`，复用Web canonical `getFileIconName`与共享color resolver，
+  静态映射完整Central icon family；unknown extension才回退`code-brackets`。
+- Web `FileEntryIcon`继续保留原Tailwind color class合同，颜色表从component移到
+  `file-icons.ts`后由Web/Lynx共同消费，避免extension identity与color drift。
+- canonical fixture真实渲染JSON黄`#f5c542`、TypeScript蓝`#3178c6`、Go fallback灰
+  `#9ca3af`、Markdown蓝`#6cb6ff`与PDF红`#ef4444`；light/dark均为28px rows，
+  SVG path与颜色逐项一致，两张PNG为1280x820、page errors0。
+- 完整静态Central mapping使未压缩Lynx bundle增加约118KB；该显式成本换取Python、
+  image/archive/document/media/framework等所有已知类型的正确身份，不隐藏tradeoff。
+  Lynx focused **3 files / 7 tests**、Web focused **2 files / 19 tests**、Web与
+  Native/Desktop production builds、React Doctor changed-scope **0 issues**通过。
+  证据在`shots/2026-08-09/explorer-file-icons-current/`。

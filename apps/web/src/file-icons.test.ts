@@ -2,6 +2,8 @@ import { assert, describe, it } from "vitest";
 
 import {
   getAttachmentIconName,
+  getFileIconColor,
+  getFileIconColorClassName,
   getFileIconName,
   inferEntryKindFromPath,
   pathLooksLikeKnownFile,
@@ -79,6 +81,20 @@ describe("getFileIconName", () => {
     for (const token of PROTOTYPE_MEMBER_TOKENS) {
       assert.equal(getFileIconName(token), "code-brackets", token);
     }
+  });
+});
+
+describe("file icon colors", () => {
+  it("shares exact colors and Web utility classes across icon consumers", () => {
+    assert.equal(getFileIconColor("typescript"), "#3178c6");
+    assert.equal(getFileIconColorClassName("typescript"), "text-[#3178c6]");
+    assert.equal(getFileIconColor("markdown"), "#6cb6ff");
+    assert.equal(getFileIconColorClassName("markdown"), "text-[#6cb6ff]");
+  });
+
+  it("falls back to the generic bracket color for unknown icon names", () => {
+    assert.equal(getFileIconColor("unknown"), "#9ca3af");
+    assert.equal(getFileIconColorClassName("unknown"), "text-[#9ca3af]");
   });
 });
 

@@ -112,11 +112,9 @@
   background-color: var(--secondary);
 }
 
-.ExplorerDockFileGlyph {
+.ExplorerDockFileIcon {
   width: 14px;
-  color: var(--muted-foreground);
-  font-size: 12px;
-  text-align: center;
+  height: 14px;
 }
 
 .ExplorerDockDirectoryChevron {

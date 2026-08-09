@@ -45,6 +45,8 @@ describe('Lynx Explorer dock', () => {
     expect(source).toContain('<ChatMarkdown');
     expect(source).toContain('Preview truncated at 1 MB.');
     expect(source).toContain('<ExplorerDirectory');
+    expect(source).toContain('<FileEntryIcon');
+    expect(source).not.toContain('ExplorerDockFileGlyph');
     expect(source).toContain('expandedDirectories.has(entry.path)');
     expect(source).toContain('disclosureChevronClassName(');
     expect(source).toContain('Loading directory…');
