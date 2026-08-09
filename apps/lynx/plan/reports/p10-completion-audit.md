@@ -280,6 +280,7 @@ Current responsive disposition:
 | Composer draft-attachment warning | non-persisted image attachments use Web's 20px surface-backed amber CircleAlert badge and expose the canonical `Draft attachment may not persist` accessible name instead of a bare `!` glyph | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
 | Nested image accessibility | Profile avatars, Explorer image previews, and Composer image thumbnails explicitly remain decorative because their identity is already owned by surrounding text or a named preview control, preventing duplicate or unnamed accessibility nodes | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Form control accessibility | Kanban task mutation, Git commit message, Integration connection name, and provider credential inputs expose explicit native accessible names; pending Git/Kanban fields retain read-only semantics without invalid DOM-only focus props | PASS — CURRENT PRODUCT IMPLEMENTATION |
+| Form error semantics | Kanban mutation, Git commit message, and custom-model slug inputs expose dynamic `aria-invalid` state whenever their adjacent retained error message is present | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Shared interactive names | high-frequency Composer, Kanban, and Pull Request controls route labels and selected/expanded/on-off state through `useLynxInteractiveState`, so Native accessibility metadata no longer depends only on Web `aria-label` attributes | PASS — SHARED NATIVE ACCESSIBILITY CONTRACT |
 | Actionable primitive semantics | `useLynxInteractiveState` now exposes every actionable control as a Native accessibility button even when its name is derived from visible text; passive hover owners remain excluded and explicit `accessibilityElement: false` remains authoritative | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
 | Empty-thread context semantics | project, environment mode, and branch chips are exposed as static draft metadata rather than falsely disabled controls; Temporary remains the tray's sole pressed-state action | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
@@ -526,6 +527,11 @@ expanded/collapsed value, and Sidebar Chats pagination labels, through that
 same Native owner. Menu/Sidebar/shared-name regressions pass (16/16), both
 production bundles build, and React Doctor 0.9.11 reports zero new diagnostics
 against `e775ac0f`.
+The form-error follow-up maps retained validation/action failures back onto the
+Kanban mutation textarea, Git commit message textarea, and custom-model slug
+input with dynamic `aria-invalid`. Existing edit-to-clear and retry behavior is
+unchanged. Focused form suites pass (9/9), both production bundles build, and
+React Doctor 0.9.11 reports zero new diagnostics against `261bc8f3`.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

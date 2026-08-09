@@ -244,6 +244,7 @@ export function SettingsCustomModelsPanel(props: {
               value={input}
               placeholder={providerConfig.example}
               accessibility-label="Custom model slug"
+              aria-invalid={Boolean(error)}
               onChange={(event) => {
                 setInput(event.target.value);
                 if (error) setError(null);

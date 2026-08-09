@@ -966,6 +966,7 @@ function EnvironmentGitAction(props: {
               default-value={commitMessage}
               readOnly={running}
               aria-label="Commit message"
+              aria-invalid={Boolean(error)}
               accessibility-element
               accessibility-label="Commit message"
               placeholder="Commit message (optional)"

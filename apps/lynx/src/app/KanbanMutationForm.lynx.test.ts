@@ -12,6 +12,7 @@ describe('Kanban mutation form accessibility', () => {
       "mutationTarget.action === 'start'\n                  ? 'Task instructions'\n                  : 'Task name'"
     );
     expect(source).toContain('accessibility-element');
+    expect(source).toContain('aria-invalid={Boolean(mutationTarget.error)}');
     expect(source).toContain('readonly={mutationPending}');
   });
 });

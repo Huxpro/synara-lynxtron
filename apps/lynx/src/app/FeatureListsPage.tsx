@@ -635,6 +635,7 @@ export function KanbanProjectPage({
                   ? 'Task instructions'
                   : 'Task name'
               }
+              aria-invalid={Boolean(mutationTarget.error)}
               accessibility-element
               accessibility-label={
                 mutationTarget.action === 'start'
