@@ -41,15 +41,19 @@ describe('Pull Request row icon fidelity', () => {
     expect(contents[3]).toContain('#5e6ad2');
     expect(new Set(contents).size).toBe(5);
 
+    const stateIconSource = readFileSync(
+      new URL('./PullRequestStateIcon.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(stateIconSource).toContain(
+      "import draftSvg from '@synara-central-icons/draft.svg?raw';"
+    );
+    expect(stateIconSource).toContain(
+      "import pullRequestClosedSvg from '@synara-central-icons/request-closed.svg?raw';"
+    );
     const source = readFileSync(
       new URL('./PullRequestRowCompositionElements.lynx.tsx', import.meta.url),
       'utf8'
-    );
-    expect(source).toContain(
-      "import draftSvg from '@synara-central-icons/draft.svg?raw';"
-    );
-    expect(source).toContain(
-      "import pullRequestClosedSvg from '@synara-central-icons/request-closed.svg?raw';"
     );
     expect(source).not.toMatch(/[◌↗◆×●○]/);
   });

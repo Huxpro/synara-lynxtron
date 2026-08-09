@@ -4,17 +4,13 @@ import type {
   PullRequestState,
 } from '@synara/contracts';
 import type { ReactNode } from '@lynx-js/react';
-import draftSvg from '@synara-central-icons/draft.svg?raw';
-import mergeConflictSvg from '@synara-central-icons/merge-conflict.svg?raw';
-import mergedSvg from '@synara-central-icons/merged-simple.svg?raw';
 import pinFilledSvg from '@synara-central-icons-fill/pin.svg?raw';
 import pinSvg from '@synara-central-icons/pin.svg?raw';
-import pullRequestClosedSvg from '@synara-central-icons/request-closed.svg?raw';
-import pullRequestSvg from '@synara-central-icons/pull-request.svg?raw';
 import { resolvePrStatePresentation } from '@synara-web/components/pullRequest/pullRequestStatePresentation.logic';
 
 import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
 import './pull-request-row-composition-elements.css';
+import { PullRequestStateIcon } from './PullRequestStateIcon.lynx';
 import { useTheme } from './useTheme.lynx';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 
@@ -59,47 +55,25 @@ export function PullRequestRowActionElement(
   );
 }
 
-const PR_STATE_SVGS = {
-  draft: draftSvg,
-  'merge-conflict': mergeConflictSvg,
-  'merged-simple': mergedSvg,
-  'pull-request': pullRequestSvg,
-  'pull-request-closed': pullRequestClosedSvg,
-} as const;
-
 export function PullRequestRowStateElement(props: {
   readonly state: PullRequestState;
   readonly isDraft: boolean;
   readonly mergeability?: GitPullRequestMergeability | undefined;
 }) {
-  const { resolvedTheme, svgColors } = useTheme();
   const presentation = resolvePrStatePresentation({
     state: props.state,
     isDraft: props.isDraft,
     mergeability: props.mergeability,
   });
-  const color =
-    presentation.iconKind === 'pull-request'
-      ? '#00a240'
-      : presentation.iconKind === 'merged-simple'
-        ? '#5e6ad2'
-        : presentation.iconKind === 'merge-conflict'
-          ? resolvedTheme === 'dark'
-            ? '#e3433f'
-            : '#e02e2a'
-          : svgColors.mutedForeground;
   return (
     <view
       className={`SharedPrState SharedPrState--${presentation.iconKind}`}
       accessibility-element
       accessibility-label={presentation.label}
     >
-      <svg
+      <PullRequestStateIcon
         className="SharedPrStateIcon"
-        content={colorizeLynxSvg(
-          PR_STATE_SVGS[presentation.iconKind],
-          color
-        )}
+        presentation={presentation}
       />
     </view>
   );

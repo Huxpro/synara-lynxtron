@@ -2,13 +2,17 @@ import type { ProviderKind } from '@synara/contracts';
 import { useRef, type ReactNode } from '@lynx-js/react';
 import { getRectByRef } from '@lynx-js/lynx-ui';
 import type { NodesRef } from '@lynx-js/types';
+import forkSvg from '@synara-central-icons/fork.svg?raw';
+import pinFilledSvg from '@synara-central-icons-fill/pin.svg?raw';
+import worktreeSvg from '@synara-central-icons/arrow-split-right.svg?raw';
 
-import type { PrStatePresentation } from '@synara-web/components/pullRequest/pullRequestStatePresentation';
+import type { PrStatePresentation } from '@synara-web/components/pullRequest/pullRequestStatePresentation.logic';
 import type { SidebarStatusPresentation } from '@synara-web/components/SidebarStatus.logic';
 import type { KanbanColumnKey } from '@synara-web/components/kanban/kanban.logic';
 import type { KanbanDragPoint } from '@synara-web/components/kanban/kanbanDnd.logic';
 import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
-import { GitBranchIcon } from '../lib/icons.lynx';
+import { GitBranchIcon, PaperclipIcon } from '../lib/icons.lynx';
+import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
 import {
   isNativeKanbanPrimaryPointer,
   readNativeKanbanPointer,
@@ -16,6 +20,8 @@ import {
 } from '../app/kanbanDnd.logic';
 
 import './kanban-card-composition-elements.css';
+import { PullRequestStateIcon } from './PullRequestStateIcon.lynx';
+import { useTheme } from './useTheme.lynx';
 import {
   lynxNestedInteractiveEventProps,
   useLynxInteractiveState,
@@ -138,7 +144,13 @@ export function KanbanCardTitleElement(props: ChildrenProps) {
 }
 
 export function KanbanCardPinElement() {
-  return <view className="SharedKanbanCardPin" />;
+  const { svgColors } = useTheme();
+  return (
+    <svg
+      className="SharedKanbanCardPin"
+      content={colorizeLynxSvg(pinFilledSvg, svgColors.mutedForeground)}
+    />
+  );
 }
 
 export function KanbanCardDraftPreviewElement(props: ChildrenProps) {
@@ -175,11 +187,26 @@ export function KanbanCardBranchElement(props: { readonly label: string }) {
 }
 
 export function KanbanCardWorktreeElement(_props: { readonly label: string }) {
-  return <text className="SharedKanbanCardMetaIcon">W</text>;
+  const { svgColors } = useTheme();
+  return (
+    <svg
+      className="SharedKanbanCardMetaIcon"
+      content={colorizeLynxSvg(worktreeSvg, svgColors.mutedForeground)}
+    />
+  );
 }
 
 export function KanbanCardForkElement() {
-  return <text className="SharedKanbanCardMetaIcon">⑂</text>;
+  const { resolvedTheme } = useTheme();
+  return (
+    <svg
+      className="SharedKanbanCardForkIcon"
+      content={colorizeLynxSvg(
+        forkSvg,
+        resolvedTheme === 'dark' ? '#6ee7b7' : '#059669'
+      )}
+    />
+  );
 }
 
 export function KanbanCardPullRequestElement(props: {
@@ -188,14 +215,18 @@ export function KanbanCardPullRequestElement(props: {
   readonly presentation: PrStatePresentation;
 }) {
   return (
-    <text className={`SharedKanbanCardPr SharedKanbanCardPr--${props.presentation.iconKind}`}>
-      #{props.number}
-    </text>
+    <view className="SharedKanbanCardPr">
+      <PullRequestStateIcon
+        className="SharedKanbanCardPrIcon"
+        presentation={props.presentation}
+      />
+      <text className="SharedKanbanCardPrText">#{props.number}</text>
+    </view>
   );
 }
 
 export function KanbanCardAttachmentElement() {
-  return <text className="SharedKanbanCardMetaIcon">＋</text>;
+  return <PaperclipIcon className="SharedKanbanCardMetaIcon" size={12} />;
 }
 
 export function KanbanCardTrailingElement(props: ChildrenProps) {
