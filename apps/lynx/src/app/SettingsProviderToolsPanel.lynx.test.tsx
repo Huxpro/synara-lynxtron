@@ -130,6 +130,10 @@ describe('Settings Provider tools fidelity', () => {
   });
 
   it('matches the Web inset-list and disclosure anatomy', () => {
+    const panelSource = readFileSync(
+      new URL('./SettingsProviderToolsPanel.lynx.tsx', import.meta.url),
+      'utf8'
+    );
     const styles = readFileSync(
       new URL('./settings-provider-tools-panel.css', import.meta.url),
       'utf8'
@@ -158,6 +162,9 @@ describe('Settings Provider tools fidelity', () => {
     );
     expect(styles).toMatch(
       /\.SettingsProviderToolsFieldInput\s*\{[^}]*height:\s*28px;[^}]*margin-top:\s*4px;/s
+    );
+    expect(panelSource).toContain(
+      'accessibility-label={props.field.label}'
     );
     expect(styles).toMatch(
       /\.SettingsProviderToolsBooleanField\s*\{[^}]*padding:\s*8px 12px;[^}]*border-radius:\s*6px;/s

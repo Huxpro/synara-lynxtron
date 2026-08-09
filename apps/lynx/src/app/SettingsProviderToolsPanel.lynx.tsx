@@ -210,6 +210,7 @@ function ProviderTextField(props: {
         type={props.field.kind === 'password' ? 'password' : 'text'}
         disabled={props.disabled}
         maxLength={4096}
+        accessibility-label={props.field.label}
         placeholder={
           configured
             ? 'Configured — enter a replacement or leave blank'

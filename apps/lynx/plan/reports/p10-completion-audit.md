@@ -279,6 +279,7 @@ Current responsive disposition:
 | Composer sending-state identity | the primary action uses Web's exact 14-viewBox, 12px animated partial-circle spinner instead of a static `•••` text approximation; send and stop states retain their existing canonical arrow and square identities | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
 | Composer draft-attachment warning | non-persisted image attachments use Web's 20px surface-backed amber CircleAlert badge and expose the canonical `Draft attachment may not persist` accessible name instead of a bare `!` glyph | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
 | Nested image accessibility | Profile avatars, Explorer image previews, and Composer image thumbnails explicitly remain decorative because their identity is already owned by surrounding text or a named preview control, preventing duplicate or unnamed accessibility nodes | PASS — CURRENT PRODUCT IMPLEMENTATION |
+| Form control accessibility | Kanban task mutation, Git commit message, Integration connection name, and provider credential inputs expose explicit native accessible names; pending Git/Kanban fields retain read-only semantics without invalid DOM-only focus props | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Empty-thread context semantics | project, environment mode, and branch chips are exposed as static draft metadata rather than falsely disabled controls; Temporary remains the tray's sole pressed-state action | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
 | Shared Menu icon identity | default checkbox/radio indicators and submenu affordances use generated 12px Check and 14px ChevronRight icons, removing Unicode state glyphs from every Menu consumer | PASS — SHARED PRIMITIVE |
 | Sidebar completed-status identity | completed threads use Web's filled `circle-check` Central asset at the canonical 15px trailing role instead of a hand-built green dot plus text checkmark | PASS — CURRENT PRODUCT SURFACES |
@@ -496,6 +497,13 @@ named `Preview <file>` control, matching Web's empty-alt ownership and avoiding
 duplicate or unnamed image nodes. Focused Profile, Explorer, and Composer
 suites pass (11/11), both production bundles build, and React Doctor 0.9.11
 reports zero new diagnostics against `3761d33f`.
+The form-semantics follow-up explicitly names the Kanban task instructions /
+task name textarea, Git commit message textarea, Integration connection name,
+and provider-specific credential fields. The Git textarea uses the native Lynx
+`default-value` plus `bindinput` path and becomes read-only while its action is
+running; no invalid DOM-only focus attribute remains. Four focused suites pass
+(14/14), both production bundles build, and React Doctor 0.9.11 reports zero
+new diagnostics against `ebbf6836`.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

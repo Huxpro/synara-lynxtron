@@ -257,6 +257,7 @@ export function SettingsIntegrationsPanel() {
               value={name}
               maxLength={120}
               placeholder="Coding agent"
+              accessibility-label="Connection name"
               onChange={(event) => setName(event.target.value)}
             />
           </view>

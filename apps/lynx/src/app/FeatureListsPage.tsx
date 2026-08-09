@@ -630,6 +630,17 @@ export function KanbanProjectPage({
               }`}
               default-value={mutationTarget.value}
               readonly={mutationPending}
+              aria-label={
+                mutationTarget.action === 'start'
+                  ? 'Task instructions'
+                  : 'Task name'
+              }
+              accessibility-element
+              accessibility-label={
+                mutationTarget.action === 'start'
+                  ? 'Task instructions'
+                  : 'Task name'
+              }
               placeholder={
                 mutationTarget.action === 'start'
                   ? 'What should the agent do?'

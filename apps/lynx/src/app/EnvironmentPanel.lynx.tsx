@@ -963,7 +963,11 @@ function EnvironmentGitAction(props: {
             </scroll-view>
             <textarea
               className="EnvironmentGitActionMessage"
-              value={commitMessage}
+              default-value={commitMessage}
+              readOnly={running}
+              aria-label="Commit message"
+              accessibility-element
+              accessibility-label="Commit message"
               placeholder="Commit message (optional)"
               maxlength={10_000}
               bindinput={(event) =>
