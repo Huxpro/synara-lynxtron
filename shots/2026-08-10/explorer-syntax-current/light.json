@@ -1,0 +1,121 @@
+{
+  "diagnostics": {
+    "activeBaseUrl": "ws://127.0.0.1:58240",
+    "configuredBaseUrl": "ws://127.0.0.1:58240",
+    "connectionAttempts": 1,
+    "explorerPreviewActionCount": 0,
+    "lastExplorerPreviewAction": null,
+    "lastRpcError": "Synara RPC provider.listModels failed: [{\"_tag\":\"Fail\",\"error\":{\"_tag\":\"WsRpcError\",\"message\":\"Provider adapter request failed (codex) for model/list: Codex CLI version check failed. Error: codex not found in PATH\",\"cause\":{\"message\":\"Provider adapter request failed (codex) for model/list: Codex CLI version check failed. Error: codex not found in PATH\",\"name\":\"Error\"}}}]",
+    "lastSyntaxHighlightResult": {
+      "error": null,
+      "language": "typescript",
+      "path": "src/syntax.ts",
+      "theme": "light+dark"
+    },
+    "lastTransportError": null,
+    "pendingRequests": 0,
+    "readyBaseUrl": null,
+    "recentRpcTags": [
+      "orchestration.getThreadDetailSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getThreadDetailSnapshot",
+      "projects.listDirectories",
+      "projects.readFile",
+      "provider.listModels",
+      "server.getConfig"
+    ],
+    "rendererReadyRoute": null,
+    "socketState": 1,
+    "syntaxHighlightCallCount": 1
+  },
+  "highlighted": "true",
+  "language": "typescript",
+  "lineNumbers": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6"
+  ],
+  "rootClass": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up",
+  "tokens": [
+    {
+      "color": "rgb(215, 58, 73)",
+      "text": "export"
+    },
+    {
+      "color": "rgb(215, 58, 73)",
+      "text": "interface"
+    },
+    {
+      "color": "rgb(111, 66, 193)",
+      "text": "SyntaxEvidence"
+    },
+    {
+      "color": "rgb(36, 41, 46)",
+      "text": " {"
+    },
+    {
+      "color": "rgb(215, 58, 73)",
+      "text": "readonly"
+    },
+    {
+      "color": "rgb(227, 98, 9)",
+      "text": "theme"
+    },
+    {
+      "color": "rgb(215, 58, 73)",
+      "text": ":"
+    },
+    {
+      "color": "rgb(3, 47, 98)",
+      "text": "'light'"
+    },
+    {
+      "color": "rgb(215, 58, 73)",
+      "text": "|"
+    },
+    {
+      "color": "rgb(3, 47, 98)",
+      "text": "'dark'"
+    },
+    {
+      "color": "rgb(36, 41, 46)",
+      "text": ";"
+    },
+    {
+      "color": "rgb(36, 41, 46)",
+      "text": "}"
+    },
+    {
+      "color": "rgb(215, 58, 73)",
+      "text": "export"
+    },
+    {
+      "color": "rgb(215, 58, 73)",
+      "text": "const"
+    },
+    {
+      "color": "rgb(0, 92, 197)",
+      "text": "syntaxReady"
+    },
+    {
+      "color": "rgb(215, 58, 73)",
+      "text": "="
+    },
+    {
+      "color": "rgb(0, 92, 197)",
+      "text": "true"
+    },
+    {
+      "color": "rgb(36, 41, 46)",
+      "text": ";"
+    }
+  ],
+  "viewport": {
+    "dpr": 1,
+    "innerHeight": 820,
+    "innerWidth": 1280
+  }
+}

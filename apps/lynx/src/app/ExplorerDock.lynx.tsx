@@ -24,9 +24,11 @@ import {
   MenuTrigger,
 } from '../components/ui/menu.lynx';
 import type { ExplorerEntriesResult } from './queries';
+import type { NativeSyntaxHighlightThemes } from '../main/syntaxHighlightingContract.logic';
 import { ResizableRightPanel } from './ResizableRightPanel.lynx';
 import { ExplorerPdfFallback } from './ExplorerPdfFallback.lynx';
 import { applyExplorerChatAction } from './explorerChatActions.logic';
+import { ExplorerSyntaxPreview } from './ExplorerSyntaxPreview.lynx';
 import './explorer-dock.css';
 
 function isMarkdownPath(path: string): boolean {
@@ -228,6 +230,7 @@ export function ExplorerDock(props: {
   readonly file: ProjectReadFileResult | null;
   readonly fileError: boolean;
   readonly filePending: boolean;
+  readonly fileSyntaxHighlight: NativeSyntaxHighlightThemes | null;
   readonly localPreviewUrl: string | null;
   readonly localPreviewError: boolean;
   readonly localPreviewPending: boolean;
@@ -240,6 +243,7 @@ export function ExplorerDock(props: {
   readonly query: string;
   readonly selectedPath: string | null;
   readonly threadId: string;
+  readonly theme: 'dark' | 'light';
   readonly workspaceRoot: string | null;
 }) {
   const close = useLynxInteractiveState({
@@ -375,14 +379,13 @@ export function ExplorerDock(props: {
                 />
               </scroll-view>
             ) : (
-              <scroll-view className="ExplorerDockPreviewScroll" scroll-orientation="vertical">
-                <text className="ExplorerDockCode">{props.file?.contents ?? ''}</text>
-                {props.file?.truncated ? (
-                  <text className="ExplorerDockTruncated">
-                    Preview truncated at 1 MB.
-                  </text>
-                ) : null}
-              </scroll-view>
+              <ExplorerSyntaxPreview
+                contents={props.file?.contents ?? ''}
+                highlighted={props.fileSyntaxHighlight}
+                path={props.selectedPath}
+                theme={props.theme}
+                truncated={props.file?.truncated ?? false}
+              />
             )}
           </view>
         </view>

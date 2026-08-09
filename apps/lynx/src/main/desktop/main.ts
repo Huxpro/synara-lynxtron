@@ -47,6 +47,7 @@ import fs from 'node:fs';
 import type { KeybindingCommand } from '@synara/contracts';
 import { handleUpdater } from './updateService';
 import { resolveShellWindowChrome } from './shellWindowChrome';
+import { NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG } from '../syntaxHighlightingContract.logic';
 import {
   disposeNativeRpcHost,
   handleNativeRpc,
@@ -409,9 +410,25 @@ app.whenReady().then(() => {
 
       try {
         if (name === 'synaraRpc' || name === 'synaraRpcStream') {
-          const result = await handleNativeRpc(name, data, (event) => {
-            w.sendGlobalEvent('synara:git-action-progress', event);
-          });
+          const result =
+            name === 'synaraRpc' &&
+            data.tag === NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG
+              ? await import('../syntaxHighlightingHost').then(
+                  ({ highlightCodeThemesForNativePreview }) =>
+                    highlightCodeThemesForNativePreview({
+                      code:
+                        typeof data.payload?.code === 'string'
+                          ? data.payload.code
+                          : '',
+                      path:
+                        typeof data.payload?.path === 'string'
+                          ? data.payload.path
+                          : '',
+                    })
+                )
+              : await handleNativeRpc(name, data, (event) => {
+                  w.sendGlobalEvent('synara:git-action-progress', event);
+                });
           callback.sendReply(
             JSON.stringify({
               _tag: 'NativeRpcResult',

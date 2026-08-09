@@ -15,6 +15,7 @@ import {
 import {
   DEFAULT_THEME_STATE,
   parseStoredThemeState,
+  resolveThemeVariant,
   type ThemeState,
 } from '@synara-web/theme/theme.logic';
 import { isSupportedLocalPreviewFilePath } from '@synara/shared/localPreviewFiles';
@@ -316,6 +317,7 @@ export function App() {
               initialExplorerExpandedDirectories
             }
             initialExplorerWidth={initialExplorerWidth}
+            resolvedTheme={resolveThemeVariant(themeState.mode, false)}
             viewportWidth={viewportLayout.width}
             onThemeStateChange={setThemeState}
             onUiDensityChange={setUiDensity}

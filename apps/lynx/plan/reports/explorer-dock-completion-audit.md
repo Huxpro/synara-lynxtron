@@ -15,7 +15,7 @@ file preview, responsive layout, and light/dark Lynx-for-Web evidence pass.
 | Root listing | Canonical fixture RPC returned `directory:docs`, `directory:src`, and `file:README.md` | PASS |
 | File-name search | Canonical fixture RPC returned `src/explorer-fixture.ts` for `explorer-fixture` | PASS |
 | File preview | Canonical fixture RPC read `README.md`, returned the expected heading, and was not truncated | PASS |
-| Markdown and text rendering | Markdown uses the existing Lynx `ChatMarkdown`; other files use the mono text preview and expose the 1 MB truncation state | PASS |
+| Markdown and text rendering | Markdown uses the existing Lynx `ChatMarkdown`; supported source files use Host-owned Shiki tokens with line numbers, while unsupported/failed/oversized files preserve the immediate mono fallback and 1 MB truncation state | PASS |
 | Main/background thread boundary | Explorer dynamically imports the background-only transport from background-only query loaders; the Native build rejects regressions here | PASS |
 | Light and dark source theming | Explorer has no literal colors or color mixing. It uses only `ThemeState → SliceRoot--theme-*` semantic tokens for background, text, borders, selection, error, and hover states | PASS |
 | Light and dark geometry | Both themes share the same component tree and 50% / 480–960 / 240px geometry contract | PASS at source/contract level |
@@ -43,9 +43,8 @@ file preview, responsive layout, and light/dark Lynx-for-Web evidence pass.
 
 - This is the first real Explorer slice, not full Web Explorer parity.
 - The Lynx-for-Web activation blocker is resolved for trusted click and Enter.
-- Native in-app PDF page rendering, selection comments, and syntax-highlighted
-  rich preview remain future product scope rather than
-  blockers for this first Explorer slice. PDF files now have a safe,
+- Native in-app PDF page rendering and selection comments remain future product
+  scope rather than blockers for this first Explorer slice. PDF files now have a safe,
   non-deceptive default-app fallback; that is not claimed as Web PDF viewer
   parity.
 
@@ -146,3 +145,31 @@ opening and positioning the menu because its SVG/text custom elements do not
 publish the trigger tap or native anchor measurement. Once visible, menu items
 remain the real Lynx Menu controls and were activated through their accessible
 `menuitem` refs. Native keeps the unmodified Menu trigger/item path.
+
+## Syntax-preview continuation
+
+`shots/2026-08-10/explorer-syntax-current/` closes the rich source-preview
+gap without introducing an HTML renderer or regex-based pseudo-highlighting.
+The Desktop/Web Host owns a real Shiki JavaScript-regex highlighter and returns
+bounded token JSON; the Lynx UI reconstructs the exact source with line numbers
+and token color/font-style metadata.
+
+The Host loads only 34 explicit language modules plus `github-light` and
+`github-dark`. This reduced the Web production directory from the initial
+full-registry prototype's roughly 40 MB to roughly 11 MB. Both themes are
+tokenized in one Host request, so theme changes select a matching cached token
+projection without a second filesystem read or a light/dark race.
+
+The canonical RPC fixture proves TypeScript highlighting through the real
+`projects.readFile` path. At `1280x820`, light resolves `export` to `#D73A49`
+and `syntaxReady` to `#005CC5`; dark resolves them to `#F97583` and `#79B8FF`.
+Both frames expose six line numbers, preserve the source, have empty page-error
+logs, and use one Host tokenization request.
+
+The final Native production bundle cold-started in the exact-owned Synara
+Lynxtron process, opened the real thread route, connected to the isolated
+server, and listed the canonical workspace. Native token pixels remain
+uncertified: the background-owned window cannot open the nested source file
+through the current input harness, and the owned PID did not expose a DevTool
+listener. Other clients on ports 8901/8904 belonged to different PIDs and were
+explicitly rejected rather than reused.

@@ -269,9 +269,14 @@ interface ThreadPageProps {
   readonly explorerDirectoryErrors: ReadonlySet<string>;
   readonly explorerDirectoryPending: ReadonlySet<string>;
   readonly explorerExpandedDirectories: ReadonlySet<string>;
-  readonly explorerFile: Awaited<ReturnType<typeof fetchExplorerFile>> | null;
+  readonly explorerFile: Awaited<
+    ReturnType<typeof fetchExplorerFile>
+  >['file'] | null;
   readonly explorerFileError: boolean;
   readonly explorerFilePending: boolean;
+  readonly explorerFileSyntaxHighlight: Awaited<
+    ReturnType<typeof fetchExplorerFile>
+  >['syntaxHighlight'];
   readonly explorerLocalPreviewUrl: string | null;
   readonly explorerLocalPreviewError: boolean;
   readonly explorerLocalPreviewPending: boolean;
@@ -285,6 +290,7 @@ interface ThreadPageProps {
   readonly onExplorerSelectPath: (path: string) => void;
   readonly onExplorerToggleDirectory: (path: string) => void;
   readonly threadId: string;
+  readonly resolvedTheme: 'dark' | 'light';
   readonly viewportWidth: number;
 }
 
@@ -302,6 +308,7 @@ function ThreadRightDocks(
     | 'explorerFile'
     | 'explorerFileError'
     | 'explorerFilePending'
+    | 'explorerFileSyntaxHighlight'
     | 'explorerLocalPreviewError'
     | 'explorerLocalPreviewPending'
     | 'explorerLocalPreviewUrl'
@@ -311,6 +318,7 @@ function ThreadRightDocks(
     | 'onExplorerQueryChange'
     | 'onExplorerSelectPath'
     | 'onExplorerToggleDirectory'
+    | 'resolvedTheme'
     | 'viewportWidth'
   > & {
     readonly diffOpen: boolean;
@@ -335,6 +343,7 @@ function ThreadRightDocks(
     explorerFile,
     explorerFileError,
     explorerFilePending,
+    explorerFileSyntaxHighlight,
     explorerLocalPreviewError,
     explorerLocalPreviewPending,
     explorerLocalPreviewUrl,
@@ -345,6 +354,7 @@ function ThreadRightDocks(
     onExplorerQueryChange,
     onExplorerSelectPath,
     onExplorerToggleDirectory,
+    resolvedTheme,
     setDiffDockWidth,
     setDiffOpen,
     setExplorerDockWidth,
@@ -378,6 +388,7 @@ function ThreadRightDocks(
         file={explorerFile}
         fileError={explorerFileError}
         filePending={explorerFilePending}
+        fileSyntaxHighlight={explorerFileSyntaxHighlight}
         localPreviewUrl={explorerLocalPreviewUrl}
         localPreviewError={explorerLocalPreviewError}
         localPreviewPending={explorerLocalPreviewPending}
@@ -385,6 +396,7 @@ function ThreadRightDocks(
         query={explorerQuery}
         selectedPath={explorerSelectedPath}
         threadId={currentThread?.id ?? ''}
+        theme={resolvedTheme}
         workspaceRoot={currentThread?.workspaceRoot ?? null}
         onWidthChange={setExplorerDockWidth}
         onQueryChange={onExplorerQueryChange}
@@ -415,6 +427,7 @@ function ThreadPage(props: ThreadPageProps) {
     explorerFile,
     explorerFileError,
     explorerFilePending,
+    explorerFileSyntaxHighlight,
     explorerLocalPreviewUrl,
     explorerLocalPreviewError,
     explorerLocalPreviewPending,
@@ -428,6 +441,7 @@ function ThreadPage(props: ThreadPageProps) {
     onExplorerSelectPath,
     onExplorerToggleDirectory,
     threadId,
+    resolvedTheme,
     viewportWidth,
   } = props;
   const { temporary, toggleTemporary } =
@@ -657,6 +671,7 @@ function ThreadPage(props: ThreadPageProps) {
         explorerFile={explorerFile}
         explorerFileError={explorerFileError}
         explorerFilePending={explorerFilePending}
+        explorerFileSyntaxHighlight={explorerFileSyntaxHighlight}
         explorerLocalPreviewError={explorerLocalPreviewError}
         explorerLocalPreviewPending={explorerLocalPreviewPending}
         explorerLocalPreviewUrl={explorerLocalPreviewUrl}
@@ -667,6 +682,7 @@ function ThreadPage(props: ThreadPageProps) {
         onExplorerQueryChange={onExplorerQueryChange}
         onExplorerSelectPath={onExplorerSelectPath}
         onExplorerToggleDirectory={onExplorerToggleDirectory}
+        resolvedTheme={resolvedTheme}
         setDiffDockWidth={setDiffDockWidth}
         setDiffOpen={setDiffOpen}
         setExplorerDockWidth={setExplorerDockWidth}
@@ -687,6 +703,7 @@ export function SliceRouter({
   initialExplorerPath,
   initialExplorerQuery,
   initialExplorerWidth,
+  resolvedTheme,
   viewportWidth,
   onThemeStateChange,
   onUiDensityChange,
@@ -721,6 +738,7 @@ export function SliceRouter({
   readonly initialExplorerPath: string | null;
   readonly initialExplorerQuery: string;
   readonly initialExplorerWidth: number | null;
+  readonly resolvedTheme: 'dark' | 'light';
   readonly viewportWidth: number;
   readonly onThemeStateChange: (state: ThemeState) => void;
   readonly onUiDensityChange: (density: UiDensity) => void;
@@ -1074,7 +1092,9 @@ export function SliceRouter({
         explorerDirectoryErrors={explorerDirectoryErrors}
         explorerDirectoryPending={explorerDirectoryPending}
         explorerExpandedDirectories={explorerExpandedDirectories}
-        explorerFile={resolvedActiveThreadData?.explorerFile.value ?? null}
+        explorerFile={
+          resolvedActiveThreadData?.explorerFile.value?.file ?? null
+        }
         explorerFileError={
           resolvedActiveThreadData?.explorerFile.error ?? false
         }
@@ -1082,6 +1102,9 @@ export function SliceRouter({
           explorerSelectedPath !== null &&
           !isSupportedLocalPreviewFilePath(explorerSelectedPath) &&
           resolvedActiveThreadPending
+        }
+        explorerFileSyntaxHighlight={
+          resolvedActiveThreadData?.explorerFile.value?.syntaxHighlight ?? null
         }
         explorerLocalPreviewUrl={
           resolvedActiveThreadData?.explorerLocalPreview.value ?? null
@@ -1111,6 +1134,7 @@ export function SliceRouter({
           )
         }
         threadId={route.params.threadId}
+        resolvedTheme={resolvedTheme}
         viewportWidth={viewportWidth}
       />
     );

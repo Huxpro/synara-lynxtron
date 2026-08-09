@@ -61,8 +61,8 @@ describe('Lynx Explorer dock', () => {
     expect(source).toContain('mode="aspectFit"');
     expect(source).toContain('Could not load this image.');
     expect(source).toContain('<ExplorerPdfFallback');
+    expect(source).toContain('<ExplorerSyntaxPreview');
     expect(source).toContain('isSupportedLocalPdfPath(props.selectedPath)');
-    expect(source).toContain('Preview truncated at 1 MB.');
     expect(source).toContain('<ExplorerDirectory');
     expect(source).toContain('<FileEntryIcon');
     expect(source).not.toContain('ExplorerDockFileGlyph');

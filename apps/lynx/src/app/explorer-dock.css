@@ -335,6 +335,40 @@
   white-space: pre-wrap;
 }
 
+.ExplorerDockSyntax {
+  display: flex;
+  min-width: 100%;
+  flex-direction: column;
+}
+
+.ExplorerDockSyntaxLine {
+  display: flex;
+  min-height: 17px;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.ExplorerDockSyntaxLineNumber {
+  width: 34px;
+  min-width: 34px;
+  padding-right: 10px;
+  color: var(--muted-foreground);
+  font-family: var(--font-ui-family);
+  font-size: 10px;
+  line-height: 17px;
+  text-align: right;
+  opacity: 0.65;
+}
+
+.ExplorerDockSyntaxCode {
+  min-width: 0;
+  flex: 1;
+  font-family: var(--font-chat-code-family);
+  font-size: var(--app-font-size-chat-code, 11px);
+  line-height: 17px;
+  white-space: pre;
+}
+
 .ExplorerDockTruncated {
   margin-top: 12px;
   color: var(--muted-foreground);

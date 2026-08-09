@@ -72,6 +72,10 @@ import {
   RpcTransportError,
   type RpcTransportState,
 } from './rpcTransport.logic';
+import {
+  NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG,
+  type NativeSyntaxHighlightThemes,
+} from '../main/syntaxHighlightingContract.logic';
 
 export interface SynaraThread {
   readonly id: string;
@@ -185,15 +189,22 @@ function relayBridgeRequest<A>(
   tag: string,
   payload: unknown
 ): Promise<A> {
+  return hostBridgeRequest(method, {
+    tag,
+    payload,
+    baseUrl: resolveDefaultSocketUrl(null),
+  });
+}
+
+function hostBridgeRequest<A>(
+  method: string,
+  params: Record<string, unknown>
+): Promise<A> {
   return new Promise((resolve, reject) => {
     try {
       NativeModules.bridge.call(
         method,
-        {
-          tag,
-          payload,
-          baseUrl: resolveDefaultSocketUrl(null),
-        },
+        params,
         (reply: unknown) => {
           try {
             const parsed =
@@ -291,6 +302,16 @@ async function relayStreamRequest<A>(
 
 function transportRequest<A>(tag: string, payload: unknown): Promise<A> {
   return relayRequest<A>(tag, payload);
+}
+
+export function highlightExplorerCode(input: {
+  readonly code: string;
+  readonly path: string;
+}): Promise<NativeSyntaxHighlightThemes | null> {
+  return transportRequest<NativeSyntaxHighlightThemes | null>(
+    NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG,
+    input
+  );
 }
 
 export function getSynaraTransportState(): RpcTransportState {
@@ -420,6 +441,21 @@ export async function readProjectFile(
   input: ProjectReadFileInput
 ): Promise<ProjectReadFileResult> {
   return transportRequest<ProjectReadFileResult>('projects.readFile', input);
+}
+
+export async function readProjectFileWithSyntax(input: {
+  readonly cwd: string;
+  readonly relativePath: string;
+}): Promise<{
+  readonly file: ProjectReadFileResult;
+  readonly syntaxHighlight: NativeSyntaxHighlightThemes | null;
+}> {
+  const file = await readProjectFile(input);
+  const syntaxHighlight = await highlightExplorerCode({
+    code: file.contents,
+    path: file.relativePath,
+  }).catch(() => null);
+  return { file, syntaxHighlight };
 }
 
 export async function importSynaraThread(

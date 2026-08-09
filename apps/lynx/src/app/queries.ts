@@ -56,6 +56,7 @@ import {
   readPersistedThreadRecapCache,
   upsertPersistedThreadRecap,
 } from '@synara-web/lib/threadRecap';
+import type { NativeSyntaxHighlightThemes } from '../main/syntaxHighlightingContract.logic';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -182,7 +183,10 @@ const explorerFileCache = new Map<
   string,
   {
     readonly expiresAt: number;
-    readonly result: Promise<ProjectReadFileResult>;
+    readonly result: Promise<{
+      readonly file: ProjectReadFileResult;
+      readonly syntaxHighlight: NativeSyntaxHighlightThemes | null;
+    }>;
   }
 >();
 
@@ -442,15 +446,18 @@ export async function fetchExplorerDirectory(input: {
 export async function fetchExplorerFile(input: {
   readonly relativePath: string;
   readonly workspaceRoot: string;
-}): Promise<ProjectReadFileResult> {
+}): Promise<{
+  readonly file: ProjectReadFileResult;
+  readonly syntaxHighlight: NativeSyntaxHighlightThemes | null;
+}> {
   'background only';
   const cacheKey = `${input.workspaceRoot}\0${input.relativePath}`;
   const cached = explorerFileCache.get(cacheKey);
   if (cached && cached.expiresAt > Date.now()) return cached.result;
-  const { readProjectFile } = await import(
+  const { readProjectFileWithSyntax } = await import(
     /* webpackMode: "eager" */ '../data/synaraClient'
   );
-  const result = readProjectFile({
+  const result = readProjectFileWithSyntax({
     cwd: input.workspaceRoot,
     relativePath: input.relativePath,
   });

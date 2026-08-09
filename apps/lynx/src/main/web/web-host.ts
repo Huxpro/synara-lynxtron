@@ -7,6 +7,7 @@ import { setupSymmetricHost } from '@lynx-js/lynxtron/web-host';
 import { installLynxWebInteractionStateBridge } from './web-interaction-state';
 import { resolveWebInitialRoute } from './webInitialRoute.logic';
 import { resolveWebRelayEndpoint } from './webRelayEndpoint.logic';
+import { NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG } from '../syntaxHighlightingContract.logic';
 
 const bundleUrl = './main.web.bundle';
 const nodejsAdapterUrl = './nodejs-adapter-web.js';
@@ -89,6 +90,13 @@ let explorerPreviewActionCount = 0;
 let lastExplorerPreviewAction: {
   readonly action: string;
   readonly path: string;
+} | null = null;
+let syntaxHighlightCallCount = 0;
+let lastSyntaxHighlightResult: {
+  readonly error: string | null;
+  readonly language: string | null;
+  readonly path: string;
+  readonly theme: 'light+dark';
 } | null = null;
 let relayConnectionAttempts = 0;
 let relayRecoveryGeneration = 0;
@@ -588,6 +596,38 @@ async function handleBridgeCall(
 ): Promise<unknown> {
   try {
     if (method === 'synaraRpc') {
+      if (params.tag === NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG) {
+        syntaxHighlightCallCount += 1;
+        const payload =
+          params.payload && typeof params.payload === 'object'
+            ? (params.payload as Record<string, unknown>)
+            : {};
+        const path = typeof payload.path === 'string' ? payload.path : '';
+        try {
+          const { highlightCodeThemesForNativePreview } = await import(
+            '../syntaxHighlightingHost'
+          );
+          const result = await highlightCodeThemesForNativePreview({
+            code: typeof payload.code === 'string' ? payload.code : '',
+            path,
+          });
+          lastSyntaxHighlightResult = {
+            error: null,
+            language: result?.light.language ?? null,
+            path,
+            theme: 'light+dark',
+          };
+          return result;
+        } catch (error) {
+          lastSyntaxHighlightResult = {
+            error: describeError(error),
+            language: null,
+            path,
+            theme: 'light+dark',
+          };
+          throw error;
+        }
+      }
       return await synaraRpc(params.baseUrl, params.tag, params.payload);
     }
     if (method === 'synaraRpcStream') {
@@ -813,6 +853,8 @@ globalThis.__SYNARA_LYNX_RELAY_DIAGNOSTICS__ = () => ({
   lastRpcError: relayLastRpcError,
   explorerPreviewActionCount,
   lastExplorerPreviewAction,
+  syntaxHighlightCallCount,
+  lastSyntaxHighlightResult,
 });
 
 setupSymmetricHost(lynxView, {
