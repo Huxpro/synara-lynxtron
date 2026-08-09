@@ -85,6 +85,11 @@ let transcriptScrollElement: HTMLElement | null = null;
 let transcriptPreviousScrollTop: number | null = null;
 let relayLastTransportError: string | null = null;
 let relayLastRpcError: string | null = null;
+let explorerPreviewActionCount = 0;
+let lastExplorerPreviewAction: {
+  readonly action: string;
+  readonly path: string;
+} | null = null;
 let relayConnectionAttempts = 0;
 let relayRecoveryGeneration = 0;
 let relayRecoveryActive = false;
@@ -752,6 +757,9 @@ const initialEnvironmentOpen =
   new URLSearchParams(globalThis.location.search).get('environment') === 'open';
 const initialExplorerOpen =
   new URLSearchParams(globalThis.location.search).get('explorer') === 'open';
+const initialExplorerActionMenuOpen =
+  new URLSearchParams(globalThis.location.search).get('explorerActionMenu') ===
+  'open';
 const initialExplorerPath =
   new URLSearchParams(globalThis.location.search).get('explorerPath');
 const initialExplorerQuery =
@@ -772,6 +780,7 @@ webDocument.body.innerHTML = `
   init-data='${JSON.stringify({
     initialEnvironmentOpen,
     initialExplorerOpen,
+    initialExplorerActionMenuOpen,
     initialExplorerPath,
     initialExplorerQuery,
     initialExplorerExpandedDirectories,
@@ -802,6 +811,8 @@ globalThis.__SYNARA_LYNX_RELAY_DIAGNOSTICS__ = () => ({
   rendererReadyRoute: lastRendererReadyRoute,
   lastTransportError: relayLastTransportError,
   lastRpcError: relayLastRpcError,
+  explorerPreviewActionCount,
+  lastExplorerPreviewAction,
 });
 
 setupSymmetricHost(lynxView, {
@@ -817,6 +828,19 @@ const interactionBridgeController = new AbortController();
 const installInteractionBridge = () => {
   const root = lynxView.shadowRoot as ShadowRoot | null;
   if (!root) return false;
+  const queryDeep = <T extends HTMLElement>(
+    container: ParentNode,
+    selector: string
+  ): T | null => {
+    const direct = container.querySelector<T>(selector);
+    if (direct) return direct;
+    for (const element of container.querySelectorAll<HTMLElement>('*')) {
+      if (!element.shadowRoot) continue;
+      const nested = queryDeep<T>(element.shadowRoot, selector);
+      if (nested) return nested;
+    }
+    return null;
+  };
   installLynxWebInteractionStateBridge(
     root,
     interactionBridgeController.signal,
@@ -869,14 +893,58 @@ const installInteractionBridge = () => {
       url.searchParams.set('explorerWidth', String(resize.width));
       url.searchParams.set('explorer', 'open');
       globalThis.location.replace(url);
+    },
+    (action) => {
+      explorerPreviewActionCount += 1;
+      lastExplorerPreviewAction = action;
+      const url = new URL(globalThis.location.href);
+      url.searchParams.set('explorerActionMenu', 'open');
+      globalThis.location.replace(url);
     }
   );
+  if (initialExplorerActionMenuOpen) {
+    let positionAttempts = 0;
+    let positionTimer: ReturnType<typeof globalThis.setTimeout> | null = null;
+    const positionExplorerActionMenu = () => {
+      const trigger = queryDeep<HTMLElement>(
+        root,
+        '.ExplorerDockPreviewActions'
+      );
+      const popup = queryDeep<HTMLElement>(
+        root,
+        '.ExplorerDockPreviewActionsPopup'
+      );
+      if (!trigger || !popup) {
+        positionAttempts += 1;
+        if (positionAttempts < 40) {
+          positionTimer = globalThis.setTimeout(
+            positionExplorerActionMenu,
+            50
+          );
+        }
+        return false;
+      }
+      if (positionTimer !== null) {
+        globalThis.clearTimeout(positionTimer);
+        positionTimer = null;
+      }
+      const triggerRect = trigger.getBoundingClientRect();
+      const popupWidth = popup.getBoundingClientRect().width || 208;
+      popup.style.left = `${Math.max(
+        4,
+        triggerRect.right - popupWidth
+      )}px`;
+      popup.style.top = `${triggerRect.bottom + 4}px`;
+      popup.style.visibility = 'visible';
+      return true;
+    };
+    positionExplorerActionMenu();
+  }
   return true;
 };
 if (!installInteractionBridge()) {
   lynxView.addEventListener('load', installInteractionBridge, { once: true });
 }
-
 const publishViewportSize = () => {
   lynxView.sendGlobalEvent?.('viewport:resize', [
     globalThis.innerWidth,

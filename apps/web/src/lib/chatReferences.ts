@@ -3,113 +3,52 @@
 //          thread's composer draft so panels outside ChatView can talk to the chatbox.
 // Layer: Web UI utility
 
-import { CHAT_ASSISTANT_SELECTION_TEXT_MAX_CHARS, type ThreadId } from "@synara/contracts";
+import type { ThreadId } from "@synara/contracts";
 
 import { useComposerDraftStore } from "../composerDraftStore";
 import { requestComposerFocus } from "../composerFocusRequestStore";
-import { formatComposerMentionToken } from "./composerMentions";
 import { createFileCommentDraft, type FileCommentSelection } from "./fileComments";
+import {
+  buildDiffSelectionReference,
+  buildWhyChangedPrompt,
+  buildWhyLinesPrompt,
+  fenceCodeSnippet,
+  formatChatFileReference,
+  formatLineRangeLabel,
+  formatSelectionLabel,
+  type ChatFileReference,
+} from "./chatReferenceFormatting";
 
 import { createDocumentRange, getWindowSelection } from "~/components/chat/chatSelectionDom";
-export interface ChatFileReference {
-  path: string;
-  startLine?: number;
-  endLine?: number;
-  // 1-based column of the first/last selected character. When present the
-  // reference narrows to the exact span (e.g. `line 21:5-12`) so highlighting a
-  // single word references just those characters, not the whole line.
-  startColumn?: number;
-  endColumn?: number;
-  // Verbatim selected text, used by surfaces that cannot map a selection back
-  // to source lines (diff rows, whose split/unified views renumber): the quoted
-  // snippet itself becomes the precise reference. Ignored when line info is
-  // present.
-  snippet?: string;
-}
+export {
+  buildDiffSelectionReference,
+  buildWhyChangedPrompt,
+  buildWhyLinesPrompt,
+  fenceCodeSnippet,
+  formatChatFileReference,
+  formatLineRangeLabel,
+  formatSelectionLabel,
+  type ChatFileReference,
+} from "./chatReferenceFormatting";
 
 // DataTransfer type used when dragging a file row toward the composer. The
 // payload is the already-formatted reference text (mention token).
 export const CHAT_FILE_REFERENCE_DRAG_TYPE = "application/x-synara-file-reference";
 
-export function formatLineRangeLabel(startLine: number, endLine: number): string {
-  return endLine !== startLine ? `lines ${startLine}-${endLine}` : `line ${startLine}`;
-}
-
-// Wrap a snippet in a fenced block whose fence is longer than any backtick run
-// inside it (so selected code that itself contains ``` survives Markdown), after
-// normalizing newlines, trimming blank edges, and capping the length.
-export function fenceCodeSnippet(snippet: string): string {
-  const normalized = snippet.replace(/\r\n/g, "\n").replace(/^\n+|\n+$/g, "");
-  const truncated =
-    normalized.length > CHAT_ASSISTANT_SELECTION_TEXT_MAX_CHARS
-      ? normalized.slice(0, CHAT_ASSISTANT_SELECTION_TEXT_MAX_CHARS)
-      : normalized;
-  const longestBacktickRun = truncated
-    .match(/`+/g)
-    ?.reduce((max, run) => Math.max(max, run.length), 0);
-  const fence = "`".repeat(Math.max(3, (longestBacktickRun ?? 0) + 1));
-  return `${fence}\n${truncated}\n${fence}`;
-}
-
 // Editor-style location label for a reference: `line 21`, `line 21:5-12`,
 // `lines 3-9`, or `lines 21:5-23:8`. Columns are appended only when both ends
 // are known, so a single highlighted word reads as `line 21:5-12` instead of
 // referencing the whole line. Returns null when there is no line info.
-export function formatSelectionLabel(reference: ChatFileReference): string | null {
-  if (typeof reference.startLine !== "number") {
-    return null;
-  }
-  const endLine = reference.endLine ?? reference.startLine;
-  const { startColumn, endColumn } = reference;
-  if (typeof startColumn !== "number" || typeof endColumn !== "number") {
-    return formatLineRangeLabel(reference.startLine, endLine);
-  }
-  if (reference.startLine === endLine) {
-    const columns = startColumn === endColumn ? `${startColumn}` : `${startColumn}-${endColumn}`;
-    return `line ${reference.startLine}:${columns}`;
-  }
-  return `lines ${reference.startLine}:${startColumn}-${endLine}:${endColumn}`;
-}
-
 // `@path` mention token plus a parenthetical location suffix (e.g.
 // `@file (line 21:5-12)`). The range/columns live outside the mention token
 // itself so provider-side file resolution keeps working. References without
 // line info but with a snippet quote the selected text as a fenced block
 // instead — the snippet is the precise reference there.
-export function formatChatFileReference(reference: ChatFileReference): string {
-  const token = formatComposerMentionToken(reference.path);
-  const label = formatSelectionLabel(reference);
-  if (label) {
-    return `${token} (${label})`;
-  }
-  if (reference.snippet !== undefined && reference.snippet.trim().length > 0) {
-    return `${token}\n${fenceCodeSnippet(reference.snippet)}`;
-  }
-  return token;
-}
-
-export function buildWhyChangedPrompt(path: string): string {
-  return `Why did we implement the changes in ${formatComposerMentionToken(path)}?`;
-}
-
 // "Why" prompt for an arbitrary file or line range. Providers run in the
 // workspace, so the prompt steers them toward git blame/history for evidence.
-export function buildWhyLinesPrompt(reference: ChatFileReference): string {
-  const token = formatComposerMentionToken(reference.path);
-  if (typeof reference.startLine !== "number") {
-    return `Why did we implement ${token} this way? Check the git history if needed and explain the reasoning.`;
-  }
-  const endLine = reference.endLine ?? reference.startLine;
-  return `Why were ${formatLineRangeLabel(reference.startLine, endLine)} in ${token} implemented this way? Check git blame/history for the relevant commits and explain the reasoning.`;
-}
-
 // Mention token plus the highlighted diff snippet as a fenced block. Diff rows
 // have no stable file line numbers (split/unified views renumber), so the
 // quoted code itself is the precise reference.
-export function buildDiffSelectionReference(path: string, snippet: string): string {
-  return formatChatFileReference({ path, snippet });
-}
-
 export function appendComposerPromptText(threadId: ThreadId, text: string): void {
   const store = useComposerDraftStore.getState();
   const existingPrompt = store.draftsByThreadId[threadId]?.prompt ?? "";

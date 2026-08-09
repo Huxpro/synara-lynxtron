@@ -32,6 +32,7 @@ file preview, responsive layout, and light/dark Lynx-for-Web evidence pass.
 | Image preview | Workspace-relative allowlisted images bypass the text RPC, resolve through the shared authenticated `/api/local-image` route, and render in an `aspectFit` preview surface with filename metadata | PASS |
 | PDF fallback | Workspace-relative PDFs bypass text decoding, resolve through the same allowlisted local-preview URL builder, and expose a real `system-default` action with a traversal-safe absolute target. The surface explicitly states that Native in-app page rendering is unavailable | PASS |
 | Chat file references | Structured file mentions, local Markdown links, and file-shaped inline code resolve to traversal-safe workspace-relative targets and open the existing Explorer selected-path owner. User-message fallback rendering preserves mention chips while the async Markdown parser initializes | PASS |
+| Whole-file chat actions | The Explorer preview header matches Web's 40px file chrome and exposes `Reference in chat` / `Ask why this changed`. Both actions reuse Web formatting, append to the active Lynx composer draft, and preserve structured mention metadata | PASS |
 | Live Explorer light/dark populated matrix | At `1280×820`, DPR 1, both themes render three entries, selected `README.md`, a `512×774` dock, `240px` sidebar, `239×685` entries scroll area, `271×730` preview, and `247×706` preview scroller. Light resolves the dock to `rgb(255,255,255)` / `rgb(13,13,13)`; dark resolves to `rgb(16,16,16)` / `rgb(252,252,252)`. Both PNGs are exactly `1280×820` | PASS |
 | Narrow Explorer geometry | At `900×700`, DPR 1, the dock clamps to `580px` (`900 - 320px` minimum main content), keeps a `240px` sidebar and `339px` preview, restores matching `padding-right:580px`, preserves the selected README preview, and exports an exact `900×700` PNG | PASS |
 | Explorer drag resizing | At `1280×820`, the Web-compatible sash path changed the dock from `640px` to `760px` through a trusted pointer drag. The target width survived the page refresh and `ThreadPage` restored matching `padding-right:760px`; Native retains the shared `createLynxSidebarResizeSession` path | PASS |
@@ -42,7 +43,7 @@ file preview, responsive layout, and light/dark Lynx-for-Web evidence pass.
 
 - This is the first real Explorer slice, not full Web Explorer parity.
 - The Lynx-for-Web activation blocker is resolved for trusted click and Enter.
-- Native in-app PDF page rendering, ask-why, comments, and syntax-highlighted
+- Native in-app PDF page rendering, selection comments, and syntax-highlighted
   rich preview remain future product scope rather than
   blockers for this first Explorer slice. PDF files now have a safe,
   non-deceptive default-app fallback; that is not claimed as Web PDF viewer
@@ -126,3 +127,22 @@ keeps the original `bindtap` path. Lynx-for-Web reuses the existing audited
 host navigation target because its custom text element does not publish normal
 clicks; the compatibility bridge adds click, keyboard, and 2px pointer-threshold
 coverage without injecting product state.
+
+## Preview-action continuation
+
+Every selected Explorer file now gets the same 40px header rhythm as Web's
+shared file preview: the path occupies the flexible left region and a 28px
+`More actions` trigger owns the right edge. The menu keeps Web's action order
+and exact copy: `Reference in chat`, then `Ask why this changed`.
+
+Both actions write through the existing Lynx composer draft store. Formatting
+comes from the same pure Web helpers, while the Lynx adapter adds the matching
+structured file mention before setting the prompt so draft filtering cannot
+discard it. Existing prompt text is separated correctly and repeated file
+mentions are deduplicated.
+
+Lynx-for-Web uses the established idempotent init-target pattern only for
+opening and positioning the menu because its SVG/text custom elements do not
+publish the trigger tap or native anchor measurement. Once visible, menu items
+remain the real Lynx Menu controls and were activated through their accessible
+`menuitem` refs. Native keeps the unmodified Menu trigger/item path.

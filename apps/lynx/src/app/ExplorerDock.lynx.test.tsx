@@ -52,6 +52,11 @@ describe('Lynx Explorer dock', () => {
     expect(source).toContain("entry.kind === 'directory'");
     expect(source).toContain('<ChatMarkdown');
     expect(source).toContain('onOpenFileReference={props.onSelectPath}');
+    expect(source).toContain('<ExplorerPreviewHeader');
+    expect(source).toContain('ariaLabel="More actions"');
+    expect(source).toContain('Reference in chat');
+    expect(source).toContain('Ask why this changed');
+    expect(source).toContain('applyExplorerChatAction({');
     expect(source).toContain('className="ExplorerDockImage"');
     expect(source).toContain('mode="aspectFit"');
     expect(source).toContain('Could not load this image.');
@@ -148,7 +153,13 @@ describe('Lynx Explorer dock', () => {
       /\.ExplorerDockEntry\s*\{[^}]*min-height:\s*28px;[^}]*padding:\s*4px 8px;/s
     );
     expect(styles).toMatch(
-      /\.ExplorerDockPreview\s*\{[^}]*flex:\s*1;[^}]*min-width:\s*0;[^}]*padding:\s*12px;/s
+      /\.ExplorerDockPreview\s*\{[^}]*flex:\s*1;[^}]*min-width:\s*0;[^}]*flex-direction:\s*column;/s
+    );
+    expect(styles).toMatch(
+      /\.ExplorerDockPreviewHeader\s*\{[^}]*height:\s*40px;[^}]*min-height:\s*40px;[^}]*padding:\s*0 12px;[^}]*border-bottom:\s*1px solid var\(--border\);/s
+    );
+    expect(styles).toMatch(
+      /\.ExplorerDockPreviewContent\s*\{[^}]*flex:\s*1;[^}]*padding:\s*12px;/s
     );
   });
 });

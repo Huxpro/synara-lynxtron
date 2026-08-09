@@ -1,4 +1,5 @@
 import type { ProjectReadFileResult } from '@synara/contracts';
+import { useInitData, useState } from '@lynx-js/react';
 import {
   isSupportedLocalImagePath,
   isSupportedLocalPdfPath,
@@ -9,14 +10,23 @@ import { FileEntryIcon } from '../components/FileEntryIcon.lynx';
 import { Input } from '../components/ui/input';
 import {
   ChevronRightIcon,
+  EllipsisIcon,
   SearchIcon,
   XIcon,
 } from '../lib/icons.lynx';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
+import { useComposerDraftStore } from '../adapters/composerDraftStore.lynx';
 import { disclosureChevronClassName } from '../platform/motion.lynx';
+import {
+  Menu,
+  MenuItem,
+  MenuPopup,
+  MenuTrigger,
+} from '../components/ui/menu.lynx';
 import type { ExplorerEntriesResult } from './queries';
 import { ResizableRightPanel } from './ResizableRightPanel.lynx';
 import { ExplorerPdfFallback } from './ExplorerPdfFallback.lynx';
+import { applyExplorerChatAction } from './explorerChatActions.logic';
 import './explorer-dock.css';
 
 function isMarkdownPath(path: string): boolean {
@@ -25,6 +35,52 @@ function isMarkdownPath(path: string): boolean {
 
 function fileName(path: string): string {
   return path.replace(/\\/g, '/').split('/').pop() || path;
+}
+
+function ExplorerPreviewHeader(props: {
+  readonly path: string;
+  readonly threadId: string;
+}) {
+  const initData = useInitData() as {
+    readonly initialExplorerActionMenuOpen?: unknown;
+  };
+  const [menuOpen, setMenuOpen] = useState(
+    initData.initialExplorerActionMenuOpen === true
+  );
+  const runAction = (action: 'ask-why' | 'reference') => {
+    'background only';
+    applyExplorerChatAction({
+      action,
+      path: props.path,
+      store: useComposerDraftStore.getState(),
+      threadId: props.threadId,
+    });
+  };
+  return (
+    <view className="ExplorerDockPreviewHeader">
+      <text className="ExplorerDockPreviewPath">{props.path}</text>
+      <Menu open={menuOpen} onOpenChange={setMenuOpen}>
+        <MenuTrigger
+          ariaLabel="More actions"
+          className="ExplorerDockPreviewActions"
+        >
+          <EllipsisIcon size={14} color="var(--muted-foreground)" />
+        </MenuTrigger>
+        <MenuPopup
+          align="end"
+          side="bottom"
+          className="ExplorerDockPreviewActionsPopup"
+        >
+          <MenuItem onClick={() => runAction('reference')}>
+            Reference in chat
+          </MenuItem>
+          <MenuItem onClick={() => runAction('ask-why')}>
+            Ask why this changed
+          </MenuItem>
+        </MenuPopup>
+      </Menu>
+    </view>
+  );
 }
 
 type ExplorerEntry = ExplorerEntriesResult['entries'][number];
@@ -183,6 +239,7 @@ export function ExplorerDock(props: {
   readonly open: boolean;
   readonly query: string;
   readonly selectedPath: string | null;
+  readonly threadId: string;
   readonly workspaceRoot: string | null;
 }) {
   const close = useLynxInteractiveState({
@@ -264,62 +321,70 @@ export function ExplorerDock(props: {
           </scroll-view>
         </view>
         <view className="ExplorerDockPreview">
-          {!props.selectedPath ? (
-            <text className="ExplorerDockState">
-              Select a file from the list to view it.
-            </text>
-          ) : isSupportedLocalPdfPath(props.selectedPath) &&
-            props.workspaceRoot ? (
-            <ExplorerPdfFallback
+          {props.selectedPath ? (
+            <ExplorerPreviewHeader
               path={props.selectedPath}
-              previewError={props.localPreviewError}
-              previewPending={props.localPreviewPending}
-              previewUrl={props.localPreviewUrl}
-              workspaceRoot={props.workspaceRoot}
+              threadId={props.threadId}
             />
-          ) : isSupportedLocalImagePath(props.selectedPath) ? (
-            props.localPreviewPending ? (
-              <text className="ExplorerDockState">Loading image…</text>
-            ) : props.localPreviewError ? (
-              <text className="ExplorerDockState ExplorerDockState--error">
-                Could not load this image.
+          ) : null}
+          <view className="ExplorerDockPreviewContent">
+            {!props.selectedPath ? (
+              <text className="ExplorerDockState">
+                Select a file from the list to view it.
               </text>
-            ) : props.localPreviewUrl ? (
-              <view className="ExplorerDockImageFrame">
-                <image
-                  className="ExplorerDockImage"
-                  src={props.localPreviewUrl}
-                  mode="aspectFit"
-                />
-                <text className="ExplorerDockImageName">
-                  {fileName(props.selectedPath)}
-                </text>
-              </view>
-            ) : null
-          ) : props.filePending ? (
-            <text className="ExplorerDockState">Loading file…</text>
-          ) : props.fileError ? (
-            <text className="ExplorerDockState ExplorerDockState--error">
-              Could not read this file.
-            </text>
-          ) : isMarkdownPath(props.selectedPath) ? (
-            <scroll-view className="ExplorerDockPreviewScroll" scroll-orientation="vertical">
-              <ChatMarkdown
-                cwd={props.workspaceRoot}
-                onOpenFileReference={props.onSelectPath}
-                text={props.file?.contents ?? ''}
+            ) : isSupportedLocalPdfPath(props.selectedPath) &&
+              props.workspaceRoot ? (
+              <ExplorerPdfFallback
+                path={props.selectedPath}
+                previewError={props.localPreviewError}
+                previewPending={props.localPreviewPending}
+                previewUrl={props.localPreviewUrl}
+                workspaceRoot={props.workspaceRoot}
               />
-            </scroll-view>
-          ) : (
-            <scroll-view className="ExplorerDockPreviewScroll" scroll-orientation="vertical">
-              <text className="ExplorerDockCode">{props.file?.contents ?? ''}</text>
-              {props.file?.truncated ? (
-                <text className="ExplorerDockTruncated">
-                  Preview truncated at 1 MB.
+            ) : isSupportedLocalImagePath(props.selectedPath) ? (
+              props.localPreviewPending ? (
+                <text className="ExplorerDockState">Loading image…</text>
+              ) : props.localPreviewError ? (
+                <text className="ExplorerDockState ExplorerDockState--error">
+                  Could not load this image.
                 </text>
-              ) : null}
-            </scroll-view>
-          )}
+              ) : props.localPreviewUrl ? (
+                <view className="ExplorerDockImageFrame">
+                  <image
+                    className="ExplorerDockImage"
+                    src={props.localPreviewUrl}
+                    mode="aspectFit"
+                  />
+                  <text className="ExplorerDockImageName">
+                    {fileName(props.selectedPath)}
+                  </text>
+                </view>
+              ) : null
+            ) : props.filePending ? (
+              <text className="ExplorerDockState">Loading file…</text>
+            ) : props.fileError ? (
+              <text className="ExplorerDockState ExplorerDockState--error">
+                Could not read this file.
+              </text>
+            ) : isMarkdownPath(props.selectedPath) ? (
+              <scroll-view className="ExplorerDockPreviewScroll" scroll-orientation="vertical">
+                <ChatMarkdown
+                  cwd={props.workspaceRoot}
+                  onOpenFileReference={props.onSelectPath}
+                  text={props.file?.contents ?? ''}
+                />
+              </scroll-view>
+            ) : (
+              <scroll-view className="ExplorerDockPreviewScroll" scroll-orientation="vertical">
+                <text className="ExplorerDockCode">{props.file?.contents ?? ''}</text>
+                {props.file?.truncated ? (
+                  <text className="ExplorerDockTruncated">
+                    Preview truncated at 1 MB.
+                  </text>
+                ) : null}
+              </scroll-view>
+            )}
+          </view>
         </view>
       </view>
     </ResizableRightPanel>

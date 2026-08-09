@@ -17,6 +17,10 @@ function setup(
   onRightPanelResize?: (resize: {
     readonly panel: string;
     readonly width: number;
+  }) => void,
+  onExplorerPreviewAction?: (action: {
+    readonly action: 'toggle-menu';
+    readonly path: string;
   }) => void
 ) {
   const host = document.createElement('div');
@@ -33,7 +37,8 @@ function setup(
     onExplorerActivation,
     onEnvironmentActivation,
     onExplorerNavigation,
-    onRightPanelResize
+    onRightPanelResize,
+    onExplorerPreviewAction
   );
   return { child, control };
 }
@@ -202,6 +207,52 @@ describe('Lynx-for-Web interaction state bridge', () => {
     );
 
     expect(navigations).toEqual([]);
+  });
+
+  it('forwards Explorer preview menu pointer actions with the active path', () => {
+    const actions: Array<{ action: string; path: string }> = [];
+    const { control } = setup(
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      (action) => actions.push(action)
+    );
+    const root = control.getRootNode() as ShadowRoot;
+    const header = document.createElement('div');
+    header.classList.add('ExplorerDockPreviewHeader');
+    const path = document.createElement('div');
+    path.classList.add('ExplorerDockPreviewPath');
+    path.textContent = 'src/action.ts';
+    const trigger = document.createElement('div');
+    trigger.classList.add('ExplorerDockPreviewActions');
+    header.append(path, trigger);
+    root.append(header);
+
+    for (const target of [trigger]) {
+      target.dispatchEvent(
+        new MouseEvent('mousedown', {
+          bubbles: true,
+          button: 0,
+          clientX: 20,
+          clientY: 10,
+          composed: true,
+        })
+      );
+      target.dispatchEvent(
+        new MouseEvent('mouseup', {
+          bubbles: true,
+          button: 0,
+          clientX: 20,
+          clientY: 10,
+          composed: true,
+        })
+      );
+    }
+
+    expect(actions).toEqual([
+      { action: 'toggle-menu', path: 'src/action.ts' },
+    ]);
   });
 
   it('resizes a right panel from the sash and reports the clamped width', () => {

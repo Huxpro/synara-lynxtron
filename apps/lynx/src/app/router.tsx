@@ -384,6 +384,7 @@ function ThreadRightDocks(
         open={explorerOpen}
         query={explorerQuery}
         selectedPath={explorerSelectedPath}
+        threadId={currentThread?.id ?? ''}
         workspaceRoot={currentThread?.workspaceRoot ?? null}
         onWidthChange={setExplorerDockWidth}
         onQueryChange={onExplorerQueryChange}

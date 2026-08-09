@@ -8568,3 +8568,22 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   均为`640x774`，preview为`375x17`并显示
   `export const openedFromMarkdown = true;`；relay包含`projects.readFile`。
   证据在`shots/2026-08-09/explorer-file-references-current/`。
+
+### Explorer whole-file chat actions
+
+- Explorer selected-file preview新增Web authority一致的40px header、flexible path和
+  28px `More actions` trigger；menu顺序/文案保持`Reference in chat` →
+  `Ask why this changed`。selection comments仍明确受Native range/line mapping边界约束。
+- 两个action复用Web pure `formatChatFileReference` / `buildWhyLinesPrompt`，Lynx
+  adapter先写structured mention metadata再更新prompt，避免draft filter丢reference；
+  existing prompt spacing与duplicate mention均有focused tests。
+- 为避免把Web store/DOM selection依赖拉进Lynx bundle，chat reference formatting
+  从`chatReferences.ts`抽到pure module；Native bundle最终约3779.5KB，仅比前slice增加
+  约5KB，而非初版错误导入导致的约124KB增量。
+- Lynx-for-Web只对custom trigger tap和popup anchor采用既有idempotent init target；
+  popup可见后两项均由真实accessible `menuitem`点击。light Reference从空composer变为
+  `@src/action.ts`；dark Ask why变为Web同款完整history/blame prompt，draft storage
+  同时保留`{name:"action.ts",path:"src/action.ts"}`。
+- exact-owned Native production PID36935加载final bundle并连接58930真实thread/workspace；
+  当前Native menu点击未取得exact-client输入证据，因此不冒充认证。证据在
+  `shots/2026-08-10/explorer-chat-actions-current/`。

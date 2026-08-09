@@ -1,0 +1,144 @@
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/ddc67b46-2ec9-44e4-9d25-f26e0c6886ec
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/8fa210ec-be38-47ec-ac26-b6408348cada", nodejs: "blob:http://127.0.0.1:9564/ddc67b46-2ec9-44e4-9d25-f26e0c6886ec"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/a668b8ec-ee3e-4705-b415-b4d1080caf0a
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/a6c30c3e-3cab-402d-ab1e-50da17d679a0", nodejs: "blob:http://127.0.0.1:9564/a668b8ec-ee3e-4705-b415-b4d1080caf0a"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/4ec64882-d268-444d-9304-a392f5552dc3
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/d488ae3f-4293-4dc9-b71c-04f9cef8b964", nodejs: "blob:http://127.0.0.1:9564/4ec64882-d268-444d-9304-a392f5552dc3"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/cd26cd40-ffed-49ec-9588-09791ae647bc
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/99b6ca7f-4d75-4cf3-806c-85a774ef7dc3", nodejs: "blob:http://127.0.0.1:9564/cd26cd40-ffed-49ec-9588-09791ae647bc"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/18fc0dce-291e-43b8-9f01-e7ed3579b003
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/e877a1a1-6a79-446b-902f-53b3cfdb34a7", nodejs: "blob:http://127.0.0.1:9564/18fc0dce-291e-43b8-9f01-e7ed3579b003"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/210f9713-9553-4acc-8586-f43133981e8b
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/bb2308a1-60f7-46bd-8e2f-6c45f0de441e", nodejs: "blob:http://127.0.0.1:9564/210f9713-9553-4acc-8586-f43133981e8b"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/55bd4d80-c5c6-48dd-8f6c-cd24b7f18eeb
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/971bfad7-6abe-4e8d-ad07-d6d53f6d552d", nodejs: "blob:http://127.0.0.1:9564/55bd4d80-c5c6-48dd-8f6c-cd24b7f18eeb"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/a81a853e-7f15-4b9c-a96e-aaa8c69e3f5c
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/b2648c8b-8b26-466d-a603-cc3ba2f03512", nodejs: "blob:http://127.0.0.1:9564/a81a853e-7f15-4b9c-a96e-aaa8c69e3f5c"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/1ad90119-1bec-443c-9425-8abb106c5eb3
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/65f978ad-b91e-4b98-8095-825887d24edc", nodejs: "blob:http://127.0.0.1:9564/1ad90119-1bec-443c-9425-8abb106c5eb3"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/918ca782-b059-42cd-af8a-5057081c1115
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/cc0b010a-2d7c-4357-9ff4-4587f84afad2", nodejs: "blob:http://127.0.0.1:9564/918ca782-b059-42cd-af8a-5057081c1115"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/72283c80-32b6-4ee4-bdf2-b0f41c9c656b
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/fd4053a4-b615-4677-941b-1ce382613eaa", nodejs: "blob:http://127.0.0.1:9564/72283c80-32b6-4ee4-bdf2-b0f41c9c656b"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/0d05c145-d93e-41eb-bf54-6feb633b7ea0
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/e6f2df4b-7bcf-4729-8e4d-506ffa92bbf7", nodejs: "blob:http://127.0.0.1:9564/0d05c145-d93e-41eb-bf54-6feb633b7ea0"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/e517d3e1-6633-4f5e-9896-5e6e441410e9
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/96530dcd-6c24-4417-ab0a-69433b568b0e", nodejs: "blob:http://127.0.0.1:9564/e517d3e1-6633-4f5e-9896-5e6e441410e9"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/c144128e-58d7-4310-9d9f-f96ab13e3925
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/314465b0-e98a-4faf-b867-04110f028347", nodejs: "blob:http://127.0.0.1:9564/c144128e-58d7-4310-9d9f-f96ab13e3925"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/da40d801-2604-4735-96ff-7b6529e21089
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/829c93e6-0d8e-4651-b800-29dcaf9d2ffa", nodejs: "blob:http://127.0.0.1:9564/da40d801-2604-4735-96ff-7b6529e21089"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/a6cf32df-2ee9-4450-a864-48bee198a2e4
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/bab2bc5f-f703-4f3e-98b3-75a4bb6c8aba", nodejs: "blob:http://127.0.0.1:9564/a6cf32df-2ee9-4450-a864-48bee198a2e4"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/eb2b8550-a0c8-4ef6-8e48-d5c63684d153
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/16acecdd-fb6f-4dc4-8025-7938ac7becfe", nodejs: "blob:http://127.0.0.1:9564/eb2b8550-a0c8-4ef6-8e48-d5c63684d153"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/a048f2d8-cb1d-43b1-9a35-593c5efda0aa
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/63d24513-4c56-452e-a785-74da3c11a6c4", nodejs: "blob:http://127.0.0.1:9564/a048f2d8-cb1d-43b1-9a35-593c5efda0aa"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/c5faa886-45b1-4a62-97e6-59380ed40607
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/0c8fe469-616a-4c11-a1dc-dc2db147e6d4", nodejs: "blob:http://127.0.0.1:9564/c5faa886-45b1-4a62-97e6-59380ed40607"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/e35b690c-99bd-4983-9051-86e85e675dd2
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/59fcbfba-c80c-45ea-a648-a370156b80c8", nodejs: "blob:http://127.0.0.1:9564/e35b690c-99bd-4983-9051-86e85e675dd2"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/6000fea4-70a7-4209-86a5-29e8ce5603bb
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/b610f26c-52d6-4dc8-b1bf-c9b3c03a23b8", nodejs: "blob:http://127.0.0.1:9564/6000fea4-70a7-4209-86a5-29e8ce5603bb"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/c7c19fa7-0a63-49c9-81f5-527a883449f4
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/5cf46971-8f90-44e1-9f25-d9c13551ccfc", nodejs: "blob:http://127.0.0.1:9564/c7c19fa7-0a63-49c9-81f5-527a883449f4"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/761a7283-4010-4e67-ac70-35824fb61137
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/3b0d7870-8a6e-43a5-99b6-a388a6b4013a", nodejs: "blob:http://127.0.0.1:9564/761a7283-4010-4e67-ac70-35824fb61137"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/90e3a459-3d1d-4100-b38a-52df51274e85
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/8bbabb0d-6337-4a89-ae98-8e2676dad8d6", nodejs: "blob:http://127.0.0.1:9564/90e3a459-3d1d-4100-b38a-52df51274e85"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/eb26e04a-866d-4f54-87ee-d101239e6384
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/cf6dc2c9-ae54-4017-8c4d-2fceafbddb7d", nodejs: "blob:http://127.0.0.1:9564/eb26e04a-866d-4f54-87ee-d101239e6384"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/ea96ad7e-fdf0-49b7-8729-b696ffae0e46
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/e8d816a2-fc5c-41ab-bedf-8bbf69b560f4", nodejs: "blob:http://127.0.0.1:9564/ea96ad7e-fdf0-49b7-8729-b696ffae0e46"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/94cb0ece-6f1d-4336-9dc8-f33d85c7cda7
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/81ff192e-3ece-47fe-a95d-eccdc3ba8f63", nodejs: "blob:http://127.0.0.1:9564/94cb0ece-6f1d-4336-9dc8-f33d85c7cda7"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/56e2a8de-75f7-4261-9026-03071a37510a
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/feec4123-81ec-4c5b-a285-456fadb79e7f", nodejs: "blob:http://127.0.0.1:9564/56e2a8de-75f7-4261-9026-03071a37510a"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/1a49055a-c593-4aba-95e7-0f034b7523ad
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/1ebad24e-f77a-4e04-98d5-2f4c368b559a", nodejs: "blob:http://127.0.0.1:9564/1a49055a-c593-4aba-95e7-0f034b7523ad"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/1978e5a8-39e9-45f8-9e20-4bd7de9c1495
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/2c9a2cb0-c852-46d1-b04c-fa81e07d0502", nodejs: "blob:http://127.0.0.1:9564/1978e5a8-39e9-45f8-9e20-4bd7de9c1495"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/d3ce48f4-4618-47f3-a537-3a98d978af58
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/83fa74bc-7a75-45e7-aacb-c26456f6b38b", nodejs: "blob:http://127.0.0.1:9564/d3ce48f4-4618-47f3-a537-3a98d978af58"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/d77debb5-8474-4325-bb35-76a95cda8180
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/1a21f8c8-a2eb-4d5d-9207-a3bc4699f3b9", nodejs: "blob:http://127.0.0.1:9564/d77debb5-8474-4325-bb35-76a95cda8180"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/c7970922-7a79-45ed-ac0f-fef3a8b9b068
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/0cb80e38-54d3-44ca-98f1-9666cef17a84", nodejs: "blob:http://127.0.0.1:9564/c7970922-7a79-45ed-ac0f-fef3a8b9b068"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/202841fd-4a20-4df4-a381-10470cd68193
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/7b50fde6-455d-41c5-8210-e6c474b8d62c", nodejs: "blob:http://127.0.0.1:9564/202841fd-4a20-4df4-a381-10470cd68193"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/c1cd9ab5-bf94-48ed-accc-55de55013573
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/fd9133f9-6b19-4ec8-ab4c-110587263c42", nodejs: "blob:http://127.0.0.1:9564/c1cd9ab5-bf94-48ed-accc-55de55013573"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:9564/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:9564/8f787ac3-d50d-415d-a21a-19ae4ef1f28c
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:9564/4fc209ee-4d56-4be6-b957-b44806e4cac2", nodejs: "blob:http://127.0.0.1:9564/8f787ac3-d50d-415d-a21a-19ae4ef1f28c"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead

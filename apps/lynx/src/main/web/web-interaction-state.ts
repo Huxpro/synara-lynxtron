@@ -4,6 +4,8 @@ const ENVIRONMENT_TOGGLE_SELECTOR = '.EnvironmentToggle';
 const EXPLORER_TOGGLE_SELECTOR = '.ThreadFilesToggle';
 const EXPLORER_ENTRY_SELECTOR = '.ExplorerDockEntry';
 const FILE_REFERENCE_SELECTOR = '.MdInlineToken--file, .MdInlineToken--mention';
+const EXPLORER_PREVIEW_ACTION_TRIGGER_SELECTOR =
+  '.ExplorerDockPreviewActions';
 const EXPLORER_SEARCH_SELECTOR = '.ExplorerDockSearchInput';
 const RIGHT_PANEL_RESIZE_SASH_SELECTOR = '.RightPanelResizeSash';
 const LYNX_FOCUSABLE_SELECTOR = '[focusable="true"]';
@@ -28,6 +30,11 @@ export interface LynxWebExplorerNavigation {
 export interface LynxWebRightPanelResize {
   readonly panel: string;
   readonly width: number;
+}
+
+export interface LynxWebExplorerPreviewAction {
+  readonly action: 'toggle-menu';
+  readonly path: string;
 }
 
 function interactiveElement(
@@ -65,7 +72,10 @@ export function installLynxWebInteractionStateBridge(
     activation: LynxWebEnvironmentActivation
   ) => void,
   onExplorerNavigation?: (navigation: LynxWebExplorerNavigation) => void,
-  onRightPanelResize?: (resize: LynxWebRightPanelResize) => void
+  onRightPanelResize?: (resize: LynxWebRightPanelResize) => void,
+  onExplorerPreviewAction?: (
+    action: LynxWebExplorerPreviewAction
+  ) => void
 ): void {
   const hostHoverClasses = new WeakSet<HTMLElement>();
   const hostFocusClasses = new WeakSet<HTMLElement>();
@@ -81,6 +91,14 @@ export function installLynxWebInteractionStateBridge(
     | null = null;
   let fileReferencePointer:
     | {
+        readonly path: string;
+        readonly startX: number;
+        readonly startY: number;
+      }
+    | null = null;
+  let explorerPreviewActionPointer:
+    | {
+        readonly action: LynxWebExplorerPreviewAction['action'];
         readonly path: string;
         readonly startX: number;
         readonly startY: number;
@@ -194,6 +212,32 @@ export function installLynxWebInteractionStateBridge(
     'mousedown',
     (event) => {
       if (event instanceof MouseEvent && event.button === 0) {
+        const previewActionTarget = event
+          .composedPath()
+          .find(
+            (target): target is HTMLElement =>
+              target instanceof HTMLElement &&
+              target.matches(EXPLORER_PREVIEW_ACTION_TRIGGER_SELECTOR)
+          );
+        const previewHeader = previewActionTarget?.closest<HTMLElement>(
+          '.ExplorerDockPreviewHeader'
+        );
+        const path =
+          previewHeader
+            ?.querySelector<HTMLElement>('.ExplorerDockPreviewPath')
+            ?.textContent?.trim() ??
+          root
+            .querySelector<HTMLElement>('.ExplorerDockPreviewPath')
+            ?.textContent?.trim() ??
+          '';
+        if (previewActionTarget && path) {
+          explorerPreviewActionPointer = {
+            action: 'toggle-menu',
+            path,
+            startX: event.clientX,
+            startY: event.clientY,
+          };
+        }
         const fileReference = event
           .composedPath()
           .find(
@@ -271,6 +315,22 @@ export function installLynxWebInteractionStateBridge(
     'mouseup',
     (event) => {
       if (!(event instanceof MouseEvent)) return;
+      if (explorerPreviewActionPointer) {
+        const pointer = explorerPreviewActionPointer;
+        explorerPreviewActionPointer = null;
+        if (
+          onExplorerPreviewAction &&
+          Math.abs(event.clientX - pointer.startX) <= 2 &&
+          Math.abs(event.clientY - pointer.startY) <= 2
+        ) {
+          onExplorerPreviewAction({
+            action: pointer.action,
+            path: pointer.path,
+          });
+          event.preventDefault();
+          return;
+        }
+      }
       if (fileReferencePointer) {
         const pointer = fileReferencePointer;
         fileReferencePointer = null;
