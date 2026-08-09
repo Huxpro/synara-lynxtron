@@ -19,6 +19,9 @@ import type {
   PullRequestSetPinnedInput,
   PullRequestSetPinnedResult,
   PullRequestState,
+  ProjectListDirectoriesResult,
+  ProjectReadFileResult,
+  ProjectSearchEntriesResult,
 } from '@synara/contracts';
 import type { SidebarStatusPresentation } from '@synara-web/components/SidebarStatus.logic';
 import { resolveThreadStatusPill } from '@synara-web/components/SidebarThreadStatus.logic';
@@ -154,6 +157,26 @@ export interface SidebarSnapshot {
 }
 
 export type ThreadTranscriptRow = MessagesTimelineRow;
+
+export type ExplorerEntriesResult =
+  | ProjectListDirectoriesResult
+  | ProjectSearchEntriesResult;
+
+const EXPLORER_CACHE_TTL_MS = 2_000;
+const explorerEntriesCache = new Map<
+  string,
+  {
+    readonly expiresAt: number;
+    readonly result: Promise<ExplorerEntriesResult>;
+  }
+>();
+const explorerFileCache = new Map<
+  string,
+  {
+    readonly expiresAt: number;
+    readonly result: Promise<ProjectReadFileResult>;
+  }
+>();
 
 let sidebarSnapshotCache:
   | {
@@ -347,6 +370,58 @@ export async function fetchSidebarSnapshot(): Promise<SidebarSnapshot> {
     value,
   };
   return value;
+}
+
+export async function fetchExplorerEntries(input: {
+  readonly query: string;
+  readonly workspaceRoot: string;
+}): Promise<ExplorerEntriesResult> {
+  'background only';
+  const cacheKey = `${input.workspaceRoot}\0${input.query}`;
+  const cached = explorerEntriesCache.get(cacheKey);
+  if (cached && cached.expiresAt > Date.now()) return cached.result;
+  const { listProjectDirectories, searchProjectEntries } = await import(
+    /* webpackMode: "eager" */ '../data/synaraClient'
+  );
+  const result = input.query
+    ? searchProjectEntries({
+        cwd: input.workspaceRoot,
+        query: input.query,
+        kind: 'file',
+        limit: 80,
+      })
+    : listProjectDirectories({
+        cwd: input.workspaceRoot,
+        includeFiles: true,
+        depth: 1,
+      });
+  explorerEntriesCache.set(cacheKey, {
+    expiresAt: Date.now() + EXPLORER_CACHE_TTL_MS,
+    result,
+  });
+  return result;
+}
+
+export async function fetchExplorerFile(input: {
+  readonly relativePath: string;
+  readonly workspaceRoot: string;
+}): Promise<ProjectReadFileResult> {
+  'background only';
+  const cacheKey = `${input.workspaceRoot}\0${input.relativePath}`;
+  const cached = explorerFileCache.get(cacheKey);
+  if (cached && cached.expiresAt > Date.now()) return cached.result;
+  const { readProjectFile } = await import(
+    /* webpackMode: "eager" */ '../data/synaraClient'
+  );
+  const result = readProjectFile({
+    cwd: input.workspaceRoot,
+    relativePath: input.relativePath,
+  });
+  explorerFileCache.set(cacheKey, {
+    expiresAt: Date.now() + EXPLORER_CACHE_TTL_MS,
+    result,
+  });
+  return result;
 }
 
 export async function fetchThreads(): Promise<ThreadSummary[]> {

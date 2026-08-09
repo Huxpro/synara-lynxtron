@@ -13,9 +13,9 @@ describe('Lynx thread transcript polling', () => {
     );
 
     expect(routerSource).not.toContain('function useThreadTranscriptPolling');
-    expect(routerOwnerSource).toContain(
-      "queryKey: ['thread-detail', activeThreadId]"
-    );
+    expect(routerOwnerSource).toContain("'thread-detail'");
+    expect(routerOwnerSource).toContain('explorerTrimmedQuery');
+    expect(routerOwnerSource).toContain('explorerSelectedPath');
     expect(routerOwnerSource).toContain(
       'parseRoute(initialRoute).params.threadId ?? null'
     );
@@ -62,8 +62,12 @@ describe('Lynx thread transcript polling', () => {
     expect(appSource).toContain('const initData = useInitData()');
     expect(appSource).toContain('initialRoute={initialRoute}');
     expect(appSource).toContain('initialThreadBootstrap={initialThreadBootstrap}');
+    expect(appSource).toContain('initialExplorerPath={initialExplorerPath}');
+    expect(appSource).toContain('initialExplorerQuery={initialExplorerQuery}');
     expect(appSource).toContain('fetchThreadTranscriptRows(threadMatch[1])');
     expect(appSource).toContain('fetchThreadHeaderSummary(threadMatch[1])');
+    expect(appSource).toContain('fetchExplorerEntries({');
+    expect(appSource).toContain('fetchExplorerFile({');
     expect(routerSource).toContain('readonly initialRoute: string | null');
     expect(routerSource).toContain('useRoute(initialRoute)');
     expect(routerSource).toContain('resolvedActiveThreadData');

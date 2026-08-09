@@ -18,8 +18,11 @@ import type { ThemeState } from '@synara-web/theme/theme.logic';
 import type { SettingsSectionId } from '@synara-web/settingsNavigation';
 import { resolveProviderHealthBannerPresentation } from '@synara-web/components/chat/ProviderHealthBanner.logic';
 import { findProviderStatus } from '@synara-web/lib/providerAvailability';
+import { clampSidebarWidth } from '@synara-web/components/sidebarResize.logic';
 
 import {
+  fetchExplorerEntries,
+  fetchExplorerFile,
   fetchThreadHeaderSummary,
   fetchThreadTranscriptRows,
   fetchThreads,
@@ -245,17 +248,43 @@ function ThreadPage(props: {
   readonly currentThread: Awaited<ReturnType<typeof fetchThreadHeaderSummary>>;
   readonly data: Awaited<ReturnType<typeof fetchThreadTranscriptRows>> | undefined;
   readonly error: unknown;
+  readonly explorerEntries: Awaited<
+    ReturnType<typeof fetchExplorerEntries>
+  >['entries'];
+  readonly explorerEntriesError: boolean;
+  readonly explorerEntriesPending: boolean;
+  readonly explorerFile: Awaited<ReturnType<typeof fetchExplorerFile>> | null;
+  readonly explorerFileError: boolean;
+  readonly explorerFilePending: boolean;
+  readonly explorerQuery: string;
+  readonly explorerSelectedPath: string | null;
+  readonly initialExplorerWidth: number | null;
   readonly initialExplorerOpen: boolean;
   readonly isPending: boolean;
+  readonly onExplorerQueryChange: (query: string) => void;
+  readonly onExplorerSelectPath: (path: string) => void;
   readonly threadId: string;
+  readonly viewportWidth: number;
 }) {
   const {
     currentThread,
     data,
     error,
+    explorerEntries,
+    explorerEntriesError,
+    explorerEntriesPending,
+    explorerFile,
+    explorerFileError,
+    explorerFilePending,
+    explorerQuery,
+    explorerSelectedPath,
+    initialExplorerWidth,
     initialExplorerOpen,
     isPending,
+    onExplorerQueryChange,
+    onExplorerSelectPath,
     threadId,
+    viewportWidth,
   } = props;
   const { temporary, toggleTemporary } =
     useTemporaryThreadLifecycle(threadId);
@@ -267,8 +296,18 @@ function ThreadPage(props: {
   const [explorerOpen, setExplorerOpen] = useState(initialExplorerOpen);
   const [threadPageWidth, setThreadPageWidth] = useState(0);
   const [diffDockWidth, setDiffDockWidth] = useState<number | null>(null);
-  const [explorerDockWidth, setExplorerDockWidth] = useState<number | null>(
-    null
+  const [explorerDockWidth, setExplorerDockWidth] = useState<number | null>(() =>
+    initialExplorerOpen && viewportWidth > 0
+      ? clampSidebarWidth(
+          initialExplorerWidth ?? Math.round(viewportWidth / 2),
+          {
+            maxWidth: 960,
+            minWidth: 480,
+            minimumContentWidth: 320,
+            viewportWidth,
+          }
+        )
+      : null
   );
   const transcriptControllerRef = useRef<TranscriptController | null>(null);
   const registerTranscriptController = useCallback(
@@ -441,7 +480,7 @@ function ThreadPage(props: {
         />
       ) : null}
       <DiffDock
-        availableWidth={threadPageWidth}
+        availableWidth={threadPageWidth || viewportWidth}
         open={diffOpen}
         workspaceRoot={currentThread?.workspaceRoot ?? null}
         onClose={() => {
@@ -451,10 +490,21 @@ function ThreadPage(props: {
         onWidthChange={setDiffDockWidth}
       />
       <ExplorerDock
-        availableWidth={threadPageWidth}
+        availableWidth={threadPageWidth || viewportWidth}
+        entries={explorerEntries}
+        entriesError={explorerEntriesError}
+        entriesPending={explorerEntriesPending}
+        initialWidth={initialExplorerWidth}
+        file={explorerFile}
+        fileError={explorerFileError}
+        filePending={explorerFilePending}
         open={explorerOpen}
+        query={explorerQuery}
+        selectedPath={explorerSelectedPath}
         workspaceRoot={currentThread?.workspaceRoot ?? null}
         onWidthChange={setExplorerDockWidth}
+        onQueryChange={onExplorerQueryChange}
+        onSelectPath={onExplorerSelectPath}
         onClose={() => {
           setExplorerOpen(false);
           setExplorerDockWidth(null);
@@ -468,16 +518,32 @@ export function SliceRouter({
   initialRoute,
   initialThreadBootstrap,
   initialExplorerOpen,
+  initialExplorerPath,
+  initialExplorerQuery,
+  initialExplorerWidth,
+  viewportWidth,
   onThemeStateChange,
   onUiDensityChange,
 }: {
   readonly initialRoute: string | null;
   readonly initialThreadBootstrap: {
     readonly data: Awaited<ReturnType<typeof fetchThreadTranscriptRows>>;
+    readonly explorerEntries: {
+      readonly value: Awaited<ReturnType<typeof fetchExplorerEntries>> | null;
+      readonly error: boolean;
+    };
+    readonly explorerFile: {
+      readonly value: Awaited<ReturnType<typeof fetchExplorerFile>> | null;
+      readonly error: boolean;
+    };
     readonly summary: Awaited<ReturnType<typeof fetchThreadHeaderSummary>>;
     readonly threadId: string;
   } | null;
   readonly initialExplorerOpen: boolean;
+  readonly initialExplorerPath: string | null;
+  readonly initialExplorerQuery: string;
+  readonly initialExplorerWidth: number | null;
+  readonly viewportWidth: number;
   readonly onThemeStateChange: (state: ThemeState) => void;
   readonly onUiDensityChange: (density: UiDensity) => void;
 }) {
@@ -498,12 +564,22 @@ export function SliceRouter({
       : initialRoute
         ? parseRoute(initialRoute).params.threadId ?? null
         : null;
+  const [explorerQuery, setExplorerQuery] = useState(initialExplorerQuery);
+  const [explorerSelectedPath, setExplorerSelectedPath] = useState<
+    string | null
+  >(initialExplorerPath);
+  const explorerTrimmedQuery = explorerQuery.trim();
   const {
     data: activeThreadData,
     error: activeThreadError,
     isPending: activeThreadPending,
   } = useQuery({
-    queryKey: ['thread-detail', activeThreadId],
+    queryKey: [
+      'thread-detail',
+      activeThreadId,
+      explorerTrimmedQuery,
+      explorerSelectedPath,
+    ],
     queryFn: async () => {
       'background only';
       const threadId = activeThreadId;
@@ -512,19 +588,58 @@ export function SliceRouter({
         fetchThreadTranscriptRows(threadId),
         fetchThreadHeaderSummary(threadId),
       ]);
-      return { data, summary };
+      const explorerEntries = summary?.workspaceRoot
+        ? await fetchExplorerEntries({
+            workspaceRoot: summary.workspaceRoot,
+            query: explorerTrimmedQuery,
+          }).then(
+            (value) => ({ value, error: false }),
+            () => ({ value: null, error: true })
+          )
+        : { value: null, error: false };
+      const explorerFile =
+        summary?.workspaceRoot && explorerSelectedPath
+          ? await fetchExplorerFile({
+              workspaceRoot: summary.workspaceRoot,
+              relativePath: explorerSelectedPath,
+            }).then(
+              (value) => ({ value, error: false }),
+              () => ({ value: null, error: true })
+            )
+          : { value: null, error: false };
+      return { data, explorerEntries, explorerFile, summary };
     },
     enabled: activeThreadId !== null,
     refetchInterval: 500,
     retry: false,
   });
-  const resolvedActiveThreadData =
-    activeThreadData ??
-    (initialThreadBootstrap?.threadId === activeThreadId
+  const matchingInitialThreadBootstrap =
+    initialThreadBootstrap?.threadId === activeThreadId
       ? initialThreadBootstrap
-      : undefined);
+      : null;
+  const resolvedActiveThreadData = activeThreadData
+    ? {
+        ...activeThreadData,
+        explorerEntries:
+          activeThreadData.explorerEntries.value ||
+          activeThreadData.explorerEntries.error
+            ? activeThreadData.explorerEntries
+            : matchingInitialThreadBootstrap?.explorerEntries ??
+              activeThreadData.explorerEntries,
+        explorerFile:
+          activeThreadData.explorerFile.value ||
+          activeThreadData.explorerFile.error
+            ? activeThreadData.explorerFile
+            : matchingInitialThreadBootstrap?.explorerFile ??
+              activeThreadData.explorerFile,
+      }
+    : matchingInitialThreadBootstrap ?? undefined;
   const resolvedActiveThreadPending =
     resolvedActiveThreadData === undefined && activeThreadPending;
+  useEffect(() => {
+    setExplorerQuery('');
+    setExplorerSelectedPath(null);
+  }, [activeThreadId]);
   const [persistedLastRoute, setPersistedLastRoute] =
     useState<LastThreadRoute | null>(null);
   const [lastRouteHydrated, setLastRouteHydrated] = useState(false);
@@ -693,9 +808,32 @@ export function SliceRouter({
         currentThread={resolvedActiveThreadData?.summary}
         data={resolvedActiveThreadData?.data}
         error={activeThreadError}
+        explorerEntries={
+          resolvedActiveThreadData?.explorerEntries.value?.entries ?? []
+        }
+        explorerEntriesError={
+          resolvedActiveThreadData?.explorerEntries.error ?? false
+        }
+        explorerEntriesPending={resolvedActiveThreadPending}
+        explorerFile={resolvedActiveThreadData?.explorerFile.value ?? null}
+        explorerFileError={
+          resolvedActiveThreadData?.explorerFile.error ?? false
+        }
+        explorerFilePending={
+          explorerSelectedPath !== null && resolvedActiveThreadPending
+        }
+        explorerQuery={explorerQuery}
+        explorerSelectedPath={explorerSelectedPath}
+        initialExplorerWidth={initialExplorerWidth}
         initialExplorerOpen={initialExplorerOpen}
         isPending={resolvedActiveThreadPending}
+        onExplorerQueryChange={(query) => {
+          setExplorerQuery(query);
+          setExplorerSelectedPath(null);
+        }}
+        onExplorerSelectPath={setExplorerSelectedPath}
         threadId={route.params.threadId}
+        viewportWidth={viewportWidth}
       />
     );
   } else if (route.pathname === '/kanban') {

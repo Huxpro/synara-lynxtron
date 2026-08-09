@@ -1,50 +1,14 @@
-import { useState } from '@lynx-js/react';
-import { useQuery } from '@tanstack/react-query';
 import type {
-  ProjectListDirectoriesInput,
-  ProjectListDirectoriesResult,
-  ProjectReadFileInput,
   ProjectReadFileResult,
-  ProjectSearchEntriesInput,
-  ProjectSearchEntriesResult,
 } from '@synara/contracts';
 
 import { ChatMarkdown } from '../components/markdown/ChatMarkdown';
 import { Input } from '../components/ui/input';
 import { FolderIcon, SearchIcon, XIcon } from '../lib/icons.lynx';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
+import type { ExplorerEntriesResult } from './queries';
 import { ResizableRightPanel } from './ResizableRightPanel.lynx';
 import './explorer-dock.css';
-
-async function loadProjectDirectories(
-  input: ProjectListDirectoriesInput
-): Promise<ProjectListDirectoriesResult> {
-  'background only';
-  const { listProjectDirectories } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient.lynx'
-  );
-  return listProjectDirectories(input);
-}
-
-async function loadProjectSearchEntries(
-  input: ProjectSearchEntriesInput
-): Promise<ProjectSearchEntriesResult> {
-  'background only';
-  const { searchProjectEntries } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient.lynx'
-  );
-  return searchProjectEntries(input);
-}
-
-async function loadProjectFile(
-  input: ProjectReadFileInput
-): Promise<ProjectReadFileResult> {
-  'background only';
-  const { readProjectFile } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient.lynx'
-  );
-  return readProjectFile(input);
-}
 
 function isMarkdownPath(path: string): boolean {
   return /\.(?:md|mdx|markdown)$/i.test(path);
@@ -89,62 +53,38 @@ function ExplorerEntryRow(props: {
 
 export function ExplorerDock(props: {
   readonly availableWidth: number;
+  readonly entries: ExplorerEntriesResult['entries'];
+  readonly entriesError: boolean;
+  readonly entriesPending: boolean;
+  readonly initialWidth: number | null;
+  readonly file: ProjectReadFileResult | null;
+  readonly fileError: boolean;
+  readonly filePending: boolean;
   readonly onClose: () => void;
+  readonly onQueryChange: (query: string) => void;
+  readonly onSelectPath: (path: string) => void;
   readonly onWidthChange: (width: number) => void;
   readonly open: boolean;
+  readonly query: string;
+  readonly selectedPath: string | null;
   readonly workspaceRoot: string | null;
 }) {
-  const [query, setQuery] = useState('');
-  const [selectedPath, setSelectedPath] = useState<string | null>(null);
-  const trimmedQuery = query.trim();
-  const entriesQuery = useQuery({
-    queryKey: ['explorer-entries', props.workspaceRoot, trimmedQuery],
-    queryFn: () =>
-      trimmedQuery
-        ? loadProjectSearchEntries({
-            cwd: props.workspaceRoot!,
-            query: trimmedQuery,
-            kind: 'file',
-            limit: 80,
-          })
-        : loadProjectDirectories({
-            cwd: props.workspaceRoot!,
-            includeFiles: true,
-            depth: 1,
-          }),
-    enabled: props.open && Boolean(props.workspaceRoot),
-    retry: false,
-  });
-  const fileQuery = useQuery({
-    queryKey: ['explorer-file', props.workspaceRoot, selectedPath],
-    queryFn: () =>
-      loadProjectFile({
-        cwd: props.workspaceRoot!,
-        relativePath: selectedPath!,
-      }),
-    enabled:
-      props.open && Boolean(props.workspaceRoot) && selectedPath !== null,
-    retry: false,
-  });
   const close = useLynxInteractiveState({
     baseClassName: 'ExplorerDockClose',
     accessibleLabel: 'Close files',
     onActivate: props.onClose,
   });
   if (!props.open) return null;
-  const entries =
-    'entries' in (entriesQuery.data ?? {})
-      ? (entriesQuery.data?.entries ?? [])
-      : [];
 
   return (
     <ResizableRightPanel
       availableWidth={props.availableWidth}
       className="ExplorerDock"
       defaultWidth={
-        props.availableWidth > 0
+        props.initialWidth ??
+        (props.availableWidth > 0
           ? Math.round(props.availableWidth / 2)
-          : 640
+          : 640)
       }
       maxWidth={960}
       minimumMainWidth={320}
@@ -169,59 +109,59 @@ export function ExplorerDock(props: {
               size="sm"
               variant="soft"
               type="search"
-              defaultValue=""
+              defaultValue={props.query}
               placeholder="Search files..."
               aria-label="Search files"
-              onChange={(event) => setQuery(event.target.value)}
+              onChange={(event) => props.onQueryChange(event.target.value)}
               onKeyDown={(event) => {
-                if (event.key === 'Escape') setQuery('');
+                if (event.key === 'Escape') props.onQueryChange('');
               }}
             />
           </view>
           <scroll-view className="ExplorerDockEntries" scroll-orientation="vertical">
             {!props.workspaceRoot ? (
               <text className="ExplorerDockState">No workspace.</text>
-            ) : entriesQuery.isPending ? (
+            ) : props.entriesPending ? (
               <text className="ExplorerDockState">Loading files…</text>
-            ) : entriesQuery.error ? (
+            ) : props.entriesError ? (
               <text className="ExplorerDockState ExplorerDockState--error">
                 Could not load files.
               </text>
-            ) : entries.length === 0 ? (
+            ) : props.entries.length === 0 ? (
               <text className="ExplorerDockState">
-                {trimmedQuery ? 'No matching files.' : 'No files found.'}
+                {props.query.trim() ? 'No matching files.' : 'No files found.'}
               </text>
             ) : (
-              entries.map((entry) => (
+              props.entries.map((entry) => (
                 <ExplorerEntryRow
                   key={entry.path}
                   entry={entry}
-                  selected={entry.path === selectedPath}
-                  onSelect={setSelectedPath}
+                  selected={entry.path === props.selectedPath}
+                  onSelect={props.onSelectPath}
                 />
               ))
             )}
           </scroll-view>
         </view>
         <view className="ExplorerDockPreview">
-          {!selectedPath ? (
+          {!props.selectedPath ? (
             <text className="ExplorerDockState">
               Select a file from the list to view it.
             </text>
-          ) : fileQuery.isPending ? (
+          ) : props.filePending ? (
             <text className="ExplorerDockState">Loading file…</text>
-          ) : fileQuery.error ? (
+          ) : props.fileError ? (
             <text className="ExplorerDockState ExplorerDockState--error">
               Could not read this file.
             </text>
-          ) : isMarkdownPath(selectedPath) ? (
+          ) : isMarkdownPath(props.selectedPath) ? (
             <scroll-view className="ExplorerDockPreviewScroll" scroll-orientation="vertical">
-              <ChatMarkdown text={fileQuery.data?.contents ?? ''} />
+              <ChatMarkdown text={props.file?.contents ?? ''} />
             </scroll-view>
           ) : (
             <scroll-view className="ExplorerDockPreviewScroll" scroll-orientation="vertical">
-              <text className="ExplorerDockCode">{fileQuery.data?.contents ?? ''}</text>
-              {fileQuery.data?.truncated ? (
+              <text className="ExplorerDockCode">{props.file?.contents ?? ''}</text>
+              {props.file?.truncated ? (
                 <text className="ExplorerDockTruncated">
                   Preview truncated at 1 MB.
                 </text>

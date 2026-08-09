@@ -1,0 +1,45 @@
+{
+  "dock": {
+    "bg": "rgb(255, 255, 255)",
+    "border": "rgba(13, 13, 13, 0.07)",
+    "color": "rgb(13, 13, 13)",
+    "height": 774,
+    "width": 760,
+    "x": 520,
+    "y": 46
+  },
+  "entries": [
+    "docsdocs",
+    "srcsrc",
+    "▤README.mdREADME.md"
+  ],
+  "pageStyle": "padding-right:760px;",
+  "preview": "# Explorer Data\n\nPreview **markdown** content.",
+  "relay": {
+    "activeBaseUrl": "ws://127.0.0.1:58180",
+    "configuredBaseUrl": "ws://127.0.0.1:58180",
+    "connectionAttempts": 1,
+    "lastRpcError": "Synara RPC provider.listModels failed: [{\"_tag\":\"Fail\",\"error\":{\"_tag\":\"WsRpcError\",\"message\":\"Provider adapter request failed (codex) for model/list: Codex CLI version check failed. Error: codex not found in PATH\",\"cause\":{\"message\":\"Provider adapter request failed (codex) for model/list: Codex CLI version check failed. Error: codex not found in PATH\",\"name\":\"Error\"}}}]",
+    "lastTransportError": null,
+    "pendingRequests": 0,
+    "readyBaseUrl": null,
+    "recentRpcTags": [
+      "orchestration.getThreadDetailSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getThreadDetailSnapshot",
+      "projects.listDirectories",
+      "projects.readFile",
+      "provider.listModels",
+      "server.getConfig"
+    ],
+    "rendererReadyRoute": null,
+    "socketState": 1
+  },
+  "selected": "Open README.md",
+  "theme": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up",
+  "viewport": {
+    "dpr": 1,
+    "innerHeight": 820,
+    "innerWidth": 1280
+  }
+}

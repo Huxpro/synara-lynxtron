@@ -741,12 +741,26 @@ async function handleBridgeCall(
 pendingInitialRoute = resolveWebInitialRoute(globalThis.location.search);
 const initialExplorerOpen =
   new URLSearchParams(globalThis.location.search).get('explorer') === 'open';
+const initialExplorerPath =
+  new URLSearchParams(globalThis.location.search).get('explorerPath');
+const initialExplorerQuery =
+  new URLSearchParams(globalThis.location.search).get('explorerQuery') ?? '';
+const initialExplorerWidthValue = Number(
+  new URLSearchParams(globalThis.location.search).get('explorerWidth')
+);
+const initialExplorerWidth =
+  Number.isFinite(initialExplorerWidthValue) && initialExplorerWidthValue > 0
+    ? initialExplorerWidthValue
+    : null;
 webDocument.body.innerHTML = `
 <lynx-view
   id="root-view"
   style="height:100vh; width:100vw;"
   init-data='${JSON.stringify({
     initialExplorerOpen,
+    initialExplorerPath,
+    initialExplorerQuery,
+    initialExplorerWidth,
     initialRoute: pendingInitialRoute,
   })}'
   url="${bundleUrl}">
@@ -794,6 +808,29 @@ const installInteractionBridge = () => {
     (activation) => {
       const url = new URL(globalThis.location.href);
       url.searchParams.set('explorer', activation.open ? 'open' : 'closed');
+      globalThis.location.replace(url);
+    },
+    (navigation) => {
+      const url = new URL(globalThis.location.href);
+      if (navigation.query !== undefined) {
+        if (navigation.query) {
+          url.searchParams.set('explorerQuery', navigation.query);
+        } else {
+          url.searchParams.delete('explorerQuery');
+        }
+        url.searchParams.delete('explorerPath');
+      }
+      if (navigation.path !== undefined) {
+        url.searchParams.set('explorerPath', navigation.path);
+      }
+      url.searchParams.set('explorer', 'open');
+      globalThis.location.replace(url);
+    },
+    (resize) => {
+      if (resize.panel !== 'ExplorerDock') return;
+      const url = new URL(globalThis.location.href);
+      url.searchParams.set('explorerWidth', String(resize.width));
+      url.searchParams.set('explorer', 'open');
       globalThis.location.replace(url);
     }
   );

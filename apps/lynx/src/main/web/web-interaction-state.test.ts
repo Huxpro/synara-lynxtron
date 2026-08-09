@@ -4,7 +4,15 @@ import { readFileSync } from 'node:fs';
 import { installLynxWebInteractionStateBridge } from './web-interaction-state';
 
 function setup(
-  onExplorerActivation?: (activation: { readonly open: boolean }) => void
+  onExplorerActivation?: (activation: { readonly open: boolean }) => void,
+  onExplorerNavigation?: (navigation: {
+    readonly path?: string;
+    readonly query?: string;
+  }) => void,
+  onRightPanelResize?: (resize: {
+    readonly panel: string;
+    readonly width: number;
+  }) => void
 ) {
   const host = document.createElement('div');
   document.body.append(host);
@@ -17,7 +25,9 @@ function setup(
   installLynxWebInteractionStateBridge(
     root,
     undefined,
-    onExplorerActivation
+    onExplorerActivation,
+    onExplorerNavigation,
+    onRightPanelResize
   );
   return { child, control };
 }
@@ -43,6 +53,90 @@ describe('Lynx-for-Web interaction state bridge', () => {
     control.click();
 
     expect(activations).toEqual([true, false]);
+  });
+
+  it('forwards file selection and search submission without activating directories', () => {
+    const navigations: Array<{ path?: string; query?: string }> = [];
+    const { control } = setup(undefined, (navigation) =>
+      navigations.push(navigation)
+    );
+    control.classList.add('ExplorerDockEntry');
+    control.setAttribute('aria-disabled', 'true');
+    control.setAttribute('accessibility-label', 'Open src');
+    control.click();
+
+    control.setAttribute('aria-disabled', 'false');
+    control.setAttribute('accessibility-label', 'Open README.md');
+    control.click();
+
+    const root = control.getRootNode() as ShadowRoot;
+    const search = document.createElement('div');
+    search.classList.add('ExplorerDockSearchInput');
+    const lynxInput = document.createElement('x-input');
+    const inputRoot = lynxInput.attachShadow({ mode: 'open' });
+    const input = document.createElement('input');
+    input.value = 'populated';
+    inputRoot.append(input);
+    search.append(lynxInput);
+    root.append(search);
+    lynxInput.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        key: 'Enter',
+      })
+    );
+
+    expect(navigations).toEqual([
+      { path: 'README.md' },
+      { query: 'populated' },
+    ]);
+  });
+
+  it('resizes a right panel from the sash and reports the clamped width', () => {
+    const resizes: Array<{ panel: string; width: number }> = [];
+    const { control } = setup(undefined, undefined, (resize) =>
+      resizes.push(resize)
+    );
+    const root = control.getRootNode() as ShadowRoot;
+    const page = document.createElement('div');
+    page.classList.add('ThreadPage');
+    const panel = document.createElement('div');
+    panel.classList.add('ExplorerDock');
+    panel.style.width = '640px';
+    const sash = document.createElement('div');
+    sash.classList.add('RightPanelResizeSash');
+    panel.append(sash);
+    root.append(page, panel);
+
+    sash.dispatchEvent(
+      new MouseEvent('mousedown', {
+        bubbles: true,
+        composed: true,
+        button: 0,
+        clientX: 640,
+      })
+    );
+    sash.dispatchEvent(
+      new MouseEvent('mousemove', {
+        bubbles: true,
+        composed: true,
+        buttons: 1,
+        clientX: 520,
+      })
+    );
+    sash.dispatchEvent(
+      new MouseEvent('mouseup', {
+        bubbles: true,
+        composed: true,
+        button: 0,
+        clientX: 520,
+      })
+    );
+
+    expect(panel.style.width).toBe('704px');
+    expect(page.style.paddingRight).toBe('704px');
+    expect(resizes).toEqual([{ panel: 'ExplorerDock', width: 704 }]);
   });
 
   it('normalizes the Web Elements textarea shadow part through LynxView injection', () => {

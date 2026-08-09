@@ -19,12 +19,17 @@ describe('Lynx Explorer dock', () => {
     expect(clientSource).toContain("'projects.listDirectories'");
     expect(clientSource).toContain("'projects.searchEntries'");
     expect(clientSource).toContain("'projects.readFile'");
-    expect(source).not.toContain(
-      "from '../data/synaraClient.lynx'"
+    expect(source).not.toContain('useQuery');
+    expect(source).toContain('entriesPending: boolean');
+    expect(source).toContain('onQueryChange: (query: string) => void');
+    expect(routerSource).toContain('fetchExplorerEntries({');
+    expect(routerSource).toContain('fetchExplorerFile({');
+    expect(routerSource).toContain("'background only'");
+    expect(routerSource).toContain(
+      'enabled: activeThreadId !== null'
     );
-    expect(source).toContain("'background only'");
-    expect(source).toContain(
-      "/* webpackMode: \"eager\" */ '../data/synaraClient.lynx'"
+    expect(routerSource).toContain(
+      'const [data, summary] = await Promise.all(['
     );
     expect(source).toContain('<ResizableRightPanel');
     expect(source).toContain('placeholder="Search files..."');

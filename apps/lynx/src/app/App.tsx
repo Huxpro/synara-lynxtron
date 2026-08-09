@@ -27,6 +27,8 @@ import { useViewportLayout } from '~/hooks/useViewportLayout';
 import { sliceUiDensityClassName } from './appDensity.logic';
 import { sliceThemeClassName } from './appTheme.logic';
 import {
+  fetchExplorerEntries,
+  fetchExplorerFile,
   fetchThreadHeaderSummary,
   fetchThreadTranscriptRows,
   queryClient,
@@ -68,6 +70,9 @@ async function readPersistedAppearance(): Promise<{
 export function App() {
   const initData = useInitData() as {
     readonly initialExplorerOpen?: unknown;
+    readonly initialExplorerPath?: unknown;
+    readonly initialExplorerQuery?: unknown;
+    readonly initialExplorerWidth?: unknown;
     readonly initialRoute?: unknown;
   };
   const initialRoute =
@@ -76,9 +81,30 @@ export function App() {
       ? initData.initialRoute
       : null;
   const initialExplorerOpen = initData.initialExplorerOpen === true;
+  const initialExplorerPath =
+    typeof initData.initialExplorerPath === 'string'
+      ? initData.initialExplorerPath
+      : null;
+  const initialExplorerQuery =
+    typeof initData.initialExplorerQuery === 'string'
+      ? initData.initialExplorerQuery
+      : '';
+  const initialExplorerWidth =
+    typeof initData.initialExplorerWidth === 'number' &&
+    Number.isFinite(initData.initialExplorerWidth)
+      ? initData.initialExplorerWidth
+      : null;
   const [storageReady, setStorageReady] = useState(false);
   const [initialThreadBootstrap, setInitialThreadBootstrap] = useState<{
     readonly data: Awaited<ReturnType<typeof fetchThreadTranscriptRows>>;
+    readonly explorerEntries: {
+      readonly value: Awaited<ReturnType<typeof fetchExplorerEntries>> | null;
+      readonly error: boolean;
+    };
+    readonly explorerFile: {
+      readonly value: Awaited<ReturnType<typeof fetchExplorerFile>> | null;
+      readonly error: boolean;
+    };
     readonly summary: Awaited<ReturnType<typeof fetchThreadHeaderSummary>>;
     readonly threadId: string;
   } | null>(null);
@@ -100,7 +126,36 @@ export function App() {
         ? Promise.all([
             fetchThreadTranscriptRows(threadMatch[1]),
             fetchThreadHeaderSummary(threadMatch[1]),
-          ]).catch(() => null)
+          ])
+            .then(async ([data, summary]) => {
+              const explorerEntries = summary?.workspaceRoot
+                ? await fetchExplorerEntries({
+                    workspaceRoot: summary.workspaceRoot,
+                    query: initialExplorerQuery.trim(),
+                  }).then(
+                    (value) => ({ value, error: false }),
+                    () => ({ value: null, error: true })
+                  )
+                : { value: null, error: false };
+              const explorerFile =
+                summary?.workspaceRoot && initialExplorerPath
+                  ? await fetchExplorerFile({
+                      workspaceRoot: summary.workspaceRoot,
+                      relativePath: initialExplorerPath,
+                    }).then(
+                      (value) => ({ value, error: false }),
+                      () => ({ value: null, error: true })
+                    )
+                  : { value: null, error: false };
+              return {
+                data,
+                explorerEntries,
+                explorerFile,
+                summary,
+                threadId: threadMatch[1],
+              };
+            })
+            .catch(() => null)
         : null,
     ]).then(([appearance, thread]) => {
       if (!active) return;
@@ -108,9 +163,7 @@ export function App() {
       setThemeState(appearance.themeState);
       if (threadMatch && thread) {
         setInitialThreadBootstrap({
-          data: thread[0],
-          summary: thread[1],
-          threadId: threadMatch[1],
+          ...thread,
         });
       }
       setStorageReady(true);
@@ -192,6 +245,10 @@ export function App() {
             initialRoute={initialRoute}
             initialThreadBootstrap={initialThreadBootstrap}
             initialExplorerOpen={initialExplorerOpen}
+            initialExplorerPath={initialExplorerPath}
+            initialExplorerQuery={initialExplorerQuery}
+            initialExplorerWidth={initialExplorerWidth}
+            viewportWidth={viewportLayout.width}
             onThemeStateChange={setThemeState}
             onUiDensityChange={setUiDensity}
           />

@@ -1,10 +1,8 @@
 # Explorer Dock completion audit
 
 Status: implementation, contracts, production builds, real project RPCs,
-thread bootstrap hydration, and live Lynx-for-Web activation pass. The live
-Explorer data render remains blocked because the mounted entries query stays
-pending without publishing `projects.listDirectories`; no populated-tree or
-file-preview pixel pass is claimed.
+thread bootstrap hydration, activation, populated Explorer rendering, search,
+file preview, responsive layout, and light/dark Lynx-for-Web evidence pass.
 
 ## Prompt-to-artifact checklist
 
@@ -21,21 +19,23 @@ file-preview pixel pass is claimed.
 | Main/background thread boundary | Explorer dynamically imports the background-only transport from background-only query loaders; the Native build rejects regressions here | PASS |
 | Light and dark source theming | Explorer has no literal colors or color mixing. It uses only `ThemeState → SliceRoot--theme-*` semantic tokens for background, text, borders, selection, error, and hover states | PASS |
 | Light and dark geometry | Both themes share the same component tree and 50% / 480–960 / 240px geometry contract | PASS at source/contract level |
-| Focused tests | Explorer, shared right-panel, and Environment/right-dock contracts pass 8/8 | PASS |
+| Focused tests | Explorer, shared right-panel, thread bootstrap, Web interaction, and shared interactive-state contracts pass 24/24 | PASS |
 | Production builds | Native/Desktop, Lynx-for-Web, and Web original production builds pass | PASS |
 | Native identity and console | Exact-owned PID `94395`, client `localhost:8903`, App `@synara/lynx`, session URL points at `apps/lynx/dist/desktop/main.lynx.bundle`; error/warning console is empty | PASS |
-| Native bundle identity | Staged and output bundle hashes match: `89e44c076dd06131f019143f4a7083164473dfbf4aa589be1cec087288a72598` | PASS |
+| Native bundle identity | Staged and output bundle hashes match: `5f51fb164bf90f15a79d3ed46d62434ea58396118bacfe47010b721c5e1855d8` | PASS |
 | Thread bootstrap hydration | Host route is supplied through Lynx `initData`; App prefetches the initial thread before leaving the hydration shell; canonical fixture rendered its real title, workspace, empty state, and enabled Files control | PASS |
 | Live Explorer activation | Trusted mouse click closes and opens the dock; focused keyboard Enter opens it. The Web-only compatibility path writes an idempotent `explorer=open\|closed` target to the harness URL and reloads the Lynx page, while Native keeps the original `bindtap`/`bindkeydown` path | PASS |
-| Live Explorer light/dark shell | At `1280×820`, DPR 1, both themes render a `512×774` dock, `240px` sidebar, `239×685` entries scroll area, and `271×730` preview. Light resolves the dock to `rgb(255,255,255)` / `rgb(13,13,13)`; dark resolves to `rgb(16,16,16)` / `rgb(252,252,252)`. Both PNGs are exactly `1280×820` | PASS for open/loading shell |
-| Live Explorer data render | The mounted dock remains at `Loading files…`; relay diagnostics contain no `projects.listDirectories` tag even though the canonical RPC itself passed separately | BLOCKED — no populated tree, selection, preview, or scrolled-content pixel claim |
+| Live Explorer populated data | Canonical fixture rendered `docs`, `src`, and `README.md`; relay diagnostics included `projects.listDirectories`. Trusted README selection included `projects.readFile` and rendered the expected Markdown. Search `populated` + Enter included `projects.searchEntries`, returned only `src/populated.ts`, and its trusted selection rendered the source text | PASS |
+| Live Explorer light/dark populated matrix | At `1280×820`, DPR 1, both themes render three entries, selected `README.md`, a `512×774` dock, `240px` sidebar, `239×685` entries scroll area, `271×730` preview, and `247×706` preview scroller. Light resolves the dock to `rgb(255,255,255)` / `rgb(13,13,13)`; dark resolves to `rgb(16,16,16)` / `rgb(252,252,252)`. Both PNGs are exactly `1280×820` | PASS |
+| Narrow Explorer geometry | At `900×700`, DPR 1, the dock clamps to `580px` (`900 - 320px` minimum main content), keeps a `240px` sidebar and `339px` preview, restores matching `padding-right:580px`, preserves the selected README preview, and exports an exact `900×700` PNG | PASS |
+| Explorer drag resizing | At `1280×820`, the Web-compatible sash path changed the dock from `640px` to `760px` through a trusted pointer drag. The target width survived the page refresh and `ThreadPage` restored matching `padding-right:760px`; Native retains the shared `createLynxSidebarResizeSession` path | PASS |
+| Retained evidence | `shots/2026-08-09/explorer-populated-current/` records light/dark/narrow PNGs, geometry and relay JSON, bundle hashes, provenance, known provider-path limitation, and byte/process cleanup | PASS |
 | Native DOM/screenshot tooling | Current Lynx SDK returns `{}` for `DOM.getDocument` and no DevTool screencast frame; CoreGraphics confirms the owned 1280×820 window but cannot replace exact LynxView capture | RECORDED LIMIT |
 
 ## Scope boundary
 
 - This is the first real Explorer slice, not full Web Explorer parity.
-- Directory expansion, image/PDF preview, file references, ask-why, comments,
-  and syntax-highlighted rich preview remain future work.
 - The Lynx-for-Web activation blocker is resolved for trusted click and Enter.
-- The live Explorer query must publish `projects.listDirectories` before
-  retaining populated-tree, file-preview, search, or scrolled-content evidence.
+- Directory expansion, image/PDF preview, file references, ask-why, comments,
+  and syntax-highlighted rich preview remain future product scope rather than
+  blockers for this first Explorer slice.

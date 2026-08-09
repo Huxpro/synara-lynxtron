@@ -1,0 +1,17 @@
+{
+  "dock": {
+    "height": 654,
+    "width": 580,
+    "x": 320,
+    "y": 46
+  },
+  "pageStyle": "padding-right:580px;",
+  "previewWidth": 339,
+  "selected": "Open README.md",
+  "sidebarWidth": 240,
+  "viewport": {
+    "dpr": 1,
+    "innerHeight": 700,
+    "innerWidth": 900
+  }
+}
