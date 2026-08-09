@@ -18,4 +18,27 @@ describe('Kanban overview fidelity', () => {
       /\.SharedKanbanOverviewEmptyBody\s*\{[^}]*margin-top:\s*4px;[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;/s
     );
   });
+
+  it('uses generated chevron and Plus identities for project actions', () => {
+    const source = readFileSync(
+      new URL('./KanbanOverviewCompositionElements.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const styles = readFileSync(
+      new URL('./kanban-overview-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(source).toContain('<ChevronRightIcon');
+    expect(source).toContain(
+      'className="SharedKanbanOverviewProjectChevron"'
+    );
+    expect(source).toContain(
+      '<PlusIcon className="SharedKanbanOverviewNewTaskIcon" size={14} />'
+    );
+    expect(source).not.toMatch(/[›＋]/);
+    expect(styles).toMatch(
+      /\.SharedKanbanOverviewProjectChevron\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*margin-left:\s*auto;/s
+    );
+  });
 });

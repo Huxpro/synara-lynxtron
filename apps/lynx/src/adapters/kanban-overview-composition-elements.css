@@ -98,8 +98,7 @@
   font-weight: 650;
 }
 
-.SharedKanbanOverviewProjectCount,
-.SharedKanbanOverviewProjectChevron {
+.SharedKanbanOverviewProjectCount {
   color: var(--muted-foreground);
   font-size: 12px;
 }
@@ -109,7 +108,10 @@
 }
 
 .SharedKanbanOverviewProjectChevron {
+  width: 14px;
+  height: 14px;
   margin-left: auto;
+  color: var(--muted-foreground);
 }
 
 .SharedKanbanOverviewNewTask {
@@ -121,9 +123,10 @@
   border-radius: 7px;
 }
 
-.SharedKanbanOverviewNewTaskLabel {
+.SharedKanbanOverviewNewTaskIcon {
+  width: 14px;
+  height: 14px;
   color: var(--muted-foreground);
-  font-size: 14px;
 }
 
 .SharedKanbanOverviewCardScroller {

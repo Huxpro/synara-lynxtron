@@ -1,5 +1,6 @@
 import type { ReactNode } from '@lynx-js/react';
 
+import { ChevronRightIcon, PlusIcon } from '../lib/icons.lynx';
 import './kanban-overview-composition-elements.css';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 
@@ -70,7 +71,12 @@ export function KanbanOverviewProjectCountElement(props: ChildrenProps) {
 }
 
 export function KanbanOverviewProjectChevronElement() {
-  return <text className="SharedKanbanOverviewProjectChevron">›</text>;
+  return (
+    <ChevronRightIcon
+      className="SharedKanbanOverviewProjectChevron"
+      size={14}
+    />
+  );
 }
 
 export function KanbanOverviewNewTaskElement(props: {
@@ -87,7 +93,7 @@ export function KanbanOverviewNewTaskElement(props: {
       aria-label={props.label}
       {...interaction.eventProps}
     >
-      <text className="SharedKanbanOverviewNewTaskLabel">＋</text>
+      <PlusIcon className="SharedKanbanOverviewNewTaskIcon" size={14} />
     </view>
   );
 }
