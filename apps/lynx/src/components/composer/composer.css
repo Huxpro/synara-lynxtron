@@ -997,21 +997,16 @@
   opacity: 0.72;
 }
 
-.ComposerPrimaryActionGlyphLynx {
-  color: var(--primary-foreground);
-  font-size: 17px;
-  font-weight: 700;
-}
-
 .ComposerPrimaryActionSendIconLynx {
   width: 20px;
   height: 20px;
   flex-shrink: 0;
 }
 
-.ComposerPrimaryActionLynx--sending .ComposerPrimaryActionGlyphLynx {
-  font-size: 9px;
-  letter-spacing: 1px;
+.ComposerPrimaryActionSendingIconLynx {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
 }
 
 .ComposerPrimaryActionStopGlyphLynx {

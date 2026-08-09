@@ -153,6 +153,18 @@ describe('native composer attachment menu item', () => {
     expect(composerStyles).toMatch(
       /\.ComposerPrimaryActionSendIconLynx\s*\{[^}]*width:\s*20px;[^}]*height:\s*20px;/s
     );
+    expect(inputElementsSource).toContain(
+      'className="ComposerPrimaryActionSendingIconLynx animate-spin"'
+    );
+    expect(inputElementsSource).toContain(
+      'stroke-dasharray="20 12"'
+    );
+    expect(inputElementsSource).not.toContain(
+      '<text className="ComposerPrimaryActionGlyphLynx">•••</text>'
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerPrimaryActionSendingIconLynx\s*\{[^}]*width:\s*12px;[^}]*height:\s*12px;[^}]*flex-shrink:\s*0;/s
+    );
     expect(composerStyles).toMatch(
       /\.ComposerFooterActionsLynx\s*\{[^}]*margin-left:\s*auto;[^}]*gap:\s*8px;/s
     );
