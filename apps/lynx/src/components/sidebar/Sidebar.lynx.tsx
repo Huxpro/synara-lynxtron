@@ -9,6 +9,8 @@ import {
 import { getRectByRef } from '@lynx-js/lynx-ui';
 import type { NodesRef } from '@lynx-js/types';
 import { useQuery } from '@tanstack/react-query';
+import forkSvg from '@synara-central-icons/fork.svg?raw';
+import worktreeSvg from '@synara-central-icons/arrow-split-right.svg?raw';
 
 import { SidebarPrimarySurfaceNavigation } from '@synara-web/components/SidebarPrimarySurfaceNavigation';
 import { resolvePullRequestReviewBadge } from '@synara-web/components/SidebarActionBadges.logic';
@@ -81,8 +83,12 @@ import {
 import {
   ChevronDownIcon,
   ChevronRightIcon,
+  ClockIcon,
+  GitBranchIcon,
   SettingsIcon,
 } from '../../lib/icons';
+import { colorizeLynxSvg } from '../../lib/themedSvg.lynx';
+import { useTheme } from '../../adapters/useTheme.lynx';
 import { useLynxInteractiveState } from '../ui/interactive-state.lynx';
 import { deriveSidebarSections } from './sidebar.logic';
 import { SidebarSearchPaletteLynx } from './SidebarSearchPalette.lynx';
@@ -168,6 +174,7 @@ function SidebarThreadTrailing({
 }: {
   readonly thread: ThreadSummary;
 }) {
+  const { resolvedTheme, svgColors } = useTheme();
   const providerShown =
     shouldShowSidebarThreadProviderIdentity(thread.title) &&
     Boolean(thread.provider);
@@ -193,19 +200,35 @@ function SidebarThreadTrailing({
       metaContent={
         descriptors.length > 0
           ? descriptors.map((descriptor) => (
-              <text
+              <view
                 key={descriptor.id}
                 aria-label={descriptor.tooltip}
                 className={`AppSidebarThreadMeta AppSidebarThreadMeta--${descriptor.id}`}
               >
                 {descriptor.id === 'fork'
-                  ? '⑂'
+                  ? (
+                      <svg
+                        className="AppSidebarThreadMetaIcon"
+                        content={colorizeLynxSvg(
+                          forkSvg,
+                          resolvedTheme === 'dark' ? '#6ee7b7' : '#059669'
+                        )}
+                      />
+                    )
                   : descriptor.id === 'handoff'
-                    ? '⇢'
+                    ? <GitBranchIcon size={12} />
                     : descriptor.id === 'worktree'
-                      ? '◇'
-                      : '◷'}
-              </text>
+                      ? (
+                          <svg
+                            className="AppSidebarThreadMetaIcon"
+                            content={colorizeLynxSvg(
+                              worktreeSvg,
+                              svgColors.mutedForeground
+                            )}
+                          />
+                        )
+                      : <ClockIcon size={12} />}
+              </view>
             ))
           : null
       }
