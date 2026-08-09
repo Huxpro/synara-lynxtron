@@ -4,6 +4,7 @@ import { formatPastedTextCountLabel, pastedTextTitle } from '@synara-web/lib/com
 import { FileEntryIcon } from '../components/FileEntryIcon.lynx';
 import {
   ChevronRightIcon,
+  CircleAlertIcon,
   FileIcon,
   MessageCircleIcon,
   XIcon,
@@ -225,7 +226,17 @@ export function ComposerImageAttachmentElement({
         <text className="ComposerReferenceImageFallbackLynx">IMG</text>
       )}
       {nonPersisted ? (
-        <text className="ComposerReferenceImageWarningLynx">!</text>
+        <view
+          className="ComposerReferenceImageWarningLynx"
+          accessibility-element={true}
+          accessibility-label="Draft attachment may not persist"
+        >
+          <CircleAlertIcon
+            className="ComposerReferenceImageWarningIconLynx"
+            color="#d97706"
+            size={12}
+          />
+        </view>
       ) : null}
       <ComposerReferenceRemoveButton
         label={`Remove ${image.name}`}

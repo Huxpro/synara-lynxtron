@@ -38,9 +38,19 @@ describe('composer reference attachment interaction contract', () => {
     );
     expect(source).toContain('<FileEntryIcon');
     expect(source).toContain('<ChevronRightIcon');
+    expect(source).toContain('<CircleAlertIcon');
+    expect(source).toContain(
+      'accessibility-label="Draft attachment may not persist"'
+    );
+    expect(source).not.toContain(
+      '<text className="ComposerReferenceImageWarningLynx">!</text>'
+    );
     expect(source).not.toMatch(/[×◌≡▤]/);
     expect(styles).toMatch(
       /\.ComposerReferenceCardActionLynx\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*row;[^}]*gap:\s*2px;/s
+    );
+    expect(styles).toMatch(
+      /\.ComposerReferenceImageWarningLynx\s*\{[^}]*width:\s*20px;[^}]*height:\s*20px;[^}]*border-radius:\s*10px;[^}]*background-color:\s*var\(--composer-surface\);/s
     );
   });
 
@@ -124,5 +134,32 @@ describe('composer reference attachment interaction contract', () => {
     fireEvent(remove, new Event('catchEvent:tap', { bubbles: true }));
     expect(onRemoveImage).toHaveBeenCalledWith(image.id);
     expect(onExpandImage).toHaveBeenCalledTimes(1);
+  });
+
+  it('names the non-persisted image warning without changing preview activation', () => {
+    const image = {
+      id: 'image-1',
+      name: 'screen.png',
+      previewUrl: 'data:image/png;base64,AA==',
+    };
+
+    render(
+      <ComposerImageAttachmentElement
+        image={image}
+        images={[image]}
+        nonPersisted={true}
+        onExpandImage={() => {}}
+        onRemoveImage={() => {}}
+      />
+    );
+
+    const warning = findElement('.ComposerReferenceImageWarningLynx');
+    expect(warning.getAttribute('accessibility-element')).toBe('true');
+    expect(warning.getAttribute('accessibility-label')).toBe(
+      'Draft attachment may not persist'
+    );
+    expect(
+      warning.querySelector('.ComposerReferenceImageWarningIconLynx')
+    ).not.toBeNull();
   });
 });

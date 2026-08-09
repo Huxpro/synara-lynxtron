@@ -275,6 +275,7 @@ Current responsive disposition:
 | Composer reference icon identity | assistant/file-comment summaries, pasted-text cards, generic file cards, remove actions, and show-in-field disclosure use MessageCircle, File/FileEntry, X, and ChevronRight icons instead of circle/cross/text-block glyphs | PASS — CURRENT PRODUCT SURFACES |
 | Composer token icon identity | mention, agent, skill, terminal-context, and link chips use file-type, Robot, Building Blocks, Console, and External Link SVG identities in both canonical segment rendering and the Native draft projection; only the slash-command chip retains its semantic `/` text marker | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
 | Composer sending-state identity | the primary action uses Web's exact 14-viewBox, 12px animated partial-circle spinner instead of a static `•••` text approximation; send and stop states retain their existing canonical arrow and square identities | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
+| Composer draft-attachment warning | non-persisted image attachments use Web's 20px surface-backed amber CircleAlert badge and expose the canonical `Draft attachment may not persist` accessible name instead of a bare `!` glyph | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
 | Shared Menu icon identity | default checkbox/radio indicators and submenu affordances use generated 12px Check and 14px ChevronRight icons, removing Unicode state glyphs from every Menu consumer | PASS — SHARED PRIMITIVE |
 | Sidebar completed-status identity | completed threads use Web's filled `circle-check` Central asset at the canonical 15px trailing role instead of a hand-built green dot plus text checkmark | PASS — CURRENT PRODUCT SURFACES |
 | Sidebar thread metadata identity | fork, handoff, worktree, and automation badges use the canonical 12px Fork, GitBranch, split-arrow, and Clock assets instead of Unicode approximations | PASS — CURRENT PRODUCT SURFACES |
@@ -397,6 +398,14 @@ stand-in without changing disabled, send, stop, or activation semantics.
 Focused adapter tests, both production builds, `git diff --check`, and React
 Doctor 0.9.11 against `93846eac` pass with zero diagnostics; visual
 re-certification remains part of the pending current-head matrix.
+The attachment warning follow-up replaces the remaining bare `!` overlay on
+non-persisted Composer images with Web's 20px surface-backed, shadowed amber
+CircleAlert badge and canonical accessible name. The nested warning remains
+non-interactive, so image preview and remove activation paths are unchanged.
+Focused renderer/interaction tests, both production builds, `git diff
+--check`, and React Doctor 0.9.11 against `8871eb92` pass with zero
+diagnostics; this remains implementation evidence pending the full visual
+matrix.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
