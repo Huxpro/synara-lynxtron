@@ -94,6 +94,39 @@ frames. Because the baseline reproduces the failure, no product regression is
 claimed; because the Theme Import UI never rendered, no Native textarea/IME
 pass is claimed either.
 
+### Root-cause isolation
+
+The blocker was subsequently narrowed beyond the original baseline check:
+
+- the 2026-08-04 certified Native source head `52ec3f62` rebuilt to the
+  recorded `2583.5 kB` bundle and initialized successfully on the same
+  Lynxtron 0.0.7 executable;
+- an automated `git bisect` from `52ec3f62` to `02cfa0b7` identified
+  `e25a8f7c` (`Add Environment pinned checklist`) as the first bundle that the
+  host rejected;
+- the last good bundle contained 748 unique ReactLynx snapshot templates; the
+  first bad bundle contained 756, and current head contains more than 800;
+- replacing the newly added row with `null` restored Native startup, while
+  retaining any rendered row shape reproduced the parser failure. This rules
+  out the pinned-message RPC/data path and points to the legacy snapshot
+  template payload handled by the host;
+- removing Native `loadFile` init data, changing cache keys, disabling source
+  maps/UI source maps, moving debug info, enabling bundle-size optimization,
+  and splitting source files did not fix the host parser;
+- Lynxtron 0.0.8 reproduced the same failure. Lynxtron 0.0.9 did not provide a
+  usable renderer/DevTool session in this environment and therefore was not
+  accepted as a passing upgrade;
+- ReactLynx standalone/automatic lazy bundles allow the main bundle to start,
+  but Lynxtron 0.0.7 rejects the dynamic bundle through both QueryComponent and
+  FetchBundle paths. Element Template compilation removes snapshot pressure,
+  but the current `@lynx-js/lynx-ui` dependency is not compatible with that
+  runtime entry.
+
+The actionable prerequisite is therefore a Lynxtron/Lynx SDK combination that
+successfully loads the current ReactLynx snapshot bundle, or supports Element
+Template together with LynxUI. Reducing or hiding product UI only to stay below
+the legacy parser boundary is not treated as an acceptable fidelity fix.
+
 ## Stable geometry
 
 At `1280x820`, after the 200ms dialog entrance settled:
