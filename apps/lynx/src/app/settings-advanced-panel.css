@@ -224,6 +224,15 @@
   gap: 12px;
 }
 
+.SettingsAdvancedReleaseTrigger.ui-hover,
+.SettingsAdvancedReleaseTrigger.ui-pressed {
+  opacity: 0.82;
+}
+
+.SettingsAdvancedReleaseTrigger.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
 .SettingsAdvancedReleaseIdentity {
   display: flex;
   min-width: 0;

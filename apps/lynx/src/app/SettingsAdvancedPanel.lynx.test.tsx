@@ -50,6 +50,12 @@ describe('Settings Advanced fidelity', () => {
     expect(panelSource).toContain('useLynxDisclosurePresence(');
     expect(panelSource).toContain('disclosureContentClassName(');
     expect(panelSource).toContain('disclosureChevronClassName(');
+    expect(panelSource).toContain(
+      'useLynxDisclosurePresence(props.open)'
+    );
+    expect(panelSource).toContain('<ReleaseHistoryEntry');
+    expect(panelSource).not.toContain('bindtap={() =>\n                        setExpandedRelease');
+    expect(panelSource).not.toContain('{open ? (');
     expect(panelSource).toContain('aria-expanded={showRecoveryTools}');
     expect(panelSource).toContain("'SettingsAdvancedRecoveryChevron'");
   });
@@ -107,6 +113,9 @@ describe('Settings Advanced fidelity', () => {
     );
     expect(styles).toMatch(
       /\.SettingsAdvancedReleaseTrigger\s*\{[^}]*height:\s*44px;[^}]*padding:\s*12px 0;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsAdvancedReleaseTrigger\.ui-focus\s*\{[^}]*box-shadow:\s*0 0 0 1px var\(--ring\);/s
     );
     expect(styles).toMatch(
       /\.SettingsAdvancedReleaseFeatures\s*\{[^}]*padding:\s*0 4px 16px 24px;[^}]*gap:\s*24px;/s

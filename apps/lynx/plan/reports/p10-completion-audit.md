@@ -281,6 +281,7 @@ Current responsive disposition:
 | Sidebar completed-status identity | completed threads use Web's filled `circle-check` Central asset at the canonical 15px trailing role instead of a hand-built green dot plus text checkmark | PASS — CURRENT PRODUCT SURFACES |
 | Sidebar thread metadata identity | fork, handoff, worktree, and automation badges use the canonical 12px Fork, GitBranch, split-arrow, and Clock assets instead of Unicode approximations | PASS — CURRENT PRODUCT SURFACES |
 | Environment disclosure motion | Project instructions, Pinned, Markers, and Notepad share one ChevronRight header and the canonical 220ms presence/content motion with reduced-motion behavior; four bespoke instant-unmount/180-degree implementations were removed | PASS — CURRENT PRODUCT SURFACES |
+| Settings Release History disclosure | each release entry owns stable hook state, shared 220ms ChevronRight/content motion, expanded/collapsed accessibility value, and keyboard/focus/pressed interaction instead of a raw tap handler plus instant feature unmount | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
 | Collapsed-work disclosure | transcript collapsed-work uses the shared rotating ChevronRight identity and 220ms class contract while intentionally retaining `preserveOnClose: false` so live transcript measurement never observes an animated intermediate height | PASS — TRANSCRIPT GUARDRAIL PRESERVED |
 | Transcript work-row identity | error/thinking/info/tool rows use Web's CircleAlert, Robot, Check, and Zap identities at the 13px status role instead of punctuation and text glyphs; transcript row/version/scroll behavior is unchanged | PASS — CURRENT PRODUCT SURFACES |
 | Composer selection icon identity | model trait and project picker selected states use the same generated 12px Check identity as shared Menu rows instead of font-dependent checkmarks | PASS — CURRENT PRODUCT SURFACES |
@@ -426,6 +427,15 @@ favourites, cost metadata, and popup ownership are unchanged. The focused
 model-picker contract test, both production builds, `git diff --check`, and
 React Doctor 0.9.11 against `bfe6ba38` pass with zero diagnostics; current-head
 visual re-certification remains pending.
+The Settings Advanced Release History follow-up moves each changelog row into a
+stable entry component so its presence hook is legal and deterministic. Rows
+now use the shared 220ms ChevronRight/content motion and shared interactive
+state for keyboard activation plus hover, pressed, focus, and named
+expanded/collapsed feedback; changelog ordering and the single-expanded-entry
+state remain unchanged. Advanced focused tests pass (3/3), both production
+bundles build, `git diff --check` passes, and React Doctor 0.9.11 reports zero
+new diagnostics against `2f12c0a9`. Visual re-certification remains part of
+the pending current-head matrix.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
