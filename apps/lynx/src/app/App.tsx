@@ -17,7 +17,7 @@ import {
   parseStoredThemeState,
   type ThemeState,
 } from '@synara-web/theme/theme.logic';
-import { isSupportedLocalImagePath } from '@synara/shared/localPreviewFiles';
+import { isSupportedLocalPreviewFilePath } from '@synara/shared/localPreviewFiles';
 import {
   viewportBreakpointClassNames,
   viewportHeightClassNames,
@@ -35,7 +35,7 @@ import {
   fetchExplorerDirectory,
   fetchExplorerEntries,
   fetchExplorerFile,
-  fetchExplorerImagePreviewUrl,
+  fetchExplorerLocalPreviewUrl,
   fetchThreadHeaderSummary,
   fetchThreadTranscriptRows,
   queryClient,
@@ -123,7 +123,7 @@ export function App() {
       readonly value: Awaited<ReturnType<typeof fetchExplorerFile>> | null;
       readonly error: boolean;
     };
-    readonly explorerImagePreview: {
+    readonly explorerLocalPreview: {
       readonly value: string | null;
       readonly error: boolean;
     };
@@ -167,7 +167,7 @@ export function App() {
               const explorerFile =
                 summary?.workspaceRoot &&
                 initialExplorerPath &&
-                !isSupportedLocalImagePath(initialExplorerPath)
+                !isSupportedLocalPreviewFilePath(initialExplorerPath)
                   ? await fetchExplorerFile({
                       workspaceRoot: summary.workspaceRoot,
                       relativePath: initialExplorerPath,
@@ -176,11 +176,11 @@ export function App() {
                       () => ({ value: null, error: true })
                     )
                   : { value: null, error: false };
-              const explorerImagePreview =
+              const explorerLocalPreview =
                 summary?.workspaceRoot &&
                 initialExplorerPath &&
-                isSupportedLocalImagePath(initialExplorerPath)
-                  ? await fetchExplorerImagePreviewUrl({
+                isSupportedLocalPreviewFilePath(initialExplorerPath)
+                  ? await fetchExplorerLocalPreviewUrl({
                       workspaceRoot: summary.workspaceRoot,
                       relativePath: initialExplorerPath,
                     }).then(
@@ -214,7 +214,7 @@ export function App() {
                 explorerDirectories,
                 explorerEntries,
                 explorerFile,
-                explorerImagePreview,
+                explorerLocalPreview,
                 summary,
                 threadId: threadMatch[1],
               };

@@ -19,13 +19,13 @@ import type { SettingsSectionId } from '@synara-web/settingsNavigation';
 import { resolveProviderHealthBannerPresentation } from '@synara-web/components/chat/ProviderHealthBanner.logic';
 import { findProviderStatus } from '@synara-web/lib/providerAvailability';
 import { clampSidebarWidth } from '@synara-web/components/sidebarResize.logic';
-import { isSupportedLocalImagePath } from '@synara/shared/localPreviewFiles';
+import { isSupportedLocalPreviewFilePath } from '@synara/shared/localPreviewFiles';
 
 import {
   fetchExplorerDirectory,
   fetchExplorerEntries,
   fetchExplorerFile,
-  fetchExplorerImagePreviewUrl,
+  fetchExplorerLocalPreviewUrl,
   fetchThreadHeaderSummary,
   fetchThreadTranscriptRows,
   fetchThreads,
@@ -272,9 +272,9 @@ interface ThreadPageProps {
   readonly explorerFile: Awaited<ReturnType<typeof fetchExplorerFile>> | null;
   readonly explorerFileError: boolean;
   readonly explorerFilePending: boolean;
-  readonly explorerImagePreviewUrl: string | null;
-  readonly explorerImagePreviewError: boolean;
-  readonly explorerImagePreviewPending: boolean;
+  readonly explorerLocalPreviewUrl: string | null;
+  readonly explorerLocalPreviewError: boolean;
+  readonly explorerLocalPreviewPending: boolean;
   readonly explorerQuery: string;
   readonly explorerSelectedPath: string | null;
   readonly initialEnvironmentOpen: boolean;
@@ -302,9 +302,9 @@ function ThreadRightDocks(
     | 'explorerFile'
     | 'explorerFileError'
     | 'explorerFilePending'
-    | 'explorerImagePreviewError'
-    | 'explorerImagePreviewPending'
-    | 'explorerImagePreviewUrl'
+    | 'explorerLocalPreviewError'
+    | 'explorerLocalPreviewPending'
+    | 'explorerLocalPreviewUrl'
     | 'explorerQuery'
     | 'explorerSelectedPath'
     | 'initialExplorerWidth'
@@ -335,9 +335,9 @@ function ThreadRightDocks(
     explorerFile,
     explorerFileError,
     explorerFilePending,
-    explorerImagePreviewError,
-    explorerImagePreviewPending,
-    explorerImagePreviewUrl,
+    explorerLocalPreviewError,
+    explorerLocalPreviewPending,
+    explorerLocalPreviewUrl,
     explorerOpen,
     explorerQuery,
     explorerSelectedPath,
@@ -378,9 +378,9 @@ function ThreadRightDocks(
         file={explorerFile}
         fileError={explorerFileError}
         filePending={explorerFilePending}
-        imagePreviewUrl={explorerImagePreviewUrl}
-        imagePreviewError={explorerImagePreviewError}
-        imagePreviewPending={explorerImagePreviewPending}
+        localPreviewUrl={explorerLocalPreviewUrl}
+        localPreviewError={explorerLocalPreviewError}
+        localPreviewPending={explorerLocalPreviewPending}
         open={explorerOpen}
         query={explorerQuery}
         selectedPath={explorerSelectedPath}
@@ -414,9 +414,9 @@ function ThreadPage(props: ThreadPageProps) {
     explorerFile,
     explorerFileError,
     explorerFilePending,
-    explorerImagePreviewUrl,
-    explorerImagePreviewError,
-    explorerImagePreviewPending,
+    explorerLocalPreviewUrl,
+    explorerLocalPreviewError,
+    explorerLocalPreviewPending,
     explorerQuery,
     explorerSelectedPath,
     initialEnvironmentOpen,
@@ -642,9 +642,9 @@ function ThreadPage(props: ThreadPageProps) {
         explorerFile={explorerFile}
         explorerFileError={explorerFileError}
         explorerFilePending={explorerFilePending}
-        explorerImagePreviewError={explorerImagePreviewError}
-        explorerImagePreviewPending={explorerImagePreviewPending}
-        explorerImagePreviewUrl={explorerImagePreviewUrl}
+        explorerLocalPreviewError={explorerLocalPreviewError}
+        explorerLocalPreviewPending={explorerLocalPreviewPending}
+        explorerLocalPreviewUrl={explorerLocalPreviewUrl}
         explorerOpen={explorerOpen}
         explorerQuery={explorerQuery}
         explorerSelectedPath={explorerSelectedPath}
@@ -689,7 +689,7 @@ export function SliceRouter({
       readonly value: Awaited<ReturnType<typeof fetchExplorerFile>> | null;
       readonly error: boolean;
     };
-    readonly explorerImagePreview: {
+    readonly explorerLocalPreview: {
       readonly value: string | null;
       readonly error: boolean;
     };
@@ -772,7 +772,7 @@ export function SliceRouter({
       const explorerFile =
         summary?.workspaceRoot &&
         explorerSelectedPath &&
-        !isSupportedLocalImagePath(explorerSelectedPath)
+        !isSupportedLocalPreviewFilePath(explorerSelectedPath)
           ? await fetchExplorerFile({
               workspaceRoot: summary.workspaceRoot,
               relativePath: explorerSelectedPath,
@@ -781,11 +781,11 @@ export function SliceRouter({
               () => ({ value: null, error: true })
             )
           : { value: null, error: false };
-      const explorerImagePreview =
+      const explorerLocalPreview =
         summary?.workspaceRoot &&
         explorerSelectedPath &&
-        isSupportedLocalImagePath(explorerSelectedPath)
-          ? await fetchExplorerImagePreviewUrl({
+        isSupportedLocalPreviewFilePath(explorerSelectedPath)
+          ? await fetchExplorerLocalPreviewUrl({
               workspaceRoot: summary.workspaceRoot,
               relativePath: explorerSelectedPath,
             }).then(
@@ -815,7 +815,7 @@ export function SliceRouter({
         explorerDirectories,
         explorerEntries,
         explorerFile,
-        explorerImagePreview,
+        explorerLocalPreview,
         summary,
       };
     },
@@ -846,12 +846,12 @@ export function SliceRouter({
             ? activeThreadData.explorerFile
             : matchingInitialThreadBootstrap?.explorerFile ??
               activeThreadData.explorerFile,
-        explorerImagePreview:
-          activeThreadData.explorerImagePreview.value ||
-          activeThreadData.explorerImagePreview.error
-            ? activeThreadData.explorerImagePreview
-            : matchingInitialThreadBootstrap?.explorerImagePreview ??
-              activeThreadData.explorerImagePreview,
+        explorerLocalPreview:
+          activeThreadData.explorerLocalPreview.value ||
+          activeThreadData.explorerLocalPreview.error
+            ? activeThreadData.explorerLocalPreview
+            : matchingInitialThreadBootstrap?.explorerLocalPreview ??
+              activeThreadData.explorerLocalPreview,
         explorerDirectories: activeThreadData.explorerDirectories,
       }
     : matchingInitialThreadBootstrap ?? undefined;
@@ -1065,18 +1065,18 @@ export function SliceRouter({
         }
         explorerFilePending={
           explorerSelectedPath !== null &&
-          !isSupportedLocalImagePath(explorerSelectedPath) &&
+          !isSupportedLocalPreviewFilePath(explorerSelectedPath) &&
           resolvedActiveThreadPending
         }
-        explorerImagePreviewUrl={
-          resolvedActiveThreadData?.explorerImagePreview.value ?? null
+        explorerLocalPreviewUrl={
+          resolvedActiveThreadData?.explorerLocalPreview.value ?? null
         }
-        explorerImagePreviewError={
-          resolvedActiveThreadData?.explorerImagePreview.error ?? false
+        explorerLocalPreviewError={
+          resolvedActiveThreadData?.explorerLocalPreview.error ?? false
         }
-        explorerImagePreviewPending={
+        explorerLocalPreviewPending={
           explorerSelectedPath !== null &&
-          isSupportedLocalImagePath(explorerSelectedPath) &&
+          isSupportedLocalPreviewFilePath(explorerSelectedPath) &&
           resolvedActiveThreadPending
         }
         explorerQuery={explorerQuery}

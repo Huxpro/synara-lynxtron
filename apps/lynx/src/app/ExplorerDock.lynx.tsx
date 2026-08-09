@@ -1,4 +1,8 @@
 import type { ProjectReadFileResult } from '@synara/contracts';
+import {
+  isSupportedLocalImagePath,
+  isSupportedLocalPdfPath,
+} from '@synara/shared/localPreviewFiles';
 
 import { ChatMarkdown } from '../components/markdown/ChatMarkdown';
 import { FileEntryIcon } from '../components/FileEntryIcon.lynx';
@@ -12,6 +16,7 @@ import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { disclosureChevronClassName } from '../platform/motion.lynx';
 import type { ExplorerEntriesResult } from './queries';
 import { ResizableRightPanel } from './ResizableRightPanel.lynx';
+import { ExplorerPdfFallback } from './ExplorerPdfFallback.lynx';
 import './explorer-dock.css';
 
 function isMarkdownPath(path: string): boolean {
@@ -167,9 +172,9 @@ export function ExplorerDock(props: {
   readonly file: ProjectReadFileResult | null;
   readonly fileError: boolean;
   readonly filePending: boolean;
-  readonly imagePreviewUrl: string | null;
-  readonly imagePreviewError: boolean;
-  readonly imagePreviewPending: boolean;
+  readonly localPreviewUrl: string | null;
+  readonly localPreviewError: boolean;
+  readonly localPreviewPending: boolean;
   readonly onClose: () => void;
   readonly onQueryChange: (query: string) => void;
   readonly onSelectPath: (path: string) => void;
@@ -263,23 +268,34 @@ export function ExplorerDock(props: {
             <text className="ExplorerDockState">
               Select a file from the list to view it.
             </text>
-          ) : props.imagePreviewPending ? (
-            <text className="ExplorerDockState">Loading image…</text>
-          ) : props.imagePreviewError ? (
-            <text className="ExplorerDockState ExplorerDockState--error">
-              Could not load this image.
-            </text>
-          ) : props.imagePreviewUrl ? (
-            <view className="ExplorerDockImageFrame">
-              <image
-                className="ExplorerDockImage"
-                src={props.imagePreviewUrl}
-                mode="aspectFit"
-              />
-              <text className="ExplorerDockImageName">
-                {fileName(props.selectedPath)}
+          ) : isSupportedLocalPdfPath(props.selectedPath) &&
+            props.workspaceRoot ? (
+            <ExplorerPdfFallback
+              path={props.selectedPath}
+              previewError={props.localPreviewError}
+              previewPending={props.localPreviewPending}
+              previewUrl={props.localPreviewUrl}
+              workspaceRoot={props.workspaceRoot}
+            />
+          ) : isSupportedLocalImagePath(props.selectedPath) ? (
+            props.localPreviewPending ? (
+              <text className="ExplorerDockState">Loading image…</text>
+            ) : props.localPreviewError ? (
+              <text className="ExplorerDockState ExplorerDockState--error">
+                Could not load this image.
               </text>
-            </view>
+            ) : props.localPreviewUrl ? (
+              <view className="ExplorerDockImageFrame">
+                <image
+                  className="ExplorerDockImage"
+                  src={props.localPreviewUrl}
+                  mode="aspectFit"
+                />
+                <text className="ExplorerDockImageName">
+                  {fileName(props.selectedPath)}
+                </text>
+              </view>
+            ) : null
           ) : props.filePending ? (
             <text className="ExplorerDockState">Loading file…</text>
           ) : props.fileError ? (

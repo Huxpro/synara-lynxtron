@@ -30,6 +30,7 @@ file preview, responsive layout, and light/dark Lynx-for-Web evidence pass.
 | Tree row fidelity | Tree rows now match Web's 28px single-line anatomy, use the shared disclosure chevron motion, and indent root/child/grandchild content at 8/22/36px instead of duplicating names as `docsdocs` / `srcsrc` | PASS |
 | File icon identity | Lynx consumes Web's canonical `getFileIconName` and shared color resolver, renders the exact Central SVG family for every mapped type, and falls back to `code-brackets` only for unknown types | PASS |
 | Image preview | Workspace-relative allowlisted images bypass the text RPC, resolve through the shared authenticated `/api/local-image` route, and render in an `aspectFit` preview surface with filename metadata | PASS |
+| PDF fallback | Workspace-relative PDFs bypass text decoding, resolve through the same allowlisted local-preview URL builder, and expose a real `system-default` action with a traversal-safe absolute target. The surface explicitly states that Native in-app page rendering is unavailable | PASS |
 | Live Explorer light/dark populated matrix | At `1280×820`, DPR 1, both themes render three entries, selected `README.md`, a `512×774` dock, `240px` sidebar, `239×685` entries scroll area, `271×730` preview, and `247×706` preview scroller. Light resolves the dock to `rgb(255,255,255)` / `rgb(13,13,13)`; dark resolves to `rgb(16,16,16)` / `rgb(252,252,252)`. Both PNGs are exactly `1280×820` | PASS |
 | Narrow Explorer geometry | At `900×700`, DPR 1, the dock clamps to `580px` (`900 - 320px` minimum main content), keeps a `240px` sidebar and `339px` preview, restores matching `padding-right:580px`, preserves the selected README preview, and exports an exact `900×700` PNG | PASS |
 | Explorer drag resizing | At `1280×820`, the Web-compatible sash path changed the dock from `640px` to `760px` through a trusted pointer drag. The target width survived the page refresh and `ThreadPage` restored matching `padding-right:760px`; Native retains the shared `createLynxSidebarResizeSession` path | PASS |
@@ -40,9 +41,11 @@ file preview, responsive layout, and light/dark Lynx-for-Web evidence pass.
 
 - This is the first real Explorer slice, not full Web Explorer parity.
 - The Lynx-for-Web activation blocker is resolved for trusted click and Enter.
-- PDF preview, file references, ask-why, comments,
-  and syntax-highlighted rich preview remain future product scope rather than
-  blockers for this first Explorer slice.
+- Native in-app PDF page rendering, file references, ask-why, comments, and
+  syntax-highlighted rich preview remain future product scope rather than
+  blockers for this first Explorer slice. PDF files now have a safe,
+  non-deceptive default-app fallback; that is not claimed as Web PDF viewer
+  parity.
 
 ## Directory-tree continuation
 
@@ -85,5 +88,19 @@ the HTTP origin from the active runtime WebSocket endpoint, and skips
 The retained 32x24 fixture is half red and half blue. Both light and dark
 1280x820 frames contain 51,324 exact pixels of each color in the preview
 surface; the route returns HTTP 200, `image/png`, trusted-origin CORS, and 142
-bytes. Relay evidence contains no `projects.readFile`. PDF remains future scope
-because Lynx does not yet have the Web PDF viewer/page controls.
+bytes. Relay evidence contains no `projects.readFile`.
+
+## PDF-fallback continuation
+
+Workspace-relative PDFs now use the shared preview-file allowlist rather than
+entering `projects.readFile`, so binary bytes are never decoded as source text.
+The Lynx surface renders the canonical PDF icon, file name, explicit capability
+copy, and one `Open in default app` action. That action joins only a safe
+workspace-relative path and sends the resulting absolute path through the
+existing authenticated `shell.openInEditor` RPC with `system-default`.
+
+This does not render PDF pages inside Lynx. The current Lynxtron runtime has no
+working `<webview>` fallback, and the Web viewer depends on pdf.js canvas,
+selectable text/link layers, page navigation, and zoom controls. The fallback
+therefore names the boundary instead of presenting an image, iframe, or
+synthetic page controls as Native PDF parity.

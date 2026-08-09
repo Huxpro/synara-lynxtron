@@ -461,7 +461,7 @@ export async function fetchExplorerFile(input: {
   return result;
 }
 
-export async function fetchExplorerImagePreviewUrl(input: {
+export async function fetchExplorerLocalPreviewUrl(input: {
   readonly relativePath: string;
   readonly workspaceRoot: string;
 }): Promise<string> {

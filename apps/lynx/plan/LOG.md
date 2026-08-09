@@ -8521,3 +8521,29 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - focused **4 files / 8 tests**、Lynx-for-Web与Native/Desktop production builds通过。
   PDF viewer/page controls仍是future scope，不冒充完成。证据在
   `shots/2026-08-09/explorer-image-preview-current/`。
+
+### Explorer PDF safe fallback
+
+- Explorer选择workspace-relative PDF时不再进入文本`projects.readFile`，而是复用
+  shared preview-file allowlist与`/api/local-image` URL builder；binary PDF bytes
+  不会被错误解码成source text。
+- Lynx明确展示canonical PDF icon、文件名和Native内嵌页渲染尚不可用的说明，只提供
+  一个真实`Open in default app`动作。该动作通过shared path helper拒绝absolute/
+  traversal relative path，将安全workspace-relative path转换为native absolute path，
+  再调用既有authenticated `shell.openInEditor` RPC与`system-default`。
+- 没有使用`<image>`、`<iframe>`或已知会导致当前Lynxtron崩溃的`<webview>`冒充PDF
+  viewer；Web的pdf.js canvas、text/link layers、page navigation与zoom仍是明确
+  hard island。
+- canonical one-page `report.pdf`通过real project/thread route渲染；light/dark
+  `1280x820`、DPR1下fallback均为`375x706`，copy/button geometry一致，页面内无
+  PDF `<image>`/`<webview>`。安全route返回200、`application/pdf`、593 bytes、
+  trusted-origin CORS与`nosniff`，relay无`projects.readFile`，page errors 0。
+- exact-owned Native production PID22815使用正确`synara://` route和`58910`，
+  host log包含真实thread snapshot与`projects.listDirectories`且无
+  `projects.readFile`。该实例未发布DevTool client；现有8901/8904分别属于旧
+  Lynxtron default app和t3code，因此不冒充Native screenshot/DOM通过。
+- focused **3 files / 5 tests**、Lynx-for-Web与Native/Desktop production builds
+  通过。外部app按钮未在证据采集中点击，避免系统PDF viewer抢用户焦点；safe path与
+  authenticated RPC action由focused tests锁定。cleanup snapshot sequence6、
+  live project/thread 0/0。证据在
+  `shots/2026-08-09/explorer-pdf-fallback-current/`。

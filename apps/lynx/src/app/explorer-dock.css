@@ -185,6 +185,89 @@
   line-height: 14px;
 }
 
+.ExplorerDockPdf {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+}
+
+.ExplorerDockPdfIcon {
+  display: flex;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 16px;
+  align-items: center;
+  justify-content: center;
+}
+
+.ExplorerDockPdfIcon .FileEntryIcon {
+  width: 40px;
+  height: 40px;
+}
+
+.ExplorerDockPdfCopy {
+  display: flex;
+  max-width: 360px;
+  align-items: center;
+  flex-direction: column;
+}
+
+.ExplorerDockPdfTitleRow {
+  display: flex;
+  max-width: 100%;
+  align-items: center;
+  gap: 8px;
+}
+
+.ExplorerDockPdfTitle {
+  color: var(--foreground);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.ExplorerDockPdfBadge {
+  padding: 1px 6px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  color: var(--muted-foreground);
+  font-size: 9px;
+  font-weight: 500;
+  line-height: 14px;
+}
+
+.ExplorerDockPdfDescription,
+.ExplorerDockPdfHint,
+.ExplorerDockPdfStatus {
+  color: var(--muted-foreground);
+  font-size: 11px;
+  line-height: 16px;
+  text-align: center;
+}
+
+.ExplorerDockPdfDescription {
+  margin-top: 10px;
+}
+
+.ExplorerDockPdfHint {
+  margin-top: 2px;
+  opacity: 0.78;
+}
+
+.ExplorerDockPdfOpen {
+  margin-top: 16px;
+}
+
+.ExplorerDockPdfStatus {
+  margin-top: 10px;
+}
+
 .ExplorerDockState {
   margin: auto;
   color: var(--muted-foreground);

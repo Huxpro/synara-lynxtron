@@ -23,6 +23,10 @@ describe('Lynx Explorer dock', () => {
       new URL('./App.tsx', import.meta.url),
       'utf8'
     );
+    const pdfSource = readFileSync(
+      new URL('./ExplorerPdfFallback.lynx.tsx', import.meta.url),
+      'utf8'
+    );
     const webHostSource = readFileSync(
       new URL('../main/web/web-host.ts', import.meta.url),
       'utf8'
@@ -50,6 +54,8 @@ describe('Lynx Explorer dock', () => {
     expect(source).toContain('className="ExplorerDockImage"');
     expect(source).toContain('mode="aspectFit"');
     expect(source).toContain('Could not load this image.');
+    expect(source).toContain('<ExplorerPdfFallback');
+    expect(source).toContain('isSupportedLocalPdfPath(props.selectedPath)');
     expect(source).toContain('Preview truncated at 1 MB.');
     expect(source).toContain('<ExplorerDirectory');
     expect(source).toContain('<FileEntryIcon');
@@ -70,13 +76,23 @@ describe('Lynx Explorer dock', () => {
       'initialExplorerExpandedDirectories.map(async (path)'
     );
     expect(appSource).toContain('fetchExplorerDirectory({');
-    expect(appSource).toContain('fetchExplorerImagePreviewUrl({');
+    expect(appSource).toContain('fetchExplorerLocalPreviewUrl({');
     expect(appSource).toContain(
-      '!isSupportedLocalImagePath(initialExplorerPath)'
+      '!isSupportedLocalPreviewFilePath(initialExplorerPath)'
     );
     expect(routerSource).toContain(
-      '!isSupportedLocalImagePath(explorerSelectedPath)'
+      '!isSupportedLocalPreviewFilePath(explorerSelectedPath)'
     );
+    expect(queriesSource).toContain(
+      'export async function fetchExplorerLocalPreviewUrl'
+    );
+    expect(pdfSource).toContain("editor: 'system-default'");
+    expect(pdfSource).toContain('resolveExplorerPdfOpenTarget({');
+    expect(pdfSource).toContain(
+      'PDF preview is not available in the native client yet.'
+    );
+    expect(pdfSource).not.toContain('<image');
+    expect(pdfSource).not.toContain('<webview');
     expect(webHostSource).toContain(
       'relaySocketBaseUrl ??\n          relayReadyBaseUrl ??\n          configuredRelayBaseUrl()'
     );
