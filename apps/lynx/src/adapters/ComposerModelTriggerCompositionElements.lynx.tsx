@@ -1,7 +1,7 @@
 import type { ReactNode } from '@lynx-js/react';
 
 import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
-import { ChevronDownIcon } from '../lib/icons.lynx';
+import { ChevronDownIcon, SettingsIcon } from '../lib/icons.lynx';
 
 export function ComposerModelTriggerFrameElement(props: {
   readonly children: ReactNode;
@@ -35,7 +35,15 @@ export function ComposerModelTriggerFastBadgeElement() {
 export function ComposerModelTriggerStatusIconElement(props: {
   readonly accessibleLabel: string;
 }) {
-  return <text className="ComposerModelTriggerMetaLynx">⚙ {props.accessibleLabel}</text>;
+  return (
+    <view
+      className="ComposerModelTriggerStatusLynx"
+      accessibility-element
+      accessibility-label={props.accessibleLabel}
+    >
+      <SettingsIcon className="ComposerModelTriggerStatusIconLynx" size={14} />
+    </view>
+  );
 }
 
 export function ComposerModelTriggerStatusLabelElement(props: {

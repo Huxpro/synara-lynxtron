@@ -30,7 +30,7 @@ import {
 } from '@synara-web/lib/modelFavorites.logic';
 import { webStorage } from '../../platform/storage';
 import { useLynxInteractiveState } from '../ui/interactive-state.lynx';
-import { ChevronDownIcon } from '../../lib/icons.lynx';
+import { ArrowLeftIcon, ChevronDownIcon } from '../../lib/icons.lynx';
 import {
   Menu,
   MenuPopup,
@@ -345,7 +345,10 @@ export function ComposerModelControl(props: {
                 aria-label="Back to providers"
                 {...providerBackInteraction.eventProps}
               >
-                <text className="ComposerProviderBackGlyphLynx">‹</text>
+                <ArrowLeftIcon
+                  className="ComposerProviderBackIconLynx"
+                  size={14}
+                />
                 <text className="ComposerProviderBackLabelLynx">
                   Providers
                 </text>

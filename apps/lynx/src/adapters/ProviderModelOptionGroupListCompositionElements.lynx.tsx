@@ -1,6 +1,11 @@
 import type { ReactNode } from '@lynx-js/react';
 
 import {
+  CheckIcon,
+  ChevronDownIcon,
+  ChevronRightIcon,
+} from '../lib/icons.lynx';
+import {
   lynxNestedInteractiveEventProps,
   useLynxInteractiveState,
 } from '../components/ui/interactive-state.lynx';
@@ -45,7 +50,17 @@ export function ProviderModelCollapsibleGroupElement(props: {
         aria-expanded={props.open}
         {...interaction.eventProps}
       >
-        <text className="ComposerModelGroupChevronLynx">{props.open ? '⌄' : '›'}</text>
+        {props.open ? (
+          <ChevronDownIcon
+            className="ComposerModelGroupChevronLynx"
+            size={12}
+          />
+        ) : (
+          <ChevronRightIcon
+            className="ComposerModelGroupChevronLynx"
+            size={12}
+          />
+        )}
         <text className="ComposerModelGroupLabelLynx">{props.label}</text>
         <text className="ComposerModelGroupCountLynx">{props.count}</text>
       </view>
@@ -92,7 +107,9 @@ export function ProviderModelRadioItemElement(props: {
       aria-selected={props.active}
       {...optionInteraction.eventProps}
     >
-      <text className="ComposerModelOptionCheckLynx">{props.active ? '✓' : ''}</text>
+      <view className="ComposerModelOptionCheckLynx">
+        {props.active ? <CheckIcon size={12} /> : null}
+      </view>
       <text className="ComposerModelOptionNameLynx">{props.modelName}</text>
       {props.costMultiplierLabel ? (
         <text className="ComposerModelOptionMetaLynx">{props.costMultiplierLabel}</text>
