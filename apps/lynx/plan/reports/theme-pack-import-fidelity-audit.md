@@ -1,6 +1,6 @@
 # Theme Pack Import fidelity audit
 
-Status: Browser-complete, Native batch pending
+Status: Browser-complete, Native batch blocked by Lynxtron bundle loading
 
 Updated: 2026-08-09
 
@@ -64,7 +64,35 @@ Concrete success criteria:
 | Focused regression coverage | 3 files / 21 tests pass, including success and parser-error dialog behavior | PASS |
 | Production builds | Lynx-for-Web and Native/Desktop builds pass; only existing encoder and optional `ws` warnings | PASS |
 | React Doctor | Controlled-input and label findings were fixed; one remaining warning targets ReactLynx-only `accessibility-element`, which is required by the native AX contract | PASS WITH DOCUMENTED FALSE POSITIVE |
-| Native textarea/IME | Browser evidence cannot certify native selection, paste, composition, or keyboard routing | PENDING NATIVE BATCH |
+| Native textarea/IME | Exact-owned production preflight used PID-derived client `localhost:8903`, App `@synara/lynx`, a `1280×820` owned window, staged/output bundle hash parity, isolated server `58190`, and an isolated Lynx user-data directory. Lynxtron 0.0.7 failed before app background initialization with `An error occurred when parse json`, leaving a white LynxView and only the preload console line. Rebuilding and launching the pushed `31155c7d` baseline produced the same failure, so this is not attributed to the current Explorer slice. Native input, selection, paste, composition, undo/redo, and keyboard routing remain uncertified | BLOCKED BY NATIVE HARNESS / SDK |
+
+## Native preflight blocker
+
+The 2026-08-09 Native batch was attempted rather than inferred from browser
+evidence:
+
+- exact-owned current-head process PID `29047`, then pushed-baseline PID
+  `49010`;
+- DevTool client `localhost:8903`, App `@synara/lynx`, session URL
+  `file:///Users/bytedance/github/synara/apps/lynx/dist/desktop/main.lynx.bundle`;
+- owned CoreGraphics window `1280×820`;
+- staged/output current-head bundle hash
+  `16ea76029c27f34ee6c35b8f7e21982caf2cfc24ab59fa47cde111bd8f1068c7`;
+- isolated server `58190` and isolated Lynx user-data state;
+- empty DevTool error/warning console except the expected preload message.
+
+Both current-head and the clean pushed baseline reached the same Lynxtron
+0.0.7 host failure before ReactLynx initialized:
+
+```text
+An error occurred when parse json: The data couldn’t be read because it isn’t in the correct format.
+```
+
+The owned window remained a blank white LynxView, `DOM.getDocument` returned
+`{}`, DevTool screenshot capture timed out, and ReactLynx exposed no component
+frames. Because the baseline reproduces the failure, no product regression is
+claimed; because the Theme Import UI never rendered, no Native textarea/IME
+pass is claimed either.
 
 ## Stable geometry
 
