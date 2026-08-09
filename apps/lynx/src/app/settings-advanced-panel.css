@@ -288,6 +288,10 @@
   gap: 8px;
 }
 
+.SettingsAdvancedReleaseFeatureCopy {
+  gap: 4px;
+}
+
 .SettingsAdvancedReleaseFeatureDescription {
   font-size: 14px;
   line-height: 22.75px;

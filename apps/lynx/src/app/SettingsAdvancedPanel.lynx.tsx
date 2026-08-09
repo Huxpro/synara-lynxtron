@@ -100,12 +100,14 @@ function ReleaseHistoryEntry(props: {
               key={feature.id}
               className="SettingsAdvancedReleaseFeature"
             >
-              <text className="SettingsAdvancedReleaseFeatureTitle">
-                {feature.title}
-              </text>
-              <text className="SettingsAdvancedReleaseFeatureDescription">
-                {feature.description}
-              </text>
+              <view className="SettingsAdvancedReleaseFeatureCopy">
+                <text className="SettingsAdvancedReleaseFeatureTitle">
+                  {feature.title}
+                </text>
+                <text className="SettingsAdvancedReleaseFeatureDescription">
+                  {feature.description}
+                </text>
+              </view>
               {feature.details ? (
                 <text className="SettingsAdvancedReleaseFeatureDetails">
                   {feature.details}

@@ -283,7 +283,7 @@ Current responsive disposition:
 | Sidebar completed-status identity | completed threads use Web's filled `circle-check` Central asset at the canonical 15px trailing role instead of a hand-built green dot plus text checkmark | PASS — CURRENT PRODUCT SURFACES |
 | Sidebar thread metadata identity | fork, handoff, worktree, and automation badges use the canonical 12px Fork, GitBranch, split-arrow, and Clock assets instead of Unicode approximations | PASS — CURRENT PRODUCT SURFACES |
 | Environment disclosure motion | Project instructions, Pinned, Markers, and Notepad share one ChevronRight header and the canonical 220ms presence/content motion with reduced-motion behavior; four bespoke instant-unmount/180-degree implementations were removed | PASS — CURRENT PRODUCT SURFACES |
-| Settings Release History disclosure | each release entry owns stable hook state, shared 220ms ChevronRight/content motion, expanded/collapsed accessibility value, and keyboard/focus/pressed interaction instead of a raw tap handler plus instant feature unmount | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
+| Settings Release History disclosure | each release entry owns stable hook state, shared 220ms ChevronRight/content motion, expanded/collapsed accessibility value, and keyboard/focus/pressed interaction; current-head paired evidence additionally confirms exact dialog, trigger, feature-row, and nested 4px/8px copy rhythm | PASS — CURRENT-HEAD BROWSER EVIDENCE |
 | Collapsed-work disclosure | transcript collapsed-work uses the shared rotating ChevronRight identity and 220ms class contract while intentionally retaining `preserveOnClose: false` so live transcript measurement never observes an animated intermediate height | PASS — TRANSCRIPT GUARDRAIL PRESERVED |
 | Transcript work-row identity | error/thinking/info/tool rows use Web's CircleAlert, Robot, Check, and Zap identities at the 13px status role instead of punctuation and text glyphs; transcript row/version/scroll behavior is unchanged | PASS — CURRENT PRODUCT SURFACES |
 | Composer selection icon identity | model trait and project picker selected states use the same generated 12px Check identity as shared Menu rows instead of font-dependent checkmarks | PASS — CURRENT PRODUCT SURFACES |
@@ -439,6 +439,19 @@ state remain unchanged. Advanced focused tests pass (3/3), both production
 bundles build, `git diff --check` passes, and React Doctor 0.9.11 reports zero
 new diagnostics against `2f12c0a9`. Visual re-certification remains part of
 the pending current-head matrix.
+`shots/2026-08-10/settings-release-history-rhythm-current/` adds current-head
+paired runtime evidence and closes a later measured 20px content-height
+residual. The dialog and trigger were already exact, but each of five features
+was 4px too tall because Lynx used an 8px title-description gap where Web
+groups that copy at 4px before the outer 8px details gap. A named
+`SettingsAdvancedReleaseFeatureCopy` owner now reproduces that nested rhythm.
+Web and Lynx-for-Web match exactly at `478x941.75` for the expanded content and
+at every feature-row origin/height. Real rendered taps also confirm exit
+content remains present at 120ms and unmounts after the 220ms transition plus
+cleanup buffer. The current served bundle hash matched `dist/web`, the
+three-client preflight shared server instance/snapshot, both PNGs are
+`1280x820`, page-error files are empty, and the named browser session was
+closed.
 The Explorer tree follow-up aligns Native directory expansion with Web's
 `CollapsiblePanel` behavior. Each recursive entry is now a stable component
 with shared 220ms ChevronRight/content motion and explicit `aria-expanded`;
