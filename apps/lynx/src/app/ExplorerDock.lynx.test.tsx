@@ -66,8 +66,16 @@ describe('Lynx Explorer dock', () => {
     expect(source).toContain('<ExplorerDirectory');
     expect(source).toContain('<FileEntryIcon');
     expect(source).not.toContain('ExplorerDockFileGlyph');
-    expect(source).toContain('expandedDirectories.has(entry.path)');
+    expect(source).toContain(
+      'props.expandedDirectories.has(props.entry.path)'
+    );
     expect(source).toContain('disclosureChevronClassName(');
+    expect(source).toContain(
+      'useLynxDisclosurePresence(expanded)'
+    );
+    expect(source).toContain('disclosureContentClassName(');
+    expect(source).toContain('<ExplorerDirectoryEntry');
+    expect(source).not.toContain('{expanded ? (');
     expect(source).toContain('Loading directory…');
     expect(source).toContain('Could not load directory.');
     expect(source).toContain('showPaths={Boolean(props.query.trim())}');
@@ -151,6 +159,9 @@ describe('Lynx Explorer dock', () => {
     );
     expect(styles).toMatch(
       /\.ExplorerDockEntry\s*\{[^}]*min-height:\s*28px;[^}]*padding:\s*4px 8px;/s
+    );
+    expect(styles).toMatch(
+      /\.ExplorerDockDirectoryChildren\s*\{[^}]*width:\s*100%;/s
     );
     expect(styles).toMatch(
       /\.ExplorerDockCommentEditor\s*\{[^}]*width:\s*440px;[^}]*min-width:\s*240px;[^}]*max-width:\s*calc\(100% - 44px\);/s

@@ -16,7 +16,11 @@ import {
 } from '../lib/icons.lynx';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { useComposerDraftStore } from '../adapters/composerDraftStore.lynx';
-import { disclosureChevronClassName } from '../platform/motion.lynx';
+import {
+  disclosureChevronClassName,
+  disclosureContentClassName,
+  useLynxDisclosurePresence,
+} from '../platform/motion.lynx';
 import {
   Menu,
   MenuItem,
@@ -121,6 +125,7 @@ function ExplorerEntryRow(props: {
     <view
       className={row.className}
       style={{ paddingLeft: `${8 + props.depth * 14}px` }}
+      aria-expanded={directory ? props.expanded : undefined}
       {...row.eventProps}
     >
       {directory ? (
@@ -150,7 +155,7 @@ function ExplorerEntryRow(props: {
   );
 }
 
-function ExplorerDirectory(props: {
+type ExplorerDirectoryProps = {
   readonly depth: number;
   readonly directoryEntries: Readonly<
     Record<string, ExplorerEntriesResult['entries']>
@@ -163,57 +168,88 @@ function ExplorerDirectory(props: {
   readonly onToggleDirectory: (path: string) => void;
   readonly selectedPath: string | null;
   readonly showPaths: boolean;
-}) {
+};
+
+function ExplorerDirectoryEntry(
+  props: Omit<ExplorerDirectoryProps, 'entries'> & {
+    readonly entry: ExplorerEntry;
+  }
+) {
+  const expanded =
+    props.entry.kind === 'directory' &&
+    props.expandedDirectories.has(props.entry.path);
+  const childrenPresent = useLynxDisclosurePresence(expanded);
+  return (
+    <view>
+      <ExplorerEntryRow
+        depth={props.depth}
+        entry={props.entry}
+        expanded={expanded}
+        selected={props.entry.path === props.selectedPath}
+        showPath={props.showPaths}
+        onSelect={props.onSelectPath}
+        onToggleDirectory={props.onToggleDirectory}
+      />
+      {props.entry.kind === 'directory' && childrenPresent ? (
+        <view
+          className={disclosureContentClassName(
+            expanded,
+            'ExplorerDockDirectoryChildren'
+          )}
+          aria-hidden={!expanded}
+        >
+          {props.directoryPending.has(props.entry.path) ? (
+            <text
+              className="ExplorerDockDirectoryState"
+              style={{ paddingLeft: `${22 + (props.depth + 1) * 14}px` }}
+            >
+              Loading directory…
+            </text>
+          ) : props.directoryErrors.has(props.entry.path) ? (
+            <text
+              className="ExplorerDockDirectoryState ExplorerDockState--error"
+              style={{ paddingLeft: `${22 + (props.depth + 1) * 14}px` }}
+            >
+              Could not load directory.
+            </text>
+          ) : (
+            <ExplorerDirectory
+              depth={props.depth + 1}
+              directoryEntries={props.directoryEntries}
+              directoryErrors={props.directoryErrors}
+              directoryPending={props.directoryPending}
+              entries={props.directoryEntries[props.entry.path] ?? []}
+              expandedDirectories={props.expandedDirectories}
+              onSelectPath={props.onSelectPath}
+              onToggleDirectory={props.onToggleDirectory}
+              selectedPath={props.selectedPath}
+              showPaths={props.showPaths}
+            />
+          )}
+        </view>
+      ) : null}
+    </view>
+  );
+}
+
+function ExplorerDirectory(props: ExplorerDirectoryProps) {
   return (
     <>
-      {props.entries.map((entry) => {
-        const expanded =
-          entry.kind === 'directory' &&
-          props.expandedDirectories.has(entry.path);
-        return (
-          <view key={entry.path}>
-            <ExplorerEntryRow
-              depth={props.depth}
-              entry={entry}
-              expanded={expanded}
-              selected={entry.path === props.selectedPath}
-              showPath={props.showPaths}
-              onSelect={props.onSelectPath}
-              onToggleDirectory={props.onToggleDirectory}
-            />
-            {expanded ? (
-              props.directoryPending.has(entry.path) ? (
-                <text
-                  className="ExplorerDockDirectoryState"
-                  style={{ paddingLeft: `${22 + (props.depth + 1) * 14}px` }}
-                >
-                  Loading directory…
-                </text>
-              ) : props.directoryErrors.has(entry.path) ? (
-                <text
-                  className="ExplorerDockDirectoryState ExplorerDockState--error"
-                  style={{ paddingLeft: `${22 + (props.depth + 1) * 14}px` }}
-                >
-                  Could not load directory.
-                </text>
-              ) : (
-                <ExplorerDirectory
-                  depth={props.depth + 1}
-                  directoryEntries={props.directoryEntries}
-                  directoryErrors={props.directoryErrors}
-                  directoryPending={props.directoryPending}
-                  entries={props.directoryEntries[entry.path] ?? []}
-                  expandedDirectories={props.expandedDirectories}
-                  onSelectPath={props.onSelectPath}
-                  onToggleDirectory={props.onToggleDirectory}
-                  selectedPath={props.selectedPath}
-                  showPaths={props.showPaths}
-                />
-              )
-            ) : null}
-          </view>
-        );
-      })}
+      {props.entries.map((entry) => (
+        <ExplorerDirectoryEntry
+          key={entry.path}
+          depth={props.depth}
+          entry={entry}
+          directoryEntries={props.directoryEntries}
+          directoryErrors={props.directoryErrors}
+          directoryPending={props.directoryPending}
+          expandedDirectories={props.expandedDirectories}
+          onSelectPath={props.onSelectPath}
+          onToggleDirectory={props.onToggleDirectory}
+          selectedPath={props.selectedPath}
+          showPaths={props.showPaths}
+        />
+      ))}
     </>
   );
 }

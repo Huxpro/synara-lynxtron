@@ -286,6 +286,7 @@ Current responsive disposition:
 | Transcript work-row identity | error/thinking/info/tool rows use Web's CircleAlert, Robot, Check, and Zap identities at the 13px status role instead of punctuation and text glyphs; transcript row/version/scroll behavior is unchanged | PASS — CURRENT PRODUCT SURFACES |
 | Composer selection icon identity | model trait and project picker selected states use the same generated 12px Check identity as shared Menu rows instead of font-dependent checkmarks | PASS — CURRENT PRODUCT SURFACES |
 | Diff / Explorer docks and source actions | working-tree Diff Dock and filesystem-backed Explorer are reachable; Explorer covers tree/search, rich source/Markdown/image/PDF fallback, whole-file references, ask-why, and accessible per-line local comments that persist and serialize into the shared composer contract | PASS — CURRENT PRODUCT SURFACES |
+| Explorer directory disclosure | recursive directory rows keep parent-owned cached listings through the canonical 220ms closing motion, expose named expanded/collapsed state, and reuse the shared rotating ChevronRight instead of instantly removing nested loading/error/content rows | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
 | Pull Request Timeline / Code | selected PR detail exposes Summary/Timeline/Code; Timeline projects real detail commits/comments, while Code fetches typed `pullRequests.diff` data on demand and covers portable files, line numbers, loading/error/retry/truncation/expand states | PASS — CURRENT PRODUCT SURFACES |
 | Pull Request comments | Summary exposes a Lynx-native GitHub comment composer backed by typed `pullRequests.comment`; it enforces the shared 65,536-character contract, preserves drafts on failure, prevents rapid duplicate submission, handles Enter/Shift+Enter/IME correctly, and revalidates detail/list data after settled mutations | PASS — CURRENT PRODUCT SURFACES |
 | Pull Request row icon identity | open/draft/conflicting/merged/closed rows resolve through the shared PR-state presentation and render the matching Central assets; pin controls use Web's outline/filled pin rule instead of Unicode circles | PASS — CURRENT PRODUCT SURFACES |
@@ -436,6 +437,15 @@ state remain unchanged. Advanced focused tests pass (3/3), both production
 bundles build, `git diff --check` passes, and React Doctor 0.9.11 reports zero
 new diagnostics against `2f12c0a9`. Visual re-certification remains part of
 the pending current-head matrix.
+The Explorer tree follow-up aligns Native directory expansion with Web's
+`CollapsiblePanel` behavior. Each recursive entry is now a stable component
+with shared 220ms ChevronRight/content motion and explicit `aria-expanded`;
+parent-owned directory listings remain cached while closing presence only
+controls render lifetime, so no fetch, selected-path, search, or error-state
+semantics change. The focused Explorer suite passes (2/2), both production
+bundles build, `git diff --check` passes, and React Doctor 0.9.11 reports zero
+diagnostics against `4924448c`. Visual re-certification remains part of the
+pending current-head matrix.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

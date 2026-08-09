@@ -123,6 +123,10 @@
   opacity: 0.75;
 }
 
+.ExplorerDockDirectoryChildren {
+  width: 100%;
+}
+
 .ExplorerDockDirectoryState {
   display: flex;
   min-height: 28px;
