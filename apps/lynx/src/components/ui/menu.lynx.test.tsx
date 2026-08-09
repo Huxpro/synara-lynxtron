@@ -309,6 +309,37 @@ describe('Lynx Menu overlay contract', () => {
     expect(elementTree.root?.querySelector('.LxMenuPopup')).not.toBeNull();
   });
 
+  it('uses generated Check and Chevron identities for shared menu states', () => {
+    render(
+      <Menu defaultOpen>
+        <MenuTrigger>
+          <text>Open</text>
+        </MenuTrigger>
+        <MenuPopup>
+          <MenuCheckboxItem checked onCheckedChange={() => undefined}>
+            Enabled
+          </MenuCheckboxItem>
+          <MenuSub>
+            <MenuSubTrigger>More</MenuSubTrigger>
+          </MenuSub>
+        </MenuPopup>
+      </Menu>
+    );
+
+    expect(
+      elementTree.root?.querySelector('.LxMenuIndicatorIcon')
+    ).not.toBeNull();
+    expect(
+      elementTree.root?.querySelector('.LxMenuSubTrigger__chevron')
+    ).not.toBeNull();
+    const source = readFileSync(
+      new URL('./menu.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(source).not.toContain("{props.checked ? '✓' : ''}");
+    expect(source).not.toContain('>›</text>');
+  });
+
   it('keeps submenu content independent until its trigger opens it', async () => {
     render(
       <Menu defaultOpen>

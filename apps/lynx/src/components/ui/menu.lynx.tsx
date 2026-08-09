@@ -12,7 +12,7 @@ import { getRectByRef } from '@lynx-js/lynx-ui';
 import type { NodesRef } from '@lynx-js/types';
 import { resolveCommandNavigation } from '@synara/shared/commandNavigation';
 
-import { CheckIcon } from '../../lib/icons.lynx';
+import { CheckIcon, ChevronRightIcon } from '../../lib/icons.lynx';
 import { useLynxInteractiveState } from './interactive-state.lynx';
 import { focusLynxNode, type LynxFocusableRef } from './focus.lynx';
 import { cx, renderSlot, textContent } from './shared.lynx';
@@ -532,7 +532,9 @@ export function MenuCheckboxItem(props: {
         <view className="LxMenuSwitch__thumb" />
       </view>
     ) : (
-      <text className="LxMenuIndicator">{props.checked ? '✓' : ''}</text>
+      <view className="LxMenuIndicator">
+        {props.checked ? <CheckIcon className="LxMenuIndicatorIcon" /> : null}
+      </view>
     );
   return (
     <MenuItem
@@ -633,7 +635,10 @@ export function MenuSubTrigger(props: {
     >
       <view className="LxMenuItem__row">
         {textContent(props.children, 'LxMenuItem__text')}
-        <text className="LxMenuSubTrigger__chevron">›</text>
+        <ChevronRightIcon
+          className="LxMenuSubTrigger__chevron"
+          size={14}
+        />
       </view>
     </view>
   );
