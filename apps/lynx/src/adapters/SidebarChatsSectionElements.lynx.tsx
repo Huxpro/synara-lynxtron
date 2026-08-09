@@ -97,6 +97,7 @@ function SidebarChatsPaginationActionElement(props: {
 }) {
   const interaction = useLynxInteractiveState({
     baseClassName: 'SharedSidebarChatsPaginationAction',
+    accessibleLabel: props.label,
     disabled: props.onActivate === undefined,
     onActivate: props.onActivate,
   });

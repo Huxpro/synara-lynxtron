@@ -45,6 +45,7 @@ describe('shared interactive accessible names', () => {
       './PullRequestDetailCloseCompositionElements.lynx.tsx'
     );
     const summary = source('./PullRequestSummaryCompositionElements.lynx.tsx');
+    const chats = source('./SidebarChatsSectionElements.lynx.tsx');
 
     expect(column.match(/accessibleLabel: props\.label/g)).toHaveLength(2);
     expect(route).toContain("accessibleLabel: 'Back to Kanban'");
@@ -55,5 +56,6 @@ describe('shared interactive accessible names', () => {
     expect(summary).toContain(
       "accessibilityValue: open ? 'Expanded' : 'Collapsed'"
     );
+    expect(chats).toContain('accessibleLabel: props.label');
   });
 });

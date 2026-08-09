@@ -88,7 +88,7 @@ describe('Lynx Menu overlay contract', () => {
 
     render(
       <Menu onOpenChange={onOpenChange}>
-        <MenuTrigger>
+        <MenuTrigger ariaLabel="Open actions">
           <text>Open</text>
         </MenuTrigger>
         <MenuPopup side="top" align="start" sideOffset={6}>
@@ -100,9 +100,12 @@ describe('Lynx Menu overlay contract', () => {
     const trigger = menuTrigger();
     expect(trigger.getAttribute('aria-haspopup')).toBe('menu');
     expect(trigger.getAttribute('aria-expanded')).toBe('false');
+    expect(trigger.getAttribute('accessibility-label')).toBe('Open actions');
+    expect(trigger.getAttribute('accessibility-value')).toBe('Collapsed');
 
     await openMenu();
     expect(trigger.getAttribute('aria-expanded')).toBe('true');
+    expect(trigger.getAttribute('accessibility-value')).toBe('Expanded');
     expect(onOpenChange).toHaveBeenLastCalledWith(true);
 
     const action = elementTree.root?.querySelector('.LxMenuItem');

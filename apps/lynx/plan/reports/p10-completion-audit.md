@@ -521,6 +521,11 @@ emit no accessibility node and explicit `accessibilityElement: false` remains
 authoritative. Primitive, nested-action, Composer attachment, shared-name, and
 Environment regressions pass (19/19), both production bundles build, and React
 Doctor 0.9.11 reports zero diagnostics against `145d4f0f`.
+The remaining explicit-label pass routes shared Menu trigger labels plus
+expanded/collapsed value, and Sidebar Chats pagination labels, through that
+same Native owner. Menu/Sidebar/shared-name regressions pass (16/16), both
+production bundles build, and React Doctor 0.9.11 reports zero new diagnostics
+against `e775ac0f`.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

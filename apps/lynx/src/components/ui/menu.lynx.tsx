@@ -282,6 +282,8 @@ export function MenuTrigger(props: {
       props.className,
       props.disabled && 'LxMenuTrigger--disabled'
     ),
+    accessibleLabel: props.ariaLabel,
+    accessibilityValue: menu.open ? 'Expanded' : 'Collapsed',
     disabled: props.disabled,
     onActivate: handleTap,
   });
