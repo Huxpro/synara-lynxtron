@@ -461,6 +461,28 @@ export async function fetchExplorerFile(input: {
   return result;
 }
 
+export async function fetchExplorerImagePreviewUrl(input: {
+  readonly relativePath: string;
+  readonly workspaceRoot: string;
+}): Promise<string> {
+  'background only';
+  const [{ bridgeCall }, { buildWorkspaceLocalPreviewUrl }] = await Promise.all([
+    import(/* webpackMode: "eager" */ '../platform/bridge'),
+    import(/* webpackMode: "eager" */ './localPreview.logic'),
+  ]);
+  const runtime = await bridgeCall<{ readonly wsUrl?: unknown }>(
+    'runtimeGetSynaraWsUrl'
+  );
+  const wsUrl =
+    typeof runtime?.wsUrl === 'string' ? runtime.wsUrl.trim() : '';
+  if (!wsUrl) throw new Error('Synara runtime endpoint is unavailable.');
+  return buildWorkspaceLocalPreviewUrl({
+    wsUrl,
+    cwd: input.workspaceRoot,
+    path: input.relativePath,
+  });
+}
+
 export async function fetchThreads(): Promise<ThreadSummary[]> {
   'background only';
   return (await fetchSidebarSnapshot()).threads as ThreadSummary[];

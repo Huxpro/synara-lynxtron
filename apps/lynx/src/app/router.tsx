@@ -19,11 +19,13 @@ import type { SettingsSectionId } from '@synara-web/settingsNavigation';
 import { resolveProviderHealthBannerPresentation } from '@synara-web/components/chat/ProviderHealthBanner.logic';
 import { findProviderStatus } from '@synara-web/lib/providerAvailability';
 import { clampSidebarWidth } from '@synara-web/components/sidebarResize.logic';
+import { isSupportedLocalImagePath } from '@synara/shared/localPreviewFiles';
 
 import {
   fetchExplorerDirectory,
   fetchExplorerEntries,
   fetchExplorerFile,
+  fetchExplorerImagePreviewUrl,
   fetchThreadHeaderSummary,
   fetchThreadTranscriptRows,
   fetchThreads,
@@ -251,7 +253,7 @@ function ThreadsLandingPage(props: {
   );
 }
 
-function ThreadPage(props: {
+interface ThreadPageProps {
   readonly currentThread: Awaited<ReturnType<typeof fetchThreadHeaderSummary>>;
   readonly data: Awaited<ReturnType<typeof fetchThreadTranscriptRows>> | undefined;
   readonly error: unknown;
@@ -270,6 +272,9 @@ function ThreadPage(props: {
   readonly explorerFile: Awaited<ReturnType<typeof fetchExplorerFile>> | null;
   readonly explorerFileError: boolean;
   readonly explorerFilePending: boolean;
+  readonly explorerImagePreviewUrl: string | null;
+  readonly explorerImagePreviewError: boolean;
+  readonly explorerImagePreviewPending: boolean;
   readonly explorerQuery: string;
   readonly explorerSelectedPath: string | null;
   readonly initialEnvironmentOpen: boolean;
@@ -281,7 +286,119 @@ function ThreadPage(props: {
   readonly onExplorerToggleDirectory: (path: string) => void;
   readonly threadId: string;
   readonly viewportWidth: number;
-}) {
+}
+
+function ThreadRightDocks(
+  props: Pick<
+    ThreadPageProps,
+    | 'currentThread'
+    | 'explorerDirectoryEntries'
+    | 'explorerDirectoryErrors'
+    | 'explorerDirectoryPending'
+    | 'explorerEntries'
+    | 'explorerEntriesError'
+    | 'explorerEntriesPending'
+    | 'explorerExpandedDirectories'
+    | 'explorerFile'
+    | 'explorerFileError'
+    | 'explorerFilePending'
+    | 'explorerImagePreviewError'
+    | 'explorerImagePreviewPending'
+    | 'explorerImagePreviewUrl'
+    | 'explorerQuery'
+    | 'explorerSelectedPath'
+    | 'initialExplorerWidth'
+    | 'onExplorerQueryChange'
+    | 'onExplorerSelectPath'
+    | 'onExplorerToggleDirectory'
+    | 'viewportWidth'
+  > & {
+    readonly diffOpen: boolean;
+    readonly explorerOpen: boolean;
+    readonly threadPageWidth: number;
+    readonly setDiffDockWidth: (width: number | null) => void;
+    readonly setDiffOpen: (open: boolean) => void;
+    readonly setExplorerDockWidth: (width: number | null) => void;
+    readonly setExplorerOpen: (open: boolean) => void;
+  }
+) {
+  const {
+    currentThread,
+    diffOpen,
+    explorerDirectoryEntries,
+    explorerDirectoryErrors,
+    explorerDirectoryPending,
+    explorerEntries,
+    explorerEntriesError,
+    explorerEntriesPending,
+    explorerExpandedDirectories,
+    explorerFile,
+    explorerFileError,
+    explorerFilePending,
+    explorerImagePreviewError,
+    explorerImagePreviewPending,
+    explorerImagePreviewUrl,
+    explorerOpen,
+    explorerQuery,
+    explorerSelectedPath,
+    initialExplorerWidth,
+    onExplorerQueryChange,
+    onExplorerSelectPath,
+    onExplorerToggleDirectory,
+    setDiffDockWidth,
+    setDiffOpen,
+    setExplorerDockWidth,
+    setExplorerOpen,
+    threadPageWidth,
+    viewportWidth,
+  } = props;
+  const availableWidth = threadPageWidth || viewportWidth;
+  return (
+    <>
+      <DiffDock
+        availableWidth={availableWidth}
+        open={diffOpen}
+        workspaceRoot={currentThread?.workspaceRoot ?? null}
+        onClose={() => {
+          setDiffOpen(false);
+          setDiffDockWidth(null);
+        }}
+        onWidthChange={setDiffDockWidth}
+      />
+      <ExplorerDock
+        availableWidth={availableWidth}
+        entries={explorerEntries}
+        entriesError={explorerEntriesError}
+        entriesPending={explorerEntriesPending}
+        directoryEntries={explorerDirectoryEntries}
+        directoryErrors={explorerDirectoryErrors}
+        directoryPending={explorerDirectoryPending}
+        expandedDirectories={explorerExpandedDirectories}
+        initialWidth={initialExplorerWidth}
+        file={explorerFile}
+        fileError={explorerFileError}
+        filePending={explorerFilePending}
+        imagePreviewUrl={explorerImagePreviewUrl}
+        imagePreviewError={explorerImagePreviewError}
+        imagePreviewPending={explorerImagePreviewPending}
+        open={explorerOpen}
+        query={explorerQuery}
+        selectedPath={explorerSelectedPath}
+        workspaceRoot={currentThread?.workspaceRoot ?? null}
+        onWidthChange={setExplorerDockWidth}
+        onQueryChange={onExplorerQueryChange}
+        onSelectPath={onExplorerSelectPath}
+        onToggleDirectory={onExplorerToggleDirectory}
+        onClose={() => {
+          setExplorerOpen(false);
+          setExplorerDockWidth(null);
+        }}
+      />
+    </>
+  );
+}
+
+function ThreadPage(props: ThreadPageProps) {
   const {
     currentThread,
     data,
@@ -297,6 +414,9 @@ function ThreadPage(props: {
     explorerFile,
     explorerFileError,
     explorerFilePending,
+    explorerImagePreviewUrl,
+    explorerImagePreviewError,
+    explorerImagePreviewPending,
     explorerQuery,
     explorerSelectedPath,
     initialEnvironmentOpen,
@@ -509,41 +629,35 @@ function ThreadPage(props: {
           }}
         />
       ) : null}
-      <DiffDock
-        availableWidth={threadPageWidth || viewportWidth}
-        open={diffOpen}
-        workspaceRoot={currentThread?.workspaceRoot ?? null}
-        onClose={() => {
-          setDiffOpen(false);
-          setDiffDockWidth(null);
-        }}
-        onWidthChange={setDiffDockWidth}
-      />
-      <ExplorerDock
-        availableWidth={threadPageWidth || viewportWidth}
-        entries={explorerEntries}
-        entriesError={explorerEntriesError}
-        entriesPending={explorerEntriesPending}
-        directoryEntries={explorerDirectoryEntries}
-        directoryErrors={explorerDirectoryErrors}
-        directoryPending={explorerDirectoryPending}
-        expandedDirectories={explorerExpandedDirectories}
-        initialWidth={initialExplorerWidth}
-        file={explorerFile}
-        fileError={explorerFileError}
-        filePending={explorerFilePending}
-        open={explorerOpen}
-        query={explorerQuery}
-        selectedPath={explorerSelectedPath}
-        workspaceRoot={currentThread?.workspaceRoot ?? null}
-        onWidthChange={setExplorerDockWidth}
-        onQueryChange={onExplorerQueryChange}
-        onSelectPath={onExplorerSelectPath}
-        onToggleDirectory={onExplorerToggleDirectory}
-        onClose={() => {
-          setExplorerOpen(false);
-          setExplorerDockWidth(null);
-        }}
+      <ThreadRightDocks
+        currentThread={currentThread}
+        diffOpen={diffOpen}
+        explorerDirectoryEntries={explorerDirectoryEntries}
+        explorerDirectoryErrors={explorerDirectoryErrors}
+        explorerDirectoryPending={explorerDirectoryPending}
+        explorerEntries={explorerEntries}
+        explorerEntriesError={explorerEntriesError}
+        explorerEntriesPending={explorerEntriesPending}
+        explorerExpandedDirectories={explorerExpandedDirectories}
+        explorerFile={explorerFile}
+        explorerFileError={explorerFileError}
+        explorerFilePending={explorerFilePending}
+        explorerImagePreviewError={explorerImagePreviewError}
+        explorerImagePreviewPending={explorerImagePreviewPending}
+        explorerImagePreviewUrl={explorerImagePreviewUrl}
+        explorerOpen={explorerOpen}
+        explorerQuery={explorerQuery}
+        explorerSelectedPath={explorerSelectedPath}
+        initialExplorerWidth={initialExplorerWidth}
+        onExplorerQueryChange={onExplorerQueryChange}
+        onExplorerSelectPath={onExplorerSelectPath}
+        onExplorerToggleDirectory={onExplorerToggleDirectory}
+        setDiffDockWidth={setDiffDockWidth}
+        setDiffOpen={setDiffOpen}
+        setExplorerDockWidth={setExplorerDockWidth}
+        setExplorerOpen={setExplorerOpen}
+        threadPageWidth={threadPageWidth}
+        viewportWidth={viewportWidth}
       />
     </view>
   );
@@ -573,6 +687,10 @@ export function SliceRouter({
     };
     readonly explorerFile: {
       readonly value: Awaited<ReturnType<typeof fetchExplorerFile>> | null;
+      readonly error: boolean;
+    };
+    readonly explorerImagePreview: {
+      readonly value: string | null;
       readonly error: boolean;
     };
     readonly explorerDirectories: readonly (readonly [
@@ -652,8 +770,22 @@ export function SliceRouter({
           )
         : { value: null, error: false };
       const explorerFile =
-        summary?.workspaceRoot && explorerSelectedPath
+        summary?.workspaceRoot &&
+        explorerSelectedPath &&
+        !isSupportedLocalImagePath(explorerSelectedPath)
           ? await fetchExplorerFile({
+              workspaceRoot: summary.workspaceRoot,
+              relativePath: explorerSelectedPath,
+            }).then(
+              (value) => ({ value, error: false }),
+              () => ({ value: null, error: true })
+            )
+          : { value: null, error: false };
+      const explorerImagePreview =
+        summary?.workspaceRoot &&
+        explorerSelectedPath &&
+        isSupportedLocalImagePath(explorerSelectedPath)
+          ? await fetchExplorerImagePreviewUrl({
               workspaceRoot: summary.workspaceRoot,
               relativePath: explorerSelectedPath,
             }).then(
@@ -683,6 +815,7 @@ export function SliceRouter({
         explorerDirectories,
         explorerEntries,
         explorerFile,
+        explorerImagePreview,
         summary,
       };
     },
@@ -713,6 +846,12 @@ export function SliceRouter({
             ? activeThreadData.explorerFile
             : matchingInitialThreadBootstrap?.explorerFile ??
               activeThreadData.explorerFile,
+        explorerImagePreview:
+          activeThreadData.explorerImagePreview.value ||
+          activeThreadData.explorerImagePreview.error
+            ? activeThreadData.explorerImagePreview
+            : matchingInitialThreadBootstrap?.explorerImagePreview ??
+              activeThreadData.explorerImagePreview,
         explorerDirectories: activeThreadData.explorerDirectories,
       }
     : matchingInitialThreadBootstrap ?? undefined;
@@ -925,7 +1064,20 @@ export function SliceRouter({
           resolvedActiveThreadData?.explorerFile.error ?? false
         }
         explorerFilePending={
-          explorerSelectedPath !== null && resolvedActiveThreadPending
+          explorerSelectedPath !== null &&
+          !isSupportedLocalImagePath(explorerSelectedPath) &&
+          resolvedActiveThreadPending
+        }
+        explorerImagePreviewUrl={
+          resolvedActiveThreadData?.explorerImagePreview.value ?? null
+        }
+        explorerImagePreviewError={
+          resolvedActiveThreadData?.explorerImagePreview.error ?? false
+        }
+        explorerImagePreviewPending={
+          explorerSelectedPath !== null &&
+          isSupportedLocalImagePath(explorerSelectedPath) &&
+          resolvedActiveThreadPending
         }
         explorerQuery={explorerQuery}
         explorerSelectedPath={explorerSelectedPath}

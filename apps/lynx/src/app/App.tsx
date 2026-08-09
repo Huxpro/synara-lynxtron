@@ -17,6 +17,7 @@ import {
   parseStoredThemeState,
   type ThemeState,
 } from '@synara-web/theme/theme.logic';
+import { isSupportedLocalImagePath } from '@synara/shared/localPreviewFiles';
 import {
   viewportBreakpointClassNames,
   viewportHeightClassNames,
@@ -34,6 +35,7 @@ import {
   fetchExplorerDirectory,
   fetchExplorerEntries,
   fetchExplorerFile,
+  fetchExplorerImagePreviewUrl,
   fetchThreadHeaderSummary,
   fetchThreadTranscriptRows,
   queryClient,
@@ -121,6 +123,10 @@ export function App() {
       readonly value: Awaited<ReturnType<typeof fetchExplorerFile>> | null;
       readonly error: boolean;
     };
+    readonly explorerImagePreview: {
+      readonly value: string | null;
+      readonly error: boolean;
+    };
     readonly explorerDirectories: readonly (readonly [
       string,
       Awaited<ReturnType<typeof fetchExplorerDirectory>>['entries'],
@@ -159,8 +165,22 @@ export function App() {
                   )
                 : { value: null, error: false };
               const explorerFile =
-                summary?.workspaceRoot && initialExplorerPath
+                summary?.workspaceRoot &&
+                initialExplorerPath &&
+                !isSupportedLocalImagePath(initialExplorerPath)
                   ? await fetchExplorerFile({
+                      workspaceRoot: summary.workspaceRoot,
+                      relativePath: initialExplorerPath,
+                    }).then(
+                      (value) => ({ value, error: false }),
+                      () => ({ value: null, error: true })
+                    )
+                  : { value: null, error: false };
+              const explorerImagePreview =
+                summary?.workspaceRoot &&
+                initialExplorerPath &&
+                isSupportedLocalImagePath(initialExplorerPath)
+                  ? await fetchExplorerImagePreviewUrl({
                       workspaceRoot: summary.workspaceRoot,
                       relativePath: initialExplorerPath,
                     }).then(
@@ -194,6 +214,7 @@ export function App() {
                 explorerDirectories,
                 explorerEntries,
                 explorerFile,
+                explorerImagePreview,
                 summary,
                 threadId: threadMatch[1],
               };

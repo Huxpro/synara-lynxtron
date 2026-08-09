@@ -167,6 +167,9 @@ export function ExplorerDock(props: {
   readonly file: ProjectReadFileResult | null;
   readonly fileError: boolean;
   readonly filePending: boolean;
+  readonly imagePreviewUrl: string | null;
+  readonly imagePreviewError: boolean;
+  readonly imagePreviewPending: boolean;
   readonly onClose: () => void;
   readonly onQueryChange: (query: string) => void;
   readonly onSelectPath: (path: string) => void;
@@ -260,6 +263,23 @@ export function ExplorerDock(props: {
             <text className="ExplorerDockState">
               Select a file from the list to view it.
             </text>
+          ) : props.imagePreviewPending ? (
+            <text className="ExplorerDockState">Loading image…</text>
+          ) : props.imagePreviewError ? (
+            <text className="ExplorerDockState ExplorerDockState--error">
+              Could not load this image.
+            </text>
+          ) : props.imagePreviewUrl ? (
+            <view className="ExplorerDockImageFrame">
+              <image
+                className="ExplorerDockImage"
+                src={props.imagePreviewUrl}
+                mode="aspectFit"
+              />
+              <text className="ExplorerDockImageName">
+                {fileName(props.selectedPath)}
+              </text>
+            </view>
           ) : props.filePending ? (
             <text className="ExplorerDockState">Loading file…</text>
           ) : props.fileError ? (

@@ -601,6 +601,14 @@ async function handleBridgeCall(
         height: globalThis.innerHeight,
       };
     }
+    if (method === 'runtimeGetSynaraWsUrl') {
+      return {
+        wsUrl:
+          relaySocketBaseUrl ??
+          relayReadyBaseUrl ??
+          configuredRelayBaseUrl(),
+      };
+    }
     if (method === 'shellRendererReady') {
       const route = pendingInitialRoute;
       pendingInitialRoute = null;

@@ -23,6 +23,10 @@ describe('Lynx Explorer dock', () => {
       new URL('./App.tsx', import.meta.url),
       'utf8'
     );
+    const webHostSource = readFileSync(
+      new URL('../main/web/web-host.ts', import.meta.url),
+      'utf8'
+    );
 
     expect(clientSource).toContain("'projects.listDirectories'");
     expect(clientSource).toContain("'projects.searchEntries'");
@@ -43,6 +47,9 @@ describe('Lynx Explorer dock', () => {
     expect(source).toContain('placeholder="Search files..."');
     expect(source).toContain("entry.kind === 'directory'");
     expect(source).toContain('<ChatMarkdown');
+    expect(source).toContain('className="ExplorerDockImage"');
+    expect(source).toContain('mode="aspectFit"');
+    expect(source).toContain('Could not load this image.');
     expect(source).toContain('Preview truncated at 1 MB.');
     expect(source).toContain('<ExplorerDirectory');
     expect(source).toContain('<FileEntryIcon');
@@ -63,6 +70,16 @@ describe('Lynx Explorer dock', () => {
       'initialExplorerExpandedDirectories.map(async (path)'
     );
     expect(appSource).toContain('fetchExplorerDirectory({');
+    expect(appSource).toContain('fetchExplorerImagePreviewUrl({');
+    expect(appSource).toContain(
+      '!isSupportedLocalImagePath(initialExplorerPath)'
+    );
+    expect(routerSource).toContain(
+      '!isSupportedLocalImagePath(explorerSelectedPath)'
+    );
+    expect(webHostSource).toContain(
+      'relaySocketBaseUrl ??\n          relayReadyBaseUrl ??\n          configuredRelayBaseUrl()'
+    );
     expect(routerSource).toContain(
       'toggleExpandedDirectory(current, path)'
     );

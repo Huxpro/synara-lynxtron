@@ -1,0 +1,8 @@
+HTTP/1.1 200 OK
+Cache-Control: private, max-age=60
+Access-Control-Allow-Origin: http://127.0.0.1:9534
+Vary: Origin
+X-Content-Type-Options: nosniff
+Content-Type: image/png
+Date: Sun, 09 Aug 2026 14:56:28 GMT
+Content-Length: 142

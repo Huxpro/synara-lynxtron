@@ -8505,3 +8505,19 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Lynx focused **3 files / 7 tests**、Web focused **2 files / 19 tests**、Web与
   Native/Desktop production builds、React Doctor changed-scope **0 issues**通过。
   证据在`shots/2026-08-09/explorer-file-icons-current/`。
+
+### Explorer image preview fidelity
+
+- workspace-relative allowlisted images不再进入文本`projects.readFile`。Lynx复用
+  shared `isSupportedLocalImagePath`与server `/api/local-image`安全路由，通过active
+  runtime WebSocket endpoint构造HTTP URL；Web host修复为优先返回active/ready relay
+  endpoint，避免isolated runtime误指默认58090。
+- Explorer preview使用真实`<image mode="aspectFit">`，保留文件名metadata和独立
+  loading/error states。`ThreadRightDocks`从giant `ThreadPage`抽出，React Doctor
+  changed-scope恢复0 issues。
+- canonical 32x24 fixture左右分别红`#ef4444`/蓝`#3b82f6`；light/dark 1280x820
+  preview crop各含51,324 exact red/blue pixels。HTTP route返回200、image/png、
+  trusted-origin CORS、142 bytes；relay无`projects.readFile`，page errors0。
+- focused **4 files / 8 tests**、Lynx-for-Web与Native/Desktop production builds通过。
+  PDF viewer/page controls仍是future scope，不冒充完成。证据在
+  `shots/2026-08-09/explorer-image-preview-current/`。
