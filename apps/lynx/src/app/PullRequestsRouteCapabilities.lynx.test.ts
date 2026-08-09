@@ -28,6 +28,7 @@ describe('Lynx Pull Requests detail capabilities', () => {
       '<PullRequestTimelineComposition detail={selectedDetail} />'
     );
     expect(source).toContain('<PullRequestSummaryComposition');
+    expect(source).toContain('commentingAvailable');
   });
 
   it('keeps the typed RPC path in the background query owner', () => {
@@ -42,8 +43,13 @@ describe('Lynx Pull Requests detail capabilities', () => {
 
     expect(queries).toContain('export async function fetchPullRequestDiff');
     expect(queries).toContain('fetchSynaraPullRequestDiff');
+    expect(queries).toContain('export async function postPullRequestComment');
+    expect(queries).toContain('postSynaraPullRequestComment');
     expect(client).toContain(
       "transportRequest<PullRequestDiffResult>('pullRequests.diff', input)"
+    );
+    expect(client).toContain(
+      "transportRequest<PullRequestActionResult>('pullRequests.comment', input)"
     );
   });
 });

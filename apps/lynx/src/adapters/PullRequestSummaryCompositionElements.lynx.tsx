@@ -7,6 +7,7 @@ import { useState, type ReactNode } from '@lynx-js/react';
 
 import { ChatMarkdown } from '../components/markdown/ChatMarkdown.lynx';
 import { PULL_REQUEST_CHECK_STATUS_LABELS } from '@synara-web/components/pullRequest/pullRequestSummary.logic';
+import { PullRequestCommentComposer } from './PullRequestCommentComposer.lynx';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 import './pull-request-summary-composition-elements.css';
 
@@ -216,7 +217,9 @@ export function PullRequestSummaryCommentsElement(props: {
           </view>
         ))
       )}
-      {props.commentingAvailable ? null : (
+      {props.commentingAvailable ? (
+        <PullRequestCommentComposer detail={props.detail} />
+      ) : (
         <text className="SharedPrSummaryCapability">
           Commenting is unavailable in this runtime.
         </text>

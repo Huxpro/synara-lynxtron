@@ -38,6 +38,7 @@ import type {
   PullRequestDiffResult,
   PullRequestActionInput,
   PullRequestActionResult,
+  PullRequestCommentInput,
   PullRequestListEntry,
   PullRequestSetPinnedInput,
   PullRequestSetPinnedResult,
@@ -685,6 +686,12 @@ export async function performSynaraPullRequestAction(
   input: PullRequestActionInput
 ): Promise<PullRequestActionResult> {
   return transportRequest<PullRequestActionResult>('pullRequests.action', input);
+}
+
+export async function postSynaraPullRequestComment(
+  input: PullRequestCommentInput
+): Promise<PullRequestActionResult> {
+  return transportRequest<PullRequestActionResult>('pullRequests.comment', input);
 }
 
 export async function setSynaraPullRequestPinned(

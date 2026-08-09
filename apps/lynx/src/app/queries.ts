@@ -15,6 +15,7 @@ import type {
   PullRequestDiffResult,
   PullRequestActionInput,
   PullRequestActionResult,
+  PullRequestCommentInput,
   PullRequestListEntry,
   PullRequestSetPinnedInput,
   PullRequestSetPinnedResult,
@@ -753,6 +754,16 @@ export async function performPullRequestAction(
     /* webpackMode: "eager" */ '../data/synaraClient'
   );
   return performSynaraPullRequestAction(input);
+}
+
+export async function postPullRequestComment(
+  input: PullRequestCommentInput
+): Promise<PullRequestActionResult> {
+  'background only';
+  const { postSynaraPullRequestComment } = await import(
+    /* webpackMode: "eager" */ '../data/synaraClient'
+  );
+  return postSynaraPullRequestComment(input);
 }
 
 export async function setPullRequestPinned(

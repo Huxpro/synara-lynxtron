@@ -270,6 +270,7 @@ Current responsive disposition:
 | Environment Git actions | stable menu, selectable-file/new-branch commits, safe pull, streamed live progress, metadata sync, confirmation, and paired themes | PASS |
 | Diff / Explorer docks and source actions | working-tree Diff Dock and filesystem-backed Explorer are reachable; Explorer covers tree/search, rich source/Markdown/image/PDF fallback, whole-file references, ask-why, and accessible per-line local comments that persist and serialize into the shared composer contract | PASS — CURRENT PRODUCT SURFACES |
 | Pull Request Timeline / Code | selected PR detail exposes Summary/Timeline/Code; Timeline projects real detail commits/comments, while Code fetches typed `pullRequests.diff` data on demand and covers portable files, line numbers, loading/error/retry/truncation/expand states | PASS — CURRENT PRODUCT SURFACES |
+| Pull Request comments | Summary exposes a Lynx-native GitHub comment composer backed by typed `pullRequests.comment`; it enforces the shared 65,536-character contract, preserves drafts on failure, prevents rapid duplicate submission, handles Enter/Shift+Enter/IME correctly, and revalidates detail/list data after settled mutations | PASS — CURRENT PRODUCT SURFACES |
 | Native arbitrary range selection | whole-message transcript references and source line comments are complete; arbitrary DOM-style text range selection still requires a host/engine selection kernel | PARTIAL — EXPLICIT HOST/ENGINE GAP |
 | Current-head full three-client route/theme/size/state matrix | historical P10 matrix predates later product commits | NOT RE-CERTIFIED |
 
@@ -361,5 +362,7 @@ from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after
 the remaining product/platform scope is explicitly resolved. Environment,
 Diff, Explorer, whole-file actions, and source line comments now have real
-consumers; arbitrary text-range selection and in-app Native PDF rendering must
-still not be hidden with responsive CSS or counted as passing runtime evidence.
+consumers, and Pull Request Summary now has a real typed GitHub comment
+mutation path with failure recovery. Arbitrary text-range selection and in-app
+Native PDF rendering must still not be hidden with responsive CSS or counted
+as passing runtime evidence.

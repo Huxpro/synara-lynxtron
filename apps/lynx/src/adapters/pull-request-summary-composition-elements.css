@@ -211,3 +211,92 @@
   margin-top: 10px;
   text-align: center;
 }
+
+.SharedPrCommentComposer {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.SharedPrCommentComposerControl {
+  width: 100%;
+  min-height: 42px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 4px 6px 4px 12px;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background-color: var(--background);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.SharedPrCommentComposerAccount {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  border-radius: 10px;
+  background-color: var(--color-background-elevated-secondary);
+}
+
+.SharedPrCommentComposerAccountIcon {
+  width: 12px;
+  height: 12px;
+}
+
+.SharedPrCommentComposerInput {
+  min-width: 0;
+  min-height: 34px;
+  max-height: 126px;
+  flex: 1;
+  padding: 7px 0;
+  color: var(--foreground);
+  background-color: transparent;
+  font-family: system-ui;
+  font-size: var(--app-font-size-ui-sm);
+  line-height: 20px;
+}
+
+.SharedPrCommentComposerSubmit {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  min-height: 28px;
+  flex-shrink: 0;
+  margin-bottom: 2px;
+  border-radius: 14px;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.SharedPrCommentComposerSubmitIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.SharedPrCommentComposerError {
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background-color: var(--color-background-elevated-secondary);
+}
+
+.SharedPrCommentComposerErrorTitle,
+.SharedPrCommentComposerErrorDescription {
+  color: var(--destructive);
+  font-size: var(--app-font-size-ui-sm);
+  line-height: 18px;
+}
+
+.SharedPrCommentComposerErrorTitle {
+  font-weight: 600;
+}
+
+.SharedPrCommentComposerErrorDescription {
+  margin-top: 2px;
+}

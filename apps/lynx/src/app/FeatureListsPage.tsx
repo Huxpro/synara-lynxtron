@@ -1126,7 +1126,7 @@ export function PullRequestsPage() {
                 ) : (
                   <PullRequestSummaryComposition
                     detail={selectedDetail}
-                    commentingAvailable={false}
+                    commentingAvailable
                   />
                 )
               ) : null}

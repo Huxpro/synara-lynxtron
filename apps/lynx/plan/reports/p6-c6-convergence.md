@@ -248,8 +248,11 @@ classified without widening EXCLUSIVE:
   anatomy are shared; current Lynx route also owns real Timeline projection,
   typed `pullRequests.diff` Code data, portable file/line rendering,
   loading/error/retry/truncation/expand states, pinning, and primary
-  merge/close/reopen actions. GitHub review-comment mutation remains a separate
-  capability boundary rather than a missing Timeline/Code tab.
+  merge/close/reopen actions. The Summary comments section now also owns a
+  Lynx-native composer backed by typed `pullRequests.comment`, with the shared
+  65,536-character contract, Enter/Shift+Enter/IME guards, synchronous
+  duplicate-submit protection, recoverable errors, and detail/list
+  revalidation after settled mutations.
 
 No diagnostic reachability, unused import, type-only credit, copied JSX or
 expanded EXCLUSIVE classification is used to improve these values.
