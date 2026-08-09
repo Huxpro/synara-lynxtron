@@ -154,25 +154,15 @@ describe('native composer attachment menu item', () => {
       /\.ComposerPrimaryActionSendIconLynx\s*\{[^}]*width:\s*20px;[^}]*height:\s*20px;/s
     );
     expect(composerStyles).toMatch(
-      /\.ComposerVoiceButtonLynx\s*\{[^}]*width:\s*28px;[^}]*min-width:\s*28px;[^}]*height:\s*28px;[^}]*min-height:\s*28px;[^}]*padding:\s*5px;[^}]*border:\s*1px solid transparent;[^}]*border-radius:\s*8px;[^}]*opacity:\s*0\.48;/s
-    );
-    expect(composerStyles).toMatch(
-      /\.ComposerVoiceGlyphLynx\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;[^}]*flex-shrink:\s*0;/s
-    );
-    expect(composerStyles).toMatch(
       /\.ComposerFooterActionsLynx\s*\{[^}]*margin-left:\s*auto;[^}]*gap:\s*8px;/s
     );
     const composerSource = readFileSync(
       new URL('../components/composer/Composer.lynx.tsx', import.meta.url),
       'utf8'
     );
-    expect(composerSource).toContain(
-      "import microphoneSvg from '@synara-central-icons/microphone.svg?raw';"
-    );
-    expect(composerSource).toContain('className="ComposerVoiceGlyphLynx"');
-    expect(composerSource).toContain('aria-disabled="true"');
+    expect(composerSource).not.toContain('ComposerVoiceButtonLynx');
     expect(composerSource).not.toContain(
-      'render={<MicIcon className="ComposerVoiceGlyphLynx" />}'
+      'Record voice note (unavailable in Lynx for Web)'
     );
     expect(primitiveStyles).toMatch(
       /\.LxMenuItem\s*\{[^}]*border-radius:\s*8px;/s

@@ -1,4 +1,3 @@
-import microphoneSvg from '@synara-central-icons/microphone.svg?raw';
 import { useEffect, useMemo, useRef, useState } from '@lynx-js/react';
 import { useQuery } from '@tanstack/react-query';
 import type {
@@ -1535,21 +1534,6 @@ export function Composer({
                     setModelCatalogProvider(null);
                   }}
                 />
-              ) : null}
-              {emptyLanding ? (
-                <view
-                  className="ComposerVoiceButtonLynx"
-                  aria-label="Record voice note (unavailable in Lynx for Web)"
-                  aria-disabled="true"
-                >
-                  <svg
-                    className="ComposerVoiceGlyphLynx"
-                    content={colorizeLynxSvg(
-                      microphoneSvg,
-                      svgColors.mutedForeground
-                    )}
-                  />
-                </view>
               ) : null}
               <ComposerPrimaryActionComposition
                 mode={

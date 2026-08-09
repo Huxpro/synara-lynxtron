@@ -955,29 +955,6 @@
   opacity: 0.2;
 }
 
-.ComposerVoiceButtonLynx {
-  width: 28px;
-  min-width: 28px;
-  height: 28px;
-  min-height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  padding: 5px;
-  border: 1px solid transparent;
-  border-radius: 8px;
-  background-color: transparent;
-  opacity: 0.48;
-}
-
-.ComposerVoiceGlyphLynx {
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
-  color: var(--muted-foreground);
-}
-
 .ComposerPrimaryActionLynx.ui-hover {
   opacity: 0.9;
 }
