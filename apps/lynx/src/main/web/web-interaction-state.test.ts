@@ -40,7 +40,7 @@ function setup(
     onRightPanelResize,
     onExplorerPreviewAction
   );
-  return { child, control };
+  return { child, control, root };
 }
 
 describe('Lynx-for-Web interaction state bridge', () => {

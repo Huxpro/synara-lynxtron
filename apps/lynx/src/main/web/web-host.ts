@@ -804,6 +804,14 @@ const initialExplorerPath =
   new URLSearchParams(globalThis.location.search).get('explorerPath');
 const initialExplorerQuery =
   new URLSearchParams(globalThis.location.search).get('explorerQuery') ?? '';
+const initialExplorerCommentLineValue = Number(
+  new URLSearchParams(globalThis.location.search).get('explorerCommentLine')
+);
+const initialExplorerCommentLine =
+  Number.isInteger(initialExplorerCommentLineValue) &&
+  initialExplorerCommentLineValue > 0
+    ? initialExplorerCommentLineValue
+    : null;
 const initialExplorerExpandedDirectories =
   new URLSearchParams(globalThis.location.search).getAll('explorerExpanded');
 const initialExplorerWidthValue = Number(
@@ -822,6 +830,7 @@ webDocument.body.innerHTML = `
     initialExplorerOpen,
     initialExplorerActionMenuOpen,
     initialExplorerPath,
+    initialExplorerCommentLine,
     initialExplorerQuery,
     initialExplorerExpandedDirectories,
     initialExplorerWidth,
@@ -941,6 +950,15 @@ const installInteractionBridge = () => {
       lastExplorerPreviewAction = action;
       const url = new URL(globalThis.location.href);
       url.searchParams.set('explorerActionMenu', 'open');
+      globalThis.location.replace(url);
+    },
+    (commentLine) => {
+      const url = new URL(globalThis.location.href);
+      url.searchParams.set(
+        'explorerCommentLine',
+        String(commentLine.lineNumber)
+      );
+      url.searchParams.set('explorer', 'open');
       globalThis.location.replace(url);
     }
   );

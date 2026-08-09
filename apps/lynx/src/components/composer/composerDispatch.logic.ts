@@ -7,6 +7,25 @@ import type {
   ProviderSkillReference,
   RuntimeMode,
 } from '@synara/contracts';
+import {
+  appendPastedTextsToPrompt,
+  type PastedTextDraft,
+} from '@synara-web/lib/composerPastedText';
+import {
+  appendFileCommentsToPrompt,
+  type FileCommentSelection,
+} from '@synara-web/lib/fileComments';
+
+export function buildComposerSendText(input: {
+  readonly fileComments: ReadonlyArray<FileCommentSelection>;
+  readonly pastedTexts: ReadonlyArray<PastedTextDraft>;
+  readonly prompt: string;
+}): string {
+  return appendFileCommentsToPrompt(
+    appendPastedTextsToPrompt(input.prompt, input.pastedTexts),
+    input.fileComments
+  ).trim();
+}
 
 export function isRunningComposerSession(status: string | null): boolean {
   return status === 'running';

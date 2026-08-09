@@ -285,6 +285,7 @@ interface ThreadPageProps {
   readonly initialEnvironmentOpen: boolean;
   readonly initialExplorerWidth: number | null;
   readonly initialExplorerOpen: boolean;
+  readonly initialExplorerCommentLine: number | null;
   readonly isPending: boolean;
   readonly onExplorerQueryChange: (query: string) => void;
   readonly onExplorerSelectPath: (path: string) => void;
@@ -315,6 +316,7 @@ function ThreadRightDocks(
     | 'explorerQuery'
     | 'explorerSelectedPath'
     | 'initialExplorerWidth'
+    | 'initialExplorerCommentLine'
     | 'onExplorerQueryChange'
     | 'onExplorerSelectPath'
     | 'onExplorerToggleDirectory'
@@ -351,6 +353,7 @@ function ThreadRightDocks(
     explorerQuery,
     explorerSelectedPath,
     initialExplorerWidth,
+    initialExplorerCommentLine,
     onExplorerQueryChange,
     onExplorerSelectPath,
     onExplorerToggleDirectory,
@@ -385,6 +388,7 @@ function ThreadRightDocks(
         directoryPending={explorerDirectoryPending}
         expandedDirectories={explorerExpandedDirectories}
         initialWidth={initialExplorerWidth}
+        initialCommentLine={initialExplorerCommentLine}
         file={explorerFile}
         fileError={explorerFileError}
         filePending={explorerFilePending}
@@ -435,6 +439,7 @@ function ThreadPage(props: ThreadPageProps) {
     explorerSelectedPath,
     initialEnvironmentOpen,
     initialExplorerWidth,
+    initialExplorerCommentLine,
     initialExplorerOpen,
     isPending,
     onExplorerQueryChange,
@@ -679,6 +684,7 @@ function ThreadPage(props: ThreadPageProps) {
         explorerQuery={explorerQuery}
         explorerSelectedPath={explorerSelectedPath}
         initialExplorerWidth={initialExplorerWidth}
+        initialExplorerCommentLine={initialExplorerCommentLine}
         onExplorerQueryChange={onExplorerQueryChange}
         onExplorerSelectPath={onExplorerSelectPath}
         onExplorerToggleDirectory={onExplorerToggleDirectory}
@@ -699,6 +705,7 @@ export function SliceRouter({
   initialRoute,
   initialThreadBootstrap,
   initialExplorerOpen,
+  initialExplorerCommentLine,
   initialExplorerExpandedDirectories,
   initialExplorerPath,
   initialExplorerQuery,
@@ -734,6 +741,7 @@ export function SliceRouter({
     readonly threadId: string;
   } | null;
   readonly initialExplorerOpen: boolean;
+  readonly initialExplorerCommentLine: number | null;
   readonly initialExplorerExpandedDirectories: readonly string[];
   readonly initialExplorerPath: string | null;
   readonly initialExplorerQuery: string;
@@ -1122,6 +1130,7 @@ export function SliceRouter({
         initialEnvironmentOpen={initialEnvironmentOpen}
         initialExplorerWidth={initialExplorerWidth}
         initialExplorerOpen={initialExplorerOpen}
+        initialExplorerCommentLine={initialExplorerCommentLine}
         isPending={resolvedActiveThreadPending}
         onExplorerQueryChange={(query) => {
           setExplorerQuery(query);

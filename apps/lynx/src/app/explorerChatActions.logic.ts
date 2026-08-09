@@ -3,6 +3,11 @@ import {
   buildWhyLinesPrompt,
   formatChatFileReference,
 } from '@synara-web/lib/chatReferenceFormatting';
+import {
+  createFileCommentDraft,
+  type FileCommentSelection,
+} from '@synara-web/lib/fileComments';
+import type { FileCommentDraft } from '@synara-web/lib/fileComments';
 
 interface ExplorerComposerDraft {
   readonly mentions: ReadonlyArray<ProviderMentionReference>;
@@ -16,6 +21,22 @@ interface ExplorerComposerDraftStore {
     mentions: ReadonlyArray<ProviderMentionReference>
   ) => void;
   readonly setPrompt: (threadId: string, prompt: string) => void;
+}
+
+export function applyExplorerFileComment(input: {
+  readonly comment: FileCommentSelection;
+  readonly store: {
+    readonly addFileComment: (
+      threadId: string,
+      comment: FileCommentDraft
+    ) => void;
+  };
+  readonly threadId: string;
+}): boolean {
+  const draft = createFileCommentDraft(input.comment);
+  if (!draft) return false;
+  input.store.addFileComment(input.threadId, draft);
+  return true;
 }
 
 export type ExplorerChatAction = 'ask-why' | 'reference';

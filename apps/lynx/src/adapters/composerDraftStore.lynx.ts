@@ -23,6 +23,10 @@ import {
   providerSkillReferencesEqual,
 } from '@synara-web/lib/composerMentions';
 import type { PastedTextDraft } from '@synara-web/lib/composerPastedText';
+import {
+  normalizeFileCommentSelection,
+  type FileCommentDraft,
+} from '@synara-web/lib/fileComments';
 import type { NativeComposerFileAttachment } from '../components/composer/composerAttachments.lynx';
 import { webStorage } from '../platform/storage';
 
@@ -32,6 +36,7 @@ export const LYNX_COMPOSER_DRAFT_STORAGE_KEY =
 interface LynxComposerDraft {
   readonly assistantSelections: ReadonlyArray<ChatAssistantSelectionAttachment>;
   readonly files: ReadonlyArray<NativeComposerFileAttachment>;
+  readonly fileComments: ReadonlyArray<FileCommentDraft>;
   readonly mentions: ReadonlyArray<ProviderMentionReference>;
   readonly modelSelection?: ModelSelection;
   readonly pastedTexts: ReadonlyArray<PastedTextDraft>;
@@ -50,9 +55,14 @@ interface LynxComposerDraftStoreState {
     threadId: string,
     files: ReadonlyArray<NativeComposerFileAttachment>
   ) => void;
+  readonly addFileComment: (
+    threadId: string,
+    comment: FileCommentDraft
+  ) => void;
   readonly clearDraft: (threadId: string) => void;
   readonly removePastedText: (threadId: string, pastedTextId: string) => void;
   readonly removeFile: (threadId: string, fileId: string) => void;
+  readonly removeFileComments: (threadId: string) => void;
   readonly removeAssistantSelections: (threadId: string) => void;
   readonly setModelSelection: (
     threadId: string,
@@ -103,6 +113,32 @@ function parseAssistantSelections(
   return selections;
 }
 
+function parseFileComments(value: unknown): FileCommentDraft[] {
+  if (!Array.isArray(value)) return [];
+  const comments: FileCommentDraft[] = [];
+  for (const candidate of value) {
+    if (
+      !isStringRecord(candidate) ||
+      typeof candidate.id !== 'string' ||
+      candidate.id.trim().length === 0 ||
+      typeof candidate.path !== 'string' ||
+      typeof candidate.startLine !== 'number' ||
+      typeof candidate.endLine !== 'number' ||
+      typeof candidate.text !== 'string'
+    ) {
+      continue;
+    }
+    const normalized = normalizeFileCommentSelection({
+      path: candidate.path,
+      startLine: candidate.startLine,
+      endLine: candidate.endLine,
+      text: candidate.text,
+    });
+    if (normalized) comments.push({ id: candidate.id, ...normalized });
+  }
+  return comments;
+}
+
 export function parsePersistedLynxComposerDrafts(
   raw: string | null
 ): Record<string, LynxComposerDraft> {
@@ -122,6 +158,7 @@ export function parsePersistedLynxComposerDrafts(
         files: Array.isArray(candidate.files)
           ? (candidate.files as NativeComposerFileAttachment[])
           : [],
+        fileComments: parseFileComments(candidate.fileComments),
         mentions: Array.isArray(candidate.mentions)
           ? (candidate.mentions as ProviderMentionReference[])
           : [],
@@ -149,6 +186,7 @@ function emptyDraft(): LynxComposerDraft {
   return {
     assistantSelections: [],
     files: [],
+    fileComments: [],
     mentions: [],
     pastedTexts: [],
     prompt: '',
@@ -161,6 +199,7 @@ function shouldRemoveDraft(draft: LynxComposerDraft): boolean {
     draft.prompt.length === 0 &&
     draft.assistantSelections.length === 0 &&
     draft.files.length === 0 &&
+    draft.fileComments.length === 0 &&
     draft.mentions.length === 0 &&
     draft.pastedTexts.length === 0 &&
     draft.skills.length === 0 &&
@@ -248,6 +287,35 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()(
           },
         };
       }),
+    addFileComment: (threadId, comment) =>
+      set((state) => {
+        const normalized = normalizeFileCommentSelection(comment);
+        if (!normalized) return state;
+        const current = state.draftsByThreadId[threadId] ?? emptyDraft();
+        if (
+          current.fileComments.some(
+            (entry) =>
+              entry.path === normalized.path &&
+              entry.startLine === normalized.startLine &&
+              entry.endLine === normalized.endLine &&
+              entry.text === normalized.text
+          )
+        ) {
+          return state;
+        }
+        return {
+          draftsByThreadId: {
+            ...state.draftsByThreadId,
+            [threadId]: {
+              ...current,
+              fileComments: [
+                ...current.fileComments,
+                { id: comment.id, ...normalized },
+              ],
+            },
+          },
+        };
+      }),
     addPastedText: (threadId, pastedText) =>
       set((state) => {
         const current = state.draftsByThreadId[threadId] ?? emptyDraft();
@@ -273,6 +341,7 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()(
           draftsByThreadId[threadId] = {
             assistantSelections: [],
             files: [],
+            fileComments: [],
             mentions: [],
             modelSelection: current.modelSelection,
             pastedTexts: [],
@@ -308,6 +377,19 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()(
         const files = current.files.filter((file) => file.id !== fileId);
         if (files.length === current.files.length) return state;
         const nextDraft = { ...current, files };
+        const draftsByThreadId = { ...state.draftsByThreadId };
+        if (shouldRemoveDraft(nextDraft)) {
+          delete draftsByThreadId[threadId];
+        } else {
+          draftsByThreadId[threadId] = nextDraft;
+        }
+        return { draftsByThreadId };
+      }),
+    removeFileComments: (threadId) =>
+      set((state) => {
+        const current = state.draftsByThreadId[threadId];
+        if (!current || current.fileComments.length === 0) return state;
+        const nextDraft = { ...current, fileComments: [] };
         const draftsByThreadId = { ...state.draftsByThreadId };
         if (shouldRemoveDraft(nextDraft)) {
           delete draftsByThreadId[threadId];

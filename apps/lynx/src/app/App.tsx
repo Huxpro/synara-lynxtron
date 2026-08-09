@@ -79,6 +79,7 @@ export function App() {
   const initData = useInitData() as {
     readonly initialEnvironmentOpen?: unknown;
     readonly initialExplorerOpen?: unknown;
+    readonly initialExplorerCommentLine?: unknown;
     readonly initialExplorerPath?: unknown;
     readonly initialExplorerQuery?: unknown;
     readonly initialExplorerExpandedDirectories?: unknown;
@@ -92,6 +93,12 @@ export function App() {
       ? initData.initialRoute
       : null;
   const initialExplorerOpen = initData.initialExplorerOpen === true;
+  const initialExplorerCommentLine =
+    typeof initData.initialExplorerCommentLine === 'number' &&
+    Number.isInteger(initData.initialExplorerCommentLine) &&
+    initData.initialExplorerCommentLine > 0
+      ? initData.initialExplorerCommentLine
+      : null;
   const initialExplorerPath =
     typeof initData.initialExplorerPath === 'string'
       ? initData.initialExplorerPath
@@ -311,6 +318,7 @@ export function App() {
             initialRoute={initialRoute}
             initialThreadBootstrap={initialThreadBootstrap}
             initialExplorerOpen={initialExplorerOpen}
+            initialExplorerCommentLine={initialExplorerCommentLine}
             initialExplorerPath={initialExplorerPath}
             initialExplorerQuery={initialExplorerQuery}
             initialExplorerExpandedDirectories={

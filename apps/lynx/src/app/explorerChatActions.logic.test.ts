@@ -1,7 +1,8 @@
-import { describe, expect, it } from '@rstest/core';
+import { describe, expect, it, rs } from '@rstest/core';
 
 import {
   applyExplorerChatAction,
+  applyExplorerFileComment,
   type ExplorerChatAction,
 } from './explorerChatActions.logic';
 
@@ -71,4 +72,46 @@ describe('Explorer chat actions', () => {
     ).toEqual([{ name: 'router.tsx', path: 'src/app/router.tsx' }]);
   });
 
+  it('adds a normalized file comment draft without changing prompt text', () => {
+    const comments: unknown[] = [];
+    expect(
+      applyExplorerFileComment({
+        comment: {
+          path: ' src/app/router.tsx ',
+          startLine: 0,
+          endLine: 4,
+          text: '\nRename this value.\n',
+        },
+        store: {
+          addFileComment: (_threadId, comment) => comments.push(comment),
+        },
+        threadId: 'thread',
+      })
+    ).toBe(true);
+    expect(comments).toMatchObject([
+      {
+        path: 'src/app/router.tsx',
+        startLine: 1,
+        endLine: 4,
+        text: 'Rename this value.',
+      },
+    ]);
+  });
+
+  it('rejects an empty file comment', () => {
+    const addFileComment = rs.fn();
+    expect(
+      applyExplorerFileComment({
+        comment: {
+          path: 'src/app/router.tsx',
+          startLine: 2,
+          endLine: 2,
+          text: '   ',
+        },
+        store: { addFileComment },
+        threadId: 'thread',
+      })
+    ).toBe(false);
+    expect(addFileComment).not.toHaveBeenCalled();
+  });
 });

@@ -30,6 +30,7 @@ describe('Lynx composer draft attachment subset', () => {
     ).toEqual({
       assistantSelections: [],
       files: [],
+      fileComments: [],
       mentions: [],
       prompt: '',
       pastedTexts: [pastedText],
@@ -74,6 +75,7 @@ describe('Lynx composer draft attachment subset', () => {
     ).toEqual({
       assistantSelections: [],
       files: [],
+      fileComments: [],
       mentions: [],
       prompt: '',
       pastedTexts: [],
@@ -121,6 +123,55 @@ describe('Lynx composer draft attachment subset', () => {
     ]);
 
     useComposerDraftStore.getState().removeAssistantSelections('thread-1');
+    expect(
+      useComposerDraftStore.getState().draftsByThreadId['thread-1']
+    ).toBeUndefined();
+  });
+
+  it('persists, deduplicates, normalizes, and removes file comments', () => {
+    const store = useComposerDraftStore.getState();
+    store.addFileComment('thread-1', {
+      id: 'comment-1',
+      path: ' src/example.ts ',
+      startLine: 0,
+      endLine: 2,
+      text: '\n  Rename this value.  \n',
+    });
+    useComposerDraftStore.getState().addFileComment('thread-1', {
+      id: 'comment-duplicate',
+      path: 'src/example.ts',
+      startLine: 1,
+      endLine: 2,
+      text: 'Rename this value.',
+    });
+
+    expect(
+      useComposerDraftStore.getState().draftsByThreadId['thread-1']
+        ?.fileComments
+    ).toEqual([
+      {
+        id: 'comment-1',
+        path: 'src/example.ts',
+        startLine: 1,
+        endLine: 2,
+        text: 'Rename this value.',
+      },
+    ]);
+    expect(
+      parsePersistedLynxComposerDrafts(
+        webStorage.getItem(LYNX_COMPOSER_DRAFT_STORAGE_KEY)
+      )['thread-1']?.fileComments
+    ).toEqual([
+      {
+        id: 'comment-1',
+        path: 'src/example.ts',
+        startLine: 1,
+        endLine: 2,
+        text: 'Rename this value.',
+      },
+    ]);
+
+    useComposerDraftStore.getState().removeFileComments('thread-1');
     expect(
       useComposerDraftStore.getState().draftsByThreadId['thread-1']
     ).toBeUndefined();
@@ -314,6 +365,7 @@ describe('Lynx composer draft attachment subset', () => {
     ).toEqual({
       valid: {
         assistantSelections: [],
+        fileComments: [],
         prompt: 'keep',
         skills: [],
         mentions: [],

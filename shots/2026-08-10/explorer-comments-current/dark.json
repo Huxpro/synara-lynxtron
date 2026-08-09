@@ -1,0 +1,57 @@
+{
+  "activeLine": "5+export const commentReady = true;",
+  "editor": {
+    "height": 135,
+    "text": "SLocal commentComment on line 5CancelComment",
+    "width": 451,
+    "x": 807,
+    "y": 232
+  },
+  "lineButtons": [
+    "Comment on line 1",
+    "Comment on line 2",
+    "Comment on line 3",
+    "Comment on line 4",
+    "Comment on line 5",
+    "Comment on line 6"
+  ],
+  "relay": {
+    "activeBaseUrl": "ws://127.0.0.1:58260",
+    "configuredBaseUrl": "ws://127.0.0.1:58260",
+    "connectionAttempts": 1,
+    "explorerPreviewActionCount": 0,
+    "lastExplorerPreviewAction": null,
+    "lastRpcError": "Synara RPC provider.listModels failed: [{\"_tag\":\"Fail\",\"error\":{\"_tag\":\"WsRpcError\",\"message\":\"Provider adapter request failed (codex) for model/list: Codex CLI version check failed. Error: codex not found in PATH\",\"cause\":{\"message\":\"Provider adapter request failed (codex) for model/list: Codex CLI version check failed. Error: codex not found in PATH\",\"name\":\"Error\"}}}]",
+    "lastSyntaxHighlightResult": {
+      "error": null,
+      "language": "typescript",
+      "path": "syntax.ts",
+      "theme": "light+dark"
+    },
+    "lastTransportError": null,
+    "pendingRequests": 0,
+    "readyBaseUrl": null,
+    "recentRpcTags": [
+      "orchestration.getThreadDetailSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getThreadDetailSnapshot",
+      "projects.listDirectories",
+      "projects.readFile",
+      "provider.listModels",
+      "server.getConfig"
+    ],
+    "rendererReadyRoute": null,
+    "socketState": 1,
+    "syntaxHighlightCallCount": 1
+  },
+  "rootClass": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up",
+  "textarea": {
+    "label": "Comment on line 5",
+    "placeholder": "Request change"
+  },
+  "viewport": {
+    "dpr": 1,
+    "innerHeight": 820,
+    "innerWidth": 1280
+  }
+}

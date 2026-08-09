@@ -1,6 +1,7 @@
 import { describe, expect, it } from '@rstest/core';
 
 import {
+  buildComposerSendText,
   buildComposerInteractionModeSetCommand,
   buildComposerRuntimeModeSetCommand,
   buildComposerTurnInterruptCommand,
@@ -9,8 +10,34 @@ import {
   isRunningComposerSession,
   runComposerSendTransaction,
 } from './composerDispatch.logic';
+import { createPastedTextDraft } from '@synara-web/lib/composerPastedText';
 
 describe('composer dispatch logic', () => {
+  it('serializes file comments into the canonical prompt block on send', () => {
+    expect(
+      buildComposerSendText({
+        prompt: 'Please review',
+        pastedTexts: [
+          createPastedTextDraft({
+            id: 'paste-1',
+            createdAt: '2026-08-10T00:00:00.000Z',
+            text: 'context',
+          }),
+        ],
+        fileComments: [
+          {
+            path: 'src/example.ts',
+            startLine: 5,
+            endLine: 5,
+            text: 'Rename this exported constant.',
+          },
+        ],
+      })
+    ).toBe(
+      'Please review\n\n<pasted_text>\n[{"text":"context"}]\n</pasted_text>\n\n<file_comments>\n- src/example.ts line 5:\n  Rename this exported constant.\n</file_comments>'
+    );
+  });
+
   it('matches Web connecting versus interruptible session states', () => {
     expect(isConnectingComposerSession('starting')).toBe(true);
     expect(isConnectingComposerSession('running')).toBe(false);

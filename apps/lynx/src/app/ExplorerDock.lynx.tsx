@@ -27,7 +27,10 @@ import type { ExplorerEntriesResult } from './queries';
 import type { NativeSyntaxHighlightThemes } from '../main/syntaxHighlightingContract.logic';
 import { ResizableRightPanel } from './ResizableRightPanel.lynx';
 import { ExplorerPdfFallback } from './ExplorerPdfFallback.lynx';
-import { applyExplorerChatAction } from './explorerChatActions.logic';
+import {
+  applyExplorerChatAction,
+  applyExplorerFileComment,
+} from './explorerChatActions.logic';
 import { ExplorerSyntaxPreview } from './ExplorerSyntaxPreview.lynx';
 import './explorer-dock.css';
 
@@ -227,6 +230,7 @@ export function ExplorerDock(props: {
   readonly directoryPending: ReadonlySet<string>;
   readonly expandedDirectories: ReadonlySet<string>;
   readonly initialWidth: number | null;
+  readonly initialCommentLine: number | null;
   readonly file: ProjectReadFileResult | null;
   readonly fileError: boolean;
   readonly filePending: boolean;
@@ -382,6 +386,19 @@ export function ExplorerDock(props: {
               <ExplorerSyntaxPreview
                 contents={props.file?.contents ?? ''}
                 highlighted={props.fileSyntaxHighlight}
+                initialCommentLine={props.initialCommentLine}
+                onComment={({ lineNumber, text }) =>
+                  applyExplorerFileComment({
+                    comment: {
+                      path: props.selectedPath!,
+                      startLine: lineNumber,
+                      endLine: lineNumber,
+                      text,
+                    },
+                    store: useComposerDraftStore.getState(),
+                    threadId: props.threadId,
+                  })
+                }
                 path={props.selectedPath}
                 theme={props.theme}
                 truncated={props.file?.truncated ?? false}

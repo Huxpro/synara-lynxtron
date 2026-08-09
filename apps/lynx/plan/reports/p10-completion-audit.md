@@ -268,8 +268,8 @@ Current responsive disposition:
 | Dark shell base fill | Electron vibrancy RGB 6–7 versus Native canonical opaque #101010/#111111 | INTENTIONAL HOST MATERIAL DELTA |
 | Environment | reachable current-head consumer; paired light/dark Browser geometry/material proof at 900x650 | PASS IN BROWSER; NATIVE CURRENT-HEAD SCREENCAST NOT CERTIFIED |
 | Environment Git actions | stable menu, selectable-file/new-branch commits, safe pull, streamed live progress, metadata sync, confirmation, and paired themes | PASS |
-| Diff/browser docks, selection actions | working-tree Diff Dock is reachable and keeps its Web split contract; Browser/explorer and selection-action consumers remain absent | PARTIAL PRODUCT/PLATFORM KERNEL |
-| Native transcript selection | Web requires DOM Selection/Range; Lynx now persists, displays, removes, and sends canonical assistant-selection attachments through an explicitly labeled whole-message fallback | PARTIAL — WHOLE-MESSAGE REFERENCE WORKS; RANGE SELECTION REMAINS AN AUDITED HOST/ENGINE GAP |
+| Diff / Explorer docks and source actions | working-tree Diff Dock and filesystem-backed Explorer are reachable; Explorer covers tree/search, rich source/Markdown/image/PDF fallback, whole-file references, ask-why, and accessible per-line local comments that persist and serialize into the shared composer contract | PASS — CURRENT PRODUCT SURFACES |
+| Native arbitrary range selection | whole-message transcript references and source line comments are complete; arbitrary DOM-style text range selection still requires a host/engine selection kernel | PARTIAL — EXPLICIT HOST/ENGINE GAP |
 | Current-head full three-client route/theme/size/state matrix | historical P10 matrix predates later product commits | NOT RE-CERTIFIED |
 
 Evidence for the final Settings sweep:
@@ -358,6 +358,7 @@ because the current DevTool reports `0px` for that compound view.
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after
-the remaining product/platform scope is explicitly resolved. The absent
-environment, diff/browser, and selection-action consumers must not be hidden
-with responsive CSS or counted as passing runtime evidence.
+the remaining product/platform scope is explicitly resolved. Environment,
+Diff, Explorer, whole-file actions, and source line comments now have real
+consumers; arbitrary text-range selection and in-app Native PDF rendering must
+still not be hidden with responsive CSS or counted as passing runtime evidence.

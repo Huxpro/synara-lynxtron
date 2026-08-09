@@ -33,6 +33,7 @@ file preview, responsive layout, and light/dark Lynx-for-Web evidence pass.
 | PDF fallback | Workspace-relative PDFs bypass text decoding, resolve through the same allowlisted local-preview URL builder, and expose a real `system-default` action with a traversal-safe absolute target. The surface explicitly states that Native in-app page rendering is unavailable | PASS |
 | Chat file references | Structured file mentions, local Markdown links, and file-shaped inline code resolve to traversal-safe workspace-relative targets and open the existing Explorer selected-path owner. User-message fallback rendering preserves mention chips while the async Markdown parser initializes | PASS |
 | Whole-file chat actions | The Explorer preview header matches Web's 40px file chrome and exposes `Reference in chat` / `Ask why this changed`. Both actions reuse Web formatting, append to the active Lynx composer draft, and preserve structured mention metadata | PASS |
+| Source line comments | Every highlighted source line exposes an accessible `Comment on line N` gutter control. The inline editor reuses Web's copy, normalization, length limit, Cancel/Comment semantics, shared composer comment chip, persistence, and `<file_comments>` send serialization | PASS |
 | Live Explorer light/dark populated matrix | At `1280×820`, DPR 1, both themes render three entries, selected `README.md`, a `512×774` dock, `240px` sidebar, `239×685` entries scroll area, `271×730` preview, and `247×706` preview scroller. Light resolves the dock to `rgb(255,255,255)` / `rgb(13,13,13)`; dark resolves to `rgb(16,16,16)` / `rgb(252,252,252)`. Both PNGs are exactly `1280×820` | PASS |
 | Narrow Explorer geometry | At `900×700`, DPR 1, the dock clamps to `580px` (`900 - 320px` minimum main content), keeps a `240px` sidebar and `339px` preview, restores matching `padding-right:580px`, preserves the selected README preview, and exports an exact `900×700` PNG | PASS |
 | Explorer drag resizing | At `1280×820`, the Web-compatible sash path changed the dock from `640px` to `760px` through a trusted pointer drag. The target width survived the page refresh and `ThreadPage` restored matching `padding-right:760px`; Native retains the shared `createLynxSidebarResizeSession` path | PASS |
@@ -43,8 +44,8 @@ file preview, responsive layout, and light/dark Lynx-for-Web evidence pass.
 
 - This is the first real Explorer slice, not full Web Explorer parity.
 - The Lynx-for-Web activation blocker is resolved for trusted click and Enter.
-- Native in-app PDF page rendering and selection comments remain future product
-  scope rather than blockers for this first Explorer slice. PDF files now have a safe,
+- Native in-app PDF page rendering remains future product scope rather than a
+  blocker for this first Explorer slice. PDF files now have a safe,
   non-deceptive default-app fallback; that is not claimed as Web PDF viewer
   parity.
 
@@ -173,3 +174,34 @@ uncertified: the background-owned window cannot open the nested source file
 through the current input harness, and the owned PID did not expose a DevTool
 listener. Other clients on ports 8901/8904 belonged to different PIDs and were
 explicitly rejected rather than reused.
+
+## Line-comment continuation
+
+`shots/2026-08-10/explorer-comments-current/` closes the actionable source
+comment gap without claiming DOM range selection. Each syntax line owns an
+accessible 34px gutter control. Activating `Comment on line 5` opens the same
+`Local comment` / `Comment on line 5` / `Request change` / Cancel / Comment
+anatomy as Web directly below the active line, with a semantic accent band.
+
+The implementation reuses `apps/web/src/lib/fileComments.ts` as the only
+normalization, range-label, 4,000-character, deduplication, and prompt-block
+owner. Valid comments persist in the Lynx composer draft, render through the
+shared `ComposerReferenceAttachmentsComposition`, can be cleared as a group,
+and serialize through the exact Web `<file_comments>` block before dispatch.
+They are not converted into a guessed wire attachment or inserted into the
+visible prompt text.
+
+The retained light/dark frames are both `1280x820`, have identical
+`451x135 @ (807,232)` editor geometry, six named line controls, the active
+line-5 band, current TypeScript tokens, and empty page-error logs. A real mouse
+click reached the line gutter and the existing Web-only compatibility layer
+represented the idempotent `explorerCommentLine=5` init target; Native keeps
+the original `bindtap` path.
+
+Focused verification covers the rendered line tap/Cancel path, editable
+comment submit behavior, invalid input, normalization, persistence,
+deduplication, removal, shared chip wiring, and exact send serialization
+(`47/47`). Web and Desktop production builds pass. Web Elements still does not
+publish real `x-textarea` keyboard input back through ReactLynx `bindinput`, so
+runtime text entry is not claimed from Browser automation; Native textarea/IME
+remains the certification boundary already recorded by the theme-import audit.

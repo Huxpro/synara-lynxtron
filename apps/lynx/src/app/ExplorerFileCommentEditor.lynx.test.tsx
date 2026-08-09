@@ -1,0 +1,54 @@
+import { describe, expect, it, rs } from '@rstest/core';
+import { fireEvent, render, waitFor } from '@lynx-js/react/testing-library';
+
+import { ExplorerFileCommentEditor } from './ExplorerFileCommentEditor.lynx';
+
+describe('Explorer file comment editor', () => {
+  it('matches Web copy and submits only normalized non-empty comments', async () => {
+    const onCancel = rs.fn();
+    const onSubmit = rs.fn();
+    render(
+      <ExplorerFileCommentEditor
+        lineNumber={5}
+        onCancel={onCancel}
+        onSubmit={onSubmit}
+      />
+    );
+
+    expect(
+      elementTree.root?.querySelector('.ExplorerDockCommentTitle')?.textContent
+    ).toBe('Local comment');
+    expect(
+      elementTree.root?.querySelector('.ExplorerDockCommentTarget')?.textContent
+    ).toBe('Comment on line 5');
+    const textarea = elementTree.root?.querySelector(
+      '.ExplorerDockCommentInput'
+    );
+    expect(textarea?.getAttribute('placeholder')).toBe('Request change');
+
+    const buttons = elementTree.root?.querySelectorAll('.LxButton') ?? [];
+    fireEvent.tap(buttons[1]!);
+    expect(onSubmit).not.toHaveBeenCalled();
+
+    textarea?.dispatchEvent(
+      new CustomEvent('bindEvent:input', {
+        bubbles: true,
+        detail: { value: '\n  Rename this value.  \n' },
+      })
+    );
+    await waitFor(() => {
+      const currentButtons =
+        elementTree.root?.querySelectorAll('.LxButton') ?? [];
+      expect(currentButtons[1]?.getAttribute('disabled')).not.toBe(true);
+    });
+    fireEvent.tap(
+      (elementTree.root?.querySelectorAll('.LxButton') ?? [])[1]!
+    );
+    expect(onSubmit).toHaveBeenCalledWith('Rename this value.');
+
+    fireEvent.tap(
+      (elementTree.root?.querySelectorAll('.LxButton') ?? [])[0]!
+    );
+    expect(onCancel).toHaveBeenCalledTimes(1);
+  });
+});

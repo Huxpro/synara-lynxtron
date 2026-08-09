@@ -6,6 +6,7 @@ const EXPLORER_ENTRY_SELECTOR = '.ExplorerDockEntry';
 const FILE_REFERENCE_SELECTOR = '.MdInlineToken--file, .MdInlineToken--mention';
 const EXPLORER_PREVIEW_ACTION_TRIGGER_SELECTOR =
   '.ExplorerDockPreviewActions';
+const EXPLORER_COMMENT_LINE_SELECTOR = '.ExplorerDockSyntaxLineNumber';
 const EXPLORER_SEARCH_SELECTOR = '.ExplorerDockSearchInput';
 const RIGHT_PANEL_RESIZE_SASH_SELECTOR = '.RightPanelResizeSash';
 const LYNX_FOCUSABLE_SELECTOR = '[focusable="true"]';
@@ -35,6 +36,10 @@ export interface LynxWebRightPanelResize {
 export interface LynxWebExplorerPreviewAction {
   readonly action: 'toggle-menu';
   readonly path: string;
+}
+
+export interface LynxWebExplorerCommentLine {
+  readonly lineNumber: number;
 }
 
 function interactiveElement(
@@ -75,6 +80,9 @@ export function installLynxWebInteractionStateBridge(
   onRightPanelResize?: (resize: LynxWebRightPanelResize) => void,
   onExplorerPreviewAction?: (
     action: LynxWebExplorerPreviewAction
+  ) => void,
+  onExplorerCommentLine?: (
+    commentLine: LynxWebExplorerCommentLine
   ) => void
 ): void {
   const hostHoverClasses = new WeakSet<HTMLElement>();
@@ -100,6 +108,13 @@ export function installLynxWebInteractionStateBridge(
     | {
         readonly action: LynxWebExplorerPreviewAction['action'];
         readonly path: string;
+        readonly startX: number;
+        readonly startY: number;
+      }
+    | null = null;
+  let explorerCommentLinePointer:
+    | {
+        readonly lineNumber: number;
         readonly startX: number;
         readonly startY: number;
       }
@@ -212,6 +227,25 @@ export function installLynxWebInteractionStateBridge(
     'mousedown',
     (event) => {
       if (event instanceof MouseEvent && event.button === 0) {
+        const commentLineTarget = event
+          .composedPath()
+          .find(
+            (target): target is HTMLElement =>
+              target instanceof HTMLElement &&
+              target.matches(EXPLORER_COMMENT_LINE_SELECTOR)
+          );
+        const commentLineLabel =
+          commentLineTarget?.getAttribute('accessibility-label') ?? '';
+        const commentLineMatch = /^Comment on line (\d+)$/.exec(
+          commentLineLabel
+        );
+        if (commentLineMatch) {
+          explorerCommentLinePointer = {
+            lineNumber: Number(commentLineMatch[1]),
+            startX: event.clientX,
+            startY: event.clientY,
+          };
+        }
         const previewActionTarget = event
           .composedPath()
           .find(
@@ -315,6 +349,19 @@ export function installLynxWebInteractionStateBridge(
     'mouseup',
     (event) => {
       if (!(event instanceof MouseEvent)) return;
+      if (explorerCommentLinePointer) {
+        const pointer = explorerCommentLinePointer;
+        explorerCommentLinePointer = null;
+        if (
+          onExplorerCommentLine &&
+          Math.abs(event.clientX - pointer.startX) <= 2 &&
+          Math.abs(event.clientY - pointer.startY) <= 2
+        ) {
+          onExplorerCommentLine({ lineNumber: pointer.lineNumber });
+          event.preventDefault();
+          return;
+        }
+      }
       if (explorerPreviewActionPointer) {
         const pointer = explorerPreviewActionPointer;
         explorerPreviewActionPointer = null;

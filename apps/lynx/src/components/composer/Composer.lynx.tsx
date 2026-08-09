@@ -61,7 +61,6 @@ import {
 } from '@synara-web/providerModelOptions';
 import {
   appendPastedTextToEditablePrompt,
-  appendPastedTextsToPrompt,
   createPastedTextDraft,
   type PastedTextDraft,
 } from '@synara-web/lib/composerPastedText';
@@ -73,6 +72,7 @@ import {
 } from '../../data/synaraClient.lynx';
 import {
   buildComposerInteractionModeSetCommand,
+  buildComposerSendText,
   buildComposerRuntimeModeSetCommand,
   buildComposerTurnInterruptCommand,
   buildComposerTurnStartCommand,
@@ -127,6 +127,7 @@ const EMPTY_MENTIONS: ReadonlyArray<
 > = [];
 const EMPTY_PASTED_TEXTS: ReadonlyArray<PastedTextDraft> = [];
 const EMPTY_FILES: ReadonlyArray<NativeComposerFileAttachment> = [];
+const EMPTY_FILE_COMMENTS = [];
 const EMPTY_SKILLS: ReadonlyArray<ProviderSkillReference> = [];
 const EMPTY_NON_PERSISTED_IMAGE_IDS: ReadonlySet<string> = new Set();
 interface ComposerEditorHistoryContext {
@@ -272,6 +273,11 @@ export function Composer({
   const files = useComposerDraftStore(
     (state) => state.draftsByThreadId[brandedThreadId]?.files ?? EMPTY_FILES
   );
+  const fileComments = useComposerDraftStore(
+    (state) =>
+      state.draftsByThreadId[brandedThreadId]?.fileComments ??
+      EMPTY_FILE_COMMENTS
+  );
   const mentions = useComposerDraftStore(
     (state) =>
       state.draftsByThreadId[brandedThreadId]?.mentions ?? EMPTY_MENTIONS
@@ -299,6 +305,9 @@ export function Composer({
     (state) => state.removePastedText
   );
   const removeFile = useComposerDraftStore((state) => state.removeFile);
+  const removeFileComments = useComposerDraftStore(
+    (state) => state.removeFileComments
+  );
   const removeAssistantSelections = useComposerDraftStore(
     (state) => state.removeAssistantSelections
   );
@@ -1144,12 +1153,13 @@ export function Composer({
       setMentions(brandedThreadId, projectedEditor.mentions);
       setSkills(brandedThreadId, projectedEditor.skills);
     }
-    const text = appendPastedTextsToPrompt(
-      projectedEditor.canonicalText,
-      pastedTexts
-    ).trim();
+    const text = buildComposerSendText({
+      prompt: projectedEditor.canonicalText,
+      pastedTexts,
+      fileComments,
+    });
     if (
-      (!text && files.length === 0) ||
+      (!text && files.length === 0 && fileComments.length === 0) ||
       sendInFlightRef.current ||
       !activeModelSelection ||
       !runtimeMode ||
@@ -1304,7 +1314,7 @@ export function Composer({
         ) : null}
         <ComposerReferenceAttachmentsComposition
           assistantSelections={assistantSelections}
-          fileComments={[]}
+          fileComments={fileComments}
           pastedTexts={pastedTexts}
           files={files}
           images={[]}
@@ -1313,7 +1323,9 @@ export function Composer({
           onRemoveAssistantSelections={() =>
             removeAssistantSelections(brandedThreadId)
           }
-          onRemoveFileComments={() => undefined}
+          onRemoveFileComments={() =>
+            removeFileComments(brandedThreadId)
+          }
           onRemovePastedText={(pastedTextId) => {
             'background only';
             removePastedTextFromDraft(pastedTextId);
