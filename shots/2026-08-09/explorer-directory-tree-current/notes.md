@@ -11,6 +11,8 @@
 - The provider-list error is the isolated harness's known missing `codex` PATH limitation and does not affect Explorer RPCs.
 - `page-errors.txt` is empty. Browser console contains only the known upstream custom-element initialization warning plus host setup logs.
 - Both PNGs are exactly `1280x820`.
+- Focused verification passed 18 tests; Native/Desktop and Lynx-for-Web
+  production builds passed; React Doctor changed-scope reported zero issues.
 - Cleanup: canonical delete advanced the final snapshot to sequence 4 with zero
   live projects/threads; the named browser session, owned server/static ports,
   isolated home, and temporary workspace were removed.

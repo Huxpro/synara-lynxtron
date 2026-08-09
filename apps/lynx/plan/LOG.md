@@ -8486,5 +8486,6 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   `src/nested`，渲染`tree.ts`、`deep.ts`后折叠parent；relay记录root/src/nested三次
   `projects.listDirectories`，connection1、pending0、transport error null。
 - light/dark 1280x820/DPR1 geometry完全一致，两张PNG尺寸正确、page errors为空。
-  focused **5 files / 17 tests**、Lynx-for-Web与Native/Desktop production builds
-  通过；证据在`shots/2026-08-09/explorer-directory-tree-current/`。
+  focused **5 files / 18 tests**、Lynx-for-Web与Native/Desktop production builds、
+  React Doctor changed-scope **0 issues**通过；证据在
+  `shots/2026-08-09/explorer-directory-tree-current/`。
