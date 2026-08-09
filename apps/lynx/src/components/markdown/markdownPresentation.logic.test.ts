@@ -72,6 +72,11 @@ describe('Lynx markdown presentation logic', () => {
     expect(source).toContain("label={wrap ? 'Disable soft wrap' : 'Enable soft wrap'}");
     expect(source).toContain("label={copied ? 'Copied' : 'Copy code'}");
     expect(source).toContain("variant === 'user' ? ' MdRoot--user' : ''");
+    expect(source).toContain('resolveLynxMarkdownFileReference({');
+    expect(source).toContain('resolveLynxInlineCodeFileReference({');
+    expect(source).toContain('<MarkdownFileReferenceToken');
+    expect(source).toContain('onOpenFileReference={context.onOpenFileReference}');
+    expect(source).toContain("renderUserText(text, 'fallback', context)");
   });
 
   it('keeps user dollar tokens out of the assistant math processor', () => {

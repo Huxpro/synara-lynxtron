@@ -304,7 +304,11 @@ export function ExplorerDock(props: {
             </text>
           ) : isMarkdownPath(props.selectedPath) ? (
             <scroll-view className="ExplorerDockPreviewScroll" scroll-orientation="vertical">
-              <ChatMarkdown text={props.file?.contents ?? ''} />
+              <ChatMarkdown
+                cwd={props.workspaceRoot}
+                onOpenFileReference={props.onSelectPath}
+                text={props.file?.contents ?? ''}
+              />
             </scroll-view>
           ) : (
             <scroll-view className="ExplorerDockPreviewScroll" scroll-orientation="vertical">

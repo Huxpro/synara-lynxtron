@@ -81,11 +81,15 @@ function TranscriptWorkEntries({
 }
 
 function TranscriptMessage({
+  onOpenFileReference,
   row,
   threadId,
+  workspaceRoot,
 }: {
+  readonly onOpenFileReference?: (relativePath: string) => void;
   row: MessageTranscriptRow;
   threadId: string;
+  readonly workspaceRoot: string | null;
 }) {
   const { message } = row;
   const isUser = message.role === 'user';
@@ -149,9 +153,11 @@ function TranscriptMessage({
             style={getChatTranscriptUserMessageTextStyle() as Record<string, string>}
           >
             <ChatMarkdown
+              cwd={workspaceRoot}
               text={message.text}
               variant="user"
               mentionReferences={message.mentions ?? []}
+              onOpenFileReference={onOpenFileReference}
             />
           </view>
         </MessageUserBubbleComposition>
@@ -170,7 +176,11 @@ function TranscriptMessage({
               <TranscriptWorkEntry key={item.id} entry={item.entry} />
             ) : (
               <view key={item.id} className="TranscriptCollapsedNarration">
-                <ChatMarkdown text={item.message.text} />
+                <ChatMarkdown
+                  cwd={workspaceRoot}
+                  onOpenFileReference={onOpenFileReference}
+                  text={item.message.text}
+                />
               </view>
             )
           )}
@@ -181,7 +191,11 @@ function TranscriptMessage({
         {assistantText === null ? null : (
           <view className="TranscriptAssistantContent">
             <view style={getChatTranscriptTextStyle() as Record<string, string>}>
-              <ChatMarkdown text={assistantText} />
+              <ChatMarkdown
+                cwd={workspaceRoot}
+                onOpenFileReference={onOpenFileReference}
+                text={assistantText}
+              />
             </view>
             <view
               className={`${addToChat.className}${
@@ -202,14 +216,25 @@ function TranscriptMessage({
 }
 
 function TranscriptRowContent({
+  onOpenFileReference,
   row,
   threadId,
+  workspaceRoot,
 }: {
+  readonly onOpenFileReference?: (relativePath: string) => void;
   row: ThreadTranscriptRow;
   threadId: string;
+  readonly workspaceRoot: string | null;
 }) {
   if (row.kind === 'message') {
-    return <TranscriptMessage row={row} threadId={threadId} />;
+    return (
+      <TranscriptMessage
+        onOpenFileReference={onOpenFileReference}
+        row={row}
+        threadId={threadId}
+        workspaceRoot={workspaceRoot}
+      />
+    );
   }
   if (row.kind === 'work') {
     return (
@@ -261,13 +286,17 @@ export interface TranscriptController {
 }
 
 export function Transcript({
+  onOpenFileReference,
   rows,
   threadId,
   onController,
+  workspaceRoot,
 }: {
+  readonly onOpenFileReference?: (relativePath: string) => void;
   readonly rows: readonly ThreadTranscriptRow[];
   readonly threadId: string;
   readonly onController?: (controller: TranscriptController | null) => void;
+  readonly workspaceRoot: string | null;
 }) {
   const listRef = useRef<React.ElementRef<'list'>>(null);
   const pinnedRef = useRef(true);
@@ -426,7 +455,12 @@ export function Transcript({
             key={row.id}
             estimated-main-axis-size-px={estimateTranscriptRowMainAxisSize(row)}
           >
-            <TranscriptRowContent row={row} threadId={threadId} />
+            <TranscriptRowContent
+              onOpenFileReference={onOpenFileReference}
+              row={row}
+              threadId={threadId}
+              workspaceRoot={workspaceRoot}
+            />
           </list-item>
         ))}
         <list-item

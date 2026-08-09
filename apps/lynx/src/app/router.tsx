@@ -479,6 +479,18 @@ function ThreadPage(props: ThreadPageProps) {
     setExplorerDockWidth(null);
     setExplorerOpen(open);
   }, []);
+  const openExplorerFileReference = useCallback(
+    (relativePath: string) => {
+      onExplorerQueryChange('');
+      onExplorerSelectPath(relativePath);
+      setExplorerVisibility(true);
+    },
+    [
+      onExplorerQueryChange,
+      onExplorerSelectPath,
+      setExplorerVisibility,
+    ]
+  );
   const explorerToggle = useLynxInteractiveState({
     baseClassName: 'ThreadFilesToggle',
     accessibleLabel: 'Toggle files panel',
@@ -551,9 +563,11 @@ function ThreadPage(props: ThreadPageProps) {
       {bodyState.kind === 'transcript' ? (
         <ComposerColumnFrameSurface className="ThreadTranscriptColumn">
           <Transcript
+            workspaceRoot={currentThread?.workspaceRoot ?? null}
             rows={bodyState.rows}
             threadId={threadId}
             onController={registerTranscriptController}
+            onOpenFileReference={openExplorerFileReference}
           />
         </ComposerColumnFrameSurface>
       ) : bodyState.kind === 'empty' ? (

@@ -129,6 +129,81 @@ describe('Lynx-for-Web interaction state bridge', () => {
     ]);
   });
 
+  it('forwards file-reference click and keyboard activation to Explorer', () => {
+    const navigations: Array<{ path?: string }> = [];
+    const { control } = setup(undefined, undefined, (navigation) =>
+      navigations.push(navigation)
+    );
+    control.classList.add('MdInlineToken--file');
+    control.setAttribute('aria-disabled', 'false');
+    control.setAttribute(
+      'accessibility-label',
+      'Open src/app/router.tsx'
+    );
+
+    control.click();
+    control.dispatchEvent(
+      new MouseEvent('mousedown', {
+        bubbles: true,
+        button: 0,
+        clientX: 20,
+        clientY: 10,
+        composed: true,
+      })
+    );
+    control.dispatchEvent(
+      new MouseEvent('mouseup', {
+        bubbles: true,
+        button: 0,
+        clientX: 21,
+        clientY: 11,
+        composed: true,
+      })
+    );
+    control.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        key: 'Enter',
+      })
+    );
+
+    expect(navigations).toEqual([
+      { path: 'src/app/router.tsx' },
+      { path: 'src/app/router.tsx' },
+      { path: 'src/app/router.tsx' },
+    ]);
+  });
+
+  it('does not activate a file reference after pointer movement', () => {
+    const navigations: Array<{ path?: string }> = [];
+    const { control } = setup(undefined, undefined, (navigation) =>
+      navigations.push(navigation)
+    );
+    control.classList.add('MdInlineToken--mention');
+    control.setAttribute('accessibility-label', 'Open README.md');
+    control.dispatchEvent(
+      new MouseEvent('mousedown', {
+        bubbles: true,
+        button: 0,
+        clientX: 10,
+        clientY: 10,
+        composed: true,
+      })
+    );
+    control.dispatchEvent(
+      new MouseEvent('mouseup', {
+        bubbles: true,
+        button: 0,
+        clientX: 18,
+        clientY: 10,
+        composed: true,
+      })
+    );
+
+    expect(navigations).toEqual([]);
+  });
+
   it('resizes a right panel from the sash and reports the clamped width', () => {
     const resizes: Array<{ panel: string; width: number }> = [];
     const { control } = setup(undefined, undefined, undefined, (resize) =>

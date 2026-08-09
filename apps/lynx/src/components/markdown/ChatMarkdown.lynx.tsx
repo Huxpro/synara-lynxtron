@@ -24,39 +24,66 @@ import {
   toggleMarkdownCodeWrap,
   type MarkdownInlineTokenSegment,
 } from './markdownPresentation.logic';
+import {
+  resolveLynxInlineCodeFileReference,
+  resolveLynxMarkdownFileReference,
+} from './markdownFileReferences.logic';
+import { MarkdownFileReferenceToken } from './MarkdownFileReferenceToken.lynx';
 
 export interface ChatMarkdownProps {
   readonly text: string;
   readonly className?: string;
+  readonly cwd?: string | null;
   readonly variant?: MarkdownVariant;
   readonly mentionReferences?: ReadonlyArray<ProviderMentionReference>;
+  readonly onOpenFileReference?: (relativePath: string) => void;
 }
 
 interface MarkdownRenderContext {
   readonly allowComposerChips: boolean;
+  readonly cwd: string | null;
   readonly mentionReferences: ReadonlyArray<ProviderMentionReference>;
+  readonly onOpenFileReference?: (relativePath: string) => void;
   readonly variant: MarkdownVariant;
 }
 
 function MarkdownInlineToken({
+  context,
   segment,
 }: {
+  readonly context: MarkdownRenderContext;
   readonly segment: MarkdownInlineTokenSegment;
 }) {
   const presentation = resolveMarkdownInlineTokenPresentation(segment);
-  const target = presentation.openExternalUrl;
-  const activate = target
+  const externalTarget = presentation.openExternalUrl;
+  const fileReference =
+    segment.type === 'mention'
+      ? resolveLynxMarkdownFileReference({
+          cwd: context.cwd,
+          rawPath: segment.path,
+        })
+      : null;
+  const activate = externalTarget
     ? () => {
         'background only';
-        void platformWindow.openExternal(target);
+        void platformWindow.openExternal(externalTarget);
       }
-    : undefined;
+    : fileReference && context.onOpenFileReference
+      ? () => {
+          'background only';
+          context.onOpenFileReference?.(fileReference);
+        }
+      : undefined;
   const interaction = useLynxInteractiveState({
     baseClassName: `MdInlineToken MdInlineToken--${segment.type}`,
     focusable: Boolean(activate),
     onActivate: activate,
     accessibilityTraits: activate ? 'link' : 'text',
-    accessibleLabel: activate ? `Open ${target}` : presentation.label,
+    accessibleLabel: externalTarget
+      ? `Open ${externalTarget}`
+      : fileReference
+        ? `Open ${fileReference}`
+        : presentation.label,
   });
   return (
     <text className={interaction.className} {...interaction.eventProps}>
@@ -69,15 +96,25 @@ function MarkdownInlineToken({
 function renderUserText(
   value: string,
   key: string,
-  mentionReferences: ReadonlyArray<ProviderMentionReference>
+  context: MarkdownRenderContext
 ): React.ReactNode {
-  return splitPromptIntoDisplaySegments(value, mentionReferences).map(
-    (segment, index) =>
-      segment.type === 'text' ? (
-        <text key={`${key}.text.${index}`}>{segment.text}</text>
+  const occurrences = new Map<string, number>();
+  return splitPromptIntoDisplaySegments(value, context.mentionReferences).map(
+    (segment) => {
+      const identity = JSON.stringify(segment);
+      const occurrence = occurrences.get(identity) ?? 0;
+      occurrences.set(identity, occurrence + 1);
+      const segmentKey = `${key}.${segment.type}.${identity}.${occurrence}`;
+      return segment.type === 'text' ? (
+        <text key={segmentKey}>{segment.text}</text>
       ) : (
-        <MarkdownInlineToken key={`${key}.token.${index}`} segment={segment} />
-      )
+        <MarkdownInlineToken
+          context={context}
+          key={segmentKey}
+          segment={segment}
+        />
+      );
+    }
   );
 }
 
@@ -133,6 +170,12 @@ function MarkdownLink({
 }) {
   const url = node.url ?? '';
   const external = /^https?:\/\//i.test(url);
+  const fileReference = external
+    ? null
+    : resolveLynxMarkdownFileReference({
+        cwd: context.cwd,
+        rawPath: url,
+      });
   const activate = external
     ? () => {
         'background only';
@@ -144,9 +187,25 @@ function MarkdownLink({
     disabled: !activate,
     focusable: Boolean(activate),
     onActivate: activate,
-    accessibilityTraits: external ? 'link' : 'text',
+    accessibilityTraits: activate ? 'link' : 'text',
     accessibleLabel: external ? `Open ${url}` : undefined,
   });
+  if (fileReference) {
+    return (
+      <MarkdownFileReferenceToken
+        className="MdInlineToken MdInlineToken--file"
+        key={nodeKey}
+        onOpenFileReference={context.onOpenFileReference}
+        relativePath={fileReference}
+        showGlyph
+      >
+        {renderInlineChildren(node, nodeKey, {
+          ...context,
+          allowComposerChips: false,
+        })}
+      </MarkdownFileReferenceToken>
+    );
+  }
   return (
     <text className={interaction.className} key={nodeKey} {...interaction.eventProps}>
       {renderInlineChildren(node, nodeKey, {
@@ -179,6 +238,39 @@ function MarkdownCodeAction({
     <view className={interaction.className} aria-label={label} {...interaction.eventProps}>
       {children}
     </view>
+  );
+}
+
+function MarkdownInlineCode({
+  context,
+  node,
+  nodeKey,
+}: {
+  readonly context: MarkdownRenderContext;
+  readonly node: MarkdownNode;
+  readonly nodeKey: string;
+}) {
+  const fileReference = resolveLynxInlineCodeFileReference({
+    cwd: context.cwd,
+    value: node.value ?? '',
+  });
+  if (fileReference) {
+    return (
+      <MarkdownFileReferenceToken
+        className="MdInlineToken MdInlineToken--file"
+        key={nodeKey}
+        onOpenFileReference={context.onOpenFileReference}
+        relativePath={fileReference}
+        showGlyph
+      >
+        {node.value ?? ''}
+      </MarkdownFileReferenceToken>
+    );
+  }
+  return (
+    <text className="MdCode MdInlineCode" key={nodeKey}>
+      {node.value ?? ''}
+    </text>
   );
 }
 
@@ -268,7 +360,7 @@ function renderNode(
       return <view key={key}>{children()}</view>;
     case 'text':
       return context.variant === 'user' && context.allowComposerChips
-        ? renderUserText(node.value ?? '', key, context.mentionReferences)
+        ? renderUserText(node.value ?? '', key, context)
         : <text key={key}>{node.value ?? ''}</text>;
     case 'paragraph':
       return (
@@ -349,9 +441,11 @@ function renderNode(
       return <MarkdownCodeBlock node={node} nodeKey={key} />;
     case 'inlineCode':
       return (
-        <text className="MdCode MdInlineCode" key={key}>
-          {node.value ?? ''}
-        </text>
+        <MarkdownInlineCode
+          context={context}
+          node={node}
+          nodeKey={key}
+        />
       );
     case 'math':
       return (
@@ -385,8 +479,10 @@ function renderNode(
 export function ChatMarkdown({
   text,
   className,
+  cwd = null,
   variant = 'assistant',
   mentionReferences = [],
+  onOpenFileReference,
 }: ChatMarkdownProps) {
   const [tree, setTree] = useState<MarkdownNode | null>(null);
 
@@ -402,7 +498,9 @@ export function ChatMarkdown({
 
   const context: MarkdownRenderContext = {
     allowComposerChips: variant === 'user',
+    cwd,
     mentionReferences,
+    onOpenFileReference,
     variant,
   };
 
@@ -412,7 +510,15 @@ export function ChatMarkdown({
         variant === 'user' ? ' MdRoot--user' : ''
       }`}
     >
-      {tree ? renderNode(tree, 'root', context) : <text className="MdParagraph">{text}</text>}
+      {tree ? (
+        renderNode(tree, 'root', context)
+      ) : (
+        <text className="MdParagraph">
+          {variant === 'user'
+            ? renderUserText(text, 'fallback', context)
+            : text}
+        </text>
+      )}
     </view>
   );
 }

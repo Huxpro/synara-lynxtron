@@ -3,6 +3,7 @@ const WEB_FOCUS_CLASS = 'ui-focus';
 const ENVIRONMENT_TOGGLE_SELECTOR = '.EnvironmentToggle';
 const EXPLORER_TOGGLE_SELECTOR = '.ThreadFilesToggle';
 const EXPLORER_ENTRY_SELECTOR = '.ExplorerDockEntry';
+const FILE_REFERENCE_SELECTOR = '.MdInlineToken--file, .MdInlineToken--mention';
 const EXPLORER_SEARCH_SELECTOR = '.ExplorerDockSearchInput';
 const RIGHT_PANEL_RESIZE_SASH_SELECTOR = '.RightPanelResizeSash';
 const LYNX_FOCUSABLE_SELECTOR = '[focusable="true"]';
@@ -76,6 +77,13 @@ export function installLynxWebInteractionStateBridge(
         readonly panelName: string;
         readonly startWidth: number;
         readonly startX: number;
+      }
+    | null = null;
+  let fileReferencePointer:
+    | {
+        readonly path: string;
+        readonly startX: number;
+        readonly startY: number;
       }
     | null = null;
   const syncTabStop = (element: HTMLElement) => {
@@ -185,6 +193,28 @@ export function installLynxWebInteractionStateBridge(
   root.addEventListener(
     'mousedown',
     (event) => {
+      if (event instanceof MouseEvent && event.button === 0) {
+        const fileReference = event
+          .composedPath()
+          .find(
+            (target): target is HTMLElement =>
+              target instanceof HTMLElement &&
+              target.matches(FILE_REFERENCE_SELECTOR)
+          );
+        const label =
+          fileReference?.getAttribute('accessibility-label') ?? '';
+        if (
+          fileReference?.getAttribute('aria-disabled') !== 'true' &&
+          label.startsWith('Open ') &&
+          label.length > 5
+        ) {
+          fileReferencePointer = {
+            path: label.slice(5),
+            startX: event.clientX,
+            startY: event.clientY,
+          };
+        }
+      }
       if (
         !onRightPanelResize ||
         !(event instanceof MouseEvent) ||
@@ -240,7 +270,21 @@ export function installLynxWebInteractionStateBridge(
   root.addEventListener(
     'mouseup',
     (event) => {
-      if (!resize || !(event instanceof MouseEvent)) return;
+      if (!(event instanceof MouseEvent)) return;
+      if (fileReferencePointer) {
+        const pointer = fileReferencePointer;
+        fileReferencePointer = null;
+        if (
+          onExplorerNavigation &&
+          Math.abs(event.clientX - pointer.startX) <= 2 &&
+          Math.abs(event.clientY - pointer.startY) <= 2
+        ) {
+          onExplorerNavigation({ path: pointer.path });
+          event.preventDefault();
+          return;
+        }
+      }
+      if (!resize) return;
       const width = Math.round(
         resize.panel.getBoundingClientRect().width ||
           Number.parseFloat(resize.panel.style.width) ||
@@ -300,7 +344,8 @@ export function installLynxWebInteractionStateBridge(
             target.matches(EXPLORER_ENTRY_SELECTOR)
         );
       if (
-        entry?.getAttribute('aria-disabled') !== 'true' &&
+        entry &&
+        entry.getAttribute('aria-disabled') !== 'true' &&
         onExplorerNavigation
       ) {
         const label = entry.getAttribute('accessibility-label') ?? '';
@@ -318,6 +363,24 @@ export function installLynxWebInteractionStateBridge(
           onExplorerNavigation({
             expandedDirectory: { open: false, path: label.slice(9) },
           });
+        }
+      }
+      const fileReference = event
+        .composedPath()
+        .find(
+          (target): target is HTMLElement =>
+            target instanceof HTMLElement &&
+            target.matches(FILE_REFERENCE_SELECTOR)
+        );
+      if (
+        fileReference &&
+        fileReference.getAttribute('aria-disabled') !== 'true' &&
+        onExplorerNavigation
+      ) {
+        const label =
+          fileReference.getAttribute('accessibility-label') ?? '';
+        if (label.startsWith('Open ') && label.length > 5) {
+          onExplorerNavigation({ path: label.slice(5) });
         }
       }
     },
@@ -370,6 +433,37 @@ export function installLynxWebInteractionStateBridge(
       onEnvironmentActivation({
         open: !element.classList.contains('EnvironmentToggle--open'),
       });
+    },
+    listenerOptions
+  );
+  root.addEventListener(
+    'keydown',
+    (event) => {
+      if (
+        !onExplorerNavigation ||
+        !(event instanceof KeyboardEvent) ||
+        (event.key !== 'Enter' && event.key !== ' ' && event.key !== 'Spacebar')
+      ) {
+        return;
+      }
+      const fileReference = event
+        .composedPath()
+        .find(
+          (target): target is HTMLElement =>
+            target instanceof HTMLElement &&
+            target.matches(FILE_REFERENCE_SELECTOR)
+        );
+      if (
+        !fileReference ||
+        fileReference.getAttribute('aria-disabled') === 'true'
+      ) {
+        return;
+      }
+      const label =
+        fileReference.getAttribute('accessibility-label') ?? '';
+      if (!label.startsWith('Open ') || label.length <= 5) return;
+      event.preventDefault();
+      onExplorerNavigation({ path: label.slice(5) });
     },
     listenerOptions
   );

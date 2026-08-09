@@ -51,6 +51,7 @@ describe('Lynx Explorer dock', () => {
     expect(source).toContain('placeholder="Search files..."');
     expect(source).toContain("entry.kind === 'directory'");
     expect(source).toContain('<ChatMarkdown');
+    expect(source).toContain('onOpenFileReference={props.onSelectPath}');
     expect(source).toContain('className="ExplorerDockImage"');
     expect(source).toContain('mode="aspectFit"');
     expect(source).toContain('Could not load this image.');
@@ -103,6 +104,12 @@ describe('Lynx Explorer dock', () => {
     expect(routerSource).toContain(
       'onActivate: () => setExplorerVisibility(!explorerOpen)'
     );
+    expect(routerSource).toContain(
+      'onOpenFileReference={openExplorerFileReference}'
+    );
+    expect(routerSource).toContain("onExplorerQueryChange('')");
+    expect(routerSource).toContain('onExplorerSelectPath(relativePath)');
+    expect(routerSource).toContain('setExplorerVisibility(true)');
     expect(routerSource).toContain(
       'useState(initialExplorerOpen)'
     );

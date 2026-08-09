@@ -8547,3 +8547,24 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   authenticated RPC action由focused tests锁定。cleanup snapshot sequence6、
   live project/thread 0/0。证据在
   `shots/2026-08-09/explorer-pdf-fallback-current/`。
+
+### Explorer chat file references
+
+- Lynx chat中的structured file mentions、local Markdown links与file-shaped inline
+  code现在都能打开现有Explorer owner；没有新建第二套file viewer。Web原先组件内的
+  inline-code candidate grammar抽到shared pure logic，Lynx复用Web Markdown-link
+  resolver并在打开前拒绝external、traversal与out-of-workspace targets，line/column
+  suffix只用于识别、不进入preview path。
+- `ThreadPage`收到安全relative path后清空Explorer search、选择目标、关闭Environment/
+  Diff并打开Explorer。Explorer内Markdown也复用同一callback。user Markdown parser
+  尚未完成时，fallback继续走structured composer segment renderer，不再短暂退化为
+  raw `@path` text。
+- Native保留原始`bindtap`；Lynx-for-Web因custom text不发布normal click，复用既有
+  audited host navigation target，并增加click/Enter/Space与2px pointer threshold，
+  不写React state、不直改SQLite。
+- canonical public `thread.turn.start` fixture真实渲染`@router.tsx`，light/dark
+  `1280x820`中token均为`73.625x17`且AX label为
+  `Open src/app/router.tsx`。真实mouse down/up后URL写入安全relative path，Explorer
+  均为`640x774`，preview为`375x17`并显示
+  `export const openedFromMarkdown = true;`；relay包含`projects.readFile`。
+  证据在`shots/2026-08-09/explorer-file-references-current/`。

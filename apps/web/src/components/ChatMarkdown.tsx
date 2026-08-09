@@ -29,7 +29,7 @@ import remarkMath from "remark-math";
 import { copyTextToClipboard } from "~/platform/clipboard";
 import { resolveDiffThemeName, type DiffThemeName } from "../lib/diffRendering";
 import { dedentCode, parseCodeFenceInfo, type CodeFenceInfo } from "../lib/codeFence";
-import { getFileIconName, pathLooksLikeKnownFile } from "../file-icons";
+import { getFileIconName } from "../file-icons";
 import { CentralIcon } from "~/lib/central-icons";
 import { isLocalImageMarkdownSrc } from "../lib/localImageUrls";
 import { useTheme } from "../hooks/useTheme";
@@ -59,6 +59,7 @@ import {
   parseComposerChipSegment,
 } from "../lib/remarkComposerChips";
 import { IconButton } from "./ui/icon-button";
+import { resolveInlineCodeFilePath } from "../lib/markdownFileReferences";
 
 import { useDebouncedValue } from "@tanstack/react-pacer";
 const EXTERNAL_HTTP_HREF_PATTERN = /^https?:\/\//i;
@@ -734,27 +735,6 @@ function extractCodeBlock(
   };
 }
 
-const INLINE_CODE_FILE_PATH_MAX_LENGTH = 120;
-
-// Decides whether an inline code span names a file/path that should render as a
-// mention chip (icon + medium label), matching how a file reads in the composer.
-// Conservative on purpose: requires a recognized filename/extension and rejects
-// whitespace and URLs so ordinary prose tokens stay plain inline code.
-function inlineCodeFilePath(raw: string): string | null {
-  // Strip a pair of surrounding quotes/backticks the author may have wrapped the
-  // path in (e.g. `'src/data/social-metrics.ts'`).
-  const value = raw.trim().replace(/^['"`]+|['"`]+$/g, "");
-  if (
-    value.length === 0 ||
-    value.length > INLINE_CODE_FILE_PATH_MAX_LENGTH ||
-    /\s/.test(value) ||
-    value.includes("://")
-  ) {
-    return null;
-  }
-  return pathLooksLikeKnownFile(value) ? value : null;
-}
-
 // Shared openable file chip: the same mention-chip UI (file icon + medium label)
 // used for both assistant markdown file links and inline code that names a file.
 // A plain click prefers the surface's in-app viewer (right-dock file pane);
@@ -1159,7 +1139,7 @@ function ChatMarkdown({
         // mention chip. The target is resolved against cwd so it opens like a
         // markdown file link; an unresolvable path still chips on its raw value.
         if (!className) {
-          const filePath = inlineCodeFilePath(nodeToPlainText(children));
+          const filePath = resolveInlineCodeFilePath(nodeToPlainText(children));
           if (filePath) {
             const targetPath = resolveMarkdownFileLinkTarget(filePath, cwd) ?? filePath;
             return <OpenableFileChip targetPath={targetPath} theme={resolvedTheme} />;

@@ -1,0 +1,45 @@
+import { describe, expect, it } from '@rstest/core';
+import { fireEvent, render } from '@lynx-js/react/testing-library';
+
+import { MarkdownFileReferenceToken } from './MarkdownFileReferenceToken.lynx';
+
+describe('Lynx markdown file reference token', () => {
+  it('publishes an accessible file-open action', () => {
+    const openedPaths: string[] = [];
+    const onOpenFileReference = (relativePath: string) => {
+      openedPaths.push(relativePath);
+    };
+    render(
+      <MarkdownFileReferenceToken
+        className="MdInlineToken MdInlineToken--file"
+        onOpenFileReference={onOpenFileReference}
+        relativePath="src/app/router.tsx"
+        showGlyph
+      >
+        the router
+      </MarkdownFileReferenceToken>
+    );
+
+    const reference = elementTree.root?.querySelector('.MdInlineToken--file');
+    expect(reference?.getAttribute('accessibility-label')).toBe(
+      'Open src/app/router.tsx'
+    );
+    fireEvent.tap(reference!);
+    expect(openedPaths).toEqual(['src/app/router.tsx']);
+  });
+
+  it('stays non-interactive without an owning opener', () => {
+    render(
+      <MarkdownFileReferenceToken
+        className="MdInlineToken MdInlineToken--file"
+        relativePath="README.md"
+      >
+        README.md
+      </MarkdownFileReferenceToken>
+    );
+
+    const reference = elementTree.root?.querySelector('.MdInlineToken--file');
+    expect(reference?.getAttribute('accessibility-traits')).toBe('text');
+    expect(reference?.getAttribute('focusable')).not.toBe('true');
+  });
+});
