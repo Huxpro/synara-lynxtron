@@ -8471,3 +8471,20 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - focused **3 files / 9 tests**和Native/Desktop production build通过。fixture canonical
   cleanup snapshot219：live project0、live thread0；named sessions和临时public
   harness已删除。
+
+### Explorer directory tree fidelity
+
+- Explorer不再把directory rows禁用为静态占位。`SliceRouter`拥有Web等价的
+  expanded-path set，按已展开路径lazy调用typed `projects.listDirectories`；
+  successful results缓存30秒，失败请求从缓存剔除以允许retry。搜索模式仍保持扁平。
+- `ExplorerDock`递归渲染目录，复用shared `LynxDisclosureChevron` motion；tree rows从
+  旧36px双行`docsdocs/srcsrc`收敛到Web authority的28px单行，root/child/grandchild
+  padding-left为8/22/36px。
+- Lynx-for-Web只在host compatibility层用可重复`explorerExpanded` URL target弥补
+  Web Elements不发布`bindtap`；Native/Desktop bundle继续走原始live `bindtap`。
+- canonical `/tmp/synara-env-toggle-wrapper-fixture`真实鼠标依次展开`src`和
+  `src/nested`，渲染`tree.ts`、`deep.ts`后折叠parent；relay记录root/src/nested三次
+  `projects.listDirectories`，connection1、pending0、transport error null。
+- light/dark 1280x820/DPR1 geometry完全一致，两张PNG尺寸正确、page errors为空。
+  focused **5 files / 17 tests**、Lynx-for-Web与Native/Desktop production builds
+  通过；证据在`shots/2026-08-09/explorer-directory-tree-current/`。

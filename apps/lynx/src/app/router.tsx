@@ -21,12 +21,15 @@ import { findProviderStatus } from '@synara-web/lib/providerAvailability';
 import { clampSidebarWidth } from '@synara-web/components/sidebarResize.logic';
 
 import {
+  fetchExplorerDirectory,
   fetchExplorerEntries,
   fetchExplorerFile,
   fetchThreadHeaderSummary,
   fetchThreadTranscriptRows,
   fetchThreads,
+  type ExplorerEntriesResult,
 } from './queries';
+import { toggleExpandedDirectory } from './explorerTree.logic';
 import { threadRecapRevision } from './environmentRecap.logic';
 import type { EnvironmentBootstrapData } from './environmentBootstrap.lynx';
 import { Transcript, type TranscriptController } from './Transcript';
@@ -255,6 +258,12 @@ function ThreadPage(props: {
   >['entries'];
   readonly explorerEntriesError: boolean;
   readonly explorerEntriesPending: boolean;
+  readonly explorerDirectoryEntries: Readonly<
+    Record<string, ExplorerEntriesResult['entries']>
+  >;
+  readonly explorerDirectoryErrors: ReadonlySet<string>;
+  readonly explorerDirectoryPending: ReadonlySet<string>;
+  readonly explorerExpandedDirectories: ReadonlySet<string>;
   readonly explorerFile: Awaited<ReturnType<typeof fetchExplorerFile>> | null;
   readonly explorerFileError: boolean;
   readonly explorerFilePending: boolean;
@@ -266,6 +275,7 @@ function ThreadPage(props: {
   readonly isPending: boolean;
   readonly onExplorerQueryChange: (query: string) => void;
   readonly onExplorerSelectPath: (path: string) => void;
+  readonly onExplorerToggleDirectory: (path: string) => void;
   readonly threadId: string;
   readonly viewportWidth: number;
 }) {
@@ -277,6 +287,10 @@ function ThreadPage(props: {
     explorerEntries,
     explorerEntriesError,
     explorerEntriesPending,
+    explorerDirectoryEntries,
+    explorerDirectoryErrors,
+    explorerDirectoryPending,
+    explorerExpandedDirectories,
     explorerFile,
     explorerFileError,
     explorerFilePending,
@@ -288,6 +302,7 @@ function ThreadPage(props: {
     isPending,
     onExplorerQueryChange,
     onExplorerSelectPath,
+    onExplorerToggleDirectory,
     threadId,
     viewportWidth,
   } = props;
@@ -506,6 +521,10 @@ function ThreadPage(props: {
         entries={explorerEntries}
         entriesError={explorerEntriesError}
         entriesPending={explorerEntriesPending}
+        directoryEntries={explorerDirectoryEntries}
+        directoryErrors={explorerDirectoryErrors}
+        directoryPending={explorerDirectoryPending}
+        expandedDirectories={explorerExpandedDirectories}
         initialWidth={initialExplorerWidth}
         file={explorerFile}
         fileError={explorerFileError}
@@ -517,6 +536,7 @@ function ThreadPage(props: {
         onWidthChange={setExplorerDockWidth}
         onQueryChange={onExplorerQueryChange}
         onSelectPath={onExplorerSelectPath}
+        onToggleDirectory={onExplorerToggleDirectory}
         onClose={() => {
           setExplorerOpen(false);
           setExplorerDockWidth(null);
@@ -531,6 +551,7 @@ export function SliceRouter({
   initialRoute,
   initialThreadBootstrap,
   initialExplorerOpen,
+  initialExplorerExpandedDirectories,
   initialExplorerPath,
   initialExplorerQuery,
   initialExplorerWidth,
@@ -551,10 +572,16 @@ export function SliceRouter({
       readonly value: Awaited<ReturnType<typeof fetchExplorerFile>> | null;
       readonly error: boolean;
     };
+    readonly explorerDirectories: readonly (readonly [
+      string,
+      ExplorerEntriesResult['entries'],
+      boolean,
+    ])[];
     readonly summary: Awaited<ReturnType<typeof fetchThreadHeaderSummary>>;
     readonly threadId: string;
   } | null;
   readonly initialExplorerOpen: boolean;
+  readonly initialExplorerExpandedDirectories: readonly string[];
   readonly initialExplorerPath: string | null;
   readonly initialExplorerQuery: string;
   readonly initialExplorerWidth: number | null;
@@ -583,10 +610,16 @@ export function SliceRouter({
   const [explorerSelectedPath, setExplorerSelectedPath] = useState<
     string | null
   >(initialExplorerPath);
+  const [explorerExpandedDirectories, setExplorerExpandedDirectories] =
+    useState<ReadonlySet<string>>(
+      () => new Set(initialExplorerExpandedDirectories)
+    );
+  const previousExplorerThreadIdRef = useRef(activeThreadId);
   const explorerTrimmedQuery = explorerQuery.trim();
   const {
     data: activeThreadData,
     error: activeThreadError,
+    isFetching: activeThreadFetching,
     isPending: activeThreadPending,
   } = useQuery({
     queryKey: [
@@ -594,6 +627,7 @@ export function SliceRouter({
       activeThreadId,
       explorerTrimmedQuery,
       explorerSelectedPath,
+      [...explorerExpandedDirectories].sort().join('\0'),
     ],
     queryFn: async () => {
       'background only';
@@ -622,9 +656,26 @@ export function SliceRouter({
               () => ({ value: null, error: true })
             )
           : { value: null, error: false };
+      const explorerDirectories =
+        summary?.workspaceRoot && explorerTrimmedQuery.length === 0
+          ? await Promise.all(
+              [...explorerExpandedDirectories].sort().map(async (path) => {
+                try {
+                  const result = await fetchExplorerDirectory({
+                    workspaceRoot: summary.workspaceRoot!,
+                    relativePath: path,
+                  });
+                  return [path, result.entries, false] as const;
+                } catch {
+                  return [path, [], true] as const;
+                }
+              })
+            )
+          : [];
       return {
         data,
         environment: null,
+        explorerDirectories,
         explorerEntries,
         explorerFile,
         summary,
@@ -657,13 +708,36 @@ export function SliceRouter({
             ? activeThreadData.explorerFile
             : matchingInitialThreadBootstrap?.explorerFile ??
               activeThreadData.explorerFile,
+        explorerDirectories: activeThreadData.explorerDirectories,
       }
     : matchingInitialThreadBootstrap ?? undefined;
   const resolvedActiveThreadPending =
     resolvedActiveThreadData === undefined && activeThreadPending;
+  const explorerDirectoryData = Object.fromEntries(
+    (resolvedActiveThreadData?.explorerDirectories ?? [])
+      .filter((entry) => !entry[2])
+      .map(([path, entries]) => [path, entries])
+  ) as Readonly<Record<string, ExplorerEntriesResult['entries']>>;
+  const explorerDirectoryErrors = new Set(
+    (resolvedActiveThreadData?.explorerDirectories ?? [])
+      .filter((entry) => entry[2])
+      .map(([path]) => path)
+  );
+  const explorerDirectoryPending = new Set(
+    activeThreadFetching
+      ? [...explorerExpandedDirectories].filter(
+          (path) =>
+            explorerDirectoryData[path] === undefined &&
+            !explorerDirectoryErrors.has(path)
+        )
+      : []
+  );
   useEffect(() => {
+    if (previousExplorerThreadIdRef.current === activeThreadId) return;
+    previousExplorerThreadIdRef.current = activeThreadId;
     setExplorerQuery('');
     setExplorerSelectedPath(null);
+    setExplorerExpandedDirectories(new Set());
   }, [activeThreadId]);
   const [persistedLastRoute, setPersistedLastRoute] =
     useState<LastThreadRoute | null>(null);
@@ -841,6 +915,10 @@ export function SliceRouter({
           resolvedActiveThreadData?.explorerEntries.error ?? false
         }
         explorerEntriesPending={resolvedActiveThreadPending}
+        explorerDirectoryEntries={explorerDirectoryData}
+        explorerDirectoryErrors={explorerDirectoryErrors}
+        explorerDirectoryPending={explorerDirectoryPending}
+        explorerExpandedDirectories={explorerExpandedDirectories}
         explorerFile={resolvedActiveThreadData?.explorerFile.value ?? null}
         explorerFileError={
           resolvedActiveThreadData?.explorerFile.error ?? false
@@ -859,6 +937,11 @@ export function SliceRouter({
           setExplorerSelectedPath(null);
         }}
         onExplorerSelectPath={setExplorerSelectedPath}
+        onExplorerToggleDirectory={(path) =>
+          setExplorerExpandedDirectories((current) =>
+            toggleExpandedDirectory(current, path)
+          )
+        }
         threadId={route.params.threadId}
         viewportWidth={viewportWidth}
       />

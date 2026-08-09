@@ -15,6 +15,14 @@ describe('Lynx Explorer dock', () => {
       new URL('./router.tsx', import.meta.url),
       'utf8'
     );
+    const queriesSource = readFileSync(
+      new URL('./queries.ts', import.meta.url),
+      'utf8'
+    );
+    const appSource = readFileSync(
+      new URL('./App.tsx', import.meta.url),
+      'utf8'
+    );
 
     expect(clientSource).toContain("'projects.listDirectories'");
     expect(clientSource).toContain("'projects.searchEntries'");
@@ -33,9 +41,29 @@ describe('Lynx Explorer dock', () => {
     );
     expect(source).toContain('<ResizableRightPanel');
     expect(source).toContain('placeholder="Search files..."');
-    expect(source).toContain("kind: 'file'");
+    expect(source).toContain("entry.kind === 'directory'");
     expect(source).toContain('<ChatMarkdown');
     expect(source).toContain('Preview truncated at 1 MB.');
+    expect(source).toContain('<ExplorerDirectory');
+    expect(source).toContain('expandedDirectories.has(entry.path)');
+    expect(source).toContain('disclosureChevronClassName(');
+    expect(source).toContain('Loading directory…');
+    expect(source).toContain('Could not load directory.');
+    expect(source).toContain('showPaths={Boolean(props.query.trim())}');
+    expect(queriesSource).toContain('export async function fetchExplorerDirectory');
+    expect(queriesSource).toContain('relativePath: input.relativePath');
+    expect(routerSource).toContain('fetchExplorerDirectory({');
+    expect(routerSource).toContain(
+      "[...explorerExpandedDirectories].sort().join('\\0')"
+    );
+    expect(routerSource).toContain('explorerDirectories,');
+    expect(appSource).toContain(
+      'initialExplorerExpandedDirectories.map(async (path)'
+    );
+    expect(appSource).toContain('fetchExplorerDirectory({');
+    expect(routerSource).toContain(
+      'toggleExpandedDirectory(current, path)'
+    );
     expect(routerSource).toContain("accessibleLabel: 'Toggle files panel'");
     expect(routerSource).toContain(
       'onActivate: () => setExplorerVisibility(!explorerOpen)'
@@ -73,6 +101,9 @@ describe('Lynx Explorer dock', () => {
     );
     expect(styles).toMatch(
       /\.ExplorerDockSearchInput\s*\{[^}]*height:\s*28px;[^}]*padding-left:\s*32px;/s
+    );
+    expect(styles).toMatch(
+      /\.ExplorerDockEntry\s*\{[^}]*min-height:\s*28px;[^}]*padding:\s*4px 8px;/s
     );
     expect(styles).toMatch(
       /\.ExplorerDockPreview\s*\{[^}]*flex:\s*1;[^}]*min-width:\s*0;[^}]*padding:\s*12px;/s

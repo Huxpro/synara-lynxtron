@@ -31,6 +31,7 @@ import {
   type EnvironmentBootstrapData,
 } from './environmentBootstrap.lynx';
 import {
+  fetchExplorerDirectory,
   fetchExplorerEntries,
   fetchExplorerFile,
   fetchThreadHeaderSummary,
@@ -77,6 +78,7 @@ export function App() {
     readonly initialExplorerOpen?: unknown;
     readonly initialExplorerPath?: unknown;
     readonly initialExplorerQuery?: unknown;
+    readonly initialExplorerExpandedDirectories?: unknown;
     readonly initialExplorerWidth?: unknown;
     readonly initialRoute?: unknown;
   };
@@ -95,6 +97,13 @@ export function App() {
     typeof initData.initialExplorerQuery === 'string'
       ? initData.initialExplorerQuery
       : '';
+  const initialExplorerExpandedDirectories = Array.isArray(
+    initData.initialExplorerExpandedDirectories
+  )
+    ? initData.initialExplorerExpandedDirectories.filter(
+        (path): path is string => typeof path === 'string' && path.length > 0
+      )
+    : [];
   const initialExplorerWidth =
     typeof initData.initialExplorerWidth === 'number' &&
     Number.isFinite(initData.initialExplorerWidth)
@@ -112,6 +121,11 @@ export function App() {
       readonly value: Awaited<ReturnType<typeof fetchExplorerFile>> | null;
       readonly error: boolean;
     };
+    readonly explorerDirectories: readonly (readonly [
+      string,
+      Awaited<ReturnType<typeof fetchExplorerDirectory>>['entries'],
+      boolean,
+    ])[];
     readonly summary: Awaited<ReturnType<typeof fetchThreadHeaderSummary>>;
     readonly threadId: string;
   } | null>(null);
@@ -154,6 +168,22 @@ export function App() {
                       () => ({ value: null, error: true })
                     )
                   : { value: null, error: false };
+              const explorerDirectories =
+                summary?.workspaceRoot && !initialExplorerQuery.trim()
+                  ? await Promise.all(
+                      initialExplorerExpandedDirectories.map(async (path) => {
+                        try {
+                          const result = await fetchExplorerDirectory({
+                            workspaceRoot: summary.workspaceRoot!,
+                            relativePath: path,
+                          });
+                          return [path, result.entries, false] as const;
+                        } catch {
+                          return [path, [], true] as const;
+                        }
+                      })
+                    )
+                  : [];
               const environment =
                 initialEnvironmentOpen && summary?.workspaceRoot
                   ? await fetchEnvironmentBootstrapData(summary.workspaceRoot)
@@ -161,6 +191,7 @@ export function App() {
               return {
                 data,
                 environment,
+                explorerDirectories,
                 explorerEntries,
                 explorerFile,
                 summary,
@@ -260,6 +291,9 @@ export function App() {
             initialExplorerOpen={initialExplorerOpen}
             initialExplorerPath={initialExplorerPath}
             initialExplorerQuery={initialExplorerQuery}
+            initialExplorerExpandedDirectories={
+              initialExplorerExpandedDirectories
+            }
             initialExplorerWidth={initialExplorerWidth}
             viewportWidth={viewportLayout.width}
             onThemeStateChange={setThemeState}

@@ -98,7 +98,7 @@
 
 .ExplorerDockEntry {
   display: flex;
-  min-height: 36px;
+  min-height: 28px;
   padding: 4px 8px;
   align-items: center;
   gap: 8px;
@@ -119,11 +119,27 @@
   text-align: center;
 }
 
+.ExplorerDockDirectoryChevron {
+  width: 14px;
+  height: 14px;
+  opacity: 0.75;
+}
+
+.ExplorerDockDirectoryState {
+  display: flex;
+  min-height: 28px;
+  align-items: center;
+  color: var(--muted-foreground);
+  font-size: 10px;
+  line-height: 14px;
+}
+
 .ExplorerDockEntryCopy {
   display: flex;
   min-width: 0;
   flex: 1;
-  flex-direction: column;
+  align-items: baseline;
+  gap: 6px;
 }
 
 .ExplorerDockEntryName {

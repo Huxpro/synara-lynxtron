@@ -163,11 +163,19 @@ export type ExplorerEntriesResult =
   | ProjectSearchEntriesResult;
 
 const EXPLORER_CACHE_TTL_MS = 2_000;
+const EXPLORER_DIRECTORY_CACHE_TTL_MS = 30_000;
 const explorerEntriesCache = new Map<
   string,
   {
     readonly expiresAt: number;
     readonly result: Promise<ExplorerEntriesResult>;
+  }
+>();
+const explorerDirectoryCache = new Map<
+  string,
+  {
+    readonly expiresAt: number;
+    readonly result: Promise<ProjectListDirectoriesResult>;
   }
 >();
 const explorerFileCache = new Map<
@@ -398,6 +406,35 @@ export async function fetchExplorerEntries(input: {
   explorerEntriesCache.set(cacheKey, {
     expiresAt: Date.now() + EXPLORER_CACHE_TTL_MS,
     result,
+  });
+  return result;
+}
+
+export async function fetchExplorerDirectory(input: {
+  readonly relativePath: string;
+  readonly workspaceRoot: string;
+}): Promise<ProjectListDirectoriesResult> {
+  'background only';
+  const cacheKey = `${input.workspaceRoot}\0${input.relativePath}`;
+  const cached = explorerDirectoryCache.get(cacheKey);
+  if (cached && cached.expiresAt > Date.now()) return cached.result;
+  const { listProjectDirectories } = await import(
+    /* webpackMode: "eager" */ '../data/synaraClient'
+  );
+  const result = listProjectDirectories({
+    cwd: input.workspaceRoot,
+    relativePath: input.relativePath,
+    includeFiles: true,
+    depth: 1,
+  });
+  explorerDirectoryCache.set(cacheKey, {
+    expiresAt: Date.now() + EXPLORER_DIRECTORY_CACHE_TTL_MS,
+    result,
+  });
+  void result.catch(() => {
+    if (explorerDirectoryCache.get(cacheKey)?.result === result) {
+      explorerDirectoryCache.delete(cacheKey);
+    }
   });
   return result;
 }

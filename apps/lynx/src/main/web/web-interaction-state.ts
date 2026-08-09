@@ -16,6 +16,10 @@ export interface LynxWebEnvironmentActivation {
 }
 
 export interface LynxWebExplorerNavigation {
+  readonly expandedDirectory?: {
+    readonly open: boolean;
+    readonly path: string;
+  };
   readonly path?: string;
   readonly query?: string;
 }
@@ -302,6 +306,18 @@ export function installLynxWebInteractionStateBridge(
         const label = entry.getAttribute('accessibility-label') ?? '';
         if (label.startsWith('Open ') && label.length > 5) {
           onExplorerNavigation({ path: label.slice(5) });
+          return;
+        }
+        if (label.startsWith('Expand ') && label.length > 7) {
+          onExplorerNavigation({
+            expandedDirectory: { open: true, path: label.slice(7) },
+          });
+          return;
+        }
+        if (label.startsWith('Collapse ') && label.length > 9) {
+          onExplorerNavigation({
+            expandedDirectory: { open: false, path: label.slice(9) },
+          });
         }
       }
     },

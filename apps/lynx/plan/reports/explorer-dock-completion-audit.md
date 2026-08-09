@@ -26,6 +26,8 @@ file preview, responsive layout, and light/dark Lynx-for-Web evidence pass.
 | Thread bootstrap hydration | Host route is supplied through Lynx `initData`; App prefetches the initial thread before leaving the hydration shell; canonical fixture rendered its real title, workspace, empty state, and enabled Files control | PASS |
 | Live Explorer activation | Trusted mouse click closes and opens the dock; focused keyboard Enter opens it. The Web-only compatibility path writes an idempotent `explorer=open\|closed` target to the harness URL and reloads the Lynx page, while Native keeps the original `bindtap`/`bindkeydown` path | PASS |
 | Live Explorer populated data | Canonical fixture rendered `docs`, `src`, and `README.md`; relay diagnostics included `projects.listDirectories`. Trusted README selection included `projects.readFile` and rendered the expected Markdown. Search `populated` + Enter included `projects.searchEntries`, returned only `src/populated.ts`, and its trusted selection rendered the source text | PASS |
+| Directory expansion | Canonical nested fixture expanded `src` then `src/nested` through real rendered mouse input, issued one lazy `projects.listDirectories` request per level, rendered `tree.ts` and `deep.ts`, and collapsed the parent without exposing descendants | PASS |
+| Tree row fidelity | Tree rows now match Web's 28px single-line anatomy, use the shared disclosure chevron motion, and indent root/child/grandchild content at 8/22/36px instead of duplicating names as `docsdocs` / `srcsrc` | PASS |
 | Live Explorer light/dark populated matrix | At `1280×820`, DPR 1, both themes render three entries, selected `README.md`, a `512×774` dock, `240px` sidebar, `239×685` entries scroll area, `271×730` preview, and `247×706` preview scroller. Light resolves the dock to `rgb(255,255,255)` / `rgb(13,13,13)`; dark resolves to `rgb(16,16,16)` / `rgb(252,252,252)`. Both PNGs are exactly `1280×820` | PASS |
 | Narrow Explorer geometry | At `900×700`, DPR 1, the dock clamps to `580px` (`900 - 320px` minimum main content), keeps a `240px` sidebar and `339px` preview, restores matching `padding-right:580px`, preserves the selected README preview, and exports an exact `900×700` PNG | PASS |
 | Explorer drag resizing | At `1280×820`, the Web-compatible sash path changed the dock from `640px` to `760px` through a trusted pointer drag. The target width survived the page refresh and `ThreadPage` restored matching `padding-right:760px`; Native retains the shared `createLynxSidebarResizeSession` path | PASS |
@@ -36,6 +38,20 @@ file preview, responsive layout, and light/dark Lynx-for-Web evidence pass.
 
 - This is the first real Explorer slice, not full Web Explorer parity.
 - The Lynx-for-Web activation blocker is resolved for trusted click and Enter.
-- Directory expansion, image/PDF preview, file references, ask-why, comments,
+- Image/PDF preview, file references, ask-why, comments,
   and syntax-highlighted rich preview remain future product scope rather than
   blockers for this first Explorer slice.
+
+## Directory-tree continuation
+
+`shots/2026-08-09/explorer-directory-tree-current/` closes the directory
+expansion gap with a two-level real fixture. Lynx owns the same expanded-path
+set as Web, lazy-loads each visible directory through the existing typed
+`projects.listDirectories` RPC, caches successful results for 30 seconds, and
+evicts failed requests so retry remains possible. Search results remain flat.
+
+The Web-only host compatibility layer represents expanded targets with repeated
+`explorerExpanded` URL parameters because Web Elements does not publish the
+ReactLynx `bindtap`; the Desktop bundle retains the original live `bindtap`
+state path. Light and dark `1280x820` evidence has identical 28px row geometry,
+8/22/36px indentation, empty page-error files, and three directory-list RPCs.

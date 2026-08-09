@@ -1,11 +1,14 @@
-import type {
-  ProjectReadFileResult,
-} from '@synara/contracts';
+import type { ProjectReadFileResult } from '@synara/contracts';
 
 import { ChatMarkdown } from '../components/markdown/ChatMarkdown';
 import { Input } from '../components/ui/input';
-import { FolderIcon, SearchIcon, XIcon } from '../lib/icons.lynx';
+import {
+  ChevronRightIcon,
+  SearchIcon,
+  XIcon,
+} from '../lib/icons.lynx';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
+import { disclosureChevronClassName } from '../platform/motion.lynx';
 import type { ExplorerEntriesResult } from './queries';
 import { ResizableRightPanel } from './ResizableRightPanel.lynx';
 import './explorer-dock.css';
@@ -18,26 +21,50 @@ function fileName(path: string): string {
   return path.replace(/\\/g, '/').split('/').pop() || path;
 }
 
+type ExplorerEntry = ExplorerEntriesResult['entries'][number];
+
 function ExplorerEntryRow(props: {
-  readonly entry: {
-    readonly kind: 'file' | 'directory';
-    readonly path: string;
-  };
+  readonly depth: number;
+  readonly entry: ExplorerEntry;
+  readonly expanded: boolean;
   readonly onSelect: (path: string) => void;
+  readonly onToggleDirectory: (path: string) => void;
   readonly selected: boolean;
+  readonly showPath: boolean;
 }) {
+  const directory = props.entry.kind === 'directory';
   const row = useLynxInteractiveState({
     baseClassName: `ExplorerDockEntry${
       props.selected ? ' ExplorerDockEntry--selected' : ''
     }`,
-    accessibleLabel: `Open ${props.entry.path}`,
-    disabled: props.entry.kind !== 'file',
-    onActivate: () => props.onSelect(props.entry.path),
+    accessibleLabel: directory
+      ? `${props.expanded ? 'Collapse' : 'Expand'} ${props.entry.path}`
+      : `Open ${props.entry.path}`,
+    accessibilityValue: directory
+      ? props.expanded
+        ? 'Expanded'
+        : 'Collapsed'
+      : undefined,
+    onActivate: () =>
+      directory
+        ? props.onToggleDirectory(props.entry.path)
+        : props.onSelect(props.entry.path),
   });
   return (
-    <view className={row.className} {...row.eventProps}>
-      {props.entry.kind === 'directory' ? (
-        <FolderIcon size={14} color="var(--muted-foreground)" />
+    <view
+      className={row.className}
+      style={{ paddingLeft: `${8 + props.depth * 14}px` }}
+      {...row.eventProps}
+    >
+      {directory ? (
+        <ChevronRightIcon
+          className={disclosureChevronClassName(
+            props.expanded,
+            'ExplorerDockDirectoryChevron'
+          )}
+          size={14}
+          color="var(--muted-foreground)"
+        />
       ) : (
         <text className="ExplorerDockFileGlyph">▤</text>
       )}
@@ -45,9 +72,79 @@ function ExplorerEntryRow(props: {
         <text className="ExplorerDockEntryName">
           {fileName(props.entry.path)}
         </text>
-        <text className="ExplorerDockEntryPath">{props.entry.path}</text>
+        {props.showPath ? (
+          <text className="ExplorerDockEntryPath">{props.entry.path}</text>
+        ) : null}
       </view>
     </view>
+  );
+}
+
+function ExplorerDirectory(props: {
+  readonly depth: number;
+  readonly directoryEntries: Readonly<
+    Record<string, ExplorerEntriesResult['entries']>
+  >;
+  readonly directoryErrors: ReadonlySet<string>;
+  readonly directoryPending: ReadonlySet<string>;
+  readonly entries: ExplorerEntriesResult['entries'];
+  readonly expandedDirectories: ReadonlySet<string>;
+  readonly onSelectPath: (path: string) => void;
+  readonly onToggleDirectory: (path: string) => void;
+  readonly selectedPath: string | null;
+  readonly showPaths: boolean;
+}) {
+  return (
+    <>
+      {props.entries.map((entry) => {
+        const expanded =
+          entry.kind === 'directory' &&
+          props.expandedDirectories.has(entry.path);
+        return (
+          <view key={entry.path}>
+            <ExplorerEntryRow
+              depth={props.depth}
+              entry={entry}
+              expanded={expanded}
+              selected={entry.path === props.selectedPath}
+              showPath={props.showPaths}
+              onSelect={props.onSelectPath}
+              onToggleDirectory={props.onToggleDirectory}
+            />
+            {expanded ? (
+              props.directoryPending.has(entry.path) ? (
+                <text
+                  className="ExplorerDockDirectoryState"
+                  style={{ paddingLeft: `${22 + (props.depth + 1) * 14}px` }}
+                >
+                  Loading directory…
+                </text>
+              ) : props.directoryErrors.has(entry.path) ? (
+                <text
+                  className="ExplorerDockDirectoryState ExplorerDockState--error"
+                  style={{ paddingLeft: `${22 + (props.depth + 1) * 14}px` }}
+                >
+                  Could not load directory.
+                </text>
+              ) : (
+                <ExplorerDirectory
+                  depth={props.depth + 1}
+                  directoryEntries={props.directoryEntries}
+                  directoryErrors={props.directoryErrors}
+                  directoryPending={props.directoryPending}
+                  entries={props.directoryEntries[entry.path] ?? []}
+                  expandedDirectories={props.expandedDirectories}
+                  onSelectPath={props.onSelectPath}
+                  onToggleDirectory={props.onToggleDirectory}
+                  selectedPath={props.selectedPath}
+                  showPaths={props.showPaths}
+                />
+              )
+            ) : null}
+          </view>
+        );
+      })}
+    </>
   );
 }
 
@@ -56,6 +153,12 @@ export function ExplorerDock(props: {
   readonly entries: ExplorerEntriesResult['entries'];
   readonly entriesError: boolean;
   readonly entriesPending: boolean;
+  readonly directoryEntries: Readonly<
+    Record<string, ExplorerEntriesResult['entries']>
+  >;
+  readonly directoryErrors: ReadonlySet<string>;
+  readonly directoryPending: ReadonlySet<string>;
+  readonly expandedDirectories: ReadonlySet<string>;
   readonly initialWidth: number | null;
   readonly file: ProjectReadFileResult | null;
   readonly fileError: boolean;
@@ -63,6 +166,7 @@ export function ExplorerDock(props: {
   readonly onClose: () => void;
   readonly onQueryChange: (query: string) => void;
   readonly onSelectPath: (path: string) => void;
+  readonly onToggleDirectory: (path: string) => void;
   readonly onWidthChange: (width: number) => void;
   readonly open: boolean;
   readonly query: string;
@@ -132,14 +236,18 @@ export function ExplorerDock(props: {
                 {props.query.trim() ? 'No matching files.' : 'No files found.'}
               </text>
             ) : (
-              props.entries.map((entry) => (
-                <ExplorerEntryRow
-                  key={entry.path}
-                  entry={entry}
-                  selected={entry.path === props.selectedPath}
-                  onSelect={props.onSelectPath}
-                />
-              ))
+              <ExplorerDirectory
+                depth={0}
+                directoryEntries={props.directoryEntries}
+                directoryErrors={props.directoryErrors}
+                directoryPending={props.directoryPending}
+                entries={props.entries}
+                expandedDirectories={props.expandedDirectories}
+                onSelectPath={props.onSelectPath}
+                onToggleDirectory={props.onToggleDirectory}
+                selectedPath={props.selectedPath}
+                showPaths={Boolean(props.query.trim())}
+              />
             )}
           </scroll-view>
         </view>

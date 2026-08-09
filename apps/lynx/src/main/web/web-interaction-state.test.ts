@@ -7,6 +7,10 @@ function setup(
   onExplorerActivation?: (activation: { readonly open: boolean }) => void,
   onEnvironmentActivation?: (activation: { readonly open: boolean }) => void,
   onExplorerNavigation?: (navigation: {
+    readonly expandedDirectory?: {
+      readonly open: boolean;
+      readonly path: string;
+    };
     readonly path?: string;
     readonly query?: string;
   }) => void,
@@ -79,17 +83,23 @@ describe('Lynx-for-Web interaction state bridge', () => {
     expect(activations).toEqual([true, false]);
   });
 
-  it('forwards file selection and search submission without activating directories', () => {
-    const navigations: Array<{ path?: string; query?: string }> = [];
+  it('forwards file selection, directory targets, and search submission', () => {
+    const navigations: Array<{
+      expandedDirectory?: { open: boolean; path: string };
+      path?: string;
+      query?: string;
+    }> = [];
     const { control } = setup(undefined, undefined, (navigation) =>
       navigations.push(navigation)
     );
     control.classList.add('ExplorerDockEntry');
-    control.setAttribute('aria-disabled', 'true');
-    control.setAttribute('accessibility-label', 'Open src');
+    control.setAttribute('aria-disabled', 'false');
+    control.setAttribute('accessibility-label', 'Expand src');
     control.click();
 
-    control.setAttribute('aria-disabled', 'false');
+    control.setAttribute('accessibility-label', 'Collapse src');
+    control.click();
+
     control.setAttribute('accessibility-label', 'Open README.md');
     control.click();
 
@@ -112,6 +122,8 @@ describe('Lynx-for-Web interaction state bridge', () => {
     );
 
     expect(navigations).toEqual([
+      { expandedDirectory: { open: true, path: 'src' } },
+      { expandedDirectory: { open: false, path: 'src' } },
       { path: 'README.md' },
       { query: 'populated' },
     ]);
