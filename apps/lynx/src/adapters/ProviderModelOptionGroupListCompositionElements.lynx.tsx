@@ -5,9 +5,13 @@ import starSvg from '@synara-central-icons/star.svg?raw';
 import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
 import {
   CheckIcon,
-  ChevronDownIcon,
   ChevronRightIcon,
 } from '../lib/icons.lynx';
+import {
+  disclosureChevronClassName,
+  disclosureContentClassName,
+  useLynxDisclosurePresence,
+} from '../platform/motion.lynx';
 import {
   lynxNestedInteractiveEventProps,
   useLynxInteractiveState,
@@ -39,8 +43,11 @@ export function ProviderModelCollapsibleGroupElement(props: {
   readonly open: boolean;
   readonly onOpenChange: (open: boolean) => void;
 }) {
+  const contentPresent = useLynxDisclosurePresence(props.open);
   const interaction = useLynxInteractiveState({
     baseClassName: 'ComposerModelGroupHeaderLynx',
+    accessibleLabel: `${props.open ? 'Collapse' : 'Expand'} ${props.label} models`,
+    accessibilityValue: props.open ? 'Expanded' : 'Collapsed',
     onActivate: () => {
       'background only';
       props.onOpenChange(!props.open);
@@ -54,21 +61,27 @@ export function ProviderModelCollapsibleGroupElement(props: {
         aria-expanded={props.open}
         {...interaction.eventProps}
       >
-        {props.open ? (
-          <ChevronDownIcon
-            className="ComposerModelGroupChevronLynx"
-            size={12}
-          />
-        ) : (
-          <ChevronRightIcon
-            className="ComposerModelGroupChevronLynx"
-            size={12}
-          />
-        )}
+        <ChevronRightIcon
+          className={disclosureChevronClassName(
+            props.open,
+            'ComposerModelGroupChevronLynx'
+          )}
+          size={12}
+        />
         <text className="ComposerModelGroupLabelLynx">{props.label}</text>
         <text className="ComposerModelGroupCountLynx">{props.count}</text>
       </view>
-      {props.open ? props.children : null}
+      {contentPresent ? (
+        <view
+          className={disclosureContentClassName(
+            props.open,
+            'ComposerModelGroupContentLynx'
+          )}
+          aria-hidden={!props.open}
+        >
+          {props.children}
+        </view>
+      ) : null}
     </view>
   );
 }

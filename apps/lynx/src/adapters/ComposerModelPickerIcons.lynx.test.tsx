@@ -30,8 +30,16 @@ describe('Composer model picker icon fidelity', () => {
     expect(controlSource).toContain(
       'className="ComposerProviderBackIconLynx"'
     );
-    expect(groupSource).toContain('<ChevronDownIcon');
     expect(groupSource).toContain('<ChevronRightIcon');
+    expect(groupSource).toContain('disclosureChevronClassName(');
+    expect(groupSource).toContain(
+      'useLynxDisclosurePresence(props.open)'
+    );
+    expect(groupSource).toContain('disclosureContentClassName(');
+    expect(groupSource).not.toContain('<ChevronDownIcon');
+    expect(groupSource).not.toContain(
+      '{props.open ? props.children : null}'
+    );
     expect(groupSource).toContain('<CheckIcon size={12} />');
     expect(triggerSource).toContain(
       "import fastModeSvg from '@synara-central-icons-fill/zap.svg?raw';"
@@ -50,6 +58,9 @@ describe('Composer model picker icon fidelity', () => {
     );
     expect(styles).toMatch(
       /\.ComposerModelGroupChevronLynx\s*\{[^}]*width:\s*12px;[^}]*height:\s*12px;[^}]*opacity:\s*0\.5;/s
+    );
+    expect(styles).toMatch(
+      /\.ComposerModelGroupContentLynx\s*\{[^}]*width:\s*100%;[^}]*padding-bottom:\s*2px;/s
     );
     expect(styles).toMatch(
       /\.ComposerModelOptionFavoriteIconLynx\s*\{[^}]*width:\s*12px;[^}]*height:\s*12px;/s

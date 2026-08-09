@@ -272,6 +272,7 @@ Current responsive disposition:
 | Kanban icon identity | route Back, overview project disclosure, and all New task entry points use generated Arrow/Chevron/Plus SVGs; Draft/In Progress/Done status marks reproduce Web's exact 14×14 paths; card pin/worktree/fork/attachment/PR metadata use the same filled-pin, split-arrow, fork, paperclip, and shared PR-state assets as Web instead of text approximations | PASS — CURRENT PRODUCT SURFACES |
 | Composer voice capability | Lynx has no microphone-capture host bridge; current head follows Web's capability gate by omitting the unavailable control instead of rendering a permanently disabled fake microphone. The historical 28×28 disabled-control evidence remains provenance for the superseded implementation, not current-head UI | PASS — HONEST HOST BOUNDARY |
 | Composer model-picker icon identity | model status, provider Back, collapsible-group disclosure, selected-model, Fast mode trigger/toggle, and Favorite affordances use generated/Central Settings, Arrow, Chevron, Check, outline/filled Zap, and outline/filled Star icons instead of Unicode approximations while retaining the existing 14px/12px geometry | PASS — CURRENT PRODUCT SURFACES |
+| Composer model-group disclosure | collapsible provider groups use one shared rotating 12px ChevronRight identity, named expanded/collapsed state, and the canonical 220ms presence/content motion instead of swapping right/down SVGs and immediately mounting model rows | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
 | Composer reference icon identity | assistant/file-comment summaries, pasted-text cards, generic file cards, remove actions, and show-in-field disclosure use MessageCircle, File/FileEntry, X, and ChevronRight icons instead of circle/cross/text-block glyphs | PASS — CURRENT PRODUCT SURFACES |
 | Composer token icon identity | mention, agent, skill, terminal-context, and link chips use file-type, Robot, Building Blocks, Console, and External Link SVG identities in both canonical segment rendering and the Native draft projection; only the slash-command chip retains its semantic `/` text marker | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
 | Composer sending-state identity | the primary action uses Web's exact 14-viewBox, 12px animated partial-circle spinner instead of a static `•••` text approximation; send and stop states retain their existing canonical arrow and square identities | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
@@ -417,6 +418,14 @@ diff-logic tests pass (6 assertions total), both production bundles build,
 `git diff --check` passes, and React Doctor 0.9.11 reports zero diagnostics for
 both `apps/lynx` and `apps/web` against `f7398e67`. Visual re-certification
 remains part of the pending current-head matrix.
+The Composer model-group follow-up closes the same motion-contract gap on the
+high-frequency model picker. Lynx now keeps one 12px ChevronRight in the shared
+220ms rotation class, preserves group rows through the closing animation, and
+exposes named expanded/collapsed accessibility state. Model selection,
+favourites, cost metadata, and popup ownership are unchanged. The focused
+model-picker contract test, both production builds, `git diff --check`, and
+React Doctor 0.9.11 against `bfe6ba38` pass with zero diagnostics; current-head
+visual re-certification remains pending.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

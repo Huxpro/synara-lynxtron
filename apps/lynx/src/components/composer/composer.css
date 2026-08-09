@@ -746,6 +746,11 @@
   margin-left: auto;
 }
 
+.ComposerModelGroupContentLynx {
+  width: 100%;
+  padding-bottom: 2px;
+}
+
 .ComposerModelOptionLynx {
   min-height: 30px;
   padding: 5px 8px;
