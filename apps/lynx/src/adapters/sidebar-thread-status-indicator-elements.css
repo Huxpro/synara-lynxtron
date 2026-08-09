@@ -19,16 +19,13 @@
 }
 
 .LynxSidebarThreadStatus--completed {
-  width: 13px;
-  height: 13px;
-  align-items: center;
-  justify-content: center;
-  background-color: #10b981;
+  width: 15px;
+  height: 15px;
+  background-color: transparent;
 }
 
 .LynxSidebarThreadStatusCheck {
-  color: #ffffff;
-  font-size: 9px;
-  font-weight: 700;
-  line-height: 11px;
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
 }

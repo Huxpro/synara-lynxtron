@@ -1,5 +1,7 @@
 import type { ReactNode } from '@lynx-js/react';
+import circleCheckSvg from '@synara-central-icons-fill/circle-check.svg?raw';
 
+import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
 import './sidebar-thread-status-indicator-elements.css';
 
 function StatusShell({
@@ -28,7 +30,10 @@ export function SidebarThreadStatusCompletedElement({
       label="Completed"
       className="LynxSidebarThreadStatus LynxSidebarThreadStatus--completed"
     >
-      <text className="LynxSidebarThreadStatusCheck">✓</text>
+      <svg
+        className="LynxSidebarThreadStatusCheck"
+        content={colorizeLynxSvg(circleCheckSvg, '#00a240')}
+      />
     </StatusShell>
   );
 }
