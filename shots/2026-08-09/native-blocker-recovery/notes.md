@@ -7,7 +7,7 @@ Commit: `b7b06ac7`
 Bundle:
 
 - path: `apps/lynx/dist/desktop/main.lynx.bundle`
-- SHA-256: `724cfa5e52b14ec945ec96cb9fec349e94703207a50d0878b7bcc384abd99b50`
+- SHA-256: `cf453720348ffd0fc018673a79991e96ee4c26cd16bcc84bea32e506224385ca`
 
 Runtime:
 
@@ -17,15 +17,14 @@ Runtime:
 - isolated server: `127.0.0.1:58800`
 - isolated state: `.synara-native-matrix`
 - isolated renderer state: `/tmp/synara-native-matrix-user`
-- launch argument: `/settings/general` (not accepted by the
-  `synara://` deep-link parser)
+- startup route: `synara://settings/general`
 
 ## Cells
 
 | Cell | Outer window | Root class | Route | Console | Screenshot |
 | --- | --- | --- | --- | --- | --- |
-| Shell light | `1280x820` | `SliceRoot--theme-light` | populated shell DOM | no error/warning entries | `settings-light-1280.png`, `2560x1640` |
-| Shell dark | `1440x900` | `SliceRoot--theme-dark` | populated shell DOM | no error/warning entries | `settings-dark-1440.png`, `2880x1800` |
+| Settings light | `1280x820` | `SliceRoot--theme-light` / `SettingsPage--theme-light` | `SharedSettingsGeneralRoot` plus active General navigation row | no error/warning entries | `settings-light-1280.png`, `2560x1640` |
+| Settings dark | `1440x900` | `SliceRoot--theme-dark` / `SettingsPage--theme-dark` | `SharedSettingsGeneralRoot` plus active General navigation row | no error/warning entries | `settings-dark-1440.png`, `2880x1800` |
 
 The theme was supplied through the product's persisted `synara:theme` format in
 the isolated KV file. Window dimensions were supplied through the isolated
@@ -35,11 +34,10 @@ native `window-state.json`; CoreGraphics confirmed the requested outer bounds.
 
 Both cells initialized the current production bundle, rendered a populated
 document tree, reached `shellRendererReady`, and retained clean exact-client
-error/warning consoles. They close the former template-context startup blocker
-for both themes and both certification sizes. They do not prove a Settings
-route: the bare `/settings/general` argument was not accepted by
-`routeFromArguments`, which only parses `synara://` deep links. The later Theme
-Pack follow-up uses the correct `synara://settings/appearance` route.
+error/warning consoles. The original diagnostic used a bare route argument,
+which `routeFromArguments` does not accept. These retained files replace that
+invalid diagnostic and use the real `synara://settings/general` deep link with
+strict `SettingsPage` and `SharedSettingsGeneralRoot` assertions.
 
 Lynxtron `0.0.9` DevTool screenshots cover the full outer window dimensions,
 whereas the previous `0.0.7` harness documented titlebar-subtracted LynxView
