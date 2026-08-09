@@ -278,6 +278,7 @@ Current responsive disposition:
 | Composer token icon identity | mention, agent, skill, terminal-context, and link chips use file-type, Robot, Building Blocks, Console, and External Link SVG identities in both canonical segment rendering and the Native draft projection; only the slash-command chip retains its semantic `/` text marker | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
 | Composer sending-state identity | the primary action uses Web's exact 14-viewBox, 12px animated partial-circle spinner instead of a static `•••` text approximation; send and stop states retain their existing canonical arrow and square identities | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
 | Composer draft-attachment warning | non-persisted image attachments use Web's 20px surface-backed amber CircleAlert badge and expose the canonical `Draft attachment may not persist` accessible name instead of a bare `!` glyph | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
+| Empty-thread context semantics | project, environment mode, and branch chips are exposed as static draft metadata rather than falsely disabled controls; Temporary remains the tray's sole pressed-state action | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
 | Shared Menu icon identity | default checkbox/radio indicators and submenu affordances use generated 12px Check and 14px ChevronRight icons, removing Unicode state glyphs from every Menu consumer | PASS — SHARED PRIMITIVE |
 | Sidebar completed-status identity | completed threads use Web's filled `circle-check` Central asset at the canonical 15px trailing role instead of a hand-built green dot plus text checkmark | PASS — CURRENT PRODUCT SURFACES |
 | Sidebar thread metadata identity | fork, handoff, worktree, and automation badges use the canonical 12px Fork, GitBranch, split-arrow, and Clock assets instead of Unicode approximations | PASS — CURRENT PRODUCT SURFACES |
@@ -456,6 +457,13 @@ URL actions are unchanged. The focused Environment suite passes (6/6), both
 production bundles build, `git diff --check` passes, and React Doctor 0.9.11
 reports zero new diagnostics against `e3e026e6`. Visual re-certification
 remains part of the pending current-head matrix.
+The empty-thread context-tray follow-up removes false `aria-disabled` and
+disabled accessibility state from the environment-mode and branch metadata.
+Those chips describe the current draft context and have no action in the Web
+authority; Temporary remains the only pressed-state control. The focused
+landing suite passes (3/3), both production bundles build, `git diff --check`
+passes, and React Doctor 0.9.11 reports zero diagnostics against `f099a0f0`.
+Visual re-certification remains part of the pending current-head matrix.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

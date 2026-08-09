@@ -26,21 +26,13 @@ export function EmptyThreadContextTray(props: {
         <FolderIcon className="EmptyThreadContextIcon" size={14} />
         <text className="EmptyThreadContextLabel">{props.projectName}</text>
       </view>
-      <view
-        className="EmptyThreadContextStatus"
-        aria-disabled="true"
-        accessibility-state={{ disabled: true }}
-      >
+      <view className="EmptyThreadContextStatus">
         <DeviceLaptopIcon className="EmptyThreadContextIcon" size={14} />
         <text className="EmptyThreadContextLabel">
           {props.envMode === 'local' ? 'Local' : 'Worktree'}
         </text>
       </view>
-      <view
-        className="EmptyThreadContextStatus"
-        aria-disabled="true"
-        accessibility-state={{ disabled: true }}
-      >
+      <view className="EmptyThreadContextStatus">
         <GitBranchIcon className="EmptyThreadContextIcon" size={14} />
         <text className="EmptyThreadContextLabel">{props.branch ?? 'main'}</text>
       </view>
