@@ -229,7 +229,11 @@ export function createRpcSocketManager(input: {
     let lastError: Error | null = null;
     for (let attempt = 0; attempt <= input.maxReconnectAttempts; attempt += 1) {
       if (disposed) throw new RpcTransportError('client disposed');
-      publishState(everConnected || attempt > 0 ? 'reconnecting' : 'connecting');
+      publishState(
+        state === 'reconnecting' || state === 'offline' || attempt > 0
+          ? 'reconnecting'
+          : 'connecting'
+      );
       try {
         const socket = await input.connect();
         if (disposed) {

@@ -24,7 +24,7 @@ Date: 2026-08-09
 | Verify real wheel publication | Chromium wheel over the Lynx-for-Web custom element does not update the nested scroll-view; programmatic positions are retained for visual evidence only | RECORDED WEB ELEMENTS LIMIT |
 | Preserve honest Git/usage failure states | `git.statusLocal` reuses the existing local/remote status split, skips upstream refresh, and returns working-tree statistics without network access; the >8s Usage request remains excluded | PASS |
 | Close loaded-content height residual | stable external Git fixture (`README.md`, fixed +1/−1) proves Web and Lynx light/dark all resolve to 427px content, 408px viewport, and 0/10/19 top/mid/bottom positions | PASS — previous 15px delta closed |
-| Native certification | blocked by the separately documented Lynxtron snapshot parser issue | BLOCKED BY SDK |
+| Native certification | Lynxtron `0.0.9` loads the current bundle and a canonical project/thread fixture was created through product RPCs. The loaded panel still cannot be opened through the current exact-client synthetic touch path: hit testing reaches the right-header toggle, but activation is not published. No hidden open-state injection is used | PARTIAL — REGISTERED RIGHT-HEADER INPUT BOUNDARY |
 
 ## Result
 
@@ -48,3 +48,21 @@ content-height delta. A dedicated local-only status RPC returns the same +1/−1
 working-tree statistics without refreshing remote refs. The fixed external Git
 fixture then produces exact 427px content height and 0/10/19 scroll positions
 in Web and Lynx-for-Web, in both themes.
+
+`shots/2026-08-09/environment-header-transport-current/` closes a separate
+Native precondition defect discovered after the SDK blocker was removed. The
+transport notice previously occupied `1158..1268` while the Files/Environment
+control cluster occupied `1204..1260`, so the visible Environment center
+hit-tested to the reconnecting notice text. The notice now ends at `x=1204`
+and the control cluster begins at `x=1204`; the same center resolves to the
+Environment icon.
+
+Normal `closeWhenIdle` reconnects also remain `connecting`/`idle` instead of
+being mislabeled as failure recovery solely because the manager connected
+before. A real socket failure still publishes `reconnecting`.
+
+The current Native loaded-data cell remains incomplete for a narrower reason:
+exact-client synthetic touch still does not activate the right-header toggle
+after hit testing resolves correctly. The canonical fixture, current bundle,
+and thread route are valid; no hidden `initialEnvironmentOpen` data is injected
+to bypass that product interaction boundary.

@@ -279,21 +279,34 @@ describe('rpc transport manager', () => {
   });
 
   it('retires an idle socket after its final response when requested', async () => {
-    const socket = new FakeSocket();
+    const first = new FakeSocket();
+    const second = new FakeSocket();
+    const sockets = [first, second];
+    const states: string[] = [];
     const { manager } = managerFor({
-      connect: async () => socket,
+      connect: async () => sockets.shift() ?? second,
       closeWhenIdle: true,
       autoReconnectOnFailure: true,
     });
+    manager.subscribe((state) => states.push(state));
     const pending = manager.request<{ ok: true }>(
       'orchestration.getSnapshot',
       {}
     );
-    await flushUntil(() => socket.sent.length === 1);
-    socket.succeedLast({ ok: true });
+    await flushUntil(() => first.sent.length === 1);
+    first.succeedLast({ ok: true });
     await expect(pending).resolves.toEqual({ ok: true });
-    expect(socket.closed).toBe(true);
+    expect(first.closed).toBe(true);
     expect(manager.getState()).toBe('idle');
+
+    const next = manager.request<{ ok: true }>(
+      'orchestration.getSnapshot',
+      {}
+    );
+    await flushUntil(() => second.sent.length === 1);
+    second.succeedLast({ ok: true });
+    await expect(next).resolves.toEqual({ ok: true });
+    expect(states).not.toContain('reconnecting');
   });
 
   it('delivers stream chunks in order and settles on the final exit', async () => {

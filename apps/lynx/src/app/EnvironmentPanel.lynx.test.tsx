@@ -15,6 +15,10 @@ describe('Lynx Environment panel', () => {
       new URL('./App.tsx', import.meta.url),
       'utf8'
     );
+    const appStyles = readFileSync(
+      new URL('./App.css', import.meta.url),
+      'utf8'
+    );
     const bootstrapSource = readFileSync(
       new URL('./environmentBootstrap.lynx.ts', import.meta.url),
       'utf8'
@@ -91,6 +95,9 @@ describe('Lynx Environment panel', () => {
     expect(panelSource).toContain("from '@synara/shared/threadMarkers'");
     expect(panelSource).not.toContain("from '@synara-web/pinnedMessages'");
     expect(panelSource).not.toContain("from '@synara-web/threadMarkers'");
+    expect(appStyles).toMatch(
+      /\.TransportStatusNotice\s*\{[^}]*top:\s*8px;[^}]*right:\s*76px;[^}]*z-index:\s*1000;/s
+    );
   });
 
   it('uses only sections backed by real current capabilities', () => {

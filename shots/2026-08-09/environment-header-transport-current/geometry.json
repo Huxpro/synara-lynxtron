@@ -1,0 +1,14 @@
+{
+  "before": {
+    "transportNotice": [1158, 8, 1268, 36],
+    "threadHeaderControls": [1204, 9, 1260, 37],
+    "environmentToggle": [1232, 9, 1260, 37],
+    "toggleCenterHit": "TransportStatusNoticeText"
+  },
+  "after": {
+    "transportNotice": [1094, 8, 1204, 36],
+    "threadHeaderControls": [1204, 9, 1260, 37],
+    "environmentToggle": [1232, 9, 1260, 37],
+    "toggleCenterHit": "EnvironmentToggleIcon"
+  }
+}
