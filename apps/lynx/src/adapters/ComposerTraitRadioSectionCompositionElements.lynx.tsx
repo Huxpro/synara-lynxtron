@@ -1,12 +1,17 @@
 import type { ReactNode } from '@lynx-js/react';
+import fastModeFilledSvg from '@synara-central-icons-fill/zap.svg?raw';
+import fastModeSvg from '@synara-central-icons/zap.svg?raw';
 
 import { CheckIcon } from '../lib/icons.lynx';
+import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
+import { useTheme } from './useTheme.lynx';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 
 export function ComposerTraitFastModeToggleElement(props: {
   readonly enabled: boolean;
   readonly onToggle: () => void;
 }) {
+  const { resolvedTheme, svgColors } = useTheme();
   const interaction = useLynxInteractiveState({
     baseClassName: `ComposerTraitFastModeToggleLynx${
       props.enabled ? ' ComposerTraitFastModeToggleLynx--active' : ''
@@ -20,15 +25,21 @@ export function ComposerTraitFastModeToggleElement(props: {
       aria-pressed={props.enabled}
       {...interaction.eventProps}
     >
-      <text
-        className={`ComposerTraitFastModeToggleGlyphLynx${
+      <svg
+        className={`ComposerTraitFastModeToggleIconLynx${
           props.enabled
-            ? ' ComposerTraitFastModeToggleGlyphLynx--active'
+            ? ' ComposerTraitFastModeToggleIconLynx--active'
             : ''
         }`}
-      >
-        ϟ
-      </text>
+        content={colorizeLynxSvg(
+          props.enabled ? fastModeFilledSvg : fastModeSvg,
+          props.enabled
+            ? resolvedTheme === 'dark'
+              ? '#fbbf24'
+              : '#f59e0b'
+            : svgColors.mutedForeground
+        )}
+      />
     </view>
   );
 }

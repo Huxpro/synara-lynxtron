@@ -58,8 +58,16 @@ describe('native composer trait picker contract', () => {
 
     expect(toggle.getAttribute('aria-label')).toBe('Fast mode');
     expect(toggle.getAttribute('aria-pressed')).toBe('false');
+    expect(
+      elementTree.root
+        ?.querySelector('.ComposerTraitFastModeToggleIconLynx')
+        ?.getAttribute('content')
+    ).toContain('stroke=');
     expect(composerStyles).toMatch(
       /\.ComposerTraitFastModeToggleLynx\s*\{[^}]*width:\s*20px;[^}]*height:\s*20px;[^}]*margin-top:\s*-4px;[^}]*margin-bottom:\s*-4px;[^}]*border-radius:\s*8px;/s
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerTraitFastModeToggleIconLynx\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;/s
     );
   });
 });

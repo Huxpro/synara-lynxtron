@@ -544,13 +544,11 @@
   opacity: 0.72;
 }
 
-.ComposerTraitFastModeToggleGlyphLynx {
+.ComposerTraitFastModeToggleIconLynx {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
   color: var(--muted-foreground);
-  font-size: 14px;
-}
-
-.ComposerTraitFastModeToggleGlyphLynx--active {
-  color: var(--chart-4);
 }
 
 .ComposerTraitOptionListLynx {
