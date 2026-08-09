@@ -32,6 +32,12 @@ describe('Lynx Explorer dock', () => {
     expect(source).toContain('<ChatMarkdown');
     expect(source).toContain('Preview truncated at 1 MB.');
     expect(routerSource).toContain("accessibleLabel: 'Toggle files panel'");
+    expect(routerSource).toContain(
+      'onActivate: () => setExplorerVisibility(!explorerOpen)'
+    );
+    expect(routerSource).toContain(
+      'useState(initialExplorerOpen)'
+    );
     expect(routerSource).toContain('setDiffOpen(false)');
     expect(routerSource).toContain('setExplorerOpen(false)');
   });

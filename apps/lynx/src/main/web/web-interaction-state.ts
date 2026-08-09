@@ -1,6 +1,11 @@
 const WEB_HOVER_CLASS = 'ui-hover';
 const WEB_FOCUS_CLASS = 'ui-focus';
+const EXPLORER_TOGGLE_SELECTOR = '.ThreadFilesToggle';
 const LYNX_FOCUSABLE_SELECTOR = '[focusable="true"]';
+
+export interface LynxWebExplorerActivation {
+  readonly open: boolean;
+}
 
 function interactiveElement(
   event: Event,
@@ -31,7 +36,8 @@ function relatedTargetIsInside(
 
 export function installLynxWebInteractionStateBridge(
   root: ShadowRoot,
-  signal?: AbortSignal
+  signal?: AbortSignal,
+  onExplorerActivation?: (activation: LynxWebExplorerActivation) => void
 ): void {
   const hostHoverClasses = new WeakSet<HTMLElement>();
   const hostFocusClasses = new WeakSet<HTMLElement>();
@@ -138,6 +144,49 @@ export function installLynxWebInteractionStateBridge(
       }
       element.classList.remove(WEB_FOCUS_CLASS);
       hostFocusClasses.delete(element);
+    },
+    listenerOptions
+  );
+  root.addEventListener(
+    'click',
+    (event) => {
+      if (!onExplorerActivation) return;
+      const element = event
+        .composedPath()
+        .find(
+          (target): target is HTMLElement =>
+            target instanceof HTMLElement &&
+            target.matches(EXPLORER_TOGGLE_SELECTOR)
+        );
+      if (!element || element.getAttribute('aria-disabled') === 'true') return;
+      onExplorerActivation({
+        open: !element.classList.contains('ThreadFilesToggle--active'),
+      });
+    },
+    listenerOptions
+  );
+  root.addEventListener(
+    'keydown',
+    (event) => {
+      if (
+        !onExplorerActivation ||
+        !(event instanceof KeyboardEvent) ||
+        (event.key !== 'Enter' && event.key !== ' ' && event.key !== 'Spacebar')
+      ) {
+        return;
+      }
+      const element = event
+        .composedPath()
+        .find(
+          (target): target is HTMLElement =>
+            target instanceof HTMLElement &&
+            target.matches(EXPLORER_TOGGLE_SELECTOR)
+        );
+      if (!element || element.getAttribute('aria-disabled') === 'true') return;
+      event.preventDefault();
+      onExplorerActivation({
+        open: !element.classList.contains('ThreadFilesToggle--active'),
+      });
     },
     listenerOptions
   );

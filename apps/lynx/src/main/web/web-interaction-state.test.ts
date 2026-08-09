@@ -3,7 +3,9 @@ import { readFileSync } from 'node:fs';
 
 import { installLynxWebInteractionStateBridge } from './web-interaction-state';
 
-function setup() {
+function setup(
+  onExplorerActivation?: (activation: { readonly open: boolean }) => void
+) {
   const host = document.createElement('div');
   document.body.append(host);
   const root = host.attachShadow({ mode: 'open' });
@@ -12,11 +14,37 @@ function setup() {
   const child = document.createElement('span');
   control.append(child);
   root.append(control);
-  installLynxWebInteractionStateBridge(root);
+  installLynxWebInteractionStateBridge(
+    root,
+    undefined,
+    onExplorerActivation
+  );
   return { child, control };
 }
 
 describe('Lynx-for-Web interaction state bridge', () => {
+  it('forwards enabled Explorer click and keyboard activation as idempotent target state', () => {
+    const activations: boolean[] = [];
+    const { control } = setup((activation) =>
+      activations.push(activation.open)
+    );
+    control.classList.add('ThreadFilesToggle');
+
+    control.click();
+    control.classList.add('ThreadFilesToggle--active');
+    control.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        key: 'Enter',
+      })
+    );
+    control.setAttribute('aria-disabled', 'true');
+    control.click();
+
+    expect(activations).toEqual([true, false]);
+  });
+
   it('normalizes the Web Elements textarea shadow part through LynxView injection', () => {
     const source = readFileSync(
       new URL('./web-host.ts', import.meta.url),

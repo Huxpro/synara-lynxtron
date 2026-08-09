@@ -739,11 +739,16 @@ async function handleBridgeCall(
 }
 
 pendingInitialRoute = resolveWebInitialRoute(globalThis.location.search);
+const initialExplorerOpen =
+  new URLSearchParams(globalThis.location.search).get('explorer') === 'open';
 webDocument.body.innerHTML = `
 <lynx-view
   id="root-view"
   style="height:100vh; width:100vw;"
-  init-data='${JSON.stringify({ initialRoute: pendingInitialRoute })}'
+  init-data='${JSON.stringify({
+    initialExplorerOpen,
+    initialRoute: pendingInitialRoute,
+  })}'
   url="${bundleUrl}">
 </lynx-view>`;
 
@@ -785,7 +790,12 @@ const installInteractionBridge = () => {
   if (!root) return false;
   installLynxWebInteractionStateBridge(
     root,
-    interactionBridgeController.signal
+    interactionBridgeController.signal,
+    (activation) => {
+      const url = new URL(globalThis.location.href);
+      url.searchParams.set('explorer', activation.open ? 'open' : 'closed');
+      globalThis.location.replace(url);
+    }
   );
   return true;
 };

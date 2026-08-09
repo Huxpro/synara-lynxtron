@@ -245,10 +245,18 @@ function ThreadPage(props: {
   readonly currentThread: Awaited<ReturnType<typeof fetchThreadHeaderSummary>>;
   readonly data: Awaited<ReturnType<typeof fetchThreadTranscriptRows>> | undefined;
   readonly error: unknown;
+  readonly initialExplorerOpen: boolean;
   readonly isPending: boolean;
   readonly threadId: string;
 }) {
-  const { currentThread, data, error, isPending, threadId } = props;
+  const {
+    currentThread,
+    data,
+    error,
+    initialExplorerOpen,
+    isPending,
+    threadId,
+  } = props;
   const { temporary, toggleTemporary } =
     useTemporaryThreadLifecycle(threadId);
   const [providerStatuses, setProviderStatuses] = useState<
@@ -256,7 +264,7 @@ function ThreadPage(props: {
   >([]);
   const [environmentOpen, setEnvironmentOpen] = useState(false);
   const [diffOpen, setDiffOpen] = useState(false);
-  const [explorerOpen, setExplorerOpen] = useState(false);
+  const [explorerOpen, setExplorerOpen] = useState(initialExplorerOpen);
   const [threadPageWidth, setThreadPageWidth] = useState(0);
   const [diffDockWidth, setDiffDockWidth] = useState<number | null>(null);
   const [explorerDockWidth, setExplorerDockWidth] = useState<number | null>(
@@ -280,17 +288,18 @@ function ThreadPage(props: {
     error,
     rows: data,
   });
+  const setExplorerVisibility = useCallback((open: boolean) => {
+    setEnvironmentOpen(false);
+    setDiffOpen(false);
+    setDiffDockWidth(null);
+    setExplorerDockWidth(null);
+    setExplorerOpen(open);
+  }, []);
   const explorerToggle = useLynxInteractiveState({
     baseClassName: 'ThreadFilesToggle',
     accessibleLabel: 'Toggle files panel',
     disabled: !currentThread?.workspaceRoot,
-    onActivate: () => {
-      setEnvironmentOpen(false);
-      setDiffOpen(false);
-      setDiffDockWidth(null);
-      setExplorerDockWidth(null);
-      setExplorerOpen((open) => !open);
-    },
+    onActivate: () => setExplorerVisibility(!explorerOpen),
   });
   const rightDockWidth = explorerOpen ? explorerDockWidth : diffDockWidth;
   const composer = (
@@ -458,6 +467,7 @@ function ThreadPage(props: {
 export function SliceRouter({
   initialRoute,
   initialThreadBootstrap,
+  initialExplorerOpen,
   onThemeStateChange,
   onUiDensityChange,
 }: {
@@ -467,6 +477,7 @@ export function SliceRouter({
     readonly summary: Awaited<ReturnType<typeof fetchThreadHeaderSummary>>;
     readonly threadId: string;
   } | null;
+  readonly initialExplorerOpen: boolean;
   readonly onThemeStateChange: (state: ThemeState) => void;
   readonly onUiDensityChange: (density: UiDensity) => void;
 }) {
@@ -682,6 +693,7 @@ export function SliceRouter({
         currentThread={resolvedActiveThreadData?.summary}
         data={resolvedActiveThreadData?.data}
         error={activeThreadError}
+        initialExplorerOpen={initialExplorerOpen}
         isPending={resolvedActiveThreadPending}
         threadId={route.params.threadId}
       />
