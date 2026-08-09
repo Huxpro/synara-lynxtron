@@ -1,6 +1,13 @@
 import { type ReactNode } from '@lynx-js/react';
 
 import { formatPastedTextCountLabel, pastedTextTitle } from '@synara-web/lib/composerPastedText';
+import { FileEntryIcon } from '../components/FileEntryIcon.lynx';
+import {
+  ChevronRightIcon,
+  FileIcon,
+  MessageCircleIcon,
+  XIcon,
+} from '../lib/icons.lynx';
 import {
   lynxNestedInteractiveEventProps,
   useLynxInteractiveState,
@@ -49,7 +56,7 @@ function ComposerReferenceRemoveButton(props: {
       className={interaction.className}
       {...eventProps}
     >
-      <text className="ComposerReferenceRemoveGlyphLynx">×</text>
+      <XIcon className="ComposerReferenceRemoveIconLynx" size={12} />
     </view>
   );
 }
@@ -73,7 +80,7 @@ export function ComposerAssistantSelectionsAttachmentElement({
   const label = `${selections.length} selection${selections.length === 1 ? '' : 's'}`;
   return (
     <view className="ComposerReferenceSummaryLynx">
-      <text className="ComposerReferenceGlyphLynx">◌</text>
+      <MessageCircleIcon className="ComposerReferenceGlyphLynx" size={12} />
       <text className="ComposerReferenceLabelLynx">{label}</text>
       {onRemove ? (
         <ComposerReferenceRemoveButton label="Remove selections" onRemove={onRemove} />
@@ -93,7 +100,7 @@ export function ComposerFileCommentsAttachmentElement({
   const label = `${comments.length} comment${comments.length === 1 ? '' : 's'}`;
   return (
     <view className="ComposerReferenceSummaryLynx">
-      <text className="ComposerReferenceGlyphLynx">◌</text>
+      <MessageCircleIcon className="ComposerReferenceGlyphLynx" size={12} />
       <text className="ComposerReferenceLabelLynx">{label}</text>
       {onRemove ? (
         <ComposerReferenceRemoveButton label="Remove comments" onRemove={onRemove} />
@@ -120,7 +127,7 @@ export function ComposerPastedTextAttachmentElement({
   return (
     <view className="ComposerReferenceCardLynx ComposerReferencePastedTextLynx">
       <view className="ComposerReferenceTileLynx">
-        <text className="ComposerReferenceTileGlyphLynx">≡</text>
+        <FileIcon className="ComposerReferenceTileIconLynx" size={16} />
       </view>
       <view className="ComposerReferenceCardCopyLynx">
         <text className="ComposerReferenceCardTitleLynx">{title}</text>
@@ -131,6 +138,10 @@ export function ComposerPastedTextAttachmentElement({
           <text className="ComposerReferenceCardActionTextLynx">
             Show in text field · {formatPastedTextCountLabel(pastedText)}
           </text>
+          <ChevronRightIcon
+            className="ComposerReferenceActionChevronLynx"
+            size={10}
+          />
         </view>
       </view>
       <ComposerReferenceRemoveButton
@@ -151,7 +162,10 @@ export function ComposerFileAttachmentElement({
   return (
     <view className="ComposerReferenceCardLynx">
       <view className="ComposerReferenceTileLynx">
-        <text className="ComposerReferenceTileGlyphLynx">▤</text>
+        <FileEntryIcon
+          className="ComposerReferenceTileIconLynx"
+          pathValue={file.name}
+        />
       </view>
       <view className="ComposerReferenceCardCopyLynx">
         <text className="ComposerReferenceCardTitleLynx">{file.name}</text>

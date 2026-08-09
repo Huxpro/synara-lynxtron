@@ -1,5 +1,6 @@
 import { describe, expect, it, rs } from '@rstest/core';
 import { fireEvent, render } from '@lynx-js/react/testing-library';
+import { readFileSync } from 'node:fs';
 
 import {
   ComposerImageAttachmentElement,
@@ -13,6 +14,36 @@ function findElement(selector: string): Element {
 }
 
 describe('composer reference attachment interaction contract', () => {
+  it('uses canonical summary, file, remove, and disclosure icons', () => {
+    const source = readFileSync(
+      new URL(
+        './ComposerReferenceAttachmentsCompositionElements.lynx.tsx',
+        import.meta.url
+      ),
+      'utf8'
+    );
+    const styles = readFileSync(
+      new URL('../components/composer/composer.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(source).toContain(
+      '<MessageCircleIcon className="ComposerReferenceGlyphLynx" size={12} />'
+    );
+    expect(source).toContain(
+      '<XIcon className="ComposerReferenceRemoveIconLynx" size={12} />'
+    );
+    expect(source).toContain(
+      '<FileIcon className="ComposerReferenceTileIconLynx" size={16} />'
+    );
+    expect(source).toContain('<FileEntryIcon');
+    expect(source).toContain('<ChevronRightIcon');
+    expect(source).not.toMatch(/[×◌≡▤]/);
+    expect(styles).toMatch(
+      /\.ComposerReferenceCardActionLynx\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*row;[^}]*gap:\s*2px;/s
+    );
+  });
+
   it('gives the pasted-text show and remove actions canonical interaction state', () => {
     const onShowInTextField = rs.fn();
     const onRemove = rs.fn();
