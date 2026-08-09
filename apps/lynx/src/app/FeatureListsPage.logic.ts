@@ -23,7 +23,8 @@ export const EMPTY_KANBAN_BOARD: KanbanBoard = {
 };
 
 export function buildCanonicalSliceKanbanBoard(
-  snapshot: SidebarSnapshot | undefined
+  snapshot: SidebarSnapshot | undefined,
+  composerDraftByThreadId: Parameters<typeof buildKanbanBoard>[0]['composerDraftByThreadId'] = {}
 ): KanbanBoard {
   if (!snapshot) return EMPTY_KANBAN_BOARD;
   // Match Web's boot-safe container partition: without workspace-path state,
@@ -49,11 +50,8 @@ export function buildCanonicalSliceKanbanBoard(
   return buildKanbanBoard({
     projects,
     threads: snapshot.kanbanThreads,
-    // The native board is read-only. Browser-local composer drafts, manual DnD
-    // order, terminal entry state, and optimistic dispatch overlays only exist
-    // when their mutation/runtime kernels are present.
     draftThreads: [],
-    composerDraftByThreadId: {},
+    composerDraftByThreadId,
     draftOrderByProjectId: {},
     projectIdAliases,
   });

@@ -70,6 +70,10 @@ import {
 } from './queries';
 import { Button } from '../components/ui/button';
 import {
+  projectLynxKanbanComposerDrafts,
+  useComposerDraftStore,
+} from '../adapters/composerDraftStore.lynx';
+import {
   buildNativeKanbanArchiveCommand,
   buildNativeKanbanRenameCommand,
   buildNativeKanbanStartCommand,
@@ -95,14 +99,38 @@ import {
   resolveKanbanProjectRouteState,
 } from './kanbanRouteState.logic';
 import { ResizableRightPanel } from './ResizableRightPanel.lynx';
+import { KanbanNewTaskDialog } from './KanbanNewTaskDialog.lynx';
 
 export function ProjectsPage({ navigate }: { readonly navigate: (to: string) => void }) {
+  const [newTaskProjectId, setNewTaskProjectId] =
+    useState<ProjectId | null>(null);
+  const [newTaskOpen, setNewTaskOpen] = useState(false);
+  const lynxDraftsByThreadId = useComposerDraftStore(
+    (store) => store.draftsByThreadId
+  );
+  const composerDraftByThreadId = useMemo(
+    () => projectLynxKanbanComposerDrafts(lynxDraftsByThreadId),
+    [lynxDraftsByThreadId]
+  );
   const { data, error, isPending, isFetching, refetch } = useQuery({
     queryKey: ['sidebar-snapshot'],
     queryFn: fetchSidebarSnapshot,
     refetchInterval: 5_000,
   });
-  const board = useMemo(() => buildCanonicalSliceKanbanBoard(data), [data]);
+  const board = useMemo(
+    () => buildCanonicalSliceKanbanBoard(data, composerDraftByThreadId),
+    [composerDraftByThreadId, data]
+  );
+  const projects = useMemo(
+    () =>
+      board.projects.flatMap((projectBoard) => {
+        const project = data?.projects.find(
+          (candidate) => candidate.id === projectBoard.projectId
+        );
+        return project ? [project] : [];
+      }),
+    [board.projects, data?.projects]
+  );
   const routeState = resolveKanbanOverviewRouteState({
     hasSnapshot: data !== undefined,
     isPending,
@@ -115,9 +143,12 @@ export function ProjectsPage({ navigate }: { readonly navigate: (to: string) => 
         taskCount={board.totalCount}
         navigationAvailable={false}
         backAvailable={false}
-        newTaskDisabled
+        newTaskDisabled={projects.length === 0}
         newTaskShortcutParts={[]}
-        onNewTask={() => {}}
+        onNewTask={() => {
+          setNewTaskProjectId(null);
+          setNewTaskOpen(true);
+        }}
       />
       {routeState.kind === 'loading' ? (
         <KanbanStateComposition kind="loading-overview" />
@@ -144,9 +175,21 @@ export function ProjectsPage({ navigate }: { readonly navigate: (to: string) => 
               navigate(`/kanban/${projectId}`)
             }
             onOpenCard={(card) => navigate(`/thread/${card.threadId}`)}
+            onNewTask={(projectId) => {
+              setNewTaskProjectId(projectId);
+              setNewTaskOpen(true);
+            }}
           />
         </view>
       )}
+      {newTaskOpen ? (
+        <KanbanNewTaskDialog
+          initialProjectId={newTaskProjectId}
+          projects={projects}
+          onOpenChange={setNewTaskOpen}
+          onTaskCreated={() => void refetch()}
+        />
+      ) : null}
     </view>
   );
 }
@@ -225,6 +268,14 @@ export function KanbanProjectPage({
   const [mutationNotice, setMutationNotice] = useState<string | null>(null);
   const [mutationChooserCard, setMutationChooserCard] =
     useState<KanbanCard | null>(null);
+  const [newTaskOpen, setNewTaskOpen] = useState(false);
+  const lynxDraftsByThreadId = useComposerDraftStore(
+    (store) => store.draftsByThreadId
+  );
+  const composerDraftByThreadId = useMemo(
+    () => projectLynxKanbanComposerDrafts(lynxDraftsByThreadId),
+    [lynxDraftsByThreadId]
+  );
   const mutationGateRef = useRef(createKanbanMutationGate());
   const mutationTextareaRef = useRef<React.ElementRef<'textarea'>>(null);
   const kanbanColumnRectsRef = useRef<Partial<Record<KanbanColumnKey, KanbanDragRect>>>({});
@@ -238,11 +289,12 @@ export function KanbanProjectPage({
   const projectBoard = useMemo(
     () =>
       selectKanbanProjectBoard(
-        buildCanonicalSliceKanbanBoard(data),
+        buildCanonicalSliceKanbanBoard(data, composerDraftByThreadId),
         projectId
       ),
-    [data, projectId]
+    [composerDraftByThreadId, data, projectId]
   );
+  const project = data?.projects.find((candidate) => candidate.id === projectId);
   const routeState = resolveKanbanProjectRouteState({
     hasSnapshot: data !== undefined,
     projectFound: projectBoard !== null,
@@ -499,9 +551,9 @@ export function KanbanProjectPage({
         navigationAvailable={false}
         backAvailable
         onBack={() => navigate('/kanban')}
-        newTaskDisabled
+        newTaskDisabled={!project}
         newTaskShortcutParts={[]}
-        onNewTask={() => {}}
+        onNewTask={() => setNewTaskOpen(true)}
       />
       {mutationNotice ? (
         <view
@@ -688,6 +740,11 @@ export function KanbanProjectPage({
                 <KanbanColumnComposition
                   columnKey={column}
                   cards={projectBoard?.[column] ?? []}
+                  onNewCard={
+                    column === 'draft'
+                      ? () => setNewTaskOpen(true)
+                      : undefined
+                  }
                   onOpenCard={(card) => navigate(`/thread/${card.threadId}`)}
                   onCardContextMenu={openKanbanCardMenu}
                   onCardDragPointerStart={startNativeKanbanDrag}
@@ -742,6 +799,15 @@ export function KanbanProjectPage({
             </view>
           ) : null}
         </view>
+      ) : null}
+      {newTaskOpen && project ? (
+        <KanbanNewTaskDialog
+          initialProjectId={project.id as ProjectId}
+          initialSendAsDraft
+          projects={[project]}
+          onOpenChange={setNewTaskOpen}
+          onTaskCreated={() => void refetch()}
+        />
       ) : null}
     </view>
   );

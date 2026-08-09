@@ -52,6 +52,54 @@ describe('buildCanonicalSliceKanbanBoard', () => {
     ]);
     expect(board.projects[1]?.draft[0]?.title).toBe('READY-LYNX-COMPOSER');
   });
+
+  it('projects a persisted Lynx composer draft onto its real thread card', () => {
+    const snapshot = {
+      kanbanProjects: [
+        { id: 'project-a', kind: 'project', name: 'Project A' },
+      ],
+      kanbanThreads: [
+        {
+          id: 'thread-draft',
+          projectId: 'project-a',
+          title: 'Verify Kanban fidelity',
+          createdAt: '2026-08-10T08:00:00.000Z',
+          updatedAt: '2026-08-10T08:00:00.000Z',
+          latestUserMessageAt: null,
+          latestTurn: null,
+          session: null,
+          modelSelection: {
+            provider: 'codex',
+            model: 'gpt-5.6-sol',
+            options: {},
+          },
+          hasPendingApprovals: false,
+          hasPendingUserInput: false,
+          hasLiveTailWork: false,
+          branch: null,
+          envMode: 'local',
+          worktreePath: null,
+        },
+      ],
+    } as unknown as SidebarSnapshot;
+
+    const board = buildCanonicalSliceKanbanBoard(snapshot, {
+      'thread-draft': {
+        prompt: 'Verify Kanban fidelity in both themes.',
+        hasAttachments: false,
+        provider: 'codex',
+      },
+    });
+
+    expect(board.totalCount).toBe(1);
+    expect(board.projects[0]?.draft[0]).toMatchObject({
+      threadId: 'thread-draft',
+      column: 'draft',
+      title: 'Verify Kanban fidelity',
+      provider: 'codex',
+      draftPrompt: 'Verify Kanban fidelity in both themes.',
+    });
+  });
 });
 
 describe('selectKanbanProjectBoard', () => {

@@ -97,6 +97,7 @@ export interface ProjectSummary {
   readonly kind: 'project' | 'chat' | 'studio';
   readonly title: string;
   readonly workspaceRoot: string;
+  readonly defaultModelSelection: ModelSelection | null;
   readonly isPinned?: boolean;
 }
 
@@ -363,6 +364,7 @@ export async function fetchSidebarSnapshot(): Promise<SidebarSnapshot> {
       kind: project.kind,
       title: project.name,
       workspaceRoot: project.cwd,
+      defaultModelSelection: project.defaultModelSelection,
       isPinned: project.isPinned,
     })),
     threads,

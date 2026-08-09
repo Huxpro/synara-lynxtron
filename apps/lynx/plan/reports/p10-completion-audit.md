@@ -268,11 +268,21 @@ Current responsive disposition:
 | Dark shell base fill | Electron vibrancy RGB 6–7 versus Native canonical opaque #101010/#111111 | INTENTIONAL HOST MATERIAL DELTA |
 | Environment | reachable current-head consumer; paired light/dark Browser geometry/material proof at 900x650 | PASS IN BROWSER; NATIVE CURRENT-HEAD SCREENCAST NOT CERTIFIED |
 | Environment Git actions | stable menu, selectable-file/new-branch commits, safe pull, streamed live progress, metadata sync, confirmation, and paired themes | PASS |
+| Kanban task creation | overview header, per-project overview action, project header, and Draft-column action open a compact Lynx-native task dialog with Web's `Send as draft` switch and `Create task` action; draft mode persists a typed `thread.create` plus composer draft, immediate mode additionally dispatches typed `thread.turn.start`, and provider failure preserves the real Draft card | PASS — CURRENT PRODUCT SURFACES |
 | Diff / Explorer docks and source actions | working-tree Diff Dock and filesystem-backed Explorer are reachable; Explorer covers tree/search, rich source/Markdown/image/PDF fallback, whole-file references, ask-why, and accessible per-line local comments that persist and serialize into the shared composer contract | PASS — CURRENT PRODUCT SURFACES |
 | Pull Request Timeline / Code | selected PR detail exposes Summary/Timeline/Code; Timeline projects real detail commits/comments, while Code fetches typed `pullRequests.diff` data on demand and covers portable files, line numbers, loading/error/retry/truncation/expand states | PASS — CURRENT PRODUCT SURFACES |
 | Pull Request comments | Summary exposes a Lynx-native GitHub comment composer backed by typed `pullRequests.comment`; it enforces the shared 65,536-character contract, preserves drafts on failure, prevents rapid duplicate submission, handles Enter/Shift+Enter/IME correctly, and revalidates detail/list data after settled mutations | PASS — CURRENT PRODUCT SURFACES |
 | Native arbitrary range selection | whole-message transcript references and source line comments are complete; arbitrary DOM-style text range selection still requires a host/engine selection kernel | PARTIAL — EXPLICIT HOST/ENGINE GAP |
 | Current-head full three-client route/theme/size/state matrix | historical P10 matrix predates later product commits | NOT RE-CERTIFIED |
+
+The Kanban New task slice is covered by focused renderer/state tests, canonical
+command construction, draft-card projection, both production bundles, and a
+changed-plus-untracked React Doctor scan. A light/dark Lynx-for-Web capture was
+attempted against an isolated canonical project created through
+`orchestration.dispatchCommand`, but the browser relay later failed bootstrap
+reconnection while the raw typed WebSocket client and server stayed healthy.
+The harness run was invalidated, its empty evidence directory and isolated
+state were removed, and no screenshot claim is made for this slice.
 
 Evidence for the final Settings sweep:
 `shots/2026-08-07/responsive-settings-completion-audit/`.

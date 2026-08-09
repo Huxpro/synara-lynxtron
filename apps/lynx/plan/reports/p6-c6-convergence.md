@@ -206,7 +206,7 @@ it is not permission to retain a second copy of ordinary product anatomy.
 | Threads landing | `router.tsx` | Chat surface header, centered empty landing, composer frame/placeholder | Route restore/query lifecycle and host scroll wrapper | No second page anatomy owner identified |
 | Thread | `router.tsx`, `Transcript.lynx.tsx`, `Composer.lynx.tsx` | Header/empty/panel state, message and status rows, collapsed-work disclosure chrome, typography, composer shell/editor/footer and menus | `<list>` virtualization/stick controller, native Markdown, textarea/input, disclosure event/visibility Elements and polling bridge | No second ordinary anatomy owner identified |
 | Settings | `SettingsPage.tsx` plus settings adapters | Back/Search capability chrome, navigation taxonomy, panel header, General, Appearance and theme-pack editor | Storage/server hydration, two-pane scroll, clipboard and registered crashing native text-input kernel | No second page anatomy owner identified; unavailable search now avoids that kernel |
-| Projects + Kanban | `FeatureListsPage.tsx` plus Kanban adapters | Route header, overview, canonical board projection, columns and cards | Query/memory route, `<scroll-view>`, read-only capability; DnD is Web-only kernel | No second page anatomy owner identified |
+| Projects + Kanban | `FeatureListsPage.tsx` plus Kanban adapters | Route header, overview, canonical board projection, columns and cards | Query/memory route, `<scroll-view>`, native pointer DnD/mutation orchestration, and compact task-creation dialog | No second page anatomy owner identified |
 | Pull Requests | `FeatureListsPage.tsx` plus PR adapters | Route header/filters, list/row/states, Summary, canonical tabs/capability and close control | Query/mutation, 50% dock, scroll and close icon/button Elements; Timeline/Code/review kernels remain Web-only | No second ordinary anatomy owner identified; redundant native identity was deleted |
 | Cross-screen controllers | `router.tsx`, `Composer.lynx.tsx` | Shared projection/composition modules listed above | Background snapshot/RPC, native window/route/scroll/input lifecycle | Split large controllers only when it deletes a visible second owner |
 
@@ -241,9 +241,14 @@ classified without widening EXCLUSIVE:
   notification and integration panels remain eligible. Navigation, chrome,
   General, Appearance and theme-pack editor anatomy are shared; native search
   is honestly unavailable because of the registered text-model crash.
-- **Projects/Kanban:** Web DnD, optimistic mutation, draft/terminal state and
-  route orchestration remain eligible. Overview/header/board/columns/cards are
-  shared; native is explicitly read-only.
+- **Projects/Kanban:** Web's dnd-kit implementation, browser-local optimistic
+  ordering, terminal entry state and route orchestration remain eligible.
+  Overview/header/board/columns/cards are shared; native now owns real pointer
+  DnD plus start/archive/rename commands and a compact New task workflow. The
+  dialog follows Web's `Send as draft` switch plus `Create task` action. New
+  tasks use typed `thread.create`, persist the Lynx composer draft, optionally
+  dispatch typed `thread.turn.start`, retain the Draft card on provider
+  failure, and re-enter the canonical `buildKanbanBoard` projection.
 - **Pull Requests:** list/row/states/filters/Summary/tabs/capability/close
   anatomy are shared; current Lynx route also owns real Timeline projection,
   typed `pullRequests.diff` Code data, portable file/line rendering,

@@ -87,6 +87,20 @@ describe('Lynx composer draft attachment subset', () => {
     });
   });
 
+  it('discards prompt and retained model for an abandoned scratch draft', () => {
+    const store = useComposerDraftStore.getState();
+    store.setPrompt('thread-1', 'temporary task');
+    store.setModelSelection('thread-1', {
+      provider: 'codex',
+      model: 'gpt-5.6-sol',
+    });
+
+    useComposerDraftStore.getState().discardDraft('thread-1');
+    expect(
+      useComposerDraftStore.getState().draftsByThreadId['thread-1']
+    ).toBeUndefined();
+  });
+
   it('persists, deduplicates, and removes whole-message assistant references', () => {
     const selection = createAssistantSelectionAttachment({
       assistantMessageId: 'assistant-1',

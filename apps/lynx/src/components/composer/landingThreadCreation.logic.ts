@@ -1,12 +1,12 @@
-export interface LandingThreadCreationState {
+export interface ThreadCreationState {
   created: boolean;
   inFlight: Promise<void> | null;
 }
 
-export async function ensureLandingThreadCreated(input: {
+export async function ensureThreadCreated(input: {
   readonly create: () => Promise<void>;
   readonly recover: () => Promise<boolean>;
-  readonly state: LandingThreadCreationState;
+  readonly state: ThreadCreationState;
 }): Promise<void> {
   'background only';
   if (input.state.created) return;
@@ -25,3 +25,6 @@ export async function ensureLandingThreadCreated(input: {
   input.state.inFlight = creation;
   return creation;
 }
+
+export const ensureLandingThreadCreated = ensureThreadCreated;
+export type LandingThreadCreationState = ThreadCreationState;

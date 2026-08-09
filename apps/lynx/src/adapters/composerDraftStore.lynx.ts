@@ -27,6 +27,7 @@ import {
   normalizeFileCommentSelection,
   type FileCommentDraft,
 } from '@synara-web/lib/fileComments';
+import type { KanbanComposerDraftSnapshot } from '@synara-web/components/kanban/kanban.logic';
 import type { NativeComposerFileAttachment } from '../components/composer/composerAttachments.lynx';
 import { webStorage } from '../platform/storage';
 
@@ -60,6 +61,7 @@ interface LynxComposerDraftStoreState {
     comment: FileCommentDraft
   ) => void;
   readonly clearDraft: (threadId: string) => void;
+  readonly discardDraft: (threadId: string) => void;
   readonly removePastedText: (threadId: string, pastedTextId: string) => void;
   readonly removeFile: (threadId: string, fileId: string) => void;
   readonly removeFileComments: (threadId: string) => void;
@@ -77,6 +79,25 @@ interface LynxComposerDraftStoreState {
     threadId: string,
     skills: ReadonlyArray<ProviderSkillReference>
   ) => void;
+}
+
+export function projectLynxKanbanComposerDrafts(
+  draftsByThreadId: Readonly<Record<string, LynxComposerDraft>>
+): Readonly<Record<string, KanbanComposerDraftSnapshot>> {
+  return Object.fromEntries(
+    Object.entries(draftsByThreadId).map(([threadId, draft]) => [
+      threadId,
+      {
+        prompt: draft.prompt,
+        hasAttachments:
+          draft.files.length > 0 ||
+          draft.assistantSelections.length > 0 ||
+          draft.fileComments.length > 0 ||
+          draft.pastedTexts.length > 0,
+        provider: draft.modelSelection?.provider ?? null,
+      },
+    ])
+  );
 }
 
 function isStringRecord(value: unknown): value is Record<string, unknown> {
@@ -351,6 +372,13 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()(
         } else {
           delete draftsByThreadId[threadId];
         }
+        return { draftsByThreadId };
+      }),
+    discardDraft: (threadId) =>
+      set((state) => {
+        if (!state.draftsByThreadId[threadId]) return state;
+        const draftsByThreadId = { ...state.draftsByThreadId };
+        delete draftsByThreadId[threadId];
         return { draftsByThreadId };
       }),
     removePastedText: (threadId, pastedTextId) =>
