@@ -121,7 +121,7 @@ describe('ThemePack boolean interaction contract', () => {
       /\.SliceRoot--theme-dark \.LxDialogPopup\.SharedThemePackImportDialog\s*\{[^}]*box-shadow:\s*0 16px 50px -12px rgba\(0,\s*0,\s*0,\s*0\.7\);/s
     );
     expect(styles).toMatch(
-      /\.SharedThemePackImportClose\s*\{[^}]*position:\s*absolute;[^}]*right:\s*8px;[^}]*top:\s*8px;[^}]*width:\s*28px;[^}]*height:\s*28px;[^}]*display:\s*flex;[^}]*align-items:\s*center;[^}]*justify-content:\s*center;[^}]*padding:\s*0;[^}]*border-radius:\s*10px;/s
+      /\.SharedThemePackImportClose\s*\{[^}]*position:\s*absolute;[^}]*z-index:\s*1;[^}]*right:\s*8px;[^}]*top:\s*8px;[^}]*width:\s*28px;[^}]*height:\s*28px;[^}]*display:\s*flex;[^}]*align-items:\s*center;[^}]*justify-content:\s*center;[^}]*padding:\s*0;[^}]*border-radius:\s*10px;/s
     );
     expect(styles).toMatch(
       /\.SharedThemePackImportCloseIcon\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;/s

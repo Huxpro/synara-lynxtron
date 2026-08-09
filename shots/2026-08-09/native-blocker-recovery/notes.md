@@ -17,14 +17,15 @@ Runtime:
 - isolated server: `127.0.0.1:58800`
 - isolated state: `.synara-native-matrix`
 - isolated renderer state: `/tmp/synara-native-matrix-user`
-- route: `/settings/general`
+- launch argument: `/settings/general` (not accepted by the
+  `synara://` deep-link parser)
 
 ## Cells
 
 | Cell | Outer window | Root class | Route | Console | Screenshot |
 | --- | --- | --- | --- | --- | --- |
-| Settings light | `1280x820` | `SliceRoot--theme-light` | Settings found in the exact-client DOM | no error/warning entries | `settings-light-1280.png`, `2560x1640` |
-| Settings dark | `1440x900` | `SliceRoot--theme-dark` | Settings found in the exact-client DOM | no error/warning entries | `settings-dark-1440.png`, `2880x1800` |
+| Shell light | `1280x820` | `SliceRoot--theme-light` | populated shell DOM | no error/warning entries | `settings-light-1280.png`, `2560x1640` |
+| Shell dark | `1440x900` | `SliceRoot--theme-dark` | populated shell DOM | no error/warning entries | `settings-dark-1440.png`, `2880x1800` |
 
 The theme was supplied through the product's persisted `synara:theme` format in
 the isolated KV file. Window dimensions were supplied through the isolated
@@ -34,8 +35,11 @@ native `window-state.json`; CoreGraphics confirmed the requested outer bounds.
 
 Both cells initialized the current production bundle, rendered a populated
 document tree, reached `shellRendererReady`, and retained clean exact-client
-error/warning consoles. This closes the former template-context startup
-blocker for both themes and both certification sizes.
+error/warning consoles. They close the former template-context startup blocker
+for both themes and both certification sizes. They do not prove a Settings
+route: the bare `/settings/general` argument was not accepted by
+`routeFromArguments`, which only parses `synara://` deep links. The later Theme
+Pack follow-up uses the correct `synara://settings/appearance` route.
 
 Lynxtron `0.0.9` DevTool screenshots cover the full outer window dimensions,
 whereas the previous `0.0.7` harness documented titlebar-subtracted LynxView

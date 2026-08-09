@@ -82,6 +82,7 @@
 
 .SharedThemePackImportClose {
   position: absolute;
+  z-index: 1;
   right: 8px;
   top: 8px;
   width: 28px;

@@ -1,6 +1,6 @@
 # Theme Pack Import fidelity audit
 
-Status: Browser-complete, Native batch blocked by Lynxtron bundle loading
+Status: Browser-complete, Native dialog and dismiss interaction verified
 
 Updated: 2026-08-09
 
@@ -64,12 +64,13 @@ Concrete success criteria:
 | Focused regression coverage | 3 files / 21 tests pass, including success and parser-error dialog behavior | PASS |
 | Production builds | Lynx-for-Web and Native/Desktop builds pass; only existing encoder and optional `ws` warnings | PASS |
 | React Doctor | Controlled-input and label findings were fixed; one remaining warning targets ReactLynx-only `accessibility-element`, which is required by the native AX contract | PASS WITH DOCUMENTED FALSE POSITIVE |
-| Native textarea/IME | Exact-owned production preflight used PID-derived client `localhost:8903`, App `@synara/lynx`, a `1280×820` owned window, staged/output bundle hash parity, isolated server `58190`, and an isolated Lynx user-data directory. Lynxtron 0.0.7 failed before app background initialization with `An error occurred when parse json`, leaving a white LynxView and only the preload console line. Rebuilding and launching the pushed `31155c7d` baseline produced the same failure, so this is not attributed to the current Explorer slice. Native input, selection, paste, composition, undo/redo, and keyboard routing remain uncertified | BLOCKED BY NATIVE HARNESS / SDK |
+| Native dialog anatomy and dismissal | Lynxtron `0.0.9-dev`, the current staged bundle, startup deep link `synara://settings/appearance`, and PID-derived DevTool evidence now cover light/dark dialog geometry and real trigger/Cancel/Close paths. The first `0.0.9` run exposed a real z-order defect: the visible Close center hit the title text. `z-index: 1` restores the Close subtree as the hit target and a real exact-client click unmounts the dialog | PASS — `shots/2026-08-09/theme-pack-import-native/` |
+| Native textarea/IME | The current Native dialog and textarea now render, but the background-owned window is not the frontmost macOS text client. Programmatic `setValue` would bypass `bindinput` and is not accepted as input evidence. Ordinary typing, selection, paste, composition, and undo/redo therefore remain uncertified rather than being inferred from Browser tests | PARTIAL — HOST TEXT-CLIENT BOUNDARY |
 
-## Native preflight blocker
+## Resolved Native preflight blocker
 
-The 2026-08-09 Native batch was attempted rather than inferred from browser
-evidence:
+The original 2026-08-09 Native batch was attempted rather than inferred from
+browser evidence:
 
 - exact-owned current-head process PID `29047`, then pushed-baseline PID
   `49010`;
@@ -126,6 +127,12 @@ The actionable prerequisite is therefore a Lynxtron/Lynx SDK combination that
 successfully loads the current ReactLynx snapshot bundle, or supports Element
 Template together with LynxUI. Reducing or hiding product UI only to stay below
 the legacy parser boundary is not treated as an acceptable fidelity fix.
+
+That prerequisite was resolved by `b7b06ac7`: pure pinned/marker label helpers
+now live in `packages/shared`, so the Lynx bundle no longer pulls Web dispatch,
+Effect RPC, and `wsTransport` into the PrimJS context. The Lynxtron toolchain is
+now `0.0.9`. Current exact-owned runs render the Appearance page and Import
+dialog in both themes.
 
 ## Stable geometry
 
@@ -394,12 +401,12 @@ and to `4.94%` in dark; neither final crop has any channel difference above
 ## Residuals and disposition
 
 - Native textarea, IME, selection, paste, undo/redo, and keyboard routing remain
-  a required Native batch boundary.
-- A fresh exact-owned Native attempt identified PID `34313`, PID-derived
-  `localhost:8902/session 1`, the current staged bundle URL, and an empty
-  warning/error console. `DOM.getDocument` still returned `{}` and DevTool
-  screencast timed out, so Native dialog pixels/input remain harness-blocked
-  rather than being promoted from Browser evidence.
+  a required Native batch boundary. The bundle/parser blocker no longer applies;
+  the remaining prerequisite is a visible, frontmost exact-owned macOS text
+  client.
+- Current exact-owned Native evidence proves the real `synara://settings/appearance`
+  route, light/dark dialog pixels and geometry, trigger activation, Cancel, and
+  the repaired Close hit target with empty warning/error consoles.
 - Lynx-for-Web did not publish `mouseenter` to the custom `DialogClose` root.
   No dead hover CSS is retained; pointer-hover publication remains part of the
   known host mouse-event boundary.
