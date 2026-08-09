@@ -280,6 +280,7 @@ Current responsive disposition:
 | Composer draft-attachment warning | non-persisted image attachments use Web's 20px surface-backed amber CircleAlert badge and expose the canonical `Draft attachment may not persist` accessible name instead of a bare `!` glyph | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
 | Nested image accessibility | Profile avatars, Explorer image previews, and Composer image thumbnails explicitly remain decorative because their identity is already owned by surrounding text or a named preview control, preventing duplicate or unnamed accessibility nodes | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Form control accessibility | Kanban task mutation, Git commit message, Integration connection name, and provider credential inputs expose explicit native accessible names; pending Git/Kanban fields retain read-only semantics without invalid DOM-only focus props | PASS — CURRENT PRODUCT IMPLEMENTATION |
+| Shared interactive names | high-frequency Composer, Kanban, and Pull Request controls route labels and selected/expanded/on-off state through `useLynxInteractiveState`, so Native accessibility metadata no longer depends only on Web `aria-label` attributes | PASS — SHARED NATIVE ACCESSIBILITY CONTRACT |
 | Empty-thread context semantics | project, environment mode, and branch chips are exposed as static draft metadata rather than falsely disabled controls; Temporary remains the tray's sole pressed-state action | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
 | Shared Menu icon identity | default checkbox/radio indicators and submenu affordances use generated 12px Check and 14px ChevronRight icons, removing Unicode state glyphs from every Menu consumer | PASS — SHARED PRIMITIVE |
 | Sidebar completed-status identity | completed threads use Web's filled `circle-check` Central asset at the canonical 15px trailing role instead of a hand-built green dot plus text checkmark | PASS — CURRENT PRODUCT SURFACES |
@@ -504,6 +505,14 @@ and provider-specific credential fields. The Git textarea uses the native Lynx
 running; no invalid DOM-only focus attribute remains. Four focused suites pass
 (14/14), both production bundles build, and React Doctor 0.9.11 reports zero
 new diagnostics against `ebbf6836`.
+The shared-interaction follow-up migrates existing Composer command/model/
+trait controls, Kanban route/column/overview actions, and Pull Request
+filter/tab/disclosure/close actions into the hook's native accessibility owner.
+Visible Web labels remain unchanged, while Native now receives
+`accessibility-element`, label, traits, and selected/expanded/on-off value from
+the same source. Focused cross-adapter regressions pass (5/5), both production
+bundles build, and React Doctor 0.9.11 reports zero new diagnostics against
+`3b74e086`.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

@@ -39,6 +39,7 @@ export function KanbanColumnNewCardElement(props: {
 }) {
   const interaction = useLynxInteractiveState({
     baseClassName: 'SharedKanbanColumnNewCard',
+    accessibleLabel: props.label,
     onActivate: props.onActivate,
   });
   return (
@@ -87,6 +88,7 @@ export function KanbanColumnShowMoreElement(props: {
 }) {
   const interaction = useLynxInteractiveState({
     baseClassName: 'SharedKanbanColumnShowMore',
+    accessibleLabel: props.label,
     onActivate: props.onActivate,
   });
   return (

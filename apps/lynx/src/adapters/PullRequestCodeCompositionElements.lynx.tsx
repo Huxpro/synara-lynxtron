@@ -139,6 +139,7 @@ export function PullRequestCodeMoreElement(props: {
 }) {
   const interaction = useLynxInteractiveState({
     baseClassName: 'SharedPrCodeMore',
+    accessibleLabel: props.label,
     onActivate: props.onActivate,
   });
   return (

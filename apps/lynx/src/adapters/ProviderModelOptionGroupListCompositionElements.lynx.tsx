@@ -103,6 +103,8 @@ export function ProviderModelRadioItemElement(props: {
     baseClassName: `ComposerModelOptionLynx${
       props.active ? ' ComposerModelOptionLynx--active' : ''
     }`,
+    accessibleLabel: `Select ${props.modelName}`,
+    accessibilityValue: props.active ? 'Selected' : undefined,
     onActivate: () => {
       'background only';
       props.onSelect();
@@ -113,6 +115,10 @@ export function ProviderModelRadioItemElement(props: {
     baseClassName: `ComposerModelOptionFavoriteLynx${
       props.isFavorite ? ' ComposerModelOptionFavoriteLynx--active' : ''
     }`,
+    accessibleLabel: `${props.isFavorite ? 'Remove' : 'Add'} ${
+      props.modelName
+    } ${props.isFavorite ? 'from' : 'to'} favourites`,
+    accessibilityValue: props.isFavorite ? 'On' : 'Off',
     onActivate: props.onToggleFavorite,
   });
   const favoriteEventProps = lynxNestedInteractiveEventProps(

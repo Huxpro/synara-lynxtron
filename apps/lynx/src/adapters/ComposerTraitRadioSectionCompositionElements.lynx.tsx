@@ -16,6 +16,8 @@ export function ComposerTraitFastModeToggleElement(props: {
     baseClassName: `ComposerTraitFastModeToggleLynx${
       props.enabled ? ' ComposerTraitFastModeToggleLynx--active' : ''
     }`,
+    accessibleLabel: 'Fast mode',
+    accessibilityValue: props.enabled ? 'On' : 'Off',
     onActivate: props.onToggle,
   });
   return (
@@ -89,6 +91,8 @@ export function ComposerTraitRadioItemElement(props: {
     baseClassName: `ComposerTraitOptionLynx${
       props.active ? ' ComposerTraitOptionLynx--active' : ''
     }${props.disabled ? ' ComposerTraitOptionLynx--disabled' : ''}`,
+    accessibleLabel: props.label,
+    accessibilityValue: props.active ? 'Selected' : undefined,
     disabled: props.disabled,
     onActivate: activate,
   });

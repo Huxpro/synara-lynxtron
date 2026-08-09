@@ -9,6 +9,7 @@ export function PullRequestDetailCloseButtonElement(props: {
 }) {
   const interaction = useLynxInteractiveState({
     baseClassName: 'SharedPrDetailCloseButton',
+    accessibleLabel: props.accessibleLabel,
     onActivate: props.onActivate,
   });
   return (

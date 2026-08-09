@@ -28,6 +28,8 @@ export function CollapsedWorkTriggerElement(
 ) {
   const interaction = useLynxInteractiveState({
     baseClassName: 'SharedCollapsedWorkTrigger',
+    accessibleLabel: props.accessibleLabel,
+    accessibilityValue: props.open ? 'Expanded' : 'Collapsed',
     onActivate: props.onActivate,
   });
   return (

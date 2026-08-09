@@ -119,6 +119,8 @@ export function ComposerCommandRowElement(props: {
     baseClassName: `ComposerCommandRowLynx${
       props.active ? ' ComposerCommandRowLynx--active' : ''
     }`,
+    accessibleLabel: props.title,
+    accessibilityValue: props.active ? 'Selected' : undefined,
     onActivate: () => {
       'background only';
       props.onHighlight();

@@ -113,6 +113,8 @@ function PullRequestFilterPillElement(props: {
     baseClassName: `SharedPrFilterPill${
       props.active ? ' SharedPrFilterPill--active' : ''
     }`,
+    accessibleLabel: props.label,
+    accessibilityValue: props.active ? 'Selected' : undefined,
     onActivate: props.onActivate,
   });
   return (

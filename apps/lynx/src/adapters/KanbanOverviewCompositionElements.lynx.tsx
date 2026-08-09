@@ -85,6 +85,7 @@ export function KanbanOverviewNewTaskElement(props: {
 }) {
   const interaction = useLynxInteractiveState({
     baseClassName: 'SharedKanbanOverviewNewTask',
+    accessibleLabel: props.label,
     onActivate: props.onActivate,
   });
   return (
@@ -119,6 +120,7 @@ export function KanbanOverviewShowMoreElement(props: {
 }) {
   const interaction = useLynxInteractiveState({
     baseClassName: 'SharedKanbanOverviewShowMore',
+    accessibleLabel: props.label,
     onActivate: props.onActivate,
   });
   return (

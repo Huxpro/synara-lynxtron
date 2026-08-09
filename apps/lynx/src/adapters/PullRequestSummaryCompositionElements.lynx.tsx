@@ -127,6 +127,8 @@ export function PullRequestSummarySectionElement(
   };
   const interaction = useLynxInteractiveState({
     baseClassName: 'SharedPrSummarySectionHeader',
+    accessibleLabel: `${props.label}, ${open ? 'expanded' : 'collapsed'}`,
+    accessibilityValue: open ? 'Expanded' : 'Collapsed',
     onActivate: toggle,
   });
   return (

@@ -57,6 +57,7 @@ function ComposerProviderOptionElement(props: {
     baseClassName: `ComposerProviderOptionLynx${
       props.item.disabled ? ' ComposerProviderOptionLynx--disabled' : ''
     }`,
+    accessibleLabel: `Browse ${props.item.label} models`,
     disabled: props.item.disabled,
     onActivate: props.onSelect,
   });
@@ -253,6 +254,7 @@ export function ComposerModelControl(props: {
 
   const providerBackInteraction = useLynxInteractiveState({
     baseClassName: 'ComposerProviderBackLynx',
+    accessibleLabel: 'Back to providers',
     onActivate: () => {
       'background only';
       setPanel('providers');

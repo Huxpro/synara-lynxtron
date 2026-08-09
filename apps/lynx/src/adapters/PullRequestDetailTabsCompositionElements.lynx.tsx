@@ -19,6 +19,8 @@ export function PullRequestDetailTabElement(props: {
     baseClassName: `SharedPrDetailTab${
       props.active ? ' SharedPrDetailTab--active' : ''
     }${props.available ? '' : ' SharedPrDetailTab--unavailable'}`,
+    accessibleLabel: props.label,
+    accessibilityValue: props.active ? 'Selected' : undefined,
     disabled: !props.available,
     onActivate: props.onActivate,
   });

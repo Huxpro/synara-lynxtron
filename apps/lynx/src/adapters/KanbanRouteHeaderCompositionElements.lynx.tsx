@@ -25,6 +25,7 @@ export function KanbanRouteHeaderBackElement(props: {
 }) {
   const interaction = useLynxInteractiveState({
     baseClassName: 'SharedKanbanRouteBack',
+    accessibleLabel: 'Back to Kanban',
     onActivate: props.onActivate,
   });
   return (
@@ -63,6 +64,7 @@ export function KanbanRouteHeaderNewTaskElement(props: {
     baseClassName: `SharedKanbanRouteNewTask${
       props.disabled ? ' SharedKanbanRouteNewTask--disabled' : ''
     }`,
+    accessibleLabel: 'New task',
     disabled: props.disabled,
     onActivate: props.onActivate,
   });
