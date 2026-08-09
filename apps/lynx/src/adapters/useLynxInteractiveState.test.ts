@@ -78,7 +78,7 @@ describe('Lynx interactive state adapter', () => {
     ).toBe('Control');
   });
 
-  it('exposes named native button semantics without widening unlabeled nodes', () => {
+  it('exposes actionable native button semantics without widening passive nodes', () => {
     const onActivate = () => {};
 
     expect(
@@ -102,8 +102,8 @@ describe('Lynx interactive state adapter', () => {
     expect(
       lynxInteractiveAccessibilityProps({ onActivate })
     ).toMatchObject({
-      'accessibility-element': undefined,
-      'accessibility-traits': undefined,
+      'accessibility-element': true,
+      'accessibility-traits': 'button',
     });
     expect(
       lynxInteractiveAccessibilityProps({

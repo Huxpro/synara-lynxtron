@@ -281,6 +281,7 @@ Current responsive disposition:
 | Nested image accessibility | Profile avatars, Explorer image previews, and Composer image thumbnails explicitly remain decorative because their identity is already owned by surrounding text or a named preview control, preventing duplicate or unnamed accessibility nodes | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Form control accessibility | Kanban task mutation, Git commit message, Integration connection name, and provider credential inputs expose explicit native accessible names; pending Git/Kanban fields retain read-only semantics without invalid DOM-only focus props | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Shared interactive names | high-frequency Composer, Kanban, and Pull Request controls route labels and selected/expanded/on-off state through `useLynxInteractiveState`, so Native accessibility metadata no longer depends only on Web `aria-label` attributes | PASS — SHARED NATIVE ACCESSIBILITY CONTRACT |
+| Actionable primitive semantics | `useLynxInteractiveState` now exposes every actionable control as a Native accessibility button even when its name is derived from visible text; passive hover owners remain excluded and explicit `accessibilityElement: false` remains authoritative | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
 | Empty-thread context semantics | project, environment mode, and branch chips are exposed as static draft metadata rather than falsely disabled controls; Temporary remains the tray's sole pressed-state action | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
 | Shared Menu icon identity | default checkbox/radio indicators and submenu affordances use generated 12px Check and 14px ChevronRight icons, removing Unicode state glyphs from every Menu consumer | PASS — SHARED PRIMITIVE |
 | Sidebar completed-status identity | completed threads use Web's filled `circle-check` Central asset at the canonical 15px trailing role instead of a hand-built green dot plus text checkmark | PASS — CURRENT PRODUCT SURFACES |
@@ -513,6 +514,13 @@ Visible Web labels remain unchanged, while Native now receives
 the same source. Focused cross-adapter regressions pass (5/5), both production
 bundles build, and React Doctor 0.9.11 reports zero new diagnostics against
 `3b74e086`.
+The primitive follow-up closes the remaining visible-text control gap:
+`useLynxInteractiveState` now treats `onActivate` as sufficient to emit a
+Native accessibility element with button traits, while pure hover owners still
+emit no accessibility node and explicit `accessibilityElement: false` remains
+authoritative. Primitive, nested-action, Composer attachment, shared-name, and
+Environment regressions pass (19/19), both production bundles build, and React
+Doctor 0.9.11 reports zero diagnostics against `145d4f0f`.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

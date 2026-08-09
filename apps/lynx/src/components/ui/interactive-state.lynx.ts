@@ -36,9 +36,10 @@ export function lynxInteractiveAccessibilityProps(
   options: LynxInteractiveAccessibilityOptions
 ) {
   const hasAccessibleLabel = Boolean(options.accessibleLabel?.trim());
+  const actionable = options.onActivate !== undefined;
   const accessibilityElement =
     options.accessibilityElement ??
-    (hasAccessibleLabel ? true : undefined);
+    (hasAccessibleLabel || actionable ? true : undefined);
   return {
     'accessibility-element': accessibilityElement,
     'accessibility-label': options.accessibleLabel,
