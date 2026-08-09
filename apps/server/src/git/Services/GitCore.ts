@@ -201,7 +201,10 @@ export interface GitCoreShape {
   /**
    * Read detailed working tree / branch status for a repository.
    */
-  readonly statusDetails: (cwd: string) => Effect.Effect<GitStatusDetails, GitCommandError>;
+  readonly statusDetails: (
+    cwd: string,
+    options?: { readonly refreshRemote?: boolean },
+  ) => Effect.Effect<GitStatusDetails, GitCommandError>;
 
   /**
    * Read a unified patch for the current working tree, including untracked files.

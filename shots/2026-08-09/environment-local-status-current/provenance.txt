@@ -1,0 +1,9 @@
+server ws: ws://127.0.0.1:58700
+web origin: http://localhost:9463
+server pid: 64168
+web pid: 64167
+server instance: 4071bf9d-4a76-44a5-88aa-c568090b724b
+project: project-git-stable
+thread: thread-git-stable
+workspace: /tmp/synara-env-local-status-fixture
+statusLocal latency: 480ms

@@ -109,6 +109,22 @@ it.effect("accepts git.preparePullRequestThread requests", () =>
   }),
 );
 
+it.effect("accepts local-only git status requests", () =>
+  Effect.gen(function* () {
+    const parsed = yield* decode(WebSocketRequest, {
+      id: "req-status-local",
+      body: {
+        _tag: WS_METHODS.gitStatusLocal,
+        cwd: " /repo ",
+      },
+    });
+    assert.strictEqual(parsed.body._tag, WS_METHODS.gitStatusLocal);
+    if (parsed.body._tag === WS_METHODS.gitStatusLocal) {
+      assert.strictEqual(parsed.body.cwd, "/repo");
+    }
+  }),
+);
+
 it.effect("accepts project script discovery requests", () =>
   Effect.gen(function* () {
     const parsed = yield* decode(WebSocketRequest, {

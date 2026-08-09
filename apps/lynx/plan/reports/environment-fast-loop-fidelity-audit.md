@@ -18,11 +18,12 @@ Date: 2026-08-09
 | Verify page-error gate | `web-errors.json` and `lynx-errors.json` contain empty error arrays | PASS |
 | Verify focused tests | Environment + thread polling + Web interaction bridge: 3 files / 17 tests | PASS |
 | Verify production builds | Lynx-for-Web and Native/Desktop production builds pass; known encoder and optional `ws` warnings only | PASS |
-| Load Environment data without destabilizing the relay | initial-open fast loop uses two bounded two-request batches for branches/local servers and config/repository; it excludes the measured >8s usage request and remote-fetching Git status; one relay connection, zero Environment duplicate RPCs, zero retained transport errors | PASS WITH RELIABILITY BOUNDARY |
+| Load Environment data without destabilizing the relay | initial-open fast loop uses bounded batches for local status/branches/servers and config/repository; `git.statusLocal` never refreshes remote refs, and the measured >8s Usage request remains excluded; one relay connection, zero duplicate Environment RPCs, zero retained transport errors | PASS |
 | Match current Editor composition | Lynx adds Web's real `Editor view` row and opens the existing Explorer dock through `setExplorerVisibility(true)`; external editor picker remains below it | PASS |
 | Verify top/middle/bottom scroll geometry | paired light/dark 1280x480 cells: exact 288x330 surface at x=980/y=138, 328px viewport, Web 0/82/164 and Lynx 0/75/149 top/mid/bottom positions | PASS FOR STATIC GEOMETRY |
 | Verify real wheel publication | Chromium wheel over the Lynx-for-Web custom element does not update the nested scroll-view; programmatic positions are retained for visual evidence only | RECORDED WEB ELEMENTS LIMIT |
-| Preserve honest Git/usage failure states | bootstrap avoids the measured remote Git fetch timeout and >8s usage request; Git shows retryable `Couldn't load changes`, and the unavailable Usage row is omitted to match current Web composition | PASS — 15px content-height delta remains from absent Git stats |
+| Preserve honest Git/usage failure states | `git.statusLocal` reuses the existing local/remote status split, skips upstream refresh, and returns working-tree statistics without network access; the >8s Usage request remains excluded | PASS |
+| Close loaded-content height residual | stable external Git fixture (`README.md`, fixed +1/−1) proves Web and Lynx light/dark all resolve to 427px content, 408px viewport, and 0/10/19 top/mid/bottom positions | PASS — previous 15px delta closed |
 | Native certification | blocked by the separately documented Lynxtron snapshot parser issue | BLOCKED BY SDK |
 
 ## Result
@@ -39,7 +40,11 @@ keeps the original shell matrix. The loaded-data continuation is under
 `shots/2026-08-09/environment-loaded-current/`: all four screenshots are
 1280x480, all four page-error arrays are empty, and both themes retain the
 same shell and scroll geometry. Lynx-for-Web now renders real branch, local
-server, repository, editor, project-instruction, and notepad content. The
-remaining 15px content-height delta is the explicit retryable Git-status row
-instead of Web's live change statistics; waiting on the remote-fetching Git
-request would violate the connection reliability objective.
+server, repository, editor, project-instruction, and notepad content.
+
+The follow-up under
+`shots/2026-08-09/environment-local-status-current/` closes the remaining
+content-height delta. A dedicated local-only status RPC returns the same +1/−1
+working-tree statistics without refreshing remote refs. The fixed external Git
+fixture then produces exact 427px content height and 0/10/19 scroll positions
+in Web and Lynx-for-Web, in both themes.

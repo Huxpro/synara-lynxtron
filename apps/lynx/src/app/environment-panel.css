@@ -204,6 +204,12 @@
   border-radius: 10px;
 }
 
+.EnvironmentBranchGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
 .EnvironmentBranchTrigger.ui-hover,
 .EnvironmentBranchTrigger.ui-focus,
 .EnvironmentBranchTrigger.ui-pressed {
@@ -641,17 +647,6 @@
   opacity: 0.6;
 }
 
-.EnvironmentWorkspace {
-  margin: -2px 8px 2px 32px;
-  overflow: hidden;
-  color: var(--muted-foreground);
-  font-family: var(--font-mono-family);
-  font-size: 10px;
-  line-height: 15px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 .EnvironmentDivider {
   height: 1px;
   margin: 4px 0;
@@ -1085,13 +1080,13 @@
 }
 
 .EnvironmentNotepad {
-  min-height: 74px;
+  min-height: 78px;
   padding: 2px 8px 4px;
 }
 
 .EnvironmentNotepadInput {
   width: 100%;
-  min-height: 68px;
+  min-height: 72px;
   padding: 8px 12px;
   border: 1px solid var(--settings-project-border);
   border-radius: 10px;

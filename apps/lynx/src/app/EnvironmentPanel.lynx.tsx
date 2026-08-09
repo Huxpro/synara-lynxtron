@@ -5,6 +5,7 @@ import {
   type EditorId,
   type GitPullRequestCheck,
   type GitStackedAction,
+  type GitStatusLocalResult,
   type GitStatusResult,
   type OrchestrationThreadPullRequest,
   type PinnedMessage,
@@ -328,7 +329,7 @@ function EnvironmentLocalServers(props: {
 function EnvironmentChanges(props: {
   readonly bootstrapOnly: boolean;
   readonly initialLoadCompleted: boolean;
-  readonly initialStatus: GitStatusResult | null;
+  readonly initialStatus: GitStatusLocalResult | null;
   readonly onOpenViewer: () => void;
   readonly open: boolean;
   readonly onStatusChange: (status: GitStatusResult | null) => void;
@@ -336,7 +337,7 @@ function EnvironmentChanges(props: {
 }) {
   const [refreshGeneration, setRefreshGeneration] = useState(0);
   const [statusState, setStatusState] = useState<{
-    readonly data: Awaited<ReturnType<typeof fetchGitStatus>> | null;
+    readonly data: GitStatusLocalResult | GitStatusResult | null;
     readonly error: boolean;
     readonly pending: boolean;
   }>({
@@ -986,69 +987,79 @@ function EnvironmentBranch(props: {
   }
 
   return (
-    <Menu open={menuOpen} onOpenChange={setMenuOpen}>
-      <MenuTrigger
-        ariaLabel="Choose branch"
-        className="EnvironmentBranchTrigger"
-        disabled={branchesQuery.isPending}
-      >
-        <EnvironmentRow
-          icon={
-            <GitBranchIcon
-              size={16}
-              color="var(--foreground)"
-            />
-          }
-          label={props.branch ?? 'No branch'}
-          trailing={props.envMode === 'worktree' ? 'Worktree' : 'Local'}
-          trailingIcon={
-            <ChevronDownIcon
-              size={12}
-              color="var(--muted-foreground)"
-            />
-          }
-        />
-      </MenuTrigger>
-      <MenuPopup
-        align="start"
-        side="bottom"
-        className="EnvironmentBranchPopup"
-      >
-        {props.envMode === 'worktree' ? (
-          <text className="EnvironmentBranchState">
-            Switch branches from the worktree environment controls.
-          </text>
-        ) : branches.length === 0 ? (
-          <text className="EnvironmentBranchState">
-            No local branches found.
-          </text>
-        ) : (
-          <view className="EnvironmentBranchList">
-            {branches.map((branch) => (
-              <MenuItem
-                className="EnvironmentBranchOption"
-                closeOnClick={false}
-                disabled={switchingBranch !== null}
-                key={branch.name}
-                onClick={() => void switchBranch(branch.name)}
-                trailing={
-                  branch.name === props.branch ? (
-                    <CheckIcon className="EnvironmentBranchCheck" />
-                  ) : undefined
-                }
-              >
-                {branch.name}
-              </MenuItem>
-            ))}
-          </view>
-        )}
-        {error ? (
-          <text className="EnvironmentBranchError">
-            Could not switch branch
-          </text>
-        ) : null}
-      </MenuPopup>
-    </Menu>
+    <view className="EnvironmentBranchGroup">
+      <EnvironmentRow
+        icon={
+          <DeviceLaptopIcon
+            size={16}
+            color="var(--foreground)"
+          />
+        }
+        label={props.envMode === 'worktree' ? 'Worktree' : 'Local'}
+      />
+      <Menu open={menuOpen} onOpenChange={setMenuOpen}>
+        <MenuTrigger
+          ariaLabel="Choose branch"
+          className="EnvironmentBranchTrigger"
+          disabled={branchesQuery.isPending}
+        >
+          <EnvironmentRow
+            icon={
+              <GitBranchIcon
+                size={16}
+                color="var(--foreground)"
+              />
+            }
+            label={props.branch ?? 'No branch'}
+            trailingIcon={
+              <ChevronDownIcon
+                size={12}
+                color="var(--muted-foreground)"
+              />
+            }
+          />
+        </MenuTrigger>
+        <MenuPopup
+          align="start"
+          side="bottom"
+          className="EnvironmentBranchPopup"
+        >
+          {props.envMode === 'worktree' ? (
+            <text className="EnvironmentBranchState">
+              Switch branches from the worktree environment controls.
+            </text>
+          ) : branches.length === 0 ? (
+            <text className="EnvironmentBranchState">
+              No local branches found.
+            </text>
+          ) : (
+            <view className="EnvironmentBranchList">
+              {branches.map((branch) => (
+                <MenuItem
+                  className="EnvironmentBranchOption"
+                  closeOnClick={false}
+                  disabled={switchingBranch !== null}
+                  key={branch.name}
+                  onClick={() => void switchBranch(branch.name)}
+                  trailing={
+                    branch.name === props.branch ? (
+                      <CheckIcon className="EnvironmentBranchCheck" />
+                    ) : undefined
+                  }
+                >
+                  {branch.name}
+                </MenuItem>
+              ))}
+            </view>
+          )}
+          {error ? (
+            <text className="EnvironmentBranchError">
+              Could not switch branch
+            </text>
+          ) : null}
+        </MenuPopup>
+      </Menu>
+    </view>
   );
 }
 
@@ -2663,10 +2674,6 @@ export function EnvironmentPanel(props: {
                 workspaceRoot={props.workspaceRoot}
               />
             ) : null}
-            {props.workspaceRoot ? (
-              <text className="EnvironmentWorkspace">{props.workspaceRoot}</text>
-            ) : null}
-
             {props.workspaceRoot ? (
               <EnvironmentGitAction
                 branch={props.branch}

@@ -2302,6 +2302,48 @@ it.layer(TestLayer)("git integration", (it) => {
         }),
     );
 
+    it.effect(
+      "skips upstream refresh for local-only status details",
+      () =>
+        Effect.gen(function* () {
+          const remote = yield* makeTmpDir();
+          const source = yield* makeTmpDir();
+          const clone = yield* makeTmpDir();
+          yield* git(remote, ["init", "--bare"]);
+
+          yield* initRepoWithCommit(source);
+          const core = yield* GitCore;
+          const initialBranch = (yield* core.listBranches({ cwd: source })).branches.find(
+            (branch) => branch.current,
+          )!.name;
+          yield* git(source, ["remote", "add", "origin", remote]);
+          yield* git(source, ["push", "-u", "origin", initialBranch]);
+
+          yield* git(clone, ["clone", remote, "."]);
+          yield* git(clone, ["config", "user.email", "test@test.com"]);
+          yield* git(clone, ["config", "user.name", "Test"]);
+          yield* git(clone, [
+            "checkout",
+            "-B",
+            initialBranch,
+            "--track",
+            `origin/${initialBranch}`,
+          ]);
+          yield* writeTextFile(path.join(clone, "LOCAL_ONLY.md"), "remote change\n");
+          yield* git(clone, ["add", "LOCAL_ONLY.md"]);
+          yield* git(clone, ["commit", "-m", "remote local-only update"]);
+          yield* git(clone, ["push", "origin", initialBranch]);
+
+          const localOnly = yield* core.statusDetails(source, {
+            refreshRemote: false,
+          });
+          expect(localOnly.behindCount).toBe(0);
+
+          const refreshed = yield* core.statusDetails(source);
+          expect(refreshed.behindCount).toBe(1);
+        }),
+    );
+
     it.effect("prepares commit context by auto-staging and creates commit", () =>
       Effect.gen(function* () {
         const tmp = yield* makeTmpDir();

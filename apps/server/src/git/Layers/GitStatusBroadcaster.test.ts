@@ -36,13 +36,18 @@ const baseDetails: GitStatusDetails = {
 function makeTestLayer(state: {
   currentDetails: GitStatusDetails;
   currentStatus: GitStatusResult;
+  detailsOptions?: Array<{ readonly refreshRemote?: boolean } | undefined>;
   detailsCalls: number;
   statusCalls: number;
 }) {
   const gitCore = {
-    statusDetails: () =>
+    statusDetails: (
+      _cwd: string,
+      options?: { readonly refreshRemote?: boolean },
+    ) =>
       Effect.sync(() => {
         state.detailsCalls += 1;
+        state.detailsOptions?.push(options);
         return state.currentDetails;
       }),
   } as unknown as GitCoreShape;
@@ -73,6 +78,7 @@ const runBroadcasterTest = (
   state: {
     currentDetails: GitStatusDetails;
     currentStatus: GitStatusResult;
+    detailsOptions?: Array<{ readonly refreshRemote?: boolean } | undefined>;
     detailsCalls: number;
     statusCalls: number;
   },
@@ -84,6 +90,41 @@ afterEach(() => {
 });
 
 describe("GitStatusBroadcasterLive", () => {
+  it("refreshes local status without invoking the remote status path", async () => {
+    const state = {
+      currentDetails: {
+        ...baseDetails,
+        hasWorkingTreeChanges: true,
+        workingTree: {
+          files: [{ path: "src/local.ts", insertions: 3, deletions: 1 }],
+          insertions: 3,
+          deletions: 1,
+        },
+      },
+      currentStatus: baseStatus,
+      detailsOptions: [] as Array<{ readonly refreshRemote?: boolean } | undefined>,
+      detailsCalls: 0,
+      statusCalls: 0,
+    };
+
+    await runBroadcasterTest(
+      state,
+      Effect.gen(function* () {
+        const broadcaster = yield* GitStatusBroadcaster;
+        const local = yield* broadcaster.refreshLocalStatus("/repo");
+
+        expect(local).toEqual({
+          branch: baseStatus.branch,
+          hasWorkingTreeChanges: true,
+          workingTree: state.currentDetails.workingTree,
+        });
+        expect(state.detailsOptions).toEqual([{ refreshRemote: false }]);
+        expect(state.detailsCalls).toBe(1);
+        expect(state.statusCalls).toBe(0);
+      }),
+    );
+  });
+
   it("refreshes local git status on repeated reads without repeating PR lookup", async () => {
     const state = {
       currentDetails: baseDetails,

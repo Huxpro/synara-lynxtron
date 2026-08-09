@@ -63,6 +63,7 @@ import {
   GitStashInfoInput,
   GitStashInfoResult,
   GitStatusInput,
+  GitStatusLocalResult,
   GitStatusResult,
   GitSummarizeDiffInput,
   GitSummarizeDiffResult,
@@ -445,6 +446,12 @@ export const WsShellOpenInEditorRpc = Rpc.make(WS_METHODS.shellOpenInEditor, {
 export const WsGitStatusRpc = Rpc.make(WS_METHODS.gitStatus, {
   payload: GitStatusInput,
   success: GitStatusResult,
+  error: WsRpcError,
+});
+
+export const WsGitStatusLocalRpc = Rpc.make(WS_METHODS.gitStatusLocal, {
+  payload: GitStatusInput,
+  success: GitStatusLocalResult,
   error: WsRpcError,
 });
 
@@ -1009,6 +1016,7 @@ export const WsFeatureRpcGroup = RpcGroup.make(
   WsShellOpenInEditorRpc,
   WsGitGithubRepositoryRpc,
   WsGitStatusRpc,
+  WsGitStatusLocalRpc,
   WsGitReadWorkingTreeDiffRpc,
   WsGitSummarizeDiffRpc,
   WsGitPullRpc,

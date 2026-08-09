@@ -12,6 +12,7 @@ import type {
   GitActionProgressEvent,
   GitRunStackedActionInput,
   GitRunStackedActionResult,
+  GitStatusLocalResult,
   GitStatusResult,
   ModelSelection,
   OrchestrationImportThreadInput,
@@ -612,6 +613,12 @@ export async function fetchGitPullRequestSnapshot(input: {
 
 export async function fetchGitStatus(cwd: string): Promise<GitStatusResult> {
   return transportRequest('git.status', { cwd });
+}
+
+export async function fetchGitStatusLocal(
+  cwd: string
+): Promise<GitStatusLocalResult> {
+  return transportRequest('git.statusLocal', { cwd });
 }
 
 export async function pullGitBranch(cwd: string): Promise<GitPullResult> {

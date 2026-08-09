@@ -1,7 +1,7 @@
 import type {
   GitHubRepositoryResult,
   GitListBranchesResult,
-  GitStatusResult,
+  GitStatusLocalResult,
   ServerConfig,
   ServerListLocalServersResult,
 } from '@synara/contracts';
@@ -11,7 +11,7 @@ import { sleepOnHost } from '../platform/timer';
 export interface EnvironmentBootstrapData {
   readonly branches: GitListBranchesResult | null;
   readonly config: ServerConfig | null;
-  readonly gitStatus: GitStatusResult | null;
+  readonly gitStatus: GitStatusLocalResult | null;
   readonly gitStatusLoaded: true;
   readonly localServers: ServerListLocalServersResult | null;
   readonly repository: GitHubRepositoryResult | null;
@@ -37,11 +37,13 @@ export async function fetchEnvironmentBootstrapData(
   const {
     fetchGitBranches,
     fetchGitHubRepository,
+    fetchGitStatusLocal,
     fetchLocalServers,
     fetchServerConfig,
   } = await import(/* webpackMode: "eager" */ '../data/synaraClient.lynx');
 
-  const [branches, localServers] = await Promise.all([
+  const [gitStatus, branches, localServers] = await Promise.all([
+    withinBootstrapBudget(fetchGitStatusLocal(workspaceRoot)),
     withinBootstrapBudget(fetchGitBranches(workspaceRoot)),
     withinBootstrapBudget(fetchLocalServers()),
   ]);
@@ -53,7 +55,7 @@ export async function fetchEnvironmentBootstrapData(
   return {
     branches,
     config,
-    gitStatus: null,
+    gitStatus,
     gitStatusLoaded: true,
     localServers,
     repository,

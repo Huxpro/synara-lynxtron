@@ -32,6 +32,12 @@ describe('Lynx Environment panel', () => {
     );
     expect(bootstrapSource.match(/await Promise\.all\(\[/g)).toHaveLength(2);
     expect(bootstrapSource).not.toContain('fetchAllProviderUsage');
+    expect(bootstrapSource).toContain('fetchGitStatusLocal');
+    expect(bootstrapSource).not.toContain('fetchGitStatus(');
+    expect(panelSource).toContain(
+      "label={props.envMode === 'worktree' ? 'Worktree' : 'Local'}"
+    );
+    expect(panelSource).not.toContain('EnvironmentWorkspace');
     expect(routerSource).toContain(
       'matchingInitialThreadBootstrap?.environment'
     );
@@ -296,6 +302,9 @@ describe('Lynx Environment panel', () => {
       /\.LxMenuPopup\.EnvironmentBranchPopup\s*\{[^}]*width:\s*224px;[^}]*max-height:\s*320px;[^}]*padding:\s*4px;/s
     );
     expect(styles).toMatch(
+      /\.EnvironmentBranchGroup\s*\{[^}]*flex-direction:\s*column;[^}]*gap:\s*2px;/s
+    );
+    expect(styles).toMatch(
       /\.LxDialogPopup\.EnvironmentGitActionDialog\s*\{[^}]*width:\s*min\(520px,\s*calc\(100vw - 32px\)\);[^}]*border-radius:\s*18px;/s
     );
     expect(styles).toMatch(
@@ -336,6 +345,12 @@ describe('Lynx Environment panel', () => {
     );
     expect(styles).toMatch(
       /\.EnvironmentInstructionsInput\s*\{[^}]*min-height:\s*68px;[^}]*padding:\s*8px 12px;[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s
+    );
+    expect(styles).toMatch(
+      /\.EnvironmentNotepad\s*\{[^}]*min-height:\s*78px;[^}]*padding:\s*2px 8px 4px;/s
+    );
+    expect(styles).toMatch(
+      /\.EnvironmentNotepadInput\s*\{[^}]*min-height:\s*72px;/s
     );
     expect(styles).toMatch(
       /\.EnvironmentInstructionsCopy\s*\{[^}]*min-height:\s*24px;[^}]*gap:\s*4px;[^}]*padding:\s*0 7px;/s

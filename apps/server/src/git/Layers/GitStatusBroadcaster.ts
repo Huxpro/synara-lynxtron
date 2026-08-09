@@ -130,7 +130,17 @@ export const GitStatusBroadcasterLive = Layer.effect(
       loadStatus(normalizeCwd(cwd), { publish: true });
 
     const refreshLocalStatus: GitStatusBroadcasterShape["refreshLocalStatus"] = (cwd) =>
-      refreshStatus(cwd).pipe(Effect.map(splitLocalStatus));
+      Effect.gen(function* () {
+        const normalizedCwd = normalizeCwd(cwd);
+        const details = yield* gitCore.statusDetails(normalizedCwd, {
+          refreshRemote: false,
+        });
+        return yield* updateCachedLocalStatus(
+          normalizedCwd,
+          splitLocalStatusDetails(details),
+          { publish: true },
+        );
+      });
 
     const streamStatus: GitStatusBroadcasterShape["streamStatus"] = (input) =>
       Stream.unwrap(

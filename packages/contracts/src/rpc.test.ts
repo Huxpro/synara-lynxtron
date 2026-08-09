@@ -4,6 +4,7 @@ import {
   WsAutomationCreateRpc,
   WsBootstrapRpcGroup,
   WsFeatureRpcGroup,
+  WsGitStatusLocalRpc,
   WsProjectsDiscoverScriptsRpc,
   WsPullRequestsReviewRequestCountRpc,
   WsRpcError,
@@ -47,5 +48,10 @@ describe("WS RPC contracts", () => {
 
   it("exports the count-only pull request review RPC", () => {
     expect(WsPullRequestsReviewRequestCountRpc).toBeDefined();
+  });
+
+  it("exports the local-only git status RPC", () => {
+    expect(WsGitStatusLocalRpc).toBeDefined();
+    expect(WsFeatureRpcGroup.requests.has("git.statusLocal")).toBe(true);
   });
 });
