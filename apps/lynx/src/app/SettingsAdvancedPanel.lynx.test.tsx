@@ -127,6 +127,9 @@ describe('Settings Advanced fidelity', () => {
       /\.SettingsAdvancedReleaseFeatureCopy\s*\{[^}]*gap:\s*4px;/s
     );
     expect(styles).toMatch(
+      /\.SettingsAdvancedReleaseFeatureDetails\s*\{[^}]*opacity:\s*0\.85;/s
+    );
+    expect(styles).toMatch(
       /\.SettingsAdvancedReleaseDialog \.LxDialogFooter\s*\{[^}]*height:\s*52px;[^}]*padding:\s*12px 16px;/s
     );
     expect(styles).toMatch(

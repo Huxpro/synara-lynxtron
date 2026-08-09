@@ -452,6 +452,12 @@ cleanup buffer. The current served bundle hash matched `dist/web`, the
 three-client preflight shared server instance/snapshot, both PNGs are
 `1280x820`, page-error files are empty, and the named browser session was
 closed.
+The adjacent release-note emphasis contract now also mirrors Web's explicit
+`text-muted-foreground/85` details role instead of applying `0.8` opacity.
+This is covered by the focused source contract and both production builds; a
+fresh dark Web comparison was rejected after the browser harness repeatedly
+navigated to `about:blank`, so no runtime dark-cell claim is attached to this
+single-property follow-up.
 The Explorer tree follow-up aligns Native directory expansion with Web's
 `CollapsiblePanel` behavior. Each recursive entry is now a stable component
 with shared 220ms ChevronRight/content motion and explicit `aria-expanded`;
