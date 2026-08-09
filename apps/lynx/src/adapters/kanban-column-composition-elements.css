@@ -70,38 +70,17 @@
   opacity: 0.8;
 }
 
-.SharedKanbanColumnNewCardLabel {
+.SharedKanbanColumnNewCardIcon {
+  width: 14px;
+  height: 14px;
   color: var(--muted-foreground);
-  font-size: 14px;
 }
 
-.SharedKanbanColumnStatus {
+.SharedKanbanColumnStatusIcon {
   width: 14px;
   height: 14px;
   margin-left: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 7px;
-}
-
-.SharedKanbanColumnStatusGlyph {
-  font-size: 12px;
-  line-height: 14px;
-  color: var(--muted-foreground);
-}
-
-.SharedKanbanColumnStatus--inProgress .SharedKanbanColumnStatusGlyph {
-  color: #d6a800;
-}
-
-.SharedKanbanColumnStatus--done {
-  background-color: #5e6ad2;
-}
-
-.SharedKanbanColumnStatus--done .SharedKanbanColumnStatusGlyph {
-  color: #ffffff;
-  font-size: 10px;
+  flex-shrink: 0;
 }
 
 .SharedKanbanColumnScroller {

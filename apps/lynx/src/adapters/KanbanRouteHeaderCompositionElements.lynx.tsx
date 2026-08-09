@@ -1,6 +1,6 @@
 import type { ReactNode } from '@lynx-js/react';
 
-import { PlusIcon } from '../lib/icons.lynx';
+import { ArrowLeftIcon, PlusIcon } from '../lib/icons.lynx';
 import './kanban-route-header-composition-elements.css';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 
@@ -33,7 +33,7 @@ export function KanbanRouteHeaderBackElement(props: {
       aria-label="Back to Kanban"
       {...interaction.eventProps}
     >
-      <text className="SharedKanbanRouteBackGlyph">‹</text>
+      <ArrowLeftIcon className="SharedKanbanRouteBackIcon" size={14} />
     </view>
   );
 }

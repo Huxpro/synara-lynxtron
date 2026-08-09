@@ -33,6 +33,10 @@ describe('Kanban route header fidelity', () => {
     expect(source).toContain(
       '<PlusIcon className="SharedKanbanRouteNewTaskIcon" size={14} />'
     );
+    expect(source).toContain(
+      '<ArrowLeftIcon className="SharedKanbanRouteBackIcon" size={14} />'
+    );
+    expect(source).not.toContain('SharedKanbanRouteBackGlyph');
     expect(source).not.toContain('＋ New task');
   });
 });

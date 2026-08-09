@@ -41,10 +41,10 @@
   opacity: 0.8;
 }
 
-.SharedKanbanRouteBackGlyph {
+.SharedKanbanRouteBackIcon {
+  width: 14px;
+  height: 14px;
   color: var(--muted-foreground);
-  font-size: 20px;
-  line-height: 22px;
 }
 
 .SharedKanbanRouteTitle {

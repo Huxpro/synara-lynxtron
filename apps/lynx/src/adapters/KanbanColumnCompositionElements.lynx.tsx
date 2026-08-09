@@ -2,6 +2,8 @@ import type { ReactNode } from '@lynx-js/react';
 
 import type { KanbanColumnKey } from '@synara-web/components/kanban/kanban.logic';
 
+import { PlusIcon } from '../lib/icons.lynx';
+import { KanbanStatusIcon } from './KanbanStatusIcon.lynx';
 import './kanban-column-composition-elements.css';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 
@@ -45,7 +47,7 @@ export function KanbanColumnNewCardElement(props: {
       aria-label={props.label}
       {...interaction.eventProps}
     >
-      <text className="SharedKanbanColumnNewCardLabel">＋</text>
+      <PlusIcon className="SharedKanbanColumnNewCardIcon" size={14} />
     </view>
   );
 }
@@ -53,15 +55,7 @@ export function KanbanColumnNewCardElement(props: {
 export function KanbanColumnStatusElement(props: {
   readonly column: KanbanColumnKey;
 }) {
-  return (
-    <view
-      className={`SharedKanbanColumnStatus SharedKanbanColumnStatus--${props.column}`}
-    >
-      <text className="SharedKanbanColumnStatusGlyph">
-        {props.column === 'done' ? '✓' : props.column === 'inProgress' ? '◐' : '◌'}
-      </text>
-    </view>
-  );
+  return <KanbanStatusIcon column={props.column} />;
 }
 
 export function KanbanColumnCardListElement(props: ChildrenProps) {
