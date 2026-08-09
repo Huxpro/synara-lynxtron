@@ -6,6 +6,12 @@ import type {
 import { useState, type ReactNode } from '@lynx-js/react';
 
 import { ChatMarkdown } from '../components/markdown/ChatMarkdown.lynx';
+import { ChevronRightIcon } from '../lib/icons.lynx';
+import {
+  disclosureChevronClassName,
+  disclosureContentClassName,
+  useLynxDisclosurePresence,
+} from '../platform/motion.lynx';
 import { PULL_REQUEST_CHECK_STATUS_LABELS } from '@synara-web/components/pullRequest/pullRequestSummary.logic';
 import { PullRequestCommentComposer } from './PullRequestCommentComposer.lynx';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
@@ -114,6 +120,7 @@ export function PullRequestSummarySectionElement(
   }
 ) {
   const [open, setOpen] = useState(props.defaultOpen);
+  const contentPresent = useLynxDisclosurePresence(open);
   const toggle = () => {
     'background only';
     setOpen((value) => !value);
@@ -131,15 +138,27 @@ export function PullRequestSummarySectionElement(
         {...interaction.eventProps}
       >
         <text className="SharedPrSummarySectionTitle">{props.label}</text>
-        <text className="SharedPrSummarySectionChevron">
-          {open ? '⌄' : '›'}
-        </text>
+        <ChevronRightIcon
+          className={disclosureChevronClassName(
+            open,
+            'SharedPrSummarySectionChevron'
+          )}
+          size={14}
+        />
         {props.count === undefined ? null : (
           <text className="SharedPrSummarySectionCount">{props.count}</text>
         )}
       </view>
-      {open ? (
-        <view className="SharedPrSummarySectionBody">{props.children}</view>
+      {contentPresent ? (
+        <view
+          className={disclosureContentClassName(
+            open,
+            'SharedPrSummarySectionBody'
+          )}
+          aria-hidden={!open}
+        >
+          {props.children}
+        </view>
       ) : null}
     </view>
   );

@@ -115,11 +115,17 @@
   font-weight: 500;
 }
 
-.SharedPrSummarySectionChevron,
 .SharedPrSummarySectionCount {
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui-sm);
   margin-left: 6px;
+}
+
+.SharedPrSummarySectionChevron {
+  width: 14px;
+  height: 14px;
+  margin-left: 6px;
+  color: var(--muted-foreground);
 }
 
 .SharedPrSummarySectionBody {
