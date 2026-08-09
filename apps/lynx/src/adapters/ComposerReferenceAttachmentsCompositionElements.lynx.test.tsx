@@ -123,6 +123,11 @@ describe('composer reference attachment interaction contract', () => {
     expect(preview.getAttribute('accessibility-label')).toBe(
       'Preview screen.png'
     );
+    expect(
+      preview.querySelector('.ComposerReferenceImagePreviewLynx')?.getAttribute(
+        'accessibility-element'
+      )
+    ).toBe('false');
     fireEvent.tap(preview);
     expect(onExpandImage).toHaveBeenCalledTimes(1);
     expect(onExpandImage).toHaveBeenLastCalledWith({

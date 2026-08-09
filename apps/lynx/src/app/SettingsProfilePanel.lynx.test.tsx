@@ -109,6 +109,12 @@ describe('Settings Profile fidelity', () => {
     expect(profileSource).toContain('<ProfileColorOption');
     expect(profileSource).toContain('dialogs.pickProfileImage()');
     expect(profileSource).toContain('mode="aspectFill"');
+    expect(profileSource).toMatch(
+      /className="SettingsProfileAvatarImage"[\s\S]{0,160}accessibility-element=\{false\}/
+    );
+    expect(profileSource).toMatch(
+      /className="SettingsProfileEditAvatarImage"[\s\S]{0,160}accessibility-element=\{false\}/
+    );
     expect(profileSource).toContain(
       "import pencilSvg from '@synara-central-icons/pencil.svg?raw';"
     );

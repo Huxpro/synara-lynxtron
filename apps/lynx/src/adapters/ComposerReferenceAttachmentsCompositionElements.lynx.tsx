@@ -221,7 +221,12 @@ export function ComposerImageAttachmentElement({
       {...previewInteraction.eventProps}
     >
       {image.previewUrl ? (
-        <image className="ComposerReferenceImagePreviewLynx" src={image.previewUrl} mode="aspectFill" />
+        <image
+          className="ComposerReferenceImagePreviewLynx"
+          src={image.previewUrl}
+          mode="aspectFill"
+          accessibility-element={false}
+        />
       ) : (
         <text className="ComposerReferenceImageFallbackLynx">IMG</text>
       )}

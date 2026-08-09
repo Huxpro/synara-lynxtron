@@ -476,6 +476,7 @@ function ProfileContent(props: {
               className="SettingsProfileAvatarImage"
               src={avatarImage}
               mode="aspectFill"
+              accessibility-element={false}
             />
           ) : (
             <text className="SettingsProfileAvatarText">
@@ -691,6 +692,7 @@ function ProfileContent(props: {
                   className="SettingsProfileEditAvatarImage"
                   src={draftImage}
                   mode="aspectFill"
+                  accessibility-element={false}
                 />
               ) : (
                 <text className="SettingsProfileEditAvatarText">

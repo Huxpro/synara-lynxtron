@@ -59,6 +59,9 @@ describe('Lynx Explorer dock', () => {
     expect(source).toContain('applyExplorerChatAction({');
     expect(source).toContain('className="ExplorerDockImage"');
     expect(source).toContain('mode="aspectFit"');
+    expect(source).toMatch(
+      /className="ExplorerDockImage"[\s\S]{0,160}accessibility-element=\{false\}/
+    );
     expect(source).toContain('Could not load this image.');
     expect(source).toContain('<ExplorerPdfFallback');
     expect(source).toContain('<ExplorerSyntaxPreview');

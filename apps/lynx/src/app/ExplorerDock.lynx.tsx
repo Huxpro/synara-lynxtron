@@ -398,6 +398,7 @@ export function ExplorerDock(props: {
                     className="ExplorerDockImage"
                     src={props.localPreviewUrl}
                     mode="aspectFit"
+                    accessibility-element={false}
                   />
                   <text className="ExplorerDockImageName">
                     {fileName(props.selectedPath)}
