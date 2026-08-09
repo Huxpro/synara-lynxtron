@@ -3,6 +3,34 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from '@rstest/core';
 
 describe('Lynx Synara relay state', () => {
+  it('keeps the Lynxtron 0.0.9 feature socket in the Node host', () => {
+    const hostSource = readFileSync(
+      new URL('../main/desktop/nativeRpcHost.ts', import.meta.url),
+      'utf8'
+    );
+    const clientSource = readFileSync(
+      new URL('./synaraClient.lynx.ts', import.meta.url),
+      'utf8'
+    );
+
+    expect(hostSource).toContain(
+      "const featureManager = createManager(openFeatureSocket, {\n  closeWhenIdle: false,"
+    );
+    expect(hostSource).toContain('{ maxReconnectAttempts: 0 }');
+    expect(hostSource).toContain('manager.dispose()');
+    expect(clientSource).not.toContain('LynxWebSocketModule');
+    expect(clientSource).not.toContain('featureManager');
+
+    const mainSource = readFileSync(
+      new URL('../main/desktop/main.ts', import.meta.url),
+      'utf8'
+    );
+    expect(mainSource).toContain(
+      "_tag: 'NativeRpcResult'"
+    );
+    expect(clientSource).toContain("parsed._tag === 'NativeRpcResult'");
+  });
+
   it('leaves connection lifecycle state to the Web relay socket owner', () => {
     const source = readFileSync(
       new URL('./synaraClient.lynx.ts', import.meta.url),
@@ -17,7 +45,7 @@ describe('Lynx Synara relay state', () => {
     expect(relayRequest).not.toContain(
       "setRelayState(relayEverConnected ? 'reconnecting' : 'connecting')"
     );
-    expect(relayRequest).not.toContain("setRelayState('offline')");
+    expect(relayRequest).toContain("setRelayState('offline')");
     expect(relayRequest).toContain("setRelayState('connected')");
   });
 

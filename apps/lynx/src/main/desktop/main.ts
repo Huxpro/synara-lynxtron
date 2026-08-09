@@ -47,6 +47,11 @@ import fs from 'node:fs';
 import type { KeybindingCommand } from '@synara/contracts';
 import { handleUpdater } from './updateService';
 import { resolveShellWindowChrome } from './shellWindowChrome';
+import {
+  disposeNativeRpcHost,
+  handleNativeRpc,
+  subscribeNativeRpcTransportState,
+} from './nativeRpcHost';
 const isDev = process.env.NODE_ENV === 'development';
 const isDevtoolEnabled =
   isDev || process.env.SYNARA_ENABLE_DEVTOOL === '1';
@@ -403,7 +408,17 @@ app.whenReady().then(() => {
       }
 
       try {
-        if (name === 'showDialog') {
+        if (name === 'synaraRpc' || name === 'synaraRpcStream') {
+          const result = await handleNativeRpc(name, data, (event) => {
+            w.sendGlobalEvent('synara:git-action-progress', event);
+          });
+          callback.sendReply(
+            JSON.stringify({
+              _tag: 'NativeRpcResult',
+              value: result ?? null,
+            })
+          );
+        } else if (name === 'showDialog') {
           const { message } = data;
           dialog.showMessageBox({ message });
           callback.sendReply('');
@@ -479,8 +494,25 @@ app.whenReady().then(() => {
           callback.sendReply(JSON.stringify({ error: `unknown bridge method ${name}` }));
         }
       } catch (error) {
-        callback.sendReply(JSON.stringify({ error: String(error) }));
+        callback.sendReply(
+          JSON.stringify({
+            error: error instanceof Error ? error.message : String(error),
+            ...(
+              error &&
+              typeof error === 'object' &&
+              'errorKind' in error
+                ? { errorKind: error.errorKind }
+                : {}
+            ),
+          })
+        );
       }
+    }
+  );
+
+  const unsubscribeTransportState = subscribeNativeRpcTransportState(
+    (state) => {
+      w.sendGlobalEvent('synara:transport-state', state);
     }
   );
 
@@ -509,6 +541,8 @@ app.whenReady().then(() => {
     w.loadFile(LYNX_BUNDLE_PATH, loadOptions);
   }
   w.on('close', () => {
+    unsubscribeTransportState();
+    disposeNativeRpcHost();
     flushWindowState();
     appendShellLog(shellPaths.logFile, 'window closed');
     mainWindow = null;

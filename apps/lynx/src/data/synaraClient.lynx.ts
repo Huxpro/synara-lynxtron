@@ -66,15 +66,11 @@ import type {
   ExternalMcpCreateIntegrationResult,
   ExternalMcpIntegration,
 } from '@synara/contracts';
-import { createWebSocket, resolveDefaultSocketUrl, type WebSocketLike } from '../platform/net.socket';
+import { resolveDefaultSocketUrl } from '../platform/net.socket';
 import { bridgeCall, onGlobalEvent } from '../platform/bridge';
-import { sleepOnHost } from '../platform/timer';
 import {
-  createRpcSocketManager,
-  openRpcSocketWithTimeout,
   RpcTransportError,
   type RpcTransportState,
-  type StartRpcTimeout,
 } from './rpcTransport.logic';
 
 export interface SynaraThread {
@@ -126,149 +122,9 @@ export interface SynaraPullRequestListResult {
   readonly repositoryBatches: readonly unknown[];
 }
 
-const PROTOCOL = {
-  epoch: 1,
-  minRevision: 1,
-  maxRevision: 1,
-  capabilities: ['orchestration.cursor-safe-streams', 'rpc.typed-errors'],
-  bootstrapPath: '/ws/bootstrap',
-  featurePath: '/ws',
-} as const;
-const IS_WEB_RELAY_MODE = process.env.SYNARA_LYNX_WEB_RELAY === '1';
-const CLIENT_BUILD = IS_WEB_RELAY_MODE
-  ? '0.5.5-lynx-web'
-  : '0.5.5-lynx-slice';
-const TRUSTED_APP_ORIGIN = 'synara://app';
-const SOCKET_OPEN_TIMEOUT_MS = 8_000;
-// Keep parity with Web's transport. Discovery and pull-request requests can
-// legitimately cross a few seconds; 60s still bounds a missing close frame.
-const RPC_REQUEST_TIMEOUT_MS = 60_000;
-// Keep the reconnecting state long enough to be perceptible (and useful) while
-// still bounding a hard outage to 7.75s of backoff before surfacing offline.
-const MAX_RECONNECT_ATTEMPTS = 6;
-const INITIAL_RECONNECT_DELAY_MS = 250;
-const MAX_RECONNECT_DELAY_MS = 2_000;
 const OFFLINE_RETRY_DELAY_MS = 5_000;
 const TRANSPORT_STATE_EVENT = 'synara:transport-state';
 const GIT_ACTION_PROGRESS_EVENT = 'synara:git-action-progress';
-
-let requestSequence = 0;
-
-function withPath(base: string, path: string): string {
-  const origin = base.match(/^(wss?:\/\/[^/]+)/)?.[1];
-  if (!origin) throw new Error(`Invalid Synara WebSocket URL: ${base}`);
-  return `${origin}${path}`;
-}
-
-function withQuery(base: string, values: Readonly<Record<string, string>>): string {
-  const query = Object.entries(values)
-    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
-    .join('&');
-  return `${base}?${query}`;
-}
-
-const startHostTimeout: StartRpcTimeout = (milliseconds, onTimeout) => {
-  let cancelled = false;
-  void sleepOnHost(milliseconds)
-    .then(() => {
-      if (!cancelled) onTimeout();
-    })
-    .catch(() => {
-      if (!cancelled) onTimeout();
-    });
-  return () => {
-    cancelled = true;
-  };
-};
-
-function openSocket(url: string): Promise<WebSocketLike> {
-  return openRpcSocketWithTimeout({
-    timeoutMs: SOCKET_OPEN_TIMEOUT_MS,
-    startTimeout: startHostTimeout,
-    createSocket: () => {
-    // Lynxtron otherwise supplies an opaque Origin for a native WebSocket.
-    // Synara intentionally rejects opaque browser origins; use the existing
-    // trusted desktop-app identity instead of weakening the server policy.
-      return createWebSocket(url, undefined, {
-        headers: { Origin: TRUSTED_APP_ORIGIN },
-      });
-    },
-  });
-}
-
-let nativeSocketUrlPromise: Promise<string> | null = null;
-
-async function resolveNativeSocketUrl(): Promise<string> {
-  nativeSocketUrlPromise ??= bridgeCall<{ readonly wsUrl?: unknown }>(
-    'runtimeGetSynaraWsUrl'
-  )
-    .then((result) => {
-      const wsUrl = typeof result?.wsUrl === 'string' ? result.wsUrl.trim() : '';
-      if (!wsUrl) return resolveDefaultSocketUrl(null);
-      const parsed = new URL(wsUrl);
-      if (parsed.protocol !== 'ws:' && parsed.protocol !== 'wss:') {
-        throw new Error('Synara runtime endpoint must use ws: or wss:');
-      }
-      return parsed.origin;
-    })
-    .catch(() => resolveDefaultSocketUrl(null));
-  return nativeSocketUrlPromise;
-}
-
-function createManager(
-  connect: () => Promise<WebSocketLike>,
-  maxReconnectAttempts = MAX_RECONNECT_ATTEMPTS
-) {
-  return createRpcSocketManager({
-    connect,
-    sleep: sleepOnHost,
-    startTimeout: startHostTimeout,
-    nextRequestId: () => String(++requestSequence),
-    requestTimeoutMs: RPC_REQUEST_TIMEOUT_MS,
-    maxReconnectAttempts,
-    initialReconnectDelayMs: INITIAL_RECONNECT_DELAY_MS,
-    maxReconnectDelayMs: MAX_RECONNECT_DELAY_MS,
-    offlineRetryDelayMs: OFFLINE_RETRY_DELAY_MS,
-    closeWhenIdle: true,
-    autoReconnectOnFailure: true,
-  });
-}
-
-async function negotiate(baseUrl: string): Promise<{
-  readonly protocolEpoch: number;
-  readonly negotiatedRevision: number;
-  readonly serverInstanceId: string;
-}> {
-  const manager = createManager(
-    () => openSocket(withPath(baseUrl, PROTOCOL.bootstrapPath)),
-    0
-  );
-  try {
-    return await manager.request('bootstrap.negotiate', {
-      protocolEpoch: PROTOCOL.epoch,
-      minRevision: PROTOCOL.minRevision,
-      maxRevision: PROTOCOL.maxRevision,
-      clientBuild: CLIENT_BUILD,
-      requiredCapabilities: [...PROTOCOL.capabilities],
-    });
-  } finally {
-    manager.dispose();
-  }
-}
-
-async function openFeatureSocket(): Promise<WebSocketLike> {
-  const baseUrl = await resolveNativeSocketUrl();
-  const compatibility = await negotiate(baseUrl);
-  const url = withQuery(withPath(baseUrl, PROTOCOL.featurePath), {
-    'x-synara-client-build': CLIENT_BUILD,
-    'x-synara-protocol-epoch': String(compatibility.protocolEpoch),
-    'x-synara-protocol-revision': String(compatibility.negotiatedRevision),
-    'x-synara-server-instance': compatibility.serverInstanceId,
-  });
-  return openSocket(url);
-}
-
-const featureManager = createManager(openFeatureSocket);
 
 let relayState: RpcTransportState = 'idle';
 let relayEverConnected = false;
@@ -285,37 +141,35 @@ function setRelayState(state: RpcTransportState): void {
   for (const listener of relayStateListeners) listener(state);
 }
 
-if (IS_WEB_RELAY_MODE) {
-  onGlobalEvent(TRANSPORT_STATE_EVENT, (state: unknown) => {
-    if (
-      state !== 'connected' &&
-      state !== 'reconnecting' &&
-      state !== 'offline'
-    ) {
-      return;
-    }
-    if (state === 'connected') {
-      relayEverConnected = true;
-      relayOfflineUntilMs = 0;
-    } else if (state === 'offline') {
-      relayOfflineUntilMs = Date.now() + OFFLINE_RETRY_DELAY_MS;
-    }
-    setRelayState(state);
-  });
-  onGlobalEvent(GIT_ACTION_PROGRESS_EVENT, (event: unknown) => {
-    if (
-      !event ||
-      typeof event !== 'object' ||
-      !('actionId' in event) ||
-      typeof event.actionId !== 'string'
-    ) {
-      return;
-    }
-    gitActionProgressListeners.get(event.actionId)?.(
-      event as GitActionProgressEvent
-    );
-  });
-}
+onGlobalEvent(TRANSPORT_STATE_EVENT, (state: unknown) => {
+  if (
+    state !== 'connected' &&
+    state !== 'reconnecting' &&
+    state !== 'offline'
+  ) {
+    return;
+  }
+  if (state === 'connected') {
+    relayEverConnected = true;
+    relayOfflineUntilMs = 0;
+  } else if (state === 'offline') {
+    relayOfflineUntilMs = Date.now() + OFFLINE_RETRY_DELAY_MS;
+  }
+  setRelayState(state);
+});
+onGlobalEvent(GIT_ACTION_PROGRESS_EVENT, (event: unknown) => {
+  if (
+    !event ||
+    typeof event !== 'object' ||
+    !('actionId' in event) ||
+    typeof event.actionId !== 'string'
+  ) {
+    return;
+  }
+  gitActionProgressListeners.get(event.actionId)?.(
+    event as GitActionProgressEvent
+  );
+});
 
 function describeRelayError(error: unknown): string {
   if (error instanceof Error) return error.message;
@@ -358,6 +212,16 @@ function relayBridgeRequest<A>(
               reject(error);
               return;
             }
+            if (
+              parsed &&
+              typeof parsed === 'object' &&
+              '_tag' in parsed &&
+              parsed._tag === 'NativeRpcResult' &&
+              'value' in parsed
+            ) {
+              resolve(parsed.value as A);
+              return;
+            }
             resolve(parsed as A);
           } catch (error) {
             reject(error);
@@ -388,6 +252,8 @@ async function relayRequest<A>(tag: string, payload: unknown): Promise<A> {
       setRelayState('connected');
       throw error;
     }
+    relayOfflineUntilMs = Date.now() + OFFLINE_RETRY_DELAY_MS;
+    setRelayState('offline');
     throw new RpcTransportError(
       `Synara RPC ${tag} failed: ${describeRelayError(error)}`
     );
@@ -415,6 +281,8 @@ async function relayStreamRequest<A>(
       setRelayState('connected');
       throw error;
     }
+    relayOfflineUntilMs = Date.now() + OFFLINE_RETRY_DELAY_MS;
+    setRelayState('offline');
     throw new RpcTransportError(
       `Synara RPC ${tag} failed: ${describeRelayError(error)}`
     );
@@ -422,18 +290,16 @@ async function relayStreamRequest<A>(
 }
 
 function transportRequest<A>(tag: string, payload: unknown): Promise<A> {
-  if (IS_WEB_RELAY_MODE) return relayRequest<A>(tag, payload);
-  return featureManager.request<A>(tag, payload);
+  return relayRequest<A>(tag, payload);
 }
 
 export function getSynaraTransportState(): RpcTransportState {
-  return IS_WEB_RELAY_MODE ? relayState : featureManager.getState();
+  return relayState;
 }
 
 export function subscribeSynaraTransportState(
   listener: (state: RpcTransportState) => void
 ): () => void {
-  if (!IS_WEB_RELAY_MODE) return featureManager.subscribe(listener);
   relayStateListeners.add(listener);
   listener(relayState);
   return () => relayStateListeners.delete(listener);
@@ -653,27 +519,16 @@ export async function runGitStackedAction(
   const accept = (event: GitActionProgressEvent) => {
     if (event.kind === 'action_finished') result = event.result;
   };
-  if (IS_WEB_RELAY_MODE) {
-    if (onProgress) gitActionProgressListeners.set(input.actionId, onProgress);
-    try {
-      for (const event of await relayStreamRequest<GitActionProgressEvent>(
-        'git.runStackedAction',
-        input
-      )) {
-        accept(event);
-      }
-    } finally {
-      gitActionProgressListeners.delete(input.actionId);
-    }
-  } else {
-    await featureManager.requestStream<GitActionProgressEvent>(
+  if (onProgress) gitActionProgressListeners.set(input.actionId, onProgress);
+  try {
+    for (const event of await relayStreamRequest<GitActionProgressEvent>(
       'git.runStackedAction',
-      input,
-      (event) => {
-        onProgress?.(event);
-        accept(event);
-      }
-    );
+      input
+    )) {
+      accept(event);
+    }
+  } finally {
+    gitActionProgressListeners.delete(input.actionId);
   }
   if (!result) {
     throw new RpcTransportError(
@@ -806,12 +661,8 @@ export async function setSynaraPullRequestPinned(
 }
 
 export async function disposeSynaraClient(): Promise<void> {
-  if (IS_WEB_RELAY_MODE) {
-    relayStateListeners.clear();
-    gitActionProgressListeners.clear();
-    relayOfflineUntilMs = 0;
-    setRelayState('idle');
-    return;
-  }
-  featureManager.dispose();
+  relayStateListeners.clear();
+  gitActionProgressListeners.clear();
+  relayOfflineUntilMs = 0;
+  setRelayState('idle');
 }
