@@ -1,7 +1,10 @@
 import type { ReactNode } from '@lynx-js/react';
+import fastModeSvg from '@synara-central-icons-fill/zap.svg?raw';
 
 import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
 import { ChevronDownIcon, SettingsIcon } from '../lib/icons.lynx';
+import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
+import { useTheme } from './useTheme.lynx';
 
 export function ComposerModelTriggerFrameElement(props: {
   readonly children: ReactNode;
@@ -29,7 +32,13 @@ export function ComposerModelTriggerModelLabelElement(props: {
 }
 
 export function ComposerModelTriggerFastBadgeElement() {
-  return <text className="ComposerModelTriggerMetaLynx">⚡</text>;
+  const { svgColors } = useTheme();
+  return (
+    <svg
+      className="ComposerModelTriggerFastIconLynx"
+      content={colorizeLynxSvg(fastModeSvg, svgColors.mutedForeground)}
+    />
+  );
 }
 
 export function ComposerModelTriggerStatusIconElement(props: {

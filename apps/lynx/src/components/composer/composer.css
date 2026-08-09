@@ -359,6 +359,13 @@
   color: var(--muted-foreground);
 }
 
+.ComposerModelTriggerFastIconLynx {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+}
+
 .ComposerModelTriggerStatusLynx,
 .ComposerModelTriggerStatusIconLynx {
   width: 14px;
@@ -411,7 +418,8 @@
 }
 
 .ComposerTraitsTriggerFastLynx {
-  font-size: 10px;
+  width: 12px;
+  height: 12px;
 }
 
 .ComposerTraitsTriggerChevronLynx {
@@ -806,13 +814,10 @@
   opacity: 0.72;
 }
 
-.ComposerModelOptionFavoriteGlyphLynx {
-  color: var(--muted-foreground);
-  font-size: 13px;
-}
-
-.ComposerModelOptionFavoriteGlyphLynx--active {
-  color: var(--warning);
+.ComposerModelOptionFavoriteIconLynx {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
 }
 
 .ComposerExtrasTriggerHostLynx,

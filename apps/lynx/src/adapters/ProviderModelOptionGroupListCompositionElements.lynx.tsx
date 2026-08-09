@@ -1,5 +1,8 @@
 import type { ReactNode } from '@lynx-js/react';
+import starFilledSvg from '@synara-central-icons-fill/star.svg?raw';
+import starSvg from '@synara-central-icons/star.svg?raw';
 
+import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
 import {
   CheckIcon,
   ChevronDownIcon,
@@ -9,6 +12,7 @@ import {
   lynxNestedInteractiveEventProps,
   useLynxInteractiveState,
 } from '../components/ui/interactive-state.lynx';
+import { useTheme } from './useTheme.lynx';
 
 export function ProviderModelOptionListFrameElement(props: {
   readonly children: ReactNode;
@@ -81,6 +85,7 @@ export function ProviderModelRadioItemElement(props: {
   readonly onSelect: () => void;
   readonly onToggleFavorite: () => void;
 }) {
+  const { resolvedTheme, svgColors } = useTheme();
   const optionInteraction = useLynxInteractiveState({
     baseClassName: `ComposerModelOptionLynx${
       props.active ? ' ComposerModelOptionLynx--active' : ''
@@ -125,15 +130,21 @@ export function ProviderModelRadioItemElement(props: {
           aria-checked={props.isFavorite}
           {...favoriteEventProps}
         >
-          <text
-            className={`ComposerModelOptionFavoriteGlyphLynx${
+          <svg
+            className={`ComposerModelOptionFavoriteIconLynx${
               props.isFavorite
-                ? ' ComposerModelOptionFavoriteGlyphLynx--active'
+                ? ' ComposerModelOptionFavoriteIconLynx--active'
                 : ''
             }`}
-          >
-            {props.isFavorite ? '★' : '☆'}
-          </text>
+            content={colorizeLynxSvg(
+              props.isFavorite ? starFilledSvg : starSvg,
+              props.isFavorite
+                ? resolvedTheme === 'dark'
+                  ? '#fbbf24'
+                  : '#f59e0b'
+                : svgColors.mutedForeground
+            )}
+          />
         </view>
       ) : null}
     </view>

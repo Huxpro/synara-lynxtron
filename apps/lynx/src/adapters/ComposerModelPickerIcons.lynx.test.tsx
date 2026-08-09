@@ -33,14 +33,26 @@ describe('Composer model picker icon fidelity', () => {
     expect(groupSource).toContain('<ChevronDownIcon');
     expect(groupSource).toContain('<ChevronRightIcon');
     expect(groupSource).toContain('<CheckIcon size={12} />');
+    expect(triggerSource).toContain(
+      "import fastModeSvg from '@synara-central-icons-fill/zap.svg?raw';"
+    );
+    expect(groupSource).toContain(
+      "import starFilledSvg from '@synara-central-icons-fill/star.svg?raw';"
+    );
+    expect(groupSource).toContain(
+      "import starSvg from '@synara-central-icons/star.svg?raw';"
+    );
     expect(`${triggerSource}\n${groupSource}\n${controlSource}`).not.toMatch(
-      /[⚙‹⌄›✓]/
+      /[⚙‹⌄›✓⚡★☆]/
     );
     expect(styles).toMatch(
       /\.ComposerModelTriggerStatusIconLynx\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;/s
     );
     expect(styles).toMatch(
       /\.ComposerModelGroupChevronLynx\s*\{[^}]*width:\s*12px;[^}]*height:\s*12px;[^}]*opacity:\s*0\.5;/s
+    );
+    expect(styles).toMatch(
+      /\.ComposerModelOptionFavoriteIconLynx\s*\{[^}]*width:\s*12px;[^}]*height:\s*12px;/s
     );
   });
 });

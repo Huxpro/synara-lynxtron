@@ -5,6 +5,7 @@ import type {
   ServerProviderStatus,
 } from '@synara/contracts';
 import { useMemo, useState } from '@lynx-js/react';
+import fastModeSvg from '@synara-central-icons-fill/zap.svg?raw';
 
 import {
   buildComposerProviderPickerItems,
@@ -31,6 +32,8 @@ import {
 import { webStorage } from '../../platform/storage';
 import { useLynxInteractiveState } from '../ui/interactive-state.lynx';
 import { ArrowLeftIcon, ChevronDownIcon } from '../../lib/icons.lynx';
+import { colorizeLynxSvg } from '../../lib/themedSvg.lynx';
+import { useTheme } from '../../adapters/useTheme.lynx';
 import {
   Menu,
   MenuPopup,
@@ -85,6 +88,7 @@ export function ComposerModelControl(props: {
   readonly onModelSelectionChange: (selection: ModelSelection) => void;
   readonly splitTraits?: boolean;
 }) {
+  const { svgColors } = useTheme();
   const [modelOpen, setModelOpen] = useState(false);
   const [traitsOpen, setTraitsOpen] = useState(false);
   const [panel, setPanel] =
@@ -413,7 +417,13 @@ export function ComposerModelControl(props: {
           >
             <text className="ComposerTraitsTriggerLabelLynx">{effortLabel}</text>
             {traitSelection.fastModeEnabled ? (
-              <text className="ComposerTraitsTriggerFastLynx">⚡</text>
+              <svg
+                className="ComposerTraitsTriggerFastLynx"
+                content={colorizeLynxSvg(
+                  fastModeSvg,
+                  svgColors.mutedForeground
+                )}
+              />
             ) : null}
             <ChevronDownIcon
               className="ComposerTraitsTriggerChevronLynx"
