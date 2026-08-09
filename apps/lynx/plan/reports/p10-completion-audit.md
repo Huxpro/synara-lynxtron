@@ -273,6 +273,7 @@ Current responsive disposition:
 | Composer voice capability | Lynx has no microphone-capture host bridge; current head follows Web's capability gate by omitting the unavailable control instead of rendering a permanently disabled fake microphone. The historical 28×28 disabled-control evidence remains provenance for the superseded implementation, not current-head UI | PASS — HONEST HOST BOUNDARY |
 | Composer model-picker icon identity | model status, provider Back, collapsible-group disclosure, selected-model, Fast mode trigger/toggle, and Favorite affordances use generated/Central Settings, Arrow, Chevron, Check, outline/filled Zap, and outline/filled Star icons instead of Unicode approximations while retaining the existing 14px/12px geometry | PASS — CURRENT PRODUCT SURFACES |
 | Composer reference icon identity | assistant/file-comment summaries, pasted-text cards, generic file cards, remove actions, and show-in-field disclosure use MessageCircle, File/FileEntry, X, and ChevronRight icons instead of circle/cross/text-block glyphs | PASS — CURRENT PRODUCT SURFACES |
+| Composer token icon identity | mention, agent, skill, terminal-context, and link chips use file-type, Robot, Building Blocks, Console, and External Link SVG identities in both canonical segment rendering and the Native draft projection; only the slash-command chip retains its semantic `/` text marker | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
 | Shared Menu icon identity | default checkbox/radio indicators and submenu affordances use generated 12px Check and 14px ChevronRight icons, removing Unicode state glyphs from every Menu consumer | PASS — SHARED PRIMITIVE |
 | Sidebar completed-status identity | completed threads use Web's filled `circle-check` Central asset at the canonical 15px trailing role instead of a hand-built green dot plus text checkmark | PASS — CURRENT PRODUCT SURFACES |
 | Sidebar thread metadata identity | fork, handoff, worktree, and automation badges use the canonical 12px Fork, GitBranch, split-arrow, and Clock assets instead of Unicode approximations | PASS — CURRENT PRODUCT SURFACES |
@@ -379,6 +380,15 @@ Composer shadow, 10px runtime trigger radius, and secondary foreground for the
 shared folder SVG. Exact-owned Native proves the dark root, shadow, folder
 paint, identity, and empty console; Native radius is intentionally not claimed
 because the current DevTool reports `0px` for that compound view.
+The subsequent Composer token identity slice removes the remaining `@`, `◆`,
+`›`, and `↗` stand-ins from editable token chips. Canonical mention segments
+and Native projected mention anchors both resolve through `FileEntryIcon`
+(including the path encoded in the projection key); agent, skill, and terminal
+tokens use the Central Robot, Building Blocks, and Console assets; links use
+the generated Tabler External Link icon. Focused token/projection tests, both
+production builds, `git diff --check`, and the fixed React Doctor 0.9.11 scan
+against `60e0d910` pass with zero diagnostics. This is implementation evidence,
+not a replacement for the pending current-head visual matrix.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

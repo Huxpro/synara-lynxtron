@@ -32,6 +32,7 @@ const icons = {
   CopyIcon: 'copy',
   DeviceLaptopIcon: 'device-laptop',
   EllipsisIcon: 'dots',
+  ExternalLinkIcon: 'external-link',
   FileIcon: 'file',
   FolderIcon: 'folder',
   FolderOpenIcon: 'folder-open',

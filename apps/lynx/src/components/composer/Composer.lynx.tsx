@@ -7,9 +7,13 @@ import type {
   ProviderSkillReference,
   ServerProviderStatus,
 } from '@synara/contracts';
+import agentMentionSvg from '@synara-central-icons/robot.svg?raw';
+import skillSvg from '@synara-central-icons/building-blocks.svg?raw';
+import terminalSvg from '@synara-central-icons/console.svg?raw';
 
 import { useComposerDraftStore } from '../../adapters/composerDraftStore.lynx';
 import { useTheme } from '../../adapters/useTheme.lynx';
+import { ExternalLinkIcon } from '../../lib/icons.lynx';
 import { colorizeLynxSvg } from '../../lib/themedSvg.lynx';
 import { dialogs } from '../../platform/dialogs';
 import { onGlobalEvent } from '../../platform/bridge';
@@ -110,6 +114,7 @@ import {
   type NativeComposerFileAttachment,
 } from './composerAttachments.lynx';
 import { ComposerModelControl } from './ComposerModelControl.lynx';
+import { FileEntryIcon } from '../FileEntryIcon.lynx';
 import { Button } from '../ui/button';
 import {
   buildLynxSlashCommandItems,
@@ -147,12 +152,39 @@ function segmentLabel(segment: ComposerTokenSegment): string {
   return segment.url;
 }
 
-function segmentGlyph(segment: ComposerTokenSegment): string {
-  if (segment.type === 'mention' || segment.type === 'agent-mention') return '@';
-  if (segment.type === 'skill') return '◆';
-  if (segment.type === 'slash-command') return '/';
-  if (segment.type === 'terminal-context') return '›';
-  return '↗';
+function ComposerTokenIcon(props: {
+  readonly kind:
+    | ComposerTokenSegment['type']
+    | NativeComposerDisplayToken['kind'];
+  readonly pathValue?: string;
+}) {
+  const { svgColors } = useTheme();
+  if (props.kind === 'mention') {
+    return (
+      <FileEntryIcon
+        className="ComposerChipIcon"
+        pathValue={props.pathValue ?? ''}
+      />
+    );
+  }
+  if (props.kind === 'slash-command') {
+    return <text className="ComposerChipGlyph">/</text>;
+  }
+  if (props.kind === 'link') {
+    return <ExternalLinkIcon className="ComposerChipIcon" size={12} />;
+  }
+  const content =
+    props.kind === 'skill'
+      ? skillSvg
+      : props.kind === 'agent-mention'
+        ? agentMentionSvg
+        : terminalSvg;
+  return (
+    <svg
+      className="ComposerChipIcon"
+      content={colorizeLynxSvg(content, svgColors.foreground)}
+    />
+  );
 }
 
 function ComposerChip({
@@ -162,7 +194,10 @@ function ComposerChip({
 }) {
   return (
     <view className={`ComposerChip ComposerChip--${segment.type}`}>
-      <text className="ComposerChipGlyph">{segmentGlyph(segment)}</text>
+      <ComposerTokenIcon
+        kind={segment.type}
+        pathValue={segment.type === 'mention' ? segment.path : undefined}
+      />
       <text className="ComposerChipLabel">{segmentLabel(segment)}</text>
     </view>
   );
@@ -175,9 +210,14 @@ function ComposerProjectionChip({
 }) {
   return (
     <view className={`ComposerChip ComposerChip--${token.kind}`}>
-      <text className="ComposerChipGlyph">
-        {token.kind === 'mention' ? '@' : '◆'}
-      </text>
+      <ComposerTokenIcon
+        kind={token.kind}
+        pathValue={
+          token.kind === 'mention' && token.key.startsWith('mention:')
+            ? token.key.slice('mention:'.length)
+            : undefined
+        }
+      />
       <text className="ComposerChipLabel">{token.label}</text>
     </view>
   );

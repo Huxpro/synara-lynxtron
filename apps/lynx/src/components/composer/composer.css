@@ -262,6 +262,13 @@
   margin-right: 4px;
 }
 
+.ComposerChipIcon {
+  width: 12px;
+  height: 12px;
+  margin-right: 4px;
+  flex-shrink: 0;
+}
+
 .ComposerChip--slash-command .ComposerChipGlyph,
 .ComposerChip--slash-command .ComposerChipLabel {
   color: var(--primary-foreground);
