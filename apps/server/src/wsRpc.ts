@@ -64,6 +64,7 @@ import {
 } from "./gitHandoffOperations";
 import { Keybindings } from "./keybindings";
 import { createLocalPreviewGrant } from "./localImageFiles";
+import { inspectLocalPdf } from "./localPdfPreview";
 import { listLocalServers, stopLocalServer } from "./localServerMonitor";
 import { listManagedWorktrees, pruneProjectedArchivedManagedWorktrees } from "./managedWorktrees";
 import {
@@ -996,6 +997,16 @@ const makeWsRpcHandlersLayer = () =>
           rpcEffect(
             Effect.promise(() => createLocalPreviewGrant({ requestedPath: input.path })),
             "Failed to create local file preview grant",
+          ),
+        [WS_METHODS.projectsInspectPdf]: (input) =>
+          rpcEffect(
+            Effect.promise(() =>
+              inspectLocalPdf({
+                requestedPath: input.path,
+                cwd: input.cwd,
+              }),
+            ),
+            "Failed to inspect PDF",
           ),
         [WS_METHODS.projectsWriteFile]: (input) =>
           rpcEffect(workspaceFileSystem.writeFile(input), "Failed to write workspace file"),

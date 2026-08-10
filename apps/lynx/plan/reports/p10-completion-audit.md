@@ -850,6 +850,11 @@ closed, but a new complete three-client certification is still required after
 the remaining product/platform scope is explicitly resolved. Environment,
 Diff, Explorer, whole-file actions, and source line comments now have real
 consumers, and Pull Request Summary now has a real typed GitHub comment
-mutation path with failure recovery. Arbitrary text-range selection and in-app
-Native PDF rendering must still not be hidden with responsive CSS or counted
-as passing runtime evidence.
+mutation path with failure recovery. Native Explorer now renders allowlisted
+PDF pages in-app through a bounded server-side `pdfjs-dist` plus
+`@napi-rs/canvas` pipeline, with schema-backed page-count metadata, native
+`<image>` output, and Previous/Next controls. Exact-owned runtime evidence,
+HTTP headers, rendered PNG, DOM, and console are retained in
+`shots/2026-08-10/explorer-pdf-page-current/`. This closes page rendering but
+does not claim the Web viewer's text layer, links, search, or zoom. Arbitrary
+Native text-range selection remains the explicit host/engine gap.

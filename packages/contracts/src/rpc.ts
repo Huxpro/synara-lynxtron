@@ -121,6 +121,8 @@ import {
   ProjectDevServerEvent,
   ProjectDiscoverScriptsInput,
   ProjectDiscoverScriptsResult,
+  ProjectInspectPdfInput,
+  ProjectInspectPdfResult,
   ProjectListDevServersResult,
   ProjectListDirectoriesInput,
   ProjectListDirectoriesResult,
@@ -390,6 +392,12 @@ export const WsProjectsCreateLocalFilePreviewGrantRpc = Rpc.make(
     error: WsRpcError,
   },
 );
+
+export const WsProjectsInspectPdfRpc = Rpc.make(WS_METHODS.projectsInspectPdf, {
+  payload: ProjectInspectPdfInput,
+  success: ProjectInspectPdfResult,
+  error: WsRpcError,
+});
 
 export const WsProjectsWriteFileRpc = Rpc.make(WS_METHODS.projectsWriteFile, {
   payload: ProjectWriteFileInput,
@@ -1006,6 +1014,7 @@ export const WsFeatureRpcGroup = RpcGroup.make(
   WsProjectsSearchLocalEntriesRpc,
   WsProjectsReadFileRpc,
   WsProjectsCreateLocalFilePreviewGrantRpc,
+  WsProjectsInspectPdfRpc,
   WsProjectsWriteFileRpc,
   WsProjectsRunDevServerRpc,
   WsProjectsStopDevServerRpc,

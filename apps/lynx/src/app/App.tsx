@@ -18,7 +18,10 @@ import {
   resolveThemeVariant,
   type ThemeState,
 } from '@synara-web/theme/theme.logic';
-import { isSupportedLocalPreviewFilePath } from '@synara/shared/localPreviewFiles';
+import {
+  isSupportedLocalPdfPath,
+  isSupportedLocalPreviewFilePath,
+} from '@synara/shared/localPreviewFiles';
 import {
   viewportBreakpointClassNames,
   viewportHeightClassNames,
@@ -37,6 +40,7 @@ import {
   fetchExplorerEntries,
   fetchExplorerFile,
   fetchExplorerLocalPreviewUrl,
+  fetchExplorerPdfMetadata,
   fetchThreadHeaderSummary,
   fetchThreadTranscriptRows,
   queryClient,
@@ -135,6 +139,10 @@ export function App() {
       readonly value: string | null;
       readonly error: boolean;
     };
+    readonly explorerPdfMetadata: {
+      readonly value: Awaited<ReturnType<typeof fetchExplorerPdfMetadata>> | null;
+      readonly error: boolean;
+    };
     readonly explorerDirectories: readonly (readonly [
       string,
       Awaited<ReturnType<typeof fetchExplorerDirectory>>['entries'],
@@ -196,6 +204,18 @@ export function App() {
                       () => ({ value: null, error: true })
                     )
                   : { value: null, error: false };
+              const explorerPdfMetadata =
+                summary?.workspaceRoot &&
+                initialExplorerPath &&
+                isSupportedLocalPdfPath(initialExplorerPath)
+                  ? await fetchExplorerPdfMetadata({
+                      workspaceRoot: summary.workspaceRoot,
+                      relativePath: initialExplorerPath,
+                    }).then(
+                      (value) => ({ value, error: false }),
+                      () => ({ value: null, error: true })
+                    )
+                  : { value: null, error: false };
               const explorerDirectories =
                 summary?.workspaceRoot && !initialExplorerQuery.trim()
                   ? await Promise.all(
@@ -223,6 +243,7 @@ export function App() {
                 explorerEntries,
                 explorerFile,
                 explorerLocalPreview,
+                explorerPdfMetadata,
                 summary,
                 threadId: threadMatch[1],
               };

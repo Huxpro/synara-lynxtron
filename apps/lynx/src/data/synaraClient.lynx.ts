@@ -29,6 +29,7 @@ import type {
   ProjectId,
   ProjectListDirectoriesInput,
   ProjectListDirectoriesResult,
+  ProjectInspectPdfResult,
   ProjectReadFileInput,
   ProjectReadFileResult,
   ProjectSearchEntriesInput,
@@ -442,6 +443,13 @@ export async function readProjectFile(
   input: ProjectReadFileInput
 ): Promise<ProjectReadFileResult> {
   return transportRequest<ProjectReadFileResult>('projects.readFile', input);
+}
+
+export async function inspectProjectPdf(input: {
+  readonly cwd: string;
+  readonly path: string;
+}): Promise<ProjectInspectPdfResult> {
+  return transportRequest<ProjectInspectPdfResult>('projects.inspectPdf', input);
 }
 
 export async function readProjectFileWithSyntax(input: {

@@ -105,10 +105,17 @@ describe('Lynx Explorer dock', () => {
     );
     expect(pdfSource).toContain("editor: 'system-default'");
     expect(pdfSource).toContain('resolveExplorerPdfOpenTarget({');
-    expect(pdfSource).toContain(
-      'PDF preview is not available in the native client yet.'
+    expect(queriesSource).toContain(
+      'export async function fetchExplorerPdfMetadata'
     );
-    expect(pdfSource).not.toContain('<image');
+    expect(routerSource).toContain('fetchExplorerPdfMetadata({');
+    expect(routerSource).toContain('explorerPdfPageCount={explorerPdfPageCount}');
+    expect(routerSource).toContain('pdfPageCount={explorerPdfPageCount}');
+    expect(pdfSource).toContain('buildPdfPagePreviewUrl({');
+    expect(pdfSource).toContain('className="ExplorerDockPdfPageImage"');
+    expect(pdfSource).toContain('aria-label="Previous PDF page"');
+    expect(pdfSource).toContain('aria-label="Next PDF page"');
+    expect(pdfSource).toContain('mode="aspectFit"');
     expect(pdfSource).not.toContain('<webview');
     expect(webHostSource).toContain(
       'relaySocketBaseUrl ??\n          relayReadyBaseUrl ??\n          configuredRelayBaseUrl()'

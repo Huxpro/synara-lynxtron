@@ -6,6 +6,7 @@ import {
   dispatchRendererGlobalEvent,
   SEARCH_NAVIGATION_ACCELERATORS,
   parseSynaraDeepLink,
+  parseSynaraDeepLinkInitData,
   parseViewportProbeSequence,
   parseWindowState,
   reduceShellRouteDelivery,
@@ -78,6 +79,31 @@ describe('shellRuntime', () => {
     expect(parseSynaraDeepLink('synara://thread/abc-123')).toBe('/thread/abc-123');
     expect(parseSynaraDeepLink('synara://fidelity-reference')).toBe('/');
     expect(parseSynaraDeepLink('https://example.com')).toBeNull();
+  });
+
+  it('preserves supported startup surface state from desktop deep links', () => {
+    expect(
+      parseSynaraDeepLinkInitData(
+        'synara://thread/abc-123?environment=open&explorer=open&explorerPath=reports%2Fpreview.pdf&explorerQuery=report&explorerCommentLine=7&explorerExpanded=reports&explorerExpanded=reports%2F2026&explorerWidth=520'
+      )
+    ).toEqual({
+      initialEnvironmentOpen: true,
+      initialExplorerOpen: true,
+      initialExplorerCommentLine: 7,
+      initialExplorerExpandedDirectories: ['reports', 'reports/2026'],
+      initialExplorerPath: 'reports/preview.pdf',
+      initialExplorerQuery: 'report',
+      initialExplorerWidth: 520,
+      initialRoute: '/thread/abc-123',
+    });
+    expect(
+      parseSynaraDeepLinkInitData(
+        'synara://thread/abc-123?explorerCommentLine=0&explorerWidth=invalid'
+      )
+    ).toMatchObject({
+      initialExplorerCommentLine: null,
+      initialExplorerWidth: null,
+    });
   });
 
   it('queues the latest startup route until the renderer announces readiness', () => {

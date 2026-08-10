@@ -9,6 +9,7 @@
 //          derived from them.
 
 export const LOCAL_IMAGE_ROUTE_PATH = "/api/local-image" as const;
+export const LOCAL_PDF_PAGE_ROUTE_PATH = "/api/local-pdf-page" as const;
 
 // Lower-case extensions (with leading dot) that the server is willing to serve and
 // the web client is willing to treat as local-image markdown sources. Keep these in

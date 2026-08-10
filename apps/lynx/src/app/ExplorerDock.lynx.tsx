@@ -280,6 +280,9 @@ export function ExplorerDock(props: {
   readonly onToggleDirectory: (path: string) => void;
   readonly onWidthChange: (width: number) => void;
   readonly open: boolean;
+  readonly pdfMetadataError: boolean;
+  readonly pdfMetadataPending: boolean;
+  readonly pdfPageCount: number;
   readonly query: string;
   readonly selectedPath: string | null;
   readonly threadId: string;
@@ -383,6 +386,9 @@ export function ExplorerDock(props: {
                 previewError={props.localPreviewError}
                 previewPending={props.localPreviewPending}
                 previewUrl={props.localPreviewUrl}
+                metadataError={props.pdfMetadataError}
+                metadataPending={props.pdfMetadataPending}
+                pageCount={props.pdfPageCount}
                 workspaceRoot={props.workspaceRoot}
               />
             ) : isSupportedLocalImagePath(props.selectedPath) ? (

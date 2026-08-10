@@ -30,6 +30,7 @@ import {
   dispatchRendererGlobalEvent,
   migrateLegacyShellFiles,
   parseSynaraDeepLink,
+  parseSynaraDeepLinkInitData,
   parseViewportProbeSequence,
   readWindowState,
   reduceShellRouteDelivery,
@@ -119,6 +120,14 @@ function routeFromArguments(argv: readonly string[]): string | null {
   for (const argument of argv) {
     const route = parseSynaraDeepLink(argument);
     if (route) return route;
+  }
+  return null;
+}
+
+function initDataFromArguments(argv: readonly string[]) {
+  for (const argument of argv) {
+    const initData = parseSynaraDeepLinkInitData(argument);
+    if (initData) return initData;
   }
   return null;
 }
@@ -541,8 +550,9 @@ app.whenReady().then(() => {
   if (savedState?.maximized) w.maximize();
   if (savedState?.fullscreen) w.setFullScreen(true);
   flushWindowState();
+  const startupInitData = initDataFromArguments(process.argv);
   const startupRoute =
-    routeDeliveryState.pendingRoute ?? routeFromArguments(process.argv);
+    routeDeliveryState.pendingRoute ?? startupInitData?.initialRoute ?? null;
   if (startupRoute) {
     routeDeliveryState = reduceShellRouteDelivery(routeDeliveryState, {
       type: 'route-requested',
@@ -550,7 +560,10 @@ app.whenReady().then(() => {
     }).state;
   }
   const loadOptions = {
-    data: { initialRoute: startupRoute },
+    data: {
+      ...(startupInitData ?? {}),
+      initialRoute: startupRoute,
+    },
   };
   if (isDev) {
     w.loadURL('http://localhost:5971/main.lynx.bundle', loadOptions);

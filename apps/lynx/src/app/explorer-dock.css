@@ -244,44 +244,46 @@
   min-height: 0;
   flex: 1;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 28px;
+  background-color: var(--secondary);
 }
 
-.ExplorerDockPdfIcon {
+.ExplorerDockPdfToolbar {
   display: flex;
-  width: 48px;
-  height: 48px;
-  margin-bottom: 16px;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+  background-color: var(--background);
 }
 
-.ExplorerDockPdfIcon .FileEntryIcon {
-  width: 40px;
-  height: 40px;
-}
-
-.ExplorerDockPdfCopy {
+.ExplorerDockPdfIdentity,
+.ExplorerDockPdfControls {
   display: flex;
-  max-width: 360px;
   align-items: center;
-  flex-direction: column;
 }
 
-.ExplorerDockPdfTitleRow {
-  display: flex;
-  max-width: 100%;
-  align-items: center;
+.ExplorerDockPdfIdentity {
+  min-width: 0;
+  flex: 1;
   gap: 8px;
 }
 
+.ExplorerDockPdfControls {
+  flex-shrink: 0;
+  gap: 4px;
+}
+
 .ExplorerDockPdfTitle {
+  min-width: 0;
   color: var(--foreground);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
-  line-height: 18px;
+  line-height: 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .ExplorerDockPdfBadge {
@@ -294,8 +296,37 @@
   line-height: 14px;
 }
 
-.ExplorerDockPdfDescription,
-.ExplorerDockPdfHint,
+.ExplorerDockPdfPage {
+  min-width: 44px;
+  color: var(--muted-foreground);
+  font-size: 10px;
+  line-height: 14px;
+  text-align: center;
+}
+
+.ExplorerDockPdfPageFrame {
+  display: flex;
+  width: 100%;
+  min-height: 0;
+  flex: 1;
+  padding: 12px;
+  align-items: center;
+  justify-content: center;
+}
+
+.ExplorerDockPdfPageImage {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.ExplorerDockPdfError {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .ExplorerDockPdfStatus {
   color: var(--muted-foreground);
   font-size: 11px;
@@ -303,17 +334,8 @@
   text-align: center;
 }
 
-.ExplorerDockPdfDescription {
-  margin-top: 10px;
-}
-
-.ExplorerDockPdfHint {
-  margin-top: 2px;
-  opacity: 0.78;
-}
-
 .ExplorerDockPdfOpen {
-  margin-top: 16px;
+  margin-left: 4px;
 }
 
 .ExplorerDockPdfStatus {

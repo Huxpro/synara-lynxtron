@@ -1,10 +1,14 @@
 import { describe, expect, it } from '@rstest/core';
 import {
+  LOCAL_PDF_PAGE_ROUTE_PATH,
   SUPPORTED_LOCAL_IMAGE_EXTENSIONS,
   SUPPORTED_LOCAL_IMAGE_EXTENSION_REGEX,
 } from '@synara/shared/localPreviewFiles';
 
-import { buildWorkspaceLocalPreviewUrl } from './localPreview.logic';
+import {
+  buildPdfPagePreviewUrl,
+  buildWorkspaceLocalPreviewUrl,
+} from './localPreview.logic';
 
 describe('workspace local preview URL', () => {
   it('maps ws and wss endpoints to the shared HTTP preview route', () => {
@@ -34,5 +38,18 @@ describe('workspace local preview URL', () => {
     }
     expect('preview.pdf').not.toMatch(SUPPORTED_LOCAL_IMAGE_EXTENSION_REGEX);
     expect('preview.png.txt').not.toMatch(SUPPORTED_LOCAL_IMAGE_EXTENSION_REGEX);
+  });
+
+  it('derives a rendered PDF page URL without dropping safe file identity', () => {
+    expect(
+      buildPdfPagePreviewUrl({
+        previewUrl:
+          'http://127.0.0.1:58090/api/local-image?path=reports%2Fpreview.pdf&cwd=%2Frepo',
+        page: 3,
+        width: 1200,
+      })
+    ).toBe(
+      `http://127.0.0.1:58090${LOCAL_PDF_PAGE_ROUTE_PATH}?path=reports%2Fpreview.pdf&cwd=%2Frepo&page=3&width=1200`
+    );
   });
 });

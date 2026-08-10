@@ -165,6 +165,17 @@ export const ProjectCreateLocalFilePreviewGrantResult = Schema.Struct({
 });
 export type ProjectCreateLocalFilePreviewGrantResult =
   typeof ProjectCreateLocalFilePreviewGrantResult.Type;
+
+export const ProjectInspectPdfInput = Schema.Struct({
+  cwd: TrimmedNonEmptyString,
+  path: TrimmedNonEmptyString.check(Schema.isMaxLength(PROJECT_READ_FILE_PATH_MAX_LENGTH)),
+});
+export type ProjectInspectPdfInput = typeof ProjectInspectPdfInput.Type;
+
+export const ProjectInspectPdfResult = Schema.Struct({
+  pageCount: PositiveInt,
+});
+export type ProjectInspectPdfResult = typeof ProjectInspectPdfResult.Type;
 // ── Dev Server Process Manager ───────────────────────────────────────
 //
 // Dev servers are first-class background processes owned by the server and

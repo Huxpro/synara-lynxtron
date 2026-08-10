@@ -1,0 +1,14 @@
+{
+  "pid": 18102,
+  "client": "localhost:8901",
+  "session": 1,
+  "server": "ws://127.0.0.1:58920",
+  "bundleSha256": "09a304e4eda71682ae732e5fa562b2eec34a435ea55915f30ba29cb19433d827",
+  "imageUrl": "http://127.0.0.1:58920/api/local-pdf-page?path=report.pdf&cwd=%2Fprivate%2Ftmp%2Fsynara-pdf-page-current&page=1&width=960",
+  "imageLabel": "report.pdf, page 1 of 1",
+  "previousDisabled": true,
+  "nextDisabled": true,
+  "pageCountVisible": true,
+  "consoleBytes": 1,
+  "png": "/Users/bytedance/github/synara/shots/2026-08-10/explorer-pdf-page-current/native.png\n  pixelWidth: 2560\n  pixelHeight: 1640\n"
+}

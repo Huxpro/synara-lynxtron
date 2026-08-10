@@ -1,0 +1,11 @@
+HTTP/1.1 200 OK
+Cache-Control: private, max-age=60
+X-Content-Type-Options: nosniff
+Access-Control-Allow-Origin: synara://app
+Vary: Origin
+Content-Type: image/png
+Date: Mon, 10 Aug 2026 12:46:15 GMT
+Content-Length: 15389
+x-synara-pdf-page-count: 1
+x-synara-pdf-page-width: 960
+x-synara-pdf-page-height: 576

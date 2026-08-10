@@ -18,8 +18,13 @@ import {
   ServerConfig,
   type ServerConfigShape,
 } from "./config";
-import { attachmentsEffectRouteLayer, localImageEffectRouteLayer } from "./http";
+import {
+  attachmentsEffectRouteLayer,
+  localImageEffectRouteLayer,
+  localPdfPageEffectRouteLayer,
+} from "./http";
 import { createLocalPreviewGrant } from "./localImageFiles";
+import { writePdfFixture } from "./localPdfTestFixture";
 import { ManagedAttachmentRepositoryLive } from "./persistence/Layers/ManagedAttachments";
 import { SqlitePersistenceMemory } from "./persistence/Layers/Sqlite";
 
@@ -117,7 +122,10 @@ function makeFakeServerAuth(): ServerAuthShape {
 
 async function withEffectServer(
   config: ServerConfigShape,
-  routeLayer: typeof localImageEffectRouteLayer | typeof attachmentsEffectRouteLayer,
+  routeLayer:
+    | typeof localImageEffectRouteLayer
+    | typeof localPdfPageEffectRouteLayer
+    | typeof attachmentsEffectRouteLayer,
   run: (origin: string) => Promise<void>,
 ): Promise<void> {
   const scope = await Effect.runPromise(Scope.make("sequential"));
@@ -135,7 +143,9 @@ async function withEffectServer(
           );
           const httpApp = yield* routeLayer === localImageEffectRouteLayer
             ? HttpRouter.toHttpEffect(localImageEffectRouteLayer)
-            : HttpRouter.toHttpEffect(attachmentsEffectRouteLayer);
+            : routeLayer === localPdfPageEffectRouteLayer
+              ? HttpRouter.toHttpEffect(localPdfPageEffectRouteLayer)
+              : HttpRouter.toHttpEffect(attachmentsEffectRouteLayer);
           yield* httpServer.serve(httpApp);
         }).pipe(
           Effect.provide(
@@ -298,6 +308,57 @@ describe("localImageEffectRouteLayer", () => {
       const params = new URLSearchParams({ path: ghostPath, cwd: workspace });
       const response = await fetch(`${origin}/api/local-image?${params}`);
       expect(response.status).toBe(404);
+    });
+  });
+});
+
+describe("localPdfPageEffectRouteLayer", () => {
+  it("renders an allowlisted PDF page to a bounded PNG", async () => {
+    const workspace = makeTempDir("synara-effect-pdf-page-");
+    writeFileSync(path.join(workspace, ".git"), "gitdir: .git");
+    const pdfPath = path.join(workspace, "report.pdf");
+    writePdfFixture(pdfPath);
+    const config = makeServerConfig({ cwd: workspace });
+
+    await withEffectServer(config, localPdfPageEffectRouteLayer, async (origin) => {
+      const params = new URLSearchParams({
+        path: "report.pdf",
+        cwd: workspace,
+        page: "1",
+        width: "600",
+      });
+      const response = await fetch(`${origin}/api/local-pdf-page?${params}`, {
+        headers: { Origin: "synara://app" },
+      });
+      expect(response.status).toBe(200);
+      expect(response.headers.get("content-type")).toContain("image/png");
+      expect(response.headers.get("x-synara-pdf-page-count")).toBe("1");
+      expect(response.headers.get("x-synara-pdf-page-width")).toBe("600");
+      expect(response.headers.get("x-synara-pdf-page-height")).toBe("360");
+      expect(response.headers.get("access-control-allow-origin")).toBe("synara://app");
+      const bytes = new Uint8Array(await response.arrayBuffer());
+      expect(Array.from(bytes.slice(0, 8))).toEqual([137, 80, 78, 71, 13, 10, 26, 10]);
+    });
+  });
+
+  it("rejects out-of-range pages and does not expose them through untrusted CORS", async () => {
+    const workspace = makeTempDir("synara-effect-pdf-page-invalid-");
+    writeFileSync(path.join(workspace, ".git"), "gitdir: .git");
+    const pdfPath = path.join(workspace, "report.pdf");
+    writePdfFixture(pdfPath);
+    const config = makeServerConfig({ cwd: workspace });
+
+    await withEffectServer(config, localPdfPageEffectRouteLayer, async (origin) => {
+      const params = new URLSearchParams({
+        path: "report.pdf",
+        cwd: workspace,
+        page: "2",
+      });
+      const response = await fetch(`${origin}/api/local-pdf-page?${params}`, {
+        headers: { Origin: "https://example.test" },
+      });
+      expect(response.status).toBe(422);
+      expect(response.headers.get("access-control-allow-origin")).toBeNull();
     });
   });
 });

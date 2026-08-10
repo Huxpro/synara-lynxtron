@@ -1,9 +1,9 @@
-import { useState } from '@lynx-js/react';
+import { useEffect, useState } from '@lynx-js/react';
 
-import { FileEntryIcon } from '../components/FileEntryIcon.lynx';
 import { Button } from '../components/ui/button.lynx';
 import { openPathInEditor } from '../data/synaraClient.lynx';
 import { resolveExplorerPdfOpenTarget } from './explorerPdf.logic';
+import { buildPdfPagePreviewUrl } from './localPreview.logic';
 
 function fileName(path: string): string {
   return path.replace(/\\/g, '/').split('/').pop() || path;
@@ -11,6 +11,9 @@ function fileName(path: string): string {
 
 export function ExplorerPdfFallback(props: {
   readonly path: string;
+  readonly metadataError: boolean;
+  readonly metadataPending: boolean;
+  readonly pageCount: number;
   readonly previewError: boolean;
   readonly previewPending: boolean;
   readonly previewUrl: string | null;
@@ -18,10 +21,21 @@ export function ExplorerPdfFallback(props: {
 }) {
   const [opening, setOpening] = useState(false);
   const [openError, setOpenError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
   const openTarget = resolveExplorerPdfOpenTarget({
     workspaceRoot: props.workspaceRoot,
     relativePath: props.path,
   });
+  const pageCount = props.pageCount;
+  const pageUrl = props.previewUrl
+    ? buildPdfPagePreviewUrl({
+        previewUrl: props.previewUrl,
+        page,
+      })
+    : null;
+  useEffect(() => {
+    setPage(1);
+  }, [props.path, props.workspaceRoot]);
 
   async function openInDefaultApp() {
     'background only';
@@ -46,41 +60,76 @@ export function ExplorerPdfFallback(props: {
 
   return (
     <view className="ExplorerDockPdf">
-      <view className="ExplorerDockPdfIcon">
-        <FileEntryIcon pathValue={props.path} />
-      </view>
-      <view className="ExplorerDockPdfCopy">
-        <view className="ExplorerDockPdfTitleRow">
+      <view className="ExplorerDockPdfToolbar">
+        <view className="ExplorerDockPdfIdentity">
           <text className="ExplorerDockPdfTitle">{fileName(props.path)}</text>
           <text className="ExplorerDockPdfBadge">PDF</text>
         </view>
-        <text className="ExplorerDockPdfDescription">
-          PDF preview is not available in the native client yet.
-        </text>
-        <text className="ExplorerDockPdfHint">
-          Open it in your default PDF app to view pages, search, and select text.
-        </text>
+        <view className="ExplorerDockPdfControls">
+          <Button
+            variant="ghost"
+            size="sm"
+            disabled={page <= 1}
+            aria-label="Previous PDF page"
+            onClick={() => {
+              'background only';
+              setPage((current) => Math.max(1, current - 1));
+            }}
+          >
+            Previous
+          </Button>
+          <text className="ExplorerDockPdfPage">
+            {pageCount > 0 ? `${page} / ${pageCount}` : '— / —'}
+          </text>
+          <Button
+            variant="ghost"
+            size="sm"
+            disabled={pageCount === 0 || page >= pageCount}
+            aria-label="Next PDF page"
+            onClick={() => {
+              'background only';
+              setPage((current) => Math.min(pageCount, current + 1));
+            }}
+          >
+            Next
+          </Button>
+          <Button
+            className="ExplorerDockPdfOpen"
+            variant="secondary"
+            size="sm"
+            disabled={!props.previewUrl || !openTarget || opening}
+            aria-label={`Open ${fileName(props.path)} in default app`}
+            onClick={() => {
+              'background only';
+              void openInDefaultApp();
+            }}
+          >
+            {opening ? 'Opening…' : 'Open'}
+          </Button>
+        </view>
       </view>
-      {props.previewPending ? (
-        <text className="ExplorerDockPdfStatus">Preparing file…</text>
-      ) : props.previewError || !props.previewUrl ? (
-        <text className="ExplorerDockPdfStatus ExplorerDockState--error">
-          Could not prepare this PDF.
-        </text>
-      ) : null}
-      <Button
-        className="ExplorerDockPdfOpen"
-        variant="secondary"
-        size="sm"
-        disabled={!props.previewUrl || !openTarget || opening}
-        aria-label={`Open ${fileName(props.path)} in default app`}
-        onClick={() => {
-          'background only';
-          void openInDefaultApp();
-        }}
-      >
-        {opening ? 'Opening…' : 'Open in default app'}
-      </Button>
+      <view className="ExplorerDockPdfPageFrame">
+        {props.previewPending || props.metadataPending ? (
+          <text className="ExplorerDockPdfStatus">Rendering PDF…</text>
+        ) : props.previewError ||
+          !props.previewUrl ||
+          props.metadataError ||
+          !pageUrl ? (
+          <view className="ExplorerDockPdfError">
+            <text className="ExplorerDockPdfStatus ExplorerDockState--error">
+              Could not render this PDF.
+            </text>
+          </view>
+        ) : (
+          <image
+            className="ExplorerDockPdfPageImage"
+            src={pageUrl}
+            mode="aspectFit"
+            accessibility-element={true}
+            accessibility-label={`${fileName(props.path)}, page ${page} of ${pageCount}`}
+          />
+        )}
+      </view>
       {openError ? (
         <text className="ExplorerDockPdfStatus ExplorerDockState--error">
           {openError}

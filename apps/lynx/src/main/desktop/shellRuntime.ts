@@ -337,29 +337,61 @@ export function appendShellLog(
 }
 
 export function parseSynaraDeepLink(raw: string): string | null {
+  return parseSynaraDeepLinkInitData(raw)?.initialRoute ?? null;
+}
+
+export interface SynaraDeepLinkInitData {
+  readonly initialEnvironmentOpen: boolean;
+  readonly initialExplorerOpen: boolean;
+  readonly initialExplorerCommentLine: number | null;
+  readonly initialExplorerExpandedDirectories: readonly string[];
+  readonly initialExplorerPath: string | null;
+  readonly initialExplorerQuery: string;
+  readonly initialExplorerWidth: number | null;
+  readonly initialRoute: string;
+}
+
+export function parseSynaraDeepLinkInitData(raw: string): SynaraDeepLinkInitData | null {
   try {
     const url = new URL(raw);
     if (url.protocol !== 'synara:') return null;
-    if (url.hostname === 'threads') return '/';
+    let initialRoute = '/';
+    if (url.hostname === 'threads') initialRoute = '/';
     if (url.hostname === 'settings') {
       const section = url.pathname.replace(/^\/+/, '').split('/')[0];
-      return section
+      initialRoute = section
         ? `/settings/${encodeURIComponent(decodeURIComponent(section))}`
         : '/settings';
-    }
-    if (url.hostname === 'update') return '/update';
-    if (url.hostname === 'pull-requests') return '/pull-requests';
-    if (url.hostname === 'kanban') {
+    } else if (url.hostname === 'update') initialRoute = '/update';
+    else if (url.hostname === 'pull-requests') initialRoute = '/pull-requests';
+    else if (url.hostname === 'kanban') {
       const projectId = url.pathname.replace(/^\/+/, '').split('/')[0];
-      return projectId
+      initialRoute = projectId
         ? `/kanban/${encodeURIComponent(decodeURIComponent(projectId))}`
         : '/kanban';
-    }
-    if (url.hostname === 'thread') {
+    } else if (url.hostname === 'thread') {
       const id = url.pathname.replace(/^\/+/, '').split('/')[0];
-      return id ? `/thread/${encodeURIComponent(decodeURIComponent(id))}` : null;
+      if (!id) return null;
+      initialRoute = `/thread/${encodeURIComponent(decodeURIComponent(id))}`;
     }
-    return '/';
+    const explorerCommentLineValue = Number(url.searchParams.get('explorerCommentLine'));
+    const explorerWidthValue = Number(url.searchParams.get('explorerWidth'));
+    return {
+      initialEnvironmentOpen: url.searchParams.get('environment') === 'open',
+      initialExplorerOpen: url.searchParams.get('explorer') === 'open',
+      initialExplorerCommentLine:
+        Number.isInteger(explorerCommentLineValue) && explorerCommentLineValue > 0
+          ? explorerCommentLineValue
+          : null,
+      initialExplorerExpandedDirectories: url.searchParams.getAll('explorerExpanded'),
+      initialExplorerPath: url.searchParams.get('explorerPath'),
+      initialExplorerQuery: url.searchParams.get('explorerQuery') ?? '',
+      initialExplorerWidth:
+        Number.isFinite(explorerWidthValue) && explorerWidthValue > 0
+          ? explorerWidthValue
+          : null,
+      initialRoute,
+    };
   } catch {
     return null;
   }

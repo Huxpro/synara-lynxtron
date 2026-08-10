@@ -458,6 +458,7 @@ export function createWsNativeApi(): NativeApi {
       readFile: (input) => transport.request(WS_METHODS.projectsReadFile, input),
       createLocalFilePreviewGrant: (input) =>
         transport.request(WS_METHODS.projectsCreateLocalFilePreviewGrant, input),
+      inspectPdf: (input) => transport.request(WS_METHODS.projectsInspectPdf, input),
       writeFile: (input) => transport.request(WS_METHODS.projectsWriteFile, input),
       runDevServer: (input) => transport.request(WS_METHODS.projectsRunDevServer, input),
       stopDevServer: (input) => transport.request(WS_METHODS.projectsStopDevServer, input),

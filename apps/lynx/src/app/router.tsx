@@ -19,13 +19,17 @@ import type { SettingsSectionId } from '@synara-web/settingsNavigation';
 import { resolveProviderHealthBannerPresentation } from '@synara-web/components/chat/ProviderHealthBanner.logic';
 import { findProviderStatus } from '@synara-web/lib/providerAvailability';
 import { clampSidebarWidth } from '@synara-web/components/sidebarResize.logic';
-import { isSupportedLocalPreviewFilePath } from '@synara/shared/localPreviewFiles';
+import {
+  isSupportedLocalPdfPath,
+  isSupportedLocalPreviewFilePath,
+} from '@synara/shared/localPreviewFiles';
 
 import {
   fetchExplorerDirectory,
   fetchExplorerEntries,
   fetchExplorerFile,
   fetchExplorerLocalPreviewUrl,
+  fetchExplorerPdfMetadata,
   fetchThreadHeaderSummary,
   fetchThreadTranscriptRows,
   fetchThreads,
@@ -280,6 +284,9 @@ interface ThreadPageProps {
   readonly explorerLocalPreviewUrl: string | null;
   readonly explorerLocalPreviewError: boolean;
   readonly explorerLocalPreviewPending: boolean;
+  readonly explorerPdfPageCount: number;
+  readonly explorerPdfMetadataError: boolean;
+  readonly explorerPdfMetadataPending: boolean;
   readonly explorerQuery: string;
   readonly explorerSelectedPath: string | null;
   readonly initialEnvironmentOpen: boolean;
@@ -313,6 +320,9 @@ function ThreadRightDocks(
     | 'explorerLocalPreviewError'
     | 'explorerLocalPreviewPending'
     | 'explorerLocalPreviewUrl'
+    | 'explorerPdfPageCount'
+    | 'explorerPdfMetadataError'
+    | 'explorerPdfMetadataPending'
     | 'explorerQuery'
     | 'explorerSelectedPath'
     | 'initialExplorerWidth'
@@ -349,6 +359,9 @@ function ThreadRightDocks(
     explorerLocalPreviewError,
     explorerLocalPreviewPending,
     explorerLocalPreviewUrl,
+    explorerPdfPageCount,
+    explorerPdfMetadataError,
+    explorerPdfMetadataPending,
     explorerOpen,
     explorerQuery,
     explorerSelectedPath,
@@ -396,6 +409,9 @@ function ThreadRightDocks(
         localPreviewUrl={explorerLocalPreviewUrl}
         localPreviewError={explorerLocalPreviewError}
         localPreviewPending={explorerLocalPreviewPending}
+        pdfPageCount={explorerPdfPageCount}
+        pdfMetadataError={explorerPdfMetadataError}
+        pdfMetadataPending={explorerPdfMetadataPending}
         open={explorerOpen}
         query={explorerQuery}
         selectedPath={explorerSelectedPath}
@@ -435,6 +451,9 @@ function ThreadPage(props: ThreadPageProps) {
     explorerLocalPreviewUrl,
     explorerLocalPreviewError,
     explorerLocalPreviewPending,
+    explorerPdfPageCount,
+    explorerPdfMetadataError,
+    explorerPdfMetadataPending,
     explorerQuery,
     explorerSelectedPath,
     initialEnvironmentOpen,
@@ -680,6 +699,9 @@ function ThreadPage(props: ThreadPageProps) {
         explorerLocalPreviewError={explorerLocalPreviewError}
         explorerLocalPreviewPending={explorerLocalPreviewPending}
         explorerLocalPreviewUrl={explorerLocalPreviewUrl}
+        explorerPdfPageCount={explorerPdfPageCount}
+        explorerPdfMetadataError={explorerPdfMetadataError}
+        explorerPdfMetadataPending={explorerPdfMetadataPending}
         explorerOpen={explorerOpen}
         explorerQuery={explorerQuery}
         explorerSelectedPath={explorerSelectedPath}
@@ -730,6 +752,10 @@ export function SliceRouter({
     };
     readonly explorerLocalPreview: {
       readonly value: string | null;
+      readonly error: boolean;
+    };
+    readonly explorerPdfMetadata: {
+      readonly value: Awaited<ReturnType<typeof fetchExplorerPdfMetadata>> | null;
       readonly error: boolean;
     };
     readonly explorerDirectories: readonly (readonly [
@@ -834,6 +860,18 @@ export function SliceRouter({
               () => ({ value: null, error: true })
             )
           : { value: null, error: false };
+      const explorerPdfMetadata =
+        summary?.workspaceRoot &&
+        explorerSelectedPath &&
+        isSupportedLocalPdfPath(explorerSelectedPath)
+          ? await fetchExplorerPdfMetadata({
+              workspaceRoot: summary.workspaceRoot,
+              relativePath: explorerSelectedPath,
+            }).then(
+              (value) => ({ value, error: false }),
+              () => ({ value: null, error: true })
+            )
+          : { value: null, error: false };
       const explorerDirectories =
         summary?.workspaceRoot && explorerTrimmedQuery.length === 0
           ? await Promise.all(
@@ -857,6 +895,7 @@ export function SliceRouter({
         explorerEntries,
         explorerFile,
         explorerLocalPreview,
+        explorerPdfMetadata,
         summary,
       };
     },
@@ -893,6 +932,12 @@ export function SliceRouter({
             ? activeThreadData.explorerLocalPreview
             : matchingInitialThreadBootstrap?.explorerLocalPreview ??
               activeThreadData.explorerLocalPreview,
+        explorerPdfMetadata:
+          activeThreadData.explorerPdfMetadata.value ||
+          activeThreadData.explorerPdfMetadata.error
+            ? activeThreadData.explorerPdfMetadata
+            : matchingInitialThreadBootstrap?.explorerPdfMetadata ??
+              activeThreadData.explorerPdfMetadata,
         explorerDirectories: activeThreadData.explorerDirectories,
       }
     : matchingInitialThreadBootstrap ?? undefined;
@@ -1123,6 +1168,17 @@ export function SliceRouter({
         explorerLocalPreviewPending={
           explorerSelectedPath !== null &&
           isSupportedLocalPreviewFilePath(explorerSelectedPath) &&
+          resolvedActiveThreadPending
+        }
+        explorerPdfPageCount={
+          resolvedActiveThreadData?.explorerPdfMetadata.value?.pageCount ?? 0
+        }
+        explorerPdfMetadataError={
+          resolvedActiveThreadData?.explorerPdfMetadata.error ?? false
+        }
+        explorerPdfMetadataPending={
+          explorerSelectedPath !== null &&
+          isSupportedLocalPdfPath(explorerSelectedPath) &&
           resolvedActiveThreadPending
         }
         explorerQuery={explorerQuery}

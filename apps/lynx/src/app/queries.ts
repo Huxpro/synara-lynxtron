@@ -493,6 +493,20 @@ export async function fetchExplorerLocalPreviewUrl(input: {
   });
 }
 
+export async function fetchExplorerPdfMetadata(input: {
+  readonly relativePath: string;
+  readonly workspaceRoot: string;
+}): Promise<{ readonly pageCount: number }> {
+  'background only';
+  const { inspectProjectPdf } = await import(
+    /* webpackMode: "eager" */ '../data/synaraClient'
+  );
+  return inspectProjectPdf({
+    cwd: input.workspaceRoot,
+    path: input.relativePath,
+  });
+}
+
 export async function fetchThreads(): Promise<ThreadSummary[]> {
   'background only';
   return (await fetchSidebarSnapshot()).threads as ThreadSummary[];

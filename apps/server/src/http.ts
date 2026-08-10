@@ -17,6 +17,7 @@ import {
   VOICE_TRANSCRIPTION_UPLOAD_ROUTE_PATH,
 } from "@synara/shared/binaryTransfer";
 import { EDITOR_ICON_ROUTE_PATH } from "@synara/shared/editorIcons";
+import { LOCAL_PDF_PAGE_ROUTE_PATH } from "@synara/shared/localPreviewFiles";
 import { threadExportBlockedReason } from "@synara/shared/threadExport";
 import { Cause, DateTime, Effect, FileSystem, Layer, Option, Path, Schema, Stream } from "effect";
 import { HttpRouter, HttpServerRequest, HttpServerResponse } from "effect/unstable/http";
@@ -34,6 +35,7 @@ import { deriveAuthClientMetadata } from "./auth/utils";
 import { ServerConfig, type ServerConfigShape } from "./config";
 import { resolveCachedEditorIcon } from "./editorAppIcons";
 import { LOCAL_IMAGE_ROUTE_PATH, resolveAllowedLocalPreviewFile } from "./localImageFiles.ts";
+import { renderLocalPdfPage } from "./localPdfPreview.ts";
 import { ProjectFaviconResolver } from "./project/Services/ProjectFaviconResolver";
 import { ProjectionSnapshotQuery } from "./orchestration/Services/ProjectionSnapshotQuery";
 import { ProviderAdapterRegistry } from "./provider/Services/ProviderAdapterRegistry";
@@ -189,6 +191,7 @@ export function makeEffectHttpRouteLayer(
     siteFaviconEffectRouteLayer,
     editorIconEffectRouteLayer,
     localImageEffectRouteLayer,
+    localPdfPageEffectRouteLayer,
     binaryUploadEffectRouteLayer,
     attachmentsEffectRouteLayer,
     staticAndDevEffectRouteLayer,
@@ -811,6 +814,60 @@ export const localImageEffectRouteLayer = HttpRouter.add(
         "X-Content-Type-Options": "nosniff",
         ...(isSvg ? SVG_DOCUMENT_SECURITY_HEADERS : {}),
         ...(isDownload ? { "Content-Disposition": `attachment; filename="${safeFileName}"` } : {}),
+      },
+    });
+  }).pipe(Effect.catchTag("AuthError", (error) => Effect.succeed(authErrorResponse(error)))),
+);
+
+export const localPdfPageEffectRouteLayer = HttpRouter.add(
+  "GET",
+  LOCAL_PDF_PAGE_ROUTE_PATH,
+  Effect.gen(function* () {
+    const request = yield* HttpServerRequest.HttpServerRequest;
+    const url = HttpServerRequest.toURL(request);
+    if (!url) return HttpServerResponse.text("Bad Request", { status: 400 });
+
+    const config = yield* ServerConfig;
+    if (!isLegacyTokenAuthorized({ config, url })) {
+      yield* requireAuthenticatedRequest;
+    }
+
+    const page = Number(url.searchParams.get("page") ?? "1");
+    const width = Number(url.searchParams.get("width") ?? "960");
+    if (!Number.isInteger(page) || page < 1 || !Number.isFinite(width)) {
+      return HttpServerResponse.text("Invalid PDF page request", {
+        status: 400,
+        headers: localPreviewCorsHeaders({ config, request, url }),
+      });
+    }
+
+    const rendered = yield* Effect.promise(() =>
+      renderLocalPdfPage({
+        requestedPath: url.searchParams.get("path"),
+        cwd: url.searchParams.get("cwd"),
+        allowAbsoluteLocalPreviewFile: true,
+        previewGrant: url.searchParams.get("grant"),
+        page,
+        width,
+      }).catch(() => null),
+    );
+    if (!rendered) {
+      return HttpServerResponse.text("Could not render PDF page", {
+        status: 422,
+        headers: localPreviewCorsHeaders({ config, request, url }),
+      });
+    }
+
+    return HttpServerResponse.uint8Array(rendered.bytes, {
+      status: 200,
+      contentType: "image/png",
+      headers: {
+        "Cache-Control": "private, max-age=60",
+        "X-Content-Type-Options": "nosniff",
+        "X-Synara-Pdf-Page-Count": String(rendered.pageCount),
+        "X-Synara-Pdf-Page-Width": String(rendered.width),
+        "X-Synara-Pdf-Page-Height": String(rendered.height),
+        ...localPreviewCorsHeaders({ config, request, url }),
       },
     });
   }).pipe(Effect.catchTag("AuthError", (error) => Effect.succeed(authErrorResponse(error)))),
