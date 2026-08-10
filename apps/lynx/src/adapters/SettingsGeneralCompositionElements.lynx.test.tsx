@@ -96,6 +96,10 @@ describe('Settings General fidelity', () => {
     expect(control.getAttribute('focusable')).toBe('false');
     expect(control.getAttribute('aria-disabled')).toBe('true');
     expect(control.getAttribute('aria-checked')).toBe('true');
+    expect(control.getAttribute('accessibility-role')).toBe('switch');
+    expect(control.getAttribute('accessibility-state')).toBe(
+      '{"checked":true,"disabled":true}'
+    );
     fireEvent.tap(control);
     expect(changes).toBe(0);
   });

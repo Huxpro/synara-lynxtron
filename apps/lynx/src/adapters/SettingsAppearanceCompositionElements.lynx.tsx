@@ -188,6 +188,8 @@ export function SettingsAppearanceBooleanControlElement(props: {
       className={interaction.className}
       aria-label={props.ariaLabel}
       aria-checked={props.checked}
+      accessibility-role="switch"
+      accessibility-state={{ checked: props.checked }}
       {...interaction.eventProps}
     >
       <view className="SharedSettingsAppearanceSwitchThumb" />

@@ -108,6 +108,11 @@ export function SettingsGeneralBooleanControlElement(props: {
       className={interaction.className}
       aria-label={props.ariaLabel}
       aria-checked={props.checked}
+      accessibility-role="switch"
+      accessibility-state={{
+        checked: props.checked,
+        disabled: props.disabled ?? false,
+      }}
       {...interaction.eventProps}
     >
       <view className="SharedSettingsGeneralSwitchThumb" />

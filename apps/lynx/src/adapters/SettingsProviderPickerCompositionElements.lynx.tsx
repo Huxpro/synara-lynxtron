@@ -29,6 +29,8 @@ function ProviderVisibilitySwitch(props: {
       className={interaction.className}
       aria-label={`Show ${props.item.title} in the provider picker`}
       aria-checked={checked}
+      accessibility-role="switch"
+      accessibility-state={{ checked }}
       {...interaction.eventProps}
     >
       <view className="SharedSettingsProviderPickerSwitchThumb" />

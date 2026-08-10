@@ -218,6 +218,8 @@ describe('Lynx Settings section labels', () => {
     expect(providerSource).toContain('<ChevronDownIcon');
     expect(providerSource).not.toContain('↑');
     expect(providerSource).not.toContain('↓');
+    expect(providerSource).toContain('accessibility-role="switch"');
+    expect(providerSource).toContain('accessibility-state={{ checked }}');
     expect(providerStyles).toMatch(
       /\.SharedSettingsProviderPickerSwitch\s*\{[^}]*width:\s*32px;[^}]*height:\s*20px;[^}]*border-radius:\s*10px;/s
     );

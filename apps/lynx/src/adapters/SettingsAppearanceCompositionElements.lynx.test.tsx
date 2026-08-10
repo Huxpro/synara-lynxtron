@@ -65,6 +65,10 @@ describe('Settings Appearance fidelity', () => {
     expect(source).toContain('role="radiogroup"');
     expect(source).toContain('role="radio"');
     expect(source).toContain('aria-checked={active}');
+    expect(source).toContain('accessibility-role="switch"');
+    expect(source).toContain(
+      'accessibility-state={{ checked: props.checked }}'
+    );
     expect(source).toContain(
       "'accessibility-state': { selected: active }"
     );

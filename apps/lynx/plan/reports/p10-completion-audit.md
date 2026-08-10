@@ -289,6 +289,7 @@ Current responsive disposition:
 | Profile avatar color selection | each named color-swatch button exposes Selected/Not selected Native accessibility value without replacing its actionable button trait | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Appearance segmented selection | theme and density segment buttons project selected state through Lynx UI `buttonProps` in addition to Web `aria-checked`, matching the visible active segment in Native accessibility | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Shared Menu selection semantics | radio, checkbox, and switch menu items publish Web menuitem roles plus Native selected/checked role, state, and value on the existing focus/activation owner instead of exposing only a visual checkmark or track | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
+| Settings switch semantics | General, Appearance, Provider Picker, and Theme Pack custom switches expose Native switch role plus checked/disabled state on their existing interaction owner instead of presenting only as generic buttons with On/Off text | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Settings heading semantics | one Native heading primitive preserves every current Web Settings h1/h2/h3 counterpart across generic panels, private Appearance/General/Git/provider layouts, Profile identity and sections, Provider Usage, and Theme Pack titles instead of leaving them as undifferentiated text | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Shared interactive names | high-frequency Composer, Kanban, and Pull Request controls route labels and selected/expanded/on-off state through `useLynxInteractiveState`, so Native accessibility metadata no longer depends only on Web `aria-label` attributes | PASS — SHARED NATIVE ACCESSIBILITY CONTRACT |
 | Actionable primitive semantics | `useLynxInteractiveState` now exposes every actionable control as a Native accessibility button even when its name is derived from visible text; passive hover owners remain excluded and explicit `accessibilityElement: false` remains authoritative | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
@@ -616,6 +617,12 @@ reports zero diagnostics against `5e9b63e2`. The previously failing General
 fallback assertion was a stale fixture from before Droid gained a real icon in
 `147cf5b7`; using an intentionally unsupported provider restores that suite
 alone (3/3) and the full Menu/Settings consumer batch (26/26).
+The Settings switch follow-up adds Native switch role plus checked state to
+General, Appearance, Provider Picker, and Theme Pack custom switches; disabled
+General controls also publish disabled state. The non-actionable AppSnap
+placeholder retains its separate disabled-state contract. Focused regressions
+pass (21/21), both production bundles build, `git diff --check` passes, and
+React Doctor 0.9.11 reports zero diagnostics against `db358579`.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

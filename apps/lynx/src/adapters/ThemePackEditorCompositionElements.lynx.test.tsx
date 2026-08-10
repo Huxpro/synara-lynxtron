@@ -511,6 +511,10 @@ describe('ThemePack boolean interaction contract', () => {
     const control = switchElement();
     expect(control.getAttribute('focusable')).toBe('true');
     expect(control.getAttribute('aria-checked')).toBe('false');
+    expect(control.getAttribute('accessibility-role')).toBe('switch');
+    expect(control.getAttribute('accessibility-state')).toBe(
+      '{"checked":false}'
+    );
     expect(control.getAttribute('accessibility-label')).toBe(
       'Light theme translucent sidebar'
     );

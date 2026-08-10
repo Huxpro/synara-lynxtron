@@ -450,6 +450,8 @@ export function ThemePackBooleanControlElement(props: {
     <view
       className={interaction.className}
       aria-checked={props.checked}
+      accessibility-role="switch"
+      accessibility-state={{ checked: props.checked }}
       {...interaction.eventProps}
     >
       <view className="SharedThemePackSwitchThumb" />
