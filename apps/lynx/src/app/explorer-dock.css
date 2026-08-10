@@ -42,7 +42,7 @@
 .ExplorerDockClose.ui-hover,
 .ExplorerDockClose.ui-focus,
 .ExplorerDockClose.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-elevated-secondary);
 }
 
 .ExplorerDockBody {
@@ -196,7 +196,7 @@
 .ExplorerDockPreviewActions.ui-hover,
 .ExplorerDockPreviewActions.ui-focus,
 .ExplorerDockPreviewActions.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-elevated-secondary);
 }
 
 .ExplorerDockPreviewActionsPopup {

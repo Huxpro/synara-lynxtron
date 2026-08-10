@@ -148,9 +148,9 @@ describe('Lynx Explorer dock', () => {
 
     expect(styles).not.toMatch(/#[0-9a-f]{3,8}\b|rgba?\(|oklch\(|color-mix\(/i);
     for (const token of [
-      '--accent',
       '--background',
       '--border',
+      '--color-background-elevated-secondary',
       '--destructive',
       '--foreground',
       '--muted-foreground',
@@ -170,6 +170,17 @@ describe('Lynx Explorer dock', () => {
     expect(styles).toMatch(
       /\.ExplorerDockEntry\s*\{[^}]*min-height:\s*28px;[^}]*padding:\s*4px 8px;/s
     );
+    for (const className of [
+      'ExplorerDockClose',
+      'ExplorerDockPreviewActions',
+    ]) {
+      expect(styles).toMatch(
+        new RegExp(
+          `\\.${className}\\.ui-hover,[^}]*\\{[^}]*background-color:\\s*var\\(--color-background-elevated-secondary\\);`,
+          's'
+        )
+      );
+    }
     expect(styles).toMatch(
       /\.ExplorerDockDirectoryChildren\s*\{[^}]*width:\s*100%;/s
     );

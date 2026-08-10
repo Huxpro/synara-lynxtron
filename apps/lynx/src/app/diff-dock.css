@@ -55,7 +55,7 @@
 .DiffDockClose.ui-hover,
 .DiffDockClose.ui-focus,
 .DiffDockClose.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-elevated-secondary);
 }
 
 .DiffDockScroller {
@@ -90,7 +90,7 @@
 .DiffDockRetry.ui-hover,
 .DiffDockRetry.ui-focus,
 .DiffDockRetry.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-elevated-secondary);
 }
 
 .DiffDockRetryText {

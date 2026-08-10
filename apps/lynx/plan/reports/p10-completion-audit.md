@@ -883,6 +883,13 @@ Every ordinary Environment interaction owner now uses
 `rgba(13,13,13,0.04)` at the same `987/175/274x26` box. Focused tests enumerate
 the surface and pass 6/6; both production builds succeed.
 
+The subsequent dock-chrome material pass applies the same Web neutral hover
+contract to Diff close/retry and Explorer close/preview-action controls instead
+of generated blue `--accent`. Explorer selected rows keep their separate
+`--secondary` state and are not conflated with transient hover. Focused Diff
+and Explorer contracts pass 3/3 and the Native/Desktop production build
+succeeds.
+
 The Native arbitrary text-range selection investigation reached an upstream
 Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's
 documented contract exposes `text-selection={true}`, `flatten={false}`,
