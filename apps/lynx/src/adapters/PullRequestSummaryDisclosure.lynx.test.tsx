@@ -21,6 +21,7 @@ describe('Pull Request summary disclosure fidelity', () => {
       '<PullRequestActorLabel actor={props.author} variant="author" />'
     );
     expect(source).toContain('className="SharedPrSummaryReviewers"');
+    expect(source).toContain('cwd={props.detail.workspaceRoot}');
     expect(source).toContain('<PullRequestSummaryMetaIcon kind="reviewers" />');
     expect(source).toContain('<PullRequestSummaryMetaIcon');
     expect(source).toContain(

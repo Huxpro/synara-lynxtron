@@ -203,6 +203,7 @@ export function PullRequestSummaryDescriptionElement(props: {
 }) {
   return (
     <ChatMarkdown
+      cwd={props.detail.workspaceRoot}
       text={
         props.detail.body.trim()
           ? props.detail.body
