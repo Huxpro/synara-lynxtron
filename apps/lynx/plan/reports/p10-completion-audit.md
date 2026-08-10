@@ -294,6 +294,7 @@ Current responsive disposition:
 | Integration project selection | project-scope choices expose Native checkbox role and checked state on the existing named interaction owner, matching the visual checkbox and Selected/Not selected value | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Provider Usage meter semantics | each painted remaining-usage track exposes one named static Native text element and percentage value while retaining Web numeric ARIA, without claiming an unsupported Native progressbar contract | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Keyboard-input accessible names | the shared `Input` keyboard-event branch forwards normalized Web/native labels to its raw Lynx input, preserving Settings sidebar and shortcut-search names instead of dropping them during the platform split | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
+| Shared Input invalid semantics | the shared `Input` forwards `aria-invalid` through both its raw keyboard and Lynx UI input branches instead of using the state only for wrapper styling | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
 | Appearance select trigger name | the Appearance select field name is owned by the actionable `MenuTrigger` as well as its nested Web button, preventing an unnamed outer Native menu control | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Settings navigation state | active navigation controls match Web `aria-current="page"` and publish Native selected/disabled state plus the existing Current section value on the same interaction owner | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Settings disclosure values | Integration advanced-permissions joins Release History and recovery disclosures in publishing Expanded/Collapsed Native accessibility value while retaining Web `aria-expanded`, without inventing an unestablished Native expanded-state shape | PASS — CURRENT PRODUCT IMPLEMENTATION |
@@ -668,6 +669,13 @@ production bundles build, `git diff --check` passes, and React Doctor 0.9.11
 reports zero diagnostics against `85ba7a1f`. Direct raw-input mounting remains
 outside the renderer harness because host invocation is not implemented, so
 the primitive metadata assertion is deterministic source coverage.
+The shared Input invalid-state follow-up forwards `aria-invalid` to both the
+raw keyboard input and standard Lynx UI input rather than keeping it only as a
+wrapper CSS class. Input/custom-model/Theme Pack regressions pass (12/12), both
+production bundles build, `git diff --check` passes, and React Doctor 0.9.11
+reports zero diagnostics against `c1ff94a4`. Direct primitive mounting remains
+outside the renderer harness because Lynx input host invocation is not
+implemented, so branch metadata uses deterministic source coverage.
 The Appearance select follow-up moves the field name onto the actionable
 `MenuTrigger` owner while retaining the nested button label for Web parity.
 Focused Appearance/Menu regressions pass (14/14), both production bundles

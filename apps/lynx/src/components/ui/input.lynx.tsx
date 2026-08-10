@@ -67,6 +67,7 @@ interface RawInputEvent {
 
 interface KeyboardInputProps {
   readonly accessibleLabel?: string;
+  readonly ariaInvalid?: boolean;
   readonly className: string;
   readonly confirmType: NonNullable<LynxInputProps['confirmType']>;
   readonly defaultValue?: string;
@@ -170,6 +171,7 @@ const KeyboardInput = forwardRef<InputRef, KeyboardInputProps>(
       ref={inputRef}
       id={props.id}
       aria-label={props.accessibleLabel}
+      aria-invalid={props.ariaInvalid}
       accessibility-element={props.accessibleLabel ? true : undefined}
       accessibility-label={props.accessibleLabel}
       readonly={props.disabled || props.readonly}
@@ -276,6 +278,7 @@ export const Input = forwardRef<InputRef, InputProps>(function Input(
         <KeyboardInput
           ref={forwardedRef}
           accessibleLabel={accessibilityLabel ?? ariaLabel}
+          ariaInvalid={ariaInvalid}
           id={props.id}
           className="LxInput"
           readonly={props.readonly}
@@ -304,6 +307,7 @@ export const Input = forwardRef<InputRef, InputProps>(function Input(
           readonly={resolvedDisabled || props.readonly}
           disabled={resolvedDisabled}
           focusable={!resolvedDisabled}
+          aria-invalid={ariaInvalid}
           type={type === 'search' ? 'text' : type}
           confirmType={type === 'search' ? 'search' : props.confirmType}
           onInput={resolvedDisabled ? undefined : handleInput}

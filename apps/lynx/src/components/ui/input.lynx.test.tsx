@@ -16,5 +16,10 @@ describe('Lynx Input accessibility contract', () => {
       'accessibility-element={props.accessibleLabel ? true : undefined}'
     );
     expect(source).toContain('accessibility-label={props.accessibleLabel}');
+    expect(source).toContain('ariaInvalid={ariaInvalid}');
+    expect(source).toContain('aria-invalid={props.ariaInvalid}');
+    expect(source).toMatch(
+      /<LynxInput[\s\S]{0,260}aria-invalid=\{ariaInvalid\}/
+    );
   });
 });
