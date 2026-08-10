@@ -50,6 +50,12 @@ describe('composer reference attachment interaction contract', () => {
       /\.ComposerReferenceCardActionLynx\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*row;[^}]*gap:\s*2px;/s
     );
     expect(styles).toMatch(
+      /\.ComposerReferenceCardActionLynx\.ui-pressed \.ComposerReferenceCardActionTextLynx\s*\{[^}]*color:\s*var\(--foreground\);/s
+    );
+    expect(styles).not.toMatch(
+      /\.ComposerReference(?:CardAction|Remove|Image)Lynx\.ui-pressed\s*\{[^}]*opacity:/s
+    );
+    expect(styles).toMatch(
       /\.ComposerReferenceImageWarningLynx\s*\{[^}]*width:\s*20px;[^}]*height:\s*20px;[^}]*border-radius:\s*10px;[^}]*background-color:\s*var\(--composer-surface\);/s
     );
   });

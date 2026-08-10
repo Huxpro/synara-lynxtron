@@ -1073,8 +1073,8 @@
   box-shadow: 0 0 0 1px var(--ring);
 }
 
-.ComposerReferenceCardActionLynx.ui-pressed {
-  opacity: 0.68;
+.ComposerReferenceCardActionLynx.ui-pressed .ComposerReferenceCardActionTextLynx {
+  color: var(--foreground);
 }
 
 .ComposerReferenceRemoveLynx {
@@ -1096,10 +1096,6 @@
 
 .ComposerReferenceRemoveLynx.ui-focus {
   box-shadow: 0 0 0 2px var(--ring);
-}
-
-.ComposerReferenceRemoveLynx.ui-pressed {
-  opacity: 0.64;
 }
 
 .ComposerReferenceRemoveIconLynx {
@@ -1135,10 +1131,6 @@
 
 .ComposerReferenceImageLynx.ui-focus {
   box-shadow: 0 0 0 2px var(--ring);
-}
-
-.ComposerReferenceImageLynx.ui-pressed {
-  opacity: 0.72;
 }
 
 .ComposerReferenceImagePreviewLynx {

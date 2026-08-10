@@ -1009,6 +1009,13 @@ remain the sole visual state owners, so press no longer flashes every child
 simultaneously. Kanban composition regressions pass 7/7 and the Native/Desktop
 production build succeeds.
 
+The Composer attachment-action follow-up stabilizes pasted-text Show, nested
+Remove, and image preview controls. Show raises its underlined label to
+foreground, Remove keeps its solid circular treatment, and image preview keeps
+its border response; none now flashes the full control at 64–72% opacity.
+Attachment interaction regressions pass 4/4 and the Native/Desktop production
+build succeeds.
+
 The Native arbitrary text-range selection investigation reached an upstream
 Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's
 documented contract exposes `text-selection={true}`, `flatten={false}`,
