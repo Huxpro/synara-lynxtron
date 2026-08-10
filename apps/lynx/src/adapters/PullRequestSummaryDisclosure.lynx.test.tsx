@@ -11,6 +11,10 @@ describe('Pull Request summary disclosure fidelity', () => {
       new URL('./pull-request-summary-composition-elements.css', import.meta.url),
       'utf8'
     );
+    const commentSource = readFileSync(
+      new URL('./PullRequestSummaryCommentCard.lynx.tsx', import.meta.url),
+      'utf8'
+    );
 
     expect(source).toContain('useLynxDisclosurePresence(open)');
     expect(source).toContain(
@@ -25,14 +29,22 @@ describe('Pull Request summary disclosure fidelity', () => {
     expect(source).toContain(
       'void platformWindow.openExternal(props.check.url!)'
     );
-    expect(source).toContain('actor={comment.author}');
-    expect(source).toContain('variant="comment"');
+    expect(commentSource).toContain('actor={props.comment.author}');
+    expect(commentSource).toContain('variant="comment"');
     expect(source).not.toContain(
       "props.reviewers.map((actor) => actor.login).join(', ')"
     );
     expect(source).not.toContain(
       "{comment.author?.login ?? 'ghost'}"
     );
+    expect(source).toContain(
+      'defaultOpen={index >= props.detail.comments.length - 2}'
+    );
+    expect(commentSource).toContain('formatRelativeTime(props.comment.createdAt)');
+    expect(commentSource).toContain('useLynxDisclosurePresence(open)');
+    expect(commentSource).toContain('disclosureChevronClassName(');
+    expect(commentSource).toContain('disclosureContentClassName(');
+    expect(commentSource).toContain('cwd={props.workspaceRoot}');
     expect(source).toContain('disclosureContentClassName(');
     expect(source).toContain('disclosureChevronClassName(');
     expect(source).toContain('<ChevronRightIcon');

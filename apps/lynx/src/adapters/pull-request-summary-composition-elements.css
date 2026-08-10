@@ -259,7 +259,6 @@
 .SharedPrSummaryMuted,
 .SharedPrSummaryWarning,
 .SharedPrSummaryCapability,
-.SharedPrSummaryCommentAuthor,
 .SharedPrSummaryCommentPath {
   font-size: var(--app-font-size-ui-sm);
   line-height: 18px;
@@ -311,15 +310,37 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 6px;
+  gap: 8px;
+  padding: 10px 0;
 }
 
-.SharedPrSummaryCommentAuthor {
-  color: var(--foreground);
-  font-weight: 500;
+.SharedPrSummaryCommentHeader.ui-focus {
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.SharedPrSummaryCommentTime {
+  margin-left: auto;
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-sm);
+  line-height: 18px;
+}
+
+.SharedPrSummaryCommentChevron {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+}
+
+.SharedPrSummaryCommentBody {
+  padding-bottom: 12px;
 }
 
 .SharedPrSummaryCommentPath {
+  display: block;
+  max-width: 100%;
+  margin-bottom: 8px;
   min-width: 0;
   flex: 1;
   margin-left: 8px;

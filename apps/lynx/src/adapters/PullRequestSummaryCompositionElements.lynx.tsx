@@ -17,6 +17,7 @@ import { PullRequestCommentComposer } from './PullRequestCommentComposer.lynx';
 import { PullRequestActorLabel } from './PullRequestActorLabel.lynx';
 import { PullRequestCheckStatusIcon } from './PullRequestCheckStatusIcon.lynx';
 import { PullRequestSummaryBranchRow } from './PullRequestSummaryBranchRow.lynx';
+import { PullRequestSummaryCommentCard } from './PullRequestSummaryCommentCard.lynx';
 import { PullRequestSummaryMetaIcon } from './PullRequestSummaryMetaIcon.lynx';
 import { platformWindow } from '../platform/window';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
@@ -275,21 +276,13 @@ export function PullRequestSummaryCommentsElement(props: {
           No comments
         </text>
       ) : (
-        props.detail.comments.map((comment) => (
-          <view className="SharedPrSummaryComment" key={comment.id}>
-            <view className="SharedPrSummaryCommentHeader">
-              <PullRequestActorLabel
-                actor={comment.author}
-                variant="comment"
-              />
-              {comment.path ? (
-                <text className="SharedPrSummaryCommentPath">
-                  {comment.path}
-                </text>
-              ) : null}
-            </view>
-            <ChatMarkdown text={comment.body || '_No review body._'} />
-          </view>
+        props.detail.comments.map((comment, index) => (
+          <PullRequestSummaryCommentCard
+            comment={comment}
+            defaultOpen={index >= props.detail.comments.length - 2}
+            key={comment.id}
+            workspaceRoot={props.detail.workspaceRoot}
+          />
         ))
       )}
       {props.commentingAvailable ? (
