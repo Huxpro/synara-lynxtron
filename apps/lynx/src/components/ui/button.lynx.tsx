@@ -92,6 +92,7 @@ export function Button({
   render,
   type: _type,
   buttonProps,
+  disabled,
   'aria-label': ariaLabel,
   ...props
 }: ButtonProps) {
@@ -99,13 +100,27 @@ export function Button({
     'background only';
     onClick?.(createButtonClickEvent());
   };
+  const existingAccessibilityState = buttonProps?.['accessibility-state'];
+  const accessibilityState = disabled
+    ? {
+        ...(typeof existingAccessibilityState === 'object' &&
+        existingAccessibilityState !== null
+          ? existingAccessibilityState
+          : {}),
+        disabled: true,
+      }
+    : existingAccessibilityState;
   return (
     <LynxButton
       {...props}
+      disabled={disabled}
       onClick={handleClick}
       className={buttonVariants({ className, variant, size, shape })}
       buttonProps={{
         ...buttonProps,
+        ...(accessibilityState
+          ? { 'accessibility-state': accessibilityState }
+          : {}),
         ...(ariaLabel
           ? {
               'accessibility-element': true,
