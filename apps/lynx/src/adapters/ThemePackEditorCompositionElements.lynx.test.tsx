@@ -112,6 +112,7 @@ describe('ThemePack boolean interaction contract', () => {
     expect(source).toContain(
       'className="SharedThemePackImportTriggerHost"'
     );
+    expect(source).toContain('ariaLabel="Import theme"');
     expect(source).toContain(
       'viewportClassName="SharedThemePackImportViewport"'
     );

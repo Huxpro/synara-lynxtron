@@ -143,9 +143,10 @@ describe('Lynx Dialog dismiss contract', () => {
   });
 
   it('restores focus to its exact trigger after dismiss', async () => {
+    const onOpenChange = rs.fn();
     render(
-      <Dialog defaultOpen>
-        <DialogTrigger>
+      <Dialog onOpenChange={onOpenChange}>
+        <DialogTrigger ariaLabel="Open search">
           <text>Open search</text>
         </DialogTrigger>
         <DialogPopup showCloseButton={false}>
@@ -154,7 +155,13 @@ describe('Lynx Dialog dismiss contract', () => {
       </Dialog>
     );
 
+    const trigger = elementTree.root?.querySelector('.LxDialogTrigger');
+    if (!trigger) throw new Error('expected DialogTrigger');
+    expect(trigger.getAttribute('accessibility-label')).toBe('Open search');
+    fireEvent.tap(trigger);
+    expect(onOpenChange).toHaveBeenLastCalledWith(true);
     fireEvent.keydown(await openDialog(), { key: 'Escape' });
+    expect(onOpenChange).toHaveBeenLastCalledWith(false);
     await waitFor(() => expect(select).toHaveBeenCalledTimes(1));
     expect(select.mock.calls[0]?.[0]).toMatch(/^\.LxDialogTrigger--\d+$/);
     expect(invoke).toHaveBeenCalledWith({
@@ -162,5 +169,23 @@ describe('Lynx Dialog dismiss contract', () => {
       params: { focus: true },
     });
     expect(exec).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps disabled triggers inert and unfocusable', () => {
+    const onOpenChange = rs.fn();
+    render(
+      <Dialog onOpenChange={onOpenChange}>
+        <DialogTrigger disabled ariaLabel="Open search">
+          <text>Open search</text>
+        </DialogTrigger>
+      </Dialog>
+    );
+
+    const trigger = elementTree.root?.querySelector('.LxDialogTrigger');
+    if (!trigger) throw new Error('expected disabled DialogTrigger');
+    expect(trigger.getAttribute('focusable')).toBe('false');
+    expect(trigger.getAttribute('aria-disabled')).toBe('true');
+    fireEvent.tap(trigger);
+    expect(onOpenChange).not.toHaveBeenCalled();
   });
 });

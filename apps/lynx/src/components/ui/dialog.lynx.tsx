@@ -2,7 +2,6 @@ import {
   DialogBackdrop as LynxDialogBackdrop,
   DialogContent as LynxDialogContent,
   DialogRoot,
-  DialogTrigger as LynxDialogTrigger,
   DialogView,
 } from '@lynx-js/lynx-ui';
 import {
@@ -32,12 +31,14 @@ interface DialogProps {
 interface DialogDismissContextValue {
   readonly close: () => void;
   readonly open: boolean;
+  readonly show: () => void;
   readonly registerTriggerSelector: (selector: string) => () => void;
 }
 
 const DialogDismissContext = createContext<DialogDismissContextValue>({
   close: () => {},
   open: false,
+  show: () => {},
   registerTriggerSelector: () => () => {},
 });
 
@@ -72,6 +73,7 @@ export function Dialog({ open, defaultOpen, onOpenChange, children }: DialogProp
       value={{
         open: actualOpen,
         close: () => setOpen(false),
+        show: () => setOpen(true),
         registerTriggerSelector,
       }}
     >
@@ -87,6 +89,7 @@ export function DialogTrigger(props: {
   render?: ReactNode;
   className?: string;
   disabled?: boolean;
+  ariaLabel?: string;
 }) {
   const dialog = useContext(DialogDismissContext);
   const selectorRef = useRef<string | null>(null);
@@ -98,17 +101,20 @@ export function DialogTrigger(props: {
     () => dialog.registerTriggerSelector(selectorRef.current!),
     [dialog.registerTriggerSelector]
   );
+  const interaction = useLynxInteractiveState({
+    baseClassName: cx(
+      'LxDialogTrigger',
+      selectorRef.current.slice(1),
+      props.className
+    ),
+    accessibleLabel: props.ariaLabel,
+    disabled: props.disabled,
+    onActivate: dialog.show,
+  });
   return (
-    <LynxDialogTrigger
-      className={cx(
-        'LxDialogTrigger',
-        selectorRef.current.slice(1),
-        props.className
-      )}
-      disabled={props.disabled}
-    >
+    <view className={interaction.className} {...interaction.eventProps}>
       {renderSlot(props.render, props.children)}
-    </LynxDialogTrigger>
+    </view>
   );
 }
 

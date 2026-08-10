@@ -168,6 +168,7 @@ export function ThemePackImportActionElement(props: {
     >
       <DialogTrigger
         className="SharedThemePackImportTriggerHost"
+        ariaLabel="Import theme"
       >
         <Button
           size="sm"
