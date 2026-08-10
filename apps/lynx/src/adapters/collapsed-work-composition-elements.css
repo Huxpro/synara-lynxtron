@@ -15,17 +15,15 @@
   padding-bottom: 13px;
 }
 
-.SharedCollapsedWorkTrigger.ui-hover {
-  background-color: var(--muted);
-}
-
 .SharedCollapsedWorkTrigger.ui-focus {
   box-shadow: 0 0 0 1px var(--ring);
 }
 
-.SharedCollapsedWorkTrigger.ui-pressed {
-  background-color: var(--muted);
-  opacity: 0.72;
+.SharedCollapsedWorkTrigger.ui-hover .SharedCollapsedWorkLabel,
+.SharedCollapsedWorkTrigger.ui-hover .SharedCollapsedWorkChevron,
+.SharedCollapsedWorkTrigger.ui-pressed .SharedCollapsedWorkLabel,
+.SharedCollapsedWorkTrigger.ui-pressed .SharedCollapsedWorkChevron {
+  opacity: 0.9;
 }
 
 .SharedCollapsedWorkLabel {

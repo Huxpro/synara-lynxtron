@@ -873,7 +873,7 @@
 }
 
 .TranscriptJump.ui-hover {
-  opacity: 0.9;
+  background-color: var(--color-background-elevated-secondary);
 }
 
 .TranscriptJump.ui-focus {
@@ -881,7 +881,7 @@
 }
 
 .TranscriptJump.ui-pressed {
-  opacity: 0.72;
+  background-color: var(--color-background-button-secondary);
 }
 
 .TranscriptJumpIcon {

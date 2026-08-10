@@ -983,6 +983,13 @@ track/label stable rather than flashing the entire switch at 80–82% opacity.
 The aggregate switch contract plus consumer suites pass 20/20 and the
 Native/Desktop production build succeeds.
 
+The transcript feedback follow-up removes two frequent full-control flashes.
+Collapsed-work disclosure now follows Web's text/chevron emphasis without
+painting or dimming the entire trigger, and Scroll to bottom uses Web's neutral
+hover/pressed surfaces rather than 90%/72% whole-button opacity. Disclosure,
+selection-reference, and jump contracts pass 4/4 and the Native/Desktop
+production build succeeds.
+
 The Native arbitrary text-range selection investigation reached an upstream
 Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's
 documented contract exposes `text-selection={true}`, `flatten={false}`,
