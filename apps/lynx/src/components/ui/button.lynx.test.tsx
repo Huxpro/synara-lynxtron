@@ -4,6 +4,27 @@ import { fireEvent, render } from '@lynx-js/react/testing-library';
 import { Button } from './button.lynx';
 
 describe('Lynx Button accessibility contract', () => {
+  it('exposes visible-text actions as Native buttons by default', () => {
+    render(<Button>Save</Button>);
+
+    const button = elementTree.root?.querySelector('.LxButton');
+    expect(button?.getAttribute('accessibility-element')).toBe('true');
+    expect(button?.getAttribute('accessibility-traits')).toBe('button');
+    expect(button?.textContent).toBe('Save');
+  });
+
+  it('honors explicit passive accessibility ownership', () => {
+    render(
+      <Button buttonProps={{ 'accessibility-element': false }}>
+        Visual only
+      </Button>
+    );
+
+    const button = elementTree.root?.querySelector('.LxButton');
+    expect(button?.getAttribute('accessibility-element')).toBe('false');
+    expect(button?.getAttribute('accessibility-traits')).toBeNull();
+  });
+
   it('publishes disabled state and remains inert', () => {
     const onClick = rs.fn();
     render(

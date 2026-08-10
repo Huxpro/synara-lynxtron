@@ -101,6 +101,11 @@ export function Button({
     onClick?.(createButtonClickEvent());
   };
   const existingAccessibilityState = buttonProps?.['accessibility-state'];
+  const accessibilityElement =
+    buttonProps?.['accessibility-element'] ?? true;
+  const accessibilityTraits =
+    buttonProps?.['accessibility-traits'] ??
+    (accessibilityElement ? ('button' as const) : undefined);
   const accessibilityState = disabled
     ? {
         ...(typeof existingAccessibilityState === 'object' &&
@@ -118,14 +123,16 @@ export function Button({
       className={buttonVariants({ className, variant, size, shape })}
       buttonProps={{
         ...buttonProps,
+        'accessibility-element': accessibilityElement,
+        ...(accessibilityTraits
+          ? { 'accessibility-traits': accessibilityTraits }
+          : {}),
         ...(accessibilityState
           ? { 'accessibility-state': accessibilityState }
           : {}),
         ...(ariaLabel
           ? {
-              'accessibility-element': true,
               'accessibility-label': ariaLabel,
-              'accessibility-traits': 'button' as const,
             }
           : {}),
       }}
