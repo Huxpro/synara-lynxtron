@@ -3,6 +3,7 @@ import type {
   OrchestrationShellSnapshot,
 } from '@synara/contracts';
 import { beforeEach, describe, expect, it, rs } from '@rstest/core';
+import { readFileSync } from 'node:fs';
 import {
   fireEvent,
   render,
@@ -56,6 +57,25 @@ const project: ProjectSummary = {
     model: 'gpt-5.6-sol',
   },
 };
+
+describe('Kanban new task project feedback', () => {
+  it('separates branded selection from neutral hover and pressed states', () => {
+    const styles = readFileSync(
+      new URL('./kanban-new-task-dialog.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(styles).toMatch(
+      /\.KanbanNewTaskProject--selected\s*\{[^}]*background-color:\s*var\(--accent\);/s
+    );
+    expect(styles).toMatch(
+      /\.KanbanNewTaskProject\.ui-hover,[^{]*\{[^}]*background-color:\s*var\(--secondary\);/s
+    );
+    expect(styles).not.toMatch(
+      /\.KanbanNewTaskProject\.ui-pressed\s*\{[^}]*opacity:/s
+    );
+  });
+});
 
 function textarea(): Element {
   const element = elementTree.root?.querySelector('.KanbanNewTaskInput');

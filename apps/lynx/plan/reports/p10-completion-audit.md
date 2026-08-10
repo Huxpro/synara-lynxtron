@@ -911,6 +911,12 @@ Hover, focus, and press now preserve the field surface and raise the icon to
 full opacity. Focused Appearance regressions pass 3/3 and the Native/Desktop
 production build succeeds.
 
+The Kanban New task project feedback follow-up keeps selected project identity
+on the branded accent surface while moving ordinary hover/press to Web's
+neutral secondary material and removing whole-chip pressed dimming. This keeps
+selected and transient states from impersonating each other. The complete
+dialog suite passes 4/4 and the Native/Desktop production build succeeds.
+
 The Native arbitrary text-range selection investigation reached an upstream
 Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's
 documented contract exposes `text-selection={true}`, `flatten={false}`,

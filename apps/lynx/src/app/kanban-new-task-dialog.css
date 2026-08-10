@@ -84,15 +84,11 @@
 
 .KanbanNewTaskProject.ui-hover,
 .KanbanNewTaskProject.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--secondary);
 }
 
 .KanbanNewTaskProject.ui-focus {
   box-shadow: inset 0 0 0 1px var(--ring);
-}
-
-.KanbanNewTaskProject.ui-pressed {
-  opacity: 0.82;
 }
 
 .KanbanNewTaskProjectText {
