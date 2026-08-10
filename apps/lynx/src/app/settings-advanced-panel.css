@@ -118,10 +118,6 @@
   box-shadow: 0 0 0 1px var(--ring);
 }
 
-.SettingsAdvancedRecoveryTrigger.ui-pressed {
-  opacity: 0.72;
-}
-
 .SettingsAdvancedRecoveryTitle {
   color: var(--muted-foreground);
 }
@@ -222,11 +218,6 @@
   padding: 12px 0;
   align-items: center;
   gap: 12px;
-}
-
-.SettingsAdvancedReleaseTrigger.ui-hover,
-.SettingsAdvancedReleaseTrigger.ui-pressed {
-  opacity: 0.82;
 }
 
 .SettingsAdvancedReleaseTrigger.ui-focus {

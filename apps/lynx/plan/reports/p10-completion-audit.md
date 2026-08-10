@@ -1016,6 +1016,12 @@ its border response; none now flashes the full control at 64–72% opacity.
 Attachment interaction regressions pass 4/4 and the Native/Desktop production
 build succeeds.
 
+The Settings pressed-feedback follow-up stabilizes General/Appearance Reset
+and Advanced recovery/release disclosures. Reset uses the ghost-button
+secondary pressed surface rather than fading to 70%, while disclosure rows keep
+their copy and chevrons at full opacity. General, Appearance, and Advanced
+regressions pass 10/10 and the Native/Desktop production build succeeds.
+
 The Native arbitrary text-range selection investigation reached an upstream
 Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's
 documented contract exposes `text-selection={true}`, `flatten={false}`,
