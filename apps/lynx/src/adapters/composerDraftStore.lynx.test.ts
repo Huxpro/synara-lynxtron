@@ -30,8 +30,10 @@ describe('Lynx composer draft attachment subset', () => {
     ).toEqual({
       assistantSelections: [],
       files: [],
+      images: [],
       fileComments: [],
       mentions: [],
+      nonPersistedImageIds: [],
       prompt: '',
       pastedTexts: [pastedText],
       skills: [],
@@ -75,8 +77,10 @@ describe('Lynx composer draft attachment subset', () => {
     ).toEqual({
       assistantSelections: [],
       files: [],
+      images: [],
       fileComments: [],
       mentions: [],
+      nonPersistedImageIds: [],
       prompt: '',
       pastedTexts: [],
       skills: [],
@@ -287,6 +291,39 @@ describe('Lynx composer draft attachment subset', () => {
     ).toBeUndefined();
   });
 
+  it('persists picked-image capabilities as non-persisted draft warnings', () => {
+    const image = {
+      type: 'image' as const,
+      id: 'lynx-image-1',
+      token: '11111111-1111-4111-8111-111111111111',
+      name: 'screenshot.png',
+      mimeType: 'image/png',
+      sizeBytes: 12,
+      previewUrl: 'data:image/png;base64,AA==',
+    };
+    const store = useComposerDraftStore.getState();
+    store.addImages('thread-1', [image, image]);
+    expect(
+      useComposerDraftStore.getState().draftsByThreadId['thread-1']
+    ).toMatchObject({
+      images: [image],
+      nonPersistedImageIds: [image.id],
+    });
+    expect(
+      parsePersistedLynxComposerDrafts(
+        webStorage.getItem(LYNX_COMPOSER_DRAFT_STORAGE_KEY)
+      )['thread-1']
+    ).toMatchObject({
+      images: [image],
+      nonPersistedImageIds: [image.id],
+    });
+
+    useComposerDraftStore.getState().removeImage('thread-1', image.id);
+    expect(
+      useComposerDraftStore.getState().draftsByThreadId['thread-1']
+    ).toBeUndefined();
+  });
+
   it('updates and preserves options when a trait changes on the same model', () => {
     const store = useComposerDraftStore.getState();
     store.setModelSelection('thread-1', {
@@ -384,6 +421,8 @@ describe('Lynx composer draft attachment subset', () => {
         skills: [],
         mentions: [],
         files: [],
+        images: [],
+        nonPersistedImageIds: [],
         pastedTexts: [],
       },
     });

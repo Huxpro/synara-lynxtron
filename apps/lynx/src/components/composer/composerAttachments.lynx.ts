@@ -1,9 +1,10 @@
 import 'background-only';
 
-import type { ChatFileAttachment } from '@synara/contracts';
+import type { ChatFileAttachment, ChatImageAttachment } from '@synara/contracts';
 import {
   PROVIDER_SEND_TURN_MAX_ATTACHMENTS,
   PROVIDER_SEND_TURN_MAX_FILE_BYTES,
+  PROVIDER_SEND_TURN_MAX_IMAGE_BYTES,
 } from '@synara/contracts/attachmentLimits';
 
 import { bridgeCall } from '../../platform/bridge';
@@ -23,9 +24,24 @@ export interface NativeComposerFileAttachment {
   readonly type: 'file';
 }
 
+export interface NativeComposerImageAttachment {
+  readonly id: string;
+  readonly mimeType: string;
+  readonly name: string;
+  readonly previewUrl: string;
+  readonly sizeBytes: number;
+  readonly token: string;
+  readonly type: 'image';
+}
+
+export type NativeComposerBinaryAttachment =
+  | NativeComposerImageAttachment
+  | NativeComposerFileAttachment;
+
 export interface PickedComposerFilesResult {
   readonly error: string | null;
   readonly files: ReadonlyArray<NativeComposerFileAttachment>;
+  readonly images: ReadonlyArray<NativeComposerImageAttachment>;
   readonly rejectedTokens: ReadonlyArray<string>;
 }
 
@@ -44,11 +60,12 @@ function validPickedFile(file: PickedFile): boolean {
   );
 }
 
-export function resolvePickedComposerFiles(input: {
+export async function resolvePickedComposerFiles(input: {
   readonly existingAttachmentCount: number;
   readonly files: ReadonlyArray<PickedFile>;
-}): PickedComposerFilesResult {
+}, request: AttachmentBridgeCall = bridgeCall): Promise<PickedComposerFilesResult> {
   const files: NativeComposerFileAttachment[] = [];
+  const images: NativeComposerImageAttachment[] = [];
   const rejectedTokens: string[] = [];
   const seenTokens = new Set<string>();
   let error: string | null = null;
@@ -61,9 +78,13 @@ export function resolvePickedComposerFiles(input: {
       continue;
     }
     seenTokens.add(file.token);
-    if (file.sizeBytes > PROVIDER_SEND_TURN_MAX_FILE_BYTES) {
+    const isImage = file.mimeType.toLowerCase().startsWith('image/');
+    const maxBytes = isImage
+      ? PROVIDER_SEND_TURN_MAX_IMAGE_BYTES
+      : PROVIDER_SEND_TURN_MAX_FILE_BYTES;
+    if (file.sizeBytes > maxBytes) {
       rejectedTokens.push(file.token);
-      error = `'${file.name}' exceeds the 25MB attachment limit.`;
+      error = `'${file.name}' exceeds the ${isImage ? '10MB' : '25MB'} attachment limit.`;
       continue;
     }
     if (attachmentCount >= PROVIDER_SEND_TURN_MAX_ATTACHMENTS) {
@@ -71,18 +92,46 @@ export function resolvePickedComposerFiles(input: {
       error = `You can attach up to ${PROVIDER_SEND_TURN_MAX_ATTACHMENTS} references per message.`;
       continue;
     }
-    files.push({
-      type: 'file',
-      id: `lynx-file-${file.token}`,
-      token: file.token,
-      name: file.name,
-      mimeType: file.mimeType,
-      sizeBytes: file.sizeBytes,
-    });
+    if (isImage) {
+      try {
+        const preview = await request<{ readonly dataUrl: string }>(
+          'attachmentsGetPickedImagePreview',
+          { token: file.token }
+        );
+        if (
+          typeof preview.dataUrl !== 'string' ||
+          !preview.dataUrl.startsWith('data:image/')
+        ) {
+          throw new Error('The image preview is invalid.');
+        }
+        images.push({
+          type: 'image',
+          id: `lynx-image-${file.token}`,
+          token: file.token,
+          name: file.name,
+          mimeType: file.mimeType,
+          sizeBytes: file.sizeBytes,
+          previewUrl: preview.dataUrl,
+        });
+      } catch {
+        rejectedTokens.push(file.token);
+        error = `Unable to preview '${file.name}'. Pick it again.`;
+        continue;
+      }
+    } else {
+      files.push({
+        type: 'file',
+        id: `lynx-file-${file.token}`,
+        token: file.token,
+        name: file.name,
+        mimeType: file.mimeType,
+        sizeBytes: file.sizeBytes,
+      });
+    }
     attachmentCount += 1;
   }
 
-  return { files, rejectedTokens, error };
+  return { files, images, rejectedTokens, error };
 }
 
 export async function releasePickedComposerFile(token: string): Promise<void> {
@@ -106,24 +155,29 @@ async function cancelManagedAttachments(
   }
 }
 
+type StagedNativeAttachment = ChatImageAttachment | ChatFileAttachment;
+
 export interface StagedNativeComposerFiles {
-  readonly attachments: ReadonlyArray<ChatFileAttachment>;
+  readonly attachments: ReadonlyArray<StagedNativeAttachment>;
   readonly runWithDispatch: <A>(
-    dispatch: (attachments: ReadonlyArray<ChatFileAttachment>) => Promise<A>
+    dispatch: (attachments: ReadonlyArray<StagedNativeAttachment>) => Promise<A>
   ) => Promise<A>;
 }
 
 export async function stageNativeComposerFiles(input: {
-  readonly files: ReadonlyArray<NativeComposerFileAttachment>;
+  readonly files: ReadonlyArray<NativeComposerBinaryAttachment>;
   readonly threadId: string;
 }, request: AttachmentBridgeCall = bridgeCall): Promise<StagedNativeComposerFiles> {
-  const attachments: ChatFileAttachment[] = [];
+  const attachments: StagedNativeAttachment[] = [];
   try {
     for (const file of input.files) {
-      const result = await request<{ attachment: ChatFileAttachment }>(
+      const result = await request<{ attachment: StagedNativeAttachment }>(
         'attachmentsUploadPickedFile',
         { token: file.token, threadId: input.threadId }
       );
+      if (result.attachment.type !== file.type) {
+        throw new Error(`Attachment type changed while uploading '${file.name}'.`);
+      }
       attachments.push(result.attachment);
     }
   } catch (error) {

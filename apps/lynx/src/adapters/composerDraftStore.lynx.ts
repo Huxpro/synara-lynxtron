@@ -28,7 +28,10 @@ import {
   type FileCommentDraft,
 } from '@synara-web/lib/fileComments';
 import type { KanbanComposerDraftSnapshot } from '@synara-web/components/kanban/kanban.logic';
-import type { NativeComposerFileAttachment } from '../components/composer/composerAttachments.lynx';
+import type {
+  NativeComposerFileAttachment,
+  NativeComposerImageAttachment,
+} from '../components/composer/composerAttachments.lynx';
 import { webStorage } from '../platform/storage';
 
 export const LYNX_COMPOSER_DRAFT_STORAGE_KEY =
@@ -37,6 +40,8 @@ export const LYNX_COMPOSER_DRAFT_STORAGE_KEY =
 interface LynxComposerDraft {
   readonly assistantSelections: ReadonlyArray<ChatAssistantSelectionAttachment>;
   readonly files: ReadonlyArray<NativeComposerFileAttachment>;
+  readonly images: ReadonlyArray<NativeComposerImageAttachment>;
+  readonly nonPersistedImageIds: ReadonlyArray<string>;
   readonly fileComments: ReadonlyArray<FileCommentDraft>;
   readonly mentions: ReadonlyArray<ProviderMentionReference>;
   readonly modelSelection?: ModelSelection;
@@ -56,6 +61,10 @@ interface LynxComposerDraftStoreState {
     threadId: string,
     files: ReadonlyArray<NativeComposerFileAttachment>
   ) => void;
+  readonly addImages: (
+    threadId: string,
+    images: ReadonlyArray<NativeComposerImageAttachment>
+  ) => void;
   readonly addFileComment: (
     threadId: string,
     comment: FileCommentDraft
@@ -64,6 +73,7 @@ interface LynxComposerDraftStoreState {
   readonly discardDraft: (threadId: string) => void;
   readonly removePastedText: (threadId: string, pastedTextId: string) => void;
   readonly removeFile: (threadId: string, fileId: string) => void;
+  readonly removeImage: (threadId: string, imageId: string) => void;
   readonly removeFileComments: (threadId: string) => void;
   readonly removeAssistantSelections: (threadId: string) => void;
   readonly setModelSelection: (
@@ -91,6 +101,7 @@ export function projectLynxKanbanComposerDrafts(
         prompt: draft.prompt,
         hasAttachments:
           draft.files.length > 0 ||
+          draft.images.length > 0 ||
           draft.assistantSelections.length > 0 ||
           draft.fileComments.length > 0 ||
           draft.pastedTexts.length > 0,
@@ -160,6 +171,43 @@ function parseFileComments(value: unknown): FileCommentDraft[] {
   return comments;
 }
 
+function parseNativeComposerFiles(
+  value: unknown
+): NativeComposerFileAttachment[] {
+  if (!Array.isArray(value)) return [];
+  return value.filter(
+    (candidate): candidate is NativeComposerFileAttachment =>
+      isStringRecord(candidate) &&
+      candidate.type === 'file' &&
+      typeof candidate.id === 'string' &&
+      typeof candidate.token === 'string' &&
+      typeof candidate.name === 'string' &&
+      typeof candidate.mimeType === 'string' &&
+      Number.isSafeInteger(candidate.sizeBytes) &&
+      Number(candidate.sizeBytes) >= 0
+  );
+}
+
+function parseNativeComposerImages(
+  value: unknown
+): NativeComposerImageAttachment[] {
+  if (!Array.isArray(value)) return [];
+  return value.filter(
+    (candidate): candidate is NativeComposerImageAttachment =>
+      isStringRecord(candidate) &&
+      candidate.type === 'image' &&
+      typeof candidate.id === 'string' &&
+      typeof candidate.token === 'string' &&
+      typeof candidate.name === 'string' &&
+      typeof candidate.mimeType === 'string' &&
+      candidate.mimeType.toLowerCase().startsWith('image/') &&
+      typeof candidate.previewUrl === 'string' &&
+      candidate.previewUrl.startsWith('data:image/') &&
+      Number.isSafeInteger(candidate.sizeBytes) &&
+      Number(candidate.sizeBytes) >= 0
+  );
+}
+
 export function parsePersistedLynxComposerDrafts(
   raw: string | null
 ): Record<string, LynxComposerDraft> {
@@ -176,8 +224,12 @@ export function parsePersistedLynxComposerDrafts(
         assistantSelections: parseAssistantSelections(
           candidate.assistantSelections
         ),
-        files: Array.isArray(candidate.files)
-          ? (candidate.files as NativeComposerFileAttachment[])
+        files: parseNativeComposerFiles(candidate.files),
+        images: parseNativeComposerImages(candidate.images),
+        nonPersistedImageIds: Array.isArray(candidate.nonPersistedImageIds)
+          ? candidate.nonPersistedImageIds.filter(
+              (id): id is string => typeof id === 'string'
+            )
           : [],
         fileComments: parseFileComments(candidate.fileComments),
         mentions: Array.isArray(candidate.mentions)
@@ -207,6 +259,8 @@ function emptyDraft(): LynxComposerDraft {
   return {
     assistantSelections: [],
     files: [],
+    images: [],
+    nonPersistedImageIds: [],
     fileComments: [],
     mentions: [],
     pastedTexts: [],
@@ -220,6 +274,7 @@ function shouldRemoveDraft(draft: LynxComposerDraft): boolean {
     draft.prompt.length === 0 &&
     draft.assistantSelections.length === 0 &&
     draft.files.length === 0 &&
+    draft.images.length === 0 &&
     draft.fileComments.length === 0 &&
     draft.mentions.length === 0 &&
     draft.pastedTexts.length === 0 &&
@@ -258,7 +313,9 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()(
         const normalized = normalizeAssistantSelectionAttachment(selection);
         if (
           !normalized ||
-          current.files.length + current.assistantSelections.length >=
+          current.files.length +
+              current.images.length +
+              current.assistantSelections.length >=
             PROVIDER_SEND_TURN_MAX_ATTACHMENTS
         ) {
           return state;
@@ -305,6 +362,36 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()(
           draftsByThreadId: {
             ...state.draftsByThreadId,
             [threadId]: { ...current, files: [...current.files, ...incoming] },
+          },
+        };
+      }),
+    addImages: (threadId, images) =>
+      set((state) => {
+        if (images.length === 0) return state;
+        const current = state.draftsByThreadId[threadId] ?? emptyDraft();
+        const existingTokens = new Set(
+          current.images.map((image) => image.token)
+        );
+        const incoming: NativeComposerImageAttachment[] = [];
+        for (const image of images) {
+          if (existingTokens.has(image.token)) continue;
+          existingTokens.add(image.token);
+          incoming.push(image);
+        }
+        if (incoming.length === 0) return state;
+        return {
+          draftsByThreadId: {
+            ...state.draftsByThreadId,
+            [threadId]: {
+              ...current,
+              images: [...current.images, ...incoming],
+              nonPersistedImageIds: [
+                ...new Set([
+                  ...current.nonPersistedImageIds,
+                  ...incoming.map((image) => image.id),
+                ]),
+              ],
+            },
           },
         };
       }),
@@ -362,6 +449,8 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()(
           draftsByThreadId[threadId] = {
             assistantSelections: [],
             files: [],
+            images: [],
+            nonPersistedImageIds: [],
             fileComments: [],
             mentions: [],
             modelSelection: current.modelSelection,
@@ -405,6 +494,27 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()(
         const files = current.files.filter((file) => file.id !== fileId);
         if (files.length === current.files.length) return state;
         const nextDraft = { ...current, files };
+        const draftsByThreadId = { ...state.draftsByThreadId };
+        if (shouldRemoveDraft(nextDraft)) {
+          delete draftsByThreadId[threadId];
+        } else {
+          draftsByThreadId[threadId] = nextDraft;
+        }
+        return { draftsByThreadId };
+      }),
+    removeImage: (threadId, imageId) =>
+      set((state) => {
+        const current = state.draftsByThreadId[threadId];
+        if (!current) return state;
+        const images = current.images.filter((image) => image.id !== imageId);
+        if (images.length === current.images.length) return state;
+        const nextDraft = {
+          ...current,
+          images,
+          nonPersistedImageIds: current.nonPersistedImageIds.filter(
+            (id) => id !== imageId
+          ),
+        };
         const draftsByThreadId = { ...state.draftsByThreadId };
         if (shouldRemoveDraft(nextDraft)) {
           delete draftsByThreadId[threadId];

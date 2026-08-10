@@ -4,6 +4,7 @@ import {
   resolvePickedComposerFiles,
   stageNativeComposerFiles,
   type NativeComposerFileAttachment,
+  type NativeComposerImageAttachment,
 } from './composerAttachments.lynx';
 
 const picked = (overrides: Partial<{
@@ -39,11 +40,24 @@ const stagedAttachment = (id: string) => ({
   sizeBytes: 12,
 });
 
+const nativeImage = (
+  token: string,
+  name = 'screenshot.png'
+): NativeComposerImageAttachment => ({
+  type: 'image',
+  id: `lynx-image-${token}`,
+  token,
+  name,
+  mimeType: 'image/png',
+  sizeBytes: 12,
+  previewUrl: 'data:image/png;base64,AA==',
+});
+
 describe('native composer picked-file intake', () => {
-  it('maps a validated host capability into the shared file-card shape', () => {
-    expect(
+  it('maps a validated host capability into the shared file-card shape', async () => {
+    await expect(
       resolvePickedComposerFiles({ existingAttachmentCount: 0, files: [picked()] })
-    ).toEqual({
+    ).resolves.toEqual({
       files: [
         {
           type: 'file',
@@ -54,13 +68,54 @@ describe('native composer picked-file intake', () => {
           sizeBytes: 12,
         },
       ],
+      images: [],
       rejectedTokens: [],
       error: null,
     });
   });
 
-  it('rejects oversized and malformed capabilities without losing valid files', () => {
-    const result = resolvePickedComposerFiles({
+  it('resolves image previews through the host capability', async () => {
+    const calls: Array<{ method: string; params: Record<string, unknown> }> = [];
+    async function request<T>(
+      method: string,
+      params: Record<string, unknown>
+    ): Promise<T> {
+      calls.push({ method, params });
+      return { dataUrl: 'data:image/png;base64,AA==' } as T;
+    }
+    const result = await resolvePickedComposerFiles(
+      {
+        existingAttachmentCount: 0,
+        files: [picked({ name: 'shot.png', mimeType: 'image/png' })],
+      },
+      request
+    );
+    expect(result).toEqual({
+      files: [],
+      images: [
+        {
+          type: 'image',
+          id: 'lynx-image-11111111-1111-4111-8111-111111111111',
+          token: '11111111-1111-4111-8111-111111111111',
+          name: 'shot.png',
+          mimeType: 'image/png',
+          sizeBytes: 12,
+          previewUrl: 'data:image/png;base64,AA==',
+        },
+      ],
+      rejectedTokens: [],
+      error: null,
+    });
+    expect(calls).toEqual([
+      {
+        method: 'attachmentsGetPickedImagePreview',
+        params: { token: '11111111-1111-4111-8111-111111111111' },
+      },
+    ]);
+  });
+
+  it('rejects oversized and malformed capabilities without losing valid files', async () => {
+    const result = await resolvePickedComposerFiles({
       existingAttachmentCount: 0,
       files: [
         picked(),
@@ -81,8 +136,8 @@ describe('native composer picked-file intake', () => {
     expect(result.error).toBe('One selected file could not be validated.');
   });
 
-  it('enforces the shared eight-reference limit against existing draft items', () => {
-    const result = resolvePickedComposerFiles({
+  it('enforces the shared eight-reference limit against existing draft items', async () => {
+    const result = await resolvePickedComposerFiles({
       existingAttachmentCount: 8,
       files: [picked()],
     });
@@ -179,5 +234,43 @@ describe('native composer picked-file intake', () => {
 
     await expect(staged.runWithDispatch(async () => 'sent')).resolves.toBe('sent');
     expect(cancelled).toEqual([]);
+  });
+
+  it('uploads image and file capabilities with matching server types', async () => {
+    const uploaded: string[] = [];
+    async function request<T>(
+      method: string,
+      params: Record<string, unknown>
+    ): Promise<T> {
+      if (method !== 'attachmentsUploadPickedFile') {
+        return { cancelled: true } as T;
+      }
+      uploaded.push(String(params.token));
+      const isImage = params.token === 'image-token';
+      return {
+        attachment: isImage
+          ? {
+              type: 'image',
+              id: 'managed-image',
+              name: 'screenshot.png',
+              mimeType: 'image/png',
+              sizeBytes: 12,
+            }
+          : stagedAttachment('managed-file'),
+      } as T;
+    }
+    const staged = await stageNativeComposerFiles(
+      {
+        threadId: 'thread-1',
+        files: [nativeImage('image-token'), nativeFile('file-token')],
+      },
+      request
+    );
+
+    expect(uploaded).toEqual(['image-token', 'file-token']);
+    expect(staged.attachments.map((attachment) => attachment.type)).toEqual([
+      'image',
+      'file',
+    ]);
   });
 });

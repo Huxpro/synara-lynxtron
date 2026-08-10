@@ -113,6 +113,7 @@ import {
   resolvePickedComposerFiles,
   stageNativeComposerFiles,
   type NativeComposerFileAttachment,
+  type NativeComposerImageAttachment,
 } from './composerAttachments.lynx';
 import { ComposerModelControl } from './ComposerModelControl.lynx';
 import { FileEntryIcon } from '../FileEntryIcon.lynx';
@@ -132,9 +133,16 @@ const EMPTY_MENTIONS: ReadonlyArray<
 > = [];
 const EMPTY_PASTED_TEXTS: ReadonlyArray<PastedTextDraft> = [];
 const EMPTY_FILES: ReadonlyArray<NativeComposerFileAttachment> = [];
+const EMPTY_IMAGES: ReadonlyArray<NativeComposerImageAttachment> = [];
 const EMPTY_FILE_COMMENTS = [];
 const EMPTY_SKILLS: ReadonlyArray<ProviderSkillReference> = [];
-const EMPTY_NON_PERSISTED_IMAGE_IDS: ReadonlySet<string> = new Set();
+interface NativeExpandedImagePreview {
+  readonly images: ReadonlyArray<{
+    readonly src: string;
+    readonly name: string;
+  }>;
+  readonly index: number;
+}
 interface ComposerEditorHistoryContext {
   readonly mentions: ReadonlyArray<ProviderMentionReference>;
   readonly pastedTexts: ReadonlyArray<PastedTextDraft>;
@@ -352,6 +360,17 @@ export function Composer({
   const files = useComposerDraftStore(
     (state) => state.draftsByThreadId[brandedThreadId]?.files ?? EMPTY_FILES
   );
+  const images = useComposerDraftStore(
+    (state) => state.draftsByThreadId[brandedThreadId]?.images ?? EMPTY_IMAGES
+  );
+  const nonPersistedImageIds = useComposerDraftStore(
+    (state) =>
+      state.draftsByThreadId[brandedThreadId]?.nonPersistedImageIds ?? []
+  );
+  const nonPersistedImageIdSet = useMemo(
+    () => new Set(nonPersistedImageIds),
+    [nonPersistedImageIds]
+  );
   const fileComments = useComposerDraftStore(
     (state) =>
       state.draftsByThreadId[brandedThreadId]?.fileComments ??
@@ -379,11 +398,13 @@ export function Composer({
   );
   const addPastedText = useComposerDraftStore((state) => state.addPastedText);
   const addFiles = useComposerDraftStore((state) => state.addFiles);
+  const addImages = useComposerDraftStore((state) => state.addImages);
   const clearDraft = useComposerDraftStore((state) => state.clearDraft);
   const removePastedText = useComposerDraftStore(
     (state) => state.removePastedText
   );
   const removeFile = useComposerDraftStore((state) => state.removeFile);
+  const removeImage = useComposerDraftStore((state) => state.removeImage);
   const removeFileComments = useComposerDraftStore(
     (state) => state.removeFileComments
   );
@@ -401,6 +422,8 @@ export function Composer({
   const sendInFlightRef = useRef(false);
   const [isStopping, setIsStopping] = useState(false);
   const [sendError, setSendError] = useState<string | null>(null);
+  const [expandedImage, setExpandedImage] =
+    useState<NativeExpandedImagePreview | null>(null);
   const [composerTrigger, setComposerTrigger] =
     useState<ComposerTrigger | null>(null);
   const [modelCatalogProvider, setModelCatalogProvider] =
@@ -1024,8 +1047,9 @@ export function Composer({
     setSendError(null);
     try {
       const picked = await dialogs.pickFiles();
-      const resolved = resolvePickedComposerFiles({
-        existingAttachmentCount: files.length,
+      const resolved = await resolvePickedComposerFiles({
+        existingAttachmentCount:
+          files.length + images.length + assistantSelections.length,
         files: picked.files,
       });
       await Promise.all(
@@ -1033,6 +1057,9 @@ export function Composer({
       );
       if (resolved.files.length > 0) {
         addFiles(brandedThreadId, resolved.files);
+      }
+      if (resolved.images.length > 0) {
+        addImages(brandedThreadId, resolved.images);
       }
       const error =
         resolved.error ?? picked.errors[picked.errors.length - 1] ?? null;
@@ -1153,6 +1180,16 @@ export function Composer({
     restoreNativeFocus();
   }
 
+  function removeNativeComposerImage(imageId: string) {
+    'background only';
+    const image = images.find((entry) => entry.id === imageId);
+    if (!image) return;
+    removeImage(brandedThreadId, imageId);
+    void releasePickedComposerFile(image.token);
+    setExpandedImage(null);
+    restoreNativeFocus();
+  }
+
   function showPastedTextInField(pastedTextId: string) {
     'background only';
     const pastedText = pastedTexts.find((entry) => entry.id === pastedTextId);
@@ -1238,7 +1275,10 @@ export function Composer({
       fileComments,
     });
     if (
-      (!text && files.length === 0 && fileComments.length === 0) ||
+      (!text &&
+        files.length === 0 &&
+        images.length === 0 &&
+        fileComments.length === 0) ||
       sendInFlightRef.current ||
       !activeModelSelection ||
       !runtimeMode ||
@@ -1257,11 +1297,11 @@ export function Composer({
             interactionMode,
             modelSelection: activeModelSelection,
             runtimeMode,
-            text: text || 'Review the attached file.',
+            text: text || 'Review the attachment.',
           }),
         dispatch: async () => {
           const stagedFiles = await stageNativeComposerFiles({
-            files,
+            files: [...images, ...files],
             threadId,
           });
           await stagedFiles.runWithDispatch((attachments) =>
@@ -1274,7 +1314,7 @@ export function Composer({
                 messageId: createComposerDispatchId('message'),
                 modelSelection: activeModelSelection as never,
                 runtimeMode,
-                text: text || 'Review the attached file.',
+                text: text || 'Review the attachment.',
                 threadId,
                 mentions: projectedEditor.mentions,
                 skills: projectedEditor.skills,
@@ -1282,7 +1322,9 @@ export function Composer({
             )
           );
           await Promise.all(
-            files.map((file) => releasePickedComposerFile(file.token))
+            [...images, ...files].map((file) =>
+              releasePickedComposerFile(file.token)
+            )
           );
         },
         clearDraft: clearDraftAfterSend,
@@ -1343,7 +1385,10 @@ export function Composer({
   const sendDisabled =
     isSending ||
     isConnecting ||
-    (draft.trim().length === 0 && pastedTexts.length === 0 && files.length === 0) ||
+    (draft.trim().length === 0 &&
+      pastedTexts.length === 0 &&
+      files.length === 0 &&
+      images.length === 0) ||
     !activeModelSelection ||
     !runtimeMode ||
     !interactionMode;
@@ -1396,9 +1441,9 @@ export function Composer({
           fileComments={fileComments}
           pastedTexts={pastedTexts}
           files={files}
-          images={[]}
-          nonPersistedImageIdSet={EMPTY_NON_PERSISTED_IMAGE_IDS}
-          onExpandImage={() => undefined}
+          images={images}
+          nonPersistedImageIdSet={nonPersistedImageIdSet}
+          onExpandImage={setExpandedImage}
           onRemoveAssistantSelections={() =>
             removeAssistantSelections(brandedThreadId)
           }
@@ -1414,8 +1459,30 @@ export function Composer({
             showPastedTextInField(pastedTextId);
           }}
           onRemoveFile={removeNativeComposerFile}
-          onRemoveImage={() => undefined}
+          onRemoveImage={removeNativeComposerImage}
         />
+        {expandedImage ? (
+          <view
+            className="ComposerExpandedImageBackdrop"
+            bindtap={() => {
+              'background only';
+              setExpandedImage(null);
+            }}
+            accessibility-element={true}
+            accessibility-label="Close image preview"
+          >
+            <view className="ComposerExpandedImageCard">
+              <image
+                className="ComposerExpandedImage"
+                src={expandedImage.images[expandedImage.index]?.src ?? ''}
+                mode="aspectFit"
+              />
+              <text className="ComposerExpandedImageName">
+                {expandedImage.images[expandedImage.index]?.name ?? 'Image'}
+              </text>
+            </view>
+          </view>
+        ) : null}
         {auxiliaryTokens.length > 0 ? (
           <scroll-view className="ComposerTokenPreview" scroll-orientation="horizontal">
             <view className="ComposerTokenRow">
@@ -1572,7 +1639,10 @@ export function Composer({
                   'background only';
                   void pickNativeComposerFiles();
                 }}
-                onAddPhotos={() => undefined}
+                onAddPhotos={() => {
+                  'background only';
+                  void pickNativeComposerFiles();
+                }}
                 onToggleFastMode={toggleFastMode}
                 onSetPlanMode={(enabled) => {
                   'background only';
