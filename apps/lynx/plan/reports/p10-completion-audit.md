@@ -890,6 +890,13 @@ of generated blue `--accent`. Explorer selected rows keep their separate
 and Explorer contracts pass 3/3 and the Native/Desktop production build
 succeeds.
 
+The Pull Request disclosure material follow-up removes interaction paint that
+Web does not own: Summary and Code file headers no longer gain a blue
+background or pressed opacity, while Code `Show more` raises only its muted
+label to foreground on hover/focus/press. The existing 220ms disclosure and
+focus-ring contracts remain intact. Focused Summary/Code regressions pass 2/2
+and the Native/Desktop production build succeeds.
+
 The Native arbitrary text-range selection investigation reached an upstream
 Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's
 documented contract exposes `text-selection={true}`, `flatten={false}`,

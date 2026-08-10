@@ -96,17 +96,8 @@
   padding: 0 20px;
 }
 
-.SharedPrSummarySectionHeader.ui-hover,
-.SharedPrSummarySectionHeader.ui-pressed {
-  background-color: var(--accent);
-}
-
 .SharedPrSummarySectionHeader.ui-focus {
   box-shadow: inset 0 0 0 1px var(--ring);
-}
-
-.SharedPrSummarySectionHeader.ui-pressed {
-  opacity: 0.82;
 }
 
 .SharedPrSummarySectionTitle {

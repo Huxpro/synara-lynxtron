@@ -61,11 +61,6 @@
   background-color: var(--muted);
 }
 
-.SharedPrCodeFileHeader.ui-hover,
-.SharedPrCodeFileHeader.ui-pressed {
-  background-color: var(--accent);
-}
-
 .SharedPrCodeFileHeader.ui-focus {
   border-color: var(--ring);
 }
@@ -183,13 +178,14 @@
   border-top: 1px solid var(--border);
 }
 
-.SharedPrCodeMore.ui-hover,
-.SharedPrCodeMore.ui-pressed {
-  background-color: var(--accent);
-}
-
 .SharedPrCodeMoreText {
   color: var(--muted-foreground);
   font-size: 10px;
   line-height: 14px;
+}
+
+.SharedPrCodeMore.ui-hover .SharedPrCodeMoreText,
+.SharedPrCodeMore.ui-focus .SharedPrCodeMoreText,
+.SharedPrCodeMore.ui-pressed .SharedPrCodeMoreText {
+  color: var(--foreground);
 }

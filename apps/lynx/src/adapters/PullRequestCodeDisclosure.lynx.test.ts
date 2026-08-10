@@ -37,6 +37,15 @@ describe('Pull Request Code disclosure fidelity', () => {
     expect(lynxStyles).toMatch(
       /\.SharedPrCodeFileChevron\s*\{[^}]*width:\s*10px;[^}]*height:\s*10px;[^}]*flex-shrink:\s*0;/s
     );
+    expect(lynxStyles).not.toMatch(
+      /\.SharedPrCodeFileHeader\.ui-(?:hover|pressed)[^{]*\{[^}]*background-color:/s
+    );
+    expect(lynxStyles).toMatch(
+      /\.SharedPrCodeMore\.ui-hover \.SharedPrCodeMoreText,[^{]*\{[^}]*color:\s*var\(--foreground\);/s
+    );
+    expect(lynxStyles).not.toMatch(
+      /\.SharedPrCodeMore\.ui-(?:hover|pressed)[^{]*\{[^}]*background-color:/s
+    );
 
     expect(webElements).toContain(
       'import { DisclosureChevron } from "~/components/ui/DisclosureChevron";'

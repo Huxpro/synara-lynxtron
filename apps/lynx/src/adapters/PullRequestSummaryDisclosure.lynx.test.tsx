@@ -21,5 +21,8 @@ describe('Pull Request summary disclosure fidelity', () => {
     expect(styles).toMatch(
       /\.SharedPrSummarySectionChevron\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*margin-left:\s*6px;/s
     );
+    expect(styles).not.toMatch(
+      /\.SharedPrSummarySectionHeader\.ui-(?:hover|pressed)[^{]*\{[^}]*(?:background-color|opacity):/s
+    );
   });
 });
