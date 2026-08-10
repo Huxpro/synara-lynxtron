@@ -1,0 +1,171 @@
+{
+  "client": "native",
+  "stateId": "settings-general-dark-1280",
+  "roles": {
+    "root": {
+      "nodeId": 13,
+      "nodeName": "VIEW",
+      "attributes": {
+        "data-viewport-width": "1280",
+        "data-viewport-height": "820",
+        "class": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 820
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "heading": {
+      "nodeId": 155,
+      "nodeName": "TEXT",
+      "attributes": {
+        "accessibility-element": "true",
+        "accessibility-heading": "true",
+        "accessibility-traits": "header",
+        "class": "SharedSettingsPanelHeaderTitle"
+      },
+      "text": "",
+      "box": {
+        "x": 456,
+        "y": 32,
+        "width": 371,
+        "height": 28
+      },
+      "font": {
+        "family": "",
+        "size": "20px",
+        "weight": "500",
+        "lineHeight": "28px",
+        "letterSpacing": "-0.5px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "content": {
+      "nodeId": 151,
+      "nodeName": "SCROLL-VIEW",
+      "attributes": {
+        "scroll-orientation": "vertical",
+        "class": "SettingsContent"
+      },
+      "text": "",
+      "box": {
+        "x": 256,
+        "y": 0,
+        "width": 1024,
+        "height": 820
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "firstRow": {
+      "nodeId": 751,
+      "nodeName": "VIEW",
+      "attributes": {
+        "idSelector": "setting-default-provider",
+        "class": "SharedSettingsGeneralRow"
+      },
+      "text": "",
+      "box": {
+        "x": 457,
+        "y": 151,
+        "width": 622,
+        "height": 61
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "firstControl": {
+      "nodeId": 761,
+      "nodeName": "VIEW",
+      "attributes": {
+        "event-through": "false",
+        "accessibility-element": "false",
+        "bindtap": "523:0:bindtap",
+        "bindmouseup": "523:0:bindmouseup",
+        "bindmousedown": "523:0:bindmousedown",
+        "bindtouchstart": "523:0:bindtouchstart",
+        "bindtouchend": "523:0:bindtouchend",
+        "bindtouchcancel": "523:0:bindtouchcancel",
+        "class": "LxButton LxButton--outline LxButton--default SharedSettingsGeneralSelectTrigger SharedSettingsGeneralSelectTrigger--general"
+      },
+      "text": "",
+      "box": {
+        "x": 891,
+        "y": 165,
+        "width": 176,
+        "height": 32
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "hsla(0,0%,5%,.069)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

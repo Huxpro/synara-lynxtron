@@ -57,11 +57,8 @@ export function isSupportedLocalPreviewFilePath(filePath: string): boolean {
   return isSupportedLocalImagePath(filePath) || isSupportedLocalPdfPath(filePath);
 }
 
-// Built from the canonical extensions list so the web regex never drifts from the
-// server allowlist. Anchored at end-of-string to match `.png`-style suffixes only.
-export const SUPPORTED_LOCAL_IMAGE_EXTENSION_REGEX: RegExp = (() => {
-  const escaped = SUPPORTED_LOCAL_IMAGE_EXTENSIONS.map((extension) =>
-    extension.slice(1).replaceAll(/[.*+?^${}()|[\]\\]/g, "\\$&"),
-  );
-  return new RegExp(`\\.(?:${escaped.join("|")})$`, "i");
-})();
+// Keep this literal aligned with SUPPORTED_LOCAL_IMAGE_EXTENSIONS. Constructing
+// it with Array.map + String.replaceAll at module evaluation time is not
+// supported by the ReactLynx main-thread runtime.
+export const SUPPORTED_LOCAL_IMAGE_EXTENSION_REGEX =
+  /\.(?:avif|bmp|gif|heic|heif|ico|jpeg|jpg|png|svg|tiff|webp)$/i;

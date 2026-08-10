@@ -1,3 +1,3 @@
 36daed2170b1294ee3efd8e9379aec3e5b0290fcb13e2099f8016ae0f44fefe4  shots/2026-08-10/settings-general-matrix-current/snapshot.sqlite
 7e0d17545f2d22bbaf53116e2984ce86a888cfe7c03fee4e8dc5d82f6d6a113d  apps/lynx/dist/web/main.web.bundle
-5a34e39eaf63263ce4ea521e1858df6ae6c7e6230431ea0d8d80c1375d24df0f  apps/lynx/dist/desktop/main.lynx.bundle
+7fccad8f72c8115c83e84aec0731cfac5b9130c7c3d0b7a39ea6f35e6a0450f7  apps/lynx/dist/desktop/main.lynx.bundle

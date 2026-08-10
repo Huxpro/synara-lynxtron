@@ -1,8 +1,8 @@
 {
-  "status": "harness-failure",
-  "runtime": "@lynx-js/lynxtron 0.0.9",
+  "status": "resolved",
+  "runtime": "@lynx-js/lynxtron 0.0.9-dev",
   "bundle": "apps/lynx/dist/desktop/main.lynx.bundle",
-  "bundleSha256": "5a34e39eaf63263ce4ea521e1858df6ae6c7e6230431ea0d8d80c1375d24df0f",
+  "bundleSha256": "7fccad8f72c8115c83e84aec0731cfac5b9130c7c3d0b7a39ea6f35e6a0450f7",
   "server": "ws://127.0.0.1:58500",
   "launches": [
     {
@@ -29,17 +29,32 @@
       "ownership": "unrelated and untouched"
     }
   ],
-  "directDiscovery": {
+  "initialProductionRuntimeDiagnosis": {
     "mode": "--no-daemon",
     "portsProbed": "8901-8910",
     "ownedListenerFound": false,
     "result": "All candidates except unrelated 8901 refused the connection."
   },
-  "rootCause": {
-    "installedRuntime": "production 0.0.9",
-    "requiredRuntime": "paired 0.0.9-dev diagnostic host",
-    "evidence": "native-template-context-blocker-resolution.md records that only the paired development release enables the local DevTool connector",
-    "availability": "The diagnostic host executable is not installed or cached in the current environment."
+  "runtimeRestoration": {
+    "package": "@lynx-js/lynxtron@0.0.9-dev",
+    "installation": "temporary npm install under /tmp",
+    "workspaceDependenciesChanged": false,
+    "client": "localhost:8902",
+    "sdkVersion": "4.2"
   },
-  "disposition": "No Native screenshot retained; stale or unrelated DevTool clients were not used. Resume after restoring the paired diagnostic runtime or another supported exact-client capture path."
+  "startupRegression": {
+    "symptom": "QuickContext::Execute TypeError at native Array.map followed by missing snapshots",
+    "knownGood": "99e2b46c",
+    "firstBad": "7165953d",
+    "source": "packages/shared/src/localPreviewFiles.ts",
+    "cause": "top-level Array.map and String.replaceAll regex construction in the ReactLynx main-thread graph",
+    "fix": "equivalent static regular expression plus allowlist parity test"
+  },
+  "retainedNativeCells": [
+    "settings-general-light-1280",
+    "settings-general-dark-1280",
+    "settings-general-light-1440",
+    "settings-general-dark-1440"
+  ],
+  "disposition": "Resolved. Four exact-owned Native cells retained with zero warning/error console messages."
 }

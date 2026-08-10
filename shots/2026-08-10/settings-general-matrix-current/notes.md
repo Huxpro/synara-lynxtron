@@ -1,11 +1,10 @@
 # Settings General current-head matrix refresh
 
-Status: Browser tier retained; Native tier blocked by a repeatable Lynxtron
-DevTool registration failure.
+Status: complete current-head Web, Lynx-for-Web, and Native route matrix
 
 ## Identity
 
-- Source head: `1ffecbdf`
+- Source base: `25a85f29`
 - Shared server: `ws://127.0.0.1:58500`
 - Web host: `http://localhost:9301`
 - Isolated state: `.synara-settings-general-matrix-current` (removed)
@@ -14,7 +13,7 @@ DevTool registration failure.
 - Lynx-for-Web bundle SHA-256:
   `7e0d17545f2d22bbaf53116e2984ce86a888cfe7c03fee4e8dc5d82f6d6a113d`
 - Native bundle SHA-256:
-  `5a34e39eaf63263ce4ea521e1858df6ae6c7e6230431ea0d8d80c1375d24df0f`
+  `7fccad8f72c8115c83e84aec0731cfac5b9130c7c3d0b7a39ea6f35e6a0450f7`
 - Output and staged bundle copies matched before launch.
 
 ## Retained Browser matrix
@@ -69,52 +68,52 @@ toast and recording `toastCount: 0`.
 
 No invalid frame is retained as a passing matrix cell.
 
-## Native harness blocker
+## Native matrix
 
-Two exact-owned production launches rendered Settings and connected to the
-correct `58500` server, but `@lynx-js/lynxtron 0.0.9` did not register a
-PID-owned DevTool listener:
+The paired `0.0.9-dev` diagnostic host was restored from the published npm
+package into `/tmp` without changing workspace dependencies. It registered a
+separate exact-owned `@synara/lynx` client on `8902`; unrelated
+`@t3tools/lynxtron` remained on `8901`.
 
-- first launch: CLI PID `83500`, app PID `83507`;
-- second clean launch: app PID `85618`;
-- both used the staged file bundle and explicit
-  `SYNARA_ENABLE_DEVTOOL=1`;
-- the built bundle retains the runtime
-  `process.env.SYNARA_ENABLE_DEVTOOL === "1"` gate and
-  `devtool.setDevToolEnabled(...)` call;
-- the child process environment contained all requested flags;
-- the only client before and after was unrelated
-  `localhost:8901` / `@t3tools/lynxtron`.
+The first diagnostic-host launch exposed a real current-head startup
+regression: the document remained an empty `PAGE` and the console reported
+`QuickContext::Execute() TypeError: not a function` followed by missing
+snapshot errors. A clean rebuild was byte-identical and reproduced it.
 
-After the second identical failure, the restart loop stopped. No unrelated,
-remembered, or stale client was used and no Native screenshot was retained.
-The structured failure record is
-`native/devtool-registration-failure.json`.
+An automated exact-host bisect used `fb6cdcb3` as known good and found
+`7165953d` (`Render Explorer image previews safely`) as the first bad commit;
+`99e2b46c` was confirmed good. The newly reachable
+`packages/shared/src/localPreviewFiles.ts` module constructed its exported
+regex at module evaluation time with `Array.map` and `String.replaceAll`.
+ReactLynx's main-thread runtime does not support that operation. Replacing the
+initializer with the equivalent static regex preserves the allowlist and
+restores startup. A focused test locks every canonical image extension against
+the regex.
 
-Follow-up direct discovery with `--no-daemon` ruled out stale daemon state:
-the connector probed `8901` through `8910`, every candidate except the
-unrelated `8901` refused the connection, and the owned process had no listening
-DevTool socket.
+Two exact-owned Native launches then retained the four required cells:
 
-The historical successful Native run used the paired `0.0.9-dev` diagnostic
-runtime. The repository's blocker-resolution report explicitly records that
-production `0.0.9` and `0.0.9-dev` share the renderer executable but only the
-paired development release enables the local DevTool connector. That
-diagnostic host is no longer installed or cached in the current environment.
-The installed `@lynx-js/lynxtron-dev-plugins` package contains build plugins,
-not the missing diagnostic host executable.
+| State | Root PID | Client | PNG | Console |
+| --- | ---: | --- | --- | --- |
+| Light, 1280x820 | `72290` | `localhost:8902/session 1` | `2560x1640` | empty |
+| Dark, 1280x820 | `72290` | `localhost:8902/session 1` | `2560x1640` | empty |
+| Dark, 1440x900 | `78385` | `localhost:8902/session 1` | `2880x1800` | empty |
+| Light, 1440x900 | `78385` | `localhost:8902/session 1` | `2880x1800` | empty |
 
-This is a harness failure, not a passing Native cell and not a product
-regression. Native certification can resume only after restoring the paired
-`0.0.9-dev` runtime (or another supported exact-client capture path). The
-current-head three-client matrix remains incomplete.
+Every capture points to the staged
+`apps/lynx/dist/desktop/main.lynx.bundle`, contains the expected theme,
+comfortable density, viewport dimensions, General header/content/first-row/
+first-control roles, and zero warning/error console messages. Theme and route
+changes used rendered controls. Native was restored to System before shutdown.
 
 ## Cleanup
 
-- Both owned Native launches were stopped.
+- Both retained Native launches and all diagnostic/bisect launches were
+  stopped.
 - Owned server/Web ports `58500` and `9301` were released.
 - Isolated Web and Native runtime state was removed after the frozen SQLite
   backup was written.
+- The temporary diagnostic runtime and bisect worktree were removed after
+  verification.
 - The unrelated `@t3tools/lynxtron` client on `8901` remained running and was
   not touched.
 - Historical `.p10-view*` and older evidence directories were not modified.
