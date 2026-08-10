@@ -329,7 +329,7 @@ Current responsive disposition:
 | Transcript work-row identity | error/thinking/info/tool rows use Web's CircleAlert, Robot, Check, and Zap identities at the 13px status role instead of punctuation and text glyphs; transcript row/version/scroll behavior is unchanged | PASS — CURRENT PRODUCT SURFACES |
 | Composer selection icon identity | model trait and project picker selected states use the same generated 12px Check identity as shared Menu rows instead of font-dependent checkmarks | PASS — CURRENT PRODUCT SURFACES |
 | Diff / Explorer docks and source actions | working-tree Diff Dock and filesystem-backed Explorer are reachable; Explorer covers tree/search, rich source/Markdown/image/PDF fallback, whole-file references, ask-why, and accessible per-line local comments that persist and serialize into the shared composer contract | PASS — CURRENT PRODUCT SURFACES |
-| Explorer directory disclosure | recursive directory rows keep parent-owned cached listings through the canonical 220ms closing motion, expose named expanded/collapsed state, and reuse the shared rotating ChevronRight instead of instantly removing nested loading/error/content rows | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
+| Explorer directory disclosure | recursive directory rows keep parent-owned cached listings through the canonical 220ms closing motion, expose named expanded/collapsed state, reuse the shared rotating ChevronRight, and match Web's 28px row, 6px gap/radius, 12px depth step, 75% icon, 78% resting label, and distinct hover/selection neutral surfaces instead of instantly removing children or using coarse tree-row approximations | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
 | Pull Request Timeline / Code | selected PR detail exposes Summary/Timeline/Code; Timeline projects real detail commits/comments, while Code fetches typed `pullRequests.diff` data on demand and covers portable files, line numbers, loading/error/retry/truncation/expand states | PASS — CURRENT PRODUCT SURFACES |
 | Pull Request comments | Summary exposes a Lynx-native GitHub comment composer backed by typed `pullRequests.comment`; it enforces the shared 65,536-character contract, preserves drafts on failure, prevents rapid duplicate submission, handles Enter/Shift+Enter/IME correctly, and revalidates detail/list data after settled mutations | PASS — CURRENT PRODUCT SURFACES |
 | Pull Request row icon identity | open/draft/conflicting/merged/closed rows resolve through the shared PR-state presentation and render the matching Central assets; pin controls use Web's outline/filled pin rule instead of Unicode circles | PASS — CURRENT PRODUCT SURFACES |
@@ -1034,6 +1034,38 @@ collapsed-work text emphasis. The last unsupported owner, Profile avatar color,
 no longer shrinks to 94% on press; its selected ring and hover identity remain.
 Guard, Profile, Button, and Menu suites pass 23/23 and the Native/Desktop
 production build succeeds.
+
+The current-head Browser re-certification attempt uses a fresh isolated Synara
+home at `.synara-fidelity-current-0811`, server `127.0.0.1:58120`, Web
+`localhost:10044`, and the same-origin Lynx-for-Web surface at
+`localhost:10044/lynx/index.html`. Both named browser sessions report an exact
+`1280×820` viewport at DPR 1, and both retained preflight PNGs are exactly
+`1280×820`. The Lynx host runtime config and relay diagnostics both resolve to
+`ws://127.0.0.1:58120` with no transport error. A real rendered Add project
+dialog created the `synara` project from `/Users/bytedance/github/synara`; both
+clients then rendered that shared project snapshot. This proves the harness
+connection, data source, route bootstrap, viewport, and output dimensions.
+
+The attempt does not upgrade the pending interaction cells to PASS. This
+machine has no `codex` executable in PATH, so the real provider model catalog
+fails and cannot establish the model-group or sending states. Web's model
+trigger opens through a real pointer sequence, while the Lynx-for-Web custom
+element does not forward the same trigger activation. Both editors accept real
+keyboard input, but the Lynx-for-Web textarea island does not project the edit
+back into the rich-token draft state. The Web product path also exposes no
+Explorer action from the active project thread or global Search. No internal
+state injection, direct SQLite edit, or synthetic fixture was used to conceal
+these boundaries.
+
+The accompanying Explorer source audit found a real anatomy residual despite
+the blocked visual cell. Lynx tree rows now match Web's shared file-row source
+of truth: 28px height, 6px gap and radius, an 8px base plus 12px per-depth
+indent, 75% file icons, 78% resting labels, and separate hover versus
+selection/focus neutral surfaces. Focused Explorer tests pass 2/2, both
+Lynx-for-Web and Native/Desktop production builds succeed, and
+`git diff --check` passes. This is implementation evidence only; the Explorer
+directory disclosure row remains visually pending until the real product path
+can expose it in both clients.
 
 The Native arbitrary text-range selection investigation reached an upstream
 Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's

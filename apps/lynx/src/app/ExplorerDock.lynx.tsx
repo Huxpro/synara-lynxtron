@@ -124,7 +124,7 @@ function ExplorerEntryRow(props: {
   return (
     <view
       className={row.className}
-      style={{ paddingLeft: `${8 + props.depth * 14}px` }}
+      style={{ paddingLeft: `${8 + props.depth * 12}px` }}
       aria-expanded={directory ? props.expanded : undefined}
       {...row.eventProps}
     >
@@ -201,14 +201,14 @@ function ExplorerDirectoryEntry(
           {props.directoryPending.has(props.entry.path) ? (
             <text
               className="ExplorerDockDirectoryState"
-              style={{ paddingLeft: `${22 + (props.depth + 1) * 14}px` }}
+              style={{ paddingLeft: `${8 + (props.depth + 1) * 12}px` }}
             >
               Loading directory…
             </text>
           ) : props.directoryErrors.has(props.entry.path) ? (
             <text
               className="ExplorerDockDirectoryState ExplorerDockState--error"
-              style={{ paddingLeft: `${22 + (props.depth + 1) * 14}px` }}
+              style={{ paddingLeft: `${8 + (props.depth + 1) * 12}px` }}
             >
               Could not load directory.
             </text>

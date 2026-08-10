@@ -79,6 +79,12 @@ describe('Lynx Explorer dock', () => {
     expect(source).toContain('disclosureContentClassName(');
     expect(source).toContain('<ExplorerDirectoryEntry');
     expect(source).not.toContain('{expanded ? (');
+    expect(source).toContain(
+      "style={{ paddingLeft: `${8 + props.depth * 12}px` }}"
+    );
+    expect(source).toContain(
+      "style={{ paddingLeft: `${8 + (props.depth + 1) * 12}px` }}"
+    );
     expect(source).toContain('Loading directory…');
     expect(source).toContain('Could not load directory.');
     expect(source).toContain('showPaths={Boolean(props.query.trim())}');
@@ -168,7 +174,19 @@ describe('Lynx Explorer dock', () => {
       /\.ExplorerDockSearchInput\s*\{[^}]*height:\s*28px;[^}]*padding-left:\s*32px;/s
     );
     expect(styles).toMatch(
-      /\.ExplorerDockEntry\s*\{[^}]*min-height:\s*28px;[^}]*padding:\s*4px 8px;/s
+      /\.ExplorerDockEntry\s*\{[^}]*min-height:\s*28px;[^}]*padding:\s*4px 8px;[^}]*gap:\s*6px;[^}]*border-radius:\s*6px;/s
+    );
+    expect(styles).toMatch(
+      /\.ExplorerDockEntry\.ui-hover,[^{]*\{[^}]*background-color:\s*var\(--color-background-button-secondary-hover\);/s
+    );
+    expect(styles).toMatch(
+      /\.ExplorerDockEntry\.ui-focus,[^{]*\{[^}]*background-color:\s*var\(--color-background-button-secondary\);/s
+    );
+    expect(styles).toMatch(
+      /\.ExplorerDockFileIcon\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*opacity:\s*0\.75;/s
+    );
+    expect(styles).toMatch(
+      /\.ExplorerDockEntryName\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;[^}]*opacity:\s*0\.78;/s
     );
     for (const className of [
       'ExplorerDockClose',
