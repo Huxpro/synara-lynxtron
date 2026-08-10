@@ -98,6 +98,10 @@ export function SettingsSidebarSearchUnavailableElement(props: ChildrenProps) {
       className="SharedSettingsSidebarSearchUnavailable"
       aria-label="Search settings unavailable"
       aria-disabled="true"
+      accessibility-element
+      accessibility-label="Search settings unavailable"
+      accessibility-traits="search"
+      accessibility-state={{ disabled: true }}
       focusable={false}
     >
       <view className="SharedSettingsSidebarSearchIcon">

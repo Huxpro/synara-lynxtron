@@ -1,7 +1,31 @@
 import { describe, expect, it } from '@rstest/core';
+import { render } from '@lynx-js/react/testing-library';
 import { readFileSync } from 'node:fs';
 
+import { SettingsSidebarSearchUnavailableElement } from './SettingsSidebarChromeCompositionElements.lynx';
+
 describe('Lynx Settings search input', () => {
+  it('exposes the unavailable placeholder as a disabled Native search element', () => {
+    render(
+      <SettingsSidebarSearchUnavailableElement>
+        Search settings
+      </SettingsSidebarSearchUnavailableElement>
+    );
+
+    const search = elementTree.root?.querySelector(
+      '.SharedSettingsSidebarSearchUnavailable'
+    );
+    expect(search?.getAttribute('focusable')).toBe('false');
+    expect(search?.getAttribute('accessibility-element')).toBe('true');
+    expect(search?.getAttribute('accessibility-label')).toBe(
+      'Search settings unavailable'
+    );
+    expect(search?.getAttribute('accessibility-traits')).toBe('search');
+    expect(search?.getAttribute('accessibility-state')).toBe(
+      '{"disabled":true}'
+    );
+  });
+
   it('uses an uncontrolled native input to avoid per-keystroke ACK loss', () => {
     const source = readFileSync(
       new URL('./SettingsSidebarChromeCompositionElements.lynx.tsx', import.meta.url),
