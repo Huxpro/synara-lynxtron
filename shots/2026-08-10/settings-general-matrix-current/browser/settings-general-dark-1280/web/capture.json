@@ -1,0 +1,26 @@
+{
+  "client": "web",
+  "stateId": "settings-general-dark-1280",
+  "buildSha256": "7e0d17545f2d22bbaf53116e2984ce86a888cfe7c03fee4e8dc5d82f6d6a113d",
+  "snapshotSha256": "36daed2170b1294ee3efd8e9379aec3e5b0290fcb13e2099f8016ae0f44fefe4",
+  "stateEcho": {
+    "semanticRoute": "settings-general",
+    "theme": "dark",
+    "density": "comfortable",
+    "interactionState": "default"
+  },
+  "viewport": {
+    "innerWidth": 1280,
+    "innerHeight": 820,
+    "dpr": 1,
+    "visualWidth": 1280,
+    "visualHeight": 820
+  },
+  "image": {
+    "width": 1280,
+    "height": 820
+  },
+  "url": "http://localhost:9301/settings?section=appsnap",
+  "heading": null,
+  "errors": []
+}

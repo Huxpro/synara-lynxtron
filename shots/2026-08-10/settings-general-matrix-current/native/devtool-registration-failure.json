@@ -1,0 +1,33 @@
+{
+  "status": "harness-failure",
+  "runtime": "@lynx-js/lynxtron 0.0.9",
+  "bundle": "apps/lynx/dist/desktop/main.lynx.bundle",
+  "bundleSha256": "5a34e39eaf63263ce4ea521e1858df6ae6c7e6230431ea0d8d80c1375d24df0f",
+  "server": "ws://127.0.0.1:58500",
+  "launches": [
+    {
+      "cliPid": 83500,
+      "appPid": 83507,
+      "result": "rendered and connected to server; no PID-owned DevTool listener registered"
+    },
+    {
+      "appPid": 85618,
+      "result": "rendered and connected to server; repeated identical DevTool registration failure"
+    }
+  ],
+  "environment": {
+    "NODE_ENV": "production",
+    "SYNARA_ENABLE_DEVTOOL": "1",
+    "SYNARA_ALLOW_PARALLEL_INSTANCE": "1",
+    "SYNARA_BACKGROUND_LAUNCH": "1",
+    "SYNARA_LYNX_USER_DATA_DIR": "/tmp/synara-settings-general-matrix-current"
+  },
+  "observedClientsBeforeAndAfter": [
+    {
+      "id": "localhost:8901",
+      "app": "@t3tools/lynxtron",
+      "ownership": "unrelated and untouched"
+    }
+  ],
+  "disposition": "No Native screenshot retained; stale or unrelated DevTool clients were not used."
+}

@@ -1,0 +1,1 @@
+"{\n  \"url\": \"http://localhost:9301/settings?section=appsnap\",\n  \"viewport\": {\n    \"innerWidth\": 1440,\n    \"innerHeight\": 900,\n    \"dpr\": 1,\n    \"visualWidth\": 1440,\n    \"visualHeight\": 900\n  },\n  \"background\": \"rgb(16, 16, 16)\",\n  \"rootColor\": \"rgb(255, 255, 255)\"\n}"

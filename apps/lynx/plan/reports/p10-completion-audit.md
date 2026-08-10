@@ -813,6 +813,20 @@ rounding. Evidence and invalid-cell classification are recorded in
 Profile suite passes (5/5), both production bundles build, React Doctor 0.9.11
 reports zero diagnostics against `92c0fe91`, and the named browser session was
 closed after restoring both clients to System.
+The Settings General current-head refresh in
+`shots/2026-08-10/settings-general-matrix-current/` retains all four required
+Web/Lynx-for-Web theme/size coordinates against one isolated server and frozen
+snapshot. General heading geometry is exact at both sizes; light mean absolute
+RGB differences are `0.5922` and `0.5095`. The larger dark difference remains
+inside the already registered translucent-Web versus opaque-Lynx material
+boundary rather than a new Settings geometry, type, content, or state defect.
+Native was not retained: two exact-owned production launches rendered and
+connected to the correct server, but Lynxtron 0.0.9 did not register a
+PID-owned DevTool listener despite the explicit runtime flag and intact bundle
+gate. The second identical failure stopped the restart loop; the unrelated
+`@t3tools/lynxtron` client was not used or touched. Therefore this batch is
+Browser certification progress plus an explicit Native harness blocker, not a
+closed three-client matrix.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
