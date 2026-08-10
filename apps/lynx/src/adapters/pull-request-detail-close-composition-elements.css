@@ -18,5 +18,5 @@
 }
 
 .SharedPrDetailCloseButton.ui-pressed {
-  opacity: 0.72;
+  background-color: var(--color-background-elevated-secondary);
 }

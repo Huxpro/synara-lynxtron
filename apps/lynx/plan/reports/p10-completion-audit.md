@@ -990,6 +990,12 @@ hover/pressed surfaces rather than 90%/72% whole-button opacity. Disclosure,
 selection-reference, and jump contracts pass 4/4 and the Native/Desktop
 production build succeeds.
 
+The inline-action follow-up removes the same press transform from Pull Request
+detail Close and Markdown code Copy/Wrap. PR Close now retains chrome geometry
+and uses the neutral elevated surface; code actions retain their 24px box and
+use ghost-button secondary paint rather than opacity plus scale. Focused
+contracts pass 3/3 and the Native/Desktop production build succeeds.
+
 The Native arbitrary text-range selection investigation reached an upstream
 Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's
 documented contract exposes `text-selection={true}`, `flatten={false}`,
