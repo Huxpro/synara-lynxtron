@@ -211,12 +211,9 @@
 }
 
 .SharedSettingsAppearanceFontAction.ui-hover,
-.SharedSettingsAppearanceFontAction.ui-focus {
-  background-color: var(--accent);
-}
-
+.SharedSettingsAppearanceFontAction.ui-focus,
 .SharedSettingsAppearanceFontAction.ui-pressed {
-  opacity: 0.7;
+  opacity: 1;
 }
 
 .SharedSettingsAppearanceFontPopup {

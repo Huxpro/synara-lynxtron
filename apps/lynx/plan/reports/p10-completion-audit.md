@@ -904,6 +904,13 @@ tint plus 35% focus ring in each theme instead of a brand-blue `--accent`
 surface. Focused banner regressions pass 3/3 and the Native/Desktop production
 build succeeds.
 
+The Appearance terminal-font autocomplete follow-up removes a different
+brand-color leak: Web's clear/trigger affordance changes only from 80% to 100%
+opacity, so Lynx no longer paints a blue hover surface or dims pressed state.
+Hover, focus, and press now preserve the field surface and raise the icon to
+full opacity. Focused Appearance regressions pass 3/3 and the Native/Desktop
+production build succeeds.
+
 The Native arbitrary text-range selection investigation reached an upstream
 Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's
 documented contract exposes `text-selection={true}`, `flatten={false}`,

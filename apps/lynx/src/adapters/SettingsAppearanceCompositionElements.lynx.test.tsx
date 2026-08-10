@@ -139,6 +139,12 @@ describe('Settings Appearance fidelity', () => {
     expect(styles).toMatch(
       /\.SharedSettingsAppearanceSelectPopup\s*\{[^}]*width:\s*160px;/s
     );
+    expect(styles).toMatch(
+      /\.SharedSettingsAppearanceFontAction\.ui-hover,[^{]*\{[^}]*opacity:\s*1;/s
+    );
+    expect(styles).not.toMatch(
+      /\.SharedSettingsAppearanceFontAction\.ui-(?:hover|focus|pressed)[^{]*\{[^}]*background-color:/s
+    );
   });
 
   it('filters the shared terminal font suggestions without restricting free-form values', () => {
