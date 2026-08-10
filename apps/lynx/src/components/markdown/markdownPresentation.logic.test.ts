@@ -42,20 +42,19 @@ describe('Lynx markdown presentation logic', () => {
         type: 'skill',
         name: 'check-code',
       })
-    ).toEqual({ glyph: '◆', label: 'Check Code', openExternalUrl: null });
+    ).toEqual({ label: 'Check Code', openExternalUrl: null });
     expect(
       resolveMarkdownInlineTokenPresentation({
         type: 'mention',
         path: 'src/components/App.tsx',
       })
-    ).toEqual({ glyph: '@', label: 'App.tsx', openExternalUrl: null });
+    ).toEqual({ label: 'App.tsx', openExternalUrl: null });
     expect(
       resolveMarkdownInlineTokenPresentation({
         type: 'link',
         url: 'https://example.com',
       })
     ).toEqual({
-      glyph: '↗',
       label: 'https://example.com',
       openExternalUrl: 'https://example.com',
     });

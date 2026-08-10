@@ -19,11 +19,15 @@ import {
   type MarkdownVariant,
 } from './markdownAst';
 import {
+  resolveAgentChipColor,
+} from '@synara-web/components/composerInlineChip.logic';
+import {
   resolveMarkdownCodeBlockPresentation,
   resolveMarkdownInlineTokenPresentation,
   toggleMarkdownCodeWrap,
   type MarkdownInlineTokenSegment,
 } from './markdownPresentation.logic';
+import { MarkdownInlineTokenIcon } from './MarkdownInlineTokenIcon.lynx';
 import {
   resolveLynxInlineCodeFileReference,
   resolveLynxMarkdownFileReference,
@@ -56,6 +60,10 @@ function MarkdownInlineToken({
   readonly segment: MarkdownInlineTokenSegment;
 }) {
   const presentation = resolveMarkdownInlineTokenPresentation(segment);
+  const agentColor =
+    segment.type === 'agent-mention'
+      ? resolveAgentChipColor(segment.color)
+      : null;
   const externalTarget = presentation.openExternalUrl;
   const fileReference =
     segment.type === 'mention'
@@ -87,8 +95,22 @@ function MarkdownInlineToken({
         : presentation.label,
   });
   return (
-    <text className={interaction.className} {...interaction.eventProps}>
-      <text className="MdInlineTokenGlyph">{presentation.glyph}</text>
+    <text
+      className={interaction.className}
+      style={
+        agentColor
+          ? {
+              backgroundColor: agentColor.bg,
+              color: agentColor.text,
+            }
+          : undefined
+      }
+      {...interaction.eventProps}
+    >
+      <MarkdownInlineTokenIcon
+        segment={segment}
+        color={agentColor?.text}
+      />
       {presentation.label}
     </text>
   );

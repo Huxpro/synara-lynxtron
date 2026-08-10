@@ -17,33 +17,24 @@ export type MarkdownInlineTokenSegment = Exclude<
 export function resolveMarkdownInlineTokenPresentation(
   segment: MarkdownInlineTokenSegment
 ): {
-  readonly glyph: string;
   readonly label: string;
   readonly openExternalUrl: string | null;
 } {
   let label: string;
-  let glyph: string;
   if (segment.type === 'mention') {
     label = segment.path.split(/[\\/]/).pop() || segment.path;
-    glyph = '@';
   } else if (segment.type === 'skill') {
     label = formatComposerSkillChipLabel(segment.name);
-    glyph = '◆';
   } else if (segment.type === 'slash-command') {
     label = `/${segment.command}`;
-    glyph = '/';
   } else if (segment.type === 'agent-mention') {
     label = `@${segment.alias}`;
-    glyph = '@';
   } else if (segment.type === 'terminal-context') {
     label = segment.context?.terminalLabel ?? 'Terminal context';
-    glyph = '›';
   } else {
     label = segment.url;
-    glyph = '↗';
   }
   return {
-    glyph,
     label,
     openExternalUrl: segment.type === 'link' ? segment.url : null,
   };

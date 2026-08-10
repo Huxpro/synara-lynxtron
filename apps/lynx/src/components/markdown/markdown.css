@@ -346,9 +346,41 @@
   line-height: 15px;
 }
 
+.MdInlineToken--mention,
+.MdInlineToken--skill,
+.MdInlineToken--slash-command,
+.MdInlineToken--link {
+  padding: 0;
+  border-width: 0;
+  background-color: transparent;
+  color: var(--info-foreground);
+}
+
+.MdInlineToken--agent-mention {
+  padding: 2px 6px;
+  border-width: 0;
+  border-radius: var(--radius-md);
+}
+
+.MdInlineToken--terminal-context {
+  margin-right: 0;
+  margin-left: 0;
+  padding: 2px;
+  border: 1px solid var(--color-border-light);
+  border-radius: 4px;
+  background-color: var(--sidebar-accent-active);
+  color: var(--foreground);
+}
+
 .MdInlineTokenGlyph,
-.MdInlineTokenFileIcon {
+.MdInlineTokenFileIcon,
+.MdInlineTokenIcon {
   margin-right: 3px;
+}
+
+.MdInlineToken--terminal-context .MdInlineTokenIcon {
+  width: 14px;
+  height: 14px;
 }
 
 .MdInlineTokenGlyph {
@@ -357,6 +389,14 @@
 }
 
 .MdInlineTokenFileIcon {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  vertical-align: middle;
+  opacity: 0.85;
+}
+
+.MdInlineTokenIcon {
   display: inline-block;
   width: 12px;
   height: 12px;
