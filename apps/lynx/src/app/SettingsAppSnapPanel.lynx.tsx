@@ -46,7 +46,8 @@ export function SettingsAppSnapPanel() {
               aria-disabled={true}
               accessibility-element={true}
               accessibility-label="Enable AppSnap"
-              accessibility-state={{ disabled: true }}
+              accessibility-role="switch"
+              accessibility-state={{ checked: false, disabled: true }}
               accessibility-value="Off"
             >
               <view className="SettingsAppSnapDisabledSwitchThumb" />

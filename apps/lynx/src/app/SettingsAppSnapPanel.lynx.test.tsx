@@ -25,7 +25,10 @@ describe('Settings AppSnap capability fidelity', () => {
     expect(panelSource).toContain('in the last minute, and');
     expect(panelSource).toContain('consecutive snaps stay together.');
     expect(panelSource).toContain('Unavailable in this runtime');
-    expect(panelSource).toContain('accessibility-state={{ disabled: true }}');
+    expect(panelSource).toContain('accessibility-role="switch"');
+    expect(panelSource).toContain(
+      'accessibility-state={{ checked: false, disabled: true }}'
+    );
     expect(panelSource).not.toContain('onChange=');
     expect(panelSource).not.toContain('onClick=');
   });
