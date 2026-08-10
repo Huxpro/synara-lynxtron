@@ -95,7 +95,10 @@ export function SettingsIntegrationsPanel() {
   const [setup, setSetup] =
     useState<ExternalMcpCreateIntegrationResult | null>(null);
   const [pendingAction, setPendingAction] = useState<string | null>(null);
-  const [notice, setNotice] = useState<string | null>(null);
+  const [notice, setNotice] = useState<{
+    readonly intent: 'success' | 'error';
+    readonly message: string;
+  } | null>(null);
   const projectGridPresent = useLynxDisclosurePresence(!allProjects);
   const advancedPresent = useLynxDisclosurePresence(advancedOpen);
 
@@ -128,11 +131,13 @@ export function SettingsIntegrationsPanel() {
         queryKey: ['external-mcp-integrations'],
       });
     } catch (error) {
-      setNotice(
-        error instanceof Error
-          ? error.message
-          : 'Could not create the connection.'
-      );
+      setNotice({
+        intent: 'error',
+        message:
+          error instanceof Error
+            ? error.message
+            : 'Could not create the connection.',
+      });
     } finally {
       setPendingAction(null);
     }
@@ -151,9 +156,11 @@ export function SettingsIntegrationsPanel() {
         queryKey: ['external-mcp-integrations'],
       });
     } catch (error) {
-      setNotice(
-        error instanceof Error ? error.message : 'Could not revoke connection.'
-      );
+      setNotice({
+        intent: 'error',
+        message:
+          error instanceof Error ? error.message : 'Could not revoke connection.',
+      });
     } finally {
       setPendingAction(null);
     }
@@ -175,9 +182,11 @@ export function SettingsIntegrationsPanel() {
         : await refreshExternalMcpPairing(integration.integrationId);
       setSetup(result);
     } catch (error) {
-      setNotice(
-        error instanceof Error ? error.message : 'Could not resume pairing.'
-      );
+      setNotice({
+        intent: 'error',
+        message:
+          error instanceof Error ? error.message : 'Could not resume pairing.',
+      });
     } finally {
       setPendingAction(null);
     }
@@ -192,7 +201,7 @@ export function SettingsIntegrationsPanel() {
         stdio: setup.stdio,
       })
     );
-    setNotice('Setup prompt copied.');
+    setNotice({ intent: 'success', message: 'Setup prompt copied.' });
   }
 
   if (integrationsQuery.isPending || snapshotQuery.isPending) {
@@ -208,8 +217,12 @@ export function SettingsIntegrationsPanel() {
   return (
     <view className="SettingsIntegrationsPanel">
       {notice ? (
-        <view className="SettingsIntegrationsNotice">
-          <text className="SettingsIntegrationsNoticeText">{notice}</text>
+        <view
+          className={`SettingsIntegrationsNotice SettingsIntegrationsNotice--${notice.intent}`}
+          accessibility-element
+          accessibility-role={notice.intent === 'error' ? 'alert' : undefined}
+        >
+          <text className="SettingsIntegrationsNoticeText">{notice.message}</text>
         </view>
       ) : null}
 

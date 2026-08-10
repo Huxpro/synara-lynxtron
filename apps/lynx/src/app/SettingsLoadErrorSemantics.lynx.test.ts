@@ -35,4 +35,39 @@ describe('Settings load error semantics', () => {
       ).not.toContain('accessibility-role="alert"');
     }
   });
+
+  it('announces retained mutation failures without making success notices assertive', () => {
+    const advancedSource = readFileSync(
+      new URL('./SettingsAdvancedPanel.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const integrationsSource = readFileSync(
+      new URL('./SettingsIntegrationsPanel.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const providerToolsSource = readFileSync(
+      new URL('./SettingsProviderToolsPanel.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const worktreesSource = readFileSync(
+      new URL('./SettingsWorktreesPanel.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+
+    expect(advancedSource).toContain(
+      "accessibility-role={notice.intent === 'error' ? 'alert' : undefined}"
+    );
+    expect(integrationsSource).toContain(
+      "accessibility-role={notice.intent === 'error' ? 'alert' : undefined}"
+    );
+    expect(integrationsSource).toContain(
+      "setNotice({ intent: 'success', message: 'Setup prompt copied.' });"
+    );
+    expect(providerToolsSource).toMatch(
+      /className="SettingsProviderToolsNotice"[\s\S]{0,120}accessibility-role="alert"/
+    );
+    expect(worktreesSource).toMatch(
+      /className="SettingsWorktreesDeleteError"[\s\S]{0,120}accessibility-role="alert"/
+    );
+  });
 });

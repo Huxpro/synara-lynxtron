@@ -486,7 +486,11 @@ export function SettingsProviderToolsPanel(props: {
   return (
     <view className="SettingsProviderToolsRoot">
       {notice ? (
-        <view className="SettingsProviderToolsNotice">
+        <view
+          className="SettingsProviderToolsNotice"
+          accessibility-element
+          accessibility-role="alert"
+        >
           <text className="SettingsProviderToolsNoticeText">{notice}</text>
         </view>
       ) : null}

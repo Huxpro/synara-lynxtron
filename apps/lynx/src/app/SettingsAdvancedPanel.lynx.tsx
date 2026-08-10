@@ -237,6 +237,8 @@ export function SettingsAdvancedPanel() {
       {notice ? (
         <view
           className={`SettingsAdvancedNotice SettingsAdvancedNotice--${notice.intent}`}
+          accessibility-element
+          accessibility-role={notice.intent === 'error' ? 'alert' : undefined}
         >
           <text className="SettingsAdvancedNoticeText">{notice.message}</text>
         </view>

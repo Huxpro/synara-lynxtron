@@ -170,7 +170,11 @@ export function SettingsWorktreesPanel() {
   return (
     <view className="SettingsWorktreesPanel">
       {deleteError ? (
-        <view className="SettingsWorktreesDeleteError">
+        <view
+          className="SettingsWorktreesDeleteError"
+          accessibility-element
+          accessibility-role="alert"
+        >
           <text className="SettingsWorktreesDeleteErrorText">
             {deleteError}
           </text>
