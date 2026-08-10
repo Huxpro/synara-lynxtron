@@ -153,6 +153,9 @@ describe('native composer attachment menu item', () => {
     expect(composerStyles).toMatch(
       /\.ComposerPrimaryActionLynx--disabled\s*\{[^}]*opacity:\s*0\.2;/s
     );
+    expect(composerStyles).not.toMatch(
+      /\.ComposerPrimaryActionLynx\.ui-(?:hover|pressed)\s*\{[^}]*opacity:/s
+    );
     expect(composerStyles).toMatch(
       /\.ComposerPrimaryActionSendIconLynx\s*\{[^}]*width:\s*20px;[^}]*height:\s*20px;/s
     );

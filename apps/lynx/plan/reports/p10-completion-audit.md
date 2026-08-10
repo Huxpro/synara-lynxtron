@@ -996,6 +996,12 @@ and uses the neutral elevated surface; code actions retain their 24px box and
 use ghost-button secondary paint rather than opacity plus scale. Focused
 contracts pass 3/3 and the Native/Desktop production build succeeds.
 
+The Composer primary-action follow-up keeps Send/Sending/Stop on its stable
+28px prominent circle. Hover and press no longer flash the entire control at
+90%/72% opacity; disabled remains intentionally visible at 20%, and the
+semantic arrow/spinner/stop identities are unchanged. Focused Composer
+regressions pass 5/5 and the Native/Desktop production build succeeds.
+
 The Native arbitrary text-range selection investigation reached an upstream
 Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's
 documented contract exposes `text-selection={true}`, `flatten={false}`,

@@ -945,16 +945,8 @@
   opacity: 0.2;
 }
 
-.ComposerPrimaryActionLynx.ui-hover {
-  opacity: 0.9;
-}
-
 .ComposerPrimaryActionLynx.ui-focus {
   box-shadow: 0 0 0 1px var(--ring);
-}
-
-.ComposerPrimaryActionLynx.ui-pressed {
-  opacity: 0.72;
 }
 
 .ComposerPrimaryActionSendIconLynx {
