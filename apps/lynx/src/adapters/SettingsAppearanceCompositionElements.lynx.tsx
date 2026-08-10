@@ -19,6 +19,7 @@ import {
   MenuRadioItem,
   MenuTrigger,
 } from '../components/ui/menu';
+import { SettingsHeadingElement } from './SettingsHeadingElement.lynx';
 import { SettingsResetIcon } from './SettingsResetIcon.lynx';
 import {
   lynxNestedInteractiveEventProps,
@@ -57,7 +58,9 @@ export function SettingsAppearanceSectionElement(props: {
 }) {
   return (
     <view className="SharedSettingsAppearanceSection">
-      <text className="SharedSettingsAppearanceSectionTitle">{props.title}</text>
+      <SettingsHeadingElement className="SharedSettingsAppearanceSectionTitle">
+        {props.title}
+      </SettingsHeadingElement>
       {props.children}
     </view>
   );
@@ -92,7 +95,9 @@ export function SettingsAppearanceRowElement(props: {
     >
       <view className="SharedSettingsAppearanceRowCopy">
         <view className="SharedSettingsAppearanceTitleLine">
-          <text className="SharedSettingsAppearanceRowTitle">{props.title}</text>
+          <SettingsHeadingElement className="SharedSettingsAppearanceRowTitle">
+            {props.title}
+          </SettingsHeadingElement>
           {props.changed ? (
             <view
               className={resetInteraction.className}

@@ -17,6 +17,7 @@ import {
   MenuRadioItem,
   MenuTrigger,
 } from '../components/ui/menu';
+import { SettingsHeadingElement } from './SettingsHeadingElement.lynx';
 import { SettingsResetIcon } from './SettingsResetIcon.lynx';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 import { settingRowAnchorId } from '@synara-web/settingsNavigation';
@@ -34,7 +35,9 @@ export function SettingsGeneralSectionElement(props: {
 }) {
   return (
     <view id={props.targetId} className="SharedSettingsGeneralSection">
-      <text className="SharedSettingsGeneralSectionTitle">{props.title}</text>
+      <SettingsHeadingElement className="SharedSettingsGeneralSectionTitle">
+        {props.title}
+      </SettingsHeadingElement>
       <view className="SharedSettingsGeneralCard">{props.children}</view>
     </view>
   );
@@ -63,7 +66,9 @@ export function SettingsGeneralRowElement(props: {
     >
       <view className="SharedSettingsGeneralRowCopy">
         <view className="SharedSettingsGeneralRowTitleLine">
-          <text className="SharedSettingsGeneralRowTitle">{props.title}</text>
+          <SettingsHeadingElement className="SharedSettingsGeneralRowTitle">
+            {props.title}
+          </SettingsHeadingElement>
           {props.changed ? (
             <view
               className={resetInteraction.className}

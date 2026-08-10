@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 
+import { SettingsHeadingElement } from './SettingsHeadingElement.lynx';
 import './settings-section-elements.css';
 
 type ElementProps = {
@@ -13,14 +14,11 @@ export function SettingsSectionElement({ className, children }: ElementProps) {
 
 export function SettingsSectionTitleElement({ className, children }: ElementProps) {
   return (
-    <text
+    <SettingsHeadingElement
       className={`SharedSettingsSectionTitle ${className}`}
-      accessibility-element
-      accessibility-heading
-      accessibility-traits="header"
     >
       {children}
-    </text>
+    </SettingsHeadingElement>
   );
 }
 

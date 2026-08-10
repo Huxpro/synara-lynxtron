@@ -6,6 +6,7 @@ import type {
 
 import { Button } from '../components/ui/button';
 import { ChevronDownIcon } from '../lib/icons.lynx';
+import { SettingsHeadingElement } from './SettingsHeadingElement.lynx';
 import { SettingsResetIcon } from './SettingsResetIcon.lynx';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 
@@ -54,16 +55,16 @@ export function SettingsProviderPickerElement(props: {
   });
   return (
     <view className="SharedSettingsProviderPickerSection">
-      <text className="SharedSettingsProviderPickerSectionTitle">
+      <SettingsHeadingElement className="SharedSettingsProviderPickerSectionTitle">
         {props.sectionTitle}
-      </text>
+      </SettingsHeadingElement>
       <view className="SharedSettingsProviderPickerCard">
         <view className="SharedSettingsProviderPickerHeader">
           <view className="SharedSettingsProviderPickerHeaderCopy">
             <view className="SharedSettingsProviderPickerTitleLine">
-              <text className="SharedSettingsProviderPickerTitle">
+              <SettingsHeadingElement className="SharedSettingsProviderPickerTitle">
                 {props.title}
-              </text>
+              </SettingsHeadingElement>
               {props.changed ? (
                 <view
                   className={resetInteraction.className}

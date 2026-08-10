@@ -1,6 +1,7 @@
 import type { ReactNode } from '@lynx-js/react';
 
 import { Button } from '../components/ui/button';
+import { SettingsHeadingElement } from './SettingsHeadingElement.lynx';
 
 type ChildrenProps = {
   readonly children?: ReactNode;
@@ -19,14 +20,9 @@ export function SettingsPanelHeaderCopyElement(props: ChildrenProps) {
 
 export function SettingsPanelHeaderTitleElement(props: ChildrenProps) {
   return (
-    <text
-      className="SharedSettingsPanelHeaderTitle"
-      accessibility-element
-      accessibility-heading
-      accessibility-traits="header"
-    >
+    <SettingsHeadingElement className="SharedSettingsPanelHeaderTitle">
       {props.children}
-    </text>
+    </SettingsHeadingElement>
   );
 }
 

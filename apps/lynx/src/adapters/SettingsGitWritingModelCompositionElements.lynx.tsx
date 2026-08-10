@@ -10,6 +10,7 @@ import {
   MenuRadioItem,
   MenuTrigger,
 } from '../components/ui/menu';
+import { SettingsHeadingElement } from './SettingsHeadingElement.lynx';
 import { SettingsResetIcon } from './SettingsResetIcon.lynx';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 
@@ -25,7 +26,9 @@ export function SettingsGitWritingModelSectionElement(props: {
 }) {
   return (
     <view className="SharedSettingsGeneralSection">
-      <text className="SharedSettingsGeneralSectionTitle">{props.title}</text>
+      <SettingsHeadingElement className="SharedSettingsGeneralSectionTitle">
+        {props.title}
+      </SettingsHeadingElement>
       <view className="SharedSettingsGeneralCard">{props.children}</view>
     </view>
   );
@@ -47,7 +50,9 @@ export function SettingsGitWritingModelRowElement(props: {
     <view className="SharedSettingsGeneralRow SharedSettingsGeneralRow--terminal">
       <view className="SharedSettingsGeneralRowCopy">
         <view className="SharedSettingsGeneralRowTitleLine">
-          <text className="SharedSettingsGeneralRowTitle">{props.title}</text>
+          <SettingsHeadingElement className="SharedSettingsGeneralRowTitle">
+            {props.title}
+          </SettingsHeadingElement>
           {props.changed ? (
             <view
               className={resetInteraction.className}
