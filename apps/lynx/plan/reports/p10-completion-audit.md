@@ -1039,6 +1039,13 @@ directory, and fixed line range. Non-file fences retain the compact language
 label. Focused Markdown and file-icon coverage passes 11/11; both Lynx-for-Web
 and Native/Desktop production builds pass with only the existing warnings.
 
+The GFM task-list follow-up replaces font-dependent `☑` / `☐` text with a
+stable 14px, 3px-radius checkbox and a 10px Check SVG on the primary fill.
+Tasks remain intentionally read-only on Lynx, but now expose static Native
+checkbox role plus checked/disabled state instead of only visual punctuation.
+Focused Markdown coverage passes 8/8; both Lynx-for-Web and Native/Desktop
+production builds pass with only the existing warnings.
+
 The Composer primary-action follow-up keeps Send/Sending/Stop on its stable
 28px prominent circle. Hover and press no longer flash the entire control at
 90%/72% opacity; disabled remains intentionally visible at 20%, and the

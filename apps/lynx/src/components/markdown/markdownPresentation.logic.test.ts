@@ -103,6 +103,25 @@ describe('Lynx markdown presentation logic', () => {
     expect(source).toContain('<MarkdownFileReferenceToken');
     expect(source).toContain('onOpenFileReference={context.onOpenFileReference}');
     expect(source).toContain("renderUserText(text, 'fallback', context)");
+    expect(source).toContain('accessibility-role="checkbox"');
+    expect(source).toContain(
+      'accessibility-state={{ checked: props.checked, disabled: true }}'
+    );
+    expect(source).toContain(
+      '<CheckIcon className="MdTaskCheckboxIcon" size={10} />'
+    );
+    expect(source).not.toContain("'☑'");
+    expect(source).not.toContain("'☐'");
+    const styles = readFileSync(
+      new URL('./markdown.css', import.meta.url),
+      'utf8'
+    );
+    expect(styles).toMatch(
+      /\.MdTaskCheckbox\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*border:\s*1px solid var\(--color-border\);[^}]*border-radius:\s*3px;/s
+    );
+    expect(styles).toMatch(
+      /\.MdTaskCheckbox--checked\s*\{[^}]*border-color:\s*var\(--primary\);[^}]*background-color:\s*var\(--primary\);/s
+    );
   });
 
   it('keeps user dollar tokens out of the assistant math processor', () => {

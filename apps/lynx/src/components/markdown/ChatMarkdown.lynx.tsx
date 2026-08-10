@@ -297,6 +297,24 @@ function MarkdownInlineCode({
   );
 }
 
+function MarkdownTaskCheckbox(props: { readonly checked: boolean }) {
+  return (
+    <view
+      className={`MdTaskCheckbox${
+        props.checked ? ' MdTaskCheckbox--checked' : ''
+      }`}
+      accessibility-element={true}
+      accessibility-role="checkbox"
+      accessibility-state={{ checked: props.checked, disabled: true }}
+      accessibility-value={props.checked ? 'Checked' : 'Not checked'}
+    >
+      {props.checked ? (
+        <CheckIcon className="MdTaskCheckboxIcon" size={10} />
+      ) : null}
+    </view>
+  );
+}
+
 function MarkdownCodeBlock({ node, nodeKey }: { readonly node: MarkdownNode; readonly nodeKey: string }) {
   const [copied, setCopied] = useState(false);
   const [wrap, setWrap] = useState(false);
@@ -453,18 +471,18 @@ function renderNode(
       );
     case 'listItem': {
       const task = node.checked !== undefined && node.checked !== null;
-      const marker = task
-        ? node.checked
-          ? '☑'
-          : '☐'
-        : listContext?.ordered
+      const marker = listContext?.ordered
           ? `${listContext.index + 1}.`
           : '•';
       return (
         <view className="MdListItem" key={key}>
-          <text className={node.checked ? 'MdListMarker MdCheckboxChecked' : 'MdListMarker'}>
-            {marker}
-          </text>
+          {task ? (
+            <view className="MdListMarker MdTaskCheckboxSlot">
+              <MarkdownTaskCheckbox checked={node.checked === true} />
+            </view>
+          ) : (
+            <text className="MdListMarker">{marker}</text>
+          )}
           <view className="MdListBody">{children()}</view>
         </view>
       );

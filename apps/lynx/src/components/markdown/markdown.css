@@ -131,12 +131,32 @@
   flex: 1;
 }
 
-.MdCheckbox {
-  color: var(--muted-foreground);
+.MdTaskCheckboxSlot {
+  display: flex;
+  height: 21px;
+  align-items: center;
 }
 
-.MdCheckboxChecked {
-  color: var(--primary);
+.MdTaskCheckbox {
+  display: flex;
+  width: 14px;
+  height: 14px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  background-color: transparent;
+}
+
+.MdTaskCheckbox--checked {
+  border-color: var(--primary);
+  background-color: var(--primary);
+}
+
+.MdTaskCheckboxIcon {
+  width: 10px;
+  height: 10px;
+  color: var(--primary-foreground);
 }
 
 .MdCode {
