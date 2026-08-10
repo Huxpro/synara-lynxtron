@@ -877,10 +877,11 @@ one modified and one untracked file produces the same `Changes +2 / -0` and
 Editor view rows in both clients. Default geometry is exact at `274x26`.
 The audit exposed that Lynx used the generated blue `--accent` token for
 hover/focus/pressed while Web uses neutral elevated-secondary material.
-Changes, Editor, and repository row owners now use
-`--color-background-elevated-secondary`; final light hover resolves to the
-same `rgba(13,13,13,0.04)` at the same `987/175/274x26` box. Focused tests pass
-6/6 and both production builds succeed.
+Every ordinary Environment interaction owner now uses
+`--color-background-elevated-secondary`; only the passive recap skeleton keeps
+`--accent`. Final representative light hover resolves to the same
+`rgba(13,13,13,0.04)` at the same `987/175/274x26` box. Focused tests enumerate
+the surface and pass 6/6; both production builds succeed.
 
 The Native arbitrary text-range selection investigation reached an upstream
 Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's

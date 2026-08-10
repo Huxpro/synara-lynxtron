@@ -354,9 +354,20 @@ describe('Lynx Environment panel', () => {
       /\.EnvironmentRow\s*\{[^}]*min-height:\s*26px;[^}]*padding:\s*4px 8px;[^}]*gap:\s*8px;/s
     );
     for (const className of [
+      'EnvironmentToggle',
+      'EnvironmentSettings',
       'EnvironmentChangesTrigger',
+      'EnvironmentBranchTrigger',
+      'EnvironmentGitActionTrigger',
+      'EnvironmentGitActionSelectAll',
+      'EnvironmentGitActionFile',
+      'EnvironmentLocalServersTrigger',
       'EnvironmentEditorTrigger',
       'EnvironmentRepositoryRow',
+      'EnvironmentPullRequestMenuTrigger',
+      'EnvironmentInstructionsCopy',
+      'EnvironmentPinnedAction',
+      'EnvironmentDisclosure',
     ]) {
       expect(styles).toMatch(
         new RegExp(
@@ -365,6 +376,12 @@ describe('Lynx Environment panel', () => {
         )
       );
     }
+    expect(styles).toMatch(
+      /\.EnvironmentPinnedRow\.ui-hover\s*\{[^}]*background-color:\s*var\(--color-background-elevated-secondary\);/s
+    );
+    expect(styles).toMatch(
+      /\.EnvironmentRecapSkeletonLine\s*\{[^}]*background-color:\s*var\(--accent\);/s
+    );
     expect(styles).toContain('padding-right: 312px;');
     expect(styles).toMatch(
       /\.LxMenuPopup\.EnvironmentLocalServersPopup\s*\{[^}]*width:\s*288px;[^}]*padding:\s*6px;/s

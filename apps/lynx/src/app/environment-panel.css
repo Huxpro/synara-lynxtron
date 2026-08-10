@@ -21,7 +21,7 @@
 
 .EnvironmentToggle.ui-hover,
 .EnvironmentToggle.ui-focus {
-  background-color: var(--accent);
+  background-color: var(--color-background-elevated-secondary);
 }
 
 .EnvironmentToggle--open,
@@ -129,7 +129,7 @@
 .EnvironmentSettings.ui-hover,
 .EnvironmentSettings.ui-focus,
 .EnvironmentSettings.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-elevated-secondary);
 }
 
 .EnvironmentSettingsIcon {
@@ -213,7 +213,7 @@
 .EnvironmentBranchTrigger.ui-hover,
 .EnvironmentBranchTrigger.ui-focus,
 .EnvironmentBranchTrigger.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-elevated-secondary);
   opacity: 1;
 }
 
@@ -259,7 +259,7 @@
 .EnvironmentGitActionTrigger.ui-hover,
 .EnvironmentGitActionTrigger.ui-focus,
 .EnvironmentGitActionTrigger.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-elevated-secondary);
   opacity: 1;
 }
 
@@ -377,7 +377,7 @@
 .EnvironmentGitActionSelectAll.ui-hover,
 .EnvironmentGitActionSelectAll.ui-focus,
 .EnvironmentGitActionSelectAll.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-elevated-secondary);
 }
 
 .EnvironmentGitActionSelectAllLabel {
@@ -444,7 +444,7 @@
 .EnvironmentGitActionFile.ui-hover,
 .EnvironmentGitActionFile.ui-focus,
 .EnvironmentGitActionFile.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-elevated-secondary);
   opacity: 1;
 }
 
@@ -493,7 +493,7 @@
 .EnvironmentLocalServersTrigger.ui-hover,
 .EnvironmentLocalServersTrigger.ui-focus,
 .EnvironmentLocalServersTrigger.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-elevated-secondary);
 }
 
 .LxMenuPopup.EnvironmentLocalServersPopup {
@@ -727,7 +727,7 @@
 .EnvironmentPullRequestMenuTrigger.ui-hover,
 .EnvironmentPullRequestMenuTrigger.ui-focus,
 .EnvironmentPullRequestMenuTrigger.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-elevated-secondary);
   opacity: 1;
 }
 
@@ -891,7 +891,7 @@
 .EnvironmentInstructionsCopy.ui-hover,
 .EnvironmentInstructionsCopy.ui-focus,
 .EnvironmentInstructionsCopy.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-elevated-secondary);
 }
 
 .EnvironmentInstructionsCopyLabel {
@@ -921,7 +921,7 @@
 }
 
 .EnvironmentPinnedRow.ui-hover {
-  background-color: var(--accent);
+  background-color: var(--color-background-elevated-secondary);
 }
 
 .EnvironmentPinnedCheckbox {
@@ -1021,7 +1021,7 @@
 .EnvironmentPinnedAction.ui-hover,
 .EnvironmentPinnedAction.ui-focus,
 .EnvironmentPinnedAction.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-elevated-secondary);
   opacity: 1;
 }
 
@@ -1064,7 +1064,7 @@
 .EnvironmentDisclosure.ui-hover,
 .EnvironmentDisclosure.ui-focus,
 .EnvironmentDisclosure.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-elevated-secondary);
 }
 
 .EnvironmentDisclosureChevron {

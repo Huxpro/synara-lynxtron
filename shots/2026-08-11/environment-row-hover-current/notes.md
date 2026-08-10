@@ -21,8 +21,13 @@ used `--accent`. The generated Native light theme resolves that token to blue
 `rgb(232,242,250)`, while Web uses the neutral
 `--color-background-elevated-secondary` hover surface.
 
-All three row owners now use Web's semantic token. The final Changes hover
-resolves identically in both clients:
+All ordinary Environment interaction owners now use Web's semantic token:
+header toggle/settings, Changes, branch/Git actions and file selection, local
+servers, Editor/repository/PR rows, instructions, pinned actions, and
+disclosures. The recap skeleton intentionally keeps `--accent` as a passive
+loading fill.
+
+The final representative Changes hover resolves identically in both clients:
 
 - box: `987/175/274x26`;
 - background: `rgba(13,13,13,0.04)`;
