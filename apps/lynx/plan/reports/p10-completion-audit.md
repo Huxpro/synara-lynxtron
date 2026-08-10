@@ -277,7 +277,7 @@ Current responsive disposition:
 | Composer reference icon identity | assistant/file-comment summaries, pasted-text cards, generic file cards, remove actions, and show-in-field disclosure use MessageCircle, File/FileEntry, X, and ChevronRight icons instead of circle/cross/text-block glyphs | PASS — CURRENT PRODUCT SURFACES |
 | Composer token icon identity | mention, agent, skill, slash-command, terminal-context, and link chips use file-type, Robot, Building Blocks, Clock, Console, and External Link SVG identities in both canonical segment rendering and the Native draft projection; token anatomy follows Web's plain info-colored inline tokens, per-agent soft color pills, and zero-outer-margin 4px bordered terminal attachment with a 14px/85% Console icon instead of filling every token with the brand accent or treating attachment tokens as ordinary inline chips | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
 | Composer sending-state identity | the primary action uses Web's exact foreground/background-surface prominent-button colors, 28px Send/Sending circle, desktop 26px Stop circle, and 14-viewBox, 12px animated partial-circle spinner instead of primary-token approximations, one-size-fits-all geometry, or a static `•••` marker; send and stop retain their canonical arrow and square identities | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
-| Composer draft-attachment warning | non-persisted image attachments use Web's 64px elevated-secondary thumbnail with light border plus the exact left/bottom 4px, 20px surface-backed amber CircleAlert badge, and expose the canonical `Draft attachment may not persist` accessible name instead of a bare `!` glyph or generic muted image chrome | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
+| Composer draft-image attachments | the Native picker now classifies `image/*` capabilities, applies the shared 10MB image limit, asks the host for a bounded decoded preview, persists the token-backed draft with an explicit non-persisted warning, supports preview/remove, stages the original bytes as a managed `image` attachment, and releases the picked capability after remove or successful send; the thumbnail retains Web's 64px elevated-secondary anatomy and exact 20px amber CircleAlert badge with the canonical `Draft attachment may not persist` accessible name | IMPLEMENTED — REAL CONSUMER PATH; NATIVE INTERACTION RE-CERTIFICATION BLOCKED BY DEVTOOL PORT OWNERSHIP |
 | Nested image accessibility | Profile avatars, Explorer image previews, and Composer image thumbnails explicitly remain decorative because their identity is already owned by surrounding text or a named preview control, preventing duplicate or unnamed accessibility nodes | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Profile composite semantics | Profile stat tiles, insight definition rows, plugin usage rows, and model usage rows expose one concise static Native name per visual composite with text traits, avoiding fragmented label/value/icon traversal without inventing unsupported list roles | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Form control accessibility | Kanban task mutation, Git commit message, Integration connection name, and provider credential inputs expose explicit native accessible names; pending Git/Kanban fields retain read-only semantics without invalid DOM-only focus props | PASS — CURRENT PRODUCT IMPLEMENTATION |
@@ -1097,6 +1097,35 @@ The experiment was therefore fully reverted rather than shipping a path that
 can crash the Native host. The existing whole-message assistant reference
 remains the safe supported fallback, while arbitrary Native text-range
 selection remains blocked on a Lynxtron PC engine/runtime fix.
+
+The Composer draft-image follow-up corrects a source-only false positive in the
+earlier attachment-warning audit. The warning renderer previously had no Lynx
+consumer because Composer always passed empty images, an empty non-persisted
+set, and no-op preview/remove/photo callbacks. Current head now carries a real
+Native path end to end: `dialogsPickFiles` applies image/file-specific limits;
+the host revalidates the token, file identity, MIME, and size before decoding a
+bounded 512px preview; the Lynx draft store retains image capabilities and
+non-persisted IDs; the shared attachment composition renders the real image,
+warning, preview, and remove controls; and send staging uploads the original
+bytes with the server's `image` metadata before dispatch. Upload type mismatches
+fail closed, and failed partial staging cancels every managed attachment.
+Attachment, draft-store, and renderer focused suites pass 27/27; both
+Lynx-for-Web and Native/Desktop production builds pass with only the existing
+unsupported-CSS and optional `ws` accelerator warnings.
+
+Native runtime preflight used the exact staged
+`apps/lynx/dist/desktop/main.lynx.bundle`, isolated state
+`.synara-native-image-0811`, server `127.0.0.1:58090`, and a separate Lynx user
+data directory. Host logs prove the owned app loaded the isolated storage and
+connected through real `synaraRpc` calls. The interaction cell is not retained
+as PASS: the unrelated `@t3tools/lynxtron` client already owns Desktop DevTool
+port 8901, while this Lynxtron runtime registered no second client on the
+CLI-scanned 8902–8910 range. Because the supported DevTool input domain can
+drive only LynxView touch and cannot inject a file into the macOS picker, the
+real image selection, thumbnail, warning, preview, remove, and send sequence
+still requires a later exact-client run with available DevTool ownership. The
+owned Synara app and server were stopped; the unrelated 8901 client was not
+touched.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
