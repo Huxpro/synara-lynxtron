@@ -70,10 +70,22 @@
   color: var(--muted-foreground);
 }
 
-.MdLink,
-.MdLinkTarget {
+.MdLink {
   color: var(--color-token-text-link-foreground);
   font-weight: 500;
+}
+
+.MdLinkTargetIcon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-right: 3px;
+  vertical-align: middle;
+  opacity: 0.72;
+}
+
+.MdLinkTargetFavicon {
+  border-radius: 2px;
 }
 
 .MdLink.ui-hover,

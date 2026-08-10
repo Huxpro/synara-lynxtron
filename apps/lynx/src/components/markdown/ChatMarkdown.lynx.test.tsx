@@ -1,5 +1,6 @@
 import { describe, expect, it } from '@rstest/core';
 import { fireEvent, render } from '@lynx-js/react/testing-library';
+import { readFileSync } from 'node:fs';
 
 import { MarkdownFileReferenceToken } from './MarkdownFileReferenceToken.lynx';
 
@@ -41,5 +42,18 @@ describe('Lynx markdown file reference token', () => {
     const reference = elementTree.root?.querySelector('.MdInlineToken--file');
     expect(reference?.getAttribute('accessibility-traits')).toBe('text');
     expect(reference?.getAttribute('focusable')).not.toBe('true');
+  });
+
+  it('wires external links to the shared favicon slot instead of a text arrow', () => {
+    const source = readFileSync(
+      new URL('./ChatMarkdown.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(source).toContain(
+      "{external ? <ExternalLinkIcon url={url} /> : null}"
+    );
+    expect(source).not.toContain(
+      '{external ? <text className="MdLinkTarget"> ↗</text> : null}'
+    );
   });
 });

@@ -28,6 +28,7 @@ import {
   resolveLynxInlineCodeFileReference,
   resolveLynxMarkdownFileReference,
 } from './markdownFileReferences.logic';
+import { ExternalLinkIcon } from './ExternalLinkIcon.lynx';
 import { MarkdownFileReferenceToken } from './MarkdownFileReferenceToken.lynx';
 
 export interface ChatMarkdownProps {
@@ -208,11 +209,11 @@ function MarkdownLink({
   }
   return (
     <text className={interaction.className} key={nodeKey} {...interaction.eventProps}>
+      {external ? <ExternalLinkIcon url={url} /> : null}
       {renderInlineChildren(node, nodeKey, {
         ...context,
         allowComposerChips: false,
       })}
-      {external ? <text className="MdLinkTarget"> ↗</text> : null}
     </text>
   );
 }

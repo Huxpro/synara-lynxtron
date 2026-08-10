@@ -1022,6 +1022,16 @@ and uses the neutral elevated surface; code actions retain their 24px box and
 use ghost-button secondary paint rather than opacity plus scale. Focused
 contracts pass 3/3 and the Native/Desktop production build succeeds.
 
+The Markdown external-link icon follow-up replaces Lynx's trailing `↗` text
+approximation with the same leading icon decision as Web: GitHub links use the
+Central GitHub mark, ordinary HTTP links load the server-cached site favicon,
+and load failures fall back to the Central Globe identity without layout
+shift. The favicon URL stays coupled to the active WebSocket host and forwards
+its startup token for authenticated local instances. The 1em icon slot is
+decorative beneath the link's existing accessible name. URL, token, render,
+error-fallback, and consumer wiring coverage passes 7/7; both Lynx-for-Web and
+Native/Desktop production builds pass with only the existing warnings.
+
 The Composer primary-action follow-up keeps Send/Sending/Stop on its stable
 28px prominent circle. Hover and press no longer flash the entire control at
 90%/72% opacity; disabled remains intentionally visible at 20%, and the
