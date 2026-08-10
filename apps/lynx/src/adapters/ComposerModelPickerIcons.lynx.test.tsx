@@ -36,6 +36,12 @@ describe('Composer model picker icon fidelity', () => {
       'useLynxDisclosurePresence(props.open)'
     );
     expect(groupSource).toContain('disclosureContentClassName(');
+    expect(groupSource).toContain(
+      "props.open ? ' ComposerModelGroupHeaderLynx--open' : ''"
+    );
+    expect(groupSource).toContain(
+      '<view className="ComposerModelGroupCountColumnLynx">'
+    );
     expect(groupSource).not.toContain('<ChevronDownIcon');
     expect(groupSource).not.toContain(
       '{props.open ? props.children : null}'
@@ -58,6 +64,21 @@ describe('Composer model picker icon fidelity', () => {
     );
     expect(styles).toMatch(
       /\.ComposerModelGroupChevronLynx\s*\{[^}]*width:\s*12px;[^}]*height:\s*12px;[^}]*opacity:\s*0\.5;/s
+    );
+    expect(styles).toMatch(
+      /\.ComposerModelGroupLynx\s*\{[^}]*gap:\s*1px;[^}]*padding-right:\s*2px;[^}]*padding-left:\s*2px;/s
+    );
+    expect(styles).toMatch(
+      /\.ComposerModelGroupChevronLynx\s*\{[^}]*margin-right:\s*6px;/s
+    );
+    expect(styles).toMatch(
+      /\.ComposerModelGroupHeaderLynx--open \.ComposerModelGroupLabelLynx\s*\{[^}]*color:\s*var\(--foreground\);[^}]*opacity:\s*0\.75;/s
+    );
+    expect(styles).toMatch(
+      /\.ComposerModelGroupCountColumnLynx\s*\{[^}]*width:\s*40px;[^}]*justify-content:\s*flex-end;/s
+    );
+    expect(styles).toMatch(
+      /\.ComposerModelGroupCountLynx\s*\{[^}]*padding:\s*1px 6px;[^}]*border-radius:\s*999px;[^}]*background-color:\s*var\(--color-background-elevated-secondary\);[^}]*font-size:\s*9px;/s
     );
     expect(styles).toMatch(
       /\.ComposerModelGroupContentLynx\s*\{[^}]*width:\s*100%;[^}]*padding-bottom:\s*2px;/s

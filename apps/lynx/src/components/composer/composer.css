@@ -684,6 +684,8 @@
   display: flex;
   flex-direction: column;
   gap: 1px;
+  padding-right: 2px;
+  padding-left: 2px;
 }
 
 .ComposerModelGroupHeaderLynx,
@@ -695,7 +697,7 @@
 
 .ComposerModelGroupHeaderLynx {
   min-height: 26px;
-  padding: 4px 7px;
+  padding: 4px 8px;
   border-radius: 10.4px;
 }
 
@@ -718,12 +720,41 @@
 .ComposerModelGroupChevronLynx {
   width: 12px;
   height: 12px;
+  margin-right: 6px;
   flex-shrink: 0;
   opacity: 0.5;
 }
 
-.ComposerModelGroupCountLynx {
+.ComposerModelGroupLabelLynx {
+  min-width: 0;
+  overflow: hidden;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ComposerModelGroupHeaderLynx--open .ComposerModelGroupLabelLynx {
+  color: var(--foreground);
+  opacity: 0.75;
+}
+
+.ComposerModelGroupCountColumnLynx {
+  width: 40px;
   margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.ComposerModelGroupCountLynx {
+  padding: 1px 6px;
+  border-radius: 999px;
+  background-color: var(--color-background-elevated-secondary);
+  font-size: 9px;
+  font-weight: 400;
+  text-align: center;
+  opacity: 0.7;
 }
 
 .ComposerModelGroupContentLynx {

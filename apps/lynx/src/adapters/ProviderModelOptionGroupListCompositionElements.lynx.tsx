@@ -45,7 +45,9 @@ export function ProviderModelCollapsibleGroupElement(props: {
 }) {
   const contentPresent = useLynxDisclosurePresence(props.open);
   const interaction = useLynxInteractiveState({
-    baseClassName: 'ComposerModelGroupHeaderLynx',
+    baseClassName: `ComposerModelGroupHeaderLynx${
+      props.open ? ' ComposerModelGroupHeaderLynx--open' : ''
+    }`,
     accessibleLabel: `${props.open ? 'Collapse' : 'Expand'} ${props.label} models`,
     accessibilityValue: props.open ? 'Expanded' : 'Collapsed',
     onActivate: () => {
@@ -69,7 +71,9 @@ export function ProviderModelCollapsibleGroupElement(props: {
           size={12}
         />
         <text className="ComposerModelGroupLabelLynx">{props.label}</text>
-        <text className="ComposerModelGroupCountLynx">{props.count}</text>
+        <view className="ComposerModelGroupCountColumnLynx">
+          <text className="ComposerModelGroupCountLynx">{props.count}</text>
+        </view>
       </view>
       {contentPresent ? (
         <view
