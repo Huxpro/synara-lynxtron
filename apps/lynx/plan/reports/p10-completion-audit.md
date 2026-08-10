@@ -319,7 +319,7 @@ Current responsive disposition:
 | Settings heading semantics | one Native heading primitive preserves every current Web Settings h1/h2/h3 counterpart across generic panels, private Appearance/General/Git/provider layouts, Profile identity and sections, Provider Usage, and Theme Pack titles instead of leaving them as undifferentiated text | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Shared interactive names | high-frequency Composer, Kanban, and Pull Request controls route labels and selected/expanded/on-off state through `useLynxInteractiveState`, so Native accessibility metadata no longer depends only on Web `aria-label` attributes | PASS — SHARED NATIVE ACCESSIBILITY CONTRACT |
 | Actionable primitive semantics | `useLynxInteractiveState` now exposes every actionable control as a Native accessibility button even when its name is derived from visible text; passive hover owners remain excluded and explicit `accessibilityElement: false` remains authoritative | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
-| Empty-thread context semantics | project, environment mode, and branch chips are exposed as static draft metadata rather than falsely disabled controls; Temporary remains the tray's sole pressed-state action | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
+| Empty-thread context semantics | project and environment mode are static draft metadata; a branch chip renders only for a real snapshot branch; Temporary remains the tray's sole pressed-state action | PASS — CURRENT-HEAD BROWSER EVIDENCE |
 | Shared Menu icon identity | default checkbox/radio indicators and submenu affordances use generated 12px Check and 14px ChevronRight icons, removing Unicode state glyphs from every Menu consumer | PASS — SHARED PRIMITIVE |
 | Sidebar completed-status identity | completed threads use Web's filled `circle-check` Central asset at the canonical 15px trailing role instead of a hand-built green dot plus text checkmark | PASS — CURRENT PRODUCT SURFACES |
 | Sidebar thread metadata identity | fork, handoff, worktree, and automation badges use the canonical 12px Fork, GitBranch, split-arrow, and Clock assets instead of Unicode approximations | PASS — CURRENT PRODUCT SURFACES |
@@ -864,9 +864,12 @@ The same canonical fixture exposed a separate content projection defect: its
 server snapshot has `branch:null`, Web correctly omits the branch selector, but
 Lynx invented a `main` status chip. The context tray now renders branch
 metadata only when the snapshot supplies a branch and otherwise leaves the
-slot absent. Rendered regressions cover both null and exact named branches;
-the combined empty-thread suites pass 5/5 and the Native/Desktop production
-build succeeds.
+slot absent. Current-head paired evidence in
+`shots/2026-08-10/empty-thread-null-branch-current/` retains the same
+`Branch Current / Local / Temporary` content and `736x58` tray in Web and
+Lynx-for-Web, with no standalone `main` token. Rendered regressions cover both
+null and exact named branches; the combined empty-thread suites pass 5/5 and
+the Native/Desktop production build succeeds.
 
 The Native arbitrary text-range selection investigation reached an upstream
 Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's
