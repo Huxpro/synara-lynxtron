@@ -290,6 +290,7 @@ Current responsive disposition:
 | Appearance segmented selection | theme and density segment buttons project selected state through Lynx UI `buttonProps` in addition to Web `aria-checked`, matching the visible active segment in Native accessibility | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Shared Menu selection semantics | radio, checkbox, and switch menu items publish Web menuitem roles plus Native selected/checked role, state, and value on the existing focus/activation owner instead of exposing only a visual checkmark or track | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
 | Settings switch semantics | General, Appearance, Provider Picker, and Theme Pack custom switches expose Native switch role plus checked/disabled state on their existing interaction owner instead of presenting only as generic buttons with On/Off text | PASS — CURRENT PRODUCT IMPLEMENTATION |
+| Integration project selection | project-scope choices expose Native checkbox role and checked state on the existing named interaction owner, matching the visual checkbox and Selected/Not selected value | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Settings heading semantics | one Native heading primitive preserves every current Web Settings h1/h2/h3 counterpart across generic panels, private Appearance/General/Git/provider layouts, Profile identity and sections, Provider Usage, and Theme Pack titles instead of leaving them as undifferentiated text | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Shared interactive names | high-frequency Composer, Kanban, and Pull Request controls route labels and selected/expanded/on-off state through `useLynxInteractiveState`, so Native accessibility metadata no longer depends only on Web `aria-label` attributes | PASS — SHARED NATIVE ACCESSIBILITY CONTRACT |
 | Actionable primitive semantics | `useLynxInteractiveState` now exposes every actionable control as a Native accessibility button even when its name is derived from visible text; passive hover owners remain excluded and explicit `accessibilityElement: false` remains authoritative | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
@@ -623,6 +624,11 @@ General controls also publish disabled state. The non-actionable AppSnap
 placeholder retains its separate disabled-state contract. Focused regressions
 pass (21/21), both production bundles build, `git diff --check` passes, and
 React Doctor 0.9.11 reports zero diagnostics against `db358579`.
+The Integration project-choice follow-up adds Native checkbox role and checked
+state to the existing named interaction owner while preserving its visual
+checkmark and Selected/Not selected value. The focused Integrations suite
+passes (3/3), both production bundles build, `git diff --check` passes, and
+React Doctor 0.9.11 reports zero diagnostics against `5d4da83e`.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

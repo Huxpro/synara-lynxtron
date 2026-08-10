@@ -50,7 +50,13 @@ function ProjectChoice(props: {
     onActivate: props.onChange,
   });
   return (
-    <view className={interaction.className} {...interaction.eventProps}>
+    <view
+      className={interaction.className}
+      aria-checked={props.checked}
+      accessibility-role="checkbox"
+      accessibility-state={{ checked: props.checked }}
+      {...interaction.eventProps}
+    >
       <text className="SettingsIntegrationsProjectTitle">{props.title}</text>
       <view
         className={`SettingsIntegrationsCheckbox${

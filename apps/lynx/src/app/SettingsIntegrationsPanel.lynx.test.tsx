@@ -28,6 +28,10 @@ describe('Settings Integrations fidelity', () => {
     expect(panelSource).toContain('No connected agents');
     expect(panelSource).toContain('<CheckIcon size={12}');
     expect(panelSource).not.toContain('>✓<');
+    expect(panelSource).toContain('accessibility-role="checkbox"');
+    expect(panelSource).toContain(
+      'accessibility-state={{ checked: props.checked }}'
+    );
     expect(panelSource).toContain('useLynxDisclosurePresence(!allProjects)');
     expect(panelSource).toContain('useLynxDisclosurePresence(advancedOpen)');
     expect(panelSource).toContain('disclosureContentClassName(');
