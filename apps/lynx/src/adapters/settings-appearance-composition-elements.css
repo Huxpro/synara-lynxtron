@@ -153,10 +153,6 @@
   box-shadow: 0 0 0 2px var(--ring);
 }
 
-.SharedSettingsAppearanceSwitch.ui-pressed {
-  opacity: 0.8;
-}
-
 .SharedSettingsAppearanceSwitchThumb {
   width: 16px;
   height: 16px;

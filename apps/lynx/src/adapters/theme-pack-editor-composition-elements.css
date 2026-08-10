@@ -445,10 +445,6 @@
   box-shadow: 0 0 0 2px var(--ring);
 }
 
-.SharedThemePackSwitch.ui-pressed {
-  opacity: 0.8;
-}
-
 .SharedThemePackSwitchThumb {
   width: 16px;
   height: 16px;

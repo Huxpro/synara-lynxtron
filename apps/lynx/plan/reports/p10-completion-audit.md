@@ -976,6 +976,13 @@ primary and destructive buttons remain stable on their own fills. Button,
 Dialog, Theme Pack, Composer, and Settings consumers pass 28/28 and the
 Native/Desktop production build succeeds.
 
+The custom Switch follow-up removes the same whole-control dim from General,
+Appearance, Provider Picker, Theme Pack, and Kanban task switches. Web keeps
+the track stable and deforms only the thumb during press; Lynx now keeps its
+track/label stable rather than flashing the entire switch at 80–82% opacity.
+The aggregate switch contract plus consumer suites pass 20/20 and the
+Native/Desktop production build succeeds.
+
 The Native arbitrary text-range selection investigation reached an upstream
 Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's
 documented contract exposes `text-selection={true}`, `flatten={false}`,

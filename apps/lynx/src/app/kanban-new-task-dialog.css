@@ -155,10 +155,6 @@
   box-shadow: 0 0 0 2px var(--ring);
 }
 
-.KanbanNewTaskDraftSwitch.ui-pressed {
-  opacity: 0.82;
-}
-
 .KanbanNewTaskDraftSwitchThumb {
   width: 16px;
   height: 16px;

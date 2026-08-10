@@ -123,10 +123,6 @@
   box-shadow: 0 0 0 2px var(--ring);
 }
 
-.SharedSettingsGeneralSwitch.ui-pressed {
-  opacity: 0.8;
-}
-
 .SharedSettingsGeneralSwitch--disabled {
   opacity: 0.48;
 }

@@ -136,10 +136,6 @@
   box-shadow: 0 0 0 2px var(--ring);
 }
 
-.SharedSettingsProviderPickerSwitch.ui-pressed {
-  opacity: 0.8;
-}
-
 .SharedSettingsProviderPickerSwitchThumb {
   width: 16px;
   height: 16px;
