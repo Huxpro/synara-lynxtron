@@ -102,12 +102,12 @@ export function SettingsArchivedPanel() {
         ? snapshotQuery.error.message
         : 'Archived threads could not be loaded.';
     return (
-      <view
-        className="SettingsArchivedState SettingsArchivedState--error"
-        accessibility-element
-        accessibility-role="alert"
-      >
-        <text className="SettingsArchivedStateText">
+      <view className="SettingsArchivedState SettingsArchivedState--error">
+        <text
+          className="SettingsArchivedStateText"
+          accessibility-element
+          accessibility-role="alert"
+        >
           {errorMessage}
         </text>
         <Button

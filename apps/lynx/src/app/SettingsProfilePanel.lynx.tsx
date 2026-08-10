@@ -931,12 +931,12 @@ export function SettingsProfilePanel() {
   }
   if (!coreQuery.data) {
     return (
-      <view
-        className="SettingsProfileState"
-        accessibility-element
-        accessibility-role="alert"
-      >
-        <text className="SettingsProfileStateText">
+      <view className="SettingsProfileState">
+        <text
+          className="SettingsProfileStateText"
+          accessibility-element
+          accessibility-role="alert"
+        >
           Couldn’t load your local stats.
         </text>
         <Button

@@ -284,6 +284,7 @@ Current responsive disposition:
 | Form error semantics | Kanban mutation, Git commit message, and custom-model slug inputs expose dynamic `aria-invalid` state whenever their adjacent retained error message is present | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Error announcement semantics | retained Kanban mutation, Git action, and custom-model errors are Native accessibility alerts in addition to marking their owning inputs invalid | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Settings load failure announcements | retained Profile, Worktrees, Skills, and Archived query failures are Native accessibility alerts while their initial loading states remain non-assertive | PASS — CURRENT PRODUCT IMPLEMENTATION |
+| Settings retry alert ownership | Profile, Worktrees, and Archived load alerts live on error text nodes rather than action-containing containers, preserving Retry buttons as separate reachable Native controls | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Settings mutation notice announcements | Advanced, Integrations, Provider Tools, Worktrees, Skills, and Archived retained mutation failures are Native alerts; successful repair/copy confirmations remain non-assertive through explicit notice intent | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Profile dialog feedback semantics | image-picker and share/export failures are Native alerts, while copied/saved/cancelled outcomes retain explicit success/neutral intent and remain non-assertive | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Profile avatar color selection | each named color-swatch button exposes Selected/Not selected Native accessibility value without replacing its actionable button trait | PASS — CURRENT PRODUCT IMPLEMENTATION |
@@ -604,6 +605,12 @@ initial loading states assertive. Retry controls and focus behavior remain
 unchanged. Focused load-error/Profile regressions pass (6/6), both production
 bundles build, `git diff --check` passes, and React Doctor 0.9.11 reports zero
 diagnostics against `4bc471f6`.
+The retry-ownership follow-up moves Profile, Worktrees, and Archived load-alert
+semantics from containers onto their error text nodes so sibling Retry buttons
+remain independent reachable Native controls. Focused alert/Profile/
+Worktrees/Archived regressions pass (13/13), both production bundles build,
+`git diff --check` passes, and React Doctor 0.9.11 reports zero diagnostics
+against `bbcbd93d`.
 The retained mutation-notice follow-up marks Advanced recovery/open failures,
 Integration create/revoke/resume failures, provider update/settings failures,
 and destructive Worktree failures as Native alerts. Advanced repair success

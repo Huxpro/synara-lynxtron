@@ -12,6 +12,19 @@ describe('Settings load error semantics', () => {
       const source = readFileSync(new URL(file, import.meta.url), 'utf8');
       expect(source).toContain('accessibility-role="alert"');
     }
+    for (const file of [
+      './SettingsProfilePanel.lynx.tsx',
+      './SettingsWorktreesPanel.lynx.tsx',
+      './SettingsArchivedPanel.lynx.tsx',
+    ]) {
+      const source = readFileSync(new URL(file, import.meta.url), 'utf8');
+      expect(source).not.toMatch(
+        /<view[^>]*accessibility-role="alert"[\s\S]{0,320}<Button/
+      );
+      expect(source).toMatch(
+        /<text[\s\S]{0,140}accessibility-role="alert"/
+      );
+    }
 
     const combinedSource = [
       './SettingsProfilePanel.lynx.tsx',
