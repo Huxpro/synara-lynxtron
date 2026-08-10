@@ -25,4 +25,15 @@ describe('Pull Request summary disclosure fidelity', () => {
       /\.SharedPrSummarySectionHeader\.ui-(?:hover|pressed)[^{]*\{[^}]*(?:background-color|opacity):/s
     );
   });
+
+  it('delegates branch anatomy to the lightweight branch-row component', () => {
+    const source = readFileSync(
+      new URL('./PullRequestSummaryCompositionElements.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(source).toContain('<PullRequestSummaryBranchRow');
+    expect(source).not.toContain(
+      '`${props.headBranch} › ${props.baseBranch}'
+    );
+  });
 });

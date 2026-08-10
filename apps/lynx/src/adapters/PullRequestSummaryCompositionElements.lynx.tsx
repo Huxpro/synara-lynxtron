@@ -14,6 +14,7 @@ import {
 } from '../platform/motion.lynx';
 import { PULL_REQUEST_CHECK_STATUS_LABELS } from '@synara-web/components/pullRequest/pullRequestSummary.logic';
 import { PullRequestCommentComposer } from './PullRequestCommentComposer.lynx';
+import { PullRequestSummaryBranchRow } from './PullRequestSummaryBranchRow.lynx';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 import './pull-request-summary-composition-elements.css';
 
@@ -82,11 +83,6 @@ type PullRequestSummaryMetaRowProps =
     };
 
 function metaValue(props: PullRequestSummaryMetaRowProps): string {
-  if (props.kind === 'branch') {
-    return `${props.headBranch} › ${props.baseBranch}  +${props.additions.toLocaleString(
-      'en-US'
-    )} -${props.deletions.toLocaleString('en-US')}`;
-  }
   if (props.kind === 'reviewers') {
     return props.reviewers.length
       ? props.reviewers.map((actor) => actor.login).join(', ')
@@ -98,6 +94,17 @@ function metaValue(props: PullRequestSummaryMetaRowProps): string {
 export function PullRequestSummaryMetaRowElement(
   props: PullRequestSummaryMetaRowProps
 ) {
+  if (props.kind === 'branch') {
+    return (
+      <PullRequestSummaryBranchRow
+        additions={props.additions}
+        baseBranch={props.baseBranch}
+        deletions={props.deletions}
+        headBranch={props.headBranch}
+        label={props.label}
+      />
+    );
+  }
   return (
     <view className="SharedPrSummaryMetaRow">
       <text className="SharedPrSummaryMetaLabel">{props.label}</text>

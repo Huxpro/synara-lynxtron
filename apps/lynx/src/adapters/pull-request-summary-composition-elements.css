@@ -69,6 +69,25 @@
   color: var(--muted-foreground);
 }
 
+.SharedPrSummaryMetaLabel--icon {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+.SharedPrSummaryMetaLabelIcon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.SharedPrSummaryMetaLabelText {
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-sm);
+  line-height: 18px;
+}
+
 .SharedPrSummaryMetaValue {
   min-width: 0;
   flex: 1;
@@ -76,6 +95,53 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.SharedPrSummaryBranchValue {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+.SharedPrSummaryBranchName {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--foreground);
+  font-size: var(--app-font-size-ui-sm);
+  line-height: 18px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.SharedPrSummaryBranchArrow {
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-sm);
+}
+
+.SharedPrSummaryDiffStat {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: row;
+  gap: 4px;
+  margin-left: 4px;
+}
+
+.SharedPrSummaryDiffStat--addition,
+.SharedPrSummaryDiffStat--deletion {
+  font-size: var(--app-font-size-ui-sm);
+  line-height: 18px;
+}
+
+.SharedPrSummaryDiffStat--addition {
+  color: var(--color-decoration-added);
+}
+
+.SharedPrSummaryDiffStat--deletion {
+  color: var(--color-decoration-deleted);
 }
 
 .SharedPrSummaryMetaValue--warning {
