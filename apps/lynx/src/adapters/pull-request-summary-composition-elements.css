@@ -336,6 +336,71 @@
   padding-bottom: 12px;
 }
 
+.SharedPrSummaryFinding {
+  margin-bottom: 8px;
+}
+
+.SharedPrSummaryFindingTitle {
+  display: block;
+  color: var(--foreground);
+  font-size: var(--app-font-size-ui);
+  line-height: 18px;
+  font-weight: 600;
+}
+
+.SharedPrSummaryFindingSeverity {
+  display: block;
+  font-size: var(--app-font-size-ui-sm);
+  line-height: 18px;
+  font-weight: 500;
+}
+
+.SharedPrSummaryFindingSeverity--high {
+  color: var(--destructive);
+}
+
+.SharedPrSummaryFindingSeverity--medium {
+  color: var(--color-text-status-warning);
+}
+
+.SharedPrSummaryFindingSeverity--low {
+  color: var(--muted-foreground);
+}
+
+.SharedPrSummaryCommentActions {
+  display: flex;
+  width: 100%;
+  margin-top: 8px;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.SharedPrSummaryCommentReply {
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.SharedPrSummaryCommentReply.ui-hover,
+.SharedPrSummaryCommentReply.ui-pressed {
+  background-color: var(--muted);
+}
+
+.SharedPrSummaryCommentReply.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.SharedPrSummaryCommentReplyText {
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-sm);
+  line-height: 18px;
+  font-weight: 500;
+}
+
+.SharedPrSummaryCommentReply.ui-hover .SharedPrSummaryCommentReplyText,
+.SharedPrSummaryCommentReply.ui-pressed .SharedPrSummaryCommentReplyText {
+  color: var(--foreground);
+}
+
 .SharedPrSummaryCommentPath {
   display: block;
   max-width: 100%;

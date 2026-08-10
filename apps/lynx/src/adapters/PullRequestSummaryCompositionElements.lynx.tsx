@@ -282,6 +282,7 @@ export function PullRequestSummaryCommentsElement(props: {
             comment={comment}
             defaultOpen={index >= props.detail.comments.length - 2}
             key={comment.id}
+            prUrl={props.detail.url}
             workspaceRoot={props.detail.workspaceRoot}
           />
         ))

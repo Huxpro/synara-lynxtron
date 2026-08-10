@@ -49,6 +49,18 @@ describe('Pull Request summary disclosure fidelity', () => {
     expect(commentSource).toContain('disclosureChevronClassName(');
     expect(commentSource).toContain('disclosureContentClassName(');
     expect(commentSource).toContain('cwd={props.workspaceRoot}');
+    expect(commentSource).toContain(
+      'parseFindingComment(props.comment.body)'
+    );
+    expect(commentSource).toContain('{finding.title}');
+    expect(commentSource).toContain('{finding.severity} Severity');
+    expect(commentSource).toContain(
+      'const replyUrl = props.comment.url ?? props.prUrl'
+    );
+    expect(commentSource).toContain(
+      'void platformWindow.openExternal(replyUrl)'
+    );
+    expect(source).toContain('prUrl={props.detail.url}');
     expect(source).toContain('disclosureContentClassName(');
     expect(source).toContain('disclosureChevronClassName(');
     expect(source).toContain('<ChevronRightIcon');
