@@ -63,10 +63,10 @@ describe('Composer token icon fidelity', () => {
       /\.ComposerChip--agent-mention\s*\{[^}]*padding:\s*2px 6px;[^}]*border-radius:\s*var\(--radius-md\);/s
     );
     expect(styles).toMatch(
-      /\.ComposerChip--terminal-context\s*\{[^}]*padding:\s*2px;[^}]*border:\s*1px solid var\(--color-border-light\);[^}]*border-radius:\s*4px;[^}]*background-color:\s*var\(--sidebar-accent-active\);/s
+      /\.ComposerChip--terminal-context\s*\{[^}]*margin-right:\s*0;[^}]*margin-left:\s*0;[^}]*padding:\s*2px;[^}]*border:\s*1px solid var\(--color-border-light\);[^}]*border-radius:\s*4px;[^}]*background-color:\s*var\(--sidebar-accent-active\);/s
     );
     expect(styles).toMatch(
-      /\.ComposerChip--terminal-context \.ComposerChipIcon\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;/s
+      /\.ComposerChip--terminal-context \.ComposerChipIcon\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*opacity:\s*0\.85;/s
     );
     expect(styles).not.toMatch(
       /\.ComposerChip\s*\{[^}]*background-color:\s*var\(--accent\);/s
