@@ -13,7 +13,7 @@ import terminalSvg from '@synara-central-icons/console.svg?raw';
 
 import { useComposerDraftStore } from '../../adapters/composerDraftStore.lynx';
 import { useTheme } from '../../adapters/useTheme.lynx';
-import { ExternalLinkIcon } from '../../lib/icons.lynx';
+import { ClockIcon, ExternalLinkIcon } from '../../lib/icons.lynx';
 import { colorizeLynxSvg } from '../../lib/themedSvg.lynx';
 import { dialogs } from '../../platform/dialogs';
 import { onGlobalEvent } from '../../platform/bridge';
@@ -57,7 +57,8 @@ import { ComposerLifecycleStatus } from '@synara-web/components/chat/ComposerLif
 import {
   formatComposerSkillChipLabel,
   formatComposerSlashCommandChipLabel,
-} from '@synara-web/components/composerInlineChip';
+  resolveAgentChipColor,
+} from '@synara-web/components/composerInlineChip.logic';
 import {
   buildModelSelection,
   buildNextProviderOptions,
@@ -157,6 +158,7 @@ function ComposerTokenIcon(props: {
     | ComposerTokenSegment['type']
     | NativeComposerDisplayToken['kind'];
   readonly pathValue?: string;
+  readonly color?: string;
 }) {
   const { svgColors } = useTheme();
   if (props.kind === 'mention') {
@@ -168,10 +170,22 @@ function ComposerTokenIcon(props: {
     );
   }
   if (props.kind === 'slash-command') {
-    return <text className="ComposerChipGlyph">/</text>;
+    return (
+      <ClockIcon
+        className="ComposerChipIcon"
+        color="var(--info-foreground)"
+        size={12}
+      />
+    );
   }
   if (props.kind === 'link') {
-    return <ExternalLinkIcon className="ComposerChipIcon" size={12} />;
+    return (
+      <ExternalLinkIcon
+        className="ComposerChipIcon"
+        color="var(--info-foreground)"
+        size={12}
+      />
+    );
   }
   const content =
     props.kind === 'skill'
@@ -182,7 +196,13 @@ function ComposerTokenIcon(props: {
   return (
     <svg
       className="ComposerChipIcon"
-      content={colorizeLynxSvg(content, svgColors.foreground)}
+      content={colorizeLynxSvg(
+        content,
+        props.color ??
+          (props.kind === 'terminal-context'
+            ? svgColors.foreground
+            : 'var(--info-foreground)')
+      )}
     />
   );
 }
@@ -192,13 +212,33 @@ function ComposerChip({
 }: {
   readonly segment: ComposerTokenSegment;
 }) {
+  const agentColor =
+    segment.type === 'agent-mention'
+      ? resolveAgentChipColor(segment.color)
+      : undefined;
   return (
-    <view className={`ComposerChip ComposerChip--${segment.type}`}>
+    <view
+      className={`ComposerChip ComposerChip--${segment.type}`}
+      style={
+        agentColor
+          ? {
+              backgroundColor: agentColor.bg,
+              color: agentColor.text,
+            }
+          : undefined
+      }
+    >
       <ComposerTokenIcon
         kind={segment.type}
         pathValue={segment.type === 'mention' ? segment.path : undefined}
+        color={agentColor?.text}
       />
-      <text className="ComposerChipLabel">{segmentLabel(segment)}</text>
+      <text
+        className="ComposerChipLabel"
+        style={agentColor ? { color: agentColor.text } : undefined}
+      >
+        {segmentLabel(segment)}
+      </text>
     </view>
   );
 }

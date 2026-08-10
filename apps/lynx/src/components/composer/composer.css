@@ -237,25 +237,27 @@
   flex-direction: row;
   align-items: center;
   flex-shrink: 0;
-  margin-right: 6px;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
+.ComposerChip--mention,
+.ComposerChip--skill,
+.ComposerChip--slash-command,
+.ComposerChip--link {
+  background-color: transparent;
+}
+
+.ComposerChip--agent-mention {
+  padding: 2px 6px;
   border-radius: var(--radius-md);
 }
 
-.ComposerChip {
-  padding: 5px 8px;
-  background-color: var(--accent);
-}
-
-.ComposerChip--slash-command {
-  background-color: var(--primary);
-}
-
-.ComposerChipGlyph {
-  color: var(--primary);
-  font-family: var(--font-mono-family);
-  font-size: 10px;
-  font-weight: 700;
-  margin-right: 4px;
+.ComposerChip--terminal-context {
+  padding: 2px;
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-sm);
+  background-color: var(--sidebar-accent-active);
 }
 
 .ComposerChipIcon {
@@ -265,15 +267,26 @@
   flex-shrink: 0;
 }
 
-.ComposerChip--slash-command .ComposerChipGlyph,
-.ComposerChip--slash-command .ComposerChipLabel {
-  color: var(--primary-foreground);
+.ComposerChip--agent-mention .ComposerChipIcon,
+.ComposerChip--terminal-context .ComposerChipIcon {
+  margin-right: 2px;
 }
 
 .ComposerChipLabel {
+  color: var(--info-foreground);
+  font-size: var(--type-composer-editor-size);
+  line-height: var(--type-composer-editor-line-height);
+  font-weight: 500;
+}
+
+.ComposerChip--agent-mention .ComposerChipLabel {
+  font-size: var(--type-composer-editor-size);
+}
+
+.ComposerChip--terminal-context .ComposerChipLabel {
   color: var(--foreground);
   font-size: 11px;
-  font-weight: 600;
+  line-height: 1.1;
 }
 
 .ComposerFooterRowLynx {
