@@ -1076,6 +1076,14 @@ Lynx-for-Web and Native/Desktop production builds succeed, and
 directory disclosure row remains visually pending until the real product path
 can expose it in both clients.
 
+A follow-up current-head PR Code attempt reused the same isolated project and
+opened the real Web `Pull requests` route through its rendered sidebar control.
+The `Open`, `Closed`, and `Merged` filters all completed without page errors,
+but the authenticated repository projection returned no rows in any state.
+Because no real pull request could be selected, no diff was fetched and the
+Code disclosure cell remains visually pending. No pull-request fixture or
+direct persistence edit was introduced to manufacture evidence.
+
 The Native arbitrary text-range selection investigation reached an upstream
 Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's
 documented contract exposes `text-selection={true}`, `flatten={false}`,
