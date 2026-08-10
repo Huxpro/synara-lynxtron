@@ -844,6 +844,22 @@ success without dispatching events, as confirmed against both Settings
 navigation and the Project Picker's `aria-expanded` state. No direct theme
 state or Runtime/DOM mutation was used to manufacture those cells.
 
+The `3b9e343c` Native interaction follow-up closes the application-layer
+titlebar drag regression behind the reported hover/drag flashing: every
+focusable titlebar control now owns `-x-app-region:no-drag`, while the blank
+titlebar surface remains draggable. The focused contract protects both
+requirements. This does not claim that unrelated Lynxtron compositor failures
+are impossible.
+
+The current empty-thread project heading refresh is retained in
+`shots/2026-08-10/empty-thread-heading-current/`. A real project named
+`Environment Current` exposed that the historical `400px` Lynx heading
+contract wrapped to `400x70` while Web remained one `545.25x34.5` line. The
+Lynx adapter now maps Web's centered `736px` chat frame and lets project copy
+fill it. Final frame and Composer geometry share `x=400,width=736`; the Lynx
+heading is one centered `688x35` line. Focused regressions pass 3/3 and the
+final Lynx-for-Web production build succeeds.
+
 The Native arbitrary text-range selection investigation reached an upstream
 Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's
 documented contract exposes `text-selection={true}`, `flatten={false}`,

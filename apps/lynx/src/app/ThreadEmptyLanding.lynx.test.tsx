@@ -74,7 +74,10 @@ describe('empty Thread landing fidelity', () => {
       "projectName ? ' CenteredEmptyLandingHeading--project' : ''"
     );
     expect(headingStyles).toMatch(
-      /\.CenteredEmptyLandingHeading--project\s*\{[^}]*width:\s*400px;/s
+      /\.CenteredEmptyLandingFrame\s*\{[^}]*width:\s*100%;[^}]*max-width:\s*736px;[^}]*box-sizing:\s*border-box;[^}]*align-self:\s*center;/s
+    );
+    expect(headingStyles).toMatch(
+      /\.CenteredEmptyLandingHeading--project\s*\{[^}]*width:\s*100%;/s
     );
     expect(headingStyles).toMatch(
       /\.SliceRoot--viewport-compact \.CenteredEmptyLandingHeading\s*\{[^}]*width:\s*calc\(100% - 48px\);/s

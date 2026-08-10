@@ -1,0 +1,4 @@
+8c279c0e399f00e4cbeef260ca65923d6628d15a249607f7e9bac4848607fafb  apps/lynx/dist/web/main.web.bundle
+a209ba85773882b79b8147779c406fbb67a12dcb723ba7c4ea7ca3168e651cc8  /tmp/synara-environment-current-server/dev/state.sqlite
+shots/2026-08-10/empty-thread-heading-current/web.png:  PNG image data, 1280 x 820, 8-bit/color RGB, non-interlaced
+shots/2026-08-10/empty-thread-heading-current/lynx.png: PNG image data, 1280 x 820, 8-bit/color RGB, non-interlaced
