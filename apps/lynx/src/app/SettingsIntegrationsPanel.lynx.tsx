@@ -350,6 +350,11 @@ export function SettingsIntegrationsPanel() {
                 variant="ghost"
                 aria-label="Review advanced permissions"
                 aria-expanded={advancedOpen}
+                buttonProps={{
+                  'accessibility-value': advancedOpen
+                    ? 'Expanded'
+                    : 'Collapsed',
+                }}
                 onClick={() => setAdvancedOpen((current) => !current)}
               >
                 <text className="LxButton__text">Review</text>

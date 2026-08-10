@@ -37,6 +37,11 @@ describe('Settings Integrations fidelity', () => {
     expect(panelSource).toContain('disclosureContentClassName(');
     expect(panelSource).toContain('disclosureChevronClassName(');
     expect(panelSource).toContain('aria-expanded={advancedOpen}');
+    expect(panelSource).toContain(
+      "'accessibility-value': advancedOpen"
+    );
+    expect(panelSource).toContain("? 'Expanded'");
+    expect(panelSource).toContain(": 'Collapsed'");
     expect(panelSource).toContain('<text className="LxButton__text">Review</text>');
   });
 
