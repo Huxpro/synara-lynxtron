@@ -26,6 +26,7 @@ import path from 'node:path';
 import {
   PROVIDER_SEND_TURN_MAX_ATTACHMENTS,
   PROVIDER_SEND_TURN_MAX_FILE_BYTES,
+  PROVIDER_SEND_TURN_MAX_IMAGE_BYTES,
 } from '@synara/contracts/attachmentLimits';
 import {
   ATTACHMENT_CANCEL_ROUTE_PATH,
@@ -39,7 +40,9 @@ import {
 } from './shellRuntime';
 import { resolveSynaraWsUrl } from './runtimeEndpoint.logic';
 import {
+  attachmentTypeForMimeType,
   resolveAttachmentUploadPayload,
+  resolveImagePreviewSize,
   validatePickedFileForUpload,
 } from './attachmentHost.logic';
 
@@ -66,6 +69,7 @@ interface PickedFileRecord {
 }
 
 const PICKED_FILE_TTL_MS = 30 * 60 * 1_000;
+const PICKED_IMAGE_PREVIEW_MAX_DIMENSION = 512;
 const pickedFiles = new Map<string, PickedFileRecord>();
 
 function mimeTypeForPath(filePath: string): string {
@@ -309,8 +313,15 @@ export async function handleDialogs(
             errors.push(`'${name}' is not a regular file.`);
             continue;
           }
-          if (stat.size > PROVIDER_SEND_TURN_MAX_FILE_BYTES) {
-            errors.push(`'${name}' exceeds the 25MB attachment limit.`);
+          const mimeType = mimeTypeForPath(resolvedPath);
+          const attachmentType = attachmentTypeForMimeType(mimeType);
+          const maxBytes =
+            attachmentType === 'image'
+              ? PROVIDER_SEND_TURN_MAX_IMAGE_BYTES
+              : PROVIDER_SEND_TURN_MAX_FILE_BYTES;
+          const sizeLimitLabel = attachmentType === 'image' ? '10MB' : '25MB';
+          if (stat.size > maxBytes) {
+            errors.push(`'${name}' exceeds the ${sizeLimitLabel} attachment limit.`);
             continue;
           }
           const token = randomUUID();
@@ -318,7 +329,7 @@ export async function handleDialogs(
             token,
             path: resolvedPath,
             name,
-            mimeType: mimeTypeForPath(resolvedPath),
+            mimeType,
             sizeBytes: stat.size,
             expiresAt: Date.now() + PICKED_FILE_TTL_MS,
           } satisfies PickedFileRecord;
@@ -430,6 +441,34 @@ export async function handleAttachments(
   if (method === 'attachmentsReleasePickedFile') {
     return JSON.stringify({ released: pickedFiles.delete(String(data.token ?? '')) });
   }
+  if (method === 'attachmentsGetPickedImagePreview') {
+    const token = String(data.token ?? '');
+    const file = pickedFiles.get(token);
+    if (!file) throw new Error('The selected image is no longer available. Pick it again.');
+    if (attachmentTypeForMimeType(file.mimeType) !== 'image') {
+      throw new Error(`'${file.name}' is not an image attachment.`);
+    }
+    const currentStat = fs.statSync(file.path);
+    validatePickedFileForUpload({
+      file,
+      currentIsFile: currentStat.isFile(),
+      currentSizeBytes: currentStat.size,
+      maxBytes: PROVIDER_SEND_TURN_MAX_IMAGE_BYTES,
+      sizeLimitLabel: '10MB',
+    });
+    const image = nativeImage.createFromPath(file.path);
+    if (image.isEmpty()) throw new Error(`Unable to decode '${file.name}' as an image.`);
+    const previewSize = resolveImagePreviewSize({
+      ...image.getSize(),
+      maxDimension: PICKED_IMAGE_PREVIEW_MAX_DIMENSION,
+    });
+    const preview =
+      previewSize.width === image.getSize().width &&
+      previewSize.height === image.getSize().height
+        ? image
+        : image.resize({ ...previewSize, quality: 'good' });
+    return JSON.stringify({ dataUrl: preview.toDataURL() });
+  }
   if (method === 'attachmentsCancel') {
     const attachmentId = String(data.attachmentId ?? '');
     if (!attachmentId || attachmentId.length > 128 || !/^[a-z0-9_-]+$/i.test(attachmentId)) {
@@ -462,15 +501,18 @@ export async function handleAttachments(
     file,
     currentIsFile: currentStat.isFile(),
     currentSizeBytes: currentStat.size,
+    maxBytes:
+      attachmentTypeForMimeType(file.mimeType) === 'image'
+        ? PROVIDER_SEND_TURN_MAX_IMAGE_BYTES
+        : PROVIDER_SEND_TURN_MAX_FILE_BYTES,
+    sizeLimitLabel: attachmentTypeForMimeType(file.mimeType) === 'image' ? '10MB' : '25MB',
   });
   const bytes = await fs.promises.readFile(file.path);
-  if (bytes.byteLength > PROVIDER_SEND_TURN_MAX_FILE_BYTES) {
-    throw new Error(`'${file.name}' exceeds the 25MB attachment limit.`);
-  }
+  const attachmentType = attachmentTypeForMimeType(file.mimeType);
   const response = await fetch(
     attachmentHttpUrl(ATTACHMENT_UPLOAD_ROUTE_PATH, {
       threadId,
-      type: 'file',
+      type: attachmentType,
       name: file.name,
       mimeType: file.mimeType,
     }),
