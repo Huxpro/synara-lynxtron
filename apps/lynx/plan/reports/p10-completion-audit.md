@@ -279,6 +279,7 @@ Current responsive disposition:
 | Composer sending-state identity | the primary action uses Web's exact 14-viewBox, 12px animated partial-circle spinner instead of a static `•••` text approximation; send and stop states retain their existing canonical arrow and square identities | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
 | Composer draft-attachment warning | non-persisted image attachments use Web's 20px surface-backed amber CircleAlert badge and expose the canonical `Draft attachment may not persist` accessible name instead of a bare `!` glyph | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
 | Nested image accessibility | Profile avatars, Explorer image previews, and Composer image thumbnails explicitly remain decorative because their identity is already owned by surrounding text or a named preview control, preventing duplicate or unnamed accessibility nodes | PASS — CURRENT PRODUCT IMPLEMENTATION |
+| Profile composite semantics | Profile stat tiles, insight definition rows, plugin usage rows, and model usage rows expose one concise static Native name per visual composite with text traits, avoiding fragmented label/value/icon traversal without inventing unsupported list roles | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Form control accessibility | Kanban task mutation, Git commit message, Integration connection name, and provider credential inputs expose explicit native accessible names; pending Git/Kanban fields retain read-only semantics without invalid DOM-only focus props | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Form error semantics | Kanban mutation, Git commit message, and custom-model slug inputs expose dynamic `aria-invalid` state whenever their adjacent retained error message is present | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Error announcement semantics | retained Kanban mutation, Git action, and custom-model errors are Native accessibility alerts in addition to marking their owning inputs invalid | PASS — CURRENT PRODUCT IMPLEMENTATION |
@@ -558,6 +559,13 @@ plain text because their Web authority is also a non-heading `div`. Focused
 Profile, Usage, Theme Pack, and shared-heading regressions pass (22/22), both
 production bundles build, `git diff --check` passes, and React Doctor 0.9.11
 reports zero diagnostics against `e7e931dd`.
+The Profile composite follow-up exposes each stat, insight, plugin usage, and
+model usage row as one named static Native text element. This preserves the
+Web label/value or list-item reading unit while avoiding speculative Native
+list/definition roles that are not established by the current Lynx contract.
+The focused Profile suite passes (5/5), both production bundles build,
+`git diff --check` passes, and React Doctor 0.9.11 reports zero diagnostics
+against `7feb8ba7`.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

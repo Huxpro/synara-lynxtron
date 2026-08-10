@@ -82,6 +82,18 @@ describe('Settings Profile fidelity', () => {
     );
     expect(profileSource.match(/<SettingsHeadingElement className="SettingsProfileSectionTitle">/g))
       .toHaveLength(4);
+    expect(profileSource).toContain(
+      'accessibility-label={`${props.label}: ${props.value}`}'
+    );
+    expect(
+      profileSource.match(/accessibility-traits="text"/g)
+    ).toHaveLength(4);
+    expect(profileSource).toContain(
+      'accessibility-label={`${skill.displayName}: ${formatNumber(skill.runCount)} runs`}'
+    );
+    expect(profileSource).toContain(
+      'accessibility-label={`${entry.model}: ${entry.percent}%`}'
+    );
   });
 
   it('implements the canonical local Edit profile contract', () => {

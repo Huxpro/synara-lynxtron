@@ -266,6 +266,9 @@ function StatTile(props: {
   return (
     <view
       className={`SettingsProfileStat SettingsProfileStat--${props.index}`}
+      accessibility-element
+      accessibility-label={`${props.label}: ${props.value}`}
+      accessibility-traits="text"
     >
       <text className="SettingsProfileStatValue">{props.value}</text>
       <text className="SettingsProfileStatLabel">{props.label}</text>
@@ -278,7 +281,12 @@ function InsightRow(props: {
   readonly value: string;
 }) {
   return (
-    <view className="SettingsProfileInsightRow">
+    <view
+      className="SettingsProfileInsightRow"
+      accessibility-element
+      accessibility-label={`${props.label}: ${props.value}`}
+      accessibility-traits="text"
+    >
       <text className="SettingsProfileInsightLabel">{props.label}</text>
       <text className="SettingsProfileInsightValue" maxlines={1}>
         {props.value}
@@ -623,6 +631,9 @@ function ProfileContent(props: {
                 <view
                   className="SettingsProfilePluginRow"
                   key={`${skill.kind}:${skill.name}`}
+                  accessibility-element
+                  accessibility-label={`${skill.displayName}: ${formatNumber(skill.runCount)} runs`}
+                  accessibility-traits="text"
                 >
                   <view className="SettingsProfilePluginIdentity">
                     <view className="SettingsProfilePluginIcon">
@@ -656,6 +667,9 @@ function ProfileContent(props: {
               <view
                 className="SettingsProfileModel"
                 key={`${entry.provider}:${entry.model}`}
+                accessibility-element
+                accessibility-label={`${entry.model}: ${entry.percent}%`}
+                accessibility-traits="text"
               >
                 <view className="SettingsProfileModelLine">
                   <view className="SettingsProfileModelIdentity">
