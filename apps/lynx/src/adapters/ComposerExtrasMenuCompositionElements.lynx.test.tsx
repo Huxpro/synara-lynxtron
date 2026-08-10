@@ -153,6 +153,9 @@ describe('native composer attachment menu item', () => {
     expect(composerStyles).toMatch(
       /\.ComposerPrimaryActionLynx--disabled\s*\{[^}]*opacity:\s*0\.2;/s
     );
+    expect(composerStyles).toMatch(
+      /\.ComposerPrimaryActionLynx\s*\{[^}]*background-color:\s*var\(--color-text-foreground\);/s
+    );
     expect(composerStyles).not.toMatch(
       /\.ComposerPrimaryActionLynx\.ui-(?:hover|pressed)\s*\{[^}]*opacity:/s
     );
@@ -165,11 +168,18 @@ describe('native composer attachment menu item', () => {
     expect(inputElementsSource).toContain(
       'stroke-dasharray="20 12"'
     );
+    expect(inputElementsSource).toContain(
+      "'var(--color-background-surface)'"
+    );
+    expect(inputElementsSource).not.toContain('activeTheme.theme.surface');
     expect(inputElementsSource).not.toContain(
       '<text className="ComposerPrimaryActionGlyphLynx">•••</text>'
     );
     expect(composerStyles).toMatch(
       /\.ComposerPrimaryActionSendingIconLynx\s*\{[^}]*width:\s*12px;[^}]*height:\s*12px;[^}]*flex-shrink:\s*0;/s
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerPrimaryActionStopGlyphLynx\s*\{[^}]*background-color:\s*var\(--color-background-surface\);/s
     );
     expect(composerStyles).toMatch(
       /\.ComposerFooterActionsLynx\s*\{[^}]*margin-left:\s*auto;[^}]*gap:\s*8px;/s

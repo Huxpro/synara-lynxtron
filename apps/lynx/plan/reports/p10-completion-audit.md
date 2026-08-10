@@ -276,7 +276,7 @@ Current responsive disposition:
 | Composer model-group disclosure | collapsible provider groups use one shared rotating 12px ChevronRight identity, named expanded/collapsed state, and the canonical 220ms presence/content motion instead of swapping right/down SVGs and immediately mounting model rows | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
 | Composer reference icon identity | assistant/file-comment summaries, pasted-text cards, generic file cards, remove actions, and show-in-field disclosure use MessageCircle, File/FileEntry, X, and ChevronRight icons instead of circle/cross/text-block glyphs | PASS — CURRENT PRODUCT SURFACES |
 | Composer token icon identity | mention, agent, skill, slash-command, terminal-context, and link chips use file-type, Robot, Building Blocks, Clock, Console, and External Link SVG identities in both canonical segment rendering and the Native draft projection; token anatomy follows Web's plain info-colored inline tokens, per-agent soft color pills, and bordered terminal-context attachment treatment instead of filling every token with the brand accent | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
-| Composer sending-state identity | the primary action uses Web's exact 14-viewBox, 12px animated partial-circle spinner instead of a static `•••` text approximation; send and stop states retain their existing canonical arrow and square identities | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
+| Composer sending-state identity | the primary action uses Web's exact foreground/background-surface prominent-button colors and 14-viewBox, 12px animated partial-circle spinner instead of primary-token approximations or a static `•••` marker; send and stop states retain their canonical arrow and square identities | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
 | Composer draft-attachment warning | non-persisted image attachments use Web's 20px surface-backed amber CircleAlert badge and expose the canonical `Draft attachment may not persist` accessible name instead of a bare `!` glyph | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
 | Nested image accessibility | Profile avatars, Explorer image previews, and Composer image thumbnails explicitly remain decorative because their identity is already owned by surrounding text or a named preview control, preventing duplicate or unnamed accessibility nodes | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Profile composite semantics | Profile stat tiles, insight definition rows, plugin usage rows, and model usage rows expose one concise static Native name per visual composite with text traits, avoiding fragmented label/value/icon traversal without inventing unsupported list roles | PASS — CURRENT PRODUCT IMPLEMENTATION |
@@ -444,10 +444,12 @@ a replacement for the pending current-head visual matrix.
 The next Composer state slice aligns the primary action's transient sending
 state with Web's exact 14-viewBox partial-circle spinner, rendered at 12px with
 the existing shared `animate-spin` utility. It replaces the static `•••` text
-stand-in without changing disabled, send, stop, or activation semantics.
-Focused adapter tests, both production builds, `git diff --check`, and React
-Doctor 0.9.11 against `93846eac` pass with zero diagnostics; visual
-re-certification remains part of the pending current-head matrix.
+stand-in without changing disabled or activation semantics. A later anatomy
+audit corrects the whole prominent control from the nearby `primary` pair to
+Web's exact `color-text-foreground` / `color-background-surface` pair across
+send, sending, and stop states. Focused adapter tests and production builds
+remain implementation evidence; visual re-certification is still part of the
+pending current-head matrix.
 The attachment warning follow-up replaces the remaining bare `!` overlay on
 non-persisted Composer images with Web's 20px surface-backed, shadowed amber
 CircleAlert badge and canonical accessible name. The nested warning remains
