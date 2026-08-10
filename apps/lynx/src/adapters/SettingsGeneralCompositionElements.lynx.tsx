@@ -158,7 +158,7 @@ export function SettingsGeneralSelectControlElement(props: {
         <Button
           variant="outline"
           className="SharedSettingsGeneralSelectTrigger SharedSettingsGeneralSelectTrigger--general"
-          aria-label={props.ariaLabel}
+          buttonProps={{ 'accessibility-element': false }}
         >
           <view className="SharedSettingsGeneralSelectContent">
             {provider && selected ? (

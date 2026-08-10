@@ -318,7 +318,7 @@ export function SettingsAppearanceSelectControlElement(props: {
         <Button
           variant="outline"
           className="SharedSettingsAppearanceSelect"
-          aria-label={props.ariaLabel}
+          buttonProps={{ 'accessibility-element': false }}
         >
           <text className="SharedSettingsAppearanceSelectLabel">
             {selected?.label ?? props.value}

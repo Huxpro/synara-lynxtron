@@ -122,6 +122,9 @@ describe('Settings Appearance fidelity', () => {
     expect(source).toContain('className="SharedSettingsAppearanceSelectLabel"');
     expect(source).toContain('className="SharedSettingsAppearanceSelectChevron"');
     expect(source).toContain('<MenuTrigger ariaLabel={props.ariaLabel}>');
+    expect(source).toContain(
+      "buttonProps={{ 'accessibility-element': false }}"
+    );
     expect(styles).toMatch(
       /\.SharedSettingsAppearanceSelect\s*\{[^}]*width:\s*160px;[^}]*justify-content:\s*flex-start;[^}]*gap:\s*8px;/s
     );

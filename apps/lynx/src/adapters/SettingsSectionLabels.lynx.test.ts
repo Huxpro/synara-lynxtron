@@ -270,6 +270,11 @@ describe('Lynx Settings section labels', () => {
       expect(source).toContain('<SettingsResetIcon />');
       expect(source).not.toContain('↶');
     }
+    for (const source of owners.slice(0, 3)) {
+      expect(source).toContain(
+        "buttonProps={{ 'accessibility-element': false }}"
+      );
+    }
   });
 
   it('matches the Web select chevron tone', () => {

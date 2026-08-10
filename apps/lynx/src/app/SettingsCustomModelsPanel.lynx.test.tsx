@@ -52,6 +52,9 @@ describe('Settings Custom Models fidelity', () => {
     expect(source).toContain('onConfirm={addModel}');
     expect(source).toContain('aria-invalid={Boolean(error)}');
     expect(source).toContain('<Input\n                nativeInput');
+    expect(source).toContain(
+      "buttonProps={{ 'accessibility-element': false }}"
+    );
     expect(source).toContain('accessibility-role="alert"');
     expect(source).toContain('Remove ${row.slug}');
     expect(source).toContain('Reset custom models to default');

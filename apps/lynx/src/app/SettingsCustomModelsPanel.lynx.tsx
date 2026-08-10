@@ -200,7 +200,7 @@ export function SettingsCustomModelsPanel(props: {
                   size="sm"
                   variant="outline"
                   className="SettingsCustomModelsProviderTrigger"
-                  aria-label="Custom model provider"
+                  buttonProps={{ 'accessibility-element': false }}
                 >
                   <text className="SettingsCustomModelsProviderLabel">
                     {PROVIDER_DESCRIPTOR_BY_KIND[provider].displayName}

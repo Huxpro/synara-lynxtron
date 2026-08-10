@@ -297,6 +297,7 @@ Current responsive disposition:
 | Shared Input invalid semantics | the shared `Input` forwards `aria-invalid` through both its raw keyboard and Lynx UI input branches instead of using the state only for wrapper styling | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
 | Named native input routing | `nativeInput` now selects the metadata-preserving raw branch; all named Settings/Profile/Theme Pack fields use it, including disabled Provider Tool fields with explicit Native disabled state | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
 | Appearance select trigger name | the Appearance select field name is owned by the actionable `MenuTrigger` as well as its nested Web button, preventing an unnamed outer Native menu control | PASS — CURRENT PRODUCT IMPLEMENTATION |
+| Settings select interaction ownership | General, Git writing-model, Appearance, and Custom Model selects keep the named `MenuTrigger` as the sole Native control while nested Button-shaped visuals are explicit non-accessibility elements | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Settings navigation state | active navigation controls match Web `aria-current="page"` and publish Native selected/disabled state plus the existing Current section value on the same interaction owner | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Settings disclosure values | Integration advanced-permissions joins Release History and recovery disclosures in publishing Expanded/Collapsed Native accessibility value while retaining Web `aria-expanded`, without inventing an unestablished Native expanded-state shape | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Unavailable Settings search | the inert search placeholder exposes a named, disabled Native search element while remaining unfocusable and non-actionable | PASS — HONEST CAPABILITY STATE |
@@ -689,6 +690,12 @@ The Appearance select follow-up moves the field name onto the actionable
 Focused Appearance/Menu regressions pass (14/14), both production bundles
 build, `git diff --check` passes, and React Doctor 0.9.11 reports zero
 diagnostics against `e4a5edfd`.
+The Settings select ownership follow-up keeps General, Git writing-model,
+Appearance, and Custom Model names/states on their `MenuTrigger` owners while
+marking nested Button-shaped visuals as non-accessibility elements. Focused
+General/Appearance/Custom Models/Menu/section regressions pass (25/25), both
+production bundles build, `git diff --check` passes, and React Doctor 0.9.11
+reports zero diagnostics against `7fa30c0a`.
 The Settings navigation follow-up replaces the Lynx-only `aria-selected` with
 Web's `aria-current="page"` and adds Native selected/disabled state while
 retaining the Current section accessibility value. Focused navigation

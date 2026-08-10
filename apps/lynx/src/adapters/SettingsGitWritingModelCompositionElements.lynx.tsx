@@ -87,7 +87,7 @@ export function SettingsGitWritingModelSelectElement(props: {
         <Button
           variant="outline"
           className="SharedSettingsGeneralSelectTrigger SharedSettingsGeneralSelectTrigger--writing-model"
-          aria-label={props.ariaLabel}
+          buttonProps={{ 'accessibility-element': false }}
         >
           <view className="SharedSettingsGeneralSelectContent">
             <text className="SharedSettingsGeneralSelectLabel">
