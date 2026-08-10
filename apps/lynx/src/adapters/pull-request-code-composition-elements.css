@@ -104,20 +104,17 @@
 
 .SharedPrCodeLine {
   width: 100%;
-  min-height: 18px;
+  min-height: 20px;
   display: flex;
   flex-direction: row;
   align-items: stretch;
-  border-left: 2px solid transparent;
 }
 
 .SharedPrCodeLine--addition {
-  border-left-color: var(--success);
   background-color: rgba(16, 185, 129, 0.1);
 }
 
 .SharedPrCodeLine--deletion {
-  border-left-color: var(--destructive);
   background-color: rgba(239, 68, 68, 0.1);
 }
 
@@ -126,23 +123,23 @@
 }
 
 .SharedPrCodeLineNumber {
-  width: 34px;
+  width: 40px;
   flex-shrink: 0;
-  padding: 1px 4px;
+  padding: 0 4px;
   color: var(--muted-foreground);
-  font-family: var(--font-ui-family);
-  font-size: 9px;
-  line-height: 16px;
+  font-family: var(--font-chat-code-family);
+  font-size: var(--app-font-size-chat-code, 11px);
+  line-height: 20px;
   text-align: right;
 }
 
 .SharedPrCodeLinePrefix {
-  width: 15px;
+  width: 20px;
   flex-shrink: 0;
   color: var(--muted-foreground);
   font-family: var(--font-chat-code-family);
   font-size: var(--app-font-size-chat-code, 11px);
-  line-height: 16px;
+  line-height: 20px;
   text-align: center;
 }
 
@@ -157,11 +154,11 @@
 .SharedPrCodeLineText {
   flex: 1;
   min-width: 0;
-  padding: 1px 8px 1px 2px;
+  padding-right: 12px;
   color: var(--foreground);
   font-family: var(--font-chat-code-family);
   font-size: var(--app-font-size-chat-code, 11px);
-  line-height: 16px;
+  line-height: 20px;
   white-space: pre;
 }
 

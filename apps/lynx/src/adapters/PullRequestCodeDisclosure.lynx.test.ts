@@ -52,6 +52,21 @@ describe('Pull Request Code disclosure fidelity', () => {
     expect(lynxStyles).toMatch(
       /\.SharedPrCodeLine--deletion\s*\{[^}]*background-color:\s*rgba\(239,\s*68,\s*68,\s*0\.1\);/s
     );
+    expect(lynxStyles).toMatch(
+      /\.SharedPrCodeLine\s*\{[^}]*min-height:\s*20px;/s
+    );
+    expect(lynxStyles).not.toMatch(
+      /\.SharedPrCodeLine\s*\{[^}]*border-left:/
+    );
+    expect(lynxStyles).toMatch(
+      /\.SharedPrCodeLineNumber\s*\{[^}]*width:\s*40px;[^}]*line-height:\s*20px;/s
+    );
+    expect(lynxStyles).toMatch(
+      /\.SharedPrCodeLinePrefix\s*\{[^}]*width:\s*20px;[^}]*line-height:\s*20px;/s
+    );
+    expect(lynxStyles).toMatch(
+      /\.SharedPrCodeLineText\s*\{[^}]*padding-right:\s*12px;[^}]*line-height:\s*20px;/s
+    );
     expect(lynxStyles).not.toMatch(
       /\.SharedPrCodeFileHeader\.ui-(?:hover|pressed)[^{]*\{[^}]*background-color:/s
     );
