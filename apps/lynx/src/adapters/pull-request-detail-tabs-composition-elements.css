@@ -49,6 +49,6 @@
 
 .SharedPrDetailCapabilityText {
   color: var(--muted-foreground);
-  font-size: 10px;
-  line-height: 14px;
+  font-size: var(--app-font-size-ui);
+  line-height: 18px;
 }

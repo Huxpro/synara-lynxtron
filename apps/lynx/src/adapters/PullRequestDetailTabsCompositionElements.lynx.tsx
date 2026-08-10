@@ -6,7 +6,15 @@ import { useLynxInteractiveState } from './useLynxInteractiveState';
 type ChildrenProps = { readonly children?: ReactNode };
 
 export function PullRequestDetailTabsRootElement(props: ChildrenProps) {
-  return <view className="SharedPrDetailTabs">{props.children}</view>;
+  return (
+    <view
+      className="SharedPrDetailTabs"
+      aria-label="Pull request detail tabs"
+      accessibility-element={false}
+    >
+      {props.children}
+    </view>
+  );
 }
 
 export function PullRequestDetailTabElement(props: {
