@@ -337,7 +337,10 @@ function ProfileContent(props: {
   );
   const [editOpen, setEditOpen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
-  const [shareStatus, setShareStatus] = useState('');
+  const [shareStatus, setShareStatus] = useState<{
+    readonly intent: 'success' | 'neutral' | 'error';
+    readonly message: string;
+  } | null>(null);
   const [draftName, setDraftName] = useState(displayName);
   const [draftHandle, setDraftHandle] = useState(handle.replace(/^@+/, ''));
   const [draftColor, setDraftColor] = useState(avatarColor);
@@ -364,28 +367,32 @@ function ProfileContent(props: {
   });
   const copyShareCard = () => {
     'background only';
-    setShareStatus('');
+    setShareStatus(null);
     return import(/* webpackMode: "eager" */ '../platform/clipboard')
       .then(({ exportProfileShareCard }) =>
         exportProfileShareCard({ svg: shareCardSvg })
       )
       .then((result) => {
-        setShareStatus(
-          result.ok
+        setShareStatus({
+          intent: result.ok ? 'success' : 'error',
+          message: result.ok
             ? 'Copied image to clipboard.'
-            : 'Image copy unavailable. Use Save instead.'
-        );
+            : 'Image copy unavailable. Use Save instead.',
+        });
         return result.ok;
       })
       .catch((error) => {
         console.warn('[profile] share card copy failed', String(error));
-        setShareStatus('Image copy unavailable. Use Save instead.');
+        setShareStatus({
+          intent: 'error',
+          message: 'Image copy unavailable. Use Save instead.',
+        });
         return false;
       });
   };
   const saveShareCard = () => {
     'background only';
-    setShareStatus('');
+    setShareStatus(null);
     void import(/* webpackMode: "eager" */ '../platform/dialogs')
       .then(({ dialogs }) =>
         dialogs.saveProfileShareCard({
@@ -393,8 +400,15 @@ function ProfileContent(props: {
           svg: shareCardSvg,
         })
       )
-      .then((path) => setShareStatus(path ? 'Saved PNG.' : 'Save cancelled.'))
-      .catch((error) => setShareStatus(String(error)));
+      .then((path) =>
+        setShareStatus({
+          intent: path ? 'success' : 'neutral',
+          message: path ? 'Saved PNG.' : 'Save cancelled.',
+        })
+      )
+      .catch((error) =>
+        setShareStatus({ intent: 'error', message: String(error) })
+      );
   };
   const shareTo = (target: 'x' | 'linkedin' | 'reddit') => {
     'background only';
@@ -458,7 +472,7 @@ function ProfileContent(props: {
           size="sm"
           className="SettingsProfileShareAction"
           onClick={() => {
-            setShareStatus('');
+            setShareStatus(null);
             setShareOpen(true);
           }}
         >
@@ -765,7 +779,13 @@ function ProfileContent(props: {
               </text>
             ) : null}
             {editError ? (
-              <text className="SettingsProfileEditError">{editError}</text>
+              <text
+                className="SettingsProfileEditError"
+                accessibility-element
+                accessibility-role="alert"
+              >
+                {editError}
+              </text>
             ) : null}
             <view className="SettingsProfileEditFields">
               <view className="SettingsProfileEditField">
@@ -860,7 +880,17 @@ function ProfileContent(props: {
                 Reddit
               </Button>
             </view>
-            <text className="SettingsProfileShareStatus">{shareStatus}</text>
+            {shareStatus ? (
+              <text
+                className={`SettingsProfileShareStatus SettingsProfileShareStatus--${shareStatus.intent}`}
+                accessibility-element
+                accessibility-role={
+                  shareStatus.intent === 'error' ? 'alert' : undefined
+                }
+              >
+                {shareStatus.message}
+              </text>
+            ) : null}
           </view>
         </DialogPopup>
       </Dialog>

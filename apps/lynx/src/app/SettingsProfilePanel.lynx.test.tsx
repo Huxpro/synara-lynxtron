@@ -94,6 +94,18 @@ describe('Settings Profile fidelity', () => {
     expect(profileSource).toContain(
       'accessibility-label={`${entry.model}: ${entry.percent}%`}'
     );
+    expect(profileSource).toMatch(
+      /className="SettingsProfileEditError"[\s\S]{0,120}accessibility-role="alert"/
+    );
+    expect(profileSource).toContain(
+      "readonly intent: 'success' | 'neutral' | 'error';"
+    );
+    expect(profileSource).toContain(
+      "shareStatus.intent === 'error' ? 'alert' : undefined"
+    );
+    expect(profileSource).toContain(
+      "intent: path ? 'success' : 'neutral'"
+    );
   });
 
   it('implements the canonical local Edit profile contract', () => {
