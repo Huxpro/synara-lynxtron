@@ -293,6 +293,7 @@ Current responsive disposition:
 | Integration project selection | project-scope choices expose Native checkbox role and checked state on the existing named interaction owner, matching the visual checkbox and Selected/Not selected value | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Provider Usage meter semantics | each painted remaining-usage track exposes one named static Native text element and percentage value while retaining Web numeric ARIA, without claiming an unsupported Native progressbar contract | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Keyboard-input accessible names | the shared `Input` keyboard-event branch forwards normalized Web/native labels to its raw Lynx input, preserving Settings sidebar and shortcut-search names instead of dropping them during the platform split | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
+| Appearance select trigger name | the Appearance select field name is owned by the actionable `MenuTrigger` as well as its nested Web button, preventing an unnamed outer Native menu control | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Settings heading semantics | one Native heading primitive preserves every current Web Settings h1/h2/h3 counterpart across generic panels, private Appearance/General/Git/provider layouts, Profile identity and sections, Provider Usage, and Theme Pack titles instead of leaving them as undifferentiated text | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Shared interactive names | high-frequency Composer, Kanban, and Pull Request controls route labels and selected/expanded/on-off state through `useLynxInteractiveState`, so Native accessibility metadata no longer depends only on Web `aria-label` attributes | PASS — SHARED NATIVE ACCESSIBILITY CONTRACT |
 | Actionable primitive semantics | `useLynxInteractiveState` now exposes every actionable control as a Native accessibility button even when its name is derived from visible text; passive hover owners remain excluded and explicit `accessibilityElement: false` remains authoritative | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
@@ -645,6 +646,11 @@ production bundles build, `git diff --check` passes, and React Doctor 0.9.11
 reports zero diagnostics against `85ba7a1f`. Direct raw-input mounting remains
 outside the renderer harness because host invocation is not implemented, so
 the primitive metadata assertion is deterministic source coverage.
+The Appearance select follow-up moves the field name onto the actionable
+`MenuTrigger` owner while retaining the nested button label for Web parity.
+Focused Appearance/Menu regressions pass (14/14), both production bundles
+build, `git diff --check` passes, and React Doctor 0.9.11 reports zero
+diagnostics against `e4a5edfd`.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

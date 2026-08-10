@@ -311,7 +311,7 @@ export function SettingsAppearanceSelectControlElement(props: {
     props.options[0];
   return (
     <Menu>
-      <MenuTrigger>
+      <MenuTrigger ariaLabel={props.ariaLabel}>
         <Button
           variant="outline"
           className="SharedSettingsAppearanceSelect"
