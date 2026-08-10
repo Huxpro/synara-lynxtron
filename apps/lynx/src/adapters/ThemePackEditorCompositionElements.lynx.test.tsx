@@ -93,7 +93,9 @@ describe('ThemePack boolean interaction contract', () => {
       /\.SharedThemePackRowLabel\s*\{[^}]*color:\s*var\(--settings-row-label-strong\);[^}]*font-size:\s*14px;[^}]*font-weight:\s*400;[^}]*line-height:\s*20px;/s
     );
     expect(source).toContain('className="SharedThemePackResetAction"');
-    expect(source).toContain('className="SharedThemePackHeaderAction"');
+    expect(source).toContain(
+      "'SharedThemePackImportTriggerHost SharedThemePackHeaderAction SharedThemePackImportTrigger'"
+    );
     expect(styles).toMatch(
       /\.SharedThemePackResetAction\s*\{[^}]*min-height:\s*20px;[^}]*padding:\s*2px 6px;/s
     );
@@ -109,9 +111,7 @@ describe('ThemePack boolean interaction contract', () => {
     expect(source).toContain('className="SharedThemePackImportDialog"');
     expect(source).toContain('showCloseButton={false}');
     expect(source).toContain('<DialogTrigger');
-    expect(source).toContain(
-      'className="SharedThemePackImportTriggerHost"'
-    );
+    expect(source).toContain('SharedThemePackImportTriggerHost');
     expect(source).toContain('ariaLabel="Import theme"');
     expect(source).toContain(
       'viewportClassName="SharedThemePackImportViewport"'
@@ -278,9 +278,13 @@ describe('ThemePack boolean interaction contract', () => {
       <ThemePackImportActionElement variant="light" onImport={onImport} />
     );
 
-    fireEvent.tap(
-      elementTree.root?.querySelector('.SharedThemePackImportTriggerHost')!
+    const trigger = elementTree.root?.querySelector(
+      '.SharedThemePackImportTriggerHost'
     );
+    if (!trigger) throw new Error('expected ThemePack import trigger');
+    expect(trigger.querySelector('.LxButton')).toBeNull();
+    expect(trigger.getAttribute('accessibility-label')).toBe('Import theme');
+    fireEvent.tap(trigger);
     const textarea = await waitFor(() => {
       const current = elementTree.root?.querySelector(
         '.SharedThemePackImportTextarea'

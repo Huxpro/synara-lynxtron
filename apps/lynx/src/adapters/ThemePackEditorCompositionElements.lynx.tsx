@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from '@lynx-js/react';
 
-import { Button } from '../components/ui/button';
+import { Button, buttonVariants } from '../components/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -167,16 +167,15 @@ export function ThemePackImportActionElement(props: {
       }}
     >
       <DialogTrigger
-        className="SharedThemePackImportTriggerHost"
+        className={buttonVariants({
+          size: 'sm',
+          variant: 'ghost',
+          className:
+            'SharedThemePackImportTriggerHost SharedThemePackHeaderAction SharedThemePackImportTrigger',
+        })}
         ariaLabel="Import theme"
       >
-        <Button
-          size="sm"
-          variant="ghost"
-          className="SharedThemePackHeaderAction SharedThemePackImportTrigger"
-        >
-          Import
-        </Button>
+        <text className="LxButton__text">Import</text>
       </DialogTrigger>
         <DialogPopup
           className="SharedThemePackImportDialog"
@@ -192,7 +191,6 @@ export function ThemePackImportActionElement(props: {
               color="var(--muted-foreground)"
               size={16}
               style={{ opacity: 0.8 }}
-              accessibilityLabel="Close"
             />
           </DialogClose>
           <scroll-view className="SharedThemePackImportScroll" scroll-y>
