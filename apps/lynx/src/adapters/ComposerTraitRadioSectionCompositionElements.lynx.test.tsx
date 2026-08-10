@@ -69,5 +69,18 @@ describe('native composer trait picker contract', () => {
     expect(composerStyles).toMatch(
       /\.ComposerTraitFastModeToggleIconLynx\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;/s
     );
+    expect(composerStyles).not.toContain(
+      '.ComposerTraitFastModeToggleLynx--active'
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerTraitFastModeToggleLynx\.ui-hover,[^{]*\{[^}]*background-color:\s*var\(--color-background-button-secondary-hover\);/s
+    );
+    expect(composerStyles).not.toContain('.ComposerTraitOptionLynx--active');
+    expect(composerStyles).toMatch(
+      /\.ComposerTraitOptionLynx\.ui-hover,[^{]*\{[^}]*background-color:\s*var\(--color-background-button-secondary-hover\);/s
+    );
+    expect(composerStyles).not.toMatch(
+      /\.ComposerTrait(?:FastModeToggle|Option)Lynx\.ui-pressed\s*\{[^}]*opacity:/s
+    );
   });
 });

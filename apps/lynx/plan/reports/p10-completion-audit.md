@@ -940,6 +940,13 @@ than a second branded row background; favorite state remains the amber star.
 Focused model/trait/icon regressions pass 7/7 and the Native/Desktop production
 build succeeds.
 
+The Composer trait-list follow-up completes the same separation for effort,
+context, agent, and speed controls. Active radio choices remain visible through
+their Check indicator, Fast remains visible through its amber filled Zap, and
+neither state adds a branded row background. Hover/press uses neutral
+button-secondary material without dimming. Focused trait/Composer regressions
+pass 6/6 and the Native/Desktop production build succeeds.
+
 The Native arbitrary text-range selection investigation reached an upstream
 Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's
 documented contract exposes `text-selection={true}`, `flatten={false}`,

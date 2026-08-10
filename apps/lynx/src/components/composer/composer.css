@@ -529,21 +529,13 @@
   background-color: transparent;
 }
 
-.ComposerTraitFastModeToggleLynx--active {
-  background-color: var(--accent);
-}
-
 .ComposerTraitFastModeToggleLynx.ui-hover,
 .ComposerTraitFastModeToggleLynx.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-button-secondary-hover);
 }
 
 .ComposerTraitFastModeToggleLynx.ui-focus {
   box-shadow: 0 0 0 1px var(--ring);
-}
-
-.ComposerTraitFastModeToggleLynx.ui-pressed {
-  opacity: 0.72;
 }
 
 .ComposerTraitFastModeToggleIconLynx {
@@ -566,21 +558,13 @@
   border-radius: 8px;
 }
 
-.ComposerTraitOptionLynx--active {
-  background-color: var(--accent);
-}
-
 .ComposerTraitOptionLynx.ui-hover,
 .ComposerTraitOptionLynx.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-button-secondary-hover);
 }
 
 .ComposerTraitOptionLynx.ui-focus {
   box-shadow: 0 0 0 1px var(--ring);
-}
-
-.ComposerTraitOptionLynx.ui-pressed {
-  opacity: 0.72;
 }
 
 .ComposerTraitOptionLynx--disabled {
