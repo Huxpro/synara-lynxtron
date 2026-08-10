@@ -32,7 +32,7 @@
   min-width: 0;
   overflow: hidden;
   color: var(--foreground);
-  font-size: var(--app-font-size-ui-sm);
+  font-size: var(--app-font-size-ui);
   line-height: 18px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -45,4 +45,8 @@
 
 .SharedPrActorLabel--reviewer {
   max-width: 128px;
+}
+
+.SharedPrActorLabel--reviewer .SharedPrActorLogin {
+  font-size: var(--app-font-size-ui-sm);
 }

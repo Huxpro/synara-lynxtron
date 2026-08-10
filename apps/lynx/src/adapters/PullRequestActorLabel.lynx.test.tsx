@@ -1,5 +1,6 @@
 import { describe, expect, it } from '@rstest/core';
 import { fireEvent, render } from '@lynx-js/react/testing-library';
+import { readFileSync } from 'node:fs';
 
 import { PullRequestActorLabel } from './PullRequestActorLabel.lynx';
 
@@ -52,5 +53,18 @@ describe('Pull Request actor label fidelity', () => {
     expect(
       elementTree.root?.querySelector('.SharedPrActorLogin')?.textContent
     ).toBe('ghost');
+  });
+
+  it('uses meta text for authors/comments and fine text for reviewers', () => {
+    const styles = readFileSync(
+      new URL('./pull-request-actor-label.css', import.meta.url),
+      'utf8'
+    );
+    expect(styles).toMatch(
+      /\.SharedPrActorLogin\s*\{[^}]*font-size:\s*var\(--app-font-size-ui\);[^}]*line-height:\s*18px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrActorLabel--reviewer \.SharedPrActorLogin\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm\);/s
+    );
   });
 });
