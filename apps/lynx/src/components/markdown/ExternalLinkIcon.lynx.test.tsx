@@ -18,7 +18,9 @@ describe('Lynx markdown external-link icon', () => {
   });
 
   it('loads the site favicon and falls back to the shared globe on error', () => {
-    render(<ExternalLinkIcon url="https://openai.com/research" />);
+    const { rerender } = render(
+      <ExternalLinkIcon url="https://openai.com/research" />
+    );
 
     const favicon = elementTree.root?.querySelector('.MdLinkTargetFavicon');
     expect(favicon?.getAttribute('src')).toBe(
@@ -29,5 +31,14 @@ describe('Lynx markdown external-link icon', () => {
       elementTree.root?.querySelector('.MdLinkTargetFavicon')
     ).toBeNull();
     expect(elementTree.root?.querySelector('.MdLinkTargetIcon')).not.toBeNull();
+
+    rerender(<ExternalLinkIcon url="https://example.com/docs" />);
+    expect(
+      elementTree.root
+        ?.querySelector('.MdLinkTargetFavicon')
+        ?.getAttribute('src')
+    ).toBe(
+      'http://127.0.0.1:58090/api/site-favicon?domain=example.com'
+    );
   });
 });

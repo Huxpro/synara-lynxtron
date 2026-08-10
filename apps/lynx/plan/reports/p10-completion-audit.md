@@ -1029,7 +1029,9 @@ approximation with the same leading icon decision as Web: GitHub links use the
 Central GitHub mark, ordinary HTTP links load the server-cached site favicon,
 and load failures fall back to the Central Globe identity without layout
 shift. The favicon URL stays coupled to the active WebSocket host and forwards
-its startup token for authenticated local instances. The 1em icon slot is
+its startup token for authenticated local instances; failure state is keyed by
+favicon URL so a changed link retries its own host rather than inheriting a
+previous domain's Globe fallback. The 1em icon slot is
 decorative beneath the link's existing accessible name. URL, token, render,
 error-fallback, and consumer wiring coverage passes 7/7; both Lynx-for-Web and
 Native/Desktop production builds pass with only the existing warnings.

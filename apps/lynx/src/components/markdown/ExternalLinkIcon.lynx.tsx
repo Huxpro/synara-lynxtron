@@ -12,7 +12,7 @@ import {
 export function ExternalLinkIcon(props: { readonly url: string }) {
   const { svgColors } = useTheme();
   const faviconUrl = buildSiteFaviconUrl(props.url);
-  const [faviconFailed, setFaviconFailed] = useState(false);
+  const [failedFaviconUrl, setFailedFaviconUrl] = useState<string | null>(null);
   if (isGitHubExternalLink(props.url)) {
     return (
       <svg
@@ -22,7 +22,7 @@ export function ExternalLinkIcon(props: { readonly url: string }) {
       />
     );
   }
-  if (faviconUrl && !faviconFailed) {
+  if (faviconUrl && failedFaviconUrl !== faviconUrl) {
     return (
       <image
         className="MdLinkTargetIcon MdLinkTargetFavicon"
@@ -31,7 +31,7 @@ export function ExternalLinkIcon(props: { readonly url: string }) {
         accessibility-element={false}
         binderror={() => {
           'background only';
-          setFaviconFailed(true);
+          setFailedFaviconUrl(faviconUrl);
         }}
       />
     );
