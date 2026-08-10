@@ -2,6 +2,7 @@ import { useState } from '@lynx-js/react';
 
 import { type NativeSyntaxHighlightThemes } from '../main/syntaxHighlightingContract.logic';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
+import { PlusIcon } from '../lib/icons.lynx';
 import { ExplorerFileCommentEditor } from './ExplorerFileCommentEditor.lynx';
 
 function tokenStyle(fontStyle: number): Record<string, string | number> {
@@ -95,7 +96,12 @@ export function ExplorerSyntaxLine(props: {
           <text className="ExplorerDockSyntaxLineNumberText">
             {props.lineNumber}
           </text>
-          <text className="ExplorerDockSyntaxCommentGlyph">+</text>
+          <view className="ExplorerDockSyntaxCommentGlyph">
+            <PlusIcon
+              className="ExplorerDockSyntaxCommentGlyphIcon"
+              size={14}
+            />
+          </view>
         </view>
         <text className="ExplorerDockSyntaxCode">
           {props.line.length === 0 ? (

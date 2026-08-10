@@ -37,6 +37,12 @@ describe('Explorer syntax preview', () => {
     expect(source).toContain('data-syntax-highlighted="true"');
     expect(source).toContain('baseClassName: `ExplorerDockSyntaxLineNumber');
     expect(source).toContain('accessibleLabel: `Comment on line');
+    expect(source).toContain(
+      '<PlusIcon\n              className="ExplorerDockSyntaxCommentGlyphIcon"\n              size={14}'
+    );
+    expect(source).not.toContain(
+      '<text className="ExplorerDockSyntaxCommentGlyph">+</text>'
+    );
     expect(source).toContain('<ExplorerFileCommentEditor');
     expect(source).toContain('color: token.color');
     expect(source).toContain('className="ExplorerDockCode"');

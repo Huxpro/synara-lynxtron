@@ -427,12 +427,16 @@
   display: none;
   width: 16px;
   height: 16px;
+  align-items: center;
+  justify-content: center;
   border-radius: 5px;
   background-color: var(--secondary);
   color: var(--foreground);
-  font-size: 12px;
-  line-height: 16px;
-  text-align: center;
+}
+
+.ExplorerDockSyntaxCommentGlyphIcon {
+  width: 14px;
+  height: 14px;
 }
 
 .ExplorerDockSyntaxLineNumber.ui-hover,
@@ -450,7 +454,7 @@
 .ExplorerDockSyntaxLineNumber.ui-hover .ExplorerDockSyntaxCommentGlyph,
 .ExplorerDockSyntaxLineNumber.ui-focus .ExplorerDockSyntaxCommentGlyph,
 .ExplorerDockSyntaxLineNumber--active .ExplorerDockSyntaxCommentGlyph {
-  display: block;
+  display: flex;
 }
 
 .ExplorerDockSyntaxLineNumber.ui-hover .ExplorerDockSyntaxCommentGlyph,
