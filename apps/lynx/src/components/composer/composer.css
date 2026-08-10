@@ -994,6 +994,12 @@
   background-color: var(--color-text-foreground);
 }
 
+.ComposerPrimaryActionLynx--stop {
+  width: 26px;
+  height: 26px;
+  border-radius: 13px;
+}
+
 .ComposerPrimaryActionLynx--disabled {
   opacity: 0.2;
 }

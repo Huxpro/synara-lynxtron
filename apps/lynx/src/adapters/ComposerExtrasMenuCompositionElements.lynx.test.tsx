@@ -156,6 +156,9 @@ describe('native composer attachment menu item', () => {
     expect(composerStyles).toMatch(
       /\.ComposerPrimaryActionLynx\s*\{[^}]*background-color:\s*var\(--color-text-foreground\);/s
     );
+    expect(composerStyles).toMatch(
+      /\.ComposerPrimaryActionLynx--stop\s*\{[^}]*width:\s*26px;[^}]*height:\s*26px;[^}]*border-radius:\s*13px;/s
+    );
     expect(composerStyles).not.toMatch(
       /\.ComposerPrimaryActionLynx\.ui-(?:hover|pressed)\s*\{[^}]*opacity:/s
     );
