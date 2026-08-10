@@ -250,6 +250,7 @@ describe('ThemePack boolean interaction contract', () => {
       /\.SharedThemePackFontInput--mono \.LxInput\s*\{[^}]*font-family:\s*var\(--font-chat-code-family\);/s
     );
     expect(source).toContain('className="SharedThemePackColorControl"');
+    expect(source).toContain('aria-label={`Reset ${props.ariaLabel}`}');
     expect(source).toContain('className="SharedThemePackColorIndicator"');
     expect(source).toContain('className="SharedThemePackColorInput"');
     expect(source).toContain(

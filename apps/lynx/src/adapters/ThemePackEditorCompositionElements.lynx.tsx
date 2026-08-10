@@ -369,7 +369,12 @@ export function ThemePackColorControlElement(props: {
   return (
     <view className="SharedThemePackColorLine">
       {props.onReset ? (
-        <Button size="icon-sm" variant="ghost" onClick={props.onReset}>
+        <Button
+          size="icon-sm"
+          variant="ghost"
+          aria-label={`Reset ${props.ariaLabel}`}
+          onClick={props.onReset}
+        >
           <SettingsResetIcon />
         </Button>
       ) : null}
