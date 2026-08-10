@@ -968,6 +968,14 @@ continues to own its own chrome, while disabled opacity remains centralized.
 Menu plus representative Settings, Composer, Environment, and Explorer
 consumers pass 30/30 and the Native/Desktop production build succeeds.
 
+The shared Button follow-up removes the matching high-impact repaint source:
+Native button press no longer applies one global `opacity:0.82` plus
+`scale(0.98)` transform to every variant. Ghost, chrome/outline, and
+secondary/subtle variants instead use their Web semantic pressed surfaces;
+primary and destructive buttons remain stable on their own fills. Button,
+Dialog, Theme Pack, Composer, and Settings consumers pass 28/28 and the
+Native/Desktop production build succeeds.
+
 The Native arbitrary text-range selection investigation reached an upstream
 Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's
 documented contract exposes `text-selection={true}`, `flatten={false}`,

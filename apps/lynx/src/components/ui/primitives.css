@@ -14,8 +14,23 @@
 }
 
 .LxButton.ui-active {
-  opacity: 0.82;
-  transform: scale(0.98);
+  opacity: 1;
+  transform: none;
+}
+
+.LxButton--ghost.ui-active {
+  background-color: var(--color-background-button-secondary);
+}
+
+.LxButton--chrome.ui-active,
+.LxButton--outline.ui-active,
+.LxButton--chrome-outline.ui-active {
+  background-color: var(--color-background-elevated-secondary);
+}
+
+.LxButton--secondary.ui-active,
+.LxButton--subtle.ui-active {
+  background-color: var(--color-background-button-secondary-hover);
 }
 
 .LxButton.ui-disabled {

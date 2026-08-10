@@ -1,9 +1,30 @@
 import { describe, expect, it, rs } from '@rstest/core';
 import { fireEvent, render } from '@lynx-js/react/testing-library';
+import { readFileSync } from 'node:fs';
 
 import { Button } from './button.lynx';
 
 describe('Lynx Button accessibility contract', () => {
+  it('uses variant-owned pressed paint without globally dimming or scaling', () => {
+    const styles = readFileSync(
+      new URL('./primitives.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(styles).toMatch(
+      /\.LxButton\.ui-active\s*\{[^}]*opacity:\s*1;[^}]*transform:\s*none;/s
+    );
+    expect(styles).toMatch(
+      /\.LxButton--ghost\.ui-active\s*\{[^}]*background-color:\s*var\(--color-background-button-secondary\);/s
+    );
+    expect(styles).toMatch(
+      /\.LxButton--chrome\.ui-active,[^{]*\{[^}]*background-color:\s*var\(--color-background-elevated-secondary\);/s
+    );
+    expect(styles).not.toMatch(
+      /\.LxButton\.ui-active\s*\{[^}]*(?:opacity:\s*0\.|scale\(0\.)/s
+    );
+  });
+
   it('exposes visible-text actions as Native buttons by default', () => {
     render(<Button>Save</Button>);
 
