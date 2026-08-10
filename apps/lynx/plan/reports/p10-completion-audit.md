@@ -268,7 +268,7 @@ Current responsive disposition:
 | Dark shell base fill | Electron vibrancy RGB 6–7 versus Native canonical opaque #101010/#111111 | INTENTIONAL HOST MATERIAL DELTA |
 | Environment | reachable current-head consumer; paired light/dark Browser geometry/material proof at 900x650 | PASS IN BROWSER; NATIVE CURRENT-HEAD SCREENCAST NOT CERTIFIED |
 | Environment Git actions | stable menu, selectable-file/new-branch commits, safe pull, streamed live progress, metadata sync, confirmation, and paired themes | PASS |
-| Environment row interaction | Changes/retry, commit-file selection, Editor view, and pull-request external rows share one interactive-state owner for tap, Enter/Space, hover, pressed, focus, disabled, and checked semantics instead of raw tap-only handlers | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
+| Environment row interaction | Changes/retry, commit-file selection, Editor view, and pull-request external rows share one interactive-state owner; current-head real Git evidence verifies exact Changes/Editor geometry and neutral hover material | PASS — CURRENT-HEAD BROWSER EVIDENCE |
 | Kanban task creation | overview header, per-project overview action, project header, and Draft-column action open a compact Lynx-native task dialog with Web's `Send as draft` switch and `Create task` action; draft mode persists a typed `thread.create` plus composer draft, immediate mode additionally dispatches typed `thread.turn.start`, and provider failure preserves the real Draft card | PASS — CURRENT PRODUCT SURFACES |
 | Kanban icon identity | route Back, overview project disclosure, and all New task entry points use generated Arrow/Chevron/Plus SVGs; Draft/In Progress/Done status marks reproduce Web's exact 14×14 paths; card pin/worktree/fork/attachment/PR metadata use the same filled-pin, split-arrow, fork, paperclip, and shared PR-state assets as Web instead of text approximations | PASS — CURRENT PRODUCT SURFACES |
 | Composer voice capability | Lynx has no microphone-capture host bridge; current head follows Web's capability gate by omitting the unavailable control instead of rendering a permanently disabled fake microphone. The historical 28×28 disabled-control evidence remains provenance for the superseded implementation, not current-head UI | PASS — HONEST HOST BOUNDARY |
@@ -870,6 +870,17 @@ slot absent. Current-head paired evidence in
 Lynx-for-Web, with no standalone `main` token. Rendered regressions cover both
 null and exact named branches; the combined empty-thread suites pass 5/5 and
 the Native/Desktop production build succeeds.
+
+The current Environment row interaction refresh is retained in
+`shots/2026-08-11/environment-row-hover-current/`. A real Git workspace with
+one modified and one untracked file produces the same `Changes +2 / -0` and
+Editor view rows in both clients. Default geometry is exact at `274x26`.
+The audit exposed that Lynx used the generated blue `--accent` token for
+hover/focus/pressed while Web uses neutral elevated-secondary material.
+Changes, Editor, and repository row owners now use
+`--color-background-elevated-secondary`; final light hover resolves to the
+same `rgba(13,13,13,0.04)` at the same `987/175/274x26` box. Focused tests pass
+6/6 and both production builds succeed.
 
 The Native arbitrary text-range selection investigation reached an upstream
 Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's

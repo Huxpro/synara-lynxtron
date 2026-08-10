@@ -171,7 +171,7 @@
 .EnvironmentChangesTrigger.ui-hover,
 .EnvironmentChangesTrigger.ui-focus,
 .EnvironmentChangesTrigger.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-elevated-secondary);
   opacity: 1;
 }
 
@@ -667,7 +667,7 @@
 .EnvironmentEditorTrigger.ui-hover,
 .EnvironmentEditorTrigger.ui-focus,
 .EnvironmentEditorTrigger.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-elevated-secondary);
   opacity: 1;
 }
 
@@ -704,7 +704,7 @@
 .EnvironmentRepositoryRow.ui-hover,
 .EnvironmentRepositoryRow.ui-focus,
 .EnvironmentRepositoryRow.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-elevated-secondary);
 }
 
 .EnvironmentRepositoryError {

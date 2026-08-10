@@ -1,0 +1,6 @@
+07f41d8ada7b3c7cba632040afc8d28ec0a4eb1cfdaa9dbc6e54554bcc6ac0b4  apps/lynx/dist/web/main.web.bundle
+a209ba85773882b79b8147779c406fbb67a12dcb723ba7c4ea7ca3168e651cc8  /tmp/synara-env-row-server/dev/state.sqlite
+shots/2026-08-11/environment-row-hover-current/lynx-default.png: PNG image data, 1280 x 820, 8-bit/color RGB, non-interlaced
+shots/2026-08-11/environment-row-hover-current/lynx-hover.png:   PNG image data, 1280 x 820, 8-bit/color RGB, non-interlaced
+shots/2026-08-11/environment-row-hover-current/web-default.png:  PNG image data, 1280 x 820, 8-bit/color RGB, non-interlaced
+shots/2026-08-11/environment-row-hover-current/web-hover.png:    PNG image data, 1280 x 820, 8-bit/color RGB, non-interlaced
