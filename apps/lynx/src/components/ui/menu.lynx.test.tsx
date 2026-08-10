@@ -307,9 +307,47 @@ describe('Lynx Menu overlay contract', () => {
     ).toBeNull();
     const item = elementTree.root?.querySelector('.LxMenuItem--switch');
     if (!item) throw new Error('expected switch menu item');
+    expect(item.getAttribute('role')).toBe('menuitemcheckbox');
+    expect(item.getAttribute('accessibility-role')).toBe('switch');
+    expect(item.getAttribute('aria-checked')).toBe('true');
+    expect(item.getAttribute('accessibility-value')).toBe('Selected');
     fireEvent.tap(item);
     expect(onCheckedChange).toHaveBeenCalledWith(false);
     expect(elementTree.root?.querySelector('.LxMenuPopup')).not.toBeNull();
+  });
+
+  it('publishes radio and checkbox selection on the interactive menu item', async () => {
+    render(
+      <Menu defaultOpen>
+        <MenuTrigger>
+          <text>Open</text>
+        </MenuTrigger>
+        <MenuPopup>
+          <MenuRadioGroup value="normal">
+            <MenuRadioItem value="normal">Default</MenuRadioItem>
+            <MenuRadioItem value="fast">Fast</MenuRadioItem>
+          </MenuRadioGroup>
+          <MenuCheckboxItem checked onCheckedChange={() => undefined}>
+            Enabled
+          </MenuCheckboxItem>
+        </MenuPopup>
+      </Menu>
+    );
+
+    const items = await waitFor(() => {
+      const elements = elementTree.root?.querySelectorAll('.LxMenuItem') ?? [];
+      if (elements.length !== 3) throw new Error('expected selection menu items');
+      return elements;
+    });
+    expect(items[0]?.getAttribute('role')).toBe('menuitemradio');
+    expect(items[0]?.getAttribute('accessibility-role')).toBe('radio');
+    expect(items[0]?.getAttribute('aria-checked')).toBe('true');
+    expect(items[0]?.getAttribute('accessibility-value')).toBe('Selected');
+    expect(items[1]?.getAttribute('aria-checked')).toBe('false');
+    expect(items[1]?.getAttribute('accessibility-value')).toBe('Not selected');
+    expect(items[2]?.getAttribute('role')).toBe('menuitemcheckbox');
+    expect(items[2]?.getAttribute('accessibility-role')).toBe('checkbox');
+    expect(items[2]?.getAttribute('aria-checked')).toBe('true');
   });
 
   it('uses generated Check and Chevron identities for shared menu states', () => {

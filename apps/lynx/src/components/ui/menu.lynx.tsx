@@ -407,6 +407,8 @@ export function MenuItem(props: {
   trailing?: ReactNode;
   inset?: boolean;
   closeOnClick?: boolean;
+  selectionRole?: 'radio' | 'checkbox' | 'switch';
+  selected?: boolean;
 }) {
   const menu = useContext(MenuContext);
   const valueRef = useRef<string | null>(null);
@@ -431,6 +433,12 @@ export function MenuItem(props: {
       props.disabled && 'LxMenuItem--disabled'
     ),
     disabled: props.disabled,
+    accessibilityValue:
+      props.selected === undefined
+        ? undefined
+        : props.selected
+          ? 'Selected'
+          : 'Not selected',
     onActivate: handleClick,
   });
   const activateRef = useRef(handleClick);
@@ -452,7 +460,22 @@ export function MenuItem(props: {
       className={interaction.className}
       {...interaction.eventProps}
       aria-disabled={props.disabled}
-      role="menuitem"
+      aria-checked={props.selected}
+      role={
+        props.selectionRole === 'radio'
+          ? 'menuitemradio'
+          : props.selectionRole
+            ? 'menuitemcheckbox'
+            : 'menuitem'
+      }
+      accessibility-role={props.selectionRole}
+      accessibility-state={
+        props.selected === undefined
+          ? undefined
+          : props.selectionRole === 'radio'
+            ? { selected: props.selected }
+            : { checked: props.selected }
+      }
       bindfocus={
         props.disabled
           ? undefined
@@ -504,6 +527,8 @@ export function MenuRadioItem(props: {
     <MenuItem
       className={props.className}
       disabled={props.disabled}
+      selectionRole="radio"
+      selected={checked}
       trailing={
         checked ? <CheckIcon className="LxMenuIndicatorIcon" /> : undefined
       }
@@ -546,6 +571,8 @@ export function MenuCheckboxItem(props: {
       )}
       closeOnClick={false}
       disabled={props.disabled}
+      selectionRole={props.variant === 'switch' ? 'switch' : 'checkbox'}
+      selected={props.checked}
       trailing={switchIndicator}
       onClick={() => props.onCheckedChange?.(!props.checked)}
     >
