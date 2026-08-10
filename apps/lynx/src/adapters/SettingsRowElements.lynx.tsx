@@ -70,7 +70,16 @@ export function SettingsRowViewElement({ className, children }: ElementProps) {
 }
 
 export function SettingsRowTitleElement({ className, children }: ElementProps) {
-  return <text className={classes('SharedSettingsRowTitle', className)}>{children}</text>;
+  return (
+    <text
+      className={classes('SharedSettingsRowTitle', className)}
+      accessibility-element
+      accessibility-heading
+      accessibility-traits="header"
+    >
+      {children}
+    </text>
+  );
 }
 
 export function SettingsRowDescriptionElement({ className, children }: ElementProps) {

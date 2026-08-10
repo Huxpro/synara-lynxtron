@@ -18,7 +18,16 @@ export function SettingsPanelHeaderCopyElement(props: ChildrenProps) {
 }
 
 export function SettingsPanelHeaderTitleElement(props: ChildrenProps) {
-  return <text className="SharedSettingsPanelHeaderTitle">{props.children}</text>;
+  return (
+    <text
+      className="SharedSettingsPanelHeaderTitle"
+      accessibility-element
+      accessibility-heading
+      accessibility-traits="header"
+    >
+      {props.children}
+    </text>
+  );
 }
 
 export function SettingsPanelHeaderDescriptionElement(props: ChildrenProps) {

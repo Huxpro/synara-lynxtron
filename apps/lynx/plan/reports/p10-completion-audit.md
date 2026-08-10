@@ -282,6 +282,7 @@ Current responsive disposition:
 | Form control accessibility | Kanban task mutation, Git commit message, Integration connection name, and provider credential inputs expose explicit native accessible names; pending Git/Kanban fields retain read-only semantics without invalid DOM-only focus props | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Form error semantics | Kanban mutation, Git commit message, and custom-model slug inputs expose dynamic `aria-invalid` state whenever their adjacent retained error message is present | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Error announcement semantics | retained Kanban mutation, Git action, and custom-model errors are Native accessibility alerts in addition to marking their owning inputs invalid | PASS — CURRENT PRODUCT IMPLEMENTATION |
+| Settings heading semantics | Settings panel, section, and row titles preserve the Web h1/h2/h3 hierarchy as explicit Native accessibility headers instead of undifferentiated text | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Shared interactive names | high-frequency Composer, Kanban, and Pull Request controls route labels and selected/expanded/on-off state through `useLynxInteractiveState`, so Native accessibility metadata no longer depends only on Web `aria-label` attributes | PASS — SHARED NATIVE ACCESSIBILITY CONTRACT |
 | Actionable primitive semantics | `useLynxInteractiveState` now exposes every actionable control as a Native accessibility button even when its name is derived from visible text; passive hover owners remain excluded and explicit `accessibilityElement: false` remains authoritative | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
 | Empty-thread context semantics | project, environment mode, and branch chips are exposed as static draft metadata rather than falsely disabled controls; Temporary remains the tray's sole pressed-state action | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
@@ -538,6 +539,11 @@ the same Native alert role already used by Kanban creation and Pull Request
 comments, so assistive technology receives the failure without moving focus.
 Focused suites pass (9/9), both production bundles build, and React Doctor
 0.9.11 reports zero new diagnostics against `7ae10301`.
+The Settings heading follow-up maps the Web panel h1, section h2, and row h3
+owners to explicit Native accessibility headers with one shared semantic
+contract. Focused Settings heading regressions pass (4/4), both production
+bundles build, `git diff --check` passes, and React Doctor 0.9.11 reports zero
+diagnostics against `217e2e1d`.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

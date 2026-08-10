@@ -12,7 +12,16 @@ export function SettingsSectionElement({ className, children }: ElementProps) {
 }
 
 export function SettingsSectionTitleElement({ className, children }: ElementProps) {
-  return <text className={`SharedSettingsSectionTitle ${className}`}>{children}</text>;
+  return (
+    <text
+      className={`SharedSettingsSectionTitle ${className}`}
+      accessibility-element
+      accessibility-heading
+      accessibility-traits="header"
+    >
+      {children}
+    </text>
+  );
 }
 
 export function SettingsCardElement({ className, children }: ElementProps) {
