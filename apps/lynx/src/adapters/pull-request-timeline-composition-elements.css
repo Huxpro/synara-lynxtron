@@ -34,16 +34,16 @@
 
 .SharedPrTimelineTitle {
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-lg);
   font-weight: 500;
-  line-height: 17px;
+  line-height: 19.5px;
 }
 
 .SharedPrTimelineMeta,
 .SharedPrTimelineBody {
   color: var(--muted-foreground);
-  font-size: 10px;
-  line-height: 15px;
+  font-size: var(--app-font-size-ui);
+  line-height: 18px;
 }
 
 .SharedPrTimelineBody {
