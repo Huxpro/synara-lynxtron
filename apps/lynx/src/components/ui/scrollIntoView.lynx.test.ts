@@ -54,4 +54,19 @@ describe('scrollLynxElementIntoViewById', () => {
     });
     expect(scrollLynxElementIntoViewById('setting-theme')).toBe(false);
   });
+
+  it('supports nearest alignment for active picker rows', () => {
+    expect(
+      scrollLynxElementIntoViewById('composer-command-row-plan', 'nearest')
+    ).toBe(true);
+    expect(invoke).toHaveBeenLastCalledWith({
+      method: 'scrollIntoView',
+      params: {
+        scrollIntoViewOptions: {
+          block: 'nearest',
+          inline: 'start',
+        },
+      },
+    });
+  });
 });

@@ -1,4 +1,4 @@
-import type { ReactNode } from '@lynx-js/react';
+import { useEffect, type ReactNode } from '@lynx-js/react';
 
 import type { ComposerCommandItem } from '@synara-web/components/chat/ComposerCommandMenuComposition';
 import {
@@ -17,6 +17,11 @@ import {
   type LynxIcon,
 } from '../lib/icons.lynx';
 import { useLynxInteractiveState } from '../components/ui/interactive-state.lynx';
+import { scrollLynxElementIntoViewById } from '../components/ui/scrollIntoView.lynx';
+
+export function composerCommandRowId(itemId: string): string {
+  return `composer-command-row-${itemId.replace(/[^a-z0-9_-]+/gi, '-')}`;
+}
 
 const SLASH_COMMAND_ICONS: Record<string, LynxIcon> = {
   clear: ToolsIcon,
@@ -57,6 +62,15 @@ export function ComposerCommandMenuFrameElement(props: {
   readonly emptyText: string | null;
   readonly onHighlightedItemChange: (itemId: string | null) => void;
 }) {
+  useEffect(() => {
+    'background only';
+    if (props.activeItemId) {
+      scrollLynxElementIntoViewById(
+        composerCommandRowId(props.activeItemId),
+        'nearest'
+      );
+    }
+  }, [props.activeItemId]);
   return (
     <view className="ComposerCommandMenuLynx">
       <scroll-view
@@ -130,6 +144,7 @@ export function ComposerCommandRowElement(props: {
   const handleMouseEnter = interaction.eventProps.bindmouseenter;
   return (
     <view
+      id={composerCommandRowId(props.item.id)}
       className={interaction.className}
       aria-label={props.title}
       aria-selected={props.active}

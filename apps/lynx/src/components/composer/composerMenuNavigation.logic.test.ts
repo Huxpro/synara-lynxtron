@@ -126,5 +126,17 @@ describe('Native Composer menu navigation', () => {
     expect(source).not.toContain(
       'onHighlightedItemChange={() => undefined}'
     );
+    const adapterSource = readFileSync(
+      new URL(
+        '../../adapters/ComposerCommandMenuCompositionElements.lynx.tsx',
+        import.meta.url
+      ),
+      'utf8'
+    );
+    expect(adapterSource).toContain(
+      'scrollLynxElementIntoViewById('
+    );
+    expect(adapterSource).toContain("'nearest'");
+    expect(adapterSource).toContain('id={composerCommandRowId(props.item.id)}');
   });
 });

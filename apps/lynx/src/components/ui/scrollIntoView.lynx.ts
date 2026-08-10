@@ -1,4 +1,7 @@
-export function scrollLynxElementIntoViewById(id: string): boolean {
+export function scrollLynxElementIntoViewById(
+  id: string,
+  block: 'nearest' | 'start' = 'start'
+): boolean {
   if (!id.trim()) return false;
   try {
     lynx
@@ -8,7 +11,7 @@ export function scrollLynxElementIntoViewById(id: string): boolean {
         method: 'scrollIntoView',
         params: {
           scrollIntoViewOptions: {
-            block: 'start',
+            block,
             inline: 'start',
           },
         },

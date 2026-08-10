@@ -983,8 +983,10 @@ follow the visible row. All three menu kinds now share one normalized
 highlight owner; stale IDs fall back to the first available item, Up/Down wrap,
 hover updates active state, and Enter/Tab select that same item. The textarea
 uses a normal key listener and only prevents handled menu keys, preserving
-ordinary input outside an active menu. Focused navigation and row interaction
-coverage passes 6/6; both Lynx-for-Web and Native/Desktop production builds
+ordinary input outside an active menu. Active rows also receive stable Native
+ids and use nearest-aligned `scrollIntoView`, so long result lists follow
+keyboard navigation instead of leaving selection offscreen. Focused navigation,
+row interaction, and scroll-follow coverage passes 10/10; both Lynx-for-Web and Native/Desktop production builds
 pass with only the existing warnings.
 
 The shared Menu trigger follow-up removes an upstream wrapper-level repaint

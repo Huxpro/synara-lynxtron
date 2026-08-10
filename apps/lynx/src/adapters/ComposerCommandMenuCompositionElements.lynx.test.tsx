@@ -3,10 +3,17 @@ import { readFileSync } from 'node:fs';
 import { fireEvent, render } from '@lynx-js/react/testing-library';
 
 import { ComposerCommandRowElement } from './ComposerCommandMenuCompositionElements.lynx';
+import { composerCommandRowId } from './ComposerCommandMenuCompositionElements.lynx';
 
 const noop = () => undefined;
 
 describe('native Composer command menu row', () => {
+  it('builds stable Native ids for scroll-follow targets', () => {
+    expect(composerCommandRowId('skill:/project/SKILL.md')).toBe(
+      'composer-command-row-skill-project-SKILL-md'
+    );
+  });
+
   it('uses semantic SVG icons instead of trigger-character glyphs', () => {
     const styles = readFileSync(
       new URL('../components/composer/composer.css', import.meta.url),
@@ -122,6 +129,9 @@ describe('native Composer command menu row', () => {
 
     const row = elementTree.root?.querySelector('.ComposerCommandRowLynx');
     if (!row) throw new Error('expected command row');
+    expect(row.getAttribute('id')).toBe(
+      'composer-command-row-slash-default'
+    );
     fireEvent(row, new Event('bindEvent:mouseenter', { bubbles: true }));
     expect(onHighlight).toHaveBeenCalledTimes(1);
     expect(onSelect).not.toHaveBeenCalled();
