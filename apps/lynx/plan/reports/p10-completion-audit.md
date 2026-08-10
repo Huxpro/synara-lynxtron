@@ -830,6 +830,19 @@ equivalent static regex preserves the canonical allowlist and restores Native
 startup. Two exact-owned launches now retain all four Native General cells at
 both themes/sizes with the staged bundle, expected roles, and zero console
 messages. The unrelated `@t3tools/lynxtron` client was not used or touched.
+The subsequent Landing current-state refresh is recorded in
+`shots/2026-08-10/landing-matrix-current/`. Web and Lynx-for-Web retain all
+four theme/size coordinates with mean absolute RGB differences from `0.9688`
+to `2.0652`. Current-head Native no longer reproduces the earlier
+offline/cooldown startup frame: three cold starts rendered the Landing
+Composer on the exact isolated server with zero retry nodes and empty
+warning/error consoles. Exact-owned light Native cells are retained at both
+sizes; DPR-normalized differences from Lynx-for-Web are `0.9959` and `0.8069`,
+with a pixel-identical blank canvas. Native dark cells remain unretained
+because the current Desktop DevTool `Input.emulateTouchFromMouseEvent` returns
+success without dispatching events, as confirmed against both Settings
+navigation and the Project Picker's `aria-expanded` state. No direct theme
+state or Runtime/DOM mutation was used to manufacture those cells.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

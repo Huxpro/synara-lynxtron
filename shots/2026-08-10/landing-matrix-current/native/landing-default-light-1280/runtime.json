@@ -1,0 +1,206 @@
+{
+  "sourceHead": "3b9e343cc4665fdd3c7a28fd66ba8050da37dec0",
+  "pid": 39893,
+  "client": "localhost:8902",
+  "session": 1,
+  "server": "ws://127.0.0.1:58710",
+  "bundleSha256": "6715abf461df774dee4a0436193f11dddb2a97497224f53cedebdd2173339474",
+  "snapshotSha256": "253d6ffed93f5ca1cb2f0179bdb0d3cbba9123ddecb74a2f6add5cd84077ad5e",
+  "outer": {
+    "x": 120,
+    "y": 33,
+    "width": 1280,
+    "height": 820
+  },
+  "png": "/Users/bytedance/github/synara/shots/2026-08-10/landing-matrix-current/native/landing-default-light-1280/raw.png\n  pixelWidth: 2560\n  pixelHeight: 1640\n",
+  "rootClass": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up",
+  "nodes": {
+    "root": {
+      "nodeId": 13,
+      "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up",
+      "attrs": {
+        "data-viewport-width": "1280",
+        "data-viewport-height": "820",
+        "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up"
+      }
+    },
+    "heading": {
+      "nodeId": 130,
+      "class": "CenteredEmptyLandingHeading",
+      "attrs": {
+        "class": "CenteredEmptyLandingHeading"
+      },
+      "box": {
+        "border": [
+          608,
+          367,
+          929,
+          367,
+          929,
+          402,
+          608,
+          402
+        ],
+        "content": [
+          608,
+          367,
+          929,
+          367,
+          929,
+          402,
+          608,
+          402
+        ],
+        "height": 35,
+        "margin": [
+          608,
+          367,
+          929,
+          367,
+          929,
+          402,
+          608,
+          402
+        ],
+        "padding": [
+          608,
+          367,
+          929,
+          367,
+          929,
+          402,
+          608,
+          402
+        ],
+        "width": 321
+      }
+    },
+    "composer": {
+      "nodeId": 149,
+      "class": "ComposerInputSurfaceLynx",
+      "attrs": {
+        "class": "ComposerInputSurfaceLynx"
+      },
+      "box": {
+        "border": [
+          400,
+          421,
+          1136,
+          421,
+          1136,
+          516,
+          400,
+          516
+        ],
+        "content": [
+          401,
+          422,
+          1135,
+          422,
+          1135,
+          515,
+          401,
+          515
+        ],
+        "height": 93,
+        "margin": [
+          400,
+          421,
+          1136,
+          421,
+          1136,
+          516,
+          400,
+          516
+        ],
+        "padding": [
+          401,
+          422,
+          1135,
+          422,
+          1135,
+          515,
+          401,
+          515
+        ],
+        "width": 734
+      }
+    },
+    "project": {
+      "nodeId": 186,
+      "class": "LxMenuTrigger LandingComposerProjectTrigger ComposerProjectPickerTriggerLynx",
+      "attrs": {
+        "react-ref-149-0": "1",
+        "accessibility-element": "true",
+        "accessibility-label": "Work in a project",
+        "accessibility-traits": "button",
+        "accessibility-value": "Collapsed",
+        "focusable": "true",
+        "aria-disabled": "false",
+        "aria-label": "Work in a project",
+        "aria-haspopup": "menu",
+        "aria-expanded": "false",
+        "bindmouseenter": "149:0:bindmouseenter",
+        "bindtap": "149:0:bindtap",
+        "bindmouseup": "149:0:bindmouseup",
+        "bindtouchstart": "149:0:bindtouchstart",
+        "bindmouseleave": "149:0:bindmouseleave",
+        "bindmousedown": "149:0:bindmousedown",
+        "bindtouchend": "149:0:bindtouchend",
+        "bindblur": "149:0:bindblur",
+        "catchkeydown": "149:0:catchkeydown",
+        "bindfocus": "149:0:bindfocus",
+        "bindtouchcancel": "149:0:bindtouchcancel",
+        "bindlayoutchange": "149:0:bindlayoutchange",
+        "class": "LxMenuTrigger LandingComposerProjectTrigger ComposerProjectPickerTriggerLynx"
+      },
+      "box": {
+        "border": [
+          408,
+          520,
+          530,
+          520,
+          530,
+          548,
+          408,
+          548
+        ],
+        "content": [
+          415,
+          525,
+          523,
+          525,
+          523,
+          543,
+          415,
+          543
+        ],
+        "height": 18,
+        "margin": [
+          408,
+          520,
+          530,
+          520,
+          530,
+          548,
+          408,
+          548
+        ],
+        "padding": [
+          409,
+          521,
+          529,
+          521,
+          529,
+          547,
+          409,
+          547
+        ],
+        "width": 108
+      }
+    }
+  },
+  "retryNodes": 0,
+  "offlineText": false,
+  "consoleBytes": 1
+}

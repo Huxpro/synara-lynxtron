@@ -1,0 +1,44 @@
+{
+  "1280": {
+    "nativePhysical": [
+      2560,
+      1640
+    ],
+    "logical": [
+      1280,
+      820
+    ],
+    "browser": [
+      1280,
+      820
+    ],
+    "meanAbsoluteRgbDiff": 0.9959378175813008,
+    "regions": {
+      "sidebar": 1.7507383765243902,
+      "mainHeader": 0.4818062160326087,
+      "landingCenter": 2.5300438766292426,
+      "blankMain": 0.0
+    }
+  },
+  "1440": {
+    "nativePhysical": [
+      2880,
+      1800
+    ],
+    "logical": [
+      1440,
+      900
+    ],
+    "browser": [
+      1440,
+      900
+    ],
+    "meanAbsoluteRgbDiff": 0.8069068930041152,
+    "regions": {
+      "sidebar": 1.5962239583333335,
+      "mainHeader": 0.416697267920094,
+      "landingCenter": 2.3051475602586713,
+      "blankMain": 0.0
+    }
+  }
+}
