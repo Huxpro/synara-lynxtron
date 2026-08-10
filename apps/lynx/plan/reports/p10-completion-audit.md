@@ -961,6 +961,13 @@ Semantic icons and focus rings are unchanged. Command composition plus shared
 Command regressions pass 10/10 and the Native/Desktop production build
 succeeds.
 
+The shared Menu trigger follow-up removes an upstream wrapper-level repaint
+that Web never applies. Hover, focus, and press no longer change opacity or add
+a duplicate focus ring on the entire trigger subtree; each concrete trigger
+continues to own its own chrome, while disabled opacity remains centralized.
+Menu plus representative Settings, Composer, Environment, and Explorer
+consumers pass 30/30 and the Native/Desktop production build succeeds.
+
 The Native arbitrary text-range selection investigation reached an upstream
 Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's
 documented contract exposes `text-selection={true}`, `flatten={false}`,

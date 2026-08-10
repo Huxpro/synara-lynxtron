@@ -66,6 +66,12 @@ describe('Lynx Menu overlay contract', () => {
     expect(primitiveStyles).not.toMatch(
       /\.LxMenuItem\.ui-pressed\s*\{[^}]*opacity:/s
     );
+    expect(primitiveStyles).not.toMatch(
+      /\.LxMenuTrigger\.ui-(?:hover|focus|pressed)\s*\{/
+    );
+    expect(primitiveStyles).toMatch(
+      /\.LxMenuTrigger--disabled\s*\{[^}]*opacity:\s*0\.48;/s
+    );
   });
 
   it('normalizes global anchors into a nested Web layer viewport', () => {

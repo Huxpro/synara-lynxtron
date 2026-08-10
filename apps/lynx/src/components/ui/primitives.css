@@ -457,18 +457,6 @@
   display: flex;
 }
 
-.LxMenuTrigger.ui-hover {
-  opacity: 0.9;
-}
-
-.LxMenuTrigger.ui-focus {
-  box-shadow: 0 0 0 1px var(--ring);
-}
-
-.LxMenuTrigger.ui-pressed {
-  opacity: 0.72;
-}
-
 .LxMenuTrigger--disabled {
   opacity: 0.48;
 }
