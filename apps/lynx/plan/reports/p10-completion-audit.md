@@ -844,6 +844,20 @@ success without dispatching events, as confirmed against both Settings
 navigation and the Project Picker's `aria-expanded` state. No direct theme
 state or Runtime/DOM mutation was used to manufacture those cells.
 
+The Native arbitrary text-range selection investigation reached an upstream
+Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's
+documented contract exposes `text-selection={true}`, `flatten={false}`,
+`selectionchange`, and the `getSelectedText` UI method, and the experimental
+production bundle contained that wiring. On the exact-owned Desktop client,
+Lynx DevTool main-thread evaluation resolved an assistant `.MdParagraph` to a
+Lynx element wrapper with `invoke`; invoking `getSelectedText` immediately
+removed that client and the host terminated with `SIGABRT` after reporting
+`out_of_range was thrown in -fno-exceptions mode with message "basic_string"`.
+The experiment was therefore fully reverted rather than shipping a path that
+can crash the Native host. The existing whole-message assistant reference
+remains the safe supported fallback, while arbitrary Native text-range
+selection remains blocked on a Lynxtron PC engine/runtime fix.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after
