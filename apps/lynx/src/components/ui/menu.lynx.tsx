@@ -277,6 +277,10 @@ export function MenuTrigger(props: {
     }
     menu.toggle();
   };
+  useEffect(() => {
+    if (!menu.open) return;
+    void refreshAnchorRect();
+  }, [menu.open]);
   const interaction = useLynxInteractiveState({
     baseClassName: cx(
       'LxMenuTrigger',

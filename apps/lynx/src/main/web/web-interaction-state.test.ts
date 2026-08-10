@@ -21,6 +21,9 @@ function setup(
   onExplorerPreviewAction?: (action: {
     readonly action: 'toggle-menu';
     readonly path: string;
+  }) => void,
+  onComposerModelMenuActivation?: (activation: {
+    readonly open: true;
   }) => void
 ) {
   const host = document.createElement('div');
@@ -38,12 +41,103 @@ function setup(
     onEnvironmentActivation,
     onExplorerNavigation,
     onRightPanelResize,
-    onExplorerPreviewAction
+    onExplorerPreviewAction,
+    undefined,
+    onComposerModelMenuActivation
   );
   return { child, control, root };
 }
 
 describe('Lynx-for-Web interaction state bridge', () => {
+  it('forwards Composer model trigger activation as idempotent target state', () => {
+    const activations: Array<{ open: true }> = [];
+    const { control } = setup(
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      (activation) => activations.push(activation)
+    );
+    control.classList.add('ComposerModelTriggerLynx');
+
+    control.click();
+    control.dispatchEvent(
+      new MouseEvent('mousedown', {
+        bubbles: true,
+        button: 0,
+        clientX: 20,
+        clientY: 10,
+        composed: true,
+      })
+    );
+    control.dispatchEvent(
+      new MouseEvent('mouseup', {
+        bubbles: true,
+        button: 0,
+        clientX: 21,
+        clientY: 11,
+        composed: true,
+      })
+    );
+    control.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        key: 'Enter',
+      })
+    );
+    control.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        key: ' ',
+      })
+    );
+    control.setAttribute('aria-disabled', 'true');
+    control.click();
+
+    expect(activations).toEqual([
+      { open: true },
+      { open: true },
+      { open: true },
+      { open: true },
+    ]);
+  });
+
+  it('does not activate the Composer model menu after pointer movement', () => {
+    const activations: Array<{ open: true }> = [];
+    const { control } = setup(
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      (activation) => activations.push(activation)
+    );
+    control.classList.add('ComposerModelTriggerLynx');
+    control.dispatchEvent(
+      new MouseEvent('mousedown', {
+        bubbles: true,
+        button: 0,
+        clientX: 10,
+        clientY: 10,
+        composed: true,
+      })
+    );
+    control.dispatchEvent(
+      new MouseEvent('mouseup', {
+        bubbles: true,
+        button: 0,
+        clientX: 18,
+        clientY: 10,
+        composed: true,
+      })
+    );
+
+    expect(activations).toEqual([]);
+  });
+
   it('forwards enabled Explorer click and keyboard activation as idempotent target state', () => {
     const activations: boolean[] = [];
     const { control } = setup((activation) =>
@@ -312,6 +406,16 @@ describe('Lynx-for-Web interaction state bridge', () => {
     );
     expect(source).toContain(
       'lynxView.injectStyleRules = LYNX_WEB_STYLE_RULES'
+    );
+    expect(source).toContain(
+      "url.searchParams.set(COMPOSER_MODEL_MENU_QUERY, 'open')"
+    );
+    expect(source).toContain('initialComposerModelMenuOpen,');
+    expect(source).toContain(
+      "root,\n        '.ComposerModelPopupLynx'"
+    );
+    expect(source).toContain(
+      "popup.style.visibility = 'visible'"
     );
     expect(source).toContain(
       "'.EnvironmentScroller { flex: 0 1 auto; height: auto; min-height: 0; max-height: 100%; }'"

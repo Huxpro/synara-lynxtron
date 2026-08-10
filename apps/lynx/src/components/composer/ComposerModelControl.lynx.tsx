@@ -4,7 +4,7 @@ import type {
   ProviderModelDescriptor,
   ServerProviderStatus,
 } from '@synara/contracts';
-import { useMemo, useState } from '@lynx-js/react';
+import { useInitData, useMemo, useState } from '@lynx-js/react';
 import fastModeSvg from '@synara-central-icons-fill/zap.svg?raw';
 
 import {
@@ -89,8 +89,13 @@ export function ComposerModelControl(props: {
   readonly onModelSelectionChange: (selection: ModelSelection) => void;
   readonly splitTraits?: boolean;
 }) {
+  const initData = useInitData() as {
+    readonly initialComposerModelMenuOpen?: unknown;
+  };
   const { svgColors } = useTheme();
-  const [modelOpen, setModelOpen] = useState(false);
+  const [modelOpen, setModelOpen] = useState(
+    initData.initialComposerModelMenuOpen === true
+  );
   const [traitsOpen, setTraitsOpen] = useState(false);
   const [panel, setPanel] =
     useState<ComposerModelPopupPanel>('providers');

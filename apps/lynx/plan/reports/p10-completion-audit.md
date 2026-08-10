@@ -1049,13 +1049,22 @@ connection, data source, route bootstrap, viewport, and output dimensions.
 The attempt does not upgrade the pending interaction cells to PASS. This
 machine has no `codex` executable in PATH, so the real provider model catalog
 fails and cannot establish the model-group or sending states. Web's model
-trigger opens through a real pointer sequence, while the Lynx-for-Web custom
-element does not forward the same trigger activation. Both editors accept real
-keyboard input, but the Lynx-for-Web textarea island does not project the edit
-back into the rich-token draft state. The Web product path also exposes no
-Explorer action from the active project thread or global Search. No internal
-state injection, direct SQLite edit, or synthetic fixture was used to conceal
-these boundaries.
+trigger opens through a real pointer sequence. The Lynx-for-Web host now
+converts the custom-element pointer/keyboard target into an idempotent
+same-origin `composerModelMenu=open` state, and the Composer consumes that
+init-data through its normal controlled Menu path. The shared Menu trigger also
+refreshes its anchor whenever an externally controlled menu opens; a bounded
+Web-only position fallback keeps the resulting provider popup visible and
+right-aligned when Web Elements cannot return a selector rect during the first
+frame. Current runtime proof renders a visible `260×300` popup at
+`x=739.25..999.25` against the `x=904.09..999.25` trigger with no page errors.
+The provider rows still remain in honest `Checking`/unavailable states because
+there is no Codex executable, so model-group contents are not visually
+certified. Both editors accept real keyboard input, but the Lynx-for-Web
+textarea island does not project the edit back into the rich-token draft
+state. The Web product path also exposes no Explorer action from the active
+project thread or global Search. No internal state injection, direct SQLite
+edit, or synthetic fixture was used to conceal these boundaries.
 
 The accompanying Explorer source audit found a real anatomy residual despite
 the blocked visual cell. Lynx tree rows now match Web's shared file-row source

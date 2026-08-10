@@ -27,6 +27,10 @@ describe('Composer model picker icon fidelity', () => {
       '<SettingsIcon className="ComposerModelTriggerStatusIconLynx" size={14} />'
     );
     expect(controlSource).toContain('<ArrowLeftIcon');
+    expect(controlSource).toContain('useInitData()');
+    expect(controlSource).toContain(
+      'initData.initialComposerModelMenuOpen === true'
+    );
     expect(controlSource).toContain(
       'className="ComposerProviderBackIconLynx"'
     );

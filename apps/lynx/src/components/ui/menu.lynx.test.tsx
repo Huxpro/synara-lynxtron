@@ -46,6 +46,10 @@ async function openMenu(): Promise<Element> {
 
 describe('Lynx Menu overlay contract', () => {
   it('matches the shared Web option text line box', () => {
+    const source = readFileSync(
+      new URL('./menu.lynx.tsx', import.meta.url),
+      'utf8'
+    );
     const primitiveStyles = readFileSync(
       new URL('./primitives.css', import.meta.url),
       'utf8'
@@ -71,6 +75,9 @@ describe('Lynx Menu overlay contract', () => {
     );
     expect(primitiveStyles).toMatch(
       /\.LxMenuTrigger--disabled\s*\{[^}]*opacity:\s*0\.48;/s
+    );
+    expect(source).toContain(
+      'if (!menu.open) return;\n    void refreshAnchorRect();'
     );
   });
 

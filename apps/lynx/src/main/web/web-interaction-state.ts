@@ -9,6 +9,7 @@ const EXPLORER_PREVIEW_ACTION_TRIGGER_SELECTOR =
 const EXPLORER_COMMENT_LINE_SELECTOR = '.ExplorerDockSyntaxLineNumber';
 const EXPLORER_SEARCH_SELECTOR = '.ExplorerDockSearchInput';
 const RIGHT_PANEL_RESIZE_SASH_SELECTOR = '.RightPanelResizeSash';
+const COMPOSER_MODEL_TRIGGER_SELECTOR = '.ComposerModelTriggerLynx';
 const LYNX_FOCUSABLE_SELECTOR = '[focusable="true"]';
 
 export interface LynxWebExplorerActivation {
@@ -40,6 +41,10 @@ export interface LynxWebExplorerPreviewAction {
 
 export interface LynxWebExplorerCommentLine {
   readonly lineNumber: number;
+}
+
+export interface LynxWebComposerModelMenuActivation {
+  readonly open: true;
 }
 
 function interactiveElement(
@@ -83,6 +88,9 @@ export function installLynxWebInteractionStateBridge(
   ) => void,
   onExplorerCommentLine?: (
     commentLine: LynxWebExplorerCommentLine
+  ) => void,
+  onComposerModelMenuActivation?: (
+    activation: LynxWebComposerModelMenuActivation
   ) => void
 ): void {
   const hostHoverClasses = new WeakSet<HTMLElement>();
@@ -115,6 +123,12 @@ export function installLynxWebInteractionStateBridge(
   let explorerCommentLinePointer:
     | {
         readonly lineNumber: number;
+        readonly startX: number;
+        readonly startY: number;
+      }
+    | null = null;
+  let composerModelPointer:
+    | {
         readonly startX: number;
         readonly startY: number;
       }
@@ -227,6 +241,22 @@ export function installLynxWebInteractionStateBridge(
     'mousedown',
     (event) => {
       if (event instanceof MouseEvent && event.button === 0) {
+        const composerModelTrigger = event
+          .composedPath()
+          .find(
+            (target): target is HTMLElement =>
+              target instanceof HTMLElement &&
+              target.matches(COMPOSER_MODEL_TRIGGER_SELECTOR)
+          );
+        if (
+          composerModelTrigger &&
+          composerModelTrigger.getAttribute('aria-disabled') !== 'true'
+        ) {
+          composerModelPointer = {
+            startX: event.clientX,
+            startY: event.clientY,
+          };
+        }
         const commentLineTarget = event
           .composedPath()
           .find(
@@ -349,6 +379,19 @@ export function installLynxWebInteractionStateBridge(
     'mouseup',
     (event) => {
       if (!(event instanceof MouseEvent)) return;
+      if (composerModelPointer) {
+        const pointer = composerModelPointer;
+        composerModelPointer = null;
+        if (
+          onComposerModelMenuActivation &&
+          Math.abs(event.clientX - pointer.startX) <= 2 &&
+          Math.abs(event.clientY - pointer.startY) <= 2
+        ) {
+          onComposerModelMenuActivation({ open: true });
+          event.preventDefault();
+          return;
+        }
+      }
       if (explorerCommentLinePointer) {
         const pointer = explorerCommentLinePointer;
         explorerCommentLinePointer = null;
@@ -443,6 +486,21 @@ export function installLynxWebInteractionStateBridge(
         });
         return;
       }
+      const composerModelTrigger = event
+        .composedPath()
+        .find(
+          (target): target is HTMLElement =>
+            target instanceof HTMLElement &&
+            target.matches(COMPOSER_MODEL_TRIGGER_SELECTOR)
+        );
+      if (
+        composerModelTrigger &&
+        composerModelTrigger.getAttribute('aria-disabled') !== 'true' &&
+        onComposerModelMenuActivation
+      ) {
+        onComposerModelMenuActivation({ open: true });
+        return;
+      }
       const entry = event
         .composedPath()
         .find(
@@ -515,6 +573,34 @@ export function installLynxWebInteractionStateBridge(
       onExplorerActivation({
         open: !element.classList.contains('ThreadFilesToggle--active'),
       });
+    },
+    listenerOptions
+  );
+  root.addEventListener(
+    'keydown',
+    (event) => {
+      if (
+        !(event instanceof KeyboardEvent) ||
+        (event.key !== 'Enter' && event.key !== ' ' && event.key !== 'Spacebar')
+      ) {
+        return;
+      }
+      const composerModelTrigger = event
+        .composedPath()
+        .find(
+          (target): target is HTMLElement =>
+            target instanceof HTMLElement &&
+            target.matches(COMPOSER_MODEL_TRIGGER_SELECTOR)
+        );
+      if (
+        !composerModelTrigger ||
+        composerModelTrigger.getAttribute('aria-disabled') === 'true' ||
+        !onComposerModelMenuActivation
+      ) {
+        return;
+      }
+      event.preventDefault();
+      onComposerModelMenuActivation({ open: true });
     },
     listenerOptions
   );
