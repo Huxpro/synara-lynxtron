@@ -51,6 +51,7 @@ describe('Settings Custom Models fidelity', () => {
     expect(source).toContain('confirmType="send"');
     expect(source).toContain('onConfirm={addModel}');
     expect(source).toContain('aria-invalid={Boolean(error)}');
+    expect(source).toContain('accessibility-role="alert"');
     expect(source).toContain('Remove ${row.slug}');
     expect(source).toContain('Reset custom models to default');
     expect(source).toContain("provider: 'pi'");

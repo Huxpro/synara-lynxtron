@@ -13,6 +13,7 @@ describe('Kanban mutation form accessibility', () => {
     );
     expect(source).toContain('accessibility-element');
     expect(source).toContain('aria-invalid={Boolean(mutationTarget.error)}');
+    expect(source).toContain('accessibility-role="alert"');
     expect(source).toContain('readonly={mutationPending}');
   });
 });

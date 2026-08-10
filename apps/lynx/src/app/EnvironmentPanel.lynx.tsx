@@ -976,7 +976,13 @@ function EnvironmentGitAction(props: {
               }
             />
             {error ? (
-              <text className="EnvironmentGitActionDialogError">{error}</text>
+              <text
+                className="EnvironmentGitActionDialogError"
+                accessibility-element
+                accessibility-role="alert"
+              >
+                {error}
+              </text>
             ) : null}
           </DialogPanel>
           <DialogFooter className="EnvironmentGitActionFooter">

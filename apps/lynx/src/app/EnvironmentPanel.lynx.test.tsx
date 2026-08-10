@@ -198,6 +198,7 @@ describe('Lynx Environment panel', () => {
     expect(panelSource).toContain('aria-label="Commit message"');
     expect(panelSource).toContain('aria-invalid={Boolean(error)}');
     expect(panelSource).toContain('accessibility-label="Commit message"');
+    expect(panelSource).toContain('accessibility-role="alert"');
     expect(panelSource).toContain('default-value={commitMessage}');
     expect(panelSource).toContain('readOnly={running}');
     expect(panelSource).toContain('ariaLabel="Commit and Push"');

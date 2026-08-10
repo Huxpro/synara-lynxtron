@@ -660,7 +660,13 @@ export function KanbanProjectPage({
             />
           ) : null}
           {mutationTarget.error ? (
-            <text className="KanbanMutationError">{mutationTarget.error}</text>
+            <text
+              className="KanbanMutationError"
+              accessibility-element
+              accessibility-role="alert"
+            >
+              {mutationTarget.error}
+            </text>
           ) : null}
           <view className="KanbanMutationActions">
             <Button

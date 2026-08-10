@@ -264,7 +264,13 @@ export function SettingsCustomModelsPanel(props: {
               </Button>
             </view>
             {error ? (
-              <text className="SettingsCustomModelsError">{error}</text>
+              <text
+                className="SettingsCustomModelsError"
+                accessibility-element
+                accessibility-role="alert"
+              >
+                {error}
+              </text>
             ) : null}
             {settingsQuery.isPending ? (
               <text className="SettingsCustomModelsState">
