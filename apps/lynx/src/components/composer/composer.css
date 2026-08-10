@@ -256,7 +256,7 @@
 .ComposerChip--terminal-context {
   padding: 2px;
   border: 1px solid var(--color-border-light);
-  border-radius: var(--radius-sm);
+  border-radius: 4px;
   background-color: var(--sidebar-accent-active);
 }
 
@@ -270,6 +270,11 @@
 .ComposerChip--agent-mention .ComposerChipIcon,
 .ComposerChip--terminal-context .ComposerChipIcon {
   margin-right: 2px;
+}
+
+.ComposerChip--terminal-context .ComposerChipIcon {
+  width: 14px;
+  height: 14px;
 }
 
 .ComposerChipLabel {
