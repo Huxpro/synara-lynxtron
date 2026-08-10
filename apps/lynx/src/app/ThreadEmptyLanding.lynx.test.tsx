@@ -44,7 +44,9 @@ describe('empty Thread landing fidelity', () => {
     expect(traySource).toContain(
       "props.envMode === 'local' ? 'Local' : 'Worktree'"
     );
-    expect(traySource).toContain('props.branch ?? \'main\'');
+    expect(traySource).toContain('props.branch ? (');
+    expect(traySource).toContain('{props.branch}');
+    expect(traySource).not.toContain("props.branch ?? 'main'");
     expect(lifecycleSource).toContain("type: 'thread.delete'");
     expect(lifecycleSource).toContain(
       'shouldDeleteDepartingTemporaryThread('

@@ -860,6 +860,14 @@ fill it. Final frame and Composer geometry share `x=400,width=736`; the Lynx
 heading is one centered `688x35` line. Focused regressions pass 3/3 and the
 final Lynx-for-Web production build succeeds.
 
+The same canonical fixture exposed a separate content projection defect: its
+server snapshot has `branch:null`, Web correctly omits the branch selector, but
+Lynx invented a `main` status chip. The context tray now renders branch
+metadata only when the snapshot supplies a branch and otherwise leaves the
+slot absent. Rendered regressions cover both null and exact named branches;
+the combined empty-thread suites pass 5/5 and the Native/Desktop production
+build succeeds.
+
 The Native arbitrary text-range selection investigation reached an upstream
 Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's
 documented contract exposes `text-selection={true}`, `flatten={false}`,

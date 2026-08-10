@@ -32,10 +32,12 @@ export function EmptyThreadContextTray(props: {
           {props.envMode === 'local' ? 'Local' : 'Worktree'}
         </text>
       </view>
-      <view className="EmptyThreadContextStatus">
-        <GitBranchIcon className="EmptyThreadContextIcon" size={14} />
-        <text className="EmptyThreadContextLabel">{props.branch ?? 'main'}</text>
-      </view>
+      {props.branch ? (
+        <view className="EmptyThreadContextStatus">
+          <GitBranchIcon className="EmptyThreadContextIcon" size={14} />
+          <text className="EmptyThreadContextLabel">{props.branch}</text>
+        </view>
+      ) : null}
       <view className="EmptyThreadContextSpacer" />
       <Button
         variant="ghost"

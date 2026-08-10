@@ -54,3 +54,12 @@ intrinsically while Lynx exposes the centered heading container.
 
 Focused `ThreadEmptyLanding.lynx.test.tsx` passes 3/3, and the final
 Lynx-for-Web production build succeeds.
+
+## Follow-up boundary
+
+The retained Lynx PNG predates the next independent context-projection slice
+and therefore still shows a `main` chip for this fixture. The canonical thread
+actually has `branch:null`, and Web correctly omits a branch selector. Current
+source no longer invents `main`: a branch status renders only when the server
+snapshot contains a branch. The follow-up is covered by rendered null-branch
+and named-branch tests rather than relabeling this earlier PNG.
