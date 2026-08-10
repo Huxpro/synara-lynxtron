@@ -112,6 +112,12 @@ describe('Lynx Settings section labels', () => {
     expect(usageSource).toContain('snapshot.detail?.trim()');
     expect(usageSource).toContain('className="SettingsUsageNotice"');
     expect(usageSource).toContain(
+      'accessibility-label={`${display.label}: ${Math.round(display.remainingPercent)}% remaining`}'
+    );
+    expect(usageSource).toContain(
+      'accessibility-value={`${Math.round(display.remainingPercent)}%`}'
+    );
+    expect(usageSource).toContain(
       "if ((snapshot.status ?? 'ok') === 'ok') return snapshot.planName ?? null;"
     );
     expect(usageStyles).toMatch(

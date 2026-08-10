@@ -72,6 +72,10 @@ function UsageLimitRow(props: {
           aria-valuenow={Math.round(display.remainingPercent)}
           aria-valuemin={0}
           aria-valuemax={100}
+          accessibility-element
+          accessibility-label={`${display.label}: ${Math.round(display.remainingPercent)}% remaining`}
+          accessibility-traits="text"
+          accessibility-value={`${Math.round(display.remainingPercent)}%`}
         >
           <view
             className={`SettingsUsageTrackFill SettingsUsageTone--${display.remainingTone}`}
