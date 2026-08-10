@@ -57,7 +57,11 @@ export function SettingsNavigationItemButtonElement(props: ChildrenProps & {
   return (
     <view
       className={interaction.className}
-      aria-selected={props.active}
+      aria-current={props.active ? 'page' : undefined}
+      accessibility-state={{
+        selected: props.active,
+        disabled: props.disabled,
+      }}
       {...interaction.eventProps}
     >
       {props.children}
