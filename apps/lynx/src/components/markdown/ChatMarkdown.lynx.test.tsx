@@ -25,6 +25,8 @@ describe('Lynx markdown file reference token', () => {
     expect(reference?.getAttribute('accessibility-label')).toBe(
       'Open src/app/router.tsx'
     );
+    expect(reference?.querySelector('.MdInlineTokenFileIcon')).not.toBeNull();
+    expect(reference?.querySelector('.MdInlineTokenGlyph')).toBeNull();
     fireEvent.tap(reference!);
     expect(openedPaths).toEqual(['src/app/router.tsx']);
   });

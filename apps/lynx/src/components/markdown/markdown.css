@@ -346,10 +346,22 @@
   line-height: 15px;
 }
 
-.MdInlineTokenGlyph {
+.MdInlineTokenGlyph,
+.MdInlineTokenFileIcon {
   margin-right: 3px;
+}
+
+.MdInlineTokenGlyph {
   color: var(--muted-foreground);
   font-size: 10px;
+}
+
+.MdInlineTokenFileIcon {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  vertical-align: middle;
+  opacity: 0.85;
 }
 
 .MdInlineToken.ui-hover,

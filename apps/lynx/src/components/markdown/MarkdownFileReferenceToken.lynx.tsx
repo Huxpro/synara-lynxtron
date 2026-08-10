@@ -1,5 +1,6 @@
 import type { ReactNode } from '@lynx-js/react';
 
+import { FileEntryIcon } from '../FileEntryIcon.lynx';
 import { useLynxInteractiveState } from '../ui/interactive-state.lynx';
 
 export function MarkdownFileReferenceToken(props: {
@@ -25,7 +26,12 @@ export function MarkdownFileReferenceToken(props: {
   });
   return (
     <text className={interaction.className} {...interaction.eventProps}>
-      {props.showGlyph ? <text className="MdInlineTokenGlyph">@</text> : null}
+      {props.showGlyph ? (
+        <FileEntryIcon
+          className="MdInlineTokenFileIcon"
+          pathValue={props.relativePath}
+        />
+      ) : null}
       {props.children}
     </text>
   );
