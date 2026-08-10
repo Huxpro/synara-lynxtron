@@ -61,7 +61,7 @@ describe('desktop window drag regions', () => {
       /\.AppWindowDragRegion\s*\{[^}]*-x-app-region:\s*drag;/s
     );
     expect(appStyles).toMatch(
-      /\.AppWindowDragRegion \.LxButton,[^{]*\{[^}]*-x-app-region:\s*no-drag;/s
+      /\.AppWindowDragRegion \.LxButton,[^{]*\.AppWindowDragRegion \[focusable='true'\],[^{]*\{[^}]*-x-app-region:\s*no-drag;/s
     );
   });
 });

@@ -44,6 +44,7 @@
 }
 
 .AppWindowDragRegion .LxButton,
+.AppWindowDragRegion [focusable='true'],
 .AppWindowDragRegion input,
 .AppWindowDragRegion textarea {
   -x-app-region: no-drag;
