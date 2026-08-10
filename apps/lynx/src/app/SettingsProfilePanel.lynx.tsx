@@ -208,6 +208,7 @@ function ProfileColorOption(props: {
       props.active ? ' SettingsProfileColorOption--active' : ''
     }`,
     accessibleLabel: `Use ${props.color}`,
+    accessibilityValue: props.active ? 'Selected' : 'Not selected',
     onActivate: props.onSelect,
   });
   return (

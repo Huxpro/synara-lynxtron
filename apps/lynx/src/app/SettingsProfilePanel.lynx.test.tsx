@@ -139,6 +139,9 @@ describe('Settings Profile fidelity', () => {
     expect(profileSource).toContain('className="SettingsProfileEditAction"');
     expect(profileSource).toContain('className="SettingsProfileEditDialog"');
     expect(profileSource).toContain('<ProfileColorOption');
+    expect(profileSource).toContain(
+      "accessibilityValue: props.active ? 'Selected' : 'Not selected'"
+    );
     expect(profileSource).toContain('dialogs.pickProfileImage()');
     expect(profileSource).toContain('mode="aspectFill"');
     expect(profileSource).toMatch(
