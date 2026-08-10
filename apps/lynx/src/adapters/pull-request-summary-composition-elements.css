@@ -182,13 +182,15 @@
 
 .SharedPrSummarySectionTitle {
   color: var(--foreground);
-  font-size: var(--app-font-size-ui);
+  font-size: calc(var(--app-font-size-ui-lg) * 1.16);
+  line-height: 20px;
   font-weight: 500;
 }
 
 .SharedPrSummarySectionCount {
   color: var(--muted-foreground);
-  font-size: var(--app-font-size-ui-sm);
+  font-size: var(--app-font-size-ui);
+  line-height: 18px;
   margin-left: 6px;
 }
 

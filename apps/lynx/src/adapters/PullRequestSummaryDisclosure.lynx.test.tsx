@@ -69,6 +69,12 @@ describe('Pull Request summary disclosure fidelity', () => {
     expect(styles).toMatch(
       /\.SharedPrSummarySectionChevron\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*margin-left:\s*6px;/s
     );
+    expect(styles).toMatch(
+      /\.SharedPrSummarySectionTitle\s*\{[^}]*font-size:\s*calc\(var\(--app-font-size-ui-lg\) \* 1\.16\);[^}]*line-height:\s*20px;[^}]*font-weight:\s*500;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrSummarySectionCount\s*\{[^}]*font-size:\s*var\(--app-font-size-ui\);[^}]*line-height:\s*18px;/s
+    );
     expect(styles).not.toMatch(
       /\.SharedPrSummarySectionHeader\.ui-(?:hover|pressed)[^{]*\{[^}]*(?:background-color|opacity):/s
     );
