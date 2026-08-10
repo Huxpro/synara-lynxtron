@@ -172,17 +172,25 @@ export function SettingsUsagePanel() {
           {cards.map((snapshot) => {
             const status = snapshot.status ?? 'ok';
             const statusText = statusLabel(snapshot);
+            const providerName = providerUsageDisplayName(snapshot.provider);
             const hasUsage =
               snapshot.limits.length > 0 || snapshot.usageLines.length > 0;
             return (
               <view className="SettingsUsageCard" key={snapshot.provider}>
-                <view className="SettingsUsageCardHeader">
+                <view
+                  className="SettingsUsageCardHeader"
+                  accessibility-element
+                  accessibility-label={`${providerName}${
+                    statusText ? `: ${statusText}` : ''
+                  }`}
+                  accessibility-traits="text"
+                >
                   <view className="SettingsUsageProviderIdentity">
                     <view className="SettingsUsageProviderIcon">
                       <OpenAIProviderIcon provider={snapshot.provider} />
                     </view>
                     <text className="SettingsUsageProvider">
-                      {providerUsageDisplayName(snapshot.provider)}
+                      {providerName}
                     </text>
                   </view>
                   {statusText ? (

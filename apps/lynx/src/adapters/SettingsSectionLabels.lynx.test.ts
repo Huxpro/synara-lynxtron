@@ -121,6 +121,9 @@ describe('Lynx Settings section labels', () => {
       'accessibility-label={`${line.label}: ${line.value}${'
     );
     expect(usageSource).toContain(
+      'accessibility-label={`${providerName}${'
+    );
+    expect(usageSource).toContain(
       "if ((snapshot.status ?? 'ok') === 'ok') return snapshot.planName ?? null;"
     );
     expect(usageStyles).toMatch(
