@@ -19,6 +19,12 @@ describe('Pull Request summary disclosure fidelity', () => {
     expect(source).toContain('className="SharedPrSummaryReviewers"');
     expect(source).toContain('<PullRequestSummaryMetaIcon kind="reviewers" />');
     expect(source).toContain('<PullRequestSummaryMetaIcon');
+    expect(source).toContain(
+      '<PullRequestCheckStatusIcon status={props.check.status} />'
+    );
+    expect(source).toContain(
+      'void platformWindow.openExternal(props.check.url!)'
+    );
     expect(source).toContain('actor={comment.author}');
     expect(source).toContain('variant="comment"');
     expect(source).not.toContain(

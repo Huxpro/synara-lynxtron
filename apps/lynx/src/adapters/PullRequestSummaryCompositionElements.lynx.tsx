@@ -15,8 +15,10 @@ import {
 import { PULL_REQUEST_CHECK_STATUS_LABELS } from '@synara-web/components/pullRequest/pullRequestSummary.logic';
 import { PullRequestCommentComposer } from './PullRequestCommentComposer.lynx';
 import { PullRequestActorLabel } from './PullRequestActorLabel.lynx';
+import { PullRequestCheckStatusIcon } from './PullRequestCheckStatusIcon.lynx';
 import { PullRequestSummaryBranchRow } from './PullRequestSummaryBranchRow.lynx';
 import { PullRequestSummaryMetaIcon } from './PullRequestSummaryMetaIcon.lynx';
+import { platformWindow } from '../platform/window';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 import './pull-request-summary-composition-elements.css';
 
@@ -218,17 +220,39 @@ export function PullRequestSummaryChecksElement(props: {
         <text className="SharedPrSummaryMuted">No checks reported.</text>
       ) : (
         props.checks.map((check, index) => (
-          <view
-            className="SharedPrSummaryCheckRow"
+          <PullRequestSummaryCheckRow
+            check={check}
             key={`${check.name}:${check.url ?? ''}:${index}`}
-          >
-            <text className="SharedPrSummaryCheckName">{check.name}</text>
-            <text className="SharedPrSummaryCheckStatus">
-              {PULL_REQUEST_CHECK_STATUS_LABELS[check.status]}
-            </text>
-          </view>
+          />
         ))
       )}
+    </view>
+  );
+}
+
+function PullRequestSummaryCheckRow(props: {
+  readonly check: PullRequestCheck;
+}) {
+  const interaction = useLynxInteractiveState({
+    baseClassName: 'SharedPrSummaryCheckRow',
+    accessibleLabel: `${props.check.name}, ${
+      PULL_REQUEST_CHECK_STATUS_LABELS[props.check.status]
+    }`,
+    disabled: !props.check.url,
+    onActivate: props.check.url
+      ? () => {
+          'background only';
+          void platformWindow.openExternal(props.check.url!);
+        }
+      : undefined,
+  });
+  return (
+    <view className={interaction.className} {...interaction.eventProps}>
+      <PullRequestCheckStatusIcon status={props.check.status} />
+      <text className="SharedPrSummaryCheckName">{props.check.name}</text>
+      <text className="SharedPrSummaryCheckStatus">
+        {PULL_REQUEST_CHECK_STATUS_LABELS[props.check.status]}
+      </text>
     </view>
   );
 }

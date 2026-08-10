@@ -216,7 +216,42 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 0 8px;
+  gap: 8px;
+  margin: 0 -8px;
+  padding: 6px 8px;
+  border-radius: 6px;
+}
+
+.SharedPrSummaryCheckRow.ui-hover,
+.SharedPrSummaryCheckRow.ui-pressed {
+  background-color: var(--muted);
+}
+
+.SharedPrSummaryCheckRow.ui-focus {
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.SharedPrSummaryCheckRow.ui-disabled.ui-hover {
+  background-color: transparent;
+}
+
+.SharedPrSummaryCheckStatusIcon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.SharedPrSummaryCheckStatusIcon--pending {
+  animation: spin 1s linear infinite;
+}
+
+.SharedPrSummaryCheckStatusIcon--neutral {
+  width: 14px;
+  height: 14px;
+  margin: 1px;
+  border: 1px dashed var(--muted-foreground);
+  border-radius: 7px;
+  opacity: 0.5;
 }
 
 .SharedPrSummaryCheckName,
@@ -228,6 +263,19 @@
 .SharedPrSummaryCommentPath {
   font-size: var(--app-font-size-ui-sm);
   line-height: 18px;
+}
+
+.SharedPrSummaryCheckName {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.SharedPrSummaryCheckStatus {
+  flex-shrink: 0;
+  color: var(--muted-foreground);
 }
 
 .SharedPrSummaryCheckName {
