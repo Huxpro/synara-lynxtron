@@ -932,6 +932,14 @@ continues to live on indicators and explicit checked state rather than
 transient row paint. Primitive plus representative Composer/Settings consumers
 pass 28/28 and the Native/Desktop production build succeeds.
 
+The Composer model-list follow-up brings its custom rows onto that primitive
+contract: provider choices, Back, collapsible group headers, model rows, and
+favorite actions use neutral transient feedback without whole-row pressed
+dimming. Selected models are identified by the existing Check indicator rather
+than a second branded row background; favorite state remains the amber star.
+Focused model/trait/icon regressions pass 7/7 and the Native/Desktop production
+build succeeds.
+
 The Native arbitrary text-range selection investigation reached an upstream
 Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's
 documented contract exposes `text-selection={true}`, `flatten={false}`,

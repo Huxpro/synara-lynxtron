@@ -487,15 +487,11 @@
 
 .ComposerProviderOptionLynx.ui-hover,
 .ComposerProviderOptionLynx.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-button-secondary-hover);
 }
 
 .ComposerProviderOptionLynx.ui-focus {
   box-shadow: 0 0 0 1px var(--ring);
-}
-
-.ComposerProviderOptionLynx.ui-pressed {
-  opacity: 0.72;
 }
 
 .ComposerTraitSectionLynx {
@@ -631,15 +627,11 @@
 
 .ComposerProviderBackLynx.ui-hover,
 .ComposerProviderBackLynx.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-button-secondary-hover);
 }
 
 .ComposerProviderBackLynx.ui-focus {
   box-shadow: 0 0 0 1px var(--ring);
-}
-
-.ComposerProviderBackLynx.ui-pressed {
-  opacity: 0.72;
 }
 
 .ComposerProviderBackIconLynx {
@@ -716,15 +708,11 @@
 
 .ComposerModelGroupHeaderLynx.ui-hover,
 .ComposerModelGroupHeaderLynx.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-button-secondary-hover);
 }
 
 .ComposerModelGroupHeaderLynx.ui-focus {
   box-shadow: 0 0 0 1px var(--ring);
-}
-
-.ComposerModelGroupHeaderLynx.ui-pressed {
-  opacity: 0.72;
 }
 
 .ComposerModelGroupChevronLynx,
@@ -756,21 +744,13 @@
   border-radius: 8px;
 }
 
-.ComposerModelOptionLynx--active {
-  background-color: var(--accent);
-}
-
 .ComposerModelOptionLynx.ui-hover,
 .ComposerModelOptionLynx.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-button-secondary-hover);
 }
 
 .ComposerModelOptionLynx.ui-focus {
   box-shadow: 0 0 0 1px var(--ring);
-}
-
-.ComposerModelOptionLynx.ui-pressed {
-  opacity: 0.72;
 }
 
 .ComposerModelOptionCheckLynx {
@@ -816,15 +796,11 @@
 
 .ComposerModelOptionFavoriteLynx.ui-hover,
 .ComposerModelOptionFavoriteLynx.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-button-secondary-hover);
 }
 
 .ComposerModelOptionFavoriteLynx.ui-focus {
   box-shadow: 0 0 0 1px var(--ring);
-}
-
-.ComposerModelOptionFavoriteLynx.ui-pressed {
-  opacity: 0.72;
 }
 
 .ComposerModelOptionFavoriteIconLynx {

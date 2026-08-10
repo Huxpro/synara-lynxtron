@@ -231,10 +231,19 @@ describe('native composer attachment menu item', () => {
       /\.ComposerProviderOptionLynx--disabled \.ComposerModelTriggerChevronLynx\s*\{[^}]*display:\s*none;/s
     );
     expect(composerStyles).toMatch(
+      /\.ComposerProviderOptionLynx\.ui-hover,[^{]*\{[^}]*background-color:\s*var\(--color-background-button-secondary-hover\);/s
+    );
+    expect(composerStyles).not.toMatch(
+      /\.ComposerProviderOptionLynx\.ui-pressed\s*\{[^}]*opacity:/s
+    );
+    expect(composerStyles).toMatch(
       /\.ComposerTraitOptionLynx\s*\{[^}]*border-radius:\s*8px;/s
     );
     expect(composerStyles).toMatch(
       /\.ComposerModelGroupHeaderLynx\s*\{[^}]*border-radius:\s*10\.4px;/s
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerModelGroupHeaderLynx\.ui-hover,[^{]*\{[^}]*background-color:\s*var\(--color-background-button-secondary-hover\);/s
     );
     expect(composerStyles).toMatch(
       /\.ComposerModelOptionLynx\s*\{[^}]*border-radius:\s*8px;/s
@@ -244,6 +253,15 @@ describe('native composer attachment menu item', () => {
     );
     expect(composerStyles).toMatch(
       /\.ComposerModelOptionFavoriteLynx\s*\{[^}]*border-radius:\s*10\.4px;/s
+    );
+    expect(composerStyles).not.toContain(
+      '.ComposerModelOptionLynx--active'
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerModelOptionLynx\.ui-hover,[^{]*\{[^}]*background-color:\s*var\(--color-background-button-secondary-hover\);/s
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerModelOptionFavoriteLynx\.ui-hover,[^{]*\{[^}]*background-color:\s*var\(--color-background-button-secondary-hover\);/s
     );
   });
 });
