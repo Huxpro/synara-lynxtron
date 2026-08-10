@@ -26,7 +26,7 @@ export function PullRequestCheckStatusIcon(props: {
         : circleXSvg;
   const color =
     props.status === 'pending'
-      ? '#d97706'
+      ? svgColors.warning
       : props.status === 'success'
         ? activeTheme.theme.semanticColors.diffAdded
         : activeTheme.theme.semanticColors.diffRemoved;

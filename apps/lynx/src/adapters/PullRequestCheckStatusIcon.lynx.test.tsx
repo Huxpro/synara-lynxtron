@@ -1,5 +1,6 @@
 import { describe, expect, it } from '@rstest/core';
 import { render } from '@lynx-js/react/testing-library';
+import { readFileSync } from 'node:fs';
 
 import { PullRequestCheckStatusIcon } from './PullRequestCheckStatusIcon.lynx';
 
@@ -29,5 +30,12 @@ describe('Pull Request check status icons', () => {
         '.SharedPrSummaryCheckStatusIcon--neutral'
       )
     ).toHaveLength(2);
+    const source = readFileSync(
+      new URL('./PullRequestCheckStatusIcon.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(source).toContain('? svgColors.warning');
+    expect(source).not.toContain('buildThemeCssVariables');
+    expect(source).not.toContain("? '#d97706'");
   });
 });

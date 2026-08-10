@@ -71,6 +71,7 @@ export function useTheme() {
         activeTheme.theme,
         resolvedTheme
       ),
+      warning: resolvedTheme === 'dark' ? '#f5b44a' : '#d97706',
     },
     theme: themeState.mode,
     setTheme: (mode: ThemeMode) =>

@@ -74,7 +74,7 @@ export function PullRequestSummaryMetaIcon(props: {
           colors: {
             success: activeTheme.theme.semanticColors.diffAdded,
             failure: activeTheme.theme.semanticColors.diffRemoved,
-            pending: '#d97706',
+            pending: svgColors.warning,
             neutral: svgColors.mutedForeground,
           },
         })}
