@@ -69,5 +69,19 @@ describe('Settings load error semantics', () => {
     expect(worktreesSource).toMatch(
       /className="SettingsWorktreesDeleteError"[\s\S]{0,120}accessibility-role="alert"/
     );
+    const skillsSource = readFileSync(
+      new URL('./SettingsSkillsPanel.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const archivedSource = readFileSync(
+      new URL('./SettingsArchivedPanel.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(skillsSource).toMatch(
+      /className="SettingsSkillsSaveError"[\s\S]{0,120}accessibility-role="alert"/
+    );
+    expect(archivedSource).toMatch(
+      /className="SettingsArchivedRestoreError"[\s\S]{0,120}accessibility-role="alert"/
+    );
   });
 });

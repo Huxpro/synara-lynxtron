@@ -186,7 +186,11 @@ export function SettingsSkillsPanel() {
       </SettingsSection>
 
       {saveError ? (
-        <view className="SettingsSkillsSaveError">
+        <view
+          className="SettingsSkillsSaveError"
+          accessibility-element
+          accessibility-role="alert"
+        >
           <text className="SettingsSkillsSaveErrorText">{saveError}</text>
         </view>
       ) : null}

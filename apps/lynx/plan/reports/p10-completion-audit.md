@@ -284,7 +284,7 @@ Current responsive disposition:
 | Form error semantics | Kanban mutation, Git commit message, and custom-model slug inputs expose dynamic `aria-invalid` state whenever their adjacent retained error message is present | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Error announcement semantics | retained Kanban mutation, Git action, and custom-model errors are Native accessibility alerts in addition to marking their owning inputs invalid | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Settings load failure announcements | retained Profile, Worktrees, Skills, and Archived query failures are Native accessibility alerts while their initial loading states remain non-assertive | PASS — CURRENT PRODUCT IMPLEMENTATION |
-| Settings mutation notice announcements | Advanced, Integrations, Provider Tools, and Worktree retained mutation failures are Native alerts; successful repair/copy confirmations remain non-assertive through explicit notice intent | PASS — CURRENT PRODUCT IMPLEMENTATION |
+| Settings mutation notice announcements | Advanced, Integrations, Provider Tools, Worktrees, Skills, and Archived retained mutation failures are Native alerts; successful repair/copy confirmations remain non-assertive through explicit notice intent | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Profile dialog feedback semantics | image-picker and share/export failures are Native alerts, while copied/saved/cancelled outcomes retain explicit success/neutral intent and remain non-assertive | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Settings heading semantics | one Native heading primitive preserves every current Web Settings h1/h2/h3 counterpart across generic panels, private Appearance/General/Git/provider layouts, Profile identity and sections, Provider Usage, and Theme Pack titles instead of leaving them as undifferentiated text | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Shared interactive names | high-frequency Composer, Kanban, and Pull Request controls route labels and selected/expanded/on-off state through `useLynxInteractiveState`, so Native accessibility metadata no longer depends only on Web `aria-label` attributes | PASS — SHARED NATIVE ACCESSIBILITY CONTRACT |
@@ -587,6 +587,13 @@ copy/save exports as Native alerts. Copied image, saved PNG, and cancelled-save
 outcomes carry success/neutral intent and remain non-assertive. The focused
 Profile suite passes (5/5), both production bundles build, `git diff --check`
 passes, and React Doctor 0.9.11 reports zero diagnostics against `0c730166`.
+The final retained Settings mutation-error inventory adds Skills setting-save
+failures and Archived restore/delete failures to the same Native alert
+contract. Provider Usage warnings, AppSnap state, and ordinary provider
+metadata remain non-alert descriptive content. Focused Skills, Archived, and
+error-contract regressions pass (8/8), both production bundles build,
+`git diff --check` passes, and React Doctor 0.9.11 reports zero diagnostics
+against `490f3a2a`.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

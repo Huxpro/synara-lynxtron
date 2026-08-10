@@ -143,7 +143,11 @@ export function SettingsArchivedPanel() {
   return (
     <view className="SettingsArchivedPanel">
       {actionError ? (
-        <view className="SettingsArchivedRestoreError">
+        <view
+          className="SettingsArchivedRestoreError"
+          accessibility-element
+          accessibility-role="alert"
+        >
           <text className="SettingsArchivedRestoreErrorText">
             {actionError}
           </text>
