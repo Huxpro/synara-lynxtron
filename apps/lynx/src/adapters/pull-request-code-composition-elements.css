@@ -58,7 +58,11 @@
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
-  background-color: var(--muted);
+  background-color: rgba(13, 13, 13, 0.014);
+}
+
+.SliceRoot--theme-dark .SharedPrCodeFileHeader {
+  background-color: rgba(252, 252, 252, 0.0021);
 }
 
 .SharedPrCodeFileHeader.ui-focus {
@@ -112,15 +116,19 @@
 }
 
 .SharedPrCodeLine--addition {
-  background-color: rgba(16, 185, 129, 0.1);
+  background-color: rgba(0, 162, 64, 0.1);
 }
 
 .SharedPrCodeLine--deletion {
-  background-color: rgba(239, 68, 68, 0.1);
+  background-color: rgba(224, 46, 42, 0.1);
 }
 
 .SharedPrCodeLine--hunk {
-  background-color: var(--muted);
+  background-color: rgba(13, 13, 13, 0.024);
+}
+
+.SliceRoot--theme-dark .SharedPrCodeLine--hunk {
+  background-color: rgba(252, 252, 252, 0.0036);
 }
 
 .SharedPrCodeLineNumber {

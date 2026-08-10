@@ -44,6 +44,12 @@ describe('Pull Request Code disclosure fidelity', () => {
       /\.SharedPrCodeFileHeader\s*\{[^}]*gap:\s*8px;[^}]*padding:\s*8px 12px;/s
     );
     expect(lynxStyles).toMatch(
+      /\.SharedPrCodeFileHeader\s*\{[^}]*background-color:\s*rgba\(13,\s*13,\s*13,\s*0\.014\);/s
+    );
+    expect(lynxStyles).toMatch(
+      /\.SliceRoot--theme-dark \.SharedPrCodeFileHeader\s*\{[^}]*background-color:\s*rgba\(252,\s*252,\s*252,\s*0\.0021\);/s
+    );
+    expect(lynxStyles).toMatch(
       /\.SharedPrCodeStatsText,[^{]*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s
     );
     expect(lynxStyles).toMatch(
@@ -59,10 +65,16 @@ describe('Pull Request Code disclosure fidelity', () => {
       /\.SharedPrCodeMoreText\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s
     );
     expect(lynxStyles).toMatch(
-      /\.SharedPrCodeLine--addition\s*\{[^}]*background-color:\s*rgba\(16,\s*185,\s*129,\s*0\.1\);/s
+      /\.SharedPrCodeLine--addition\s*\{[^}]*background-color:\s*rgba\(0,\s*162,\s*64,\s*0\.1\);/s
     );
     expect(lynxStyles).toMatch(
-      /\.SharedPrCodeLine--deletion\s*\{[^}]*background-color:\s*rgba\(239,\s*68,\s*68,\s*0\.1\);/s
+      /\.SharedPrCodeLine--deletion\s*\{[^}]*background-color:\s*rgba\(224,\s*46,\s*42,\s*0\.1\);/s
+    );
+    expect(lynxStyles).toMatch(
+      /\.SharedPrCodeLine--hunk\s*\{[^}]*background-color:\s*rgba\(13,\s*13,\s*13,\s*0\.024\);/s
+    );
+    expect(lynxStyles).toMatch(
+      /\.SliceRoot--theme-dark \.SharedPrCodeLine--hunk\s*\{[^}]*background-color:\s*rgba\(252,\s*252,\s*252,\s*0\.0036\);/s
     );
     expect(lynxStyles).toMatch(
       /\.SharedPrCodeLine\s*\{[^}]*min-height:\s*20px;/s
