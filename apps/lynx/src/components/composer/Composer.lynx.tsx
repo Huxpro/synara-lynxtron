@@ -128,6 +128,11 @@ import {
   resolveLynxSlashCommandSelection,
   resolveLynxThreadMentionSelection,
 } from './composerCommandMenu.logic';
+import {
+  findComposerMenuActiveItem,
+  nudgeComposerMenuActiveItemId,
+  resolveComposerMenuActiveItemId,
+} from './composerMenuNavigation.logic';
 
 import './composer.css';
 
@@ -140,6 +145,7 @@ const EMPTY_FILES: ReadonlyArray<NativeComposerFileAttachment> = [];
 const EMPTY_IMAGES: ReadonlyArray<NativeComposerImageAttachment> = [];
 const EMPTY_FILE_COMMENTS = [];
 const EMPTY_SKILLS: ReadonlyArray<ProviderSkillReference> = [];
+const EMPTY_COMMAND_ITEMS: ReadonlyArray<ComposerCommandItem> = [];
 interface ComposerEditorHistoryContext {
   readonly mentions: ReadonlyArray<ProviderMentionReference>;
   readonly pastedTexts: ReadonlyArray<PastedTextDraft>;
@@ -423,6 +429,8 @@ export function Composer({
     useState<NativeExpandedImagePreview | null>(null);
   const [composerTrigger, setComposerTrigger] =
     useState<ComposerTrigger | null>(null);
+  const [composerHighlightedItemId, setComposerHighlightedItemId] =
+    useState<string | null>(null);
   const [modelCatalogProvider, setModelCatalogProvider] =
     useState<ProviderKind | null>(null);
   const pendingNativeValueRef = useRef<ComposerNativeValueAck | null>(null);
@@ -645,6 +653,27 @@ export function Composer({
         description: skill.description ?? skill.path,
       }));
   }, [composerTrigger, providerSkillsCatalog?.skills]);
+  const composerMenuItems =
+    composerTrigger?.kind === 'slash-command'
+      ? slashCommandItems
+      : composerTrigger?.kind === 'skill'
+        ? skillItems
+        : composerTrigger?.kind === 'mention'
+          ? threadMentionItems
+          : EMPTY_COMMAND_ITEMS;
+  const activeComposerMenuItemId = resolveComposerMenuActiveItemId({
+    activeItemId: composerHighlightedItemId,
+    items: composerMenuItems,
+  });
+  useEffect(() => {
+    'background only';
+    setComposerHighlightedItemId((current) =>
+      resolveComposerMenuActiveItemId({
+        activeItemId: current,
+        items: composerMenuItems,
+      })
+    );
+  }, [composerMenuItems]);
 
   function setNativeValue(
     canonicalValue: string,
@@ -1024,6 +1053,44 @@ export function Composer({
       transition.selectionEnd
     );
     setComposerTrigger(null);
+  }
+
+  function handleComposerMenuKey(event: {
+    readonly key: string;
+    preventDefault: () => void;
+    stopPropagation: () => void;
+  }) {
+    'background only';
+    if (composerMenuItems.length === 0) return;
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      event.preventDefault();
+      event.stopPropagation();
+      setComposerHighlightedItemId((current) =>
+        nudgeComposerMenuActiveItemId({
+          activeItemId: current,
+          direction: event.key === 'ArrowDown' ? 'next' : 'previous',
+          items: composerMenuItems,
+        })
+      );
+      return;
+    }
+    if (event.key !== 'Enter' && event.key !== 'Tab') {
+      return;
+    }
+    const item = findComposerMenuActiveItem({
+      activeItemId: composerHighlightedItemId,
+      items: composerMenuItems,
+    });
+    if (!item) return;
+    event.preventDefault();
+    event.stopPropagation();
+    if (composerTrigger?.kind === 'slash-command') {
+      selectSlashCommand(item);
+    } else if (composerTrigger?.kind === 'skill') {
+      selectSkill(item);
+    } else if (composerTrigger?.kind === 'mention') {
+      selectThreadMention(item);
+    }
   }
 
   function clearDraftAfterSend() {
@@ -1412,8 +1479,8 @@ export function Composer({
             resolvedTheme={resolvedTheme}
             isLoading={false}
             triggerKind="slash-command"
-            activeItemId={slashCommandItems[0]?.id ?? null}
-            onHighlightedItemChange={() => undefined}
+            activeItemId={activeComposerMenuItemId}
+            onHighlightedItemChange={setComposerHighlightedItemId}
             onSelect={(item) => {
               'background only';
               selectSlashCommand(item);
@@ -1425,8 +1492,8 @@ export function Composer({
             resolvedTheme={resolvedTheme}
             isLoading={providerSkillsPending}
             triggerKind="skill"
-            activeItemId={skillItems[0]?.id ?? null}
-            onHighlightedItemChange={() => undefined}
+            activeItemId={activeComposerMenuItemId}
+            onHighlightedItemChange={setComposerHighlightedItemId}
             onSelect={(item) => {
               'background only';
               selectSkill(item);
@@ -1438,8 +1505,8 @@ export function Composer({
             resolvedTheme={resolvedTheme}
             isLoading={false}
             triggerKind="mention"
-            activeItemId={threadMentionItems[0]?.id ?? null}
-            onHighlightedItemChange={() => undefined}
+            activeItemId={activeComposerMenuItemId}
+            onHighlightedItemChange={setComposerHighlightedItemId}
             onSelect={(item) => {
               'background only';
               selectThreadMention(item);
@@ -1516,6 +1583,7 @@ export function Composer({
             maxlength={8000}
             maxlines={6}
             enable-scroll-bar={true}
+            bindkeydown={handleComposerMenuKey}
             bindfocus={() => {
             'background only';
             setFocused(true);

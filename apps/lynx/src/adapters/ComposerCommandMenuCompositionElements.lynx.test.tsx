@@ -1,6 +1,6 @@
-import { describe, expect, it } from '@rstest/core';
+import { describe, expect, it, rs } from '@rstest/core';
 import { readFileSync } from 'node:fs';
-import { render } from '@lynx-js/react/testing-library';
+import { fireEvent, render } from '@lynx-js/react/testing-library';
 
 import { ComposerCommandRowElement } from './ComposerCommandMenuCompositionElements.lynx';
 
@@ -94,5 +94,40 @@ describe('native Composer command menu row', () => {
     expect(styles).not.toMatch(
       /\.ComposerCommandRowLynx\.ui-pressed\s*\{[^}]*opacity:/s
     );
+  });
+
+  it('updates the shared highlight before selecting a hovered or activated row', () => {
+    const onHighlight = rs.fn();
+    const onSelect = rs.fn();
+    render(
+      <ComposerCommandRowElement
+        item={{
+          id: 'slash:default',
+          type: 'slash-command',
+          command: 'default',
+          label: '/default',
+          description: 'Switch to default mode',
+          source: 'app',
+        }}
+        title="Default Mode"
+        secondaryText="Switch to default mode"
+        trailingMeta="/default"
+        resolvedTheme="light"
+        active={false}
+        onHighlight={onHighlight}
+        onItemRef={noop}
+        onSelect={onSelect}
+      />
+    );
+
+    const row = elementTree.root?.querySelector('.ComposerCommandRowLynx');
+    if (!row) throw new Error('expected command row');
+    fireEvent(row, new Event('bindEvent:mouseenter', { bubbles: true }));
+    expect(onHighlight).toHaveBeenCalledTimes(1);
+    expect(onSelect).not.toHaveBeenCalled();
+
+    fireEvent.tap(row);
+    expect(onHighlight).toHaveBeenCalledTimes(2);
+    expect(onSelect).toHaveBeenCalledTimes(1);
   });
 });

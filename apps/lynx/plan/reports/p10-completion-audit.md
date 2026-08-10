@@ -966,6 +966,18 @@ Semantic icons and focus rings are unchanged. Command composition plus shared
 Command regressions pass 10/10 and the Native/Desktop production build
 succeeds.
 
+The Composer command-menu interaction follow-up removes a dead-state shortcut
+behind that visual parity. Slash-command, skill, and mention menus previously
+forced the first row active and discarded every shared highlight callback, so
+pointer hover could not move selected state and keyboard activation could not
+follow the visible row. All three menu kinds now share one normalized
+highlight owner; stale IDs fall back to the first available item, Up/Down wrap,
+hover updates active state, and Enter/Tab select that same item. The textarea
+uses a normal key listener and only prevents handled menu keys, preserving
+ordinary input outside an active menu. Focused navigation and row interaction
+coverage passes 6/6; both Lynx-for-Web and Native/Desktop production builds
+pass with only the existing warnings.
+
 The shared Menu trigger follow-up removes an upstream wrapper-level repaint
 that Web never applies. Hover, focus, and press no longer change opacity or add
 a duplicate focus ring on the entire trigger subtree; each concrete trigger
