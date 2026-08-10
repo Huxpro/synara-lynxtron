@@ -1169,9 +1169,9 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border: 1px solid var(--border);
+  border: 1px solid var(--color-border-light);
   border-radius: 12px;
-  background-color: var(--muted);
+  background-color: var(--color-background-elevated-secondary);
 }
 
 .ComposerReferenceImageLynx.ui-hover {
@@ -1195,8 +1195,8 @@
 
 .ComposerReferenceImageWarningLynx {
   position: absolute;
-  left: 5px;
-  bottom: 5px;
+  left: 4px;
+  bottom: 4px;
   display: flex;
   width: 20px;
   height: 20px;

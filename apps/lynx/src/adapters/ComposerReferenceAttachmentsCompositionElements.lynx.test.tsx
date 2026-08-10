@@ -56,7 +56,10 @@ describe('composer reference attachment interaction contract', () => {
       /\.ComposerReference(?:CardAction|Remove|Image)Lynx\.ui-pressed\s*\{[^}]*opacity:/s
     );
     expect(styles).toMatch(
-      /\.ComposerReferenceImageWarningLynx\s*\{[^}]*width:\s*20px;[^}]*height:\s*20px;[^}]*border-radius:\s*10px;[^}]*background-color:\s*var\(--composer-surface\);/s
+      /\.ComposerReferenceImageLynx\s*\{[^}]*border:\s*1px solid var\(--color-border-light\);[^}]*border-radius:\s*12px;[^}]*background-color:\s*var\(--color-background-elevated-secondary\);/s
+    );
+    expect(styles).toMatch(
+      /\.ComposerReferenceImageWarningLynx\s*\{[^}]*left:\s*4px;[^}]*bottom:\s*4px;[^}]*width:\s*20px;[^}]*height:\s*20px;[^}]*border-radius:\s*10px;[^}]*background-color:\s*var\(--composer-surface\);/s
     );
   });
 
