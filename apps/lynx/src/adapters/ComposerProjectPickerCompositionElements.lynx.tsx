@@ -1,6 +1,7 @@
 import folderSvg from '@synara-central-icons/folder-2.svg?raw';
 import type { SpaceIconName } from '@synara/contracts';
-import type { ReactNode } from '@lynx-js/react';
+import type { InputRef } from '@lynx-js/lynx-ui';
+import { useEffect, useRef, type ReactNode } from '@lynx-js/react';
 
 import {
   BlocksIcon,
@@ -94,16 +95,27 @@ export function ComposerProjectPickerPanelElement(props: {
   readonly query: string;
   readonly onQueryChange: (query: string) => void;
 }) {
+  const inputRef = useRef<InputRef>(null);
+  useEffect(() => {
+    'background only';
+    const input = inputRef.current;
+    if (!input) return;
+    void input
+      .focus()
+      .then(() => input.setSelectionRange(0, props.query.length))
+      .catch(() => undefined);
+  }, []);
   return (
     <view className="ComposerProjectPickerPanelLynx">
       <view className="ComposerProjectPickerSearchLynx">
         <Input
+          ref={inputRef}
           type="search"
           size="sm"
           value={props.query}
           placeholder={props.placeholder}
+          aria-label={props.placeholder}
           onChange={(event) => props.onQueryChange(event.target.value)}
-          onKeyDown={() => undefined}
         />
       </view>
       <scroll-view

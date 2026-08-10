@@ -959,6 +959,15 @@ surface; selected project identity remains solely on the existing Check
 indicator instead of a branded row background. Focused project-picker/Landing
 regressions pass 3/3 and the Native/Desktop production build succeeds.
 
+The Project Picker search-focus follow-up closes a keyboard-entry mismatch
+behind that visual shell. Web opens the picker with its search field focused
+and the existing query selected; Lynx previously left focus on the trigger and
+attached a no-op key callback to the input. The mounted Lynx panel now focuses
+the named search field, selects its current query, and leaves Arrow/Enter/Escape
+ownership with the shared Menu primitive rather than duplicating navigation.
+Focused picker coverage passes 1/1; both Lynx-for-Web and Native/Desktop
+production builds pass with only the existing warnings.
+
 The Composer command-menu follow-up closes its remaining custom-row fork:
 keyboard-active rows use Web's neutral button-secondary fill, while pointer
 hover/press uses button-secondary-hover and no longer dims the entire row.

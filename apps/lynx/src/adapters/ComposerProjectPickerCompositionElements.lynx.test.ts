@@ -41,5 +41,12 @@ describe('composer project picker trigger icon', () => {
     );
     expect(source).toContain('<CheckIcon size={12} />');
     expect(source).not.toContain("{props.selected ? '✓' : ''}");
+    expect(source).toContain('const inputRef = useRef<InputRef>(null);');
+    expect(source).toContain('.focus()');
+    expect(source).toContain(
+      '.then(() => input.setSelectionRange(0, props.query.length))'
+    );
+    expect(source).toContain('aria-label={props.placeholder}');
+    expect(source).not.toContain('onKeyDown={() => undefined}');
   });
 });
