@@ -182,7 +182,10 @@ export function ThemePackImportActionElement(props: {
           viewportClassName="SharedThemePackImportViewport"
           showCloseButton={false}
         >
-          <DialogClose className="SharedThemePackImportClose">
+          <DialogClose
+            className="SharedThemePackImportClose"
+            ariaLabel="Close theme import"
+          >
             <XIcon
               className="SharedThemePackImportCloseIcon"
               color="var(--muted-foreground)"

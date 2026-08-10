@@ -1,6 +1,5 @@
 import {
   DialogBackdrop as LynxDialogBackdrop,
-  DialogClose as LynxDialogClose,
   DialogContent as LynxDialogContent,
   DialogRoot,
   DialogTrigger as LynxDialogTrigger,
@@ -19,6 +18,7 @@ import {
 
 import { XIcon } from '../../lib/icons';
 import { focusLynxElementBySelector } from './focus.lynx';
+import { useLynxInteractiveState } from './interactive-state.lynx';
 import { cx, renderSlot, textContent } from './shared.lynx';
 import './primitives.css';
 
@@ -117,11 +117,19 @@ export function DialogClose(props: {
   render?: ReactNode;
   className?: string;
   disabled?: boolean;
+  ariaLabel?: string;
 }) {
+  const dialog = useContext(DialogDismissContext);
+  const interaction = useLynxInteractiveState({
+    baseClassName: props.className ?? 'LxDialogClose',
+    accessibleLabel: props.ariaLabel,
+    disabled: props.disabled,
+    onActivate: dialog.close,
+  });
   return (
-    <LynxDialogClose className={props.className} disabled={props.disabled}>
+    <view className={interaction.className} {...interaction.eventProps}>
       {renderSlot(props.render, props.children)}
-    </LynxDialogClose>
+    </view>
   );
 }
 
@@ -179,8 +187,8 @@ export function DialogPopup({
       >
         {children}
         {showCloseButton && (
-          <DialogClose className="LxDialogClose">
-            <XIcon className="LxDialogClose__icon" size={18} accessibilityLabel="Close" />
+          <DialogClose className="LxDialogClose" ariaLabel="Close dialog">
+            <XIcon className="LxDialogClose__icon" size={18} />
           </DialogClose>
         )}
       </LynxDialogContent>

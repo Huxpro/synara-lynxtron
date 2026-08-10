@@ -7,6 +7,7 @@ import {
 
 import {
   Dialog,
+  DialogClose,
   DialogPopup,
   DialogTitle,
   DialogTrigger,
@@ -86,6 +87,32 @@ describe('Lynx Dialog dismiss contract', () => {
     expect(title?.getAttribute('accessibility-element')).toBe('true');
     expect(title?.getAttribute('accessibility-heading')).toBe('true');
     expect(title?.getAttribute('accessibility-traits')).toBe('header');
+  });
+
+  it('names and activates default and custom close owners', async () => {
+    const onOpenChange = rs.fn();
+    render(
+      <Dialog defaultOpen onOpenChange={onOpenChange}>
+        <DialogPopup>
+          <DialogClose className="CustomClose" ariaLabel="Close custom dialog">
+            <text>Done</text>
+          </DialogClose>
+        </DialogPopup>
+      </Dialog>
+    );
+
+    await openDialog();
+    const defaultClose = elementTree.root?.querySelector('.LxDialogClose');
+    const customClose = elementTree.root?.querySelector('.CustomClose');
+    expect(defaultClose?.getAttribute('accessibility-label')).toBe(
+      'Close dialog'
+    );
+    expect(customClose?.getAttribute('accessibility-label')).toBe(
+      'Close custom dialog'
+    );
+    if (!customClose) throw new Error('expected custom DialogClose');
+    fireEvent.tap(customClose);
+    expect(onOpenChange).toHaveBeenLastCalledWith(false);
   });
 
   it('closes from Escape', async () => {

@@ -298,6 +298,7 @@ Current responsive disposition:
 | Settings disclosure values | Integration advanced-permissions joins Release History and recovery disclosures in publishing Expanded/Collapsed Native accessibility value while retaining Web `aria-expanded`, without inventing an unestablished Native expanded-state shape | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Unavailable Settings search | the inert search placeholder exposes a named, disabled Native search element while remaining unfocusable and non-actionable | PASS — HONEST CAPABILITY STATE |
 | Shared dialog title semantics | the shared Lynx `DialogTitle` renders as an explicit Native header, covering Settings Profile edit/share and Release History plus other product dialogs without per-dialog duplication | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
+| Shared dialog close names | default and custom dialog close affordances use the shared interaction owner with explicit Native names, preserving dismiss and exact-trigger focus restoration instead of naming only a nested icon | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
 | Settings heading semantics | one Native heading primitive preserves every current Web Settings h1/h2/h3 counterpart across generic panels, private Appearance/General/Git/provider layouts, Profile identity and sections, Provider Usage, and Theme Pack titles instead of leaving them as undifferentiated text | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Shared interactive names | high-frequency Composer, Kanban, and Pull Request controls route labels and selected/expanded/on-off state through `useLynxInteractiveState`, so Native accessibility metadata no longer depends only on Web `aria-label` attributes | PASS — SHARED NATIVE ACCESSIBILITY CONTRACT |
 | Actionable primitive semantics | `useLynxInteractiveState` now exposes every actionable control as a Native accessibility button even when its name is derived from visible text; passive hover owners remain excluded and explicit `accessibilityElement: false` remains authoritative | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
@@ -678,6 +679,13 @@ the Environment commit and Kanban task dialogs. Focused Dialog/Profile/
 Advanced regressions pass (13/13), both production bundles build,
 `git diff --check` passes, and React Doctor 0.9.11 reports zero diagnostics
 against `0adea946`.
+The dialog-close follow-up replaces the upstream close wrapper, which forwards
+only style/class/disabled and cannot carry accessibility metadata, with the
+shared interaction owner. Default closes are named `Close dialog`; Theme Pack
+uses `Close theme import`. Focused Dialog/Theme Pack regressions pass (15/15),
+including activation and exact-trigger focus restoration; both production
+bundles build, `git diff --check` passes, and React Doctor 0.9.11 reports zero
+diagnostics against `e0fa42e4`.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

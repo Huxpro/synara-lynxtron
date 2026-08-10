@@ -116,6 +116,7 @@ describe('ThemePack boolean interaction contract', () => {
       'viewportClassName="SharedThemePackImportViewport"'
     );
     expect(source).toContain('className="SharedThemePackImportClose"');
+    expect(source).toContain('ariaLabel="Close theme import"');
     expect(source).toContain('className="SharedThemePackImportCloseIcon"');
     expect(source).toContain('color="var(--muted-foreground)"');
     expect(source).toContain('style={{ opacity: 0.8 }}');
