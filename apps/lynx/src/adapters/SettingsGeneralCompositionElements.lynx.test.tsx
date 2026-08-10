@@ -29,7 +29,7 @@ describe('Settings General fidelity', () => {
           ariaLabel="Default provider"
           options={[
             { value: 'codex', label: 'Codex' },
-            { value: 'droid', label: 'Droid' },
+            { value: 'future-provider', label: 'Future provider' },
           ]}
           onChange={() => {}}
         />
@@ -61,7 +61,7 @@ describe('Settings General fidelity', () => {
       elementTree.root?.querySelector(
         '.SharedSettingsGeneralProviderFallbackText'
       )?.textContent
-    ).toBe('D');
+    ).toBe('F');
     expect(styles).toMatch(
       /\.SharedSettingsGeneralProviderOption\s*\{[^}]*gap:\s*8px;/s
     );

@@ -612,8 +612,10 @@ adding `menuitemradio` / `menuitemcheckbox` Web roles and Native
 radio/checkbox/switch state for visual checks and tracks. The complete Menu
 suite passes (11/11), adjacent Appearance/Theme Pack suites pass (12/12), both
 production bundles build, `git diff --check` passes, and React Doctor 0.9.11
-reports zero diagnostics against `5e9b63e2`. The unrelated General provider
-fallback assertion remains independently reproducible and was not modified.
+reports zero diagnostics against `5e9b63e2`. The previously failing General
+fallback assertion was a stale fixture from before Droid gained a real icon in
+`147cf5b7`; using an intentionally unsupported provider restores that suite
+alone (3/3) and the full Menu/Settings consumer batch (26/26).
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
