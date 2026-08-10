@@ -166,6 +166,7 @@ describe('Settings Provider tools fidelity', () => {
     expect(panelSource).toContain(
       'accessibility-label={props.field.label}'
     );
+    expect(panelSource).toContain('<Input\n        nativeInput');
     expect(styles).toMatch(
       /\.SettingsProviderToolsBooleanField\s*\{[^}]*padding:\s*8px 12px;[^}]*border-radius:\s*6px;/s
     );

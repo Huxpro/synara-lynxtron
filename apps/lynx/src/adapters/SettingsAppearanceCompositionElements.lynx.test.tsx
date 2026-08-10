@@ -91,6 +91,7 @@ describe('Settings Appearance fidelity', () => {
     );
     expect(source).toContain('size="sm"');
     expect(source).toContain('variant="soft"');
+    expect(source.match(/<Input\s+nativeInput/g)).toHaveLength(2);
     expect(source).toContain('size={16}');
     expect(styles).toMatch(
       /\.SharedSettingsAppearanceSegmentIcon\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;[^}]*margin-left:\s*-1px;[^}]*margin-right:\s*-1px;[^}]*opacity:\s*0\.8;/s

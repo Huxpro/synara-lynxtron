@@ -153,6 +153,7 @@ describe('Settings Profile fidelity', () => {
     expect(profileSource).toContain(
       "import pencilSvg from '@synara-central-icons/pencil.svg?raw';"
     );
+    expect(profileSource.match(/<Input\s+nativeInput/g)).toHaveLength(2);
     expect(dialogSource).toContain('pickProfileImage: () =>');
     expect(desktopHostSource).toContain("case 'dialogsPickProfileImage':");
     expect(desktopHostSource).toContain('nativeImage.createFromPath(filePath)');

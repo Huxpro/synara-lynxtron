@@ -203,6 +203,7 @@ function ProviderTextField(props: {
         {props.field.label}
       </text>
       <Input
+        nativeInput
         className="SettingsProviderToolsFieldInput"
         size="sm"
         variant="soft"

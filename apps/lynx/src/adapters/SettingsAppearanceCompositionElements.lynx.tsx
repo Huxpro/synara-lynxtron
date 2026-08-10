@@ -207,6 +207,7 @@ export function SettingsAppearanceNumberControlElement(props: {
   return (
     <view className="SharedSettingsAppearanceInputLine">
       <Input
+        nativeInput
         type="number"
         size="sm"
         variant="soft"
@@ -247,6 +248,7 @@ export function SettingsAppearanceTextControlElement(props: {
       >
         <view className="SharedSettingsAppearanceFontInput">
           <Input
+            nativeInput
             size="sm"
             variant="soft"
             value={props.value}

@@ -792,6 +792,7 @@ function ProfileContent(props: {
               <view className="SettingsProfileEditField">
                 <text className="SettingsProfileEditLabel">Display name</text>
                 <Input
+                  nativeInput
                   size="sm"
                   value={draftName}
                   placeholder="Your name"
@@ -804,6 +805,7 @@ function ProfileContent(props: {
                 <view className="SettingsProfileHandleInput">
                   <text className="SettingsProfileHandlePrefix">@</text>
                   <Input
+                    nativeInput
                     unstyled
                     value={draftHandle}
                     placeholder="username"

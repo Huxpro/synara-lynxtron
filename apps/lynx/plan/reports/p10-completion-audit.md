@@ -295,6 +295,7 @@ Current responsive disposition:
 | Provider Usage meter semantics | each painted remaining-usage track exposes one named static Native text element and percentage value while retaining Web numeric ARIA, without claiming an unsupported Native progressbar contract | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Keyboard-input accessible names | the shared `Input` keyboard-event branch forwards normalized Web/native labels to its raw Lynx input, preserving Settings sidebar and shortcut-search names instead of dropping them during the platform split | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
 | Shared Input invalid semantics | the shared `Input` forwards `aria-invalid` through both its raw keyboard and Lynx UI input branches instead of using the state only for wrapper styling | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
+| Named native input routing | `nativeInput` now selects the metadata-preserving raw branch; all named Settings/Profile/Theme Pack fields use it, including disabled Provider Tool fields with explicit Native disabled state | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
 | Appearance select trigger name | the Appearance select field name is owned by the actionable `MenuTrigger` as well as its nested Web button, preventing an unnamed outer Native menu control | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Settings navigation state | active navigation controls match Web `aria-current="page"` and publish Native selected/disabled state plus the existing Current section value on the same interaction owner | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Settings disclosure values | Integration advanced-permissions joins Release History and recovery disclosures in publishing Expanded/Collapsed Native accessibility value while retaining Web `aria-expanded`, without inventing an unestablished Native expanded-state shape | PASS — CURRENT PRODUCT IMPLEMENTATION |
@@ -676,6 +677,13 @@ production bundles build, `git diff --check` passes, and React Doctor 0.9.11
 reports zero diagnostics against `c1ff94a4`. Direct primitive mounting remains
 outside the renderer harness because Lynx input host invocation is not
 implemented, so branch metadata uses deterministic source coverage.
+The named-input routing follow-up honors the existing `nativeInput` prop and
+routes every named Settings/Profile/Theme Pack field through the raw input
+branch because upstream Lynx UI Input does not spread accessibility metadata.
+The raw branch also publishes Native disabled state for Provider Tool fields.
+Focused primitive and seven-consumer regressions pass (27/27), both production
+bundles build, `git diff --check` passes, and React Doctor 0.9.11 reports zero
+diagnostics against `46c34659`.
 The Appearance select follow-up moves the field name onto the actionable
 `MenuTrigger` owner while retaining the nested button label for Web parity.
 Focused Appearance/Menu regressions pass (14/14), both production bundles

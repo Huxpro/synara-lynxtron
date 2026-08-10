@@ -79,7 +79,7 @@ interface KeyboardInputProps {
   readonly onConfirm?: LynxInputProps['onConfirm'];
   readonly onFocus?: LynxInputProps['onFocus'];
   readonly onInput?: LynxInputProps['onInput'];
-  readonly onKeyDown: (event: LynxInputKeyEvent) => void;
+  readonly onKeyDown?: (event: LynxInputKeyEvent) => void;
   readonly onSelectionChange?: LynxInputProps['onSelectionChange'];
   readonly placeholder?: string;
   readonly readonly?: boolean;
@@ -172,8 +172,10 @@ const KeyboardInput = forwardRef<InputRef, KeyboardInputProps>(
       id={props.id}
       aria-label={props.accessibleLabel}
       aria-invalid={props.ariaInvalid}
+      aria-disabled={props.disabled || undefined}
       accessibility-element={props.accessibleLabel ? true : undefined}
       accessibility-label={props.accessibleLabel}
+      accessibility-state={props.disabled ? { disabled: true } : undefined}
       readonly={props.disabled || props.readonly}
       disabled={props.disabled}
       focusable={!props.disabled}
@@ -220,7 +222,7 @@ export const Input = forwardRef<InputRef, InputProps>(function Input(
     size = 'default',
     variant = 'default',
     unstyled = false,
-    nativeInput: _nativeInput,
+    nativeInput = false,
     disabled,
     type = 'text',
     onInput,
@@ -274,7 +276,7 @@ export const Input = forwardRef<InputRef, InputProps>(function Input(
         className
       )}
     >
-      {onKeyDown ? (
+      {nativeInput || onKeyDown ? (
         <KeyboardInput
           ref={forwardedRef}
           accessibleLabel={accessibilityLabel ?? ariaLabel}

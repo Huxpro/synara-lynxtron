@@ -272,6 +272,7 @@ export function SettingsIntegrationsPanel() {
               </text>
             </view>
             <Input
+              nativeInput
               className="SettingsIntegrationsNameInput"
               value={name}
               maxLength={120}

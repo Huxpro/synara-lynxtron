@@ -106,6 +106,7 @@ describe('Settings Integrations fidelity', () => {
     expect(panelSource).toContain(
       'accessibility-label="Connection name"'
     );
+    expect(panelSource).toContain('<Input\n              nativeInput');
     expect(styles).toMatch(
       /\.SliceRoot--viewport-sm-up \.SettingsIntegrationsNameInput\s*\{[^}]*width:\s*256px;/s
     );

@@ -238,6 +238,7 @@ describe('ThemePack boolean interaction contract', () => {
       /\.SharedThemePackRowControl\s*\{[^}]*width:\s*280px;/s
     );
     expect(source).toContain('className={`SharedThemePackFontInput');
+    expect(source.match(/<Input\s+nativeInput/g)).toHaveLength(2);
     expect(source).toContain("props.mono ? ' SharedThemePackFontInput--mono' : ''");
     expect(source).toContain('accessibility-label={props.ariaLabel}');
     expect(styles).toMatch(

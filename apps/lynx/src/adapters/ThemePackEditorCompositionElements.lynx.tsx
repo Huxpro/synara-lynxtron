@@ -398,6 +398,7 @@ export function ThemePackColorControlElement(props: {
           aria-hidden="true"
         />
         <Input
+          nativeInput
           unstyled
           className="SharedThemePackColorInput"
           value={props.color.toUpperCase()}
@@ -427,6 +428,7 @@ export function ThemePackFontControlElement(props: {
 }) {
   return (
     <Input
+      nativeInput
       size="sm"
       variant="soft"
       className={`SharedThemePackFontInput${
