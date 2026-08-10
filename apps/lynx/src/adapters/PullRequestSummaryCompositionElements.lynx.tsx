@@ -244,9 +244,10 @@ export function PullRequestSummaryCommentsElement(props: {
         props.detail.comments.map((comment) => (
           <view className="SharedPrSummaryComment" key={comment.id}>
             <view className="SharedPrSummaryCommentHeader">
-              <text className="SharedPrSummaryCommentAuthor">
-                {comment.author?.login ?? 'ghost'}
-              </text>
+              <PullRequestActorLabel
+                actor={comment.author}
+                variant="comment"
+              />
               {comment.path ? (
                 <text className="SharedPrSummaryCommentPath">
                   {comment.path}

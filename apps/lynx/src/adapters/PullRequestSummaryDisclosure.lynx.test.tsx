@@ -17,8 +17,13 @@ describe('Pull Request summary disclosure fidelity', () => {
       '<PullRequestActorLabel actor={props.author} variant="author" />'
     );
     expect(source).toContain('className="SharedPrSummaryReviewers"');
+    expect(source).toContain('actor={comment.author}');
+    expect(source).toContain('variant="comment"');
     expect(source).not.toContain(
       "props.reviewers.map((actor) => actor.login).join(', ')"
+    );
+    expect(source).not.toContain(
+      "{comment.author?.login ?? 'ghost'}"
     );
     expect(source).toContain('disclosureContentClassName(');
     expect(source).toContain('disclosureChevronClassName(');

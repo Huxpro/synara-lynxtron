@@ -38,7 +38,8 @@
   white-space: nowrap;
 }
 
-.SharedPrActorLabel--author .SharedPrActorLogin {
+.SharedPrActorLabel--author .SharedPrActorLogin,
+.SharedPrActorLabel--comment .SharedPrActorLogin {
   font-weight: 500;
 }
 

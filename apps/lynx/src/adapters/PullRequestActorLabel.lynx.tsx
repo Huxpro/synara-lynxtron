@@ -10,7 +10,7 @@ function initialFor(actor: PullRequestActor | null): string {
 
 export function PullRequestActorLabel(props: {
   readonly actor: PullRequestActor | null;
-  readonly variant: 'author' | 'reviewer';
+  readonly variant: 'author' | 'comment' | 'reviewer';
 }) {
   const [failedSrc, setFailedSrc] = useState<string | null>(null);
   const login = props.actor?.login?.trim() || 'ghost';
