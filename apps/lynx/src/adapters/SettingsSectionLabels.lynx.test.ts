@@ -118,6 +118,9 @@ describe('Lynx Settings section labels', () => {
       'accessibility-value={`${Math.round(display.remainingPercent)}%`}'
     );
     expect(usageSource).toContain(
+      'accessibility-label={`${line.label}: ${line.value}${'
+    );
+    expect(usageSource).toContain(
       "if ((snapshot.status ?? 'ok') === 'ok') return snapshot.planName ?? null;"
     );
     expect(usageStyles).toMatch(

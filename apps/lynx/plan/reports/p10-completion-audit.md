@@ -304,6 +304,7 @@ Current responsive disposition:
 | Theme Pack color reset names | optional icon-only Accent/Background/Foreground reset buttons use Web's field-specific `Reset <color field>` accessible name | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Theme Pack import validation | retained parser failures mark the share-string textarea invalid and announce as Native alerts; editing clears both the message and invalid state | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | AppSnap capability switch semantics | the unavailable AppSnap placeholder remains inert and unfocusable while exposing Native switch role plus explicit off/disabled state | PASS — HONEST CAPABILITY STATE |
+| Provider Usage line semantics | label/value/subtitle usage rows expose one concise static Native text element per Web conceptual item while meter tracks remain independent quantitative elements | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Settings empty-state reading units | Archived, Skills, and Integrations title/description empty states expose one concise static Native text element per conceptual row/card instead of fragmented title and description nodes | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Settings heading semantics | one Native heading primitive preserves every current Web Settings h1/h2/h3 counterpart across generic panels, private Appearance/General/Git/provider layouts, Profile identity and sections, Provider Usage, and Theme Pack titles instead of leaving them as undifferentiated text | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Shared interactive names | high-frequency Composer, Kanban, and Pull Request controls route labels and selected/expanded/on-off state through `useLynxInteractiveState`, so Native accessibility metadata no longer depends only on Web `aria-label` attributes | PASS — SHARED NATIVE ACCESSIBILITY CONTRACT |
@@ -725,6 +726,11 @@ checked-false/disabled-true state beside its existing Off value. Focused
 AppSnap regressions pass (2/2), both production bundles build,
 `git diff --check` passes, and React Doctor 0.9.11 reports zero diagnostics
 against `acb32b7d`.
+The Provider Usage line follow-up exposes each label/value/optional-subtitle
+row as one static Native text element while leaving percentage meter tracks as
+separate quantitative elements. Focused Usage contracts pass (6/6), both
+production bundles build, `git diff --check` passes, and React Doctor 0.9.11
+reports zero diagnostics against `6cf595b4`.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

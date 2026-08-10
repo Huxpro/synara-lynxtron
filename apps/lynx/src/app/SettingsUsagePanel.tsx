@@ -231,6 +231,11 @@ export function SettingsUsagePanel() {
                           <view
                             className="SettingsUsageLine"
                             key={`${snapshot.provider}:${line.label}:${line.value}`}
+                            accessibility-element
+                            accessibility-label={`${line.label}: ${line.value}${
+                              line.subtitle ? `. ${line.subtitle}` : ''
+                            }`}
+                            accessibility-traits="text"
                           >
                             <view className="SettingsUsageLineHeader">
                               <text className="SettingsUsageLabel">
