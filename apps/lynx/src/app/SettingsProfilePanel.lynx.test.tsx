@@ -74,6 +74,14 @@ describe('Settings Profile fidelity', () => {
     expect(profileSource).toContain('Activity insights');
     expect(profileSource).toContain('Most used plugins');
     expect(profileSource).toContain('Model usage');
+    expect(profileSource).toContain(
+      "import { SettingsHeadingElement } from '../adapters/SettingsHeadingElement.lynx';"
+    );
+    expect(profileSource).toContain(
+      '<SettingsHeadingElement className="SettingsProfileName">'
+    );
+    expect(profileSource.match(/<SettingsHeadingElement className="SettingsProfileSectionTitle">/g))
+      .toHaveLength(4);
   });
 
   it('implements the canonical local Edit profile contract', () => {

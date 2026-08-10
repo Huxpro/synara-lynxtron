@@ -34,6 +34,7 @@ import { ProfileUsageKindIcon } from './ProfileUsageKindIcon.lynx';
 import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
 import { ScreenshotIcon, Trash2 } from '../lib/icons.lynx';
 import { webStorage } from '../platform/storage';
+import { SettingsHeadingElement } from '../adapters/SettingsHeadingElement.lynx';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { useTheme } from '../adapters/useTheme.lynx';
 import {
@@ -485,7 +486,9 @@ function ProfileContent(props: {
           )}
         </view>
         <view className="SettingsProfileIdentityCopy">
-          <text className="SettingsProfileName">{displayName}</text>
+          <SettingsHeadingElement className="SettingsProfileName">
+            {displayName}
+          </SettingsHeadingElement>
           <view className="SettingsProfileHandleLine">
             <text className="SettingsProfileHandle">
               {handle}
@@ -533,7 +536,9 @@ function ProfileContent(props: {
       </view>
 
       <view className="SettingsProfileSection SettingsProfileActivity">
-        <text className="SettingsProfileSectionTitle">Activity</text>
+        <SettingsHeadingElement className="SettingsProfileSectionTitle">
+          Activity
+        </SettingsHeadingElement>
         <view
           className="SettingsProfileHeatmap"
           accessibility-element
@@ -576,7 +581,9 @@ function ProfileContent(props: {
 
       <view className="SettingsProfileColumns">
         <view className="SettingsProfileColumn">
-          <text className="SettingsProfileSectionTitle">Activity insights</text>
+          <SettingsHeadingElement className="SettingsProfileSectionTitle">
+            Activity insights
+          </SettingsHeadingElement>
           <view className="SettingsProfileList">
             <InsightRow label="Most used provider" value={providerValue} />
             <InsightRow
@@ -607,7 +614,9 @@ function ProfileContent(props: {
         </view>
 
         <view className="SettingsProfileColumn">
-          <text className="SettingsProfileSectionTitle">Most used plugins</text>
+          <SettingsHeadingElement className="SettingsProfileSectionTitle">
+            Most used plugins
+          </SettingsHeadingElement>
           <view className="SettingsProfileList">
             {props.stats.skills.length > 0 ? (
               props.stats.skills.slice(0, 6).map((skill) => (
@@ -638,7 +647,9 @@ function ProfileContent(props: {
       </view>
 
       <view className="SettingsProfileSection SettingsProfileModelUsage">
-        <text className="SettingsProfileSectionTitle">Model usage</text>
+        <SettingsHeadingElement className="SettingsProfileSectionTitle">
+          Model usage
+        </SettingsHeadingElement>
         <view className="SettingsProfileModels">
           {modelUsage.entries.length > 0 ? (
             modelUsage.entries.slice(0, 6).map((entry) => (

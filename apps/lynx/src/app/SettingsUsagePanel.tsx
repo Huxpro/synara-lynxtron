@@ -8,6 +8,7 @@ import {
 } from '@synara/shared/providerUsage';
 import { deriveProviderUsageLimitDisplay } from '@synara/shared/providerUsageDisplay';
 
+import { SettingsHeadingElement } from '../adapters/SettingsHeadingElement.lynx';
 import { Button } from '../components/ui/button';
 import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
 import { RefreshCwIcon, TriangleAlertIcon } from '../lib/icons.lynx';
@@ -139,7 +140,9 @@ export function SettingsUsagePanel() {
   return (
     <view className="SettingsUsage">
       <view className="SettingsUsageHeader">
-        <text className="SettingsUsageSectionTitle">Provider usage</text>
+        <SettingsHeadingElement className="SettingsUsageSectionTitle">
+          Provider usage
+        </SettingsHeadingElement>
         <Button
           size="xs"
           variant="outline"

@@ -19,6 +19,7 @@ import {
   MenuRadioItem,
   MenuTrigger,
 } from '../components/ui/menu';
+import { SettingsHeadingElement } from './SettingsHeadingElement.lynx';
 import { SettingsResetIcon } from './SettingsResetIcon.lynx';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 import type {
@@ -108,7 +109,9 @@ export function ThemePackTitleElement(props: {
 }) {
   return (
     <view className="SharedThemePackTitleLine">
-      <text className="SharedThemePackTitle">{props.title}</text>
+      <SettingsHeadingElement className="SharedThemePackTitle">
+        {props.title}
+      </SettingsHeadingElement>
       {props.children}
     </view>
   );

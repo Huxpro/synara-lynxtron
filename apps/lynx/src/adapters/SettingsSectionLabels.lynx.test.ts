@@ -84,6 +84,9 @@ describe('Lynx Settings section labels', () => {
       'utf8'
     );
     expect(usageSource).toContain('className="SettingsUsageRefresh"');
+    expect(usageSource).toContain(
+      '<SettingsHeadingElement className="SettingsUsageSectionTitle">'
+    );
     expect(usageStyles).toMatch(
       /\.SettingsUsageRefresh\s*\{[^}]*width:\s*72px;[^}]*height:\s*24px;[^}]*padding:\s*0 7px;/s
     );

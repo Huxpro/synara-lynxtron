@@ -7,6 +7,7 @@ import {
   ThemePackCodeThemeControlElement,
   ThemePackContrastControlElement,
   ThemePackImportActionElement,
+  ThemePackTitleElement,
   mixThemeColors,
   readableThemeColor,
   resolveThemePackContrastKeyValue,
@@ -51,6 +52,15 @@ beforeEach(() => {
 });
 
 describe('ThemePack boolean interaction contract', () => {
+  it('preserves the Web h3 title as a Native heading', () => {
+    render(<ThemePackTitleElement title="Light theme" />);
+
+    const title = elementTree.root?.querySelector('.SharedThemePackTitle');
+    expect(title?.getAttribute('accessibility-element')).toBe('true');
+    expect(title?.getAttribute('accessibility-heading')).toBe('true');
+    expect(title?.getAttribute('accessibility-traits')).toBe('header');
+  });
+
   it('matches the Web two-row header and row typography', () => {
     const source = readFileSync(
       new URL('./ThemePackEditorCompositionElements.lynx.tsx', import.meta.url),
