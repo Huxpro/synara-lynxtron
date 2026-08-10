@@ -171,6 +171,24 @@ describe('Settings Profile fidelity', () => {
     expect(styles).toMatch(
       /\.SettingsProfileEditFooterButton\s*\{[^}]*height:\s*44px;[^}]*border-radius:\s*8px;/s
     );
+    expect(styles).toMatch(
+      /\.SliceRoot--theme-light\s*\{[^}]*--settings-profile-stats-border:\s*rgba\(13,\s*13,\s*13,\s*0\.042\);[^}]*--settings-profile-stats-divider:\s*rgba\(13,\s*13,\s*13,\s*0\.035\);/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--theme-dark\s*\{[^}]*--settings-profile-stats-border:\s*rgba\(252,\s*252,\s*252,\s*0\.043\);[^}]*--settings-profile-stats-divider:\s*rgba\(252,\s*252,\s*252,\s*0\.036\);/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsProfileStats\s*\{[^}]*border:\s*1px solid var\(--settings-profile-stats-border\);/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsProfileStat\s*\{[^}]*border-left:\s*1px solid var\(--settings-profile-stats-divider\);/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-lg-up \.SettingsProfileStat\s*\{[^}]*border-left-width:\s*0;[^}]*border-right:\s*1px solid var\(--settings-profile-stats-divider\);/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-lg-up \.SettingsProfileStat--4\s*\{[^}]*border-right-width:\s*0;/s
+    );
   });
 
   it('implements a real cross-platform Profile Share export kernel', () => {

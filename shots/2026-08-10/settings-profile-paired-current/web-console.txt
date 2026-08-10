@@ -1,0 +1,23 @@
+[debug] [vite] connecting...
+[debug] [vite] connected.
+[info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[log] [Lynxtron Web] Configuring nodejs module with script: http://localhost:9201/lynx/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://localhost:9201/6d143138-b0c4-4aef-a453-7fba16c5b085
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://localhost:9201/76925020-fc56-4d86-937e-c00cc8d1cf41", nodejs: "blob:http://localhost:9201/6d143138-b0c4-4aef-a453-7fba16c5b085"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[debug] [vite] connecting...
+[debug] [vite] connected.
+[info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[debug] [vite] connecting...
+[debug] [vite] connected.
+[info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[log] [Lynxtron Web] Configuring nodejs module with script: http://localhost:9201/lynx/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://localhost:9201/30671446-422f-41ab-aa3c-b0f1b0da7116
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://localhost:9201/5d3007f2-7e3f-4cef-8172-df2e2e3d90f6", nodejs: "blob:http://localhost:9201/30671446-422f-41ab-aa3c-b0f1b0da7116"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[debug] [vite] connecting...
+[debug] [vite] connected.
+[info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[debug] [vite] connecting...
+[debug] [vite] connected.
+[info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold

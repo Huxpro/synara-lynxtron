@@ -800,6 +800,19 @@ The Provider Usage warning follow-up moves semantics from the generic nested
 decorative icon ownership. Focused Usage contracts pass (6/6), both production
 bundles build, `git diff --check` passes, and React Doctor 0.9.11 reports zero
 diagnostics against `65c099f5`.
+The current-head Profile stats calibration uses one isolated server and one
+named browser session to compare Web and Lynx-for-Web at `1280x820`, DPR 1, in
+both light and dark themes. First-screen geometry is effectively exact. The
+remaining material residual came from using the full border token for both
+the stats outline and dividers, plus assigning wide-layout dividers to the
+following tile rather than Web's preceding-tile `divide-x` ownership. Separate
+light/dark low-alpha tokens and right-edge ownership align the dark sampled
+pixels exactly; the light divider differs by one RGB level from alpha
+rounding. Evidence and invalid-cell classification are recorded in
+`shots/2026-08-10/settings-profile-paired-current/notes.md`. The focused
+Profile suite passes (5/5), both production bundles build, React Doctor 0.9.11
+reports zero diagnostics against `92c0fe91`, and the named browser session was
+closed after restoring both clients to System.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
