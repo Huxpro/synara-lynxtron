@@ -30,11 +30,8 @@
   height: 16px;
   margin-top: 1px;
   margin-right: 8px;
-  color: var(--color-text-status-warning);
-}
-
-.ProviderHealthBanner--error .ProviderHealthBannerIcon {
-  color: var(--color-text-status-error);
+  color: var(--foreground);
+  opacity: 0.92;
 }
 
 .ProviderHealthBannerCopy {
@@ -76,13 +73,22 @@
 
 .ProviderHealthBannerDismiss.ui-hover,
 .ProviderHealthBannerDismiss.ui-pressed {
-  background-color: var(--accent);
+  background-color: rgba(13, 13, 13, 0.1);
   opacity: 1;
 }
 
 .ProviderHealthBannerDismiss.ui-focus {
-  border-color: var(--ring);
+  border-color: rgba(13, 13, 13, 0.35);
   opacity: 1;
+}
+
+.SliceRoot--theme-dark .ProviderHealthBannerDismiss.ui-hover,
+.SliceRoot--theme-dark .ProviderHealthBannerDismiss.ui-pressed {
+  background-color: rgba(252, 252, 252, 0.1);
+}
+
+.SliceRoot--theme-dark .ProviderHealthBannerDismiss.ui-focus {
+  border-color: rgba(252, 252, 252, 0.35);
 }
 
 .ProviderHealthBannerDismissIcon {

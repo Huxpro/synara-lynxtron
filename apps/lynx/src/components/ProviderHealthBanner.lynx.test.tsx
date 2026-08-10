@@ -66,5 +66,15 @@ describe("Native ProviderHealthBanner", () => {
     expect(styles).toMatch(
       /\.SliceRoot--viewport-short-height \.ProviderHealthBannerDescription\s*\{[^}]*display:\s*none;/s,
     );
+    expect(styles).toMatch(
+      /\.ProviderHealthBannerIcon\s*\{[^}]*color:\s*var\(--foreground\);[^}]*opacity:\s*0\.92;/s,
+    );
+    expect(styles).toMatch(
+      /\.ProviderHealthBannerDismiss\.ui-hover,[^{]*\{[^}]*background-color:\s*rgba\(13,\s*13,\s*13,\s*0\.1\);/s,
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--theme-dark \.ProviderHealthBannerDismiss\.ui-hover,[^{]*\{[^}]*background-color:\s*rgba\(252,\s*252,\s*252,\s*0\.1\);/s,
+    );
+    expect(styles).not.toContain("background-color: var(--accent)");
   });
 });

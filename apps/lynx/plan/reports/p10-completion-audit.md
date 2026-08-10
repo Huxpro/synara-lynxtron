@@ -897,6 +897,13 @@ label to foreground on hover/focus/press. The existing 220ms disclosure and
 focus-ring contracts remain intact. Focused Summary/Code regressions pass 2/2
 and the Native/Desktop production build succeeds.
 
+The Provider Health notification follow-up aligns the full banner affordance,
+not only its frame: warning/error icons follow Web's readable notification
+foreground at 92%, and the dismiss control uses that foreground's 10% hover
+tint plus 35% focus ring in each theme instead of a brand-blue `--accent`
+surface. Focused banner regressions pass 3/3 and the Native/Desktop production
+build succeeds.
+
 The Native arbitrary text-range selection investigation reached an upstream
 Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's
 documented contract exposes `text-selection={true}`, `flatten={false}`,
