@@ -78,7 +78,10 @@ describe('Composer model picker icon fidelity', () => {
       /\.ComposerModelGroupCountColumnLynx\s*\{[^}]*width:\s*40px;[^}]*justify-content:\s*flex-end;/s
     );
     expect(styles).toMatch(
-      /\.ComposerModelGroupCountLynx\s*\{[^}]*padding:\s*1px 6px;[^}]*border-radius:\s*999px;[^}]*background-color:\s*var\(--color-background-elevated-secondary\);[^}]*font-size:\s*9px;/s
+      /\.ComposerModelGroupCountLynx\s*\{[^}]*padding:\s*1px 6px;[^}]*border-radius:\s*999px;[^}]*background-color:\s*rgba\(0,\s*0,\s*0,\s*0\.06\);[^}]*font-size:\s*9px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--theme-dark \.ComposerModelGroupCountLynx\s*\{[^}]*background-color:\s*rgba\(255,\s*255,\s*255,\s*0\.06\);/s
     );
     expect(styles).toMatch(
       /\.ComposerModelGroupContentLynx\s*\{[^}]*width:\s*100%;[^}]*padding-bottom:\s*2px;/s
