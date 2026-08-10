@@ -311,7 +311,7 @@ export function ThemePackCodeThemeControlElement(props: {
         <Button
           variant="outline"
           className="SharedThemePackCodeSelect"
-          aria-label={props.ariaLabel}
+          buttonProps={{ 'accessibility-element': false }}
         >
           <CodeThemeOption label={props.label} theme={props.theme} />
           <ChevronDownIcon

@@ -305,6 +305,7 @@ Current responsive disposition:
 | Shared dialog close names | default and custom dialog close affordances use the shared interaction owner with explicit Native names, preserving dismiss and exact-trigger focus restoration instead of naming only a nested icon | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
 | Shared dialog trigger names | dialog triggers use the shared interaction owner with explicit Native names, disabled behavior, open activation, and exact-selector focus restoration instead of relying on an upstream wrapper that drops accessibility metadata | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
 | Theme Pack dialog interaction ownership | the Import affordance applies shared Button visual classes directly to its one named `DialogTrigger`, and the close icon remains decorative beneath its one named `DialogClose`, eliminating nested duplicate controls | PASS — CURRENT PRODUCT IMPLEMENTATION |
+| Theme Pack code-theme ownership | the named code-theme `MenuTrigger` is the sole Native control while its palette-preview Button-shaped child is an explicit non-accessibility element | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Theme Pack color reset names | optional icon-only Accent/Background/Foreground reset buttons use Web's field-specific `Reset <color field>` accessible name | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Theme Pack import validation | retained parser failures mark the share-string textarea invalid and announce as Native alerts; editing clears both the message and invalid state | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | AppSnap capability switch semantics | the unavailable AppSnap placeholder remains inert and unfocusable while exposing Native switch role plus explicit off/disabled state | PASS — HONEST CAPABILITY STATE |
@@ -743,6 +744,11 @@ outer owner; the nested close icon likewise no longer carries a duplicate
 name. Focused Theme Pack/Dialog regressions pass (16/16), both production
 bundles build, `git diff --check` passes, and React Doctor 0.9.11 reports zero
 diagnostics against `db6e6139`.
+The Theme Pack code-theme follow-up keeps the field name/state on its
+`MenuTrigger` and marks the nested palette-preview Button as a non-accessibility
+element. Focused Theme Pack/Menu regressions pass (20/20), both production
+bundles build, `git diff --check` passes, and React Doctor 0.9.11 reports zero
+diagnostics against `63807af8`.
 The Theme Pack color-reset follow-up gives every optional icon-only reset
 button Web's exact field-specific `Reset ${ariaLabel}` name. The focused Theme
 Pack suite passes (9/9), both production bundles build, `git diff --check`

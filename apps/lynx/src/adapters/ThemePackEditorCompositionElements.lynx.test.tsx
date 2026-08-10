@@ -517,6 +517,11 @@ describe('ThemePack boolean interaction contract', () => {
     if (!trigger) throw new Error('expected code theme trigger');
     expect(trigger.getAttribute('aria-label')).toBe('Light theme code theme');
     expect(
+      trigger
+        .querySelector('.SharedThemePackCodeSelect')
+        ?.getAttribute('accessibility-element')
+    ).toBe('false');
+    expect(
       elementTree.root?.querySelector('.SharedThemePackCodeSwatchText')?.textContent
     ).toBe('Aa');
     expect(
