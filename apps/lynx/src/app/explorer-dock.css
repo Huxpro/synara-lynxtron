@@ -155,6 +155,11 @@
   opacity: 0.78;
 }
 
+.ExplorerDockEntry--directory .ExplorerDockEntryName {
+  font-weight: 500;
+  opacity: 0.8;
+}
+
 .ExplorerDockEntry.ui-hover .ExplorerDockEntryName,
 .ExplorerDockEntry.ui-focus .ExplorerDockEntryName,
 .ExplorerDockEntry.ui-pressed .ExplorerDockEntryName,

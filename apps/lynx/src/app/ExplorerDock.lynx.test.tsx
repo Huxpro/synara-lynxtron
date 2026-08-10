@@ -83,6 +83,9 @@ describe('Lynx Explorer dock', () => {
       "style={{ paddingLeft: `${8 + props.depth * 12}px` }}"
     );
     expect(source).toContain(
+      "directory ? ' ExplorerDockEntry--directory' : ''"
+    );
+    expect(source).toContain(
       "style={{ paddingLeft: `${8 + (props.depth + 1) * 12}px` }}"
     );
     expect(source).toContain('Loading directory…');
@@ -187,6 +190,9 @@ describe('Lynx Explorer dock', () => {
     );
     expect(styles).toMatch(
       /\.ExplorerDockEntryName\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;[^}]*opacity:\s*0\.78;/s
+    );
+    expect(styles).toMatch(
+      /\.ExplorerDockEntry--directory \.ExplorerDockEntryName\s*\{[^}]*font-weight:\s*500;[^}]*opacity:\s*0\.8;/s
     );
     for (const className of [
       'ExplorerDockClose',

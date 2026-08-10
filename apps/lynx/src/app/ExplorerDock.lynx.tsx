@@ -106,6 +106,8 @@ function ExplorerEntryRow(props: {
   const directory = props.entry.kind === 'directory';
   const row = useLynxInteractiveState({
     baseClassName: `ExplorerDockEntry${
+      directory ? ' ExplorerDockEntry--directory' : ''
+    }${
       props.selected ? ' ExplorerDockEntry--selected' : ''
     }`,
     accessibleLabel: directory
