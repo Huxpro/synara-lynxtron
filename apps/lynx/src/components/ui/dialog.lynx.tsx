@@ -201,7 +201,16 @@ export function DialogFooter(props: {
 }
 
 export function DialogTitle(props: { children?: ReactNode; className?: string }) {
-  return <>{textContent(props.children, cx('LxDialogTitle', props.className))}</>;
+  return (
+    <text
+      className={cx('LxDialogTitle', props.className)}
+      accessibility-element
+      accessibility-heading
+      accessibility-traits="header"
+    >
+      {props.children}
+    </text>
+  );
 }
 
 export function DialogDescription(props: { children?: ReactNode; className?: string }) {

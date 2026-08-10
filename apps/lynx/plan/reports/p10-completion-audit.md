@@ -297,6 +297,7 @@ Current responsive disposition:
 | Settings navigation state | active navigation controls match Web `aria-current="page"` and publish Native selected/disabled state plus the existing Current section value on the same interaction owner | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Settings disclosure values | Integration advanced-permissions joins Release History and recovery disclosures in publishing Expanded/Collapsed Native accessibility value while retaining Web `aria-expanded`, without inventing an unestablished Native expanded-state shape | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Unavailable Settings search | the inert search placeholder exposes a named, disabled Native search element while remaining unfocusable and non-actionable | PASS — HONEST CAPABILITY STATE |
+| Shared dialog title semantics | the shared Lynx `DialogTitle` renders as an explicit Native header, covering Settings Profile edit/share and Release History plus other product dialogs without per-dialog duplication | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
 | Settings heading semantics | one Native heading primitive preserves every current Web Settings h1/h2/h3 counterpart across generic panels, private Appearance/General/Git/provider layouts, Profile identity and sections, Provider Usage, and Theme Pack titles instead of leaving them as undifferentiated text | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Shared interactive names | high-frequency Composer, Kanban, and Pull Request controls route labels and selected/expanded/on-off state through `useLynxInteractiveState`, so Native accessibility metadata no longer depends only on Web `aria-label` attributes | PASS — SHARED NATIVE ACCESSIBILITY CONTRACT |
 | Actionable primitive semantics | `useLynxInteractiveState` now exposes every actionable control as a Native accessibility button even when its name is derived from visible text; passive hover owners remain excluded and explicit `accessibilityElement: false` remains authoritative | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
@@ -671,6 +672,12 @@ named Native search element with disabled state while retaining
 `focusable={false}` and no activation handler. Focused sidebar-search
 regressions pass (3/3), both production bundles build, `git diff --check`
 passes, and React Doctor 0.9.11 reports zero diagnostics against `a00cd615`.
+The shared Dialog follow-up renders `DialogTitle` as one explicit Native
+header, covering Profile edit/share and Release History in Settings as well as
+the Environment commit and Kanban task dialogs. Focused Dialog/Profile/
+Advanced regressions pass (13/13), both production bundles build,
+`git diff --check` passes, and React Doctor 0.9.11 reports zero diagnostics
+against `0adea946`.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

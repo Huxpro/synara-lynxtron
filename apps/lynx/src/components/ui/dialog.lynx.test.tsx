@@ -8,6 +8,7 @@ import {
 import {
   Dialog,
   DialogPopup,
+  DialogTitle,
   DialogTrigger,
 } from './dialog.lynx';
 
@@ -69,6 +70,22 @@ describe('Lynx Dialog dismiss contract', () => {
     if (!backdrop) throw new Error('expected DialogBackdrop');
     fireEvent.tap(backdrop);
     expect(onOpenChange).toHaveBeenLastCalledWith(false);
+  });
+
+  it('publishes dialog titles as Native headings', async () => {
+    render(
+      <Dialog defaultOpen>
+        <DialogPopup showCloseButton={false}>
+          <DialogTitle>Release history</DialogTitle>
+        </DialogPopup>
+      </Dialog>
+    );
+
+    await openDialog();
+    const title = elementTree.root?.querySelector('.LxDialogTitle');
+    expect(title?.getAttribute('accessibility-element')).toBe('true');
+    expect(title?.getAttribute('accessibility-heading')).toBe('true');
+    expect(title?.getAttribute('accessibility-traits')).toBe('header');
   });
 
   it('closes from Escape', async () => {
