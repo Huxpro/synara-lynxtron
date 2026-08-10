@@ -246,6 +246,7 @@ export function MenuTrigger(props: {
   disabled?: boolean;
   ariaLabel?: string;
   onActivate?: () => void;
+  passive?: boolean;
 }) {
   const menu = useContext(MenuContext);
   const refreshAnchorRect = async () => {
@@ -282,15 +283,17 @@ export function MenuTrigger(props: {
       props.className,
       props.disabled && 'LxMenuTrigger--disabled'
     ),
-    accessibleLabel: props.ariaLabel,
+    accessibilityElement: props.passive ? false : undefined,
+    accessibleLabel: props.passive ? undefined : props.ariaLabel,
     accessibilityValue: menu.open ? 'Expanded' : 'Collapsed',
     disabled: props.disabled,
-    onActivate: handleTap,
+    focusable: props.passive ? false : undefined,
+    onActivate: props.passive ? undefined : handleTap,
   });
   const handleKeyDown = (event: MenuKeyboardEvent) => {
     'background only';
     if (handleMenuEscape(event, menu)) return;
-    interaction.eventProps.bindkeydown?.(event);
+    if (!props.passive) interaction.eventProps.bindkeydown?.(event);
   };
   const handleLayoutChange = () => {
     'background only';
@@ -304,7 +307,9 @@ export function MenuTrigger(props: {
       aria-label={props.ariaLabel}
       aria-haspopup="menu"
       aria-expanded={menu.open}
-      catchkeydown={props.disabled ? undefined : handleKeyDown}
+      catchkeydown={
+        props.disabled || props.passive ? undefined : handleKeyDown
+      }
       bindlayoutchange={handleLayoutChange}
     >
       {renderSlot(props.render, props.children)}

@@ -108,7 +108,9 @@ describe('Settings Appearance fidelity', () => {
       /\.SharedSettingsAppearanceInputLine \.LxInput\s*\{[^}]*text-align:\s*right;/s
     );
     expect(source).toContain('onFocus={() => setOpen(true)}');
-    expect(source).toContain('onActivate={() => setOpen(true)}');
+    expect(source).toContain(
+      'className="SharedSettingsAppearanceFontTrigger"\n        passive'
+    );
     expect(source).toContain("props.onChange('');");
     expect(source).toContain('No matching suggested fonts.');
     expect(source).toContain('<MenuItem');

@@ -243,8 +243,7 @@ export function SettingsAppearanceTextControlElement(props: {
     <Menu open={open} onOpenChange={setOpen}>
       <MenuTrigger
         className="SharedSettingsAppearanceFontTrigger"
-        ariaLabel={props.ariaLabel}
-        onActivate={() => setOpen(true)}
+        passive
       >
         <view className="SharedSettingsAppearanceFontInput">
           <Input

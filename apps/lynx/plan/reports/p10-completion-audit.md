@@ -308,6 +308,7 @@ Current responsive disposition:
 | Theme Pack code-theme ownership | the named code-theme `MenuTrigger` is the sole Native control while its palette-preview Button-shaped child is an explicit non-accessibility element | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Theme Pack color reset names | optional icon-only Accent/Background/Foreground reset buttons use Web's field-specific `Reset <color field>` accessible name | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Theme Pack import validation | retained parser failures mark the share-string textarea invalid and announce as Native alerts; editing clears both the message and invalid state | PASS — CURRENT PRODUCT IMPLEMENTATION |
+| Appearance font autocomplete ownership | the native font input remains the sole named/focusable control while a passive `MenuTrigger` provides popup anchoring without accessibility or tap ownership | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | AppSnap capability switch semantics | the unavailable AppSnap placeholder remains inert and unfocusable while exposing Native switch role plus explicit off/disabled state | PASS — HONEST CAPABILITY STATE |
 | Provider Usage line semantics | label/value/subtitle usage rows expose one concise static Native text element per Web conceptual item while meter tracks remain independent quantitative elements | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Provider Usage header semantics | each provider card header exposes one static Native provider identity plus optional plan/auth status reading unit instead of disconnected icon/name/status fragments | PASS — CURRENT PRODUCT IMPLEMENTATION |
@@ -759,6 +760,11 @@ a Native alert. Editing clears both the error and invalid state. The focused
 Theme Pack suite passes (9/9), both production bundles build,
 `git diff --check` passes, and React Doctor 0.9.11 reports zero diagnostics
 against `939d7520`.
+The Appearance font-autocomplete follow-up introduces a passive MenuTrigger
+anchor so the named native text input remains the sole focus/accessibility
+owner and still opens suggestions on focus/change. Focused Appearance/Menu
+regressions pass (15/15), both production bundles build, `git diff --check`
+passes, and React Doctor 0.9.11 reports zero diagnostics against `c411d1de`.
 The AppSnap capability-state follow-up retains the unavailable toggle's honest
 inert/unfocusable behavior while adding Native switch role and explicit
 checked-false/disabled-true state beside its existing Off value. Focused

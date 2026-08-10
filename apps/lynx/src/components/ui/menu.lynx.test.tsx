@@ -155,6 +155,23 @@ describe('Lynx Menu overlay contract', () => {
     expect(elementTree.root?.querySelector('.LxMenuPopup')).toBeNull();
   });
 
+  it('keeps passive anchor triggers out of accessibility and activation', () => {
+    const onOpenChange = rs.fn();
+    render(
+      <Menu onOpenChange={onOpenChange}>
+        <MenuTrigger passive>
+          <text>Search field</text>
+        </MenuTrigger>
+      </Menu>
+    );
+
+    const trigger = menuTrigger();
+    expect(trigger.getAttribute('focusable')).toBe('false');
+    expect(trigger.getAttribute('accessibility-element')).toBe('false');
+    fireEvent.tap(trigger);
+    expect(onOpenChange).not.toHaveBeenCalled();
+  });
+
   it('keeps disabled triggers and items inert and unfocusable', async () => {
     const onDisabledItem = rs.fn();
     const onOpenChange = rs.fn();
