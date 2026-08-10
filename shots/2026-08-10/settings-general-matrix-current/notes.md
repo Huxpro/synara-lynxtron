@@ -91,8 +91,23 @@ remembered, or stale client was used and no Native screenshot was retained.
 The structured failure record is
 `native/devtool-registration-failure.json`.
 
+Follow-up direct discovery with `--no-daemon` ruled out stale daemon state:
+the connector probed `8901` through `8910`, every candidate except the
+unrelated `8901` refused the connection, and the owned process had no listening
+DevTool socket.
+
+The historical successful Native run used the paired `0.0.9-dev` diagnostic
+runtime. The repository's blocker-resolution report explicitly records that
+production `0.0.9` and `0.0.9-dev` share the renderer executable but only the
+paired development release enables the local DevTool connector. That
+diagnostic host is no longer installed or cached in the current environment.
+The installed `@lynx-js/lynxtron-dev-plugins` package contains build plugins,
+not the missing diagnostic host executable.
+
 This is a harness failure, not a passing Native cell and not a product
-regression. The current-head three-client matrix remains incomplete.
+regression. Native certification can resume only after restoring the paired
+`0.0.9-dev` runtime (or another supported exact-client capture path). The
+current-head three-client matrix remains incomplete.
 
 ## Cleanup
 

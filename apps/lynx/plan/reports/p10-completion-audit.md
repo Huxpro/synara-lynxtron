@@ -824,9 +824,13 @@ Native was not retained: two exact-owned production launches rendered and
 connected to the correct server, but Lynxtron 0.0.9 did not register a
 PID-owned DevTool listener despite the explicit runtime flag and intact bundle
 gate. The second identical failure stopped the restart loop; the unrelated
-`@t3tools/lynxtron` client was not used or touched. Therefore this batch is
-Browser certification progress plus an explicit Native harness blocker, not a
-closed three-client matrix.
+`@t3tools/lynxtron` client was not used or touched. Direct `--no-daemon`
+discovery confirmed that the owned process opened no candidate DevTool port.
+Historical successful captures used the paired `0.0.9-dev` diagnostic host,
+which enables the local connector while production `0.0.9` intentionally does
+not; that diagnostic executable is no longer installed in the current
+environment. Therefore this batch is Browser certification progress plus an
+explicit Native runtime prerequisite, not a closed three-client matrix.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
