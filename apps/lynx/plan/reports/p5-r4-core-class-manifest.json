@@ -39,8 +39,8 @@
       }
     },
     "runtime": {
-      "classes": 1388,
-      "weighted": 12836
+      "classes": 1386,
+      "weighted": 12828
     }
   },
   "classes": [
@@ -11890,7 +11890,7 @@
         "thread",
         "threads"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -19978,7 +19978,7 @@
         "thread",
         "threads"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },

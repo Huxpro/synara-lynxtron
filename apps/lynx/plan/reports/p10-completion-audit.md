@@ -277,7 +277,7 @@ Current responsive disposition:
 | Composer reference icon identity | assistant/file-comment summaries, pasted-text cards, generic file cards, remove actions, and show-in-field disclosure use MessageCircle, File/FileEntry, X, and ChevronRight icons instead of circle/cross/text-block glyphs | PASS — CURRENT PRODUCT SURFACES |
 | Composer token icon identity | mention, agent, skill, slash-command, terminal-context, and link chips use file-type, Robot, Building Blocks, Clock, Console, and External Link SVG identities in both canonical segment rendering and the Native draft projection; token anatomy follows Web's plain info-colored inline tokens, per-agent soft color pills, and zero-outer-margin 4px bordered terminal attachment with a 14px/85% Console icon instead of filling every token with the brand accent or treating attachment tokens as ordinary inline chips | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
 | Composer sending-state identity | the primary action uses Web's exact foreground/background-surface prominent-button colors, 28px Send/Sending circle, desktop 26px Stop circle, and 14-viewBox, 12px animated partial-circle spinner instead of primary-token approximations, one-size-fits-all geometry, or a static `•••` marker; send and stop retain their canonical arrow and square identities | PASS — CURRENT PRODUCT IMPLEMENTATION; VISUAL RE-CERTIFICATION PENDING |
-| Composer draft-image attachments | the Native picker now classifies `image/*` capabilities, applies the shared 10MB image limit, asks the host for a bounded decoded preview, persists the token-backed draft with an explicit non-persisted warning, supports preview/remove, stages the original bytes as a managed `image` attachment, and releases the picked capability after remove or successful send; the thumbnail retains Web's 64px elevated-secondary anatomy and exact 20px amber CircleAlert badge with the canonical `Draft attachment may not persist` accessible name | IMPLEMENTED — REAL CONSUMER PATH; NATIVE INTERACTION RE-CERTIFICATION BLOCKED BY DEVTOOL PORT OWNERSHIP |
+| Composer draft-image attachments | the Native picker now classifies `image/*` capabilities, applies the shared 10MB image limit, asks the host for a bounded decoded preview, persists the token-backed draft with an explicit non-persisted warning, supports preview/remove, stages the original bytes as a managed `image` attachment, and releases the picked capability after remove or successful send; the thumbnail retains Web's 64px elevated-secondary anatomy and exact 20px amber CircleAlert badge with the canonical `Draft attachment may not persist` accessible name; expanded preview now matches Web's 75% backdrop, bordered 8px elevated frame, 24px close action, 36px previous/next actions, filename/count caption, circular navigation, and Escape/arrow-key behavior instead of a static black panel | IMPLEMENTED — REAL CONSUMER PATH; NATIVE INTERACTION RE-CERTIFICATION BLOCKED BY DEVTOOL PORT OWNERSHIP |
 | Nested image accessibility | Profile avatars, Explorer image previews, and Composer image thumbnails explicitly remain decorative because their identity is already owned by surrounding text or a named preview control, preventing duplicate or unnamed accessibility nodes | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Profile composite semantics | Profile stat tiles, insight definition rows, plugin usage rows, and model usage rows expose one concise static Native name per visual composite with text traits, avoiding fragmented label/value/icon traversal without inventing unsupported list roles | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Form control accessibility | Kanban task mutation, Git commit message, Integration connection name, and provider credential inputs expose explicit native accessible names; pending Git/Kanban fields retain read-only semantics without invalid DOM-only focus props | PASS — CURRENT PRODUCT IMPLEMENTATION |
@@ -1126,6 +1126,20 @@ real image selection, thumbnail, warning, preview, remove, and send sequence
 still requires a later exact-client run with available DevTool ownership. The
 owned Synara app and server were stopped; the unrelated 8901 client was not
 touched.
+
+The expanded-image polish follow-up removes the simplified Native-only black
+panel introduced with the first real image consumer. The Native composition now
+matches the Web authority's modal anatomy and behavior: a 75% fullscreen
+backdrop, a 92%-class bounded image region with an 8px bordered elevated frame,
+a 24px inset close action, 36px edge navigation actions, a centered truncated
+12px filename/count caption, circular previous/next navigation, and
+Escape/ArrowLeft/ArrowRight keyboard handling. The image itself owns its
+accessible name while the overlay, backdrop, close, previous, and next actions
+retain distinct names. Focused overlay coverage passes 3/3; the attachment,
+draft-store, renderer, and overlay set passes 30/30; both Lynx-for-Web and
+Native/Desktop production builds pass with only the existing warnings. This is
+implementation and interaction-contract evidence, not a replacement for the
+blocked real-picker Native screenshot cell described above.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

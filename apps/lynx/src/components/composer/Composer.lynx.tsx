@@ -116,6 +116,10 @@ import {
   type NativeComposerImageAttachment,
 } from './composerAttachments.lynx';
 import { ComposerModelControl } from './ComposerModelControl.lynx';
+import {
+  ExpandedImageOverlay,
+  type NativeExpandedImagePreview,
+} from './ExpandedImageOverlay.lynx';
 import { FileEntryIcon } from '../FileEntryIcon.lynx';
 import { Button } from '../ui/button';
 import {
@@ -136,13 +140,6 @@ const EMPTY_FILES: ReadonlyArray<NativeComposerFileAttachment> = [];
 const EMPTY_IMAGES: ReadonlyArray<NativeComposerImageAttachment> = [];
 const EMPTY_FILE_COMMENTS = [];
 const EMPTY_SKILLS: ReadonlyArray<ProviderSkillReference> = [];
-interface NativeExpandedImagePreview {
-  readonly images: ReadonlyArray<{
-    readonly src: string;
-    readonly name: string;
-  }>;
-  readonly index: number;
-}
 interface ComposerEditorHistoryContext {
   readonly mentions: ReadonlyArray<ProviderMentionReference>;
   readonly pastedTexts: ReadonlyArray<PastedTextDraft>;
@@ -1190,6 +1187,19 @@ export function Composer({
     restoreNativeFocus();
   }
 
+  function navigateExpandedImage(direction: -1 | 1) {
+    'background only';
+    setExpandedImage((current) => {
+      if (!current || current.images.length <= 1) return current;
+      return {
+        ...current,
+        index:
+          (current.index + direction + current.images.length) %
+          current.images.length,
+      };
+    });
+  }
+
   function showPastedTextInField(pastedTextId: string) {
     'background only';
     const pastedText = pastedTexts.find((entry) => entry.id === pastedTextId);
@@ -1461,28 +1471,15 @@ export function Composer({
           onRemoveFile={removeNativeComposerFile}
           onRemoveImage={removeNativeComposerImage}
         />
-        {expandedImage ? (
-          <view
-            className="ComposerExpandedImageBackdrop"
-            bindtap={() => {
-              'background only';
-              setExpandedImage(null);
-            }}
-            accessibility-element={true}
-            accessibility-label="Close image preview"
-          >
-            <view className="ComposerExpandedImageCard">
-              <image
-                className="ComposerExpandedImage"
-                src={expandedImage.images[expandedImage.index]?.src ?? ''}
-                mode="aspectFit"
-              />
-              <text className="ComposerExpandedImageName">
-                {expandedImage.images[expandedImage.index]?.name ?? 'Image'}
-              </text>
-            </view>
-          </view>
-        ) : null}
+        <ExpandedImageOverlay
+          expandedImage={expandedImage}
+          onClose={() => {
+            'background only';
+            setExpandedImage(null);
+            restoreNativeFocus();
+          }}
+          onNavigate={navigateExpandedImage}
+        />
         {auxiliaryTokens.length > 0 ? (
           <scroll-view className="ComposerTokenPreview" scroll-orientation="horizontal">
             <view className="ComposerTokenRow">
