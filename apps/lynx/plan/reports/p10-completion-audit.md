@@ -1134,8 +1134,9 @@ backdrop, a 92%-class bounded image region with an 8px bordered elevated frame,
 a 24px inset close action, 36px edge navigation actions, a centered truncated
 12px filename/count caption, circular previous/next navigation, and
 Escape/ArrowLeft/ArrowRight keyboard handling. The image itself owns its
-accessible name while the overlay, backdrop, close, previous, and next actions
-retain distinct names. Focused overlay coverage passes 3/3; the attachment,
+accessible name while the non-atomic dialog root preserves distinct backdrop,
+close, previous, and next actions instead of collapsing the modal into one
+Native accessibility node. Focused overlay coverage passes 3/3; the attachment,
 draft-store, renderer, and overlay set passes 30/30; both Lynx-for-Web and
 Native/Desktop production builds pass with only the existing warnings. This is
 implementation and interaction-contract evidence, not a replacement for the

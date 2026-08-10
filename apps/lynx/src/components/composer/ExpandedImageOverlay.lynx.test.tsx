@@ -46,15 +46,29 @@ describe('Native expanded image overlay fidelity', () => {
     const overlay = findElement('.ComposerExpandedImageOverlay');
     expect(overlay.getAttribute('role')).toBe('dialog');
     expect(overlay.getAttribute('aria-modal')).toBe('true');
-    expect(overlay.getAttribute('accessibility-label')).toBe(
-      'Expanded image preview'
-    );
+    expect(overlay.getAttribute('aria-label')).toBe('Expanded image preview');
+    expect(overlay.getAttribute('accessibility-element')).toBeNull();
 
     const image = findElement('.ComposerExpandedImage');
     expect(image.getAttribute('src')).toBe(
       'data:image/png;base64,second'
     );
     expect(image.getAttribute('accessibility-label')).toBe('Second image');
+    expect(
+      findElement('.ComposerExpandedImageNavigate--previous').getAttribute(
+        'accessibility-label'
+      )
+    ).toBe('Previous image');
+    expect(
+      findElement('.ComposerExpandedImageNavigate--next').getAttribute(
+        'accessibility-label'
+      )
+    ).toBe('Next image');
+    expect(
+      findElement('.ComposerExpandedImageClose').getAttribute(
+        'accessibility-label'
+      )
+    ).toBe('Close image preview');
     expect(findElement('.ComposerExpandedImageName').textContent).toBe(
       'Second image (2/3)'
     );

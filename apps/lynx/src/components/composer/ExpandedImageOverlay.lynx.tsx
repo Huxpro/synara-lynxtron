@@ -84,8 +84,6 @@ export function ExpandedImageOverlay(props: {
       role="dialog"
       aria-modal="true"
       aria-label="Expanded image preview"
-      accessibility-element={true}
-      accessibility-label="Expanded image preview"
     >
       <ExpandedImageAction
         className="ComposerExpandedImageBackdrop"
