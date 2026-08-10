@@ -292,6 +292,7 @@ Current responsive disposition:
 | Settings switch semantics | General, Appearance, Provider Picker, and Theme Pack custom switches expose Native switch role plus checked/disabled state on their existing interaction owner instead of presenting only as generic buttons with On/Off text | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Integration project selection | project-scope choices expose Native checkbox role and checked state on the existing named interaction owner, matching the visual checkbox and Selected/Not selected value | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Provider Usage meter semantics | each painted remaining-usage track exposes one named static Native text element and percentage value while retaining Web numeric ARIA, without claiming an unsupported Native progressbar contract | PASS — CURRENT PRODUCT IMPLEMENTATION |
+| Keyboard-input accessible names | the shared `Input` keyboard-event branch forwards normalized Web/native labels to its raw Lynx input, preserving Settings sidebar and shortcut-search names instead of dropping them during the platform split | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
 | Settings heading semantics | one Native heading primitive preserves every current Web Settings h1/h2/h3 counterpart across generic panels, private Appearance/General/Git/provider layouts, Profile identity and sections, Provider Usage, and Theme Pack titles instead of leaving them as undifferentiated text | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Shared interactive names | high-frequency Composer, Kanban, and Pull Request controls route labels and selected/expanded/on-off state through `useLynxInteractiveState`, so Native accessibility metadata no longer depends only on Web `aria-label` attributes | PASS — SHARED NATIVE ACCESSIBILITY CONTRACT |
 | Actionable primitive semantics | `useLynxInteractiveState` now exposes every actionable control as a Native accessibility button even when its name is derived from visible text; passive hover owners remain excluded and explicit `accessibilityElement: false` remains authoritative | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
@@ -636,6 +637,14 @@ as one named Native text element with a percentage value while retaining Web
 current Lynx contract does not establish one. Focused Usage contracts pass
 (6/6), both production bundles build, `git diff --check` passes, and React
 Doctor 0.9.11 reports zero diagnostics against `b78dda06`.
+The shared Input follow-up fixes the `onKeyDown` / raw `KeyboardInput` branch
+so `aria-label` or `accessibility-label` reaches the native input as both Web
+and Native naming metadata. This restores Settings sidebar and keyboard-
+shortcut search names. Focused primitive/consumer contracts pass (4/4), both
+production bundles build, `git diff --check` passes, and React Doctor 0.9.11
+reports zero diagnostics against `85ba7a1f`. Direct raw-input mounting remains
+outside the renderer harness because host invocation is not implemented, so
+the primitive metadata assertion is deterministic source coverage.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
