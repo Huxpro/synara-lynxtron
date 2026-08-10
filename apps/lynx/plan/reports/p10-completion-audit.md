@@ -954,6 +954,13 @@ surface; selected project identity remains solely on the existing Check
 indicator instead of a branded row background. Focused project-picker/Landing
 regressions pass 3/3 and the Native/Desktop production build succeeds.
 
+The Composer command-menu follow-up closes its remaining custom-row fork:
+keyboard-active rows use Web's neutral button-secondary fill, while pointer
+hover/press uses button-secondary-hover and no longer dims the entire row.
+Semantic icons and focus rings are unchanged. Command composition plus shared
+Command regressions pass 10/10 and the Native/Desktop production build
+succeeds.
+
 The Native arbitrary text-range selection investigation reached an upstream
 Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's
 documented contract exposes `text-selection={true}`, `flatten={false}`,

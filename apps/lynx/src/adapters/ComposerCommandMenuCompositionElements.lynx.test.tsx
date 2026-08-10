@@ -1,4 +1,5 @@
 import { describe, expect, it } from '@rstest/core';
+import { readFileSync } from 'node:fs';
 import { render } from '@lynx-js/react/testing-library';
 
 import { ComposerCommandRowElement } from './ComposerCommandMenuCompositionElements.lynx';
@@ -7,6 +8,10 @@ const noop = () => undefined;
 
 describe('native Composer command menu row', () => {
   it('uses semantic SVG icons instead of trigger-character glyphs', () => {
+    const styles = readFileSync(
+      new URL('../components/composer/composer.css', import.meta.url),
+      'utf8'
+    );
     const items = [
       {
         id: 'slash:plan',
@@ -80,5 +85,14 @@ describe('native Composer command menu row', () => {
     expect(
       elementTree.root?.querySelector('.ComposerCommandGlyphLynx')
     ).toBeNull();
+    expect(styles).toMatch(
+      /\.ComposerCommandRowLynx--active\s*\{[^}]*background-color:\s*var\(--color-background-button-secondary\);/s
+    );
+    expect(styles).toMatch(
+      /\.ComposerCommandRowLynx\.ui-hover,[^{]*\{[^}]*background-color:\s*var\(--color-background-button-secondary-hover\);/s
+    );
+    expect(styles).not.toMatch(
+      /\.ComposerCommandRowLynx\.ui-pressed\s*\{[^}]*opacity:/s
+    );
   });
 });

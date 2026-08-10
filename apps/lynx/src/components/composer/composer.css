@@ -83,20 +83,16 @@
 }
 
 .ComposerCommandRowLynx--active {
-  background-color: var(--accent);
+  background-color: var(--color-background-button-secondary);
 }
 
 .ComposerCommandRowLynx.ui-hover,
 .ComposerCommandRowLynx.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-button-secondary-hover);
 }
 
 .ComposerCommandRowLynx.ui-focus {
   box-shadow: 0 0 0 1px var(--ring);
-}
-
-.ComposerCommandRowLynx.ui-pressed {
-  opacity: 0.72;
 }
 
 .ComposerCommandIconSlotLynx {
