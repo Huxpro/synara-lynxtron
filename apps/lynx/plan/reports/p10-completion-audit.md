@@ -1032,6 +1032,13 @@ decorative beneath the link's existing accessible name. URL, token, render,
 error-fallback, and consumer wiring coverage passes 7/7; both Lynx-for-Web and
 Native/Desktop production builds pass with only the existing warnings.
 
+The Markdown file-fence header follow-up replaces Lynx's flattened
+`filename + directory · line range` text with Web's four-role anatomy:
+extension-aware 14px file icon, medium filename, independently truncating
+directory, and fixed line range. Non-file fences retain the compact language
+label. Focused Markdown and file-icon coverage passes 11/11; both Lynx-for-Web
+and Native/Desktop production builds pass with only the existing warnings.
+
 The Composer primary-action follow-up keeps Send/Sending/Stop on its stable
 28px prominent circle. Hover and press no longer flash the entire control at
 90%/72% opacity; disabled remains intentionally visible at 20%, and the

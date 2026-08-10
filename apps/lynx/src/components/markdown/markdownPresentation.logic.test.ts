@@ -16,8 +16,11 @@ describe('Lynx markdown presentation logic', () => {
       })
     ).toEqual({
       code: 'function greet() {\n  return "hello";\n}\n',
+      directory: null,
+      filePath: null,
+      isFileReference: false,
+      lineRange: null,
       minimumTextHeightPx: 66,
-      metadata: '',
       title: 'javascript',
     });
   });
@@ -30,10 +33,34 @@ describe('Lynx markdown presentation logic', () => {
       })
     ).toEqual({
       code: 'const ready = true;\n',
+      directory: 'src/runtime',
+      filePath: 'src/runtime/state.ts',
+      isFileReference: true,
+      lineRange: '12-18',
       minimumTextHeightPx: 33,
-      metadata: 'src/runtime · 12-18',
       title: 'state.ts',
     });
+    const source = readFileSync(
+      new URL('./ChatMarkdown.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const styles = readFileSync(
+      new URL('./markdown.css', import.meta.url),
+      'utf8'
+    );
+    expect(source).toContain('className="MdCodeFileIcon"');
+    expect(source).toContain(
+      '<text className="MdCodeDirectory">{presentation.directory}</text>'
+    );
+    expect(source).toContain(
+      '<text className="MdCodeLineRange">{presentation.lineRange}</text>'
+    );
+    expect(styles).toMatch(
+      /\.MdCodeFileIcon\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;/s
+    );
+    expect(styles).toMatch(
+      /\.MdCodeDirectory\s*\{[^}]*overflow:\s*hidden;[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s
+    );
   });
 
   it('uses the same readable labels for skills, mentions, and links', () => {

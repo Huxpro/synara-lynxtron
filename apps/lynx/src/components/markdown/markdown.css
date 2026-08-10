@@ -187,7 +187,8 @@
 }
 
 .MdCodeLanguage,
-.MdCodeMetadata {
+.MdCodeDirectory,
+.MdCodeLineRange {
   min-width: 0;
   color: var(--muted-foreground);
   font-family: var(--font-chat-code-family);
@@ -201,6 +202,27 @@
 .MdCodeLanguage {
   color: var(--foreground);
   font-weight: 500;
+}
+
+.MdCodeFileIcon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.MdCodeDirectory {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--muted-foreground);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.MdCodeLineRange {
+  flex-shrink: 0;
+  padding-left: 2px;
+  color: var(--muted-foreground);
+  opacity: 0.8;
 }
 
 .MdCodeActions {

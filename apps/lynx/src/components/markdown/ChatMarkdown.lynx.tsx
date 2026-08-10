@@ -332,9 +332,18 @@ function MarkdownCodeBlock({ node, nodeKey }: { readonly node: MarkdownNode; rea
     >
       <view className="MdCodeHeader">
         <view className="MdCodeTitle">
+          {presentation.isFileReference && presentation.filePath ? (
+            <FileEntryIcon
+              className="MdCodeFileIcon"
+              pathValue={presentation.filePath}
+            />
+          ) : null}
           <text className="MdCodeLanguage">{presentation.title}</text>
-          {presentation.metadata ? (
-            <text className="MdCodeMetadata">{presentation.metadata}</text>
+          {presentation.directory ? (
+            <text className="MdCodeDirectory">{presentation.directory}</text>
+          ) : null}
+          {presentation.lineRange ? (
+            <text className="MdCodeLineRange">{presentation.lineRange}</text>
           ) : null}
         </view>
         <view className="MdCodeActions">

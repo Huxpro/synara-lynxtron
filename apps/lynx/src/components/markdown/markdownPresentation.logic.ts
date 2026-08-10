@@ -53,9 +53,10 @@ export function resolveMarkdownCodeBlockPresentation(input: {
     // copied text follow the same contract on both targets.
     code,
     minimumTextHeightPx: code.split('\n').length * MARKDOWN_CODE_LINE_HEIGHT_PX,
-    metadata: fence.isFileReference
-      ? [fence.directory, fence.lineRange].filter(Boolean).join(' · ')
-      : '',
+    directory: fence.directory,
+    filePath: fence.filePath,
+    isFileReference: fence.isFileReference,
+    lineRange: fence.lineRange,
     title:
       fence.isFileReference && fence.fileName
         ? fence.fileName
