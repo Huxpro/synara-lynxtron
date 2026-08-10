@@ -124,7 +124,12 @@ export function SettingsArchivedPanel() {
 
   if (groups.length === 0) {
     return (
-      <view className="SettingsArchivedEmpty">
+      <view
+        className="SettingsArchivedEmpty"
+        accessibility-element
+        accessibility-label="No archived threads. Archived threads will appear here and can be restored to the sidebar."
+        accessibility-traits="text"
+      >
         <view className="SettingsArchivedEmptyIconShell">
           <ArchiveIcon
             className="SettingsArchivedEmptyIcon"

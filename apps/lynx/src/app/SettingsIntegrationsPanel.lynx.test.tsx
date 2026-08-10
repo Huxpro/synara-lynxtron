@@ -26,6 +26,9 @@ describe('Settings Integrations fidelity', () => {
     expect(panelSource).toContain('Connect a coding agent');
     expect(panelSource).toContain('Connected agents');
     expect(panelSource).toContain('No connected agents');
+    expect(panelSource).toContain(
+      'accessibility-label="No connected agents. Connect Codex, Claude, or another local MCP agent to create and follow Synara tasks."'
+    );
     expect(panelSource).toContain('<CheckIcon size={12}');
     expect(panelSource).not.toContain('>✓<');
     expect(panelSource).toContain('accessibility-role="checkbox"');

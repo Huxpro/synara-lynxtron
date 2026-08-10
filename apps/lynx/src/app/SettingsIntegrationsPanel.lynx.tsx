@@ -510,7 +510,12 @@ export function SettingsIntegrationsPanel() {
             );
           })
         ) : (
-          <view className="SettingsIntegrationsEmpty">
+          <view
+            className="SettingsIntegrationsEmpty"
+            accessibility-element
+            accessibility-label="No connected agents. Connect Codex, Claude, or another local MCP agent to create and follow Synara tasks."
+            accessibility-traits="text"
+          >
             <text className="SettingsIntegrationsRowTitle">
               No connected agents
             </text>

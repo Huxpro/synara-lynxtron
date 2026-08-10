@@ -26,6 +26,9 @@ describe('Settings Archived fidelity', () => {
     expect(panelSource).toContain('snapshotQuery.data?.archivedThreads');
     expect(panelSource).toContain('No archived threads');
     expect(panelSource).toContain(
+      'accessibility-label="No archived threads. Archived threads will appear here and can be restored to the sidebar."'
+    );
+    expect(panelSource).toContain(
       'Archived threads will appear here and can be restored to the sidebar.'
     );
     expect(panelSource).toContain("import { ArchiveIcon } from '../lib/icons.lynx';");

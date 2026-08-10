@@ -300,6 +300,7 @@ Current responsive disposition:
 | Shared dialog title semantics | the shared Lynx `DialogTitle` renders as an explicit Native header, covering Settings Profile edit/share and Release History plus other product dialogs without per-dialog duplication | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
 | Shared dialog close names | default and custom dialog close affordances use the shared interaction owner with explicit Native names, preserving dismiss and exact-trigger focus restoration instead of naming only a nested icon | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
 | Shared dialog trigger names | dialog triggers use the shared interaction owner with explicit Native names, disabled behavior, open activation, and exact-selector focus restoration instead of relying on an upstream wrapper that drops accessibility metadata | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
+| Settings empty-state reading units | Archived, Skills, and Integrations title/description empty states expose one concise static Native text element per conceptual row/card instead of fragmented title and description nodes | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Settings heading semantics | one Native heading primitive preserves every current Web Settings h1/h2/h3 counterpart across generic panels, private Appearance/General/Git/provider layouts, Profile identity and sections, Provider Usage, and Theme Pack titles instead of leaving them as undifferentiated text | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Shared interactive names | high-frequency Composer, Kanban, and Pull Request controls route labels and selected/expanded/on-off state through `useLynxInteractiveState`, so Native accessibility metadata no longer depends only on Web `aria-label` attributes | PASS — SHARED NATIVE ACCESSIBILITY CONTRACT |
 | Actionable primitive semantics | `useLynxInteractiveState` now exposes every actionable control as a Native accessibility button even when its name is derived from visible text; passive hover owners remain excluded and explicit `accessibilityElement: false` remains authoritative | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
@@ -693,6 +694,11 @@ production trigger is named `Import theme`; tests cover labeled open
 activation, close, exact focus restoration, and disabled inertness (16/16).
 Both production bundles build, `git diff --check` passes, and React Doctor
 0.9.11 reports zero diagnostics against `19413cea`.
+The Settings empty-state follow-up exposes Archived, Skills, and Integrations
+title/description pairs as one static Native text element per Web conceptual
+row/card without adding heading or control traits. Focused regressions pass
+(9/9), both production bundles build, `git diff --check` passes, and React
+Doctor 0.9.11 reports zero diagnostics against `f056a61f`.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

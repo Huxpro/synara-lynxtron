@@ -24,6 +24,9 @@ describe('Settings Skills fidelity', () => {
     expect(panelSource).toContain("queryKey: ['server-settings']");
     expect(panelSource).toContain('Synara skills folder');
     expect(panelSource).toContain('No skills found');
+    expect(panelSource).toContain(
+      'accessibility-label="No skills found. Add a skill folder containing a SKILL.md to the Synara skills folder above, or install skills for any supported provider."'
+    );
   });
 
   it('optimistically toggles the canonical disabled-skill setting', () => {
