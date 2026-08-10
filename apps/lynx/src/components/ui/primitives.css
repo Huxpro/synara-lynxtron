@@ -300,15 +300,11 @@
 .LxCommandItem.ui-hover,
 .LxCommandItem--highlighted,
 .LxCommandItem.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-button-secondary-hover);
 }
 
 .LxCommandItem.ui-focus {
   box-shadow: 0 0 0 1px var(--ring);
-}
-
-.LxCommandItem.ui-pressed {
-  opacity: 0.82;
 }
 
 .LxCommandItem--disabled {
@@ -567,7 +563,7 @@
 .LxMenuItem.ui-hover,
 .LxMenuItem.ui-focus,
 .LxMenuItem--highlighted {
-  background-color: var(--accent);
+  background-color: var(--color-background-button-secondary-hover);
 }
 
 .LxMenuItem.ui-focus {
@@ -575,8 +571,7 @@
 }
 
 .LxMenuItem.ui-pressed {
-  background-color: var(--accent);
-  opacity: 0.72;
+  background-color: var(--color-background-button-secondary-hover);
 }
 
 .LxMenuItem--disabled {

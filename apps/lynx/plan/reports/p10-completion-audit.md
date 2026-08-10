@@ -924,6 +924,14 @@ models retain branded accent identity. Model press no longer dims the whole
 control. Focused Composer regressions pass 4/4 and the Native/Desktop production
 build succeeds.
 
+The shared Menu/Command primitive follow-up removes the broadest remaining
+brand-color leak: pointer hover, keyboard highlight, focus-visible menu state,
+and press now use Web's button-secondary-hover token instead of branded
+`--accent`, without whole-row pressed opacity. Radio/checkbox/switch selection
+continues to live on indicators and explicit checked state rather than
+transient row paint. Primitive plus representative Composer/Settings consumers
+pass 28/28 and the Native/Desktop production build succeeds.
+
 The Native arbitrary text-range selection investigation reached an upstream
 Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's
 documented contract exposes `text-selection={true}`, `flatten={false}`,

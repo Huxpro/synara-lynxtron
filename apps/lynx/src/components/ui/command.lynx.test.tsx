@@ -149,6 +149,10 @@ describe('Lynx CommandItem interaction contract', () => {
   });
 
   it('publishes hover, pressed, focus, highlight and exact key/tap activation', () => {
+    const primitiveStyles = readFileSync(
+      new URL('./primitives.css', import.meta.url),
+      'utf8'
+    );
     const onClick = rs.fn();
     const onMouseDown = rs.fn(
       (event: { preventDefault(): void }) => event.preventDefault()
@@ -174,6 +178,12 @@ describe('Lynx CommandItem interaction contract', () => {
     );
     expect(item.getAttribute('class')).toContain('ui-hover');
     expect(onItemHighlighted).toHaveBeenLastCalledWith('action:new-thread');
+    expect(primitiveStyles).toMatch(
+      /\.LxCommandItem\.ui-hover,[^{]*\{[^}]*background-color:\s*var\(--color-background-button-secondary-hover\);/s
+    );
+    expect(primitiveStyles).not.toMatch(
+      /\.LxCommandItem\.ui-pressed\s*\{[^}]*opacity:/s
+    );
 
     fireEvent.mousedown(item);
     expect(item.getAttribute('class')).toContain('ui-pressed');

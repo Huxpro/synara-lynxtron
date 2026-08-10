@@ -57,6 +57,15 @@ describe('Lynx Menu overlay contract', () => {
     expect(primitiveStyles).toMatch(
       /\.LxMenuItem\s*\{[^}]*min-height:\s*32px;[^}]*padding:\s*6px 10px;/s
     );
+    expect(primitiveStyles).toMatch(
+      /\.LxMenuItem\.ui-hover,[^{]*\{[^}]*background-color:\s*var\(--color-background-button-secondary-hover\);/s
+    );
+    expect(primitiveStyles).toMatch(
+      /\.LxMenuItem\.ui-pressed\s*\{[^}]*background-color:\s*var\(--color-background-button-secondary-hover\);/s
+    );
+    expect(primitiveStyles).not.toMatch(
+      /\.LxMenuItem\.ui-pressed\s*\{[^}]*opacity:/s
+    );
   });
 
   it('normalizes global anchors into a nested Web layer viewport', () => {
