@@ -216,6 +216,7 @@ export function ThemePackImportActionElement(props: {
                 <textarea
                   className="SharedThemePackImportTextarea"
                   aria-label="Theme share string"
+                  aria-invalid={Boolean(error)}
                   accessibility-element
                   accessibility-label="Theme share string"
                   focusable
@@ -232,7 +233,13 @@ export function ThemePackImportActionElement(props: {
                 />
               </view>
               {error ? (
-                <text className="SharedThemePackImportError">{error}</text>
+                <text
+                  className="SharedThemePackImportError"
+                  accessibility-element
+                  accessibility-role="alert"
+                >
+                  {error}
+                </text>
               ) : null}
             </DialogPanel>
             <DialogFooter className="SharedThemePackImportFooter">

@@ -397,6 +397,34 @@ describe('ThemePack boolean interaction contract', () => {
         elementTree.root?.querySelector('.SharedThemePackImportError')
           ?.textContent
       ).toBe('Embedded theme variant must match dark.');
+      expect(
+        elementTree.root
+          ?.querySelector('.SharedThemePackImportTextarea')
+          ?.getAttribute('aria-invalid')
+      ).toBe('true');
+      expect(
+        elementTree.root
+          ?.querySelector('.SharedThemePackImportError')
+          ?.getAttribute('accessibility-role')
+      ).toBe('alert');
+    });
+    elementTree.root
+      ?.querySelector('.SharedThemePackImportTextarea')
+      ?.dispatchEvent(
+        new CustomEvent('bindEvent:input', {
+          bubbles: true,
+          detail: { value: 'codex-theme-v1:retry' },
+        })
+      );
+    await waitFor(() => {
+      expect(
+        elementTree.root?.querySelector('.SharedThemePackImportError')
+      ).toBeNull();
+      expect(
+        elementTree.root
+          ?.querySelector('.SharedThemePackImportTextarea')
+          ?.getAttribute('aria-invalid')
+      ).toBe('false');
     });
   });
 
