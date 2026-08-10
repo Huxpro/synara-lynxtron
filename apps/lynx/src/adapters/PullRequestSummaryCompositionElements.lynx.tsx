@@ -288,11 +288,7 @@ export function PullRequestSummaryCommentsElement(props: {
       )}
       {props.commentingAvailable ? (
         <PullRequestCommentComposer detail={props.detail} />
-      ) : (
-        <text className="SharedPrSummaryCapability">
-          Commenting is unavailable in this runtime.
-        </text>
-      )}
+      ) : null}
     </view>
   );
 }

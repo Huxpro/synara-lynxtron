@@ -41,6 +41,9 @@ describe('Pull Request summary disclosure fidelity', () => {
     expect(source).toContain(
       'defaultOpen={index >= props.detail.comments.length - 2}'
     );
+    expect(source).not.toContain(
+      'Commenting is unavailable in this runtime.'
+    );
     expect(commentSource).toContain('formatRelativeTime(props.comment.createdAt)');
     expect(commentSource).toContain('useLynxDisclosurePresence(open)');
     expect(commentSource).toContain('disclosureChevronClassName(');

@@ -258,7 +258,6 @@
 .SharedPrSummaryCheckStatus,
 .SharedPrSummaryMuted,
 .SharedPrSummaryWarning,
-.SharedPrSummaryCapability,
 .SharedPrSummaryCommentPath {
   font-size: var(--app-font-size-ui-sm);
   line-height: 18px;
