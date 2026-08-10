@@ -13,6 +13,13 @@ describe('Pull Request summary disclosure fidelity', () => {
     );
 
     expect(source).toContain('useLynxDisclosurePresence(open)');
+    expect(source).toContain(
+      '<PullRequestActorLabel actor={props.author} variant="author" />'
+    );
+    expect(source).toContain('className="SharedPrSummaryReviewers"');
+    expect(source).not.toContain(
+      "props.reviewers.map((actor) => actor.login).join(', ')"
+    );
     expect(source).toContain('disclosureContentClassName(');
     expect(source).toContain('disclosureChevronClassName(');
     expect(source).toContain('<ChevronRightIcon');

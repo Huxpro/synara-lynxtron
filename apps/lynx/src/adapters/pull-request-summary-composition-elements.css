@@ -148,6 +148,20 @@
   color: var(--destructive);
 }
 
+.SharedPrSummaryMetaValue--muted {
+  color: var(--muted-foreground);
+}
+
+.SharedPrSummaryReviewers {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
 .SharedPrSummarySection {
   width: 100%;
   border-top: 1px solid var(--border);

@@ -14,6 +14,7 @@ import {
 } from '../platform/motion.lynx';
 import { PULL_REQUEST_CHECK_STATUS_LABELS } from '@synara-web/components/pullRequest/pullRequestSummary.logic';
 import { PullRequestCommentComposer } from './PullRequestCommentComposer.lynx';
+import { PullRequestActorLabel } from './PullRequestActorLabel.lynx';
 import { PullRequestSummaryBranchRow } from './PullRequestSummaryBranchRow.lynx';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 import './pull-request-summary-composition-elements.css';
@@ -38,9 +39,7 @@ export function PullRequestSummaryIntroElement(props: {
     <view className="SharedPrSummaryIntro">
       <text className="SharedPrSummaryTitle">{props.title}</text>
       <view className="SharedPrSummaryByline">
-        <text className="SharedPrSummaryBylineStrong">
-          {props.author?.login ?? 'ghost'}
-        </text>
+        <PullRequestActorLabel actor={props.author} variant="author" />
         <text className="SharedPrSummaryBylineText">·</text>
         <text className="SharedPrSummaryBylineText">
           {props.updatedAtLabel}
@@ -82,15 +81,6 @@ type PullRequestSummaryMetaRowProps =
       readonly checks: ReadonlyArray<PullRequestCheck>;
     };
 
-function metaValue(props: PullRequestSummaryMetaRowProps): string {
-  if (props.kind === 'reviewers') {
-    return props.reviewers.length
-      ? props.reviewers.map((actor) => actor.login).join(', ')
-      : 'None';
-  }
-  return props.value;
-}
-
 export function PullRequestSummaryMetaRowElement(
   props: PullRequestSummaryMetaRowProps
 ) {
@@ -105,6 +95,28 @@ export function PullRequestSummaryMetaRowElement(
       />
     );
   }
+  if (props.kind === 'reviewers') {
+    return (
+      <view className="SharedPrSummaryMetaRow">
+        <text className="SharedPrSummaryMetaLabel">{props.label}</text>
+        {props.reviewers.length === 0 ? (
+          <text className="SharedPrSummaryMetaValue SharedPrSummaryMetaValue--muted">
+            None
+          </text>
+        ) : (
+          <view className="SharedPrSummaryReviewers">
+            {props.reviewers.map((actor) => (
+              <PullRequestActorLabel
+                actor={actor}
+                key={actor.login}
+                variant="reviewer"
+              />
+            ))}
+          </view>
+        )}
+      </view>
+    );
+  }
   return (
     <view className="SharedPrSummaryMetaRow">
       <text className="SharedPrSummaryMetaLabel">{props.label}</text>
@@ -113,7 +125,7 @@ export function PullRequestSummaryMetaRowElement(
           props.kind === 'merge' ? ' SharedPrSummaryMetaValue--warning' : ''
         }`}
       >
-        {metaValue(props)}
+        {props.value}
       </text>
     </view>
   );
