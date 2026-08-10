@@ -287,6 +287,7 @@ Current responsive disposition:
 | Settings mutation notice announcements | Advanced, Integrations, Provider Tools, Worktrees, Skills, and Archived retained mutation failures are Native alerts; successful repair/copy confirmations remain non-assertive through explicit notice intent | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Profile dialog feedback semantics | image-picker and share/export failures are Native alerts, while copied/saved/cancelled outcomes retain explicit success/neutral intent and remain non-assertive | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Profile avatar color selection | each named color-swatch button exposes Selected/Not selected Native accessibility value without replacing its actionable button trait | PASS — CURRENT PRODUCT IMPLEMENTATION |
+| Appearance segmented selection | theme and density segment buttons project selected state through Lynx UI `buttonProps` in addition to Web `aria-checked`, matching the visible active segment in Native accessibility | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Settings heading semantics | one Native heading primitive preserves every current Web Settings h1/h2/h3 counterpart across generic panels, private Appearance/General/Git/provider layouts, Profile identity and sections, Provider Usage, and Theme Pack titles instead of leaving them as undifferentiated text | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Shared interactive names | high-frequency Composer, Kanban, and Pull Request controls route labels and selected/expanded/on-off state through `useLynxInteractiveState`, so Native accessibility metadata no longer depends only on Web `aria-label` attributes | PASS — SHARED NATIVE ACCESSIBILITY CONTRACT |
 | Actionable primitive semantics | `useLynxInteractiveState` now exposes every actionable control as a Native accessibility button even when its name is derived from visible text; passive hover owners remain excluded and explicit `accessibilityElement: false` remains authoritative | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
@@ -600,6 +601,11 @@ and adds Selected/Not selected accessibility value, so the visual active ring
 has a matching state announcement. The focused Profile suite passes (5/5),
 both production bundles build, `git diff --check` passes, and React Doctor
 0.9.11 reports zero diagnostics against `a6b61b6e`.
+The Appearance segmented-control follow-up projects each active/inactive theme
+or density segment through Lynx UI `buttonProps` with Native selected state,
+rather than relying only on wrapper `aria-checked`. The focused Appearance
+suite passes (3/3), both production bundles build, `git diff --check` passes,
+and React Doctor 0.9.11 reports zero diagnostics against `4ebaf067`.
 
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are

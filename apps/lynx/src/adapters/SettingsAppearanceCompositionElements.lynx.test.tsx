@@ -65,6 +65,9 @@ describe('Settings Appearance fidelity', () => {
     expect(source).toContain('role="radiogroup"');
     expect(source).toContain('role="radio"');
     expect(source).toContain('aria-checked={active}');
+    expect(source).toContain(
+      "'accessibility-state': { selected: active }"
+    );
     expect(source).toContain('SharedSettingsAppearanceSegment--inactive');
     expect(source).toContain(
       "Icon ? '' : ' SharedSettingsAppearanceSegment--text-only'"
