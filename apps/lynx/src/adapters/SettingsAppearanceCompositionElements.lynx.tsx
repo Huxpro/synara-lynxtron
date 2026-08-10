@@ -151,6 +151,7 @@ export function SettingsAppearanceSegmentedControlElement(props: {
             aria-checked={active}
             aria-label={`${props.ariaLabel}: ${option.label}`}
             buttonProps={{
+              'accessibility-role': 'radio',
               'accessibility-state': { selected: active },
             }}
             onClick={() => props.onChange(option.value)}

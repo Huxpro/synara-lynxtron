@@ -72,6 +72,7 @@ describe('Settings Appearance fidelity', () => {
     expect(source).toContain(
       "'accessibility-state': { selected: active }"
     );
+    expect(source).toContain("'accessibility-role': 'radio'");
     expect(source).toContain('SharedSettingsAppearanceSegment--inactive');
     expect(source).toContain(
       "Icon ? '' : ' SharedSettingsAppearanceSegment--text-only'"

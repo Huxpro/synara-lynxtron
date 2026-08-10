@@ -287,7 +287,7 @@ Current responsive disposition:
 | Settings mutation notice announcements | Advanced, Integrations, Provider Tools, Worktrees, Skills, and Archived retained mutation failures are Native alerts; successful repair/copy confirmations remain non-assertive through explicit notice intent | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Profile dialog feedback semantics | image-picker and share/export failures are Native alerts, while copied/saved/cancelled outcomes retain explicit success/neutral intent and remain non-assertive | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Profile avatar color selection | each named color-swatch button exposes Selected/Not selected Native accessibility value without replacing its actionable button trait | PASS — CURRENT PRODUCT IMPLEMENTATION |
-| Appearance segmented selection | theme and density segment buttons project selected state through Lynx UI `buttonProps` in addition to Web `aria-checked`, matching the visible active segment in Native accessibility | PASS — CURRENT PRODUCT IMPLEMENTATION |
+| Appearance segmented selection | theme and density segment buttons project Native radio role plus selected state through Lynx UI `buttonProps` in addition to Web `role`/`aria-checked`, matching the visible active segment | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Shared Menu selection semantics | radio, checkbox, and switch menu items publish Web menuitem roles plus Native selected/checked role, state, and value on the existing focus/activation owner instead of exposing only a visual checkmark or track | PASS — SHARED NATIVE ACCESSIBILITY PRIMITIVE |
 | Settings switch semantics | General, Appearance, Provider Picker, and Theme Pack custom switches expose Native switch role plus checked/disabled state on their existing interaction owner instead of presenting only as generic buttons with On/Off text | PASS — CURRENT PRODUCT IMPLEMENTATION |
 | Integration project selection | project-scope choices expose Native checkbox role and checked state on the existing named interaction owner, matching the visual checkbox and Selected/Not selected value | PASS — CURRENT PRODUCT IMPLEMENTATION |
@@ -622,10 +622,11 @@ has a matching state announcement. The focused Profile suite passes (5/5),
 both production bundles build, `git diff --check` passes, and React Doctor
 0.9.11 reports zero diagnostics against `a6b61b6e`.
 The Appearance segmented-control follow-up projects each active/inactive theme
-or density segment through Lynx UI `buttonProps` with Native selected state,
-rather than relying only on wrapper `aria-checked`. The focused Appearance
-suite passes (3/3), both production bundles build, `git diff --check` passes,
-and React Doctor 0.9.11 reports zero diagnostics against `4ebaf067`.
+or density segment through Lynx UI `buttonProps` with Native radio role and
+selected state, rather than relying only on wrapper `role` / `aria-checked`.
+The focused Appearance suite passes (3/3), both production bundles build,
+`git diff --check` passes, and React Doctor 0.9.11 reports zero diagnostics
+against `b962abf1`.
 The shared Menu selection follow-up keeps one focus/activation owner while
 adding `menuitemradio` / `menuitemcheckbox` Web roles and Native
 radio/checkbox/switch state for visual checks and tracks. The complete Menu
