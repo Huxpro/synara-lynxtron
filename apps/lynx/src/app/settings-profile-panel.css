@@ -600,10 +600,6 @@
   box-shadow: 0 0 0 2px var(--ring);
 }
 
-.SettingsProfileColorOption.ui-pressed {
-  transform: scale(0.94);
-}
-
 .SettingsProfilePhotoHint,
 .SettingsProfileEditError {
   font-size: 12px;

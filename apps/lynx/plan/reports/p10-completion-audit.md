@@ -1022,6 +1022,14 @@ secondary pressed surface rather than fading to 70%, while disclosure rows keep
 their copy and chevrons at full opacity. General, Appearance, and Advanced
 regressions pass 10/10 and the Native/Desktop production build succeeds.
 
+The final pressed-repaint guard scans every Lynx CSS owner and rejects
+whole-control `ui-pressed`/`ui-active` opacity below one or non-none transforms,
+while allowing explicit descendant feedback such as switch/thumb physics and
+collapsed-work text emphasis. The last unsupported owner, Profile avatar color,
+no longer shrinks to 94% on press; its selected ring and hover identity remain.
+Guard, Profile, Button, and Menu suites pass 23/23 and the Native/Desktop
+production build succeeds.
+
 The Native arbitrary text-range selection investigation reached an upstream
 Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's
 documented contract exposes `text-selection={true}`, `flatten={false}`,
