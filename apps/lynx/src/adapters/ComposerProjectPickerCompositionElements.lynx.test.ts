@@ -27,6 +27,18 @@ describe('composer project picker trigger icon', () => {
     expect(styles).toMatch(
       /\.ComposerProjectPickerTriggerIconLynx\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*flex-shrink:\s*0;/s
     );
+    expect(styles).toMatch(
+      /\.ComposerProjectPickerTriggerLynx\.ui-hover,[^{]*\{[^}]*background-color:\s*var\(--color-background-elevated-secondary\);/s
+    );
+    expect(styles).not.toContain(
+      '.ComposerProjectPickerOptionLynx--selected'
+    );
+    expect(styles).toMatch(
+      /\.ComposerProjectPickerOptionLynx\.ui-hover,[^{]*\{[^}]*background-color:\s*var\(--color-background-button-secondary-hover\);/s
+    );
+    expect(styles).toMatch(
+      /\.ComposerProjectPickerActionLynx\.ui-hover,[^{]*\{[^}]*background-color:\s*var\(--color-background-elevated-secondary\);/s
+    );
     expect(source).toContain('<CheckIcon size={12} />');
     expect(source).not.toContain("{props.selected ? '✓' : ''}");
   });

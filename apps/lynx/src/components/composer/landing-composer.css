@@ -33,7 +33,7 @@
 .ComposerProjectPickerTriggerLynx.ui-hover,
 .ComposerProjectPickerTriggerLynx.ui-pressed,
 .ComposerProjectPickerTriggerLynx--open {
-  background-color: var(--accent);
+  background-color: var(--color-background-elevated-secondary);
 }
 
 .ComposerProjectPickerTriggerLynx.ui-focus {
@@ -173,10 +173,9 @@
   gap: 8px;
 }
 
-.ComposerProjectPickerOptionLynx--selected,
 .ComposerProjectPickerOptionLynx.ui-hover,
 .ComposerProjectPickerOptionLynx.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-button-secondary-hover);
 }
 
 .ComposerProjectPickerOptionLynx.ui-focus {
@@ -247,7 +246,7 @@
 
 .ComposerProjectPickerActionLynx.ui-hover,
 .ComposerProjectPickerActionLynx.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-elevated-secondary);
 }
 
 .ComposerProjectPickerActionTextLynx {

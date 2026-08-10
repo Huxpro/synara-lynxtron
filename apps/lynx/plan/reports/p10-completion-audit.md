@@ -947,6 +947,13 @@ neither state adds a branded row background. Hover/press uses neutral
 button-secondary material without dimming. Focused trait/Composer regressions
 pass 6/6 and the Native/Desktop production build succeeds.
 
+The Landing Project Picker follow-up removes the same state conflation from the
+new-thread tray. Closed/open trigger chrome and footer actions use neutral
+elevated-secondary feedback; option hover uses the shared menu-highlight
+surface; selected project identity remains solely on the existing Check
+indicator instead of a branded row background. Focused project-picker/Landing
+regressions pass 3/3 and the Native/Desktop production build succeeds.
+
 The Native arbitrary text-range selection investigation reached an upstream
 Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's
 documented contract exposes `text-selection={true}`, `flatten={false}`,
