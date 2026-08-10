@@ -2,7 +2,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   padding: 12px;
 }
 
@@ -26,8 +26,8 @@
 .SharedPrCodeStatsText,
 .SharedPrCodeStatsAddition,
 .SharedPrCodeStatsDeletion {
-  font-size: 10px;
-  line-height: 14px;
+  font-size: 12px;
+  line-height: 16px;
 }
 
 .SharedPrCodeStatsText {
@@ -52,12 +52,12 @@
 
 .SharedPrCodeFileHeader {
   width: 100%;
-  min-height: 34px;
+  min-height: 32px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 7px;
-  padding: 7px 9px;
+  gap: 8px;
+  padding: 8px 12px;
   background-color: var(--muted);
 }
 
@@ -113,10 +113,12 @@
 
 .SharedPrCodeLine--addition {
   border-left-color: var(--success);
+  background-color: rgba(16, 185, 129, 0.1);
 }
 
 .SharedPrCodeLine--deletion {
   border-left-color: var(--destructive);
+  background-color: rgba(239, 68, 68, 0.1);
 }
 
 .SharedPrCodeLine--hunk {
