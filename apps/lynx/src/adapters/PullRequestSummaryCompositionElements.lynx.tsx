@@ -16,6 +16,7 @@ import { PULL_REQUEST_CHECK_STATUS_LABELS } from '@synara-web/components/pullReq
 import { PullRequestCommentComposer } from './PullRequestCommentComposer.lynx';
 import { PullRequestActorLabel } from './PullRequestActorLabel.lynx';
 import { PullRequestSummaryBranchRow } from './PullRequestSummaryBranchRow.lynx';
+import { PullRequestSummaryMetaIcon } from './PullRequestSummaryMetaIcon.lynx';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 import './pull-request-summary-composition-elements.css';
 
@@ -98,7 +99,10 @@ export function PullRequestSummaryMetaRowElement(
   if (props.kind === 'reviewers') {
     return (
       <view className="SharedPrSummaryMetaRow">
-        <text className="SharedPrSummaryMetaLabel">{props.label}</text>
+        <view className="SharedPrSummaryMetaLabel SharedPrSummaryMetaLabel--icon">
+          <PullRequestSummaryMetaIcon kind="reviewers" />
+          <text className="SharedPrSummaryMetaLabelText">{props.label}</text>
+        </view>
         {props.reviewers.length === 0 ? (
           <text className="SharedPrSummaryMetaValue SharedPrSummaryMetaValue--muted">
             None
@@ -119,7 +123,13 @@ export function PullRequestSummaryMetaRowElement(
   }
   return (
     <view className="SharedPrSummaryMetaRow">
-      <text className="SharedPrSummaryMetaLabel">{props.label}</text>
+      <view className="SharedPrSummaryMetaLabel SharedPrSummaryMetaLabel--icon">
+        <PullRequestSummaryMetaIcon
+          kind={props.kind}
+          checks={props.kind === 'checks' ? props.checks : undefined}
+        />
+        <text className="SharedPrSummaryMetaLabelText">{props.label}</text>
+      </view>
       <text
         className={`SharedPrSummaryMetaValue${
           props.kind === 'merge' ? ' SharedPrSummaryMetaValue--warning' : ''
