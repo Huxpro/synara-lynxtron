@@ -72,6 +72,18 @@ describe('Composer model picker icon fidelity', () => {
       /\.ComposerModelGroupChevronLynx\s*\{[^}]*margin-right:\s*6px;/s
     );
     expect(styles).toMatch(
+      /\.ComposerModelGroupHeaderLynx\.ui-hover,[^{]*\{[^}]*background-color:\s*rgba\(0,\s*0,\s*0,\s*0\.04\);/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--theme-dark \.ComposerModelGroupHeaderLynx\.ui-hover,[^{]*\{[^}]*background-color:\s*rgba\(255,\s*255,\s*255,\s*0\.04\);/s
+    );
+    expect(styles).not.toMatch(
+      /\.ComposerModelGroupHeaderLynx\.ui-focus\s*\{[^}]*box-shadow:/
+    );
+    expect(styles).toMatch(
+      /\.ComposerModelGroupLabelLynx\s*\{[^}]*font-weight:\s*500;[^}]*opacity:\s*0\.8;/s
+    );
+    expect(styles).toMatch(
       /\.ComposerModelGroupHeaderLynx--open \.ComposerModelGroupLabelLynx\s*\{[^}]*color:\s*var\(--foreground\);[^}]*opacity:\s*0\.75;/s
     );
     expect(styles).toMatch(

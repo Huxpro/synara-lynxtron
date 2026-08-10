@@ -711,11 +711,12 @@
 
 .ComposerModelGroupHeaderLynx.ui-hover,
 .ComposerModelGroupHeaderLynx.ui-pressed {
-  background-color: var(--color-background-button-secondary-hover);
+  background-color: rgba(0, 0, 0, 0.04);
 }
 
-.ComposerModelGroupHeaderLynx.ui-focus {
-  box-shadow: 0 0 0 1px var(--ring);
+.SliceRoot--theme-dark .ComposerModelGroupHeaderLynx.ui-hover,
+.SliceRoot--theme-dark .ComposerModelGroupHeaderLynx.ui-pressed {
+  background-color: rgba(255, 255, 255, 0.04);
 }
 
 .ComposerModelGroupChevronLynx,
@@ -737,6 +738,7 @@
   min-width: 0;
   overflow: hidden;
   font-weight: 500;
+  opacity: 0.8;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
