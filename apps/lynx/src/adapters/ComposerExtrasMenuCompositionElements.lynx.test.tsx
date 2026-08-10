@@ -110,6 +110,9 @@ describe('native composer attachment menu item', () => {
       /\.ComposerRuntimeTriggerLynx\s*\{[^}]*min-height:\s*28px;[^}]*padding:\s*4px 10px;[^}]*border:\s*1px solid transparent;[^}]*border-radius:\s*10px;/s
     );
     expect(composerStyles).toMatch(
+      /\.LxMenuTrigger\.ui-hover \.ComposerRuntimeTriggerLynx,[^{]*\{[^}]*background-color:\s*var\(--color-background-elevated-secondary\);/s
+    );
+    expect(composerStyles).toMatch(
       /\.SliceRoot--theme-dark \.ComposerInputSurfaceLynx\s*\{[^}]*box-shadow:\s*0 6px 24px -10px rgba\(0,\s*0,\s*0,\s*0\.3\);/s
     );
     expect(composerStyles).toMatch(
@@ -201,6 +204,12 @@ describe('native composer attachment menu item', () => {
       /\.ComposerModelTriggerLynx\s*\{[^}]*padding:\s*4px 6px;[^}]*border:\s*1px solid transparent;[^}]*border-radius:\s*10px;/s
     );
     expect(composerStyles).toMatch(
+      /\.ComposerModelTriggerLynx\.ui-hover\s*\{[^}]*background-color:\s*var\(--color-background-elevated-secondary\);/s
+    );
+    expect(composerStyles).not.toMatch(
+      /\.ComposerModelTriggerLynx\.ui-pressed\s*\{[^}]*opacity:/s
+    );
+    expect(composerStyles).toMatch(
       /\.ComposerModelControlLynx\s*\{[^}]*gap:\s*8px;/s
     );
     expect(composerStyles).toMatch(
@@ -208,6 +217,9 @@ describe('native composer attachment menu item', () => {
     );
     expect(composerStyles).toMatch(
       /\.ComposerTraitsTriggerLynx\s*\{[^}]*gap:\s*8px;[^}]*padding:\s*4px 10px;[^}]*border:\s*1px solid transparent;[^}]*border-radius:\s*10px;/s
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerTraitsTriggerLynx\.ui-hover,[^{]*\{[^}]*background-color:\s*var\(--color-background-elevated-secondary\);/s
     );
     expect(composerStyles).toMatch(
       /\.ComposerProviderOptionLynx \.ComposerModelTriggerMetaLynx\s*\{[^}]*margin-left:\s*auto;[^}]*font-size:\s*11px;[^}]*line-height:\s*18px;[^}]*opacity:\s*0\.8;/s

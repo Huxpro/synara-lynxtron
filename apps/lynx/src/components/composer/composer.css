@@ -324,7 +324,7 @@
 }
 
 .ComposerModelTriggerLynx.ui-hover {
-  background-color: var(--accent);
+  background-color: var(--color-background-elevated-secondary);
 }
 
 .ComposerModelTriggerLynx.ui-focus {
@@ -332,8 +332,7 @@
 }
 
 .ComposerModelTriggerLynx.ui-pressed {
-  background-color: var(--accent);
-  opacity: 0.72;
+  background-color: var(--color-background-elevated-secondary);
 }
 
 .ComposerModelTriggerContentLynx {
@@ -401,7 +400,7 @@
 
 .ComposerTraitsTriggerLynx.ui-hover,
 .ComposerTraitsTriggerLynx.ui-pressed {
-  background-color: var(--accent);
+  background-color: var(--color-background-elevated-secondary);
 }
 
 .ComposerTraitsTriggerLynx.ui-focus {
@@ -931,7 +930,7 @@
 
 .LxMenuTrigger.ui-hover .ComposerRuntimeTriggerLynx,
 .LxMenuTrigger.ui-pressed .ComposerRuntimeTriggerLynx {
-  background-color: var(--accent);
+  background-color: var(--color-background-elevated-secondary);
 }
 
 .LxMenuTrigger.ui-focus .ComposerRuntimeTriggerLynx {

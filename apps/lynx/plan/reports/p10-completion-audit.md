@@ -917,6 +917,13 @@ neutral secondary material and removing whole-chip pressed dimming. This keeps
 selected and transient states from impersonating each other. The complete
 dialog suite passes 4/4 and the Native/Desktop production build succeeds.
 
+The Composer footer-chrome follow-up applies the same selected/transient split
+to closed controls: Model, Traits, and Runtime triggers use Web's neutral
+elevated-secondary hover/pressed surface, while active menu rows and selected
+models retain branded accent identity. Model press no longer dims the whole
+control. Focused Composer regressions pass 4/4 and the Native/Desktop production
+build succeeds.
+
 The Native arbitrary text-range selection investigation reached an upstream
 Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's
 documented contract exposes `text-selection={true}`, `flatten={false}`,
