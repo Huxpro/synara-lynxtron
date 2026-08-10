@@ -1002,6 +1002,13 @@ The Composer primary-action follow-up keeps Send/Sending/Stop on its stable
 semantic arrow/spinner/stop identities are unchanged. Focused Composer
 regressions pass 5/5 and the Native/Desktop production build succeeds.
 
+The Kanban interaction follow-up removes blanket 80% press opacity from cards,
+route navigation/actions, overview project/actions, and column actions. Their
+existing Web-matched hover backgrounds, focus rings, and drag-source opacity
+remain the sole visual state owners, so press no longer flashes every child
+simultaneously. Kanban composition regressions pass 7/7 and the Native/Desktop
+production build succeeds.
+
 The Native arbitrary text-range selection investigation reached an upstream
 Lynxtron PC runtime blocker rather than a shippable product slice. Lynx's
 documented contract exposes `text-selection={true}`, `flatten={false}`,

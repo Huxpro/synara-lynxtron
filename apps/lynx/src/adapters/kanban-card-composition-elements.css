@@ -27,10 +27,6 @@
   box-shadow: 0 0 0 1px var(--ring);
 }
 
-.SharedKanbanCard.ui-pressed {
-  opacity: 0.8;
-}
-
 .SharedKanbanCardTitleRow,
 .SharedKanbanCardMetaRow,
 .SharedKanbanCardTrailing,

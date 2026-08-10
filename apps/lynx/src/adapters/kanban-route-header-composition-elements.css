@@ -36,11 +36,6 @@
   box-shadow: 0 0 0 1px var(--ring);
 }
 
-.SharedKanbanRouteBack.ui-pressed,
-.SharedKanbanRouteNewTask.ui-pressed {
-  opacity: 0.8;
-}
-
 .SharedKanbanRouteBackIcon {
   width: 14px;
   height: 14px;

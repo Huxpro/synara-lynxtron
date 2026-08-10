@@ -84,12 +84,6 @@
   box-shadow: 0 0 0 1px var(--ring);
 }
 
-.SharedKanbanOverviewProjectHeader.ui-pressed,
-.SharedKanbanOverviewNewTask.ui-pressed,
-.SharedKanbanOverviewShowMore.ui-pressed {
-  opacity: 0.8;
-}
-
 .SharedKanbanOverviewProjectTitle {
   flex: 1;
   min-width: 0;
