@@ -134,7 +134,11 @@ export function SettingsWorktreesPanel() {
   if (worktreesQuery.isError || snapshotQuery.isError) {
     const error = worktreesQuery.error ?? snapshotQuery.error;
     return (
-      <view className="SettingsWorktreesState SettingsWorktreesState--error">
+      <view
+        className="SettingsWorktreesState SettingsWorktreesState--error"
+        accessibility-element
+        accessibility-role="alert"
+      >
         <text className="SettingsWorktreesStateText">
           {error instanceof Error ? error.message : 'Unable to load worktrees.'}
         </text>

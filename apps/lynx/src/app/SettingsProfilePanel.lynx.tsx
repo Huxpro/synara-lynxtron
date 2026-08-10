@@ -898,7 +898,11 @@ export function SettingsProfilePanel() {
   }
   if (!coreQuery.data) {
     return (
-      <view className="SettingsProfileState">
+      <view
+        className="SettingsProfileState"
+        accessibility-element
+        accessibility-role="alert"
+      >
         <text className="SettingsProfileStateText">
           Couldn’t load your local stats.
         </text>

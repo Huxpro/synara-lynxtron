@@ -141,7 +141,11 @@ export function SettingsSkillsPanel() {
   if (catalogQuery.isError || settingsQuery.isError) {
     const error = catalogQuery.error ?? settingsQuery.error;
     return (
-      <view className="SettingsSkillsState SettingsSkillsState--error">
+      <view
+        className="SettingsSkillsState SettingsSkillsState--error"
+        accessibility-element
+        accessibility-role="alert"
+      >
         <text className="SettingsSkillsStateText">
           {error instanceof Error
             ? error.message
