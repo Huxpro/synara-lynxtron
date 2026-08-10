@@ -111,6 +111,8 @@ describe('Lynx Settings section labels', () => {
     expect(usageSource).toContain('<TriangleAlertIcon');
     expect(usageSource).toContain('snapshot.detail?.trim()');
     expect(usageSource).toContain('className="SettingsUsageNotice"');
+    expect(usageSource).toContain('accessibility-label={snapshot.detail}');
+    expect(usageSource).not.toContain('accessibilityLabel="Usage warning"');
     expect(usageSource).toContain(
       'accessibility-label={`${display.label}: ${Math.round(display.remainingPercent)}% remaining`}'
     );

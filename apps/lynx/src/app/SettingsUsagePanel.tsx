@@ -204,12 +204,16 @@ export function SettingsUsagePanel() {
                 {status === 'ok' && hasUsage ? (
                   <view className="SettingsUsageDetails">
                     {snapshot.detail?.trim() ? (
-                      <view className="SettingsUsageNotice">
+                      <view
+                        className="SettingsUsageNotice"
+                        accessibility-element
+                        accessibility-label={snapshot.detail}
+                        accessibility-traits="text"
+                      >
                         <TriangleAlertIcon
                           className="SettingsUsageNoticeIcon"
                           size={14}
                           color="var(--settings-usage-warning-text)"
-                          accessibilityLabel="Usage warning"
                         />
                         <text className="SettingsUsageNoticeText">
                           {snapshot.detail}
