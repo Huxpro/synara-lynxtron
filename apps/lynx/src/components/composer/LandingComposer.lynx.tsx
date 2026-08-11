@@ -1,6 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from '@lynx-js/react';
 import { useQuery } from '@tanstack/react-query';
-import type { ModelSelection } from '@synara/contracts';
+import type {
+  ModelSelection,
+  ProviderKind,
+  ProviderListModelsResult,
+} from '@synara/contracts';
 import { getDefaultModel } from '@synara/shared/model';
 import { PanelStateMessage } from '@synara-web/components/chat/PanelStateMessage';
 import { ComposerProjectPickerComposition } from '@synara-web/components/chat/ComposerProjectPickerComposition';
@@ -12,6 +16,7 @@ import {
   dispatchSynaraCommand,
   browseFilesystem,
   fetchFreshServerConfig,
+  fetchProviderModels,
   fetchSynaraSidebarShellSnapshot,
 } from '../../data/synaraClient.lynx';
 import { dialogs } from '../../platform/dialogs';
@@ -35,7 +40,9 @@ function projectWorkspaceLabel(workspaceRoot: string): string {
   return segments.at(-1) || workspaceRoot;
 }
 
-export async function loadLandingBootstrap() {
+export async function loadLandingBootstrap(
+  initialModelProvider: ProviderKind | null = null
+) {
   'background only';
   const [snapshot, , config] = await Promise.all([
     fetchSynaraSidebarShellSnapshot(),
@@ -61,6 +68,13 @@ export async function loadLandingBootstrap() {
         entries: [],
         errorMessage: 'Home folder is not available yet.',
       };
+  const initialModelCatalog: ProviderListModelsResult | null =
+    initialModelProvider && config.homeDir
+      ? await fetchProviderModels({
+          provider: initialModelProvider,
+          cwd: config.homeDir,
+        }).catch(() => null)
+      : null;
   const existing = snapshot.projects.find((project) => project.kind === 'chat');
   if (existing) {
     return {
@@ -71,6 +85,7 @@ export async function loadLandingBootstrap() {
       localFolders: localFolderResult.entries,
       localFoldersError: localFolderResult.errorMessage,
       homeDir: config.homeDir ?? null,
+      initialModelCatalog,
       serverConfig: config,
     };
   }
@@ -106,6 +121,7 @@ export async function loadLandingBootstrap() {
       localFolders: localFolderResult.entries,
       localFoldersError: localFolderResult.errorMessage,
       homeDir: config.homeDir ?? null,
+      initialModelCatalog,
       serverConfig: config,
     };
   } catch (error) {
@@ -125,6 +141,7 @@ export async function loadLandingBootstrap() {
         localFolders: localFolderResult.entries,
         localFoldersError: localFolderResult.errorMessage,
         homeDir: config.homeDir ?? null,
+        initialModelCatalog,
         serverConfig: config,
       };
     }
@@ -133,6 +150,7 @@ export async function loadLandingBootstrap() {
 }
 
 export function LandingComposer(props: {
+  readonly initialModelProvider?: ProviderKind | null;
   readonly initialProjectId?: string | null;
   readonly onThreadCreated: (threadId: string) => void;
 }) {
@@ -154,8 +172,11 @@ export function LandingComposer(props: {
     null
   );
   const { data, error, isFetching, isPending, refetch } = useQuery({
-    queryKey: ['landing-composer-bootstrap'],
-    queryFn: loadLandingBootstrap,
+    queryKey: [
+      'landing-composer-bootstrap',
+      props.initialModelProvider ?? null,
+    ],
+    queryFn: () => loadLandingBootstrap(props.initialModelProvider ?? null),
     staleTime: 30_000,
   });
   useEffect(() => {
@@ -378,6 +399,7 @@ export function LandingComposer(props: {
         activeTurnId={null}
         workspaceRoot={targetProject.workspaceRoot}
         providerStatuses={data.serverConfig.providers}
+        initialModelCatalog={data.initialModelCatalog}
         emptyLanding={true}
         onBeforeSend={ensureThread}
         onSetInteractionMode={setInteractionMode}

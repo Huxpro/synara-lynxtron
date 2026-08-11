@@ -9,6 +9,7 @@ import { useQuery } from '@tanstack/react-query';
 import type {
   ModelSelection,
   ProviderKind,
+  ProviderListModelsResult,
   ProviderMentionReference,
   ProviderSkillReference,
   ServerProviderStatus,
@@ -317,6 +318,7 @@ interface ComposerProps {
   readonly draftId?: string;
   readonly workspaceRoot?: string | null;
   readonly emptyLanding?: boolean;
+  readonly initialModelCatalog?: ProviderListModelsResult | null;
   readonly providerStatuses?: readonly ServerProviderStatus[];
   readonly onBeforeSend?: (input: {
     readonly interactionMode: 'default' | 'plan';
@@ -348,6 +350,7 @@ export function Composer({
   draftId,
   workspaceRoot,
   emptyLanding = false,
+  initialModelCatalog,
   providerStatuses,
   onBeforeSend,
   onProviderStatusesChange,
@@ -1753,7 +1756,11 @@ export function Composer({
                   initialPanel={
                     initialModelCatalogProvider ? 'models' : 'providers'
                   }
-                  runtimeModels={runtimeModelCatalog?.models ?? []}
+                  runtimeModels={
+                    runtimeModelCatalog?.models ??
+                    initialModelCatalog?.models ??
+                    []
+                  }
                   modelsLoading={
                     runtimeModelsPending ||
                     (runtimeModelsFetching && !runtimeModelCatalog)

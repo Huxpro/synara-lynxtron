@@ -83,14 +83,20 @@ describe('landing composer fidelity contract', () => {
     expect(clientSource).toContain('providers: providerStatuses.providers');
     expect(landingSource).toContain('fetchFreshServerConfig()');
     expect(landingSource).toContain(
-      'export async function loadLandingBootstrap()'
+      'export async function loadLandingBootstrap('
     );
     expect(routerSource).toContain(
-      "queryKey: ['landing-composer-bootstrap']"
+      "queryKey: ['landing-composer-bootstrap', initialModelProvider]"
     );
-    expect(routerSource).toContain('queryFn: loadLandingBootstrap');
+    expect(routerSource).toContain(
+      'queryFn: () => loadLandingBootstrap(initialModelProvider)'
+    );
     expect(routerSource).toContain(
       'landingBootstrap?.serverConfig.providers ?? []'
+    );
+    expect(landingSource).toContain('initialModelCatalog,');
+    expect(landingSource).toContain(
+      'initialModelCatalog={data.initialModelCatalog}'
     );
     expect(landingSource).not.toContain('onProviderStatusesChange');
     expect(composerSource).toContain('fetchFreshServerConfig()');

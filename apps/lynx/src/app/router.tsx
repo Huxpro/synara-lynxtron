@@ -10,12 +10,19 @@
 // and rendered by hand here (see synara-lynx plan 04 pattern P-08).
 
 import { createMemoryHistory } from '@tanstack/history';
-import { useCallback, useEffect, useRef, useState } from '@lynx-js/react';
+import {
+  useCallback,
+  useEffect,
+  useInitData,
+  useRef,
+  useState,
+} from '@lynx-js/react';
 import { useQuery } from '@tanstack/react-query';
 import type { ProviderKind, ServerProviderStatus } from '@synara/contracts';
 import type { UiDensity } from '@synara-web/lib/appDensity';
 import type { ThemeState } from '@synara-web/theme/theme.logic';
 import type { SettingsSectionId } from '@synara-web/settingsNavigation';
+import { isProviderKind } from '@synara-web/providerOrdering';
 import { resolveProviderHealthBannerPresentation } from '@synara-web/components/chat/ProviderHealthBanner.logic';
 import { findProviderStatus } from '@synara-web/lib/providerAvailability';
 import { clampSidebarWidth } from '@synara-web/components/sidebarResize.logic';
@@ -220,9 +227,17 @@ function ThreadsLandingPage(props: {
   readonly initialProjectId?: string | null;
   readonly onThreadCreated: (threadId: string) => void;
 }) {
+  const initData = useInitData() as {
+    readonly initialComposerModelProvider?: unknown;
+  };
+  const initialModelProvider =
+    typeof initData.initialComposerModelProvider === 'string' &&
+    isProviderKind(initData.initialComposerModelProvider)
+      ? initData.initialComposerModelProvider
+      : null;
   const { data: landingBootstrap } = useQuery({
-    queryKey: ['landing-composer-bootstrap'],
-    queryFn: loadLandingBootstrap,
+    queryKey: ['landing-composer-bootstrap', initialModelProvider],
+    queryFn: () => loadLandingBootstrap(initialModelProvider),
     staleTime: 30_000,
   });
   const providerStatuses = landingBootstrap?.serverConfig.providers ?? [];
@@ -251,6 +266,7 @@ function ThreadsLandingPage(props: {
             <CenteredEmptyLanding />
             <ComposerColumnFrameSurface>
               <LandingComposer
+                initialModelProvider={initialModelProvider}
                 initialProjectId={props.initialProjectId}
                 onThreadCreated={props.onThreadCreated}
               />

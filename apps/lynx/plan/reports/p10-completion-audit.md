@@ -1799,6 +1799,21 @@ Web currently receives the live OpenCode model directory while Lynx retains
 only its static `OpenAI GPT-5` fallback, so grouped-model disclosure remains
 explicitly visually unrecertified.
 
+The Composer dynamic-model follow-up closes that catalog projection mismatch.
+Typed RPC evidence returns seven real OpenCode models from `opencode-cli`, but
+the mounted Lynx model control previously retained its static fallback after
+the relay query completed. A provider-scoped shared Landing bootstrap now
+prefetches the initial catalog and passes it into Composer's first render,
+falling back to the static catalog on failure without blocking Landing. Fresh
+light/1280 Web and Lynx frames now show the same seven OpenCode models with
+empty page-error gates; Lynx relay is open with zero pending requests and no
+transport/RPC error. Focused landing/model/interaction coverage passes 22/22
+and the Lynx-for-Web production build passes. Evidence is retained in
+`shots/2026-08-11/current-head-composer-dynamic-models-light-1280/`. The real
+OpenCode catalog has only one upstream group, Pi returns no dynamic models, and
+Kilo cannot start in this isolated environment; there is still no honest
+multi-group dataset for collapsible group visual re-certification.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after
