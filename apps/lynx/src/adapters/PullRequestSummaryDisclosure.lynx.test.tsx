@@ -141,4 +141,34 @@ describe('Pull Request summary disclosure fidelity', () => {
       '--pr-check-row-hover-surface: rgba(252, 252, 252, 0.003);'
     );
   });
+
+  it('uses the 12px metadata role across the Summary overview', () => {
+    const styles = readFileSync(
+      new URL('./pull-request-summary-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+    const actorStyles = readFileSync(
+      new URL('./pull-request-actor-label.css', import.meta.url),
+      'utf8'
+    );
+
+    for (const selector of [
+      '.SharedPrSummaryBylineStrong,\\s*.SharedPrSummaryBylineText',
+      '.SharedPrSummaryMetaLabel,\\s*.SharedPrSummaryMetaValue',
+      '.SharedPrSummaryMetaLabelText',
+      '.SharedPrSummaryBranchName',
+      '.SharedPrSummaryBranchArrow',
+      '.SharedPrSummaryDiffStat--addition,\\s*.SharedPrSummaryDiffStat--deletion',
+    ]) {
+      expect(styles).toMatch(
+        new RegExp(
+          `${selector}\\s*\\{[^}]*font-size:\\s*var\\(--app-font-size-ui\\);`,
+          's'
+        )
+      );
+    }
+    expect(actorStyles).toMatch(
+      /\.SharedPrActorLabel--reviewer \.SharedPrActorLogin\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm\);/s
+    );
+  });
 });

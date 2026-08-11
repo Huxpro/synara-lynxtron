@@ -1523,6 +1523,16 @@ Native/Desktop production builds pass; strict reuse and style audits remain
 green at 61.95% pull-request reuse and 98.07% style coverage. This is
 source/build evidence, not a new Native runtime certification cell.
 
+The pull-request Summary overview follow-up corrects its remaining metadata
+scale drift without changing the already-matched 20px panel inset and 16px
+section rhythm. Byline copy, meta labels/values, branch names/arrows, and branch
+diff counts now use Web's 12px metadata role instead of 11px fine text.
+Reviewer actor chips remain the intentional 11px exception, and title/section
+typography is unchanged. Focused Summary/actor coverage passes 8/8;
+Lynx-for-Web and Native/Desktop production builds pass; strict reuse and style
+audits remain green at 61.95% pull-request reuse and 98.07% style coverage.
+This is source/build evidence, not a new Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

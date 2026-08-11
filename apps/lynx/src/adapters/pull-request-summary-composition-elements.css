@@ -31,7 +31,7 @@
 
 .SharedPrSummaryBylineStrong,
 .SharedPrSummaryBylineText {
-  font-size: var(--app-font-size-ui-sm);
+  font-size: var(--app-font-size-ui);
   line-height: 18px;
 }
 
@@ -59,7 +59,7 @@
 
 .SharedPrSummaryMetaLabel,
 .SharedPrSummaryMetaValue {
-  font-size: var(--app-font-size-ui-sm);
+  font-size: var(--app-font-size-ui);
   line-height: 18px;
 }
 
@@ -84,7 +84,7 @@
 
 .SharedPrSummaryMetaLabelText {
   color: var(--muted-foreground);
-  font-size: var(--app-font-size-ui-sm);
+  font-size: var(--app-font-size-ui);
   line-height: 18px;
 }
 
@@ -110,7 +110,7 @@
   min-width: 0;
   overflow: hidden;
   color: var(--foreground);
-  font-size: var(--app-font-size-ui-sm);
+  font-size: var(--app-font-size-ui);
   line-height: 18px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -119,7 +119,7 @@
 .SharedPrSummaryBranchArrow {
   flex-shrink: 0;
   color: var(--muted-foreground);
-  font-size: var(--app-font-size-ui-sm);
+  font-size: var(--app-font-size-ui);
 }
 
 .SharedPrSummaryDiffStat {
@@ -132,7 +132,7 @@
 
 .SharedPrSummaryDiffStat--addition,
 .SharedPrSummaryDiffStat--deletion {
-  font-size: var(--app-font-size-ui-sm);
+  font-size: var(--app-font-size-ui);
   line-height: 18px;
 }
 
