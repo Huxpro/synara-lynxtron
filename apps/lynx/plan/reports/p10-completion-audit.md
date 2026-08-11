@@ -1689,6 +1689,16 @@ reuse and style audits remain green at 61.95% pull-request reuse and 98.07%
 style coverage. This is source/build evidence, not a new Native runtime
 certification cell.
 
+The pull-request filter semantics follow-up aligns pill selection across both
+accessibility surfaces. Involvement/state pills now publish `aria-pressed` and
+Native `accessibility-state.selected` in addition to their named button trait
+and `Selected` value, matching Web and the project-filter trigger. Hover/focus
+intent prefetch, visual active state, and keyboard/tap activation remain
+unchanged. Focused route/interaction coverage passes 12/12; Lynx-for-Web and
+Native/Desktop production builds pass; strict reuse and style audits remain
+green at 61.95% pull-request reuse and 98.07% style coverage. This is
+source/build evidence, not a new Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

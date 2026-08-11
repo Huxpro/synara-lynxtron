@@ -122,7 +122,12 @@ function PullRequestFilterPillElement(props: {
     onIntent: props.onIntent,
   });
   return (
-    <view className={interaction.className} {...interaction.eventProps}>
+    <view
+      className={interaction.className}
+      {...interaction.eventProps}
+      aria-pressed={props.active}
+      accessibility-state={{ selected: props.active }}
+    >
       <text
         className={`SharedPrFilterPillText${
           props.active ? ' SharedPrFilterPillText--active' : ''

@@ -69,6 +69,10 @@ describe('pull request route controls fidelity', () => {
       'onIntent={() => props.onIntent?.(option.value)}'
     );
     expect(source).toContain('onIntent: props.onIntent');
+    expect(source).toContain('aria-pressed={props.active}');
+    expect(source).toContain(
+      'accessibility-state={{ selected: props.active }}'
+    );
     expect(styles).toMatch(
       /\.SharedPrProjectFilterPopup \.SharedPrProjectFilterLabel\s*\{[^}]*padding:\s*4px 8px;[^}]*font-size:\s*11px;[^}]*line-height:\s*16px;[^}]*font-weight:\s*500;/s
     );
