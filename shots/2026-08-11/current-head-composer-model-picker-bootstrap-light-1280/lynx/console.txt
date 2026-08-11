@@ -1,0 +1,16 @@
+[log] [Lynxtron Web] Configuring nodejs module with script: http://localhost:8891/lynx/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://localhost:8891/cea83afa-50e6-41d1-b37a-c52e329fa836
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://localhost:8891/b3e253de-1256-452f-9cec-6e033b4f07e4", nodejs: "blob:http://localhost:8891/cea83afa-50e6-41d1-b37a-c52e329fa836"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://localhost:8891/lynx/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://localhost:8891/33b8f427-4476-4671-90e4-4bcc5e633952
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://localhost:8891/97d48cd6-d517-40ba-a1fe-8ccb09ba3aa1", nodejs: "blob:http://localhost:8891/33b8f427-4476-4671-90e4-4bcc5e633952"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://localhost:8891/lynx/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://localhost:8891/ef6e3043-b084-48ad-b404-cb167e2bbfbe
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://localhost:8891/638c56ef-0b8e-4c1f-b1bb-733c9a7da4d1", nodejs: "blob:http://localhost:8891/ef6e3043-b084-48ad-b404-cb167e2bbfbe"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] [Lynxtron Web] Configuring nodejs module with script: http://localhost:8891/lynx/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://localhost:8891/a780b2ea-0677-4be3-99b8-6562dae59677
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://localhost:8891/79b86eea-cdaa-445d-b580-4f111277c6e3", nodejs: "blob:http://localhost:8891/a780b2ea-0677-4be3-99b8-6562dae59677"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead

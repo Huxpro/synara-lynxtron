@@ -418,6 +418,16 @@ describe('Lynx-for-Web interaction state bridge', () => {
       "popup.style.visibility = 'visible'"
     );
     expect(source).toContain(
+      'const INITIAL_OVERLAY_POSITION_TIMEOUT_MS = 15_000'
+    );
+    expect(source).toContain(
+      'const INITIAL_OVERLAY_POSITION_RETRY_MS = 50'
+    );
+    expect(source.match(/positionInitialOverlayWhenReady\(\(\) =>/g)).toHaveLength(
+      2
+    );
+    expect(source).not.toContain('positionAttempts < 40');
+    expect(source).toContain(
       "'.EnvironmentScroller { flex: 0 1 auto; height: auto; min-height: 0; max-height: 100%; }'"
     );
   });

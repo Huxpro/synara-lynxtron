@@ -1762,6 +1762,24 @@ model-group hover-token assertion and is not treated as evidence for this
 slice. This remains a focused fast-loop cell, not Native or global P10
 certification.
 
+The Composer model-picker bootstrap follow-up fixes two prerequisites for the
+pending model-group visual cell. First, the Web host's initial-overlay
+positioner now uses one shared 15-second bounded retry path for Composer and
+Explorer instead of abandoning a popup after 40×50ms; slower real provider
+bootstrap no longer leaves the menu permanently hidden. Second, Landing passes
+its already-refreshed provider statuses directly into Composer, so the initial
+picker mounts with final Unavailable/Sign in/OpenCode/Pi states instead of an
+empty-provider `Checking` snapshot. Fresh light/1280 Web and Lynx frames retain
+the same final provider availability state with empty page errors; Lynx relay
+is open with zero pending requests and no transport/RPC error. Focused
+initial-open/interaction coverage passes 15/15 and the Lynx-for-Web production
+build passes. Evidence is retained in
+`shots/2026-08-11/current-head-composer-model-picker-bootstrap-light-1280/`.
+The current browser harness can publish hover/focus to the Lynx bindtap provider
+row but cannot produce its activation event, so OpenCode model-group disclosure
+remains explicitly visually unrecertified rather than being inferred from
+source or programmatic state.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

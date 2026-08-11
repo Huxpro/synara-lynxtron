@@ -377,6 +377,7 @@ export function LandingComposer(props: {
         sessionStatus={null}
         activeTurnId={null}
         workspaceRoot={targetProject.workspaceRoot}
+        providerStatuses={data.serverConfig.providers}
         emptyLanding={true}
         onBeforeSend={ensureThread}
         onSetInteractionMode={setInteractionMode}

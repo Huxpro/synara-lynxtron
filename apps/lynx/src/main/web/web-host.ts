@@ -34,6 +34,8 @@ const MAX_RECONNECT_ATTEMPTS = 6;
 const INITIAL_RECONNECT_DELAY_MS = 250;
 const MAX_RECONNECT_DELAY_MS = 2_000;
 const OFFLINE_RETRY_DELAY_MS = 5_000;
+const INITIAL_OVERLAY_POSITION_RETRY_MS = 50;
+const INITIAL_OVERLAY_POSITION_TIMEOUT_MS = 15_000;
 const TRANSPORT_STATE_EVENT = 'synara:transport-state';
 const GIT_ACTION_PROGRESS_EVENT = 'synara:git-action-progress';
 const COMPOSER_MODEL_MENU_QUERY = 'composerModelMenu';
@@ -162,6 +164,15 @@ function describeError(error: unknown): string {
 
 function sleep(milliseconds: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
+function positionInitialOverlayWhenReady(position: () => boolean): void {
+  const deadline = Date.now() + INITIAL_OVERLAY_POSITION_TIMEOUT_MS;
+  const attempt = () => {
+    if (position() || Date.now() >= deadline) return;
+    globalThis.setTimeout(attempt, INITIAL_OVERLAY_POSITION_RETRY_MS);
+  };
+  attempt();
 }
 
 function safeClose(socket: WebSocket | null): void {
@@ -974,9 +985,7 @@ const installInteractionBridge = () => {
     }
   );
   if (initialExplorerActionMenuOpen) {
-    let positionAttempts = 0;
-    let positionTimer: ReturnType<typeof globalThis.setTimeout> | null = null;
-    const positionExplorerActionMenu = () => {
+    positionInitialOverlayWhenReady(() => {
       const trigger = queryDeep<HTMLElement>(
         root,
         '.ExplorerDockPreviewActions'
@@ -985,20 +994,7 @@ const installInteractionBridge = () => {
         root,
         '.ExplorerDockPreviewActionsPopup'
       );
-      if (!trigger || !popup) {
-        positionAttempts += 1;
-        if (positionAttempts < 40) {
-          positionTimer = globalThis.setTimeout(
-            positionExplorerActionMenu,
-            50
-          );
-        }
-        return false;
-      }
-      if (positionTimer !== null) {
-        globalThis.clearTimeout(positionTimer);
-        positionTimer = null;
-      }
+      if (!trigger || !popup) return false;
       const triggerRect = trigger.getBoundingClientRect();
       const popupWidth = popup.getBoundingClientRect().width || 208;
       popup.style.left = `${Math.max(
@@ -1008,12 +1004,10 @@ const installInteractionBridge = () => {
       popup.style.top = `${triggerRect.bottom + 4}px`;
       popup.style.visibility = 'visible';
       return true;
-    };
-    positionExplorerActionMenu();
+    });
   }
   if (initialComposerModelMenuOpen) {
-    let positionAttempts = 0;
-    const positionComposerModelMenu = () => {
+    positionInitialOverlayWhenReady(() => {
       const trigger = queryDeep<HTMLElement>(
         root,
         '.ComposerModelTriggerLynx'
@@ -1023,13 +1017,7 @@ const installInteractionBridge = () => {
         '.ComposerModelPopupLynx'
       );
       const layer = popup?.closest<HTMLElement>('.LxMenuLayer');
-      if (!trigger || !popup || !layer) {
-        positionAttempts += 1;
-        if (positionAttempts < 40) {
-          globalThis.setTimeout(positionComposerModelMenu, 50);
-        }
-        return;
-      }
+      if (!trigger || !popup || !layer) return false;
       const triggerRect = trigger.getBoundingClientRect();
       const popupRect = popup.getBoundingClientRect();
       const layerRect = layer.getBoundingClientRect();
@@ -1042,8 +1030,8 @@ const installInteractionBridge = () => {
         triggerRect.top - layerRect.top - popupRect.height - 6
       )}px`;
       popup.style.visibility = 'visible';
-    };
-    positionComposerModelMenu();
+      return true;
+    });
   }
   return true;
 };

@@ -310,6 +310,7 @@ interface ComposerProps {
   readonly draftId?: string;
   readonly workspaceRoot?: string | null;
   readonly emptyLanding?: boolean;
+  readonly providerStatuses?: readonly ServerProviderStatus[];
   readonly onBeforeSend?: (input: {
     readonly interactionMode: 'default' | 'plan';
     readonly modelSelection: ModelSelection;
@@ -340,6 +341,7 @@ export function Composer({
   draftId,
   workspaceRoot,
   emptyLanding = false,
+  providerStatuses,
   onBeforeSend,
   onProviderStatusesChange,
   onSetInteractionMode,
@@ -1738,7 +1740,7 @@ export function Composer({
                     runtimeModelsPending ||
                     (runtimeModelsFetching && !runtimeModelCatalog)
                   }
-                  providers={serverConfig?.providers ?? []}
+                  providers={providerStatuses ?? serverConfig?.providers ?? []}
                   splitTraits={emptyLanding}
                   onCatalogProviderChange={(provider) => {
                     'background only';
