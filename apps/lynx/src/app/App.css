@@ -51,6 +51,7 @@
 }
 
 .SliceRoot--theme-light {
+  --pr-comment-divider: rgba(13, 13, 13, 0.0345);
   --pr-comment-error-border: rgba(224, 46, 42, 0.3);
   --pr-comment-error-surface: rgba(224, 46, 42, 0.04);
   --pr-check-row-hover-surface: rgba(13, 13, 13, 0.02);
@@ -73,6 +74,7 @@
 }
 
 .SliceRoot--theme-dark {
+  --pr-comment-divider: rgba(252, 252, 252, 0.036);
   --pr-comment-error-border: rgba(227, 67, 63, 0.3);
   --pr-comment-error-surface: rgba(227, 67, 63, 0.04);
   --pr-check-row-hover-surface: rgba(252, 252, 252, 0.003);

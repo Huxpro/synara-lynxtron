@@ -1533,6 +1533,17 @@ Lynx-for-Web and Native/Desktop production builds pass; strict reuse and style
 audits remain green at 61.95% pull-request reuse and 98.07% style coverage.
 This is source/build evidence, not a new Native runtime certification cell.
 
+The pull-request comment-card follow-up removes a Native double-inset and
+restores Web's between-card separator model. Cards no longer add their own 10px
+vertical padding around a header that already owns 10px, file paths no longer
+carry an 8px left offset, and only adjacent cards receive a 50%-strength top
+divider. The disclosure header, 12px actor identity, 11px timestamp/path, 12px
+Reply action, finding hierarchy, 12px body bottom inset, and 220ms disclosure
+motion remain unchanged. Focused Summary/warning coverage passes 10/10;
+Lynx-for-Web and Native/Desktop production builds pass; strict reuse and style
+audits remain green at 61.95% pull-request reuse and 98.07% style coverage.
+This is source/build evidence, not a new Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

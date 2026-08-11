@@ -171,4 +171,37 @@ describe('Pull Request summary disclosure fidelity', () => {
       /\.SharedPrActorLabel--reviewer \.SharedPrActorLogin\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm\);/s
     );
   });
+
+  it('matches the Web comment-card inset and between-card divider', () => {
+    const styles = readFileSync(
+      new URL('./pull-request-summary-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+    const appStyles = readFileSync(
+      new URL('../app/App.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(styles).toMatch(
+      /\.SharedPrSummaryComment\s*\{[^}]*width:\s*100%;[^}]*\}/s
+    );
+    expect(styles).not.toMatch(
+      /\.SharedPrSummaryComment\s*\{[^}]*(?:padding|border-bottom):/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrSummaryComment \+ \.SharedPrSummaryComment\s*\{[^}]*border-top:\s*1px solid var\(--pr-comment-divider\);/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrSummaryCommentHeader\s*\{[^}]*padding:\s*10px 0;/s
+    );
+    expect(styles).not.toMatch(
+      /\.SharedPrSummaryCommentPath\s*\{[^}]*margin-left:/s
+    );
+    expect(appStyles).toContain(
+      '--pr-comment-divider: rgba(13, 13, 13, 0.0345);'
+    );
+    expect(appStyles).toContain(
+      '--pr-comment-divider: rgba(252, 252, 252, 0.036);'
+    );
+  });
 });
