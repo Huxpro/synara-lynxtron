@@ -1555,6 +1555,16 @@ builds pass; strict reuse and style audits remain green at 61.95% pull-request
 reuse and 98.07% style coverage. This is source/build evidence, not a new
 Native runtime certification cell.
 
+The pull-request detail-header spacing follow-up removes a local margin left
+behind when the external-browser action moved into the shared action cluster.
+The cluster remains the sole owner of right alignment and the 4px gap between
+primary action, external open, and Close; the external action no longer adds
+another 4px trailing margin that doubled its distance from Close. Focused
+header/layout coverage passes 4/4; Lynx-for-Web and Native/Desktop production
+builds pass; strict reuse and style audits remain green at 61.95% pull-request
+reuse and 98.07% style coverage. This is source/build evidence, not a new
+Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

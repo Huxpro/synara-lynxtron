@@ -94,7 +94,17 @@ describe('Pull Request detail close fidelity', () => {
     expect(source).toContain("'background only';");
     expect(source).toContain('void platformWindow.openExternal(props.url);');
     expect(styles).toMatch(
-      /\.SharedPrDetailExternalButton\s*\{[^}]*margin-left:\s*auto;[^}]*margin-right:\s*4px;/s
+      /\.SharedPrDetailExternalButton\s*\{[^}]*margin-left:\s*0;/s
+    );
+    expect(styles).not.toMatch(
+      /\.SharedPrDetailExternalButton\s*\{[^}]*margin-right:/
+    );
+    const appStyles = readFileSync(
+      new URL('../app/App.css', import.meta.url),
+      'utf8'
+    );
+    expect(appStyles).toMatch(
+      /\.SharedPrDetailDockActions\s*\{[^}]*margin-left:\s*auto;[^}]*gap:\s*4px;/s
     );
   });
 });
