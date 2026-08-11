@@ -220,7 +220,9 @@ export function PullRequestSummaryChecksElement(props: {
   return (
     <view className="SharedPrSummaryChecks">
       {props.checks.length === 0 ? (
-        <text className="SharedPrSummaryMuted">No checks reported.</text>
+        <text className="SharedPrSummaryEmptyChecks">
+          No checks reported.
+        </text>
       ) : (
         props.checks.map((check, index) => (
           <PullRequestSummaryCheckRow
@@ -274,7 +276,7 @@ export function PullRequestSummaryCommentsElement(props: {
         </PullRequestWarningBanner>
       ) : null}
       {props.detail.comments.length === 0 ? (
-        <text className="SharedPrSummaryMuted SharedPrSummaryEmptyComments">
+        <text className="SharedPrSummaryEmptyComments">
           No comments
         </text>
       ) : (

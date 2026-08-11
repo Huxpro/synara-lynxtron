@@ -90,4 +90,25 @@ describe('Pull Request summary disclosure fidelity', () => {
       '`${props.headBranch} › ${props.baseBranch}'
     );
   });
+
+  it('uses distinct meta and body roles for Summary empty states', () => {
+    const source = readFileSync(
+      new URL('./PullRequestSummaryCompositionElements.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const styles = readFileSync(
+      new URL('./pull-request-summary-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(source).toContain('className="SharedPrSummaryEmptyChecks"');
+    expect(source).toContain('className="SharedPrSummaryEmptyComments"');
+    expect(styles).toMatch(
+      /\.SharedPrSummaryEmptyChecks\s*\{[^}]*font-size:\s*var\(--app-font-size-ui\);[^}]*line-height:\s*18px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrSummaryEmptyComments\s*\{[^}]*padding:\s*16px 0;[^}]*font-size:\s*var\(--app-font-size-ui-lg\);[^}]*line-height:\s*20px;[^}]*text-align:\s*center;/s
+    );
+    expect(source).not.toContain('SharedPrSummaryMuted');
+  });
 });

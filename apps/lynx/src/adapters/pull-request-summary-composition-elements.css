@@ -258,7 +258,6 @@
 
 .SharedPrSummaryCheckName,
 .SharedPrSummaryCheckStatus,
-.SharedPrSummaryMuted,
 .SharedPrSummaryCommentPath {
   font-size: var(--app-font-size-ui-sm);
   line-height: 18px;
@@ -284,13 +283,21 @@
 }
 
 .SharedPrSummaryCheckStatus,
-.SharedPrSummaryMuted,
 .SharedPrSummaryCommentPath {
   color: var(--muted-foreground);
 }
 
+.SharedPrSummaryEmptyChecks {
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui);
+  line-height: 18px;
+}
+
 .SharedPrSummaryEmptyComments {
   padding: 16px 0;
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-lg);
+  line-height: 20px;
   text-align: center;
 }
 

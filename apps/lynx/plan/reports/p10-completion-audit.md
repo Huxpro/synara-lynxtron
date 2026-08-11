@@ -1468,6 +1468,17 @@ reuse and style audits remain green at 61.95% pull-request reuse and 98.07%
 style coverage. This is source/build evidence, not a new Native runtime
 certification cell.
 
+The pull-request Summary empty-state follow-up separates two roles that the
+Native adapter had collapsed into one 11px muted class. `No checks reported.`
+now uses Web's 12px meta role with an 18px line box, while centered `No
+comments` uses the 13px body role with a 20px line box and existing 16px
+vertical padding. The obsolete shared muted class is removed so future empty
+copy must choose its semantic tier. Focused Summary/warning coverage passes
+7/7; Lynx-for-Web and Native/Desktop production builds pass; strict reuse and
+style audits remain green at 61.95% pull-request reuse and 98.07% style
+coverage. This is source/build evidence, not a new Native runtime certification
+cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after
