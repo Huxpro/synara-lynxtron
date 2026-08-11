@@ -1,0 +1,228 @@
+{
+  "client": "native",
+  "stateId": "native-settings-general-light-1280",
+  "roles": {
+    "root": {
+      "nodeId": 13,
+      "nodeName": "VIEW",
+      "attributes": {
+        "data-viewport-width": "1280",
+        "data-viewport-height": "820",
+        "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 820
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "page": {
+      "nodeId": 149,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsPage SettingsPage--theme-light SettingsPage--sidebar-open"
+      },
+      "text": "",
+      "box": {
+        "x": 256,
+        "y": 0,
+        "width": 1024,
+        "height": 820
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "content": {
+      "nodeId": 152,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SettingsContentInner"
+      },
+      "text": "",
+      "box": {
+        "x": 432,
+        "y": 0,
+        "width": 672,
+        "height": 1521
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "header": {
+      "nodeId": 153,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "SharedSettingsPanelHeader"
+      },
+      "text": "",
+      "box": {
+        "x": 456,
+        "y": 32,
+        "width": 624,
+        "height": 54
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "section": {
+      "nodeId": 167,
+      "nodeName": "VIEW",
+      "attributes": {
+        "idSelector": "",
+        "class": "SharedSettingsGeneralSection"
+      },
+      "text": "",
+      "box": {
+        "x": 456,
+        "y": 118,
+        "width": 624,
+        "height": 155
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "row": {
+      "nodeId": 172,
+      "nodeName": "VIEW",
+      "attributes": {
+        "idSelector": "setting-default-provider",
+        "class": "SharedSettingsGeneralRow"
+      },
+      "text": "",
+      "box": {
+        "x": 457,
+        "y": 151,
+        "width": 622,
+        "height": 61
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "control": {
+      "nodeId": 182,
+      "nodeName": "VIEW",
+      "attributes": {
+        "event-through": "false",
+        "accessibility-element": "false",
+        "bindtap": "146:0:bindtap",
+        "bindmouseup": "146:0:bindmouseup",
+        "bindmousedown": "146:0:bindmousedown",
+        "bindtouchstart": "146:0:bindtouchstart",
+        "bindtouchend": "146:0:bindtouchend",
+        "bindtouchcancel": "146:0:bindtouchcancel",
+        "class": "LxButton LxButton--outline LxButton--default SharedSettingsGeneralSelectTrigger SharedSettingsGeneralSelectTrigger--general"
+      },
+      "text": "",
+      "box": {
+        "x": 891,
+        "y": 165,
+        "width": 176,
+        "height": 32
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "hsla(0,0%,5%,.069)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    }
+  }
+}

@@ -1858,6 +1858,20 @@ Web plus Native/Desktop production builds pass. Evidence is retained in
 `shots/2026-08-11/current-head-native-landing/`. Native dark, 1440, and the
 remaining routes are still unrecertified.
 
+The exact-owned Native refresh now also covers Settings General light/1280 via
+the real startup deep link `synara://settings/general`. PID-derived
+`localhost:8902/session 1` points to the staged workspace bundle, while
+unrelated `@t3tools/lynxtron` remains untouched on 8901. The Native frame is
+2560x1640 for a logical 1280x820 root and has an empty exact-client console.
+Key route geometry matches current Web authority: the General heading begins
+at `(456,32)`, and the first provider control is exactly 176x32 at `(891,165)`
+in both clients. Native additionally records the 1024px page, 672px content
+rail, 624x54 header, 624x155 first section, and 622x61 first row. No product
+patch was required. Evidence is retained in
+`shots/2026-08-11/current-head-native-settings-general/`. This closes only the
+light/1280 General route cell; dark, 1440, other Settings sections, and the
+remaining Native routes are pending.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after
