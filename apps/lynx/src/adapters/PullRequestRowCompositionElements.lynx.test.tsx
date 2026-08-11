@@ -163,6 +163,9 @@ describe('Pull Request row icon fidelity', () => {
     expect(styles).toMatch(
       /\.SharedPrRow--selected\s*\{[^}]*background-color:\s*var\(--muted\);/s
     );
+    expect(styles).toMatch(
+      /\.SharedPrRowAction\s*\{[^}]*padding:\s*6px 4px 6px 12px;[^}]*border-radius:\s*8px;/s
+    );
     expect(appStyles).toMatch(
       /\.SliceRoot--theme-light\s*\{[^}]*--pr-row-hover-surface:\s*rgba\(13,\s*13,\s*13,\s*0\.028\);/s
     );

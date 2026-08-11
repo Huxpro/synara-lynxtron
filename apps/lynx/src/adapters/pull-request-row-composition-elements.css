@@ -28,6 +28,7 @@
   flex-direction: row;
   align-items: center;
   padding: 6px 4px 6px 12px;
+  border-radius: 8px;
 }
 
 .SharedPrRowAction.ui-focus {

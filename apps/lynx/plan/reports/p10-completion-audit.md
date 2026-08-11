@@ -1575,6 +1575,16 @@ Native/Desktop production builds pass; strict reuse and style audits remain
 green at 61.95% pull-request reuse and 98.07% style coverage. This is
 source/build evidence, not a new Native runtime certification cell.
 
+The pull-request row focus follow-up aligns its action outline with the rounded
+row chrome. The Native row action now carries the same 8px radius as the outer
+row, so its 1px focus ring no longer appears square inside rounded
+hover/selection surfaces. Existing 6x4x6x12px row padding, keyboard activation,
+accessible current-value semantics, selected background, and pin separation
+remain unchanged. Focused row coverage passes 5/5; Lynx-for-Web and
+Native/Desktop production builds pass; strict reuse and style audits remain
+green at 61.95% pull-request reuse and 98.07% style coverage. This is
+source/build evidence, not a new Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after
