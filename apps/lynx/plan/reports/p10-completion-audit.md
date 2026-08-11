@@ -1679,6 +1679,16 @@ Native/Desktop production builds pass; strict reuse and style audits remain
 green at 61.95% pull-request reuse and 98.07% style coverage. This is
 source/build evidence, not a new Native runtime certification cell.
 
+The pull-request detail-loading follow-up scopes Web's 20px panel inset to the
+Native detail skeleton. The existing four 52px loading rows now sit inside a
+full-width padded wrapper instead of touching the detail scroller edges, while
+route-list loading remains unchanged. Initial-error, stale-data, and Code-tab
+recovery paths keep their separate contracts. Focused detail/list coverage
+passes 6/6; Lynx-for-Web and Native/Desktop production builds pass; strict
+reuse and style audits remain green at 61.95% pull-request reuse and 98.07%
+style coverage. This is source/build evidence, not a new Native runtime
+certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

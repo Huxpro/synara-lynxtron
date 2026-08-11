@@ -451,6 +451,11 @@
   min-height: 0;
 }
 
+.SharedPrDetailLoading {
+  width: 100%;
+  padding: 20px;
+}
+
 .SliceRoot--viewport-compact
   .SharedPrRouteBody--detail-open
   .SharedPrRouteScroller,

@@ -1256,10 +1256,12 @@ export function PullRequestsPage() {
                   />
                 )
               ) : selectedDetailPending ? (
-                <PullRequestListLoadingComposition
-                  rowCount={4}
-                  label="Loading pull request details…"
-                />
+                <view className="SharedPrDetailLoading">
+                  <PullRequestListLoadingComposition
+                    rowCount={4}
+                    label="Loading pull request details…"
+                  />
+                </view>
               ) : selectedDetailError && !selectedDetail ? (
                 <PullRequestsUnavailableState
                   error={selectedDetailError}

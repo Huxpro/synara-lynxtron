@@ -25,7 +25,16 @@ describe('Pull Request detail recovery fidelity', () => {
 
     expect(source).toContain('rowCount={4}');
     expect(source).toContain('label="Loading pull request details…"');
+    expect(source).toContain('className="SharedPrDetailLoading"');
     expect(source).toContain('retrying={selectedDiffFetching}');
     expect(source).toContain('onRetry={() => void refetchSelectedDiff()}');
+  });
+
+  it('keeps detail skeletons inside the Web 20px panel inset', () => {
+    const styles = readFileSync(new URL('./App.css', import.meta.url), 'utf8');
+
+    expect(styles).toMatch(
+      /\.SharedPrDetailLoading\s*\{[^}]*width:\s*100%;[^}]*padding:\s*20px;/s
+    );
   });
 });
