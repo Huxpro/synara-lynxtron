@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Synara P10 · Perceptual Residual Atlas</title>
+    <title>Synara · High-fidelity Work Review</title>
     <style>
       :root {
         color-scheme: light dark;
@@ -611,7 +611,458 @@
         font-size: 10px;
       }
 
+      .review-deck {
+        display: grid;
+        grid-template-columns: 280px minmax(0, 1fr);
+        height: max(620px, calc(100vh - 190px));
+        max-height: 820px;
+        margin: 28px 0 48px;
+        overflow: hidden;
+        border: 1px solid var(--line-strong);
+        background: var(--surface);
+      }
+
+      .review-rail {
+        display: flex;
+        min-width: 0;
+        min-height: 0;
+        flex-direction: column;
+        border-right: 1px solid var(--line);
+        background: var(--page);
+      }
+
+      .review-rail-head {
+        padding: 16px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .review-rail-head strong,
+      .review-rail-head span {
+        display: block;
+      }
+
+      .review-rail-head strong {
+        font-family: "Iowan Old Style", "Songti SC", serif;
+        font-size: 22px;
+        font-weight: 500;
+      }
+
+      .review-rail-head span {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.45;
+      }
+
+      .review-search {
+        width: 100%;
+        height: 34px;
+        margin-top: 12px;
+        border: 1px solid var(--line);
+        border-radius: 5px;
+        padding: 0 9px;
+        color: var(--ink);
+        background: var(--surface);
+      }
+
+      .review-days {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .review-day {
+        flex: none;
+        border: 0;
+        border-radius: 4px;
+        padding: 5px 7px;
+        color: var(--muted);
+        background: transparent;
+        cursor: pointer;
+        font-size: 10px;
+      }
+
+      .review-day[aria-pressed="true"] {
+        color: var(--surface);
+        background: var(--ink);
+      }
+
+      .review-list {
+        min-height: 0;
+        flex: 1;
+        overflow-y: auto;
+        padding: 6px;
+      }
+
+      .review-list-item {
+        display: grid;
+        width: 100%;
+        grid-template-columns: 28px minmax(0, 1fr) auto;
+        gap: 8px;
+        align-items: center;
+        border: 0;
+        border-radius: 5px;
+        padding: 8px;
+        color: var(--muted);
+        background: transparent;
+        cursor: pointer;
+        text-align: left;
+      }
+
+      .review-list-item:hover {
+        color: var(--ink);
+        background: color-mix(in srgb, var(--ink) 5%, transparent);
+      }
+
+      .review-list-item[aria-current="true"] {
+        color: var(--ink);
+        background: color-mix(in srgb, var(--accent) 11%, var(--surface));
+      }
+
+      .review-list-index {
+        font-family: "Iowan Old Style", serif;
+        font-size: 14px;
+        color: var(--accent);
+      }
+
+      .review-list-copy {
+        min-width: 0;
+      }
+
+      .review-list-copy strong,
+      .review-list-copy span {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .review-list-copy strong {
+        font-size: 11px;
+        font-weight: 650;
+      }
+
+      .review-list-copy span {
+        margin-top: 2px;
+        font-size: 9px;
+      }
+
+      .review-list-count {
+        font-size: 9px;
+      }
+
+      .review-main {
+        display: flex;
+        min-width: 0;
+        min-height: 0;
+        flex-direction: column;
+      }
+
+      .review-head {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 24px;
+        align-items: end;
+        padding: 18px 20px 14px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .review-kicker {
+        margin: 0 0 4px;
+        color: var(--accent);
+        font-size: 10px;
+        font-weight: 750;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+      }
+
+      .review-title {
+        margin: 0;
+        font-family: "Iowan Old Style", "Songti SC", serif;
+        font-size: clamp(24px, 3vw, 42px);
+        font-weight: 500;
+        letter-spacing: -0.025em;
+        line-height: 1;
+      }
+
+      .review-description {
+        max-width: 760px;
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .review-position {
+        color: var(--muted);
+        font-size: 11px;
+        text-align: right;
+      }
+
+      .review-position strong {
+        display: block;
+        color: var(--ink);
+        font-family: "Iowan Old Style", serif;
+        font-size: 24px;
+        font-weight: 500;
+      }
+
+      .review-stage {
+        position: relative;
+        display: grid;
+        min-width: 0;
+        min-height: 0;
+        flex: 1;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1px;
+        background: var(--line);
+      }
+
+      .review-frame {
+        display: flex;
+        min-width: 0;
+        min-height: 0;
+        overflow: hidden;
+        flex-direction: column;
+        background: var(--surface);
+      }
+
+      .review-frame-head {
+        display: flex;
+        min-height: 38px;
+        gap: 10px;
+        align-items: center;
+        padding: 8px 10px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .review-frame-head strong {
+        font-size: 11px;
+      }
+
+      .review-frame-head span {
+        margin-left: auto;
+        overflow: hidden;
+        color: var(--muted);
+        font-size: 9px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .review-image-button {
+        display: grid;
+        min-width: 0;
+        min-height: 0;
+        flex: 1;
+        place-items: center;
+        border: 0;
+        padding: 10px;
+        overflow: hidden;
+        color: inherit;
+        background:
+          linear-gradient(90deg, color-mix(in srgb, var(--line) 45%, transparent) 1px, transparent 1px)
+            0 0 / 24px 24px,
+          linear-gradient(color-mix(in srgb, var(--line) 40%, transparent) 1px, transparent 1px)
+            0 0 / 24px 24px,
+          var(--page);
+        cursor: zoom-in;
+      }
+
+      .review-image-button img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        min-width: 0;
+        min-height: 0;
+        max-height: 62vh;
+        object-fit: contain;
+      }
+
+      .review-frame-missing {
+        display: grid;
+        min-height: 300px;
+        flex: 1;
+        place-items: center;
+        padding: 28px;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.5;
+        text-align: center;
+        background: var(--page);
+      }
+
+      .review-stage[data-mode="overlay"] {
+        display: block;
+        position: relative;
+        background: var(--page);
+      }
+
+      .review-stage[data-mode="overlay"] .review-frame {
+        display: none;
+      }
+
+      .review-overlay {
+        display: none;
+      }
+
+      .review-stage[data-mode="overlay"] .review-overlay {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+      }
+
+      .review-overlay img {
+        position: absolute;
+        width: calc(100% - 24px);
+        height: calc(100% - 24px);
+        object-fit: contain;
+      }
+
+      .review-overlay img:last-of-type {
+        clip-path: inset(0 0 0 var(--review-split, 50%));
+      }
+
+      .review-overlay-line {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: var(--review-split, 50%);
+        width: 1px;
+        background: var(--accent);
+        pointer-events: none;
+      }
+
+      .review-overlay input {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: ew-resize;
+      }
+
+      .review-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+        min-height: 52px;
+        padding: 9px 12px;
+        border-top: 1px solid var(--line);
+      }
+
+      .review-controls button {
+        min-height: 30px;
+        border: 1px solid var(--line);
+        border-radius: 5px;
+        padding: 5px 9px;
+        color: var(--ink);
+        background: var(--surface);
+        cursor: pointer;
+      }
+
+      .review-controls button[aria-pressed="true"] {
+        border-color: var(--line-strong);
+        color: var(--surface);
+        background: var(--ink);
+      }
+
+      .review-help {
+        margin-left: auto;
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      .audit-section {
+        margin: 20px 0;
+        border-top: 1px solid var(--line-strong);
+      }
+
+      .audit-section > summary {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        padding: 16px 0;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .audit-section > summary span {
+        margin-left: auto;
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 500;
+      }
+
+      #reviewLightbox {
+        width: min(96vw, 1800px);
+        max-width: none;
+        height: 94vh;
+        border: 1px solid var(--line-strong);
+        padding: 0;
+        color: var(--ink);
+        background: var(--surface);
+      }
+
+      #reviewLightbox::backdrop {
+        background: rgba(0, 0, 0, 0.72);
+      }
+
+      .review-lightbox-head {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        min-height: 46px;
+        padding: 8px 12px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .review-lightbox-head strong {
+        overflow: hidden;
+        font-size: 12px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .review-lightbox-head span {
+        margin-left: auto;
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      .review-lightbox-head button {
+        border: 0;
+        color: var(--ink);
+        background: transparent;
+        cursor: pointer;
+        font-size: 20px;
+      }
+
+      .review-lightbox-stage {
+        display: grid;
+        height: calc(94vh - 47px);
+        place-items: center;
+        overflow: auto;
+        background: var(--page);
+      }
+
+      .review-lightbox-stage img {
+        display: block;
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+      }
+
       @media (max-width: 1280px) {
+        .review-deck {
+          grid-template-columns: 230px minmax(0, 1fr);
+        }
+
         .workbench {
           grid-template-columns: 1fr;
         }
@@ -625,6 +1076,32 @@
       @media (max-width: 900px) {
         .masthead {
           grid-template-columns: 1fr;
+        }
+
+        .review-deck {
+          display: block;
+          height: auto;
+          max-height: none;
+          overflow: visible;
+        }
+
+        .review-rail {
+          max-height: 300px;
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+
+        .review-stage {
+          grid-template-columns: 1fr;
+        }
+
+        .review-image-button img {
+          max-height: 70vh;
+        }
+
+        .review-help {
+          width: 100%;
+          margin-left: 0;
         }
 
         .frames {
@@ -642,67 +1119,105 @@
       <header class="masthead">
         <div>
           <p class="eyebrow">Synara · P10 perceptual fidelity</p>
-          <h1>最后 20%，逐项归因。</h1>
+          <h1>十天工作，一次翻完。</h1>
           <p class="intro">
-            同一 snapshot、route、theme、viewport 与 interaction state。Raw frame 用于身份审计，
-            normalized frame 用于 overlay/split；geometry、resolved styles 和 residual disposition
-            与图片一起保留。任何 open P0/P1 都让 strict verifier 保持红色。
+            先按工作项浏览，再深入审计。← / → 翻工作项，↑ / ↓ 切换同一项里的状态，
+            Enter 放大当前图片，1 / 2 / 3 选择 Web、Lynx-for-Web、Native。
+            所有 1,856 张原始证据仍可从页面底部访问。
           </p>
         </div>
         <div class="summary">
-          <div><strong id="stateCount">0</strong><span>Canonical states</span></div>
-          <div><strong id="retainedCount">0</strong><span>Retained cells</span></div>
-          <div><strong id="blockingCount">0</strong><span>Open P0/P1</span></div>
-          <div><strong id="residualCount">0</strong><span>Total residuals</span></div>
+          <div><strong id="storyCount">0</strong><span>工作项</span></div>
+          <div><strong>10</strong><span>连续工作日</span></div>
+          <div><strong id="imageCount">0</strong><span>截图证据</span></div>
+          <div><strong>← →</strong><span>键盘浏览</span></div>
         </div>
       </header>
 
-      <nav class="toolbar">
-        <label>
-          State
-          <select id="stateFilter">
-            <option value="all">All states</option>
-          </select>
-        </label>
-        <label>
-          Theme
-          <select id="themeFilter">
-            <option value="all">All</option>
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
-          </select>
-        </label>
-        <label>
-          Severity
-          <select id="severityFilter">
-            <option value="all">All</option>
-            <option value="P0">P0</option>
-            <option value="P1">P1</option>
-            <option value="P2">P2</option>
-            <option value="P3">P3</option>
-          </select>
-        </label>
-        <button id="showOnlyOpen" type="button" aria-pressed="false">Open residuals only</button>
-        <span class="result" id="resultCount"></span>
-      </nav>
-
-      <section class="gallery" id="gallery"></section>
-
-      <section class="archive" id="screenshotArchive">
-        <header class="archive-header">
-          <div>
-            <p class="eyebrow">Evidence archive</p>
-            <h2>August 2–11 screenshots</h2>
-            <p>
-              Every PNG/JPEG retained in these ten daily evidence trees is indexed
-              here, including Native diagnostic frame sequences. Directories load
-              previews only when expanded. “Untracked” means the image exists in
-              this working tree but was not committed when the archive was generated.
-            </p>
+      <section class="review-deck" aria-label="High fidelity work review">
+        <aside class="review-rail">
+          <div class="review-rail-head">
+            <strong>工作目录</strong>
+            <span>按天与功能组织；选择一项后在右侧对比。</span>
+            <input
+              class="review-search"
+              id="reviewSearch"
+              type="search"
+              placeholder="搜索后按 Enter 开始浏览"
+              aria-label="搜索工作项"
+            />
           </div>
-          <div class="archive-summary" id="archiveSummary"></div>
-        </header>
-        <div class="archive-toolbar">
+          <div class="review-days" id="reviewDays"></div>
+          <div class="review-list" id="reviewList"></div>
+        </aside>
+        <section class="review-main">
+          <header class="review-head">
+            <div>
+              <p class="review-kicker" id="reviewKicker"></p>
+              <h2 class="review-title" id="reviewTitle"></h2>
+              <p class="review-description" id="reviewDescription"></p>
+            </div>
+            <div class="review-position">
+              <strong id="reviewPosition"></strong>
+              <span id="reviewVariantPosition"></span>
+            </div>
+          </header>
+          <div class="review-stage" id="reviewStage" data-mode="grid"></div>
+          <footer class="review-controls">
+            <button id="previousStory" type="button" aria-label="上一个工作项">← 上一个</button>
+            <button id="nextStory" type="button" aria-label="下一个工作项">下一个 →</button>
+            <button id="previousVariant" type="button" aria-label="上一组截图">↑ 上一组</button>
+            <button id="nextVariant" type="button" aria-label="下一组截图">下一组 ↓</button>
+            <button id="gridMode" type="button" aria-pressed="true">并排</button>
+            <button id="overlayMode" type="button" aria-pressed="false">叠加</button>
+            <span class="review-help">← → 工作项 · ↑ ↓ 状态 · 1/2/3 选端 · Enter 放大 · O 叠加</span>
+          </footer>
+        </section>
+      </section>
+
+      <details class="audit-section">
+        <summary>
+          Canonical P10 residual atlas
+          <span>原有 normalized overlay、geometry、styles 与 residuals</span>
+        </summary>
+        <nav class="toolbar">
+          <label>
+            State
+            <select id="stateFilter">
+              <option value="all">All states</option>
+            </select>
+          </label>
+          <label>
+            Theme
+            <select id="themeFilter">
+              <option value="all">All</option>
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+            </select>
+          </label>
+          <label>
+            Severity
+            <select id="severityFilter">
+              <option value="all">All</option>
+              <option value="P0">P0</option>
+              <option value="P1">P1</option>
+              <option value="P2">P2</option>
+              <option value="P3">P3</option>
+            </select>
+          </label>
+          <button id="showOnlyOpen" type="button" aria-pressed="false">Open residuals only</button>
+          <span class="result" id="resultCount"></span>
+        </nav>
+        <section class="gallery" id="gallery"></section>
+      </details>
+
+      <details class="audit-section">
+        <summary>
+          全量原始截图索引
+          <span id="archiveSummary"></span>
+        </summary>
+        <section class="archive" id="screenshotArchive">
+          <div class="archive-toolbar">
           <input
             id="archiveSearch"
             type="search"
@@ -717,15 +1232,34 @@
             <option value="tracked">Tracked</option>
             <option value="untracked">Untracked</option>
           </select>
-        </div>
-        <div class="archive-days" id="archiveDays"></div>
-      </section>
+          </div>
+          <div class="archive-days" id="archiveDays"></div>
+        </section>
+      </details>
     </main>
+
+    <dialog id="reviewLightbox">
+      <div class="review-lightbox-head">
+        <strong id="reviewLightboxTitle"></strong>
+        <span>← / → 图片 · Esc 关闭</span>
+        <button id="closeReviewLightbox" type="button" aria-label="关闭">×</button>
+      </div>
+      <div class="review-lightbox-stage">
+        <img id="reviewLightboxImage" alt="" />
+      </div>
+    </dialog>
 
     <script src="manifest.js"></script>
     <script src="screenshot-archive.js"></script>
     <script>
       const data = globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ ?? { states: [] };
+      const screenshotArchive = globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ ?? {
+        days: [],
+        stories: [],
+        imageCount: 0,
+        trackedCount: 0,
+        untrackedCount: 0,
+      };
       const clients = [
         { id: "web", label: "Web authority" },
         { id: "lynx", label: "Lynx-for-Web" },
@@ -989,34 +1523,8 @@
       });
 
       const residualsAll = data.states.flatMap((state) => state.residuals);
-      document.querySelector("#stateCount").textContent = String(data.states.length);
-      document.querySelector("#retainedCount").textContent = String(
-        data.states.reduce(
-          (count, state) =>
-            count +
-            clients.reduce(
-              (clientCount, client) =>
-                clientCount + (state.evidence[client.id].status === "retained" ? 1 : 0),
-              0,
-            ),
-          0,
-        ),
-      );
-      document.querySelector("#blockingCount").textContent = String(
-        residualsAll.filter(
-          (residual) =>
-            residual.status === "open" && (residual.severity === "P0" || residual.severity === "P1"),
-        ).length,
-      );
-      document.querySelector("#residualCount").textContent = String(residualsAll.length);
       render();
 
-      const screenshotArchive = globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ ?? {
-        days: [],
-        imageCount: 0,
-        trackedCount: 0,
-        untrackedCount: 0,
-      };
       const archiveDays = document.querySelector("#archiveDays");
       const archiveSearch = document.querySelector("#archiveSearch");
       const archiveDay = document.querySelector("#archiveDay");
@@ -1102,6 +1610,304 @@
       archiveDay.addEventListener("change", renderArchive);
       archiveGitStatus.addEventListener("change", renderArchive);
       renderArchive();
+
+      const dayNarratives = {
+        "2026-08-02": "搭建共享 server 的 fast loop，并验证 Composer、transcript 与 Markdown。",
+        "2026-08-03": "扩展核心路由、Host input、Command K、Composer 细节与 Settings 行为。",
+        "2026-08-04": "建立完整 P10 matrix、overlay residual atlas 与三端基准。",
+        "2026-08-05": "集中收敛 Settings、Providers、Usage 与 Profile 的真实功能和视觉。",
+        "2026-08-06": "逐控件校准 Composer、Command K、Sidebar 与 populated states。",
+        "2026-08-07": "处理窗口 chrome、响应式布局、Settings sidebar 与窄窗口行为。",
+        "2026-08-08": "实现 Environment/Diff，并继续修正主题、图标与交互细节。",
+        "2026-08-09": "完成 Explorer、Theme Pack、Sidebar drag 与 Native blocker recovery。",
+        "2026-08-10": "刷新矩阵、排查 Native 闪烁，并补 Explorer 内容能力。",
+        "2026-08-11": "对 current HEAD 做 Landing、Composer、Settings、PR、Kanban 复证。",
+      };
+      const reviewState = {
+        day: "all",
+        search: "",
+        storyIndex: 0,
+        variantIndex: 0,
+        selectedClient: 0,
+        mode: "grid",
+      };
+      const reviewClients = [
+        { id: "web", label: "Web authority" },
+        { id: "lynx", label: "Lynx-for-Web" },
+        { id: "native", label: "Lynxtron Native" },
+      ];
+      const reviewList = document.querySelector("#reviewList");
+      const reviewStage = document.querySelector("#reviewStage");
+      const reviewLightbox = document.querySelector("#reviewLightbox");
+      const reviewLightboxImage = document.querySelector("#reviewLightboxImage");
+      const reviewLightboxTitle = document.querySelector("#reviewLightboxTitle");
+      let lightboxImages = [];
+      let lightboxIndex = 0;
+
+      function visibleStories() {
+        const search = reviewState.search.toLowerCase();
+        return screenshotArchive.stories.filter(
+          (story) =>
+            (reviewState.day === "all" || story.day === reviewState.day) &&
+            (!search ||
+              story.label.toLowerCase().includes(search) ||
+              story.directory.toLowerCase().includes(search)),
+        );
+      }
+
+      function clientImages(story, client) {
+        return story.images.filter((image) => image.client === client);
+      }
+
+      function clientImage(story, client) {
+        const images = clientImages(story, client);
+        if (images.length) {
+          return images[reviewState.variantIndex % images.length];
+        }
+        const recognized = story.images.some((image) =>
+          ["web", "lynx", "native"].includes(image.client),
+        );
+        if (recognized) return null;
+        const evidence = story.images.filter((image) => image.client === "evidence");
+        if (!evidence.length) return null;
+        const offset = reviewClients.findIndex((entry) => entry.id === client);
+        return evidence[(reviewState.variantIndex + offset) % evidence.length];
+      }
+
+      function variantCount(story) {
+        return Math.max(
+          1,
+          ...reviewClients.map((client) => clientImages(story, client.id).length),
+          story.images.filter((image) => image.client === "evidence").length,
+        );
+      }
+
+      function reviewFrame(story, client, index) {
+        const image = clientImage(story, client.id);
+        if (!image) {
+          return `
+            <article class="review-frame">
+              <div class="review-frame-head"><strong>${client.label}</strong></div>
+              <div class="review-frame-missing">该工作项没有可归属到 ${client.label} 的截图。<br />可在底部原始索引查看其它证据。</div>
+            </article>
+          `;
+        }
+        return `
+          <article class="review-frame">
+            <div class="review-frame-head">
+              <strong>${client.label}</strong>
+              <span title="${escapeHtml(image.repoPath)}">${escapeHtml(image.name)}</span>
+            </div>
+            <button class="review-image-button" type="button" data-review-client="${index}" data-review-image="${image.path}" data-review-title="${escapeHtml(story.label)} · ${client.label} · ${escapeHtml(image.name)}">
+              <img src="${image.path}" alt="${escapeHtml(story.label)} · ${client.label}" />
+            </button>
+          </article>
+        `;
+      }
+
+      function reviewOverlay(story) {
+        const images = reviewClients
+          .map((client) => ({ client, image: clientImage(story, client.id) }))
+          .filter((entry) => entry.image);
+        if (images.length < 2) {
+          return `<div class="review-frame-missing">至少需要两个 client frame 才能叠加比较。</div>`;
+        }
+        const first = images[0];
+        const second = images[1];
+        return `
+          <div class="review-overlay" style="--review-split:50%">
+            <img src="${first.image.path}" alt="${first.client.label}" />
+            <img src="${second.image.path}" alt="${second.client.label}" />
+            <span class="review-overlay-line"></span>
+            <input type="range" min="0" max="100" value="50" aria-label="对比分割位置" />
+          </div>
+        `;
+      }
+
+      function renderReview() {
+        const stories = visibleStories();
+        if (!stories.length) {
+          reviewList.innerHTML = `<div class="archive-empty">没有匹配的工作项。</div>`;
+          reviewStage.innerHTML = `<div class="review-frame-missing">调整日期或搜索条件。</div>`;
+          return;
+        }
+        reviewState.storyIndex =
+          (reviewState.storyIndex + stories.length) % stories.length;
+        const story = stories[reviewState.storyIndex];
+        const variants = variantCount(story);
+        reviewState.variantIndex =
+          (reviewState.variantIndex + variants) % variants;
+        reviewList.innerHTML = stories
+          .map(
+            (item, index) => `
+              <button class="review-list-item" type="button" data-review-story="${index}" aria-current="${index === reviewState.storyIndex}">
+                <span class="review-list-index">${String(index + 1).padStart(2, "0")}</span>
+                <span class="review-list-copy">
+                  <strong>${escapeHtml(item.label)}</strong>
+                  <span>${item.day} · ${escapeHtml(item.directory)}</span>
+                </span>
+                <span class="review-list-count">${item.imageCount}</span>
+              </button>
+            `,
+          )
+          .join("");
+        document.querySelector("#reviewKicker").textContent =
+          `${story.day} · ${story.clients.join(" / ")}`;
+        document.querySelector("#reviewTitle").textContent = story.label;
+        document.querySelector("#reviewDescription").textContent =
+          dayNarratives[story.day] ?? "High-fidelity implementation and verification evidence.";
+        document.querySelector("#reviewPosition").textContent =
+          `${reviewState.storyIndex + 1} / ${stories.length}`;
+        document.querySelector("#reviewVariantPosition").textContent =
+          variants > 1
+            ? `截图组 ${reviewState.variantIndex + 1} / ${variants}`
+            : `${story.imageCount} 张证据`;
+        reviewStage.dataset.mode = reviewState.mode;
+        reviewStage.innerHTML =
+          reviewClients.map((client, index) => reviewFrame(story, client, index)).join("") +
+          reviewOverlay(story);
+        lightboxImages = reviewClients
+          .map((client) => {
+            const image = clientImage(story, client.id);
+            return image
+              ? {
+                  src: image.path,
+                  title: `${story.label} · ${client.label} · ${image.name}`,
+                }
+              : null;
+          })
+          .filter(Boolean);
+        reviewStage.querySelectorAll("[data-review-image]").forEach((button) => {
+          button.addEventListener("click", () => {
+            reviewState.selectedClient = Number(button.dataset.reviewClient);
+            openReviewLightbox();
+          });
+        });
+        const split = reviewStage.querySelector(".review-overlay input");
+        if (split) {
+          split.addEventListener("input", () => {
+            split.parentElement.style.setProperty("--review-split", `${split.value}%`);
+          });
+        }
+        reviewList.querySelectorAll("[data-review-story]").forEach((button) => {
+          button.addEventListener("click", () => {
+            reviewState.storyIndex = Number(button.dataset.reviewStory);
+            reviewState.variantIndex = 0;
+            renderReview();
+          });
+        });
+        reviewList
+          .querySelector('[aria-current="true"]')
+          ?.scrollIntoView({ block: "nearest" });
+      }
+
+      function stepStory(direction) {
+        reviewState.storyIndex += direction;
+        reviewState.variantIndex = 0;
+        renderReview();
+      }
+
+      function stepVariant(direction) {
+        reviewState.variantIndex += direction;
+        renderReview();
+      }
+
+      function setReviewMode(mode) {
+        reviewState.mode = mode;
+        document.querySelector("#gridMode").setAttribute("aria-pressed", String(mode === "grid"));
+        document.querySelector("#overlayMode").setAttribute("aria-pressed", String(mode === "overlay"));
+        renderReview();
+      }
+
+      function openReviewLightbox() {
+        if (!lightboxImages.length) return;
+        const preferred = lightboxImages[
+          Math.min(reviewState.selectedClient, lightboxImages.length - 1)
+        ];
+        lightboxIndex = lightboxImages.indexOf(preferred);
+        reviewLightboxImage.src = preferred.src;
+        reviewLightboxImage.alt = preferred.title;
+        reviewLightboxTitle.textContent = preferred.title;
+        reviewLightbox.showModal();
+      }
+
+      function stepReviewLightbox(direction) {
+        if (!lightboxImages.length) return;
+        lightboxIndex =
+          (lightboxIndex + direction + lightboxImages.length) % lightboxImages.length;
+        const image = lightboxImages[lightboxIndex];
+        reviewLightboxImage.src = image.src;
+        reviewLightboxImage.alt = image.title;
+        reviewLightboxTitle.textContent = image.title;
+      }
+
+      const reviewDays = document.querySelector("#reviewDays");
+      reviewDays.innerHTML = [
+        `<button class="review-day" type="button" data-review-day="all" aria-pressed="true">全部</button>`,
+        ...screenshotArchive.days.map(
+          (day) =>
+            `<button class="review-day" type="button" data-review-day="${day.day}" aria-pressed="false">${day.day.slice(5)}</button>`,
+        ),
+      ].join("");
+      reviewDays.querySelectorAll("[data-review-day]").forEach((button) => {
+        button.addEventListener("click", () => {
+          reviewState.day = button.dataset.reviewDay;
+          reviewState.storyIndex = 0;
+          reviewState.variantIndex = 0;
+          reviewDays.querySelectorAll("[data-review-day]").forEach((peer) => {
+            peer.setAttribute("aria-pressed", String(peer === button));
+          });
+          renderReview();
+        });
+      });
+      const reviewSearch = document.querySelector("#reviewSearch");
+      reviewSearch.addEventListener("input", (event) => {
+        reviewState.search = event.target.value;
+        reviewState.storyIndex = 0;
+        reviewState.variantIndex = 0;
+        renderReview();
+      });
+      reviewSearch.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter") return;
+        reviewSearch.blur();
+        event.preventDefault();
+      });
+      document.querySelector("#previousStory").addEventListener("click", () => stepStory(-1));
+      document.querySelector("#nextStory").addEventListener("click", () => stepStory(1));
+      document.querySelector("#previousVariant").addEventListener("click", () => stepVariant(-1));
+      document.querySelector("#nextVariant").addEventListener("click", () => stepVariant(1));
+      document.querySelector("#gridMode").addEventListener("click", () => setReviewMode("grid"));
+      document.querySelector("#overlayMode").addEventListener("click", () => setReviewMode("overlay"));
+      document.querySelector("#closeReviewLightbox").addEventListener("click", () => reviewLightbox.close());
+      reviewLightbox.addEventListener("click", (event) => {
+        if (event.target === reviewLightbox) reviewLightbox.close();
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.target.matches("input, select, textarea")) return;
+        if (reviewLightbox.open) {
+          if (event.key === "ArrowLeft") stepReviewLightbox(-1);
+          if (event.key === "ArrowRight") stepReviewLightbox(1);
+          return;
+        }
+        if (event.key === "ArrowLeft") stepStory(-1);
+        else if (event.key === "ArrowRight") stepStory(1);
+        else if (event.key === "ArrowUp") stepVariant(-1);
+        else if (event.key === "ArrowDown") stepVariant(1);
+        else if (event.key === "Enter") openReviewLightbox();
+        else if (event.key.toLowerCase() === "o") {
+          setReviewMode(reviewState.mode === "grid" ? "overlay" : "grid");
+        } else if (["1", "2", "3"].includes(event.key)) {
+          reviewState.selectedClient = Number(event.key) - 1;
+          openReviewLightbox();
+        } else {
+          return;
+        }
+        event.preventDefault();
+      });
+      document.querySelector("#storyCount").textContent = String(screenshotArchive.storyCount);
+      document.querySelector("#imageCount").textContent =
+        screenshotArchive.imageCount.toLocaleString();
+      renderReview();
     </script>
   </body>
 </html>

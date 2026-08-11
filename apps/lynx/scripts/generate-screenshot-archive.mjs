@@ -23,6 +23,15 @@ const includedDays = new Set([
   '2026-08-11',
 ]);
 const imageExtensions = new Set(['.jpeg', '.jpg', '.png']);
+const clientDirectoryNames = new Set([
+  'browser',
+  'lynx',
+  'native',
+  'native-closed',
+  'native-tools',
+  'normalized',
+  'web',
+]);
 
 function listFiles(directory) {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -97,6 +106,82 @@ const days = [...includedDays].sort().map((day) => {
   };
 });
 
+function inferClient(image) {
+  const path = image.repoPath.toLowerCase();
+  const name = image.name.toLowerCase();
+  if (
+    path.includes('/native/') ||
+    name.startsWith('native') ||
+    name.includes('-native')
+  ) {
+    return 'native';
+  }
+  if (
+    path.includes('/lynx/') ||
+    name.startsWith('lynx') ||
+    name.includes('-lynx')
+  ) {
+    return 'lynx';
+  }
+  if (
+    path.includes('/web/') ||
+    name.startsWith('web') ||
+    name.includes('-web')
+  ) {
+    return 'web';
+  }
+  return 'evidence';
+}
+
+function storyDirectory(image) {
+  const parts = image.directory.split('/');
+  const lastPart = parts.at(-1);
+  if (lastPart && clientDirectoryNames.has(lastPart)) parts.pop();
+  if (parts[0] === 'p8-q2' && parts[1] === 'native') parts.splice(1, 1);
+  return parts.join('/');
+}
+
+function storyLabel(directory) {
+  return directory
+    .split('/')
+    .map((part) =>
+      part
+        .replaceAll('-', ' ')
+        .replace(/\b\w/gu, (letter) => letter.toUpperCase())
+    )
+    .join(' · ');
+}
+
+const storyMap = new Map();
+for (const image of images) {
+  const directory = storyDirectory(image);
+  const key = `${image.day}/${directory}`;
+  const story = storyMap.get(key) ?? {
+    id: key.replaceAll('/', '--'),
+    day: image.day,
+    directory,
+    label: storyLabel(directory),
+    images: [],
+  };
+  story.images.push({ ...image, client: inferClient(image) });
+  storyMap.set(key, story);
+}
+
+const stories = [...storyMap.values()]
+  .map((story) => ({
+    ...story,
+    imageCount: story.images.length,
+    clients: [...new Set(story.images.map((image) => image.client))],
+    sequence:
+      story.images.length >= 20 ||
+      story.directory.includes('flicker-diagnostic'),
+  }))
+  .sort((left, right) =>
+    `${left.day}/${left.directory}`.localeCompare(
+      `${right.day}/${right.directory}`
+    )
+  );
+
 const archive = {
   version: 1,
   range: {
@@ -108,6 +193,8 @@ const archive = {
   byteCount: images.reduce((total, image) => total + image.bytes, 0),
   trackedCount: images.filter((image) => image.gitStatus === 'tracked').length,
   untrackedCount: images.filter((image) => image.gitStatus === 'untracked').length,
+  storyCount: stories.length,
+  stories,
   days,
 };
 
