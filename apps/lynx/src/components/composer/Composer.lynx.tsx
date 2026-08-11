@@ -70,9 +70,9 @@ import {
 } from '@synara-web/lib/composerPastedText';
 import {
   dispatchSynaraCommand,
+  fetchFreshServerConfig,
   fetchProviderModels,
   fetchProviderSkills,
-  fetchServerConfig,
 } from '../../data/synaraClient.lynx';
 import {
   buildComposerInteractionModeSetCommand,
@@ -516,9 +516,10 @@ export function Composer({
     queryKey: ['server-config'],
     queryFn: () => {
       'background only';
-      return fetchServerConfig();
+      return fetchFreshServerConfig();
     },
-    staleTime: 30_000,
+    staleTime: 15_000,
+    retry: false,
   });
   useEffect(() => {
     if (serverConfig) {

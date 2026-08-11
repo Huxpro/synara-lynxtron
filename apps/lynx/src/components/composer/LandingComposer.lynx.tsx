@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from '@lynx-js/react';
 import { useQuery } from '@tanstack/react-query';
-import type { ModelSelection, ServerProviderStatus } from '@synara/contracts';
+import type { ModelSelection } from '@synara/contracts';
 import { getDefaultModel } from '@synara/shared/model';
 import { PanelStateMessage } from '@synara-web/components/chat/PanelStateMessage';
 import { ComposerProjectPickerComposition } from '@synara-web/components/chat/ComposerProjectPickerComposition';
@@ -11,7 +11,7 @@ import { fetchSidebarSnapshot, queryClient } from '../../app/queries';
 import {
   dispatchSynaraCommand,
   browseFilesystem,
-  fetchServerConfig,
+  fetchFreshServerConfig,
   fetchSynaraSidebarShellSnapshot,
 } from '../../data/synaraClient.lynx';
 import { dialogs } from '../../platform/dialogs';
@@ -35,12 +35,12 @@ function projectWorkspaceLabel(workspaceRoot: string): string {
   return segments.at(-1) || workspaceRoot;
 }
 
-async function loadLandingBootstrap() {
+export async function loadLandingBootstrap() {
   'background only';
   const [snapshot, , config] = await Promise.all([
     fetchSynaraSidebarShellSnapshot(),
     fetchSidebarSnapshot(),
-    fetchServerConfig(),
+    fetchFreshServerConfig(),
   ]);
   const spaces = useStore.getState().spaces;
   const normalizedProjects = useStore.getState().projects;
@@ -134,9 +134,6 @@ async function loadLandingBootstrap() {
 
 export function LandingComposer(props: {
   readonly initialProjectId?: string | null;
-  readonly onProviderStatusesChange?: (
-    statuses: readonly ServerProviderStatus[]
-  ) => void;
   readonly onThreadCreated: (threadId: string) => void;
 }) {
   const threadIdRef = useRef(landingId('thread'));
@@ -164,9 +161,8 @@ export function LandingComposer(props: {
   useEffect(() => {
     if (data?.serverConfig) {
       queryClient.setQueryData(['server-config'], data.serverConfig);
-      props.onProviderStatusesChange?.(data.serverConfig.providers);
     }
-  }, [data?.serverConfig, props.onProviderStatusesChange]);
+  }, [data?.serverConfig]);
   const modelSelection = useMemo<ModelSelection>(() => {
     const selectedProject = data?.projects.find(
       (project) => project.id === selectedProjectId
@@ -383,7 +379,6 @@ export function LandingComposer(props: {
         workspaceRoot={targetProject.workspaceRoot}
         emptyLanding={true}
         onBeforeSend={ensureThread}
-        onProviderStatusesChange={props.onProviderStatusesChange}
         onSetInteractionMode={setInteractionMode}
         onSendSucceeded={() => {
           'background only';

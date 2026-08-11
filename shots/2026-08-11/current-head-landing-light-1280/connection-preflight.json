@@ -1,0 +1,25 @@
+{
+  "serverUrl": "ws://127.0.0.1:58090",
+  "webOrigin": "http://localhost:8891",
+  "runtimeWsUrl": "ws://127.0.0.1:58090",
+  "probes": [
+    {
+      "label": "web",
+      "origin": "http://localhost:8891",
+      "serverInstanceId": "2a060820-bbb7-4893-a4b2-d5fd9e18bece",
+      "snapshotSequence": 2
+    },
+    {
+      "label": "lynx-for-web",
+      "origin": "http://localhost:8891",
+      "serverInstanceId": "2a060820-bbb7-4893-a4b2-d5fd9e18bece",
+      "snapshotSequence": 2
+    },
+    {
+      "label": "lynxtron-native",
+      "origin": null,
+      "serverInstanceId": "2a060820-bbb7-4893-a4b2-d5fd9e18bece",
+      "snapshotSequence": 2
+    }
+  ]
+}

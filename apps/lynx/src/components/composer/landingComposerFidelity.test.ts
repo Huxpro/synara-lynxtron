@@ -30,6 +30,10 @@ describe('landing composer fidelity contract', () => {
       new URL('./Composer.lynx.tsx', import.meta.url),
       'utf8'
     );
+    const clientSource = readFileSync(
+      new URL('../../data/synaraClient.lynx.ts', import.meta.url),
+      'utf8'
+    );
     const sidebarPrimaryActionStyles = readFileSync(
       new URL(
         '../../adapters/sidebar-primary-action-elements.css',
@@ -70,6 +74,26 @@ describe('landing composer fidelity contract', () => {
     );
     expect(landingSource).toContain('localFoldersError');
     expect(landingSource.match(/serverConfig:\s*config/g)).toHaveLength(3);
+    expect(clientSource).toContain(
+      "return transportRequest('server.refreshProviders', {});"
+    );
+    expect(clientSource).toContain(
+      'export async function fetchFreshServerConfig()'
+    );
+    expect(clientSource).toContain('providers: providerStatuses.providers');
+    expect(landingSource).toContain('fetchFreshServerConfig()');
+    expect(landingSource).toContain(
+      'export async function loadLandingBootstrap()'
+    );
+    expect(routerSource).toContain(
+      "queryKey: ['landing-composer-bootstrap']"
+    );
+    expect(routerSource).toContain('queryFn: loadLandingBootstrap');
+    expect(routerSource).toContain(
+      'landingBootstrap?.serverConfig.providers ?? []'
+    );
+    expect(landingSource).not.toContain('onProviderStatusesChange');
+    expect(composerSource).toContain('fetchFreshServerConfig()');
     expect(landingSource).toContain('onRetry=');
     expect(landingSource).not.toContain('.catch(() => [])');
     expect(landingSource).not.toContain('<MenuItem');

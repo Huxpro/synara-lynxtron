@@ -1708,6 +1708,26 @@ Lynx-for-Web and Native/Desktop production builds pass; strict reuse and style
 audits remain green at 61.95% pull-request reuse and 98.07% style coverage.
 This is source/build evidence, not a new Native runtime certification cell.
 
+The current-head landing re-certification first repaired the fast-loop harness:
+Rsbuild now keeps host-owned CSS, Wasm, and ordinary sourcemaps instead of
+proxying every `/static/` and `.map` request to Rspeedy. The resulting clean
+paired light/1280 cell then exposed a real product residual: Lynx omitted Web's
+Codex provider-health banner because it read cached config without performing
+Web's provider refresh, and its child-to-parent status callback was not a
+reliable publication boundary. Landing now shares one
+`landing-composer-bootstrap` query between route and composer; the query folds
+fresh provider statuses into server config before publishing either surface.
+The retained Web and Lynx frames are both 1280x820, share server instance
+`2a060820-bbb7-4893-a4b2-d5fd9e18bece` at snapshot sequence 2, and align the
+provider banner exactly at 736x68 `(400,58)`. Heading y differs by 0.25px and
+the project tray by 0.75px. Lynx relay is open with zero pending requests and
+zero transport/RPC/page errors; only the named upstream Wasm initialization
+warning remains. Focused coverage passes 5/5; Web and Native/Desktop production
+builds pass; strict reuse and style audits remain green at 61.95% pull-request
+reuse and 98.07% style coverage. Evidence is retained in
+`shots/2026-08-11/current-head-landing-light-1280/`. This certifies only the
+fast-loop landing light/1280 slice, not Native or the global P10 matrix.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

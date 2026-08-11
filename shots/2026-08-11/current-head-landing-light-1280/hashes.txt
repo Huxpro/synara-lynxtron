@@ -1,0 +1,3 @@
+a209ba85773882b79b8147779c406fbb67a12dcb723ba7c4ea7ca3168e651cc8  .synara-fidelity-0811/dev/state.sqlite
+5df6cbfee104d513230a725a1cb431b2d73d3867a9e6dfe5797bc1a005155a1c  apps/lynx/dist/web/main.web.bundle
+d3fcbad4f2be32e2b68ad1e407c5a82e8a4ca4bb7e28b02cc987931daeea5009  apps/lynx/dist/desktop/main.lynx.bundle

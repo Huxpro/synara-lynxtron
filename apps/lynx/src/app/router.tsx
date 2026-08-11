@@ -58,7 +58,10 @@ import { ChatSurfaceHeaderFrame } from '@synara-web/components/chat/ChatSurfaceH
 import { ChatSurfaceHeaderIdentity } from '@synara-web/components/chat/ChatSurfaceHeaderIdentity';
 import { ComposerColumnFrameSurface } from '@synara-web/components/chat/ComposerColumnFrameSurface';
 import { PanelStateMessage } from '@synara-web/components/chat/PanelStateMessage';
-import { LandingComposer } from '../components/composer/LandingComposer.lynx';
+import {
+  LandingComposer,
+  loadLandingBootstrap,
+} from '../components/composer/LandingComposer.lynx';
 import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
 import { ProviderHealthBanner } from '../components/ProviderHealthBanner.lynx';
 import {
@@ -217,9 +220,12 @@ function ThreadsLandingPage(props: {
   readonly initialProjectId?: string | null;
   readonly onThreadCreated: (threadId: string) => void;
 }) {
-  const [providerStatuses, setProviderStatuses] = useState<
-    readonly ServerProviderStatus[]
-  >([]);
+  const { data: landingBootstrap } = useQuery({
+    queryKey: ['landing-composer-bootstrap'],
+    queryFn: loadLandingBootstrap,
+    staleTime: 30_000,
+  });
+  const providerStatuses = landingBootstrap?.serverConfig.providers ?? [];
   const providerHealth = useProviderHealthBanner('codex', providerStatuses);
   return (
     <view className="ThreadsLanding">
@@ -246,7 +252,6 @@ function ThreadsLandingPage(props: {
             <ComposerColumnFrameSurface>
               <LandingComposer
                 initialProjectId={props.initialProjectId}
-                onProviderStatusesChange={setProviderStatuses}
                 onThreadCreated={props.onThreadCreated}
               />
             </ComposerColumnFrameSurface>

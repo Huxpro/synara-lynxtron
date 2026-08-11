@@ -58,6 +58,7 @@ import type {
   ServerListProviderUsageInput,
   ServerListProviderUsageResult,
   ServerListLocalServersResult,
+  ServerRefreshProvidersResult,
   ServerStopLocalServerInput,
   ServerStopLocalServerResult,
   ServerSettingsPatch,
@@ -488,6 +489,21 @@ export async function updateServerSettings(
 
 export async function fetchServerConfig(): Promise<ServerConfig> {
   return transportRequest('server.getConfig', {});
+}
+
+export async function refreshProviderStatuses(): Promise<ServerRefreshProvidersResult> {
+  return transportRequest('server.refreshProviders', {});
+}
+
+export async function fetchFreshServerConfig(): Promise<ServerConfig> {
+  const [config, providerStatuses] = await Promise.all([
+    fetchServerConfig(),
+    refreshProviderStatuses(),
+  ]);
+  return {
+    ...config,
+    providers: providerStatuses.providers,
+  };
 }
 
 export async function generateThreadRecap(
