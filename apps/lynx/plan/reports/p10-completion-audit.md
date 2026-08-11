@@ -1628,6 +1628,15 @@ Native/Desktop production builds pass; strict reuse and style audits remain
 green at 61.95% pull-request reuse and 98.07% style coverage. This is
 source/build evidence, not a new Native runtime certification cell.
 
+The pull-request selection-reset follow-up fixes a cross-row recovery leak.
+Selecting a different PR now clears `lastFailedAction` before replacing detail
+identity, so a Retry from the previous PR cannot remain visible or mutate the
+wrong item. Tab, diff expansion, and visible-line state continue to reset in the
+same selection transition. Focused selection/action coverage passes 3/3;
+Lynx-for-Web and Native/Desktop production builds pass; strict reuse and style
+audits remain green at 61.95% pull-request reuse and 98.07% style coverage.
+This is source/build evidence, not a new Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

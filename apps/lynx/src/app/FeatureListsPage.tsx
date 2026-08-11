@@ -992,6 +992,7 @@ export function PullRequestsPage() {
     resetDetailUi();
   };
   const selectPullRequest = (entry: PullRequestListEntry) => {
+    setLastFailedAction(null);
     setSelectedInput({
       projectId: entry.projectId,
       repository: entry.repository,
