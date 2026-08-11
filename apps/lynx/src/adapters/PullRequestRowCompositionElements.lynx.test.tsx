@@ -139,4 +139,31 @@ describe('Pull Request row icon fidelity', () => {
     );
     expect(source).not.toContain('className="SharedPrAvatar"');
   });
+
+  it('matches the Web row title weight and 70-percent hover surface', () => {
+    const styles = readFileSync(
+      new URL('./pull-request-row-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+    const appStyles = readFileSync(
+      new URL('../app/App.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(styles).toMatch(
+      /\.SharedPrTitle\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-lg\);[^}]*font-weight:\s*500;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrRow\.ui-hover,\s*\.SharedPrRow\.ui-pressed\s*\{[^}]*background-color:\s*var\(--pr-row-hover-surface\);/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrRow--selected\s*\{[^}]*background-color:\s*var\(--muted\);/s
+    );
+    expect(appStyles).toMatch(
+      /\.SliceRoot--theme-light\s*\{[^}]*--pr-row-hover-surface:\s*rgba\(13,\s*13,\s*13,\s*0\.028\);/s
+    );
+    expect(appStyles).toMatch(
+      /\.SliceRoot--theme-dark\s*\{[^}]*--pr-row-hover-surface:\s*rgba\(252,\s*252,\s*252,\s*0\.0042\);/s
+    );
+  });
 });

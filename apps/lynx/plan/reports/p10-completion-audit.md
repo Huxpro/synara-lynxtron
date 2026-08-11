@@ -1293,6 +1293,17 @@ style audits remain green at 61.95% pull-request reuse and 98.07% style
 coverage. This is source/build evidence, not a new Native runtime certification
 cell.
 
+The pull-request row surface follow-up closes two quieter hierarchy drifts.
+Native row titles now use Web's 500 medium weight instead of 600 semibold, and
+unselected hover/press uses the exact 70% elevated-secondary wash rather than
+the full selected surface. Because Native theme SVG/CSS projection needs direct
+values, the 70% surface resolves to `rgba(13,13,13,0.028)` in light and
+`rgba(252,252,252,0.0042)` in dark; selected rows still retain the full
+elevated-secondary token. Focused row/actor coverage passes 7/7; Lynx-for-Web
+and Native/Desktop production builds pass; strict reuse and style audits remain
+green at 61.95% pull-request reuse and 98.07% style coverage. This is
+source/build evidence, not a new Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after
