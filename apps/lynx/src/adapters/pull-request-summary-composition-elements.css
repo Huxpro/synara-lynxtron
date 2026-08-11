@@ -164,7 +164,7 @@
 
 .SharedPrSummarySection {
   width: 100%;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--pr-section-divider);
 }
 
 .SharedPrSummarySectionHeader {
@@ -391,7 +391,7 @@
 
 .SharedPrSummaryCommentReply.ui-hover,
 .SharedPrSummaryCommentReply.ui-pressed {
-  background-color: var(--muted);
+  background-color: var(--pr-inline-muted-surface);
 }
 
 .SharedPrSummaryCommentReply.ui-focus {

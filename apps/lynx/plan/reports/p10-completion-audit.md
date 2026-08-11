@@ -1544,6 +1544,17 @@ Lynx-for-Web and Native/Desktop production builds pass; strict reuse and style
 audits remain green at 61.95% pull-request reuse and 98.07% style coverage.
 This is source/build evidence, not a new Native runtime certification cell.
 
+The pull-request Summary surface-strength follow-up aligns two subtle 60%
+tokens. Section dividers now use 60% of the canonical border instead of the
+full line, and the compact Reply action uses 60% of the muted background on
+hover/press instead of the full muted surface. Theme projections resolve those
+values directly for light/dark while preserving focus rings, foreground hover
+ink, 2x6px Reply geometry, section spacing, and disclosure motion. Focused
+Summary/pressed coverage passes 8/8; Lynx-for-Web and Native/Desktop production
+builds pass; strict reuse and style audits remain green at 61.95% pull-request
+reuse and 98.07% style coverage. This is source/build evidence, not a new
+Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

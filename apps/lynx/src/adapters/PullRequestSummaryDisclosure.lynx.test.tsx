@@ -204,4 +204,34 @@ describe('Pull Request summary disclosure fidelity', () => {
       '--pr-comment-divider: rgba(252, 252, 252, 0.036);'
     );
   });
+
+  it('matches the 60-percent section divider and Reply hover surface', () => {
+    const styles = readFileSync(
+      new URL('./pull-request-summary-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+    const appStyles = readFileSync(
+      new URL('../app/App.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(styles).toMatch(
+      /\.SharedPrSummarySection\s*\{[^}]*border-top:\s*1px solid var\(--pr-section-divider\);/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrSummaryCommentReply\.ui-hover,\s*\.SharedPrSummaryCommentReply\.ui-pressed\s*\{[^}]*background-color:\s*var\(--pr-inline-muted-surface\);/s
+    );
+    expect(appStyles).toContain(
+      '--pr-section-divider: rgba(13, 13, 13, 0.0414);'
+    );
+    expect(appStyles).toContain(
+      '--pr-section-divider: rgba(252, 252, 252, 0.0432);'
+    );
+    expect(appStyles).toContain(
+      '--pr-inline-muted-surface: rgba(13, 13, 13, 0.024);'
+    );
+    expect(appStyles).toContain(
+      '--pr-inline-muted-surface: rgba(252, 252, 252, 0.0036);'
+    );
+  });
 });
