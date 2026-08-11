@@ -1279,6 +1279,20 @@ Native/Desktop production builds pass; strict reuse and style audits remain
 green at 61.95% pull-request reuse and 98.07% style coverage. This is
 source/build evidence, not a new Native runtime certification cell.
 
+The pull-request row pin follow-up matches Web's progressive disclosure instead
+of keeping every unpinned action permanently visible. On desktop-sized Native
+viewports an unpinned control now starts hidden, reveals on row hover or direct
+pin focus/hover, swaps its baked SVG from muted to foreground without adding a
+filled hover chip, and remains visible on compact/medium viewports. Pinned rows
+keep the filled foreground asset at full opacity through every interaction; a
+separate pinned icon class prevents hover from hiding the sole filled glyph.
+The 28px control and 14px icon geometry, focus ring, accessible label, selected
+state, and mutation callback remain unchanged. Focused row/actor coverage passes
+6/6; Lynx-for-Web and Native/Desktop production builds pass; strict reuse and
+style audits remain green at 61.95% pull-request reuse and 98.07% style
+coverage. This is source/build evidence, not a new Native runtime certification
+cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

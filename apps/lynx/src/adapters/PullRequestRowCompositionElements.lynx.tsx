@@ -153,7 +153,9 @@ export function PullRequestRowPinElement(props: {
 }) {
   const { svgColors } = useTheme();
   const interaction = useLynxInteractiveState({
-    baseClassName: 'SharedPrPin',
+    baseClassName: `SharedPrPin ${
+      props.pinned ? 'SharedPrPin--pinned' : 'SharedPrPin--unpinned'
+    }`,
     accessibleLabel: props.label,
     accessibilityValue: props.pinned ? 'Pinned' : 'Not pinned',
     onActivate: props.onActivate,
@@ -166,12 +168,22 @@ export function PullRequestRowPinElement(props: {
       {...interaction.eventProps}
     >
       <svg
-        className="SharedPrPinIcon"
+        className={`SharedPrPinIcon ${
+          props.pinned
+            ? 'SharedPrPinIcon--pinned'
+            : 'SharedPrPinIcon--muted'
+        }`}
         content={colorizeLynxSvg(
           props.pinned ? pinFilledSvg : pinSvg,
           props.pinned ? svgColors.foreground : svgColors.mutedForeground
         )}
       />
+      {props.pinned ? null : (
+        <svg
+          className="SharedPrPinIcon SharedPrPinIcon--foreground"
+          content={colorizeLynxSvg(pinSvg, svgColors.foreground)}
+        />
+      )}
     </view>
   );
 }

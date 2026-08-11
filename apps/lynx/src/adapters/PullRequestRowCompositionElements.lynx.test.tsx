@@ -76,9 +76,39 @@ describe('Pull Request row icon fidelity', () => {
     );
 
     const icons = elementTree.root?.querySelectorAll('.SharedPrPinIcon') ?? [];
-    expect(icons).toHaveLength(2);
+    expect(icons).toHaveLength(3);
     expect(icons[0]?.getAttribute('content')).not.toBe(
-      icons[1]?.getAttribute('content')
+      icons[2]?.getAttribute('content')
+    );
+    expect(
+      elementTree.root?.querySelector('.SharedPrPin--pinned')
+    ).not.toBeNull();
+    expect(
+      elementTree.root?.querySelector(
+        '.SharedPrPin--pinned .SharedPrPinIcon--pinned'
+      )
+    ).not.toBeNull();
+    expect(
+      elementTree.root?.querySelector(
+        '.SharedPrPin--pinned .SharedPrPinIcon--muted'
+      )
+    ).toBeNull();
+
+    const styles = readFileSync(
+      new URL('./pull-request-row-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-md-up \.SharedPrPin--unpinned\s*\{[^}]*opacity:\s*0;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrRow\.ui-hover \.SharedPrPin,[^{]*\{[^}]*opacity:\s*1;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrRow\.ui-hover \.SharedPrPinIcon--foreground,[^{]*\{[^}]*opacity:\s*1;/s
+    );
+    expect(styles).not.toMatch(
+      /\.SharedPrPin\.ui-(?:hover|pressed)[^{]*\{[^}]*background-color:/s
     );
   });
 
