@@ -1315,6 +1315,18 @@ production builds pass; strict reuse and style audits remain green at 61.95%
 pull-request reuse and 98.07% style coverage. This is source/build evidence,
 not a new Native runtime certification cell.
 
+The pull-request row pin-geometry follow-up closes the remaining action-box
+drift. Native now constrains the pin to a true 28x28 square with matching
+minimum dimensions, prevents flex shrink, centers it vertically in the row,
+and applies Web's 4px trailing inset. Previously only width was fixed, so the
+control stretched to the row's full height and lacked the right breathing room
+even though its glyph was centered. The existing visibility, tone swap, focus,
+selection, and mutation contracts remain unchanged. Focused row/actor coverage
+passes 8/8; Lynx-for-Web and Native/Desktop production builds pass; strict
+reuse and style audits remain green at 61.95% pull-request reuse and 98.07%
+style coverage. This is source/build evidence, not a new Native runtime
+certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

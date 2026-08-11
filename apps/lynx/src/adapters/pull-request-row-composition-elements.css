@@ -150,10 +150,16 @@
 .SharedPrPin {
   position: relative;
   width: 28px;
+  height: 28px;
+  min-width: 28px;
+  min-height: 28px;
+  flex-shrink: 0;
+  align-self: center;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 6px;
+  margin-right: 4px;
   opacity: 0.7;
 }
 

@@ -108,6 +108,9 @@ describe('Pull Request row icon fidelity', () => {
     expect(styles).toMatch(
       /\.SharedPrRow\.ui-hover \.SharedPrPinIcon--foreground,[^{]*\{[^}]*opacity:\s*1;/s
     );
+    expect(styles).toMatch(
+      /\.SharedPrPin\s*\{[^}]*width:\s*28px;[^}]*height:\s*28px;[^}]*min-width:\s*28px;[^}]*min-height:\s*28px;[^}]*flex-shrink:\s*0;[^}]*align-self:\s*center;[^}]*margin-right:\s*4px;/s
+    );
     expect(styles).not.toMatch(
       /\.SharedPrPin\.ui-(?:hover|pressed)[^{]*\{[^}]*background-color:/s
     );
