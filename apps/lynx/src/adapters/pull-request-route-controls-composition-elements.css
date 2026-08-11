@@ -137,7 +137,15 @@
   padding-left: 32px;
   padding-right: 10px;
   border-radius: 10px;
-  font-size: 12px;
+  font-size: 11px;
+}
+
+.SliceRoot--theme-light .SharedPrSearchInput {
+  background-color: rgba(13, 13, 13, 0.02);
+}
+
+.SliceRoot--theme-dark .SharedPrSearchInput {
+  background-color: rgba(252, 252, 252, 0.02);
 }
 
 .SharedPrSearchIcon {

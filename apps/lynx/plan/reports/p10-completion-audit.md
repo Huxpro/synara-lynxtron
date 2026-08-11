@@ -1204,6 +1204,18 @@ pull-request reuse at 61.95% and style coverage at 98.07%. This is
 source/build evidence for an authority-backed anatomy correction, not a new
 Native runtime certification cell.
 
+The editable pull-request search follow-up closes the two remaining local
+style drifts against Web's shared `SearchInput size="sm"` authority. Native now
+uses the 11px UI-supporting text role rather than forcing the 12px base role,
+and its soft field surface uses the same 2% foreground wash in light and dark
+themes rather than the stronger shared secondary-button fill. The existing
+28px height, 10px radius, border, 32px leading inset, 14px search glyph, and
+editable input behavior remain unchanged because they already matched Web.
+Focused route-control coverage passes 4/4; Lynx-for-Web and Native/Desktop
+production builds pass; strict reuse and style audits remain green at 61.95%
+pull-request reuse and 98.07% style coverage. This is source/build evidence,
+not a new Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

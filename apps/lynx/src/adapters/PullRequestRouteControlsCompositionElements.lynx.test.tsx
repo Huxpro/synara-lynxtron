@@ -77,7 +77,13 @@ describe('pull request route controls fidelity', () => {
     );
     expect(source).toContain("if (event.key === 'Escape')");
     expect(styles).toMatch(
-      /\.SharedPrSearchInput\s*\{[^}]*height:\s*28px;[^}]*padding-left:\s*32px;[^}]*border-radius:\s*10px;[^}]*font-size:\s*12px;/s
+      /\.SharedPrSearchInput\s*\{[^}]*height:\s*28px;[^}]*padding-left:\s*32px;[^}]*border-radius:\s*10px;[^}]*font-size:\s*11px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--theme-light \.SharedPrSearchInput\s*\{[^}]*background-color:\s*rgba\(13,\s*13,\s*13,\s*0\.02\);/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--theme-dark \.SharedPrSearchInput\s*\{[^}]*background-color:\s*rgba\(252,\s*252,\s*252,\s*0\.02\);/s
     );
     expect(styles).toMatch(
       /\.SharedPrSearchIcon\s*\{[^}]*left:\s*10px;[^}]*top:\s*7px;[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*opacity:\s*0\.7;/s
