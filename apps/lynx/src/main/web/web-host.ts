@@ -39,6 +39,7 @@ const INITIAL_OVERLAY_POSITION_TIMEOUT_MS = 15_000;
 const TRANSPORT_STATE_EVENT = 'synara:transport-state';
 const GIT_ACTION_PROGRESS_EVENT = 'synara:git-action-progress';
 const COMPOSER_MODEL_MENU_QUERY = 'composerModelMenu';
+const COMPOSER_MODEL_PROVIDER_QUERY = 'composerModelProvider';
 const STORAGE_PREFIX = 'synara.lynx.';
 const PROTOCOL = {
   epoch: 1,
@@ -837,6 +838,10 @@ const initialComposerModelMenuOpen =
   new URLSearchParams(globalThis.location.search).get(
     COMPOSER_MODEL_MENU_QUERY
   ) === 'open';
+const initialComposerModelProvider =
+  new URLSearchParams(globalThis.location.search).get(
+    COMPOSER_MODEL_PROVIDER_QUERY
+  );
 webDocument.body.innerHTML = `
 <lynx-view
   id="root-view"
@@ -851,6 +856,7 @@ webDocument.body.innerHTML = `
     initialExplorerExpandedDirectories,
     initialExplorerWidth,
     initialComposerModelMenuOpen,
+    initialComposerModelProvider,
     initialRoute: pendingInitialRoute,
   })}'
   url="${bundleUrl}">
@@ -978,9 +984,15 @@ const installInteractionBridge = () => {
       url.searchParams.set('explorer', 'open');
       globalThis.location.replace(url);
     },
-    () => {
+    (activation) => {
       const url = new URL(globalThis.location.href);
       url.searchParams.set(COMPOSER_MODEL_MENU_QUERY, 'open');
+      if (activation.provider) {
+        url.searchParams.set(
+          COMPOSER_MODEL_PROVIDER_QUERY,
+          activation.provider
+        );
+      }
       globalThis.location.replace(url);
     }
   );

@@ -10,6 +10,7 @@ const EXPLORER_COMMENT_LINE_SELECTOR = '.ExplorerDockSyntaxLineNumber';
 const EXPLORER_SEARCH_SELECTOR = '.ExplorerDockSearchInput';
 const RIGHT_PANEL_RESIZE_SASH_SELECTOR = '.RightPanelResizeSash';
 const COMPOSER_MODEL_TRIGGER_SELECTOR = '.ComposerModelTriggerLynx';
+const COMPOSER_PROVIDER_OPTION_SELECTOR = '.ComposerProviderOptionLynx';
 const LYNX_FOCUSABLE_SELECTOR = '[focusable="true"]';
 
 export interface LynxWebExplorerActivation {
@@ -45,6 +46,7 @@ export interface LynxWebExplorerCommentLine {
 
 export interface LynxWebComposerModelMenuActivation {
   readonly open: true;
+  readonly provider?: string;
 }
 
 function interactiveElement(
@@ -129,6 +131,7 @@ export function installLynxWebInteractionStateBridge(
     | null = null;
   let composerModelPointer:
     | {
+        readonly provider?: string;
         readonly startX: number;
         readonly startY: number;
       }
@@ -253,6 +256,26 @@ export function installLynxWebInteractionStateBridge(
           composerModelTrigger.getAttribute('aria-disabled') !== 'true'
         ) {
           composerModelPointer = {
+            startX: event.clientX,
+            startY: event.clientY,
+          };
+        }
+        const composerProviderOption = event
+          .composedPath()
+          .find(
+            (target): target is HTMLElement =>
+              target instanceof HTMLElement &&
+              target.matches(COMPOSER_PROVIDER_OPTION_SELECTOR)
+          );
+        const composerProvider =
+          composerProviderOption?.getAttribute('data-provider') ?? '';
+        if (
+          composerProviderOption &&
+          composerProvider &&
+          composerProviderOption.getAttribute('aria-disabled') !== 'true'
+        ) {
+          composerModelPointer = {
+            provider: composerProvider,
             startX: event.clientX,
             startY: event.clientY,
           };
@@ -387,7 +410,10 @@ export function installLynxWebInteractionStateBridge(
           Math.abs(event.clientX - pointer.startX) <= 2 &&
           Math.abs(event.clientY - pointer.startY) <= 2
         ) {
-          onComposerModelMenuActivation({ open: true });
+          onComposerModelMenuActivation({
+            open: true,
+            ...(pointer.provider ? { provider: pointer.provider } : {}),
+          });
           event.preventDefault();
           return;
         }
@@ -501,6 +527,27 @@ export function installLynxWebInteractionStateBridge(
         onComposerModelMenuActivation({ open: true });
         return;
       }
+      const composerProviderOption = event
+        .composedPath()
+        .find(
+          (target): target is HTMLElement =>
+            target instanceof HTMLElement &&
+            target.matches(COMPOSER_PROVIDER_OPTION_SELECTOR)
+        );
+      const composerProvider =
+        composerProviderOption?.getAttribute('data-provider') ?? '';
+      if (
+        composerProviderOption &&
+        composerProvider &&
+        composerProviderOption.getAttribute('aria-disabled') !== 'true' &&
+        onComposerModelMenuActivation
+      ) {
+        onComposerModelMenuActivation({
+          open: true,
+          provider: composerProvider,
+        });
+        return;
+      }
       const entry = event
         .composedPath()
         .find(
@@ -593,14 +640,36 @@ export function installLynxWebInteractionStateBridge(
             target.matches(COMPOSER_MODEL_TRIGGER_SELECTOR)
         );
       if (
-        !composerModelTrigger ||
-        composerModelTrigger.getAttribute('aria-disabled') === 'true' ||
+        composerModelTrigger &&
+        composerModelTrigger.getAttribute('aria-disabled') !== 'true' &&
+        onComposerModelMenuActivation
+      ) {
+        event.preventDefault();
+        onComposerModelMenuActivation({ open: true });
+        return;
+      }
+      const composerProviderOption = event
+        .composedPath()
+        .find(
+          (target): target is HTMLElement =>
+            target instanceof HTMLElement &&
+            target.matches(COMPOSER_PROVIDER_OPTION_SELECTOR)
+        );
+      const composerProvider =
+        composerProviderOption?.getAttribute('data-provider') ?? '';
+      if (
+        !composerProviderOption ||
+        !composerProvider ||
+        composerProviderOption.getAttribute('aria-disabled') === 'true' ||
         !onComposerModelMenuActivation
       ) {
         return;
       }
       event.preventDefault();
-      onComposerModelMenuActivation({ open: true });
+      onComposerModelMenuActivation({
+        open: true,
+        provider: composerProvider,
+      });
     },
     listenerOptions
   );

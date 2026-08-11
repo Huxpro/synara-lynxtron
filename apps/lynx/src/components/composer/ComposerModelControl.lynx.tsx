@@ -64,6 +64,7 @@ function ComposerProviderOptionElement(props: {
   return (
     <view
       className={interaction.className}
+      data-provider={props.item.provider}
       aria-label={`Browse ${props.item.label} models`}
       {...interaction.eventProps}
     >
@@ -82,6 +83,7 @@ function ComposerProviderOptionElement(props: {
 export function ComposerModelControl(props: {
   readonly modelSelection: ModelSelection;
   readonly catalogProvider: ProviderKind;
+  readonly initialPanel?: ComposerModelPopupPanel;
   readonly runtimeModels: ReadonlyArray<ProviderModelDescriptor>;
   readonly modelsLoading: boolean;
   readonly providers: ReadonlyArray<ServerProviderStatus>;
@@ -97,8 +99,9 @@ export function ComposerModelControl(props: {
     initData.initialComposerModelMenuOpen === true
   );
   const [traitsOpen, setTraitsOpen] = useState(false);
-  const [panel, setPanel] =
-    useState<ComposerModelPopupPanel>('providers');
+  const [panel, setPanel] = useState<ComposerModelPopupPanel>(
+    props.initialPanel ?? 'providers'
+  );
   const activeProvider = props.modelSelection.provider;
   const activeModel = props.modelSelection.model;
   const catalogProvider = props.catalogProvider;
@@ -198,6 +201,7 @@ export function ComposerModelControl(props: {
     traitSelection.fastModeDescriptor !== null ||
     traitSelection.caps.supportsFastMode;
   const popupContent = resolveComposerModelPopupContent({
+    hasModelOptions: options.length > 0,
     panel,
     modelsLoading: props.modelsLoading,
   });

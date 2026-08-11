@@ -1780,6 +1780,25 @@ row but cannot produce its activation event, so OpenCode model-group disclosure
 remains explicitly visually unrecertified rather than being inferred from
 source or programmatic state.
 
+The Composer provider-activation follow-up closes the next Lynx-for-Web
+interaction gap. Provider rows now expose a stable provider id, and the Web
+interaction bridge forwards click, bounded pointer-up, and Enter/Space through
+the existing URL-first harness state. The provider query is validated through
+the shared provider-kind guard, initializes Composer's catalog provider, and
+mounts the picker directly in its models panel. A real pointer activation on
+OpenCode produced
+`?composerModelMenu=open&composerModelProvider=opencode`. The models panel also
+renders static fallback options while dynamic discovery is pending instead of
+showing a permanent skeleton when usable options already exist. Focused
+interaction/initial-open/overlay coverage passes 20/20 and the Lynx-for-Web
+production build passes. Both retained 1280x820 frames have empty page-error
+gates and Lynx relay remains open with zero pending requests and no
+transport/RPC error. Evidence is retained in
+`shots/2026-08-11/current-head-composer-provider-activation-light-1280/`.
+Web currently receives the live OpenCode model directory while Lynx retains
+only its static `OpenAI GPT-5` fallback, so grouped-model disclosure remains
+explicitly visually unrecertified.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

@@ -24,6 +24,7 @@ function setup(
   }) => void,
   onComposerModelMenuActivation?: (activation: {
     readonly open: true;
+    readonly provider?: string;
   }) => void
 ) {
   const host = document.createElement('div');
@@ -136,6 +137,55 @@ describe('Lynx-for-Web interaction state bridge', () => {
     );
 
     expect(activations).toEqual([]);
+  });
+
+  it('forwards enabled Composer provider activation with its stable provider id', () => {
+    const activations: Array<{ open: true; provider?: string }> = [];
+    const { child, control } = setup(
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      (activation) => activations.push(activation)
+    );
+    control.classList.add('ComposerProviderOptionLynx');
+    control.setAttribute('data-provider', 'opencode');
+
+    child.click();
+    control.dispatchEvent(
+      new MouseEvent('mousedown', {
+        bubbles: true,
+        button: 0,
+        clientX: 20,
+        clientY: 10,
+        composed: true,
+      })
+    );
+    control.dispatchEvent(
+      new MouseEvent('mouseup', {
+        bubbles: true,
+        button: 0,
+        clientX: 21,
+        clientY: 11,
+        composed: true,
+      })
+    );
+    control.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        key: 'Enter',
+      })
+    );
+    control.setAttribute('aria-disabled', 'true');
+    child.click();
+
+    expect(activations).toEqual([
+      { open: true, provider: 'opencode' },
+      { open: true, provider: 'opencode' },
+      { open: true, provider: 'opencode' },
+    ]);
   });
 
   it('forwards enabled Explorer click and keyboard activation as idempotent target state', () => {
@@ -410,6 +460,10 @@ describe('Lynx-for-Web interaction state bridge', () => {
     expect(source).toContain(
       "url.searchParams.set(COMPOSER_MODEL_MENU_QUERY, 'open')"
     );
+    expect(source).toContain(
+      'COMPOSER_MODEL_PROVIDER_QUERY'
+    );
+    expect(source).toContain('initialComposerModelProvider,');
     expect(source).toContain('initialComposerModelMenuOpen,');
     expect(source).toContain(
       "root,\n        '.ComposerModelPopupLynx'"

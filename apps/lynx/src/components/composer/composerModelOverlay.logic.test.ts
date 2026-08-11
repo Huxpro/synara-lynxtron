@@ -6,6 +6,7 @@ describe('Composer model popup content', () => {
   it('keeps the provider panel visible while a catalog query is pending', () => {
     expect(
       resolveComposerModelPopupContent({
+        hasModelOptions: false,
         panel: 'providers',
         modelsLoading: true,
       })
@@ -15,6 +16,7 @@ describe('Composer model popup content', () => {
   it('shows loading instead of stale model options after provider navigation', () => {
     expect(
       resolveComposerModelPopupContent({
+        hasModelOptions: false,
         panel: 'models',
         modelsLoading: true,
       })
@@ -24,8 +26,19 @@ describe('Composer model popup content', () => {
   it('shows model options when provider discovery settles', () => {
     expect(
       resolveComposerModelPopupContent({
+        hasModelOptions: true,
         panel: 'models',
         modelsLoading: false,
+      })
+    ).toBe('models');
+  });
+
+  it('shows static fallback options while dynamic discovery is pending', () => {
+    expect(
+      resolveComposerModelPopupContent({
+        hasModelOptions: true,
+        panel: 'models',
+        modelsLoading: true,
       })
     ).toBe('models');
   });

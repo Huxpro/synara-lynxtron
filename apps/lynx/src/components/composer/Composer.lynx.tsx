@@ -1,4 +1,10 @@
-import { useEffect, useMemo, useRef, useState } from '@lynx-js/react';
+import {
+  useEffect,
+  useInitData,
+  useMemo,
+  useRef,
+  useState,
+} from '@lynx-js/react';
 import { useQuery } from '@tanstack/react-query';
 import type {
   ModelSelection,
@@ -63,6 +69,7 @@ import {
   buildModelSelection,
   buildNextProviderOptions,
 } from '@synara-web/providerModelOptions';
+import { isProviderKind } from '@synara-web/providerOrdering';
 import {
   appendPastedTextToEditablePrompt,
   createPastedTextDraft,
@@ -347,6 +354,14 @@ export function Composer({
   onSetInteractionMode,
   onSendSucceeded,
 }: ComposerProps) {
+  const initData = useInitData() as {
+    readonly initialComposerModelProvider?: unknown;
+  };
+  const initialModelCatalogProvider =
+    typeof initData.initialComposerModelProvider === 'string' &&
+    isProviderKind(initData.initialComposerModelProvider)
+      ? initData.initialComposerModelProvider
+      : null;
   const { resolvedTheme, svgColors } = useTheme();
   const textareaRef = useRef<React.ElementRef<'textarea'>>(null);
   const brandedThreadId = (draftId ?? threadId) as never;
@@ -434,7 +449,7 @@ export function Composer({
   const [composerHighlightedItemId, setComposerHighlightedItemId] =
     useState<string | null>(null);
   const [modelCatalogProvider, setModelCatalogProvider] =
-    useState<ProviderKind | null>(null);
+    useState<ProviderKind | null>(initialModelCatalogProvider);
   const pendingNativeValueRef = useRef<ComposerNativeValueAck | null>(null);
   const nativeSelectionRef = useRef({
     selectionStart: draftProjection.displayText.length,
@@ -1735,6 +1750,9 @@ export function Composer({
                 <ComposerModelControl
                   modelSelection={activeModelSelection as never}
                   catalogProvider={discoveryProvider ?? activeModelSelection.provider}
+                  initialPanel={
+                    initialModelCatalogProvider ? 'models' : 'providers'
+                  }
                   runtimeModels={runtimeModelCatalog?.models ?? []}
                   modelsLoading={
                     runtimeModelsPending ||

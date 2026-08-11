@@ -22,6 +22,12 @@ describe('Native Composer model initial-open state', () => {
     expect(composerSource).toContain(
       'providers={providerStatuses ?? serverConfig?.providers ?? []}'
     );
+    expect(composerSource).toContain(
+      "isProviderKind(initData.initialComposerModelProvider)"
+    );
+    expect(composerSource).toContain(
+      "initialModelCatalogProvider ? 'models' : 'providers'"
+    );
     expect(landingSource).toContain(
       'providerStatuses={data.serverConfig.providers}'
     );
