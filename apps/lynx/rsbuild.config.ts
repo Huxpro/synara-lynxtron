@@ -6,6 +6,7 @@
 
 import { defineConfig } from '@rsbuild/core';
 import { pluginLynxtron } from '@lynx-js/lynxtron-dev-plugins/rsbuild';
+import { isRspeedyDevAsset } from './src/main/web/rspeedyDevProxy.logic';
 const rspeedyDevServer = 'http://localhost:5971';
 const buildHostInputProbe = process.env.SYNARA_HOST_INPUT_PROBE === '1';
 
@@ -15,11 +16,7 @@ export default defineConfig({
     historyApiFallback: true,
     proxy: [
       {
-        pathFilter: (pathname: string) =>
-          pathname.endsWith('.bundle') ||
-          pathname.endsWith('.map') ||
-          pathname.includes('__rspeedy') ||
-          pathname.includes('/static/'),
+        pathFilter: isRspeedyDevAsset,
         target: rspeedyDevServer,
         pathRewrite: {
           '^/web/': '/',
