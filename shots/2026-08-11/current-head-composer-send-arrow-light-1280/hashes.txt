@@ -1,0 +1,4 @@
+e9a0726b6647fa5a89ccb13cc12b5686c73e7589bd34268b1f62961bf5b3f335  shots/2026-08-11/current-head-composer-send-arrow-light-1280/web/landing.png
+988e892521b1e3a23c070f36a454a755978af5411fd825d0febc2046c9aa0749  shots/2026-08-11/current-head-composer-send-arrow-light-1280/lynx/landing.png
+82c1147c49bc5b68ddf21d19942d81e7a772e9225c79a196a9823125119333a6  apps/lynx/dist/web/main.web.bundle
+b874cf819dc8f14c528afd96daac56ec7aca8667d481300eae20bfd4ee779064  apps/lynx/dist/desktop/main.lynx.bundle

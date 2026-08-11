@@ -2,6 +2,7 @@ import sendArrowSvg from '@synara-central-icons/arrow-up.svg?raw';
 import type { ReactNode } from 'react';
 
 import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
+import { useTheme } from './useTheme.lynx';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 
 const COMPOSER_SENDING_SPINNER_SVG =
@@ -94,6 +95,7 @@ export function ComposerPrimaryActionElement(props: {
   readonly mode: 'send' | 'sending' | 'stop';
   readonly onActivate: () => void;
 }) {
+  const { svgColors } = useTheme();
   const isStop = props.mode === 'stop';
   const isSending = props.mode === 'sending';
   const label =
@@ -120,7 +122,7 @@ export function ComposerPrimaryActionElement(props: {
           className="ComposerPrimaryActionSendingIconLynx animate-spin"
           content={colorizeLynxSvg(
             COMPOSER_SENDING_SPINNER_SVG,
-            'var(--color-background-surface)'
+            svgColors.surface
           )}
         />
       ) : isStop ? (
@@ -130,7 +132,7 @@ export function ComposerPrimaryActionElement(props: {
           className="ComposerPrimaryActionSendIconLynx"
           content={colorizeLynxSvg(
             sendArrowSvg,
-            'var(--color-background-surface)'
+            svgColors.surface
           )}
         />
       )}

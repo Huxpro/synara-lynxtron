@@ -1743,6 +1743,25 @@ style coverage. Evidence is retained in
 `shots/2026-08-11/current-head-provider-banner-icon-light-1280/`. This remains
 a focused fast-loop cell, not Native or global P10 certification.
 
+The Composer primary-action follow-up fixes a raw-SVG theme projection
+regression introduced by the earlier color-token alignment. Passing the literal
+`var(--color-background-surface)` into `<svg content>` left the disabled send
+action with only its 28px gray circle; Lynx did not paint the white up-arrow.
+`useTheme().svgColors` now exposes the resolved surface color, and both the send
+arrow and sending spinner inject that concrete live-theme value. The retained
+light/1280 frame shows the arrow again; runtime inspection locks a 28x28 button
+at opacity 0.2, a centered 20x20 icon, and raw SVG `stroke="#ffffff"`. Both
+1280x820 frames have empty page-error gates; Lynx relay is open with zero
+pending requests and no transport/RPC error. Focused primary-action/theme
+coverage passes 3/3; Web and Native/Desktop production builds pass; strict
+reuse and style audits remain green at 61.95% pull-request reuse and 98.07%
+style coverage. Evidence is retained in
+`shots/2026-08-11/current-head-composer-send-arrow-light-1280/`. The older
+aggregate Composer adapter test remains independently stale at an unrelated
+model-group hover-token assertion and is not treated as evidence for this
+slice. This remains a focused fast-loop cell, not Native or global P10
+certification.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

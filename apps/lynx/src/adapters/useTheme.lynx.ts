@@ -71,6 +71,7 @@ export function useTheme() {
         activeTheme.theme,
         resolvedTheme
       ),
+      surface: activeTheme.theme.surface,
       warning: resolvedTheme === 'dark' ? '#f5b44a' : '#d97706',
     },
     theme: themeState.mode,

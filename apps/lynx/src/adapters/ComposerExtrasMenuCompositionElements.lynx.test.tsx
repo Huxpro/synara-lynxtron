@@ -172,9 +172,12 @@ describe('native composer attachment menu item', () => {
       'stroke-dasharray="20 12"'
     );
     expect(inputElementsSource).toContain(
+      'const { svgColors } = useTheme()'
+    );
+    expect(inputElementsSource.match(/svgColors\.surface/g)).toHaveLength(2);
+    expect(inputElementsSource).not.toContain(
       "'var(--color-background-surface)'"
     );
-    expect(inputElementsSource).not.toContain('activeTheme.theme.surface');
     expect(inputElementsSource).not.toContain(
       '<text className="ComposerPrimaryActionGlyphLynx">•••</text>'
     );
