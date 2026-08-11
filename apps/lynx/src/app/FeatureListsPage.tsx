@@ -943,6 +943,8 @@ export function PullRequestsPage() {
     () => buildCanonicalSlicePullRequestList(data, involvement, searchQuery),
     [data, involvement, searchQuery]
   );
+  const truncatedRepositoryCount =
+    data?.repositoryBatches.filter((batch) => batch.truncated).length ?? 0;
   const codeView = useMemo(
     () =>
       buildPullRequestCodeView(
@@ -1096,6 +1098,30 @@ export function PullRequestsPage() {
                 }}
               />
             )}
+            {data && truncatedRepositoryCount > 0 ? (
+              <text className="SharedPrListFootnote">
+                Showing the first 50 matching pull requests for{' '}
+                {truncatedRepositoryCount}{' '}
+                {truncatedRepositoryCount === 1
+                  ? 'repository'
+                  : 'repositories'}.
+              </text>
+            ) : null}
+            {data?.errors.length ? (
+              <PullRequestWarningBanner shape="callout">
+                {data.errors.length} project{' '}
+                {data.errors.length === 1
+                  ? 'repository was'
+                  : 'repositories were'}{' '}
+                unavailable. Healthy repositories are still shown.
+              </PullRequestWarningBanner>
+            ) : null}
+            {error && data ? (
+              <PullRequestWarningBanner shape="callout">
+                The latest background refresh failed. Showing the last available
+                pull requests.
+              </PullRequestWarningBanner>
+            ) : null}
           </view>
         </scroll-view>
         {selectedInput ? (

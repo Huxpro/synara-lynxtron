@@ -1433,6 +1433,18 @@ Lynx-for-Web and Native/Desktop production builds pass; strict reuse and style
 audits remain green at 61.95% pull-request reuse and 98.07% style coverage.
 This is source/build evidence, not a new Native runtime certification cell.
 
+The pull-request retained-list follow-up restores Web's bounded-data reporting
+without replacing healthy rows. Native now shows 11px fine print when one or
+more repository batches hit the 50-result cap, a rounded amber callout when
+some project repositories are unavailable, and a second callout when the
+latest background refresh fails while cached rows remain. The warning adapter
+now supports both full-width banner and 8px-radius callout shapes using the same
+readable foreground, 4% warning tint, and 32% warning border. Focused
+warning/recovery coverage passes 5/5; Lynx-for-Web and Native/Desktop production
+builds pass; strict reuse and style audits remain green at 61.95% pull-request
+reuse and 98.07% style coverage. This is source/build evidence, not a new
+Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

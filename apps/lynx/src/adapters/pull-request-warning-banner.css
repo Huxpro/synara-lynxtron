@@ -1,12 +1,29 @@
 .SharedPrWarningBanner {
   width: 100%;
   padding: 8px 12px;
-  border-bottom: 1px solid var(--pr-warning-border);
   background-color: var(--pr-warning-surface);
+}
+
+.SharedPrWarningBanner--banner {
+  border-bottom: 1px solid var(--pr-warning-border);
+}
+
+.SharedPrWarningBanner--callout {
+  margin-top: 12px;
+  border: 1px solid var(--pr-warning-border);
+  border-radius: 8px;
 }
 
 .SharedPrWarningBannerText {
   color: var(--foreground);
   font-size: var(--app-font-size-ui);
+  line-height: 18px;
+}
+
+.SharedPrListFootnote {
+  margin-top: 12px;
+  padding: 0 4px;
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-sm);
   line-height: 18px;
 }
