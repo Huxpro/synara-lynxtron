@@ -153,7 +153,7 @@ describe('Pull Request summary disclosure fidelity', () => {
     );
 
     for (const selector of [
-      '.SharedPrSummaryBylineStrong,\\s*.SharedPrSummaryBylineText',
+      '.SharedPrSummaryBylineText',
       '.SharedPrSummaryMetaLabel,\\s*.SharedPrSummaryMetaValue',
       '.SharedPrSummaryMetaLabelText',
       '.SharedPrSummaryBranchName',
@@ -170,6 +170,8 @@ describe('Pull Request summary disclosure fidelity', () => {
     expect(actorStyles).toMatch(
       /\.SharedPrActorLabel--reviewer \.SharedPrActorLogin\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm\);/s
     );
+    expect(styles).not.toContain('.SharedPrSummaryBylineStrong');
+    expect(styles).not.toContain('.SharedPrSummaryCapability');
   });
 
   it('matches the Web comment-card inset and between-card divider', () => {

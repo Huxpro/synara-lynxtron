@@ -29,15 +29,9 @@
   margin-top: 6px;
 }
 
-.SharedPrSummaryBylineStrong,
 .SharedPrSummaryBylineText {
   font-size: var(--app-font-size-ui);
   line-height: 18px;
-}
-
-.SharedPrSummaryBylineStrong {
-  color: var(--foreground);
-  font-weight: 500;
 }
 
 .SharedPrSummaryBylineText {
@@ -419,15 +413,6 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-}
-
-.SharedPrSummaryCapability {
-  color: var(--muted-foreground);
-  padding: 10px 12px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  margin-top: 10px;
-  text-align: center;
 }
 
 .SharedPrCommentComposer {

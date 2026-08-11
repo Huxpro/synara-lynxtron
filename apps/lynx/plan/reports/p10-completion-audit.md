@@ -1607,6 +1607,17 @@ Lynx-for-Web and Native/Desktop production builds pass; strict reuse and style
 audits remain green at 61.95% pull-request reuse and 98.07% style coverage.
 This is source/build evidence, not a new Native runtime certification cell.
 
+The pull-request dead-chrome cleanup removes two selectors left behind by
+superseded Summary implementations: `SharedPrSummaryBylineStrong` (actor
+emphasis now belongs to the shared actor-label adapter) and
+`SharedPrSummaryCapability` (all Summary/Timeline/Code capabilities are real
+and the active shared capability composition returns null). The focused Summary
+contract now guards only live byline metadata and explicitly rejects both
+orphans. Focused Summary coverage passes 8/8; Lynx-for-Web and Native/Desktop
+production builds pass; strict reuse and style audits remain green at 61.95%
+pull-request reuse and 98.07% style coverage. This is source/build evidence,
+not a new Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after
