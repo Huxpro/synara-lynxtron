@@ -88,6 +88,26 @@ describe('pull request route controls fidelity', () => {
     expect(routeSource).toContain('setSearchQuery(value)');
   });
 
+  it('keeps unavailable search as plain muted text like Web', () => {
+    const styles = readFileSync(
+      new URL(
+        './pull-request-route-controls-composition-elements.css',
+        import.meta.url
+      ),
+      'utf8'
+    );
+
+    expect(styles).toMatch(
+      /\.SharedPrSearchUnavailable\s*\{[^}]*display:\s*flex;[^}]*align-items:\s*center;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrSearchUnavailableText\s*\{[^}]*color:\s*var\(--muted-foreground\);[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s
+    );
+    expect(styles).not.toMatch(
+      /\.SharedPrSearchUnavailable\s*\{[^}]*(?:border|border-radius|background-color|padding):/s
+    );
+  });
+
   it('uses the Web route inset instead of a local filter offset', () => {
     const appStyles = readFileSync(
       new URL('../app/App.css', import.meta.url),

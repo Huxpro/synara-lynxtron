@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-10T22:33:20.094Z",
+  "generatedAt": "2026-08-11T00:02:55.683Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",

@@ -119,13 +119,13 @@
 .SharedPrSearch,
 .SharedPrSearchUnavailable {
   min-width: 0;
-  height: 28px;
   flex: 1;
 }
 
 .SharedPrSearch {
   position: relative;
   display: flex;
+  height: 28px;
 }
 
 .SharedPrSearchInput {
@@ -155,17 +155,13 @@
 
 .SharedPrSearchUnavailable {
   display: flex;
-  justify-content: center;
-  padding: 0 10px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background-color: var(--secondary);
+  align-items: center;
 }
 
 .SharedPrSearchUnavailableText {
   color: var(--muted-foreground);
-  font-size: 11px;
-  line-height: 26px;
+  font-size: 12px;
+  line-height: 18px;
 }
 
 .SharedPrProjectFilterTrigger {

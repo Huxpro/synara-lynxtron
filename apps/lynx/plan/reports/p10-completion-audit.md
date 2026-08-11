@@ -1191,6 +1191,19 @@ Native/Desktop production builds pass with only the existing warnings. This is
 implementation and interaction-contract evidence, not a replacement for the
 blocked real-picker Native screenshot cell described above.
 
+The pull-request route-controls follow-up removes a Native-only disabled-input
+skin from the unavailable-search capability state. Web renders that state as
+plain muted metadata rather than an input: current head now removes the local
+border, fill, radius, and horizontal padding, aligns the copy within the search
+row, and restores the 12px UI metadata role. The neighboring project-filter
+trigger remains 24px intentionally because Web's shared `IconButton` defaults
+to desktop `icon-xs`, while the separate refresh action remains the 28px
+`icon-sm` control. Focused route-control coverage passes 4/4; Lynx-for-Web and
+Native/Desktop production builds pass; strict reuse and style audits pass with
+pull-request reuse at 61.95% and style coverage at 98.07%. This is
+source/build evidence for an authority-backed anatomy correction, not a new
+Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after
