@@ -67,4 +67,25 @@ describe('Pull Request actor label fidelity', () => {
       /\.SharedPrActorLabel--reviewer \.SharedPrActorLogin\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm\);/s
     );
   });
+
+  it('matches the shared half-strength avatar ring in both themes', () => {
+    const styles = readFileSync(
+      new URL('./pull-request-actor-label.css', import.meta.url),
+      'utf8'
+    );
+    const appStyles = readFileSync(
+      new URL('../app/App.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(styles).toMatch(
+      /\.SharedPrActorAvatar\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;[^}]*border:\s*1px solid var\(--pr-avatar-ring\);[^}]*border-radius:\s*8px;/s
+    );
+    expect(appStyles).toContain(
+      '--pr-avatar-ring: rgba(13, 13, 13, 0.0345);'
+    );
+    expect(appStyles).toContain(
+      '--pr-avatar-ring: rgba(252, 252, 252, 0.036);'
+    );
+  });
 });

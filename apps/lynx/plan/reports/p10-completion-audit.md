@@ -1596,6 +1596,17 @@ builds pass; strict reuse and style audits remain green at 61.95% pull-request
 reuse and 98.07% style coverage. This is source/build evidence, not a new
 Native runtime certification cell.
 
+The pull-request actor-avatar follow-up aligns the shared image/fallback ring
+strength. Every 16px GitHub avatar now uses Web's 50%-strength border—3.45%
+light and 3.6% dark—instead of the full canonical border, while retaining the
+same circular geometry, real-image loading, initials fallback, `ghost`
+identity, failure recovery, and actor accessibility label. Because rows,
+Summary, reviewers, and comments share this adapter, the correction applies to
+all PR actor surfaces at once. Focused actor/row coverage passes 9/9;
+Lynx-for-Web and Native/Desktop production builds pass; strict reuse and style
+audits remain green at 61.95% pull-request reuse and 98.07% style coverage.
+This is source/build evidence, not a new Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after
