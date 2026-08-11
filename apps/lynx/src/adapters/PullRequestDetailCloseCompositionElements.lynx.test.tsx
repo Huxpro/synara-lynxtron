@@ -2,7 +2,10 @@ import { describe, expect, it } from '@rstest/core';
 import { fireEvent, render } from '@lynx-js/react/testing-library';
 import { readFileSync } from 'node:fs';
 
-import { PullRequestDetailCloseButtonElement } from './PullRequestDetailCloseCompositionElements.lynx';
+import {
+  PullRequestDetailCloseButtonElement,
+  PullRequestDetailExternalButtonElement,
+} from './PullRequestDetailCloseCompositionElements.lynx';
 
 describe('Pull Request detail close fidelity', () => {
   it('uses the full-strength 28px shared header control', () => {
@@ -47,6 +50,51 @@ describe('Pull Request detail close fidelity', () => {
     expect(source).not.toContain('color="var(--muted-foreground)"');
     expect(styles).toMatch(
       /\.SharedPrDetailCloseButton\s*\{[^}]*width:\s*28px;[^}]*height:\s*28px;[^}]*border-radius:\s*8px;/s
+    );
+  });
+
+  it('matches the adjacent external-browser header action', () => {
+    render(
+      <PullRequestDetailExternalButtonElement
+        url="https://github.com/example/repo/pull/42"
+      />
+    );
+
+    const external = elementTree.root?.querySelector(
+      '.SharedPrDetailExternalButton'
+    );
+    expect(external?.getAttribute('accessibility-label')).toBe(
+      'Open in external browser'
+    );
+    expect(external?.querySelector('svg')?.getAttribute('content')).toContain(
+      'stroke="#0d0d0d"'
+    );
+    const routeSource = readFileSync(
+      new URL('../app/FeatureListsPage.tsx', import.meta.url),
+      'utf8'
+    );
+    const styles = readFileSync(
+      new URL(
+        './pull-request-detail-close-composition-elements.css',
+        import.meta.url
+      ),
+      'utf8'
+    );
+    expect(routeSource).toContain('<PullRequestDetailExternalButtonElement');
+    expect(routeSource).toContain(
+      'url={selectedDetail.url}'
+    );
+    const source = readFileSync(
+      new URL(
+        './PullRequestDetailCloseCompositionElements.lynx.tsx',
+        import.meta.url
+      ),
+      'utf8'
+    );
+    expect(source).toContain("'background only';");
+    expect(source).toContain('void platformWindow.openExternal(props.url);');
+    expect(styles).toMatch(
+      /\.SharedPrDetailExternalButton\s*\{[^}]*margin-left:\s*auto;[^}]*margin-right:\s*4px;/s
     );
   });
 });

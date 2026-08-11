@@ -1385,6 +1385,20 @@ builds pass, and strict reuse/style audits remain green at 61.95% pull-request
 reuse and 98.07% style coverage. This is source/build evidence, not a new
 Native runtime certification cell.
 
+The pull-request detail-header action follow-up restores the supported
+external-browser affordance beside Close. Once detail data is available, Native
+now renders a second full-strength 28px header action with a 16px external-link
+glyph and Web's 4px action gap; activating it calls
+`platformWindow.openExternal(detail.url)`. The host call stays inside a
+`background only` adapter callback so no background-only module enters the
+main-thread route graph—the first build caught and forced correction of that
+boundary. Native's existing primary mutation action remains below the header,
+so Web's broader more-actions menu is not duplicated. Focused header coverage
+passes 3/3; Lynx-for-Web and Native/Desktop production builds pass; strict
+reuse and style audits remain green at 61.95% pull-request reuse and 98.07%
+style coverage. This is source/build evidence, not a new Native runtime
+certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

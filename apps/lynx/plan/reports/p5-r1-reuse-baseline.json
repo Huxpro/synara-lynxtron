@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-11T01:07:19.238Z",
+  "generatedAt": "2026-08-11T01:13:08.124Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -21,7 +21,7 @@
     "entries": [
       "src/app/index.tsx"
     ],
-    "modules": 576,
+    "modules": 577,
     "externalImports": [
       "@base-ui/react/autocomplete",
       "@base-ui/react/collapsible",

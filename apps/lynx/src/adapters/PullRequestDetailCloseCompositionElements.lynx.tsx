@@ -1,4 +1,5 @@
-import { XIcon } from '../lib/icons.lynx';
+import { ExternalLinkIcon, XIcon } from '../lib/icons.lynx';
+import { platformWindow } from '../platform/window';
 import './pull-request-detail-close-composition-elements.css';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 
@@ -19,6 +20,30 @@ export function PullRequestDetailCloseButtonElement(props: {
       {...interaction.eventProps}
     >
       <XIcon size={16} color="var(--foreground)" />
+    </view>
+  );
+}
+
+export function PullRequestDetailExternalButtonElement(props: {
+  readonly url: string;
+}) {
+  const openExternal = () => {
+    'background only';
+    void platformWindow.openExternal(props.url);
+  };
+  const interaction = useLynxInteractiveState({
+    baseClassName:
+      'SharedPrDetailCloseButton SharedPrDetailExternalButton',
+    accessibleLabel: 'Open in external browser',
+    onActivate: openExternal,
+  });
+  return (
+    <view
+      className={interaction.className}
+      aria-label="Open in external browser"
+      {...interaction.eventProps}
+    >
+      <ExternalLinkIcon size={16} color="var(--foreground)" />
     </view>
   );
 }

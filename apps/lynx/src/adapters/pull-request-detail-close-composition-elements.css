@@ -4,8 +4,12 @@
   justify-content: center;
   width: 28px;
   height: 28px;
-  margin-left: auto;
   border-radius: 8px;
+}
+
+.SharedPrDetailExternalButton {
+  margin-left: auto;
+  margin-right: 4px;
 }
 
 .SharedPrDetailCloseButton.ui-hover,

@@ -101,6 +101,7 @@ import {
 import { ResizableRightPanel } from './ResizableRightPanel.lynx';
 import { KanbanNewTaskDialog } from './KanbanNewTaskDialog.lynx';
 import { PullRequestsUnavailableState } from '../adapters/PullRequestsUnavailableState.lynx';
+import { PullRequestDetailExternalButtonElement } from '../adapters/PullRequestDetailCloseCompositionElements.lynx';
 
 export function ProjectsPage({ navigate }: { readonly navigate: (to: string) => void }) {
   const [newTaskProjectId, setNewTaskProjectId] =
@@ -1112,6 +1113,11 @@ export function PullRequestsPage() {
                 availableTabs={['summary', 'timeline', 'code']}
                 onSelectTab={setActiveDetailTab}
               />
+              {selectedDetail ? (
+                <PullRequestDetailExternalButtonElement
+                  url={selectedDetail.url}
+                />
+              ) : null}
               <PullRequestDetailCloseComposition
                 onClose={closeDetail}
               />
