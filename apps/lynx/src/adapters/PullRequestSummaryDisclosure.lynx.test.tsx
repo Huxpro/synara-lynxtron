@@ -234,4 +234,21 @@ describe('Pull Request summary disclosure fidelity', () => {
       '--pr-inline-muted-surface: rgba(252, 252, 252, 0.0036);'
     );
   });
+
+  it('matches finding and Reply semantic text roles', () => {
+    const styles = readFileSync(
+      new URL('./pull-request-summary-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(styles).toMatch(
+      /\.SharedPrSummaryFindingTitle\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-lg\);[^}]*line-height:\s*20px;[^}]*font-weight:\s*600;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrSummaryFindingSeverity\s*\{[^}]*font-size:\s*var\(--app-font-size-ui\);[^}]*line-height:\s*18px;[^}]*font-weight:\s*500;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrSummaryCommentReplyText\s*\{[^}]*font-size:\s*var\(--app-font-size-ui\);[^}]*line-height:\s*18px;[^}]*font-weight:\s*500;/s
+    );
+  });
 });

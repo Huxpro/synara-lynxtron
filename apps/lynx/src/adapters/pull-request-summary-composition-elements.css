@@ -352,14 +352,14 @@
 .SharedPrSummaryFindingTitle {
   display: block;
   color: var(--foreground);
-  font-size: var(--app-font-size-ui);
-  line-height: 18px;
+  font-size: var(--app-font-size-ui-lg);
+  line-height: 20px;
   font-weight: 600;
 }
 
 .SharedPrSummaryFindingSeverity {
   display: block;
-  font-size: var(--app-font-size-ui-sm);
+  font-size: var(--app-font-size-ui);
   line-height: 18px;
   font-weight: 500;
 }
@@ -400,7 +400,7 @@
 
 .SharedPrSummaryCommentReplyText {
   color: var(--muted-foreground);
-  font-size: var(--app-font-size-ui-sm);
+  font-size: var(--app-font-size-ui);
   line-height: 18px;
   font-weight: 500;
 }

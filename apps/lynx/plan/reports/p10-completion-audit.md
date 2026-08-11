@@ -1565,6 +1565,16 @@ builds pass; strict reuse and style audits remain green at 61.95% pull-request
 reuse and 98.07% style coverage. This is source/build evidence, not a new
 Native runtime certification cell.
 
+The pull-request finding/action typography follow-up aligns the last compact
+comment-card roles. Parsed finding titles now use Web's 13px body tier with a
+20px line box instead of 12px metadata, while severity and Reply labels use the
+12px metadata tier instead of 11px fine text. Severity colors, semibold title,
+medium labels, 2x6px Reply geometry, and external GitHub action remain
+unchanged. Focused Summary/warning coverage passes 12/12; Lynx-for-Web and
+Native/Desktop production builds pass; strict reuse and style audits remain
+green at 61.95% pull-request reuse and 98.07% style coverage. This is
+source/build evidence, not a new Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after
