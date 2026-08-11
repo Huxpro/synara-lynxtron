@@ -24,6 +24,15 @@ describe('pull request route controls fidelity', () => {
     expect(styles).toMatch(
       /\.SharedPrFilterPill\s*\{[^}]*padding:\s*4px 10px;[^}]*border-radius:\s*8px;/s
     );
+    expect(styles).not.toMatch(
+      /\.SharedPrFilterPill\.ui-(?:hover|pressed)[^{]*\{[^}]*background-color:/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrFilterPill\.ui-hover \.SharedPrFilterPillText\s*\{[^}]*color:\s*var\(--foreground\);/s
+    );
+    expect(styles).not.toMatch(
+      /\.SharedPrFilterPill\.ui-pressed \.SharedPrFilterPillText/
+    );
     expect(styles).toMatch(
       /\.SharedPrRouteRefresh\s*\{[^}]*width:\s*28px;[^}]*height:\s*28px;[^}]*border-width:\s*0;/s
     );
@@ -44,6 +53,10 @@ describe('pull request route controls fidelity', () => {
     expect(source).not.toContain('{selectedName}</Button>');
     expect(source).toContain('<RefreshCwIcon');
     expect(source).not.toContain("{props.refreshing ? '…' : '↻'}");
+    expect(source).toContain(
+      'onIntent={() => props.onIntent?.(option.value)}'
+    );
+    expect(source).toContain('onIntent: props.onIntent');
   });
 
   it('maps the Web search control to the shared Lynx input primitive', () => {

@@ -1216,6 +1216,19 @@ production builds pass; strict reuse and style audits remain green at 61.95%
 pull-request reuse and 98.07% style coverage. This is source/build evidence,
 not a new Native runtime certification cell.
 
+The pull-request filter-pill follow-up aligns both interaction presentation
+and prefetch intent with the shared Web composition. Inactive Native pills no
+longer gain a filled secondary surface on hover or press; only hover brightens
+their muted label to foreground, while the selected pill keeps the canonical
+secondary fill and focus retains its visible ring. The previously accepted
+but dropped `onIntent` callback now flows through the shared Lynx interaction
+primitive and fires on hover and focus, matching Web's route-prefetch contract
+without adding a pill-local pointer implementation. Focused route-control and
+interaction coverage passes 12/12; Lynx-for-Web and Native/Desktop production
+builds pass; strict reuse and style audits remain green at 61.95% pull-request
+reuse and 98.07% style coverage. This is source/build evidence, not a new
+Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

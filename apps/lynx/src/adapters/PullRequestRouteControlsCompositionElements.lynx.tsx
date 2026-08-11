@@ -98,6 +98,7 @@ export function PullRequestFilterPillGroupElement<T extends string>(props: {
           active={option.value === props.value}
           label={option.label}
           onActivate={() => props.onChange(option.value)}
+          onIntent={() => props.onIntent?.(option.value)}
         />
       ))}
     </view>
@@ -108,6 +109,7 @@ function PullRequestFilterPillElement(props: {
   readonly active: boolean;
   readonly label: string;
   readonly onActivate: () => void;
+  readonly onIntent: () => void;
 }) {
   const interaction = useLynxInteractiveState({
     baseClassName: `SharedPrFilterPill${
@@ -116,6 +118,7 @@ function PullRequestFilterPillElement(props: {
     accessibleLabel: props.label,
     accessibilityValue: props.active ? 'Selected' : undefined,
     onActivate: props.onActivate,
+    onIntent: props.onIntent,
   });
   return (
     <view className={interaction.className} {...interaction.eventProps}>

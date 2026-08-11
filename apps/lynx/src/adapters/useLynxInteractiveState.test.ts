@@ -1,4 +1,5 @@
 import { describe, expect, it } from '@rstest/core';
+import { readFileSync } from 'node:fs';
 
 import {
   handleLynxActivationKey,
@@ -76,6 +77,23 @@ describe('Lynx interactive state adapter', () => {
         pressed: false,
       })
     ).toBe('Control');
+  });
+
+  it('keeps shared hover and focus intent delivery in the interaction primitive', () => {
+    const source = readFileSync(
+      new URL(
+        '../components/ui/interactive-state.lynx.ts',
+        import.meta.url
+      ),
+      'utf8'
+    );
+
+    expect(source).toMatch(
+      /bindmouseenter:[\s\S]*?setHovered\(true\);[\s\S]*?options\.onIntent\?\.\(\);[\s\S]*?bindmouseleave:/
+    );
+    expect(source).toMatch(
+      /bindfocus:[\s\S]*?setFocused\(true\);[\s\S]*?options\.onIntent\?\.\(\);[\s\S]*?bindblur:/
+    );
   });
 
   it('exposes actionable native button semantics without widening passive nodes', () => {

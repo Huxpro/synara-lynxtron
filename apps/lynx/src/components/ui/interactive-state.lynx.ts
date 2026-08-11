@@ -30,6 +30,7 @@ export interface LynxInteractiveAccessibilityOptions {
   readonly accessibilityValue?: string;
   readonly accessibleLabel?: string;
   readonly onActivate?: (() => void) | undefined;
+  readonly onIntent?: (() => void) | undefined;
 }
 
 export function lynxInteractiveAccessibilityProps(
@@ -116,7 +117,12 @@ export function useLynxInteractiveState(options: {
       focusable:
         !disabled && (options.focusable ?? options.onActivate !== undefined),
       'aria-disabled': disabled,
-      bindmouseenter: disabled ? undefined : () => setHovered(true),
+      bindmouseenter: disabled
+        ? undefined
+        : () => {
+            setHovered(true);
+            options.onIntent?.();
+          },
       bindmouseleave: disabled
         ? undefined
         : () => {
@@ -128,7 +134,12 @@ export function useLynxInteractiveState(options: {
       bindtouchstart: disabled ? undefined : () => setPressed(true),
       bindtouchend: disabled ? undefined : clearPressed,
       bindtouchcancel: disabled ? undefined : clearPressed,
-      bindfocus: disabled ? undefined : () => setFocused(true),
+      bindfocus: disabled
+        ? undefined
+        : () => {
+            setFocused(true);
+            options.onIntent?.();
+          },
       bindblur: disabled
         ? undefined
         : () => {
