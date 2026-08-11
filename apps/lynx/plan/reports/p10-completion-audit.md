@@ -1411,6 +1411,17 @@ strict reuse and style audits remain green at 61.95% pull-request reuse and
 98.07% style coverage. This is source/build evidence, not a new Native runtime
 certification cell.
 
+The pull-request detail-error follow-up removes the second dead-end recovery
+path. Initial detail failures now reuse the same reason-aware unavailable
+surface as list failures, preserve the exact server message, expose the detail
+query's `isFetching` state, and call `refetchSelectedDetail` in place instead
+of telling users to close the panel. The existing four-row detail skeleton and
+the Code tab's separate diff retry path remain unchanged. Focused
+detail/unavailable coverage passes 4/4; Lynx-for-Web and Native/Desktop
+production builds pass; strict reuse and style audits remain green at 61.95%
+pull-request reuse and 98.07% style coverage. This is source/build evidence,
+not a new Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

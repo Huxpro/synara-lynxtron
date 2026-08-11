@@ -872,6 +872,7 @@ export function PullRequestsPage() {
   const {
     data: selectedDetail,
     error: selectedDetailError,
+    isFetching: selectedDetailFetching,
     isPending: selectedDetailPending,
     refetch: refetchSelectedDetail,
   } = useQuery({
@@ -1209,10 +1210,10 @@ export function PullRequestsPage() {
                   label="Loading pull request details…"
                 />
               ) : selectedDetailError ? (
-                <PullRequestListEmptyComposition
-                  title="Pull request unavailable"
-                  description="The detail could not be loaded. Close the panel and try again."
-                  intent="alert"
+                <PullRequestsUnavailableState
+                  error={selectedDetailError}
+                  retrying={selectedDetailFetching}
+                  onRetry={() => void refetchSelectedDetail()}
                 />
               ) : selectedDetail ? (
                 activeDetailTab === 'timeline' ? (
