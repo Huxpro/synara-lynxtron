@@ -1339,6 +1339,17 @@ reuse/style audits remain green at 61.95% pull-request reuse and 98.07% style
 coverage. This is source/build evidence, not a new Native runtime certification
 cell.
 
+The pull-request loading-state follow-up restores the shared skeleton's base
+surface. Native loading rows keep the already-correct 52px height, 8px radius,
+2px spacing, row count, and live status announcement, but no longer weaken the
+canonical `--muted` fill with a local 75% opacity. Web's moving linear highlight
+has no established Native skeleton-motion primitive, so that remains an
+explicit platform delta rather than introducing an unverified one-off
+animation. Focused list/row coverage passes 7/7; Lynx-for-Web and
+Native/Desktop production builds pass; strict reuse and style audits remain
+green at 61.95% pull-request reuse and 98.07% style coverage. This is
+source/build evidence, not a new Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

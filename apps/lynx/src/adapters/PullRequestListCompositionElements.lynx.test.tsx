@@ -2,7 +2,10 @@ import { describe, expect, it } from '@rstest/core';
 import { render } from '@lynx-js/react/testing-library';
 import { readFileSync } from 'node:fs';
 
-import { PullRequestListEmptyElement } from './PullRequestListCompositionElements.lynx';
+import {
+  PullRequestListEmptyElement,
+  PullRequestListLoadingElement,
+} from './PullRequestListCompositionElements.lynx';
 
 describe('Pull Request list state fidelity', () => {
   it('matches the shared Empty vertical footprint and text measure', () => {
@@ -31,6 +34,25 @@ describe('Pull Request list state fidelity', () => {
     );
     expect(styles).toMatch(
       /\.SharedPrEmptyDescription\s*\{[^}]*max-width:\s*384px;[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;[^}]*margin-top:\s*4px;/s
+    );
+  });
+
+  it('uses the full shared muted surface for loading rows', () => {
+    render(<PullRequestListLoadingElement rowCount={3} label="Loading pull requests" />);
+
+    expect(elementTree.root?.querySelectorAll('.SharedPrLoadingRow')).toHaveLength(3);
+    const loading = elementTree.root?.querySelector('.SharedPrLoading');
+    expect(loading?.getAttribute('accessibility-label')).toBe('Loading pull requests');
+
+    const styles = readFileSync(
+      new URL('./pull-request-list-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+    expect(styles).toMatch(
+      /\.SharedPrLoadingRow\s*\{[^}]*height:\s*52px;[^}]*border-radius:\s*8px;[^}]*background-color:\s*var\(--muted\);/s
+    );
+    expect(styles).not.toMatch(
+      /\.SharedPrLoadingRow\s*\{[^}]*opacity:/s
     );
   });
 });
