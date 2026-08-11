@@ -56,6 +56,10 @@ describe('pull request route controls fidelity', () => {
     expect(source).toContain('className="SharedPrProjectFilterIconSlot"');
     expect(source).toContain('className="SharedPrProjectFilterIcon"');
     expect(source).toContain('className="SharedPrProjectFilterDot"');
+    expect(source).toContain(
+      '<MenuGroupLabel className="SharedPrProjectFilterLabel">'
+    );
+    expect(source).toContain('Project');
     expect(source).not.toContain('{selectedName}</Button>');
     expect(source).toContain('<RefreshCwIcon');
     expect(source).not.toContain("{props.refreshing ? '…' : '↻'}");
@@ -63,6 +67,18 @@ describe('pull request route controls fidelity', () => {
       'onIntent={() => props.onIntent?.(option.value)}'
     );
     expect(source).toContain('onIntent: props.onIntent');
+    expect(styles).toMatch(
+      /\.SharedPrProjectFilterPopup \.SharedPrProjectFilterLabel\s*\{[^}]*padding:\s*4px 8px;[^}]*font-size:\s*11px;[^}]*line-height:\s*16px;[^}]*font-weight:\s*500;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrProjectFilterPopup \.LxMenuItem\s*\{[^}]*min-height:\s*0;[^}]*padding:\s*6px 8px;[^}]*border-radius:\s*6px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrProjectFilterPopup \.LxMenuItem__text\s*\{[^}]*min-width:\s*0;[^}]*flex:\s*1;[^}]*font-size:\s*13px;[^}]*line-height:\s*20px;[^}]*overflow:\s*hidden;[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrProjectFilterPopup \.LxMenuIndicatorIcon\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;/s
+    );
   });
 
   it('maps the Web search control to the shared Lynx input primitive', () => {

@@ -224,3 +224,32 @@
 .SharedPrProjectFilterPopup {
   width: 256px;
 }
+
+.SharedPrProjectFilterPopup .SharedPrProjectFilterLabel {
+  padding: 4px 8px;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 500;
+}
+
+.SharedPrProjectFilterPopup .LxMenuItem {
+  min-height: 0;
+  padding: 6px 8px;
+  border-radius: 6px;
+}
+
+.SharedPrProjectFilterPopup .LxMenuItem__text {
+  min-width: 0;
+  flex: 1;
+  font-size: 13px;
+  line-height: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.SharedPrProjectFilterPopup .LxMenuIndicatorIcon {
+  width: 14px;
+  height: 14px;
+}

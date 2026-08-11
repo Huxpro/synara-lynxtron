@@ -1243,6 +1243,18 @@ pass; strict reuse and style audits remain green at 61.95% pull-request reuse
 and 98.07% style coverage. This is source/build evidence, not a new Native
 runtime certification cell.
 
+The pull-request project-filter follow-up restores the popup anatomy that the
+generic Native radio menu had flattened. The popup now includes Web's `Project`
+group label at the 11px fine-text role, uses 13px body rows with 6px vertical
+and 8px horizontal padding, matches the 6px row radius and 14px selected
+checkmark, and truncates long project names instead of letting them compete
+with the indicator. The shared menu still owns selection semantics, keyboard
+navigation, dismissal, focus, and highlighting. Focused route/menu coverage
+passes 16/16; Lynx-for-Web and Native/Desktop production builds pass; strict
+reuse and style audits remain green at 61.95% pull-request reuse and 98.07%
+style coverage. This is source/build evidence, not a new Native runtime
+certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

@@ -7,6 +7,7 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import {
   Menu,
+  MenuGroupLabel,
   MenuPopup,
   MenuRadioGroup,
   MenuRadioItem,
@@ -220,6 +221,9 @@ export function PullRequestProjectFilterElement(props: {
         align="end"
         className="SharedPrProjectFilterPopup"
       >
+        <MenuGroupLabel className="SharedPrProjectFilterLabel">
+          Project
+        </MenuGroupLabel>
         <MenuRadioGroup
           value={props.value ?? ''}
           onValueChange={(value) =>
