@@ -1886,6 +1886,18 @@ production builds pass. Evidence is retained in
 `shots/2026-08-11/current-head-native-pull-requests/`. Populated list/detail,
 dark, and 1440 cells remain pending.
 
+The exact-owned Native refresh also covers the Kanban overview empty
+light/1280 route via `synara://kanban`. PID-derived
+`localhost:8902/session 1` points to the staged workspace bundle and has an
+empty exact-client console; unrelated 8901 remains untouched. The retained
+Native frame records the 1024x820 overview page, 1024x46 header, 51x20 title at
+`(276,13)`, and 1024x762 empty region with canonical `Nothing on the board yet`
+copy, `0 tasks`, and the disabled New task action. Current Web authority exposes
+the same overview state and empty copy with an empty page-error gate. No product
+patch was required. Evidence is retained in
+`shots/2026-08-11/current-head-native-kanban/`. Project-board, populated,
+dark, and 1440 cells remain pending.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after
