@@ -224,19 +224,24 @@ export function PullRequestProjectFilterElement(props: {
         <MenuGroupLabel className="SharedPrProjectFilterLabel">
           Project
         </MenuGroupLabel>
-        <MenuRadioGroup
-          value={props.value ?? ''}
-          onValueChange={(value) =>
-            props.onChange(value ? (value as ProjectId) : undefined)
-          }
+        <scroll-view
+          className="SharedPrProjectFilterList"
+          scroll-orientation="vertical"
         >
-          <MenuRadioItem value="">All projects</MenuRadioItem>
-          {props.projects.map(([projectId, title]) => (
-            <MenuRadioItem key={projectId} value={projectId}>
-              {title}
-            </MenuRadioItem>
-          ))}
-        </MenuRadioGroup>
+          <MenuRadioGroup
+            value={props.value ?? ''}
+            onValueChange={(value) =>
+              props.onChange(value ? (value as ProjectId) : undefined)
+            }
+          >
+            <MenuRadioItem value="">All projects</MenuRadioItem>
+            {props.projects.map(([projectId, title]) => (
+              <MenuRadioItem key={projectId} value={projectId}>
+                {title}
+              </MenuRadioItem>
+            ))}
+          </MenuRadioGroup>
+        </scroll-view>
       </MenuPopup>
     </Menu>
   );

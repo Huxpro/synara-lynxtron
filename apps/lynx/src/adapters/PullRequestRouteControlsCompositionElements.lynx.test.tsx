@@ -60,6 +60,8 @@ describe('pull request route controls fidelity', () => {
       '<MenuGroupLabel className="SharedPrProjectFilterLabel">'
     );
     expect(source).toContain('Project');
+    expect(source).toContain('className="SharedPrProjectFilterList"');
+    expect(source).toContain('scroll-orientation="vertical"');
     expect(source).not.toContain('{selectedName}</Button>');
     expect(source).toContain('<RefreshCwIcon');
     expect(source).not.toContain("{props.refreshing ? '…' : '↻'}");
@@ -69,6 +71,9 @@ describe('pull request route controls fidelity', () => {
     expect(source).toContain('onIntent: props.onIntent');
     expect(styles).toMatch(
       /\.SharedPrProjectFilterPopup \.SharedPrProjectFilterLabel\s*\{[^}]*padding:\s*4px 8px;[^}]*font-size:\s*11px;[^}]*line-height:\s*16px;[^}]*font-weight:\s*500;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrProjectFilterList\s*\{[^}]*width:\s*100%;[^}]*max-height:\s*288px;/s
     );
     expect(styles).toMatch(
       /\.SharedPrProjectFilterPopup \.LxMenuItem\s*\{[^}]*min-height:\s*0;[^}]*padding:\s*6px 8px;[^}]*border-radius:\s*6px;/s

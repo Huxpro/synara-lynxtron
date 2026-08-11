@@ -1255,6 +1255,18 @@ reuse and style audits remain green at 61.95% pull-request reuse and 98.07%
 style coverage. This is source/build evidence, not a new Native runtime
 certification cell.
 
+The long project-filter follow-up closes the popup's overflow contract. Web
+keeps its label fixed and bounds only the project rows to `max-h-72`; Native now
+does the same with a dedicated vertical `scroll-view` capped at 288px. Large
+project sets therefore scroll inside the 256px popup instead of expanding the
+generic menu beyond the viewport or clipping trailing choices. The shared menu
+continues to own item registration and keyboard order because the radio group
+remains intact inside the scroll region. Focused route/menu coverage passes
+16/16; Lynx-for-Web and Native/Desktop production builds pass; strict reuse and
+style audits remain green at 61.95% pull-request reuse and 98.07% style
+coverage. This is source/build evidence, not a new Native runtime certification
+cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after
