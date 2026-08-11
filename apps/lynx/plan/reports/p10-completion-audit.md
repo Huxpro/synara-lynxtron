@@ -1399,6 +1399,18 @@ reuse and style audits remain green at 61.95% pull-request reuse and 98.07%
 style coverage. This is source/build evidence, not a new Native runtime
 certification cell.
 
+The pull-request primary-action follow-up removes the Native-only full-width
+bordered band and returns the action to Web's 48px detail header. Ready, draft,
+or reopen now renders in the shared right-side action cluster beside external
+open and Close, using a 28px pill, 12px horizontal padding, 12/18px text, normal
+weight, and a 4px inter-control gap. Failed mutations still preserve the
+retained action input and show a conditional inline recovery row with an
+outline Retry action; no normal-state divider remains. Focused layout/header
+coverage passes 4/4; Lynx-for-Web and Native/Desktop production builds pass;
+strict reuse and style audits remain green at 61.95% pull-request reuse and
+98.07% style coverage. This is source/build evidence, not a new Native runtime
+certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

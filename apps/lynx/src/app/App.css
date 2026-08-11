@@ -406,6 +406,27 @@
   padding: 0 8px;
 }
 
+.SharedPrDetailDockActions {
+  margin-left: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+
+.SharedPrHeaderPrimaryAction {
+  min-height: 28px;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 8px;
+}
+
+.SharedPrHeaderPrimaryAction .LxButton__text {
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 400;
+}
+
 .SharedPrDetailDockScroller {
   width: 100%;
   flex: 1;
@@ -439,20 +460,14 @@
   margin-bottom: 10px;
 }
 
-.SharedPrActionBar {
-  width: 100%;
-  padding: 8px 20px;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-
 .SharedPrActionRecovery {
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 8px;
-  margin-top: 8px;
+  padding: 8px 20px;
+  border-bottom: 1px solid var(--border);
 }
 
 .SharedPrActionError {

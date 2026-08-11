@@ -1113,49 +1113,52 @@ export function PullRequestsPage() {
                 availableTabs={['summary', 'timeline', 'code']}
                 onSelectTab={setActiveDetailTab}
               />
-              {selectedDetail ? (
-                <PullRequestDetailExternalButtonElement
-                  url={selectedDetail.url}
+              <view className="SharedPrDetailDockActions">
+                {selectedDetail && primaryAction ? (
+                  <Button
+                    size="sm"
+                    className="SharedPrHeaderPrimaryAction"
+                    disabled={actionMutation.isPending}
+                    onClick={() =>
+                      runPullRequestAction({
+                        projectId: selectedDetail.projectId,
+                        repository: selectedDetail.repository,
+                        number: selectedDetail.number,
+                        action: primaryAction.action,
+                      })
+                    }
+                  >
+                    {actionMutation.isPending
+                      ? primaryAction.pendingLabel
+                      : primaryAction.label}
+                  </Button>
+                ) : null}
+                {selectedDetail ? (
+                  <PullRequestDetailExternalButtonElement
+                    url={selectedDetail.url}
+                  />
+                ) : null}
+                <PullRequestDetailCloseComposition
+                  onClose={closeDetail}
                 />
-              ) : null}
-              <PullRequestDetailCloseComposition
-                onClose={closeDetail}
-              />
+              </view>
             </view>
             <PullRequestDetailCapabilityComposition
               availableTabs={['summary', 'timeline', 'code']}
             />
-            {selectedDetail && primaryAction ? (
-              <view className="SharedPrActionBar">
+            {lastFailedAction ? (
+              <view className="SharedPrActionRecovery">
+                <text className="SharedPrActionError">
+                  Pull request action failed. The current state was kept.
+                </text>
                 <Button
+                  size="sm"
+                  variant="outline"
                   disabled={actionMutation.isPending}
-                  onClick={() =>
-                    runPullRequestAction({
-                      projectId: selectedDetail.projectId,
-                      repository: selectedDetail.repository,
-                      number: selectedDetail.number,
-                      action: primaryAction.action,
-                    })
-                  }
+                  onClick={() => runPullRequestAction(lastFailedAction)}
                 >
-                  {actionMutation.isPending
-                    ? primaryAction.pendingLabel
-                    : primaryAction.label}
+                  Retry
                 </Button>
-                {lastFailedAction ? (
-                  <view className="SharedPrActionRecovery">
-                    <text className="SharedPrActionError">
-                      Pull request action failed. The current state was kept.
-                    </text>
-                    <Button
-                      variant="outline"
-                      disabled={actionMutation.isPending}
-                      onClick={() => runPullRequestAction(lastFailedAction)}
-                    >
-                      Retry
-                    </Button>
-                  </view>
-                ) : null}
               </view>
             ) : null}
             <scroll-view
