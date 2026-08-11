@@ -1304,6 +1304,17 @@ and Native/Desktop production builds pass; strict reuse and style audits remain
 green at 61.95% pull-request reuse and 98.07% style coverage. This is
 source/build evidence, not a new Native runtime certification cell.
 
+The pull-request row metadata follow-up restores two shared composition props
+that the Native adapter previously accepted but ignored. Project labels now
+respect Web's 12rem/192px truncation bound, branch labels respect its
+14rem/224px bound, and both retain their full `title` value as a Native
+accessibility label when the visible text is clipped. The mapping is explicit
+to the two shared contract values rather than parsing arbitrary Tailwind class
+strings. Focused row/actor coverage passes 8/8; Lynx-for-Web and Native/Desktop
+production builds pass; strict reuse and style audits remain green at 61.95%
+pull-request reuse and 98.07% style coverage. This is source/build evidence,
+not a new Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

@@ -113,6 +113,14 @@
   overflow: hidden;
 }
 
+.SharedPrMetaSegmentText--project {
+  max-width: 192px;
+}
+
+.SharedPrMetaSegmentText--branch {
+  max-width: 224px;
+}
+
 .SharedPrTrailing {
   flex-shrink: 0;
   display: flex;

@@ -116,12 +116,24 @@ export function PullRequestRowMetaSegmentElement(
     readonly showSeparator: boolean;
   }
 ) {
+  const widthClassName =
+    props.truncateWidth === 'max-w-[12rem]'
+      ? ' SharedPrMetaSegmentText--project'
+      : props.truncateWidth === 'max-w-[14rem]'
+        ? ' SharedPrMetaSegmentText--branch'
+        : '';
   return (
     <view className="SharedPrMetaSegment">
       {props.showSeparator ? (
         <text className="SharedPrMetaSeparator">·</text>
       ) : null}
-      <text className="SharedPrMetaSegmentText">{props.children}</text>
+      <text
+        className={`SharedPrMetaSegmentText${widthClassName}`}
+        accessibility-element={props.title ? true : undefined}
+        accessibility-label={props.title}
+      >
+        {props.children}
+      </text>
     </view>
   );
 }

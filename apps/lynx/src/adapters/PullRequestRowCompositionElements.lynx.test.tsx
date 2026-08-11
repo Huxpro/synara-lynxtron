@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 
 import {
   PullRequestRowAuthorElement,
+  PullRequestRowMetaSegmentElement,
   PullRequestRowPinElement,
   PullRequestRowStateElement,
 } from './PullRequestRowCompositionElements.lynx';
@@ -164,6 +165,51 @@ describe('Pull Request row icon fidelity', () => {
     );
     expect(appStyles).toMatch(
       /\.SliceRoot--theme-dark\s*\{[^}]*--pr-row-hover-surface:\s*rgba\(252,\s*252,\s*252,\s*0\.0042\);/s
+    );
+  });
+
+  it('preserves Web metadata truncation bounds and full accessible labels', () => {
+    render(
+      <view>
+        <PullRequestRowMetaSegmentElement
+          title="Project with a very long title"
+          truncateWidth="max-w-[12rem]"
+          showSeparator={false}
+        >
+          Long project
+        </PullRequestRowMetaSegmentElement>
+        <PullRequestRowMetaSegmentElement
+          title="feature/long-branch → main"
+          truncateWidth="max-w-[14rem]"
+          showSeparator
+        >
+          feature/long-branch
+        </PullRequestRowMetaSegmentElement>
+      </view>
+    );
+
+    const project = elementTree.root?.querySelector(
+      '.SharedPrMetaSegmentText--project'
+    );
+    const branch = elementTree.root?.querySelector(
+      '.SharedPrMetaSegmentText--branch'
+    );
+    expect(project?.getAttribute('accessibility-label')).toBe(
+      'Project with a very long title'
+    );
+    expect(branch?.getAttribute('accessibility-label')).toBe(
+      'feature/long-branch → main'
+    );
+
+    const styles = readFileSync(
+      new URL('./pull-request-row-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+    expect(styles).toMatch(
+      /\.SharedPrMetaSegmentText--project\s*\{[^}]*max-width:\s*192px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrMetaSegmentText--branch\s*\{[^}]*max-width:\s*224px;/s
     );
   });
 });
