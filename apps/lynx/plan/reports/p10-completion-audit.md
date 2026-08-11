@@ -1513,6 +1513,16 @@ Native/Desktop production builds pass; strict reuse and style audits remain
 green at 61.95% pull-request reuse and 98.07% style coverage. This is
 source/build evidence, not a new Native runtime certification cell.
 
+The pull-request Timeline follow-up corrects its two remaining layout anchors.
+Native now uses Web's exact 20px panel padding instead of an 18px vertical
+inset, and the rail begins after an 8px left margin instead of 6px. The 20px
+rail content inset, 1px border, 8px marker at `-25px/4px`, 20px event spacing,
+13px title, 12px metadata/body roles, and three-line body clamp remain
+unchanged. Focused Timeline coverage passes 2/2; Lynx-for-Web and
+Native/Desktop production builds pass; strict reuse and style audits remain
+green at 61.95% pull-request reuse and 98.07% style coverage. This is
+source/build evidence, not a new Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

@@ -17,4 +17,20 @@ describe('Pull Request timeline typography', () => {
       /\.SharedPrTimeline(?:Title|Meta|Body)\s*\{[^}]*font-size:\s*10px;/s
     );
   });
+
+  it('matches the Web timeline inset and rail anchors', () => {
+    const styles = readFileSync(
+      new URL('./pull-request-timeline-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+    expect(styles).toMatch(
+      /\.SharedPrTimelineRoot\s*\{[^}]*width:\s*100%;[^}]*padding:\s*20px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrTimelineRail\s*\{[^}]*margin-left:\s*8px;[^}]*padding-left:\s*20px;[^}]*border-left:\s*1px solid var\(--border\);/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrTimelineMarker\s*\{[^}]*left:\s*-25px;[^}]*top:\s*4px;[^}]*width:\s*8px;[^}]*height:\s*8px;/s
+    );
+  });
 });
