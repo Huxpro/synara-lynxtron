@@ -2,6 +2,7 @@ import type { ServerProviderStatus } from "@synara/contracts";
 import { resolveProviderHealthBannerPresentation } from "@synara-web/components/chat/ProviderHealthBanner.logic";
 
 import { CircleAlertIcon, TriangleAlertIcon, XIcon } from "../lib/icons.lynx";
+import { useTheme } from "../adapters/useTheme.lynx";
 import { useLynxInteractiveState } from "./ui/interactive-state.lynx";
 
 import "./provider-health-banner.css";
@@ -11,6 +12,7 @@ export function ProviderHealthBanner(props: {
   readonly status: ServerProviderStatus | null;
 }) {
   const presentation = resolveProviderHealthBannerPresentation(props.status);
+  const { activeTheme, svgColors } = useTheme();
   const dismiss = useLynxInteractiveState({
     baseClassName: "ProviderHealthBannerDismiss",
     accessibleLabel: "Dismiss provider status",
@@ -28,6 +30,11 @@ export function ProviderHealthBanner(props: {
       >
         <Icon
           className="ProviderHealthBannerIcon"
+          color={
+            presentation.tone === "error"
+              ? activeTheme.theme.semanticColors.diffRemoved
+              : svgColors.warning
+          }
           size={16}
           accessibilityLabel={presentation.tone}
         />

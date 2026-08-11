@@ -48,6 +48,9 @@ describe("Native ProviderHealthBanner", () => {
       "Codex CLI failed to start.",
     );
     expect(dismiss.getAttribute("accessibility-label")).toBe("Dismiss provider status");
+    expect(
+      elementTree.root?.querySelector(".ProviderHealthBannerIcon")?.getAttribute("content"),
+    ).toContain('stroke="#e02e2a"');
     fireEvent.tap(dismiss);
     expect(onDismiss).toHaveBeenCalledTimes(1);
   });

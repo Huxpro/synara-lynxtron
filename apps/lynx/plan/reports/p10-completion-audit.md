@@ -1841,6 +1841,23 @@ Lynx-for-Web production build passes. Evidence is retained in
 fast-loop System-dark Landing cell, not Native system appearance or the full
 matrix.
 
+The current-head Native Landing follow-up adds the first post-PR exact-owned
+Native cell. The published `0.0.9` host rendered but did not register DevTool
+while unrelated `@t3tools/lynxtron` owned 8901, so that diagnostic run was
+rejected. The temporary published `0.0.9-dev` host uses the same main executable
+bytes and registered the workspace bundle on PID-derived
+`localhost:8902/session 1`; unrelated 8901 was untouched. The retained light
+cell records the staged bundle, snapshot hash, `1280x820` root, `2560x1640`
+frame, 736x68 banner at `(400,58)`, and an empty exact-client console. It also
+exposed and closed a Native-only icon-paint residual: generated raw SVG had
+already fixed the error icon to foreground `#0d0d0d`, so CSS destructive color
+could not apply. The banner now passes the resolved destructive or warning
+color into the generated SVG; Native DOM contains `stroke="#e02e2a"` and the
+frame matches the browser error tone. Focused banner coverage passes 3/3 and
+Web plus Native/Desktop production builds pass. Evidence is retained in
+`shots/2026-08-11/current-head-native-landing/`. Native dark, 1440, and the
+remaining routes are still unrecertified.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

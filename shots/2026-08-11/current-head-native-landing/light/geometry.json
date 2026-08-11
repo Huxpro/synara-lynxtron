@@ -1,0 +1,199 @@
+{
+  "client": "native",
+  "stateId": "native-landing-light-1280",
+  "roles": {
+    "root": {
+      "nodeId": 13,
+      "nodeName": "VIEW",
+      "attributes": {
+        "data-viewport-width": "1280",
+        "data-viewport-height": "820",
+        "class": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up"
+      },
+      "text": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 820
+      },
+      "font": {
+        "family": "system-ui",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgb(255,255,255)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "banner": {
+      "nodeId": 146,
+      "nodeName": "VIEW",
+      "attributes": {
+        "accessibility-element": "true",
+        "accessibility-label": "Codex provider status. Codex CLI (`codex`) is not installed or not on PATH.",
+        "class": "ProviderHealthBanner ProviderHealthBanner--error"
+      },
+      "text": "",
+      "box": {
+        "x": 400,
+        "y": 58,
+        "width": 736,
+        "height": 68
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(1,105,204,0.0980392)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "0 4px 18px -6px #00000019",
+        "opacity": "1"
+      }
+    },
+    "bannerIcon": {
+      "nodeId": 152,
+      "nodeName": "SVG",
+      "attributes": {
+        "content": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#e02e2a\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-alert-circle\" > <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /> <path d=\"M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0\" /> <path d=\"M12 8v4\" /> <path d=\"M12 16h.01\" /> </svg>",
+        "accessibility-label": "error",
+        "class": "ProviderHealthBannerIcon",
+        "style": "height:16px;width:16px;"
+      },
+      "text": "",
+      "box": {
+        "x": 415,
+        "y": 72,
+        "width": 16,
+        "height": 16
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(224,46,42)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "0.92"
+      }
+    },
+    "heading": {
+      "nodeId": 130,
+      "nodeName": "TEXT",
+      "attributes": {
+        "class": "CenteredEmptyLandingHeading"
+      },
+      "text": "",
+      "box": {
+        "x": 608,
+        "y": 407,
+        "width": 321,
+        "height": 35
+      },
+      "font": {
+        "family": "",
+        "size": "30px",
+        "weight": "400",
+        "lineHeight": "35px",
+        "letterSpacing": "-1.8px"
+      },
+      "paint": {
+        "color": "rgb(13,13,13)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "1"
+      }
+    },
+    "composer": {
+      "nodeId": 161,
+      "nodeName": "VIEW",
+      "attributes": {
+        "class": "ComposerInputSurfaceLynx"
+      },
+      "text": "",
+      "box": {
+        "x": 400,
+        "y": 461,
+        "width": 736,
+        "height": 95
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgba(0,0,0,0)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "0 4px 18px -6px #0d0d0d11",
+        "opacity": "1"
+      }
+    },
+    "send": {
+      "nodeId": 195,
+      "nodeName": "VIEW",
+      "attributes": {
+        "aria-label": "Send message",
+        "accessibility-element": "true",
+        "accessibility-label": "Send message",
+        "accessibility-traits": "button",
+        "focusable": "false",
+        "aria-disabled": "true",
+        "class": "ComposerPrimaryActionLynx ComposerPrimaryActionLynx--send ComposerPrimaryActionLynx--disabled"
+      },
+      "text": "",
+      "box": {
+        "x": 1099,
+        "y": 521,
+        "width": 28,
+        "height": 28
+      },
+      "font": {
+        "family": "",
+        "size": "14px",
+        "weight": "normal",
+        "lineHeight": "",
+        "letterSpacing": "0px"
+      },
+      "paint": {
+        "color": "rgb(0,0,0)",
+        "background": "rgb(13,13,13)",
+        "borderColor": "black",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "",
+        "opacity": "0.2"
+      }
+    }
+  }
+}
