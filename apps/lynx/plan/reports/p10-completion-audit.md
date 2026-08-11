@@ -1229,6 +1229,20 @@ builds pass; strict reuse and style audits remain green at 61.95% pull-request
 reuse and 98.07% style coverage. This is source/build evidence, not a new
 Native runtime certification cell.
 
+The pull-request header follow-up verifies that the adapter's null local
+navigation element is intentional rather than a missing control: the Native
+shell already owns one toggle/back/forward cluster in the open sidebar header
+or the fixed closed-sidebar titlebar, and the closed PR header uses the matching
+212px inset to avoid it. The actual remaining Web `truncate` contract is now
+applied to both the title and scoped-project label, with shrinkable zero-width
+flex bounds, clipped nowrap text, and ellipsis while keeping the scope separator
+stable. This prevents long project names from displacing the refresh action or
+colliding with shell chrome without duplicating navigation. Focused route and
+titlebar coverage passes 8/8; Lynx-for-Web and Native/Desktop production builds
+pass; strict reuse and style audits remain green at 61.95% pull-request reuse
+and 98.07% style coverage. This is source/build evidence, not a new Native
+runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

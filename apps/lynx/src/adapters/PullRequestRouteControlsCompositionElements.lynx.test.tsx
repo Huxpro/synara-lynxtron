@@ -19,7 +19,13 @@ describe('pull request route controls fidelity', () => {
     );
 
     expect(styles).toMatch(
-      /\.SharedPrRouteHeaderTitle\s*\{[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;[^}]*font-weight:\s*500;/s
+      /\.SharedPrRouteHeaderTitle\s*\{[^}]*min-width:\s*0;[^}]*flex-shrink:\s*1;[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;[^}]*font-weight:\s*500;[^}]*overflow:\s*hidden;[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrRouteHeaderScope\s*\{[^}]*min-width:\s*0;[^}]*flex-shrink:\s*1;[^}]*overflow:\s*hidden;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrRouteHeaderScopeText\s*\{[^}]*min-width:\s*0;[^}]*flex-shrink:\s*1;[^}]*overflow:\s*hidden;[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s
     );
     expect(styles).toMatch(
       /\.SharedPrFilterPill\s*\{[^}]*padding:\s*4px 10px;[^}]*border-radius:\s*8px;/s
