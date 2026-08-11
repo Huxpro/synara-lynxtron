@@ -16,12 +16,17 @@
 }
 
 .SharedPrDetailTab--active {
-  background-color: var(--muted);
+  background-color: var(--color-background-button-secondary);
 }
 
 .SharedPrDetailTab.ui-hover,
 .SharedPrDetailTab.ui-pressed {
-  background-color: var(--muted);
+  background-color: var(--color-background-button-secondary-hover);
+}
+
+.SharedPrDetailTab--active.ui-hover,
+.SharedPrDetailTab--active.ui-pressed {
+  background-color: var(--color-background-button-secondary);
 }
 
 .SharedPrDetailTab.ui-focus {

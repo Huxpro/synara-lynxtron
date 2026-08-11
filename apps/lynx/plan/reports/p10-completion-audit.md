@@ -1637,6 +1637,17 @@ Lynx-for-Web and Native/Desktop production builds pass; strict reuse and style
 audits remain green at 61.95% pull-request reuse and 98.07% style coverage.
 This is source/build evidence, not a new Native runtime certification cell.
 
+The pull-request detail-tab surface follow-up replaces the generic muted token
+with the shared control-state tokens. Selected tabs now use
+`--color-background-button-secondary`, idle hover/press uses the corresponding
+hover token, and selected tabs remain stable under interaction. The 11px muted
+idle text, foreground active/hover ink, 28px geometry, accessibility semantics,
+and 416px minimum-header fit remain unchanged. Focused tab/header coverage
+passes 5/5; Lynx-for-Web and Native/Desktop production builds pass; strict
+reuse and style audits remain green at 61.95% pull-request reuse and 98.07%
+style coverage. This is source/build evidence, not a new Native runtime
+certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

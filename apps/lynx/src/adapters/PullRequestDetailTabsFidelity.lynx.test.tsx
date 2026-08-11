@@ -63,5 +63,14 @@ describe('Pull Request detail tabs fidelity', () => {
     expect(styles).toMatch(
       /\.SharedPrDetailTabText--active,\s*\.SharedPrDetailTab\.ui-hover \.SharedPrDetailTabText,\s*\.SharedPrDetailTab\.ui-pressed \.SharedPrDetailTabText\s*\{[^}]*color:\s*var\(--foreground\);/s
     );
+    expect(styles).toMatch(
+      /\.SharedPrDetailTab--active\s*\{[^}]*background-color:\s*var\(--color-background-button-secondary\);/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrDetailTab\.ui-hover,\s*\.SharedPrDetailTab\.ui-pressed\s*\{[^}]*background-color:\s*var\(--color-background-button-secondary-hover\);/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrDetailTab--active\.ui-hover,\s*\.SharedPrDetailTab--active\.ui-pressed\s*\{[^}]*background-color:\s*var\(--color-background-button-secondary\);/s
+    );
   });
 });
