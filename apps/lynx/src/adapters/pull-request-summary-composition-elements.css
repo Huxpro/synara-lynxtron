@@ -138,10 +138,6 @@
   color: var(--color-decoration-deleted);
 }
 
-.SharedPrSummaryMetaValue--warning {
-  color: var(--destructive);
-}
-
 .SharedPrSummaryMetaValue--muted {
   color: var(--muted-foreground);
 }

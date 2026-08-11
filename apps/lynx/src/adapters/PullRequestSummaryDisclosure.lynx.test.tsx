@@ -143,6 +143,10 @@ describe('Pull Request summary disclosure fidelity', () => {
   });
 
   it('uses the 12px metadata role across the Summary overview', () => {
+    const source = readFileSync(
+      new URL('./PullRequestSummaryCompositionElements.lynx.tsx', import.meta.url),
+      'utf8'
+    );
     const styles = readFileSync(
       new URL('./pull-request-summary-composition-elements.css', import.meta.url),
       'utf8'
@@ -172,6 +176,8 @@ describe('Pull Request summary disclosure fidelity', () => {
     );
     expect(styles).not.toContain('.SharedPrSummaryBylineStrong');
     expect(styles).not.toContain('.SharedPrSummaryCapability');
+    expect(styles).not.toContain('.SharedPrSummaryMetaValue--warning');
+    expect(source).not.toContain('SharedPrSummaryMetaValue--warning');
   });
 
   it('matches the Web comment-card inset and between-card divider', () => {

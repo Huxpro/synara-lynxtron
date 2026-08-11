@@ -134,11 +134,7 @@ export function PullRequestSummaryMetaRowElement(
         />
         <text className="SharedPrSummaryMetaLabelText">{props.label}</text>
       </view>
-      <text
-        className={`SharedPrSummaryMetaValue${
-          props.kind === 'merge' ? ' SharedPrSummaryMetaValue--warning' : ''
-        }`}
-      >
+      <text className="SharedPrSummaryMetaValue">
         {props.value}
       </text>
     </view>
