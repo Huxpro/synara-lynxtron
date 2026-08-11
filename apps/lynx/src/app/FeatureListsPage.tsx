@@ -976,6 +976,10 @@ export function PullRequestsPage() {
       )
     : null;
   const reviewingNonOpen = involvement === 'reviewing' && state !== 'open';
+  const pinErrorMessage =
+    pinMutation.error instanceof Error
+      ? pinMutation.error.message
+      : 'The pin could not be saved.';
   const resetDetailUi = () => {
     setActiveDetailTab('summary');
     setExpandedDiffFileKeys([]);
@@ -1057,9 +1061,23 @@ export function PullRequestsPage() {
               }}
             />
             {pinMutation.isError ? (
-              <text className="SharedPrMutationError">
-                Pin update failed. Refresh and try again.
-              </text>
+              <view className="SharedPrMutationRecovery">
+                <text className="SharedPrMutationError">
+                  Could not update pull request pin. {pinErrorMessage}
+                </text>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={pinMutation.isPending || !pinMutation.variables}
+                  onClick={() => {
+                    if (pinMutation.variables) {
+                      pinMutation.mutate(pinMutation.variables);
+                    }
+                  }}
+                >
+                  {pinMutation.isPending ? 'Retrying…' : 'Retry'}
+                </Button>
+              </view>
             ) : null}
             {isPending ? (
               <PullRequestListLoadingComposition />

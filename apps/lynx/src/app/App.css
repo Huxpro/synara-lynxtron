@@ -469,11 +469,25 @@
   border-left-width: 0;
 }
 
+.SharedPrMutationRecovery {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 8px 10px;
+  border: 1px solid var(--pr-comment-error-border);
+  border-radius: 8px;
+  background-color: var(--pr-comment-error-surface);
+}
+
 .SharedPrMutationError {
-  color: var(--muted-foreground);
-  font-size: 10px;
-  line-height: 14px;
-  margin-bottom: 10px;
+  min-width: 0;
+  flex: 1;
+  color: var(--destructive);
+  font-size: var(--app-font-size-ui);
+  line-height: 18px;
 }
 
 .SharedPrActionRecovery {

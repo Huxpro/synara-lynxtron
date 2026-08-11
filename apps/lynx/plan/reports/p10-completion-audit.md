@@ -1585,6 +1585,17 @@ Native/Desktop production builds pass; strict reuse and style audits remain
 green at 61.95% pull-request reuse and 98.07% style coverage. This is
 source/build evidence, not a new Native runtime certification cell.
 
+The pull-request pin-recovery follow-up replaces a misleading 10px `Refresh and
+try again` line with a real mutation retry. TanStack's retained mutation
+variables now preserve the failed row entry; the callout shows the exact error
+at the 12px metadata role and resubmits that same entry through a disabled-aware
+outline Retry button. Its 4% destructive tint, 30% border, 8px radius, 8x10px
+inset, and 8px action gap reuse the established comment-error anatomy. Focused
+recovery/row coverage passes 7/7; Lynx-for-Web and Native/Desktop production
+builds pass; strict reuse and style audits remain green at 61.95% pull-request
+reuse and 98.07% style coverage. This is source/build evidence, not a new
+Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after
