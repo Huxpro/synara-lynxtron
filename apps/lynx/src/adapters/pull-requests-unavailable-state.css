@@ -1,0 +1,39 @@
+.SharedPrUnavailable {
+  width: 100%;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 64px 24px;
+}
+
+.SharedPrUnavailableCopy {
+  max-width: 384px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.SharedPrUnavailableIcon {
+  width: 18px;
+  height: 18px;
+  margin-bottom: 8px;
+}
+
+.SharedPrUnavailableTitle {
+  color: var(--foreground);
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.SharedPrUnavailableDescription {
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  margin-top: 4px;
+}

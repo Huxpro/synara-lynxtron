@@ -1360,6 +1360,20 @@ style audits remain green at 61.95% pull-request reuse and 98.07% style
 coverage. This is source/build evidence, not a new Native runtime certification
 cell.
 
+The pull-request unavailable-state follow-up replaces the Native dead-end
+generic alert with supported recovery behavior. Structured
+`PullRequestsUnavailableError` reasons now produce Web's `GitHub CLI is
+required` or `Sign in to GitHub CLI` titles, every failure preserves its exact
+server diagnostic, the combined copy is announced as an alert, and an outline
+Retry action calls the existing query `refetch` while exposing a disabled
+`Retrying...` state. The surface reuses the audited 180px/384px empty-state
+measure and adds a restrained warning glyph. Web's install link and copyable
+shell commands remain explicit platform scope rather than dead Native actions.
+Focused unavailable/list coverage passes 5/5; Lynx-for-Web and Native/Desktop
+production builds pass; strict reuse and style audits remain green at 61.95%
+pull-request reuse and 98.07% style coverage. This is source/build evidence,
+not a new Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

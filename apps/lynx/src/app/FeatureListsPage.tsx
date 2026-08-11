@@ -100,6 +100,7 @@ import {
 } from './kanbanRouteState.logic';
 import { ResizableRightPanel } from './ResizableRightPanel.lynx';
 import { KanbanNewTaskDialog } from './KanbanNewTaskDialog.lynx';
+import { PullRequestsUnavailableState } from '../adapters/PullRequestsUnavailableState.lynx';
 
 export function ProjectsPage({ navigate }: { readonly navigate: (to: string) => void }) {
   const [newTaskProjectId, setNewTaskProjectId] =
@@ -1058,10 +1059,10 @@ export function PullRequestsPage() {
             {isPending ? (
               <PullRequestListLoadingComposition />
             ) : error && data === undefined ? (
-              <PullRequestListEmptyComposition
-                title="Pull requests unavailable"
-                description="Check your connection and try again."
-                intent="alert"
+              <PullRequestsUnavailableState
+                error={error}
+                retrying={isFetching}
+                onRetry={() => void refetch()}
               />
             ) : list.entries.length === 0 ? (
               <PullRequestListEmptyComposition
