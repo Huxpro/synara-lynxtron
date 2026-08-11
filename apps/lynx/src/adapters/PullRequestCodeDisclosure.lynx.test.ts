@@ -79,6 +79,18 @@ describe('Pull Request Code disclosure fidelity', () => {
     expect(lynxStyles).toMatch(
       /\.SharedPrCodeLine\s*\{[^}]*min-height:\s*20px;/s
     );
+    expect(lynxElements).toContain('className="SharedPrCodeLines"');
+    expect(lynxElements).toContain('scroll-orientation="horizontal"');
+    expect(lynxElements).toContain('className="SharedPrCodeLinesContent"');
+    expect(lynxStyles).toMatch(
+      /\.SharedPrCodeLinesContent\s*\{[^}]*min-width:\s*100%;/s
+    );
+    expect(lynxStyles).toMatch(
+      /\.SharedPrCodeLine\s*\{[^}]*min-width:\s*100%;/s
+    );
+    expect(lynxStyles).not.toMatch(
+      /\.SharedPrCodeLine\s*\{[^}]*\n\s*width:\s*100%;/s
+    );
     expect(lynxStyles).not.toMatch(
       /\.SharedPrCodeLine\s*\{[^}]*border-left:/
     );

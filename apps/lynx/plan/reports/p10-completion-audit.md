@@ -1657,6 +1657,17 @@ Native/Desktop production builds pass; strict reuse and style audits remain
 green at 61.95% pull-request reuse and 98.07% style coverage. This is
 source/build evidence, not a new Native runtime certification cell.
 
+The pull-request Code overflow follow-up restores Web's long-line ownership.
+Native `PullRequestCodeLinesElement` is now a horizontal `scroll-view` with an
+inner content stack; each line keeps a 100% minimum width but is no longer
+forced to the dock width, so long preformatted patch text can extend and scroll
+instead of clipping. Line numbers, prefixes, 20px row rhythm, diff surfaces,
+120/160-line progressive disclosure, and 220ms file disclosure remain
+unchanged. Focused Code/capability coverage passes 3/3; Lynx-for-Web and
+Native/Desktop production builds pass; strict reuse and style audits remain
+green at 61.95% pull-request reuse and 98.07% style coverage. This is
+source/build evidence, not a new Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

@@ -106,7 +106,14 @@ export function PullRequestCodeDisclosureElement(
 }
 
 export function PullRequestCodeLinesElement(props: ChildrenProps) {
-  return <view className="SharedPrCodeLines">{props.children}</view>;
+  return (
+    <scroll-view
+      className="SharedPrCodeLines"
+      scroll-orientation="horizontal"
+    >
+      <view className="SharedPrCodeLinesContent">{props.children}</view>
+    </scroll-view>
+  );
 }
 
 export function PullRequestCodeLineElement(props: {

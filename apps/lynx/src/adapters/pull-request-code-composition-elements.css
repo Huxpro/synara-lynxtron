@@ -107,8 +107,12 @@
   background-color: var(--background);
 }
 
+.SharedPrCodeLinesContent {
+  min-width: 100%;
+}
+
 .SharedPrCodeLine {
-  width: 100%;
+  min-width: 100%;
   min-height: 20px;
   display: flex;
   flex-direction: row;
