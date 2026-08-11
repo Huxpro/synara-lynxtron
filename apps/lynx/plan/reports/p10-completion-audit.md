@@ -1699,6 +1699,15 @@ Native/Desktop production builds pass; strict reuse and style audits remain
 green at 61.95% pull-request reuse and 98.07% style coverage. This is
 source/build evidence, not a new Native runtime certification cell.
 
+The pull-request detail-tab semantics follow-up applies the same selected-state
+contract to Summary/Timeline/Code. Active tabs now publish `aria-pressed` and
+Native `accessibility-state.selected` alongside the existing named button trait
+and `Selected` accessibility value; disabled tabs continue to inherit disabled
+state from the shared interaction helper. Focused tab coverage passes 3/3;
+Lynx-for-Web and Native/Desktop production builds pass; strict reuse and style
+audits remain green at 61.95% pull-request reuse and 98.07% style coverage.
+This is source/build evidence, not a new Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

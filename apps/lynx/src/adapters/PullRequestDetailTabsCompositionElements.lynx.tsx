@@ -33,7 +33,12 @@ export function PullRequestDetailTabElement(props: {
     onActivate: props.onActivate,
   });
   return (
-    <view className={interaction.className} {...interaction.eventProps}>
+    <view
+      className={interaction.className}
+      {...interaction.eventProps}
+      aria-pressed={props.active}
+      accessibility-state={{ selected: props.active }}
+    >
       <text
         className={`SharedPrDetailTabText${
           props.active ? ' SharedPrDetailTabText--active' : ''

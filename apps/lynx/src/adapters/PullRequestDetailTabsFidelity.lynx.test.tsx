@@ -27,6 +27,10 @@ describe('Pull Request detail tabs fidelity', () => {
     expect(root?.getAttribute('accessibility-element')).toBe('false');
     expect(tab?.getAttribute('accessibility-traits')).toBe('button');
     expect(tab?.getAttribute('accessibility-value')).toBe('Selected');
+    expect(tab?.getAttribute('aria-pressed')).toBe('true');
+    expect(tab?.getAttribute('accessibility-state')).toBe(
+      '{"selected":true}'
+    );
   });
 
   it('uses the standard PR meta role for visible capability copy', () => {
