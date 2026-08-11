@@ -1327,6 +1327,18 @@ reuse and style audits remain green at 61.95% pull-request reuse and 98.07%
 style coverage. This is source/build evidence, not a new Native runtime
 certification cell.
 
+The pull-request empty-state follow-up aligns the shared `Empty` footprint
+rather than shrinking it into a local compact placeholder. Native now uses the
+same 64px vertical padding and resulting 180px minimum block, spans the full
+list width, and caps description measure at Web's `max-w-sm` 384px instead of
+430px. The existing 20px semibold title, 14/20px description, 4px title gap,
+centered alignment, and system-state announcement were already correct and
+remain unchanged. A focused render/style contract now covers this adapter;
+focused list/row coverage passes 6/6, both production builds pass, and strict
+reuse/style audits remain green at 61.95% pull-request reuse and 98.07% style
+coverage. This is source/build evidence, not a new Native runtime certification
+cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after
