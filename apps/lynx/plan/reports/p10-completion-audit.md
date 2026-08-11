@@ -1814,6 +1814,16 @@ OpenCode catalog has only one upstream group, Pi returns no dynamic models, and
 Kilo cannot start in this isolated environment; there is still no honest
 multi-group dataset for collapsible group visual re-certification.
 
+The Composer verifier follow-up removes a stale expectation that still required
+the superseded shared hover token for model-group headers. The current product
+contract is the already-audited exact 4% foreground hover surface:
+`rgba(0,0,0,0.04)` in light mode and `rgba(255,255,255,0.04)` in dark mode.
+The aggregate Composer adapter test now checks both theme-specific values, so
+the full related Composer/model suite passes 10/10 instead of failing on a
+historical assertion. This repairs the verifier only; it does not upgrade the
+multi-group runtime visual cell, which still lacks a real multi-group catalog
+in the current environment.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

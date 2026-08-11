@@ -262,7 +262,10 @@ describe('native composer attachment menu item', () => {
       /\.ComposerModelGroupHeaderLynx\s*\{[^}]*border-radius:\s*10\.4px;/s
     );
     expect(composerStyles).toMatch(
-      /\.ComposerModelGroupHeaderLynx\.ui-hover,[^{]*\{[^}]*background-color:\s*var\(--color-background-button-secondary-hover\);/s
+      /\.ComposerModelGroupHeaderLynx\.ui-hover,[^{]*\{[^}]*background-color:\s*rgba\(0,\s*0,\s*0,\s*0\.04\);/s
+    );
+    expect(composerStyles).toMatch(
+      /\.SliceRoot--theme-dark \.ComposerModelGroupHeaderLynx\.ui-hover,[^{]*\{[^}]*background-color:\s*rgba\(255,\s*255,\s*255,\s*0\.04\);/s
     );
     expect(composerStyles).toMatch(
       /\.ComposerModelOptionLynx\s*\{[^}]*border-radius:\s*8px;/s
