@@ -1267,6 +1267,18 @@ style audits remain green at 61.95% pull-request reuse and 98.07% style
 coverage. This is source/build evidence, not a new Native runtime certification
 cell.
 
+The pull-request list-row actor follow-up removes the remaining Native-only
+initial badge. Rows now reuse the same actor adapter as Summary, reviewers, and
+comments, so a real GitHub avatar renders when available, image failures fall
+back to initials, missing actors use the canonical `ghost` identity, and the
+avatar carries the login as its accessible name. A row-specific variant keeps
+the slot avatar-only like Web rather than duplicating the visible login already
+present in row metadata. The duplicated row avatar CSS and local initial logic
+are deleted. Focused row/actor coverage passes 6/6; Lynx-for-Web and
+Native/Desktop production builds pass; strict reuse and style audits remain
+green at 61.95% pull-request reuse and 98.07% style coverage. This is
+source/build evidence, not a new Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

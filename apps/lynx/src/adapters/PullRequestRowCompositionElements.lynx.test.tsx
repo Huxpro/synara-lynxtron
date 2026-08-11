@@ -3,6 +3,7 @@ import { render } from '@lynx-js/react/testing-library';
 import { readFileSync } from 'node:fs';
 
 import {
+  PullRequestRowAuthorElement,
   PullRequestRowPinElement,
   PullRequestRowStateElement,
 } from './PullRequestRowCompositionElements.lynx';
@@ -79,5 +80,33 @@ describe('Pull Request row icon fidelity', () => {
     expect(icons[0]?.getAttribute('content')).not.toBe(
       icons[1]?.getAttribute('content')
     );
+  });
+
+  it('reuses the real actor avatar identity without rendering a row login', () => {
+    render(
+      <PullRequestRowAuthorElement
+        actor={{
+          login: 'octocat',
+          name: 'Octo Cat',
+          avatarUrl: 'https://example.test/octocat.png',
+        }}
+      />
+    );
+
+    const actor = elementTree.root?.querySelector('.SharedPrActorLabel--row');
+    expect(actor?.getAttribute('accessibility-label')).toBe('octocat');
+    expect(actor?.querySelector('.SharedPrActorAvatar')?.getAttribute('src')).toBe(
+      'https://example.test/octocat.png'
+    );
+    expect(actor?.querySelector('.SharedPrActorLogin')).toBeNull();
+
+    const source = readFileSync(
+      new URL('./PullRequestRowCompositionElements.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(source).toContain(
+      '<PullRequestActorLabel actor={props.actor} variant="row" />'
+    );
+    expect(source).not.toContain('className="SharedPrAvatar"');
   });
 });

@@ -10,7 +10,7 @@ function initialFor(actor: PullRequestActor | null): string {
 
 export function PullRequestActorLabel(props: {
   readonly actor: PullRequestActor | null;
-  readonly variant: 'author' | 'comment' | 'reviewer';
+  readonly variant: 'author' | 'comment' | 'reviewer' | 'row';
 }) {
   const [failedSrc, setFailedSrc] = useState<string | null>(null);
   const login = props.actor?.login?.trim() || 'ghost';
@@ -42,7 +42,9 @@ export function PullRequestActorLabel(props: {
           </text>
         </view>
       )}
-      <text className="SharedPrActorLogin">{login}</text>
+      {props.variant === 'row' ? null : (
+        <text className="SharedPrActorLogin">{login}</text>
+      )}
     </view>
   );
 }

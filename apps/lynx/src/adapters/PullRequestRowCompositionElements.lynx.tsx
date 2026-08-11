@@ -10,6 +10,7 @@ import { resolvePrStatePresentation } from '@synara-web/components/pullRequest/p
 
 import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
 import './pull-request-row-composition-elements.css';
+import { PullRequestActorLabel } from './PullRequestActorLabel.lynx';
 import { PullRequestStateIcon } from './PullRequestStateIcon.lynx';
 import { useTheme } from './useTheme.lynx';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
@@ -101,12 +102,7 @@ export function PullRequestRowMetaElement(props: ChildrenProps) {
 export function PullRequestRowAuthorElement(props: {
   readonly actor: PullRequestActor | null;
 }) {
-  const source = props.actor?.name?.trim() || props.actor?.login?.trim() || '?';
-  return (
-    <view className="SharedPrAvatar">
-      <text className="SharedPrAvatarText">{source.slice(0, 1).toUpperCase()}</text>
-    </view>
-  );
+  return <PullRequestActorLabel actor={props.actor} variant="row" />;
 }
 
 export function PullRequestRowMetaSegmentsElement(props: ChildrenProps) {

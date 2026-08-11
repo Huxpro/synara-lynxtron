@@ -78,23 +78,8 @@
   margin-top: 2px;
 }
 
-.SharedPrAvatar {
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background-color: var(--muted);
+.SharedPrActorLabel--row {
   margin-right: 6px;
-}
-
-.SharedPrAvatarText {
-  color: var(--muted-foreground);
-  font-size: 8px;
-  font-weight: 600;
 }
 
 .SharedPrMetaSegments {
