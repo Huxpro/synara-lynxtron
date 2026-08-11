@@ -474,7 +474,7 @@
   color: var(--foreground);
   background-color: transparent;
   font-family: system-ui;
-  font-size: var(--app-font-size-ui-sm);
+  font-size: var(--app-font-size-ui-lg);
   line-height: 20px;
 }
 

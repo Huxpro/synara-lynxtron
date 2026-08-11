@@ -9,6 +9,7 @@ import {
   render,
   waitFor,
 } from '@lynx-js/react/testing-library';
+import { readFileSync } from 'node:fs';
 
 import { queryClient } from '../app/queries';
 import { PullRequestCommentComposer } from './PullRequestCommentComposer.lynx';
@@ -115,6 +116,23 @@ function renderComposer(
 }
 
 describe('Lynx pull request comment composer', () => {
+  it('matches the Web body-text editor inside the shared pill geometry', () => {
+    const styles = readFileSync(
+      new URL('./pull-request-summary-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(styles).toMatch(
+      /\.SharedPrCommentComposerControl\s*\{[^}]*min-height:\s*42px;[^}]*gap:\s*8px;[^}]*padding:\s*4px 6px 4px 12px;[^}]*border-radius:\s*22px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrCommentComposerInput\s*\{[^}]*min-height:\s*34px;[^}]*max-height:\s*126px;[^}]*padding:\s*7px 0;[^}]*font-family:\s*system-ui;[^}]*font-size:\s*var\(--app-font-size-ui-lg\);[^}]*line-height:\s*20px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrCommentComposerSubmit\s*\{[^}]*width:\s*28px;[^}]*height:\s*28px;[^}]*border-radius:\s*14px;/s
+    );
+  });
+
   it('submits normalized comments once and revalidates detail and list data', async () => {
     queryClient.clear();
     let resolveRequest: ((value: PullRequestActionResult) => void) | undefined;

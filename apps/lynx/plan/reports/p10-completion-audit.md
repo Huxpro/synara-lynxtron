@@ -1491,6 +1491,18 @@ strict reuse and style audits remain green at 61.95% pull-request reuse and
 98.07% style coverage. This is source/build evidence, not a new Native runtime
 certification cell.
 
+The pull-request comment-composer follow-up corrects its editor typography
+without disturbing the already-real mutation path. Native now uses Web's 13px
+body role with a 20px line box instead of 11px fine text inside the existing
+42px rounded pill. The 20px GitHub account badge, 34–126px editor bounds,
+six-line cap, 7px vertical editor padding, system UI font, 28px circular submit
+button, draft retention, duplicate-submit lock, IME-safe Enter handling, and
+detail/list invalidation remain intact. Focused composer style/behavior
+coverage passes 3/3; Lynx-for-Web and Native/Desktop production builds pass;
+strict reuse and style audits remain green at 61.95% pull-request reuse and
+98.07% style coverage. This is source/build evidence, not a new Native runtime
+certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after
