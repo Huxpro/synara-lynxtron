@@ -499,14 +499,15 @@
   width: 100%;
   margin-top: 8px;
   padding: 8px 10px;
+  border: 1px solid var(--pr-comment-error-border);
   border-radius: 6px;
-  background-color: var(--color-background-elevated-secondary);
+  background-color: var(--pr-comment-error-surface);
 }
 
 .SharedPrCommentComposerErrorTitle,
 .SharedPrCommentComposerErrorDescription {
   color: var(--destructive);
-  font-size: var(--app-font-size-ui-sm);
+  font-size: var(--app-font-size-ui);
   line-height: 18px;
 }
 

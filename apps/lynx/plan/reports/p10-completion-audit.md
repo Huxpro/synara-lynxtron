@@ -1503,6 +1503,16 @@ strict reuse and style audits remain green at 61.95% pull-request reuse and
 98.07% style coverage. This is source/build evidence, not a new Native runtime
 certification cell.
 
+The pull-request comment-error follow-up replaces its neutral elevated card
+with a readable destructive callout. Failed submissions now use a 4% error
+tint, 30% error border, 6px radius, 8x10px inset, and 12px metadata copy in both
+themes, while retaining the exact GitHub error and draft for retry. The existing
+alert accessibility label, duplicate-submit lock, and successful second-submit
+path remain intact. Focused composer coverage passes 4/4; Lynx-for-Web and
+Native/Desktop production builds pass; strict reuse and style audits remain
+green at 61.95% pull-request reuse and 98.07% style coverage. This is
+source/build evidence, not a new Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

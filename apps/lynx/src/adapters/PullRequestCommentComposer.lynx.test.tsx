@@ -133,6 +133,30 @@ describe('Lynx pull request comment composer', () => {
     );
   });
 
+  it('uses a readable destructive callout while retaining the draft', () => {
+    const styles = readFileSync(
+      new URL('./pull-request-summary-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+    const appStyles = readFileSync(
+      new URL('../app/App.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(styles).toMatch(
+      /\.SharedPrCommentComposerError\s*\{[^}]*margin-top:\s*8px;[^}]*padding:\s*8px 10px;[^}]*border:\s*1px solid var\(--pr-comment-error-border\);[^}]*border-radius:\s*6px;[^}]*background-color:\s*var\(--pr-comment-error-surface\);/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrCommentComposerErrorTitle,\s*\.SharedPrCommentComposerErrorDescription\s*\{[^}]*color:\s*var\(--destructive\);[^}]*font-size:\s*var\(--app-font-size-ui\);[^}]*line-height:\s*18px;/s
+    );
+    expect(appStyles).toContain(
+      '--pr-comment-error-surface: rgba(224, 46, 42, 0.04);'
+    );
+    expect(appStyles).toContain(
+      '--pr-comment-error-border: rgba(227, 67, 63, 0.3);'
+    );
+  });
+
   it('submits normalized comments once and revalidates detail and list data', async () => {
     queryClient.clear();
     let resolveRequest: ((value: PullRequestActionResult) => void) | undefined;
