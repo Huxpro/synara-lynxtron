@@ -190,6 +190,10 @@
   border-top: 1px solid var(--border);
 }
 
+.SharedPrCodeMore--disabled {
+  opacity: 0.64;
+}
+
 .SharedPrCodeMoreText {
   color: var(--muted-foreground);
   font-size: 12px;

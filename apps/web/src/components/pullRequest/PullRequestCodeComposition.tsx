@@ -30,8 +30,9 @@ export function PullRequestCodeStateComposition(props: {
       </PullRequestCodeNoticeElement>
       {props.kind === "error" && props.onRetry ? (
         <PullRequestCodeMoreElement
+          disabled={props.retrying}
           label={props.retrying ? "Retrying…" : "Retry"}
-          onActivate={props.retrying ? () => {} : props.onRetry}
+          onActivate={props.onRetry}
         />
       ) : null}
     </PullRequestCodeRootElement>

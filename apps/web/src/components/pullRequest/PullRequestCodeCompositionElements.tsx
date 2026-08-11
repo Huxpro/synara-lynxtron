@@ -91,6 +91,10 @@ export function PullRequestCodeLineElement(props: {
   );
 }
 
-export function PullRequestCodeMoreElement(props: { readonly label: string; readonly onActivate: () => void }) {
-  return <button type="button" className="w-full border-t border-border px-3 py-2 text-xs text-muted-foreground hover:text-foreground" onClick={props.onActivate}>{props.label}</button>;
+export function PullRequestCodeMoreElement(props: {
+  readonly disabled?: boolean;
+  readonly label: string;
+  readonly onActivate: () => void;
+}) {
+  return <button type="button" disabled={props.disabled} className="w-full border-t border-border px-3 py-2 text-xs text-muted-foreground hover:text-foreground disabled:opacity-64" onClick={props.onActivate}>{props.label}</button>;
 }

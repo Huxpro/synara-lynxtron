@@ -125,5 +125,12 @@ describe('Pull Request Code disclosure fidelity', () => {
       '<PullRequestCodeDisclosureElement expanded={isExpanded}>'
     );
     expect(composition).not.toContain('{isExpanded ? (');
+    expect(composition).toContain('disabled={props.retrying}');
+    expect(composition).toContain('onActivate={props.onRetry}');
+    expect(composition).not.toContain('props.retrying ? () => {} : props.onRetry');
+    expect(lynxElements).toContain('disabled: props.disabled');
+    expect(lynxStyles).toMatch(
+      /\.SharedPrCodeMore--disabled\s*\{[^}]*opacity:\s*0\.64;/s
+    );
   });
 });

@@ -141,12 +141,16 @@ export function PullRequestCodeLineElement(props: {
 }
 
 export function PullRequestCodeMoreElement(props: {
+  readonly disabled?: boolean;
   readonly label: string;
   readonly onActivate: () => void;
 }) {
   const interaction = useLynxInteractiveState({
-    baseClassName: 'SharedPrCodeMore',
+    baseClassName: `SharedPrCodeMore${
+      props.disabled ? ' SharedPrCodeMore--disabled' : ''
+    }`,
     accessibleLabel: props.label,
+    disabled: props.disabled,
     onActivate: props.onActivate,
   });
   return (

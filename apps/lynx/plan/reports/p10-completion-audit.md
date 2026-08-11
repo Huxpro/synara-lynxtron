@@ -1668,6 +1668,17 @@ Native/Desktop production builds pass; strict reuse and style audits remain
 green at 61.95% pull-request reuse and 98.07% style coverage. This is
 source/build evidence, not a new Native runtime certification cell.
 
+The shared pull-request Code retry follow-up removes an enabled no-op state.
+`PullRequestCodeMoreElement` now accepts `disabled` on both hosts; in-flight
+refetch passes `retrying` through that contract while preserving the real Retry
+callback, so `Retrying...` is inert, unfocusable on Native, and visibly reduced
+instead of pretending to act. Progressive `Show more` controls remain enabled.
+Focused Native Code/capability coverage passes 3/3; the targeted Web test
+command found no matching file but exited successfully; Lynx-for-Web and
+Native/Desktop production builds pass; strict reuse and style audits remain
+green at 61.95% pull-request reuse and 98.07% style coverage. This is
+source/build evidence, not a new Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after
