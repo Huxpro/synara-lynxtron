@@ -33,9 +33,15 @@
 }
 
 .SharedPrDetailTabText {
-  color: var(--foreground);
-  font-size: var(--app-font-size-ui);
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-sm);
   line-height: 18px;
+}
+
+.SharedPrDetailTabText--active,
+.SharedPrDetailTab.ui-hover .SharedPrDetailTabText,
+.SharedPrDetailTab.ui-pressed .SharedPrDetailTabText {
+  color: var(--foreground);
 }
 
 .SharedPrDetailTabText--unavailable {

@@ -36,6 +36,8 @@ export function PullRequestDetailTabElement(props: {
     <view className={interaction.className} {...interaction.eventProps}>
       <text
         className={`SharedPrDetailTabText${
+          props.active ? ' SharedPrDetailTabText--active' : ''
+        }${
           props.available ? '' : ' SharedPrDetailTabText--unavailable'
         }`}
       >

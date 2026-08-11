@@ -1445,6 +1445,18 @@ builds pass; strict reuse and style audits remain green at 61.95% pull-request
 reuse and 98.07% style coverage. This is source/build evidence, not a new
 Native runtime certification cell.
 
+The pull-request detail-tab follow-up corrects the last visible chip-role drift.
+All three tabs are real, so the capability composition correctly renders no
+extra strip; the tabs themselves now use Web's 11px UI-supporting size and
+muted idle ink instead of 12px foreground labels. Selected, hovered, and
+pressed tabs brighten to foreground while retaining the existing 28px height,
+10px horizontal padding, 8px radius, 2px group gap, selected surface, focus
+ring, and button/selected accessibility semantics. Focused tab coverage passes
+3/3; Lynx-for-Web and Native/Desktop production builds pass; strict reuse and
+style audits remain green at 61.95% pull-request reuse and 98.07% style
+coverage. This is source/build evidence, not a new Native runtime certification
+cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after
