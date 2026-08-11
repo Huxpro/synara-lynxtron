@@ -1648,6 +1648,15 @@ reuse and style audits remain green at 61.95% pull-request reuse and 98.07%
 style coverage. This is source/build evidence, not a new Native runtime
 certification cell.
 
+The pull-request Summary byline follow-up restores narrow-dock wrapping. Author,
+timestamp, separators, and state can now wrap with Web's existing 6px row gap
+and 6px top inset instead of being forced into one overflowing line at the
+416px detail minimum. The 12px metadata role and shared actor identity remain
+unchanged. Focused Summary/responsive coverage passes 11/11; Lynx-for-Web and
+Native/Desktop production builds pass; strict reuse and style audits remain
+green at 61.95% pull-request reuse and 98.07% style coverage. This is
+source/build evidence, not a new Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

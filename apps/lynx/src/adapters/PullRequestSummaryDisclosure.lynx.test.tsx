@@ -178,6 +178,9 @@ describe('Pull Request summary disclosure fidelity', () => {
     expect(styles).not.toContain('.SharedPrSummaryCapability');
     expect(styles).not.toContain('.SharedPrSummaryMetaValue--warning');
     expect(source).not.toContain('SharedPrSummaryMetaValue--warning');
+    expect(styles).toMatch(
+      /\.SharedPrSummaryByline\s*\{[^}]*flex-direction:\s*row;[^}]*flex-wrap:\s*wrap;[^}]*gap:\s*6px;[^}]*margin-top:\s*6px;/s
+    );
   });
 
   it('matches the Web comment-card inset and between-card divider', () => {
