@@ -1872,6 +1872,20 @@ patch was required. Evidence is retained in
 light/1280 General route cell; dark, 1440, other Settings sections, and the
 remaining Native routes are pending.
 
+The exact-owned Native refresh now covers the Pull Requests empty light/1280
+route as well. Its first two preflights were correctly rejected: the Lynx query
+projection returned only `viewer` and `entries`, while the route also consumes
+`repositoryBatches.filter(...)` and `errors.length`. Preserving both typed RPC
+fields removes the repeated Native unhandled rejections. The final startup via
+`synara://pull-requests` has an empty exact-client console and retains the real
+empty route: 1024x820 page, 1024x46 header, 968x66 filters, and 968x180 empty
+region with the canonical `No pull requests found` copy. Current Web authority
+matches the empty copy, controls, search, project filter, and refresh action.
+Focused projection/capability coverage passes 3/3 and Web plus Native/Desktop
+production builds pass. Evidence is retained in
+`shots/2026-08-11/current-head-native-pull-requests/`. Populated list/detail,
+dark, and 1440 cells remain pending.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

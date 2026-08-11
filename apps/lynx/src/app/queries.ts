@@ -17,6 +17,8 @@ import type {
   PullRequestActionResult,
   PullRequestCommentInput,
   PullRequestListEntry,
+  PullRequestsListError,
+  PullRequestsListRepositoryBatch,
   PullRequestSetPinnedInput,
   PullRequestSetPinnedResult,
   PullRequestState,
@@ -211,6 +213,8 @@ const transcriptRowsByThreadId = new Map<
 export interface PullRequestSnapshot {
   readonly viewer: string | null;
   readonly entries: readonly PullRequestListEntry[];
+  readonly errors: readonly PullRequestsListError[];
+  readonly repositoryBatches: readonly PullRequestsListRepositoryBatch[];
 }
 
 export async function fetchSidebarSnapshot(): Promise<SidebarSnapshot> {
@@ -739,6 +743,8 @@ export async function fetchPullRequests(input: {
   return {
     viewer: result.viewer,
     entries: result.entries,
+    errors: result.errors,
+    repositoryBatches: result.repositoryBatches,
   };
 }
 
