@@ -1,0 +1,52 @@
+import { describe, expect, it } from '@rstest/core';
+import { fireEvent, render } from '@lynx-js/react/testing-library';
+import { readFileSync } from 'node:fs';
+
+import { PullRequestDetailCloseButtonElement } from './PullRequestDetailCloseCompositionElements.lynx';
+
+describe('Pull Request detail close fidelity', () => {
+  it('uses the full-strength 28px shared header control', () => {
+    let closes = 0;
+    render(
+      <PullRequestDetailCloseButtonElement
+        accessibleLabel="Close pull request details"
+        tooltip="Close"
+        onActivate={() => {
+          closes += 1;
+        }}
+      />
+    );
+
+    const close = elementTree.root?.querySelector(
+      '.SharedPrDetailCloseButton'
+    );
+    expect(close?.getAttribute('accessibility-label')).toBe(
+      'Close pull request details'
+    );
+    expect(close?.querySelector('svg')?.getAttribute('content')).toContain(
+      'stroke="#0d0d0d"'
+    );
+    fireEvent.tap(close!);
+    expect(closes).toBe(1);
+
+    const styles = readFileSync(
+      new URL(
+        './pull-request-detail-close-composition-elements.css',
+        import.meta.url
+      ),
+      'utf8'
+    );
+    const source = readFileSync(
+      new URL(
+        './PullRequestDetailCloseCompositionElements.lynx.tsx',
+        import.meta.url
+      ),
+      'utf8'
+    );
+    expect(source).toContain('color="var(--foreground)"');
+    expect(source).not.toContain('color="var(--muted-foreground)"');
+    expect(styles).toMatch(
+      /\.SharedPrDetailCloseButton\s*\{[^}]*width:\s*28px;[^}]*height:\s*28px;[^}]*border-radius:\s*8px;/s
+    );
+  });
+});

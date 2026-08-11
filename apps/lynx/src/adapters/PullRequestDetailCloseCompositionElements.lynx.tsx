@@ -18,7 +18,7 @@ export function PullRequestDetailCloseButtonElement(props: {
       aria-label={props.accessibleLabel}
       {...interaction.eventProps}
     >
-      <XIcon size={16} color="var(--muted-foreground)" />
+      <XIcon size={16} color="var(--foreground)" />
     </view>
   );
 }

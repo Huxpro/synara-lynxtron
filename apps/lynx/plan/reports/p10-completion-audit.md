@@ -1374,6 +1374,17 @@ production builds pass; strict reuse and style audits remain green at 61.95%
 pull-request reuse and 98.07% style coverage. This is source/build evidence,
 not a new Native runtime certification cell.
 
+The pull-request detail-close follow-up restores Web's explicit strong-header
+icon treatment. The Native 28x28 control, 8px radius, auto trailing alignment,
+focus ring, hover/pressed surfaces, accessible activation, and 16px X geometry
+were already correct; only the glyph ink was muted. It now resolves through
+full `--foreground`, matching the shared dock-header control instead of looking
+disabled at rest. A focused render/action contract now covers the generated SVG
+tone and activation; focused close/pressed coverage passes 2/2, both production
+builds pass, and strict reuse/style audits remain green at 61.95% pull-request
+reuse and 98.07% style coverage. This is source/build evidence, not a new
+Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after
