@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 
 import {
   PullRequestListEmptyElement,
+  PullRequestListGroupTitleElement,
   PullRequestListLoadingElement,
 } from './PullRequestListCompositionElements.lynx';
 
@@ -53,6 +54,21 @@ describe('Pull Request list state fidelity', () => {
     );
     expect(styles).not.toMatch(
       /\.SharedPrLoadingRow\s*\{[^}]*opacity:/s
+    );
+  });
+
+  it('preserves Web group headings as Native headers', () => {
+    render(
+      <PullRequestListGroupTitleElement separated>
+        Pinned
+      </PullRequestListGroupTitleElement>
+    );
+
+    const title = elementTree.root?.querySelector('.SharedPrGroupTitle');
+    expect(title?.getAttribute('accessibility-element')).toBe('true');
+    expect(title?.getAttribute('accessibility-traits')).toBe('header');
+    expect(title?.getAttribute('class')).toContain(
+      'SharedPrGroupTitle--separated'
     );
   });
 });

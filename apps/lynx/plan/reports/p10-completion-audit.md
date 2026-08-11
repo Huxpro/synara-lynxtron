@@ -1350,6 +1350,16 @@ Native/Desktop production builds pass; strict reuse and style audits remain
 green at 61.95% pull-request reuse and 98.07% style coverage. This is
 source/build evidence, not a new Native runtime certification cell.
 
+The pull-request list-group follow-up restores Web's heading identity without
+changing already-correct visual geometry. Native `Pinned`/project group labels
+now publish an accessibility element with the `header` trait, matching Web's
+`h2` semantics while preserving the 11px medium quiet-ink role, 2px bottom
+padding, and 10px separated-group top inset. Focused list/row coverage passes
+8/8; Lynx-for-Web and Native/Desktop production builds pass; strict reuse and
+style audits remain green at 61.95% pull-request reuse and 98.07% style
+coverage. This is source/build evidence, not a new Native runtime certification
+cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

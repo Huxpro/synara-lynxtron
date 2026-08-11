@@ -19,6 +19,8 @@ export function PullRequestListGroupTitleElement(
       className={`SharedPrGroupTitle${
         props.separated ? ' SharedPrGroupTitle--separated' : ''
       }`}
+      accessibility-element={true}
+      accessibility-traits="header"
     >
       {props.children}
     </text>
