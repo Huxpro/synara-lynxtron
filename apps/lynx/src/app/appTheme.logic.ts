@@ -10,13 +10,15 @@ import {
  * the documented light fallback until that host signal exists.
  */
 export function resolveSliceThemeVariant(
-  themeState: Pick<ThemeState, 'mode'>
+  themeState: Pick<ThemeState, 'mode'>,
+  systemDark = false
 ): ThemeVariant {
-  return resolveThemeVariant(themeState.mode, false);
+  return resolveThemeVariant(themeState.mode, systemDark);
 }
 
 export function sliceThemeClassName(
-  themeState: Pick<ThemeState, 'mode'>
+  themeState: Pick<ThemeState, 'mode'>,
+  systemDark = false
 ): `SliceRoot--theme-${ThemeVariant}` {
-  return `SliceRoot--theme-${resolveSliceThemeVariant(themeState)}`;
+  return `SliceRoot--theme-${resolveSliceThemeVariant(themeState, systemDark)}`;
 }

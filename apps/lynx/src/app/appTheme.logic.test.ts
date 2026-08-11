@@ -14,10 +14,14 @@ describe('slice root theme projection', () => {
     );
   });
 
-  it('uses the documented light fallback for system mode', () => {
+  it('uses the host appearance signal for system mode', () => {
     expect(resolveSliceThemeVariant({ mode: 'system' })).toBe('light');
+    expect(resolveSliceThemeVariant({ mode: 'system' }, true)).toBe('dark');
     expect(sliceThemeClassName({ mode: 'system' })).toBe(
       'SliceRoot--theme-light'
+    );
+    expect(sliceThemeClassName({ mode: 'system' }, true)).toBe(
+      'SliceRoot--theme-dark'
     );
   });
 });

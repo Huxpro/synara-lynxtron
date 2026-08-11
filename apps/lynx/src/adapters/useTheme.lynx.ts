@@ -13,6 +13,7 @@ import {
 import { THEME_STORAGE_KEY } from '@synara-web/appSettingsStorageProjection.logic';
 
 let currentThemeState = DEFAULT_THEME_STATE;
+let currentSystemDark = false;
 const listeners = new Set<(state: ThemeState) => void>();
 
 function withOpacity(color: string, opacity: number): string {
@@ -24,8 +25,12 @@ function withOpacity(color: string, opacity: number): string {
   )}, ${Number.parseInt(match[3], 16)}, ${opacity})`;
 }
 
-export function setLynxThemeState(state: ThemeState): void {
+export function setLynxThemeState(
+  state: ThemeState,
+  systemDark = currentSystemDark
+): void {
   currentThemeState = state;
+  currentSystemDark = systemDark;
   for (const listener of listeners) listener(state);
 }
 
@@ -59,7 +64,7 @@ export function useTheme() {
     return subscribeLynxThemeState(setThemeState);
   }, []);
 
-  const resolvedTheme = resolveThemeVariant(themeState.mode, false);
+  const resolvedTheme = resolveThemeVariant(themeState.mode, currentSystemDark);
   const activeTheme = resolveThemePack(themeState, resolvedTheme);
   return {
     activeTheme,

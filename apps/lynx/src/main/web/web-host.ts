@@ -842,6 +842,9 @@ const initialComposerModelProvider =
   new URLSearchParams(globalThis.location.search).get(
     COMPOSER_MODEL_PROVIDER_QUERY
   );
+const initialSystemDark = globalThis.matchMedia(
+  '(prefers-color-scheme: dark)'
+).matches;
 webDocument.body.innerHTML = `
 <lynx-view
   id="root-view"
@@ -857,6 +860,7 @@ webDocument.body.innerHTML = `
     initialExplorerWidth,
     initialComposerModelMenuOpen,
     initialComposerModelProvider,
+    initialSystemDark,
     initialRoute: pendingInitialRoute,
   })}'
   url="${bundleUrl}">

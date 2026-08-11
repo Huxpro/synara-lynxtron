@@ -464,6 +464,10 @@ describe('Lynx-for-Web interaction state bridge', () => {
       'COMPOSER_MODEL_PROVIDER_QUERY'
     );
     expect(source).toContain('initialComposerModelProvider,');
+    expect(source).toContain(
+      "globalThis.matchMedia(\n  '(prefers-color-scheme: dark)'\n).matches"
+    );
+    expect(source).toContain('initialSystemDark,');
     expect(source).toContain('initialComposerModelMenuOpen,');
     expect(source).toContain(
       "root,\n        '.ComposerModelPopupLynx'"

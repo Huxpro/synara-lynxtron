@@ -1824,6 +1824,23 @@ historical assertion. This repairs the verifier only; it does not upgrade the
 multi-group runtime visual cell, which still lacks a real multi-group catalog
 in the current environment.
 
+The Landing system-dark/1440 follow-up closes a fast-loop theme-axis mismatch.
+Web followed `prefers-color-scheme: dark` in System mode, while Lynx resolved
+every System theme with a hard-coded light fallback. The Web host now injects
+its reliable media-query result, and the App root, router, and shared Lynx theme
+consumers resolve System mode against that signal. Native/Desktop deliberately
+retains the documented light fallback until a reliable native appearance event
+exists. After switching the rendered Lynx Appearance control back to System,
+runtime evidence records `initialSystemDark=true`,
+`SliceRoot--theme-dark`, and canvas `rgb(16,16,16)`. The paired 1440x900 frames
+retain exact 736x68 banner geometry at `(480,58)`, a 0.25px heading-y residual,
+empty page errors, and an open Lynx relay with zero pending requests or
+transport/RPC errors. Focused theme/interaction coverage passes 17/17 and the
+Lynx-for-Web production build passes. Evidence is retained in
+`shots/2026-08-11/current-head-landing-system-dark-1440/`. This certifies the
+fast-loop System-dark Landing cell, not Native system appearance or the full
+matrix.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

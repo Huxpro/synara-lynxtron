@@ -81,6 +81,7 @@ async function readPersistedAppearance(): Promise<{
 
 export function App() {
   const initData = useInitData() as {
+    readonly initialSystemDark?: unknown;
     readonly initialEnvironmentOpen?: unknown;
     readonly initialExplorerOpen?: unknown;
     readonly initialExplorerCommentLine?: unknown;
@@ -90,6 +91,7 @@ export function App() {
     readonly initialExplorerWidth?: unknown;
     readonly initialRoute?: unknown;
   };
+  const systemDark = initData.initialSystemDark === true;
   const initialEnvironmentOpen = initData.initialEnvironmentOpen === true;
   const initialRoute =
     typeof initData.initialRoute === 'string' &&
@@ -268,8 +270,8 @@ export function App() {
 
   useEffect(() => {
     'background only';
-    setLynxThemeState(themeState);
-  }, [themeState]);
+    setLynxThemeState(themeState, systemDark);
+  }, [systemDark, themeState]);
   useEffect(() => {
     'background only';
     return subscribeLynxThemeState(setThemeState);
@@ -288,7 +290,7 @@ export function App() {
       <view
         className={[
           'SliceRoot',
-          sliceThemeClassName(themeState),
+          sliceThemeClassName(themeState, systemDark),
           sliceUiDensityClassName(uiDensity),
           viewportLayoutClassName(viewportLayout),
           viewportBreakpointClassNames(viewportLayout),
@@ -346,7 +348,7 @@ export function App() {
               initialExplorerExpandedDirectories
             }
             initialExplorerWidth={initialExplorerWidth}
-            resolvedTheme={resolveThemeVariant(themeState.mode, false)}
+            resolvedTheme={resolveThemeVariant(themeState.mode, systemDark)}
             viewportWidth={viewportLayout.width}
             onThemeStateChange={setThemeState}
             onUiDensityChange={setUiDensity}
