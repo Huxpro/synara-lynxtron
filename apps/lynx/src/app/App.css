@@ -51,6 +51,7 @@
 }
 
 .SliceRoot--theme-light {
+  --pr-check-row-hover-surface: rgba(13, 13, 13, 0.02);
   --pr-row-hover-surface: rgba(13, 13, 13, 0.028);
   --pr-warning-border: rgba(217, 119, 6, 0.32);
   --pr-warning-surface: rgba(217, 119, 6, 0.04);
@@ -70,6 +71,7 @@
 }
 
 .SliceRoot--theme-dark {
+  --pr-check-row-hover-surface: rgba(252, 252, 252, 0.003);
   --pr-row-hover-surface: rgba(252, 252, 252, 0.0042);
   --pr-warning-border: rgba(245, 180, 74, 0.32);
   --pr-warning-surface: rgba(245, 180, 74, 0.04);

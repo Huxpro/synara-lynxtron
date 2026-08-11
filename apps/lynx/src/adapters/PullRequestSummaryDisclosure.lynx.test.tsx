@@ -111,4 +111,34 @@ describe('Pull Request summary disclosure fidelity', () => {
     );
     expect(source).not.toContain('SharedPrSummaryMuted');
   });
+
+  it('matches the Web check-row metadata and half-muted hover surface', () => {
+    const styles = readFileSync(
+      new URL('./pull-request-summary-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+    const appStyles = readFileSync(
+      new URL('../app/App.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(styles).toMatch(
+      /\.SharedPrSummaryCheckRow\s*\{[^}]*min-height:\s*30px;[^}]*gap:\s*8px;[^}]*margin:\s*0 -8px;[^}]*padding:\s*6px 8px;[^}]*border-radius:\s*6px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrSummaryCheckRow\.ui-hover,\s*\.SharedPrSummaryCheckRow\.ui-pressed\s*\{[^}]*background-color:\s*var\(--pr-check-row-hover-surface\);/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrSummaryCheckName,\s*\.SharedPrSummaryCheckStatus\s*\{[^}]*font-size:\s*var\(--app-font-size-ui\);[^}]*line-height:\s*18px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedPrSummaryCommentPath\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm\);[^}]*line-height:\s*18px;/s
+    );
+    expect(appStyles).toContain(
+      '--pr-check-row-hover-surface: rgba(13, 13, 13, 0.02);'
+    );
+    expect(appStyles).toContain(
+      '--pr-check-row-hover-surface: rgba(252, 252, 252, 0.003);'
+    );
+  });
 });

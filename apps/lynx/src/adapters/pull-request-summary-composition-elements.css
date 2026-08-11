@@ -226,7 +226,7 @@
 
 .SharedPrSummaryCheckRow.ui-hover,
 .SharedPrSummaryCheckRow.ui-pressed {
-  background-color: var(--muted);
+  background-color: var(--pr-check-row-hover-surface);
 }
 
 .SharedPrSummaryCheckRow.ui-focus {
@@ -257,7 +257,11 @@
 }
 
 .SharedPrSummaryCheckName,
-.SharedPrSummaryCheckStatus,
+.SharedPrSummaryCheckStatus {
+  font-size: var(--app-font-size-ui);
+  line-height: 18px;
+}
+
 .SharedPrSummaryCommentPath {
   font-size: var(--app-font-size-ui-sm);
   line-height: 18px;

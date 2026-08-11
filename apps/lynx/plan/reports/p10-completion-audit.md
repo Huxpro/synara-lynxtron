@@ -1479,6 +1479,18 @@ style audits remain green at 61.95% pull-request reuse and 98.07% style
 coverage. This is source/build evidence, not a new Native runtime certification
 cell.
 
+The pull-request check-row follow-up aligns its metadata hierarchy and hover
+strength without changing interaction gating. Check name and status now use
+Web's 12px meta role instead of 11px fine text, while comment file paths remain
+11px. Row hover/press uses the exact 50% muted wash—2% light and 0.3% dark—
+rather than the full muted surface; disabled rows still suppress hover, and the
+existing 30px row, 6x8px inset, 8px gap, status glyphs, truncation, focus ring,
+accessible label, and external-link action remain unchanged. Focused Summary
+coverage passes 4/4; Lynx-for-Web and Native/Desktop production builds pass;
+strict reuse and style audits remain green at 61.95% pull-request reuse and
+98.07% style coverage. This is source/build evidence, not a new Native runtime
+certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after
