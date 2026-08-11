@@ -1728,6 +1728,21 @@ reuse and 98.07% style coverage. Evidence is retained in
 `shots/2026-08-11/current-head-landing-light-1280/`. This certifies only the
 fast-loop landing light/1280 slice, not Native or the global P10 matrix.
 
+The provider-health icon follow-up closes the remaining visible tone mismatch
+in that landing cell. Web's `Alert variant="error"` applies the destructive
+role to its direct SVG, while Native had explicitly forced the corresponding
+icon to foreground ink. Native now maps error icons to `--destructive` and
+warning icons to `--warning`, without changing notification title, description,
+or dismiss-control ink. Fresh same-state light/1280 probes resolve both Web and
+Lynx icon color to `rgb(224, 46, 42)` and preserve the exact 736x68 banner at
+`(400,58)`. Both 1280x820 frames have empty page-error gates; Lynx relay is open
+with zero pending requests and no transport/RPC error. Focused component
+coverage passes 3/3; Web and Native/Desktop production builds pass; strict
+reuse and style audits remain green at 61.95% pull-request reuse and 98.07%
+style coverage. Evidence is retained in
+`shots/2026-08-11/current-head-provider-banner-icon-light-1280/`. This remains
+a focused fast-loop cell, not Native or global P10 certification.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

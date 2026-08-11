@@ -67,7 +67,13 @@ describe("Native ProviderHealthBanner", () => {
       /\.SliceRoot--viewport-short-height \.ProviderHealthBannerDescription\s*\{[^}]*display:\s*none;/s,
     );
     expect(styles).toMatch(
-      /\.ProviderHealthBannerIcon\s*\{[^}]*color:\s*var\(--foreground\);[^}]*opacity:\s*0\.92;/s,
+      /\.ProviderHealthBannerIcon\s*\{[^}]*opacity:\s*0\.92;/s,
+    );
+    expect(styles).toMatch(
+      /\.ProviderHealthBanner--error \.ProviderHealthBannerIcon\s*\{[^}]*color:\s*var\(--destructive\);/s,
+    );
+    expect(styles).toMatch(
+      /\.ProviderHealthBanner--warning \.ProviderHealthBannerIcon\s*\{[^}]*color:\s*var\(--warning\);/s,
     );
     expect(styles).toMatch(
       /\.ProviderHealthBannerDismiss\.ui-hover,[^{]*\{[^}]*background-color:\s*rgba\(13,\s*13,\s*13,\s*0\.1\);/s,
