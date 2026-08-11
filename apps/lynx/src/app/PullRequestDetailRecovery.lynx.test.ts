@@ -10,7 +10,7 @@ describe('Pull Request detail recovery fidelity', () => {
 
     expect(source).toContain('isFetching: selectedDetailFetching');
     expect(source).toMatch(
-      /selectedDetailError \? \(\s*<PullRequestsUnavailableState\s+error=\{selectedDetailError\}\s+retrying=\{selectedDetailFetching\}\s+onRetry=\{\(\) => void refetchSelectedDetail\(\)\}/s
+      /selectedDetailError && !selectedDetail \? \(\s*<PullRequestsUnavailableState\s+error=\{selectedDetailError\}\s+retrying=\{selectedDetailFetching\}\s+onRetry=\{\(\) => void refetchSelectedDetail\(\)\}/s
     );
     expect(source).not.toContain(
       'The detail could not be loaded. Close the panel and try again.'

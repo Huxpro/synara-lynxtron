@@ -52,6 +52,8 @@
 
 .SliceRoot--theme-light {
   --pr-row-hover-surface: rgba(13, 13, 13, 0.028);
+  --pr-warning-border: rgba(217, 119, 6, 0.32);
+  --pr-warning-surface: rgba(217, 119, 6, 0.04);
   --runtime-full-access-accent: #e25505;
   --settings-usage-error-surface: rgba(251, 44, 54, 0.12);
   --settings-usage-error-text: #e7000b;
@@ -69,6 +71,8 @@
 
 .SliceRoot--theme-dark {
   --pr-row-hover-surface: rgba(252, 252, 252, 0.0042);
+  --pr-warning-border: rgba(245, 180, 74, 0.32);
+  --pr-warning-surface: rgba(245, 180, 74, 0.04);
   --runtime-full-access-accent: #fe8549;
   --settings-usage-error-surface: rgba(251, 44, 54, 0.12);
   --settings-usage-error-text: #ff6467;

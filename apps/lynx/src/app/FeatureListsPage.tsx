@@ -102,6 +102,7 @@ import { ResizableRightPanel } from './ResizableRightPanel.lynx';
 import { KanbanNewTaskDialog } from './KanbanNewTaskDialog.lynx';
 import { PullRequestsUnavailableState } from '../adapters/PullRequestsUnavailableState.lynx';
 import { PullRequestDetailExternalButtonElement } from '../adapters/PullRequestDetailCloseCompositionElements.lynx';
+import { PullRequestWarningBanner } from '../adapters/PullRequestWarningBanner.lynx';
 
 export function ProjectsPage({ navigate }: { readonly navigate: (to: string) => void }) {
   const [newTaskProjectId, setNewTaskProjectId] =
@@ -1147,6 +1148,11 @@ export function PullRequestsPage() {
             <PullRequestDetailCapabilityComposition
               availableTabs={['summary', 'timeline', 'code']}
             />
+            {selectedDetailError && selectedDetail ? (
+              <PullRequestWarningBanner>
+                Could not refresh pull request details. Showing saved data.
+              </PullRequestWarningBanner>
+            ) : null}
             {lastFailedAction ? (
               <view className="SharedPrActionRecovery">
                 <text className="SharedPrActionError">
@@ -1209,7 +1215,7 @@ export function PullRequestsPage() {
                   rowCount={4}
                   label="Loading pull request details…"
                 />
-              ) : selectedDetailError ? (
+              ) : selectedDetailError && !selectedDetail ? (
                 <PullRequestsUnavailableState
                   error={selectedDetailError}
                   retrying={selectedDetailFetching}

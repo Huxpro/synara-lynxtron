@@ -1422,6 +1422,17 @@ production builds pass; strict reuse and style audits remain green at 61.95%
 pull-request reuse and 98.07% style coverage. This is source/build evidence,
 not a new Native runtime certification cell.
 
+The pull-request stale-detail follow-up preserves cached content when only a
+background refresh fails. Native now separates `error && data` from initial
+`error && !data`: saved Summary/Timeline content stays mounted, and a full-width
+amber status banner announces `Could not refresh pull request details. Showing
+saved data.` with Web's 8x12px banner padding, readable foreground copy, 4%
+warning tint, and 32% warning bottom rule. Only no-data failures replace the
+content with Retry. Focused stale/initial recovery coverage passes 4/4;
+Lynx-for-Web and Native/Desktop production builds pass; strict reuse and style
+audits remain green at 61.95% pull-request reuse and 98.07% style coverage.
+This is source/build evidence, not a new Native runtime certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

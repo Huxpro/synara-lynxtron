@@ -1,0 +1,12 @@
+.SharedPrWarningBanner {
+  width: 100%;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--pr-warning-border);
+  background-color: var(--pr-warning-surface);
+}
+
+.SharedPrWarningBannerText {
+  color: var(--foreground);
+  font-size: var(--app-font-size-ui);
+  line-height: 18px;
+}
