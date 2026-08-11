@@ -259,7 +259,6 @@
 .SharedPrSummaryCheckName,
 .SharedPrSummaryCheckStatus,
 .SharedPrSummaryMuted,
-.SharedPrSummaryWarning,
 .SharedPrSummaryCommentPath {
   font-size: var(--app-font-size-ui-sm);
   line-height: 18px;
@@ -288,11 +287,6 @@
 .SharedPrSummaryMuted,
 .SharedPrSummaryCommentPath {
   color: var(--muted-foreground);
-}
-
-.SharedPrSummaryWarning {
-  color: var(--color-text-status-warning);
-  margin-bottom: 10px;
 }
 
 .SharedPrSummaryEmptyComments {

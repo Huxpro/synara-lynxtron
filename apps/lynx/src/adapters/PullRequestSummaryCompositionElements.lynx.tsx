@@ -19,6 +19,7 @@ import { PullRequestCheckStatusIcon } from './PullRequestCheckStatusIcon.lynx';
 import { PullRequestSummaryBranchRow } from './PullRequestSummaryBranchRow.lynx';
 import { PullRequestSummaryCommentCard } from './PullRequestSummaryCommentCard.lynx';
 import { PullRequestSummaryMetaIcon } from './PullRequestSummaryMetaIcon.lynx';
+import { PullRequestWarningBanner } from './PullRequestWarningBanner.lynx';
 import { platformWindow } from '../platform/window';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 import './pull-request-summary-composition-elements.css';
@@ -266,11 +267,11 @@ export function PullRequestSummaryCommentsElement(props: {
   return (
     <view className="SharedPrSummaryComments">
       {props.detail.commentsIncomplete || props.detail.commentsTruncated ? (
-        <text className="SharedPrSummaryWarning">
+        <PullRequestWarningBanner shape="note">
           {props.detail.commentsIncomplete
             ? 'Some unresolved review comments could not be loaded. Check GitHub for the complete review.'
             : 'More unresolved review comments may be available on GitHub.'}
-        </text>
+        </PullRequestWarningBanner>
       ) : null}
       {props.detail.comments.length === 0 ? (
         <text className="SharedPrSummaryMuted SharedPrSummaryEmptyComments">

@@ -1457,6 +1457,17 @@ style audits remain green at 61.95% pull-request reuse and 98.07% style
 coverage. This is source/build evidence, not a new Native runtime certification
 cell.
 
+The pull-request Summary warning follow-up replaces its last plain amber text
+exception with the canonical warning system. Incomplete or truncated review
+comments now use the compact note shape: 6x8px padding, 6px radius, 8px trailing
+spacing, 4% warning tint, 32% warning border, and readable foreground copy.
+Banner and callout users continue to share the same adapter, and the old
+`SharedPrSummaryWarning` class is deleted. Focused warning/Summary coverage
+passes 6/6; Lynx-for-Web and Native/Desktop production builds pass; strict
+reuse and style audits remain green at 61.95% pull-request reuse and 98.07%
+style coverage. This is source/build evidence, not a new Native runtime
+certification cell.
+
 Therefore current HEAD must not be described as globally P10-complete solely
 from the historical green verifier. Implemented responsive UI surfaces are
 closed, but a new complete three-client certification is still required after

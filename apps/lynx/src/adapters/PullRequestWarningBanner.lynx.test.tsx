@@ -38,6 +38,9 @@ describe('Pull Request warning banner fidelity', () => {
       /\.SharedPrWarningBanner--callout\s*\{[^}]*margin-top:\s*12px;[^}]*border:\s*1px solid var\(--pr-warning-border\);[^}]*border-radius:\s*8px;/s
     );
     expect(styles).toMatch(
+      /\.SharedPrWarningBanner--note\s*\{[^}]*margin-bottom:\s*8px;[^}]*padding:\s*6px 8px;[^}]*border:\s*1px solid var\(--pr-warning-border\);[^}]*border-radius:\s*6px;/s
+    );
+    expect(styles).toMatch(
       /\.SharedPrWarningBannerText\s*\{[^}]*color:\s*var\(--foreground\);[^}]*font-size:\s*var\(--app-font-size-ui\);[^}]*line-height:\s*18px;/s
     );
     expect(appStyles).toContain(
@@ -83,5 +86,20 @@ describe('Pull Request warning banner fidelity', () => {
     expect(styles).toMatch(
       /\.SharedPrListFootnote\s*\{[^}]*margin-top:\s*12px;[^}]*padding:\s*0 4px;[^}]*font-size:\s*var\(--app-font-size-ui-sm\);[^}]*line-height:\s*18px;/s
     );
+  });
+
+  it('reuses the compact warning note for incomplete Summary comments', () => {
+    const source = readFileSync(
+      new URL('./PullRequestSummaryCompositionElements.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const styles = readFileSync(
+      new URL('./pull-request-summary-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(source).toContain('<PullRequestWarningBanner shape="note">');
+    expect(source).not.toContain('className="SharedPrSummaryWarning"');
+    expect(styles).not.toContain('.SharedPrSummaryWarning');
   });
 });

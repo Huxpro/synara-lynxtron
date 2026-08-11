@@ -3,7 +3,7 @@ import './pull-request-warning-banner.css';
 
 export function PullRequestWarningBanner(props: {
   readonly children: string;
-  readonly shape?: 'banner' | 'callout';
+  readonly shape?: 'banner' | 'callout' | 'note';
 }) {
   const shape = props.shape ?? 'banner';
   useLynxSystemStateAnnouncement({
