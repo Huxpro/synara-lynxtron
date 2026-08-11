@@ -1,0 +1,1209 @@
+{
+  "frameCount": 80,
+  "minimumMean": 205.1176086128049,
+  "maximumMean": 223.35178639481708,
+  "maxDelta": 19.81429274644309,
+  "largeDeltaFrames": [],
+  "frames": [
+    {
+      "file": "frame-00.png",
+      "sourceSize": [
+        2696,
+        1776
+      ],
+      "alphaBox": [
+        1,
+        1,
+        2695,
+        1775
+      ],
+      "mean": 222.71034489329267,
+      "delta": 0
+    },
+    {
+      "file": "frame-01.png",
+      "sourceSize": [
+        2696,
+        1776
+      ],
+      "alphaBox": [
+        1,
+        1,
+        2695,
+        1775
+      ],
+      "mean": 222.71034489329267,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-02.png",
+      "sourceSize": [
+        2696,
+        1776
+      ],
+      "alphaBox": [
+        1,
+        1,
+        2695,
+        1775
+      ],
+      "mean": 222.71034489329267,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-03.png",
+      "sourceSize": [
+        2696,
+        1776
+      ],
+      "alphaBox": [
+        1,
+        1,
+        2695,
+        1775
+      ],
+      "mean": 222.71034489329267,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-04.png",
+      "sourceSize": [
+        2696,
+        1776
+      ],
+      "alphaBox": [
+        1,
+        1,
+        2695,
+        1775
+      ],
+      "mean": 222.71034489329267,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-05.png",
+      "sourceSize": [
+        2696,
+        1776
+      ],
+      "alphaBox": [
+        1,
+        1,
+        2695,
+        1775
+      ],
+      "mean": 222.71034489329267,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-06.png",
+      "sourceSize": [
+        2696,
+        1776
+      ],
+      "alphaBox": [
+        1,
+        1,
+        2695,
+        1775
+      ],
+      "mean": 222.71034489329267,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-07.png",
+      "sourceSize": [
+        2696,
+        1776
+      ],
+      "alphaBox": [
+        1,
+        1,
+        2695,
+        1775
+      ],
+      "mean": 222.71034489329267,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-08.png",
+      "sourceSize": [
+        2696,
+        1776
+      ],
+      "alphaBox": [
+        1,
+        1,
+        2695,
+        1775
+      ],
+      "mean": 222.71034489329267,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-09.png",
+      "sourceSize": [
+        2696,
+        1776
+      ],
+      "alphaBox": [
+        1,
+        1,
+        2695,
+        1775
+      ],
+      "mean": 222.71034489329267,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-10.png",
+      "sourceSize": [
+        2696,
+        1776
+      ],
+      "alphaBox": [
+        1,
+        1,
+        2695,
+        1775
+      ],
+      "mean": 222.71034489329267,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-11.png",
+      "sourceSize": [
+        2696,
+        1776
+      ],
+      "alphaBox": [
+        1,
+        1,
+        2695,
+        1775
+      ],
+      "mean": 222.71034489329267,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-12.png",
+      "sourceSize": [
+        2696,
+        1776
+      ],
+      "alphaBox": [
+        1,
+        1,
+        2695,
+        1775
+      ],
+      "mean": 222.71034489329267,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-13.png",
+      "sourceSize": [
+        2696,
+        1776
+      ],
+      "alphaBox": [
+        1,
+        1,
+        2695,
+        1775
+      ],
+      "mean": 222.71034489329267,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-14.png",
+      "sourceSize": [
+        2696,
+        1776
+      ],
+      "alphaBox": [
+        1,
+        1,
+        2695,
+        1775
+      ],
+      "mean": 222.71034489329267,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-15.png",
+      "sourceSize": [
+        2696,
+        1776
+      ],
+      "alphaBox": [
+        1,
+        1,
+        2695,
+        1775
+      ],
+      "mean": 222.71034489329267,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-16.png",
+      "sourceSize": [
+        2696,
+        1776
+      ],
+      "alphaBox": [
+        1,
+        1,
+        2695,
+        1775
+      ],
+      "mean": 222.71034489329267,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-17.png",
+      "sourceSize": [
+        2696,
+        1776
+      ],
+      "alphaBox": [
+        1,
+        1,
+        2695,
+        1775
+      ],
+      "mean": 222.71034489329267,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-18.png",
+      "sourceSize": [
+        2696,
+        1776
+      ],
+      "alphaBox": [
+        1,
+        1,
+        2695,
+        1775
+      ],
+      "mean": 222.71034489329267,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-19.png",
+      "sourceSize": [
+        2696,
+        1776
+      ],
+      "alphaBox": [
+        1,
+        1,
+        2695,
+        1775
+      ],
+      "mean": 222.71034489329267,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-20.png",
+      "sourceSize": [
+        2696,
+        1776
+      ],
+      "alphaBox": [
+        1,
+        1,
+        2695,
+        1775
+      ],
+      "mean": 222.71034489329267,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-21.png",
+      "sourceSize": [
+        2696,
+        1776
+      ],
+      "alphaBox": [
+        1,
+        1,
+        2695,
+        1775
+      ],
+      "mean": 222.71034489329267,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-22.png",
+      "sourceSize": [
+        1814,
+        1196
+      ],
+      "alphaBox": [
+        1,
+        4,
+        1811,
+        1194
+      ],
+      "mean": 223.35178639481708,
+      "delta": 1.6650314405487805
+    },
+    {
+      "file": "frame-23.png",
+      "sourceSize": [
+        738,
+        486
+      ],
+      "alphaBox": [
+        2,
+        3,
+        736,
+        485
+      ],
+      "mean": 223.04188833841462,
+      "delta": 1.1926000381097561
+    },
+    {
+      "file": "frame-24.png",
+      "sourceSize": [
+        738,
+        486
+      ],
+      "alphaBox": [
+        2,
+        3,
+        736,
+        485
+      ],
+      "mean": 223.04190771087397,
+      "delta": 3.6521849593495936e-05
+    },
+    {
+      "file": "frame-25.png",
+      "sourceSize": [
+        738,
+        486
+      ],
+      "alphaBox": [
+        2,
+        3,
+        736,
+        485
+      ],
+      "mean": 223.04191977896343,
+      "delta": 1.524390243902439e-05
+    },
+    {
+      "file": "frame-26.png",
+      "sourceSize": [
+        738,
+        486
+      ],
+      "alphaBox": [
+        2,
+        3,
+        736,
+        485
+      ],
+      "mean": 223.0419131097561,
+      "delta": 6.669207317073171e-06
+    },
+    {
+      "file": "frame-27.png",
+      "sourceSize": [
+        738,
+        486
+      ],
+      "alphaBox": [
+        2,
+        3,
+        736,
+        485
+      ],
+      "mean": 223.04192581300813,
+      "delta": 1.5879065040650408e-05
+    },
+    {
+      "file": "frame-28.png",
+      "sourceSize": [
+        2496,
+        1672
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2495,
+        1670
+      ],
+      "mean": 205.25875730436994,
+      "delta": 19.81429274644309
+    },
+    {
+      "file": "frame-29.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1729293699187,
+      "delta": 0.38300717733739836
+    },
+    {
+      "file": "frame-30.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1729293699187,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-31.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1729293699187,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-32.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1176086128049,
+      "delta": 0.1006885162601626
+    },
+    {
+      "file": "frame-33.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1176086128049,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-34.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1176086128049,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-35.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 206.2835629446138,
+      "delta": 1.1659619537601627
+    },
+    {
+      "file": "frame-36.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 206.2835629446138,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-37.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 206.2835629446138,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-38.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 206.2835629446138,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-39.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 206.2835629446138,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-40.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 206.2835629446138,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-41.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 206.2835629446138,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-42.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 206.2835629446138,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-43.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 206.2835629446138,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-44.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 206.2835629446138,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-45.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 206.2835629446138,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-46.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 206.2835629446138,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-47.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 206.2835629446138,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-48.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 206.2835629446138,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-49.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 206.2835629446138,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-50.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 206.2835629446138,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-51.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 206.2835629446138,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-52.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 206.2835629446138,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-53.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 206.2835629446138,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-54.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 206.2835629446138,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-55.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1729293699187,
+      "delta": 1.1106411966463414
+    },
+    {
+      "file": "frame-56.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1729293699187,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-57.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1729293699187,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-58.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1729293699187,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-59.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1729293699187,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-60.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1729293699187,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-61.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1729293699187,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-62.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1729293699187,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-63.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1729293699187,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-64.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1729293699187,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-65.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1729293699187,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-66.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1729293699187,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-67.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1729293699187,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-68.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1729293699187,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-69.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1729293699187,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-70.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1729293699187,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-71.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1729293699187,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-72.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1729293699187,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-73.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1729293699187,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-74.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1729293699187,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-75.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1729293699187,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-76.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1729293699187,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-77.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1729293699187,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-78.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1729293699187,
+      "delta": 0.0
+    },
+    {
+      "file": "frame-79.png",
+      "sourceSize": [
+        2784,
+        1864
+      ],
+      "alphaBox": [
+        0,
+        1,
+        2784,
+        1864
+      ],
+      "mean": 205.1729293699187,
+      "delta": 0.0
+    }
+  ]
+}

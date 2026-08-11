@@ -1,0 +1,65 @@
+{
+  "heading": {
+    "bg": "rgba(0, 0, 0, 0)",
+    "cls": "text-[26px] font-normal leading-[1.15] tracking-[-0.015em] text-foreground/95 sm:text-[30px]",
+    "color": "oklab(0.991063 0.0000452101 0.0000197887 / 0.95)",
+    "font": [
+      "30px",
+      "34.5px",
+      "400",
+      "-0.45px"
+    ],
+    "radius": "0px",
+    "rect": [
+      607.8125,
+      407.25,
+      320.359375,
+      34.5
+    ],
+    "shadow": "none",
+    "tag": "H2",
+    "text": "What should we work on?"
+  },
+  "main": {
+    "bg": "rgb(17, 17, 17)",
+    "cls": "flex h-dvh min-h-0 min-w-0 flex-1 bg-[var(--color-background-surface)] chat-content-card relative z-[15] overflow-hidden",
+    "color": "rgb(252, 252, 252)",
+    "font": [
+      "16px",
+      "24px",
+      "400",
+      "normal"
+    ],
+    "radius": "14.4px 0px 0px 14.4px",
+    "rect": [
+      256,
+      0,
+      1024,
+      820
+    ],
+    "shadow": "rgba(0, 0, 0, 0.36) -6.5px 0px 12px -10px",
+    "tag": "DIV",
+    "text": "New ChatHand offCodex provider statusCodex CLI is installed but failed to run. Error: codex not found in PATHWhat should we work on?Ask for follow-up changes or attach imagesFull accessGPT-5.5MediumWork in a projectEnvironmentLocal Servers0EditorEditor viewOpen in CursorProject instructionsNotepad"
+  },
+  "sidebar": {
+    "bg": "rgb(17, 17, 17)",
+    "cls": "relative z-0 flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow-sm/5 app-sidebar-surface",
+    "color": "rgb(252, 252, 252)",
+    "font": [
+      "16px",
+      "24px",
+      "400",
+      "normal"
+    ],
+    "radius": "0px",
+    "rect": [
+      0,
+      0,
+      256,
+      820
+    ],
+    "shadow": "rgba(255, 255, 255, 0.024) 0px 1px 0px 0px inset",
+    "tag": "DIV",
+    "text": "Toggle SidebarToggle SidebarStudioProjectsNew thread⌘NSearch⌘KKanbanPull requestsAutomationsProjects\n    To pick up a draggable item, press the space bar.\n    While dragging, use the arrow keys to move the item.\n    Press space again to drop the item in its new position, or press escape to cancel.\n  No projects yetChatsNo chats yetSettings"
+  }
+}

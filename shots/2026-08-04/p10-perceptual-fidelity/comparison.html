@@ -170,6 +170,155 @@
         gap: 38px;
       }
 
+      .archive {
+        margin-top: 56px;
+        padding-top: 24px;
+        border-top: 1px solid var(--line-strong);
+      }
+
+      .archive-header {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 24px;
+        align-items: end;
+        margin-bottom: 18px;
+      }
+
+      .archive-header h2 {
+        margin: 0;
+        font-family: "Iowan Old Style", "Songti SC", serif;
+        font-size: clamp(28px, 4vw, 48px);
+        font-weight: 500;
+        letter-spacing: -0.03em;
+      }
+
+      .archive-header p {
+        max-width: 820px;
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      .archive-summary {
+        color: var(--muted);
+        font-size: 12px;
+        text-align: right;
+      }
+
+      .archive-toolbar {
+        display: grid;
+        grid-template-columns: minmax(220px, 1fr) auto auto;
+        gap: 10px;
+        margin-bottom: 18px;
+      }
+
+      .archive-toolbar input,
+      .archive-toolbar select {
+        min-height: 34px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 5px 9px;
+        color: var(--ink);
+        background: var(--surface);
+      }
+
+      .archive-days {
+        display: grid;
+        gap: 12px;
+      }
+
+      .archive-day,
+      .archive-directory {
+        border: 1px solid var(--line);
+        background: var(--surface);
+      }
+
+      .archive-day > summary,
+      .archive-directory > summary {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .archive-day > summary {
+        padding: 12px 14px;
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .archive-directory {
+        margin: 0 12px 12px;
+        background: var(--surface-raised);
+      }
+
+      .archive-directory > summary {
+        padding: 9px 11px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .archive-count {
+        margin-left: auto;
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 600;
+      }
+
+      .archive-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+        gap: 1px;
+        border-top: 1px solid var(--line);
+        background: var(--line);
+      }
+
+      .archive-image {
+        min-width: 0;
+        padding: 8px;
+        color: inherit;
+        background: var(--surface);
+        text-decoration: none;
+      }
+
+      .archive-image img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 10;
+        object-fit: contain;
+        border: 1px solid var(--line);
+        background: var(--page);
+      }
+
+      .archive-image strong,
+      .archive-image span {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .archive-image strong {
+        margin-top: 7px;
+        font-size: 11px;
+      }
+
+      .archive-image span {
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 9px;
+      }
+
+      .archive-empty {
+        padding: 28px;
+        border: 1px solid var(--line);
+        color: var(--muted);
+        text-align: center;
+        background: var(--surface);
+      }
+
       .case {
         border-top: 1px solid var(--line-strong);
         padding-top: 18px;
@@ -538,9 +687,43 @@
       </nav>
 
       <section class="gallery" id="gallery"></section>
+
+      <section class="archive" id="screenshotArchive">
+        <header class="archive-header">
+          <div>
+            <p class="eyebrow">Evidence archive</p>
+            <h2>August 2–11 screenshots</h2>
+            <p>
+              Every PNG/JPEG retained in these ten daily evidence trees is indexed
+              here, including Native diagnostic frame sequences. Directories load
+              previews only when expanded. “Untracked” means the image exists in
+              this working tree but was not committed when the archive was generated.
+            </p>
+          </div>
+          <div class="archive-summary" id="archiveSummary"></div>
+        </header>
+        <div class="archive-toolbar">
+          <input
+            id="archiveSearch"
+            type="search"
+            placeholder="Filter by directory or filename"
+            aria-label="Filter screenshot archive"
+          />
+          <select id="archiveDay" aria-label="Filter archive by day">
+            <option value="all">All days</option>
+          </select>
+          <select id="archiveGitStatus" aria-label="Filter archive by Git status">
+            <option value="all">Tracked + untracked</option>
+            <option value="tracked">Tracked</option>
+            <option value="untracked">Untracked</option>
+          </select>
+        </div>
+        <div class="archive-days" id="archiveDays"></div>
+      </section>
     </main>
 
     <script src="manifest.js"></script>
+    <script src="screenshot-archive.js"></script>
     <script>
       const data = globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ ?? { states: [] };
       const clients = [
@@ -827,6 +1010,98 @@
       );
       document.querySelector("#residualCount").textContent = String(residualsAll.length);
       render();
+
+      const screenshotArchive = globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ ?? {
+        days: [],
+        imageCount: 0,
+        trackedCount: 0,
+        untrackedCount: 0,
+      };
+      const archiveDays = document.querySelector("#archiveDays");
+      const archiveSearch = document.querySelector("#archiveSearch");
+      const archiveDay = document.querySelector("#archiveDay");
+      const archiveGitStatus = document.querySelector("#archiveGitStatus");
+      for (const day of screenshotArchive.days) {
+        const option = document.createElement("option");
+        option.value = day.day;
+        option.textContent = `${day.day} · ${day.imageCount}`;
+        archiveDay.append(option);
+      }
+      document.querySelector("#archiveSummary").textContent =
+        `${screenshotArchive.imageCount.toLocaleString()} images · ` +
+        `${screenshotArchive.trackedCount.toLocaleString()} tracked · ` +
+        `${screenshotArchive.untrackedCount.toLocaleString()} untracked`;
+
+      function archiveImage(image) {
+        return `
+          <a class="archive-image" href="${image.path}" target="_blank" rel="noreferrer">
+            <img data-src="${image.path}" alt="${escapeHtml(image.repoPath)}" loading="lazy" />
+            <strong title="${escapeHtml(image.name)}">${escapeHtml(image.name)}</strong>
+            <span>${image.gitStatus} · ${(image.bytes / 1024).toFixed(1)} KiB</span>
+          </a>
+        `;
+      }
+
+      function hydrateArchiveDirectory(details) {
+        if (!details.open) return;
+        for (const image of details.querySelectorAll("img[data-src]")) {
+          image.src = image.dataset.src;
+          image.removeAttribute("data-src");
+        }
+      }
+
+      function renderArchive() {
+        const search = archiveSearch.value.trim().toLowerCase();
+        const selectedDay = archiveDay.value;
+        const selectedStatus = archiveGitStatus.value;
+        let visibleImages = 0;
+        const dayMarkup = screenshotArchive.days.flatMap((day) => {
+          if (selectedDay !== "all" && selectedDay !== day.day) return [];
+          const directories = day.directories.flatMap((directory) => {
+            const images = directory.images.filter(
+              (image) =>
+                (selectedStatus === "all" || image.gitStatus === selectedStatus) &&
+                (!search || image.repoPath.toLowerCase().includes(search)),
+            );
+            if (!images.length) return [];
+            visibleImages += images.length;
+            return [`
+              <details class="archive-directory">
+                <summary>
+                  <span>${escapeHtml(directory.directory)}</span>
+                  <span class="archive-count">${images.length} images</span>
+                </summary>
+                <div class="archive-grid">${images.map(archiveImage).join("")}</div>
+              </details>
+            `];
+          });
+          if (!directories.length) return [];
+          return [`
+            <details class="archive-day" ${selectedDay === day.day ? "open" : ""}>
+              <summary>
+                <span>${day.day}</span>
+                <span class="archive-count">${directories.length} directories</span>
+              </summary>
+              ${directories.join("")}
+            </details>
+          `];
+        });
+        archiveDays.innerHTML = dayMarkup.length
+          ? dayMarkup.join("")
+          : `<div class="archive-empty">No screenshots match this filter.</div>`;
+        for (const details of archiveDays.querySelectorAll(".archive-directory")) {
+          details.addEventListener("toggle", () => hydrateArchiveDirectory(details));
+        }
+        document.querySelector("#archiveSummary").textContent =
+          `${visibleImages.toLocaleString()} visible / ` +
+          `${screenshotArchive.imageCount.toLocaleString()} images · ` +
+          `${screenshotArchive.untrackedCount.toLocaleString()} untracked`;
+      }
+
+      archiveSearch.addEventListener("input", renderArchive);
+      archiveDay.addEventListener("change", renderArchive);
+      archiveGitStatus.addEventListener("change", renderArchive);
+      renderArchive();
     </script>
   </body>
 </html>

@@ -1,0 +1,70 @@
+{
+  ".chat-content-card": {
+    "bg": "rgb(17, 17, 17)",
+    "cls": "flex h-dvh min-h-0 min-w-0 flex-1 bg-[var(--color-background-surface)] chat-content-card relative z-[15] overflow-hidden",
+    "color": "rgb(252, 252, 252)",
+    "font": [
+      "16px",
+      "24px",
+      "400",
+      "normal"
+    ],
+    "placeholder": null,
+    "radius": "14.4px 0px 0px 14.4px",
+    "rect": [
+      256,
+      0,
+      1024,
+      820
+    ],
+    "shadow": "rgba(0, 0, 0, 0.36) -6.5px 0px 12px -10px",
+    "tag": "DIV",
+    "text": "New ChatHand offCodex provider statusCodex CLI is installed but failed to run. Error: codex not found in PATHWhat should"
+  },
+  "[data-slot=composer-shell]": null,
+  "[data-slot=sidebar-inner]": {
+    "bg": "rgb(17, 17, 17)",
+    "cls": "relative z-0 flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow-sm/5 app-sidebar-surface",
+    "color": "rgb(252, 252, 252)",
+    "font": [
+      "16px",
+      "24px",
+      "400",
+      "normal"
+    ],
+    "placeholder": null,
+    "radius": "0px",
+    "rect": [
+      0,
+      0,
+      256,
+      820
+    ],
+    "shadow": "rgba(255, 255, 255, 0.024) 0px 1px 0px 0px inset",
+    "tag": "DIV",
+    "text": "Toggle SidebarToggle SidebarStudioProjectsNew thread⌘NSearch⌘KKanbanPull requestsAutomationsProjects\n    To pick up a dr"
+  },
+  "h1": null,
+  "textarea": {
+    "bg": "rgba(0, 0, 0, 0)",
+    "cls": "font-system-ui field-sizing-content min-h-17.5 w-full resize-none rounded-[inherit] px-[calc(--spacing(3)-1px)] py-[calc(--spacing(1.5)-1px)] outline-none max-sm:min-h-20.5",
+    "color": "rgb(252, 252, 252)",
+    "font": [
+      "12px",
+      "18px",
+      "400",
+      "normal"
+    ],
+    "placeholder": "Type here",
+    "radius": "10px",
+    "rect": [
+      1284,
+      372.5,
+      256,
+      70
+    ],
+    "shadow": "none",
+    "tag": "TEXTAREA",
+    "text": ""
+  }
+}

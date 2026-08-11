@@ -1,0 +1,144 @@
+{
+  "compress": false,
+  "root": {
+    "attributes": [],
+    "backendNodeId": 11,
+    "childNodeCount": 1,
+    "children": [
+      {
+        "attributes": [],
+        "backendNodeId": 10,
+        "childNodeCount": 1,
+        "children": [
+          {
+            "attributes": [
+              "data-viewport-width",
+              "1280",
+              "data-viewport-height",
+              "820",
+              "class",
+              "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up"
+            ],
+            "backendNodeId": 13,
+            "childNodeCount": 2,
+            "children": [
+              {
+                "attributes": [
+                  "class",
+                  "TransportStatusNotice TransportStatusNotice--reconnecting"
+                ],
+                "backendNodeId": 137,
+                "childNodeCount": 2,
+                "children": [
+                  {
+                    "attributes": [
+                      "accessibility-element",
+                      "true",
+                      "accessibility-traits",
+                      "updating",
+                      "accessibility-label",
+                      "Reconnecting to Synara",
+                      "class",
+                      "TransportStatusNoticeText"
+                    ],
+                    "backendNodeId": 138,
+                    "childNodeCount": 1,
+                    "localName": "text",
+                    "nodeId": 138,
+                    "nodeName": "TEXT",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 137
+                  },
+                  {
+                    "attributes": [],
+                    "backendNodeId": 139,
+                    "childNodeCount": 0,
+                    "localName": "wrapper",
+                    "nodeId": 139,
+                    "nodeName": "WRAPPER",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 137
+                  }
+                ],
+                "localName": "view",
+                "nodeId": 137,
+                "nodeName": "VIEW",
+                "nodeType": 1,
+                "nodeValue": "",
+                "parentId": 13
+              },
+              {
+                "attributes": [
+                  "class",
+                  "SharedAppShellFrame"
+                ],
+                "backendNodeId": 16,
+                "childNodeCount": 2,
+                "children": [
+                  {
+                    "attributes": [
+                      "aria-hidden",
+                      "false",
+                      "accessibility-elements-hidden",
+                      "false",
+                      "class",
+                      "SidebarDisclosure SidebarDisclosure--open",
+                      "style",
+                      "width:256px;"
+                    ],
+                    "backendNodeId": 17,
+                    "childNodeCount": 2,
+                    "localName": "view",
+                    "nodeId": 17,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 16
+                  },
+                  {
+                    "attributes": [
+                      "class",
+                      "AppMain AppMain--sidebar-open"
+                    ],
+                    "backendNodeId": 114,
+                    "childNodeCount": 1,
+                    "localName": "view",
+                    "nodeId": 114,
+                    "nodeName": "VIEW",
+                    "nodeType": 1,
+                    "nodeValue": "",
+                    "parentId": 16
+                  }
+                ],
+                "localName": "view",
+                "nodeId": 16,
+                "nodeName": "VIEW",
+                "nodeType": 1,
+                "nodeValue": "",
+                "parentId": 13
+              }
+            ],
+            "localName": "view",
+            "nodeId": 13,
+            "nodeName": "VIEW",
+            "nodeType": 1,
+            "nodeValue": "",
+            "parentId": 10
+          }
+        ],
+        "localName": "page",
+        "nodeId": 10,
+        "nodeName": "PAGE",
+        "nodeType": 1,
+        "nodeValue": ""
+      }
+    ],
+    "localName": "",
+    "nodeId": 11,
+    "nodeName": "#document",
+    "nodeType": 9,
+    "nodeValue": ""
+  }
+}
