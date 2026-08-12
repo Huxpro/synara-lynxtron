@@ -26,6 +26,30 @@ export function normalizeEvidenceName(name) {
     .replace(/[-_]?(?:web|lynx|native)$/u, '') || 'raw';
 }
 
+export function isComparableImageGeometry(left, right) {
+  const leftRatio = left.width / left.height;
+  const rightRatio = right.width / right.height;
+  const nativeTitlebarCompatible =
+    (right.width === left.width * 2 &&
+      [left.height * 2, left.height * 2 - 64].includes(right.height)) ||
+    (left.width === right.width * 2 &&
+      [right.height * 2, right.height * 2 - 64].includes(left.height));
+  return (
+    nativeTitlebarCompatible ||
+    Math.abs(leftRatio - rightRatio) / leftRatio <= 0.015
+  );
+}
+
+export function visualQualityBand(maePercent) {
+  return maePercent >= 25
+    ? 'critical'
+    : maePercent >= 10
+      ? 'poor'
+      : maePercent >= 3
+        ? 'noticeable'
+        : 'close';
+}
+
 export function visualLossFromSamples(samples, targetSampleCount = 12) {
   const observedMedian = median(samples);
   if (observedMedian === null) {

@@ -4,8 +4,10 @@ import assert from 'node:assert/strict';
 import {
   calculateFidelityLoss,
   exponentialMovingAverage,
+  isComparableImageGeometry,
   median,
   normalizeEvidenceName,
+  visualQualityBand,
   visualLossFromSamples,
   weightedComponentContributions,
 } from './fidelity-loss.logic.mjs';
@@ -21,6 +23,27 @@ test('calculates robust medians', () => {
   assert.equal(median([]), null);
   assert.equal(median([3, 1, 2]), 2);
   assert.equal(median([4, 1, 2, 3]), 2.5);
+});
+
+test('keeps critical parity scored and recognizes Native titlebar geometry', () => {
+  assert.equal(visualQualityBand(90), 'critical');
+  assert.equal(visualQualityBand(20), 'poor');
+  assert.equal(visualQualityBand(5), 'noticeable');
+  assert.equal(visualQualityBand(0.5), 'close');
+  assert.equal(
+    isComparableImageGeometry(
+      { width: 1280, height: 820 },
+      { width: 2560, height: 1576 }
+    ),
+    true
+  );
+  assert.equal(
+    isComparableImageGeometry(
+      { width: 1280, height: 820 },
+      { width: 900, height: 900 }
+    ),
+    false
+  );
 });
 
 test('shrinks sparse visual samples toward a neutral prior', () => {

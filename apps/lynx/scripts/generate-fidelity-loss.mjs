@@ -7,7 +7,9 @@ import sharp from 'sharp';
 import {
   calculateFidelityLoss,
   exponentialMovingAverage,
+  isComparableImageGeometry,
   normalizeEvidenceName,
+  visualQualityBand,
   visualLossFromSamples,
   weightedComponentContributions,
   FIDELITY_LOSS_WEIGHTS,
@@ -23,7 +25,6 @@ const archivePath = resolve(evidenceRoot, 'screenshot-archive.js');
 const outputJsonPath = resolve(evidenceRoot, 'fidelity-loss.json');
 const outputJsPath = resolve(evidenceRoot, 'fidelity-loss.js');
 const comparableClients = ['web', 'lynx', 'native'];
-const maximumComparableMaePercent = 25;
 const visualRollingWindowSize = 24;
 const emaAlpha = 0.18;
 
@@ -175,12 +176,15 @@ async function imageMaePercent(leftPath, rightPath) {
     right.metadata(),
   ]);
   const leftRatio = leftMetadata.width / leftMetadata.height;
-  const rightRatio = rightMetadata.width / rightMetadata.height;
-  if (Math.abs(leftRatio - rightRatio) / leftRatio > 0.015) {
+  if (!isComparableImageGeometry(leftMetadata, rightMetadata)) {
     return { accepted: false, reason: 'aspect-ratio-mismatch' };
   }
   const width = Math.min(leftMetadata.width, rightMetadata.width);
-  const height = Math.min(leftMetadata.height, rightMetadata.height);
+  const height = Math.min(
+    leftMetadata.height,
+    rightMetadata.height,
+    Math.round(width / leftRatio)
+  );
   const [leftPixels, rightPixels] = await Promise.all([
     left.resize(width, height, { fit: 'fill' }).raw().toBuffer(),
     right.resize(width, height, { fit: 'fill' }).raw().toBuffer(),
@@ -190,10 +194,12 @@ async function imageMaePercent(leftPath, rightPath) {
     total += Math.abs(leftPixels[index] - rightPixels[index]);
   }
   const maePercent = (total / leftPixels.length / 255) * 100;
-  if (maePercent > maximumComparableMaePercent) {
-    return { accepted: false, reason: 'state-or-crop-mismatch', maePercent };
-  }
-  return { accepted: true, maePercent };
+  return {
+    accepted: true,
+    maePercent,
+    parityPercent: Math.max(0, 100 - maePercent),
+    qualityBand: visualQualityBand(maePercent),
+  };
 }
 
 async function visualSamples(stories, commitIndexByHash, firstCommitByFile) {
@@ -232,7 +238,7 @@ async function visualSamples(stories, commitIndexByHash, firstCommitByFile) {
             resolve(repoRoot, pair.right)
           );
           if (result.accepted) {
-            accepted.push({ ...pair, maePercent: result.maePercent, activationCommitIndex });
+            accepted.push({ ...pair, ...result, activationCommitIndex });
           } else {
             rejected.push({ ...pair, ...result, activationCommitIndex });
           }
@@ -346,10 +352,14 @@ for (let commitIndex = 0; commitIndex < evidenceCommits.length; commitIndex += 1
   const rejectedPairs = allSamples.rejected.filter(
     (sample) => sample.activationCommitIndex <= commitIndex
   );
+  const activatedRejectedPairs = allSamples.rejected.filter(
+    (sample) => sample.activationCommitIndex === commitIndex
+  );
   const rollingPairs = acceptedPairs.slice(-visualRollingWindowSize);
   const visual = visualLossFromSamples(
     rollingPairs.map((sample) => sample.maePercent)
   );
+  const previousVisual = commitPoints.at(-1)?.visual ?? null;
   const events = activeReliabilityEvents(commit.timestamp, ledger);
   const reliabilityPoints = events.reduce(
     (total, event) => total + event.severityPoints,
@@ -410,6 +420,7 @@ for (let commitIndex = 0; commitIndex < evidenceCommits.length; commitIndex += 1
     addedStoryIds,
     addedImages,
     activatedPairCount: activatedPairs.length,
+    activatedRejectedPairCount: activatedRejectedPairs.length,
     cumulativeAcceptedPairCount: acceptedPairs.length,
     cumulativeRejectedPairCount: rejectedPairs.length,
     rollingPairCount: rollingPairs.length,
@@ -420,6 +431,15 @@ for (let commitIndex = 0; commitIndex < evidenceCommits.length; commitIndex += 1
       ...visual,
       rollingWindowSize: visualRollingWindowSize,
       activatedPairs,
+      activatedRejectedPairs,
+      previousLoss: previousVisual?.loss ?? null,
+      previousMedianPercent: previousVisual?.medianPercent ?? null,
+      medianDelta:
+        previousVisual?.medianPercent === null ||
+        previousVisual?.medianPercent === undefined ||
+        visual.medianPercent === null
+          ? null
+          : visual.medianPercent - previousVisual.medianPercent,
     },
     reliability: {
       loss: reliabilityPoints / maximumReliabilityPoints,
@@ -477,6 +497,43 @@ const riseAnalysis = commitPoints
         : null,
     ].filter(Boolean),
   }));
+const dayAnalysis = days.map((day) => {
+  const dayPoints = commitPoints.filter((point) => point.day === day);
+  const first = dayPoints[0];
+  const last = dayPoints.at(-1);
+  const previous = commitPoints[first.index - 1] ?? null;
+  const openingLoss = previous?.loss ?? first.loss;
+  return {
+    day,
+    firstCommitIndex: first.index,
+    lastCommitIndex: last.index,
+    commitCount: dayPoints.length,
+    openingLoss,
+    closingLoss: last.loss,
+    netLossDelta: last.loss - openingLoss,
+    riseCount: dayPoints.filter((point) => point.lossDelta > 0.01).length,
+    fallCount: dayPoints.filter((point) => point.lossDelta < -0.01).length,
+    addedStoryCount: dayPoints.reduce(
+      (total, point) => total + point.addedStoryIds.length,
+      0
+    ),
+    activatedPairCount: dayPoints.reduce(
+      (total, point) => total + point.activatedPairCount,
+      0
+    ),
+    componentContributions: Object.fromEntries(
+      Object.keys(FIDELITY_LOSS_WEIGHTS).map((component) => [
+        component,
+        dayPoints.reduce(
+          (total, point) =>
+            total + point.componentContributions[component],
+          0
+        ),
+      ])
+    ),
+    commitIndexes: dayPoints.map((point) => point.index),
+  };
+});
 const points = days.map((day) => {
   const point = [...commitPoints].reverse().find((entry) => entry.day === day);
   const commits = dayCommits.get(day) ?? [];
@@ -517,7 +574,7 @@ const result = {
     visual:
       'Median same-state RGB MAE, capped at 10%, shrunk toward 50% loss until 12 accepted pairs exist.',
     comparability:
-      'Pairs require normalized state names, matching aspect ratio within 1.5%, and MAE <= 25%; rejected pairs remain in the ledger.',
+      'Pairs require normalized state names and matching aspect ratio within 1.5%; high MAE remains scored and is classified as poor or critical parity.',
     scope:
       'Cumulative unique work stories divided by the final known 379-story scope; continuous frames count as one story.',
     completeness:
@@ -535,6 +592,7 @@ const result = {
   reliabilityLedger: ledger,
   commitPoints,
   riseAnalysis,
+  dayAnalysis,
   points,
 };
 

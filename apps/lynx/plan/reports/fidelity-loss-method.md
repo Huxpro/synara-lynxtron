@@ -60,11 +60,25 @@ Only demonstrably comparable pairs enter the visual term:
 
 - Web ↔ Lynx-for-Web or Lynx-for-Web ↔ Native;
 - filenames normalize to the same state identity;
-- aspect ratios differ by no more than 1.5%;
-- RGB mean absolute error is no more than 25%.
+- aspect ratios differ by no more than 1.5%.
+
+The comparability gate recognizes the audited Native DPR2/titlebar mappings:
+`1280×820 ↔ 2560×1640`, `1280×820 ↔ 2560×1576`, and their 1440px
+equivalents. This prevents the 32 logical pixel Native titlebar correction from
+being mislabeled as an unrelated crop.
 
 Rejected pairs remain in the generated ledger with their reason. They are not
 silently discarded.
+
+High MAE is not a rejection reason. A structurally comparable pair remains in
+the loss even when parity is very poor:
+
+- `<3%` MAE: close;
+- `3–10%`: noticeable;
+- `10–25%`: poor;
+- `>=25%`: critical.
+
+The UI reports both `MAE` and `parity = max(0, 100 - MAE)`.
 
 For accepted pairs:
 
