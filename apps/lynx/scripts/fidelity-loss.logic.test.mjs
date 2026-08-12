@@ -3,9 +3,11 @@ import assert from 'node:assert/strict';
 
 import {
   calculateFidelityLoss,
+  exponentialMovingAverage,
   median,
   normalizeEvidenceName,
   visualLossFromSamples,
+  weightedComponentContributions,
 } from './fidelity-loss.logic.mjs';
 
 test('normalizes paired client filenames without erasing state identity', () => {
@@ -50,4 +52,21 @@ test('combines independently bounded loss components', () => {
     visual: 0.2,
     reliability: 0.1,
   });
+});
+
+test('calculates a stable exponential moving average', () => {
+  assert.deepEqual(exponentialMovingAverage([], 0.5), []);
+  assert.deepEqual(exponentialMovingAverage([10, 20, 10], 0.5), [10, 15, 12.5]);
+});
+
+test('attributes loss changes to weighted component deltas', () => {
+  const contributions = weightedComponentContributions(
+    { scope: 0.5, completeness: 0.4, visual: 0.3, reliability: 0.2 },
+    { scope: 0.4, completeness: 0.5, visual: 0.6, reliability: 0.1 },
+    { scope: 0.3, completeness: 0.25, visual: 0.35, reliability: 0.1 }
+  );
+  assert.ok(Math.abs(contributions.scope + 3) < 1e-12);
+  assert.ok(Math.abs(contributions.completeness - 2.5) < 1e-12);
+  assert.ok(Math.abs(contributions.visual - 10.5) < 1e-12);
+  assert.ok(Math.abs(contributions.reliability + 1) < 1e-12);
 });

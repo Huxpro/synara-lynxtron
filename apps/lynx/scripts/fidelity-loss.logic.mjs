@@ -69,3 +69,21 @@ export function calculateFidelityLoss({
     components,
   };
 }
+
+export function exponentialMovingAverage(values, alpha = 0.22) {
+  if (!values.length) return [];
+  const result = [values[0]];
+  for (let index = 1; index < values.length; index += 1) {
+    result.push(alpha * values[index] + (1 - alpha) * result[index - 1]);
+  }
+  return result;
+}
+
+export function weightedComponentContributions(previous, current, weights) {
+  return Object.fromEntries(
+    Object.keys(weights).map((key) => [
+      key,
+      (current[key] - previous[key]) * weights[key] * 100,
+    ])
+  );
+}

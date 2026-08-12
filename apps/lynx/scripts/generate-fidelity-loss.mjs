@@ -6,8 +6,10 @@ import sharp from 'sharp';
 
 import {
   calculateFidelityLoss,
+  exponentialMovingAverage,
   normalizeEvidenceName,
   visualLossFromSamples,
+  weightedComponentContributions,
   FIDELITY_LOSS_WEIGHTS,
 } from './fidelity-loss.logic.mjs';
 
@@ -22,6 +24,8 @@ const outputJsonPath = resolve(evidenceRoot, 'fidelity-loss.json');
 const outputJsPath = resolve(evidenceRoot, 'fidelity-loss.js');
 const comparableClients = ['web', 'lynx', 'native'];
 const maximumComparableMaePercent = 25;
+const visualRollingWindowSize = 24;
+const emaAlpha = 0.18;
 
 const reliabilityLedger = [
   {
@@ -63,14 +67,20 @@ function git(...arguments_) {
 }
 
 function commitMetadata(commit) {
-  const [hash, date, ...subject] = git(
+  const [hash, timestamp, ...subject] = git(
     'show',
     '-s',
     '--format=%H%x09%ad%x09%s',
-    '--date=short',
+    '--date=iso-strict',
     commit
   ).split('\t');
-  return { hash, shortHash: hash.slice(0, 9), date, subject: subject.join('\t') };
+  return {
+    hash,
+    shortHash: hash.slice(0, 9),
+    timestamp,
+    date: timestamp.slice(0, 10),
+    subject: subject.join('\t'),
+  };
 }
 
 function commitsByDay(firstDay, lastDay) {
@@ -89,6 +99,61 @@ function commitsByDay(firstDay, lastDay) {
       return { hash, shortHash: hash.slice(0, 9), date, subject: subject.join('\t') };
     });
   return Map.groupBy(rows, (row) => row.date);
+}
+
+function evidenceCommitHistory(firstDay, lastDay) {
+  const output = git(
+    'log',
+    '--reverse',
+    '--format=@@%H%x09%ad%x09%s',
+    '--date=iso-strict',
+    '--name-only',
+    '--diff-filter=AM',
+    `--since=${firstDay} 00:00:00`,
+    `--until=${lastDay} 23:59:59`,
+    '--',
+    ...days.map((day) => `shots/${day}`)
+  );
+  const commits = [];
+  let current = null;
+  for (const line of output.split('\n')) {
+    if (line.startsWith('@@')) {
+      const [hash, timestamp, ...subject] = line.slice(2).split('\t');
+      current = {
+        hash,
+        shortHash: hash.slice(0, 9),
+        timestamp,
+        date: timestamp.slice(0, 10),
+        subject: subject.join('\t'),
+        files: [],
+      };
+      commits.push(current);
+    } else if (line && current) {
+      current.files.push(line);
+    }
+  }
+  return commits;
+}
+
+function firstAddedCommitByFile(firstDay, lastDay) {
+  const output = git(
+    'log',
+    '--reverse',
+    '--format=@@%H',
+    '--name-only',
+    '--diff-filter=A',
+    `--since=${firstDay} 00:00:00`,
+    `--until=${lastDay} 23:59:59`,
+    '--',
+    ...days.map((day) => `shots/${day}`)
+  );
+  const result = new Map();
+  let currentHash = null;
+  for (const line of output.split('\n')) {
+    if (line.startsWith('@@')) currentHash = line.slice(2);
+    else if (line && currentHash && !result.has(line)) result.set(line, currentHash);
+  }
+  return result;
 }
 
 function imagesByNormalizedName(story, client) {
@@ -131,7 +196,7 @@ async function imageMaePercent(leftPath, rightPath) {
   return { accepted: true, maePercent };
 }
 
-async function visualSamples(stories) {
+async function visualSamples(stories, commitIndexByHash, firstCommitByFile) {
   const accepted = [];
   const rejected = [];
   for (const story of stories) {
@@ -154,12 +219,23 @@ async function visualSamples(stories) {
             right: rightImages[index].repoPath,
             stateKey: key,
           };
+          const leftCommit = firstCommitByFile.get(pair.left);
+          const rightCommit = firstCommitByFile.get(pair.right);
+          const leftCommitIndex = commitIndexByHash.get(leftCommit);
+          const rightCommitIndex = commitIndexByHash.get(rightCommit);
+          const activationCommitIndex = Math.max(
+            leftCommitIndex ?? 0,
+            rightCommitIndex ?? 0
+          );
           const result = await imageMaePercent(
             resolve(repoRoot, pair.left),
             resolve(repoRoot, pair.right)
           );
-          if (result.accepted) accepted.push({ ...pair, maePercent: result.maePercent });
-          else rejected.push({ ...pair, ...result });
+          if (result.accepted) {
+            accepted.push({ ...pair, maePercent: result.maePercent, activationCommitIndex });
+          } else {
+            rejected.push({ ...pair, ...result, activationCommitIndex });
+          }
         }
       }
     }
@@ -167,11 +243,15 @@ async function visualSamples(stories) {
   return { accepted, rejected };
 }
 
-function completeness(stories) {
+function completeness(stories, activeImagePaths = null) {
   let expected = 0;
   let observed = 0;
   for (const story of stories) {
-    const clients = new Set(story.clients);
+    const clients = new Set(
+      story.images
+        .filter((image) => !activeImagePaths || activeImagePaths.has(image.repoPath))
+        .map((image) => image.client)
+    );
     if ([...clients].every((client) => client === 'evidence')) {
       expected += 1;
       observed += 1;
@@ -183,11 +263,11 @@ function completeness(stories) {
   return expected ? observed / expected : 0;
 }
 
-function activeReliabilityEvents(day, ledger) {
+function activeReliabilityEvents(timestamp, ledger) {
   return ledger.filter(
     (entry) =>
-      entry.introducedMetadata.date <= day &&
-      (!entry.fixedMetadata || entry.fixedMetadata.date > day)
+      entry.introducedMetadata.timestamp <= timestamp &&
+      (!entry.fixedMetadata || entry.fixedMetadata.timestamp > timestamp)
   );
 }
 
@@ -199,28 +279,84 @@ const ledger = reliabilityLedger.map((entry) => ({
   introducedMetadata: commitMetadata(entry.introduced),
   fixedMetadata: entry.fixed ? commitMetadata(entry.fixed) : null,
 }));
+const evidenceCommits = [
+  ...evidenceCommitHistory(days[0], days.at(-1)),
+  ...ledger.flatMap((entry) =>
+    [entry.introducedMetadata, entry.fixedMetadata]
+      .filter(Boolean)
+      .map((metadata) => ({ ...metadata, files: [], reliabilityOnly: true }))
+  ),
+]
+  .filter(
+    (commit, index, commits) =>
+      commits.findIndex((candidate) => candidate.hash === commit.hash) === index
+  )
+  .sort((left, right) => left.timestamp.localeCompare(right.timestamp));
+const commitIndexByHash = new Map(
+  evidenceCommits.map((commit, index) => [commit.hash, index])
+);
+const firstCommitByFile = firstAddedCommitByFile(days[0], days.at(-1));
 const maximumReliabilityPoints = Math.max(
   1,
   ledger.reduce((total, entry) => total + entry.severityPoints, 0)
 );
-const points = [];
-const cumulativeStories = [];
+const allSamples = await visualSamples(
+  archive.stories,
+  commitIndexByHash,
+  firstCommitByFile
+);
+const storyActivationCommitIndex = new Map(
+  archive.stories.map((story) => [
+    story.id,
+    Math.min(
+      ...story.images.map(
+        (image) =>
+          commitIndexByHash.get(firstCommitByFile.get(image.repoPath)) ??
+          evidenceCommits.length - 1
+      )
+    ),
+  ])
+);
+const imageActivationCommitIndex = new Map(
+  archive.stories.flatMap((story) =>
+    story.images.map((image) => [
+      image.repoPath,
+      commitIndexByHash.get(firstCommitByFile.get(image.repoPath)) ??
+        evidenceCommits.length - 1,
+    ])
+  )
+);
+const commitPoints = [];
 let bestLoss = Number.POSITIVE_INFINITY;
+let previousComponents = null;
 
-for (const day of days) {
-  const newStories = archive.stories.filter((story) => story.day === day);
-  cumulativeStories.push(...newStories);
-  const samples = await visualSamples(newStories);
-  const visual = visualLossFromSamples(
-    samples.accepted.map((sample) => sample.maePercent)
+for (let commitIndex = 0; commitIndex < evidenceCommits.length; commitIndex += 1) {
+  const commit = evidenceCommits[commitIndex];
+  const activeStories = archive.stories.filter(
+    (story) => storyActivationCommitIndex.get(story.id) <= commitIndex
   );
-  const events = activeReliabilityEvents(day, ledger);
+  const activeImagePaths = new Set(
+    [...imageActivationCommitIndex]
+      .filter(([, activationIndex]) => activationIndex <= commitIndex)
+      .map(([file]) => file)
+  );
+  const acceptedPairs = allSamples.accepted.filter(
+    (sample) => sample.activationCommitIndex <= commitIndex
+  );
+  const rejectedPairs = allSamples.rejected.filter(
+    (sample) => sample.activationCommitIndex <= commitIndex
+  );
+  const rollingPairs = acceptedPairs.slice(-visualRollingWindowSize);
+  const visual = visualLossFromSamples(
+    rollingPairs.map((sample) => sample.maePercent)
+  );
+  const events = activeReliabilityEvents(commit.timestamp, ledger);
   const reliabilityPoints = events.reduce(
     (total, event) => total + event.severityPoints,
     0
   );
-  const scopeCoverage = cumulativeStories.length / archive.storyCount;
-  const clientCompleteness = completeness(cumulativeStories);
+  const scopeCoverage = activeStories.length / archive.storyCount;
+  const clientCompleteness = completeness(activeStories, activeImagePaths);
   const calculated = calculateFidelityLoss({
     scopeCoverage,
     clientCompleteness,
@@ -228,21 +364,62 @@ for (const day of days) {
     reliabilityLoss: reliabilityPoints / maximumReliabilityPoints,
   });
   bestLoss = Math.min(bestLoss, calculated.loss);
-  const commits = dayCommits.get(day) ?? [];
-  points.push({
-    day,
-    commit: commits.at(-1) ?? null,
-    commitCount: commits.length,
-    newStoryCount: newStories.length,
-    cumulativeStoryCount: cumulativeStories.length,
+  const componentContributions = previousComponents
+    ? weightedComponentContributions(
+        previousComponents,
+        calculated.components,
+        FIDELITY_LOSS_WEIGHTS
+      )
+    : Object.fromEntries(Object.keys(FIDELITY_LOSS_WEIGHTS).map((key) => [key, 0]));
+  const lossDelta =
+    commitPoints.length > 0
+      ? calculated.loss - commitPoints.at(-1).loss
+      : 0;
+  const addedStoryIds = archive.stories
+    .filter((story) => storyActivationCommitIndex.get(story.id) === commitIndex)
+    .map((story) => story.id);
+  const addedImages = [...imageActivationCommitIndex]
+    .filter(([, activationIndex]) => activationIndex === commitIndex)
+    .map(([file]) => file);
+  const activatedPairs = allSamples.accepted.filter(
+    (sample) => sample.activationCommitIndex === commitIndex
+  );
+  const regressionChanges = ledger.flatMap((event) => {
+    if (event.introducedMetadata.hash === commit.hash) {
+      return [{ type: 'introduced', id: event.id, summary: event.summary }];
+    }
+    if (event.fixedMetadata?.hash === commit.hash) {
+      return [{ type: 'fixed', id: event.id, summary: event.summary }];
+    }
+    return [];
+  });
+  const causes = Object.entries(componentContributions)
+    .filter(([, contribution]) => Math.abs(contribution) >= 1e-12)
+    .sort((left, right) => Math.abs(right[1]) - Math.abs(left[1]))
+    .map(([component, contribution]) => ({
+      component,
+      contribution,
+      direction: contribution > 0 ? 'up' : 'down',
+    }));
+  commitPoints.push({
+    index: commitIndex,
+    day: commit.date,
+    timestamp: commit.timestamp,
+    commit,
+    evidenceFileCount: commit.files.length,
+    addedStoryIds,
+    addedImages,
+    activatedPairCount: activatedPairs.length,
+    cumulativeAcceptedPairCount: acceptedPairs.length,
+    cumulativeRejectedPairCount: rejectedPairs.length,
+    rollingPairCount: rollingPairs.length,
+    cumulativeStoryCount: activeStories.length,
     scopeCoverage,
     clientCompleteness,
     visual: {
       ...visual,
-      acceptedPairCount: samples.accepted.length,
-      rejectedPairCount: samples.rejected.length,
-      acceptedPairs: samples.accepted,
-      rejectedPairs: samples.rejected,
+      rollingWindowSize: visualRollingWindowSize,
+      activatedPairs,
     },
     reliability: {
       loss: reliabilityPoints / maximumReliabilityPoints,
@@ -250,10 +427,78 @@ for (const day of days) {
       points: reliabilityPoints,
     },
     components: calculated.components,
+    componentContributions,
+    causes,
+    regressionChanges,
+    lossDelta,
     loss: calculated.loss,
     bestLoss,
   });
+  previousComponents = calculated.components;
 }
+const smoothLosses = exponentialMovingAverage(
+  commitPoints.map((point) => point.loss),
+  emaAlpha
+);
+commitPoints.forEach((point, index) => {
+  point.smoothLoss = smoothLosses[index];
+});
+const riseAnalysis = commitPoints
+  .filter((point) => point.lossDelta > 0.01)
+  .map((point) => ({
+    index: point.index,
+    timestamp: point.timestamp,
+    day: point.day,
+    commit: point.commit,
+    loss: point.loss,
+    lossDelta: point.lossDelta,
+    smoothLoss: point.smoothLoss,
+    causes: point.causes.filter((cause) => cause.contribution > 0),
+    countervailingCauses: point.causes.filter((cause) => cause.contribution < 0),
+    addedStoryIds: point.addedStoryIds,
+    addedImages: point.addedImages,
+    activatedPairCount: point.activatedPairCount,
+    regressionChanges: point.regressionChanges,
+    explanation: [
+      ...point.causes
+        .filter((cause) => cause.contribution > 0)
+        .map(
+          (cause) =>
+            `${cause.component} added ${cause.contribution.toFixed(2)} loss points`
+        ),
+      ...point.regressionChanges
+        .filter((change) => change.type === 'introduced')
+        .map((change) => `regression introduced: ${change.summary}`),
+      point.addedStoryIds.length
+        ? `${point.addedStoryIds.length} newly discovered stories changed scope/client expectations`
+        : null,
+      point.activatedPairCount
+        ? `${point.activatedPairCount} visual pairs entered the rolling window`
+        : null,
+    ].filter(Boolean),
+  }));
+const points = days.map((day) => {
+  const point = [...commitPoints].reverse().find((entry) => entry.day === day);
+  const commits = dayCommits.get(day) ?? [];
+  return {
+    ...point,
+    commitCount: commits.length,
+    newStoryCount: commitPoints
+      .filter((entry) => entry.day === day)
+      .reduce((total, entry) => total + entry.addedStoryIds.length, 0),
+    visual: {
+      ...point.visual,
+      acceptedPairCount: point.cumulativeAcceptedPairCount,
+      rejectedPairCount: point.cumulativeRejectedPairCount,
+      acceptedPairs: allSamples.accepted.filter(
+        (sample) => sample.activationCommitIndex <= point.index
+      ),
+      rejectedPairs: allSamples.rejected.filter(
+        (sample) => sample.activationCommitIndex <= point.index
+      ),
+    },
+  };
+});
 
 const result = {
   version: 1,
@@ -263,6 +508,7 @@ const result = {
     lastDay: days.at(-1),
     finalStoryCount: archive.storyCount,
     finalImageCount: archive.imageCount,
+    evidenceCommitCount: evidenceCommits.length,
   },
   formula: {
     expression:
@@ -278,8 +524,17 @@ const result = {
       'Observed Web/Lynx/Native cells divided by expected cells for discovered stories.',
     reliability:
       'Active, commit-bounded regression severity points divided by the ledger maximum.',
+    granularity:
+      'Every commit that adds or updates evidence produces a measured point; smoothLoss is an EMA over measured points, not interpolated evidence.',
+  },
+  smoothing: {
+    method: 'exponential-moving-average',
+    alpha: emaAlpha,
+    source: 'commitPoints.loss',
   },
   reliabilityLedger: ledger,
+  commitPoints,
+  riseAnalysis,
   points,
 };
 
@@ -289,5 +544,5 @@ writeFileSync(
   `globalThis.__SYNARA_FIDELITY_LOSS__ = ${JSON.stringify(result, null, 2)};\n`
 );
 console.log(
-  `Generated ${points.length} fidelity-loss points: ${points[0].loss.toFixed(2)} → ${points.at(-1).loss.toFixed(2)}`
+  `Generated ${commitPoints.length} commit points and ${points.length} daily anchors: ${commitPoints[0].loss.toFixed(2)} → ${commitPoints.at(-1).loss.toFixed(2)}`
 );

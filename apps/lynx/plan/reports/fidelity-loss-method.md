@@ -93,23 +93,49 @@ points. The daily end-of-day point includes only events active at that commit.
 
 ## Time and commit binding
 
-Screenshots and measurements were captured in daily batches, not after every
-one of the 615 commits in the interval. The chart therefore has one evidence
-point per day and binds it to:
+The interval contains 615 commits. Of those, 291 are evidence-bearing or
+reliability-event commits:
 
-- the final commit of that day;
-- the number of commits included since the previous point;
-- the new and cumulative story counts;
-- accepted and rejected visual pairs;
-- active reliability events.
+- a screenshot, metric, note, or generated evidence artifact was added or
+  updated; or
+- a commit introduced or fixed an explicitly registered regression.
 
-Interpolating a score for every commit would claim evidence that does not
-exist. Future runs can add commit-level points when the same capture matrix is
-executed at those commits.
+Each of those commits has a measured loss point. A story, client cell, or visual
+pair activates only when the corresponding files first enter Git. A reliability
+event activates and deactivates at its exact introducing and fixing commits.
+
+The chart also retains ten end-of-day anchors for readable labels. They are
+derived from the same commit-point ledger.
+
+The thick trend line is an exponential moving average with `alpha=0.18`. It is
+a display aid over measured commit points, not interpolated evidence and not
+the value used by the audit ledger.
+
+## Rise attribution
+
+For every commit where observed loss rises by more than `0.01`, the generator
+computes:
+
+```text
+componentContribution =
+  (currentComponent - previousComponent) × componentWeight × 100
+```
+
+The resulting explanation records:
+
+- positive and countervailing component contributions;
+- newly discovered stories and client expectations;
+- visual pairs entering the 24-pair rolling window;
+- reliability events introduced or fixed at that commit.
+
+This distinguishes a true regression from a scope-expansion rise or a visual
+sample-window change. The rise list links back to the exact commit and evidence
+day.
 
 ## Interpretation
 
-- A falling line means the weighted evidence gap decreased.
+- A falling measured line means the weighted evidence gap decreased.
+- The EMA communicates the trend without erasing measured rises.
 - A temporary rise can be legitimate when new scope exposes defects or a
   functional regression lands.
 - `bestLoss` records the best value reached so far without rewriting the
