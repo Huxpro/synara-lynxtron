@@ -171,3 +171,9 @@ Generated artifacts:
 - `shots/2026-08-04/p10-perceptual-fidelity/fidelity-loss.js`
 
 The JSON contains the full input ledger, including accepted and rejected pairs.
+
+Screenshot bytes are hosted publicly in
+`https://github.com/Huxpro/synara-fidelity-assets`. The main repository keeps
+only `screenshot-assets.json` metadata. Loss regeneration downloads required
+pairs into a process-scoped temporary directory with retry/backoff and removes
+the cache on exit; it does not restore screenshots into the checkout.

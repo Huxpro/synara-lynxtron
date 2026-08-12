@@ -1,0 +1,3578 @@
+{
+  "version": 1,
+  "method": "exact-sha256-within-sequence-directory",
+  "removedCount": 595,
+  "savedBytes": 229128415,
+  "removed": [
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-02.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-01.png",
+      "sha256": "40f9bd0453bbbf6dd26a389c8d668cbdf5f69d67add2a0f9ad58ff3e805cb8f0",
+      "bytes": 434663
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-03.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-01.png",
+      "sha256": "40f9bd0453bbbf6dd26a389c8d668cbdf5f69d67add2a0f9ad58ff3e805cb8f0",
+      "bytes": 434663
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-04.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-05.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-07.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-08.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-09.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-10.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-11.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-12.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-13.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-14.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-15.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-16.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-17.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-18.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-19.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-20.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-21.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-22.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-23.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-24.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-25.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-26.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-27.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-28.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-29.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-30.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-31.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-32.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-33.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-34.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-35.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-36.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-39.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-38.png",
+      "sha256": "8150dcc5043c0965be00f102bcae956bb294826413b24a9f6746e85b118b44cc",
+      "bytes": 438627
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-40.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-41.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-42.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-43.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-44.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-45.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-46.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-47.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-48.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-49.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-50.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-51.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-52.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-53.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-54.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-55.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-56.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-57.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-58.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-59.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-60.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-01.png",
+      "sha256": "40f9bd0453bbbf6dd26a389c8d668cbdf5f69d67add2a0f9ad58ff3e805cb8f0",
+      "bytes": 434663
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-61.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-01.png",
+      "sha256": "40f9bd0453bbbf6dd26a389c8d668cbdf5f69d67add2a0f9ad58ff3e805cb8f0",
+      "bytes": 434663
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-62.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-63.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-64.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-65.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-66.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-67.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-68.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-69.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-70.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-72.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-01.png",
+      "sha256": "40f9bd0453bbbf6dd26a389c8d668cbdf5f69d67add2a0f9ad58ff3e805cb8f0",
+      "bytes": 434663
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-73.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-01.png",
+      "sha256": "40f9bd0453bbbf6dd26a389c8d668cbdf5f69d67add2a0f9ad58ff3e805cb8f0",
+      "bytes": 434663
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-74.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-01.png",
+      "sha256": "40f9bd0453bbbf6dd26a389c8d668cbdf5f69d67add2a0f9ad58ff3e805cb8f0",
+      "bytes": 434663
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-75.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-76.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-00.png",
+      "sha256": "eba69957cdf96a66feb1ad728403055b50234e4c51f0cf3307b5715ac8782440",
+      "bytes": 344737
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-77.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-78.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-79.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-current/frame-06.png",
+      "sha256": "560cd25728e4e8b56bef46865b59191500b62a77bef7880b488b9868b9264256",
+      "bytes": 344643
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-01.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-02.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-03.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-04.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-05.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-06.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-07.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-08.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-09.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-10.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-11.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-12.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-13.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-14.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-15.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-16.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-17.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-18.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-19.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-20.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-21.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-22.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-23.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-24.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-25.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-26.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-27.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-28.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-30.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-29.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-31.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-29.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-32.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-29.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-33.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-29.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-34.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-29.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-35.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-29.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-36.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-29.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-37.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-29.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-38.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-29.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-39.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-29.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-40.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-29.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-41.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-29.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-42.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-29.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-43.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-29.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-44.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-29.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-45.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-29.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-46.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-29.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-47.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-29.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-48.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-29.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-49.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-29.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-50.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-29.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-51.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-29.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-52.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-53.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-54.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-55.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-56.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-57.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-58.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-59.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-60.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-61.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-62.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-63.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-64.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-65.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-66.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-67.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-68.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-69.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-70.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-71.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-72.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-73.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-74.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-75.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-76.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-77.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-78.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-79.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-hover-only/frame-00.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-01.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-00.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-02.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-00.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-03.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-00.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-04.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-00.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-05.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-00.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-06.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-00.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-07.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-00.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-08.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-00.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-09.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-00.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-10.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-00.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-11.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-00.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-12.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-00.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-13.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-00.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-14.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-00.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-15.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-00.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-16.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-00.png",
+      "sha256": "7ddbc82d0df7374e326e4b4101f56960ef9e7323c13ebec97d727a381c3a9d3c",
+      "bytes": 429865
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-18.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-17.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-19.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-17.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-20.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-17.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-21.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-17.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-22.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-17.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-23.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-17.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-24.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-17.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-25.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-17.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-26.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-17.png",
+      "sha256": "bc01066ccd438f95be44612e5125a79c01bfddb2dbe152def60c02f55b132cfb",
+      "bytes": 425892
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-63.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-62.png",
+      "sha256": "0b8046b231b331c1411c1947d8862960b600d266643ce52a8ab5b1d730f3d19f",
+      "bytes": 430060
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-64.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-62.png",
+      "sha256": "0b8046b231b331c1411c1947d8862960b600d266643ce52a8ab5b1d730f3d19f",
+      "bytes": 430060
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-65.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-62.png",
+      "sha256": "0b8046b231b331c1411c1947d8862960b600d266643ce52a8ab5b1d730f3d19f",
+      "bytes": 430060
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-66.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-62.png",
+      "sha256": "0b8046b231b331c1411c1947d8862960b600d266643ce52a8ab5b1d730f3d19f",
+      "bytes": 430060
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-67.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-62.png",
+      "sha256": "0b8046b231b331c1411c1947d8862960b600d266643ce52a8ab5b1d730f3d19f",
+      "bytes": 430060
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-68.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-62.png",
+      "sha256": "0b8046b231b331c1411c1947d8862960b600d266643ce52a8ab5b1d730f3d19f",
+      "bytes": 430060
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-69.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-62.png",
+      "sha256": "0b8046b231b331c1411c1947d8862960b600d266643ce52a8ab5b1d730f3d19f",
+      "bytes": 430060
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-70.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-62.png",
+      "sha256": "0b8046b231b331c1411c1947d8862960b600d266643ce52a8ab5b1d730f3d19f",
+      "bytes": 430060
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-71.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-62.png",
+      "sha256": "0b8046b231b331c1411c1947d8862960b600d266643ce52a8ab5b1d730f3d19f",
+      "bytes": 430060
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-72.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-62.png",
+      "sha256": "0b8046b231b331c1411c1947d8862960b600d266643ce52a8ab5b1d730f3d19f",
+      "bytes": 430060
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-73.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-62.png",
+      "sha256": "0b8046b231b331c1411c1947d8862960b600d266643ce52a8ab5b1d730f3d19f",
+      "bytes": 430060
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-74.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-62.png",
+      "sha256": "0b8046b231b331c1411c1947d8862960b600d266643ce52a8ab5b1d730f3d19f",
+      "bytes": 430060
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-75.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-62.png",
+      "sha256": "0b8046b231b331c1411c1947d8862960b600d266643ce52a8ab5b1d730f3d19f",
+      "bytes": 430060
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-76.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-62.png",
+      "sha256": "0b8046b231b331c1411c1947d8862960b600d266643ce52a8ab5b1d730f3d19f",
+      "bytes": 430060
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-78.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-77.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-79.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-no-blanket-ax/frame-77.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-01.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-03.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-04.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-05.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-06.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-07.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-08.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-09.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-10.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-11.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-12.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-13.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-14.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-15.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-16.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-17.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-18.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-19.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-20.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-21.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-22.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-23.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-24.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-25.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-26.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-27.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-28.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-29.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-30.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-31.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-32.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-33.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-34.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-35.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-36.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-37.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-38.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-39.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-40.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-41.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-42.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-43.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-44.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-45.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-46.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-47.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-48.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-49.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-50.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-51.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-52.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-53.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-54.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-55.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-56.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-57.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-58.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-59.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-60.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-61.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-62.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-63.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-64.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-65.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-66.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-67.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-68.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-69.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-70.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-71.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-72.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-73.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-74.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-75.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-76.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-77.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-78.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-79.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-hover/frame-02.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-01.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-02.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-03.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-04.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-05.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-06.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-08.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-09.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-10.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-11.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-12.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-13.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-14.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-15.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-16.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-17.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-18.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-19.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-20.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-21.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-22.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-23.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-24.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-25.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-26.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-27.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-28.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-29.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-30.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-31.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-32.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-33.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-34.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-35.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-36.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-37.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-38.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-39.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-40.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-41.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-42.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-43.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-44.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-45.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-46.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-47.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-48.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-49.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-50.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-51.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-52.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-53.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-54.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-55.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-56.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-57.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-58.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-59.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-60.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-61.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-62.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-63.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-64.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-65.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-66.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-67.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-68.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-69.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-70.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-71.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-72.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-73.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-74.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-75.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-76.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-77.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-78.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-79.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-real-resize/frame-07.png",
+      "sha256": "5557f11763478c4ede6bbb90b5f1b2cddee99dd1c7f76c49bffb73b32904a5ca",
+      "bytes": 429826
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-06.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-05.png",
+      "sha256": "c93ab25b86e748aaf32063846d74f6baa039dde09d79518ebf8a5a58ba26e936",
+      "bytes": 425878
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-07.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-05.png",
+      "sha256": "c93ab25b86e748aaf32063846d74f6baa039dde09d79518ebf8a5a58ba26e936",
+      "bytes": 425878
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-08.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-05.png",
+      "sha256": "c93ab25b86e748aaf32063846d74f6baa039dde09d79518ebf8a5a58ba26e936",
+      "bytes": 425878
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-15.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-14.png",
+      "sha256": "9adc31397c28fc1a6e6e5856c1f93646f4b0c15db3a33e51f2564b6491614578",
+      "bytes": 426061
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-61.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-21.png",
+      "sha256": "279d1e30e3a7e179a7a61e65ac8d9e1b2f65c3d1989762702b4925d270051003",
+      "bytes": 426603
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-62.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-22.png",
+      "sha256": "20d38b68e29ad2efe9bb45161da99f3892286c8d212a80e80979d605f8794b14",
+      "bytes": 425899
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-64.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-24.png",
+      "sha256": "93c021e6c8d329bff49ecefe2e00053a509ba12525c0df1b48b6c45f8b6b135f",
+      "bytes": 426139
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-65.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-25.png",
+      "sha256": "8ecb65697584ca9b027683402714d11e442ba768ae441df6489695264ef799c3",
+      "bytes": 425735
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-67.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-27.png",
+      "sha256": "6852b2d8f1e752f2ec2249824973b65a930ed7c9e5b3bd2ff46cac5fe05e042b",
+      "bytes": 426928
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-68.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-29.png",
+      "sha256": "2c8ad04d68f97cd47ee26919109375fcc990134185241b40444c6834017b13a3",
+      "bytes": 425466
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-70.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-31.png",
+      "sha256": "a5bf8c85d28d2be2ee01fe47a4258eb9afa7cd9bdd2b3b33907d5dbf106ee837",
+      "bytes": 425084
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-71.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-32.png",
+      "sha256": "dc9715ff6a0a777aaa803d425cefd8abf3458dd01556e46ae737ff321df3cfee",
+      "bytes": 425452
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-72.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-34.png",
+      "sha256": "b42e2a62fe2004783e82fefc29475453214323bb56dadeee157098fab782f321",
+      "bytes": 426979
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-73.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-35.png",
+      "sha256": "9b0cdd3a79d8b4056f1502b55d8bbd177fdc905ca220b175539227c288f77f2f",
+      "bytes": 426758
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-74.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-resize-only/frame-36.png",
+      "sha256": "7df59c7661a5d92bf718d07799095af1eb0f0dee00e97abcf752da69c8be81b8",
+      "bytes": 425660
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-01.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-02.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-03.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-04.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-05.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-06.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-07.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-08.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-09.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-10.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-11.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-12.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-13.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-14.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-15.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-16.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-17.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-18.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-19.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-20.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-21.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-00.png",
+      "sha256": "ee438d635f64dbf31718f473173b8410cf87dcc87958b9e771e8b776e70346bc",
+      "bytes": 425774
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-30.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-29.png",
+      "sha256": "8164fa3a19f4fbf6acd4cd73b3616ee140c499073f9c27856e5fb64696cd2363",
+      "bytes": 575797
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-31.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-29.png",
+      "sha256": "8164fa3a19f4fbf6acd4cd73b3616ee140c499073f9c27856e5fb64696cd2363",
+      "bytes": 575797
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-33.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-32.png",
+      "sha256": "4a5d4b073f8509a32d8b4d000c3ba80c09d9abf1905a286dd04ec7519afb33d1",
+      "bytes": 579169
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-34.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-32.png",
+      "sha256": "4a5d4b073f8509a32d8b4d000c3ba80c09d9abf1905a286dd04ec7519afb33d1",
+      "bytes": 579169
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-36.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-35.png",
+      "sha256": "bc7afdd1b941788f30dabbf565e3716418b7c8b43fab3e3a557f5cfe9d989957",
+      "bytes": 493947
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-37.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-35.png",
+      "sha256": "bc7afdd1b941788f30dabbf565e3716418b7c8b43fab3e3a557f5cfe9d989957",
+      "bytes": 493947
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-38.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-35.png",
+      "sha256": "bc7afdd1b941788f30dabbf565e3716418b7c8b43fab3e3a557f5cfe9d989957",
+      "bytes": 493947
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-39.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-35.png",
+      "sha256": "bc7afdd1b941788f30dabbf565e3716418b7c8b43fab3e3a557f5cfe9d989957",
+      "bytes": 493947
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-40.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-35.png",
+      "sha256": "bc7afdd1b941788f30dabbf565e3716418b7c8b43fab3e3a557f5cfe9d989957",
+      "bytes": 493947
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-41.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-35.png",
+      "sha256": "bc7afdd1b941788f30dabbf565e3716418b7c8b43fab3e3a557f5cfe9d989957",
+      "bytes": 493947
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-42.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-35.png",
+      "sha256": "bc7afdd1b941788f30dabbf565e3716418b7c8b43fab3e3a557f5cfe9d989957",
+      "bytes": 493947
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-43.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-35.png",
+      "sha256": "bc7afdd1b941788f30dabbf565e3716418b7c8b43fab3e3a557f5cfe9d989957",
+      "bytes": 493947
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-44.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-35.png",
+      "sha256": "bc7afdd1b941788f30dabbf565e3716418b7c8b43fab3e3a557f5cfe9d989957",
+      "bytes": 493947
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-45.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-35.png",
+      "sha256": "bc7afdd1b941788f30dabbf565e3716418b7c8b43fab3e3a557f5cfe9d989957",
+      "bytes": 493947
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-46.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-35.png",
+      "sha256": "bc7afdd1b941788f30dabbf565e3716418b7c8b43fab3e3a557f5cfe9d989957",
+      "bytes": 493947
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-47.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-35.png",
+      "sha256": "bc7afdd1b941788f30dabbf565e3716418b7c8b43fab3e3a557f5cfe9d989957",
+      "bytes": 493947
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-48.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-35.png",
+      "sha256": "bc7afdd1b941788f30dabbf565e3716418b7c8b43fab3e3a557f5cfe9d989957",
+      "bytes": 493947
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-49.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-35.png",
+      "sha256": "bc7afdd1b941788f30dabbf565e3716418b7c8b43fab3e3a557f5cfe9d989957",
+      "bytes": 493947
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-50.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-35.png",
+      "sha256": "bc7afdd1b941788f30dabbf565e3716418b7c8b43fab3e3a557f5cfe9d989957",
+      "bytes": 493947
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-51.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-35.png",
+      "sha256": "bc7afdd1b941788f30dabbf565e3716418b7c8b43fab3e3a557f5cfe9d989957",
+      "bytes": 493947
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-52.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-35.png",
+      "sha256": "bc7afdd1b941788f30dabbf565e3716418b7c8b43fab3e3a557f5cfe9d989957",
+      "bytes": 493947
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-53.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-35.png",
+      "sha256": "bc7afdd1b941788f30dabbf565e3716418b7c8b43fab3e3a557f5cfe9d989957",
+      "bytes": 493947
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-54.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-35.png",
+      "sha256": "bc7afdd1b941788f30dabbf565e3716418b7c8b43fab3e3a557f5cfe9d989957",
+      "bytes": 493947
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-55.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-29.png",
+      "sha256": "8164fa3a19f4fbf6acd4cd73b3616ee140c499073f9c27856e5fb64696cd2363",
+      "bytes": 575797
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-56.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-29.png",
+      "sha256": "8164fa3a19f4fbf6acd4cd73b3616ee140c499073f9c27856e5fb64696cd2363",
+      "bytes": 575797
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-57.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-29.png",
+      "sha256": "8164fa3a19f4fbf6acd4cd73b3616ee140c499073f9c27856e5fb64696cd2363",
+      "bytes": 575797
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-58.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-29.png",
+      "sha256": "8164fa3a19f4fbf6acd4cd73b3616ee140c499073f9c27856e5fb64696cd2363",
+      "bytes": 575797
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-59.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-29.png",
+      "sha256": "8164fa3a19f4fbf6acd4cd73b3616ee140c499073f9c27856e5fb64696cd2363",
+      "bytes": 575797
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-60.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-29.png",
+      "sha256": "8164fa3a19f4fbf6acd4cd73b3616ee140c499073f9c27856e5fb64696cd2363",
+      "bytes": 575797
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-61.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-29.png",
+      "sha256": "8164fa3a19f4fbf6acd4cd73b3616ee140c499073f9c27856e5fb64696cd2363",
+      "bytes": 575797
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-62.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-29.png",
+      "sha256": "8164fa3a19f4fbf6acd4cd73b3616ee140c499073f9c27856e5fb64696cd2363",
+      "bytes": 575797
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-63.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-29.png",
+      "sha256": "8164fa3a19f4fbf6acd4cd73b3616ee140c499073f9c27856e5fb64696cd2363",
+      "bytes": 575797
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-64.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-29.png",
+      "sha256": "8164fa3a19f4fbf6acd4cd73b3616ee140c499073f9c27856e5fb64696cd2363",
+      "bytes": 575797
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-65.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-29.png",
+      "sha256": "8164fa3a19f4fbf6acd4cd73b3616ee140c499073f9c27856e5fb64696cd2363",
+      "bytes": 575797
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-66.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-29.png",
+      "sha256": "8164fa3a19f4fbf6acd4cd73b3616ee140c499073f9c27856e5fb64696cd2363",
+      "bytes": 575797
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-67.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-29.png",
+      "sha256": "8164fa3a19f4fbf6acd4cd73b3616ee140c499073f9c27856e5fb64696cd2363",
+      "bytes": 575797
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-68.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-29.png",
+      "sha256": "8164fa3a19f4fbf6acd4cd73b3616ee140c499073f9c27856e5fb64696cd2363",
+      "bytes": 575797
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-69.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-29.png",
+      "sha256": "8164fa3a19f4fbf6acd4cd73b3616ee140c499073f9c27856e5fb64696cd2363",
+      "bytes": 575797
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-70.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-29.png",
+      "sha256": "8164fa3a19f4fbf6acd4cd73b3616ee140c499073f9c27856e5fb64696cd2363",
+      "bytes": 575797
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-71.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-29.png",
+      "sha256": "8164fa3a19f4fbf6acd4cd73b3616ee140c499073f9c27856e5fb64696cd2363",
+      "bytes": 575797
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-72.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-29.png",
+      "sha256": "8164fa3a19f4fbf6acd4cd73b3616ee140c499073f9c27856e5fb64696cd2363",
+      "bytes": 575797
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-73.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-29.png",
+      "sha256": "8164fa3a19f4fbf6acd4cd73b3616ee140c499073f9c27856e5fb64696cd2363",
+      "bytes": 575797
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-74.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-29.png",
+      "sha256": "8164fa3a19f4fbf6acd4cd73b3616ee140c499073f9c27856e5fb64696cd2363",
+      "bytes": 575797
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-75.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-29.png",
+      "sha256": "8164fa3a19f4fbf6acd4cd73b3616ee140c499073f9c27856e5fb64696cd2363",
+      "bytes": 575797
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-76.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-29.png",
+      "sha256": "8164fa3a19f4fbf6acd4cd73b3616ee140c499073f9c27856e5fb64696cd2363",
+      "bytes": 575797
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-77.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-29.png",
+      "sha256": "8164fa3a19f4fbf6acd4cd73b3616ee140c499073f9c27856e5fb64696cd2363",
+      "bytes": 575797
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-78.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-29.png",
+      "sha256": "8164fa3a19f4fbf6acd4cd73b3616ee140c499073f9c27856e5fb64696cd2363",
+      "bytes": 575797
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-79.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/frame-29.png",
+      "sha256": "8164fa3a19f4fbf6acd4cd73b3616ee140c499073f9c27856e5fb64696cd2363",
+      "bytes": 575797
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-01.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-00.png",
+      "sha256": "3c6aae4924234848e512558ddb8eb85dc35f9f2331be55d41f0121acc372ebd6",
+      "bytes": 51019
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-02.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-00.png",
+      "sha256": "3c6aae4924234848e512558ddb8eb85dc35f9f2331be55d41f0121acc372ebd6",
+      "bytes": 51019
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-03.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-00.png",
+      "sha256": "3c6aae4924234848e512558ddb8eb85dc35f9f2331be55d41f0121acc372ebd6",
+      "bytes": 51019
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-04.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-00.png",
+      "sha256": "3c6aae4924234848e512558ddb8eb85dc35f9f2331be55d41f0121acc372ebd6",
+      "bytes": 51019
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-05.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-00.png",
+      "sha256": "3c6aae4924234848e512558ddb8eb85dc35f9f2331be55d41f0121acc372ebd6",
+      "bytes": 51019
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-06.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-00.png",
+      "sha256": "3c6aae4924234848e512558ddb8eb85dc35f9f2331be55d41f0121acc372ebd6",
+      "bytes": 51019
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-07.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-00.png",
+      "sha256": "3c6aae4924234848e512558ddb8eb85dc35f9f2331be55d41f0121acc372ebd6",
+      "bytes": 51019
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-08.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-00.png",
+      "sha256": "3c6aae4924234848e512558ddb8eb85dc35f9f2331be55d41f0121acc372ebd6",
+      "bytes": 51019
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-09.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-00.png",
+      "sha256": "3c6aae4924234848e512558ddb8eb85dc35f9f2331be55d41f0121acc372ebd6",
+      "bytes": 51019
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-10.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-00.png",
+      "sha256": "3c6aae4924234848e512558ddb8eb85dc35f9f2331be55d41f0121acc372ebd6",
+      "bytes": 51019
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-11.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-00.png",
+      "sha256": "3c6aae4924234848e512558ddb8eb85dc35f9f2331be55d41f0121acc372ebd6",
+      "bytes": 51019
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-12.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-00.png",
+      "sha256": "3c6aae4924234848e512558ddb8eb85dc35f9f2331be55d41f0121acc372ebd6",
+      "bytes": 51019
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-13.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-00.png",
+      "sha256": "3c6aae4924234848e512558ddb8eb85dc35f9f2331be55d41f0121acc372ebd6",
+      "bytes": 51019
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-14.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-00.png",
+      "sha256": "3c6aae4924234848e512558ddb8eb85dc35f9f2331be55d41f0121acc372ebd6",
+      "bytes": 51019
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-15.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-00.png",
+      "sha256": "3c6aae4924234848e512558ddb8eb85dc35f9f2331be55d41f0121acc372ebd6",
+      "bytes": 51019
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-16.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-00.png",
+      "sha256": "3c6aae4924234848e512558ddb8eb85dc35f9f2331be55d41f0121acc372ebd6",
+      "bytes": 51019
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-17.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-00.png",
+      "sha256": "3c6aae4924234848e512558ddb8eb85dc35f9f2331be55d41f0121acc372ebd6",
+      "bytes": 51019
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-18.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-00.png",
+      "sha256": "3c6aae4924234848e512558ddb8eb85dc35f9f2331be55d41f0121acc372ebd6",
+      "bytes": 51019
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-19.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-00.png",
+      "sha256": "3c6aae4924234848e512558ddb8eb85dc35f9f2331be55d41f0121acc372ebd6",
+      "bytes": 51019
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-20.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-00.png",
+      "sha256": "3c6aae4924234848e512558ddb8eb85dc35f9f2331be55d41f0121acc372ebd6",
+      "bytes": 51019
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-21.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-00.png",
+      "sha256": "3c6aae4924234848e512558ddb8eb85dc35f9f2331be55d41f0121acc372ebd6",
+      "bytes": 51019
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-30.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-29.png",
+      "sha256": "368fb12003c7a084d92fa56eb24df67f5da308d0a214aad31cb19aeae6d6de37",
+      "bytes": 49072
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-31.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-29.png",
+      "sha256": "368fb12003c7a084d92fa56eb24df67f5da308d0a214aad31cb19aeae6d6de37",
+      "bytes": 49072
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-33.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-32.png",
+      "sha256": "0ab3bae5a176cb2276a4aea853c9bc1b27089045d7f571c90ace0953fd17d13e",
+      "bytes": 50269
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-34.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-32.png",
+      "sha256": "0ab3bae5a176cb2276a4aea853c9bc1b27089045d7f571c90ace0953fd17d13e",
+      "bytes": 50269
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-36.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-35.png",
+      "sha256": "5d73eb6ec3c49fbf892f40c83bdb6fa882f82a82745a2dfb97ff64299041c2c5",
+      "bytes": 10562
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-37.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-35.png",
+      "sha256": "5d73eb6ec3c49fbf892f40c83bdb6fa882f82a82745a2dfb97ff64299041c2c5",
+      "bytes": 10562
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-38.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-35.png",
+      "sha256": "5d73eb6ec3c49fbf892f40c83bdb6fa882f82a82745a2dfb97ff64299041c2c5",
+      "bytes": 10562
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-39.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-35.png",
+      "sha256": "5d73eb6ec3c49fbf892f40c83bdb6fa882f82a82745a2dfb97ff64299041c2c5",
+      "bytes": 10562
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-40.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-35.png",
+      "sha256": "5d73eb6ec3c49fbf892f40c83bdb6fa882f82a82745a2dfb97ff64299041c2c5",
+      "bytes": 10562
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-41.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-35.png",
+      "sha256": "5d73eb6ec3c49fbf892f40c83bdb6fa882f82a82745a2dfb97ff64299041c2c5",
+      "bytes": 10562
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-42.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-35.png",
+      "sha256": "5d73eb6ec3c49fbf892f40c83bdb6fa882f82a82745a2dfb97ff64299041c2c5",
+      "bytes": 10562
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-43.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-35.png",
+      "sha256": "5d73eb6ec3c49fbf892f40c83bdb6fa882f82a82745a2dfb97ff64299041c2c5",
+      "bytes": 10562
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-44.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-35.png",
+      "sha256": "5d73eb6ec3c49fbf892f40c83bdb6fa882f82a82745a2dfb97ff64299041c2c5",
+      "bytes": 10562
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-45.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-35.png",
+      "sha256": "5d73eb6ec3c49fbf892f40c83bdb6fa882f82a82745a2dfb97ff64299041c2c5",
+      "bytes": 10562
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-46.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-35.png",
+      "sha256": "5d73eb6ec3c49fbf892f40c83bdb6fa882f82a82745a2dfb97ff64299041c2c5",
+      "bytes": 10562
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-47.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-35.png",
+      "sha256": "5d73eb6ec3c49fbf892f40c83bdb6fa882f82a82745a2dfb97ff64299041c2c5",
+      "bytes": 10562
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-48.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-35.png",
+      "sha256": "5d73eb6ec3c49fbf892f40c83bdb6fa882f82a82745a2dfb97ff64299041c2c5",
+      "bytes": 10562
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-49.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-35.png",
+      "sha256": "5d73eb6ec3c49fbf892f40c83bdb6fa882f82a82745a2dfb97ff64299041c2c5",
+      "bytes": 10562
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-50.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-35.png",
+      "sha256": "5d73eb6ec3c49fbf892f40c83bdb6fa882f82a82745a2dfb97ff64299041c2c5",
+      "bytes": 10562
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-51.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-35.png",
+      "sha256": "5d73eb6ec3c49fbf892f40c83bdb6fa882f82a82745a2dfb97ff64299041c2c5",
+      "bytes": 10562
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-52.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-35.png",
+      "sha256": "5d73eb6ec3c49fbf892f40c83bdb6fa882f82a82745a2dfb97ff64299041c2c5",
+      "bytes": 10562
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-53.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-35.png",
+      "sha256": "5d73eb6ec3c49fbf892f40c83bdb6fa882f82a82745a2dfb97ff64299041c2c5",
+      "bytes": 10562
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-54.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-35.png",
+      "sha256": "5d73eb6ec3c49fbf892f40c83bdb6fa882f82a82745a2dfb97ff64299041c2c5",
+      "bytes": 10562
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-55.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-29.png",
+      "sha256": "368fb12003c7a084d92fa56eb24df67f5da308d0a214aad31cb19aeae6d6de37",
+      "bytes": 49072
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-56.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-29.png",
+      "sha256": "368fb12003c7a084d92fa56eb24df67f5da308d0a214aad31cb19aeae6d6de37",
+      "bytes": 49072
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-57.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-29.png",
+      "sha256": "368fb12003c7a084d92fa56eb24df67f5da308d0a214aad31cb19aeae6d6de37",
+      "bytes": 49072
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-58.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-29.png",
+      "sha256": "368fb12003c7a084d92fa56eb24df67f5da308d0a214aad31cb19aeae6d6de37",
+      "bytes": 49072
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-59.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-29.png",
+      "sha256": "368fb12003c7a084d92fa56eb24df67f5da308d0a214aad31cb19aeae6d6de37",
+      "bytes": 49072
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-60.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-29.png",
+      "sha256": "368fb12003c7a084d92fa56eb24df67f5da308d0a214aad31cb19aeae6d6de37",
+      "bytes": 49072
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-61.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-29.png",
+      "sha256": "368fb12003c7a084d92fa56eb24df67f5da308d0a214aad31cb19aeae6d6de37",
+      "bytes": 49072
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-62.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-29.png",
+      "sha256": "368fb12003c7a084d92fa56eb24df67f5da308d0a214aad31cb19aeae6d6de37",
+      "bytes": 49072
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-63.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-29.png",
+      "sha256": "368fb12003c7a084d92fa56eb24df67f5da308d0a214aad31cb19aeae6d6de37",
+      "bytes": 49072
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-64.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-29.png",
+      "sha256": "368fb12003c7a084d92fa56eb24df67f5da308d0a214aad31cb19aeae6d6de37",
+      "bytes": 49072
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-65.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-29.png",
+      "sha256": "368fb12003c7a084d92fa56eb24df67f5da308d0a214aad31cb19aeae6d6de37",
+      "bytes": 49072
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-66.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-29.png",
+      "sha256": "368fb12003c7a084d92fa56eb24df67f5da308d0a214aad31cb19aeae6d6de37",
+      "bytes": 49072
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-67.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-29.png",
+      "sha256": "368fb12003c7a084d92fa56eb24df67f5da308d0a214aad31cb19aeae6d6de37",
+      "bytes": 49072
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-68.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-29.png",
+      "sha256": "368fb12003c7a084d92fa56eb24df67f5da308d0a214aad31cb19aeae6d6de37",
+      "bytes": 49072
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-69.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-29.png",
+      "sha256": "368fb12003c7a084d92fa56eb24df67f5da308d0a214aad31cb19aeae6d6de37",
+      "bytes": 49072
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-70.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-29.png",
+      "sha256": "368fb12003c7a084d92fa56eb24df67f5da308d0a214aad31cb19aeae6d6de37",
+      "bytes": 49072
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-71.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-29.png",
+      "sha256": "368fb12003c7a084d92fa56eb24df67f5da308d0a214aad31cb19aeae6d6de37",
+      "bytes": 49072
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-72.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-29.png",
+      "sha256": "368fb12003c7a084d92fa56eb24df67f5da308d0a214aad31cb19aeae6d6de37",
+      "bytes": 49072
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-73.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-29.png",
+      "sha256": "368fb12003c7a084d92fa56eb24df67f5da308d0a214aad31cb19aeae6d6de37",
+      "bytes": 49072
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-74.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-29.png",
+      "sha256": "368fb12003c7a084d92fa56eb24df67f5da308d0a214aad31cb19aeae6d6de37",
+      "bytes": 49072
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-75.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-29.png",
+      "sha256": "368fb12003c7a084d92fa56eb24df67f5da308d0a214aad31cb19aeae6d6de37",
+      "bytes": 49072
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-76.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-29.png",
+      "sha256": "368fb12003c7a084d92fa56eb24df67f5da308d0a214aad31cb19aeae6d6de37",
+      "bytes": 49072
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-77.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-29.png",
+      "sha256": "368fb12003c7a084d92fa56eb24df67f5da308d0a214aad31cb19aeae6d6de37",
+      "bytes": 49072
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-78.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-29.png",
+      "sha256": "368fb12003c7a084d92fa56eb24df67f5da308d0a214aad31cb19aeae6d6de37",
+      "bytes": 49072
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-79.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/cg-window-drag/normalized/frame-29.png",
+      "sha256": "368fb12003c7a084d92fa56eb24df67f5da308d0a214aad31cb19aeae6d6de37",
+      "bytes": 49072
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-01.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-00.png",
+      "sha256": "2fc77dd988402ee5a9a2632cc41e9d09badd7e12fab703573088dd4253487b8b",
+      "bytes": 579030
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-05.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-04.png",
+      "sha256": "0be71a5b177424d9f43ee80448690e491b3ff297a44166ff194b53549ceedfcf",
+      "bytes": 575535
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-06.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-04.png",
+      "sha256": "0be71a5b177424d9f43ee80448690e491b3ff297a44166ff194b53549ceedfcf",
+      "bytes": 575535
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-07.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-04.png",
+      "sha256": "0be71a5b177424d9f43ee80448690e491b3ff297a44166ff194b53549ceedfcf",
+      "bytes": 575535
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-08.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-04.png",
+      "sha256": "0be71a5b177424d9f43ee80448690e491b3ff297a44166ff194b53549ceedfcf",
+      "bytes": 575535
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-09.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-04.png",
+      "sha256": "0be71a5b177424d9f43ee80448690e491b3ff297a44166ff194b53549ceedfcf",
+      "bytes": 575535
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-10.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-04.png",
+      "sha256": "0be71a5b177424d9f43ee80448690e491b3ff297a44166ff194b53549ceedfcf",
+      "bytes": 575535
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-11.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-04.png",
+      "sha256": "0be71a5b177424d9f43ee80448690e491b3ff297a44166ff194b53549ceedfcf",
+      "bytes": 575535
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-13.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-04.png",
+      "sha256": "0be71a5b177424d9f43ee80448690e491b3ff297a44166ff194b53549ceedfcf",
+      "bytes": 575535
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-14.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-04.png",
+      "sha256": "0be71a5b177424d9f43ee80448690e491b3ff297a44166ff194b53549ceedfcf",
+      "bytes": 575535
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-16.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-17.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-18.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-19.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-20.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-21.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-22.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-23.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-24.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-25.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-26.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-27.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-28.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-29.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-30.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-31.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-32.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-33.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-34.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-35.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-36.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-37.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-38.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-40.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-39.png",
+      "sha256": "925a044e9343c87e4e02a367030ab514e2b82120c03466cbba87e76845302a82",
+      "bytes": 429179
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-41.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-39.png",
+      "sha256": "925a044e9343c87e4e02a367030ab514e2b82120c03466cbba87e76845302a82",
+      "bytes": 429179
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-42.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-39.png",
+      "sha256": "925a044e9343c87e4e02a367030ab514e2b82120c03466cbba87e76845302a82",
+      "bytes": 429179
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-43.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-39.png",
+      "sha256": "925a044e9343c87e4e02a367030ab514e2b82120c03466cbba87e76845302a82",
+      "bytes": 429179
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-44.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-39.png",
+      "sha256": "925a044e9343c87e4e02a367030ab514e2b82120c03466cbba87e76845302a82",
+      "bytes": 429179
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-45.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-39.png",
+      "sha256": "925a044e9343c87e4e02a367030ab514e2b82120c03466cbba87e76845302a82",
+      "bytes": 429179
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-46.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-39.png",
+      "sha256": "925a044e9343c87e4e02a367030ab514e2b82120c03466cbba87e76845302a82",
+      "bytes": 429179
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-47.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-39.png",
+      "sha256": "925a044e9343c87e4e02a367030ab514e2b82120c03466cbba87e76845302a82",
+      "bytes": 429179
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-48.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-39.png",
+      "sha256": "925a044e9343c87e4e02a367030ab514e2b82120c03466cbba87e76845302a82",
+      "bytes": 429179
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-49.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-39.png",
+      "sha256": "925a044e9343c87e4e02a367030ab514e2b82120c03466cbba87e76845302a82",
+      "bytes": 429179
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-50.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-39.png",
+      "sha256": "925a044e9343c87e4e02a367030ab514e2b82120c03466cbba87e76845302a82",
+      "bytes": 429179
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-51.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-39.png",
+      "sha256": "925a044e9343c87e4e02a367030ab514e2b82120c03466cbba87e76845302a82",
+      "bytes": 429179
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-52.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-39.png",
+      "sha256": "925a044e9343c87e4e02a367030ab514e2b82120c03466cbba87e76845302a82",
+      "bytes": 429179
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-53.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-39.png",
+      "sha256": "925a044e9343c87e4e02a367030ab514e2b82120c03466cbba87e76845302a82",
+      "bytes": 429179
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-54.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-39.png",
+      "sha256": "925a044e9343c87e4e02a367030ab514e2b82120c03466cbba87e76845302a82",
+      "bytes": 429179
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-55.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-39.png",
+      "sha256": "925a044e9343c87e4e02a367030ab514e2b82120c03466cbba87e76845302a82",
+      "bytes": 429179
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-56.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-39.png",
+      "sha256": "925a044e9343c87e4e02a367030ab514e2b82120c03466cbba87e76845302a82",
+      "bytes": 429179
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-57.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-39.png",
+      "sha256": "925a044e9343c87e4e02a367030ab514e2b82120c03466cbba87e76845302a82",
+      "bytes": 429179
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-58.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-39.png",
+      "sha256": "925a044e9343c87e4e02a367030ab514e2b82120c03466cbba87e76845302a82",
+      "bytes": 429179
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-59.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-39.png",
+      "sha256": "925a044e9343c87e4e02a367030ab514e2b82120c03466cbba87e76845302a82",
+      "bytes": 429179
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-60.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-39.png",
+      "sha256": "925a044e9343c87e4e02a367030ab514e2b82120c03466cbba87e76845302a82",
+      "bytes": 429179
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-61.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-62.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-63.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-64.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-65.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-66.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-67.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-68.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-69.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-70.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-71.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-72.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-73.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-74.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-75.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-76.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-77.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-78.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-79.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-80.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-81.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-82.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-83.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-84.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-85.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-86.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-87.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-88.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-89.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-90.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-91.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-92.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-93.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-94.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-95.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-15.png",
+      "sha256": "b4bf65c1c8075a01e7b6dadfb93d583389579128691ac2c9214281f366f60559",
+      "bytes": 425229
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-96.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-39.png",
+      "sha256": "925a044e9343c87e4e02a367030ab514e2b82120c03466cbba87e76845302a82",
+      "bytes": 429179
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-97.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-39.png",
+      "sha256": "925a044e9343c87e4e02a367030ab514e2b82120c03466cbba87e76845302a82",
+      "bytes": 429179
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-98.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-39.png",
+      "sha256": "925a044e9343c87e4e02a367030ab514e2b82120c03466cbba87e76845302a82",
+      "bytes": 429179
+    },
+    {
+      "removed": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-99.png",
+      "retained": "shots/2026-08-10/native-interaction-flicker-diagnostic/drag-region-fix/frames/frame-39.png",
+      "sha256": "925a044e9343c87e4e02a367030ab514e2b82120c03466cbba87e76845302a82",
+      "bytes": 429179
+    }
+  ]
+}

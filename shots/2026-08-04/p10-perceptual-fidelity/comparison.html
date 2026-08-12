@@ -2006,7 +2006,7 @@
         </section>
       </section>
 
-      <details class="audit-section">
+      <details class="audit-section" id="rawArchiveDetails">
         <summary>
           Canonical P10 residual atlas
           <span>原有 normalized overlay、geometry、styles 与 residuals</span>
@@ -2059,7 +2059,8 @@
             <option value="all">All days</option>
           </select>
           <select id="archiveGitStatus" aria-label="Filter archive by Git status">
-            <option value="all">Tracked + untracked</option>
+            <option value="all">All asset locations</option>
+            <option value="remote">GitHub remote</option>
             <option value="tracked">Tracked</option>
             <option value="untracked">Untracked</option>
           </select>
@@ -2091,6 +2092,7 @@
         imageCount: 0,
         trackedCount: 0,
         untrackedCount: 0,
+        remoteCount: 0,
       };
       const fidelityLoss = globalThis.__SYNARA_FIDELITY_LOSS__ ?? {
         formula: {},
@@ -2131,6 +2133,23 @@
           .replaceAll('"', "&quot;");
       }
 
+      const fidelityAssetBase =
+        screenshotArchive.assetBaseUrl ??
+        "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main";
+
+      function fidelityAssetUrl(path) {
+        if (!path) return path;
+        if (/^https?:\/\//u.test(path)) return path;
+        if (path.startsWith("shots/")) return `${fidelityAssetBase}/${path}`;
+        const absolute = new URL(path, document.baseURI);
+        const marker = "/shots/";
+        const markerIndex = absolute.pathname.indexOf(marker);
+        if (markerIndex >= 0) {
+          return `${fidelityAssetBase}${absolute.pathname.slice(markerIndex)}`;
+        }
+        return path;
+      }
+
       function frame(state, client) {
         const evidence = state.evidence[client.id];
         return `
@@ -2142,7 +2161,7 @@
             <div class="image-wrap">
               ${
                 evidence.path
-                  ? `<img src="${evidence.path}" alt="${escapeHtml(state.label)} · ${client.label}" loading="lazy" />`
+                  ? `<img src="${fidelityAssetUrl(evidence.path)}" alt="${escapeHtml(state.label)} · ${client.label}" loading="lazy" />`
                   : `<div class="missing">${escapeHtml(evidence.reason ?? "No evidence retained.")}</div>`
               }
             </div>
@@ -2195,8 +2214,8 @@
               </label>
             </div>
             <div class="stage" data-mode="overlay" style="--overlay-opacity:0.5;--split:50%">
-              <img class="bottom" src="${state.evidence[bottom.id].comparisonPath}" alt="" />
-              <img class="top" src="${state.evidence[top.id].comparisonPath}" alt="" />
+              <img class="bottom" src="${fidelityAssetUrl(state.evidence[bottom.id].comparisonPath)}" alt="" />
+              <img class="top" src="${fidelityAssetUrl(state.evidence[top.id].comparisonPath)}" alt="" />
               <span class="split-line"></span>
               <input data-role="split" type="range" min="0" max="100" step="0.1" value="50" aria-label="Split position" />
             </div>
@@ -2278,8 +2297,12 @@
         const opacity = panel.querySelector('[data-role="opacity"]');
         const split = panel.querySelector('[data-role="split"]');
         const updateImages = () => {
-          bottomImage.src = state.evidence[bottomSelect.value].comparisonPath;
-          topImage.src = state.evidence[topSelect.value].comparisonPath;
+          bottomImage.src = fidelityAssetUrl(
+            state.evidence[bottomSelect.value].comparisonPath,
+          );
+          topImage.src = fidelityAssetUrl(
+            state.evidence[topSelect.value].comparisonPath,
+          );
         };
         bottomSelect.addEventListener("change", updateImages);
         topSelect.addEventListener("change", updateImages);
@@ -2374,7 +2397,7 @@
       document.querySelector("#archiveSummary").textContent =
         `${screenshotArchive.imageCount.toLocaleString()} images · ` +
         `${screenshotArchive.trackedCount.toLocaleString()} tracked · ` +
-        `${screenshotArchive.untrackedCount.toLocaleString()} untracked`;
+        `${screenshotArchive.remoteCount.toLocaleString()} remote`;
 
       function archiveImage(image) {
         return `
@@ -2439,13 +2462,19 @@
         document.querySelector("#archiveSummary").textContent =
           `${visibleImages.toLocaleString()} visible / ` +
           `${screenshotArchive.imageCount.toLocaleString()} images · ` +
-          `${screenshotArchive.untrackedCount.toLocaleString()} untracked`;
+          `${screenshotArchive.remoteCount.toLocaleString()} remote`;
       }
 
       archiveSearch.addEventListener("input", renderArchive);
       archiveDay.addEventListener("change", renderArchive);
       archiveGitStatus.addEventListener("change", renderArchive);
-      renderArchive();
+      document
+        .querySelector("#rawArchiveDetails")
+        .addEventListener("toggle", (event) => {
+          if (event.currentTarget.open && !archiveDays.childElementCount) {
+            renderArchive();
+          }
+        });
 
       const dayNarratives = {
         "2026-08-02": "搭建共享 server 的 fast loop，并验证 Composer、transcript 与 Markdown。",
@@ -2765,8 +2794,8 @@
       }
 
       function pairCard(pair) {
-        const leftPath = `../../../${pair.left}`;
-        const rightPath = `../../../${pair.right}`;
+        const leftPath = fidelityAssetUrl(pair.left);
+        const rightPath = fidelityAssetUrl(pair.right);
         return `
           <article class="loss-pair">
             <header class="loss-pair-head">

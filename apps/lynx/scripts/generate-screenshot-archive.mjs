@@ -1,5 +1,11 @@
 import { execFileSync } from 'node:child_process';
-import { readdirSync, statSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  readFileSync,
+  readdirSync,
+  statSync,
+  writeFileSync,
+} from 'node:fs';
 import { extname, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -10,6 +16,12 @@ const outputPath = resolve(
   shotsRoot,
   '2026-08-04/p10-perceptual-fidelity/screenshot-archive.js'
 );
+const assetManifestPath = resolve(
+  shotsRoot,
+  '2026-08-04/p10-perceptual-fidelity/screenshot-assets.json'
+);
+const assetBaseUrl =
+  'https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main';
 const includedDays = new Set([
   '2026-08-02',
   '2026-08-03',
@@ -57,7 +69,11 @@ const untrackedFiles = gitFileSet([
   'shots',
 ]);
 
-const images = listFiles(shotsRoot)
+const localImages = listFiles(shotsRoot)
+  .filter((absolutePath) =>
+    imageExtensions.has(extname(absolutePath).toLowerCase())
+  );
+const discoveredImages = localImages
   .map((absolutePath) => {
     const repoPath = relative(repoRoot, absolutePath).split(sep).join('/');
     const [, day, ...pathParts] = repoPath.split('/');
@@ -69,7 +85,7 @@ const images = listFiles(shotsRoot)
       day,
       directory,
       name: pathParts.at(-1),
-      path: `../../${day}/${pathParts.join('/')}`,
+      path: `${assetBaseUrl}/${repoPath}`,
       repoPath,
       bytes: statSync(absolutePath).size,
       gitStatus: trackedFiles.has(repoPath)
@@ -81,6 +97,32 @@ const images = listFiles(shotsRoot)
   })
   .filter(Boolean)
   .sort((left, right) => left.repoPath.localeCompare(right.repoPath));
+if (!discoveredImages.length && !existsSync(assetManifestPath)) {
+  throw new Error('No local screenshots or screenshot-assets.json manifest found');
+}
+const images = discoveredImages.length
+  ? discoveredImages
+  : JSON.parse(readFileSync(assetManifestPath, 'utf8')).images.map((image) => ({
+      ...image,
+      gitStatus: 'remote',
+    }));
+
+if (discoveredImages.length) {
+  writeFileSync(
+    assetManifestPath,
+    `${JSON.stringify(
+      {
+        version: 1,
+        assetBaseUrl,
+        imageCount: images.length,
+        byteCount: images.reduce((total, image) => total + image.bytes, 0),
+        images: images.map(({ gitStatus: _gitStatus, ...image }) => image),
+      },
+      null,
+      2
+    )}\n`
+  );
+}
 
 const days = [...includedDays].sort().map((day) => {
   const dayImages = images.filter((image) => image.day === day);
@@ -96,6 +138,7 @@ const days = [...includedDays].sort().map((day) => {
     byteCount: dayImages.reduce((total, image) => total + image.bytes, 0),
     trackedCount: dayImages.filter((image) => image.gitStatus === 'tracked').length,
     untrackedCount: dayImages.filter((image) => image.gitStatus === 'untracked').length,
+    remoteCount: dayImages.filter((image) => image.gitStatus === 'remote').length,
     directories: [...directories]
       .map(([directory, directoryImages]) => ({
         directory,
@@ -184,6 +227,7 @@ const stories = [...storyMap.values()]
 
 const archive = {
   version: 1,
+  assetBaseUrl,
   range: {
     firstDay: days.at(0)?.day ?? null,
     lastDay: days.at(-1)?.day ?? null,
@@ -193,6 +237,7 @@ const archive = {
   byteCount: images.reduce((total, image) => total + image.bytes, 0),
   trackedCount: images.filter((image) => image.gitStatus === 'tracked').length,
   untrackedCount: images.filter((image) => image.gitStatus === 'untracked').length,
+  remoteCount: images.filter((image) => image.gitStatus === 'remote').length,
   storyCount: stories.length,
   stories,
   days,

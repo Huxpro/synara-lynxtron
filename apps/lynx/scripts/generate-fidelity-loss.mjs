@@ -1,5 +1,15 @@
 import { execFileSync } from 'node:child_process';
-import { readFileSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  mkdtempSync,
+  mkdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs';
+import { createHash } from 'node:crypto';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
@@ -27,6 +37,13 @@ const outputJsPath = resolve(evidenceRoot, 'fidelity-loss.js');
 const comparableClients = ['web', 'lynx', 'native'];
 const visualRollingWindowSize = 24;
 const emaAlpha = 0.18;
+const remoteAssetCache = mkdtempSync(
+  join(tmpdir(), 'synara-fidelity-assets-cache-')
+);
+mkdirSync(remoteAssetCache, { recursive: true });
+process.on('exit', () => {
+  rmSync(remoteAssetCache, { force: true, recursive: true });
+});
 
 const reliabilityLedger = [
   {
@@ -169,8 +186,12 @@ function imagesByNormalizedName(story, client) {
 }
 
 async function imageMaePercent(leftPath, rightPath) {
-  const left = sharp(leftPath).removeAlpha();
-  const right = sharp(rightPath).removeAlpha();
+  const [resolvedLeftPath, resolvedRightPath] = await Promise.all([
+    resolveImagePath(leftPath),
+    resolveImagePath(rightPath),
+  ]);
+  const left = sharp(resolvedLeftPath).removeAlpha();
+  const right = sharp(resolvedRightPath).removeAlpha();
   const [leftMetadata, rightMetadata] = await Promise.all([
     left.metadata(),
     right.metadata(),
@@ -200,6 +221,41 @@ async function imageMaePercent(leftPath, rightPath) {
     parityPercent: Math.max(0, 100 - maePercent),
     qualityBand: visualQualityBand(maePercent),
   };
+}
+
+async function resolveImagePath(filePath) {
+  if (existsSync(filePath)) return filePath;
+  const repoPath = filePath
+    .slice(repoRoot.length + 1)
+    .split('\\')
+    .join('/');
+  const url = `${archive.assetBaseUrl}/${repoPath}`;
+  const extension = repoPath.split('.').at(-1);
+  const cacheKey = createHash('sha256').update(url).digest('hex');
+  const cachePath = resolve(remoteAssetCache, `${cacheKey}.${extension}`);
+  if (!existsSync(cachePath)) {
+    let lastError = null;
+    for (let attempt = 0; attempt < 4; attempt += 1) {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch ${url}: ${response.status}`);
+        }
+        writeFileSync(cachePath, Buffer.from(await response.arrayBuffer()));
+        lastError = null;
+        break;
+      } catch (error) {
+        lastError = error;
+        if (attempt < 3) {
+          await new Promise((resolveDelay) =>
+            setTimeout(resolveDelay, 250 * 2 ** attempt)
+          );
+        }
+      }
+    }
+    if (lastError) throw lastError;
+  }
+  return cachePath;
 }
 
 async function visualSamples(stories, commitIndexByHash, firstCommitByFile) {

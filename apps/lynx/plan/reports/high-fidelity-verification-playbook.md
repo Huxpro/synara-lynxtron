@@ -186,3 +186,11 @@ node apps/lynx/scripts/generate-screenshot-archive.mjs
 
 The generated archive records whether each image is tracked or only present in
 the local working tree. That status is part of the evidence boundary.
+
+Screenshot bytes are now hosted in the public
+`Huxpro/synara-fidelity-assets` repository. The comparison artifact resolves
+every review, canonical matrix, and loss-ledger image through GitHub Raw.
+`screenshot-assets.json` is the local metadata source of truth. Exact duplicate
+flicker frames were removed by SHA-256 within each sequence; the
+removed-to-retained mapping is preserved in
+`shots/2026-08-10/native-interaction-flicker-diagnostic/dedupe-map.json`.
