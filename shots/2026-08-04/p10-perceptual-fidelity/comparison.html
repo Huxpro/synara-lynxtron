@@ -622,6 +622,323 @@
         background: var(--surface);
       }
 
+      .loss-system {
+        margin: 28px 0 54px;
+        border-top: 1px solid var(--line-strong);
+        border-bottom: 1px solid var(--line-strong);
+        padding: 24px 0 28px;
+      }
+
+      .loss-head {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 28px;
+        align-items: end;
+        margin-bottom: 20px;
+      }
+
+      .loss-head h2 {
+        margin: 0;
+        font-family: "Iowan Old Style", "Songti SC", serif;
+        font-size: clamp(28px, 4vw, 52px);
+        font-weight: 500;
+        letter-spacing: -0.035em;
+      }
+
+      .loss-head p {
+        max-width: 820px;
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.55;
+      }
+
+      .loss-score {
+        min-width: 180px;
+        text-align: right;
+      }
+
+      .loss-score strong {
+        display: block;
+        font-family: "Iowan Old Style", serif;
+        font-size: 52px;
+        font-weight: 500;
+        letter-spacing: -0.04em;
+        line-height: 0.9;
+      }
+
+      .loss-score span {
+        display: block;
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 10px;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+      }
+
+      .loss-workbench {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 330px;
+        gap: 1px;
+        border: 1px solid var(--line);
+        background: var(--line);
+      }
+
+      .loss-chart-panel,
+      .loss-inspector {
+        min-width: 0;
+        background: var(--surface);
+      }
+
+      .loss-chart-panel {
+        padding: 14px;
+      }
+
+      .loss-chart {
+        display: block;
+        width: 100%;
+        height: auto;
+        min-height: 320px;
+        overflow: visible;
+      }
+
+      .loss-grid-line {
+        stroke: var(--line);
+        stroke-width: 1;
+      }
+
+      .loss-grid-label,
+      .loss-axis-label {
+        fill: var(--muted);
+        font-size: 9px;
+      }
+
+      .loss-line {
+        fill: none;
+        stroke: var(--accent);
+        stroke-width: 2;
+        vector-effect: non-scaling-stroke;
+      }
+
+      .loss-best-line {
+        fill: none;
+        stroke: var(--good);
+        stroke-width: 1;
+        stroke-dasharray: 4 4;
+        vector-effect: non-scaling-stroke;
+      }
+
+      .loss-point {
+        fill: var(--surface);
+        stroke: var(--accent);
+        stroke-width: 2;
+        cursor: pointer;
+        vector-effect: non-scaling-stroke;
+      }
+
+      .loss-point-hit {
+        fill: transparent;
+        cursor: pointer;
+        outline: none;
+      }
+
+      .loss-point-hit:focus-visible + .loss-point {
+        fill: var(--accent);
+        stroke: var(--surface);
+        stroke-width: 3;
+      }
+
+      .loss-point:hover,
+      .loss-point[data-selected="true"] {
+        fill: var(--accent);
+        stroke: var(--surface);
+        stroke-width: 3;
+      }
+
+      .loss-regression-marker {
+        fill: var(--p1);
+        pointer-events: none;
+      }
+
+      .loss-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      .loss-timeline {
+        display: grid;
+        grid-template-columns: repeat(10, minmax(0, 1fr));
+        gap: 1px;
+        margin-top: 12px;
+        border: 1px solid var(--line);
+        background: var(--line);
+      }
+
+      .loss-timeline button {
+        min-width: 0;
+        border: 0;
+        padding: 7px 4px;
+        color: var(--muted);
+        background: var(--surface-raised);
+        cursor: pointer;
+        font-size: 9px;
+      }
+
+      .loss-timeline button strong,
+      .loss-timeline button span {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .loss-timeline button strong {
+        color: var(--ink);
+        font-size: 11px;
+      }
+
+      .loss-timeline button[aria-pressed="true"] {
+        color: var(--surface);
+        background: var(--ink);
+      }
+
+      .loss-timeline button[aria-pressed="true"] strong {
+        color: var(--surface);
+      }
+
+      .loss-legend span::before {
+        display: inline-block;
+        width: 14px;
+        height: 2px;
+        margin-right: 5px;
+        vertical-align: middle;
+        background: var(--legend-color);
+        content: "";
+      }
+
+      .loss-inspector {
+        padding: 16px;
+      }
+
+      .loss-inspector-kicker {
+        color: var(--accent);
+        font-size: 10px;
+        font-weight: 750;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+      }
+
+      .loss-inspector h3 {
+        margin: 5px 0 3px;
+        font-family: "Iowan Old Style", serif;
+        font-size: 30px;
+        font-weight: 500;
+      }
+
+      .loss-inspector-commit {
+        color: var(--muted);
+        font-size: 10px;
+        line-height: 1.45;
+      }
+
+      .loss-components {
+        display: grid;
+        gap: 8px;
+        margin: 18px 0;
+      }
+
+      .loss-component {
+        display: grid;
+        grid-template-columns: 92px minmax(0, 1fr) 38px;
+        gap: 8px;
+        align-items: center;
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      .loss-component-track {
+        height: 5px;
+        overflow: hidden;
+        background: var(--line);
+      }
+
+      .loss-component-fill {
+        display: block;
+        height: 100%;
+        background: var(--component-color);
+      }
+
+      .loss-facts {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1px;
+        border: 1px solid var(--line);
+        background: var(--line);
+      }
+
+      .loss-fact {
+        padding: 9px;
+        background: var(--surface-raised);
+      }
+
+      .loss-fact strong,
+      .loss-fact span {
+        display: block;
+      }
+
+      .loss-fact strong {
+        font-size: 14px;
+      }
+
+      .loss-fact span {
+        margin-top: 2px;
+        color: var(--muted);
+        font-size: 8px;
+        text-transform: uppercase;
+      }
+
+      .loss-events {
+        margin: 14px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .loss-events li {
+        margin-top: 6px;
+        padding-left: 10px;
+        border-left: 2px solid var(--p1);
+        color: var(--muted);
+        font-size: 9px;
+        line-height: 1.4;
+      }
+
+      .loss-formula {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 16px;
+        align-items: center;
+        margin-top: 12px;
+        padding: 11px 13px;
+        border: 1px solid var(--line);
+        color: var(--muted);
+        background: var(--page);
+        font-size: 10px;
+        line-height: 1.5;
+      }
+
+      .loss-formula code {
+        color: var(--ink);
+        font: inherit;
+      }
+
+      .loss-formula a {
+        color: var(--accent);
+      }
+
       .review-rail {
         display: flex;
         min-width: 0;
@@ -1059,6 +1376,10 @@
       }
 
       @media (max-width: 1280px) {
+        .loss-workbench {
+          grid-template-columns: minmax(0, 1fr) 280px;
+        }
+
         .review-deck {
           grid-template-columns: 230px minmax(0, 1fr);
         }
@@ -1076,6 +1397,15 @@
       @media (max-width: 900px) {
         .masthead {
           grid-template-columns: 1fr;
+        }
+
+        .loss-head,
+        .loss-workbench {
+          grid-template-columns: 1fr;
+        }
+
+        .loss-score {
+          text-align: left;
         }
 
         .review-deck {
@@ -1133,6 +1463,48 @@
           <div><strong>← →</strong><span>键盘浏览</span></div>
         </div>
       </header>
+
+      <section class="loss-system" aria-label="Fidelity loss history">
+        <header class="loss-head">
+          <div>
+            <p class="eyebrow">Retrospective fidelity loss</p>
+            <h2>Loss 不是被抹平的进度条。</h2>
+            <p>
+              曲线基于最终 379 个 screen-state 工作单元、Web/Lynx/Native client 完整性、
+              同状态 RGB 距离和 commit-bounded regression ledger 回算。反弹被保留；
+              点击数据点可查看当天 commit、样本与债务，并跳到对应工作证据。
+            </p>
+          </div>
+          <div class="loss-score">
+            <strong id="currentLoss">—</strong>
+            <span id="lossDelta">weighted loss</span>
+          </div>
+        </header>
+        <div class="loss-workbench">
+          <div class="loss-chart-panel">
+            <svg
+              class="loss-chart"
+              id="lossChart"
+              viewBox="0 0 960 360"
+              role="img"
+              aria-label="Fidelity loss over time and commits"
+            ></svg>
+            <div class="loss-timeline" id="lossTimeline"></div>
+            <div class="loss-legend">
+              <span style="--legend-color:var(--accent)">Observed loss</span>
+              <span style="--legend-color:var(--good)">Best so far</span>
+              <span style="--legend-color:var(--p1)">Active regression debt</span>
+            </div>
+          </div>
+          <aside class="loss-inspector" id="lossInspector"></aside>
+        </div>
+        <div class="loss-formula">
+          <code id="lossFormula"></code>
+          <a href="../../../apps/lynx/plan/reports/fidelity-loss-method.md">
+            公式与证据边界
+          </a>
+        </div>
+      </section>
 
       <section class="review-deck" aria-label="High fidelity work review">
         <aside class="review-rail">
@@ -1251,6 +1623,7 @@
 
     <script src="manifest.js"></script>
     <script src="screenshot-archive.js"></script>
+    <script src="fidelity-loss.js"></script>
     <script>
       const data = globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ ?? { states: [] };
       const screenshotArchive = globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ ?? {
@@ -1259,6 +1632,10 @@
         imageCount: 0,
         trackedCount: 0,
         untrackedCount: 0,
+      };
+      const fidelityLoss = globalThis.__SYNARA_FIDELITY_LOSS__ ?? {
+        formula: {},
+        points: [],
       };
       const clients = [
         { id: "web", label: "Web authority" },
@@ -1841,6 +2218,173 @@
         reviewLightboxTitle.textContent = image.title;
       }
 
+      const lossComponentMeta = {
+        scope: { label: "Scope gap", color: "var(--p2)" },
+        completeness: { label: "Client gap", color: "var(--p1)" },
+        visual: { label: "Visual distance", color: "var(--accent)" },
+        reliability: { label: "Reliability debt", color: "var(--p0)" },
+      };
+      let selectedLossIndex = Math.max(0, fidelityLoss.points.length - 1);
+
+      function lossInspector(point) {
+        const componentRows = Object.entries(point.components)
+          .map(([key, value]) => {
+            const meta = lossComponentMeta[key];
+            return `
+              <div class="loss-component">
+                <span>${meta.label}</span>
+                <span class="loss-component-track">
+                  <span
+                    class="loss-component-fill"
+                    style="--component-color:${meta.color};width:${(value * 100).toFixed(1)}%"
+                  ></span>
+                </span>
+                <strong>${(value * 100).toFixed(0)}%</strong>
+              </div>
+            `;
+          })
+          .join("");
+        const events = point.reliability.activeEvents.length
+          ? `
+            <ul class="loss-events">
+              ${point.reliability.activeEvents
+                .map(
+                  (event) =>
+                    `<li>${escapeHtml(event.summary)} · ${event.introduced}${event.fixed ? ` → ${event.fixed}` : " · open"}</li>`,
+                )
+                .join("")}
+            </ul>
+          `
+          : `<p class="empty">No active regression debt at this evidence point.</p>`;
+        return `
+          <span class="loss-inspector-kicker">${point.day} · ${point.commit?.shortHash ?? "no commit"}</span>
+          <h3>${point.loss.toFixed(2)} loss</h3>
+          <p class="loss-inspector-commit">${escapeHtml(point.commit?.subject ?? "No commit recorded")} · ${point.commitCount} commits in batch</p>
+          <div class="loss-components">${componentRows}</div>
+          <div class="loss-facts">
+            <div class="loss-fact"><strong>${point.cumulativeStoryCount}</strong><span>cumulative stories</span></div>
+            <div class="loss-fact"><strong>${point.newStoryCount}</strong><span>new stories</span></div>
+            <div class="loss-fact"><strong>${point.visual.sampleCount}</strong><span>accepted pairs</span></div>
+            <div class="loss-fact"><strong>${point.visual.rejectedPairCount}</strong><span>rejected pairs</span></div>
+            <div class="loss-fact"><strong>${point.visual.medianPercent === null ? "—" : `${point.visual.medianPercent.toFixed(2)}%`}</strong><span>median RGB MAE</span></div>
+            <div class="loss-fact"><strong>${(point.visual.confidence * 100).toFixed(0)}%</strong><span>visual confidence</span></div>
+          </div>
+          ${events}
+        `;
+      }
+
+      function renderLossChart() {
+        const points = fidelityLoss.points;
+        if (!points.length) return;
+        const chart = document.querySelector("#lossChart");
+        const width = 960;
+        const height = 360;
+        const margin = { top: 22, right: 18, bottom: 52, left: 42 };
+        const plotWidth = width - margin.left - margin.right;
+        const plotHeight = height - margin.top - margin.bottom;
+        const maximumLoss =
+          Math.max(60, Math.ceil(Math.max(...points.map((point) => point.loss)) / 10) * 10);
+        const x = (index) =>
+          margin.left + (points.length === 1 ? plotWidth / 2 : (index / (points.length - 1)) * plotWidth);
+        const y = (value) =>
+          margin.top + plotHeight - (value / maximumLoss) * plotHeight;
+        const path = (key) =>
+          points
+            .map(
+              (point, index) =>
+                `${index === 0 ? "M" : "L"} ${x(index).toFixed(2)} ${y(point[key]).toFixed(2)}`,
+            )
+            .join(" ");
+        const grid = Array.from({ length: maximumLoss / 10 + 1 }, (_, index) => index * 10)
+          .map(
+            (value) => `
+              <line class="loss-grid-line" x1="${margin.left}" x2="${width - margin.right}" y1="${y(value)}" y2="${y(value)}"></line>
+              <text class="loss-grid-label" x="${margin.left - 8}" y="${y(value) + 3}" text-anchor="end">${value}</text>
+            `,
+          )
+          .join("");
+        chart.innerHTML = `
+          ${grid}
+          <path class="loss-best-line" d="${path("bestLoss")}"></path>
+          <path class="loss-line" d="${path("loss")}"></path>
+          ${points
+            .map(
+              (point, index) => `
+                ${
+                  point.reliability.points
+                    ? `<path class="loss-regression-marker" d="M ${x(index) - 4} ${y(point.loss) - 12} L ${x(index) + 4} ${y(point.loss) - 12} L ${x(index)} ${y(point.loss) - 5} Z"></path>`
+                    : ""
+                }
+                <rect
+                  class="loss-point-hit"
+                  data-loss-index="${index}"
+                  x="${x(index) - plotWidth / points.length / 2}"
+                  y="${margin.top}"
+                  width="${plotWidth / points.length}"
+                  height="${plotHeight}"
+                  tabindex="0"
+                  role="button"
+                  aria-label="${point.day}, loss ${point.loss.toFixed(2)}"
+                ></rect>
+                <circle
+                  class="loss-point"
+                  data-selected="${index === selectedLossIndex}"
+                  cx="${x(index)}"
+                  cy="${y(point.loss)}"
+                  r="5"
+                ></circle>
+                <text class="loss-axis-label" x="${x(index)}" y="${height - 26}" text-anchor="middle">${point.day.slice(5)}</text>
+                <text class="loss-axis-label" x="${x(index)}" y="${height - 12}" text-anchor="middle">${point.commit?.shortHash.slice(0, 6) ?? ""}</text>
+              `,
+            )
+            .join("")}
+        `;
+        const selected = points[selectedLossIndex];
+        document.querySelector("#lossInspector").innerHTML = lossInspector(selected);
+        const latest = points.at(-1);
+        const first = points[0];
+        document.querySelector("#currentLoss").textContent = latest.loss.toFixed(2);
+        document.querySelector("#lossDelta").textContent =
+          `${(latest.loss - first.loss).toFixed(2)} from ${first.loss.toFixed(2)} · lower is better`;
+        document.querySelector("#lossFormula").textContent =
+          fidelityLoss.formula.expression ?? "";
+        const activatePoint = (index) => {
+          selectedLossIndex = index;
+          selectReviewDay(points[selectedLossIndex].day);
+          renderLossChart();
+        };
+        chart.querySelectorAll(".loss-point-hit[data-loss-index]").forEach((point) => {
+          const activate = () => activatePoint(Number(point.dataset.lossIndex));
+          point.addEventListener("click", activate);
+          point.addEventListener("keydown", (event) => {
+            if (event.key !== "Enter" && event.key !== " ") return;
+            activate();
+            event.preventDefault();
+          });
+        });
+        const timeline = document.querySelector("#lossTimeline");
+        timeline.innerHTML = points
+          .map(
+            (point, index) => `
+              <button
+                type="button"
+                data-loss-timeline-index="${index}"
+                aria-pressed="${index === selectedLossIndex}"
+                title="${escapeHtml(point.commit?.subject ?? "")}"
+              >
+                <strong>${point.loss.toFixed(1)}</strong>
+                <span>${point.day.slice(5)} · ${point.commit?.shortHash.slice(0, 6) ?? ""}</span>
+              </button>
+            `,
+          )
+          .join("");
+        timeline.querySelectorAll("[data-loss-timeline-index]").forEach((button) => {
+          button.addEventListener("click", () => {
+            activatePoint(Number(button.dataset.lossTimelineIndex));
+          });
+        });
+      }
+
       const reviewDays = document.querySelector("#reviewDays");
       reviewDays.innerHTML = [
         `<button class="review-day" type="button" data-review-day="all" aria-pressed="true">全部</button>`,
@@ -1849,15 +2393,18 @@
             `<button class="review-day" type="button" data-review-day="${day.day}" aria-pressed="false">${day.day.slice(5)}</button>`,
         ),
       ].join("");
+      function selectReviewDay(day) {
+        reviewState.day = day;
+        reviewState.storyIndex = 0;
+        reviewState.variantIndex = 0;
+        reviewDays.querySelectorAll("[data-review-day]").forEach((peer) => {
+          peer.setAttribute("aria-pressed", String(peer.dataset.reviewDay === day));
+        });
+        renderReview();
+      }
       reviewDays.querySelectorAll("[data-review-day]").forEach((button) => {
         button.addEventListener("click", () => {
-          reviewState.day = button.dataset.reviewDay;
-          reviewState.storyIndex = 0;
-          reviewState.variantIndex = 0;
-          reviewDays.querySelectorAll("[data-review-day]").forEach((peer) => {
-            peer.setAttribute("aria-pressed", String(peer === button));
-          });
-          renderReview();
+          selectReviewDay(button.dataset.reviewDay);
         });
       });
       const reviewSearch = document.querySelector("#reviewSearch");
@@ -1908,6 +2455,7 @@
       document.querySelector("#imageCount").textContent =
         screenshotArchive.imageCount.toLocaleString();
       renderReview();
+      renderLossChart();
     </script>
   </body>
 </html>

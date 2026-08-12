@@ -28,6 +28,8 @@
     "evidence:perceptual": "node scripts/perceptual-evidence.mjs",
     "evidence:perceptual:write": "node scripts/perceptual-evidence.mjs --allow-incomplete --write",
     "test:evidence:perceptual": "node --test scripts/perceptual-evidence.test.mjs",
+    "evidence:fidelity-loss": "node scripts/generate-fidelity-loss.mjs",
+    "test:evidence:fidelity-loss": "node --test scripts/fidelity-loss.logic.test.mjs",
     "evidence:settings-continuation": "node scripts/settings-continuation-evidence.mjs",
     "test:evidence:settings-continuation": "node --test scripts/settings-continuation-evidence.test.mjs",
     "evidence:providers": "node scripts/providers-evidence.mjs",
