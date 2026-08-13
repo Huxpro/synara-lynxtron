@@ -100,9 +100,22 @@ const harnessIssueLedger = [
     summary:
       'Lynx-for-Web sidebar remains in Loading projects, blocking a retained UI-path thread switch for Temporary cleanup certification.',
     severityPoints: 1,
+    resolvedBy: ['2f118bc49'],
+    resolution:
+      'Thread-route bootstrap now seeds the shared sidebar snapshot before thread-specific fetches; a fresh route rendered real project and thread rows.',
+    resolutionStoryPrefixes: [],
+  },
+  {
+    id: 'lynx-web-sidebar-row-bindtap-automation',
+    type: 'interaction-harness-boundary',
+    detectedAt: '2f118bc49',
+    affectedStoryPrefix: '2026-08-13--temporary-chat-current--',
+    summary:
+      'The visible Lynx-for-Web sidebar row does not activate through agent-browser click, pointer, keyboard, or synthetic tap paths, blocking retained Temporary cleanup UI evidence.',
+    severityPoints: 0,
     resolvedBy: [],
     resolution:
-      'Unresolved; Temporary on/off rendering is comparable, but Lynx cleanup remains unit-covered rather than retained UI-path evidence.',
+      'Unresolved harness-only automation boundary; it does not count as product visual or reliability loss.',
     resolutionStoryPrefixes: [],
   },
 ];
@@ -487,6 +500,13 @@ const evidenceCommits = [
     [entry.introducedMetadata, entry.fixedMetadata]
       .filter(Boolean)
       .map((metadata) => ({ ...metadata, files: [], reliabilityOnly: true }))
+  ),
+  ...harnessLedger.flatMap((entry) =>
+    [entry.detectedMetadata, ...entry.resolvedMetadata].map((metadata) => ({
+      ...metadata,
+      files: [],
+      harnessOnly: true,
+    }))
   ),
 ]
   .filter(

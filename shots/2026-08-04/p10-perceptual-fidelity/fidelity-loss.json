@@ -6,7 +6,7 @@
     "lastDay": "2026-08-13",
     "finalStoryCount": 384,
     "finalImageCount": 1271,
-    "evidenceCommitCount": 300
+    "evidenceCommitCount": 302
   },
   "formula": {
     "expression": "100 × (0.30 × scopeGap + 0.25 × clientGap + 0.35 × visualDistance + 0.10 × reliabilityDebt)",
@@ -474,8 +474,10 @@
       "affectedStoryPrefix": "2026-08-13--temporary-chat-current--",
       "summary": "Lynx-for-Web sidebar remains in Loading projects, blocking a retained UI-path thread switch for Temporary cleanup certification.",
       "severityPoints": 1,
-      "resolvedBy": [],
-      "resolution": "Unresolved; Temporary on/off rendering is comparable, but Lynx cleanup remains unit-covered rather than retained UI-path evidence.",
+      "resolvedBy": [
+        "2f118bc49"
+      ],
+      "resolution": "Thread-route bootstrap now seeds the shared sidebar snapshot before thread-specific fetches; a fresh route rendered real project and thread rows.",
       "resolutionStoryPrefixes": [],
       "detectedMetadata": {
         "hash": "2221865a8edafda29ac62621cf2ef6b8c54e062a",
@@ -483,6 +485,40 @@
         "timestamp": "2026-08-13T21:42:33+08:00",
         "date": "2026-08-13",
         "subject": "Add Temporary chat fidelity state harness"
+      },
+      "resolvedMetadata": [
+        {
+          "hash": "2f118bc49489cd9d38d221e42d09507eea3b3758",
+          "shortHash": "2f118bc49",
+          "timestamp": "2026-08-14T00:18:30+08:00",
+          "date": "2026-08-14",
+          "subject": "Fix Lynx thread sidebar bootstrap"
+        }
+      ],
+      "resolutionEvidence": {
+        "pairCount": 0,
+        "minimumParityPercent": null,
+        "medianParityPercent": null,
+        "maximumParityPercent": null,
+        "pairs": []
+      }
+    },
+    {
+      "id": "lynx-web-sidebar-row-bindtap-automation",
+      "type": "interaction-harness-boundary",
+      "detectedAt": "2f118bc49",
+      "affectedStoryPrefix": "2026-08-13--temporary-chat-current--",
+      "summary": "The visible Lynx-for-Web sidebar row does not activate through agent-browser click, pointer, keyboard, or synthetic tap paths, blocking retained Temporary cleanup UI evidence.",
+      "severityPoints": 0,
+      "resolvedBy": [],
+      "resolution": "Unresolved harness-only automation boundary; it does not count as product visual or reliability loss.",
+      "resolutionStoryPrefixes": [],
+      "detectedMetadata": {
+        "hash": "2f118bc49489cd9d38d221e42d09507eea3b3758",
+        "shortHash": "2f118bc49",
+        "timestamp": "2026-08-14T00:18:30+08:00",
+        "date": "2026-08-14",
+        "subject": "Fix Lynx thread sidebar bootstrap"
       },
       "resolvedMetadata": [],
       "resolutionEvidence": {
@@ -43075,8 +43111,10 @@
             "affectedStoryPrefix": "2026-08-13--temporary-chat-current--",
             "summary": "Lynx-for-Web sidebar remains in Loading projects, blocking a retained UI-path thread switch for Temporary cleanup certification.",
             "severityPoints": 1,
-            "resolvedBy": [],
-            "resolution": "Unresolved; Temporary on/off rendering is comparable, but Lynx cleanup remains unit-covered rather than retained UI-path evidence.",
+            "resolvedBy": [
+              "2f118bc49"
+            ],
+            "resolution": "Thread-route bootstrap now seeds the shared sidebar snapshot before thread-specific fetches; a fresh route rendered real project and thread rows.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -43127,6 +43165,196 @@
       "loss": 12.266738394208824,
       "bestLoss": 10.560080284012596,
       "smoothLoss": 11.17644598586942
+    },
+    {
+      "index": 300,
+      "day": "2026-08-13",
+      "timestamp": "2026-08-13T22:12:33+08:00",
+      "commit": {
+        "hash": "096f28ec669c918308c258498dfb3600537907b7",
+        "shortHash": "096f28ec6",
+        "timestamp": "2026-08-13T22:12:33+08:00",
+        "date": "2026-08-13",
+        "subject": "Record Temporary chat fidelity coverage",
+        "files": [
+          "shots/2026-08-04/p10-perceptual-fidelity/comparison.html",
+          "shots/2026-08-04/p10-perceptual-fidelity/fidelity-loss.js",
+          "shots/2026-08-04/p10-perceptual-fidelity/fidelity-loss.json",
+          "shots/2026-08-04/p10-perceptual-fidelity/screenshot-archive.js",
+          "shots/2026-08-04/p10-perceptual-fidelity/screenshot-assets.json"
+        ]
+      },
+      "evidenceFileCount": 5,
+      "addedStoryIds": [],
+      "addedImages": [],
+      "activatedPairCount": 0,
+      "activatedRejectedPairCount": 0,
+      "activatedHarnessPairCount": 0,
+      "cumulativeAcceptedPairCount": 433,
+      "cumulativeRejectedPairCount": 0,
+      "rollingPairCount": 24,
+      "cumulativeStoryCount": 384,
+      "scopeCoverage": 1,
+      "clientCompleteness": 0.7475538160469667,
+      "visual": {
+        "loss": 0.11301667986808543,
+        "confidence": 1,
+        "medianPercent": 1.1301667986808543,
+        "sampleCount": 24,
+        "rollingWindowSize": 24,
+        "activatedPairs": [],
+        "activatedRejectedPairs": [],
+        "activatedHarnessPairs": [],
+        "previousLoss": 0.11301667986808543,
+        "previousMedianPercent": 1.1301667986808543,
+        "medianDelta": 0
+      },
+      "reliability": {
+        "loss": 0.2,
+        "activeEvents": [
+          {
+            "id": "viewport-state-fanout",
+            "severityPoints": 1,
+            "introduced": "664d8063e",
+            "fixed": null,
+            "summary": "Viewport hydration race and duplicated resize subscriptions"
+          }
+        ],
+        "activeHarnessIssues": [
+          {
+            "id": "temporary-sidebar-hydration",
+            "type": "interaction-harness-blocker",
+            "detectedAt": "2221865a8",
+            "affectedStoryPrefix": "2026-08-13--temporary-chat-current--",
+            "summary": "Lynx-for-Web sidebar remains in Loading projects, blocking a retained UI-path thread switch for Temporary cleanup certification.",
+            "severityPoints": 1,
+            "resolvedBy": [
+              "2f118bc49"
+            ],
+            "resolution": "Thread-route bootstrap now seeds the shared sidebar snapshot before thread-specific fetches; a fresh route rendered real project and thread rows.",
+            "resolutionStoryPrefixes": []
+          }
+        ],
+        "points": 2
+      },
+      "components": {
+        "scope": 0,
+        "completeness": 0.2524461839530333,
+        "visual": 0.11301667986808543,
+        "reliability": 0.2
+      },
+      "componentContributions": {
+        "scope": 0,
+        "completeness": 0,
+        "visual": 0,
+        "reliability": 0
+      },
+      "causes": [],
+      "regressionChanges": [],
+      "lossDelta": 0,
+      "loss": 12.266738394208824,
+      "bestLoss": 10.560080284012596,
+      "smoothLoss": 11.372698619370514
+    },
+    {
+      "index": 301,
+      "day": "2026-08-14",
+      "timestamp": "2026-08-14T00:18:30+08:00",
+      "commit": {
+        "hash": "2f118bc49489cd9d38d221e42d09507eea3b3758",
+        "shortHash": "2f118bc49",
+        "timestamp": "2026-08-14T00:18:30+08:00",
+        "date": "2026-08-14",
+        "subject": "Fix Lynx thread sidebar bootstrap",
+        "files": [],
+        "harnessOnly": true
+      },
+      "evidenceFileCount": 0,
+      "addedStoryIds": [],
+      "addedImages": [],
+      "activatedPairCount": 0,
+      "activatedRejectedPairCount": 0,
+      "activatedHarnessPairCount": 0,
+      "cumulativeAcceptedPairCount": 433,
+      "cumulativeRejectedPairCount": 0,
+      "rollingPairCount": 24,
+      "cumulativeStoryCount": 384,
+      "scopeCoverage": 1,
+      "clientCompleteness": 0.7475538160469667,
+      "visual": {
+        "loss": 0.11301667986808543,
+        "confidence": 1,
+        "medianPercent": 1.1301667986808543,
+        "sampleCount": 24,
+        "rollingWindowSize": 24,
+        "activatedPairs": [],
+        "activatedRejectedPairs": [],
+        "activatedHarnessPairs": [],
+        "previousLoss": 0.11301667986808543,
+        "previousMedianPercent": 1.1301667986808543,
+        "medianDelta": 0
+      },
+      "reliability": {
+        "loss": 0.1,
+        "activeEvents": [
+          {
+            "id": "viewport-state-fanout",
+            "severityPoints": 1,
+            "introduced": "664d8063e",
+            "fixed": null,
+            "summary": "Viewport hydration race and duplicated resize subscriptions"
+          }
+        ],
+        "activeHarnessIssues": [
+          {
+            "id": "lynx-web-sidebar-row-bindtap-automation",
+            "type": "interaction-harness-boundary",
+            "detectedAt": "2f118bc49",
+            "affectedStoryPrefix": "2026-08-13--temporary-chat-current--",
+            "summary": "The visible Lynx-for-Web sidebar row does not activate through agent-browser click, pointer, keyboard, or synthetic tap paths, blocking retained Temporary cleanup UI evidence.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Unresolved harness-only automation boundary; it does not count as product visual or reliability loss.",
+            "resolutionStoryPrefixes": []
+          }
+        ],
+        "points": 1
+      },
+      "components": {
+        "scope": 0,
+        "completeness": 0.2524461839530333,
+        "visual": 0.11301667986808543,
+        "reliability": 0.1
+      },
+      "componentContributions": {
+        "scope": 0,
+        "completeness": 0,
+        "visual": 0,
+        "reliability": -1.0000000000000002
+      },
+      "causes": [
+        {
+          "component": "reliability",
+          "contribution": -1.0000000000000002,
+          "direction": "down"
+        }
+      ],
+      "regressionChanges": [
+        {
+          "type": "harness-resolution",
+          "id": "temporary-sidebar-hydration",
+          "summary": "Thread-route bootstrap now seeds the shared sidebar snapshot before thread-specific fetches; a fresh route rendered real project and thread rows."
+        },
+        {
+          "type": "harness-detected",
+          "id": "lynx-web-sidebar-row-bindtap-automation",
+          "summary": "The visible Lynx-for-Web sidebar row does not activate through agent-browser click, pointer, keyboard, or synthetic tap paths, blocking retained Temporary cleanup UI evidence."
+        }
+      ],
+      "lossDelta": -1.0000000000000018,
+      "loss": 11.266738394208822,
+      "bestLoss": 10.560080284012596,
+      "smoothLoss": 11.353625778841408
     }
   ],
   "riseAnalysis": [
@@ -46384,8 +46612,8 @@
     {
       "day": "2026-08-13",
       "firstCommitIndex": 291,
-      "lastCommitIndex": 299,
-      "commitCount": 9,
+      "lastCommitIndex": 300,
+      "commitCount": 10,
       "openingLoss": 10.560080284012596,
       "closingLoss": 12.266738394208824,
       "netLossDelta": 1.7066581101962282,
@@ -46408,7 +46636,8 @@
         296,
         297,
         298,
-        299
+        299,
+        300
       ]
     }
   ],
@@ -124264,35 +124493,27 @@
       "newStoryCount": 28
     },
     {
-      "index": 299,
+      "index": 300,
       "day": "2026-08-13",
-      "timestamp": "2026-08-13T21:42:33+08:00",
+      "timestamp": "2026-08-13T22:12:33+08:00",
       "commit": {
-        "hash": "2221865a8edafda29ac62621cf2ef6b8c54e062a",
-        "shortHash": "2221865a8",
-        "timestamp": "2026-08-13T21:42:33+08:00",
+        "hash": "096f28ec669c918308c258498dfb3600537907b7",
+        "shortHash": "096f28ec6",
+        "timestamp": "2026-08-13T22:12:33+08:00",
         "date": "2026-08-13",
-        "subject": "Add Temporary chat fidelity state harness",
+        "subject": "Record Temporary chat fidelity coverage",
         "files": [
-          "shots/2026-08-13/temporary-chat-current/off/lynx.png",
-          "shots/2026-08-13/temporary-chat-current/off/web.png",
-          "shots/2026-08-13/temporary-chat-current/on/lynx.png",
-          "shots/2026-08-13/temporary-chat-current/on/web.png"
-        ],
-        "remoteEvidenceOnly": true
+          "shots/2026-08-04/p10-perceptual-fidelity/comparison.html",
+          "shots/2026-08-04/p10-perceptual-fidelity/fidelity-loss.js",
+          "shots/2026-08-04/p10-perceptual-fidelity/fidelity-loss.json",
+          "shots/2026-08-04/p10-perceptual-fidelity/screenshot-archive.js",
+          "shots/2026-08-04/p10-perceptual-fidelity/screenshot-assets.json"
+        ]
       },
-      "evidenceFileCount": 4,
-      "addedStoryIds": [
-        "2026-08-13--temporary-chat-current--off",
-        "2026-08-13--temporary-chat-current--on"
-      ],
-      "addedImages": [
-        "shots/2026-08-13/temporary-chat-current/off/lynx.png",
-        "shots/2026-08-13/temporary-chat-current/off/web.png",
-        "shots/2026-08-13/temporary-chat-current/on/lynx.png",
-        "shots/2026-08-13/temporary-chat-current/on/web.png"
-      ],
-      "activatedPairCount": 2,
+      "evidenceFileCount": 5,
+      "addedStoryIds": [],
+      "addedImages": [],
+      "activatedPairCount": 0,
       "activatedRejectedPairCount": 0,
       "activatedHarnessPairCount": 0,
       "cumulativeAcceptedPairCount": 433,
@@ -124307,63 +124528,12 @@
         "medianPercent": 1.1301667986808543,
         "sampleCount": 24,
         "rollingWindowSize": 24,
-        "activatedPairs": [
-          {
-            "storyId": "2026-08-13--temporary-chat-current--off",
-            "leftClient": "web",
-            "rightClient": "lynx",
-            "left": "shots/2026-08-13/temporary-chat-current/off/web.png",
-            "right": "shots/2026-08-13/temporary-chat-current/off/lynx.png",
-            "stateKey": "raw",
-            "accepted": true,
-            "maePercent": 1.8068891479355969,
-            "parityPercent": 98.19311085206441,
-            "qualityBand": "close",
-            "leftImageStats": {
-              "meanLuminance": 19.716176641202335,
-              "brightFraction": 0.0022160823170731705,
-              "darkFraction": 0.9861166158536585
-            },
-            "rightImageStats": {
-              "meanLuminance": 18.424348028963443,
-              "brightFraction": 0.003043064024390244,
-              "darkFraction": 0.9876667301829268
-            },
-            "renderedLeftTheme": "dark",
-            "renderedRightTheme": "dark",
-            "activationCommitIndex": 299
-          },
-          {
-            "storyId": "2026-08-13--temporary-chat-current--on",
-            "leftClient": "web",
-            "rightClient": "lynx",
-            "left": "shots/2026-08-13/temporary-chat-current/on/web.png",
-            "right": "shots/2026-08-13/temporary-chat-current/on/lynx.png",
-            "stateKey": "raw",
-            "accepted": true,
-            "maePercent": 1.8123907769408576,
-            "parityPercent": 98.18760922305914,
-            "qualityBand": "close",
-            "leftImageStats": {
-              "meanLuminance": 19.718371763153556,
-              "brightFraction": 0.0022160823170731705,
-              "darkFraction": 0.986078506097561
-            },
-            "rightImageStats": {
-              "meanLuminance": 18.435865750000026,
-              "brightFraction": 0.0031411966463414636,
-              "darkFraction": 0.9877038871951219
-            },
-            "renderedLeftTheme": "dark",
-            "renderedRightTheme": "dark",
-            "activationCommitIndex": 299
-          }
-        ],
+        "activatedPairs": [],
         "activatedRejectedPairs": [],
         "activatedHarnessPairs": [],
-        "previousLoss": 0.09843647875816994,
-        "previousMedianPercent": 0.9843647875816993,
-        "medianDelta": 0.14580201109915503,
+        "previousLoss": 0.11301667986808543,
+        "previousMedianPercent": 1.1301667986808543,
+        "medianDelta": 0,
         "acceptedPairCount": 433,
         "rejectedPairCount": 0,
         "acceptedPairs": [
@@ -135214,8 +135384,10 @@
             "affectedStoryPrefix": "2026-08-13--temporary-chat-current--",
             "summary": "Lynx-for-Web sidebar remains in Loading projects, blocking a retained UI-path thread switch for Temporary cleanup certification.",
             "severityPoints": 1,
-            "resolvedBy": [],
-            "resolution": "Unresolved; Temporary on/off rendering is comparable, but Lynx cleanup remains unit-covered rather than retained UI-path evidence.",
+            "resolvedBy": [
+              "2f118bc49"
+            ],
+            "resolution": "Thread-route bootstrap now seeds the shared sidebar snapshot before thread-specific fetches; a fresh route rendered real project and thread rows.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -135228,45 +135400,18 @@
         "reliability": 0.2
       },
       "componentContributions": {
-        "scope": -0.1562500000000011,
-        "completeness": 0.011942000400635977,
-        "visual": 0.5103070388470423,
-        "reliability": 1.0000000000000002
+        "scope": 0,
+        "completeness": 0,
+        "visual": 0,
+        "reliability": 0
       },
-      "causes": [
-        {
-          "component": "reliability",
-          "contribution": 1.0000000000000002,
-          "direction": "up"
-        },
-        {
-          "component": "visual",
-          "contribution": 0.5103070388470423,
-          "direction": "up"
-        },
-        {
-          "component": "scope",
-          "contribution": -0.1562500000000011,
-          "direction": "down"
-        },
-        {
-          "component": "completeness",
-          "contribution": 0.011942000400635977,
-          "direction": "up"
-        }
-      ],
-      "regressionChanges": [
-        {
-          "type": "harness-detected",
-          "id": "temporary-sidebar-hydration",
-          "summary": "Lynx-for-Web sidebar remains in Loading projects, blocking a retained UI-path thread switch for Temporary cleanup certification."
-        }
-      ],
-      "lossDelta": 1.3659990392476793,
+      "causes": [],
+      "regressionChanges": [],
+      "lossDelta": 0,
       "loss": 12.266738394208824,
       "bestLoss": 10.560080284012596,
-      "smoothLoss": 11.17644598586942,
-      "commitCount": 9,
+      "smoothLoss": 11.372698619370514,
+      "commitCount": 10,
       "newStoryCount": 5
     }
   ]
