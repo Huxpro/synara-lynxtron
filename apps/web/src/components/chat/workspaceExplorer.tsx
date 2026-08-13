@@ -6,6 +6,7 @@
 //          ExplorerActivityBarButton, useExplorerEntryPrefetch, setFileReferenceDragData.
 
 import type { ProjectEntry, ProjectFileSystemEntry } from "@synara/contracts";
+import { shouldShowWorkspaceExplorerEntry } from "@synara/shared/workspaceExplorer";
 import { useDebouncedValue } from "@tanstack/react-pacer";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -41,24 +42,6 @@ import { FileEntryIcon } from "./FileEntryIcon";
 import { fileRowClassName, fileRowIndentStyle } from "./fileRowStyles";
 import { PanelStateMessage } from "./PanelStateMessage";
 
-const EXPLORER_HIDDEN_DIRECTORY_NAMES = new Set([
-  ".cache",
-  ".next",
-  ".nuxt",
-  ".parcel-cache",
-  ".pnpm-store",
-  ".svelte-kit",
-  ".turbo",
-  ".vite",
-  ".yarn",
-  "build",
-  "coverage",
-  "dist",
-  "node_modules",
-  "out",
-  "target",
-]);
-
 // Mirrors the composer mention search: debounce keystrokes so they don't fan
 // out into fuzzy-search RPCs, and cap results to keep the sidebar light.
 const EXPLORER_SEARCH_QUERY_DEBOUNCE_MS = 120;
@@ -76,16 +59,6 @@ export function setFileReferenceDragData(dataTransfer: DataTransfer, path: strin
   dataTransfer.effectAllowed = "copy";
   dataTransfer.setData(CHAT_FILE_REFERENCE_DRAG_TYPE, formatChatFileReference({ path }));
   dataTransfer.setData("text/plain", path);
-}
-
-function shouldShowExplorerEntry(entry: ProjectFileSystemEntry): boolean {
-  if (entry.kind !== "directory") {
-    return true;
-  }
-  if (entry.name.startsWith(".synara")) {
-    return false;
-  }
-  return !EXPLORER_HIDDEN_DIRECTORY_NAMES.has(entry.name);
 }
 
 /**
@@ -245,7 +218,7 @@ function WorkspaceDirectory(props: {
 
   return (
     <>
-      {(query.data?.entries ?? []).filter(shouldShowExplorerEntry).map((entry) => {
+      {(query.data?.entries ?? []).filter(shouldShowWorkspaceExplorerEntry).map((entry) => {
         if (entry.kind !== "directory") {
           return (
             <ExplorerRow

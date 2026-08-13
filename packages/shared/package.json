@@ -227,6 +227,10 @@
     "./commandNavigation": {
       "types": "./src/commandNavigation.ts",
       "import": "./src/commandNavigation.ts"
+    },
+    "./workspaceExplorer": {
+      "types": "./src/workspaceExplorer.ts",
+      "import": "./src/workspaceExplorer.ts"
     }
   },
   "scripts": {

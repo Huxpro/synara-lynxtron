@@ -3,6 +3,7 @@ import { describe, expect, it } from '@rstest/core';
 import {
   projectExplorerDirectories,
   toggleExpandedDirectory,
+  visibleExplorerEntries,
 } from './explorerTree.logic';
 
 describe('Explorer tree state', () => {
@@ -26,5 +27,19 @@ describe('Explorer tree state', () => {
       src: [{ path: 'src/tree.ts' }],
     });
     expect([...result.errorPaths]).toEqual(['docs']);
+  });
+
+  it('uses the shared directory visibility policy', () => {
+    const visible = visibleExplorerEntries([
+      { kind: 'directory', name: '.synara-loss', path: '.synara-loss' },
+      { kind: 'directory', name: 'node_modules', path: 'node_modules' },
+      { kind: 'directory', name: 'apps', path: 'apps' },
+      { kind: 'file', name: 'dist', path: 'dist' },
+    ]);
+
+    expect(visible).toEqual([
+      { kind: 'directory', name: 'apps', path: 'apps' },
+      { kind: 'file', name: 'dist', path: 'dist' },
+    ]);
   });
 });

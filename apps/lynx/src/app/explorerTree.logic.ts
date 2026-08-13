@@ -1,3 +1,11 @@
+import { shouldShowWorkspaceExplorerEntry } from '@synara/shared/workspaceExplorer';
+
+export function visibleExplorerEntries<
+  T extends { readonly kind: string; readonly name: string },
+>(entries: readonly T[]): readonly T[] {
+  return entries.filter(shouldShowWorkspaceExplorerEntry);
+}
+
 export function toggleExpandedDirectory(
   current: ReadonlySet<string>,
   path: string

@@ -35,6 +35,7 @@ import {
   applyExplorerChatAction,
   applyExplorerFileComment,
 } from './explorerChatActions.logic';
+import { visibleExplorerEntries } from './explorerTree.logic';
 import { ExplorerSyntaxPreview } from './ExplorerSyntaxPreview.lynx';
 import './explorer-dock.css';
 
@@ -237,7 +238,7 @@ function ExplorerDirectoryEntry(
 function ExplorerDirectory(props: ExplorerDirectoryProps) {
   return (
     <>
-      {props.entries.map((entry) => (
+      {visibleExplorerEntries(props.entries).map((entry) => (
         <ExplorerDirectoryEntry
           key={entry.path}
           depth={props.depth}
