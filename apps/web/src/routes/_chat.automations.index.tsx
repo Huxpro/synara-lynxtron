@@ -1,6 +1,11 @@
-import { type AutomationDefinition, type AutomationRun } from "@synara/contracts";
+import { type AutomationDefinition } from "@synara/contracts";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState, type ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
+import {
+  projectAutomationList,
+  type AutomationDefinitionRow,
+  type AutomationTriageRow,
+} from "@synara/shared/automationList";
 
 import { getProviderStartOptions, useAppSettings } from "~/appSettings";
 import {
@@ -18,7 +23,6 @@ import {
   type AutomationDraftWarning,
   type AutomationDraftWarningId,
 } from "~/lib/automationDraft";
-import { automationLifecycleState } from "~/lib/automationStatus";
 import {
   useDesktopTopBarTrafficLightGutterClassName,
   useDesktopTopBarWindowControlsGutterClassName,
@@ -32,23 +36,16 @@ import {
   type AutomationFormState,
   AutomationDialog,
   acknowledgedRiskIdsForFormWarnings,
-  allVisibleTriageRuns,
   automationStatusDotClass,
   buildAutomationFormWarnings,
   createInputFromForm,
-  formatCadence,
-  formatRelativeTime,
   formFromDefinition,
   isFormSubmittable,
   isRowInteractiveEventTarget,
-  isTriageRun,
   providerOptionsForAutomationEdit,
   projectModelSelection,
-  runResultSummary,
-  runStatusLabel,
   RunStatusIndicator,
   updateInputFromForm,
-  unresolvedTriageRuns,
   useAutomations,
 } from "./-automations.shared";
 import { resolveThreadPickerTitle } from "./-chatThreadRoute.logic";
@@ -58,24 +55,6 @@ export const Route = createFileRoute("/_chat/automations/")({
 });
 
 const selectAllThreads = createAllThreadsSelector();
-
-type LiveAutomationRun = AutomationRun & {
-  readonly status: "pending" | "claimed" | "running" | "waiting-for-approval";
-};
-
-function isLiveRun(run: AutomationRun | null): run is LiveAutomationRun {
-  return (
-    run?.status === "pending" ||
-    run?.status === "claimed" ||
-    run?.status === "running" ||
-    run?.status === "waiting-for-approval"
-  );
-}
-
-function triageRunLabel(run: AutomationRun): string {
-  if (run.status === "succeeded" && run.result?.unread) return "New result";
-  return runStatusLabel(run.status);
-}
 
 /**
  * Minimal list row shared by the automation sections and the triage list: a leading
@@ -141,16 +120,6 @@ function AutomationListRow({
   );
 }
 
-/** Right-aligned meta for an automation row: live status, triage outcome, cadence, or "Paused". */
-function rowMeta(definition: AutomationDefinition, latestRun: AutomationRun | null): string {
-  if (isLiveRun(latestRun)) return runStatusLabel(latestRun.status);
-  if (latestRun && isTriageRun(latestRun)) return triageRunLabel(latestRun);
-  if (!definition.enabled) {
-    return automationLifecycleState(definition) === "done" ? "Done" : "Paused";
-  }
-  return formatCadence(definition.schedule);
-}
-
 function AutomationsRouteView() {
   const navigate = useNavigate();
   const { settings } = useAppSettings();
@@ -178,7 +147,6 @@ function AutomationsRouteView() {
     createMutation,
     updateMutation,
     deleteMutation,
-    runsByAutomationId,
   } = useAutomations((threadId) => void navigate({ to: "/$threadId", params: { threadId } }));
   const providerOptionsForDispatch = getProviderStartOptions(settings);
 
@@ -238,35 +206,22 @@ function AutomationsRouteView() {
     deleteMutation.mutate(definition);
   };
 
-  const active = data.definitions.filter((definition) => definition.enabled);
-  const inactive = data.definitions.filter((definition) => !definition.enabled);
-  const allTriageRuns = allVisibleTriageRuns(data.runs);
-  const triageRuns = triageFilter === "unread" ? unresolvedTriageRuns(data.runs) : allTriageRuns;
-  const unreadTriageCount = unresolvedTriageRuns(data.runs).length;
+  const projection = useMemo(
+    () =>
+      projectAutomationList({
+        data,
+        projects: projects.map((project) => ({ id: project.id, name: project.name })),
+        threads: threads.map((thread) => ({
+          id: thread.id,
+          title: resolveThreadPickerTitle(thread.title),
+        })),
+      }),
+    [data, projects, threads],
+  );
+  const triageRows = triageFilter === "unread" ? projection.triage : projection.allTriage;
 
-  const projectName = (definition: AutomationDefinition) =>
-    projects.find((project) => project.id === definition.projectId)?.name ?? "Unknown project";
-
-  const sourceSuffix = (definition: AutomationDefinition) => {
-    if (!definition.sourceThreadId || definition.sourceThreadId === definition.targetThreadId) {
-      return "";
-    }
-    const sourceThread = threads.find((candidate) => candidate.id === definition.sourceThreadId);
-    return sourceThread ? ` · From ${resolveThreadPickerTitle(sourceThread.title)}` : "";
-  };
-
-  const subtitle = (definition: AutomationDefinition) => {
-    const suffix = sourceSuffix(definition);
-    if (definition.mode === "heartbeat") {
-      const thread = threads.find((candidate) => candidate.id === definition.targetThreadId);
-      const target = thread ? resolveThreadPickerTitle(thread.title) : projectName(definition);
-      return `Heartbeat · ${target}${suffix}`;
-    }
-    return `${projectName(definition)}${suffix}`;
-  };
-
-  const renderRow = (definition: AutomationDefinition) => {
-    const latestRun: AutomationRun | null = runsByAutomationId.get(definition.id)?.[0] ?? null;
+  const renderRow = (row: AutomationDefinitionRow) => {
+    const { definition, latestRun } = row;
     return (
       <AutomationListRow
         key={definition.id}
@@ -287,25 +242,23 @@ function AutomationsRouteView() {
           </span>
         }
         title={definition.name}
-        detail={subtitle(definition)}
-        meta={rowMeta(definition, latestRun)}
+        detail={row.detail}
+        meta={row.meta}
         onDelete={() => void deleteDefinition(definition)}
       />
     );
   };
 
-  const renderSection = (title: string, defs: readonly AutomationDefinition[]) =>
-    defs.length > 0 ? (
+  const renderSection = (title: string, rows: readonly AutomationDefinitionRow[]) =>
+    rows.length > 0 ? (
       <section className="flex flex-col gap-0.5">
         <h2 className="px-2 pb-1 text-sm font-medium text-foreground">{title}</h2>
-        <div className="flex flex-col">{defs.map(renderRow)}</div>
+        <div className="flex flex-col">{rows.map(renderRow)}</div>
       </section>
     ) : null;
 
-  const renderTriageRow = (run: AutomationRun) => {
-    const definition = data.definitions.find((entry) => entry.id === run.automationId);
-    const summary = runResultSummary(run);
-    const target = definition ? subtitle(definition) : "Saved run";
+  const renderTriageRow = (row: AutomationTriageRow) => {
+    const { definition, run } = row;
     return (
       <AutomationListRow
         key={run.id}
@@ -322,9 +275,9 @@ function AutomationsRouteView() {
               : undefined
         }
         leading={<RunStatusIndicator status={run.status} />}
-        title={definition?.name ?? "Automation run"}
-        detail={summary || target}
-        meta={formatRelativeTime(run.finishedAt ?? run.startedAt ?? run.scheduledFor)}
+        title={row.title}
+        detail={row.detail}
+        meta={row.meta}
         trailing={
           <CentralIcon
             name="chevron-right-small"
@@ -336,7 +289,7 @@ function AutomationsRouteView() {
   };
 
   const renderTriage = () =>
-    allTriageRuns.length > 0 ? (
+    projection.allTriage.length > 0 ? (
       <section className="flex flex-col gap-0.5">
         <div className="flex items-center justify-between gap-3 px-2 pb-1">
           <h2 className="text-sm font-medium text-foreground">Needs review</h2>
@@ -353,7 +306,9 @@ function AutomationsRouteView() {
                     : "text-muted-foreground hover:text-foreground",
                 )}
               >
-                {value === "unread" ? `Unread ${unreadTriageCount}` : `All ${allTriageRuns.length}`}
+                {value === "unread"
+                  ? `Unread ${projection.unreadTriageCount}`
+                  : `All ${projection.allTriage.length}`}
               </button>
             ))}
           </div>
@@ -361,7 +316,7 @@ function AutomationsRouteView() {
         {triageRuns.length === 0 ? (
           <div className="px-2 py-4 text-xs text-muted-foreground">No unread runs.</div>
         ) : (
-          <div className="flex flex-col">{triageRuns.map(renderTriageRow)}</div>
+          <div className="flex flex-col">{triageRows.map(renderTriageRow)}</div>
         )}
       </section>
     ) : null;
@@ -429,8 +384,8 @@ function AutomationsRouteView() {
             ) : (
               <div className="flex flex-col gap-6">
                 {renderTriage()}
-                {renderSection("Current", active)}
-                {renderSection("Paused", inactive)}
+                {renderSection("Current", projection.current)}
+                {renderSection("Paused", projection.paused)}
               </div>
             )}
           </div>

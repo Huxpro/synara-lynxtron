@@ -56,6 +56,7 @@ import {
   ProjectsPage,
   PullRequestsPage,
 } from './FeatureListsPage';
+import { AutomationsPage } from './AutomationsPage.lynx';
 import { Composer } from '../components/composer/Composer.lynx';
 import { Sidebar } from '../components/sidebar/Sidebar.lynx';
 import { CenteredEmptyLanding } from '@synara-web/components/CenteredEmptyLanding';
@@ -169,6 +170,9 @@ function parseRoute(pathname: string): RouteState {
   }
   if (pathname === '/pull-requests') {
     return { pathname: '/pull-requests', params: {} };
+  }
+  if (pathname === '/automations') {
+    return { pathname: '/automations', params: {} };
   }
   if (pathname === '/update') {
     return { pathname: '/update', params: {} };
@@ -1242,6 +1246,8 @@ export function SliceRouter({
     );
   } else if (route.pathname === '/pull-requests') {
     page = <PullRequestsPage />;
+  } else if (route.pathname === '/automations') {
+    page = <AutomationsPage navigate={(to) => history.push(to)} />;
   } else if (route.pathname === '/update') {
     page = <UpdatePage />;
   } else {

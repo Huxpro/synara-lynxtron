@@ -231,6 +231,10 @@
     "./workspaceExplorer": {
       "types": "./src/workspaceExplorer.ts",
       "import": "./src/workspaceExplorer.ts"
+    },
+    "./automationList": {
+      "types": "./src/automationList.ts",
+      "import": "./src/automationList.ts"
     }
   },
   "scripts": {

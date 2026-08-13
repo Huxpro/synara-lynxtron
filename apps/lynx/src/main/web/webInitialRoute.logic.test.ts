@@ -8,6 +8,9 @@ describe('Lynx-for-Web initial route harness', () => {
     expect(resolveWebInitialRoute('?route=%2Fpull-requests')).toBe(
       '/pull-requests'
     );
+    expect(resolveWebInitialRoute('?route=%2Fautomations')).toBe(
+      '/automations'
+    );
     expect(resolveWebInitialRoute('?route=%2Fsettings%2Fappearance')).toBe(
       '/settings/appearance'
     );

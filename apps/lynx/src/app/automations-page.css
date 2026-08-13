@@ -1,0 +1,197 @@
+.AutomationsPage {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  background-color: var(--background);
+}
+
+.AutomationsHeader {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 46px;
+  min-height: 46px;
+  padding: 0 12px;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: var(--border);
+}
+
+.AutomationsHeaderSpacer {
+  flex: 1;
+  min-width: 0;
+}
+
+.AutomationsScroller {
+  flex: 1;
+  min-height: 0;
+}
+
+.AutomationsContent {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 768px;
+  margin: 0 auto;
+  padding: 32px 24px 48px;
+}
+
+.AutomationsTitle {
+  padding: 0 8px;
+  color: var(--foreground);
+  font-family: var(--font-heading-family);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+  letter-spacing: -0.4px;
+}
+
+.AutomationsSections,
+.AutomationsSection,
+.AutomationsRows {
+  display: flex;
+  flex-direction: column;
+}
+
+.AutomationsSections {
+  gap: 24px;
+}
+
+.AutomationsSection {
+  gap: 2px;
+}
+
+.AutomationsSectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 8px 4px;
+}
+
+.AutomationsSectionTitle {
+  padding: 0 8px 4px;
+  color: var(--foreground);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.AutomationsSectionHeader .AutomationsSectionTitle {
+  padding: 0;
+}
+
+.AutomationsSectionCount {
+  padding: 2px 8px;
+  border-radius: 6px;
+  background-color: var(--secondary);
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+
+.AutomationsRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px;
+  border-radius: 6px;
+}
+
+.AutomationsRow--interactive.ui-hover,
+.AutomationsRow--interactive.ui-pressed {
+  background-color: var(--accent);
+}
+
+.AutomationsRow--interactive.ui-focus {
+  outline-width: 2px;
+  outline-style: solid;
+  outline-color: var(--ring);
+}
+
+.AutomationsStatusDot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.AutomationsStatusDotCore {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: currentColor;
+}
+
+.AutomationsStatusDot--active {
+  color: #10b981;
+}
+
+.AutomationsStatusDot--live {
+  color: #3b82f6;
+}
+
+.AutomationsStatusDot--attention,
+.AutomationsStatusDot--triage {
+  color: var(--destructive);
+}
+
+.AutomationsStatusDot--muted {
+  color: var(--muted-foreground);
+  opacity: 0.4;
+}
+
+.AutomationsRowTitle {
+  width: 45%;
+  max-width: 45%;
+  color: var(--foreground);
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.AutomationsRowDetail {
+  flex: 1;
+  min-width: 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.AutomationsRowMeta {
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+
+.AutomationsState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 64px 16px;
+  text-align: center;
+}
+
+.AutomationsStateTitle {
+  color: var(--foreground);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.AutomationsStateText {
+  max-width: 320px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 17px;
+}

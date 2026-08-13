@@ -3,6 +3,7 @@
 
 import { QueryClient } from '@tanstack/react-query';
 import type {
+  AutomationListResult,
   MessageId,
   ModelSelection,
   OrchestrationThreadPullRequest,
@@ -166,6 +167,14 @@ export type ThreadTranscriptRow = MessagesTimelineRow;
 export type ExplorerEntriesResult =
   | ProjectListDirectoriesResult
   | ProjectSearchEntriesResult;
+
+export async function fetchAutomations(): Promise<AutomationListResult> {
+  'background only';
+  const { fetchAutomations: fetchAutomationList } = await import(
+    /* webpackMode: "eager" */ '../data/synaraClient'
+  );
+  return fetchAutomationList();
+}
 
 const EXPLORER_CACHE_TTL_MS = 2_000;
 const EXPLORER_DIRECTORY_CACHE_TTL_MS = 30_000;
