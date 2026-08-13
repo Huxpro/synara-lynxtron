@@ -56,6 +56,15 @@
     and rendered `No automations yet`.
 - The confirm dialog is harness/platform UI rather than a product screen, so
   this behavior proof does not add or score a screenshot story.
+- Detail editing was exercised through the rendered Lynx Edit dialog:
+  - Cancel preserved the original name and prompt.
+  - Save dispatched canonical `automation.update`.
+  - A full page reload restored the edited name and prompt from the server.
+- Web edits the same fields inline in the detail sidebar, while Lynx uses a
+  modal suited to native text input. This is an intentional interaction delta,
+  not a comparable screenshot state.
+- `Run now` remains unverified because it launches a real provider turn and may
+  create a worktree; no synthetic run was inserted into SQLite.
 
 ## Native certification attempt
 
