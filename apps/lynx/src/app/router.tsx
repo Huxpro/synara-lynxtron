@@ -23,6 +23,11 @@ import type { UiDensity } from '@synara-web/lib/appDensity';
 import type { ThemeState } from '@synara-web/theme/theme.logic';
 import type { SettingsSectionId } from '@synara-web/settingsNavigation';
 import { isProviderKind } from '@synara-web/providerOrdering';
+import { useStore } from '@synara-web/store';
+import {
+  APP_SETTINGS_STORAGE_KEY,
+  readSettingsGeneralProjection,
+} from '@synara-web/appSettingsStorageProjection.logic';
 import { resolveProviderHealthBannerPresentation } from '@synara-web/components/chat/ProviderHealthBanner.logic';
 import { findProviderStatus } from '@synara-web/lib/providerAvailability';
 import { clampSidebarWidth } from '@synara-web/components/sidebarResize.logic';
@@ -42,6 +47,7 @@ import {
   fetchThreads,
   type ExplorerEntriesResult,
 } from './queries';
+import { resolveStudioRestoreRoute } from './studioRoute.logic';
 import {
   projectExplorerDirectories,
   toggleExpandedDirectory,
@@ -96,6 +102,7 @@ import { DesktopTitlebarControls } from '../adapters/DesktopTitlebarControls.lyn
 import { SidebarDisclosure } from './SidebarDisclosure.lynx';
 import { FolderIcon } from '../lib/icons.lynx';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
+import { webStorage } from '../platform/storage';
 import {
   resolveMemoryNavigationState,
   type MemoryNavigationState,
@@ -241,6 +248,7 @@ function useProviderHealthBanner(
 
 // --- pages ----------------------------------------------------------------------
 function ThreadsLandingPage(props: {
+  readonly containerKind?: 'chat' | 'studio';
   readonly initialProjectId?: string | null;
   readonly onThreadCreated: (threadId: string) => void;
 }) {
@@ -253,8 +261,16 @@ function ThreadsLandingPage(props: {
       ? initData.initialComposerModelProvider
       : null;
   const { data: landingBootstrap } = useQuery({
-    queryKey: ['landing-composer-bootstrap', initialModelProvider],
-    queryFn: () => loadLandingBootstrap(initialModelProvider),
+    queryKey: [
+      'landing-composer-bootstrap',
+      initialModelProvider,
+      props.containerKind ?? 'chat',
+    ],
+    queryFn: () =>
+      loadLandingBootstrap(
+        initialModelProvider,
+        props.containerKind ?? 'chat'
+      ),
     staleTime: 30_000,
   });
   const providerStatuses = landingBootstrap?.serverConfig.providers ?? [];
@@ -283,6 +299,7 @@ function ThreadsLandingPage(props: {
             <CenteredEmptyLanding />
             <ComposerColumnFrameSurface>
               <LandingComposer
+                containerKind={props.containerKind}
                 initialModelProvider={initialModelProvider}
                 initialProjectId={props.initialProjectId}
                 onThreadCreated={props.onThreadCreated}
@@ -858,6 +875,10 @@ export function SliceRouter({
     queryFn: fetchThreads,
     refetchInterval: 5_000,
   });
+  const routeProjects = useStore((state) => state.projects);
+  const studioSettings = readSettingsGeneralProjection(
+    webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
+  );
   const activeThreadId =
     route.pathname === '/thread/$threadId'
       ? route.params.threadId
@@ -1039,6 +1060,7 @@ export function SliceRouter({
     useState<LastThreadRoute | null>(null);
   const [lastRouteHydrated, setLastRouteHydrated] = useState(false);
   const [coldStartRoutePending, setColdStartRoutePending] = useState(true);
+  const [studioLandingReady, setStudioLandingReady] = useState(false);
 
   useEffect(() => {
     'background only';
@@ -1094,6 +1116,55 @@ export function SliceRouter({
     refreshEmptySnapshot: refreshLynxRouteSnapshot,
     waitForFallbackDelay: waitForLynxRouteFallback,
   });
+  const resolveStudioRoute = useCallback(
+    () =>
+      resolveStudioRestoreRoute({
+        lastThreadRoute: persistedLastRoute,
+        projects: routeProjects,
+        sortOrder: studioSettings.sidebarThreadSortOrder,
+        threads: routeThreads ?? [],
+      }),
+    [
+      persistedLastRoute,
+      routeProjects,
+      routeThreads,
+      studioSettings.sidebarThreadSortOrder,
+    ]
+  );
+  const createFreshStudioLanding = useCallback(async () => {
+    'background only';
+    setStudioLandingReady(true);
+    return { ok: true as const };
+  }, []);
+  const studioRouteController = useRestoreOrCreateChatRouteController({
+    enabled:
+      route.pathname === '/studio' &&
+      studioSettings.showStudioSection &&
+      lastRouteHydrated,
+    threadsHydrated: !routeThreadsPending,
+    threadIds: (routeThreads ?? []).map((thread) => thread.id),
+    splitViewsHydrated: true,
+    splitViewIds: [],
+    readLastThreadRoute,
+    resolveRestoreRoute: resolveStudioRoute,
+    navigateToRoute: navigateToRestoredThread,
+    createFreshChat: createFreshStudioLanding,
+    refreshEmptySnapshot: refreshLynxRouteSnapshot,
+    waitForFallbackDelay: waitForLynxRouteFallback,
+  });
+  useEffect(() => {
+    if (
+      route.pathname === '/studio' &&
+      !studioSettings.showStudioSection
+    ) {
+      history.replace('/');
+    }
+  }, [route.pathname, studioSettings.showStudioSection]);
+  useEffect(() => {
+    if (route.pathname !== '/studio') {
+      setStudioLandingReady(false);
+    }
+  }, [route.pathname]);
 
   const navigate = useCallback((to: string) => {
     const threadMatch = to.match(/^\/thread\/([^/]+)$/);
@@ -1274,6 +1345,39 @@ export function SliceRouter({
         resolvedTheme={resolvedTheme}
         viewportWidth={viewportWidth}
       />
+    );
+  } else if (route.pathname === '/studio') {
+    page = studioLandingReady ? (
+      <ThreadsLandingPage
+        key="studio"
+        containerKind="studio"
+        onThreadCreated={(threadId) => navigate(`/thread/${threadId}`)}
+      />
+    ) : (
+      <view className="ThreadsLanding">
+        <view className="ThreadsLandingBody">
+          <view className="ThreadsLandingBodyInner">
+            <PanelStateMessage
+              intent={studioRouteController.errorMessage ? 'alert' : 'status'}
+              announcement={
+                studioRouteController.errorMessage
+                  ? 'Unable to open Studio'
+                  : 'Opening Studio'
+              }
+            >
+              {studioRouteController.errorMessage ?? 'Opening Studio…'}
+            </PanelStateMessage>
+            {studioRouteController.retry ? (
+              <Button
+                variant="outline"
+                onClick={() => studioRouteController.retry?.()}
+              >
+                Retry
+              </Button>
+            ) : null}
+          </view>
+        </view>
+      </view>
     );
   } else if (route.pathname === '/kanban') {
     page = <ProjectsPage navigate={(to) => history.push(to)} />;

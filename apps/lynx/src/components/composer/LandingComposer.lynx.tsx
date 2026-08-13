@@ -41,7 +41,8 @@ function projectWorkspaceLabel(workspaceRoot: string): string {
 }
 
 export async function loadLandingBootstrap(
-  initialModelProvider: ProviderKind | null = null
+  initialModelProvider: ProviderKind | null = null,
+  containerKind: 'chat' | 'studio' = 'chat'
 ) {
   'background only';
   const [snapshot, , config] = await Promise.all([
@@ -75,7 +76,9 @@ export async function loadLandingBootstrap(
           cwd: config.homeDir,
         }).catch(() => null)
       : null;
-  const existing = snapshot.projects.find((project) => project.kind === 'chat');
+  const existing = snapshot.projects.find(
+    (project) => project.kind === containerKind
+  );
   if (existing) {
     return {
       homeProject: existing,
@@ -90,9 +93,16 @@ export async function loadLandingBootstrap(
     };
   }
 
-  const workspaceRoot = config.homeDir?.trim();
+  const workspaceRoot =
+    containerKind === 'studio'
+      ? config.studioWorkspaceRoot?.trim()
+      : config.homeDir?.trim();
   if (!workspaceRoot) {
-    throw new Error('Home folder is not available yet.');
+    throw new Error(
+      containerKind === 'studio'
+        ? 'Studio folder is not available yet.'
+        : 'Home folder is not available yet.'
+    );
   }
   const projectId = landingId('project');
   try {
@@ -100,9 +110,10 @@ export async function loadLandingBootstrap(
       type: 'project.create',
       commandId: landingId('command'),
       projectId,
-      kind: 'chat',
-      title: 'Home',
+      kind: containerKind,
+      title: containerKind === 'studio' ? 'Studio' : 'Home',
       workspaceRoot,
+      createWorkspaceRootIfMissing: containerKind === 'studio',
       createdAt: new Date().toISOString(),
     });
     const refreshed = await fetchSynaraSidebarShellSnapshot();
@@ -127,7 +138,7 @@ export async function loadLandingBootstrap(
   } catch (error) {
     const refreshed = await fetchSynaraSidebarShellSnapshot();
     const recovered = refreshed.projects.find(
-      (project) => project.kind === 'chat'
+      (project) => project.kind === containerKind
     );
     if (recovered) {
       await fetchSidebarSnapshot();
@@ -150,6 +161,7 @@ export async function loadLandingBootstrap(
 }
 
 export function LandingComposer(props: {
+  readonly containerKind?: 'chat' | 'studio';
   readonly initialModelProvider?: ProviderKind | null;
   readonly initialProjectId?: string | null;
   readonly onThreadCreated: (threadId: string) => void;
@@ -175,8 +187,13 @@ export function LandingComposer(props: {
     queryKey: [
       'landing-composer-bootstrap',
       props.initialModelProvider ?? null,
+      props.containerKind ?? 'chat',
     ],
-    queryFn: () => loadLandingBootstrap(props.initialModelProvider ?? null),
+    queryFn: () =>
+      loadLandingBootstrap(
+        props.initialModelProvider ?? null,
+        props.containerKind ?? 'chat'
+      ),
     staleTime: 30_000,
   });
   useEffect(() => {
@@ -413,6 +430,7 @@ export function LandingComposer(props: {
           ]);
         }}
       />
+      {props.containerKind === 'studio' ? null : (
       <view className="LandingComposerTray">
         <ComposerProjectPickerComposition
           model={projectPickerModel}
@@ -495,6 +513,7 @@ export function LandingComposer(props: {
           triggerClassName="LandingComposerProjectTrigger"
         />
       </view>
+      )}
     </view>
   );
 }
