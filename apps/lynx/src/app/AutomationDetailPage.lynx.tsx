@@ -58,6 +58,9 @@ export function AutomationDetailPage({
   runs,
   projects,
   threads,
+  updateError,
+  updatePending,
+  onToggleEnabled,
   navigate,
 }: {
   readonly automationId: string;
@@ -65,6 +68,9 @@ export function AutomationDetailPage({
   readonly runs: readonly AutomationRun[];
   readonly projects: readonly AutomationListProject[];
   readonly threads: readonly AutomationListThread[];
+  readonly updateError: string | null;
+  readonly updatePending: boolean;
+  readonly onToggleEnabled: (definition: AutomationDefinition) => void;
   readonly navigate: (to: string) => void;
 }) {
   const definition =
@@ -132,12 +138,42 @@ export function AutomationDetailPage({
         </scroll-view>
       </view>
       <view className="AutomationDetailAside">
-        <view className="AutomationDetailActionsHeader AppWindowDragRegion" />
+        <view className="AutomationDetailActionsHeader AppWindowDragRegion">
+          {definition.schedule.type === 'once' ? null : (
+            <Button
+              variant="ghost"
+              size="sm"
+              disabled={updatePending}
+              aria-label={definition.enabled ? 'Pause' : 'Resume'}
+              onClick={() => onToggleEnabled(definition)}
+            >
+              {updatePending
+                ? definition.enabled
+                  ? 'Pausing...'
+                  : 'Resuming...'
+                : definition.enabled
+                  ? 'Pause'
+                  : 'Resume'}
+            </Button>
+          )}
+        </view>
         <scroll-view
           className="AutomationDetailAsideScroller"
           scroll-orientation="vertical"
         >
           <view className="AutomationDetailAsideContent">
+            {updateError ? (
+              <view
+                className="AutomationDetailUpdateError"
+                accessibility-element={true}
+                accessibility-label={`Automation update failed. ${updateError}`}
+                accessibility-traits="text"
+              >
+                <text className="AutomationDetailUpdateErrorText">
+                  Automation update failed. {updateError}
+                </text>
+              </view>
+            ) : null}
             <DetailGroup title="Status">
               <DetailRow compact label="Status" value={detail.status} />
               <DetailRow

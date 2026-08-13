@@ -69,6 +69,11 @@ describe('Lynx Automations route', () => {
     expect(detailSource).toContain('Automation not found.');
     expect(detailSource).toContain('Previous runs');
     expect(detailSource).toContain('No runs yet.');
+    expect(detailSource).toContain("'Pause' : 'Resume'");
+    expect(pageSource).toContain('mutationFn: updateAutomation');
+    expect(pageSource).toContain(
+      "invalidateQueries({ queryKey: ['automations'] })"
+    );
     expect(detailSource).not.toContain('automation.update');
     expect(detailSource).not.toContain('automation.runNow');
   });

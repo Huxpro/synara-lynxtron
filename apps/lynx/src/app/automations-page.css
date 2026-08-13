@@ -310,6 +310,25 @@
   padding: 32px 16px;
 }
 
+.AutomationDetailUpdateError {
+  padding: 8px 10px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--destructive) 30%, transparent);
+  border-radius: 6px;
+  background-color: color-mix(
+    in srgb,
+    var(--destructive) 6%,
+    transparent
+  );
+}
+
+.AutomationDetailUpdateErrorText {
+  color: var(--destructive);
+  font-size: 12px;
+  line-height: 16px;
+}
+
 .AutomationDetailGroup,
 .AutomationDetailGroupRows {
   display: flex;

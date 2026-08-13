@@ -4,6 +4,8 @@
 import { QueryClient } from '@tanstack/react-query';
 import type {
   AutomationListResult,
+  AutomationDefinition,
+  AutomationUpdateInput,
   MessageId,
   ModelSelection,
   OrchestrationThreadPullRequest,
@@ -174,6 +176,16 @@ export async function fetchAutomations(): Promise<AutomationListResult> {
     /* webpackMode: "eager" */ '../data/synaraClient'
   );
   return fetchAutomationList();
+}
+
+export async function updateAutomation(
+  input: AutomationUpdateInput
+): Promise<AutomationDefinition> {
+  'background only';
+  const { updateAutomation: updateAutomationDefinition } = await import(
+    /* webpackMode: "eager" */ '../data/synaraClient'
+  );
+  return updateAutomationDefinition(input);
 }
 
 const EXPLORER_CACHE_TTL_MS = 2_000;

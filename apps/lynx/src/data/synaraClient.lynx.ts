@@ -2,6 +2,8 @@ import 'background-only';
 
 import type {
   AutomationListResult,
+  AutomationDefinition,
+  AutomationUpdateInput,
   ClientOrchestrationCommand,
   FilesystemBrowseInput,
   FilesystemBrowseResult,
@@ -357,6 +359,12 @@ export async function fetchSynaraSidebarSearchSnapshot(): Promise<OrchestrationS
 
 export async function fetchAutomations(): Promise<AutomationListResult> {
   return transportRequest<AutomationListResult>('automation.list', {});
+}
+
+export async function updateAutomation(
+  input: AutomationUpdateInput
+): Promise<AutomationDefinition> {
+  return transportRequest<AutomationDefinition>('automation.update', input);
 }
 
 export async function fetchSynaraThreadDetailSnapshot(

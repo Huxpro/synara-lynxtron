@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from '@lynx-js/react';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import type { AutomationDefinitionRow, AutomationTriageRow } from '@synara/shared/automationList';
 import { projectAutomationList } from '@synara/shared/automationList';
 
@@ -7,7 +7,12 @@ import { Button } from '../components/ui/button';
 import { RefreshCwIcon } from '../lib/icons';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { sleepOnHost } from '../platform/timer';
-import { fetchAutomations, fetchSidebarSnapshot } from './queries';
+import {
+  fetchAutomations,
+  fetchSidebarSnapshot,
+  queryClient,
+  updateAutomation,
+} from './queries';
 import { AutomationDetailPage } from './AutomationDetailPage.lynx';
 import './automations-page.css';
 
@@ -137,6 +142,12 @@ export function AutomationsPage({
     queryKey: ['sidebar-snapshot'],
     queryFn: fetchSidebarSnapshot,
   });
+  const updateMutation = useMutation({
+    mutationFn: updateAutomation,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['automations'] });
+    },
+  });
   useHostPolling(automations.refetch, 5_000);
   const projection = useMemo(
     () =>
@@ -191,6 +202,20 @@ export function AutomationsPage({
             id: thread.id,
             title: thread.title,
           })) ?? []
+        }
+        updateError={
+          updateMutation.error instanceof Error
+            ? updateMutation.error.message
+            : updateMutation.error
+              ? String(updateMutation.error)
+              : null
+        }
+        updatePending={updateMutation.isPending}
+        onToggleEnabled={(definition) =>
+          updateMutation.mutate({
+            id: definition.id,
+            enabled: !definition.enabled,
+          })
         }
         navigate={navigate}
       />
