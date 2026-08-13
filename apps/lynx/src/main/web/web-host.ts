@@ -5,6 +5,9 @@
 import '@lynx-js/web-core/client';
 import { setupSymmetricHost } from '@lynx-js/lynxtron/web-host';
 import { installLynxWebInteractionStateBridge } from './web-interaction-state';
+import {
+  type LynxWebInteractionEvent,
+} from '../webInteractionEvent.logic';
 import { resolveWebInitialRoute } from './webInitialRoute.logic';
 import { resolveWebRelayEndpoint } from './webRelayEndpoint.logic';
 import { NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG } from '../syntaxHighlightingContract.logic';
@@ -95,6 +98,8 @@ let lastExplorerPreviewAction: {
   readonly action: string;
   readonly path: string;
 } | null = null;
+let interactionEventCount = 0;
+let lastInteractionEvent: LynxWebInteractionEvent | null = null;
 let syntaxHighlightCallCount = 0;
 let lastSyntaxHighlightResult: {
   readonly error: string | null;
@@ -897,6 +902,8 @@ globalThis.__SYNARA_LYNX_RELAY_DIAGNOSTICS__ = () => ({
   lastRpcError: relayLastRpcError,
   explorerPreviewActionCount,
   lastExplorerPreviewAction,
+  interactionEventCount,
+  lastInteractionEvent,
   syntaxHighlightCallCount,
   lastSyntaxHighlightResult,
 });
@@ -927,85 +934,59 @@ const installInteractionBridge = () => {
     }
     return null;
   };
+  const publishInteraction = (event: LynxWebInteractionEvent) => {
+    interactionEventCount += 1;
+    lastInteractionEvent = event;
+  };
   installLynxWebInteractionStateBridge(
     root,
     interactionBridgeController.signal,
     (activation) => {
-      const url = new URL(globalThis.location.href);
-      url.searchParams.set('explorer', activation.open ? 'open' : 'closed');
-      globalThis.location.replace(url);
+      publishInteraction({
+        kind: 'explorer-visibility',
+        open: activation.open,
+      });
     },
     (activation) => {
-      const url = new URL(globalThis.location.href);
-      url.searchParams.set(
-        'environment',
-        activation.open ? 'open' : 'closed'
-      );
-      globalThis.location.replace(url);
+      publishInteraction({
+        kind: 'environment-visibility',
+        open: activation.open,
+      });
     },
     (navigation) => {
-      const url = new URL(globalThis.location.href);
-      if (navigation.query !== undefined) {
-        if (navigation.query) {
-          url.searchParams.set('explorerQuery', navigation.query);
-        } else {
-          url.searchParams.delete('explorerQuery');
-        }
-        url.searchParams.delete('explorerPath');
-      }
-      if (navigation.path !== undefined) {
-        url.searchParams.set('explorerPath', navigation.path);
-      }
-      if (navigation.expandedDirectory) {
-        const expanded = new Set(
-          url.searchParams.getAll('explorerExpanded')
-        );
-        if (navigation.expandedDirectory.open) {
-          expanded.add(navigation.expandedDirectory.path);
-        } else {
-          expanded.delete(navigation.expandedDirectory.path);
-        }
-        url.searchParams.delete('explorerExpanded');
-        for (const path of expanded) {
-          url.searchParams.append('explorerExpanded', path);
-        }
-      }
-      url.searchParams.set('explorer', 'open');
-      globalThis.location.replace(url);
+      publishInteraction({
+        kind: 'explorer-navigation',
+        ...navigation,
+      });
     },
     (resize) => {
       if (resize.panel !== 'ExplorerDock') return;
-      const url = new URL(globalThis.location.href);
-      url.searchParams.set('explorerWidth', String(resize.width));
-      url.searchParams.set('explorer', 'open');
-      globalThis.location.replace(url);
+      publishInteraction({
+        kind: 'explorer-resize',
+        width: resize.width,
+      });
     },
     (action) => {
       explorerPreviewActionCount += 1;
       lastExplorerPreviewAction = action;
-      const url = new URL(globalThis.location.href);
-      url.searchParams.set('explorerActionMenu', 'open');
-      globalThis.location.replace(url);
+      publishInteraction({
+        kind: 'explorer-preview-menu',
+        path: action.path,
+      });
     },
     (commentLine) => {
-      const url = new URL(globalThis.location.href);
-      url.searchParams.set(
-        'explorerCommentLine',
-        String(commentLine.lineNumber)
-      );
-      url.searchParams.set('explorer', 'open');
-      globalThis.location.replace(url);
+      publishInteraction({
+        kind: 'explorer-comment-line',
+        lineNumber: commentLine.lineNumber,
+      });
     },
     (activation) => {
-      const url = new URL(globalThis.location.href);
-      url.searchParams.set(COMPOSER_MODEL_MENU_QUERY, 'open');
-      if (activation.provider) {
-        url.searchParams.set(
-          COMPOSER_MODEL_PROVIDER_QUERY,
-          activation.provider
-        );
-      }
-      globalThis.location.replace(url);
+      publishInteraction({
+        kind: 'composer-model-menu',
+        ...(activation.provider
+          ? { provider: activation.provider }
+          : {}),
+      });
     }
   );
   if (initialExplorerActionMenuOpen) {

@@ -457,9 +457,16 @@ describe('Lynx-for-Web interaction state bridge', () => {
     expect(source).toContain(
       'lynxView.injectStyleRules = LYNX_WEB_STYLE_RULES'
     );
-    expect(source).toContain(
-      "url.searchParams.set(COMPOSER_MODEL_MENU_QUERY, 'open')"
+    expect(source).toContain('publishInteraction({');
+    expect(source).toContain("kind: 'composer-model-menu'");
+    expect(source).toContain("kind: 'explorer-visibility'");
+    expect(source).toContain("kind: 'environment-visibility'");
+    const interactionHost = source.slice(
+      source.indexOf('const interactionBridgeController'),
+      source.indexOf('const publishViewportSize')
     );
+    expect(interactionHost).not.toContain('globalThis.location.replace');
+    expect(interactionHost).not.toContain('searchParams.set');
     expect(source).toContain(
       'COMPOSER_MODEL_PROVIDER_QUERY'
     );
