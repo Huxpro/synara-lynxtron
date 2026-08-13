@@ -12,6 +12,11 @@ import {
   DialogTitle,
 } from '../components/ui/dialog.lynx';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
+import {
+  buildAutomationCreateInput,
+  type CreateSchedule,
+  type CreateWorktreeMode,
+} from './automationCreate.logic';
 
 interface NativeTextInputEvent {
   readonly detail: {
@@ -66,6 +71,33 @@ function ProjectOption({
   );
 }
 
+function ChoiceOption({
+  disabled,
+  label,
+  selected,
+  onSelect,
+}: {
+  readonly disabled: boolean;
+  readonly label: string;
+  readonly selected: boolean;
+  readonly onSelect: () => void;
+}) {
+  const interaction = useLynxInteractiveState({
+    baseClassName: `AutomationCreateChoice${
+      selected ? ' AutomationCreateChoice--selected' : ''
+    }`,
+    accessibleLabel: label,
+    accessibilityValue: selected ? 'Selected' : undefined,
+    disabled,
+    onActivate: onSelect,
+  });
+  return (
+    <view className={interaction.className} {...interaction.eventProps}>
+      <text className="AutomationCreateChoiceText">{label}</text>
+    </view>
+  );
+}
+
 export function AutomationCreateDialog({
   open,
   projects,
@@ -84,6 +116,9 @@ export function AutomationCreateDialog({
   const [name, setName] = useState('');
   const [prompt, setPrompt] = useState('');
   const [projectId, setProjectId] = useState(projects[0]?.id ?? '');
+  const [schedule, setSchedule] = useState<CreateSchedule>('daily');
+  const [worktreeMode, setWorktreeMode] =
+    useState<CreateWorktreeMode>('auto');
   useEffect(() => {
     if (
       projects.length > 0 &&
@@ -102,28 +137,14 @@ export function AutomationCreateDialog({
 
   const submit = () => {
     if (!canCreate || !project || !modelSelection) return;
-    onCreate({
+    onCreate(buildAutomationCreateInput({
       projectId: project.id as AutomationCreateInput['projectId'],
-      sourceThreadId: null,
-      name: name.trim(),
-      prompt: prompt.trim(),
-      schedule: { type: 'daily', timeOfDay: '09:00' },
-      enabled: true,
+      name,
+      prompt,
+      schedule,
       modelSelection,
-      runtimeMode: 'approval-required',
-      interactionMode: 'default',
-      worktreeMode: 'auto',
-      mode: 'standalone',
-      targetThreadId: null,
-      maxIterations: null,
-      stopOnError: true,
-      completionPolicy: { type: 'none' },
-      minimumIntervalSeconds: 60,
-      maxRuntimeSeconds: 3600,
-      retryPolicy: { type: 'none' },
-      misfirePolicy: 'coalesce',
-      acknowledgedRisks: [],
-    });
+      worktreeMode,
+    }));
   };
 
   return (
@@ -171,9 +192,52 @@ export function AutomationCreateDialog({
               ))}
             </view>
           </view>
+          <view className="AutomationCreateField">
+            <text className="AutomationCreateLabel">Repeats</text>
+            <view className="AutomationCreateChoices">
+              {(
+                [
+                  ['manual', 'Manual'],
+                  ['daily', 'Daily'],
+                  ['weekdays', 'Weekdays'],
+                ] as const
+              ).map(([value, label]) => (
+                <ChoiceOption
+                  key={value}
+                  disabled={pending}
+                  label={label}
+                  selected={schedule === value}
+                  onSelect={() => setSchedule(value)}
+                />
+              ))}
+            </view>
+          </view>
+          <view className="AutomationCreateField">
+            <text className="AutomationCreateLabel">Runs in</text>
+            <view className="AutomationCreateChoices">
+              <ChoiceOption
+                disabled={pending}
+                label="Auto"
+                selected={worktreeMode === 'auto'}
+                onSelect={() => setWorktreeMode('auto')}
+              />
+              <ChoiceOption
+                disabled={pending}
+                label="Worktree"
+                selected={worktreeMode === 'worktree'}
+                onSelect={() => setWorktreeMode('worktree')}
+              />
+            </view>
+          </view>
           <view className="AutomationCreateSummary">
             <text className="AutomationCreateSummaryText">
-              Daily at 9:00 · {modelSelection?.model ?? 'Choose a project model'}
+              {schedule === 'manual'
+                ? 'Manual'
+                : schedule === 'daily'
+                  ? 'Daily at 9:00'
+                  : 'Weekdays at 9:00'}{' '}
+              · {worktreeMode === 'auto' ? 'Auto workspace' : 'New worktree'} ·{' '}
+              {modelSelection?.model ?? 'Choose a project model'}
             </text>
           </view>
           {error ? (

@@ -96,14 +96,29 @@ describe('Lynx Automations route', () => {
       new URL('./AutomationCreateDialog.lynx.tsx', import.meta.url),
       'utf8'
     );
+    const createLogicSource = readFileSync(
+      new URL('./automationCreate.logic.ts', import.meta.url),
+      'utf8'
+    );
 
     expect(pageSource).toContain('mutationFn: createAutomation');
     expect(pageSource).toContain('<AutomationCreateDialog');
     expect(pageSource).toContain(
       'navigate(`/automations/${encodeURIComponent(definition.id)}`)'
     );
-    expect(dialogSource).toContain("schedule: { type: 'daily', timeOfDay: '09:00' }");
-    expect(dialogSource).toContain("runtimeMode: 'approval-required'");
+    expect(dialogSource).toContain('buildAutomationCreateInput({');
+    expect(createLogicSource).toContain(
+      "export type CreateSchedule = 'daily' | 'manual' | 'weekdays'"
+    );
+    expect(createLogicSource).toContain("input.schedule === 'manual'");
+    expect(createLogicSource).toContain(
+      "{ type: input.schedule, timeOfDay: '09:00' }"
+    );
+    expect(createLogicSource).toContain(
+      "type CreateWorktreeMode = 'auto' | 'worktree'"
+    );
+    expect(createLogicSource).toContain('worktreeMode: input.worktreeMode');
+    expect(createLogicSource).toContain("runtimeMode: 'approval-required'");
     expect(dialogSource).toContain('project?.defaultModelSelection ?? null');
     expect(dialogSource).toContain('Create automation');
     expect(dialogSource).not.toContain("model: 'gpt-");

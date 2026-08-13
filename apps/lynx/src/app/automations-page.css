@@ -535,6 +535,14 @@
   gap: 6px;
 }
 
+.AutomationCreateChoices {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.AutomationCreateChoice,
 .AutomationCreateProject {
   padding: 6px 10px;
   border-width: 1px;
@@ -544,16 +552,20 @@
   background-color: transparent;
 }
 
+.AutomationCreateChoice--selected,
 .AutomationCreateProject--selected {
   border-color: var(--foreground);
   background-color: var(--accent);
 }
 
+.AutomationCreateChoice.ui-hover,
+.AutomationCreateChoice.ui-pressed,
 .AutomationCreateProject.ui-hover,
 .AutomationCreateProject.ui-pressed {
   background-color: var(--accent);
 }
 
+.AutomationCreateChoiceText,
 .AutomationCreateProjectText {
   color: var(--foreground);
   font-size: 12px;
