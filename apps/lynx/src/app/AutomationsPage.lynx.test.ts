@@ -135,4 +135,28 @@ describe('Lynx Automations route', () => {
     expect(dialogSource).toContain('Create automation');
     expect(dialogSource).not.toContain("model: 'gpt-");
   });
+
+  it('edits automation name and prompt through the canonical update mutation', () => {
+    const pageSource = readFileSync(
+      new URL('./AutomationsPage.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const detailSource = readFileSync(
+      new URL('./AutomationDetailPage.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const editSource = readFileSync(
+      new URL('./AutomationEditDialog.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+
+    expect(pageSource).toContain('onEdit={(input) =>');
+    expect(pageSource).toContain('updateMutation.mutate(input, {');
+    expect(detailSource).toContain('<AutomationEditDialog');
+    expect(detailSource).toContain('onEditOpenChange(true)');
+    expect(editSource).toContain('<DialogTitle>Edit automation</DialogTitle>');
+    expect(editSource).toContain('id: definition.id');
+    expect(editSource).toContain('name: name.trim()');
+    expect(editSource).toContain('prompt: prompt.trim()');
+  });
 });

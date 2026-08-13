@@ -480,6 +480,18 @@
   max-height: min(680px, calc(100vh - 32px));
 }
 
+.LxDialogPopup.AutomationEditDialog {
+  width: min(560px, calc(100vw - 32px));
+  max-height: min(620px, calc(100vh - 32px));
+}
+
+.AutomationEditPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 16px;
+}
+
 .AutomationCreatePanel {
   display: flex;
   flex-direction: column;

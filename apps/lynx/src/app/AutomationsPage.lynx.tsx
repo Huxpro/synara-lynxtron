@@ -138,6 +138,7 @@ export function AutomationsPage({
   readonly navigate: (to: string) => void;
 }) {
   const [createOpen, setCreateOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
   const automations = useQuery({
     queryKey: ['automations'],
     queryFn: fetchAutomations,
@@ -230,6 +231,13 @@ export function AutomationsPage({
               : null
         }
         updatePending={updateMutation.isPending}
+        editOpen={editOpen}
+        onEditOpenChange={setEditOpen}
+        onEdit={(input) =>
+          updateMutation.mutate(input, {
+            onSuccess: () => setEditOpen(false),
+          })
+        }
         deleteError={
           deleteMutation.error instanceof Error
             ? deleteMutation.error.message

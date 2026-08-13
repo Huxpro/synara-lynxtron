@@ -1,6 +1,7 @@
 import type {
   AutomationDefinition,
   AutomationRun,
+  AutomationUpdateInput,
 } from '@synara/contracts';
 import {
   formatAutomationRunTimestamp,
@@ -11,6 +12,7 @@ import {
 
 import { Button } from '../components/ui/button';
 import { ChevronRightIcon } from '../lib/icons';
+import { AutomationEditDialog } from './AutomationEditDialog.lynx';
 
 async function confirmAutomationDelete(name: string): Promise<boolean> {
   'background only';
@@ -68,6 +70,9 @@ export function AutomationDetailPage({
   threads,
   deleteError,
   deletePending,
+  editOpen,
+  onEdit,
+  onEditOpenChange,
   onDelete,
   updateError,
   updatePending,
@@ -81,6 +86,9 @@ export function AutomationDetailPage({
   readonly threads: readonly AutomationListThread[];
   readonly deleteError: string | null;
   readonly deletePending: boolean;
+  readonly editOpen: boolean;
+  readonly onEdit: (input: AutomationUpdateInput) => void;
+  readonly onEditOpenChange: (open: boolean) => void;
   readonly onDelete: (definition: AutomationDefinition) => void;
   readonly updateError: string | null;
   readonly updatePending: boolean;
@@ -160,6 +168,15 @@ export function AutomationDetailPage({
       </view>
       <view className="AutomationDetailAside">
         <view className="AutomationDetailActionsHeader AppWindowDragRegion">
+          <Button
+            variant="ghost"
+            size="sm"
+            disabled={deletePending || updatePending}
+            aria-label="Edit"
+            onClick={() => onEditOpenChange(true)}
+          >
+            Edit
+          </Button>
           <Button
             variant="ghost"
             size="sm"
@@ -261,6 +278,14 @@ export function AutomationDetailPage({
           </view>
         </scroll-view>
       </view>
+      <AutomationEditDialog
+        definition={definition}
+        open={editOpen}
+        pending={updatePending}
+        error={updateError}
+        onOpenChange={onEditOpenChange}
+        onSave={onEdit}
+      />
     </view>
   );
 }
