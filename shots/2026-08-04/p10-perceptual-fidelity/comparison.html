@@ -2739,15 +2739,20 @@
             `;
           })
           .join("");
-        const events = point.reliability.activeEvents.length
+        const debtItems = [
+          ...point.reliability.activeEvents.map(
+            (event) =>
+              `<li>[product] ${escapeHtml(event.summary)} · ${event.introduced}${event.fixed ? ` → ${event.fixed}` : " · open"}</li>`,
+          ),
+          ...point.reliability.activeHarnessIssues.map(
+            (issue) =>
+              `<li>[harness] ${escapeHtml(issue.id)} · ${escapeHtml(issue.summary)} · ${issue.detectedAt} · open</li>`,
+          ),
+        ];
+        const events = debtItems.length
           ? `
             <ul class="loss-events">
-              ${point.reliability.activeEvents
-                .map(
-                  (event) =>
-                    `<li>${escapeHtml(event.summary)} · ${event.introduced}${event.fixed ? ` → ${event.fixed}` : " · open"}</li>`,
-                )
-                .join("")}
+              ${debtItems.join("")}
             </ul>
           `
           : `<p class="empty">No active regression debt at this evidence point.</p>`;

@@ -6,12 +6,12 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     "lastDay": "2026-08-13",
     "consecutiveCalendarDays": 11
   },
-  "imageCount": 1267,
-  "byteCount": 203294033,
+  "imageCount": 1271,
+  "byteCount": 203486748,
   "trackedCount": 0,
   "untrackedCount": 0,
-  "remoteCount": 1267,
-  "storyCount": 382,
+  "remoteCount": 1271,
+  "storyCount": 384,
   "stories": [
     {
       "id": "2026-08-02--harness--composer",
@@ -18048,6 +18048,78 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
         "web"
       ],
       "sequence": false
+    },
+    {
+      "id": "2026-08-13--temporary-chat-current--off",
+      "day": "2026-08-13",
+      "directory": "temporary-chat-current/off",
+      "label": "Temporary Chat Current · Off",
+      "images": [
+        {
+          "day": "2026-08-13",
+          "directory": "temporary-chat-current/off",
+          "name": "lynx.png",
+          "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-13/temporary-chat-current/off/lynx.png",
+          "repoPath": "shots/2026-08-13/temporary-chat-current/off/lynx.png",
+          "bytes": 40960,
+          "sourceCommit": "2221865a8edafda29ac62621cf2ef6b8c54e062a",
+          "gitStatus": "remote",
+          "client": "lynx"
+        },
+        {
+          "day": "2026-08-13",
+          "directory": "temporary-chat-current/off",
+          "name": "web.png",
+          "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-13/temporary-chat-current/off/web.png",
+          "repoPath": "shots/2026-08-13/temporary-chat-current/off/web.png",
+          "bytes": 55144,
+          "sourceCommit": "2221865a8edafda29ac62621cf2ef6b8c54e062a",
+          "gitStatus": "remote",
+          "client": "web"
+        }
+      ],
+      "imageCount": 2,
+      "clients": [
+        "lynx",
+        "web"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-13--temporary-chat-current--on",
+      "day": "2026-08-13",
+      "directory": "temporary-chat-current/on",
+      "label": "Temporary Chat Current · On",
+      "images": [
+        {
+          "day": "2026-08-13",
+          "directory": "temporary-chat-current/on",
+          "name": "lynx.png",
+          "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-13/temporary-chat-current/on/lynx.png",
+          "repoPath": "shots/2026-08-13/temporary-chat-current/on/lynx.png",
+          "bytes": 41338,
+          "sourceCommit": "2221865a8edafda29ac62621cf2ef6b8c54e062a",
+          "gitStatus": "remote",
+          "client": "lynx"
+        },
+        {
+          "day": "2026-08-13",
+          "directory": "temporary-chat-current/on",
+          "name": "web.png",
+          "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-13/temporary-chat-current/on/web.png",
+          "repoPath": "shots/2026-08-13/temporary-chat-current/on/web.png",
+          "bytes": 55273,
+          "sourceCommit": "2221865a8edafda29ac62621cf2ef6b8c54e062a",
+          "gitStatus": "remote",
+          "client": "web"
+        }
+      ],
+      "imageCount": 2,
+      "clients": [
+        "lynx",
+        "web"
+      ],
+      "sequence": false
     }
   ],
   "days": [
@@ -33462,11 +33534,11 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     },
     {
       "day": "2026-08-13",
-      "imageCount": 6,
-      "byteCount": 461551,
+      "imageCount": 10,
+      "byteCount": 654266,
       "trackedCount": 0,
       "untrackedCount": 0,
-      "remoteCount": 6,
+      "remoteCount": 10,
       "directories": [
         {
           "directory": "explorer-disclosure-current/collapsed",
@@ -33542,6 +33614,58 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
               "repoPath": "shots/2026-08-13/explorer-disclosure-current/hover/web.png",
               "bytes": 81568,
               "sourceCommit": "f8823edc0a026aef1c26ff5d4aef50105242a575",
+              "gitStatus": "remote"
+            }
+          ]
+        },
+        {
+          "directory": "temporary-chat-current/off",
+          "imageCount": 2,
+          "images": [
+            {
+              "day": "2026-08-13",
+              "directory": "temporary-chat-current/off",
+              "name": "lynx.png",
+              "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-13/temporary-chat-current/off/lynx.png",
+              "repoPath": "shots/2026-08-13/temporary-chat-current/off/lynx.png",
+              "bytes": 40960,
+              "sourceCommit": "2221865a8edafda29ac62621cf2ef6b8c54e062a",
+              "gitStatus": "remote"
+            },
+            {
+              "day": "2026-08-13",
+              "directory": "temporary-chat-current/off",
+              "name": "web.png",
+              "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-13/temporary-chat-current/off/web.png",
+              "repoPath": "shots/2026-08-13/temporary-chat-current/off/web.png",
+              "bytes": 55144,
+              "sourceCommit": "2221865a8edafda29ac62621cf2ef6b8c54e062a",
+              "gitStatus": "remote"
+            }
+          ]
+        },
+        {
+          "directory": "temporary-chat-current/on",
+          "imageCount": 2,
+          "images": [
+            {
+              "day": "2026-08-13",
+              "directory": "temporary-chat-current/on",
+              "name": "lynx.png",
+              "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-13/temporary-chat-current/on/lynx.png",
+              "repoPath": "shots/2026-08-13/temporary-chat-current/on/lynx.png",
+              "bytes": 41338,
+              "sourceCommit": "2221865a8edafda29ac62621cf2ef6b8c54e062a",
+              "gitStatus": "remote"
+            },
+            {
+              "day": "2026-08-13",
+              "directory": "temporary-chat-current/on",
+              "name": "web.png",
+              "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-13/temporary-chat-current/on/web.png",
+              "repoPath": "shots/2026-08-13/temporary-chat-current/on/web.png",
+              "bytes": 55273,
+              "sourceCommit": "2221865a8edafda29ac62621cf2ef6b8c54e062a",
               "gitStatus": "remote"
             }
           ]

@@ -92,6 +92,19 @@ const harnessIssueLedger = [
       '2026-08-04--p10-perceptual-fidelity--final-overlays--skill-menu-filtered',
     ],
   },
+  {
+    id: 'temporary-sidebar-hydration',
+    type: 'interaction-harness-blocker',
+    detectedAt: '2221865a8',
+    affectedStoryPrefix: '2026-08-13--temporary-chat-current--',
+    summary:
+      'Lynx-for-Web sidebar remains in Loading projects, blocking a retained UI-path thread switch for Temporary cleanup certification.',
+    severityPoints: 1,
+    resolvedBy: [],
+    resolution:
+      'Unresolved; Temporary on/off rendering is comparable, but Lynx cleanup remains unit-covered rather than retained UI-path evidence.',
+    resolutionStoryPrefixes: [],
+  },
 ];
 
 function parseGlobalAssignment(source) {

@@ -1,8 +1,8 @@
 {
   "version": 1,
   "assetBaseUrl": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main",
-  "imageCount": 1267,
-  "byteCount": 203294033,
+  "imageCount": 1271,
+  "byteCount": 203486748,
   "images": [
     {
       "day": "2026-08-02",
@@ -10145,6 +10145,42 @@
       "repoPath": "shots/2026-08-13/explorer-disclosure-current/hover/web.png",
       "bytes": 81568,
       "sourceCommit": "f8823edc0a026aef1c26ff5d4aef50105242a575"
+    },
+    {
+      "day": "2026-08-13",
+      "directory": "temporary-chat-current/off",
+      "name": "lynx.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-13/temporary-chat-current/off/lynx.png",
+      "repoPath": "shots/2026-08-13/temporary-chat-current/off/lynx.png",
+      "bytes": 40960,
+      "sourceCommit": "2221865a8edafda29ac62621cf2ef6b8c54e062a"
+    },
+    {
+      "day": "2026-08-13",
+      "directory": "temporary-chat-current/off",
+      "name": "web.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-13/temporary-chat-current/off/web.png",
+      "repoPath": "shots/2026-08-13/temporary-chat-current/off/web.png",
+      "bytes": 55144,
+      "sourceCommit": "2221865a8edafda29ac62621cf2ef6b8c54e062a"
+    },
+    {
+      "day": "2026-08-13",
+      "directory": "temporary-chat-current/on",
+      "name": "lynx.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-13/temporary-chat-current/on/lynx.png",
+      "repoPath": "shots/2026-08-13/temporary-chat-current/on/lynx.png",
+      "bytes": 41338,
+      "sourceCommit": "2221865a8edafda29ac62621cf2ef6b8c54e062a"
+    },
+    {
+      "day": "2026-08-13",
+      "directory": "temporary-chat-current/on",
+      "name": "web.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-13/temporary-chat-current/on/web.png",
+      "repoPath": "shots/2026-08-13/temporary-chat-current/on/web.png",
+      "bytes": 55273,
+      "sourceCommit": "2221865a8edafda29ac62621cf2ef6b8c54e062a"
     }
   ]
 }
