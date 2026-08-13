@@ -106,10 +106,11 @@ The remaining pixel distance is accepted close rendering noise, not a P0/P1
 product loss. The missing detail/create/Native cells remain explicit coverage
 debt.
 
-The create dialog is an exception to the close-noise classification. Its
-`97.82%` parity is a noticeable residual: Lynx now completes Name, Prompt,
-Project, Cancel, and Create through canonical `automation.create`, but Web
-still exposes the full schedule, model, runtime, worktree, and policy form.
+The create dialog remains a functional product residual despite its
+machine-classified `close` pixel band (`97.82%` parity): Lynx now completes
+Name, Prompt, Project, Cancel, and Create through canonical
+`automation.create`, but Web still exposes the full schedule, model, runtime,
+worktree, and policy form.
 
 ## Evidence
 
