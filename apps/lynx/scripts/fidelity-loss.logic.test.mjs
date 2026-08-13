@@ -6,9 +6,11 @@ import {
   captureMismatchReason,
   classifyRenderedTheme,
   exponentialMovingAverage,
+  groupEvidenceFilesBySourceCommit,
   isComparableImageGeometry,
   median,
   normalizeEvidenceName,
+  resolveEvidenceSourceCommit,
   visualQualityBand,
   visualLossFromSamples,
   weightedComponentContributions,
@@ -19,6 +21,43 @@ test('normalizes paired client filenames without erasing state identity', () => 
   assert.equal(normalizeEvidenceName('lynx-light.png'), 'light');
   assert.equal(normalizeEvidenceName('native.png'), 'raw');
   assert.equal(normalizeEvidenceName('open-final-web.png'), 'open-final');
+});
+
+test('prefers explicit source commits for remote-only evidence', () => {
+  const firstCommitByFile = new Map([['shots/local.png', 'local-commit']]);
+  assert.equal(
+    resolveEvidenceSourceCommit(
+      {
+        repoPath: 'shots/remote.png',
+        sourceCommit: 'remote-source-commit',
+      },
+      firstCommitByFile
+    ),
+    'remote-source-commit'
+  );
+  assert.equal(
+    resolveEvidenceSourceCommit({ repoPath: 'shots/local.png' }, firstCommitByFile),
+    'local-commit'
+  );
+  assert.equal(
+    resolveEvidenceSourceCommit({ repoPath: 'shots/missing.png' }, firstCommitByFile),
+    null
+  );
+});
+
+test('groups remote evidence files by their source commit', () => {
+  assert.deepEqual(
+    groupEvidenceFilesBySourceCommit([
+      { repoPath: 'shots/a.png', sourceCommit: 'commit-a' },
+      { repoPath: 'shots/b.png', sourceCommit: 'commit-a' },
+      { repoPath: 'shots/c.png', sourceCommit: 'commit-b' },
+      { repoPath: 'shots/legacy.png' },
+    ]),
+    new Map([
+      ['commit-a', ['shots/a.png', 'shots/b.png']],
+      ['commit-b', ['shots/c.png']],
+    ])
+  );
 });
 
 test('calculates robust medians', () => {

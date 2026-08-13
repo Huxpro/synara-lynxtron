@@ -19,9 +19,11 @@ import {
   captureMismatchReason,
   classifyRenderedTheme,
   exponentialMovingAverage,
+  groupEvidenceFilesBySourceCommit,
   isComparableImageGeometry,
   median,
   normalizeEvidenceName,
+  resolveEvidenceSourceCommit,
   visualQualityBand,
   visualLossFromSamples,
   weightedComponentContributions,
@@ -360,8 +362,14 @@ async function visualSamples(stories, commitIndexByHash, firstCommitByFile) {
             right: rightImages[index].repoPath,
             stateKey: key,
           };
-          const leftCommit = firstCommitByFile.get(pair.left);
-          const rightCommit = firstCommitByFile.get(pair.right);
+          const leftCommit = resolveEvidenceSourceCommit(
+            leftImages[index],
+            firstCommitByFile
+          );
+          const rightCommit = resolveEvidenceSourceCommit(
+            rightImages[index],
+            firstCommitByFile
+          );
           const leftCommitIndex = commitIndexByHash.get(leftCommit);
           const rightCommitIndex = commitIndexByHash.get(rightCommit);
           const activationCommitIndex = Math.max(
@@ -452,8 +460,16 @@ const harnessLedger = harnessIssueLedger.map((entry) => ({
   detectedMetadata: commitMetadata(entry.detectedAt),
   resolvedMetadata: entry.resolvedBy.map(commitMetadata),
 }));
+const remoteEvidenceFilesByCommit = groupEvidenceFilesBySourceCommit(
+  archive.stories.flatMap((story) => story.images)
+);
 const evidenceCommits = [
   ...evidenceCommitHistory(days[0], days.at(-1)),
+  ...[...remoteEvidenceFilesByCommit].map(([hash, files]) => ({
+    ...commitMetadata(hash),
+    files,
+    remoteEvidenceOnly: true,
+  })),
   ...ledger.flatMap((entry) =>
     [entry.introducedMetadata, entry.fixedMetadata]
       .filter(Boolean)
@@ -527,7 +543,9 @@ const storyActivationCommitIndex = new Map(
     Math.min(
       ...story.images.map(
         (image) =>
-          commitIndexByHash.get(firstCommitByFile.get(image.repoPath)) ??
+          commitIndexByHash.get(
+            resolveEvidenceSourceCommit(image, firstCommitByFile)
+          ) ??
           evidenceCommits.length - 1
       )
     ),
@@ -537,7 +555,9 @@ const imageActivationCommitIndex = new Map(
   archive.stories.flatMap((story) =>
     story.images.map((image) => [
       image.repoPath,
-      commitIndexByHash.get(firstCommitByFile.get(image.repoPath)) ??
+      commitIndexByHash.get(
+        resolveEvidenceSourceCommit(image, firstCommitByFile)
+      ) ??
         evidenceCommits.length - 1,
     ])
   )

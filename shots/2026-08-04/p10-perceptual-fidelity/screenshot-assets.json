@@ -1,8 +1,8 @@
 {
   "version": 1,
   "assetBaseUrl": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main",
-  "imageCount": 1261,
-  "byteCount": 202832482,
+  "imageCount": 1267,
+  "byteCount": 203294033,
   "images": [
     {
       "day": "2026-08-02",
@@ -10091,6 +10091,60 @@
       "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-11/environment-row-hover-current/web-hover.png",
       "repoPath": "shots/2026-08-11/environment-row-hover-current/web-hover.png",
       "bytes": 82188
+    },
+    {
+      "day": "2026-08-13",
+      "directory": "explorer-disclosure-current/collapsed",
+      "name": "lynx.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-13/explorer-disclosure-current/collapsed/lynx.png",
+      "repoPath": "shots/2026-08-13/explorer-disclosure-current/collapsed/lynx.png",
+      "bytes": 73113,
+      "sourceCommit": "f8823edc0a026aef1c26ff5d4aef50105242a575"
+    },
+    {
+      "day": "2026-08-13",
+      "directory": "explorer-disclosure-current/collapsed",
+      "name": "web.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-13/explorer-disclosure-current/collapsed/web.png",
+      "repoPath": "shots/2026-08-13/explorer-disclosure-current/collapsed/web.png",
+      "bytes": 84179,
+      "sourceCommit": "f8823edc0a026aef1c26ff5d4aef50105242a575"
+    },
+    {
+      "day": "2026-08-13",
+      "directory": "explorer-disclosure-current/expanded",
+      "name": "lynx.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-13/explorer-disclosure-current/expanded/lynx.png",
+      "repoPath": "shots/2026-08-13/explorer-disclosure-current/expanded/lynx.png",
+      "bytes": 70609,
+      "sourceCommit": "f8823edc0a026aef1c26ff5d4aef50105242a575"
+    },
+    {
+      "day": "2026-08-13",
+      "directory": "explorer-disclosure-current/expanded",
+      "name": "web.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-13/explorer-disclosure-current/expanded/web.png",
+      "repoPath": "shots/2026-08-13/explorer-disclosure-current/expanded/web.png",
+      "bytes": 81388,
+      "sourceCommit": "f8823edc0a026aef1c26ff5d4aef50105242a575"
+    },
+    {
+      "day": "2026-08-13",
+      "directory": "explorer-disclosure-current/hover",
+      "name": "lynx.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-13/explorer-disclosure-current/hover/lynx.png",
+      "repoPath": "shots/2026-08-13/explorer-disclosure-current/hover/lynx.png",
+      "bytes": 70694,
+      "sourceCommit": "f8823edc0a026aef1c26ff5d4aef50105242a575"
+    },
+    {
+      "day": "2026-08-13",
+      "directory": "explorer-disclosure-current/hover",
+      "name": "web.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-13/explorer-disclosure-current/hover/web.png",
+      "repoPath": "shots/2026-08-13/explorer-disclosure-current/hover/web.png",
+      "bytes": 81568,
+      "sourceCommit": "f8823edc0a026aef1c26ff5d4aef50105242a575"
     }
   ]
 }

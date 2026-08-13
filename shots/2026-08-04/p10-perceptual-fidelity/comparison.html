@@ -1880,16 +1880,16 @@
       <header class="masthead">
         <div>
           <p class="eyebrow">Synara · P10 perceptual fidelity</p>
-          <h1>十天工作，一次翻完。</h1>
+          <h1><span id="reviewDayCount">0</span> 天工作，一次翻完。</h1>
           <p class="intro">
             先按工作项浏览，再深入审计。← / → 翻工作项，↑ / ↓ 切换同一项里的状态，
             Enter 放大当前图片，1 / 2 / 3 选择 Web、Lynx-for-Web、Native。
-            所有去重后保留的 1,261 张原始证据仍可从页面底部访问。
+            所有去重后保留的 <span id="introImageCount">0</span> 张原始证据仍可从页面底部访问。
           </p>
         </div>
         <div class="summary">
           <div><strong id="storyCount">0</strong><span>工作项</span></div>
-          <div><strong>10</strong><span>连续工作日</span></div>
+          <div><strong id="summaryDayCount">0</strong><span>采样工作日</span></div>
           <div><strong id="imageCount">0</strong><span>截图证据</span></div>
           <div><strong>← →</strong><span>键盘浏览</span></div>
         </div>
@@ -1902,7 +1902,7 @@
             <h2>Loss 不是被抹平的进度条。</h2>
             <p>
               每个新增/更新 evidence 的 commit 都是一个 measured point；粗线是这些真实点的 EMA，
-              不是插值出来的证据。Loss 基于 379 个 screen-state 工作单元、client 完整性、
+              不是插值出来的证据。Loss 基于 <span id="lossStoryCount">0</span> 个 screen-state 工作单元、client 完整性、
               同状态 RGB 距离和 commit-bounded regression ledger。反弹被保留并逐项归因。
             </p>
           </div>
@@ -3268,6 +3268,17 @@
       document.querySelector("#storyCount").textContent = String(screenshotArchive.storyCount);
       document.querySelector("#imageCount").textContent =
         screenshotArchive.imageCount.toLocaleString();
+      document.querySelector("#reviewDayCount").textContent = String(
+        screenshotArchive.days.length
+      );
+      document.querySelector("#summaryDayCount").textContent = String(
+        screenshotArchive.days.length
+      );
+      document.querySelector("#introImageCount").textContent =
+        screenshotArchive.imageCount.toLocaleString();
+      document.querySelector("#lossStoryCount").textContent = String(
+        screenshotArchive.storyCount
+      );
       const lossLedgerDay = document.querySelector("#lossLedgerDay");
       lossLedgerDay.innerHTML = fidelityLoss.dayAnalysis
         .map(

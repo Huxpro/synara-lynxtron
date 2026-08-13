@@ -26,6 +26,21 @@ export function normalizeEvidenceName(name) {
     .replace(/[-_]?(?:web|lynx|native)$/u, '') || 'raw';
 }
 
+export function resolveEvidenceSourceCommit(image, firstCommitByFile) {
+  return image.sourceCommit ?? firstCommitByFile.get(image.repoPath) ?? null;
+}
+
+export function groupEvidenceFilesBySourceCommit(images) {
+  const filesByCommit = new Map();
+  for (const image of images) {
+    if (!image.sourceCommit) continue;
+    const files = filesByCommit.get(image.sourceCommit) ?? [];
+    files.push(image.repoPath);
+    filesByCommit.set(image.sourceCommit, files);
+  }
+  return filesByCommit;
+}
+
 export function isComparableImageGeometry(left, right) {
   const leftRatio = left.width / left.height;
   const rightRatio = right.width / right.height;
