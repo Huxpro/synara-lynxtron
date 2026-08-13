@@ -16,10 +16,12 @@ describe('Automation create payload', () => {
     expect(
       buildAutomationCreateInput({
         projectId: 'project-1',
+        maxIterations: 25,
         modelSelection,
         name: '  Release review  ',
         prompt: '  Check regressions.  ',
         schedule,
+        stopOnError: false,
         timeOfDay: '14:30',
         worktreeMode: 'worktree',
       }),
@@ -33,6 +35,8 @@ describe('Automation create payload', () => {
           : { ...expected, timeOfDay: '14:30' },
       worktreeMode: 'worktree',
       runtimeMode: 'approval-required',
+      maxIterations: 25,
+      stopOnError: false,
     });
   });
 });

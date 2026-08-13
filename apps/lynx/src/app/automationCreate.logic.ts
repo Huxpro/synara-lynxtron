@@ -8,11 +8,13 @@ export type CreateSchedule = 'daily' | 'manual' | 'weekdays';
 export type CreateWorktreeMode = 'auto' | 'worktree';
 
 export function buildAutomationCreateInput(input: {
+  readonly maxIterations: number | null;
   readonly modelSelection: ModelSelection;
   readonly name: string;
   readonly projectId: ProjectId;
   readonly prompt: string;
   readonly schedule: CreateSchedule;
+  readonly stopOnError: boolean;
   readonly timeOfDay: string;
   readonly worktreeMode: CreateWorktreeMode;
 }): AutomationCreateInput {
@@ -32,8 +34,8 @@ export function buildAutomationCreateInput(input: {
     worktreeMode: input.worktreeMode,
     mode: 'standalone',
     targetThreadId: null,
-    maxIterations: null,
-    stopOnError: true,
+    maxIterations: input.maxIterations,
+    stopOnError: input.stopOnError,
     completionPolicy: { type: 'none' },
     minimumIntervalSeconds: 60,
     maxRuntimeSeconds: 3600,

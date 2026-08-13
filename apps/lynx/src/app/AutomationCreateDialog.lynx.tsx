@@ -140,6 +140,8 @@ export function AutomationCreateDialog({
   const [projectId, setProjectId] = useState(projects[0]?.id ?? '');
   const [schedule, setSchedule] = useState<CreateSchedule>('daily');
   const [timeOfDay, setTimeOfDay] = useState('09:00');
+  const [maxIterations, setMaxIterations] = useState<number | null>(null);
+  const [stopOnError, setStopOnError] = useState(true);
   const [worktreeMode, setWorktreeMode] =
     useState<CreateWorktreeMode>('auto');
   useEffect(() => {
@@ -167,7 +169,9 @@ export function AutomationCreateDialog({
       prompt,
       schedule,
       timeOfDay,
+      maxIterations,
       modelSelection,
+      stopOnError,
       worktreeMode,
     }));
   };
@@ -263,6 +267,43 @@ export function AutomationCreateDialog({
               />
             </view>
           )}
+          <view className="AutomationCreateField">
+            <text className="AutomationCreateLabel">Max iterations</text>
+            <view className="AutomationCreateChoices">
+              {(
+                [
+                  [null, 'Unlimited'],
+                  [10, '10 runs'],
+                  [25, '25 runs'],
+                ] as const
+              ).map(([value, label]) => (
+                <ChoiceOption
+                  key={label}
+                  disabled={pending}
+                  label={label}
+                  selected={maxIterations === value}
+                  onSelect={() => setMaxIterations(value)}
+                />
+              ))}
+            </view>
+          </view>
+          <view className="AutomationCreateField">
+            <text className="AutomationCreateLabel">Stop on error</text>
+            <view className="AutomationCreateChoices">
+              <ChoiceOption
+                disabled={pending}
+                label="On"
+                selected={stopOnError}
+                onSelect={() => setStopOnError(true)}
+              />
+              <ChoiceOption
+                disabled={pending}
+                label="Off"
+                selected={!stopOnError}
+                onSelect={() => setStopOnError(false)}
+              />
+            </view>
+          </view>
           <view className="AutomationCreateSummary">
             <text className="AutomationCreateSummaryText">
               {schedule === 'manual'
@@ -271,7 +312,11 @@ export function AutomationCreateDialog({
                   ? `Daily at ${timeOfDay}`
                   : `Weekdays at ${timeOfDay}`}{' '}
               · {worktreeMode === 'auto' ? 'Auto workspace' : 'New worktree'} ·{' '}
-              {modelSelection?.model ?? 'Choose a project model'}
+              {modelSelection?.model ?? 'Choose a project model'} ·{' '}
+              {maxIterations === null
+                ? 'Unlimited runs'
+                : `${maxIterations} runs`}{' '}
+              · {stopOnError ? 'Stops on error' : 'Continues after errors'}
             </text>
           </view>
           {error ? (
