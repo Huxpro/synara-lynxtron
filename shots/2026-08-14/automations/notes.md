@@ -10,6 +10,7 @@
   - read-only detail with no previous runs.
   - paused detail after a real rendered Pause action.
   - not-found detail for a stale or deleted deep link.
+  - initial create dialog.
 - Still missing and not claimed by this slice:
   - create/edit dialog;
   - detail mutations other than pause/resume, including delete and run now;
@@ -94,6 +95,7 @@ Final full-frame parity:
 - paused detail: `98.98107763430575%`.
 - paused list: `99.169299976088%`.
 - not-found detail: `99.43838586501674%`.
+- create dialog: `97.82059832317073%`.
 
 The detail cell also matched the two `46px` headers, `704px + 320px`
 columns, prompt title geometry, and the Status group exactly. Details and
@@ -104,10 +106,16 @@ The remaining pixel distance is accepted close rendering noise, not a P0/P1
 product loss. The missing detail/create/Native cells remain explicit coverage
 debt.
 
+The create dialog is an exception to the close-noise classification. Its
+`97.82%` parity is a noticeable residual: Lynx now completes Name, Prompt,
+Project, Cancel, and Create through canonical `automation.create`, but Web
+still exposes the full schedule, model, runtime, worktree, and policy form.
+
 ## Evidence
 
 Remote asset commits: `5341ec9`, `632a003`, `494974b`, and `fcfd182`.
 Not-found evidence is stored in `e6d4e29`.
+Create-dialog evidence is stored in `7a5ccbb`.
 
 - `shots/2026-08-14/automations/empty/web-dark-1280.png`
 - `shots/2026-08-14/automations/empty/lynx-dark-1280.png`
@@ -121,6 +129,8 @@ Not-found evidence is stored in `e6d4e29`.
 - `shots/2026-08-14/automations/detail-paused/lynx-dark-1280.png`
 - `shots/2026-08-14/automations/detail-not-found/web-dark-1280.png`
 - `shots/2026-08-14/automations/detail-not-found/lynx-dark-1280.png`
+- `shots/2026-08-14/automations/create-dialog/web-dark-1280.png`
+- `shots/2026-08-14/automations/create-dialog/lynx-dark-1280.png`
 
 ## Gates
 

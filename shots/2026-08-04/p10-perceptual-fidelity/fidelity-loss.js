@@ -4,9 +4,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
     "archive": "screenshot-archive.js",
     "firstDay": "2026-08-02",
     "lastDay": "2026-08-14",
-    "finalStoryCount": 390,
-    "finalImageCount": 1283,
-    "evidenceCommitCount": 314
+    "finalStoryCount": 391,
+    "finalImageCount": 1285,
+    "evidenceCommitCount": 316
   },
   "formula": {
     "expression": "100 × (0.30 × scopeGap + 0.25 × clientGap + 0.35 × visualDistance + 0.10 × reliabilityDebt)",
@@ -18,7 +18,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
     },
     "visual": "Median same-state RGB MAE, capped at 10%, shrunk toward 50% loss until 12 accepted pairs exist.",
     "comparability": "Pairs require normalized state names and matching aspect ratio within 1.5%; high MAE remains scored and is classified as poor or critical parity.",
-    "scope": "Cumulative unique work stories divided by the final known 390-story scope; continuous frames count as one story.",
+    "scope": "Cumulative unique work stories divided by the final known 391-story scope; continuous frames count as one story.",
     "completeness": "Observed Web/Lynx/Native cells divided by expected cells for discovered stories.",
     "reliability": "Active, commit-bounded regression severity points divided by the ledger maximum.",
     "granularity": "Every commit that adds or updates evidence produces a measured point; smoothLoss is an EMA over measured points, not interpolated evidence."
@@ -586,7 +586,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 1,
       "cumulativeStoryCount": 1,
-      "scopeCoverage": 0.002564102564102564,
+      "scopeCoverage": 0.0025575447570332483,
       "clientCompleteness": 0.3333333333333333,
       "visual": {
         "loss": 0.4630134511248605,
@@ -634,7 +634,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.9974358974358974,
+        "scope": 0.9974424552429667,
         "completeness": 0.6666666666666667,
         "visual": 0.4630134511248605,
         "reliability": 0
@@ -648,9 +648,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 62.79521437911371,
-      "bestLoss": 62.79521437911371,
-      "smoothLoss": 62.79521437911371
+      "loss": 62.795411113325784,
+      "bestLoss": 62.795411113325784,
+      "smoothLoss": 62.795411113325784
     },
     {
       "index": 1,
@@ -689,7 +689,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 2,
       "cumulativeStoryCount": 2,
-      "scopeCoverage": 0.005128205128205128,
+      "scopeCoverage": 0.005115089514066497,
       "clientCompleteness": 0.5,
       "visual": {
         "loss": 0.43063009064143953,
@@ -737,13 +737,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.9948717948717949,
+        "scope": 0.9948849104859335,
         "completeness": 0.5,
         "visual": 0.43063009064143953,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -4.166666666666669,
         "visual": -1.133417616919733,
         "reliability": 0
@@ -761,15 +761,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -5.377007360509481,
-      "loss": 57.41820701860423,
-      "bestLoss": 57.41820701860423,
-      "smoothLoss": 61.827353054222
+      "lossDelta": -5.376810626297399,
+      "loss": 57.418600487028385,
+      "bestLoss": 57.418600487028385,
+      "smoothLoss": 61.82758520059226
     },
     {
       "index": 2,
@@ -810,7 +810,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 4,
       "cumulativeStoryCount": 3,
-      "scopeCoverage": 0.007692307692307693,
+      "scopeCoverage": 0.0076726342710997444,
       "clientCompleteness": 0.5555555555555556,
       "visual": {
         "loss": 0.4627941363283118,
@@ -883,13 +883,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.9923076923076923,
+        "scope": 0.9923273657289002,
         "completeness": 0.4444444444444444,
         "visual": 0.4627941363283118,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -1.3888888888888895,
         "visual": 1.1257415990405288,
         "reliability": 0
@@ -907,15 +907,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.3400703667714353,
-      "loss": 57.07813665183279,
-      "bestLoss": 57.07813665183279,
-      "smoothLoss": 60.97249410179195
+      "lossDelta": -0.3398736325593532,
+      "loss": 57.07872685446903,
+      "bestLoss": 57.07872685446903,
+      "smoothLoss": 60.97279069829008
     },
     {
       "index": 3,
@@ -958,7 +958,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 7,
       "cumulativeStoryCount": 6,
-      "scopeCoverage": 0.015384615384615385,
+      "scopeCoverage": 0.015345268542199489,
       "clientCompleteness": 0.6111111111111112,
       "visual": {
         "loss": 0.41802227801689784,
@@ -1056,13 +1056,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.9846153846153847,
+        "scope": 0.9846547314578005,
         "completeness": 0.38888888888888884,
         "visual": 0.41802227801689784,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.23076923076922992,
+        "scope": -0.23017902813299296,
         "completeness": -1.3888888888888895,
         "visual": -1.567015040899488,
         "reliability": 0
@@ -1080,15 +1080,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.23076923076922992,
+          "contribution": -0.23017902813299296,
           "direction": "down"
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -3.1866731605576106,
-      "loss": 53.89146349127518,
-      "bestLoss": 53.89146349127518,
-      "smoothLoss": 59.69790859189894
+      "lossDelta": -3.1860829579213785,
+      "loss": 53.89264389654765,
+      "bestLoss": 53.89264389654765,
+      "smoothLoss": 59.69836427397645
     },
     {
       "index": 4,
@@ -1125,7 +1125,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 7,
       "cumulativeStoryCount": 7,
-      "scopeCoverage": 0.017948717948717947,
+      "scopeCoverage": 0.017902813299232736,
       "clientCompleteness": 0.631578947368421,
       "visual": {
         "loss": 0.41802227801689784,
@@ -1147,13 +1147,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.982051282051282,
+        "scope": 0.9820971867007673,
         "completeness": 0.368421052631579,
         "visual": 0.41802227801689784,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307998,
+        "scope": -0.07672634271099543,
         "completeness": -0.5116959064327464,
         "visual": 0,
         "reliability": 0
@@ -1166,15 +1166,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307998,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.5886189833558291,
-      "loss": 53.30284450791935,
-      "bestLoss": 53.30284450791935,
-      "smoothLoss": 58.54679705678261
+      "lossDelta": -0.5884222491437399,
+      "loss": 53.304221647403914,
+      "bestLoss": 53.304221647403914,
+      "smoothLoss": 58.5474186011934
     },
     {
       "index": 5,
@@ -1220,7 +1220,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 11,
       "cumulativeStoryCount": 8,
-      "scopeCoverage": 0.020512820512820513,
+      "scopeCoverage": 0.020460358056265986,
       "clientCompleteness": 0.6363636363636364,
       "visual": {
         "loss": 0.7824590019146207,
@@ -1343,13 +1343,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.9794871794871794,
+        "scope": 0.979539641943734,
         "completeness": 0.36363636363636365,
         "visual": 0.7824590019146207,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.1196172248803834,
         "visual": 12.7552853364203,
         "reliability": 0
@@ -1367,15 +1367,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 12.558745034616841,
-      "loss": 65.8615895425362,
-      "bestLoss": 53.30284450791935,
-      "smoothLoss": 59.86345970421826
+      "lossDelta": 12.558941768828909,
+      "loss": 65.86316341623282,
+      "bestLoss": 53.304221647403914,
+      "smoothLoss": 59.8642526679005
     },
     {
       "index": 6,
@@ -1425,7 +1425,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 16,
       "cumulativeStoryCount": 9,
-      "scopeCoverage": 0.023076923076923078,
+      "scopeCoverage": 0.023017902813299233,
       "clientCompleteness": 0.64,
       "visual": {
         "loss": 0.5951577009106488,
@@ -1573,13 +1573,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.9769230769230769,
+        "scope": 0.9769820971867008,
         "completeness": 0.36,
         "visual": 0.5951577009106488,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.0909090909090915,
         "visual": -6.555545535139016,
         "reliability": 0
@@ -1597,15 +1597,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -6.723377702971177,
-      "loss": 59.13821183956502,
-      "bestLoss": 53.30284450791935,
-      "smoothLoss": 59.732915088580675
+      "lossDelta": -6.723180968759095,
+      "loss": 59.13998244747373,
+      "bestLoss": 53.304221647403914,
+      "smoothLoss": 59.733884028223684
     },
     {
       "index": 7,
@@ -1641,7 +1641,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 16,
       "cumulativeStoryCount": 10,
-      "scopeCoverage": 0.02564102564102564,
+      "scopeCoverage": 0.02557544757033248,
       "clientCompleteness": 0.6538461538461539,
       "visual": {
         "loss": 0.5951577009106488,
@@ -1663,13 +1663,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.9743589743589743,
+        "scope": 0.9744245524296675,
         "completeness": 0.34615384615384615,
         "visual": 0.5951577009106488,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.34615384615384603,
         "visual": 0,
         "reliability": 0
@@ -1682,15 +1682,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.4230769230769269,
-      "loss": 58.71513491648809,
-      "bestLoss": 53.30284450791935,
-      "smoothLoss": 59.549714657604014
+      "lossDelta": -0.4228801888648519,
+      "loss": 58.717102258608875,
+      "bestLoss": 53.304221647403914,
+      "smoothLoss": 59.55086330969303
     },
     {
       "index": 8,
@@ -1737,7 +1737,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 16,
       "cumulativeStoryCount": 11,
-      "scopeCoverage": 0.028205128205128206,
+      "scopeCoverage": 0.028132992327365727,
       "clientCompleteness": 0.6666666666666666,
       "visual": {
         "loss": 0.5951577009106488,
@@ -1759,13 +1759,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.9717948717948718,
+        "scope": 0.9718670076726342,
         "completeness": 0.33333333333333337,
         "visual": 0.5951577009106488,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.3205128205128194,
         "visual": 0,
         "reliability": 0
@@ -1778,15 +1778,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.3974358974358978,
-      "loss": 58.31769901905219,
-      "bestLoss": 53.30284450791935,
-      "smoothLoss": 59.32795184266469
+      "lossDelta": -0.3972391632238157,
+      "loss": 58.31986309538506,
+      "bestLoss": 53.304221647403914,
+      "smoothLoss": 59.329283271117596
     },
     {
       "index": 9,
@@ -1823,7 +1823,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 16,
       "cumulativeStoryCount": 12,
-      "scopeCoverage": 0.03076923076923077,
+      "scopeCoverage": 0.030690537084398978,
       "clientCompleteness": 0.6785714285714286,
       "visual": {
         "loss": 0.5951577009106488,
@@ -1845,13 +1845,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.9692307692307692,
+        "scope": 0.969309462915601,
         "completeness": 0.3214285714285714,
         "visual": 0.5951577009106488,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.29761904761904934,
         "visual": 0,
         "reliability": 0
@@ -1864,15 +1864,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.374542124542117,
-      "loss": 57.943156894510075,
-      "bestLoss": 53.30284450791935,
-      "smoothLoss": 59.078688751996864
+      "lossDelta": -0.3743453903300349,
+      "loss": 57.945517705055025,
+      "bestLoss": 53.304221647403914,
+      "smoothLoss": 59.080205469226335
     },
     {
       "index": 10,
@@ -1985,7 +1985,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 20,
-      "scopeCoverage": 0.05128205128205128,
+      "scopeCoverage": 0.05115089514066496,
       "clientCompleteness": 0.6730769230769231,
       "visual": {
         "loss": 0.496275443866571,
@@ -2208,13 +2208,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.9487179487179487,
+        "scope": 0.948849104859335,
         "completeness": 0.32692307692307687,
         "visual": 0.496275443866571,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.6153846153846165,
+        "scope": -0.6138107416879801,
         "completeness": 0.13736263736263687,
         "visual": -3.460878996542722,
         "reliability": 0
@@ -2227,7 +2227,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.6153846153846165,
+          "contribution": -0.6138107416879801,
           "direction": "down"
         },
         {
@@ -2237,10 +2237,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -3.93890097456471,
-      "loss": 54.004255919945365,
-      "bestLoss": 53.30284450791935,
-      "smoothLoss": 58.16529084222759
+      "lossDelta": -3.9373271008680675,
+      "loss": 54.00819060418696,
+      "bestLoss": 53.304221647403914,
+      "smoothLoss": 58.16724279351925
     },
     {
       "index": 11,
@@ -2308,7 +2308,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 24,
-      "scopeCoverage": 0.06153846153846154,
+      "scopeCoverage": 0.061381074168797956,
       "clientCompleteness": 0.671875,
       "visual": {
         "loss": 0.3780220285645122,
@@ -2431,13 +2431,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.9384615384615385,
+        "scope": 0.9386189258312021,
         "completeness": 0.328125,
         "visual": 0.3780220285645122,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.3076923076923066,
+        "scope": -0.3069053708439884,
         "completeness": 0.030048076923078204,
         "visual": -4.1388695355720575,
         "reliability": 0
@@ -2450,7 +2450,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.3076923076923066,
+          "contribution": -0.3069053708439884,
           "direction": "down"
         },
         {
@@ -2460,10 +2460,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -4.416513766341289,
-      "loss": 49.587742153604076,
-      "bestLoss": 49.587742153604076,
-      "smoothLoss": 56.621332078275366
+      "lossDelta": -4.415726829492975,
+      "loss": 49.59246377469398,
+      "bestLoss": 49.59246377469398,
+      "smoothLoss": 56.6237825701307
     },
     {
       "index": 12,
@@ -2531,7 +2531,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 28,
-      "scopeCoverage": 0.07179487179487179,
+      "scopeCoverage": 0.07161125319693094,
       "clientCompleteness": 0.6710526315789473,
       "visual": {
         "loss": 0.2795167844831022,
@@ -2654,13 +2654,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.9282051282051282,
+        "scope": 0.928388746803069,
         "completeness": 0.32894736842105265,
         "visual": 0.2795167844831022,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.3076923076923066,
+        "scope": -0.3069053708439917,
         "completeness": 0.020559210526316374,
         "visual": -3.447683542849351,
         "reliability": 0
@@ -2673,7 +2673,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.3076923076923066,
+          "contribution": -0.3069053708439917,
           "direction": "down"
         },
         {
@@ -2683,10 +2683,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -3.734816640015339,
-      "loss": 45.85292551358874,
-      "bestLoss": 45.85292551358874,
-      "smoothLoss": 54.68301889663177
+      "lossDelta": -3.7340297031670175,
+      "loss": 45.858434071526965,
+      "bestLoss": 45.858434071526965,
+      "smoothLoss": 54.68601984038203
     },
     {
       "index": 13,
@@ -2754,7 +2754,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 32,
-      "scopeCoverage": 0.08205128205128205,
+      "scopeCoverage": 0.08184143222506395,
       "clientCompleteness": 0.6704545454545454,
       "visual": {
         "loss": 0.24861991648511256,
@@ -2877,13 +2877,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.9179487179487179,
+        "scope": 0.9181585677749361,
         "completeness": 0.3295454545454546,
         "visual": 0.24861991648511256,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.30769230769230993,
+        "scope": -0.3069053708439884,
         "completeness": 0.014952153110048272,
         "visual": -1.081390379929637,
         "reliability": 0
@@ -2896,7 +2896,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.30769230769230993,
+          "contribution": -0.3069053708439884,
           "direction": "down"
         },
         {
@@ -2906,10 +2906,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -1.3741305345118988,
-      "loss": 44.47879497907684,
-      "bestLoss": 44.47879497907684,
-      "smoothLoss": 52.84625859147188
+      "lossDelta": -1.3733435976635846,
+      "loss": 44.48509047386338,
+      "bestLoss": 44.48509047386338,
+      "smoothLoss": 52.84985255440868
     },
     {
       "index": 14,
@@ -2977,7 +2977,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 36,
-      "scopeCoverage": 0.09230769230769231,
+      "scopeCoverage": 0.09207161125319693,
       "clientCompleteness": 0.67,
       "visual": {
         "loss": 0.24068718228031954,
@@ -3100,13 +3100,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.9076923076923077,
+        "scope": 0.907928388746803,
         "completeness": 0.32999999999999996,
         "visual": 0.24068718228031954,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.3076923076923066,
+        "scope": -0.3069053708439917,
         "completeness": 0.011363636363634355,
         "visual": -0.27764569716775545,
         "reliability": 0
@@ -3114,7 +3114,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.3076923076923066,
+          "contribution": -0.3069053708439917,
           "direction": "down"
         },
         {
@@ -3129,10 +3129,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.5739743684964296,
-      "loss": 43.90482061058041,
-      "bestLoss": 43.90482061058041,
-      "smoothLoss": 51.23679975491142
+      "lossDelta": -0.5731874316481083,
+      "loss": 43.91190304221527,
+      "bestLoss": 43.91190304221527,
+      "smoothLoss": 51.241021642213866
     },
     {
       "index": 15,
@@ -3260,7 +3260,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 36,
-      "scopeCoverage": 0.09230769230769231,
+      "scopeCoverage": 0.09207161125319693,
       "clientCompleteness": 0.91,
       "visual": {
         "loss": 0.25666016795845603,
@@ -3883,7 +3883,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.9076923076923077,
+        "scope": 0.907928388746803,
         "completeness": 0.08999999999999997,
         "visual": 0.25666016795845603,
         "reliability": 0
@@ -3907,10 +3907,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -5.440945501265212,
-      "loss": 38.4638751093152,
-      "bestLoss": 38.4638751093152,
-      "smoothLoss": 48.9376733187041
+      "lossDelta": -5.440945501265226,
+      "loss": 38.470957540950046,
+      "bestLoss": 38.470957540950046,
+      "smoothLoss": 48.942410103986376
     },
     {
       "index": 16,
@@ -3954,7 +3954,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 37,
-      "scopeCoverage": 0.09487179487179487,
+      "scopeCoverage": 0.09462915601023018,
       "clientCompleteness": 0.9108910891089109,
       "visual": {
         "loss": 0.25666016795845603,
@@ -3976,13 +3976,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.9051282051282051,
+        "scope": 0.9053708439897699,
         "completeness": 0.08910891089108908,
         "visual": 0.25666016795845603,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.022277227722772297,
         "visual": 0,
         "reliability": 0
@@ -3990,7 +3990,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -4000,10 +4000,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.09920030464585494,
-      "loss": 38.36467480466934,
-      "bestLoss": 38.36467480466934,
-      "smoothLoss": 47.034533586177844
+      "lossDelta": -0.09900357043376573,
+      "loss": 38.37195397051628,
+      "bestLoss": 38.37195397051628,
+      "smoothLoss": 47.03972799996176
     },
     {
       "index": 17,
@@ -4029,7 +4029,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 37,
-      "scopeCoverage": 0.09487179487179487,
+      "scopeCoverage": 0.09462915601023018,
       "clientCompleteness": 0.9108910891089109,
       "visual": {
         "loss": 0.25666016795845603,
@@ -4051,7 +4051,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.9051282051282051,
+        "scope": 0.9053708439897699,
         "completeness": 0.08910891089108908,
         "visual": 0.25666016795845603,
         "reliability": 0
@@ -4065,9 +4065,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 38.36467480466934,
-      "bestLoss": 38.36467480466934,
-      "smoothLoss": 45.473959005506316
+      "loss": 38.37195397051628,
+      "bestLoss": 38.37195397051628,
+      "smoothLoss": 45.47952867466158
     },
     {
       "index": 18,
@@ -4125,7 +4125,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 40,
-      "scopeCoverage": 0.10256410256410256,
+      "scopeCoverage": 0.10230179028132992,
       "clientCompleteness": 0.8818181818181818,
       "visual": {
         "loss": 0.24535127693052533,
@@ -4198,13 +4198,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.8974358974358975,
+        "scope": 0.8976982097186701,
         "completeness": 0.11818181818181817,
         "visual": 0.24535127693052533,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.23076923076922992,
+        "scope": -0.23017902813299296,
         "completeness": 0.7268226822682272,
         "visual": -0.3958111859775745,
         "reliability": 0
@@ -4222,15 +4222,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.23076923076922992,
+          "contribution": -0.23017902813299296,
           "direction": "down"
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.10024226552142323,
-      "loss": 38.464917070190765,
-      "bestLoss": 38.36467480466934,
-      "smoothLoss": 44.21233145714952
+      "lossDelta": 0.10083246815766245,
+      "loss": 38.47278643867394,
+      "bestLoss": 38.37195397051628,
+      "smoothLoss": 44.218315072183806
     },
     {
       "index": 19,
@@ -4290,7 +4290,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 43,
-      "scopeCoverage": 0.11025641025641025,
+      "scopeCoverage": 0.10997442455242967,
       "clientCompleteness": 0.8571428571428571,
       "visual": {
         "loss": 0.24535127693052533,
@@ -4363,13 +4363,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.8897435897435897,
+        "scope": 0.8900255754475703,
         "completeness": 0.1428571428571429,
         "visual": 0.24535127693052533,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.23076923076923325,
+        "scope": -0.23017902813299296,
         "completeness": 0.6168831168831185,
         "visual": 0,
         "reliability": 0
@@ -4382,15 +4382,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.23076923076923325,
+          "contribution": -0.23017902813299296,
           "direction": "down"
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.38611388611388264,
-      "loss": 38.85103095630465,
-      "bestLoss": 38.36467480466934,
-      "smoothLoss": 43.247297366997444
+      "lossDelta": 0.38670408875012896,
+      "loss": 38.85949052742407,
+      "bestLoss": 38.37195397051628,
+      "smoothLoss": 43.25372665412706
     },
     {
       "index": 20,
@@ -4450,7 +4450,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 46,
-      "scopeCoverage": 0.11794871794871795,
+      "scopeCoverage": 0.11764705882352941,
       "clientCompleteness": 0.8359375,
       "visual": {
         "loss": 0.25666016795845603,
@@ -4523,13 +4523,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.882051282051282,
+        "scope": 0.8823529411764706,
         "completeness": 0.1640625,
         "visual": 0.25666016795845603,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.23076923076922992,
+        "scope": -0.23017902813299296,
         "completeness": 0.5301339285714274,
         "visual": 0.3958111859775745,
         "reliability": 0
@@ -4547,15 +4547,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.23076923076922992,
+          "contribution": -0.23017902813299296,
           "direction": "down"
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.6951758837797684,
-      "loss": 39.546206840084416,
-      "bestLoss": 38.36467480466934,
-      "smoothLoss": 42.5811010721531
+      "lossDelta": 0.6957660864160076,
+      "loss": 39.55525661384008,
+      "bestLoss": 38.37195397051628,
+      "smoothLoss": 42.5880020468754
     },
     {
       "index": 21,
@@ -4681,7 +4681,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 55,
-      "scopeCoverage": 0.14102564102564102,
+      "scopeCoverage": 0.14066496163682865,
       "clientCompleteness": 0.803921568627451,
       "visual": {
         "loss": 0.25666016795845603,
@@ -5004,13 +5004,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.858974358974359,
+        "scope": 0.8593350383631714,
         "completeness": 0.196078431372549,
         "visual": 0.25666016795845603,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.6923076923076898,
+        "scope": -0.6905370843989755,
         "completeness": 0.8003982843137247,
         "visual": 0,
         "reliability": 0
@@ -5023,15 +5023,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.6923076923076898,
+          "contribution": -0.6905370843989755,
           "direction": "down"
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.1080905920060431,
-      "loss": 39.65429743209046,
-      "bestLoss": 38.36467480466934,
-      "smoothLoss": 42.05427641694183
+      "lossDelta": 0.10986119991474652,
+      "loss": 39.665117813754826,
+      "bestLoss": 38.37195397051628,
+      "smoothLoss": 42.0618828849137
     },
     {
       "index": 22,
@@ -5114,7 +5114,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 59,
-      "scopeCoverage": 0.15128205128205127,
+      "scopeCoverage": 0.15089514066496162,
       "clientCompleteness": 0.7852760736196319,
       "visual": {
         "loss": 0.25666016795845603,
@@ -5136,13 +5136,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.8487179487179487,
+        "scope": 0.8491048593350383,
         "completeness": 0.21472392638036808,
         "visual": 0.25666016795845603,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.30769230769230993,
+        "scope": -0.3069053708439917,
         "completeness": 0.46613737519547727,
         "visual": 0,
         "reliability": 0
@@ -5155,15 +5155,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.30769230769230993,
+          "contribution": -0.3069053708439917,
           "direction": "down"
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.15844506750316611,
-      "loss": 39.812742499593625,
-      "bestLoss": 38.36467480466934,
-      "smoothLoss": 41.650800311819154
+      "lossDelta": 0.15923200435148033,
+      "loss": 39.824349818106306,
+      "bestLoss": 38.37195397051628,
+      "smoothLoss": 41.65912693288837
     },
     {
       "index": 23,
@@ -5203,7 +5203,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 60,
-      "scopeCoverage": 0.15384615384615385,
+      "scopeCoverage": 0.1534526854219949,
       "clientCompleteness": 0.7771084337349398,
       "visual": {
         "loss": 0.25666016795845603,
@@ -5225,13 +5225,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.8461538461538461,
+        "scope": 0.8465473145780051,
         "completeness": 0.22289156626506024,
         "visual": 0.25666016795845603,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.20419099711730393,
         "visual": 0,
         "reliability": 0
@@ -5244,15 +5244,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.12726792019422817,
-      "loss": 39.94001041978785,
-      "bestLoss": 38.36467480466934,
-      "smoothLoss": 41.34285813125352
+      "lossDelta": 0.12746465440631027,
+      "loss": 39.951814472512616,
+      "bestLoss": 38.37195397051628,
+      "smoothLoss": 41.351810690020734
     },
     {
       "index": 24,
@@ -5345,7 +5345,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 67,
-      "scopeCoverage": 0.1717948717948718,
+      "scopeCoverage": 0.17135549872122763,
       "clientCompleteness": 0.7647058823529411,
       "visual": {
         "loss": 0.2774806493585088,
@@ -5543,13 +5543,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.8282051282051281,
+        "scope": 0.8286445012787724,
         "completeness": 0.23529411764705888,
         "visual": 0.2774806493585088,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.5384615384615399,
+        "scope": -0.5370843989769813,
         "completeness": 0.31006378454996597,
         "visual": 0.728716849001847,
         "reliability": 0
@@ -5562,7 +5562,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.5384615384615399,
+          "contribution": -0.5370843989769813,
           "direction": "down"
         },
         {
@@ -5572,10 +5572,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.5003190950902692,
-      "loss": 40.44032951487812,
-      "bestLoss": 38.36467480466934,
-      "smoothLoss": 41.180402980305956
+      "lossDelta": 0.5016962345748368,
+      "loss": 40.45351070708745,
+      "bestLoss": 38.37195397051628,
+      "smoothLoss": 41.19011669309275
     },
     {
       "index": 25,
@@ -5641,7 +5641,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 71,
-      "scopeCoverage": 0.18205128205128204,
+      "scopeCoverage": 0.1815856777493606,
       "clientCompleteness": 0.7587939698492462,
       "visual": {
         "loss": 0.3448324913854054,
@@ -5764,13 +5764,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.8179487179487179,
+        "scope": 0.8184143222506394,
         "completeness": 0.24120603015075381,
         "visual": 0.3448324913854054,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.3076923076923066,
+        "scope": -0.3069053708439917,
         "completeness": 0.14779781259237346,
         "visual": 2.3573144709413807,
         "reliability": 0
@@ -5783,7 +5783,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.3076923076923066,
+          "contribution": -0.3069053708439917,
           "direction": "down"
         },
         {
@@ -5793,10 +5793,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 2.1974199758414485,
-      "loss": 42.63774949071957,
-      "bestLoss": 38.36467480466934,
-      "smoothLoss": 41.44272535218041
+      "lossDelta": 2.1982069126897628,
+      "loss": 42.651717619777216,
+      "bestLoss": 38.37195397051628,
+      "smoothLoss": 41.453204859895955
     },
     {
       "index": 26,
@@ -5862,7 +5862,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 75,
-      "scopeCoverage": 0.19230769230769232,
+      "scopeCoverage": 0.1918158567774936,
       "clientCompleteness": 0.7535545023696683,
       "visual": {
         "loss": 0.3448324913854054,
@@ -6084,13 +6084,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 2
       },
       "components": {
-        "scope": 0.8076923076923077,
+        "scope": 0.8081841432225064,
         "completeness": 0.24644549763033174,
         "visual": 0.3448324913854054,
         "reliability": 0.2
       },
       "componentContributions": {
-        "scope": -0.3076923076923066,
+        "scope": -0.3069053708439884,
         "completeness": 0.13098668698944826,
         "visual": 0,
         "reliability": 2.0000000000000004
@@ -6103,7 +6103,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.3076923076923066,
+          "contribution": -0.3069053708439884,
           "direction": "down"
         },
         {
@@ -6119,10 +6119,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "summary": "Web command-menu screenshots rendered dark while Web and Lynx assertions both declared light."
         }
       ],
-      "lossDelta": 1.8232943792971454,
-      "loss": 44.46104387001672,
-      "bestLoss": 38.36467480466934,
-      "smoothLoss": 41.98602268539095
+      "lossDelta": 1.8240813161454597,
+      "loss": 44.475798935922676,
+      "bestLoss": 38.37195397051628,
+      "smoothLoss": 41.997271793580765
     },
     {
       "index": 27,
@@ -6188,7 +6188,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 79,
-      "scopeCoverage": 0.20256410256410257,
+      "scopeCoverage": 0.2020460358056266,
       "clientCompleteness": 0.7488789237668162,
       "visual": {
         "loss": 1,
@@ -6330,13 +6330,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 2
       },
       "components": {
-        "scope": 0.7974358974358975,
+        "scope": 0.7979539641943734,
         "completeness": 0.2511210762331838,
         "visual": 1,
         "reliability": 0.2
       },
       "componentContributions": {
-        "scope": -0.3076923076923066,
+        "scope": -0.3069053708439917,
         "completeness": 0.11688946507130149,
         "visual": 22.93086280151081,
         "reliability": 0
@@ -6349,7 +6349,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.3076923076923066,
+          "contribution": -0.3069053708439917,
           "direction": "down"
         },
         {
@@ -6359,10 +6359,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 22.740059958889795,
-      "loss": 67.20110382890651,
-      "bestLoss": 38.36467480466934,
-      "smoothLoss": 46.52473729122375
+      "lossDelta": 22.740846895738123,
+      "loss": 67.2166458316608,
+      "bestLoss": 38.37195397051628,
+      "smoothLoss": 46.53675912043517
     },
     {
       "index": 28,
@@ -6493,7 +6493,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 91,
-      "scopeCoverage": 0.23333333333333334,
+      "scopeCoverage": 0.23273657289002558,
       "clientCompleteness": 0.694980694980695,
       "visual": {
         "loss": 1,
@@ -6560,13 +6560,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 2
       },
       "components": {
-        "scope": 0.7666666666666666,
+        "scope": 0.7672634271099744,
         "completeness": 0.30501930501930496,
         "visual": 1,
         "reliability": 0.2
       },
       "componentContributions": {
-        "scope": -0.9230769230769265,
+        "scope": -0.9207161125319685,
         "completeness": 1.347455719653029,
         "visual": 0,
         "reliability": 0
@@ -6579,15 +6579,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.9230769230769265,
+          "contribution": -0.9207161125319685,
           "direction": "down"
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.4243787965761072,
-      "loss": 67.62548262548262,
-      "bestLoss": 38.36467480466934,
-      "smoothLoss": 50.32287145139035
+      "lossDelta": 0.42673960712104986,
+      "loss": 67.64338543878185,
+      "bestLoss": 38.37195397051628,
+      "smoothLoss": 50.33595185773758
     },
     {
       "index": 29,
@@ -6686,7 +6686,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 96,
-      "scopeCoverage": 0.24615384615384617,
+      "scopeCoverage": 0.24552429667519182,
       "clientCompleteness": 0.6897810218978102,
       "visual": {
         "loss": 0.2774806493585088,
@@ -6928,13 +6928,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 2
       },
       "components": {
-        "scope": 0.7538461538461538,
+        "scope": 0.7544757033248082,
         "completeness": 0.3102189781021898,
         "visual": 0.2774806493585088,
         "reliability": 0.2
       },
       "componentContributions": {
-        "scope": -0.38461538461538325,
+        "scope": -0.38363171355498715,
         "completeness": 0.12999182707212065,
         "visual": -25.288177272452188,
         "reliability": 0
@@ -6947,7 +6947,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.38461538461538325,
+          "contribution": -0.38363171355498715,
           "direction": "down"
         },
         {
@@ -6957,10 +6957,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -25.54280082999545,
-      "loss": 42.08268179548717,
-      "bestLoss": 38.36467480466934,
-      "smoothLoss": 48.83963731332778
+      "lossDelta": -25.541817158935054,
+      "loss": 42.101568279846795,
+      "bestLoss": 38.37195397051628,
+      "smoothLoss": 48.85376281371724
     },
     {
       "index": 30,
@@ -7004,7 +7004,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 97,
-      "scopeCoverage": 0.24871794871794872,
+      "scopeCoverage": 0.24808184143222506,
       "clientCompleteness": 0.6895306859205776,
       "visual": {
         "loss": 0.20636199085588386,
@@ -7096,13 +7096,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 2
       },
       "components": {
-        "scope": 0.7512820512820513,
+        "scope": 0.751918158567775,
         "completeness": 0.31046931407942235,
         "visual": 0.20636199085588386,
         "reliability": 0.2
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.006258399430814077,
         "visual": -2.489153047591873,
         "reliability": 0
@@ -7115,7 +7115,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -7125,10 +7125,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -2.5598177250841303,
-      "loss": 39.52286407040304,
-      "bestLoss": 38.36467480466934,
-      "smoothLoss": 47.16261812960133
+      "lossDelta": -2.559620990872048,
+      "loss": 39.54194728897475,
+      "bestLoss": 38.37195397051628,
+      "smoothLoss": 47.177636019263595
     },
     {
       "index": 31,
@@ -7163,7 +7163,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 97,
-      "scopeCoverage": 0.24871794871794872,
+      "scopeCoverage": 0.24808184143222506,
       "clientCompleteness": 0.6895306859205776,
       "visual": {
         "loss": 0.20636199085588386,
@@ -7204,7 +7204,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 2
       },
       "components": {
-        "scope": 0.7512820512820513,
+        "scope": 0.751918158567775,
         "completeness": 0.31046931407942235,
         "visual": 0.20636199085588386,
         "reliability": 0.2
@@ -7218,9 +7218,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 39.52286407040304,
-      "bestLoss": 38.36467480466934,
-      "smoothLoss": 45.78746239894564
+      "loss": 39.54194728897475,
+      "bestLoss": 38.37195397051628,
+      "smoothLoss": 45.803212047811606
     },
     {
       "index": 32,
@@ -7264,7 +7264,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 98,
-      "scopeCoverage": 0.2512820512820513,
+      "scopeCoverage": 0.2506393861892583,
       "clientCompleteness": 0.6892857142857143,
       "visual": {
         "loss": 0.1729763532699665,
@@ -7356,13 +7356,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 2
       },
       "components": {
-        "scope": 0.7487179487179487,
+        "scope": 0.7493606138107417,
         "completeness": 0.3107142857142857,
         "visual": 0.1729763532699665,
         "reliability": 0.2
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.00612429087158417,
         "visual": -1.1684973155071077,
         "reliability": 0
@@ -7375,7 +7375,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -7385,10 +7385,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -1.239296101558601,
-      "loss": 38.28356796884444,
-      "bestLoss": 38.28356796884444,
-      "smoothLoss": 44.43676140152743
+      "lossDelta": -1.239099367346519,
+      "loss": 38.30284792162823,
+      "bestLoss": 38.30284792162823,
+      "smoothLoss": 44.4531465050986
     },
     {
       "index": 33,
@@ -7432,7 +7432,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 99,
-      "scopeCoverage": 0.25384615384615383,
+      "scopeCoverage": 0.2531969309462916,
       "clientCompleteness": 0.6890459363957597,
       "visual": {
         "loss": 0.12920971952655852,
@@ -7505,13 +7505,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.7461538461538462,
+        "scope": 0.7468030690537084,
         "completeness": 0.31095406360424027,
         "visual": 0.12920971952655852,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.005994447248863777,
         "visual": -1.531832181019279,
         "reliability": -2.0000000000000004
@@ -7529,7 +7529,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -7545,10 +7545,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "summary": "Current light Web/Lynx evidence converged to 98.7% parity, followed by synchronized Native certification."
         }
       ],
-      "lossDelta": -3.6027608106935034,
-      "loss": 34.680807158150934,
-      "bestLoss": 34.680807158150934,
-      "smoothLoss": 42.68068963771966
+      "lossDelta": -3.6025640764814284,
+      "loss": 34.7002838451468,
+      "bestLoss": 34.7002838451468,
+      "smoothLoss": 42.69763122630728
     },
     {
       "index": 34,
@@ -7583,7 +7583,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 100,
-      "scopeCoverage": 0.2564102564102564,
+      "scopeCoverage": 0.2557544757033248,
       "clientCompleteness": 0.6853146853146853,
       "visual": {
         "loss": 0.12920971952655852,
@@ -7605,13 +7605,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.7435897435897436,
+        "scope": 0.7442455242966752,
         "completeness": 0.3146853146853147,
         "visual": 0.12920971952655852,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.0932812770268604,
         "visual": 0,
         "reliability": 0
@@ -7624,15 +7624,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.01635820010378808,
-      "loss": 34.69716535825472,
-      "bestLoss": 34.680807158150934,
-      "smoothLoss": 41.243655267415974
+      "lossDelta": 0.016554934315870184,
+      "loss": 34.71683877946267,
+      "bestLoss": 34.7002838451468,
+      "smoothLoss": 41.26108858587526
     },
     {
       "index": 35,
@@ -7715,7 +7715,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 103,
-      "scopeCoverage": 0.2641025641025641,
+      "scopeCoverage": 0.26342710997442453,
       "clientCompleteness": 0.6745762711864407,
       "visual": {
         "loss": 0.12920971952655852,
@@ -7737,13 +7737,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.735897435897436,
+        "scope": 0.7365728900255755,
         "completeness": 0.3254237288135593,
         "visual": 0.12920971952655852,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.23076923076922992,
+        "scope": -0.23017902813299296,
         "completeness": 0.2684603532061153,
         "visual": 0,
         "reliability": 0
@@ -7756,15 +7756,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.23076923076922992,
+          "contribution": -0.23017902813299296,
           "direction": "down"
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.03769112243688255,
-      "loss": 34.734856480691604,
-      "bestLoss": 34.680807158150934,
-      "smoothLoss": 40.07207148580559
+      "lossDelta": 0.038281325073121764,
+      "loss": 34.75512010453579,
+      "bestLoss": 34.7002838451468,
+      "smoothLoss": 40.09001425923416
     },
     {
       "index": 36,
@@ -7827,7 +7827,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 105,
-      "scopeCoverage": 0.2692307692307692,
+      "scopeCoverage": 0.26854219948849106,
       "clientCompleteness": 0.6677740863787376,
       "visual": {
         "loss": 0.12920971952655852,
@@ -7849,13 +7849,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.7307692307692308,
+        "scope": 0.7314578005115089,
         "completeness": 0.3322259136212624,
         "visual": 0.12920971952655852,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.1538461538461533,
+        "scope": -0.15345268542199753,
         "completeness": 0.1700546201925779,
         "visual": 0,
         "reliability": 0
@@ -7868,15 +7868,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.1538461538461533,
+          "contribution": -0.15345268542199753,
           "direction": "down"
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.01620846634642703,
-      "loss": 34.75106494703803,
-      "bestLoss": 34.680807158150934,
-      "smoothLoss": 39.11429030882743
+      "lossDelta": 0.01660193477057703,
+      "loss": 34.77172203930637,
+      "bestLoss": 34.7002838451468,
+      "smoothLoss": 39.13272165964716
     },
     {
       "index": 37,
@@ -7922,7 +7922,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 106,
-      "scopeCoverage": 0.2717948717948718,
+      "scopeCoverage": 0.2710997442455243,
       "clientCompleteness": 0.6644736842105263,
       "visual": {
         "loss": 0.12920971952655852,
@@ -7944,13 +7944,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.7282051282051283,
+        "scope": 0.7289002557544757,
         "completeness": 0.3355263157894737,
         "visual": 0.12920971952655852,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.08251005420528146,
         "visual": 0,
         "reliability": 0
@@ -7963,7 +7963,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         }
       ],
@@ -7974,10 +7974,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "summary": "Current light Web/Lynx evidence converged to 98.7% parity, followed by synchronized Native certification."
         }
       ],
-      "lossDelta": 0.005586977282206362,
-      "loss": 34.75665192432024,
-      "bestLoss": 34.680807158150934,
-      "smoothLoss": 38.329915399616134
+      "lossDelta": 0.005783711494288468,
+      "loss": 34.77750575080066,
+      "bestLoss": 34.7002838451468,
+      "smoothLoss": 38.34878279605479
     },
     {
       "index": 38,
@@ -8004,7 +8004,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 106,
-      "scopeCoverage": 0.2717948717948718,
+      "scopeCoverage": 0.2710997442455243,
       "clientCompleteness": 0.6644736842105263,
       "visual": {
         "loss": 0.12920971952655852,
@@ -8026,7 +8026,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.7282051282051283,
+        "scope": 0.7289002557544757,
         "completeness": 0.3355263157894737,
         "visual": 0.12920971952655852,
         "reliability": 0
@@ -8040,9 +8040,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 34.75665192432024,
-      "bestLoss": 34.680807158150934,
-      "smoothLoss": 37.686727974062876
+      "loss": 34.77750575080066,
+      "bestLoss": 34.7002838451468,
+      "smoothLoss": 37.70595292790905
     },
     {
       "index": 39,
@@ -8551,7 +8551,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 126,
-      "scopeCoverage": 0.3230769230769231,
+      "scopeCoverage": 0.32225063938618925,
       "clientCompleteness": 0.7197802197802198,
       "visual": {
         "loss": 0.22287224435397532,
@@ -10574,13 +10574,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.676923076923077,
+        "scope": 0.6777493606138107,
         "completeness": 0.2802197802197802,
         "visual": 0.22287224435397532,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -1.5384615384615397,
+        "scope": -1.5345268542199486,
         "completeness": -1.3826633892423361,
         "visual": 3.278188368959588,
         "reliability": 0
@@ -10593,7 +10593,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -1.5384615384615397,
+          "contribution": -1.5345268542199486,
           "direction": "down"
         },
         {
@@ -10603,10 +10603,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.3570634412557112,
-      "loss": 35.11371536557595,
-      "bestLoss": 34.680807158150934,
-      "smoothLoss": 37.22358570453523
+      "lossDelta": 0.3609981254973036,
+      "loss": 35.13850387629796,
+      "bestLoss": 34.7002838451468,
+      "smoothLoss": 37.24381209861906
     },
     {
       "index": 40,
@@ -10873,7 +10873,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 136,
-      "scopeCoverage": 0.3487179487179487,
+      "scopeCoverage": 0.34782608695652173,
       "clientCompleteness": 0.7411167512690355,
       "visual": {
         "loss": 0.08822465302993625,
@@ -11896,13 +11896,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.6512820512820513,
+        "scope": 0.6521739130434783,
         "completeness": 0.25888324873096447,
         "visual": 0.08822465302993625,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.7692307692307698,
+        "scope": -0.7672634271099743,
         "completeness": -0.5334132872203939,
         "visual": -4.712665696341368,
         "reliability": 0
@@ -11915,7 +11915,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.7692307692307698,
+          "contribution": -0.7672634271099743,
           "direction": "down"
         },
         {
@@ -11925,10 +11925,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -6.0153097527925325,
-      "loss": 29.098405612783417,
-      "bestLoss": 29.098405612783417,
-      "smoothLoss": 35.76105328801991
+      "lossDelta": -6.013342410671729,
+      "loss": 29.12516146562623,
+      "bestLoss": 29.12516146562623,
+      "smoothLoss": 35.782454984680356
     },
     {
       "index": 41,
@@ -12150,7 +12150,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 144,
-      "scopeCoverage": 0.36923076923076925,
+      "scopeCoverage": 0.36828644501278773,
       "clientCompleteness": 0.7559808612440191,
       "visual": {
         "loss": 0.10915200188307031,
@@ -12973,13 +12973,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.6307692307692307,
+        "scope": 0.6317135549872123,
         "completeness": 0.2440191387559809,
         "visual": 0.10915200188307031,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.6153846153846165,
+        "scope": -0.6138107416879801,
         "completeness": -0.3716027493745888,
         "visual": 0.7324572098596921,
         "reliability": 0
@@ -12992,7 +12992,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.6153846153846165,
+          "contribution": -0.6138107416879801,
           "direction": "down"
         },
         {
@@ -13002,10 +13002,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.2545301548995056,
-      "loss": 28.84387545788391,
-      "bestLoss": 28.84387545788391,
-      "smoothLoss": 34.515961278595434
+      "lossDelta": -0.25295628120287716,
+      "loss": 28.872205184423354,
+      "bestLoss": 28.872205184423354,
+      "smoothLoss": 34.538610020634096
     },
     {
       "index": 42,
@@ -13031,7 +13031,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 144,
-      "scopeCoverage": 0.36923076923076925,
+      "scopeCoverage": 0.36828644501278773,
       "clientCompleteness": 0.7559808612440191,
       "visual": {
         "loss": 0.10915200188307031,
@@ -13053,7 +13053,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.6307692307692307,
+        "scope": 0.6317135549872123,
         "completeness": 0.2440191387559809,
         "visual": 0.10915200188307031,
         "reliability": 0
@@ -13067,9 +13067,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 28.84387545788391,
-      "bestLoss": 28.84387545788391,
-      "smoothLoss": 33.494985830867364
+      "loss": 28.872205184423354,
+      "bestLoss": 28.872205184423354,
+      "smoothLoss": 33.51865715011616
     },
     {
       "index": 43,
@@ -13158,7 +13158,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 147,
-      "scopeCoverage": 0.3769230769230769,
+      "scopeCoverage": 0.37595907928388744,
       "clientCompleteness": 0.7588652482269503,
       "visual": {
         "loss": 0.11096469990435201,
@@ -13231,13 +13231,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.6230769230769231,
+        "scope": 0.6240409207161126,
         "completeness": 0.24113475177304966,
         "visual": 0.11096469990435201,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.23076923076922992,
+        "scope": -0.23017902813298963,
         "completeness": -0.07210967457328132,
         "visual": 0.0634444307448595,
         "reliability": 0
@@ -13245,7 +13245,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.23076923076922992,
+          "contribution": -0.23017902813298963,
           "direction": "down"
         },
         {
@@ -13260,10 +13260,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.23943447459766176,
-      "loss": 28.60444098328625,
-      "bestLoss": 28.60444098328625,
-      "smoothLoss": 32.614687758302765
+      "lossDelta": -0.238844271961419,
+      "loss": 28.633360912461935,
+      "bestLoss": 28.633360912461935,
+      "smoothLoss": 32.6393038273384
     },
     {
       "index": 44,
@@ -13289,7 +13289,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 147,
-      "scopeCoverage": 0.3769230769230769,
+      "scopeCoverage": 0.37595907928388744,
       "clientCompleteness": 0.7588652482269503,
       "visual": {
         "loss": 0.11096469990435201,
@@ -13311,7 +13311,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.6230769230769231,
+        "scope": 0.6240409207161126,
         "completeness": 0.24113475177304966,
         "visual": 0.11096469990435201,
         "reliability": 0
@@ -13325,9 +13325,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 28.60444098328625,
-      "bestLoss": 28.60444098328625,
-      "smoothLoss": 31.892843338799793
+      "loss": 28.633360912461935,
+      "bestLoss": 28.633360912461935,
+      "smoothLoss": 31.91823410266064
     },
     {
       "index": 45,
@@ -13373,7 +13373,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 148,
-      "scopeCoverage": 0.37948717948717947,
+      "scopeCoverage": 0.37851662404092073,
       "clientCompleteness": 0.7605633802816901,
       "visual": {
         "loss": 0.11096469990435201,
@@ -13446,13 +13446,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.6205128205128205,
+        "scope": 0.6214833759590792,
         "completeness": 0.23943661971830987,
         "visual": 0.11096469990435201,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.0767263427110021,
         "completeness": -0.04245330136849468,
         "visual": 0,
         "reliability": 0
@@ -13460,7 +13460,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.0767263427110021,
           "direction": "down"
         },
         {
@@ -13470,10 +13470,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.11937637829156955,
-      "loss": 28.48506460499468,
-      "bestLoss": 28.48506460499468,
-      "smoothLoss": 31.279443166714877
+      "lossDelta": -0.119179644079491,
+      "loss": 28.514181268382444,
+      "bestLoss": 28.514181268382444,
+      "smoothLoss": 31.305504592490568
     },
     {
       "index": 46,
@@ -13519,7 +13519,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 149,
-      "scopeCoverage": 0.382051282051282,
+      "scopeCoverage": 0.38107416879795397,
       "clientCompleteness": 0.7622377622377622,
       "visual": {
         "loss": 0.11096469990435201,
@@ -13592,13 +13592,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.617948717948718,
+        "scope": 0.618925831202046,
         "completeness": 0.23776223776223782,
         "visual": 0.11096469990435201,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.041859548901801436,
         "visual": 0,
         "reliability": 0
@@ -13606,7 +13606,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -13616,10 +13616,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.11878262582487409,
-      "loss": 28.366281979169806,
-      "bestLoss": 28.366281979169806,
-      "smoothLoss": 30.755074152956766
+      "lossDelta": -0.11858589161279909,
+      "loss": 28.395595376769645,
+      "bestLoss": 28.395595376769645,
+      "smoothLoss": 30.7817209336608
     },
     {
       "index": 47,
@@ -13665,7 +13665,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 150,
-      "scopeCoverage": 0.38461538461538464,
+      "scopeCoverage": 0.3836317135549872,
       "clientCompleteness": 0.7638888888888888,
       "visual": {
         "loss": 0.15193428670148176,
@@ -13738,13 +13738,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.6153846153846154,
+        "scope": 0.6163682864450128,
         "completeness": 0.23611111111111116,
         "visual": 0.15193428670148176,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.041278166278166384,
         "visual": 1.4339355378995413,
         "reliability": 0
@@ -13757,7 +13757,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -13767,10 +13767,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 1.3157342946983022,
-      "loss": 29.682016273868108,
-      "bestLoss": 28.366281979169806,
-      "smoothLoss": 30.56192373472081
+      "lossDelta": 1.3159310289103772,
+      "loss": 29.711526405680022,
+      "bestLoss": 28.395595376769645,
+      "smoothLoss": 30.589085918624264
     },
     {
       "index": 48,
@@ -13816,7 +13816,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 151,
-      "scopeCoverage": 0.3871794871794872,
+      "scopeCoverage": 0.38618925831202044,
       "clientCompleteness": 0.7655172413793103,
       "visual": {
         "loss": 0.1867815065558744,
@@ -13889,13 +13889,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.6128205128205129,
+        "scope": 0.6138107416879796,
         "completeness": 0.23448275862068968,
         "visual": 0.1867815065558744,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.04070881226053702,
         "visual": 1.2196526949037416,
         "reliability": 0
@@ -13908,7 +13908,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -13918,10 +13918,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 1.1020208057201266,
-      "loss": 30.784037079588234,
-      "bestLoss": 28.366281979169806,
-      "smoothLoss": 30.601904136796946
+      "lossDelta": 1.1022175399322087,
+      "loss": 30.81374394561223,
+      "bestLoss": 28.395595376769645,
+      "smoothLoss": 30.629524363482098
     },
     {
       "index": 49,
@@ -13967,7 +13967,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 152,
-      "scopeCoverage": 0.38974358974358975,
+      "scopeCoverage": 0.3887468030690537,
       "clientCompleteness": 0.7671232876712328,
       "visual": {
         "loss": 0.165728568866571,
@@ -14040,13 +14040,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.6102564102564103,
+        "scope": 0.6112531969309463,
         "completeness": 0.23287671232876717,
         "visual": 0.165728568866571,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.040151157298062845,
         "visual": -0.7368528191256185,
         "reliability": 0
@@ -14059,7 +14059,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -14069,10 +14069,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.8539270533467587,
-      "loss": 29.930110026241476,
-      "bestLoss": 28.366281979169806,
-      "smoothLoss": 30.480981196896963
+      "lossDelta": -0.8537303191346801,
+      "loss": 29.96001362647755,
+      "bestLoss": 28.395595376769645,
+      "smoothLoss": 30.509012430821283
     },
     {
       "index": 50,
@@ -14118,7 +14118,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 153,
-      "scopeCoverage": 0.3923076923076923,
+      "scopeCoverage": 0.391304347826087,
       "clientCompleteness": 0.7687074829931972,
       "visual": {
         "loss": 0.14720478015901484,
@@ -14191,13 +14191,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.6076923076923078,
+        "scope": 0.6086956521739131,
         "completeness": 0.23129251700680276,
         "visual": 0.14720478015901484,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.03960488304911025,
         "visual": -0.6483326047644657,
         "reliability": 0
@@ -14210,7 +14210,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -14220,10 +14220,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.764860564736658,
-      "loss": 29.165249461504818,
-      "bestLoss": 28.366281979169806,
-      "smoothLoss": 30.24414948452638
+      "lossDelta": -0.7646638305245723,
+      "loss": 29.19534979595298,
+      "bestLoss": 28.395595376769645,
+      "smoothLoss": 30.272553156544987
     },
     {
       "index": 51,
@@ -14269,7 +14269,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 154,
-      "scopeCoverage": 0.39487179487179486,
+      "scopeCoverage": 0.3938618925831202,
       "clientCompleteness": 0.7702702702702703,
       "visual": {
         "loss": 0.165728568866571,
@@ -14342,13 +14342,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.6051282051282052,
+        "scope": 0.6061381074168798,
         "completeness": 0.22972972972972971,
         "visual": 0.165728568866571,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.03906968192682603,
         "visual": 0.6483326047644657,
         "reliability": 0
@@ -14361,7 +14361,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -14371,10 +14371,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.5323398459145672,
-      "loss": 29.697589307419385,
-      "bestLoss": 28.366281979169806,
-      "smoothLoss": 30.14576865264712
+      "lossDelta": 0.5325365801266422,
+      "loss": 29.72788637607962,
+      "bestLoss": 28.395595376769645,
+      "smoothLoss": 30.174513136061222
     },
     {
       "index": 52,
@@ -14445,7 +14445,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 155,
-      "scopeCoverage": 0.3974358974358974,
+      "scopeCoverage": 0.39641943734015345,
       "clientCompleteness": 0.7718120805369127,
       "visual": {
         "loss": 0.1867815065558744,
@@ -14518,13 +14518,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.6025641025641026,
+        "scope": 0.6035805626598465,
         "completeness": 0.22818791946308725,
         "visual": 0.1867815065558744,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.03854525666606157,
         "visual": 0.7368528191256185,
         "reliability": 0
@@ -14537,7 +14537,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -14547,10 +14547,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.6213844855364776,
-      "loss": 30.318973792955862,
-      "bestLoss": 28.366281979169806,
-      "smoothLoss": 30.176945577902696
+      "lossDelta": 0.6215812197485562,
+      "loss": 30.349467595828177,
+      "bestLoss": 28.395595376769645,
+      "smoothLoss": 30.206004938819277
     },
     {
       "index": 53,
@@ -14596,7 +14596,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 156,
-      "scopeCoverage": 0.4,
+      "scopeCoverage": 0.3989769820971867,
       "clientCompleteness": 0.7733333333333333,
       "visual": {
         "loss": 0.1867815065558744,
@@ -14669,13 +14669,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.6,
+        "scope": 0.6010230179028133,
         "completeness": 0.22666666666666668,
         "visual": 0.1867815065558744,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307998,
+        "scope": -0.07672634271099543,
         "completeness": -0.03803131991051423,
         "visual": 0,
         "reliability": 0
@@ -14683,7 +14683,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307998,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -14693,10 +14693,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.1149543968335891,
-      "loss": 30.204019396122273,
-      "bestLoss": 28.366281979169806,
-      "smoothLoss": 30.18181886518222
+      "lossDelta": -0.11475766262150344,
+      "loss": 30.234709933206673,
+      "bestLoss": 28.395595376769645,
+      "smoothLoss": 30.21117183780901
     },
     {
       "index": 54,
@@ -14742,7 +14742,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 157,
-      "scopeCoverage": 0.4025641025641026,
+      "scopeCoverage": 0.40153452685422,
       "clientCompleteness": 0.7748344370860927,
       "visual": {
         "loss": 0.19497499202933208,
@@ -14815,13 +14815,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5974358974358974,
+        "scope": 0.59846547314578,
         "completeness": 0.22516556291390732,
         "visual": 0.19497499202933208,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.03752759381898396,
         "visual": 0.2867719915710191,
         "reliability": 0
@@ -14834,7 +14834,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -14844,10 +14844,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.1723213208289529,
-      "loss": 30.376340716951226,
-      "bestLoss": 28.366281979169806,
-      "smoothLoss": 30.21683279850064
+      "lossDelta": 0.172518055041035,
+      "loss": 30.40722798824771,
+      "bestLoss": 28.395595376769645,
+      "smoothLoss": 30.246461944887976
     },
     {
       "index": 55,
@@ -15026,7 +15026,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 165,
-      "scopeCoverage": 0.4230769230769231,
+      "scopeCoverage": 0.4219948849104859,
       "clientCompleteness": 0.7861635220125787,
       "visual": {
         "loss": 0.1733689486578281,
@@ -15449,13 +15449,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5769230769230769,
+        "scope": 0.578005115089514,
         "completeness": 0.21383647798742134,
         "visual": 0.1733689486578281,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.6153846153846165,
+        "scope": -0.6138107416879801,
         "completeness": -0.2832271231621497,
         "visual": -0.7562115180026394,
         "reliability": 0
@@ -15468,7 +15468,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.6153846153846165,
+          "contribution": -0.6138107416879801,
           "direction": "down"
         },
         {
@@ -15478,10 +15478,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -1.654823256549406,
-      "loss": 28.72151746040182,
-      "bestLoss": 28.366281979169806,
-      "smoothLoss": 29.947676037642854
+      "lossDelta": -1.6532493828527706,
+      "loss": 28.753978605394938,
+      "bestLoss": 28.395595376769645,
+      "smoothLoss": 29.97781494377923
     },
     {
       "index": 56,
@@ -15657,7 +15657,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 165,
-      "scopeCoverage": 0.4230769230769231,
+      "scopeCoverage": 0.4219948849104859,
       "clientCompleteness": 0.7861635220125787,
       "visual": {
         "loss": 0.1733689486578281,
@@ -15679,7 +15679,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5769230769230769,
+        "scope": 0.578005115089514,
         "completeness": 0.21383647798742134,
         "visual": 0.1733689486578281,
         "reliability": 0
@@ -15693,9 +15693,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 28.72151746040182,
-      "bestLoss": 28.366281979169806,
-      "smoothLoss": 29.72696749373947
+      "loss": 28.753978605394938,
+      "bestLoss": 28.395595376769645,
+      "smoothLoss": 29.757524402870057
     },
     {
       "index": 57,
@@ -15741,7 +15741,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 166,
-      "scopeCoverage": 0.4256410256410256,
+      "scopeCoverage": 0.42455242966751916,
       "clientCompleteness": 0.7875,
       "visual": {
         "loss": 0.16361047235063855,
@@ -15814,13 +15814,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5743589743589743,
+        "scope": 0.5754475703324808,
         "completeness": 0.21250000000000002,
         "visual": 0.16361047235063855,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.03341194968553285,
         "visual": -0.34154667075163386,
         "reliability": 0
@@ -15833,7 +15833,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -15843,10 +15843,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.45188169736024264,
-      "loss": 28.269635763041578,
-      "bestLoss": 28.269635763041578,
-      "smoothLoss": 29.46464778221385
+      "lossDelta": -0.4516849631481641,
+      "loss": 28.302293642246774,
+      "bestLoss": 28.302293642246774,
+      "smoothLoss": 29.49558286595787
     },
     {
       "index": 58,
@@ -15877,7 +15877,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 166,
-      "scopeCoverage": 0.4256410256410256,
+      "scopeCoverage": 0.42455242966751916,
       "clientCompleteness": 0.7875,
       "visual": {
         "loss": 0.16361047235063855,
@@ -15899,7 +15899,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5743589743589743,
+        "scope": 0.5754475703324808,
         "completeness": 0.21250000000000002,
         "visual": 0.16361047235063855,
         "reliability": 0
@@ -15913,9 +15913,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 28.269635763041578,
-      "bestLoss": 28.269635763041578,
-      "smoothLoss": 29.24954561876284
+      "loss": 28.302293642246774,
+      "bestLoss": 28.302293642246774,
+      "smoothLoss": 29.280790805689875
     },
     {
       "index": 59,
@@ -15948,7 +15948,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 166,
-      "scopeCoverage": 0.4256410256410256,
+      "scopeCoverage": 0.42455242966751916,
       "clientCompleteness": 0.7875,
       "visual": {
         "loss": 0.16361047235063855,
@@ -15970,7 +15970,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5743589743589743,
+        "scope": 0.5754475703324808,
         "completeness": 0.21250000000000002,
         "visual": 0.16361047235063855,
         "reliability": 0
@@ -15984,9 +15984,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 28.269635763041578,
-      "bestLoss": 28.269635763041578,
-      "smoothLoss": 29.073161844733015
+      "loss": 28.302293642246774,
+      "bestLoss": 28.302293642246774,
+      "smoothLoss": 29.104661316270118
     },
     {
       "index": 60,
@@ -16016,7 +16016,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 166,
-      "scopeCoverage": 0.4256410256410256,
+      "scopeCoverage": 0.42455242966751916,
       "clientCompleteness": 0.7875,
       "visual": {
         "loss": 0.16361047235063855,
@@ -16038,7 +16038,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5743589743589743,
+        "scope": 0.5754475703324808,
         "completeness": 0.21250000000000002,
         "visual": 0.16361047235063855,
         "reliability": 0
@@ -16052,9 +16052,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 28.269635763041578,
-      "bestLoss": 28.269635763041578,
-      "smoothLoss": 28.928527150028557
+      "loss": 28.302293642246774,
+      "bestLoss": 28.302293642246774,
+      "smoothLoss": 28.96023513494592
     },
     {
       "index": 61,
@@ -16084,7 +16084,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 166,
-      "scopeCoverage": 0.4256410256410256,
+      "scopeCoverage": 0.42455242966751916,
       "clientCompleteness": 0.7875,
       "visual": {
         "loss": 0.16361047235063855,
@@ -16106,7 +16106,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5743589743589743,
+        "scope": 0.5754475703324808,
         "completeness": 0.21250000000000002,
         "visual": 0.16361047235063855,
         "reliability": 0
@@ -16120,9 +16120,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 28.269635763041578,
-      "bestLoss": 28.269635763041578,
-      "smoothLoss": 28.8099267003709
+      "loss": 28.302293642246774,
+      "bestLoss": 28.302293642246774,
+      "smoothLoss": 28.841805666260072
     },
     {
       "index": 62,
@@ -16370,7 +16370,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 166,
-      "scopeCoverage": 0.4256410256410256,
+      "scopeCoverage": 0.42455242966751916,
       "clientCompleteness": 0.7875,
       "visual": {
         "loss": 0.16361047235063855,
@@ -16392,7 +16392,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5743589743589743,
+        "scope": 0.5754475703324808,
         "completeness": 0.21250000000000002,
         "visual": 0.16361047235063855,
         "reliability": 0
@@ -16406,9 +16406,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 28.269635763041578,
-      "bestLoss": 28.269635763041578,
-      "smoothLoss": 28.712674331651623
+      "loss": 28.302293642246774,
+      "bestLoss": 28.302293642246774,
+      "smoothLoss": 28.744693501937682
     },
     {
       "index": 63,
@@ -16435,7 +16435,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 166,
-      "scopeCoverage": 0.4256410256410256,
+      "scopeCoverage": 0.42455242966751916,
       "clientCompleteness": 0.7875,
       "visual": {
         "loss": 0.16361047235063855,
@@ -16457,7 +16457,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5743589743589743,
+        "scope": 0.5754475703324808,
         "completeness": 0.21250000000000002,
         "visual": 0.16361047235063855,
         "reliability": 0
@@ -16471,9 +16471,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 28.269635763041578,
-      "bestLoss": 28.269635763041578,
-      "smoothLoss": 28.632927389301816
+      "loss": 28.302293642246774,
+      "bestLoss": 28.302293642246774,
+      "smoothLoss": 28.665061527193323
     },
     {
       "index": 64,
@@ -16500,7 +16500,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 166,
-      "scopeCoverage": 0.4256410256410256,
+      "scopeCoverage": 0.42455242966751916,
       "clientCompleteness": 0.7875,
       "visual": {
         "loss": 0.16361047235063855,
@@ -16522,7 +16522,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5743589743589743,
+        "scope": 0.5754475703324808,
         "completeness": 0.21250000000000002,
         "visual": 0.16361047235063855,
         "reliability": 0
@@ -16536,9 +16536,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 28.269635763041578,
-      "bestLoss": 28.269635763041578,
-      "smoothLoss": 28.567534896574976
+      "loss": 28.302293642246774,
+      "bestLoss": 28.302293642246774,
+      "smoothLoss": 28.599763307902947
     },
     {
       "index": 65,
@@ -16564,7 +16564,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 166,
-      "scopeCoverage": 0.4256410256410256,
+      "scopeCoverage": 0.42455242966751916,
       "clientCompleteness": 0.7875,
       "visual": {
         "loss": 0.16361047235063855,
@@ -16586,7 +16586,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5743589743589743,
+        "scope": 0.5754475703324808,
         "completeness": 0.21250000000000002,
         "visual": 0.16361047235063855,
         "reliability": 0
@@ -16600,9 +16600,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 28.269635763041578,
-      "bestLoss": 28.269635763041578,
-      "smoothLoss": 28.513913052538967
+      "loss": 28.302293642246774,
+      "bestLoss": 28.302293642246774,
+      "smoothLoss": 28.546218768084834
     },
     {
       "index": 66,
@@ -16629,7 +16629,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 166,
-      "scopeCoverage": 0.4256410256410256,
+      "scopeCoverage": 0.42455242966751916,
       "clientCompleteness": 0.7875,
       "visual": {
         "loss": 0.16361047235063855,
@@ -16651,7 +16651,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5743589743589743,
+        "scope": 0.5754475703324808,
         "completeness": 0.21250000000000002,
         "visual": 0.16361047235063855,
         "reliability": 0
@@ -16665,9 +16665,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 28.269635763041578,
-      "bestLoss": 28.269635763041578,
-      "smoothLoss": 28.46994314042944
+      "loss": 28.302293642246774,
+      "bestLoss": 28.302293642246774,
+      "smoothLoss": 28.502312245433984
     },
     {
       "index": 67,
@@ -16693,7 +16693,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 166,
-      "scopeCoverage": 0.4256410256410256,
+      "scopeCoverage": 0.42455242966751916,
       "clientCompleteness": 0.7875,
       "visual": {
         "loss": 0.16361047235063855,
@@ -16715,7 +16715,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5743589743589743,
+        "scope": 0.5754475703324808,
         "completeness": 0.21250000000000002,
         "visual": 0.16361047235063855,
         "reliability": 0
@@ -16729,9 +16729,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 28.269635763041578,
-      "bestLoss": 28.269635763041578,
-      "smoothLoss": 28.433887812499627
+      "loss": 28.302293642246774,
+      "bestLoss": 28.302293642246774,
+      "smoothLoss": 28.46630889686029
     },
     {
       "index": 68,
@@ -16757,7 +16757,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 166,
-      "scopeCoverage": 0.4256410256410256,
+      "scopeCoverage": 0.42455242966751916,
       "clientCompleteness": 0.7875,
       "visual": {
         "loss": 0.16361047235063855,
@@ -16779,7 +16779,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5743589743589743,
+        "scope": 0.5754475703324808,
         "completeness": 0.21250000000000002,
         "visual": 0.16361047235063855,
         "reliability": 0
@@ -16793,9 +16793,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 28.269635763041578,
-      "bestLoss": 28.269635763041578,
-      "smoothLoss": 28.40432244359718
+      "loss": 28.302293642246774,
+      "bestLoss": 28.302293642246774,
+      "smoothLoss": 28.436786151029857
     },
     {
       "index": 69,
@@ -16821,7 +16821,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 166,
-      "scopeCoverage": 0.4256410256410256,
+      "scopeCoverage": 0.42455242966751916,
       "clientCompleteness": 0.7875,
       "visual": {
         "loss": 0.16361047235063855,
@@ -16843,7 +16843,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5743589743589743,
+        "scope": 0.5754475703324808,
         "completeness": 0.21250000000000002,
         "visual": 0.16361047235063855,
         "reliability": 0
@@ -16857,9 +16857,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 28.269635763041578,
-      "bestLoss": 28.269635763041578,
-      "smoothLoss": 28.380078841097173
+      "loss": 28.302293642246774,
+      "bestLoss": 28.302293642246774,
+      "smoothLoss": 28.4125774994489
     },
     {
       "index": 70,
@@ -16885,7 +16885,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 166,
-      "scopeCoverage": 0.4256410256410256,
+      "scopeCoverage": 0.42455242966751916,
       "clientCompleteness": 0.7875,
       "visual": {
         "loss": 0.16361047235063855,
@@ -16907,7 +16907,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5743589743589743,
+        "scope": 0.5754475703324808,
         "completeness": 0.21250000000000002,
         "visual": 0.16361047235063855,
         "reliability": 0
@@ -16921,9 +16921,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 28.269635763041578,
-      "bestLoss": 28.269635763041578,
-      "smoothLoss": 28.360199087047167
+      "loss": 28.302293642246774,
+      "bestLoss": 28.302293642246774,
+      "smoothLoss": 28.392726405152523
     },
     {
       "index": 71,
@@ -16949,7 +16949,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 166,
-      "scopeCoverage": 0.4256410256410256,
+      "scopeCoverage": 0.42455242966751916,
       "clientCompleteness": 0.7875,
       "visual": {
         "loss": 0.16361047235063855,
@@ -16971,7 +16971,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5743589743589743,
+        "scope": 0.5754475703324808,
         "completeness": 0.21250000000000002,
         "visual": 0.16361047235063855,
         "reliability": 0
@@ -16985,9 +16985,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 28.269635763041578,
-      "bestLoss": 28.269635763041578,
-      "smoothLoss": 28.343897688726162
+      "loss": 28.302293642246774,
+      "bestLoss": 28.302293642246774,
+      "smoothLoss": 28.376448507829487
     },
     {
       "index": 72,
@@ -17013,7 +17013,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 166,
-      "scopeCoverage": 0.4256410256410256,
+      "scopeCoverage": 0.42455242966751916,
       "clientCompleteness": 0.7875,
       "visual": {
         "loss": 0.16361047235063855,
@@ -17035,7 +17035,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5743589743589743,
+        "scope": 0.5754475703324808,
         "completeness": 0.21250000000000002,
         "visual": 0.16361047235063855,
         "reliability": 0
@@ -17049,9 +17049,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 28.269635763041578,
-      "bestLoss": 28.269635763041578,
-      "smoothLoss": 28.330530542102938
+      "loss": 28.302293642246774,
+      "bestLoss": 28.302293642246774,
+      "smoothLoss": 28.363100632024597
     },
     {
       "index": 73,
@@ -17088,7 +17088,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 167,
-      "scopeCoverage": 0.4282051282051282,
+      "scopeCoverage": 0.42710997442455245,
       "clientCompleteness": 0.7867494824016563,
       "visual": {
         "loss": 0.16361047235063855,
@@ -17110,13 +17110,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5717948717948718,
+        "scope": 0.5728900255754475,
         "completeness": 0.21325051759834368,
         "visual": 0.16361047235063855,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.018762939958591462,
         "visual": 0,
         "reliability": 0
@@ -17124,7 +17124,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -17134,10 +17134,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.058160136964485076,
-      "loss": 28.211475626077092,
-      "bestLoss": 28.211475626077092,
-      "smoothLoss": 28.309100657218288
+      "lossDelta": -0.05796340275240297,
+      "loss": 28.24433023949437,
+      "bestLoss": 28.24433023949437,
+      "smoothLoss": 28.34172196136916
     },
     {
       "index": 74,
@@ -17172,7 +17172,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 168,
-      "scopeCoverage": 0.4307692307692308,
+      "scopeCoverage": 0.4296675191815857,
       "clientCompleteness": 0.7860082304526749,
       "visual": {
         "loss": 0.16361047235063855,
@@ -17194,13 +17194,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5692307692307692,
+        "scope": 0.5703324808184143,
         "completeness": 0.21399176954732513,
         "visual": 0.16361047235063855,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.018531298724536183,
         "visual": 0,
         "reliability": 0
@@ -17208,7 +17208,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -17218,10 +17218,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.05839177819854058,
-      "loss": 28.153083847878552,
-      "bestLoss": 28.153083847878552,
-      "smoothLoss": 28.281017631537136
+      "lossDelta": -0.05819504398646558,
+      "loss": 28.186135195507905,
+      "bestLoss": 28.186135195507905,
+      "smoothLoss": 28.313716343514137
     },
     {
       "index": 75,
@@ -17256,7 +17256,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 169,
-      "scopeCoverage": 0.43333333333333335,
+      "scopeCoverage": 0.4322250639386189,
       "clientCompleteness": 0.7852760736196319,
       "visual": {
         "loss": 0.16361047235063855,
@@ -17278,13 +17278,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5666666666666667,
+        "scope": 0.5677749360613811,
         "completeness": 0.21472392638036808,
         "visual": 0.16361047235063855,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.018303920826073794,
         "visual": 0,
         "reliability": 0
@@ -17292,7 +17292,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -17302,10 +17302,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.05861915609700219,
-      "loss": 28.09446469178155,
-      "bestLoss": 28.09446469178155,
-      "smoothLoss": 28.247438102381132
+      "lossDelta": -0.058422421884923637,
+      "loss": 28.12771277362298,
+      "bestLoss": 28.12771277362298,
+      "smoothLoss": 28.28023570093373
     },
     {
       "index": 76,
@@ -17340,7 +17340,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 170,
-      "scopeCoverage": 0.4358974358974359,
+      "scopeCoverage": 0.43478260869565216,
       "clientCompleteness": 0.7845528455284553,
       "visual": {
         "loss": 0.16361047235063855,
@@ -17362,13 +17362,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5641025641025641,
+        "scope": 0.5652173913043479,
         "completeness": 0.21544715447154472,
         "visual": 0.16361047235063855,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.01808070227941605,
         "visual": 0,
         "reliability": 0
@@ -17376,7 +17376,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -17386,10 +17386,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.05884237464366393,
-      "loss": 28.035622317137886,
-      "bestLoss": 28.035622317137886,
-      "smoothLoss": 28.20931126103735
+      "lossDelta": -0.05864564043157472,
+      "loss": 28.069067133191407,
+      "bestLoss": 28.069067133191407,
+      "smoothLoss": 28.24222535874011
     },
     {
       "index": 77,
@@ -17424,7 +17424,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 171,
-      "scopeCoverage": 0.43846153846153846,
+      "scopeCoverage": 0.4373401534526854,
       "clientCompleteness": 0.7838383838383839,
       "visual": {
         "loss": 0.16361047235063855,
@@ -17446,13 +17446,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5615384615384615,
+        "scope": 0.5626598465473146,
         "completeness": 0.2161616161616161,
         "visual": 0.16361047235063855,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.017861542251784712,
         "visual": 0,
         "reliability": 0
@@ -17460,7 +17460,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -17470,10 +17470,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.05906153467128661,
-      "loss": 27.9765607824666,
-      "bestLoss": 27.9765607824666,
-      "smoothLoss": 28.167416174894615
+      "lossDelta": -0.058864800459218714,
+      "loss": 28.010202332732188,
+      "bestLoss": 28.010202332732188,
+      "smoothLoss": 28.200461214058688
     },
     {
       "index": 78,
@@ -17504,7 +17504,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 172,
-      "scopeCoverage": 0.441025641025641,
+      "scopeCoverage": 0.4398976982097187,
       "clientCompleteness": 0.7811244979919679,
       "visual": {
         "loss": 0.16361047235063855,
@@ -17526,13 +17526,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.558974358974359,
+        "scope": 0.5601023017902813,
         "completeness": 0.21887550200803207,
         "visual": 0.16361047235063855,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.06784714616039911,
         "visual": 0,
         "reliability": 0
@@ -17540,7 +17540,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -17550,10 +17550,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.009075930762676876,
-      "loss": 27.967484851703922,
-      "bestLoss": 27.967484851703922,
-      "smoothLoss": 28.131428536720293
+      "lossDelta": -0.008879196550598323,
+      "loss": 28.00132313618159,
+      "bestLoss": 28.00132313618159,
+      "smoothLoss": 28.164616360040814
     },
     {
       "index": 79,
@@ -17588,7 +17588,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 173,
-      "scopeCoverage": 0.44358974358974357,
+      "scopeCoverage": 0.4424552429667519,
       "clientCompleteness": 0.780439121756487,
       "visual": {
         "loss": 0.16361047235063855,
@@ -17610,13 +17610,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5564102564102564,
+        "scope": 0.5575447570332481,
         "completeness": 0.219560878243513,
         "visual": 0.16361047235063855,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.017134405887023196,
         "visual": 0,
         "reliability": 0
@@ -17624,7 +17624,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -17634,10 +17634,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.059788671036052676,
-      "loss": 27.90769618066787,
-      "bestLoss": 27.90769618066787,
-      "smoothLoss": 28.091156712630855
+      "lossDelta": -0.05959193682397412,
+      "loss": 27.941731199357616,
+      "bestLoss": 27.941731199357616,
+      "smoothLoss": 28.12449703111784
     },
     {
       "index": 80,
@@ -17674,7 +17674,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 174,
-      "scopeCoverage": 0.4461538461538462,
+      "scopeCoverage": 0.44501278772378516,
       "clientCompleteness": 0.7797619047619048,
       "visual": {
         "loss": 0.16361047235063855,
@@ -17696,13 +17696,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5538461538461539,
+        "scope": 0.5549872122762148,
         "completeness": 0.22023809523809523,
         "visual": 0.16361047235063855,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.01693042486455576,
         "visual": 0,
         "reliability": 0
@@ -17710,7 +17710,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -17720,10 +17720,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.05999265205852211,
-      "loss": 27.847703528609348,
-      "bestLoss": 27.847703528609348,
-      "smoothLoss": 28.047335139506984
+      "lossDelta": -0.05979591784644356,
+      "loss": 27.881935281511172,
+      "bestLoss": 27.881935281511172,
+      "smoothLoss": 28.08083591618864
     },
     {
       "index": 81,
@@ -17758,7 +17758,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 175,
-      "scopeCoverage": 0.44871794871794873,
+      "scopeCoverage": 0.4475703324808184,
       "clientCompleteness": 0.7790927021696252,
       "visual": {
         "loss": 0.16361047235063855,
@@ -17780,13 +17780,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5512820512820513,
+        "scope": 0.5524296675191815,
         "completeness": 0.22090729783037477,
         "visual": 0.16361047235063855,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.016730064806988465,
         "visual": 0,
         "reliability": 0
@@ -17794,7 +17794,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -17804,10 +17804,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.06019301211609118,
-      "loss": 27.787510516493256,
-      "bestLoss": 27.787510516493256,
-      "smoothLoss": 28.000566707364513
+      "lossDelta": -0.059996277904005524,
+      "loss": 27.821939003607167,
+      "bestLoss": 27.821939003607167,
+      "smoothLoss": 28.034234471923973
     },
     {
       "index": 82,
@@ -17846,7 +17846,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 176,
-      "scopeCoverage": 0.4512820512820513,
+      "scopeCoverage": 0.45012787723785164,
       "clientCompleteness": 0.7784313725490196,
       "visual": {
         "loss": 0.16361047235063855,
@@ -17868,13 +17868,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5487179487179488,
+        "scope": 0.5498721227621484,
         "completeness": 0.22156862745098038,
         "visual": 0.16361047235063855,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.01653324051514027,
         "visual": 0,
         "reliability": 0
@@ -17882,7 +17882,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -17892,10 +17892,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.060389836407935604,
-      "loss": 27.72712068008532,
-      "bestLoss": 27.72712068008532,
-      "smoothLoss": 27.951346422454257
+      "lossDelta": -0.06019310219585705,
+      "loss": 27.76174590141131,
+      "bestLoss": 27.76174590141131,
+      "smoothLoss": 27.985186529231697
     },
     {
       "index": 83,
@@ -17934,7 +17934,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 177,
-      "scopeCoverage": 0.45384615384615384,
+      "scopeCoverage": 0.45268542199488493,
       "clientCompleteness": 0.7777777777777778,
       "visual": {
         "loss": 0.16361047235063855,
@@ -17956,13 +17956,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5461538461538462,
+        "scope": 0.5473145780051151,
         "completeness": 0.2222222222222222,
         "visual": 0.16361047235063855,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.016339869281045694,
         "visual": 0,
         "reliability": 0
@@ -17970,7 +17970,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -17980,10 +17980,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.06058320764202918,
-      "loss": 27.66653747244329,
-      "bestLoss": 27.66653747244329,
-      "smoothLoss": 27.900080811452284
+      "lossDelta": -0.06038647342995773,
+      "loss": 27.70135942798135,
+      "bestLoss": 27.70135942798135,
+      "smoothLoss": 27.934097651006635
     },
     {
       "index": 84,
@@ -18018,7 +18018,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 178,
-      "scopeCoverage": 0.4564102564102564,
+      "scopeCoverage": 0.45524296675191817,
       "clientCompleteness": 0.7771317829457365,
       "visual": {
         "loss": 0.16361047235063855,
@@ -18040,13 +18040,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5435897435897437,
+        "scope": 0.5447570332480818,
         "completeness": 0.22286821705426352,
         "visual": 0.16361047235063855,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.016149870801032695,
         "visual": 0,
         "reliability": 0
@@ -18054,7 +18054,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -18064,10 +18064,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.06077320612204318,
-      "loss": 27.60576426632125,
-      "bestLoss": 27.60576426632125,
-      "smoothLoss": 27.8471038333287
+      "lossDelta": -0.06057647190996107,
+      "loss": 27.64078295607139,
+      "bestLoss": 27.64078295607139,
+      "smoothLoss": 27.881301005918296
     },
     {
       "index": 85,
@@ -18106,7 +18106,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 179,
-      "scopeCoverage": 0.45897435897435895,
+      "scopeCoverage": 0.4578005115089514,
       "clientCompleteness": 0.7764932562620424,
       "visual": {
         "loss": 0.16361047235063855,
@@ -18128,13 +18128,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5410256410256411,
+        "scope": 0.5421994884910486,
         "completeness": 0.22350674373795765,
         "visual": 0.16361047235063855,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.015963167092353236,
         "visual": 0,
         "reliability": 0
@@ -18142,7 +18142,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -18152,10 +18152,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.06095990983072852,
-      "loss": 27.54480435649052,
-      "bestLoss": 27.54480435649052,
-      "smoothLoss": 27.79268992749783
+      "lossDelta": -0.06076317561864286,
+      "loss": 27.580019780452748,
+      "bestLoss": 27.580019780452748,
+      "smoothLoss": 27.827070385334498
     },
     {
       "index": 86,
@@ -18216,7 +18216,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 183,
-      "scopeCoverage": 0.46923076923076923,
+      "scopeCoverage": 0.4680306905370844,
       "clientCompleteness": 0.7782026768642447,
       "visual": {
         "loss": 0.16361047235063855,
@@ -18238,13 +18238,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5307692307692308,
+        "scope": 0.5319693094629157,
         "completeness": 0.2217973231357553,
         "visual": 0.16361047235063855,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.30769230769230993,
+        "scope": -0.3069053708439884,
         "completeness": -0.042735515055059015,
         "visual": 0,
         "reliability": 0
@@ -18252,7 +18252,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.30769230769230993,
+          "contribution": -0.3069053708439884,
           "direction": "down"
         },
         {
@@ -18262,10 +18262,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.35042782274736695,
-      "loss": 27.194376533743153,
-      "bestLoss": 27.194376533743153,
-      "smoothLoss": 27.684993516621986
+      "lossDelta": -0.34964088589904563,
+      "loss": 27.230378894553702,
+      "bestLoss": 27.230378894553702,
+      "smoothLoss": 27.719665916993954
     },
     {
       "index": 87,
@@ -18318,7 +18318,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 184,
-      "scopeCoverage": 0.4717948717948718,
+      "scopeCoverage": 0.47058823529411764,
       "clientCompleteness": 0.7775665399239544,
       "visual": {
         "loss": 0.16361047235063855,
@@ -18366,13 +18366,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5282051282051282,
+        "scope": 0.5294117647058824,
         "completeness": 0.22243346007604559,
         "visual": 0.16361047235063855,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.015903423507257486,
         "visual": 0,
         "reliability": 0
@@ -18380,7 +18380,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -18390,10 +18390,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.06101965341581561,
-      "loss": 27.133356880327337,
-      "bestLoss": 27.133356880327337,
-      "smoothLoss": 27.58569892208895
+      "lossDelta": -0.060822919203744163,
+      "loss": 27.169555975349958,
+      "bestLoss": 27.169555975349958,
+      "smoothLoss": 27.620646127498038
     },
     {
       "index": 88,
@@ -18445,7 +18445,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 187,
-      "scopeCoverage": 0.4794871794871795,
+      "scopeCoverage": 0.4782608695652174,
       "clientCompleteness": 0.77882797731569,
       "visual": {
         "loss": 0.16361047235063855,
@@ -18467,13 +18467,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5205128205128204,
+        "scope": 0.5217391304347826,
         "completeness": 0.22117202268431002,
         "visual": 0.16361047235063855,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.23076923076923325,
+        "scope": -0.23017902813299296,
         "completeness": -0.03153593479338912,
         "visual": 0,
         "reliability": 0
@@ -18481,7 +18481,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.23076923076923325,
+          "contribution": -0.23017902813299296,
           "direction": "down"
         },
         {
@@ -18491,10 +18491,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.2623051655626263,
-      "loss": 26.87105171476471,
-      "bestLoss": 26.87105171476471,
-      "smoothLoss": 27.457062424770587
+      "lossDelta": -0.26171496292637997,
+      "loss": 26.907841012423578,
+      "bestLoss": 26.907841012423578,
+      "smoothLoss": 27.492341206784637
     },
     {
       "index": 89,
@@ -18520,7 +18520,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 187,
-      "scopeCoverage": 0.4794871794871795,
+      "scopeCoverage": 0.4782608695652174,
       "clientCompleteness": 0.77882797731569,
       "visual": {
         "loss": 0.16361047235063855,
@@ -18542,7 +18542,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5205128205128204,
+        "scope": 0.5217391304347826,
         "completeness": 0.22117202268431002,
         "visual": 0.16361047235063855,
         "reliability": 0
@@ -18556,9 +18556,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 26.87105171476471,
-      "bestLoss": 26.87105171476471,
-      "smoothLoss": 27.35158049696953
+      "loss": 26.907841012423578,
+      "bestLoss": 26.907841012423578,
+      "smoothLoss": 27.38713117179965
     },
     {
       "index": 90,
@@ -18584,7 +18584,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 187,
-      "scopeCoverage": 0.4794871794871795,
+      "scopeCoverage": 0.4782608695652174,
       "clientCompleteness": 0.77882797731569,
       "visual": {
         "loss": 0.16361047235063855,
@@ -18606,7 +18606,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5205128205128204,
+        "scope": 0.5217391304347826,
         "completeness": 0.22117202268431002,
         "visual": 0.16361047235063855,
         "reliability": 0
@@ -18620,9 +18620,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 26.87105171476471,
-      "bestLoss": 26.87105171476471,
-      "smoothLoss": 27.265085316172662
+      "loss": 26.907841012423578,
+      "bestLoss": 26.907841012423578,
+      "smoothLoss": 27.300858943111958
     },
     {
       "index": 91,
@@ -18668,7 +18668,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 188,
-      "scopeCoverage": 0.48205128205128206,
+      "scopeCoverage": 0.48081841432225064,
       "clientCompleteness": 0.7800751879699248,
       "visual": {
         "loss": 0.17715261587358522,
@@ -18741,13 +18741,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5179487179487179,
+        "scope": 0.5191815856777493,
         "completeness": 0.2199248120300752,
         "visual": 0.17715261587358522,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.03118026635587079,
         "visual": 0.47397502330313324,
         "reliability": 0
@@ -18760,7 +18760,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -18770,10 +18770,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.36587168002418835,
-      "loss": 27.2369233947889,
-      "bestLoss": 26.87105171476471,
-      "smoothLoss": 27.26001617032359
+      "lossDelta": 0.36606841423626335,
+      "loss": 27.27390942665984,
+      "bestLoss": 26.907841012423578,
+      "smoothLoss": 27.29600803015058
     },
     {
       "index": 92,
@@ -18812,7 +18812,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 189,
-      "scopeCoverage": 0.4846153846153846,
+      "scopeCoverage": 0.4833759590792839,
       "clientCompleteness": 0.7794392523364486,
       "visual": {
         "loss": 0.18044359257930814,
@@ -18860,13 +18860,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5153846153846153,
+        "scope": 0.5166240409207161,
         "completeness": 0.22056074766355138,
         "visual": 0.18044359257930814,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.015898390836904808,
         "visual": 0.1151841847003024,
         "reliability": 0
@@ -18879,7 +18879,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -18889,10 +18889,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.05415949861412983,
-      "loss": 27.29108289340303,
-      "bestLoss": 26.87105171476471,
-      "smoothLoss": 27.26560818047789
+      "lossDelta": 0.054356232826208384,
+      "loss": 27.32826565948605,
+      "bestLoss": 26.907841012423578,
+      "smoothLoss": 27.301814403430967
     },
     {
       "index": 93,
@@ -18928,7 +18928,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 190,
-      "scopeCoverage": 0.48717948717948717,
+      "scopeCoverage": 0.4859335038363171,
       "clientCompleteness": 0.7798507462686567,
       "visual": {
         "loss": 0.18044359257930814,
@@ -18950,13 +18950,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5128205128205128,
+        "scope": 0.5140664961636829,
         "completeness": 0.2201492537313433,
         "visual": 0.18044359257930814,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.010287348305201838,
         "visual": 0,
         "reliability": 0
@@ -18964,7 +18964,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -18974,10 +18974,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.08721042522827815,
-      "loss": 27.20387246817475,
-      "bestLoss": 26.87105171476471,
-      "smoothLoss": 27.254495752263328
+      "lossDelta": -0.08701369101619605,
+      "loss": 27.241251968469854,
+      "bestLoss": 26.907841012423578,
+      "smoothLoss": 27.290913165137965
     },
     {
       "index": 94,
@@ -19056,7 +19056,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 190,
-      "scopeCoverage": 0.48717948717948717,
+      "scopeCoverage": 0.4859335038363171,
       "clientCompleteness": 0.7798507462686567,
       "visual": {
         "loss": 0.18044359257930814,
@@ -19078,7 +19078,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5128205128205128,
+        "scope": 0.5140664961636829,
         "completeness": 0.2201492537313433,
         "visual": 0.18044359257930814,
         "reliability": 0
@@ -19092,9 +19092,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 27.20387246817475,
-      "bestLoss": 26.87105171476471,
-      "smoothLoss": 27.245383561127387
+      "loss": 27.241251968469854,
+      "bestLoss": 26.907841012423578,
+      "smoothLoss": 27.281974149737707
     },
     {
       "index": 95,
@@ -19140,7 +19140,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 191,
-      "scopeCoverage": 0.4897435897435897,
+      "scopeCoverage": 0.4884910485933504,
       "clientCompleteness": 0.7810760667903525,
       "visual": {
         "loss": 0.17780665899489878,
@@ -19213,13 +19213,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5102564102564102,
+        "scope": 0.5115089514066495,
         "completeness": 0.21892393320964754,
         "visual": 0.17780665899489878,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.0767263427110021,
         "completeness": -0.030633013042394297,
         "visual": -0.09229267545432768,
         "reliability": 0
@@ -19232,7 +19232,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.0767263427110021,
           "direction": "down"
         },
         {
@@ -19242,10 +19242,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.199848765419798,
-      "loss": 27.004023702754953,
-      "bestLoss": 26.87105171476471,
-      "smoothLoss": 27.201938786620353
+      "lossDelta": -0.19965203120772657,
+      "loss": 27.041599937262127,
+      "bestLoss": 26.907841012423578,
+      "smoothLoss": 27.238706791492103
     },
     {
       "index": 96,
@@ -19291,7 +19291,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 192,
-      "scopeCoverage": 0.49230769230769234,
+      "scopeCoverage": 0.49104859335038364,
       "clientCompleteness": 0.7822878228782287,
       "visual": {
         "loss": 0.1707320150734187,
@@ -19364,13 +19364,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5076923076923077,
+        "scope": 0.5089514066496164,
         "completeness": 0.21771217712177127,
         "visual": 0.1707320150734187,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.030293902196906752,
         "visual": -0.24761253725180274,
         "reliability": 0
@@ -19383,7 +19383,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -19393,10 +19393,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.3548295163717903,
-      "loss": 26.649194186383163,
-      "bestLoss": 26.649194186383163,
-      "smoothLoss": 27.10244475857766
+      "lossDelta": -0.35463278215970107,
+      "loss": 26.686967155102426,
+      "bestLoss": 26.686967155102426,
+      "smoothLoss": 27.139393656941962
     },
     {
       "index": 97,
@@ -19442,7 +19442,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 193,
-      "scopeCoverage": 0.4948717948717949,
+      "scopeCoverage": 0.4936061381074169,
       "clientCompleteness": 0.7834862385321101,
       "visual": {
         "loss": 0.16361047235063855,
@@ -19515,13 +19515,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5051282051282051,
+        "scope": 0.5063938618925832,
         "completeness": 0.21651376146788992,
         "visual": 0.16361047235063855,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.029960391347033655,
         "visual": -0.24925399529730521,
         "reliability": 0
@@ -19534,7 +19534,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -19544,10 +19544,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.35613746356741416,
-      "loss": 26.29305672281575,
-      "bestLoss": 26.29305672281575,
-      "smoothLoss": 26.956754912140518
+      "lossDelta": -0.3559407293553356,
+      "loss": 26.33102642574709,
+      "bestLoss": 26.33102642574709,
+      "smoothLoss": 26.993887555326886
     },
     {
       "index": 98,
@@ -19593,7 +19593,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 194,
-      "scopeCoverage": 0.49743589743589745,
+      "scopeCoverage": 0.4961636828644501,
       "clientCompleteness": 0.7846715328467153,
       "visual": {
         "loss": 0.15894750737040778,
@@ -19666,13 +19666,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5025641025641026,
+        "scope": 0.5038363171355499,
         "completeness": 0.21532846715328469,
         "visual": 0.15894750737040778,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.029632357865130854,
         "visual": -0.1632037743080772,
         "reliability": 0
@@ -19685,7 +19685,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -19695,10 +19695,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.26975920909628215,
-      "loss": 26.023297513719466,
-      "bestLoss": 26.023297513719466,
-      "smoothLoss": 26.78873258042473
+      "lossDelta": -0.26956247488420715,
+      "loss": 26.061463950862883,
+      "bestLoss": 26.061463950862883,
+      "smoothLoss": 26.826051306523368
     },
     {
       "index": 99,
@@ -19744,7 +19744,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 195,
-      "scopeCoverage": 0.5,
+      "scopeCoverage": 0.49872122762148335,
       "clientCompleteness": 0.7858439201451906,
       "visual": {
         "loss": 0.1521613275645624,
@@ -19817,13 +19817,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5,
+        "scope": 0.5012787723785166,
         "completeness": 0.21415607985480944,
         "visual": 0.1521613275645624,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.029309682461881037,
         "visual": -0.2375162932045878,
         "reliability": 0
@@ -19836,7 +19836,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -19846,10 +19846,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.3437490525895477,
-      "loss": 25.67954846112992,
-      "bestLoss": 25.67954846112992,
-      "smoothLoss": 26.589079438951664
+      "lossDelta": -0.3435523183774656,
+      "loss": 25.717911632485418,
+      "bestLoss": 25.717911632485418,
+      "smoothLoss": 26.626586165196535
     },
     {
       "index": 100,
@@ -19895,7 +19895,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 196,
-      "scopeCoverage": 0.5025641025641026,
+      "scopeCoverage": 0.5012787723785166,
       "clientCompleteness": 0.7870036101083032,
       "visual": {
         "loss": 0.13133847441415591,
@@ -19968,13 +19968,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.49743589743589745,
+        "scope": 0.4987212276214834,
         "completeness": 0.21299638989169678,
         "visual": 0.13133847441415591,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.028992249077816612,
         "visual": -0.7287998602642273,
         "reliability": 0
@@ -19987,7 +19987,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -19997,10 +19997,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.8347151862651216,
-      "loss": 24.844833274864797,
-      "bestLoss": 24.844833274864797,
-      "smoothLoss": 26.27511512941603
+      "lossDelta": -0.8345184520530395,
+      "loss": 24.88339318043238,
+      "bestLoss": 24.88339318043238,
+      "smoothLoss": 26.31281142793899
     },
     {
       "index": 101,
@@ -20046,7 +20046,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 197,
-      "scopeCoverage": 0.5051282051282051,
+      "scopeCoverage": 0.5038363171355499,
       "clientCompleteness": 0.7881508078994613,
       "visual": {
         "loss": 0.10646437606521579,
@@ -20119,13 +20119,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.4948717948717949,
+        "scope": 0.4961636828644501,
         "completeness": 0.21184919210053865,
         "visual": 0.10646437606521579,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.028679944778953192,
         "visual": -0.8705934422129042,
         "reliability": 0
@@ -20138,7 +20138,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -20148,10 +20148,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.9761964639149312,
-      "loss": 23.868636810949866,
-      "bestLoss": 23.868636810949866,
-      "smoothLoss": 25.841949032092124
+      "lossDelta": -0.9759997297028562,
+      "loss": 23.907393450729522,
+      "bestLoss": 23.907393450729522,
+      "smoothLoss": 25.87983619204129
     },
     {
       "index": 102,
@@ -20198,7 +20198,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 198,
-      "scopeCoverage": 0.5076923076923077,
+      "scopeCoverage": 0.5063938618925832,
       "clientCompleteness": 0.7892857142857143,
       "visual": {
         "loss": 0.09791274360353898,
@@ -20271,13 +20271,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.49230769230769234,
+        "scope": 0.4936061381074168,
         "completeness": 0.21071428571428574,
         "visual": 0.09791274360353898,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.02837265965632274,
         "visual": -0.29930713615868837,
         "reliability": 0
@@ -20290,7 +20290,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -20300,10 +20300,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.4046028727380886,
-      "loss": 23.464033938211777,
-      "bestLoss": 23.464033938211777,
-      "smoothLoss": 25.41392431519366
+      "lossDelta": -0.40440613852601004,
+      "loss": 23.502987312203512,
+      "bestLoss": 23.502987312203512,
+      "smoothLoss": 25.45200339367049
     },
     {
       "index": 103,
@@ -20351,7 +20351,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 199,
-      "scopeCoverage": 0.5102564102564102,
+      "scopeCoverage": 0.5089514066496164,
       "clientCompleteness": 0.7904085257548845,
       "visual": {
         "loss": 0.10601555027498806,
@@ -20424,13 +20424,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.4897435897435898,
+        "scope": 0.49104859335038364,
         "completeness": 0.20959147424511548,
         "visual": 0.10601555027498806,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.02807028672925649,
         "visual": 0.28359823350071783,
         "reliability": 0
@@ -20443,7 +20443,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -20453,10 +20453,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.1786048698483853,
-      "loss": 23.642638808060163,
-      "bestLoss": 23.464033938211777,
-      "smoothLoss": 25.095092923909633
+      "lossDelta": 0.17880160406046386,
+      "loss": 23.681788916263976,
+      "bestLoss": 23.502987312203512,
+      "smoothLoss": 25.133364787737317
     },
     {
       "index": 104,
@@ -20502,7 +20502,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 200,
-      "scopeCoverage": 0.5128205128205128,
+      "scopeCoverage": 0.5115089514066496,
       "clientCompleteness": 0.7915194346289752,
       "visual": {
         "loss": 0.10388801709708276,
@@ -20575,13 +20575,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.4871794871794872,
+        "scope": 0.48849104859335035,
         "completeness": 0.20848056537102477,
         "visual": 0.10388801709708276,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.027772721852267757,
         "visual": -0.07446366122668559,
         "reliability": 0
@@ -20589,7 +20589,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -20604,10 +20604,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.1791594600020332,
-      "loss": 23.46347934805813,
-      "bestLoss": 23.46347934805813,
-      "smoothLoss": 24.801402480256364
+      "lossDelta": -0.1789627257899511,
+      "loss": 23.502826190474025,
+      "bestLoss": 23.502826190474025,
+      "smoothLoss": 24.839867840229925
     },
     {
       "index": 105,
@@ -20639,7 +20639,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 200,
-      "scopeCoverage": 0.5128205128205128,
+      "scopeCoverage": 0.5115089514066496,
       "clientCompleteness": 0.7915194346289752,
       "visual": {
         "loss": 0.10388801709708276,
@@ -20661,7 +20661,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.4871794871794872,
+        "scope": 0.48849104859335035,
         "completeness": 0.20848056537102477,
         "visual": 0.10388801709708276,
         "reliability": 0
@@ -20675,9 +20675,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 23.46347934805813,
-      "bestLoss": 23.46347934805813,
-      "smoothLoss": 24.560576316460683
+      "loss": 23.502826190474025,
+      "bestLoss": 23.502826190474025,
+      "smoothLoss": 24.599200343273864
     },
     {
       "index": 106,
@@ -20738,7 +20738,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 201,
-      "scopeCoverage": 0.5153846153846153,
+      "scopeCoverage": 0.5140664961636828,
       "clientCompleteness": 0.7926186291739895,
       "visual": {
         "loss": 0.10388801709708276,
@@ -20811,13 +20811,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.48461538461538467,
+        "scope": 0.48593350383631717,
         "completeness": 0.2073813708260105,
         "visual": 0.10388801709708276,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.027479863625357037,
         "visual": 0,
         "reliability": 0
@@ -20825,7 +20825,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -20835,10 +20835,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.1044029405484288,
-      "loss": 23.3590764075097,
-      "bestLoss": 23.3590764075097,
-      "smoothLoss": 24.34430633284951
+      "lossDelta": -0.10420620633635025,
+      "loss": 23.398619984137675,
+      "bestLoss": 23.398619984137675,
+      "smoothLoss": 24.383095878629348
     },
     {
       "index": 107,
@@ -20892,7 +20892,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 202,
-      "scopeCoverage": 0.517948717948718,
+      "scopeCoverage": 0.5166240409207161,
       "clientCompleteness": 0.7937062937062938,
       "visual": {
         "loss": 0.10388801709708276,
@@ -20965,13 +20965,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.482051282051282,
+        "scope": 0.4833759590792839,
         "completeness": 0.20629370629370625,
         "visual": 0.10388801709708276,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307998,
+        "scope": -0.07672634271099876,
         "completeness": -0.02719161330760611,
         "visual": 0,
         "reliability": 0
@@ -20979,7 +20979,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307998,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -20989,10 +20989,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.10411469023069131,
-      "loss": 23.25496171727901,
-      "bestLoss": 23.25496171727901,
-      "smoothLoss": 24.14822430204682
+      "lossDelta": -0.10391795601860565,
+      "loss": 23.29470202811907,
+      "bestLoss": 23.29470202811907,
+      "smoothLoss": 24.1871849855375
     },
     {
       "index": 108,
@@ -21033,7 +21033,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 203,
-      "scopeCoverage": 0.5205128205128206,
+      "scopeCoverage": 0.5191815856777494,
       "clientCompleteness": 0.7930434782608695,
       "visual": {
         "loss": 0.10388801709708276,
@@ -21055,13 +21055,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.47948717948717945,
+        "scope": 0.4808184143222506,
         "completeness": 0.20695652173913048,
         "visual": 0.10388801709708276,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.016570386135605908,
         "visual": 0,
         "reliability": 0
@@ -21069,7 +21069,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -21079,10 +21079,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.06035269078746808,
-      "loss": 23.19460902649154,
-      "bestLoss": 23.19460902649154,
-      "smoothLoss": 23.976573552446872
+      "lossDelta": -0.06015595657539308,
+      "loss": 23.234546071543676,
+      "bestLoss": 23.234546071543676,
+      "smoothLoss": 24.01570998101861
     },
     {
       "index": 109,
@@ -21127,7 +21127,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 204,
-      "scopeCoverage": 0.5230769230769231,
+      "scopeCoverage": 0.5217391304347826,
       "clientCompleteness": 0.7941176470588235,
       "visual": {
         "loss": 0.10388801709708276,
@@ -21175,13 +21175,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.4769230769230769,
+        "scope": 0.4782608695652174,
         "completeness": 0.20588235294117652,
         "visual": 0.10388801709708276,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.02685421994884918,
         "visual": 0,
         "reliability": 0
@@ -21189,7 +21189,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -21199,10 +21199,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.10377729687192527,
-      "loss": 23.090831729619616,
-      "bestLoss": 23.090831729619616,
-      "smoothLoss": 23.817140024337967
+      "lossDelta": -0.10358056265984317,
+      "loss": 23.130965508883833,
+      "bestLoss": 23.130965508883833,
+      "smoothLoss": 23.856455976034354
     },
     {
       "index": 110,
@@ -21251,7 +21251,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 205,
-      "scopeCoverage": 0.5256410256410257,
+      "scopeCoverage": 0.5242966751918159,
       "clientCompleteness": 0.7951807228915663,
       "visual": {
         "loss": 0.10388801709708276,
@@ -21299,13 +21299,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.47435897435897434,
+        "scope": 0.4757033248081841,
         "completeness": 0.20481927710843373,
         "visual": 0.10388801709708276,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.0265768958185697,
         "visual": 0,
         "reliability": 0
@@ -21313,7 +21313,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -21323,10 +21323,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.1034999727416448,
-      "loss": 22.98733175687797,
-      "bestLoss": 22.98733175687797,
-      "smoothLoss": 23.667774536195168
+      "lossDelta": -0.10330323852957335,
+      "loss": 23.02766227035426,
+      "bestLoss": 23.02766227035426,
+      "smoothLoss": 23.70727310901194
     },
     {
       "index": 111,
@@ -21373,7 +21373,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 206,
-      "scopeCoverage": 0.5282051282051282,
+      "scopeCoverage": 0.5268542199488491,
       "clientCompleteness": 0.7962328767123288,
       "visual": {
         "loss": 0.10388801709708276,
@@ -21421,13 +21421,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.4717948717948718,
+        "scope": 0.47314578005115093,
         "completeness": 0.20376712328767121,
         "visual": 0.10388801709708276,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.02630384551906284,
         "visual": 0,
         "reliability": 0
@@ -21435,7 +21435,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -21445,10 +21445,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.10322692244213982,
-      "loss": 22.88410483443583,
-      "bestLoss": 22.88410483443583,
-      "smoothLoss": 23.526713989878488
+      "lossDelta": -0.10303018823005772,
+      "loss": 22.9246320821242,
+      "bestLoss": 22.9246320821242,
+      "smoothLoss": 23.56639772417215
     },
     {
       "index": 112,
@@ -21495,7 +21495,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 207,
-      "scopeCoverage": 0.5307692307692308,
+      "scopeCoverage": 0.5294117647058824,
       "clientCompleteness": 0.797274275979557,
       "visual": {
         "loss": 0.10388801709708276,
@@ -21543,13 +21543,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.46923076923076923,
+        "scope": 0.47058823529411764,
         "completeness": 0.20272572402044298,
         "visual": 0.10388801709708276,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.02603498168070595,
         "visual": 0,
         "reliability": 0
@@ -21557,7 +21557,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -21567,10 +21567,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.10295805860378593,
-      "loss": 22.781146775832045,
-      "bestLoss": 22.781146775832045,
-      "smoothLoss": 23.39251189135013
+      "lossDelta": -0.10276132439170382,
+      "loss": 22.821870757732498,
+      "bestLoss": 22.821870757732498,
+      "smoothLoss": 23.43238287021301
     },
     {
       "index": 113,
@@ -21618,7 +21618,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 208,
-      "scopeCoverage": 0.5333333333333333,
+      "scopeCoverage": 0.5319693094629157,
       "clientCompleteness": 0.7983050847457627,
       "visual": {
         "loss": 0.10388801709708276,
@@ -21666,13 +21666,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.4666666666666667,
+        "scope": 0.46803069053708435,
         "completeness": 0.20169491525423733,
         "visual": 0.10388801709708276,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.025770219155141216,
         "visual": 0,
         "reliability": 0
@@ -21680,7 +21680,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -21690,10 +21690,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.10269329607821476,
-      "loss": 22.67845347975383,
-      "bestLoss": 22.67845347975383,
-      "smoothLoss": 23.263981377262798
+      "lossDelta": -0.10249656186613976,
+      "loss": 22.719374195866358,
+      "bestLoss": 22.719374195866358,
+      "smoothLoss": 23.304041308830616
     },
     {
       "index": 114,
@@ -21739,7 +21739,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 209,
-      "scopeCoverage": 0.5358974358974359,
+      "scopeCoverage": 0.5345268542199488,
       "clientCompleteness": 0.7993254637436762,
       "visual": {
         "loss": 0.10388801709708276,
@@ -21787,13 +21787,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.4641025641025641,
+        "scope": 0.46547314578005117,
         "completeness": 0.2006745362563238,
         "visual": 0.10388801709708276,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.02550947494783795,
         "visual": 0,
         "reliability": 0
@@ -21801,7 +21801,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -21811,10 +21811,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.10243255187091194,
-      "loss": 22.57602092788292,
-      "bestLoss": 22.57602092788292,
-      "smoothLoss": 23.140148496374422
+      "lossDelta": -0.10223581765883338,
+      "loss": 22.617138378207525,
+      "bestLoss": 22.617138378207525,
+      "smoothLoss": 23.18039878131846
     },
     {
       "index": 115,
@@ -21863,7 +21863,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 210,
-      "scopeCoverage": 0.5384615384615384,
+      "scopeCoverage": 0.5370843989769821,
       "clientCompleteness": 0.8003355704697986,
       "visual": {
         "loss": 0.10388801709708276,
@@ -21911,13 +21911,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.46153846153846156,
+        "scope": 0.4629156010230179,
         "completeness": 0.19966442953020136,
         "visual": 0.10388801709708276,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.025252668153061264,
         "visual": 0,
         "reliability": 0
@@ -21925,7 +21925,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -21935,10 +21935,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.10217574507613847,
-      "loss": 22.47384518280678,
-      "bestLoss": 22.47384518280678,
-      "smoothLoss": 23.020213899932248
+      "lossDelta": -0.10197901086405636,
+      "loss": 22.51515936734347,
+      "bestLoss": 22.51515936734347,
+      "smoothLoss": 23.060655686802964
     },
     {
       "index": 116,
@@ -21983,7 +21983,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 211,
-      "scopeCoverage": 0.541025641025641,
+      "scopeCoverage": 0.5396419437340153,
       "clientCompleteness": 0.8013355592654424,
       "visual": {
         "loss": 0.10388801709708276,
@@ -22031,13 +22031,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.458974358974359,
+        "scope": 0.4603580562659847,
         "completeness": 0.19866444073455758,
         "visual": 0.10388801709708276,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.024999719891094507,
         "visual": 0,
         "reliability": 0
@@ -22045,7 +22045,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -22055,10 +22055,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.1019227968141756,
-      "loss": 22.371922385992605,
-      "bestLoss": 22.371922385992605,
-      "smoothLoss": 22.903521427423115
+      "lossDelta": -0.10172606260209349,
+      "loss": 22.413433304741375,
+      "bestLoss": 22.413433304741375,
+      "smoothLoss": 22.94415565803188
     },
     {
       "index": 117,
@@ -22103,7 +22103,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 212,
-      "scopeCoverage": 0.5435897435897435,
+      "scopeCoverage": 0.5421994884910486,
       "clientCompleteness": 0.8023255813953488,
       "visual": {
         "loss": 0.10388801709708276,
@@ -22151,13 +22151,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.45641025641025645,
+        "scope": 0.4578005115089514,
         "completeness": 0.19767441860465118,
         "visual": 0.10388801709708276,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.024750553247659957,
         "visual": 0,
         "reliability": 0
@@ -22165,7 +22165,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -22175,10 +22175,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.10167363017073328,
-      "loss": 22.27024875582187,
-      "bestLoss": 22.27024875582187,
-      "smoothLoss": 22.789532346534894
+      "lossDelta": -0.10147689595865472,
+      "loss": 22.31195640878272,
+      "bestLoss": 22.31195640878272,
+      "smoothLoss": 22.830359793167034
     },
     {
       "index": 118,
@@ -22223,7 +22223,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 213,
-      "scopeCoverage": 0.5461538461538461,
+      "scopeCoverage": 0.5447570332480819,
       "clientCompleteness": 0.8033057851239669,
       "visual": {
         "loss": 0.10388801709708276,
@@ -22271,13 +22271,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.4538461538461539,
+        "scope": 0.4552429667519181,
         "completeness": 0.1966942148760331,
         "visual": 0.10388801709708276,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.02450509321545169,
         "visual": 0,
         "reliability": 0
@@ -22285,7 +22285,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -22295,10 +22295,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.10142817013852934,
-      "loss": 22.168820585683342,
-      "bestLoss": 22.168820585683342,
-      "smoothLoss": 22.677804229581614
+      "lossDelta": -0.10123143592645434,
+      "loss": 22.210724972856266,
+      "bestLoss": 22.210724972856266,
+      "smoothLoss": 22.7188255255111
     },
     {
       "index": 119,
@@ -22343,7 +22343,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 214,
-      "scopeCoverage": 0.5487179487179488,
+      "scopeCoverage": 0.5473145780051151,
       "clientCompleteness": 0.8042763157894737,
       "visual": {
         "loss": 0.10388801709708276,
@@ -22391,13 +22391,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.45128205128205123,
+        "scope": 0.45268542199488493,
         "completeness": 0.19572368421052633,
         "visual": 0.10388801709708276,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307998,
+        "scope": -0.07672634271099543,
         "completeness": -0.024263266637669645,
         "visual": 0,
         "reliability": 0
@@ -22405,7 +22405,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307998,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -22415,10 +22415,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.10118634356075162,
-      "loss": 22.06763424212259,
-      "bestLoss": 22.06763424212259,
-      "smoothLoss": 22.56797363183899
+      "lossDelta": -0.10098960934866241,
+      "loss": 22.109735363507603,
+      "bestLoss": 22.109735363507603,
+      "smoothLoss": 22.609189296350472
     },
     {
       "index": 120,
@@ -22464,7 +22464,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 215,
-      "scopeCoverage": 0.5512820512820513,
+      "scopeCoverage": 0.5498721227621484,
       "clientCompleteness": 0.8052373158756138,
       "visual": {
         "loss": 0.10388801709708276,
@@ -22512,13 +22512,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.4487179487179487,
+        "scope": 0.45012787723785164,
         "completeness": 0.19476268412438624,
         "visual": 0.10388801709708276,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.024025002153502117,
         "visual": 0,
         "reliability": 0
@@ -22526,7 +22526,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -22536,10 +22536,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.1009480790765771,
-      "loss": 21.966686163046013,
-      "bestLoss": 21.966686163046013,
-      "smoothLoss": 22.459741887456254
+      "lossDelta": -0.1007513448645021,
+      "loss": 22.0089840186431,
+      "bestLoss": 22.0089840186431,
+      "smoothLoss": 22.501152346363146
     },
     {
       "index": 121,
@@ -22584,7 +22584,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 216,
-      "scopeCoverage": 0.5538461538461539,
+      "scopeCoverage": 0.5524296675191815,
       "clientCompleteness": 0.8061889250814332,
       "visual": {
         "loss": 0.10388801709708276,
@@ -22632,13 +22632,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.4461538461538461,
+        "scope": 0.44757033248081846,
         "completeness": 0.19381107491856675,
         "visual": 0.10388801709708276,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.023790230145487312,
         "visual": 0,
         "reliability": 0
@@ -22646,7 +22646,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -22656,10 +22656,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.1007133070685633,
-      "loss": 21.86597285597745,
-      "bestLoss": 21.86597285597745,
-      "smoothLoss": 22.35286346179007
+      "lossDelta": -0.10051657285648474,
+      "loss": 21.908467445786616,
+      "bestLoss": 21.908467445786616,
+      "smoothLoss": 22.39446906425937
     },
     {
       "index": 122,
@@ -22704,7 +22704,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 217,
-      "scopeCoverage": 0.5564102564102564,
+      "scopeCoverage": 0.5549872122762148,
       "clientCompleteness": 0.807131280388979,
       "visual": {
         "loss": 0.10388801709708276,
@@ -22752,13 +22752,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.44358974358974357,
+        "scope": 0.44501278772378516,
         "completeness": 0.19286871961102103,
         "visual": 0.10388801709708276,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.023558882688642924,
         "visual": 0,
         "reliability": 0
@@ -22766,7 +22766,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -22776,10 +22776,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.10048195961172013,
-      "loss": 21.76549089636573,
-      "bestLoss": 21.76549089636573,
-      "smoothLoss": 22.247136400013687
+      "lossDelta": -0.10028522539963802,
+      "loss": 21.80818222038698,
+      "bestLoss": 21.80818222038698,
+      "smoothLoss": 22.28893743236234
     },
     {
       "index": 123,
@@ -22824,7 +22824,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 218,
-      "scopeCoverage": 0.558974358974359,
+      "scopeCoverage": 0.5575447570332481,
       "clientCompleteness": 0.8080645161290323,
       "visual": {
         "loss": 0.10388801709708276,
@@ -22872,13 +22872,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.441025641025641,
+        "scope": 0.44245524296675187,
         "completeness": 0.1919354838709677,
         "visual": 0.10388801709708276,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.023330893501333216,
         "visual": 0,
         "reliability": 0
@@ -22886,7 +22886,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -22896,10 +22896,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.10025397042441142,
-      "loss": 21.66523692594132,
-      "bestLoss": 21.66523692594132,
-      "smoothLoss": 22.142394494680662
+      "lossDelta": -0.10005723621233642,
+      "loss": 21.708124984174642,
+      "bestLoss": 21.708124984174642,
+      "smoothLoss": 22.184391191688555
     },
     {
       "index": 124,
@@ -22944,7 +22944,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 219,
-      "scopeCoverage": 0.5615384615384615,
+      "scopeCoverage": 0.5601023017902813,
       "clientCompleteness": 0.8089887640449438,
       "visual": {
         "loss": 0.10388801709708276,
@@ -22992,13 +22992,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.43846153846153846,
+        "scope": 0.4398976982097187,
         "completeness": 0.1910112359550562,
         "visual": 0.10388801709708276,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.02310619789778756,
         "visual": 0,
         "reliability": 0
@@ -23006,7 +23006,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -23016,10 +23016,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.10002927482086221,
-      "loss": 21.565207651120456,
-      "bestLoss": 21.565207651120456,
-      "smoothLoss": 22.038500862839825
+      "lossDelta": -0.09983254060878011,
+      "loss": 21.608292443565862,
+      "bestLoss": 21.608292443565862,
+      "smoothLoss": 22.08069341702647
     },
     {
       "index": 125,
@@ -23064,7 +23064,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 220,
-      "scopeCoverage": 0.5641025641025641,
+      "scopeCoverage": 0.5626598465473146,
       "clientCompleteness": 0.8099041533546326,
       "visual": {
         "loss": 0.10388801709708276,
@@ -23112,13 +23112,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.4358974358974359,
+        "scope": 0.4373401534526854,
         "completeness": 0.19009584664536738,
         "visual": 0.10388801709708276,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.02288473274222047,
         "visual": 0,
         "reliability": 0
@@ -23126,7 +23126,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -23136,10 +23136,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.09980780966530034,
-      "loss": 21.465399841455156,
-      "bestLoss": 21.465399841455156,
-      "smoothLoss": 21.935342678990587
+      "lossDelta": -0.09961107545321823,
+      "loss": 21.508681368112644,
+      "bestLoss": 21.508681368112644,
+      "smoothLoss": 21.977731248221982
     },
     {
       "index": 126,
@@ -23184,7 +23184,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 221,
-      "scopeCoverage": 0.5666666666666667,
+      "scopeCoverage": 0.5652173913043478,
       "clientCompleteness": 0.8108108108108109,
       "visual": {
         "loss": 0.10388801709708276,
@@ -23232,13 +23232,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.43333333333333335,
+        "scope": 0.4347826086956522,
         "completeness": 0.18918918918918914,
         "visual": 0.10388801709708276,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.02266643640445598,
         "visual": 0,
         "reliability": 0
@@ -23246,7 +23246,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -23256,10 +23256,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.09958951332752974,
-      "loss": 21.365810328127626,
-      "bestLoss": 21.365810328127626,
-      "smoothLoss": 21.832826855835254
+      "lossDelta": -0.09939277911545474,
+      "loss": 21.40928858899719,
+      "bestLoss": 21.40928858899719,
+      "smoothLoss": 21.875411569561518
     },
     {
       "index": 127,
@@ -23304,7 +23304,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 222,
-      "scopeCoverage": 0.5692307692307692,
+      "scopeCoverage": 0.5677749360613811,
       "clientCompleteness": 0.8117088607594937,
       "visual": {
         "loss": 0.10388801709708276,
@@ -23352,13 +23352,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.4307692307692308,
+        "scope": 0.4322250639386189,
         "completeness": 0.18829113924050633,
         "visual": 0.10388801709708276,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.02245124871707027,
         "visual": 0,
         "reliability": 0
@@ -23366,7 +23366,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -23376,10 +23376,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.0993743256401487,
-      "loss": 21.266436002487477,
-      "bestLoss": 21.266436002487477,
-      "smoothLoss": 21.730876502232654
+      "lossDelta": -0.09917759142807014,
+      "loss": 21.31011099756912,
+      "bestLoss": 21.31011099756912,
+      "smoothLoss": 21.773657466602888
     },
     {
       "index": 128,
@@ -23424,7 +23424,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 223,
-      "scopeCoverage": 0.5717948717948718,
+      "scopeCoverage": 0.5703324808184144,
       "clientCompleteness": 0.8125984251968504,
       "visual": {
         "loss": 0.10388801709708276,
@@ -23472,13 +23472,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.42820512820512824,
+        "scope": 0.42966751918158563,
         "completeness": 0.18740157480314956,
         "visual": 0.10388801709708276,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.02223911093391928,
         "visual": 0,
         "reliability": 0
@@ -23486,7 +23486,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -23496,10 +23496,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.09916218785699371,
-      "loss": 21.167273814630484,
-      "bestLoss": 21.167273814630484,
-      "smoothLoss": 21.629428018464264
+      "lossDelta": -0.09896545364491516,
+      "loss": 21.211145543924204,
+      "bestLoss": 21.211145543924204,
+      "smoothLoss": 21.672405320520728
     },
     {
       "index": 129,
@@ -23532,7 +23532,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 223,
-      "scopeCoverage": 0.5717948717948718,
+      "scopeCoverage": 0.5703324808184144,
       "clientCompleteness": 0.8125984251968504,
       "visual": {
         "loss": 0.10388801709708276,
@@ -23554,7 +23554,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.42820512820512824,
+        "scope": 0.42966751918158563,
         "completeness": 0.18740157480314956,
         "visual": 0.10388801709708276,
         "reliability": 0
@@ -23568,9 +23568,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 21.167273814630484,
-      "bestLoss": 21.167273814630484,
-      "smoothLoss": 21.546240261774184
+      "loss": 21.211145543924204,
+      "bestLoss": 21.211145543924204,
+      "smoothLoss": 21.589378560733355
     },
     {
       "index": 130,
@@ -23615,7 +23615,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 224,
-      "scopeCoverage": 0.5743589743589743,
+      "scopeCoverage": 0.5728900255754475,
       "clientCompleteness": 0.8134796238244514,
       "visual": {
         "loss": 0.10388801709708276,
@@ -23663,13 +23663,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.4256410256410257,
+        "scope": 0.42710997442455245,
         "completeness": 0.18652037617554862,
         "visual": 0.10388801709708276,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.02202996569002358,
         "visual": 0,
         "reliability": 0
@@ -23677,7 +23677,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -23687,10 +23687,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.098953042613104,
-      "loss": 21.06832077201738,
-      "bestLoss": 21.06832077201738,
-      "smoothLoss": 21.46021475361796
+      "lossDelta": -0.0987563084010219,
+      "loss": 21.11238923552318,
+      "bestLoss": 21.11238923552318,
+      "smoothLoss": 21.503520482195526
     },
     {
       "index": 131,
@@ -23735,7 +23735,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 225,
-      "scopeCoverage": 0.5769230769230769,
+      "scopeCoverage": 0.5754475703324808,
       "clientCompleteness": 0.8143525741029641,
       "visual": {
         "loss": 0.10388801709708276,
@@ -23783,13 +23783,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.42307692307692313,
+        "scope": 0.42455242966751916,
         "completeness": 0.18564742589703587,
         "visual": 0.10388801709708276,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.021823756962818797,
         "visual": 0,
         "reliability": 0
@@ -23797,7 +23797,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -23807,10 +23807,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.09874683388589389,
-      "loss": 20.969573938131486,
-      "bestLoss": 20.969573938131486,
-      "smoothLoss": 21.371899406830398
+      "lossDelta": -0.09855009967381534,
+      "loss": 21.013839135849366,
+      "bestLoss": 21.013839135849366,
+      "smoothLoss": 21.415377839853218
     },
     {
       "index": 132,
@@ -23855,7 +23855,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 226,
-      "scopeCoverage": 0.5794871794871795,
+      "scopeCoverage": 0.578005115089514,
       "clientCompleteness": 0.8152173913043478,
       "visual": {
         "loss": 0.1093567982325044,
@@ -23903,13 +23903,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.42051282051282046,
+        "scope": 0.421994884910486,
         "completeness": 0.18478260869565222,
         "visual": 0.1093567982325044,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307998,
+        "scope": -0.07672634271099543,
         "completeness": -0.021620430034591243,
         "visual": 0.19140733973975732,
         "reliability": 0
@@ -23922,7 +23922,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307998,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -23932,10 +23932,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.09286383278208632,
-      "loss": 21.062437770913572,
-      "bestLoss": 20.969573938131486,
-      "smoothLoss": 21.31619631236537
+      "lossDelta": 0.09306056699417553,
+      "loss": 21.106899702843542,
+      "bestLoss": 21.013839135849366,
+      "smoothLoss": 21.359851775191476
     },
     {
       "index": 133,
@@ -23980,7 +23980,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 227,
-      "scopeCoverage": 0.5820512820512821,
+      "scopeCoverage": 0.5805626598465473,
       "clientCompleteness": 0.8160741885625966,
       "visual": {
         "loss": 0.10937239707875021,
@@ -24028,13 +24028,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.4179487179487179,
+        "scope": 0.4194373401534527,
         "completeness": 0.18392581143740339,
         "visual": 0.10937239707875021,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.021419931456220787,
         "visual": 0.0005459596186035282,
         "reliability": 0
@@ -24042,7 +24042,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -24057,10 +24057,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.09779704876069317,
-      "loss": 20.96464072215288,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 21.252916306127123
+      "lossDelta": -0.09760031454862172,
+      "loss": 21.00929938829492,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 21.296752345550097
     },
     {
       "index": 134,
@@ -24099,7 +24099,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 228,
-      "scopeCoverage": 0.5846153846153846,
+      "scopeCoverage": 0.5831202046035806,
       "clientCompleteness": 0.816923076923077,
       "visual": {
         "loss": 0.13268346235852063,
@@ -24172,13 +24172,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.41538461538461535,
+        "scope": 0.4168797953964194,
         "completeness": 0.18307692307692303,
         "visual": 0.13268346235852063,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.021222209012008997,
         "visual": 0.8158872847919647,
         "reliability": 0
@@ -24191,7 +24191,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -24201,10 +24201,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.7177419988568801,
-      "loss": 21.68238272100976,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 21.330220260805998
+      "lossDelta": 0.7179387330689586,
+      "loss": 21.72723812136388,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 21.37423978519658
     },
     {
       "index": 135,
@@ -24259,7 +24259,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 229,
-      "scopeCoverage": 0.5871794871794872,
+      "scopeCoverage": 0.5856777493606138,
       "clientCompleteness": 0.8177641653905053,
       "visual": {
         "loss": 0.16739413956639565,
@@ -24357,13 +24357,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.4128205128205128,
+        "scope": 0.4143222506393862,
         "completeness": 0.18223583460949466,
         "visual": 0.16739413956639565,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.02102721168570909,
         "visual": 1.2148737022756255,
         "reliability": 0
@@ -24376,7 +24376,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -24386,10 +24386,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 1.1169234136668393,
-      "loss": 22.7993061346766,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 21.594655718102707
+      "lossDelta": 1.1171201478789214,
+      "loss": 22.8443582692428,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 21.6388611123249
     },
     {
       "index": 136,
@@ -24431,7 +24431,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 230,
-      "scopeCoverage": 0.5897435897435898,
+      "scopeCoverage": 0.5882352941176471,
       "clientCompleteness": 0.8185975609756098,
       "visual": {
         "loss": 0.16739413956639565,
@@ -24479,13 +24479,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.41025641025641024,
+        "scope": 0.4117647058823529,
         "completeness": 0.18140243902439024,
         "visual": 0.16739413956639565,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.020834889627610598,
         "visual": 0,
         "reliability": 0
@@ -24493,7 +24493,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -24503,10 +24503,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.09775796655068447,
-      "loss": 22.701548168125914,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 21.793896359106885
+      "lossDelta": -0.09756123233860592,
+      "loss": 22.746797036904194,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 21.838289578749176
     },
     {
       "index": 137,
@@ -24548,7 +24548,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 231,
-      "scopeCoverage": 0.5923076923076923,
+      "scopeCoverage": 0.5907928388746803,
       "clientCompleteness": 0.8179059180576631,
       "visual": {
         "loss": 0.16739413956639565,
@@ -24596,13 +24596,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.4076923076923077,
+        "scope": 0.40920716112531974,
         "completeness": 0.1820940819423369,
         "visual": 0.16739413956639565,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.017291072948666386,
         "visual": 0,
         "reliability": 0
@@ -24610,7 +24610,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -24620,10 +24620,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.05963200397441426,
-      "loss": 22.6419161641515,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 21.946539924014914
+      "lossDelta": -0.059435269762332155,
+      "loss": 22.687361767141862,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 21.99112257265986
     },
     {
       "index": 138,
@@ -24666,7 +24666,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 232,
-      "scopeCoverage": 0.5948717948717949,
+      "scopeCoverage": 0.5933503836317136,
       "clientCompleteness": 0.8187311178247734,
       "visual": {
         "loss": 0.16739413956639565,
@@ -24739,13 +24739,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.40512820512820513,
+        "scope": 0.40664961636828645,
         "completeness": 0.18126888217522663,
         "visual": 0.16739413956639565,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.020629994177756572,
         "visual": 0,
         "reliability": 0
@@ -24753,7 +24753,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -24763,10 +24763,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.09755307110083322,
-      "loss": 22.544363093050666,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 22.054148094441352
+      "lossDelta": -0.09735633688875467,
+      "loss": 22.590005430253107,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 22.09892148702665
     },
     {
       "index": 139,
@@ -24810,7 +24810,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 233,
-      "scopeCoverage": 0.5974358974358974,
+      "scopeCoverage": 0.5959079283887468,
       "clientCompleteness": 0.8195488721804511,
       "visual": {
         "loss": 0.1790413429505346,
@@ -24883,13 +24883,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.4025641025641026,
+        "scope": 0.40409207161125316,
         "completeness": 0.18045112781954886,
         "visual": 0.1790413429505346,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.020443858891944222,
         "visual": 0.40765211844486277,
         "reliability": 0
@@ -24902,7 +24902,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -24912,10 +24912,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.3102851826298405,
-      "loss": 22.854648275680507,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 22.198238127064403
+      "lossDelta": 0.31048191684191906,
+      "loss": 22.900487347095027,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 22.24320334183896
     },
     {
       "index": 140,
@@ -24961,7 +24961,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 234,
-      "scopeCoverage": 0.6,
+      "scopeCoverage": 0.59846547314578,
       "clientCompleteness": 0.8203592814371258,
       "visual": {
         "loss": 0.19160948335126732,
@@ -25034,13 +25034,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.4,
+        "scope": 0.40153452685422,
         "completeness": 0.17964071856287422,
         "visual": 0.19160948335126732,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.020260231416865948,
         "visual": 0.43988491402564556,
         "reliability": 0
@@ -25053,7 +25053,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -25063,10 +25063,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.3427016056857042,
-      "loss": 23.19734988136621,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 22.378078242838733
+      "lossDelta": 0.34289833989778273,
+      "loss": 23.24338568699281,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 22.423236163966653
     },
     {
       "index": 141,
@@ -25112,7 +25112,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 235,
-      "scopeCoverage": 0.6025641025641025,
+      "scopeCoverage": 0.6010230179028133,
       "clientCompleteness": 0.8211624441132638,
       "visual": {
         "loss": 0.19160948335126732,
@@ -25134,13 +25134,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.39743589743589747,
+        "scope": 0.3989769820971867,
         "completeness": 0.17883755588673622,
         "visual": 0.19160948335126732,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.02007906690345007,
         "visual": 0,
         "reliability": 0
@@ -25148,7 +25148,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -25158,10 +25158,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.09700214382652561,
-      "loss": 23.100347737539686,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 22.508086751884907
+      "lossDelta": -0.09680540961444706,
+      "loss": 23.146580277378362,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 22.553438104380763
     },
     {
       "index": 142,
@@ -25215,7 +25215,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 236,
-      "scopeCoverage": 0.6051282051282051,
+      "scopeCoverage": 0.6035805626598465,
       "clientCompleteness": 0.8219584569732937,
       "visual": {
         "loss": 1,
@@ -25288,13 +25288,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.3948717948717949,
+        "scope": 0.3964194373401535,
         "completeness": 0.17804154302670627,
         "visual": 1,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.01990032150074872,
         "visual": 28.293668082705643,
         "reliability": 0
@@ -25307,7 +25307,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -25317,10 +25317,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 28.196844684281814,
-      "loss": 51.2971924218215,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 27.690125772473493
+      "lossDelta": 28.197041418493896,
+      "loss": 51.34362169587226,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 27.735671150849235
     },
     {
       "index": 143,
@@ -25367,7 +25367,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 237,
-      "scopeCoverage": 0.6076923076923076,
+      "scopeCoverage": 0.6061381074168798,
       "clientCompleteness": 0.8212703101920237,
       "visual": {
         "loss": 1,
@@ -25389,13 +25389,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.39230769230769236,
+        "scope": 0.3938618925831202,
         "completeness": 0.17872968980797632,
         "visual": 1,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.01720366953175123,
         "visual": 0,
         "reliability": 0
@@ -25403,7 +25403,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -25413,10 +25413,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.05971940739132009,
-      "loss": 51.23747301443018,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 31.928648276025697
+      "lossDelta": -0.059522673179252195,
+      "loss": 51.284099022693006,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 31.974388167781115
     },
     {
       "index": 144,
@@ -25460,7 +25460,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 238,
-      "scopeCoverage": 0.6102564102564103,
+      "scopeCoverage": 0.6086956521739131,
       "clientCompleteness": 0.8205882352941176,
       "visual": {
         "loss": 1,
@@ -25508,13 +25508,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.3897435897435897,
+        "scope": 0.3913043478260869,
         "completeness": 0.17941176470588238,
         "visual": 1,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307998,
+        "scope": -0.07672634271099876,
         "completeness": 0.017051872447651495,
         "visual": 0,
         "reliability": 0
@@ -25522,7 +25522,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307998,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -25532,10 +25532,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.059871204475435036,
-      "loss": 51.177601809954744,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 35.393459912132926
+      "lossDelta": -0.059674470263345825,
+      "loss": 51.22442455242966,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 35.439394717017855
     },
     {
       "index": 145,
@@ -25576,7 +25576,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 239,
-      "scopeCoverage": 0.6128205128205129,
+      "scopeCoverage": 0.6112531969309463,
       "clientCompleteness": 0.8199121522693997,
       "visual": {
         "loss": 1,
@@ -25624,13 +25624,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.38717948717948714,
+        "scope": 0.38874680306905374,
         "completeness": 0.18008784773060027,
         "visual": 1,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.01690207561794721,
         "visual": 0,
         "reliability": 0
@@ -25638,7 +25638,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -25648,10 +25648,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.06002100130512389,
-      "loss": 51.11758080864962,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 38.22380167350593
+      "lossDelta": -0.05982426709304889,
+      "loss": 51.16460028533661,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 38.26993171931523
     },
     {
       "index": 146,
@@ -25697,7 +25697,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 240,
-      "scopeCoverage": 0.6153846153846154,
+      "scopeCoverage": 0.6138107416879796,
       "clientCompleteness": 0.8192419825072886,
       "visual": {
         "loss": 1,
@@ -25719,13 +25719,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.3846153846153846,
+        "scope": 0.38618925831202044,
         "completeness": 0.18075801749271136,
         "visual": 1,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.016754244052777367,
         "visual": 0,
         "reliability": 0
@@ -25733,7 +25733,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -25743,10 +25743,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.060168832870296285,
-      "loss": 51.057411975779324,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 40.53385152791515
+      "lossDelta": -0.059972098658221284,
+      "loss": 51.10462818667839,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 40.5801770834406
     },
     {
       "index": 147,
@@ -25786,7 +25786,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 241,
-      "scopeCoverage": 0.617948717948718,
+      "scopeCoverage": 0.6163682864450127,
       "clientCompleteness": 0.818577648766328,
       "visual": {
         "loss": 1,
@@ -25834,13 +25834,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.382051282051282,
+        "scope": 0.38363171355498726,
         "completeness": 0.181422351233672,
         "visual": 1,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.016608343524016078,
         "visual": 0,
         "reliability": 0
@@ -25848,7 +25848,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -25858,10 +25858,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.06031473339906057,
-      "loss": 50.99709724238026,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 42.41723575651887
+      "lossDelta": -0.060117999186978466,
+      "loss": 51.04451018749141,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 42.46375704216975
     },
     {
       "index": 148,
@@ -25906,7 +25906,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 242,
-      "scopeCoverage": 0.6205128205128205,
+      "scopeCoverage": 0.618925831202046,
       "clientCompleteness": 0.8164739884393064,
       "visual": {
         "loss": 1,
@@ -25928,13 +25928,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.37948717948717947,
+        "scope": 0.38107416879795397,
         "completeness": 0.1835260115606936,
         "visual": 1,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.05259150817553959,
         "visual": 0,
         "reliability": 0
@@ -25942,7 +25942,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -25952,10 +25952,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.024331568747548715,
-      "loss": 50.972765673632715,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 43.957231141599365
+      "lossDelta": -0.0241348345354524,
+      "loss": 51.02037535295596,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 44.00394833811127
     },
     {
       "index": 149,
@@ -25994,7 +25994,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 243,
-      "scopeCoverage": 0.6230769230769231,
+      "scopeCoverage": 0.6214833759590793,
       "clientCompleteness": 0.814388489208633,
       "visual": {
         "loss": 1,
@@ -26016,13 +26016,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.3769230769230769,
+        "scope": 0.3785166240409207,
         "completeness": 0.18561151079136695,
         "visual": 1,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.052137480766834,
         "visual": 0,
         "reliability": 0
@@ -26030,7 +26030,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -26040,10 +26040,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.024785596156242207,
-      "loss": 50.94798007747647,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 45.21556595005725
+      "lossDelta": -0.0245888619441601,
+      "loss": 50.9957864910118,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 45.26247920563337
     },
     {
       "index": 150,
@@ -26087,7 +26087,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 244,
-      "scopeCoverage": 0.6256410256410256,
+      "scopeCoverage": 0.6240409207161125,
       "clientCompleteness": 0.8137535816618912,
       "visual": {
         "loss": 1,
@@ -26135,13 +26135,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.37435897435897436,
+        "scope": 0.3759590792838875,
         "completeness": 0.18624641833810884,
         "visual": 1,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.015872688668547297,
         "visual": 0,
         "reliability": 0
@@ -26149,7 +26149,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -26159,10 +26159,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.06105038825452169,
-      "loss": 50.88692968922195,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 46.236411423106894
+      "lossDelta": -0.06085365404244669,
+      "loss": 50.93493283696935,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 46.28352085927385
     },
     {
       "index": 151,
@@ -26205,7 +26205,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 245,
-      "scopeCoverage": 0.6282051282051282,
+      "scopeCoverage": 0.6265984654731458,
       "clientCompleteness": 0.8131241084165478,
       "visual": {
         "loss": 1,
@@ -26253,13 +26253,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.3717948717948718,
+        "scope": 0.3734015345268542,
         "completeness": 0.1868758915834522,
         "visual": 1,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.015736831133583706,
         "visual": 0,
         "reliability": 0
@@ -26267,7 +26267,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -26277,10 +26277,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.06118624578949294,
-      "loss": 50.82574344343246,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 47.0624911867655
+      "lossDelta": -0.060989511577432154,
+      "loss": 50.87394332539192,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 47.1097969031751
     },
     {
       "index": 152,
@@ -26321,7 +26321,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 246,
-      "scopeCoverage": 0.6307692307692307,
+      "scopeCoverage": 0.629156010230179,
       "clientCompleteness": 0.8110795454545454,
       "visual": {
         "loss": 1,
@@ -26343,13 +26343,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.36923076923076925,
+        "scope": 0.370843989769821,
         "completeness": 0.18892045454545459,
         "visual": 1,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.051114074050059854,
         "visual": 0,
         "reliability": 0
@@ -26357,7 +26357,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -26367,10 +26367,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.025809002873025122,
-      "loss": 50.79993444055943,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 47.735230972448406
+      "lossDelta": -0.025612268660928805,
+      "loss": 50.84833105673099,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 47.78273305081516
     },
     {
       "index": 153,
@@ -26395,7 +26395,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 246,
-      "scopeCoverage": 0.6307692307692307,
+      "scopeCoverage": 0.629156010230179,
       "clientCompleteness": 0.8110795454545454,
       "visual": {
         "loss": 1,
@@ -26425,7 +26425,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 3
       },
       "components": {
-        "scope": 0.36923076923076925,
+        "scope": 0.370843989769821,
         "completeness": 0.18892045454545459,
         "visual": 1,
         "reliability": 0.3
@@ -26450,10 +26450,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "summary": "Focusable titlebar controls participated in the drag region"
         }
       ],
-      "lossDelta": 3.000000000000007,
-      "loss": 53.79993444055944,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 48.82687759670839
+      "lossDelta": 3,
+      "loss": 53.84833105673099,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 48.874540691880014
     },
     {
       "index": 154,
@@ -26491,7 +26491,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 247,
-      "scopeCoverage": 0.6333333333333333,
+      "scopeCoverage": 0.6317135549872123,
       "clientCompleteness": 0.809052333804809,
       "visual": {
         "loss": 1,
@@ -26521,13 +26521,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 3
       },
       "components": {
-        "scope": 0.3666666666666667,
+        "scope": 0.36828644501278773,
         "completeness": 0.190947666195191,
         "visual": 1,
         "reliability": 0.3
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.050680291243410114,
         "visual": 0,
         "reliability": 0
@@ -26535,7 +26535,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -26545,10 +26545,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.026242785679663427,
-      "loss": 53.77369165487978,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 49.71730412717924
+      "lossDelta": -0.026046051467588427,
+      "loss": 53.8222850052634,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 49.76513466828902
     },
     {
       "index": 155,
@@ -26583,7 +26583,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 247,
-      "scopeCoverage": 0.6333333333333333,
+      "scopeCoverage": 0.6317135549872123,
       "clientCompleteness": 0.809052333804809,
       "visual": {
         "loss": 1,
@@ -26613,7 +26613,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 3
       },
       "components": {
-        "scope": 0.3666666666666667,
+        "scope": 0.36828644501278773,
         "completeness": 0.190947666195191,
         "visual": 1,
         "reliability": 0.3
@@ -26627,9 +26627,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 53.77369165487978,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 50.447453882165334
+      "loss": 53.8222850052634,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 50.49542172894441
     },
     {
       "index": 156,
@@ -26664,7 +26664,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 247,
-      "scopeCoverage": 0.6333333333333333,
+      "scopeCoverage": 0.6317135549872123,
       "clientCompleteness": 0.809052333804809,
       "visual": {
         "loss": 1,
@@ -26694,7 +26694,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 3
       },
       "components": {
-        "scope": 0.3666666666666667,
+        "scope": 0.36828644501278773,
         "completeness": 0.190947666195191,
         "visual": 1,
         "reliability": 0.3
@@ -26708,9 +26708,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 53.77369165487978,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 51.04617668125393
+      "loss": 53.8222850052634,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 51.094257118681824
     },
     {
       "index": 157,
@@ -26745,7 +26745,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 247,
-      "scopeCoverage": 0.6333333333333333,
+      "scopeCoverage": 0.6317135549872123,
       "clientCompleteness": 0.809052333804809,
       "visual": {
         "loss": 1,
@@ -26775,7 +26775,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 3
       },
       "components": {
-        "scope": 0.3666666666666667,
+        "scope": 0.36828644501278773,
         "completeness": 0.190947666195191,
         "visual": 1,
         "reliability": 0.3
@@ -26789,9 +26789,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 53.77369165487978,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 51.537129376506584
+      "loss": 53.8222850052634,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 51.58530213826651
     },
     {
       "index": 158,
@@ -26830,7 +26830,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 248,
-      "scopeCoverage": 0.6358974358974359,
+      "scopeCoverage": 0.6342710997442456,
       "clientCompleteness": 0.8070422535211268,
       "visual": {
         "loss": 1,
@@ -26860,13 +26860,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 3
       },
       "components": {
-        "scope": 0.36410256410256414,
+        "scope": 0.36572890025575444,
         "completeness": 0.1929577464788732,
         "visual": 1,
         "reliability": 0.3
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.05025200709205535,
         "visual": 0,
         "reliability": 0
@@ -26874,7 +26874,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -26884,10 +26884,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.026671069831024852,
-      "loss": 53.74702058504875,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 51.934909794044174
+      "lossDelta": -0.026474335618942746,
+      "loss": 53.79581066964446,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 51.98319367391455
     },
     {
       "index": 159,
@@ -26919,7 +26919,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 248,
-      "scopeCoverage": 0.6358974358974359,
+      "scopeCoverage": 0.6342710997442456,
       "clientCompleteness": 0.8070422535211268,
       "visual": {
         "loss": 1,
@@ -26949,7 +26949,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 3
       },
       "components": {
-        "scope": 0.36410256410256414,
+        "scope": 0.36572890025575444,
         "completeness": 0.1929577464788732,
         "visual": 1,
         "reliability": 0.3
@@ -26963,9 +26963,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 53.74702058504875,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 52.261089736425
+      "loss": 53.79581066964446,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 52.30946473314594
     },
     {
       "index": 160,
@@ -26997,7 +26997,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 248,
-      "scopeCoverage": 0.6358974358974359,
+      "scopeCoverage": 0.6342710997442456,
       "clientCompleteness": 0.8070422535211268,
       "visual": {
         "loss": 1,
@@ -27027,7 +27027,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 3
       },
       "components": {
-        "scope": 0.36410256410256414,
+        "scope": 0.36572890025575444,
         "completeness": 0.1929577464788732,
         "visual": 1,
         "reliability": 0.3
@@ -27041,9 +27041,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 53.74702058504875,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 52.52855728917728
+      "loss": 53.79581066964446,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 52.57700700171567
     },
     {
       "index": 161,
@@ -27093,7 +27093,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 249,
-      "scopeCoverage": 0.6384615384615384,
+      "scopeCoverage": 0.6368286445012787,
       "clientCompleteness": 0.8073136427566807,
       "visual": {
         "loss": 1,
@@ -27123,13 +27123,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 3
       },
       "components": {
-        "scope": 0.3615384615384616,
+        "scope": 0.36317135549872126,
         "completeness": 0.19268635724331928,
         "visual": 1,
         "reliability": 0.3
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.006784730888848012,
         "visual": 0,
         "reliability": 0
@@ -27137,7 +27137,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -27147,10 +27147,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.08370780781192622,
-      "loss": 53.663312777236825,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 52.732813277028
+      "lossDelta": -0.083511073599837,
+      "loss": 53.71229959604462,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 52.78135966869488
     },
     {
       "index": 162,
@@ -27182,7 +27182,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 249,
-      "scopeCoverage": 0.6384615384615384,
+      "scopeCoverage": 0.6368286445012787,
       "clientCompleteness": 0.8073136427566807,
       "visual": {
         "loss": 1,
@@ -27212,7 +27212,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 3
       },
       "components": {
-        "scope": 0.3615384615384616,
+        "scope": 0.36317135549872126,
         "completeness": 0.19268635724331928,
         "visual": 1,
         "reliability": 0.3
@@ -27226,9 +27226,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 53.663312777236825,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 52.90030318706559
+      "loss": 53.71229959604462,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 52.94892885561784
     },
     {
       "index": 163,
@@ -27259,7 +27259,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 249,
-      "scopeCoverage": 0.6384615384615384,
+      "scopeCoverage": 0.6368286445012787,
       "clientCompleteness": 0.8073136427566807,
       "visual": {
         "loss": 1,
@@ -27289,7 +27289,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 3
       },
       "components": {
-        "scope": 0.3615384615384616,
+        "scope": 0.36317135549872126,
         "completeness": 0.19268635724331928,
         "visual": 1,
         "reliability": 0.3
@@ -27303,9 +27303,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 53.663312777236825,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.03764491329642
+      "loss": 53.71229959604462,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.086335588894656
     },
     {
       "index": 164,
@@ -27340,7 +27340,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 249,
-      "scopeCoverage": 0.6384615384615384,
+      "scopeCoverage": 0.6368286445012787,
       "clientCompleteness": 0.8073136427566807,
       "visual": {
         "loss": 1,
@@ -27370,7 +27370,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 3
       },
       "components": {
-        "scope": 0.3615384615384616,
+        "scope": 0.36317135549872126,
         "completeness": 0.19268635724331928,
         "visual": 1,
         "reliability": 0.3
@@ -27384,9 +27384,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 53.663312777236825,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.1502651288057
+      "loss": 53.71229959604462,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.19900911018165
     },
     {
       "index": 165,
@@ -27412,7 +27412,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 249,
-      "scopeCoverage": 0.6384615384615384,
+      "scopeCoverage": 0.6368286445012787,
       "clientCompleteness": 0.8073136427566807,
       "visual": {
         "loss": 1,
@@ -27442,7 +27442,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 3
       },
       "components": {
-        "scope": 0.3615384615384616,
+        "scope": 0.36317135549872126,
         "completeness": 0.19268635724331928,
         "visual": 1,
         "reliability": 0.3
@@ -27456,9 +27456,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 53.663312777236825,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.24261370552331
+      "loss": 53.71229959604462,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.29140139763698
     },
     {
       "index": 166,
@@ -27485,7 +27485,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 249,
-      "scopeCoverage": 0.6384615384615384,
+      "scopeCoverage": 0.6368286445012787,
       "clientCompleteness": 0.8073136427566807,
       "visual": {
         "loss": 1,
@@ -27515,7 +27515,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 3
       },
       "components": {
-        "scope": 0.3615384615384616,
+        "scope": 0.36317135549872126,
         "completeness": 0.19268635724331928,
         "visual": 1,
         "reliability": 0.3
@@ -27529,9 +27529,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 53.663312777236825,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.318339538431744
+      "loss": 53.71229959604462,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.367163073350355
     },
     {
       "index": 167,
@@ -27562,7 +27562,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 250,
-      "scopeCoverage": 0.6410256410256411,
+      "scopeCoverage": 0.639386189258312,
       "clientCompleteness": 0.8075842696629213,
       "visual": {
         "loss": 1,
@@ -27592,13 +27592,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 3
       },
       "components": {
-        "scope": 0.3589743589743589,
+        "scope": 0.36061381074168797,
         "completeness": 0.1924157303370787,
         "visual": 1,
         "reliability": 0.3
       },
       "componentContributions": {
-        "scope": -0.07692307692307998,
+        "scope": -0.07672634271099876,
         "completeness": -0.006765672656014465,
         "visual": 0,
         "reliability": 0
@@ -27606,7 +27606,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307998,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -27616,10 +27616,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.083688749579089,
-      "loss": 53.57962402765774,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.365370746492424
+      "lossDelta": -0.083492015367014,
+      "loss": 53.62880758067761,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.41425908466926
     },
     {
       "index": 168,
@@ -27660,7 +27660,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 252,
-      "scopeCoverage": 0.6461538461538462,
+      "scopeCoverage": 0.6445012787723785,
       "clientCompleteness": 0.8058659217877095,
       "visual": {
         "loss": 1,
@@ -27690,13 +27690,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 3
       },
       "components": {
-        "scope": 0.3538461538461538,
+        "scope": 0.3554987212276215,
         "completeness": 0.19413407821229045,
         "visual": 1,
         "reliability": 0.3
       },
       "componentContributions": {
-        "scope": -0.1538461538461533,
+        "scope": -0.1534526854219942,
         "completeness": 0.042958696880293634,
         "visual": 0,
         "reliability": 0
@@ -27704,7 +27704,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.1538461538461533,
+          "contribution": -0.1534526854219942,
           "direction": "down"
         },
         {
@@ -27714,10 +27714,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.11088745696586244,
-      "loss": 53.468736570691874,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.38397659484832
+      "lossDelta": -0.11049398854170533,
+      "loss": 53.518313592135904,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.432988896013256
     },
     {
       "index": 169,
@@ -27749,7 +27749,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 253,
-      "scopeCoverage": 0.6487179487179487,
+      "scopeCoverage": 0.6470588235294118,
       "clientCompleteness": 0.803894297635605,
       "visual": {
         "loss": 1,
@@ -27779,13 +27779,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 3
       },
       "components": {
-        "scope": 0.35128205128205126,
+        "scope": 0.3529411764705882,
         "completeness": 0.19610570236439495,
         "visual": 1,
         "reliability": 0.3
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.04929060380261252,
         "visual": 0,
         "reliability": 0
@@ -27793,7 +27793,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -27803,10 +27803,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.027632473120462464,
-      "loss": 53.44110409757141,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.39425954533848
+      "lossDelta": -0.027435738908380358,
+      "loss": 53.49087785322752,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.443408908311824
     },
     {
       "index": 170,
@@ -27843,7 +27843,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 254,
-      "scopeCoverage": 0.6512820512820513,
+      "scopeCoverage": 0.649616368286445,
       "clientCompleteness": 0.8019390581717452,
       "visual": {
         "loss": 1,
@@ -27880,13 +27880,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.3487179487179487,
+        "scope": 0.350383631713555,
         "completeness": 0.19806094182825484,
         "visual": 1,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.04888098659649731,
         "visual": 0,
         "reliability": 1.0000000000000004
@@ -27899,7 +27899,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -27915,10 +27915,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "summary": "Viewport hydration race and duplicated resize subscriptions"
         }
       ],
-      "lossDelta": 0.9719579096734137,
-      "loss": 54.413062007244825,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.577643988481626
+      "lossDelta": 0.9721546438854958,
+      "loss": 54.46303249711302,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.62694115429604
     },
     {
       "index": 171,
@@ -27956,7 +27956,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 255,
-      "scopeCoverage": 0.6538461538461539,
+      "scopeCoverage": 0.6521739130434783,
       "clientCompleteness": 0.8,
       "visual": {
         "loss": 1,
@@ -27993,13 +27993,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.34615384615384615,
+        "scope": 0.34782608695652173,
         "completeness": 0.19999999999999996,
         "visual": 1,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.04847645429362779,
         "visual": 0,
         "reliability": 0
@@ -28007,7 +28007,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -28017,10 +28017,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.028446622629438423,
-      "loss": 54.38461538461539,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.72289883978571
+      "lossDelta": -0.028249888417363422,
+      "loss": 54.434782608695656,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.77235261608798
     },
     {
       "index": 172,
@@ -28057,7 +28057,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 256,
-      "scopeCoverage": 0.6564102564102564,
+      "scopeCoverage": 0.6547314578005116,
       "clientCompleteness": 0.7980769230769231,
       "visual": {
         "loss": 1,
@@ -28094,13 +28094,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.3435897435897436,
+        "scope": 0.34526854219948844,
         "completeness": 0.20192307692307687,
         "visual": 1,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.048076923076922906,
         "visual": 0,
         "reliability": 0
@@ -28108,7 +28108,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -28118,10 +28118,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.0288461538461533,
-      "loss": 54.35576923076923,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.83681551016275
+      "lossDelta": -0.0286494196340783,
+      "loss": 54.40613318906158,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.88643311922323
     },
     {
       "index": 173,
@@ -28154,7 +28154,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 257,
-      "scopeCoverage": 0.658974358974359,
+      "scopeCoverage": 0.6572890025575447,
       "clientCompleteness": 0.7983539094650206,
       "visual": {
         "loss": 1,
@@ -28191,13 +28191,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.34102564102564104,
+        "scope": 0.34271099744245526,
         "completeness": 0.2016460905349794,
         "visual": 1,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.006924659702436942,
         "visual": 0,
         "reliability": 0
@@ -28205,7 +28205,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -28215,10 +28215,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.08384773662551481,
-      "loss": 54.27192149414372,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.91513458727933
+      "lossDelta": -0.0836510024134327,
+      "loss": 54.322482186648145,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.96492195135971
     },
     {
       "index": 174,
@@ -28269,7 +28269,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 262,
-      "scopeCoverage": 0.6717948717948717,
+      "scopeCoverage": 0.670076726342711,
       "clientCompleteness": 0.7911051212938005,
       "visual": {
         "loss": 1,
@@ -28306,13 +28306,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.32820512820512826,
+        "scope": 0.329923273657289,
         "completeness": 0.2088948787061995,
         "visual": 1,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.38461538461538325,
+        "scope": -0.38363171355498715,
         "completeness": 0.1812197042805025,
         "visual": 0,
         "reliability": 0
@@ -28320,7 +28320,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.38461538461538325,
+          "contribution": -0.38363171355498715,
           "direction": "down"
         },
         {
@@ -28330,10 +28330,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.20339568033488575,
-      "loss": 54.06852581380883,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.942745008054644
+      "lossDelta": -0.20241200927448944,
+      "loss": 54.120070177373655,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.992848632042225
     },
     {
       "index": 175,
@@ -28370,7 +28370,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 263,
-      "scopeCoverage": 0.6743589743589744,
+      "scopeCoverage": 0.6726342710997443,
       "clientCompleteness": 0.7913862718707941,
       "visual": {
         "loss": 1,
@@ -28407,13 +28407,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.3256410256410256,
+        "scope": 0.3273657289002557,
         "completeness": 0.20861372812920587,
         "visual": 1,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307998,
+        "scope": -0.07672634271099876,
         "completeness": -0.007028764424840683,
         "visual": 0,
         "reliability": 0
@@ -28421,7 +28421,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307998,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -28431,10 +28431,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.08395184134791833,
-      "loss": 53.984573972460915,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.950274221647774
+      "lossDelta": -0.08375510713583623,
+      "loss": 54.03631507023782,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 54.00067259091743
     },
     {
       "index": 176,
@@ -28475,7 +28475,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 264,
-      "scopeCoverage": 0.676923076923077,
+      "scopeCoverage": 0.6751918158567775,
       "clientCompleteness": 0.7916666666666666,
       "visual": {
         "loss": 1,
@@ -28512,13 +28512,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.32307692307692304,
+        "scope": 0.32480818414322254,
         "completeness": 0.20833333333333337,
         "visual": 1,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.007009869896812404,
         "visual": 0,
         "reliability": 0
@@ -28526,7 +28526,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -28536,10 +28536,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.0839329468198855,
-      "loss": 53.90064102564103,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.94134024636656
+      "lossDelta": -0.0837362126078105,
+      "loss": 53.95257885763001,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.9920157189257
     },
     {
       "index": 177,
@@ -28580,7 +28580,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 265,
-      "scopeCoverage": 0.6794871794871795,
+      "scopeCoverage": 0.6777493606138107,
       "clientCompleteness": 0.7919463087248322,
       "visual": {
         "loss": 1,
@@ -28617,13 +28617,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.3205128205128205,
+        "scope": 0.32225063938618925,
         "completeness": 0.20805369127516782,
         "visual": 1,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.006991051454138808,
         "visual": 0,
         "reliability": 0
@@ -28631,7 +28631,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -28641,10 +28641,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.08391412837721646,
-      "loss": 53.81672689726381,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.91890984352807
+      "lossDelta": -0.08371739416514146,
+      "loss": 53.86886146346487,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.96984795294276
     },
     {
       "index": 178,
@@ -28685,7 +28685,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 266,
-      "scopeCoverage": 0.6820512820512821,
+      "scopeCoverage": 0.680306905370844,
       "clientCompleteness": 0.792225201072386,
       "visual": {
         "loss": 1,
@@ -28722,13 +28722,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.31794871794871793,
+        "scope": 0.31969309462915596,
         "completeness": 0.20777479892761397,
         "visual": 1,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.0069723086888462404,
         "visual": 0,
         "reliability": 0
@@ -28736,7 +28736,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -28746,10 +28746,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.08389538561192467,
-      "loss": 53.73283151165189,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.88541574379036
+      "lossDelta": -0.08369865139984256,
+      "loss": 53.785162812065025,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.93660462758477
     },
     {
       "index": 179,
@@ -28788,7 +28788,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 267,
-      "scopeCoverage": 0.6846153846153846,
+      "scopeCoverage": 0.6828644501278772,
       "clientCompleteness": 0.7925033467202142,
       "visual": {
         "loss": 1,
@@ -28825,13 +28825,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.3153846153846154,
+        "scope": 0.3171355498721228,
         "completeness": 0.20749665327978584,
         "visual": 1,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.006953641195703297,
         "visual": 0,
         "reliability": 0
@@ -28839,7 +28839,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -28849,10 +28849,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.0838767181187805,
-      "loss": 53.64895479353311,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.84285277274406
+      "lossDelta": -0.08367998390669129,
+      "loss": 53.70148282815833,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.89428270368801
     },
     {
       "index": 180,
@@ -28893,7 +28893,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 268,
-      "scopeCoverage": 0.6871794871794872,
+      "scopeCoverage": 0.6854219948849105,
       "clientCompleteness": 0.7927807486631016,
       "visual": {
         "loss": 1,
@@ -28930,13 +28930,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.3128205128205128,
+        "scope": 0.3145780051150895,
         "completeness": 0.20721925133689845,
         "visual": 1,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.006935048572184743,
         "visual": 0,
         "reliability": 0
@@ -28944,7 +28944,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -28954,10 +28954,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.0838581254952615,
-      "loss": 53.565096668037846,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.79285667389694
+      "lossDelta": -0.0836613912831865,
+      "loss": 53.61782143687515,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.8445196756617
     },
     {
       "index": 181,
@@ -28995,7 +28995,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 269,
-      "scopeCoverage": 0.6897435897435897,
+      "scopeCoverage": 0.6879795396419437,
       "clientCompleteness": 0.7930574098798397,
       "visual": {
         "loss": 1,
@@ -29032,13 +29032,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.31025641025641026,
+        "scope": 0.3120204603580563,
         "completeness": 0.20694259012016025,
         "visual": 1,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.006916530418454858,
         "visual": 0,
         "reliability": 0
@@ -29046,7 +29046,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -29056,10 +29056,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.08383960734153817,
-      "loss": 53.48125706069631,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.736768743520834
+      "lossDelta": -0.08364287312945606,
+      "loss": 53.53417856374569,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.78865827551682
     },
     {
       "index": 182,
@@ -29099,7 +29099,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 270,
-      "scopeCoverage": 0.6923076923076923,
+      "scopeCoverage": 0.690537084398977,
       "clientCompleteness": 0.7933333333333333,
       "visual": {
         "loss": 1,
@@ -29136,13 +29136,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.3076923076923077,
+        "scope": 0.309462915601023,
         "completeness": 0.20666666666666667,
         "visual": 1,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.006898086337339682,
         "visual": 0,
         "reliability": 0
@@ -29150,7 +29150,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -29160,10 +29160,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.08382116326041,
-      "loss": 53.3974358974359,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.67568883122554
+      "lossDelta": -0.083624429048335,
+      "loss": 53.450554134697356,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.72779953016932
     },
     {
       "index": 183,
@@ -29205,7 +29205,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 271,
-      "scopeCoverage": 0.6948717948717948,
+      "scopeCoverage": 0.6930946291560103,
       "clientCompleteness": 0.7936085219707057,
       "visual": {
         "loss": 1,
@@ -29242,13 +29242,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.30512820512820515,
+        "scope": 0.3069053708439897,
         "completeness": 0.20639147802929425,
         "visual": 1,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.00687971593431036,
         "visual": 0,
         "reliability": 0
@@ -29256,7 +29256,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -29266,10 +29266,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.08380279285739078,
-      "loss": 53.31363310457851,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.61051880042908
+      "lossDelta": -0.08360605864530868,
+      "loss": 53.36694807605205,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.66284626842821
     },
     {
       "index": 184,
@@ -29310,7 +29310,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 272,
-      "scopeCoverage": 0.6974358974358974,
+      "scopeCoverage": 0.6956521739130435,
       "clientCompleteness": 0.7938829787234043,
       "visual": {
         "loss": 1,
@@ -29347,13 +29347,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.3025641025641026,
+        "scope": 0.30434782608695654,
         "completeness": 0.2061170212765957,
         "visual": 1,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.006861418817463716,
         "visual": 0,
         "reliability": 0
@@ -29361,7 +29361,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -29371,10 +29371,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.08378449574053803,
-      "loss": 53.22984860883797,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.54199816594268
+      "lossDelta": -0.08358776152846303,
+      "loss": 53.283360314523584,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.59453879672539
     },
     {
       "index": 185,
@@ -29410,7 +29410,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 273,
-      "scopeCoverage": 0.7,
+      "scopeCoverage": 0.6982097186700768,
       "clientCompleteness": 0.7941567065073041,
       "visual": {
         "loss": 1,
@@ -29447,13 +29447,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.30000000000000004,
+        "scope": 0.30179028132992325,
         "completeness": 0.20584329349269592,
         "visual": 1,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.006843194597494495,
         "visual": 0,
         "reliability": 0
@@ -29461,7 +29461,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -29471,10 +29471,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.0837662715205667,
-      "loss": 53.1460823373174,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.47073331679013
+      "lossDelta": -0.0835695373084917,
+      "loss": 53.19979077721509,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.52348415321354
     },
     {
       "index": 186,
@@ -29517,7 +29517,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 274,
-      "scopeCoverage": 0.7025641025641025,
+      "scopeCoverage": 0.7007672634271099,
       "clientCompleteness": 0.7936507936507936,
       "visual": {
         "loss": 1,
@@ -29580,13 +29580,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.2974358974358975,
+        "scope": 0.29923273657289007,
         "completeness": 0.2063492063492064,
         "visual": 1,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.012647821412761773,
         "visual": 0,
         "reliability": 0
@@ -29594,7 +29594,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -29604,10 +29604,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.06427525551031721,
-      "loss": 53.081807081807085,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.40072659449318
+      "lossDelta": -0.0640785212982351,
+      "loss": 53.13571225591686,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.45368521170013
     },
     {
       "index": 187,
@@ -29652,7 +29652,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 275,
-      "scopeCoverage": 0.7051282051282052,
+      "scopeCoverage": 0.7033248081841432,
       "clientCompleteness": 0.7931488801054019,
       "visual": {
         "loss": 1,
@@ -29715,13 +29715,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.2948717948717948,
+        "scope": 0.2966751918158568,
         "completeness": 0.20685111989459815,
         "visual": 1,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307998,
+        "scope": -0.07672634271099876,
         "completeness": 0.012547838634793806,
         "visual": 0,
         "reliability": 0
@@ -29729,7 +29729,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307998,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -29739,10 +29739,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.06437523828829228,
-      "loss": 53.01743184351879,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.331733539317796
+      "lossDelta": -0.06417850407619596,
+      "loss": 53.07153375184066,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.384897948925435
     },
     {
       "index": 188,
@@ -29781,7 +29781,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 276,
-      "scopeCoverage": 0.7076923076923077,
+      "scopeCoverage": 0.7058823529411765,
       "clientCompleteness": 0.7926509186351706,
       "visual": {
         "loss": 1,
@@ -29844,13 +29844,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.29230769230769227,
+        "scope": 0.2941176470588235,
         "completeness": 0.20734908136482944,
         "visual": 1,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.012449036755782239,
         "visual": 0,
         "reliability": 0
@@ -29858,7 +29858,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -29868,10 +29868,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.06447404016728342,
-      "loss": 52.95295780335151,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.26355390684387
+      "lossDelta": -0.06427730595521552,
+      "loss": 53.007256445885446,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.31692247837824
     },
     {
       "index": 189,
@@ -29942,7 +29942,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 277,
-      "scopeCoverage": 0.7102564102564103,
+      "scopeCoverage": 0.7084398976982097,
       "clientCompleteness": 0.7908496732026143,
       "visual": {
         "loss": 1,
@@ -29979,13 +29979,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.2897435897435897,
+        "scope": 0.2915601023017903,
         "completeness": 0.20915032679738566,
         "visual": 1,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.0450311358139055,
         "visual": 0,
         "reliability": 0
@@ -29993,7 +29993,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -30003,10 +30003,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.031891941109172706,
-      "loss": 52.92106586224234,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.201906058815595
+      "lossDelta": -0.031695206897097705,
+      "loss": 52.97556123898835,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.255477455288066
     },
     {
       "index": 190,
@@ -30033,7 +30033,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 277,
-      "scopeCoverage": 0.7102564102564103,
+      "scopeCoverage": 0.7084398976982097,
       "clientCompleteness": 0.7908496732026143,
       "visual": {
         "loss": 1,
@@ -30070,7 +30070,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.2897435897435897,
+        "scope": 0.2915601023017903,
         "completeness": 0.20915032679738566,
         "visual": 1,
         "reliability": 0.4
@@ -30084,9 +30084,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 52.92106586224234,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.15135482343241
+      "loss": 52.97556123898835,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.20509253635412
     },
     {
       "index": 191,
@@ -30140,7 +30140,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 278,
-      "scopeCoverage": 0.7128205128205128,
+      "scopeCoverage": 0.710997442455243,
       "clientCompleteness": 0.7890625,
       "visual": {
         "loss": 1,
@@ -30177,13 +30177,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.28717948717948716,
+        "scope": 0.289002557544757,
         "completeness": 0.2109375,
         "visual": 1,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.044679330065358625,
         "visual": 0,
         "reliability": 0
@@ -30191,7 +30191,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -30201,10 +30201,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.032243746857723465,
-      "loss": 52.88882211538461,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.104098935983814
+      "lossDelta": -0.032047012645634254,
+      "loss": 52.943514226342714,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.158008440552074
     },
     {
       "index": 192,
@@ -30231,7 +30231,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 278,
-      "scopeCoverage": 0.7128205128205128,
+      "scopeCoverage": 0.710997442455243,
       "clientCompleteness": 0.7890625,
       "visual": {
         "loss": 1,
@@ -30268,7 +30268,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.28717948717948716,
+        "scope": 0.289002557544757,
         "completeness": 0.2109375,
         "visual": 1,
         "reliability": 0.4
@@ -30282,9 +30282,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 52.88882211538461,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.06534910827596
+      "loss": 52.943514226342714,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.11939948199439
     },
     {
       "index": 193,
@@ -30335,7 +30335,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 279,
-      "scopeCoverage": 0.7153846153846154,
+      "scopeCoverage": 0.7135549872122762,
       "clientCompleteness": 0.7898832684824902,
       "visual": {
         "loss": 1,
@@ -30423,13 +30423,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.2846153846153846,
+        "scope": 0.28644501278772383,
         "completeness": 0.21011673151750976,
         "visual": 1,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.020519212062256043,
         "visual": 0,
         "reliability": 0
@@ -30437,7 +30437,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -30447,10 +30447,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.09744228898533436,
-      "loss": 52.79137982639928,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.01603463753816
+      "lossDelta": -0.09724555477325225,
+      "loss": 52.84626867156946,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.07023593611791
     },
     {
       "index": 194,
@@ -30495,7 +30495,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 280,
-      "scopeCoverage": 0.717948717948718,
+      "scopeCoverage": 0.7161125319693095,
       "clientCompleteness": 0.7906976744186046,
       "visual": {
         "loss": 0.14709626698748607,
@@ -30583,13 +30583,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.28205128205128205,
+        "scope": 0.28388746803069054,
         "completeness": 0.2093023255813954,
         "visual": 0.14709626698748607,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.02036014840285927,
         "visual": -29.851630655437987,
         "reliability": 0
@@ -30602,7 +30602,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -30612,10 +30612,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -29.948913880763918,
-      "loss": 22.84246594563536,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 47.584792272995664
+      "lossDelta": -29.94871714655185,
+      "loss": 22.89755152501761,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 47.63915274211986
     },
     {
       "index": 195,
@@ -30660,7 +30660,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 281,
-      "scopeCoverage": 0.7205128205128205,
+      "scopeCoverage": 0.7186700767263428,
       "clientCompleteness": 0.7915057915057915,
       "visual": {
         "loss": 0.1347581960883947,
@@ -30748,13 +30748,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.2794871794871795,
+        "scope": 0.28132992327365725,
         "completeness": 0.20849420849420852,
         "visual": 0.1347581960883947,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.020202927179671648,
         "visual": -0.43183248146819764,
         "reliability": 0
@@ -30767,7 +30767,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -30777,10 +30777,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.5289584855709464,
-      "loss": 22.313507460064415,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 43.03596100666804
+      "lossDelta": -0.5287617513588678,
+      "loss": 22.368789773658744,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 43.090487407796864
     },
     {
       "index": 196,
@@ -30825,7 +30825,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 282,
-      "scopeCoverage": 0.7230769230769231,
+      "scopeCoverage": 0.7212276214833759,
       "clientCompleteness": 0.7923076923076923,
       "visual": {
         "loss": 0.12156742562370475,
@@ -30913,13 +30913,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.27692307692307694,
+        "scope": 0.27877237851662406,
         "completeness": 0.20769230769230773,
         "visual": 0.12156742562370475,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.02004752004751975,
         "visual": -0.4616769662641485,
         "reliability": 0
@@ -30932,7 +30932,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -30942,10 +30942,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.5586475632347465,
-      "loss": 21.754859896829668,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 39.205362806897135
+      "lossDelta": -0.5584508290226609,
+      "loss": 21.810338944636083,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 39.26006068442793
     },
     {
       "index": 197,
@@ -30998,7 +30998,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 284,
-      "scopeCoverage": 0.7282051282051282,
+      "scopeCoverage": 0.7263427109974424,
       "clientCompleteness": 0.7920918367346939,
       "visual": {
         "loss": 0.12156742562370475,
@@ -31061,13 +31061,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.27179487179487183,
+        "scope": 0.2736572890025576,
         "completeness": 0.20790816326530615,
         "visual": 0.12156742562370475,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.1538461538461533,
+        "scope": -0.1534526854219942,
         "completeness": 0.005396389324960338,
         "visual": 0,
         "reliability": 0
@@ -31075,7 +31075,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.1538461538461533,
+          "contribution": -0.1534526854219942,
           "direction": "down"
         },
         {
@@ -31085,10 +31085,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.1484497645211924,
-      "loss": 21.606410132308476,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 36.03755132547118
+      "lossDelta": -0.1480562960970353,
+      "loss": 21.662282648539048,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 36.09246063796793
     },
     {
       "index": 198,
@@ -31133,7 +31133,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 285,
-      "scopeCoverage": 0.7307692307692307,
+      "scopeCoverage": 0.7289002557544757,
       "clientCompleteness": 0.7928843710292249,
       "visual": {
         "loss": 0.11530885715566716,
@@ -31221,13 +31221,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.2692307692307693,
+        "scope": 0.2710997442455243,
         "completeness": 0.20711562897077507,
         "visual": 0.11530885715566716,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.01981335736327694,
         "visual": -0.2190498963813155,
         "reliability": 0
@@ -31240,7 +31240,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -31250,10 +31250,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.31578633066767026,
-      "loss": 21.290623801640805,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 33.383104371181716
+      "lossDelta": -0.3155895964555917,
+      "loss": 21.346693052083456,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 33.43822247250873
     },
     {
       "index": 199,
@@ -31280,7 +31280,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 285,
-      "scopeCoverage": 0.7307692307692307,
+      "scopeCoverage": 0.7289002557544757,
       "clientCompleteness": 0.7928843710292249,
       "visual": {
         "loss": 0.11530885715566716,
@@ -31317,7 +31317,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.2692307692307693,
+        "scope": 0.2710997442455243,
         "completeness": 0.20711562897077507,
         "visual": 0.11530885715566716,
         "reliability": 0.4
@@ -31331,9 +31331,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 21.290623801640805,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 31.206457868664355
+      "loss": 21.346693052083456,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 31.26174717683218
     },
     {
       "index": 200,
@@ -31378,7 +31378,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 286,
-      "scopeCoverage": 0.7333333333333333,
+      "scopeCoverage": 0.731457800511509,
       "clientCompleteness": 0.7936708860759494,
       "visual": {
         "loss": 0.12156742562370475,
@@ -31466,13 +31466,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.2666666666666667,
+        "scope": 0.268542199488491,
         "completeness": 0.20632911392405062,
         "visual": 0.12156742562370475,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.019662876168111132,
         "visual": 0.2190498963813155,
         "reliability": 0
@@ -31485,7 +31485,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -31495,10 +31495,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.12246394329012844,
-      "loss": 21.413087744930934,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 29.44365124639234
+      "lossDelta": 0.122660677502207,
+      "loss": 21.469353729585663,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 29.49911635632781
     },
     {
       "index": 201,
@@ -31525,7 +31525,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 286,
-      "scopeCoverage": 0.7333333333333333,
+      "scopeCoverage": 0.731457800511509,
       "clientCompleteness": 0.7936708860759494,
       "visual": {
         "loss": 0.12156742562370475,
@@ -31562,7 +31562,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.2666666666666667,
+        "scope": 0.268542199488491,
         "completeness": 0.20632911392405062,
         "visual": 0.12156742562370475,
         "reliability": 0.4
@@ -31576,9 +31576,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 21.413087744930934,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 27.99814981612929
+      "loss": 21.469353729585663,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 28.053759083514226
     },
     {
       "index": 202,
@@ -31623,7 +31623,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 287,
-      "scopeCoverage": 0.735897435897436,
+      "scopeCoverage": 0.7340153452685422,
       "clientCompleteness": 0.7944514501891551,
       "visual": {
         "loss": 0.12156742562370475,
@@ -31660,13 +31660,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.26410256410256405,
+        "scope": 0.2659846547314578,
         "completeness": 0.20554854981084492,
         "visual": 0.12156742562370475,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307998,
+        "scope": -0.07672634271099543,
         "completeness": -0.019514102830142654,
         "visual": 0,
         "reliability": 0
@@ -31674,7 +31674,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307998,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -31684,10 +31684,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.09643717975322375,
-      "loss": 21.31665056517771,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 26.795479950958008
+      "lossDelta": -0.09624044554113809,
+      "loss": 21.373113284044525,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 26.851242839609682
     },
     {
       "index": 203,
@@ -31714,7 +31714,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 287,
-      "scopeCoverage": 0.735897435897436,
+      "scopeCoverage": 0.7340153452685422,
       "clientCompleteness": 0.7944514501891551,
       "visual": {
         "loss": 0.12156742562370475,
@@ -31751,7 +31751,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.26410256410256405,
+        "scope": 0.2659846547314578,
         "completeness": 0.20554854981084492,
         "visual": 0.12156742562370475,
         "reliability": 0.4
@@ -31765,9 +31765,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 21.31665056517771,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 25.809290661517558
+      "loss": 21.373113284044525,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 25.865179519607956
     },
     {
       "index": 204,
@@ -31807,7 +31807,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 289,
-      "scopeCoverage": 0.7410256410256411,
+      "scopeCoverage": 0.7391304347826086,
       "clientCompleteness": 0.7929736511919699,
       "visual": {
         "loss": 0.12156742562370475,
@@ -31844,13 +31844,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.25897435897435894,
+        "scope": 0.26086956521739135,
         "completeness": 0.20702634880803006,
         "visual": 0.12156742562370475,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.1538461538461533,
+        "scope": -0.1534526854219942,
         "completeness": 0.03694497492962856,
         "visual": 0,
         "reliability": 0
@@ -31858,7 +31858,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.1538461538461533,
+          "contribution": -0.1534526854219942,
           "direction": "down"
         },
         {
@@ -31868,10 +31868,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.11690117891652108,
-      "loss": 21.19974938626119,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 24.97957323197141
+      "lossDelta": -0.11650771049236397,
+      "loss": 21.25660557355216,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 25.035636209317914
     },
     {
       "index": 205,
@@ -31901,7 +31901,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 289,
-      "scopeCoverage": 0.7410256410256411,
+      "scopeCoverage": 0.7391304347826086,
       "clientCompleteness": 0.7929736511919699,
       "visual": {
         "loss": 0.12156742562370475,
@@ -31938,7 +31938,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.25897435897435894,
+        "scope": 0.26086956521739135,
         "completeness": 0.20702634880803006,
         "visual": 0.12156742562370475,
         "reliability": 0.4
@@ -31952,9 +31952,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 21.19974938626119,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 24.29920493974357
+      "loss": 21.25660557355216,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 24.35541069488008
     },
     {
       "index": 206,
@@ -31994,7 +31994,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 290,
-      "scopeCoverage": 0.7435897435897436,
+      "scopeCoverage": 0.7416879795396419,
       "clientCompleteness": 0.7925,
       "visual": {
         "loss": 0.12156742562370475,
@@ -32057,13 +32057,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.2564102564102564,
+        "scope": 0.25831202046035806,
         "completeness": 0.20750000000000002,
         "visual": 0.12156742562370475,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.011841279799248983,
         "visual": 0,
         "reliability": 0
@@ -32071,7 +32071,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -32081,10 +32081,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.06508179712382756,
-      "loss": 21.13466758913736,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 23.729588216634454
+      "lossDelta": -0.06488506291175256,
+      "loss": 21.19172051064041,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 23.78594646171694
     },
     {
       "index": 207,
@@ -32124,7 +32124,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 291,
-      "scopeCoverage": 0.7461538461538462,
+      "scopeCoverage": 0.7442455242966752,
       "clientCompleteness": 0.7920298879202988,
       "visual": {
         "loss": 0.10749427108241671,
@@ -32187,13 +32187,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.25384615384615383,
+        "scope": 0.25575447570332477,
         "completeness": 0.20797011207970117,
         "visual": 0.10749427108241671,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.011752801992528927,
         "visual": -0.49256040894508113,
         "reliability": 0
@@ -32206,7 +32206,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -32216,10 +32216,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.5577306838756293,
-      "loss": 20.576936905261732,
-      "bestLoss": 20.576936905261732,
-      "smoothLoss": 23.162110980587364
+      "lossDelta": -0.5575339496635507,
+      "loss": 20.634186560976858,
+      "bestLoss": 20.634186560976858,
+      "smoothLoss": 23.218629679583728
     },
     {
       "index": 208,
@@ -32259,7 +32259,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 292,
-      "scopeCoverage": 0.7487179487179487,
+      "scopeCoverage": 0.7468030690537084,
       "clientCompleteness": 0.7915632754342432,
       "visual": {
         "loss": 0.10749427108241671,
@@ -32296,13 +32296,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.2512820512820513,
+        "scope": 0.2531969309462916,
         "completeness": 0.2084367245657568,
         "visual": 0.10749427108241671,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.011665312151390439,
         "visual": 0,
         "reliability": 0
@@ -32310,7 +32310,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -32320,10 +32320,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.06525776477168677,
-      "loss": 20.511679140490045,
-      "bestLoss": 20.511679140490045,
-      "smoothLoss": 22.685033249369848
+      "lossDelta": -0.06506103055960821,
+      "loss": 20.56912553041725,
+      "bestLoss": 20.56912553041725,
+      "smoothLoss": 22.741718932733765
     },
     {
       "index": 209,
@@ -32367,7 +32367,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 294,
-      "scopeCoverage": 0.7538461538461538,
+      "scopeCoverage": 0.7519181585677749,
       "clientCompleteness": 0.7894088669950738,
       "visual": {
         "loss": 0.10749427108241671,
@@ -32404,13 +32404,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.24615384615384617,
+        "scope": 0.24808184143222511,
         "completeness": 0.21059113300492616,
         "visual": 0.10749427108241671,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.1538461538461533,
+        "scope": -0.1534526854219942,
         "completeness": 0.0538602109792341,
         "visual": 0,
         "reliability": 0
@@ -32418,7 +32418,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.1538461538461533,
+          "contribution": -0.1534526854219942,
           "direction": "down"
         },
         {
@@ -32428,10 +32428,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.09998594286692253,
-      "loss": 20.411693197623123,
-      "bestLoss": 20.411693197623123,
-      "smoothLoss": 22.275832040055437
+      "lossDelta": -0.09959247444275832,
+      "loss": 20.46953305597449,
+      "bestLoss": 20.46953305597449,
+      "smoothLoss": 22.332725474917098
     },
     {
       "index": 210,
@@ -32463,7 +32463,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 295,
-      "scopeCoverage": 0.7564102564102564,
+      "scopeCoverage": 0.7544757033248082,
       "clientCompleteness": 0.7877300613496933,
       "visual": {
         "loss": 0.10749427108241671,
@@ -32500,13 +32500,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.2435897435897436,
+        "scope": 0.24552429667519182,
         "completeness": 0.21226993865030674,
         "visual": 0.10749427108241671,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.041970141134514694,
         "visual": 0,
         "reliability": 0
@@ -32514,7 +32514,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -32524,10 +32524,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.03495293578856007,
-      "loss": 20.376740261834563,
-      "bestLoss": 20.376740261834563,
-      "smoothLoss": 21.93399551997568
+      "lossDelta": -0.034756201576481516,
+      "loss": 20.43477685439801,
+      "bestLoss": 20.43477685439801,
+      "smoothLoss": 21.991094723223664
     },
     {
       "index": 211,
@@ -32559,7 +32559,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 296,
-      "scopeCoverage": 0.7589743589743589,
+      "scopeCoverage": 0.7570332480818415,
       "clientCompleteness": 0.7860635696821516,
       "visual": {
         "loss": 0.10749427108241671,
@@ -32596,13 +32596,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.24102564102564106,
+        "scope": 0.24296675191815853,
         "completeness": 0.21393643031784837,
         "visual": 0.10749427108241671,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.04166229168854063,
         "visual": 0,
         "reliability": 0
@@ -32610,7 +32610,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -32620,10 +32620,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.035260785234537906,
-      "loss": 20.341479476600025,
-      "bestLoss": 20.341479476600025,
-      "smoothLoss": 21.647342632168066
+      "lossDelta": -0.03506405102245935,
+      "loss": 20.39971280337555,
+      "bestLoss": 20.39971280337555,
+      "smoothLoss": 21.704645977651005
     },
     {
       "index": 212,
@@ -32655,7 +32655,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 297,
-      "scopeCoverage": 0.7615384615384615,
+      "scopeCoverage": 0.7595907928388747,
       "clientCompleteness": 0.784409257003654,
       "visual": {
         "loss": 0.10749427108241671,
@@ -32692,13 +32692,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.2384615384615385,
+        "scope": 0.24040920716112535,
         "completeness": 0.21559074299634595,
         "visual": 0.10749427108241671,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.041357816962439564,
         "visual": 0,
         "reliability": 0
@@ -32706,7 +32706,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -32716,10 +32716,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.03556525996063442,
-      "loss": 20.30591421663939,
-      "bestLoss": 20.30591421663939,
-      "smoothLoss": 21.405885517372905
+      "lossDelta": -0.03536852574855587,
+      "loss": 20.364344277626994,
+      "bestLoss": 20.364344277626994,
+      "smoothLoss": 21.463391671646683
     },
     {
       "index": 213,
@@ -32751,7 +32751,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 298,
-      "scopeCoverage": 0.764102564102564,
+      "scopeCoverage": 0.7621483375959079,
       "clientCompleteness": 0.7827669902912622,
       "visual": {
         "loss": 0.10749427108241671,
@@ -32788,13 +32788,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.23589743589743595,
+        "scope": 0.23785166240409206,
         "completeness": 0.21723300970873782,
         "visual": 0.10749427108241671,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.041056667809796776,
         "visual": 0,
         "reliability": 0
@@ -32802,7 +32802,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -32812,10 +32812,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.035866409113282316,
-      "loss": 20.270047807526108,
-      "bestLoss": 20.270047807526108,
-      "smoothLoss": 21.201434729600482
+      "lossDelta": -0.03566967490120376,
+      "loss": 20.32867460272579,
+      "bestLoss": 20.32867460272579,
+      "smoothLoss": 21.259142599240924
     },
     {
       "index": 214,
@@ -32847,7 +32847,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 299,
-      "scopeCoverage": 0.7666666666666667,
+      "scopeCoverage": 0.7647058823529411,
       "clientCompleteness": 0.781136638452237,
       "visual": {
         "loss": 0.10749427108241671,
@@ -32884,13 +32884,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.23333333333333328,
+        "scope": 0.23529411764705888,
         "completeness": 0.21886336154776298,
         "visual": 0.10749427108241671,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307998,
+        "scope": -0.07672634271099543,
         "completeness": 0.040758795975628925,
         "visual": 0,
         "reliability": 0
@@ -32898,7 +32898,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307998,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -32908,10 +32908,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.03616428094744961,
-      "loss": 20.23388352657866,
-      "bestLoss": 20.23388352657866,
-      "smoothLoss": 21.027275513056555
+      "lossDelta": -0.03596754673536395,
+      "loss": 20.292707055990427,
+      "bestLoss": 20.292707055990427,
+      "smoothLoss": 21.08518420145584
     },
     {
       "index": 215,
@@ -32946,7 +32946,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 300,
-      "scopeCoverage": 0.7692307692307693,
+      "scopeCoverage": 0.7672634271099744,
       "clientCompleteness": 0.7795180722891566,
       "visual": {
         "loss": 0.10749427108241671,
@@ -32983,13 +32983,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.23076923076923073,
+        "scope": 0.23273657289002558,
         "completeness": 0.2204819277108434,
         "visual": 0.10749427108241671,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.04046415407701065,
         "visual": 0,
         "reliability": 0
@@ -32997,7 +32997,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -33007,10 +33007,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.03645892284606589,
-      "loss": 20.197424603732593,
-      "bestLoss": 20.197424603732593,
-      "smoothLoss": 20.877902349378243
+      "lossDelta": -0.036262188633987336,
+      "loss": 20.25644486735644,
+      "bestLoss": 20.25644486735644,
+      "smoothLoss": 20.936011121317947
     },
     {
       "index": 216,
@@ -33045,7 +33045,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 301,
-      "scopeCoverage": 0.7717948717948718,
+      "scopeCoverage": 0.7698209718670077,
       "clientCompleteness": 0.7779111644657863,
       "visual": {
         "loss": 0.10749427108241671,
@@ -33082,13 +33082,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.22820512820512817,
+        "scope": 0.2301790281329923,
         "completeness": 0.22208883553421366,
         "visual": 0.10749427108241671,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.04017269558425629,
         "visual": 0,
         "reliability": 0
@@ -33096,7 +33096,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -33106,10 +33106,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.03675038133881969,
-      "loss": 20.160674222393773,
-      "bestLoss": 20.160674222393773,
-      "smoothLoss": 20.74880128652104
+      "lossDelta": -0.03655364712674469,
+      "loss": 20.219891220229695,
+      "bestLoss": 20.219891220229695,
+      "smoothLoss": 20.807109539122063
     },
     {
       "index": 217,
@@ -33144,7 +33144,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 302,
-      "scopeCoverage": 0.7743589743589744,
+      "scopeCoverage": 0.7723785166240409,
       "clientCompleteness": 0.7763157894736842,
       "visual": {
         "loss": 0.10749427108241671,
@@ -33181,13 +33181,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.22564102564102562,
+        "scope": 0.2276214833759591,
         "completeness": 0.22368421052631582,
         "visual": 0.10749427108241671,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.03988437480255402,
         "visual": 0,
         "reliability": 0
@@ -33195,7 +33195,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -33205,10 +33205,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.037038702120522515,
-      "loss": 20.12363552027325,
-      "bestLoss": 20.12363552027325,
-      "smoothLoss": 20.63627144859644
+      "lossDelta": -0.03684196790844041,
+      "loss": 20.183049252321254,
+      "bestLoss": 20.183049252321254,
+      "smoothLoss": 20.69477868749792
     },
     {
       "index": 218,
@@ -33243,7 +33243,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 303,
-      "scopeCoverage": 0.7769230769230769,
+      "scopeCoverage": 0.7749360613810742,
       "clientCompleteness": 0.7747318235995232,
       "visual": {
         "loss": 0.10749427108241671,
@@ -33280,13 +33280,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.22307692307692306,
+        "scope": 0.22506393861892582,
         "completeness": 0.2252681764004768,
         "visual": 0.10749427108241671,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.03959914685402466,
         "visual": 0,
         "reliability": 0
@@ -33294,7 +33294,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -33304,10 +33304,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.037323930069053546,
-      "loss": 20.086311590204197,
-      "bestLoss": 20.086311590204197,
-      "smoothLoss": 20.537278674085837
+      "lossDelta": -0.03712719585697499,
+      "loss": 20.14592205646428,
+      "bestLoss": 20.14592205646428,
+      "smoothLoss": 20.595984493911864
     },
     {
       "index": 219,
@@ -33342,7 +33342,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 304,
-      "scopeCoverage": 0.7794871794871795,
+      "scopeCoverage": 0.7774936061381074,
       "clientCompleteness": 0.7731591448931117,
       "visual": {
         "loss": 0.10749427108241671,
@@ -33379,13 +33379,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.2205128205128205,
+        "scope": 0.22250639386189264,
         "completeness": 0.22684085510688834,
         "visual": 0.10749427108241671,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.03931696766028836,
         "visual": 0,
         "reliability": 0
@@ -33393,7 +33393,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -33403,10 +33403,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.03760610926278929,
-      "loss": 20.048705480941408,
-      "bestLoss": 20.048705480941408,
-      "smoothLoss": 20.44933549931984
+      "lossDelta": -0.03740937505070718,
+      "loss": 20.108512681413572,
+      "bestLoss": 20.108512681413572,
+      "smoothLoss": 20.508239567662173
     },
     {
       "index": 220,
@@ -33441,7 +33441,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 305,
-      "scopeCoverage": 0.782051282051282,
+      "scopeCoverage": 0.7800511508951407,
       "clientCompleteness": 0.7715976331360946,
       "visual": {
         "loss": 0.10749427108241671,
@@ -33478,13 +33478,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.21794871794871795,
+        "scope": 0.21994884910485935,
         "completeness": 0.22840236686390536,
         "visual": 0.10749427108241671,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.0390377939254255,
         "visual": 0,
         "reliability": 0
@@ -33492,7 +33492,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -33502,10 +33502,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.03788528299764593,
-      "loss": 20.01082019794376,
-      "bestLoss": 20.01082019794376,
-      "smoothLoss": 20.37040274507215
+      "lossDelta": -0.03768854878557448,
+      "loss": 20.070824132627997,
+      "bestLoss": 20.070824132627997,
+      "smoothLoss": 20.429504789356024
     },
     {
       "index": 221,
@@ -33540,7 +33540,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 306,
-      "scopeCoverage": 0.7846153846153846,
+      "scopeCoverage": 0.782608695652174,
       "clientCompleteness": 0.7700471698113207,
       "visual": {
         "loss": 0.10749427108241671,
@@ -33577,13 +33577,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.2153846153846154,
+        "scope": 0.21739130434782605,
         "completeness": 0.2299528301886793,
         "visual": 0.10749427108241671,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.0387615831193483,
         "visual": 0,
         "reliability": 0
@@ -33591,7 +33591,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -33601,10 +33601,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.038161493803730906,
-      "loss": 19.97265870414003,
-      "bestLoss": 19.97265870414003,
-      "smoothLoss": 20.298808817704366
+      "lossDelta": -0.0379647595916488,
+      "loss": 20.03285937303635,
+      "bestLoss": 20.03285937303635,
+      "smoothLoss": 20.358108614418484
     },
     {
       "index": 222,
@@ -33639,7 +33639,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 307,
-      "scopeCoverage": 0.7871794871794872,
+      "scopeCoverage": 0.7851662404092071,
       "clientCompleteness": 0.7685076380728555,
       "visual": {
         "loss": 0.10749427108241671,
@@ -33676,13 +33676,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.21282051282051284,
+        "scope": 0.21483375959079287,
         "completeness": 0.2314923619271445,
         "visual": 0.10749427108241671,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.03848829346163041,
         "visual": 0,
         "reliability": 0
@@ -33690,7 +33690,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -33700,10 +33700,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.038434783461450905,
-      "loss": 19.93422392067858,
-      "bestLoss": 19.93422392067858,
-      "smoothLoss": 20.233183536239725
+      "lossDelta": -0.03823804924936525,
+      "loss": 19.994621323786983,
+      "bestLoss": 19.994621323786983,
+      "smoothLoss": 20.292680902104816
     },
     {
       "index": 223,
@@ -33738,7 +33738,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 308,
-      "scopeCoverage": 0.7897435897435897,
+      "scopeCoverage": 0.7877237851662404,
       "clientCompleteness": 0.7669789227166276,
       "visual": {
         "loss": 0.10749427108241671,
@@ -33775,13 +33775,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.2102564102564103,
+        "scope": 0.21227621483375958,
         "completeness": 0.2330210772833724,
         "visual": 0.10749427108241671,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.03821788390569736,
         "visual": 0,
         "reliability": 0
@@ -33789,7 +33789,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -33799,10 +33799,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.03870519301737474,
-      "loss": 19.895518727661205,
-      "bestLoss": 19.895518727661205,
-      "smoothLoss": 20.17240387069559
+      "lossDelta": -0.03850845880530329,
+      "loss": 19.95611286498168,
+      "bestLoss": 19.95611286498168,
+      "smoothLoss": 20.23209865542265
     },
     {
       "index": 224,
@@ -33837,7 +33837,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 309,
-      "scopeCoverage": 0.7923076923076923,
+      "scopeCoverage": 0.7902813299232737,
       "clientCompleteness": 0.7654609101516919,
       "visual": {
         "loss": 0.10749427108241671,
@@ -33874,13 +33874,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.20769230769230773,
+        "scope": 0.2097186700767263,
         "completeness": 0.23453908984830807,
         "visual": 0.10749427108241671,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.03795031412339167,
         "visual": 0,
         "reliability": 0
@@ -33888,7 +33888,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -33898,10 +33898,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.038972762799687644,
-      "loss": 19.856545964861517,
-      "bestLoss": 19.856545964861517,
-      "smoothLoss": 20.11554944764546
+      "lossDelta": -0.03877602858760554,
+      "loss": 19.917336836394075,
+      "bestLoss": 19.917336836394075,
+      "smoothLoss": 20.175441527997506
     },
     {
       "index": 225,
@@ -33937,7 +33937,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 310,
-      "scopeCoverage": 0.7948717948717948,
+      "scopeCoverage": 0.7928388746803069,
       "clientCompleteness": 0.763953488372093,
       "visual": {
         "loss": 0.10749427108241671,
@@ -33974,13 +33974,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.20512820512820518,
+        "scope": 0.2071611253196931,
         "completeness": 0.23604651162790702,
         "visual": 0.10749427108241671,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.037685544489973744,
         "visual": 0,
         "reliability": 0
@@ -33988,7 +33988,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -33998,10 +33998,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.03923753243310202,
-      "loss": 19.817308432428415,
-      "bestLoss": 19.817308432428415,
-      "smoothLoss": 20.06186606490639
+      "lossDelta": -0.03904079822101991,
+      "loss": 19.878296038173055,
+      "bestLoss": 19.878296038173055,
+      "smoothLoss": 20.121955339829107
     },
     {
       "index": 226,
@@ -34034,7 +34034,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 311,
-      "scopeCoverage": 0.7974358974358975,
+      "scopeCoverage": 0.7953964194373402,
       "clientCompleteness": 0.7624565469293163,
       "visual": {
         "loss": 0.10749427108241671,
@@ -34071,13 +34071,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.2025641025641025,
+        "scope": 0.20460358056265981,
         "completeness": 0.2375434530706837,
         "visual": 0.10749427108241671,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307998,
+        "scope": -0.07672634271099876,
         "completeness": 0.03742353606941695,
         "visual": 0,
         "reliability": 0
@@ -34085,7 +34085,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307998,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -34095,10 +34095,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.039499540853661586,
-      "loss": 19.777808891574754,
-      "bestLoss": 19.777808891574754,
-      "smoothLoss": 20.0107357737067
+      "lossDelta": -0.03930280664157948,
+      "loss": 19.838993231531475,
+      "bestLoss": 19.838993231531475,
+      "smoothLoss": 20.071022160335534
     },
     {
       "index": 227,
@@ -34143,7 +34143,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 312,
-      "scopeCoverage": 0.8,
+      "scopeCoverage": 0.7979539641943734,
       "clientCompleteness": 0.7609699769053118,
       "visual": {
         "loss": 0.10749427108241671,
@@ -34180,13 +34180,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.19999999999999996,
+        "scope": 0.20204603580562663,
         "completeness": 0.23903002309468824,
         "visual": 0.10749427108241671,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.037164250600113524,
         "visual": 0,
         "reliability": 0
@@ -34194,7 +34194,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -34204,10 +34204,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.039758826322962904,
-      "loss": 19.73805006525179,
-      "bestLoss": 19.73805006525179,
-      "smoothLoss": 19.961652346184817
+      "lossDelta": -0.03956209211088435,
+      "loss": 19.79943113942059,
+      "bestLoss": 19.79943113942059,
+      "smoothLoss": 20.022135776570845
     },
     {
       "index": 228,
@@ -34244,7 +34244,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 313,
-      "scopeCoverage": 0.8025641025641026,
+      "scopeCoverage": 0.8005115089514067,
       "clientCompleteness": 0.7612456747404844,
       "visual": {
         "loss": 0.10749427108241671,
@@ -34281,13 +34281,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.1974358974358974,
+        "scope": 0.19948849104859334,
         "completeness": 0.23875432525951557,
         "visual": 0.10749427108241671,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.006892445879316811,
         "visual": 0,
         "reliability": 0
@@ -34295,7 +34295,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -34305,10 +34305,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.0838155228023929,
-      "loss": 19.654234542449398,
-      "bestLoss": 19.654234542449398,
-      "smoothLoss": 19.906317141512442
+      "lossDelta": -0.08361878859031435,
+      "loss": 19.715812350830277,
+      "bestLoss": 19.715812350830277,
+      "smoothLoss": 19.966997559937546
     },
     {
       "index": 229,
@@ -34344,7 +34344,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 314,
-      "scopeCoverage": 0.8051282051282052,
+      "scopeCoverage": 0.80306905370844,
       "clientCompleteness": 0.761520737327189,
       "visual": {
         "loss": 0.10749427108241671,
@@ -34381,13 +34381,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.19487179487179485,
+        "scope": 0.19693094629156005,
         "completeness": 0.23847926267281105,
         "visual": 0.10749427108241671,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.006876564667612772,
         "visual": 0,
         "reliability": 0
@@ -34395,7 +34395,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -34405,10 +34405,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.08379964159069075,
-      "loss": 19.570434900858707,
-      "bestLoss": 19.570434900858707,
-      "smoothLoss": 19.845858338194773
+      "lossDelta": -0.08360290737861575,
+      "loss": 19.63220944345166,
+      "bestLoss": 19.63220944345166,
+      "smoothLoss": 19.90673569897009
     },
     {
       "index": 230,
@@ -34445,7 +34445,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 315,
-      "scopeCoverage": 0.8076923076923077,
+      "scopeCoverage": 0.8056265984654731,
       "clientCompleteness": 0.761795166858458,
       "visual": {
         "loss": 0.10749427108241671,
@@ -34482,13 +34482,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.1923076923076923,
+        "scope": 0.19437340153452687,
         "completeness": 0.23820483314154195,
         "visual": 0.10749427108241671,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.006860738281727619,
         "visual": 0,
         "reliability": 0
@@ -34496,7 +34496,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -34506,10 +34506,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.0837838152048036,
-      "loss": 19.486651085653904,
-      "bestLoss": 19.486651085653904,
-      "smoothLoss": 19.781201032737417
+      "lossDelta": -0.0835870809927215,
+      "loss": 19.54862236245894,
+      "bestLoss": 19.54862236245894,
+      "smoothLoss": 19.842275298398082
     },
     {
       "index": 231,
@@ -34545,7 +34545,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 316,
-      "scopeCoverage": 0.8102564102564103,
+      "scopeCoverage": 0.8081841432225064,
       "clientCompleteness": 0.7620689655172413,
       "visual": {
         "loss": 0.10749427108241671,
@@ -34582,13 +34582,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.18974358974358974,
+        "scope": 0.19181585677749358,
         "completeness": 0.23793103448275865,
         "visual": 0.10749427108241671,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.006844966469582436,
         "visual": 0,
         "reliability": 0
@@ -34596,7 +34596,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -34606,10 +34606,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.08376804339265931,
-      "loss": 19.402883042261244,
-      "bestLoss": 19.402883042261244,
-      "smoothLoss": 19.71310379445171
+      "lossDelta": -0.08357130918058076,
+      "loss": 19.46505105327836,
+      "bestLoss": 19.46505105327836,
+      "smoothLoss": 19.774374934276533
     },
     {
       "index": 232,
@@ -34645,7 +34645,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 317,
-      "scopeCoverage": 0.8128205128205128,
+      "scopeCoverage": 0.8107416879795396,
       "clientCompleteness": 0.7623421354764638,
       "visual": {
         "loss": 0.10749427108241671,
@@ -34682,13 +34682,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.18717948717948718,
+        "scope": 0.1892583120204604,
         "completeness": 0.2376578645235362,
         "visual": 0.10749427108241671,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.006829248980561031,
         "visual": 0,
         "reliability": 0
@@ -34696,7 +34696,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -34706,10 +34706,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.08375232590363879,
-      "loss": 19.319130716357606,
-      "bestLoss": 19.319130716357606,
-      "smoothLoss": 19.64218864039477
+      "lossDelta": -0.08355559169155669,
+      "loss": 19.381495461586802,
+      "bestLoss": 19.381495461586802,
+      "smoothLoss": 19.70365662919238
     },
     {
       "index": 233,
@@ -34736,7 +34736,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 317,
-      "scopeCoverage": 0.8128205128205128,
+      "scopeCoverage": 0.8107416879795396,
       "clientCompleteness": 0.7623421354764638,
       "visual": {
         "loss": 0.10749427108241671,
@@ -34773,7 +34773,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.18717948717948718,
+        "scope": 0.1892583120204604,
         "completeness": 0.2376578645235362,
         "visual": 0.10749427108241671,
         "reliability": 0.4
@@ -34787,9 +34787,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 19.319130716357606,
-      "bestLoss": 19.319130716357606,
-      "smoothLoss": 19.584038214068084
+      "loss": 19.381495461586802,
+      "bestLoss": 19.381495461586802,
+      "smoothLoss": 19.645667619023378
     },
     {
       "index": 234,
@@ -34847,7 +34847,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 318,
-      "scopeCoverage": 0.8153846153846154,
+      "scopeCoverage": 0.8132992327365729,
       "clientCompleteness": 0.7626146788990825,
       "visual": {
         "loss": 0.10749427108241671,
@@ -34884,13 +34884,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.18461538461538463,
+        "scope": 0.1867007672634271,
         "completeness": 0.23738532110091748,
         "visual": 0.10749427108241671,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.006813585565468294,
         "visual": 0,
         "reliability": 0
@@ -34898,7 +34898,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -34908,10 +34908,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.08373666248854406,
-      "loss": 19.23539405386906,
-      "bestLoss": 19.23539405386906,
-      "smoothLoss": 19.52128226523226
+      "lossDelta": -0.0835399282764655,
+      "loss": 19.297955533310336,
+      "bestLoss": 19.297955533310336,
+      "smoothLoss": 19.58307944359503
     },
     {
       "index": 235,
@@ -34949,7 +34949,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 319,
-      "scopeCoverage": 0.8179487179487179,
+      "scopeCoverage": 0.8158567774936062,
       "clientCompleteness": 0.7622857142857142,
       "visual": {
         "loss": 0.09428841239239598,
@@ -35037,13 +35037,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.18205128205128207,
+        "scope": 0.1841432225063938,
         "completeness": 0.23771428571428577,
         "visual": 0.09428841239239598,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.008224115334207194,
         "visual": -0.4622050541507257,
         "reliability": 0
@@ -35056,7 +35056,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -35066,10 +35066,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.5309040157395977,
-      "loss": 18.704490038129464,
-      "bestLoss": 18.704490038129464,
-      "smoothLoss": 19.374259664353758
+      "lossDelta": -0.5307072815275191,
+      "loss": 18.767248251782817,
+      "bestLoss": 18.767248251782817,
+      "smoothLoss": 19.436229829068832
     },
     {
       "index": 236,
@@ -35100,7 +35100,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 319,
-      "scopeCoverage": 0.8179487179487179,
+      "scopeCoverage": 0.8158567774936062,
       "clientCompleteness": 0.7622857142857142,
       "visual": {
         "loss": 0.09428841239239598,
@@ -35137,7 +35137,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.18205128205128207,
+        "scope": 0.1841432225063938,
         "completeness": 0.23771428571428577,
         "visual": 0.09428841239239598,
         "reliability": 0.4
@@ -35151,9 +35151,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 18.704490038129464,
-      "bestLoss": 18.704490038129464,
-      "smoothLoss": 19.253701131633385
+      "loss": 18.767248251782817,
+      "bestLoss": 18.767248251782817,
+      "smoothLoss": 19.31581314515735
     },
     {
       "index": 237,
@@ -35179,7 +35179,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 319,
-      "scopeCoverage": 0.8179487179487179,
+      "scopeCoverage": 0.8158567774936062,
       "clientCompleteness": 0.7622857142857142,
       "visual": {
         "loss": 0.09428841239239598,
@@ -35216,7 +35216,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.18205128205128207,
+        "scope": 0.1841432225063938,
         "completeness": 0.23771428571428577,
         "visual": 0.09428841239239598,
         "reliability": 0.4
@@ -35230,9 +35230,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 18.704490038129464,
-      "bestLoss": 18.704490038129464,
-      "smoothLoss": 19.15484313480268
+      "loss": 18.767248251782817,
+      "bestLoss": 18.767248251782817,
+      "smoothLoss": 19.217071464349935
     },
     {
       "index": 238,
@@ -35263,7 +35263,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 319,
-      "scopeCoverage": 0.8179487179487179,
+      "scopeCoverage": 0.8158567774936062,
       "clientCompleteness": 0.7622857142857142,
       "visual": {
         "loss": 0.09428841239239598,
@@ -35300,7 +35300,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.18205128205128207,
+        "scope": 0.1841432225063938,
         "completeness": 0.23771428571428577,
         "visual": 0.09428841239239598,
         "reliability": 0.4
@@ -35314,9 +35314,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 18.704490038129464,
-      "bestLoss": 18.704490038129464,
-      "smoothLoss": 19.073779577401503
+      "loss": 18.767248251782817,
+      "bestLoss": 18.767248251782817,
+      "smoothLoss": 19.136103286087856
     },
     {
       "index": 239,
@@ -35342,7 +35342,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 319,
-      "scopeCoverage": 0.8179487179487179,
+      "scopeCoverage": 0.8158567774936062,
       "clientCompleteness": 0.7622857142857142,
       "visual": {
         "loss": 0.09428841239239598,
@@ -35379,7 +35379,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.18205128205128207,
+        "scope": 0.1841432225063938,
         "completeness": 0.23771428571428577,
         "visual": 0.09428841239239598,
         "reliability": 0.4
@@ -35393,9 +35393,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 18.704490038129464,
-      "bestLoss": 18.704490038129464,
-      "smoothLoss": 19.007307460332537
+      "loss": 18.767248251782817,
+      "bestLoss": 18.767248251782817,
+      "smoothLoss": 19.06970937991295
     },
     {
       "index": 240,
@@ -35421,7 +35421,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 319,
-      "scopeCoverage": 0.8179487179487179,
+      "scopeCoverage": 0.8158567774936062,
       "clientCompleteness": 0.7622857142857142,
       "visual": {
         "loss": 0.09428841239239598,
@@ -35458,7 +35458,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.18205128205128207,
+        "scope": 0.1841432225063938,
         "completeness": 0.23771428571428577,
         "visual": 0.09428841239239598,
         "reliability": 0.4
@@ -35472,9 +35472,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 18.704490038129464,
-      "bestLoss": 18.704490038129464,
-      "smoothLoss": 18.952800324335985
+      "loss": 18.767248251782817,
+      "bestLoss": 18.767248251782817,
+      "smoothLoss": 19.015266376849528
     },
     {
       "index": 241,
@@ -35506,7 +35506,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 319,
-      "scopeCoverage": 0.8179487179487179,
+      "scopeCoverage": 0.8158567774936062,
       "clientCompleteness": 0.7622857142857142,
       "visual": {
         "loss": 0.09428841239239598,
@@ -35543,7 +35543,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.18205128205128207,
+        "scope": 0.1841432225063938,
         "completeness": 0.23771428571428577,
         "visual": 0.09428841239239598,
         "reliability": 0.4
@@ -35557,9 +35557,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 18.704490038129464,
-      "bestLoss": 18.704490038129464,
-      "smoothLoss": 18.908104472818813
+      "loss": 18.767248251782817,
+      "bestLoss": 18.767248251782817,
+      "smoothLoss": 18.97062311433752
     },
     {
       "index": 242,
@@ -35585,7 +35585,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 319,
-      "scopeCoverage": 0.8179487179487179,
+      "scopeCoverage": 0.8158567774936062,
       "clientCompleteness": 0.7622857142857142,
       "visual": {
         "loss": 0.09428841239239598,
@@ -35622,7 +35622,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.18205128205128207,
+        "scope": 0.1841432225063938,
         "completeness": 0.23771428571428577,
         "visual": 0.09428841239239598,
         "reliability": 0.4
@@ -35636,9 +35636,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 18.704490038129464,
-      "bestLoss": 18.704490038129464,
-      "smoothLoss": 18.87145387457473
+      "loss": 18.767248251782817,
+      "bestLoss": 18.767248251782817,
+      "smoothLoss": 18.934015639077675
     },
     {
       "index": 243,
@@ -35676,7 +35676,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 320,
-      "scopeCoverage": 0.8205128205128205,
+      "scopeCoverage": 0.8184143222506394,
       "clientCompleteness": 0.7619589977220956,
       "visual": {
         "loss": 0.06464420930974016,
@@ -35764,13 +35764,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.17948717948717952,
+        "scope": 0.18158567774936063,
         "completeness": 0.23804100227790437,
         "visual": 0.06464420930974016,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.008167914090465023,
         "visual": -1.0375471078929537,
         "reliability": 0
@@ -35783,7 +35783,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -35793,10 +35793,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -1.106302270725564,
-      "loss": 17.5981877674039,
-      "bestLoss": 17.5981877674039,
-      "smoothLoss": 18.642265975283983
+      "lossDelta": -1.106105536513482,
+      "loss": 17.661142715269335,
+      "bestLoss": 17.661142715269335,
+      "smoothLoss": 18.704898512792173
     },
     {
       "index": 244,
@@ -35835,7 +35835,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 321,
-      "scopeCoverage": 0.823076923076923,
+      "scopeCoverage": 0.8209718670076727,
       "clientCompleteness": 0.7622298065984073,
       "visual": {
         "loss": 0.06464420930974016,
@@ -35872,13 +35872,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.17692307692307696,
+        "scope": 0.17902813299232734,
         "completeness": 0.23777019340159267,
         "visual": 0.06464420930974016,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.0067702219077925285,
         "visual": 0,
         "reliability": 0
@@ -35886,7 +35886,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -35896,10 +35896,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.08369329883086962,
-      "loss": 17.51449446857303,
-      "bestLoss": 17.51449446857303,
-      "smoothLoss": 18.439267104076013
+      "lossDelta": -0.08349656461879462,
+      "loss": 17.57764615065054,
+      "bestLoss": 17.57764615065054,
+      "smoothLoss": 18.50199308760668
     },
     {
       "index": 245,
@@ -35941,7 +35941,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 322,
-      "scopeCoverage": 0.8256410256410256,
+      "scopeCoverage": 0.8235294117647058,
       "clientCompleteness": 0.7619047619047619,
       "visual": {
         "loss": 0.06464420930974016,
@@ -36029,13 +36029,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.1743589743589744,
+        "scope": 0.17647058823529416,
         "completeness": 0.23809523809523814,
         "visual": 0.06464420930974016,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.008126117341136774,
         "visual": 0,
         "reliability": 0
@@ -36043,7 +36043,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -36053,10 +36053,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.06879695958193821,
-      "loss": 17.445697508991092,
-      "bestLoss": 17.445697508991092,
-      "smoothLoss": 18.26042457696073
+      "lossDelta": -0.0686002253698561,
+      "loss": 17.509045925280684,
+      "bestLoss": 17.509045925280684,
+      "smoothLoss": 18.323262598388002
     },
     {
       "index": 246,
@@ -36092,7 +36092,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 322,
-      "scopeCoverage": 0.8256410256410256,
+      "scopeCoverage": 0.8235294117647058,
       "clientCompleteness": 0.7619047619047619,
       "visual": {
         "loss": 0.07707077330424039,
@@ -36155,7 +36155,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.1743589743589744,
+        "scope": 0.17647058823529416,
         "completeness": 0.23809523809523814,
         "visual": 0.07707077330424039,
         "reliability": 0.4
@@ -36175,9 +36175,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       ],
       "regressionChanges": [],
       "lossDelta": 0.43492973980750804,
-      "loss": 17.8806272487986,
-      "bestLoss": 17.445697508991092,
-      "smoothLoss": 18.192061057891546
+      "loss": 17.943975665088193,
+      "bestLoss": 17.509045925280684,
+      "smoothLoss": 18.25499095039404
     },
     {
       "index": 247,
@@ -36224,7 +36224,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 323,
-      "scopeCoverage": 0.8282051282051283,
+      "scopeCoverage": 0.8260869565217391,
       "clientCompleteness": 0.7615819209039548,
       "visual": {
         "loss": 0.09428841239239598,
@@ -36312,13 +36312,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.17179487179487174,
+        "scope": 0.17391304347826086,
         "completeness": 0.23841807909604518,
         "visual": 0.09428841239239598,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307998,
+        "scope": -0.07672634271099876,
         "completeness": 0.008071025020175981,
         "visual": 0.6026173680854455,
         "reliability": 0
@@ -36331,7 +36331,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307998,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -36341,10 +36341,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.5337653161825422,
-      "loss": 18.414392564981142,
-      "bestLoss": 17.445697508991092,
-      "smoothLoss": 18.232080729167674
+      "lossDelta": 0.5339620503946207,
+      "loss": 18.477937715482813,
+      "bestLoss": 17.509045925280684,
+      "smoothLoss": 18.295121368110017
     },
     {
       "index": 248,
@@ -36391,7 +36391,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 324,
-      "scopeCoverage": 0.8307692307692308,
+      "scopeCoverage": 0.8286445012787724,
       "clientCompleteness": 0.7612612612612613,
       "visual": {
         "loss": 0.12063425344731389,
@@ -36479,13 +36479,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.16923076923076918,
+        "scope": 0.17135549872122757,
         "completeness": 0.23873873873873874,
         "visual": 0.12063425344731389,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.008016491067339149,
         "visual": 0.922104436922127,
         "reliability": 0
@@ -36498,7 +36498,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -36508,10 +36508,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.8531978510663905,
-      "loss": 19.267590416047533,
-      "bestLoss": 17.445697508991092,
-      "smoothLoss": 18.418472472806048
+      "lossDelta": 0.853394585278469,
+      "loss": 19.331332300761282,
+      "bestLoss": 17.509045925280684,
+      "smoothLoss": 18.481639335987246
     },
     {
       "index": 249,
@@ -36548,7 +36548,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 325,
-      "scopeCoverage": 0.8333333333333334,
+      "scopeCoverage": 0.8312020460358056,
       "clientCompleteness": 0.7615298087739033,
       "visual": {
         "loss": 0.12063425344731389,
@@ -36585,13 +36585,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.16666666666666663,
+        "scope": 0.1687979539641944,
         "completeness": 0.2384701912260967,
         "visual": 0.12063425344731389,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.006713687816051195,
         "visual": 0,
         "reliability": 0
@@ -36599,7 +36599,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -36609,10 +36609,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.08363676473912918,
-      "loss": 19.183953651308403,
-      "bestLoss": 17.445697508991092,
-      "smoothLoss": 18.556259084936475
+      "lossDelta": -0.08344003052704707,
+      "loss": 19.247892270234235,
+      "bestLoss": 17.509045925280684,
+      "smoothLoss": 18.619564864151705
     },
     {
       "index": 250,
@@ -36653,7 +36653,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 326,
-      "scopeCoverage": 0.8358974358974359,
+      "scopeCoverage": 0.8337595907928389,
       "clientCompleteness": 0.7617977528089888,
       "visual": {
         "loss": 0.12063425344731389,
@@ -36690,13 +36690,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.16410256410256407,
+        "scope": 0.1662404092071611,
         "completeness": 0.23820224719101124,
         "visual": 0.12063425344731389,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.0066986008771363625,
         "visual": 0,
         "reliability": 0
@@ -36704,7 +36704,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -36714,10 +36714,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.08362167780021323,
-      "loss": 19.10033197350819,
-      "bestLoss": 17.445697508991092,
-      "smoothLoss": 18.654192204879383
+      "lossDelta": -0.08342494358813468,
+      "loss": 19.1644673266461,
+      "bestLoss": 17.509045925280684,
+      "smoothLoss": 18.717647307400696
     },
     {
       "index": 251,
@@ -36749,7 +36749,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 326,
-      "scopeCoverage": 0.8358974358974359,
+      "scopeCoverage": 0.8337595907928389,
       "clientCompleteness": 0.7617977528089888,
       "visual": {
         "loss": 0.12063425344731389,
@@ -36786,7 +36786,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.16410256410256407,
+        "scope": 0.1662404092071611,
         "completeness": 0.23820224719101124,
         "visual": 0.12063425344731389,
         "reliability": 0.4
@@ -36800,9 +36800,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 19.10033197350819,
-      "bestLoss": 17.445697508991092,
-      "smoothLoss": 18.73449736323257
+      "loss": 19.1644673266461,
+      "bestLoss": 17.509045925280684,
+      "smoothLoss": 18.79807491086487
     },
     {
       "index": 252,
@@ -36832,7 +36832,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 326,
-      "scopeCoverage": 0.8358974358974359,
+      "scopeCoverage": 0.8337595907928389,
       "clientCompleteness": 0.7617977528089888,
       "visual": {
         "loss": 0.12063425344731389,
@@ -36869,7 +36869,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.16410256410256407,
+        "scope": 0.1662404092071611,
         "completeness": 0.23820224719101124,
         "visual": 0.12063425344731389,
         "reliability": 0.4
@@ -36883,9 +36883,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 19.10033197350819,
-      "bestLoss": 17.445697508991092,
-      "smoothLoss": 18.800347593082183
+      "loss": 19.1644673266461,
+      "bestLoss": 17.509045925280684,
+      "smoothLoss": 18.86402554570549
     },
     {
       "index": 253,
@@ -36923,7 +36923,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 327,
-      "scopeCoverage": 0.8384615384615385,
+      "scopeCoverage": 0.8363171355498721,
       "clientCompleteness": 0.7620650953984287,
       "visual": {
         "loss": 0.12063425344731389,
@@ -36960,13 +36960,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.16153846153846152,
+        "scope": 0.16368286445012792,
         "completeness": 0.2379349046015713,
         "visual": 0.12063425344731389,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.006683564735998626,
         "visual": 0,
         "reliability": 0
@@ -36974,7 +36974,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -36984,10 +36984,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.0836066416590775,
-      "loss": 19.016725331849113,
-      "bestLoss": 17.445697508991092,
-      "smoothLoss": 18.83929558606023
+      "lossDelta": -0.08340990744699184,
+      "loss": 19.08105741919911,
+      "bestLoss": 17.509045925280684,
+      "smoothLoss": 18.903091282934344
     },
     {
       "index": 254,
@@ -37015,7 +37015,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 327,
-      "scopeCoverage": 0.8384615384615385,
+      "scopeCoverage": 0.8363171355498721,
       "clientCompleteness": 0.7620650953984287,
       "visual": {
         "loss": 0.12063425344731389,
@@ -37052,7 +37052,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.16153846153846152,
+        "scope": 0.16368286445012792,
         "completeness": 0.2379349046015713,
         "visual": 0.12063425344731389,
         "reliability": 0.4
@@ -37066,9 +37066,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 19.016725331849113,
-      "bestLoss": 17.445697508991092,
-      "smoothLoss": 18.87123294030223
+      "loss": 19.08105741919911,
+      "bestLoss": 17.509045925280684,
+      "smoothLoss": 18.935125187462003
     },
     {
       "index": 255,
@@ -37094,7 +37094,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 327,
-      "scopeCoverage": 0.8384615384615385,
+      "scopeCoverage": 0.8363171355498721,
       "clientCompleteness": 0.7620650953984287,
       "visual": {
         "loss": 0.12063425344731389,
@@ -37131,7 +37131,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.16153846153846152,
+        "scope": 0.16368286445012792,
         "completeness": 0.2379349046015713,
         "visual": 0.12063425344731389,
         "reliability": 0.4
@@ -37145,9 +37145,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 19.016725331849113,
-      "bestLoss": 17.445697508991092,
-      "smoothLoss": 18.897421570780672
+      "loss": 19.08105741919911,
+      "bestLoss": 17.509045925280684,
+      "smoothLoss": 18.961392989174684
     },
     {
       "index": 256,
@@ -37185,7 +37185,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 328,
-      "scopeCoverage": 0.841025641025641,
+      "scopeCoverage": 0.8388746803069054,
       "clientCompleteness": 0.7623318385650224,
       "visual": {
         "loss": 0.12063425344731389,
@@ -37222,13 +37222,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.15897435897435896,
+        "scope": 0.16112531969309463,
         "completeness": 0.2376681614349776,
         "visual": 0.12063425344731389,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.006668579164842425,
         "visual": 0,
         "reliability": 0
@@ -37236,7 +37236,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -37246,10 +37246,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.08359165608791486,
-      "loss": 18.933133675761198,
-      "bestLoss": 17.445697508991092,
-      "smoothLoss": 18.903849749677168
+      "lossDelta": -0.08339492187584341,
+      "loss": 18.997662497323265,
+      "bestLoss": 17.509045925280684,
+      "smoothLoss": 18.967921500641427
     },
     {
       "index": 257,
@@ -37289,7 +37289,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 329,
-      "scopeCoverage": 0.8435897435897436,
+      "scopeCoverage": 0.8414322250639387,
       "clientCompleteness": 0.7625979843225084,
       "visual": {
         "loss": 0.12063425344731389,
@@ -37333,13 +37333,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 7
       },
       "components": {
-        "scope": 0.1564102564102564,
+        "scope": 0.15856777493606133,
         "completeness": 0.23740201567749164,
         "visual": 0.12063425344731389,
         "reliability": 0.7
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.006653643937148956,
         "visual": 0,
         "reliability": 2.9999999999999996
@@ -37352,7 +37352,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -37368,10 +37368,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "summary": "Explorer preview initializer crashed the Native runtime"
         }
       ],
-      "lossDelta": 2.916423279139771,
-      "loss": 21.84955695490097,
-      "bestLoss": 17.445697508991092,
-      "smoothLoss": 19.434077046617453
+      "lossDelta": 2.9166200133518494,
+      "loss": 21.914282510675115,
+      "bestLoss": 17.509045925280684,
+      "smoothLoss": 19.49826648244749
     },
     {
       "index": 258,
@@ -37411,7 +37411,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 330,
-      "scopeCoverage": 0.8461538461538461,
+      "scopeCoverage": 0.8439897698209718,
       "clientCompleteness": 0.7628635346756152,
       "visual": {
         "loss": 0.12063425344731389,
@@ -37455,13 +37455,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 7
       },
       "components": {
-        "scope": 0.15384615384615385,
+        "scope": 0.15601023017902815,
         "completeness": 0.23713646532438482,
         "visual": 0.12063425344731389,
         "reliability": 0.7
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.006638758827670621,
         "visual": 0,
         "reliability": 0
@@ -37469,7 +37469,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -37479,10 +37479,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.08356183575074638,
-      "loss": 21.765995119150222,
-      "bestLoss": 17.445697508991092,
-      "smoothLoss": 19.853822299673354
+      "lossDelta": -0.08336510153866072,
+      "loss": 21.830917409136454,
+      "bestLoss": 17.509045925280684,
+      "smoothLoss": 19.918143649251505
     },
     {
       "index": 259,
@@ -37527,7 +37527,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 331,
-      "scopeCoverage": 0.8487179487179487,
+      "scopeCoverage": 0.8465473145780051,
       "clientCompleteness": 0.7631284916201118,
       "visual": {
         "loss": 0.12063425344731389,
@@ -37571,13 +37571,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 7
       },
       "components": {
-        "scope": 0.1512820512820513,
+        "scope": 0.15345268542199486,
         "completeness": 0.23687150837988824,
         "visual": 0.12063425344731389,
         "reliability": 0.7
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.006623923612414373,
         "visual": 0,
         "reliability": 0
@@ -37585,7 +37585,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -37595,10 +37595,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.0835470005354928,
-      "loss": 21.68244811861473,
-      "bestLoss": 17.445697508991092,
-      "smoothLoss": 20.182974947082805
+      "lossDelta": -0.0833502663234178,
+      "loss": 21.747567142813036,
+      "bestLoss": 17.509045925280684,
+      "smoothLoss": 20.24743987809258
     },
     {
       "index": 260,
@@ -37645,7 +37645,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 332,
-      "scopeCoverage": 0.8512820512820513,
+      "scopeCoverage": 0.8491048593350383,
       "clientCompleteness": 0.7633928571428571,
       "visual": {
         "loss": 0.12063425344731389,
@@ -37689,13 +37689,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 7
       },
       "components": {
-        "scope": 0.14871794871794874,
+        "scope": 0.15089514066496168,
         "completeness": 0.2366071428571429,
         "visual": 0.12063425344731389,
         "reliability": 0.7
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.006609138068633391,
         "visual": 0,
         "reliability": 0
@@ -37703,7 +37703,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -37713,10 +37713,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.08353221499171326,
-      "loss": 21.598915903623016,
-      "bestLoss": 17.445697508991092,
-      "smoothLoss": 20.437844319260044
+      "lossDelta": -0.08333548077963115,
+      "loss": 21.664231662033405,
+      "bestLoss": 17.509045925280684,
+      "smoothLoss": 20.50246239920193
     },
     {
       "index": 261,
@@ -37755,7 +37755,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 333,
-      "scopeCoverage": 0.8538461538461538,
+      "scopeCoverage": 0.8516624040920716,
       "clientCompleteness": 0.7636566332218506,
       "visual": {
         "loss": 0.12063425344731389,
@@ -37799,13 +37799,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 7
       },
       "components": {
-        "scope": 0.1461538461538462,
+        "scope": 0.1483375959079284,
         "completeness": 0.23634336677814938,
         "visual": 0.12063425344731389,
         "reliability": 0.7
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.006594401974838182,
         "visual": 0,
         "reliability": 0
@@ -37813,7 +37813,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -37823,10 +37823,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.08351747889791028,
-      "loss": 21.515398424725106,
-      "bestLoss": 17.445697508991092,
-      "smoothLoss": 20.631804058243755
+      "lossDelta": -0.08332074468583173,
+      "loss": 21.580910917347573,
+      "bestLoss": 17.509045925280684,
+      "smoothLoss": 20.69658313246815
     },
     {
       "index": 262,
@@ -37864,7 +37864,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 334,
-      "scopeCoverage": 0.8564102564102564,
+      "scopeCoverage": 0.8542199488491049,
       "clientCompleteness": 0.7639198218262806,
       "visual": {
         "loss": 0.12063425344731389,
@@ -37908,13 +37908,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 7
       },
       "components": {
-        "scope": 0.14358974358974363,
+        "scope": 0.1457800511508951,
         "completeness": 0.2360801781737194,
         "visual": 0.12063425344731389,
         "reliability": 0.7
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": -0.006579715110749396,
         "visual": 0,
         "reliability": 0
@@ -37922,7 +37922,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -37932,10 +37932,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.08350279203382627,
-      "loss": 21.43189563269128,
-      "bestLoss": 17.445697508991092,
-      "smoothLoss": 20.77582054164431
+      "lossDelta": -0.08330605782175127,
+      "loss": 21.497604859525822,
+      "bestLoss": 17.509045925280684,
+      "smoothLoss": 20.84076704333853
     },
     {
       "index": 263,
@@ -37967,7 +37967,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 334,
-      "scopeCoverage": 0.8564102564102564,
+      "scopeCoverage": 0.8542199488491049,
       "clientCompleteness": 0.7639198218262806,
       "visual": {
         "loss": 0.12063425344731389,
@@ -38011,7 +38011,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 7
       },
       "components": {
-        "scope": 0.14358974358974363,
+        "scope": 0.1457800511508951,
         "completeness": 0.2360801781737194,
         "visual": 0.12063425344731389,
         "reliability": 0.7
@@ -38025,9 +38025,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 21.43189563269128,
-      "bestLoss": 17.445697508991092,
-      "smoothLoss": 20.893914058032767
+      "loss": 21.497604859525822,
+      "bestLoss": 17.509045925280684,
+      "smoothLoss": 20.958997850252246
     },
     {
       "index": 264,
@@ -38059,7 +38059,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 334,
-      "scopeCoverage": 0.8564102564102564,
+      "scopeCoverage": 0.8542199488491049,
       "clientCompleteness": 0.7639198218262806,
       "visual": {
         "loss": 0.12063425344731389,
@@ -38103,7 +38103,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 7
       },
       "components": {
-        "scope": 0.14358974358974363,
+        "scope": 0.1457800511508951,
         "completeness": 0.2360801781737194,
         "visual": 0.12063425344731389,
         "reliability": 0.7
@@ -38117,9 +38117,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 21.43189563269128,
-      "bestLoss": 17.445697508991092,
-      "smoothLoss": 20.990750741471302
+      "loss": 21.497604859525822,
+      "bestLoss": 17.509045925280684,
+      "smoothLoss": 21.05594711192149
     },
     {
       "index": 265,
@@ -38158,7 +38158,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 335,
-      "scopeCoverage": 0.8589743589743589,
+      "scopeCoverage": 0.8567774936061381,
       "clientCompleteness": 0.7635960044395117,
       "visual": {
         "loss": 0.1449572012494022,
@@ -38228,13 +38228,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 7
       },
       "components": {
-        "scope": 0.14102564102564108,
+        "scope": 0.14322250639386191,
         "completeness": 0.2364039955604883,
         "visual": 0.1449572012494022,
         "reliability": 0.7
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.008095434669222468,
         "visual": 0.8513031730730907,
         "reliability": 0
@@ -38247,7 +38247,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -38257,10 +38257,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.7824755308192373,
-      "loss": 22.214371163510517,
-      "bestLoss": 17.445697508991092,
-      "smoothLoss": 21.211002417438362
+      "lossDelta": 0.7826722650313194,
+      "loss": 22.28027712455714,
+      "bestLoss": 17.509045925280684,
+      "smoothLoss": 21.276326514195908
     },
     {
       "index": 266,
@@ -38317,7 +38317,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 336,
-      "scopeCoverage": 0.8615384615384616,
+      "scopeCoverage": 0.8593350383631714,
       "clientCompleteness": 0.7632743362831859,
       "visual": {
         "loss": 0.1449572012494022,
@@ -38361,13 +38361,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 7
       },
       "components": {
-        "scope": 0.1384615384615384,
+        "scope": 0.14066496163682862,
         "completeness": 0.23672566371681414,
         "visual": 0.1449572012494022,
         "reliability": 0.7
       },
       "componentContributions": {
-        "scope": -0.07692307692307998,
+        "scope": -0.07672634271099876,
         "completeness": 0.008041703908145958,
         "visual": 0,
         "reliability": 0
@@ -38375,7 +38375,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307998,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -38385,10 +38385,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.06888137301493558,
-      "loss": 22.14548979049558,
-      "bestLoss": 17.445697508991092,
-      "smoothLoss": 21.37921014458866
+      "lossDelta": -0.06868463880285347,
+      "loss": 22.211592485754288,
+      "bestLoss": 17.509045925280684,
+      "smoothLoss": 21.444674389076418
     },
     {
       "index": 267,
@@ -38475,7 +38475,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 340,
-      "scopeCoverage": 0.8717948717948718,
+      "scopeCoverage": 0.8695652173913043,
       "clientCompleteness": 0.7620087336244541,
       "visual": {
         "loss": 0.1449572012494022,
@@ -38620,13 +38620,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 7
       },
       "components": {
-        "scope": 0.1282051282051282,
+        "scope": 0.13043478260869568,
         "completeness": 0.2379912663755459,
         "visual": 0.1449572012494022,
         "reliability": 0.7
       },
       "componentContributions": {
-        "scope": -0.3076923076923066,
+        "scope": -0.3069053708439884,
         "completeness": 0.0316400664682942,
         "visual": 0,
         "reliability": 0
@@ -38634,7 +38634,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.3076923076923066,
+          "contribution": -0.3069053708439884,
           "direction": "down"
         },
         {
@@ -38644,10 +38644,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.2760522412240114,
-      "loss": 21.86943754927157,
-      "bestLoss": 17.445697508991092,
-      "smoothLoss": 21.467451077431587
+      "lossDelta": -0.27526530437569363,
+      "loss": 21.936327181378594,
+      "bestLoss": 17.509045925280684,
+      "smoothLoss": 21.533171891690813
     },
     {
       "index": 268,
@@ -38674,7 +38674,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 340,
-      "scopeCoverage": 0.8717948717948718,
+      "scopeCoverage": 0.8695652173913043,
       "clientCompleteness": 0.7620087336244541,
       "visual": {
         "loss": 0.1449572012494022,
@@ -38718,7 +38718,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 7
       },
       "components": {
-        "scope": 0.1282051282051282,
+        "scope": 0.13043478260869568,
         "completeness": 0.2379912663755459,
         "visual": 0.1449572012494022,
         "reliability": 0.7
@@ -38732,9 +38732,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 21.86943754927157,
-      "bestLoss": 17.445697508991092,
-      "smoothLoss": 21.539808642362786
+      "loss": 21.936327181378594,
+      "bestLoss": 17.509045925280684,
+      "smoothLoss": 21.605739843834613
     },
     {
       "index": 269,
@@ -38796,7 +38796,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 344,
-      "scopeCoverage": 0.882051282051282,
+      "scopeCoverage": 0.8797953964194374,
       "clientCompleteness": 0.7564655172413793,
       "visual": {
         "loss": 0.1449572012494022,
@@ -38833,13 +38833,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.11794871794871797,
+        "scope": 0.12020460358056262,
         "completeness": 0.24353448275862066,
         "visual": 0.1449572012494022,
         "reliability": 0.4
       },
       "componentContributions": {
-        "scope": -0.3076923076923066,
+        "scope": -0.3069053708439917,
         "completeness": 0.1385804095768689,
         "visual": 0,
         "reliability": -2.9999999999999996
@@ -38852,7 +38852,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.3076923076923066,
+          "contribution": -0.3069053708439917,
           "direction": "down"
         },
         {
@@ -38868,10 +38868,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "summary": "Explorer preview initializer crashed the Native runtime"
         }
       ],
-      "lossDelta": -3.169111898115439,
-      "loss": 18.70032565115613,
-      "bestLoss": 17.445697508991092,
-      "smoothLoss": 21.02870170394559
+      "lossDelta": -3.1683249612671247,
+      "loss": 18.76800222011147,
+      "bestLoss": 17.509045925280684,
+      "smoothLoss": 21.094947071564448
     },
     {
       "index": 270,
@@ -38896,7 +38896,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 344,
-      "scopeCoverage": 0.882051282051282,
+      "scopeCoverage": 0.8797953964194374,
       "clientCompleteness": 0.7564655172413793,
       "visual": {
         "loss": 0.1449572012494022,
@@ -38926,7 +38926,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.11794871794871797,
+        "scope": 0.12020460358056262,
         "completeness": 0.24353448275862066,
         "visual": 0.1449572012494022,
         "reliability": 0.1
@@ -38952,9 +38952,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "lossDelta": -2.9999999999999982,
-      "loss": 15.700325651156133,
-      "bestLoss": 15.700325651156133,
-      "smoothLoss": 20.06959401444349
+      "loss": 15.768002220111471,
+      "bestLoss": 15.768002220111471,
+      "smoothLoss": 20.136096998302914
     },
     {
       "index": 271,
@@ -39050,7 +39050,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 350,
-      "scopeCoverage": 0.8974358974358975,
+      "scopeCoverage": 0.8951406649616368,
       "clientCompleteness": 0.7526427061310782,
       "visual": {
         "loss": 0.07395648216722953,
@@ -39181,13 +39181,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.10256410256410253,
+        "scope": 0.1048593350383632,
         "completeness": 0.2473572938689218,
         "visual": 0.07395648216722953,
         "reliability": 0.1
       },
       "componentContributions": {
-        "scope": -0.46153846153846323,
+        "scope": -0.46035805626598253,
         "completeness": 0.09557027775752847,
         "visual": -2.4850251678760436,
         "reliability": 0
@@ -39200,7 +39200,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.46153846153846323,
+          "contribution": -0.46035805626598253,
           "direction": "down"
         },
         {
@@ -39210,10 +39210,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -2.850993351656978,
-      "loss": 12.849332299499155,
-      "bestLoss": 12.849332299499155,
-      "smoothLoss": 18.76994690575351
+      "lossDelta": -2.849812946384498,
+      "loss": 12.918189273726973,
+      "bestLoss": 12.918189273726973,
+      "smoothLoss": 18.836873607879244
     },
     {
       "index": 272,
@@ -39253,7 +39253,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 351,
-      "scopeCoverage": 0.9,
+      "scopeCoverage": 0.8976982097186701,
       "clientCompleteness": 0.7513171759747103,
       "visual": {
         "loss": 0.07395648216722953,
@@ -39283,13 +39283,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.09999999999999998,
+        "scope": 0.10230179028132991,
         "completeness": 0.24868282402528974,
         "visual": 0.07395648216722953,
         "reliability": 0.1
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.033138253909198445,
         "visual": 0,
         "reliability": 0
@@ -39297,7 +39297,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -39307,10 +39307,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.04378482301387798,
-      "loss": 12.805547476485277,
-      "bestLoss": 12.805547476485277,
-      "smoothLoss": 17.69635500848523
+      "lossDelta": -0.04358808880179943,
+      "loss": 12.874601184925174,
+      "bestLoss": 12.874601184925174,
+      "smoothLoss": 17.763664571747512
     },
     {
       "index": 273,
@@ -39350,7 +39350,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 352,
-      "scopeCoverage": 0.9025641025641026,
+      "scopeCoverage": 0.9002557544757033,
       "clientCompleteness": 0.7510504201680672,
       "visual": {
         "loss": 0.11294715897657115,
@@ -39406,13 +39406,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.09743589743589742,
+        "scope": 0.09974424552429673,
         "completeness": 0.24894957983193278,
         "visual": 0.11294715897657115,
         "reliability": 0.1
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.006668895166075939,
         "visual": 1.3646736883269568,
         "reliability": 0
@@ -39425,7 +39425,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -39435,10 +39435,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 1.294419506569957,
-      "loss": 14.099966983055234,
-      "bestLoss": 12.805547476485277,
-      "smoothLoss": 17.049005163907832
+      "lossDelta": 1.2946162407820374,
+      "loss": 14.169217425707211,
+      "bestLoss": 12.874601184925174,
+      "smoothLoss": 17.116664085460258
     },
     {
       "index": 274,
@@ -39464,7 +39464,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 352,
-      "scopeCoverage": 0.9025641025641026,
+      "scopeCoverage": 0.9002557544757033,
       "clientCompleteness": 0.7510504201680672,
       "visual": {
         "loss": 0.11294715897657115,
@@ -39494,7 +39494,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.09743589743589742,
+        "scope": 0.09974424552429673,
         "completeness": 0.24894957983193278,
         "visual": 0.11294715897657115,
         "reliability": 0.1
@@ -39508,9 +39508,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 14.099966983055234,
-      "bestLoss": 12.805547476485277,
-      "smoothLoss": 16.518178291354367
+      "loss": 14.169217425707211,
+      "bestLoss": 12.874601184925174,
+      "smoothLoss": 16.58612368670471
     },
     {
       "index": 275,
@@ -39544,7 +39544,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 353,
-      "scopeCoverage": 0.9051282051282051,
+      "scopeCoverage": 0.9028132992327366,
       "clientCompleteness": 0.7507853403141361,
       "visual": {
         "loss": 0.13349704974582424,
@@ -39600,13 +39600,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.09487179487179487,
+        "scope": 0.09718670076726343,
         "completeness": 0.24921465968586387,
         "visual": 0.13349704974582424,
         "reliability": 0.1
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.0066269963482773475,
         "visual": 0.7192461769238583,
         "reliability": 0
@@ -39619,7 +39619,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -39629,10 +39629,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.6489500963490578,
-      "loss": 14.748917079404292,
-      "bestLoss": 12.805547476485277,
-      "smoothLoss": 16.199711273203356
+      "lossDelta": 0.6491468305611381,
+      "loss": 14.81836425626835,
+      "bestLoss": 12.874601184925174,
+      "smoothLoss": 16.267926989226165
     },
     {
       "index": 276,
@@ -39676,7 +39676,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 354,
-      "scopeCoverage": 0.9076923076923077,
+      "scopeCoverage": 0.9053708439897699,
       "clientCompleteness": 0.7505219206680585,
       "visual": {
         "loss": 0.13436829965726127,
@@ -39757,13 +39757,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.09230769230769231,
+        "scope": 0.09462915601023014,
         "completeness": 0.24947807933194155,
         "visual": 0.13436829965726127,
         "reliability": 0.1
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.006585491151941958,
         "visual": 0.030493746900295965,
         "reliability": 0
@@ -39771,7 +39771,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -39786,10 +39786,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.03984383887083709,
-      "loss": 14.709073240533455,
-      "bestLoss": 12.805547476485277,
-      "smoothLoss": 15.931396427322774
+      "lossDelta": -0.03964710465876209,
+      "loss": 14.778717151609587,
+      "bestLoss": 12.874601184925174,
+      "smoothLoss": 15.999869218455181
     },
     {
       "index": 277,
@@ -39815,7 +39815,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 354,
-      "scopeCoverage": 0.9076923076923077,
+      "scopeCoverage": 0.9053708439897699,
       "clientCompleteness": 0.7505219206680585,
       "visual": {
         "loss": 0.13436829965726127,
@@ -39845,7 +39845,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.09230769230769231,
+        "scope": 0.09462915601023014,
         "completeness": 0.24947807933194155,
         "visual": 0.13436829965726127,
         "reliability": 0.1
@@ -39859,9 +39859,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 14.709073240533455,
-      "bestLoss": 12.805547476485277,
-      "smoothLoss": 15.711378253700698
+      "loss": 14.778717151609587,
+      "bestLoss": 12.874601184925174,
+      "smoothLoss": 15.780061846422976
     },
     {
       "index": 278,
@@ -39904,7 +39904,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 355,
-      "scopeCoverage": 0.9102564102564102,
+      "scopeCoverage": 0.907928388746803,
       "clientCompleteness": 0.7502601456815817,
       "visual": {
         "loss": 0.13436829965726127,
@@ -39960,13 +39960,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.08974358974358976,
+        "scope": 0.09207161125319696,
         "completeness": 0.24973985431841828,
         "visual": 0.13436829965726127,
         "reliability": 0.1
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.006544374661918151,
         "visual": 0,
         "reliability": 0
@@ -39974,7 +39974,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -39984,10 +39984,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.07037870226115928,
-      "loss": 14.638694538272295,
-      "bestLoss": 12.805547476485277,
-      "smoothLoss": 15.518295184923588
+      "lossDelta": -0.0701819680490754,
+      "loss": 14.708535183560512,
+      "bestLoss": 12.874601184925174,
+      "smoothLoss": 15.587187047107733
     },
     {
       "index": 279,
@@ -40027,7 +40027,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 356,
-      "scopeCoverage": 0.9128205128205128,
+      "scopeCoverage": 0.9104859335038363,
       "clientCompleteness": 0.75,
       "visual": {
         "loss": 0.10980670507532282,
@@ -40083,13 +40083,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.0871794871794872,
+        "scope": 0.08951406649616367,
         "completeness": 0.25,
         "visual": 0.10980670507532282,
         "reliability": 0.1
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.006503642039543123,
         "visual": -0.8596558103678456,
         "reliability": 0
@@ -40102,7 +40102,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -40112,10 +40112,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.9300752452513805,
-      "loss": 13.708619293020915,
-      "bestLoss": 12.805547476485277,
-      "smoothLoss": 15.192553524381108
+      "lossDelta": -0.9298785110393037,
+      "loss": 13.778656672521208,
+      "bestLoss": 12.874601184925174,
+      "smoothLoss": 15.261651579682159
     },
     {
       "index": 280,
@@ -40155,7 +40155,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 357,
-      "scopeCoverage": 0.9153846153846154,
+      "scopeCoverage": 0.9130434782608695,
       "clientCompleteness": 0.749741468459152,
       "visual": {
         "loss": 0.08675396866691071,
@@ -40211,13 +40211,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.08461538461538465,
+        "scope": 0.08695652173913049,
         "completeness": 0.250258531540848,
         "visual": 0.08675396866691071,
         "reliability": 0.1
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": 0.006463288521199595,
         "visual": -0.8068457742944241,
         "reliability": 0
@@ -40230,7 +40230,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -40240,10 +40240,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.8773055626963,
-      "loss": 12.831313730324615,
-      "bestLoss": 12.805547476485277,
-      "smoothLoss": 14.76753036145094
+      "lossDelta": -0.8771088284842179,
+      "loss": 12.90154784403699,
+      "bestLoss": 12.874601184925174,
+      "smoothLoss": 14.836832907266029
     },
     {
       "index": 281,
@@ -40283,7 +40283,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 358,
-      "scopeCoverage": 0.9179487179487179,
+      "scopeCoverage": 0.9156010230179028,
       "clientCompleteness": 0.7494845360824742,
       "visual": {
         "loss": 0.08675396866691071,
@@ -40339,13 +40339,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.08205128205128209,
+        "scope": 0.0843989769820972,
         "completeness": 0.25051546391752577,
         "visual": 0.08675396866691071,
         "reliability": 0.1
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.006423309416944689,
         "visual": 0,
         "reliability": 0
@@ -40353,7 +40353,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -40363,10 +40363,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.07049976750613318,
-      "loss": 12.760813962818482,
-      "bestLoss": 12.760813962818482,
-      "smoothLoss": 14.406321409697096
+      "lossDelta": -0.0703030332940564,
+      "loss": 12.831244810742934,
+      "bestLoss": 12.831244810742934,
+      "smoothLoss": 14.475827049891873
     },
     {
       "index": 282,
@@ -40406,7 +40406,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 359,
-      "scopeCoverage": 0.9205128205128205,
+      "scopeCoverage": 0.9181585677749361,
       "clientCompleteness": 0.7492291880781089,
       "visual": {
         "loss": 0.08252635752590959,
@@ -40462,13 +40462,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.07948717948717954,
+        "scope": 0.0818414322250639,
         "completeness": 0.2507708119218911,
         "visual": 0.08252635752590959,
         "reliability": 0.1
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.00638370010913325,
         "visual": -0.1479663899350392,
         "reliability": 0
@@ -40481,7 +40481,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -40491,10 +40491,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.21850576674898292,
-      "loss": 12.542308196069499,
-      "bestLoss": 12.542308196069499,
-      "smoothLoss": 14.070799031244128
+      "lossDelta": -0.21830903253690437,
+      "loss": 12.61293577820603,
+      "bestLoss": 12.61293577820603,
+      "smoothLoss": 14.140506620988422
     },
     {
       "index": 283,
@@ -40534,7 +40534,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 360,
-      "scopeCoverage": 0.9230769230769231,
+      "scopeCoverage": 0.9207161125319693,
       "clientCompleteness": 0.7489754098360656,
       "visual": {
         "loss": 0.08252635752590959,
@@ -40590,13 +40590,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.07692307692307687,
+        "scope": 0.07928388746803072,
         "completeness": 0.2510245901639344,
         "visual": 0.08252635752590959,
         "reliability": 0.1
       },
       "componentContributions": {
-        "scope": -0.07692307692307998,
+        "scope": -0.07672634271099543,
         "completeness": 0.006344456051082803,
         "visual": 0,
         "reliability": 0
@@ -40604,7 +40604,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307998,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -40614,10 +40614,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.07057862087199673,
-      "loss": 12.471729575197502,
-      "bestLoss": 12.471729575197502,
-      "smoothLoss": 13.782966529155736
+      "lossDelta": -0.07038188665991107,
+      "loss": 12.542553891546119,
+      "bestLoss": 12.542553891546119,
+      "smoothLoss": 13.852875129688808
     },
     {
       "index": 284,
@@ -40657,7 +40657,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 361,
-      "scopeCoverage": 0.9256410256410257,
+      "scopeCoverage": 0.9232736572890026,
       "clientCompleteness": 0.7487231869254342,
       "visual": {
         "loss": 0.08252635752590959,
@@ -40713,13 +40713,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.07435897435897432,
+        "scope": 0.07672634271099743,
         "completeness": 0.25127681307456584,
         "visual": 0.08252635752590959,
         "reliability": 0.1
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.006305572765785694,
         "visual": 0,
         "reliability": 0
@@ -40727,7 +40727,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -40737,10 +40737,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.07061750415729229,
-      "loss": 12.40111207104021,
-      "bestLoss": 12.40111207104021,
-      "smoothLoss": 13.534232726694942
+      "lossDelta": -0.07042076994521551,
+      "loss": 12.472133121600903,
+      "bestLoss": 12.472133121600903,
+      "smoothLoss": 13.604341568232986
     },
     {
       "index": 285,
@@ -40777,7 +40777,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 362,
-      "scopeCoverage": 0.9282051282051282,
+      "scopeCoverage": 0.9258312020460358,
       "clientCompleteness": 0.7489795918367347,
       "visual": {
         "loss": 0.08252635752590959,
@@ -40807,13 +40807,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.07179487179487176,
+        "scope": 0.07416879795396425,
         "completeness": 0.2510204081632653,
         "visual": 0.08252635752590959,
         "reliability": 0.1
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.0064101227825130724,
         "visual": 0,
         "reliability": 0
@@ -40821,7 +40821,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -40831,10 +40831,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.08333319970558684,
-      "loss": 12.317778871334623,
-      "bestLoss": 12.317778871334623,
-      "smoothLoss": 13.315271032730084
+      "lossDelta": -0.08313646549350828,
+      "loss": 12.388996656107395,
+      "bestLoss": 12.388996656107395,
+      "smoothLoss": 13.385579484050378
     },
     {
       "index": 286,
@@ -40875,7 +40875,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 364,
-      "scopeCoverage": 0.9333333333333333,
+      "scopeCoverage": 0.9309462915601023,
       "clientCompleteness": 0.7479674796747967,
       "visual": {
         "loss": 0.08252635752590959,
@@ -40905,13 +40905,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.06666666666666665,
+        "scope": 0.06905370843989767,
         "completeness": 0.2520325203252033,
         "visual": 0.08252635752590959,
         "reliability": 0.1
       },
       "componentContributions": {
-        "scope": -0.1538461538461533,
+        "scope": -0.15345268542199753,
         "completeness": 0.025302804048449312,
         "visual": 0,
         "reliability": 0
@@ -40919,7 +40919,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.1538461538461533,
+          "contribution": -0.15345268542199753,
           "direction": "down"
         },
         {
@@ -40929,10 +40929,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.12854334979770599,
-      "loss": 12.189235521536917,
-      "bestLoss": 12.189235521536917,
-      "smoothLoss": 13.112584640715315
+      "lossDelta": -0.12814988137354888,
+      "loss": 12.260846774733846,
+      "bestLoss": 12.260846774733846,
+      "smoothLoss": 13.183127596373403
     },
     {
       "index": 287,
@@ -40973,7 +40973,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 366,
-      "scopeCoverage": 0.9384615384615385,
+      "scopeCoverage": 0.9360613810741688,
       "clientCompleteness": 0.7469635627530364,
       "visual": {
         "loss": 0.08252635752590959,
@@ -41003,13 +41003,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.06153846153846154,
+        "scope": 0.06393861892583119,
         "completeness": 0.25303643724696356,
         "visual": 0.08252635752590959,
         "reliability": 0.1
       },
       "componentContributions": {
-        "scope": -0.1538461538461533,
+        "scope": -0.1534526854219942,
         "completeness": 0.02509792304400682,
         "visual": 0,
         "reliability": 0
@@ -41017,7 +41017,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.1538461538461533,
+          "contribution": -0.1534526854219942,
           "direction": "down"
         },
         {
@@ -41027,10 +41027,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.12874823080214703,
-      "loss": 12.06048729073477,
-      "bestLoss": 12.06048729073477,
-      "smoothLoss": 12.923207117718817
+      "lossDelta": -0.1283547623779846,
+      "loss": 12.132492012355861,
+      "bestLoss": 12.132492012355861,
+      "smoothLoss": 12.994013191250247
     },
     {
       "index": 288,
@@ -41071,7 +41071,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 368,
-      "scopeCoverage": 0.9435897435897436,
+      "scopeCoverage": 0.9411764705882353,
       "clientCompleteness": 0.7459677419354839,
       "visual": {
         "loss": 0.08252635752590959,
@@ -41101,13 +41101,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.05641025641025643,
+        "scope": 0.05882352941176472,
         "completeness": 0.2540322580645161,
         "visual": 0.08252635752590959,
         "reliability": 0.1
       },
       "componentContributions": {
-        "scope": -0.1538461538461533,
+        "scope": -0.1534526854219942,
         "completeness": 0.024895520438814045,
         "visual": 0,
         "reliability": 0
@@ -41115,7 +41115,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.1538461538461533,
+          "contribution": -0.1534526854219942,
           "direction": "down"
         },
         {
@@ -41125,10 +41125,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.12895063340733692,
-      "loss": 11.931536657327433,
-      "bestLoss": 11.931536657327433,
-      "smoothLoss": 12.74470643484837
+      "lossDelta": -0.1285571649831816,
+      "loss": 12.00393484737268,
+      "bestLoss": 12.00393484737268,
+      "smoothLoss": 12.815799089352286
     },
     {
       "index": 289,
@@ -42108,7 +42108,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 379,
-      "scopeCoverage": 0.9717948717948718,
+      "scopeCoverage": 0.969309462915601,
       "clientCompleteness": 0.7487586891757696,
       "visual": {
         "loss": 0.08252635752590959,
@@ -42239,13 +42239,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.028205128205128216,
+        "scope": 0.03069053708439895,
         "completeness": 0.2512413108242304,
         "visual": 0.08252635752590959,
         "reliability": 0.1
       },
       "componentContributions": {
-        "scope": -0.8461538461538465,
+        "scope": -0.843989769820973,
         "completeness": -0.0697736810071431,
         "visual": 0,
         "reliability": 0
@@ -42253,7 +42253,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.8461538461538465,
+          "contribution": -0.843989769820973,
           "direction": "down"
         },
         {
@@ -42263,10 +42263,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.9159275271609904,
-      "loss": 11.015609130166442,
-      "bestLoss": 11.015609130166442,
-      "smoothLoss": 12.433468920005623
+      "lossDelta": -0.9137634508281138,
+      "loss": 11.090171396544566,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 12.505186104646896
     },
     {
       "index": 290,
@@ -42293,7 +42293,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 379,
-      "scopeCoverage": 0.9717948717948718,
+      "scopeCoverage": 0.969309462915601,
       "clientCompleteness": 0.7487586891757696,
       "visual": {
         "loss": 0.08252635752590959,
@@ -42323,7 +42323,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.028205128205128216,
+        "scope": 0.03069053708439895,
         "completeness": 0.2512413108242304,
         "visual": 0.08252635752590959,
         "reliability": 0.1
@@ -42337,9 +42337,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 11.015609130166442,
-      "bestLoss": 11.015609130166442,
-      "smoothLoss": 12.178254157834571
+      "loss": 11.090171396544566,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 12.250483457188476
     },
     {
       "index": 291,
@@ -42367,7 +42367,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 379,
-      "scopeCoverage": 0.9717948717948718,
+      "scopeCoverage": 0.969309462915601,
       "clientCompleteness": 0.7487586891757696,
       "visual": {
         "loss": 0.08252635752590959,
@@ -42397,7 +42397,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.028205128205128216,
+        "scope": 0.03069053708439895,
         "completeness": 0.2512413108242304,
         "visual": 0.08252635752590959,
         "reliability": 0.1
@@ -42411,9 +42411,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 11.015609130166442,
-      "bestLoss": 11.015609130166442,
-      "smoothLoss": 11.96897805285431
+      "loss": 11.090171396544566,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 12.041627286272572
     },
     {
       "index": 292,
@@ -42441,7 +42441,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 379,
-      "scopeCoverage": 0.9717948717948718,
+      "scopeCoverage": 0.969309462915601,
       "clientCompleteness": 0.7487586891757696,
       "visual": {
         "loss": 0.08252635752590959,
@@ -42471,7 +42471,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.028205128205128216,
+        "scope": 0.03069053708439895,
         "completeness": 0.2512413108242304,
         "visual": 0.08252635752590959,
         "reliability": 0.1
@@ -42485,9 +42485,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 11.015609130166442,
-      "bestLoss": 11.015609130166442,
-      "smoothLoss": 11.797371646770493
+      "loss": 11.090171396544566,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 11.870365226121532
     },
     {
       "index": 293,
@@ -42515,7 +42515,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 379,
-      "scopeCoverage": 0.9717948717948718,
+      "scopeCoverage": 0.969309462915601,
       "clientCompleteness": 0.7487586891757696,
       "visual": {
         "loss": 0.08252635752590959,
@@ -42545,7 +42545,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.028205128205128216,
+        "scope": 0.03069053708439895,
         "completeness": 0.2512413108242304,
         "visual": 0.08252635752590959,
         "reliability": 0.1
@@ -42559,9 +42559,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 11.015609130166442,
-      "bestLoss": 11.015609130166442,
-      "smoothLoss": 11.656654393781764
+      "loss": 11.090171396544566,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 11.729930336797677
     },
     {
       "index": 294,
@@ -42592,7 +42592,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 379,
-      "scopeCoverage": 0.9717948717948718,
+      "scopeCoverage": 0.969309462915601,
       "clientCompleteness": 0.7487586891757696,
       "visual": {
         "loss": 0.08252635752590959,
@@ -42622,7 +42622,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.028205128205128216,
+        "scope": 0.03069053708439895,
         "completeness": 0.2512413108242304,
         "visual": 0.08252635752590959,
         "reliability": 0.1
@@ -42636,9 +42636,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 11.015609130166442,
-      "bestLoss": 11.015609130166442,
-      "smoothLoss": 11.541266246331007
+      "loss": 11.090171396544566,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 11.614773727552118
     },
     {
       "index": 295,
@@ -42664,7 +42664,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 379,
-      "scopeCoverage": 0.9717948717948718,
+      "scopeCoverage": 0.969309462915601,
       "clientCompleteness": 0.7487586891757696,
       "visual": {
         "loss": 0.08252635752590959,
@@ -42694,7 +42694,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.028205128205128216,
+        "scope": 0.03069053708439895,
         "completeness": 0.2512413108242304,
         "visual": 0.08252635752590959,
         "reliability": 0.1
@@ -42708,9 +42708,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 11.015609130166442,
-      "bestLoss": 11.015609130166442,
-      "smoothLoss": 11.446647965421386
+      "loss": 11.090171396544566,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 11.520345307970759
     },
     {
       "index": 296,
@@ -42738,7 +42738,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 379,
-      "scopeCoverage": 0.9717948717948718,
+      "scopeCoverage": 0.969309462915601,
       "clientCompleteness": 0.7487586891757696,
       "visual": {
         "loss": 0.08252635752590959,
@@ -42768,7 +42768,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.028205128205128216,
+        "scope": 0.03069053708439895,
         "completeness": 0.2512413108242304,
         "visual": 0.08252635752590959,
         "reliability": 0.1
@@ -42782,9 +42782,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 11.015609130166442,
-      "bestLoss": 11.015609130166442,
-      "smoothLoss": 11.369060975075497
+      "loss": 11.090171396544566,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 11.442914003914044
     },
     {
       "index": 297,
@@ -42827,7 +42827,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 382,
-      "scopeCoverage": 0.9794871794871794,
+      "scopeCoverage": 0.9769820971867008,
       "clientCompleteness": 0.7480314960629921,
       "visual": {
         "loss": 0.09843647875816994,
@@ -42933,13 +42933,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.02051282051282055,
+        "scope": 0.023017902813299185,
         "completeness": 0.25196850393700787,
         "visual": 0.09843647875816994,
         "reliability": 0.1
       },
       "componentContributions": {
-        "scope": -0.23076923076922992,
+        "scope": -0.23017902813299296,
         "completeness": 0.018179827819436722,
         "visual": 0.5568542431291121,
         "reliability": 0
@@ -42952,7 +42952,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.23076923076922992,
+          "contribution": -0.23017902813299296,
           "direction": "down"
         },
         {
@@ -42962,10 +42962,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.34426484017931713,
-      "loss": 11.35987397034576,
-      "bestLoss": 11.015609130166442,
-      "smoothLoss": 11.367407314224145
+      "lossDelta": 0.34485504281555635,
+      "loss": 11.435026439360122,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 11.441494242294338
     },
     {
       "index": 298,
@@ -42995,7 +42995,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 382,
-      "scopeCoverage": 0.9794871794871794,
+      "scopeCoverage": 0.9769820971867008,
       "clientCompleteness": 0.7480314960629921,
       "visual": {
         "loss": 0.09843647875816994,
@@ -43025,7 +43025,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.02051282051282055,
+        "scope": 0.023017902813299185,
         "completeness": 0.25196850393700787,
         "visual": 0.09843647875816994,
         "reliability": 0.1
@@ -43039,9 +43039,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 11.35987397034576,
-      "bestLoss": 11.015609130166442,
-      "smoothLoss": 11.366051312326036
+      "loss": 11.435026439360122,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 11.440330037766179
     },
     {
       "index": 299,
@@ -43079,7 +43079,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 384,
-      "scopeCoverage": 0.9846153846153847,
+      "scopeCoverage": 0.9820971867007673,
       "clientCompleteness": 0.7475538160469667,
       "visual": {
         "loss": 0.09843647875816994,
@@ -43174,13 +43174,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 2
       },
       "components": {
-        "scope": 0.01538461538461533,
+        "scope": 0.01790281329923271,
         "completeness": 0.2524461839530333,
         "visual": 0.09843647875816994,
         "reliability": 0.2
       },
       "componentContributions": {
-        "scope": -0.15384615384615663,
+        "scope": -0.1534526854219942,
         "completeness": 0.011942000400635977,
         "visual": 0,
         "reliability": 1.0000000000000002
@@ -43193,7 +43193,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.15384615384615663,
+          "contribution": -0.1534526854219942,
           "direction": "down"
         },
         {
@@ -43209,10 +43209,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "summary": "Lynx-for-Web sidebar remains in Loading projects, blocking a retained UI-path thread switch for Temporary cleanup certification."
         }
       ],
-      "lossDelta": 0.8580958465544821,
-      "loss": 12.217969816900242,
-      "bestLoss": 11.015609130166442,
-      "smoothLoss": 11.519396643149392
+      "lossDelta": 0.8584893149786392,
+      "loss": 12.293515754338761,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 11.593903466749245
     },
     {
       "index": 300,
@@ -43242,7 +43242,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 384,
-      "scopeCoverage": 0.9846153846153847,
+      "scopeCoverage": 0.9820971867007673,
       "clientCompleteness": 0.7475538160469667,
       "visual": {
         "loss": 0.09843647875816994,
@@ -43286,7 +43286,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 2
       },
       "components": {
-        "scope": 0.01538461538461533,
+        "scope": 0.01790281329923271,
         "completeness": 0.2524461839530333,
         "visual": 0.09843647875816994,
         "reliability": 0.2
@@ -43300,9 +43300,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 12.217969816900242,
-      "bestLoss": 11.015609130166442,
-      "smoothLoss": 11.645139814424546
+      "loss": 12.293515754338761,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 11.719833678515359
     },
     {
       "index": 301,
@@ -43327,7 +43327,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 384,
-      "scopeCoverage": 0.9846153846153847,
+      "scopeCoverage": 0.9820971867007673,
       "clientCompleteness": 0.7475538160469667,
       "visual": {
         "loss": 0.09843647875816994,
@@ -43369,7 +43369,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.01538461538461533,
+        "scope": 0.01790281329923271,
         "completeness": 0.2524461839530333,
         "visual": 0.09843647875816994,
         "reliability": 0.1
@@ -43400,9 +43400,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "lossDelta": -1,
-      "loss": 11.217969816900242,
-      "bestLoss": 11.015609130166442,
-      "smoothLoss": 11.568249214870171
+      "loss": 11.293515754338761,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 11.643096452163572
     },
     {
       "index": 302,
@@ -43429,7 +43429,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 384,
-      "scopeCoverage": 0.9846153846153847,
+      "scopeCoverage": 0.9820971867007673,
       "clientCompleteness": 0.7475538160469667,
       "visual": {
         "loss": 0.09843647875816994,
@@ -43471,7 +43471,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.01538461538461533,
+        "scope": 0.01790281329923271,
         "completeness": 0.2524461839530333,
         "visual": 0.09843647875816994,
         "reliability": 0.1
@@ -43485,9 +43485,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 11.217969816900242,
-      "bestLoss": 11.015609130166442,
-      "smoothLoss": 11.505198923235586
+      "loss": 11.293515754338761,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 11.580171926555106
     },
     {
       "index": 303,
@@ -43525,7 +43525,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 386,
-      "scopeCoverage": 0.9897435897435898,
+      "scopeCoverage": 0.9872122762148338,
       "clientCompleteness": 0.7470817120622568,
       "visual": {
         "loss": 0.12713766464410967,
@@ -43618,13 +43618,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.01025641025641022,
+        "scope": 0.012787723785166238,
         "completeness": 0.2529182879377432,
         "visual": 0.12713766464410967,
         "reliability": 0.1
       },
       "componentContributions": {
-        "scope": -0.1538461538461533,
+        "scope": -0.1534526854219942,
         "completeness": 0.011802599617746767,
         "visual": 1.0045415060078904,
         "reliability": 0
@@ -43637,7 +43637,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.1538461538461533,
+          "contribution": -0.1534526854219942,
           "direction": "down"
         },
         {
@@ -43647,10 +43647,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.8624979517794813,
-      "loss": 12.080467768679723,
-      "bestLoss": 11.015609130166442,
-      "smoothLoss": 11.608747315415531
+      "lossDelta": 0.8628914202036437,
+      "loss": 12.156407174542405,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 11.683894271192822
     },
     {
       "index": 304,
@@ -43680,7 +43680,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 386,
-      "scopeCoverage": 0.9897435897435898,
+      "scopeCoverage": 0.9872122762148338,
       "clientCompleteness": 0.7470817120622568,
       "visual": {
         "loss": 0.12713766464410967,
@@ -43722,7 +43722,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.01025641025641022,
+        "scope": 0.012787723785166238,
         "completeness": 0.2529182879377432,
         "visual": 0.12713766464410967,
         "reliability": 0.1
@@ -43736,9 +43736,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 12.080467768679723,
-      "bestLoss": 11.015609130166442,
-      "smoothLoss": 11.693656997003087
+      "loss": 12.156407174542405,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 11.768946593795746
     },
     {
       "index": 305,
@@ -43771,7 +43771,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 387,
-      "scopeCoverage": 0.9923076923076923,
+      "scopeCoverage": 0.989769820971867,
       "clientCompleteness": 0.7468477206595538,
       "visual": {
         "loss": 0.1319420407898932,
@@ -43839,13 +43839,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.007692307692307665,
+        "scope": 0.010230179028132946,
         "completeness": 0.25315227934044615,
         "visual": 0.1319420407898932,
         "reliability": 0.1
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.005849785067574276,
         "visual": 0.1681531651024233,
         "reliability": 0
@@ -43858,7 +43858,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -43868,10 +43868,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 0.09707987324692091,
-      "loss": 12.177547641926644,
-      "bestLoss": 11.015609130166442,
-      "smoothLoss": 11.780757313089328
+      "lossDelta": 0.09727660745899946,
+      "loss": 12.253683782001405,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 11.856199287672766
     },
     {
       "index": 306,
@@ -43901,7 +43901,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 387,
-      "scopeCoverage": 0.9923076923076923,
+      "scopeCoverage": 0.989769820971867,
       "clientCompleteness": 0.7468477206595538,
       "visual": {
         "loss": 0.1319420407898932,
@@ -43943,7 +43943,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.007692307692307665,
+        "scope": 0.010230179028132946,
         "completeness": 0.25315227934044615,
         "visual": 0.1319420407898932,
         "reliability": 0.1
@@ -43957,9 +43957,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 12.177547641926644,
-      "bestLoss": 11.015609130166442,
-      "smoothLoss": 11.852179572280045
+      "loss": 12.253683782001405,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 11.927746496651922
     },
     {
       "index": 307,
@@ -43997,7 +43997,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 389,
-      "scopeCoverage": 0.9974358974358974,
+      "scopeCoverage": 0.9948849104859335,
       "clientCompleteness": 0.7463837994214079,
       "visual": {
         "loss": 0.12713766464410967,
@@ -44090,13 +44090,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.002564102564102555,
+        "scope": 0.005115089514066473,
         "completeness": 0.25361620057859213,
         "visual": 0.12713766464410967,
         "reliability": 0.1
       },
       "componentContributions": {
-        "scope": -0.1538461538461533,
+        "scope": -0.1534526854219942,
         "completeness": 0.01159803095364953,
         "visual": -0.1681531651024233,
         "reliability": 0
@@ -44109,7 +44109,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.1538461538461533,
+          "contribution": -0.1534526854219942,
           "direction": "down"
         },
         {
@@ -44119,10 +44119,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.3104012879949263,
-      "loss": 11.867146353931718,
-      "bestLoss": 11.015609130166442,
-      "smoothLoss": 11.854873592977349
+      "lossDelta": -0.31000781957076917,
+      "loss": 11.943675962430635,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 11.93061380049209
     },
     {
       "index": 308,
@@ -44152,7 +44152,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 389,
-      "scopeCoverage": 0.9974358974358974,
+      "scopeCoverage": 0.9948849104859335,
       "clientCompleteness": 0.7463837994214079,
       "visual": {
         "loss": 0.12713766464410967,
@@ -44194,7 +44194,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.002564102564102555,
+        "scope": 0.005115089514066473,
         "completeness": 0.25361620057859213,
         "visual": 0.12713766464410967,
         "reliability": 0.1
@@ -44208,9 +44208,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 11.867146353931718,
-      "bestLoss": 11.015609130166442,
-      "smoothLoss": 11.857082689949134
+      "loss": 11.943675962430635,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 11.932964989641029
     },
     {
       "index": 309,
@@ -44236,7 +44236,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 389,
-      "scopeCoverage": 0.9974358974358974,
+      "scopeCoverage": 0.9948849104859335,
       "clientCompleteness": 0.7463837994214079,
       "visual": {
         "loss": 0.12713766464410967,
@@ -44278,7 +44278,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.002564102564102555,
+        "scope": 0.005115089514066473,
         "completeness": 0.25361620057859213,
         "visual": 0.12713766464410967,
         "reliability": 0.1
@@ -44292,9 +44292,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 11.867146353931718,
-      "bestLoss": 11.015609130166442,
-      "smoothLoss": 11.858894149466
+      "loss": 11.943675962430635,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 11.93489296474316
     },
     {
       "index": 310,
@@ -44324,7 +44324,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 389,
-      "scopeCoverage": 0.9974358974358974,
+      "scopeCoverage": 0.9948849104859335,
       "clientCompleteness": 0.7463837994214079,
       "visual": {
         "loss": 0.12713766464410967,
@@ -44366,7 +44366,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.002564102564102555,
+        "scope": 0.005115089514066473,
         "completeness": 0.25361620057859213,
         "visual": 0.12713766464410967,
         "reliability": 0.1
@@ -44380,9 +44380,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 11.867146353931718,
-      "bestLoss": 11.015609130166442,
-      "smoothLoss": 11.86037954626983
+      "loss": 11.943675962430635,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 11.936473904326906
     },
     {
       "index": 311,
@@ -44410,7 +44410,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 389,
-      "scopeCoverage": 0.9974358974358974,
+      "scopeCoverage": 0.9948849104859335,
       "clientCompleteness": 0.7463837994214079,
       "visual": {
         "loss": 0.12713766464410967,
@@ -44452,7 +44452,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.002564102564102555,
+        "scope": 0.005115089514066473,
         "completeness": 0.25361620057859213,
         "visual": 0.12713766464410967,
         "reliability": 0.1
@@ -44466,9 +44466,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 11.867146353931718,
-      "bestLoss": 11.015609130166442,
-      "smoothLoss": 11.861597571648971
+      "loss": 11.943675962430635,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 11.937770274785578
     },
     {
       "index": 312,
@@ -44498,7 +44498,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 389,
-      "scopeCoverage": 0.9974358974358974,
+      "scopeCoverage": 0.9948849104859335,
       "clientCompleteness": 0.7463837994214079,
       "visual": {
         "loss": 0.12713766464410967,
@@ -44540,7 +44540,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.002564102564102555,
+        "scope": 0.005115089514066473,
         "completeness": 0.25361620057859213,
         "visual": 0.12713766464410967,
         "reliability": 0.1
@@ -44554,9 +44554,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 11.867146353931718,
-      "bestLoss": 11.015609130166442,
-      "smoothLoss": 11.862596352459867
+      "loss": 11.943675962430635,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 11.93883329856169
     },
     {
       "index": 313,
@@ -44572,22 +44572,17 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "harnessOnly": true
       },
       "evidenceFileCount": 0,
-      "addedStoryIds": [
-        "2026-08-14--automations--detail-not-found"
-      ],
-      "addedImages": [
-        "shots/2026-08-14/automations/detail-not-found/lynx-dark-1280.png",
-        "shots/2026-08-14/automations/detail-not-found/web-dark-1280.png"
-      ],
+      "addedStoryIds": [],
+      "addedImages": [],
       "activatedPairCount": 0,
       "activatedRejectedPairCount": 0,
       "activatedHarnessPairCount": 0,
       "cumulativeAcceptedPairCount": 439,
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
-      "cumulativeStoryCount": 390,
-      "scopeCoverage": 1,
-      "clientCompleteness": 0.7461538461538462,
+      "cumulativeStoryCount": 389,
+      "scopeCoverage": 0.9948849104859335,
+      "clientCompleteness": 0.7463837994214079,
       "visual": {
         "loss": 0.12713766464410967,
         "confidence": 1,
@@ -44639,29 +44634,18 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0,
-        "completeness": 0.25384615384615383,
+        "scope": 0.005115089514066473,
+        "completeness": 0.25361620057859213,
         "visual": 0.12713766464410967,
         "reliability": 0.1
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
-        "completeness": 0.0057488316890424995,
+        "scope": 0,
+        "completeness": 0,
         "visual": 0,
         "reliability": 0
       },
-      "causes": [
-        {
-          "component": "scope",
-          "contribution": -0.07692307692307665,
-          "direction": "down"
-        },
-        {
-          "component": "completeness",
-          "contribution": 0.0057488316890424995,
-          "direction": "up"
-        }
-      ],
+      "causes": [],
       "regressionChanges": [
         {
           "type": "harness-detected",
@@ -44669,10 +44653,249 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "summary": "The exact-owned Synara Lynxtron process loaded the production bundle in a background window but could not register a DevTool client while a user-owned Lynxtron occupied the fixed localhost:8901 endpoint."
         }
       ],
-      "lossDelta": -0.07117424523403493,
-      "loss": 11.795972108697683,
-      "bestLoss": 11.015609130166442,
-      "smoothLoss": 11.850603988582675
+      "lossDelta": 0,
+      "loss": 11.943675962430635,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 11.9397049780581
+    },
+    {
+      "index": 314,
+      "day": "2026-08-14",
+      "timestamp": "2026-08-14T02:57:55+08:00",
+      "commit": {
+        "hash": "23ae571734ff2662cbec42ee72d1d71b1b247485",
+        "shortHash": "23ae57173",
+        "timestamp": "2026-08-14T02:57:55+08:00",
+        "date": "2026-08-14",
+        "subject": "Record Native Automations harness blocker",
+        "files": [
+          "shots/2026-08-04/p10-perceptual-fidelity/fidelity-loss.js",
+          "shots/2026-08-04/p10-perceptual-fidelity/fidelity-loss.json",
+          "shots/2026-08-14/automations/notes.md"
+        ]
+      },
+      "evidenceFileCount": 3,
+      "addedStoryIds": [],
+      "addedImages": [],
+      "activatedPairCount": 0,
+      "activatedRejectedPairCount": 0,
+      "activatedHarnessPairCount": 0,
+      "cumulativeAcceptedPairCount": 439,
+      "cumulativeRejectedPairCount": 0,
+      "rollingPairCount": 24,
+      "cumulativeStoryCount": 389,
+      "scopeCoverage": 0.9948849104859335,
+      "clientCompleteness": 0.7463837994214079,
+      "visual": {
+        "loss": 0.12713766464410967,
+        "confidence": 1,
+        "medianPercent": 1.2713766464410967,
+        "sampleCount": 24,
+        "rollingWindowSize": 24,
+        "activatedPairs": [],
+        "activatedRejectedPairs": [],
+        "activatedHarnessPairs": [],
+        "previousLoss": 0.12713766464410967,
+        "previousMedianPercent": 1.2713766464410967,
+        "medianDelta": 0
+      },
+      "reliability": {
+        "loss": 0.1,
+        "activeEvents": [
+          {
+            "id": "viewport-state-fanout",
+            "severityPoints": 1,
+            "introduced": "664d8063e",
+            "fixed": null,
+            "summary": "Viewport hydration race and duplicated resize subscriptions"
+          }
+        ],
+        "activeHarnessIssues": [
+          {
+            "id": "lynx-web-sidebar-row-bindtap-automation",
+            "type": "interaction-harness-boundary",
+            "detectedAt": "2f118bc49",
+            "affectedStoryPrefix": "2026-08-13--temporary-chat-current--",
+            "summary": "The visible Lynx-for-Web sidebar row does not activate through agent-browser click, pointer, keyboard, or synthetic tap paths, blocking retained Temporary cleanup UI evidence.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Unresolved harness-only automation boundary; it does not count as product visual or reliability loss.",
+            "resolutionStoryPrefixes": []
+          },
+          {
+            "id": "native-automations-devtool-fixed-port",
+            "type": "native-certification-harness-blocker",
+            "detectedAt": "06cbda876",
+            "affectedStoryPrefix": "2026-08-14--automations--",
+            "summary": "The exact-owned Synara Lynxtron process loaded the production bundle in a background window but could not register a DevTool client while a user-owned Lynxtron occupied the fixed localhost:8901 endpoint.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Unresolved harness-only ownership boundary; the user-owned @t3tools/lynxtron client was not stopped, and Native Automations certification remains missing coverage.",
+            "resolutionStoryPrefixes": []
+          }
+        ],
+        "points": 1
+      },
+      "components": {
+        "scope": 0.005115089514066473,
+        "completeness": 0.25361620057859213,
+        "visual": 0.12713766464410967,
+        "reliability": 0.1
+      },
+      "componentContributions": {
+        "scope": 0,
+        "completeness": 0,
+        "visual": 0,
+        "reliability": 0
+      },
+      "causes": [],
+      "regressionChanges": [],
+      "lossDelta": 0,
+      "loss": 11.943675962430635,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 11.940419755245156
+    },
+    {
+      "index": 315,
+      "day": "2026-08-14",
+      "timestamp": "2026-08-14T03:11:22+08:00",
+      "commit": {
+        "hash": "dfa1c45f9703ed9631c34635d182a718526a906b",
+        "shortHash": "dfa1c45f9",
+        "timestamp": "2026-08-14T03:11:22+08:00",
+        "date": "2026-08-14",
+        "subject": "Add Automations create flow to Lynx",
+        "files": [
+          "shots/2026-08-14/automations/create-dialog/lynx-dark-1280.png",
+          "shots/2026-08-14/automations/create-dialog/web-dark-1280.png"
+        ],
+        "remoteEvidenceOnly": true
+      },
+      "evidenceFileCount": 2,
+      "addedStoryIds": [
+        "2026-08-14--automations--create-dialog",
+        "2026-08-14--automations--detail-not-found"
+      ],
+      "addedImages": [
+        "shots/2026-08-14/automations/create-dialog/lynx-dark-1280.png",
+        "shots/2026-08-14/automations/create-dialog/web-dark-1280.png",
+        "shots/2026-08-14/automations/detail-not-found/lynx-dark-1280.png",
+        "shots/2026-08-14/automations/detail-not-found/web-dark-1280.png"
+      ],
+      "activatedPairCount": 1,
+      "activatedRejectedPairCount": 0,
+      "activatedHarnessPairCount": 0,
+      "cumulativeAcceptedPairCount": 440,
+      "cumulativeRejectedPairCount": 0,
+      "rollingPairCount": 24,
+      "cumulativeStoryCount": 391,
+      "scopeCoverage": 1,
+      "clientCompleteness": 0.7459252157238735,
+      "visual": {
+        "loss": 0.12713766464410967,
+        "confidence": 1,
+        "medianPercent": 1.2713766464410967,
+        "sampleCount": 24,
+        "rollingWindowSize": 24,
+        "activatedPairs": [
+          {
+            "storyId": "2026-08-14--automations--create-dialog",
+            "leftClient": "web",
+            "rightClient": "lynx",
+            "left": "shots/2026-08-14/automations/create-dialog/web-dark-1280.png",
+            "right": "shots/2026-08-14/automations/create-dialog/lynx-dark-1280.png",
+            "stateKey": "dark-1280",
+            "accepted": true,
+            "maePercent": 2.179401676829268,
+            "parityPercent": 97.82059832317073,
+            "qualityBand": "close",
+            "leftImageStats": {
+              "meanLuminance": 14.050182362804884,
+              "brightFraction": 0.0005516387195121951,
+              "darkFraction": 0.9838052591463414
+            },
+            "rightImageStats": {
+              "meanLuminance": 11.552007072218087,
+              "brightFraction": 0.0015386814024390245,
+              "darkFraction": 0.9833060213414634
+            },
+            "renderedLeftTheme": "dark",
+            "renderedRightTheme": "dark",
+            "activationCommitIndex": 315
+          }
+        ],
+        "activatedRejectedPairs": [],
+        "activatedHarnessPairs": [],
+        "previousLoss": 0.12713766464410967,
+        "previousMedianPercent": 1.2713766464410967,
+        "medianDelta": 0
+      },
+      "reliability": {
+        "loss": 0.1,
+        "activeEvents": [
+          {
+            "id": "viewport-state-fanout",
+            "severityPoints": 1,
+            "introduced": "664d8063e",
+            "fixed": null,
+            "summary": "Viewport hydration race and duplicated resize subscriptions"
+          }
+        ],
+        "activeHarnessIssues": [
+          {
+            "id": "lynx-web-sidebar-row-bindtap-automation",
+            "type": "interaction-harness-boundary",
+            "detectedAt": "2f118bc49",
+            "affectedStoryPrefix": "2026-08-13--temporary-chat-current--",
+            "summary": "The visible Lynx-for-Web sidebar row does not activate through agent-browser click, pointer, keyboard, or synthetic tap paths, blocking retained Temporary cleanup UI evidence.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Unresolved harness-only automation boundary; it does not count as product visual or reliability loss.",
+            "resolutionStoryPrefixes": []
+          },
+          {
+            "id": "native-automations-devtool-fixed-port",
+            "type": "native-certification-harness-blocker",
+            "detectedAt": "06cbda876",
+            "affectedStoryPrefix": "2026-08-14--automations--",
+            "summary": "The exact-owned Synara Lynxtron process loaded the production bundle in a background window but could not register a DevTool client while a user-owned Lynxtron occupied the fixed localhost:8901 endpoint.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Unresolved harness-only ownership boundary; the user-owned @t3tools/lynxtron client was not stopped, and Native Automations certification remains missing coverage.",
+            "resolutionStoryPrefixes": []
+          }
+        ],
+        "points": 1
+      },
+      "components": {
+        "scope": 0,
+        "completeness": 0.2540747842761265,
+        "visual": 0.12713766464410967,
+        "reliability": 0.1
+      },
+      "componentContributions": {
+        "scope": -0.1534526854219942,
+        "completeness": 0.0114645924383594,
+        "visual": 0,
+        "reliability": 0
+      },
+      "causes": [
+        {
+          "component": "scope",
+          "contribution": -0.1534526854219942,
+          "direction": "down"
+        },
+        {
+          "component": "completeness",
+          "contribution": 0.0114645924383594,
+          "direction": "up"
+        }
+      ],
+      "regressionChanges": [],
+      "lossDelta": -0.14198809298363457,
+      "loss": 11.801687869447,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 11.915448015801488
     }
   ],
   "riseAnalysis": [
@@ -44699,9 +44922,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-02/harness/transcript-switch/web-b-bottom.png"
         ]
       },
-      "loss": 65.8615895425362,
-      "lossDelta": 12.558745034616841,
-      "smoothLoss": 59.86345970421826,
+      "loss": 65.86316341623282,
+      "lossDelta": 12.558941768828909,
+      "smoothLoss": 59.8642526679005,
       "causes": [
         {
           "component": "visual",
@@ -44717,7 +44940,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         }
       ],
@@ -44777,9 +45000,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-03/settings-behavior/snapshot.sha256"
         ]
       },
-      "loss": 38.464917070190765,
-      "lossDelta": 0.10024226552142323,
-      "smoothLoss": 44.21233145714952,
+      "loss": 38.47278643867394,
+      "lossDelta": 0.10083246815766245,
+      "smoothLoss": 44.218315072183806,
       "causes": [
         {
           "component": "completeness",
@@ -44795,7 +45018,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.23076923076922992,
+          "contribution": -0.23017902813299296,
           "direction": "down"
         }
       ],
@@ -44858,9 +45081,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-03/settings-shortcuts/snapshot.sha256"
         ]
       },
-      "loss": 38.85103095630465,
-      "lossDelta": 0.38611388611388264,
-      "smoothLoss": 43.247297366997444,
+      "loss": 38.85949052742407,
+      "lossDelta": 0.38670408875012896,
+      "smoothLoss": 43.25372665412706,
       "causes": [
         {
           "component": "completeness",
@@ -44871,7 +45094,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.23076923076923325,
+          "contribution": -0.23017902813299296,
           "direction": "down"
         }
       ],
@@ -44932,9 +45155,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-03/settings-notifications/snapshot.sha256"
         ]
       },
-      "loss": 39.546206840084416,
-      "lossDelta": 0.6951758837797684,
-      "smoothLoss": 42.5811010721531,
+      "loss": 39.55525661384008,
+      "lossDelta": 0.6957660864160076,
+      "smoothLoss": 42.5880020468754,
       "causes": [
         {
           "component": "completeness",
@@ -44950,7 +45173,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.23076923076922992,
+          "contribution": -0.23017902813299296,
           "direction": "down"
         }
       ],
@@ -45048,9 +45271,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-03/p8-q2/comparison.html"
         ]
       },
-      "loss": 39.65429743209046,
-      "lossDelta": 0.1080905920060431,
-      "smoothLoss": 42.05427641694183,
+      "loss": 39.665117813754826,
+      "lossDelta": 0.10986119991474652,
+      "smoothLoss": 42.0618828849137,
       "causes": [
         {
           "component": "completeness",
@@ -45061,7 +45284,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.6923076923076898,
+          "contribution": -0.6905370843989755,
           "direction": "down"
         }
       ],
@@ -45159,9 +45382,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-03/p9-u4-native/preflight/native.png"
         ]
       },
-      "loss": 39.812742499593625,
-      "lossDelta": 0.15844506750316611,
-      "smoothLoss": 41.650800311819154,
+      "loss": 39.824349818106306,
+      "lossDelta": 0.15923200435148033,
+      "smoothLoss": 41.65912693288837,
       "causes": [
         {
           "component": "completeness",
@@ -45172,7 +45395,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.30769230769230993,
+          "contribution": -0.3069053708439917,
           "direction": "down"
         }
       ],
@@ -45235,9 +45458,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-03/p9-u5-composer/notes.md"
         ]
       },
-      "loss": 39.94001041978785,
-      "lossDelta": 0.12726792019422817,
-      "smoothLoss": 41.34285813125352,
+      "loss": 39.951814472512616,
+      "lossDelta": 0.12746465440631027,
+      "smoothLoss": 41.351810690020734,
       "causes": [
         {
           "component": "completeness",
@@ -45248,7 +45471,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         }
       ],
@@ -45326,9 +45549,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-03/p9-u5-composer/notes.md"
         ]
       },
-      "loss": 40.44032951487812,
-      "lossDelta": 0.5003190950902692,
-      "smoothLoss": 41.180402980305956,
+      "loss": 40.45351070708745,
+      "lossDelta": 0.5016962345748368,
+      "smoothLoss": 41.19011669309275,
       "causes": [
         {
           "component": "visual",
@@ -45344,7 +45567,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.5384615384615399,
+          "contribution": -0.5370843989769813,
           "direction": "down"
         }
       ],
@@ -45422,9 +45645,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-03/p9-u5-composer/notes.md"
         ]
       },
-      "loss": 42.63774949071957,
-      "lossDelta": 2.1974199758414485,
-      "smoothLoss": 41.44272535218041,
+      "loss": 42.651717619777216,
+      "lossDelta": 2.1982069126897628,
+      "smoothLoss": 41.453204859895955,
       "causes": [
         {
           "component": "visual",
@@ -45440,7 +45663,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.3076923076923066,
+          "contribution": -0.3069053708439917,
           "direction": "down"
         }
       ],
@@ -45509,9 +45732,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-03/p9-u5-composer/notes.md"
         ]
       },
-      "loss": 44.46104387001672,
-      "lossDelta": 1.8232943792971454,
-      "smoothLoss": 41.98602268539095,
+      "loss": 44.475798935922676,
+      "lossDelta": 1.8240813161454597,
+      "smoothLoss": 41.997271793580765,
       "causes": [
         {
           "component": "reliability",
@@ -45527,7 +45750,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.3076923076923066,
+          "contribution": -0.3069053708439884,
           "direction": "down"
         }
       ],
@@ -45601,9 +45824,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-03/p9-u5-composer/notes.md"
         ]
       },
-      "loss": 67.20110382890651,
-      "lossDelta": 22.740059958889795,
-      "smoothLoss": 46.52473729122375,
+      "loss": 67.2166458316608,
+      "lossDelta": 22.740846895738123,
+      "smoothLoss": 46.53675912043517,
       "causes": [
         {
           "component": "visual",
@@ -45619,7 +45842,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.3076923076923066,
+          "contribution": -0.3069053708439917,
           "direction": "down"
         }
       ],
@@ -45739,9 +45962,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-03/p9-u5-composer/notes.md"
         ]
       },
-      "loss": 67.62548262548262,
-      "lossDelta": 0.4243787965761072,
-      "smoothLoss": 50.32287145139035,
+      "loss": 67.64338543878185,
+      "lossDelta": 0.42673960712104986,
+      "smoothLoss": 50.33595185773758,
       "causes": [
         {
           "component": "completeness",
@@ -45752,7 +45975,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.9230769230769265,
+          "contribution": -0.9207161125319685,
           "direction": "down"
         }
       ],
@@ -45813,9 +46036,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-04/p10-perceptual-fidelity/native/helper-diagnostic/styles.json"
         ]
       },
-      "loss": 34.69716535825472,
-      "lossDelta": 0.01635820010378808,
-      "smoothLoss": 41.243655267415974,
+      "loss": 34.71683877946267,
+      "lossDelta": 0.016554934315870184,
+      "smoothLoss": 41.26108858587526,
       "causes": [
         {
           "component": "completeness",
@@ -45826,7 +46049,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         }
       ],
@@ -45903,9 +46126,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-04/p10-perceptual-fidelity/native/sidebar-default/styles.json"
         ]
       },
-      "loss": 34.734856480691604,
-      "lossDelta": 0.03769112243688255,
-      "smoothLoss": 40.07207148580559,
+      "loss": 34.75512010453579,
+      "lossDelta": 0.038281325073121764,
+      "smoothLoss": 40.09001425923416,
       "causes": [
         {
           "component": "completeness",
@@ -45916,7 +46139,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.23076923076922992,
+          "contribution": -0.23017902813299296,
           "direction": "down"
         }
       ],
@@ -45983,9 +46206,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-04/p10-perceptual-fidelity/native/settings-general/styles.json"
         ]
       },
-      "loss": 34.75106494703803,
-      "lossDelta": 0.01620846634642703,
-      "smoothLoss": 39.11429030882743,
+      "loss": 34.77172203930637,
+      "lossDelta": 0.01660193477057703,
+      "smoothLoss": 39.13272165964716,
       "causes": [
         {
           "component": "completeness",
@@ -45996,7 +46219,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.1538461538461533,
+          "contribution": -0.15345268542199753,
           "direction": "down"
         }
       ],
@@ -46372,9 +46595,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-04/p10-perceptual-fidelity/manifest.json"
         ]
       },
-      "loss": 35.11371536557595,
-      "lossDelta": 0.3570634412557112,
-      "smoothLoss": 37.22358570453523,
+      "loss": 35.13850387629796,
+      "lossDelta": 0.3609981254973036,
+      "smoothLoss": 37.24381209861906,
       "causes": [
         {
           "component": "visual",
@@ -46385,7 +46608,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -1.5384615384615397,
+          "contribution": -1.5345268542199486,
           "direction": "down"
         },
         {
@@ -46574,9 +46797,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-05/settings-appearance-current/web/raw.png"
         ]
       },
-      "loss": 29.682016273868108,
-      "lossDelta": 1.3157342946983022,
-      "smoothLoss": 30.56192373472081,
+      "loss": 29.711526405680022,
+      "lossDelta": 1.3159310289103772,
+      "smoothLoss": 30.589085918624264,
       "causes": [
         {
           "component": "visual",
@@ -46587,7 +46810,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -46640,9 +46863,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-05/settings-profile-current/web/raw.png"
         ]
       },
-      "loss": 30.784037079588234,
-      "lossDelta": 1.1020208057201266,
-      "smoothLoss": 30.601904136796946,
+      "loss": 30.81374394561223,
+      "lossDelta": 1.1022175399322087,
+      "smoothLoss": 30.629524363482098,
       "causes": [
         {
           "component": "visual",
@@ -46653,7 +46876,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -46706,9 +46929,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-05/settings-skills-current/web/raw.png"
         ]
       },
-      "loss": 29.697589307419385,
-      "lossDelta": 0.5323398459145672,
-      "smoothLoss": 30.14576865264712,
+      "loss": 29.72788637607962,
+      "lossDelta": 0.5325365801266422,
+      "smoothLoss": 30.174513136061222,
       "causes": [
         {
           "component": "visual",
@@ -46719,7 +46942,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -46797,9 +47020,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-05/settings-worktrees-current/notes.md"
         ]
       },
-      "loss": 30.318973792955862,
-      "lossDelta": 0.6213844855364776,
-      "smoothLoss": 30.176945577902696,
+      "loss": 30.349467595828177,
+      "lossDelta": 0.6215812197485562,
+      "smoothLoss": 30.206004938819277,
       "causes": [
         {
           "component": "visual",
@@ -46810,7 +47033,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -46863,9 +47086,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-05/settings-appsnap-current/web/raw.png"
         ]
       },
-      "loss": 30.376340716951226,
-      "lossDelta": 0.1723213208289529,
-      "smoothLoss": 30.21683279850064,
+      "loss": 30.40722798824771,
+      "lossDelta": 0.172518055041035,
+      "smoothLoss": 30.246461944887976,
       "causes": [
         {
           "component": "visual",
@@ -46876,7 +47099,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -46929,9 +47152,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-06/providers-opencode-current/web/raw.png"
         ]
       },
-      "loss": 27.2369233947889,
-      "lossDelta": 0.36587168002418835,
-      "smoothLoss": 27.26001617032359,
+      "loss": 27.27390942665984,
+      "lossDelta": 0.36606841423626335,
+      "smoothLoss": 27.29600803015058,
       "causes": [
         {
           "component": "visual",
@@ -46942,7 +47165,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -46989,9 +47212,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-06/providers-evidence-manifest.json"
         ]
       },
-      "loss": 27.29108289340303,
-      "lossDelta": 0.05415949861412983,
-      "smoothLoss": 27.26560818047789,
+      "loss": 27.32826565948605,
+      "lossDelta": 0.054356232826208384,
+      "smoothLoss": 27.301814403430967,
       "causes": [
         {
           "component": "visual",
@@ -47007,7 +47230,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         }
       ],
@@ -47057,9 +47280,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-06/thread-empty-current/web/raw.png"
         ]
       },
-      "loss": 23.642638808060163,
-      "lossDelta": 0.1786048698483853,
-      "smoothLoss": 25.095092923909633,
+      "loss": 23.681788916263976,
+      "lossDelta": 0.17880160406046386,
+      "smoothLoss": 25.133364787737317,
       "causes": [
         {
           "component": "visual",
@@ -47070,7 +47293,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -47122,9 +47345,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-06/sidebar-primary-action-label-current/web/style.json"
         ]
       },
-      "loss": 21.062437770913572,
-      "lossDelta": 0.09286383278208632,
-      "smoothLoss": 21.31619631236537,
+      "loss": 21.106899702843542,
+      "lossDelta": 0.09306056699417553,
+      "smoothLoss": 21.359851775191476,
       "causes": [
         {
           "component": "visual",
@@ -47135,7 +47358,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307998,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -47181,9 +47404,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-06/sidebar-primary-shortcut-current/web.png"
         ]
       },
-      "loss": 21.68238272100976,
-      "lossDelta": 0.7177419988568801,
-      "smoothLoss": 21.330220260805998,
+      "loss": 21.72723812136388,
+      "lossDelta": 0.7179387330689586,
+      "smoothLoss": 21.37423978519658,
       "causes": [
         {
           "component": "visual",
@@ -47194,7 +47417,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -47253,9 +47476,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-06/sidebar-primary-shortcut-reveal-current/web-hover.png"
         ]
       },
-      "loss": 22.7993061346766,
-      "lossDelta": 1.1169234136668393,
-      "smoothLoss": 21.594655718102707,
+      "loss": 22.8443582692428,
+      "lossDelta": 1.1171201478789214,
+      "smoothLoss": 21.6388611123249,
       "causes": [
         {
           "component": "visual",
@@ -47266,7 +47489,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -47320,9 +47543,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-06/sidebar-section-header-typography-current/web.png"
         ]
       },
-      "loss": 22.854648275680507,
-      "lossDelta": 0.3102851826298405,
-      "smoothLoss": 22.198238127064403,
+      "loss": 22.900487347095027,
+      "lossDelta": 0.31048191684191906,
+      "smoothLoss": 22.24320334183896,
       "causes": [
         {
           "component": "visual",
@@ -47333,7 +47556,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -47386,9 +47609,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-06/sidebar-segmented-thumb-current/web.png"
         ]
       },
-      "loss": 23.19734988136621,
-      "lossDelta": 0.3427016056857042,
-      "smoothLoss": 22.378078242838733,
+      "loss": 23.24338568699281,
+      "lossDelta": 0.34289833989778273,
+      "smoothLoss": 22.423236163966653,
       "causes": [
         {
           "component": "visual",
@@ -47399,7 +47622,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -47457,9 +47680,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-06/sidebar-project-add-current/web-hover.png"
         ]
       },
-      "loss": 51.2971924218215,
-      "lossDelta": 28.196844684281814,
-      "smoothLoss": 27.690125772473493,
+      "loss": 51.34362169587226,
+      "lossDelta": 28.197041418493896,
+      "smoothLoss": 27.735671150849235,
       "causes": [
         {
           "component": "visual",
@@ -47470,7 +47693,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -47511,9 +47734,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "files": [],
         "reliabilityOnly": true
       },
-      "loss": 53.79993444055944,
-      "lossDelta": 3.000000000000007,
-      "smoothLoss": 48.82687759670839,
+      "loss": 53.84833105673099,
+      "lossDelta": 3,
+      "smoothLoss": 48.874540691880014,
       "causes": [
         {
           "component": "reliability",
@@ -47557,9 +47780,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-07/responsive-shell-current/notes.md"
         ]
       },
-      "loss": 54.413062007244825,
-      "lossDelta": 0.9719579096734137,
-      "smoothLoss": 53.577643988481626,
+      "loss": 54.46303249711302,
+      "lossDelta": 0.9721546438854958,
+      "smoothLoss": 53.62694115429604,
       "causes": [
         {
           "component": "reliability",
@@ -47575,7 +47798,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         }
       ],
@@ -47628,9 +47851,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-08/composer-project-folder-current/notes.md"
         ]
       },
-      "loss": 21.413087744930934,
-      "lossDelta": 0.12246394329012844,
-      "smoothLoss": 29.44365124639234,
+      "loss": 21.469353729585663,
+      "lossDelta": 0.122660677502207,
+      "smoothLoss": 29.49911635632781,
       "causes": [
         {
           "component": "visual",
@@ -47641,7 +47864,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -47687,9 +47910,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-09/environment-fast-loop-current/web-light-errors.json"
         ]
       },
-      "loss": 17.8806272487986,
+      "loss": 17.943975665088193,
       "lossDelta": 0.43492973980750804,
-      "smoothLoss": 18.192061057891546,
+      "smoothLoss": 18.25499095039404,
       "causes": [
         {
           "component": "visual",
@@ -47738,9 +47961,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-09/environment-loaded-current/web-light-geometry.json"
         ]
       },
-      "loss": 18.414392564981142,
-      "lossDelta": 0.5337653161825422,
-      "smoothLoss": 18.232080729167674,
+      "loss": 18.477937715482813,
+      "lossDelta": 0.5339620503946207,
+      "smoothLoss": 18.295121368110017,
       "causes": [
         {
           "component": "visual",
@@ -47756,7 +47979,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307998,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         }
       ],
@@ -47806,9 +48029,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-09/environment-local-status-current/web-light-geometry.json"
         ]
       },
-      "loss": 19.267590416047533,
-      "lossDelta": 0.8531978510663905,
-      "smoothLoss": 18.418472472806048,
+      "loss": 19.331332300761282,
+      "lossDelta": 0.853394585278469,
+      "smoothLoss": 18.481639335987246,
       "causes": [
         {
           "component": "visual",
@@ -47824,7 +48047,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         }
       ],
@@ -47869,9 +48092,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-09/explorer-image-preview-current/pixel-proof.txt"
         ]
       },
-      "loss": 21.84955695490097,
-      "lossDelta": 2.916423279139771,
-      "smoothLoss": 19.434077046617453,
+      "loss": 21.914282510675115,
+      "lossDelta": 2.9166200133518494,
+      "smoothLoss": 19.49826648244749,
       "causes": [
         {
           "component": "reliability",
@@ -47882,7 +48105,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -47934,9 +48157,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-10/settings-release-history-rhythm-current/web.png"
         ]
       },
-      "loss": 22.214371163510517,
-      "lossDelta": 0.7824755308192373,
-      "smoothLoss": 21.211002417438362,
+      "loss": 22.28027712455714,
+      "lossDelta": 0.7826722650313194,
+      "smoothLoss": 21.276326514195908,
       "causes": [
         {
           "component": "visual",
@@ -47952,7 +48175,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         }
       ],
@@ -47995,9 +48218,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-10/empty-thread-heading-current/web.png"
         ]
       },
-      "loss": 14.099966983055234,
-      "lossDelta": 1.294419506569957,
-      "smoothLoss": 17.049005163907832,
+      "loss": 14.169217425707211,
+      "lossDelta": 1.2946162407820374,
+      "smoothLoss": 17.116664085460258,
       "causes": [
         {
           "component": "visual",
@@ -48013,7 +48236,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         }
       ],
@@ -48050,9 +48273,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "shots/2026-08-10/empty-thread-null-branch-current/web.png"
         ]
       },
-      "loss": 14.748917079404292,
-      "lossDelta": 0.6489500963490578,
-      "smoothLoss": 16.199711273203356,
+      "loss": 14.81836425626835,
+      "lossDelta": 0.6491468305611381,
+      "smoothLoss": 16.267926989226165,
       "causes": [
         {
           "component": "visual",
@@ -48068,7 +48291,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         }
       ],
@@ -48108,9 +48331,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         ],
         "remoteEvidenceOnly": true
       },
-      "loss": 11.35987397034576,
-      "lossDelta": 0.34426484017931713,
-      "smoothLoss": 11.367407314224145,
+      "loss": 11.435026439360122,
+      "lossDelta": 0.34485504281555635,
+      "smoothLoss": 11.441494242294338,
       "causes": [
         {
           "component": "visual",
@@ -48126,7 +48349,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.23076923076922992,
+          "contribution": -0.23017902813299296,
           "direction": "down"
         }
       ],
@@ -48170,9 +48393,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         ],
         "remoteEvidenceOnly": true
       },
-      "loss": 12.217969816900242,
-      "lossDelta": 0.8580958465544821,
-      "smoothLoss": 11.519396643149392,
+      "loss": 12.293515754338761,
+      "lossDelta": 0.8584893149786392,
+      "smoothLoss": 11.593903466749245,
       "causes": [
         {
           "component": "reliability",
@@ -48188,7 +48411,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.15384615384615663,
+          "contribution": -0.1534526854219942,
           "direction": "down"
         }
       ],
@@ -48235,9 +48458,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         ],
         "remoteEvidenceOnly": true
       },
-      "loss": 12.080467768679723,
-      "lossDelta": 0.8624979517794813,
-      "smoothLoss": 11.608747315415531,
+      "loss": 12.156407174542405,
+      "lossDelta": 0.8628914202036437,
+      "smoothLoss": 11.683894271192822,
       "causes": [
         {
           "component": "visual",
@@ -48253,7 +48476,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.1538461538461533,
+          "contribution": -0.1534526854219942,
           "direction": "down"
         }
       ],
@@ -48292,9 +48515,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         ],
         "remoteEvidenceOnly": true
       },
-      "loss": 12.177547641926644,
-      "lossDelta": 0.09707987324692091,
-      "smoothLoss": 11.780757313089328,
+      "loss": 12.253683782001405,
+      "lossDelta": 0.09727660745899946,
+      "smoothLoss": 11.856199287672766,
       "causes": [
         {
           "component": "visual",
@@ -48310,7 +48533,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "countervailingCauses": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         }
       ],
@@ -48337,15 +48560,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "firstCommitIndex": 0,
       "lastCommitIndex": 6,
       "commitCount": 7,
-      "openingLoss": 62.79521437911371,
-      "closingLoss": 59.13821183956502,
-      "netLossDelta": -3.6570025395486923,
+      "openingLoss": 62.795411113325784,
+      "closingLoss": 59.13998244747373,
+      "netLossDelta": -3.6554286658520567,
       "riseCount": 1,
       "fallCount": 5,
       "addedStoryCount": 9,
       "activatedPairCount": 16,
       "componentContributions": {
-        "scope": -0.6153846153846165,
+        "scope": -0.6138107416879768,
         "completeness": -7.666666666666669,
         "visual": 4.625048742502592,
         "reliability": 0
@@ -48365,15 +48588,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "firstCommitIndex": 7,
       "lastCommitIndex": 27,
       "commitCount": 21,
-      "openingLoss": 59.13821183956502,
-      "closingLoss": 67.20110382890651,
-      "netLossDelta": 8.062891989341495,
+      "openingLoss": 59.13998244747373,
+      "closingLoss": 67.2166458316608,
+      "netLossDelta": 8.076663384187071,
       "riseCount": 10,
       "fallCount": 10,
       "addedStoryCount": 70,
       "activatedPairCount": 81,
       "componentContributions": {
-        "scope": -5.384615384615382,
+        "scope": -5.370843989769823,
         "completeness": -2.7219730941704046,
         "visual": 14.169480468127292,
         "reliability": 2.0000000000000004
@@ -48407,15 +48630,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "firstCommitIndex": 28,
       "lastCommitIndex": 44,
       "commitCount": 17,
-      "openingLoss": 67.20110382890651,
-      "closingLoss": 28.60444098328625,
-      "netLossDelta": -38.59666284562026,
+      "openingLoss": 67.2166458316608,
+      "closingLoss": 28.633360912461935,
+      "netLossDelta": -38.58328491919886,
       "riseCount": 5,
       "fallCount": 7,
       "addedStoryCount": 68,
       "activatedPairCount": 169,
       "componentContributions": {
-        "scope": -5.230769230769233,
+        "scope": -5.217391304347823,
         "completeness": -0.2496581115033536,
         "visual": -31.116235503347678,
         "reliability": -2.0000000000000004
@@ -48445,15 +48668,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "firstCommitIndex": 45,
       "lastCommitIndex": 84,
       "commitCount": 40,
-      "openingLoss": 28.60444098328625,
-      "closingLoss": 27.60576426632125,
-      "netLossDelta": -0.9986767169650008,
+      "openingLoss": 28.633360912461935,
+      "closingLoss": 27.64078295607139,
+      "netLossDelta": -0.9925779563905444,
       "riseCount": 5,
       "fallCount": 18,
       "addedStoryCount": 31,
       "activatedPairCount": 38,
       "componentContributions": {
-        "scope": -2.384615384615383,
+        "scope": -2.378516624040926,
         "completeness": -0.45666336796965357,
         "visual": 1.8426020356200286,
         "reliability": 0
@@ -48506,15 +48729,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "firstCommitIndex": 85,
       "lastCommitIndex": 143,
       "commitCount": 59,
-      "openingLoss": 27.60576426632125,
-      "closingLoss": 51.23747301443018,
-      "netLossDelta": 23.63170874810893,
+      "openingLoss": 27.64078295607139,
+      "closingLoss": 51.284099022693006,
+      "netLossDelta": 23.643316066621615,
       "riseCount": 9,
       "fallCount": 45,
       "addedStoryCount": 59,
       "activatedPairCount": 67,
       "componentContributions": {
-        "scope": -4.538461538461539,
+        "scope": -4.526854219948851,
         "completeness": -1.1034631811571796,
         "visual": 29.27363346772765,
         "reliability": 0
@@ -48586,15 +48809,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "firstCommitIndex": 144,
       "lastCommitIndex": 192,
       "commitCount": 49,
-      "openingLoss": 51.23747301443018,
-      "closingLoss": 52.88882211538461,
-      "netLossDelta": 1.6513491009544339,
+      "openingLoss": 51.284099022693006,
+      "closingLoss": 52.943514226342714,
+      "netLossDelta": 1.6594152036497078,
       "riseCount": 2,
       "fallCount": 35,
       "addedStoryCount": 41,
       "activatedPairCount": 8,
       "componentContributions": {
-        "scope": -3.153846153846156,
+        "scope": -3.145780051150898,
         "completeness": 0.805195254800592,
         "visual": 0,
         "reliability": 4
@@ -48656,15 +48879,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "firstCommitIndex": 193,
       "lastCommitIndex": 233,
       "commitCount": 41,
-      "openingLoss": 52.88882211538461,
-      "closingLoss": 19.319130716357606,
-      "netLossDelta": -33.56969139902701,
+      "openingLoss": 52.943514226342714,
+      "closingLoss": 19.381495461586802,
+      "netLossDelta": -33.56201876475591,
       "riseCount": 1,
       "fallCount": 35,
       "addedStoryCount": 39,
       "activatedPairCount": 15,
       "componentContributions": {
-        "scope": -2.999999999999999,
+        "scope": -2.9923273657289,
         "completeness": 0.6680091130884053,
         "visual": -31.237700512115417,
         "reliability": 0
@@ -48718,15 +48941,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "firstCommitIndex": 234,
       "lastCommitIndex": 258,
       "commitCount": 25,
-      "openingLoss": 19.319130716357606,
-      "closingLoss": 21.765995119150222,
-      "netLossDelta": 2.4468644027926167,
+      "openingLoss": 19.381495461586802,
+      "closingLoss": 21.830917409136454,
+      "netLossDelta": 2.449421947549652,
       "riseCount": 4,
       "fallCount": 10,
       "addedStoryCount": 13,
       "activatedPairCount": 11,
       "componentContributions": {
-        "scope": -0.9999999999999998,
+        "scope": -0.9974424552429673,
         "completeness": -0.013034979978784889,
         "visual": 0.4598993827714012,
         "reliability": 2.9999999999999996
@@ -48764,15 +48987,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "firstCommitIndex": 259,
       "lastCommitIndex": 272,
       "commitCount": 14,
-      "openingLoss": 21.765995119150222,
-      "closingLoss": 12.805547476485277,
-      "netLossDelta": -8.960447642664946,
+      "openingLoss": 21.830917409136454,
+      "closingLoss": 12.874601184925174,
+      "netLossDelta": -8.95631622421128,
       "riseCount": 1,
       "fallCount": 10,
       "addedStoryCount": 21,
       "activatedPairCount": 9,
       "componentContributions": {
-        "scope": -1.6153846153846163,
+        "scope": -1.6112531969309474,
         "completeness": 0.2886589675226231,
         "visual": -1.6337219948029529,
         "reliability": -6
@@ -48799,15 +49022,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "firstCommitIndex": 273,
       "lastCommitIndex": 290,
       "commitCount": 18,
-      "openingLoss": 12.805547476485277,
-      "closingLoss": 11.015609130166442,
-      "netLossDelta": -1.7899383463188343,
+      "openingLoss": 12.874601184925174,
+      "closingLoss": 11.090171396544566,
+      "netLossDelta": -1.7844297883806082,
       "riseCount": 2,
       "fallCount": 13,
       "addedStoryCount": 28,
       "activatedPairCount": 15,
       "componentContributions": {
-        "scope": -2.153846153846153,
+        "scope": -2.1483375959079285,
         "completeness": 0.06396216997351656,
         "visual": 0.2999456375538022,
         "reliability": 0
@@ -48838,15 +49061,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "firstCommitIndex": 291,
       "lastCommitIndex": 300,
       "commitCount": 10,
-      "openingLoss": 11.015609130166442,
-      "closingLoss": 12.217969816900242,
-      "netLossDelta": 1.2023606867337993,
+      "openingLoss": 11.090171396544566,
+      "closingLoss": 12.293515754338761,
+      "netLossDelta": 1.2033443577941956,
       "riseCount": 2,
       "fallCount": 0,
       "addedStoryCount": 5,
       "activatedPairCount": 5,
       "componentContributions": {
-        "scope": -0.3846153846153866,
+        "scope": -0.38363171355498715,
         "completeness": 0.0301218282200727,
         "visual": 0.5568542431291121,
         "reliability": 1.0000000000000002
@@ -48867,18 +49090,18 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
     {
       "day": "2026-08-14",
       "firstCommitIndex": 301,
-      "lastCommitIndex": 313,
-      "commitCount": 13,
-      "openingLoss": 12.217969816900242,
-      "closingLoss": 11.795972108697683,
-      "netLossDelta": -0.421997708202559,
+      "lastCommitIndex": 315,
+      "commitCount": 15,
+      "openingLoss": 12.293515754338761,
+      "closingLoss": 11.801687869447,
+      "netLossDelta": -0.49182788489176055,
       "riseCount": 2,
       "fallCount": 3,
-      "addedStoryCount": 6,
-      "activatedPairCount": 5,
+      "addedStoryCount": 7,
+      "activatedPairCount": 6,
       "componentContributions": {
-        "scope": -0.4615384615384599,
-        "completeness": 0.03499924732801307,
+        "scope": -0.5370843989769813,
+        "completeness": 0.04071500807732997,
         "visual": 1.0045415060078904,
         "reliability": -1.0000000000000002
       },
@@ -48895,7 +49118,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         310,
         311,
         312,
-        313
+        313,
+        314,
+        315
       ]
     }
   ],
@@ -48948,7 +49173,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 16,
       "cumulativeStoryCount": 9,
-      "scopeCoverage": 0.023076923076923078,
+      "scopeCoverage": 0.023017902813299233,
       "clientCompleteness": 0.64,
       "visual": {
         "loss": 0.5951577009106488,
@@ -49501,13 +49726,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.9769230769230769,
+        "scope": 0.9769820971867008,
         "completeness": 0.36,
         "visual": 0.5951577009106488,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.0909090909090915,
         "visual": -6.555545535139016,
         "reliability": 0
@@ -49525,15 +49750,15 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -6.723377702971177,
-      "loss": 59.13821183956502,
-      "bestLoss": 53.30284450791935,
-      "smoothLoss": 59.732915088580675,
+      "lossDelta": -6.723180968759095,
+      "loss": 59.13998244747373,
+      "bestLoss": 53.304221647403914,
+      "smoothLoss": 59.733884028223684,
       "commitCount": 19,
       "newStoryCount": 9
     },
@@ -49601,7 +49826,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 79,
-      "scopeCoverage": 0.20256410256410257,
+      "scopeCoverage": 0.2020460358056266,
       "clientCompleteness": 0.7488789237668162,
       "visual": {
         "loss": 1,
@@ -52173,13 +52398,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 2
       },
       "components": {
-        "scope": 0.7974358974358975,
+        "scope": 0.7979539641943734,
         "completeness": 0.2511210762331838,
         "visual": 1,
         "reliability": 0.2
       },
       "componentContributions": {
-        "scope": -0.3076923076923066,
+        "scope": -0.3069053708439917,
         "completeness": 0.11688946507130149,
         "visual": 22.93086280151081,
         "reliability": 0
@@ -52192,7 +52417,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         },
         {
           "component": "scope",
-          "contribution": -0.3076923076923066,
+          "contribution": -0.3069053708439917,
           "direction": "down"
         },
         {
@@ -52202,10 +52427,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": 22.740059958889795,
-      "loss": 67.20110382890651,
-      "bestLoss": 38.36467480466934,
-      "smoothLoss": 46.52473729122375,
+      "lossDelta": 22.740846895738123,
+      "loss": 67.2166458316608,
+      "bestLoss": 38.37195397051628,
+      "smoothLoss": 46.53675912043517,
       "commitCount": 25,
       "newStoryCount": 70
     },
@@ -52233,7 +52458,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 147,
-      "scopeCoverage": 0.3769230769230769,
+      "scopeCoverage": 0.37595907928388744,
       "clientCompleteness": 0.7588652482269503,
       "visual": {
         "loss": 0.11096469990435201,
@@ -58910,7 +59135,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.6230769230769231,
+        "scope": 0.6240409207161126,
         "completeness": 0.24113475177304966,
         "visual": 0.11096469990435201,
         "reliability": 0
@@ -58924,9 +59149,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 28.60444098328625,
-      "bestLoss": 28.60444098328625,
-      "smoothLoss": 31.892843338799793,
+      "loss": 28.633360912461935,
+      "bestLoss": 28.633360912461935,
+      "smoothLoss": 31.91823410266064,
       "commitCount": 24,
       "newStoryCount": 68
     },
@@ -58963,7 +59188,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 178,
-      "scopeCoverage": 0.4564102564102564,
+      "scopeCoverage": 0.45524296675191817,
       "clientCompleteness": 0.7771317829457365,
       "visual": {
         "loss": 0.16361047235063855,
@@ -66590,13 +66815,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.5435897435897437,
+        "scope": 0.5447570332480818,
         "completeness": 0.22286821705426352,
         "visual": 0.16361047235063855,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.016149870801032695,
         "visual": 0,
         "reliability": 0
@@ -66604,7 +66829,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -66614,10 +66839,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.06077320612204318,
-      "loss": 27.60576426632125,
-      "bestLoss": 27.60576426632125,
-      "smoothLoss": 27.8471038333287,
+      "lossDelta": -0.06057647190996107,
+      "loss": 27.64078295607139,
+      "bestLoss": 27.64078295607139,
+      "smoothLoss": 27.881301005918296,
       "commitCount": 102,
       "newStoryCount": 31
     },
@@ -66666,7 +66891,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 237,
-      "scopeCoverage": 0.6076923076923076,
+      "scopeCoverage": 0.6061381074168798,
       "clientCompleteness": 0.8212703101920237,
       "visual": {
         "loss": 1,
@@ -75968,13 +76193,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 0
       },
       "components": {
-        "scope": 0.39230769230769236,
+        "scope": 0.3938618925831202,
         "completeness": 0.17872968980797632,
         "visual": 1,
         "reliability": 0
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.01720366953175123,
         "visual": 0,
         "reliability": 0
@@ -75982,7 +76207,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -75992,10 +76217,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.05971940739132009,
-      "loss": 51.23747301443018,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 31.928648276025697,
+      "lossDelta": -0.059522673179252195,
+      "loss": 51.284099022693006,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 31.974388167781115,
       "commitCount": 60,
       "newStoryCount": 59
     },
@@ -76024,7 +76249,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 278,
-      "scopeCoverage": 0.7128205128205128,
+      "scopeCoverage": 0.710997442455243,
       "clientCompleteness": 0.7890625,
       "visual": {
         "loss": 1,
@@ -85541,7 +85766,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.28717948717948716,
+        "scope": 0.289002557544757,
         "completeness": 0.2109375,
         "visual": 1,
         "reliability": 0.4
@@ -85555,9 +85780,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 52.88882211538461,
-      "bestLoss": 20.96464072215288,
-      "smoothLoss": 53.06534910827596,
+      "loss": 52.943514226342714,
+      "bestLoss": 21.00929938829492,
+      "smoothLoss": 53.11939948199439,
       "commitCount": 53,
       "newStoryCount": 41
     },
@@ -85586,7 +85811,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 317,
-      "scopeCoverage": 0.8128205128205128,
+      "scopeCoverage": 0.8107416879795396,
       "clientCompleteness": 0.7623421354764638,
       "visual": {
         "loss": 0.10749427108241671,
@@ -95478,7 +95703,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 4
       },
       "components": {
-        "scope": 0.18717948717948718,
+        "scope": 0.1892583120204604,
         "completeness": 0.2376578645235362,
         "visual": 0.10749427108241671,
         "reliability": 0.4
@@ -95492,9 +95717,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 19.319130716357606,
-      "bestLoss": 19.319130716357606,
-      "smoothLoss": 19.584038214068084,
+      "loss": 19.381495461586802,
+      "bestLoss": 19.381495461586802,
+      "smoothLoss": 19.645667619023378,
       "commitCount": 62,
       "newStoryCount": 39
     },
@@ -95536,7 +95761,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 330,
-      "scopeCoverage": 0.8461538461538461,
+      "scopeCoverage": 0.8439897698209718,
       "clientCompleteness": 0.7628635346756152,
       "visual": {
         "loss": 0.12063425344731389,
@@ -105710,13 +105935,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 7
       },
       "components": {
-        "scope": 0.15384615384615385,
+        "scope": 0.15601023017902815,
         "completeness": 0.23713646532438482,
         "visual": 0.12063425344731389,
         "reliability": 0.7
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099543,
         "completeness": -0.006638758827670621,
         "visual": 0,
         "reliability": 0
@@ -105724,7 +105949,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099543,
           "direction": "down"
         },
         {
@@ -105734,10 +105959,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.08356183575074638,
-      "loss": 21.765995119150222,
-      "bestLoss": 17.445697508991092,
-      "smoothLoss": 19.853822299673354,
+      "lossDelta": -0.08336510153866072,
+      "loss": 21.830917409136454,
+      "bestLoss": 17.509045925280684,
+      "smoothLoss": 19.918143649251505,
       "commitCount": 41,
       "newStoryCount": 13
     },
@@ -105779,7 +106004,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 351,
-      "scopeCoverage": 0.9,
+      "scopeCoverage": 0.8976982097186701,
       "clientCompleteness": 0.7513171759747103,
       "visual": {
         "loss": 0.07395648216722953,
@@ -116164,13 +116389,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.09999999999999998,
+        "scope": 0.10230179028132991,
         "completeness": 0.24868282402528974,
         "visual": 0.07395648216722953,
         "reliability": 0.1
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
+        "scope": -0.07672634271099876,
         "completeness": 0.033138253909198445,
         "visual": 0,
         "reliability": 0
@@ -116178,7 +116403,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.07672634271099876,
           "direction": "down"
         },
         {
@@ -116188,10 +116413,10 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         }
       ],
       "regressionChanges": [],
-      "lossDelta": -0.04378482301387798,
-      "loss": 12.805547476485277,
-      "bestLoss": 12.805547476485277,
-      "smoothLoss": 17.69635500848523,
+      "lossDelta": -0.04358808880179943,
+      "loss": 12.874601184925174,
+      "bestLoss": 12.874601184925174,
+      "smoothLoss": 17.763664571747512,
       "commitCount": 94,
       "newStoryCount": 21
     },
@@ -116220,7 +116445,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 379,
-      "scopeCoverage": 0.9717948717948718,
+      "scopeCoverage": 0.969309462915601,
       "clientCompleteness": 0.7487586891757696,
       "visual": {
         "loss": 0.08252635752590959,
@@ -126980,7 +127205,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 1
       },
       "components": {
-        "scope": 0.028205128205128216,
+        "scope": 0.03069053708439895,
         "completeness": 0.2512413108242304,
         "visual": 0.08252635752590959,
         "reliability": 0.1
@@ -126994,9 +127219,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 11.015609130166442,
-      "bestLoss": 11.015609130166442,
-      "smoothLoss": 12.178254157834571,
+      "loss": 11.090171396544566,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 12.250483457188476,
       "commitCount": 135,
       "newStoryCount": 28
     },
@@ -127028,7 +127253,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
       "cumulativeStoryCount": 384,
-      "scopeCoverage": 0.9846153846153847,
+      "scopeCoverage": 0.9820971867007673,
       "clientCompleteness": 0.7475538160469667,
       "visual": {
         "loss": 0.09843647875816994,
@@ -137927,7 +138152,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "points": 2
       },
       "components": {
-        "scope": 0.01538461538461533,
+        "scope": 0.01790281329923271,
         "completeness": 0.2524461839530333,
         "visual": 0.09843647875816994,
         "reliability": 0.2
@@ -137941,55 +138166,87 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "causes": [],
       "regressionChanges": [],
       "lossDelta": 0,
-      "loss": 12.217969816900242,
-      "bestLoss": 11.015609130166442,
-      "smoothLoss": 11.645139814424546,
+      "loss": 12.293515754338761,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 11.719833678515359,
       "commitCount": 10,
       "newStoryCount": 5
     },
     {
-      "index": 313,
+      "index": 315,
       "day": "2026-08-14",
-      "timestamp": "2026-08-14T02:49:45+08:00",
+      "timestamp": "2026-08-14T03:11:22+08:00",
       "commit": {
-        "hash": "06cbda8768489cd171b94d46fbc61ee89b9549ed",
-        "shortHash": "06cbda876",
-        "timestamp": "2026-08-14T02:49:45+08:00",
+        "hash": "dfa1c45f9703ed9631c34635d182a718526a906b",
+        "shortHash": "dfa1c45f9",
+        "timestamp": "2026-08-14T03:11:22+08:00",
         "date": "2026-08-14",
-        "subject": "Route Automations deep links in Native",
-        "files": [],
-        "harnessOnly": true
+        "subject": "Add Automations create flow to Lynx",
+        "files": [
+          "shots/2026-08-14/automations/create-dialog/lynx-dark-1280.png",
+          "shots/2026-08-14/automations/create-dialog/web-dark-1280.png"
+        ],
+        "remoteEvidenceOnly": true
       },
-      "evidenceFileCount": 0,
+      "evidenceFileCount": 2,
       "addedStoryIds": [
+        "2026-08-14--automations--create-dialog",
         "2026-08-14--automations--detail-not-found"
       ],
       "addedImages": [
+        "shots/2026-08-14/automations/create-dialog/lynx-dark-1280.png",
+        "shots/2026-08-14/automations/create-dialog/web-dark-1280.png",
         "shots/2026-08-14/automations/detail-not-found/lynx-dark-1280.png",
         "shots/2026-08-14/automations/detail-not-found/web-dark-1280.png"
       ],
-      "activatedPairCount": 0,
+      "activatedPairCount": 1,
       "activatedRejectedPairCount": 0,
       "activatedHarnessPairCount": 0,
-      "cumulativeAcceptedPairCount": 439,
+      "cumulativeAcceptedPairCount": 440,
       "cumulativeRejectedPairCount": 0,
       "rollingPairCount": 24,
-      "cumulativeStoryCount": 390,
+      "cumulativeStoryCount": 391,
       "scopeCoverage": 1,
-      "clientCompleteness": 0.7461538461538462,
+      "clientCompleteness": 0.7459252157238735,
       "visual": {
         "loss": 0.12713766464410967,
         "confidence": 1,
         "medianPercent": 1.2713766464410967,
         "sampleCount": 24,
         "rollingWindowSize": 24,
-        "activatedPairs": [],
+        "activatedPairs": [
+          {
+            "storyId": "2026-08-14--automations--create-dialog",
+            "leftClient": "web",
+            "rightClient": "lynx",
+            "left": "shots/2026-08-14/automations/create-dialog/web-dark-1280.png",
+            "right": "shots/2026-08-14/automations/create-dialog/lynx-dark-1280.png",
+            "stateKey": "dark-1280",
+            "accepted": true,
+            "maePercent": 2.179401676829268,
+            "parityPercent": 97.82059832317073,
+            "qualityBand": "close",
+            "leftImageStats": {
+              "meanLuminance": 14.050182362804884,
+              "brightFraction": 0.0005516387195121951,
+              "darkFraction": 0.9838052591463414
+            },
+            "rightImageStats": {
+              "meanLuminance": 11.552007072218087,
+              "brightFraction": 0.0015386814024390245,
+              "darkFraction": 0.9833060213414634
+            },
+            "renderedLeftTheme": "dark",
+            "renderedRightTheme": "dark",
+            "activationCommitIndex": 315
+          }
+        ],
         "activatedRejectedPairs": [],
         "activatedHarnessPairs": [],
         "previousLoss": 0.12713766464410967,
         "previousMedianPercent": 1.2713766464410967,
         "medianDelta": 0,
-        "acceptedPairCount": 439,
+        "acceptedPairCount": 440,
         "rejectedPairCount": 0,
         "acceptedPairs": [
           {
@@ -148818,6 +149075,31 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
             "activationCommitIndex": 299
           },
           {
+            "storyId": "2026-08-14--automations--create-dialog",
+            "leftClient": "web",
+            "rightClient": "lynx",
+            "left": "shots/2026-08-14/automations/create-dialog/web-dark-1280.png",
+            "right": "shots/2026-08-14/automations/create-dialog/lynx-dark-1280.png",
+            "stateKey": "dark-1280",
+            "accepted": true,
+            "maePercent": 2.179401676829268,
+            "parityPercent": 97.82059832317073,
+            "qualityBand": "close",
+            "leftImageStats": {
+              "meanLuminance": 14.050182362804884,
+              "brightFraction": 0.0005516387195121951,
+              "darkFraction": 0.9838052591463414
+            },
+            "rightImageStats": {
+              "meanLuminance": 11.552007072218087,
+              "brightFraction": 0.0015386814024390245,
+              "darkFraction": 0.9833060213414634
+            },
+            "renderedLeftTheme": "dark",
+            "renderedRightTheme": "dark",
+            "activationCommitIndex": 315
+          },
+          {
             "storyId": "2026-08-14--automations--detail",
             "leftClient": "web",
             "rightClient": "lynx",
@@ -149009,41 +149291,35 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       },
       "components": {
         "scope": 0,
-        "completeness": 0.25384615384615383,
+        "completeness": 0.2540747842761265,
         "visual": 0.12713766464410967,
         "reliability": 0.1
       },
       "componentContributions": {
-        "scope": -0.07692307692307665,
-        "completeness": 0.0057488316890424995,
+        "scope": -0.1534526854219942,
+        "completeness": 0.0114645924383594,
         "visual": 0,
         "reliability": 0
       },
       "causes": [
         {
           "component": "scope",
-          "contribution": -0.07692307692307665,
+          "contribution": -0.1534526854219942,
           "direction": "down"
         },
         {
           "component": "completeness",
-          "contribution": 0.0057488316890424995,
+          "contribution": 0.0114645924383594,
           "direction": "up"
         }
       ],
-      "regressionChanges": [
-        {
-          "type": "harness-detected",
-          "id": "native-automations-devtool-fixed-port",
-          "summary": "The exact-owned Synara Lynxtron process loaded the production bundle in a background window but could not register a DevTool client while a user-owned Lynxtron occupied the fixed localhost:8901 endpoint."
-        }
-      ],
-      "lossDelta": -0.07117424523403493,
-      "loss": 11.795972108697683,
-      "bestLoss": 11.015609130166442,
-      "smoothLoss": 11.850603988582675,
-      "commitCount": 15,
-      "newStoryCount": 6
+      "regressionChanges": [],
+      "lossDelta": -0.14198809298363457,
+      "loss": 11.801687869447,
+      "bestLoss": 11.090171396544566,
+      "smoothLoss": 11.915448015801488,
+      "commitCount": 17,
+      "newStoryCount": 7
     }
   ]
 };

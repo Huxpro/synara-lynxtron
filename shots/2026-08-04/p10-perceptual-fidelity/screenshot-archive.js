@@ -6,12 +6,12 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     "lastDay": "2026-08-14",
     "consecutiveCalendarDays": 12
   },
-  "imageCount": 1283,
-  "byteCount": 203975405,
+  "imageCount": 1285,
+  "byteCount": 204078482,
   "trackedCount": 0,
   "untrackedCount": 0,
-  "remoteCount": 1283,
-  "storyCount": 390,
+  "remoteCount": 1285,
+  "storyCount": 391,
   "stories": [
     {
       "id": "2026-08-02--harness--composer",
@@ -18122,6 +18122,42 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
       "sequence": false
     },
     {
+      "id": "2026-08-14--automations--create-dialog",
+      "day": "2026-08-14",
+      "directory": "automations/create-dialog",
+      "label": "Automations · Create Dialog",
+      "images": [
+        {
+          "day": "2026-08-14",
+          "directory": "automations/create-dialog",
+          "name": "lynx-dark-1280.png",
+          "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/automations/create-dialog/lynx-dark-1280.png",
+          "repoPath": "shots/2026-08-14/automations/create-dialog/lynx-dark-1280.png",
+          "bytes": 49534,
+          "sourceCommit": "dfa1c45f9703ed9631c34635d182a718526a906b",
+          "gitStatus": "remote",
+          "client": "lynx"
+        },
+        {
+          "day": "2026-08-14",
+          "directory": "automations/create-dialog",
+          "name": "web-dark-1280.png",
+          "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/automations/create-dialog/web-dark-1280.png",
+          "repoPath": "shots/2026-08-14/automations/create-dialog/web-dark-1280.png",
+          "bytes": 53543,
+          "sourceCommit": "dfa1c45f9703ed9631c34635d182a718526a906b",
+          "gitStatus": "remote",
+          "client": "web"
+        }
+      ],
+      "imageCount": 2,
+      "clients": [
+        "lynx",
+        "web"
+      ],
+      "sequence": false
+    },
+    {
       "id": "2026-08-14--automations--detail",
       "day": "2026-08-14",
       "directory": "automations/detail",
@@ -33890,12 +33926,38 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     },
     {
       "day": "2026-08-14",
-      "imageCount": 12,
-      "byteCount": 488657,
+      "imageCount": 14,
+      "byteCount": 591734,
       "trackedCount": 0,
       "untrackedCount": 0,
-      "remoteCount": 12,
+      "remoteCount": 14,
       "directories": [
+        {
+          "directory": "automations/create-dialog",
+          "imageCount": 2,
+          "images": [
+            {
+              "day": "2026-08-14",
+              "directory": "automations/create-dialog",
+              "name": "lynx-dark-1280.png",
+              "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/automations/create-dialog/lynx-dark-1280.png",
+              "repoPath": "shots/2026-08-14/automations/create-dialog/lynx-dark-1280.png",
+              "bytes": 49534,
+              "sourceCommit": "dfa1c45f9703ed9631c34635d182a718526a906b",
+              "gitStatus": "remote"
+            },
+            {
+              "day": "2026-08-14",
+              "directory": "automations/create-dialog",
+              "name": "web-dark-1280.png",
+              "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/automations/create-dialog/web-dark-1280.png",
+              "repoPath": "shots/2026-08-14/automations/create-dialog/web-dark-1280.png",
+              "bytes": 53543,
+              "sourceCommit": "dfa1c45f9703ed9631c34635d182a718526a906b",
+              "gitStatus": "remote"
+            }
+          ]
+        },
         {
           "directory": "automations/detail",
           "imageCount": 2,
