@@ -6,6 +6,7 @@
 - Retained comparable states:
   - empty;
   - populated list with two active daily automations.
+  - paused list with one disabled automation.
   - read-only detail with no previous runs.
   - paused detail after a real rendered Pause action.
 - Still missing and not claimed by this slice:
@@ -68,6 +69,7 @@ Final full-frame parity:
 - populated list: `98.63298312211063%`.
 - read-only detail: `98.41580160011159%`.
 - paused detail: `98.98107763430575%`.
+- paused list: `99.169299976088%`.
 
 The detail cell also matched the two `46px` headers, `704px + 320px`
 columns, prompt title geometry, and the Status group exactly. Details and
@@ -80,12 +82,14 @@ debt.
 
 ## Evidence
 
-Remote asset commits: `5341ec9`, `632a003`, and `494974b`.
+Remote asset commits: `5341ec9`, `632a003`, `494974b`, and `fcfd182`.
 
 - `shots/2026-08-14/automations/empty/web-dark-1280.png`
 - `shots/2026-08-14/automations/empty/lynx-dark-1280.png`
 - `shots/2026-08-14/automations/list/web-dark-1280.png`
 - `shots/2026-08-14/automations/list/lynx-dark-1280.png`
+- `shots/2026-08-14/automations/list-paused/web-dark-1280.png`
+- `shots/2026-08-14/automations/list-paused/lynx-dark-1280.png`
 - `shots/2026-08-14/automations/detail/web-dark-1280.png`
 - `shots/2026-08-14/automations/detail/lynx-dark-1280.png`
 - `shots/2026-08-14/automations/detail-paused/web-dark-1280.png`
