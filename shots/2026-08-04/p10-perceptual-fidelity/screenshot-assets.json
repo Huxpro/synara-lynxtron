@@ -1,8 +1,8 @@
 {
   "version": 1,
   "assetBaseUrl": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main",
-  "imageCount": 1285,
-  "byteCount": 204078482,
+  "imageCount": 1287,
+  "byteCount": 204176337,
   "images": [
     {
       "day": "2026-08-02",
@@ -10181,6 +10181,24 @@
       "repoPath": "shots/2026-08-13/temporary-chat-current/on/web.png",
       "bytes": 55273,
       "sourceCommit": "2221865a8edafda29ac62621cf2ef6b8c54e062a"
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "automations/create-dialog-expanded",
+      "name": "lynx-dark-1280.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/automations/create-dialog-expanded/lynx-dark-1280.png",
+      "repoPath": "shots/2026-08-14/automations/create-dialog-expanded/lynx-dark-1280.png",
+      "bytes": 45782,
+      "sourceCommit": "791c132ec"
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "automations/create-dialog-expanded",
+      "name": "web-dark-1280.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/automations/create-dialog-expanded/web-dark-1280.png",
+      "repoPath": "shots/2026-08-14/automations/create-dialog-expanded/web-dark-1280.png",
+      "bytes": 52073,
+      "sourceCommit": "791c132ec"
     },
     {
       "day": "2026-08-14",

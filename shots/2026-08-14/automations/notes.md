@@ -11,6 +11,7 @@
   - paused detail after a real rendered Pause action.
   - not-found detail for a stale or deleted deep link.
   - initial create dialog.
+  - expanded create dialog with schedule and worktree choices.
 - Still missing and not claimed by this slice:
   - create/edit dialog;
   - detail mutations other than pause/resume, including delete and run now;
@@ -96,6 +97,7 @@ Final full-frame parity:
 - paused list: `99.169299976088%`.
 - not-found detail: `99.43838586501674%`.
 - create dialog: `97.82059832317073%`.
+- expanded create dialog: `97.67314744241193%`.
 
 The detail cell also matched the two `46px` headers, `704px + 320px`
 columns, prompt title geometry, and the Status group exactly. Details and
@@ -112,11 +114,18 @@ Name, Prompt, Project, Cancel, and Create through canonical
 `automation.create`, but Web still exposes the full schedule, model, runtime,
 worktree, and policy form.
 
+Adding Manual/Daily/Weekdays and Auto/Worktree choices improved functional
+coverage but reduced full-frame parity from `97.82%` to `97.67%` because the
+Lynx dialog became taller without yet adopting Web's complete field layout.
+This is retained as a real residual rather than hidden by keeping only the
+better-looking earlier frame.
+
 ## Evidence
 
 Remote asset commits: `5341ec9`, `632a003`, `494974b`, and `fcfd182`.
 Not-found evidence is stored in `e6d4e29`.
 Create-dialog evidence is stored in `7a5ccbb`.
+Expanded create-dialog evidence is stored in `9b46ffd`.
 
 - `shots/2026-08-14/automations/empty/web-dark-1280.png`
 - `shots/2026-08-14/automations/empty/lynx-dark-1280.png`
@@ -132,6 +141,8 @@ Create-dialog evidence is stored in `7a5ccbb`.
 - `shots/2026-08-14/automations/detail-not-found/lynx-dark-1280.png`
 - `shots/2026-08-14/automations/create-dialog/web-dark-1280.png`
 - `shots/2026-08-14/automations/create-dialog/lynx-dark-1280.png`
+- `shots/2026-08-14/automations/create-dialog-expanded/web-dark-1280.png`
+- `shots/2026-08-14/automations/create-dialog-expanded/lynx-dark-1280.png`
 
 ## Gates
 

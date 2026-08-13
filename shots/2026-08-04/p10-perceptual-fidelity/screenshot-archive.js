@@ -6,12 +6,12 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     "lastDay": "2026-08-14",
     "consecutiveCalendarDays": 12
   },
-  "imageCount": 1285,
-  "byteCount": 204078482,
+  "imageCount": 1287,
+  "byteCount": 204176337,
   "trackedCount": 0,
   "untrackedCount": 0,
-  "remoteCount": 1285,
-  "storyCount": 391,
+  "remoteCount": 1287,
+  "storyCount": 392,
   "stories": [
     {
       "id": "2026-08-02--harness--composer",
@@ -18158,6 +18158,42 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
       "sequence": false
     },
     {
+      "id": "2026-08-14--automations--create-dialog-expanded",
+      "day": "2026-08-14",
+      "directory": "automations/create-dialog-expanded",
+      "label": "Automations · Create Dialog Expanded",
+      "images": [
+        {
+          "day": "2026-08-14",
+          "directory": "automations/create-dialog-expanded",
+          "name": "lynx-dark-1280.png",
+          "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/automations/create-dialog-expanded/lynx-dark-1280.png",
+          "repoPath": "shots/2026-08-14/automations/create-dialog-expanded/lynx-dark-1280.png",
+          "bytes": 45782,
+          "sourceCommit": "791c132ec",
+          "gitStatus": "remote",
+          "client": "lynx"
+        },
+        {
+          "day": "2026-08-14",
+          "directory": "automations/create-dialog-expanded",
+          "name": "web-dark-1280.png",
+          "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/automations/create-dialog-expanded/web-dark-1280.png",
+          "repoPath": "shots/2026-08-14/automations/create-dialog-expanded/web-dark-1280.png",
+          "bytes": 52073,
+          "sourceCommit": "791c132ec",
+          "gitStatus": "remote",
+          "client": "web"
+        }
+      ],
+      "imageCount": 2,
+      "clients": [
+        "lynx",
+        "web"
+      ],
+      "sequence": false
+    },
+    {
       "id": "2026-08-14--automations--detail",
       "day": "2026-08-14",
       "directory": "automations/detail",
@@ -33926,11 +33962,11 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     },
     {
       "day": "2026-08-14",
-      "imageCount": 14,
-      "byteCount": 591734,
+      "imageCount": 16,
+      "byteCount": 689589,
       "trackedCount": 0,
       "untrackedCount": 0,
-      "remoteCount": 14,
+      "remoteCount": 16,
       "directories": [
         {
           "directory": "automations/create-dialog",
@@ -33954,6 +33990,32 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
               "repoPath": "shots/2026-08-14/automations/create-dialog/web-dark-1280.png",
               "bytes": 53543,
               "sourceCommit": "dfa1c45f9703ed9631c34635d182a718526a906b",
+              "gitStatus": "remote"
+            }
+          ]
+        },
+        {
+          "directory": "automations/create-dialog-expanded",
+          "imageCount": 2,
+          "images": [
+            {
+              "day": "2026-08-14",
+              "directory": "automations/create-dialog-expanded",
+              "name": "lynx-dark-1280.png",
+              "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/automations/create-dialog-expanded/lynx-dark-1280.png",
+              "repoPath": "shots/2026-08-14/automations/create-dialog-expanded/lynx-dark-1280.png",
+              "bytes": 45782,
+              "sourceCommit": "791c132ec",
+              "gitStatus": "remote"
+            },
+            {
+              "day": "2026-08-14",
+              "directory": "automations/create-dialog-expanded",
+              "name": "web-dark-1280.png",
+              "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/automations/create-dialog-expanded/web-dark-1280.png",
+              "repoPath": "shots/2026-08-14/automations/create-dialog-expanded/web-dark-1280.png",
+              "bytes": 52073,
+              "sourceCommit": "791c132ec",
               "gitStatus": "remote"
             }
           ]
