@@ -2,6 +2,7 @@ const ALLOWED_WEB_INITIAL_ROUTES = new Set([
   '/',
   '/automations',
   '/kanban',
+  '/plugins',
   '/pull-requests',
   '/settings',
   '/studio',

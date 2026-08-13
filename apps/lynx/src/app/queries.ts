@@ -27,6 +27,10 @@ import type {
   PullRequestSetPinnedInput,
   PullRequestSetPinnedResult,
   PullRequestState,
+  ProviderComposerCapabilities,
+  ProviderListPluginsResult,
+  ProviderListSkillsResult,
+  ServerConfig,
   ProjectListDirectoriesResult,
   ProjectReadFileResult,
   ProjectSearchEntriesResult,
@@ -208,6 +212,40 @@ export async function deleteAutomation(
     /* webpackMode: "eager" */ '../data/synaraClient'
   );
   await deleteAutomationDefinition(input);
+}
+
+export async function fetchPluginLibraryCapabilities(): Promise<ProviderComposerCapabilities> {
+  'background only';
+  const { fetchProviderComposerCapabilities } = await import(
+    /* webpackMode: "eager" */ '../data/synaraClient'
+  );
+  return fetchProviderComposerCapabilities('codex');
+}
+
+export async function fetchPluginLibraryServerConfig(): Promise<ServerConfig> {
+  'background only';
+  const { fetchServerConfig } = await import(
+    /* webpackMode: "eager" */ '../data/synaraClient'
+  );
+  return fetchServerConfig();
+}
+
+export async function fetchPluginLibraryPlugins(): Promise<ProviderListPluginsResult> {
+  'background only';
+  const { fetchProviderPlugins, fetchServerConfig } = await import(
+    /* webpackMode: "eager" */ '../data/synaraClient'
+  );
+  const config = await fetchServerConfig();
+  return fetchProviderPlugins({ provider: 'codex', cwd: config.cwd });
+}
+
+export async function fetchPluginLibrarySkills(): Promise<ProviderListSkillsResult> {
+  'background only';
+  const { fetchProviderSkills, fetchServerConfig } = await import(
+    /* webpackMode: "eager" */ '../data/synaraClient'
+  );
+  const config = await fetchServerConfig();
+  return fetchProviderSkills({ provider: 'codex', cwd: config.cwd });
 }
 
 const EXPLORER_CACHE_TTL_MS = 2_000;

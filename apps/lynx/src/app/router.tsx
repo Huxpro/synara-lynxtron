@@ -57,6 +57,7 @@ import {
   PullRequestsPage,
 } from './FeatureListsPage';
 import { AutomationsPage } from './AutomationsPage.lynx';
+import { PluginLibraryPage } from './PluginLibraryPage.lynx';
 import { Composer } from '../components/composer/Composer.lynx';
 import { Button } from '../components/ui/button';
 import { Sidebar } from '../components/sidebar/Sidebar.lynx';
@@ -172,6 +173,9 @@ function parseRoute(pathname: string): RouteState {
   }
   if (pathname === '/pull-requests') {
     return { pathname: '/pull-requests', params: {} };
+  }
+  if (pathname === '/plugins') {
+    return { pathname: '/plugins', params: {} };
   }
   if (pathname === '/automations') {
     return { pathname: '/automations', params: {} };
@@ -1282,6 +1286,8 @@ export function SliceRouter({
     );
   } else if (route.pathname === '/pull-requests') {
     page = <PullRequestsPage />;
+  } else if (route.pathname === '/plugins') {
+    page = <PluginLibraryPage />;
   } else if (route.pathname === '/automations') {
     page = <AutomationsPage navigate={(to) => history.push(to)} />;
   } else if (route.pathname === '/automations/$automationId') {

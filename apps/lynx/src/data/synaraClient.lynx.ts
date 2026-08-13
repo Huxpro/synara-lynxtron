@@ -53,6 +53,8 @@ import type {
   ProfileTokenStats,
   ProviderKind,
   ProviderComposerCapabilities,
+  ProviderListPluginsInput,
+  ProviderListPluginsResult,
   ProviderListModelsResult,
   ProviderListSkillsResult,
   ProviderSkillsCatalogResult,
@@ -434,6 +436,15 @@ export async function fetchProviderSkills(input: {
   readonly threadId?: string;
 }): Promise<ProviderListSkillsResult> {
   return transportRequest('provider.listSkills', input);
+}
+
+export async function fetchProviderPlugins(
+  input: ProviderListPluginsInput
+): Promise<ProviderListPluginsResult> {
+  return transportRequest<ProviderListPluginsResult>(
+    'provider.listPlugins',
+    input
+  );
 }
 
 export async function fetchSkillsCatalog(): Promise<ProviderSkillsCatalogResult> {

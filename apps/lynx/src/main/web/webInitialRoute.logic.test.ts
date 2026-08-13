@@ -11,6 +11,7 @@ describe('Lynx-for-Web initial route harness', () => {
     expect(resolveWebInitialRoute('?route=%2Fautomations')).toBe(
       '/automations'
     );
+    expect(resolveWebInitialRoute('?route=%2Fplugins')).toBe('/plugins');
     expect(
       resolveWebInitialRoute('?route=%2Fautomations%2Fautomation%253A1')
     ).toBe('/automations/automation%3A1');
