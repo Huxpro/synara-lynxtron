@@ -71,10 +71,17 @@ describe('Lynx Automations route', () => {
     expect(detailSource).toContain('No runs yet.');
     expect(detailSource).toContain("'Pause' : 'Resume'");
     expect(pageSource).toContain('mutationFn: updateAutomation');
+    expect(pageSource).toContain('mutationFn: deleteAutomation');
     expect(pageSource).toContain(
       "invalidateQueries({ queryKey: ['automations'] })"
     );
+    expect(detailSource).toContain("'background only'");
+    expect(detailSource).toContain('return dialogs.confirm(');
+    expect(detailSource).toContain('confirmAutomationDelete(definition.name)');
+    expect(detailSource).toContain('if (confirmed) onDelete(definition)');
+    expect(pageSource).toContain("navigate('/automations')");
     expect(detailSource).not.toContain('automation.update');
+    expect(detailSource).not.toContain('automation.delete');
     expect(detailSource).not.toContain('automation.runNow');
   });
 });

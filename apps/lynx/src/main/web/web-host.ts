@@ -755,6 +755,11 @@ async function handleBridgeCall(
         input.click();
       });
     }
+    if (method === 'dialogsConfirm') {
+      return {
+        confirmed: globalThis.confirm(String(params.message ?? '')),
+      };
+    }
     if (method === 'dialogsSaveProfileShareCard') {
       const blob = await renderSvgToPngBlob(String(params.svg ?? ''));
       const url = URL.createObjectURL(blob);

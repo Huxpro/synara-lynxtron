@@ -12,6 +12,14 @@ import {
 import { Button } from '../components/ui/button';
 import { ChevronRightIcon } from '../lib/icons';
 
+async function confirmAutomationDelete(name: string): Promise<boolean> {
+  'background only';
+  const { dialogs } = await import(
+    /* webpackMode: "eager" */ '../platform/dialogs'
+  );
+  return dialogs.confirm(`Delete "${name}"?`);
+}
+
 function DetailGroup({
   title,
   children,
@@ -58,6 +66,9 @@ export function AutomationDetailPage({
   runs,
   projects,
   threads,
+  deleteError,
+  deletePending,
+  onDelete,
   updateError,
   updatePending,
   onToggleEnabled,
@@ -68,6 +79,9 @@ export function AutomationDetailPage({
   readonly runs: readonly AutomationRun[];
   readonly projects: readonly AutomationListProject[];
   readonly threads: readonly AutomationListThread[];
+  readonly deleteError: string | null;
+  readonly deletePending: boolean;
+  readonly onDelete: (definition: AutomationDefinition) => void;
   readonly updateError: string | null;
   readonly updatePending: boolean;
   readonly onToggleEnabled: (definition: AutomationDefinition) => void;
@@ -139,6 +153,18 @@ export function AutomationDetailPage({
       </view>
       <view className="AutomationDetailAside">
         <view className="AutomationDetailActionsHeader AppWindowDragRegion">
+          <Button
+            variant="ghost"
+            size="sm"
+            disabled={deletePending || updatePending}
+            aria-label="Delete"
+            onClick={async () => {
+              const confirmed = await confirmAutomationDelete(definition.name);
+              if (confirmed) onDelete(definition);
+            }}
+          >
+            {deletePending ? 'Deleting...' : 'Delete'}
+          </Button>
           {definition.schedule.type === 'once' ? null : (
             <Button
               variant="ghost"
@@ -162,15 +188,17 @@ export function AutomationDetailPage({
           scroll-orientation="vertical"
         >
           <view className="AutomationDetailAsideContent">
-            {updateError ? (
+            {updateError || deleteError ? (
               <view
                 className="AutomationDetailUpdateError"
                 accessibility-element={true}
-                accessibility-label={`Automation update failed. ${updateError}`}
+                accessibility-label={`Automation action failed. ${
+                  updateError ?? deleteError
+                }`}
                 accessibility-traits="text"
               >
                 <text className="AutomationDetailUpdateErrorText">
-                  Automation update failed. {updateError}
+                  Automation action failed. {updateError ?? deleteError}
                 </text>
               </view>
             ) : null}

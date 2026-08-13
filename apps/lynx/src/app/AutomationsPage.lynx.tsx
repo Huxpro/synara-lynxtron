@@ -8,6 +8,7 @@ import { RefreshCwIcon } from '../lib/icons';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { sleepOnHost } from '../platform/timer';
 import {
+  deleteAutomation,
   fetchAutomations,
   fetchSidebarSnapshot,
   queryClient,
@@ -148,6 +149,13 @@ export function AutomationsPage({
       await queryClient.invalidateQueries({ queryKey: ['automations'] });
     },
   });
+  const deleteMutation = useMutation({
+    mutationFn: deleteAutomation,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['automations'] });
+      navigate('/automations');
+    },
+  });
   useHostPolling(automations.refetch, 5_000);
   const projection = useMemo(
     () =>
@@ -211,6 +219,17 @@ export function AutomationsPage({
               : null
         }
         updatePending={updateMutation.isPending}
+        deleteError={
+          deleteMutation.error instanceof Error
+            ? deleteMutation.error.message
+            : deleteMutation.error
+              ? String(deleteMutation.error)
+              : null
+        }
+        deletePending={deleteMutation.isPending}
+        onDelete={(definition) =>
+          deleteMutation.mutate({ id: definition.id })
+        }
         onToggleEnabled={(definition) =>
           updateMutation.mutate({
             id: definition.id,

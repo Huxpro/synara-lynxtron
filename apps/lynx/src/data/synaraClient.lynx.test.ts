@@ -71,4 +71,17 @@ describe('Lynx Synara relay state', () => {
       "'Git action stream completed without a final result'"
     );
   });
+
+  it('uses canonical automation mutation tags', () => {
+    const source = readFileSync(
+      new URL('./synaraClient.lynx.ts', import.meta.url),
+      'utf8'
+    );
+    expect(source).toContain(
+      "transportRequest<AutomationDefinition>('automation.update', input)"
+    );
+    expect(source).toContain(
+      "transportRequest('automation.delete', input)"
+    );
+  });
 });

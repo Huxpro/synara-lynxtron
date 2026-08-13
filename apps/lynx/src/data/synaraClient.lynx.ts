@@ -3,6 +3,7 @@ import 'background-only';
 import type {
   AutomationListResult,
   AutomationDefinition,
+  AutomationDeleteInput,
   AutomationUpdateInput,
   ClientOrchestrationCommand,
   FilesystemBrowseInput,
@@ -365,6 +366,12 @@ export async function updateAutomation(
   input: AutomationUpdateInput
 ): Promise<AutomationDefinition> {
   return transportRequest<AutomationDefinition>('automation.update', input);
+}
+
+export async function deleteAutomation(
+  input: AutomationDeleteInput
+): Promise<void> {
+  await transportRequest('automation.delete', input);
 }
 
 export async function fetchSynaraThreadDetailSnapshot(

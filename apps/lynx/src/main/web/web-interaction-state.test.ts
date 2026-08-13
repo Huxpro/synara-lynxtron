@@ -579,3 +579,22 @@ describe('Lynx-for-Web interaction state bridge', () => {
     expect(control.classList.contains('ui-focus')).toBe(true);
   });
 });
+
+describe('Lynx-for-Web dialog bridge', () => {
+  it('keeps confirmation handling in the Web-only host', () => {
+    const hostSource = readFileSync(
+      new URL('./web-host.ts', import.meta.url),
+      'utf8'
+    );
+    const desktopSource = readFileSync(
+      new URL('../desktop/main.ts', import.meta.url),
+      'utf8'
+    );
+
+    expect(hostSource).toContain("if (method === 'dialogsConfirm')");
+    expect(hostSource).toContain(
+      "confirmed: globalThis.confirm(String(params.message ?? ''))"
+    );
+    expect(desktopSource).not.toContain('globalThis.confirm');
+  });
+});
