@@ -230,10 +230,17 @@ export function projectAutomationList(input: {
     });
   const triage = triageRows(input.data.runs.filter(isAutomationTriageRun));
 
+  const current: AutomationDefinitionRow[] = [];
+  const paused: AutomationDefinitionRow[] = [];
+  for (const definition of input.data.definitions) {
+    const row = definitionRow(definition);
+    (definition.enabled ? current : paused).push(row);
+  }
+
   return {
     allTriage: triageRows(input.data.runs.filter(isVisibleAutomationTriageRun)),
-    current: input.data.definitions.filter((definition) => definition.enabled).map(definitionRow),
-    paused: input.data.definitions.filter((definition) => !definition.enabled).map(definitionRow),
+    current,
+    paused,
     triage,
     unreadTriageCount: triage.length,
   };

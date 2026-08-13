@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from '@lynx-js/react';
+import { useEffect, useMemo, useRef } from '@lynx-js/react';
 import { useQuery } from '@tanstack/react-query';
 import type { AutomationDefinitionRow, AutomationTriageRow } from '@synara/shared/automationList';
 import { projectAutomationList } from '@synara/shared/automationList';
@@ -9,6 +9,25 @@ import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { sleepOnHost } from '../platform/timer';
 import { fetchAutomations, fetchSidebarSnapshot } from './queries';
 import './automations-page.css';
+
+function useHostPolling(poll: () => Promise<unknown>, delayMs: number): void {
+  const pollRef = useRef(poll);
+  pollRef.current = poll;
+  useEffect(() => {
+    'background only';
+    let cancelled = false;
+    const schedule = () => {
+      void sleepOnHost(delayMs).then(() => {
+        if (cancelled) return;
+        void pollRef.current().finally(schedule);
+      });
+    };
+    schedule();
+    return () => {
+      cancelled = true;
+    };
+  }, [delayMs]);
+}
 
 function AutomationStatusDot({
   tone,
@@ -125,21 +144,7 @@ export function AutomationsPage({
     queryKey: ['sidebar-snapshot'],
     queryFn: fetchSidebarSnapshot,
   });
-  useEffect(() => {
-    'background only';
-    let cancelled = false;
-    async function pollAutomations() {
-      while (!cancelled) {
-        await sleepOnHost(5_000);
-        if (cancelled) return;
-        await automations.refetch();
-      }
-    }
-    void pollAutomations();
-    return () => {
-      cancelled = true;
-    };
-  }, [automations.refetch]);
+  useHostPolling(automations.refetch, 5_000);
   const projection = useMemo(
     () =>
       automations.data

@@ -1,6 +1,6 @@
 import { type AutomationDefinition } from "@synara/contracts";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useMemo, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import {
   projectAutomationList,
   type AutomationDefinitionRow,
@@ -206,18 +206,14 @@ function AutomationsRouteView() {
     deleteMutation.mutate(definition);
   };
 
-  const projection = useMemo(
-    () =>
-      projectAutomationList({
-        data,
-        projects: projects.map((project) => ({ id: project.id, name: project.name })),
-        threads: threads.map((thread) => ({
-          id: thread.id,
-          title: resolveThreadPickerTitle(thread.title),
-        })),
-      }),
-    [data, projects, threads],
-  );
+  const projection = projectAutomationList({
+    data,
+    projects: projects.map((project) => ({ id: project.id, name: project.name })),
+    threads: threads.map((thread) => ({
+      id: thread.id,
+      title: resolveThreadPickerTitle(thread.title),
+    })),
+  });
   const triageRows = triageFilter === "unread" ? projection.triage : projection.allTriage;
 
   const renderRow = (row: AutomationDefinitionRow) => {

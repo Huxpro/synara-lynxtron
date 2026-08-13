@@ -18,8 +18,9 @@ describe('Lynx Automations route', () => {
 
     expect(pageSource).toContain("queryKey: ['automations']");
     expect(pageSource).toContain('projectAutomationList({');
-    expect(pageSource).toContain('await sleepOnHost(5_000)');
-    expect(pageSource).toContain('await automations.refetch()');
+    expect(pageSource).toContain('useHostPolling(automations.refetch, 5_000)');
+    expect(pageSource).toContain('void sleepOnHost(delayMs).then(');
+    expect(pageSource).toContain('void pollRef.current().finally(schedule)');
     expect(pageSource).not.toContain('refetchInterval: 5_000');
     expect(queriesSource).toContain("'background only'");
     expect(queriesSource).toContain('fetchAutomationList()');
