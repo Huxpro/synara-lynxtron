@@ -53,3 +53,34 @@
 - Net tracked loss is unchanged by reclassification: the real reload loss is
   closed, while the previously masked pointer-to-`bindtap` gap is explicitly
   carried forward.
+
+## Pointer-to-`bindtap` root-cause evidence
+
+- A trusted browser activation reached the Files `x-view` as the complete
+  `pointerdown -> mousedown -> pointerup -> mouseup -> click` sequence.
+- The Web Core root `ShadowRoot` had the expected passive capture `click`
+  listener. Its implementation translated DOM `click` to Lynx `tap` and called
+  `wasmContext.common_event_handler(...)`.
+- The clicked SVG, Files control, header, page, shell, and root all had valid
+  Lynx `Symbol(uniqueId)` values, so the bubble path was complete.
+- Despite those prerequisites, the Files control, Automations sidebar action,
+  and other controls did not invoke their ReactLynx handlers.
+- The following application-side hypotheses were tested and rejected:
+  - dynamic spread `bindtap`;
+  - explicit static `bindtap` with a `'background only'` handler;
+  - explicit React `onClick`;
+  - explicit `main-thread:bindtap`;
+  - `main-thread:bindtap` followed by `runOnBackground`;
+  - `lynxView.sendGlobalEvent`;
+  - `lynxView.updateData`;
+  - `lynxView.updateGlobalProps` plus `useGlobalPropsChanged`;
+  - a coordinated trial upgrade to ReactLynx `0.123.3`,
+    `react-rsbuild-plugin` `0.18.3`, and Web Core `0.24.0` with builtin
+    attribute transformation enabled.
+- Main-thread event trials on Web Core `0.24.0` produced repeated
+  `recursive use of an object detected which would lead to unsafe aliasing in rust`
+  errors and did not invoke the handler.
+- The remaining fault boundary is therefore the Web Core WASM event-handler
+  registration/lookup table, after DOM capture and before the ReactLynx
+  callback. No local product workaround is retained because every tested
+  transport either failed to deliver state or destabilized renderer startup.
