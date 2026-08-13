@@ -67,6 +67,8 @@ describe('Lynx Automations route', () => {
     expect(pageSource).toContain('<AutomationDetailPage');
     expect(detailSource).toContain('projectAutomationDetail({');
     expect(detailSource).toContain('Automation not found.');
+    expect(detailSource).toContain('AutomationDetailNotFoundHeader');
+    expect(detailSource).toContain('Back to automations');
     expect(detailSource).toContain('Previous runs');
     expect(detailSource).toContain('No runs yet.');
     expect(detailSource).toContain("'Pause' : 'Resume'");

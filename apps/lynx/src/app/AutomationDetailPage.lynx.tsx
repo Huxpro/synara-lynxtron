@@ -91,17 +91,24 @@ export function AutomationDetailPage({
     definitions.find((candidate) => candidate.id === automationId) ?? null;
   if (!definition) {
     return (
-      <view className="AutomationDetailNotFound">
-        <text className="AutomationDetailNotFoundText">
-          Automation not found.
-        </text>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => navigate('/automations')}
-        >
-          Back to automations
-        </Button>
+      <view className="AutomationDetailNotFoundPage">
+        <view className="AutomationDetailNotFoundHeader AppWindowDragRegion">
+          <text className="AutomationDetailNotFoundHeaderTitle">
+            Automations
+          </text>
+        </view>
+        <view className="AutomationDetailNotFound">
+          <text className="AutomationDetailNotFoundText">
+            Automation not found.
+          </text>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigate('/automations')}
+          >
+            Back to automations
+          </Button>
+        </view>
       </view>
     );
   }
