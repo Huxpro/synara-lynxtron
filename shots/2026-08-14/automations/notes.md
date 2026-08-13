@@ -6,10 +6,12 @@
 - Retained comparable states:
   - empty;
   - populated list with two active daily automations.
+  - read-only detail with no previous runs.
 - Still missing and not claimed by this slice:
   - create/edit dialog;
-  - automation detail;
-  - paused and needs-review visual cells;
+  - detail mutations such as pause, delete, and run now;
+  - detail with previous runs;
+  - paused and needs-review list visual cells;
   - Native certification.
 
 ## Shared data and capture identity
@@ -51,6 +53,12 @@ Final full-frame parity:
 
 - empty: `98.7281760620915%`;
 - populated list: `98.63298312211063%`.
+- read-only detail: `98.41580160011159%`.
+
+The detail cell also matched the two `46px` headers, `704px + 320px`
+columns, prompt title geometry, and the Status group exactly. Details and
+Previous runs differed by at most `1px` vertically after the Web schedule
+anatomy and timestamp copy moved into the shared projection.
 
 The remaining pixel distance is accepted close rendering noise, not a P0/P1
 product loss. The missing detail/create/Native cells remain explicit coverage
@@ -58,12 +66,14 @@ debt.
 
 ## Evidence
 
-Remote asset commit: `5341ec9`
+Remote asset commits: `5341ec9`, `632a003`
 
 - `shots/2026-08-14/automations/empty/web-dark-1280.png`
 - `shots/2026-08-14/automations/empty/lynx-dark-1280.png`
 - `shots/2026-08-14/automations/list/web-dark-1280.png`
 - `shots/2026-08-14/automations/list/lynx-dark-1280.png`
+- `shots/2026-08-14/automations/detail/web-dark-1280.png`
+- `shots/2026-08-14/automations/detail/lynx-dark-1280.png`
 
 ## Gates
 
