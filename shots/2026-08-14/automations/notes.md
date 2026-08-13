@@ -42,6 +42,16 @@
   create without reload.
 - The hardened scheduler was separately reverified from zero to one row without
   reload after React Doctor review.
+- Pause/resume was exercised through the rendered Lynx detail button and
+  canonical `automation.update`: Active → Paused → Active, with no reload and
+  no product console error.
+- Delete was exercised through the rendered Lynx detail button. The Web-only
+  harness now exposes the same confirm contract as Native:
+  - Cancel preserved the detail and definition.
+  - Confirm dispatched canonical `automation.delete`, navigated to the list,
+    and rendered `No automations yet`.
+- The confirm dialog is harness/platform UI rather than a product screen, so
+  this behavior proof does not add or score a screenshot story.
 
 ## Geometry and visual classification
 
@@ -86,6 +96,8 @@ Remote asset commits: `5341ec9`, `632a003`, and `494974b`.
 - Shared projection tests: 2/2.
 - Lynx focused tests: 8/8 in the final grouped run.
 - Full workspace production build: 6/6.
+- Delete focused tests: 19/19 for the combined detail and Web-host dialog
+  contracts.
 - Web and Lynx slice production builds passed after React Doctor fixes.
 - React Doctor new warnings were reduced from six to one; the remaining
   `prefer-useReducer` warning is the pre-existing state shape of the Web
