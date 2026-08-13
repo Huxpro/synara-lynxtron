@@ -6,7 +6,7 @@
     "lastDay": "2026-08-14",
     "finalStoryCount": 390,
     "finalImageCount": 1283,
-    "evidenceCommitCount": 312
+    "evidenceCommitCount": 314
   },
   "formula": {
     "expression": "100 × (0.30 × scopeGap + 0.25 × clientGap + 0.35 × visualDistance + 0.10 × reliabilityDebt)",
@@ -519,6 +519,32 @@
         "timestamp": "2026-08-14T00:18:30+08:00",
         "date": "2026-08-14",
         "subject": "Fix Lynx thread sidebar bootstrap"
+      },
+      "resolvedMetadata": [],
+      "resolutionEvidence": {
+        "pairCount": 0,
+        "minimumParityPercent": null,
+        "medianParityPercent": null,
+        "maximumParityPercent": null,
+        "pairs": []
+      }
+    },
+    {
+      "id": "native-automations-devtool-fixed-port",
+      "type": "native-certification-harness-blocker",
+      "detectedAt": "06cbda876",
+      "affectedStoryPrefix": "2026-08-14--automations--",
+      "summary": "The exact-owned Synara Lynxtron process loaded the production bundle in a background window but could not register a DevTool client while a user-owned Lynxtron occupied the fixed localhost:8901 endpoint.",
+      "severityPoints": 0,
+      "resolvedBy": [],
+      "resolution": "Unresolved harness-only ownership boundary; the user-owned @t3tools/lynxtron client was not stopped, and Native Automations certification remains missing coverage.",
+      "resolutionStoryPrefixes": [],
+      "detectedMetadata": {
+        "hash": "06cbda8768489cd171b94d46fbc61ee89b9549ed",
+        "shortHash": "06cbda876",
+        "timestamp": "2026-08-14T02:49:45+08:00",
+        "date": "2026-08-14",
+        "subject": "Route Automations deep links in Native"
       },
       "resolvedMetadata": [],
       "resolutionEvidence": {
@@ -44375,6 +44401,177 @@
         "remoteEvidenceOnly": true
       },
       "evidenceFileCount": 2,
+      "addedStoryIds": [],
+      "addedImages": [],
+      "activatedPairCount": 0,
+      "activatedRejectedPairCount": 0,
+      "activatedHarnessPairCount": 0,
+      "cumulativeAcceptedPairCount": 439,
+      "cumulativeRejectedPairCount": 0,
+      "rollingPairCount": 24,
+      "cumulativeStoryCount": 389,
+      "scopeCoverage": 0.9974358974358974,
+      "clientCompleteness": 0.7463837994214079,
+      "visual": {
+        "loss": 0.12713766464410967,
+        "confidence": 1,
+        "medianPercent": 1.2713766464410967,
+        "sampleCount": 24,
+        "rollingWindowSize": 24,
+        "activatedPairs": [],
+        "activatedRejectedPairs": [],
+        "activatedHarnessPairs": [],
+        "previousLoss": 0.12713766464410967,
+        "previousMedianPercent": 1.2713766464410967,
+        "medianDelta": 0
+      },
+      "reliability": {
+        "loss": 0.1,
+        "activeEvents": [
+          {
+            "id": "viewport-state-fanout",
+            "severityPoints": 1,
+            "introduced": "664d8063e",
+            "fixed": null,
+            "summary": "Viewport hydration race and duplicated resize subscriptions"
+          }
+        ],
+        "activeHarnessIssues": [
+          {
+            "id": "lynx-web-sidebar-row-bindtap-automation",
+            "type": "interaction-harness-boundary",
+            "detectedAt": "2f118bc49",
+            "affectedStoryPrefix": "2026-08-13--temporary-chat-current--",
+            "summary": "The visible Lynx-for-Web sidebar row does not activate through agent-browser click, pointer, keyboard, or synthetic tap paths, blocking retained Temporary cleanup UI evidence.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Unresolved harness-only automation boundary; it does not count as product visual or reliability loss.",
+            "resolutionStoryPrefixes": []
+          }
+        ],
+        "points": 1
+      },
+      "components": {
+        "scope": 0.002564102564102555,
+        "completeness": 0.25361620057859213,
+        "visual": 0.12713766464410967,
+        "reliability": 0.1
+      },
+      "componentContributions": {
+        "scope": 0,
+        "completeness": 0,
+        "visual": 0,
+        "reliability": 0
+      },
+      "causes": [],
+      "regressionChanges": [],
+      "lossDelta": 0,
+      "loss": 11.867146353931718,
+      "bestLoss": 11.015609130166442,
+      "smoothLoss": 11.861597571648971
+    },
+    {
+      "index": 312,
+      "day": "2026-08-14",
+      "timestamp": "2026-08-14T02:39:03+08:00",
+      "commit": {
+        "hash": "d8f0eca1241fc023a0467c767db61636bcb09d19",
+        "shortHash": "d8f0eca12",
+        "timestamp": "2026-08-14T02:39:03+08:00",
+        "date": "2026-08-14",
+        "subject": "Record Automations not-found fidelity",
+        "files": [
+          "shots/2026-08-04/p10-perceptual-fidelity/fidelity-loss.js",
+          "shots/2026-08-04/p10-perceptual-fidelity/fidelity-loss.json",
+          "shots/2026-08-04/p10-perceptual-fidelity/screenshot-archive.js",
+          "shots/2026-08-04/p10-perceptual-fidelity/screenshot-assets.json",
+          "shots/2026-08-14/automations/notes.md"
+        ]
+      },
+      "evidenceFileCount": 5,
+      "addedStoryIds": [],
+      "addedImages": [],
+      "activatedPairCount": 0,
+      "activatedRejectedPairCount": 0,
+      "activatedHarnessPairCount": 0,
+      "cumulativeAcceptedPairCount": 439,
+      "cumulativeRejectedPairCount": 0,
+      "rollingPairCount": 24,
+      "cumulativeStoryCount": 389,
+      "scopeCoverage": 0.9974358974358974,
+      "clientCompleteness": 0.7463837994214079,
+      "visual": {
+        "loss": 0.12713766464410967,
+        "confidence": 1,
+        "medianPercent": 1.2713766464410967,
+        "sampleCount": 24,
+        "rollingWindowSize": 24,
+        "activatedPairs": [],
+        "activatedRejectedPairs": [],
+        "activatedHarnessPairs": [],
+        "previousLoss": 0.12713766464410967,
+        "previousMedianPercent": 1.2713766464410967,
+        "medianDelta": 0
+      },
+      "reliability": {
+        "loss": 0.1,
+        "activeEvents": [
+          {
+            "id": "viewport-state-fanout",
+            "severityPoints": 1,
+            "introduced": "664d8063e",
+            "fixed": null,
+            "summary": "Viewport hydration race and duplicated resize subscriptions"
+          }
+        ],
+        "activeHarnessIssues": [
+          {
+            "id": "lynx-web-sidebar-row-bindtap-automation",
+            "type": "interaction-harness-boundary",
+            "detectedAt": "2f118bc49",
+            "affectedStoryPrefix": "2026-08-13--temporary-chat-current--",
+            "summary": "The visible Lynx-for-Web sidebar row does not activate through agent-browser click, pointer, keyboard, or synthetic tap paths, blocking retained Temporary cleanup UI evidence.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Unresolved harness-only automation boundary; it does not count as product visual or reliability loss.",
+            "resolutionStoryPrefixes": []
+          }
+        ],
+        "points": 1
+      },
+      "components": {
+        "scope": 0.002564102564102555,
+        "completeness": 0.25361620057859213,
+        "visual": 0.12713766464410967,
+        "reliability": 0.1
+      },
+      "componentContributions": {
+        "scope": 0,
+        "completeness": 0,
+        "visual": 0,
+        "reliability": 0
+      },
+      "causes": [],
+      "regressionChanges": [],
+      "lossDelta": 0,
+      "loss": 11.867146353931718,
+      "bestLoss": 11.015609130166442,
+      "smoothLoss": 11.862596352459867
+    },
+    {
+      "index": 313,
+      "day": "2026-08-14",
+      "timestamp": "2026-08-14T02:49:45+08:00",
+      "commit": {
+        "hash": "06cbda8768489cd171b94d46fbc61ee89b9549ed",
+        "shortHash": "06cbda876",
+        "timestamp": "2026-08-14T02:49:45+08:00",
+        "date": "2026-08-14",
+        "subject": "Route Automations deep links in Native",
+        "files": [],
+        "harnessOnly": true
+      },
+      "evidenceFileCount": 0,
       "addedStoryIds": [
         "2026-08-14--automations--detail-not-found"
       ],
@@ -44426,6 +44623,17 @@
             "resolvedBy": [],
             "resolution": "Unresolved harness-only automation boundary; it does not count as product visual or reliability loss.",
             "resolutionStoryPrefixes": []
+          },
+          {
+            "id": "native-automations-devtool-fixed-port",
+            "type": "native-certification-harness-blocker",
+            "detectedAt": "06cbda876",
+            "affectedStoryPrefix": "2026-08-14--automations--",
+            "summary": "The exact-owned Synara Lynxtron process loaded the production bundle in a background window but could not register a DevTool client while a user-owned Lynxtron occupied the fixed localhost:8901 endpoint.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Unresolved harness-only ownership boundary; the user-owned @t3tools/lynxtron client was not stopped, and Native Automations certification remains missing coverage.",
+            "resolutionStoryPrefixes": []
           }
         ],
         "points": 1
@@ -44454,11 +44662,17 @@
           "direction": "up"
         }
       ],
-      "regressionChanges": [],
+      "regressionChanges": [
+        {
+          "type": "harness-detected",
+          "id": "native-automations-devtool-fixed-port",
+          "summary": "The exact-owned Synara Lynxtron process loaded the production bundle in a background window but could not register a DevTool client while a user-owned Lynxtron occupied the fixed localhost:8901 endpoint."
+        }
+      ],
       "lossDelta": -0.07117424523403493,
       "loss": 11.795972108697683,
       "bestLoss": 11.015609130166442,
-      "smoothLoss": 11.848786207506844
+      "smoothLoss": 11.850603988582675
     }
   ],
   "riseAnalysis": [
@@ -48653,8 +48867,8 @@
     {
       "day": "2026-08-14",
       "firstCommitIndex": 301,
-      "lastCommitIndex": 311,
-      "commitCount": 11,
+      "lastCommitIndex": 313,
+      "commitCount": 13,
       "openingLoss": 12.217969816900242,
       "closingLoss": 11.795972108697683,
       "netLossDelta": -0.421997708202559,
@@ -48679,7 +48893,9 @@
         308,
         309,
         310,
-        311
+        311,
+        312,
+        313
       ]
     }
   ],
@@ -137732,22 +137948,19 @@
       "newStoryCount": 5
     },
     {
-      "index": 311,
+      "index": 313,
       "day": "2026-08-14",
-      "timestamp": "2026-08-14T02:30:09+08:00",
+      "timestamp": "2026-08-14T02:49:45+08:00",
       "commit": {
-        "hash": "64f800afc86913d4cfe3b1ce0e24c70206e62e23",
-        "shortHash": "64f800afc",
-        "timestamp": "2026-08-14T02:30:09+08:00",
+        "hash": "06cbda8768489cd171b94d46fbc61ee89b9549ed",
+        "shortHash": "06cbda876",
+        "timestamp": "2026-08-14T02:49:45+08:00",
         "date": "2026-08-14",
-        "subject": "Align Automations not-found detail",
-        "files": [
-          "shots/2026-08-14/automations/detail-not-found/lynx-dark-1280.png",
-          "shots/2026-08-14/automations/detail-not-found/web-dark-1280.png"
-        ],
-        "remoteEvidenceOnly": true
+        "subject": "Route Automations deep links in Native",
+        "files": [],
+        "harnessOnly": true
       },
-      "evidenceFileCount": 2,
+      "evidenceFileCount": 0,
       "addedStoryIds": [
         "2026-08-14--automations--detail-not-found"
       ],
@@ -148779,6 +148992,17 @@
             "resolvedBy": [],
             "resolution": "Unresolved harness-only automation boundary; it does not count as product visual or reliability loss.",
             "resolutionStoryPrefixes": []
+          },
+          {
+            "id": "native-automations-devtool-fixed-port",
+            "type": "native-certification-harness-blocker",
+            "detectedAt": "06cbda876",
+            "affectedStoryPrefix": "2026-08-14--automations--",
+            "summary": "The exact-owned Synara Lynxtron process loaded the production bundle in a background window but could not register a DevTool client while a user-owned Lynxtron occupied the fixed localhost:8901 endpoint.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Unresolved harness-only ownership boundary; the user-owned @t3tools/lynxtron client was not stopped, and Native Automations certification remains missing coverage.",
+            "resolutionStoryPrefixes": []
           }
         ],
         "points": 1
@@ -148807,12 +149031,18 @@
           "direction": "up"
         }
       ],
-      "regressionChanges": [],
+      "regressionChanges": [
+        {
+          "type": "harness-detected",
+          "id": "native-automations-devtool-fixed-port",
+          "summary": "The exact-owned Synara Lynxtron process loaded the production bundle in a background window but could not register a DevTool client while a user-owned Lynxtron occupied the fixed localhost:8901 endpoint."
+        }
+      ],
       "lossDelta": -0.07117424523403493,
       "loss": 11.795972108697683,
       "bestLoss": 11.015609130166442,
-      "smoothLoss": 11.848786207506844,
-      "commitCount": 13,
+      "smoothLoss": 11.850603988582675,
+      "commitCount": 15,
       "newStoryCount": 6
     }
   ]

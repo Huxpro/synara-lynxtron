@@ -55,6 +55,28 @@
 - The confirm dialog is harness/platform UI rather than a product screen, so
   this behavior proof does not add or score a screenshot story.
 
+## Native certification attempt
+
+- Production Native bundle:
+  `apps/lynx/dist/desktop/main.lynx.bundle`
+- Bundle SHA-256:
+  `069b678549a8b1c41fe5113c82934e26243623053d435ad6df774504e06841fb`
+- Exact-owned wrapper PID: `89278`
+- Exact-owned Lynxtron PID: `89291`
+- The process loaded `apps/lynx/dist/desktop`, was launched with
+  `SYNARA_WS_URL=ws://127.0.0.1:59000`, wrote an isolated `1280×820` window
+  state, and logged successful background startup. Without a DevTool client,
+  the rendered data source could not be independently certified.
+- The only DevTool client remained user-owned PID `60554`,
+  `localhost:8901`, app `@t3tools/lynxtron`, session URL under
+  `/Users/bytedance/github/t3code/`.
+- Lynxtron `0.0.9` exposes `setDevToolEnabled` and `connectDevtool`, but no
+  documented per-process listener port. The exact-owned parallel process did
+  not register while the user client occupied the fixed endpoint.
+- The user-owned process was not stopped. Native Automations evidence is
+  therefore explicitly missing coverage, not a product failure or a passing
+  certification.
+
 ## Geometry and visual classification
 
 After calibration, Web and Lynx-for-Web matched exactly for:

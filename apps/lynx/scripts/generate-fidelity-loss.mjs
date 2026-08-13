@@ -118,6 +118,19 @@ const harnessIssueLedger = [
       'Unresolved harness-only automation boundary; it does not count as product visual or reliability loss.',
     resolutionStoryPrefixes: [],
   },
+  {
+    id: 'native-automations-devtool-fixed-port',
+    type: 'native-certification-harness-blocker',
+    detectedAt: '06cbda876',
+    affectedStoryPrefix: '2026-08-14--automations--',
+    summary:
+      'The exact-owned Synara Lynxtron process loaded the production bundle in a background window but could not register a DevTool client while a user-owned Lynxtron occupied the fixed localhost:8901 endpoint.',
+    severityPoints: 0,
+    resolvedBy: [],
+    resolution:
+      'Unresolved harness-only ownership boundary; the user-owned @t3tools/lynxtron client was not stopped, and Native Automations certification remains missing coverage.',
+    resolutionStoryPrefixes: [],
+  },
 ];
 
 function parseGlobalAssignment(source) {
