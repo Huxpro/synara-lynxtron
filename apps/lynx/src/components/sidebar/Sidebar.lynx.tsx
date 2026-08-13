@@ -761,7 +761,7 @@ export function Sidebar({
             searchElementId={SEARCH_TRIGGER_ELEMENT_ID}
             kanbanActive={activePath === '/kanban'}
             pullRequestsActive={activePath === '/pull-requests'}
-            automationsActive={activePath === '/automations'}
+            automationsActive={activePath.startsWith('/automations')}
             pullRequestsBadge={pullRequestsReviewBadge}
             newThreadShortcutLabel={LYNX_PRIMARY_SHORTCUT_LABELS.newThread}
             searchShortcutLabel={LYNX_PRIMARY_SHORTCUT_LABELS.search}

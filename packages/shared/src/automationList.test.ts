@@ -5,7 +5,11 @@ import type {
 } from "@synara/contracts";
 import { describe, expect, it } from "vitest";
 
-import { projectAutomationList } from "./automationList";
+import {
+  formatAutomationRunTimestamp,
+  projectAutomationDetail,
+  projectAutomationList,
+} from "./automationList";
 
 function definition(
   overrides: Partial<AutomationDefinition> = {},
@@ -142,5 +146,58 @@ describe("automation list projection", () => {
         threads: [],
       }).current[0],
     ).toMatchObject({ meta: "Running", tone: "live" });
+  });
+
+  it("projects read-only detail status, metadata, and previous runs", () => {
+    const detail = projectAutomationDetail({
+      definition: definition({
+        maxIterations: 5,
+        modelSelection: {
+          provider: "codex",
+          model: "gpt-5.6-sol",
+          options: {},
+        },
+      }),
+      projectName: "Synara",
+      runs: [run()],
+      nowMs: Date.parse("2026-08-14T09:01:00.000Z"),
+    });
+
+    expect(detail).toMatchObject({
+      status: "Active",
+      projectName: "Synara",
+      nextRunAt: "2026-08-15T01:00:00.000Z",
+      lastRunAt: "2026-08-14T08:01:00.000Z",
+      detailRows: expect.arrayContaining([
+        { label: "Runs in", value: "Auto" },
+        { label: "Project", value: "Synara" },
+        { label: "Repeats", value: "Daily" },
+        { label: "Time", value: "9:00" },
+        { label: "Model", value: "GPT-5.6 Sol" },
+        { label: "Max iterations", value: "5" },
+      ]),
+    });
+    expect(detail.runs[0]).toMatchObject({
+      title: "Completed",
+      detail: "Found an actionable regression",
+      meta: "1h",
+    });
+  });
+
+  it("formats detail timestamps relative to the current local day", () => {
+    const now = new Date(2026, 7, 14, 12, 0, 0);
+    expect(
+      formatAutomationRunTimestamp(
+        new Date(2026, 7, 14, 9, 30, 0).toISOString(),
+        now.getTime(),
+      ),
+    ).toMatch(/^Today at /u);
+    expect(
+      formatAutomationRunTimestamp(
+        new Date(2026, 7, 15, 9, 30, 0).toISOString(),
+        now.getTime(),
+      ),
+    ).toMatch(/^Tomorrow at /u);
+    expect(formatAutomationRunTimestamp(null, now.getTime())).toBe("—");
   });
 });

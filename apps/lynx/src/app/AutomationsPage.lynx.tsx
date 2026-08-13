@@ -8,6 +8,7 @@ import { RefreshCwIcon } from '../lib/icons';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { sleepOnHost } from '../platform/timer';
 import { fetchAutomations, fetchSidebarSnapshot } from './queries';
+import { AutomationDetailPage } from './AutomationDetailPage.lynx';
 import './automations-page.css';
 
 function useHostPolling(poll: () => Promise<unknown>, delayMs: number): void {
@@ -43,21 +44,17 @@ function AutomationStatusDot({
 
 function AutomationRow({
   row,
-  onOpenThread,
+  onOpen,
 }: {
   readonly row: AutomationDefinitionRow;
-  readonly onOpenThread: (threadId: string) => void;
+  readonly onOpen: (automationId: string) => void;
 }) {
-  const threadId = row.latestRun?.threadId ?? row.definition.targetThreadId;
-  const interactive = threadId !== null;
   const interaction = useLynxInteractiveState({
-    baseClassName: `AutomationsRow${
-      interactive ? ' AutomationsRow--interactive' : ''
-    }`,
+    baseClassName: 'AutomationsRow AutomationsRow--interactive',
     accessibleLabel: `${row.definition.name}. ${row.detail}. ${row.meta}`,
     accessibilityElement: true,
-    accessibilityTraits: interactive ? 'button' : 'text',
-    onActivate: interactive ? () => onOpenThread(threadId) : undefined,
+    accessibilityTraits: 'button',
+    onActivate: () => onOpen(row.definition.id),
   });
   return (
     <view
@@ -74,23 +71,17 @@ function AutomationRow({
 
 function AutomationTriageListRow({
   row,
-  onOpenThread,
+  onOpen,
 }: {
   readonly row: AutomationTriageRow;
-  readonly onOpenThread: (threadId: string) => void;
+  readonly onOpen: (automationId: string) => void;
 }) {
-  const interactive = row.run.threadId !== null;
   const interaction = useLynxInteractiveState({
-    baseClassName: `AutomationsRow${
-      interactive ? ' AutomationsRow--interactive' : ''
-    }`,
+    baseClassName: 'AutomationsRow AutomationsRow--interactive',
     accessibleLabel: `${row.title}. ${row.detail}. ${row.meta}`,
     accessibilityElement: true,
-    accessibilityTraits: interactive ? 'button' : 'text',
-    onActivate:
-      interactive && row.run.threadId
-        ? () => onOpenThread(row.run.threadId as string)
-        : undefined,
+    accessibilityTraits: 'button',
+    onActivate: row.definition ? () => onOpen(row.definition!.id) : undefined,
   });
   return (
     <view
@@ -108,11 +99,11 @@ function AutomationTriageListRow({
 function AutomationSection({
   title,
   rows,
-  onOpenThread,
+  onOpen,
 }: {
   readonly title: string;
   readonly rows: readonly AutomationDefinitionRow[];
-  readonly onOpenThread: (threadId: string) => void;
+  readonly onOpen: (automationId: string) => void;
 }) {
   if (rows.length === 0) return null;
   return (
@@ -123,7 +114,7 @@ function AutomationSection({
           <AutomationRow
             key={row.definition.id}
             row={row}
-            onOpenThread={onOpenThread}
+            onOpen={onOpen}
           />
         ))}
       </view>
@@ -132,8 +123,10 @@ function AutomationSection({
 }
 
 export function AutomationsPage({
+  automationId = null,
   navigate,
 }: {
+  readonly automationId?: string | null;
   readonly navigate: (to: string) => void;
 }) {
   const automations = useQuery({
@@ -164,7 +157,45 @@ export function AutomationsPage({
         : null,
     [automations.data, sidebar.data]
   );
-  const openThread = (threadId: string) => navigate(`/thread/${threadId}`);
+  const openAutomation = (id: string) =>
+    navigate(`/automations/${encodeURIComponent(id)}`);
+
+  if (automationId) {
+    if (automations.isPending || sidebar.isPending) {
+      return (
+        <view
+          className="AutomationDetailNotFound"
+          accessibility-element={true}
+          accessibility-label="Loading automation"
+          accessibility-traits="updating"
+        >
+          <text className="AutomationDetailNotFoundText">
+            Loading automation...
+          </text>
+        </view>
+      );
+    }
+    return (
+      <AutomationDetailPage
+        automationId={automationId}
+        definitions={automations.data?.definitions ?? []}
+        runs={automations.data?.runs ?? []}
+        projects={
+          sidebar.data?.projects.map((project) => ({
+            id: project.id,
+            name: project.title,
+          })) ?? []
+        }
+        threads={
+          sidebar.data?.threads.map((thread) => ({
+            id: thread.id,
+            title: thread.title,
+          })) ?? []
+        }
+        navigate={navigate}
+      />
+    );
+  }
 
   return (
     <view className="AutomationsPage">
@@ -252,7 +283,7 @@ export function AutomationsPage({
                       <AutomationTriageListRow
                         key={row.run.id}
                         row={row}
-                        onOpenThread={openThread}
+                        onOpen={openAutomation}
                       />
                     ))}
                   </view>
@@ -261,12 +292,12 @@ export function AutomationsPage({
               <AutomationSection
                 title="Current"
                 rows={projection.current}
-                onOpenThread={openThread}
+                onOpen={openAutomation}
               />
               <AutomationSection
                 title="Paused"
                 rows={projection.paused}
-                onOpenThread={openThread}
+                onOpen={openAutomation}
               />
             </view>
           ) : null}

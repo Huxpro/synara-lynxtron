@@ -174,6 +174,13 @@ function parseRoute(pathname: string): RouteState {
   if (pathname === '/automations') {
     return { pathname: '/automations', params: {} };
   }
+  const automationMatch = pathname.match(/^\/automations\/([^/]+)$/);
+  if (automationMatch) {
+    return {
+      pathname: '/automations/$automationId',
+      params: { automationId: decodeURIComponent(automationMatch[1]) },
+    };
+  }
   if (pathname === '/update') {
     return { pathname: '/update', params: {} };
   }
@@ -1248,6 +1255,13 @@ export function SliceRouter({
     page = <PullRequestsPage />;
   } else if (route.pathname === '/automations') {
     page = <AutomationsPage navigate={(to) => history.push(to)} />;
+  } else if (route.pathname === '/automations/$automationId') {
+    page = (
+      <AutomationsPage
+        automationId={route.params.automationId}
+        navigate={(to) => history.push(to)}
+      />
+    );
   } else if (route.pathname === '/update') {
     page = <UpdatePage />;
   } else {

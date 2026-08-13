@@ -4,6 +4,7 @@ import type {
   AutomationRun,
   AutomationSchedule,
 } from "@synara/contracts";
+import { formatModelDisplayName } from "./model";
 
 export interface AutomationListProject {
   readonly id: string;
@@ -39,6 +40,19 @@ export interface AutomationListProjection {
   readonly unreadTriageCount: number;
 }
 
+export interface AutomationDetailProjection {
+  readonly definition: AutomationDefinition;
+  readonly detailRows: readonly {
+    readonly label: string;
+    readonly value: string;
+  }[];
+  readonly lastRunAt: string | null;
+  readonly nextRunAt: string | null;
+  readonly projectName: string;
+  readonly runs: readonly AutomationTriageRow[];
+  readonly status: "Active" | "Done" | "Paused" | "Scheduled";
+}
+
 function formatClockTime(timeOfDay: string): string {
   const [hours, minutes] = timeOfDay.split(":");
   const hour = Number.parseInt(hours ?? "", 10);
@@ -47,6 +61,49 @@ function formatClockTime(timeOfDay: string): string {
 
 function weekdayLabel(value: number): string {
   return ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][value] ?? "Sun";
+}
+
+function formatTimestampValue(value: string): string {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleString(undefined, {
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
+}
+
+function startOfLocalDay(date: Date): number {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
+}
+
+const AUTOMATION_RUN_TIME_FORMATTER = new Intl.DateTimeFormat(undefined, {
+  hour: "2-digit",
+  minute: "2-digit",
+});
+const AUTOMATION_RUN_DATE_TIME_FORMATTER = new Intl.DateTimeFormat(undefined, {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+  hour: "2-digit",
+  minute: "2-digit",
+});
+
+export function formatAutomationRunTimestamp(
+  value: string | null,
+  nowMs = Date.now(),
+): string {
+  if (!value) return "—";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  const now = new Date(nowMs);
+  const time = AUTOMATION_RUN_TIME_FORMATTER.format(date);
+  const dayDelta = Math.round(
+    (startOfLocalDay(date) - startOfLocalDay(now)) / 86_400_000,
+  );
+  if (dayDelta === 0) return `Today at ${time}`;
+  if (dayDelta === 1) return `Tomorrow at ${time}`;
+  if (dayDelta === -1) return `Yesterday at ${time}`;
+  return AUTOMATION_RUN_DATE_TIME_FORMATTER.format(date);
 }
 
 export function formatAutomationCadence(schedule: AutomationSchedule): string {
@@ -157,6 +214,154 @@ function latestRunsByAutomationId(runs: readonly AutomationRun[]): Map<string, A
     if (!existing || run.createdAt > existing.createdAt) latest.set(run.automationId, run);
   }
   return latest;
+}
+
+export function projectAutomationDetail(input: {
+  readonly definition: AutomationDefinition;
+  readonly projectName: string;
+  readonly runs: readonly AutomationRun[];
+  readonly targetThreadTitle?: string | null;
+  readonly nowMs?: number;
+}): AutomationDetailProjection {
+  const latestFinishedRun =
+    input.runs.find((run) => run.finishedAt !== null || run.startedAt !== null) ??
+    null;
+  const status =
+    input.definition.schedule.type === "once"
+      ? input.definition.enabled && input.definition.nextRunAt
+        ? "Scheduled"
+        : "Done"
+      : input.definition.enabled
+        ? "Active"
+        : "Paused";
+  const runs = input.runs
+    .toSorted((left, right) => right.updatedAt.localeCompare(left.updatedAt))
+    .map(
+      (run): AutomationTriageRow => ({
+        definition: input.definition,
+        detail: automationRunResultSummary(run),
+        meta: formatRelativeTime(
+          run.finishedAt ?? run.startedAt ?? run.scheduledFor,
+          input.nowMs ?? Date.now(),
+        ),
+        run,
+        title: automationRunStatusLabel(run.status),
+      }),
+    );
+  const scheduleRows: { readonly label: string; readonly value: string }[] =
+    input.definition.schedule.type === "manual"
+      ? [{ label: "Repeats", value: "Manual" }]
+      : input.definition.schedule.type === "once"
+        ? [
+            { label: "Repeats", value: "Once" },
+            { label: "Run at", value: formatTimestampValue(input.definition.schedule.runAt) },
+          ]
+        : input.definition.schedule.type === "interval"
+          ? [
+              {
+                label: "Repeats",
+                value:
+                  input.definition.schedule.everySeconds === 3600
+                    ? "Hourly"
+                    : "Custom",
+              },
+              ...(input.definition.schedule.everySeconds === 3600
+                ? []
+                : [
+                    {
+                      label: "Every",
+                      value: formatAutomationCadence(input.definition.schedule),
+                    },
+                  ]),
+            ]
+          : input.definition.schedule.type === "cron"
+            ? [
+                { label: "Repeats", value: "Cron" },
+                { label: "Cron", value: input.definition.schedule.expression },
+                { label: "Timezone", value: input.definition.schedule.timezone },
+              ]
+            : [
+                {
+                  label: "Repeats",
+                  value:
+                    input.definition.schedule.type === "daily"
+                      ? "Daily"
+                      : input.definition.schedule.type === "weekdays"
+                        ? "Weekdays"
+                        : "Weekly",
+                },
+                ...(input.definition.schedule.type === "weekly"
+                  ? [
+                      {
+                        label: "Day",
+                        value: weekdayLabel(input.definition.schedule.dayOfWeek),
+                      },
+                    ]
+                  : []),
+                {
+                  label: "Time",
+                  value: formatClockTime(input.definition.schedule.timeOfDay),
+                },
+                ...("timezone" in input.definition.schedule &&
+                input.definition.schedule.timezone
+                  ? [
+                      {
+                        label: "Timezone",
+                        value: input.definition.schedule.timezone,
+                      },
+                    ]
+                  : []),
+              ];
+  const detailRows = [
+    {
+      label: "Runs in",
+      value:
+        input.definition.mode === "heartbeat"
+          ? "Thread"
+          : input.definition.worktreeMode.charAt(0).toUpperCase() +
+            input.definition.worktreeMode.slice(1),
+    },
+    { label: "Project", value: input.projectName },
+    ...scheduleRows,
+    {
+      label: "Model",
+      value:
+        formatModelDisplayName(input.definition.modelSelection.model) ??
+        input.definition.modelSelection.model ??
+        "Default",
+    },
+    {
+      label: "Mode",
+      value: input.definition.mode === "heartbeat" ? "Heartbeat" : "Standalone",
+    },
+    {
+      label: "Max iterations",
+      value:
+        input.definition.maxIterations === null
+          ? "Unlimited"
+          : String(input.definition.maxIterations),
+    },
+    ...(input.definition.mode === "heartbeat"
+      ? [
+          {
+            label: "Thread",
+            value: input.targetThreadTitle ?? "Thread unavailable",
+          },
+        ]
+      : []),
+  ];
+  return {
+    definition: input.definition,
+    detailRows,
+    lastRunAt: latestFinishedRun?.finishedAt ?? latestFinishedRun?.startedAt ?? null,
+    nextRunAt:
+      input.definition.enabled && input.definition.nextRunAt
+        ? input.definition.nextRunAt
+        : null,
+    projectName: input.projectName,
+    runs,
+    status,
+  };
 }
 
 export function projectAutomationList(input: {

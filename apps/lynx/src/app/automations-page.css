@@ -195,3 +195,236 @@
   font-size: 12px;
   line-height: 17px;
 }
+
+.AutomationDetailPage {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  background-color: var(--background);
+}
+
+.AutomationDetailMain {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.AutomationDetailHeader,
+.AutomationDetailActionsHeader {
+  display: flex;
+  align-items: center;
+  height: 46px;
+  min-height: 46px;
+  padding: 0 20px;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: var(--border);
+}
+
+.AutomationDetailBreadcrumb {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  -x-app-region: no-drag;
+}
+
+.AutomationDetailBreadcrumbParent {
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.AutomationDetailBreadcrumbCurrent {
+  min-width: 0;
+  color: var(--foreground);
+  font-family: var(--font-heading-family);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.AutomationDetailPromptScroller,
+.AutomationDetailAsideScroller {
+  flex: 1;
+  min-height: 0;
+}
+
+.AutomationDetailPrompt {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 768px;
+  padding: 32px;
+}
+
+.AutomationDetailTitle {
+  color: var(--foreground);
+  font-family: var(--font-heading-family);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32px;
+}
+
+.AutomationDetailPromptText {
+  color: var(--muted-foreground);
+  font-size: 15px;
+  line-height: 24px;
+  white-space: pre-wrap;
+}
+
+.AutomationDetailAside {
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+  min-width: 320px;
+  height: 100%;
+  min-height: 0;
+}
+
+.AutomationDetailActionsHeader {
+  justify-content: flex-end;
+  padding: 0 12px;
+}
+
+.AutomationDetailAsideScroller {
+  border-left-width: 1px;
+  border-left-style: solid;
+  border-left-color: var(--border);
+}
+
+.AutomationDetailAsideContent {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 32px 16px;
+}
+
+.AutomationDetailGroup,
+.AutomationDetailGroupRows {
+  display: flex;
+  flex-direction: column;
+}
+
+.AutomationDetailGroup {
+  gap: 2px;
+}
+
+.AutomationDetailGroupTitle {
+  padding: 0 6px 4px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  opacity: 0.7;
+}
+
+.AutomationDetailRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 30px;
+  padding: 6px;
+  border-radius: 6px;
+}
+
+.AutomationDetailRow--compact {
+  min-height: 28px;
+}
+
+.AutomationDetailRow--time {
+  min-height: 33px;
+}
+
+.AutomationDetailRowLabel {
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.AutomationDetailRowValue {
+  min-width: 0;
+  color: var(--foreground);
+  font-size: 12px;
+  line-height: 16px;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.AutomationDetailNoRuns {
+  padding: 4px 6px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.AutomationDetailRun {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 28px;
+  padding: 6px;
+  border-radius: 6px;
+}
+
+.AutomationDetailRun--interactive.ui-hover,
+.AutomationDetailRun--interactive.ui-pressed {
+  background-color: var(--accent);
+}
+
+.AutomationDetailRunDot {
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  border-radius: 3px;
+  background-color: var(--muted-foreground);
+}
+
+.AutomationDetailRunText {
+  flex: 1;
+  min-width: 0;
+  color: var(--foreground);
+  font-size: 12px;
+  line-height: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.AutomationDetailRunMeta {
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.AutomationDetailNotFound {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  height: 100%;
+  background-color: var(--background);
+}
+
+.AutomationDetailNotFoundText {
+  color: var(--muted-foreground);
+  font-size: 14px;
+}

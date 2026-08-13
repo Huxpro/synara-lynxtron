@@ -11,6 +11,7 @@ import {
   getProviderOptionCurrentValue,
   getProviderOptionDescriptors,
 } from "@synara/shared/model";
+import { formatAutomationRunTimestamp } from "@synara/shared/automationList";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 
@@ -92,35 +93,6 @@ const selectAllThreads = createAllThreadsSelector();
 
 function lastFinishedRun(runs: readonly AutomationRun[]): AutomationRun | null {
   return runs.find((run) => run.finishedAt != null || run.startedAt != null) ?? null;
-}
-
-function startOfDay(date: Date): number {
-  return new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
-}
-
-const RUN_TIME_FORMATTER = new Intl.DateTimeFormat(undefined, {
-  hour: "2-digit",
-  minute: "2-digit",
-});
-const RUN_DATE_TIME_FORMATTER = new Intl.DateTimeFormat(undefined, {
-  day: "numeric",
-  month: "short",
-  year: "numeric",
-  hour: "2-digit",
-  minute: "2-digit",
-});
-
-// Reference-style absolute timestamp: "Today at 09:00", "Tomorrow at 12:30", "5 May 2026, 09:05".
-function formatRunTimestamp(value: string | null): string {
-  if (!value) return "—";
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return value;
-  const time = RUN_TIME_FORMATTER.format(date);
-  const dayDelta = Math.round((startOfDay(date) - startOfDay(new Date())) / 86_400_000);
-  if (dayDelta === 0) return `Today at ${time}`;
-  if (dayDelta === 1) return `Tomorrow at ${time}`;
-  if (dayDelta === -1) return `Yesterday at ${time}`;
-  return RUN_DATE_TIME_FORMATTER.format(date);
 }
 
 // Presentation for the Status pill: maps the shared lifecycle state to a label and dot color.
@@ -494,7 +466,7 @@ function AutomationDetailView() {
                 <DetailRow label="Next run">
                   {definition.enabled && definition.nextRunAt ? (
                     <StatusValue tone="muted">
-                      {formatRunTimestamp(definition.nextRunAt)}
+                      {formatAutomationRunTimestamp(definition.nextRunAt)}
                     </StatusValue>
                   ) : (
                     "—"
@@ -503,7 +475,7 @@ function AutomationDetailView() {
                 <DetailRow label="Last ran">
                   {lastRun ? (
                     <StatusValue tone="muted">
-                      {formatRunTimestamp(lastRun.finishedAt ?? lastRun.startedAt)}
+                      {formatAutomationRunTimestamp(lastRun.finishedAt ?? lastRun.startedAt)}
                     </StatusValue>
                   ) : (
                     "—"

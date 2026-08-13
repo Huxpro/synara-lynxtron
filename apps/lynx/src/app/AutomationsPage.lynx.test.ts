@@ -41,11 +41,35 @@ describe('Lynx Automations route', () => {
 
     expect(routerSource).toContain("pathname === '/automations'");
     expect(routerSource).toContain('<AutomationsPage');
+    expect(routerSource).toContain("pathname: '/automations/$automationId'");
+    expect(routerSource).toContain('automationId={route.params.automationId}');
     expect(sidebarSource).toContain(
-      "automationsActive={activePath === '/automations'}"
+      "automationsActive={activePath.startsWith('/automations')}"
     );
     expect(sidebarSource).toContain(
       "onOpenAutomations={() => navigate('/automations')}"
     );
+  });
+
+  it('opens list rows into the read-only detail surface', () => {
+    const pageSource = readFileSync(
+      new URL('./AutomationsPage.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const detailSource = readFileSync(
+      new URL('./AutomationDetailPage.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+
+    expect(pageSource).toContain(
+      'navigate(`/automations/${encodeURIComponent(id)}`)'
+    );
+    expect(pageSource).toContain('<AutomationDetailPage');
+    expect(detailSource).toContain('projectAutomationDetail({');
+    expect(detailSource).toContain('Automation not found.');
+    expect(detailSource).toContain('Previous runs');
+    expect(detailSource).toContain('No runs yet.');
+    expect(detailSource).not.toContain('automation.update');
+    expect(detailSource).not.toContain('automation.runNow');
   });
 });
