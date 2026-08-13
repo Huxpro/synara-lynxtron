@@ -7,9 +7,10 @@
   - empty;
   - populated list with two active daily automations.
   - read-only detail with no previous runs.
+  - paused detail after a real rendered Pause action.
 - Still missing and not claimed by this slice:
   - create/edit dialog;
-  - detail mutations such as pause, delete, and run now;
+  - detail mutations other than pause/resume, including delete and run now;
   - detail with previous runs;
   - paused and needs-review list visual cells;
   - Native certification.
@@ -23,6 +24,8 @@
 - Initial orchestration snapshot sequence: `0`
 - Web, Lynx-for-Web, and Native-provenance preflight all reported that same
   server instance and sequence.
+- Pause/resume used a second isolated run at `ws://127.0.0.1:58980` and
+  `http://localhost:9061`, with the same preflight rules.
 - Populated state was created through canonical `project.create` and
   `automation.create` RPCs. Cleanup used `automation.delete`; SQLite was never
   written directly.
@@ -54,6 +57,7 @@ Final full-frame parity:
 - empty: `98.7281760620915%`;
 - populated list: `98.63298312211063%`.
 - read-only detail: `98.41580160011159%`.
+- paused detail: `98.98107763430575%`.
 
 The detail cell also matched the two `46px` headers, `704px + 320px`
 columns, prompt title geometry, and the Status group exactly. Details and
@@ -66,7 +70,7 @@ debt.
 
 ## Evidence
 
-Remote asset commits: `5341ec9`, `632a003`
+Remote asset commits: `5341ec9`, `632a003`, and `494974b`.
 
 - `shots/2026-08-14/automations/empty/web-dark-1280.png`
 - `shots/2026-08-14/automations/empty/lynx-dark-1280.png`
@@ -74,6 +78,8 @@ Remote asset commits: `5341ec9`, `632a003`
 - `shots/2026-08-14/automations/list/lynx-dark-1280.png`
 - `shots/2026-08-14/automations/detail/web-dark-1280.png`
 - `shots/2026-08-14/automations/detail/lynx-dark-1280.png`
+- `shots/2026-08-14/automations/detail-paused/web-dark-1280.png`
+- `shots/2026-08-14/automations/detail-paused/lynx-dark-1280.png`
 
 ## Gates
 

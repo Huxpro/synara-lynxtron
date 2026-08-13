@@ -1,8 +1,8 @@
 {
   "version": 1,
   "assetBaseUrl": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main",
-  "imageCount": 1277,
-  "byteCount": 203769462,
+  "imageCount": 1279,
+  "byteCount": 203868964,
   "images": [
     {
       "day": "2026-08-02",
@@ -10181,6 +10181,24 @@
       "repoPath": "shots/2026-08-13/temporary-chat-current/on/web.png",
       "bytes": 55273,
       "sourceCommit": "2221865a8edafda29ac62621cf2ef6b8c54e062a"
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "automations/detail-paused",
+      "name": "lynx-dark-1280.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/automations/detail-paused/lynx-dark-1280.png",
+      "repoPath": "shots/2026-08-14/automations/detail-paused/lynx-dark-1280.png",
+      "bytes": 49137,
+      "sourceCommit": "c1d75889f41ac19720e25abfa9bff3d331fd7451"
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "automations/detail-paused",
+      "name": "web-dark-1280.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/automations/detail-paused/web-dark-1280.png",
+      "repoPath": "shots/2026-08-14/automations/detail-paused/web-dark-1280.png",
+      "bytes": 50365,
+      "sourceCommit": "c1d75889f41ac19720e25abfa9bff3d331fd7451"
     },
     {
       "day": "2026-08-14",
