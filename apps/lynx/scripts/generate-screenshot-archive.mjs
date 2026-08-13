@@ -34,6 +34,7 @@ const includedDays = new Set([
   '2026-08-10',
   '2026-08-11',
   '2026-08-13',
+  '2026-08-14',
 ]);
 const imageExtensions = new Set(['.jpeg', '.jpg', '.png']);
 const clientDirectoryNames = new Set([

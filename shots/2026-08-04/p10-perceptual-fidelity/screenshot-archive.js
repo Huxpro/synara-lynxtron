@@ -3,15 +3,15 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
   "assetBaseUrl": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main",
   "range": {
     "firstDay": "2026-08-02",
-    "lastDay": "2026-08-13",
-    "consecutiveCalendarDays": 11
+    "lastDay": "2026-08-14",
+    "consecutiveCalendarDays": 12
   },
-  "imageCount": 1271,
-  "byteCount": 203486748,
+  "imageCount": 1275,
+  "byteCount": 203644389,
   "trackedCount": 0,
   "untrackedCount": 0,
-  "remoteCount": 1271,
-  "storyCount": 384,
+  "remoteCount": 1275,
+  "storyCount": 386,
   "stories": [
     {
       "id": "2026-08-02--harness--composer",
@@ -18120,6 +18120,78 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
         "web"
       ],
       "sequence": false
+    },
+    {
+      "id": "2026-08-14--automations--empty",
+      "day": "2026-08-14",
+      "directory": "automations/empty",
+      "label": "Automations · Empty",
+      "images": [
+        {
+          "day": "2026-08-14",
+          "directory": "automations/empty",
+          "name": "lynx-dark-1280.png",
+          "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/automations/empty/lynx-dark-1280.png",
+          "repoPath": "shots/2026-08-14/automations/empty/lynx-dark-1280.png",
+          "bytes": 31500,
+          "sourceCommit": "dccdbb025164deb83f260dc01c43f5529018684c",
+          "gitStatus": "remote",
+          "client": "lynx"
+        },
+        {
+          "day": "2026-08-14",
+          "directory": "automations/empty",
+          "name": "web-dark-1280.png",
+          "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/automations/empty/web-dark-1280.png",
+          "repoPath": "shots/2026-08-14/automations/empty/web-dark-1280.png",
+          "bytes": 44482,
+          "sourceCommit": "dccdbb025164deb83f260dc01c43f5529018684c",
+          "gitStatus": "remote",
+          "client": "web"
+        }
+      ],
+      "imageCount": 2,
+      "clients": [
+        "lynx",
+        "web"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-14--automations--list",
+      "day": "2026-08-14",
+      "directory": "automations/list",
+      "label": "Automations · List",
+      "images": [
+        {
+          "day": "2026-08-14",
+          "directory": "automations/list",
+          "name": "lynx-dark-1280.png",
+          "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/automations/list/lynx-dark-1280.png",
+          "repoPath": "shots/2026-08-14/automations/list/lynx-dark-1280.png",
+          "bytes": 34545,
+          "sourceCommit": "dccdbb025164deb83f260dc01c43f5529018684c",
+          "gitStatus": "remote",
+          "client": "lynx"
+        },
+        {
+          "day": "2026-08-14",
+          "directory": "automations/list",
+          "name": "web-dark-1280.png",
+          "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/automations/list/web-dark-1280.png",
+          "repoPath": "shots/2026-08-14/automations/list/web-dark-1280.png",
+          "bytes": 47114,
+          "sourceCommit": "dccdbb025164deb83f260dc01c43f5529018684c",
+          "gitStatus": "remote",
+          "client": "web"
+        }
+      ],
+      "imageCount": 2,
+      "clients": [
+        "lynx",
+        "web"
+      ],
+      "sequence": false
     }
   ],
   "days": [
@@ -33666,6 +33738,68 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
               "repoPath": "shots/2026-08-13/temporary-chat-current/on/web.png",
               "bytes": 55273,
               "sourceCommit": "2221865a8edafda29ac62621cf2ef6b8c54e062a",
+              "gitStatus": "remote"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": "2026-08-14",
+      "imageCount": 4,
+      "byteCount": 157641,
+      "trackedCount": 0,
+      "untrackedCount": 0,
+      "remoteCount": 4,
+      "directories": [
+        {
+          "directory": "automations/empty",
+          "imageCount": 2,
+          "images": [
+            {
+              "day": "2026-08-14",
+              "directory": "automations/empty",
+              "name": "lynx-dark-1280.png",
+              "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/automations/empty/lynx-dark-1280.png",
+              "repoPath": "shots/2026-08-14/automations/empty/lynx-dark-1280.png",
+              "bytes": 31500,
+              "sourceCommit": "dccdbb025164deb83f260dc01c43f5529018684c",
+              "gitStatus": "remote"
+            },
+            {
+              "day": "2026-08-14",
+              "directory": "automations/empty",
+              "name": "web-dark-1280.png",
+              "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/automations/empty/web-dark-1280.png",
+              "repoPath": "shots/2026-08-14/automations/empty/web-dark-1280.png",
+              "bytes": 44482,
+              "sourceCommit": "dccdbb025164deb83f260dc01c43f5529018684c",
+              "gitStatus": "remote"
+            }
+          ]
+        },
+        {
+          "directory": "automations/list",
+          "imageCount": 2,
+          "images": [
+            {
+              "day": "2026-08-14",
+              "directory": "automations/list",
+              "name": "lynx-dark-1280.png",
+              "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/automations/list/lynx-dark-1280.png",
+              "repoPath": "shots/2026-08-14/automations/list/lynx-dark-1280.png",
+              "bytes": 34545,
+              "sourceCommit": "dccdbb025164deb83f260dc01c43f5529018684c",
+              "gitStatus": "remote"
+            },
+            {
+              "day": "2026-08-14",
+              "directory": "automations/list",
+              "name": "web-dark-1280.png",
+              "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/automations/list/web-dark-1280.png",
+              "repoPath": "shots/2026-08-14/automations/list/web-dark-1280.png",
+              "bytes": 47114,
+              "sourceCommit": "dccdbb025164deb83f260dc01c43f5529018684c",
               "gitStatus": "remote"
             }
           ]

@@ -891,7 +891,7 @@ const result = {
     comparability:
       'Pairs require normalized state names and matching aspect ratio within 1.5%; high MAE remains scored and is classified as poor or critical parity.',
     scope:
-      'Cumulative unique work stories divided by the final known 379-story scope; continuous frames count as one story.',
+      `Cumulative unique work stories divided by the final known ${archive.storyCount}-story scope; continuous frames count as one story.`,
     completeness:
       'Observed Web/Lynx/Native cells divided by expected cells for discovered stories.',
     reliability:
