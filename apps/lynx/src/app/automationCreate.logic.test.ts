@@ -15,6 +15,7 @@ describe('Automation create payload', () => {
   ] as const)('maps %s schedules to the canonical contract', (schedule, expected) => {
     expect(
       buildAutomationCreateInput({
+        interactionMode: 'plan',
         projectId: 'project-1',
         maxIterations: 25,
         modelSelection,
@@ -35,6 +36,7 @@ describe('Automation create payload', () => {
           : { ...expected, timeOfDay: '14:30' },
       worktreeMode: 'worktree',
       runtimeMode: 'approval-required',
+      interactionMode: 'plan',
       maxIterations: 25,
       stopOnError: false,
     });

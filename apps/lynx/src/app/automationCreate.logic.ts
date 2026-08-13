@@ -1,6 +1,7 @@
 import type {
   AutomationCreateInput,
   ModelSelection,
+  ProviderInteractionMode,
   ProjectId,
 } from '@synara/contracts';
 
@@ -8,6 +9,7 @@ export type CreateSchedule = 'daily' | 'manual' | 'weekdays';
 export type CreateWorktreeMode = 'auto' | 'worktree';
 
 export function buildAutomationCreateInput(input: {
+  readonly interactionMode: ProviderInteractionMode;
   readonly maxIterations: number | null;
   readonly modelSelection: ModelSelection;
   readonly name: string;
@@ -30,7 +32,7 @@ export function buildAutomationCreateInput(input: {
     enabled: true,
     modelSelection: input.modelSelection,
     runtimeMode: 'approval-required',
-    interactionMode: 'default',
+    interactionMode: input.interactionMode,
     worktreeMode: input.worktreeMode,
     mode: 'standalone',
     targetThreadId: null,

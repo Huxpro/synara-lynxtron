@@ -142,6 +142,9 @@ export function AutomationCreateDialog({
   const [timeOfDay, setTimeOfDay] = useState('09:00');
   const [maxIterations, setMaxIterations] = useState<number | null>(null);
   const [stopOnError, setStopOnError] = useState(true);
+  const [interactionMode, setInteractionMode] = useState<
+    AutomationCreateInput['interactionMode']
+  >('default');
   const [worktreeMode, setWorktreeMode] =
     useState<CreateWorktreeMode>('auto');
   useEffect(() => {
@@ -165,6 +168,7 @@ export function AutomationCreateDialog({
     if (!canCreate || !project || !modelSelection) return;
     onCreate(buildAutomationCreateInput({
       projectId: project.id as AutomationCreateInput['projectId'],
+      interactionMode,
       name,
       prompt,
       schedule,
@@ -304,6 +308,23 @@ export function AutomationCreateDialog({
               />
             </view>
           </view>
+          <view className="AutomationCreateField">
+            <text className="AutomationCreateLabel">Interaction mode</text>
+            <view className="AutomationCreateChoices">
+              <ChoiceOption
+                disabled={pending}
+                label="Default"
+                selected={interactionMode === 'default'}
+                onSelect={() => setInteractionMode('default')}
+              />
+              <ChoiceOption
+                disabled={pending}
+                label="Plan"
+                selected={interactionMode === 'plan'}
+                onSelect={() => setInteractionMode('plan')}
+              />
+            </view>
+          </view>
           <view className="AutomationCreateSummary">
             <text className="AutomationCreateSummaryText">
               {schedule === 'manual'
@@ -317,6 +338,7 @@ export function AutomationCreateDialog({
                 ? 'Unlimited runs'
                 : `${maxIterations} runs`}{' '}
               · {stopOnError ? 'Stops on error' : 'Continues after errors'}
+              {' '}· {interactionMode === 'plan' ? 'Plan mode' : 'Default mode'}
             </text>
           </view>
           {error ? (

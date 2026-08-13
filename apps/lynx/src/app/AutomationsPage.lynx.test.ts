@@ -124,8 +124,12 @@ describe('Lynx Automations route', () => {
     expect(createLogicSource).toContain('worktreeMode: input.worktreeMode');
     expect(createLogicSource).toContain('maxIterations: input.maxIterations');
     expect(createLogicSource).toContain('stopOnError: input.stopOnError');
+    expect(createLogicSource).toContain(
+      'interactionMode: input.interactionMode'
+    );
     expect(dialogSource).toContain('Max iterations');
     expect(dialogSource).toContain('Stop on error');
+    expect(dialogSource).toContain('Interaction mode');
     expect(createLogicSource).toContain("runtimeMode: 'approval-required'");
     expect(dialogSource).toContain('project?.defaultModelSelection ?? null');
     expect(dialogSource).toContain('Create automation');
