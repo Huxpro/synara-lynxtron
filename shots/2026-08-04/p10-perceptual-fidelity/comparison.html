@@ -2081,9 +2081,9 @@
       </div>
     </dialog>
 
-    <script src="manifest.js?v=c6846c79f"></script>
-    <script src="screenshot-archive.js?v=c6846c79f"></script>
-    <script src="fidelity-loss.js?v=c6846c79f"></script>
+    <script src="manifest.js?v=harness-lineage-v2"></script>
+    <script src="screenshot-archive.js?v=harness-lineage-v2"></script>
+    <script src="fidelity-loss.js?v=harness-lineage-v2"></script>
     <script>
       const data = globalThis.__SYNARA_PERCEPTUAL_EVIDENCE__ ?? { states: [] };
       const screenshotArchive = globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ ?? {
@@ -2831,9 +2831,42 @@
         `;
       }
 
+      function harnessPairCard(pair) {
+        const leftPath = fidelityAssetUrl(pair.left);
+        const rightPath = fidelityAssetUrl(pair.right);
+        return `
+          <article class="loss-pair">
+            <header class="loss-pair-head">
+              <div>
+                <strong>${escapeHtml(pair.storyId)} · ${escapeHtml(pair.stateKey)}</strong>
+                <span>
+                  HARNESS · declared ${pair.leftDeclaration.theme}/${pair.rightDeclaration.theme}
+                  · rendered ${pair.renderedLeftTheme}/${pair.renderedRightTheme}
+                </span>
+              </div>
+              <div class="loss-pair-score" data-band="critical">
+                <strong>${pair.parityPercent.toFixed(1)}%</strong>
+                <span>not product visual · MAE ${pair.maePercent.toFixed(2)}%</span>
+              </div>
+            </header>
+            <div class="loss-pair-images">
+              <a href="${leftPath}" target="_blank" rel="noreferrer">
+                <img src="${leftPath}" alt="${escapeHtml(pair.left)}" loading="lazy" />
+                ${escapeHtml(pair.leftClient)} · ${pair.renderedLeftTheme}
+              </a>
+              <a href="${rightPath}" target="_blank" rel="noreferrer">
+                <img src="${rightPath}" alt="${escapeHtml(pair.right)}" loading="lazy" />
+                ${escapeHtml(pair.rightClient)} · ${pair.renderedRightTheme}
+              </a>
+            </div>
+          </article>
+        `;
+      }
+
       function ledgerDetail(point) {
         const pairs = point.visual.activatedPairs;
         const rejected = point.visual.activatedRejectedPairs;
+        const harnessPairs = point.visual.activatedHarnessPairs;
         const medianBefore =
           point.visual.previousMedianPercent === null
             ? "—"
@@ -2848,6 +2881,36 @@
         const rejectedSection = rejected.length
           ? `<div class="loss-pairs">${rejected.map(rejectedPairRow).join("")}</div>`
           : `<p class="empty">No structurally rejected pairs activated at this commit.</p>`;
+        const harnessSection = harnessPairs.length
+          ? `
+            <div class="loss-pairs">${harnessPairs
+              .map(harnessPairCard)
+              .join("")}</div>
+            ${[
+              ...new Set(harnessPairs.map((pair) => pair.harnessIssueId)),
+            ]
+              .map((issueId) => {
+                const issue = fidelityLoss.harnessIssueLedger.find(
+                  (entry) => entry.id === issueId,
+                );
+                if (!issue) return "";
+                const evidence = issue.resolutionEvidence;
+                return `
+                  <div class="loss-rejected">
+                    <span>
+                      Resolved by ${issue.resolvedBy.join(" + ")}:
+                      ${escapeHtml(issue.resolution)}
+                    </span>
+                    <strong>
+                      ${evidence.pairCount} later pairs ·
+                      ${evidence.minimumParityPercent.toFixed(1)}–${evidence.maximumParityPercent.toFixed(1)}% parity
+                    </strong>
+                  </div>
+                `;
+              })
+              .join("")}
+          `
+          : `<p class="empty">No capture-state mismatch activated at this commit.</p>`;
         const regressionChanges = point.regressionChanges.length
           ? `
             <ul class="loss-events">
@@ -2889,6 +2952,13 @@
               Pair MAE enters the ${point.visual.rollingWindowSize}-pair window. The visual contribution is caused by the rolling median changing from ${medianBefore} to ${medianAfter}; it is not the pair MAE itself.
             </p>
             ${pairSection}
+          </section>
+          <section class="loss-pair-section">
+            <h5>Harness / capture mismatches</h5>
+            <p class="empty">
+              These pairs are excluded from product visual distance and charged to harness reliability debt until resolved.
+            </p>
+            ${harnessSection}
           </section>
           <section class="loss-pair-section">
             <h5>Rejected structural comparisons</h5>

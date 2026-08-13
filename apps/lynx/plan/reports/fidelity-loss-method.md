@@ -80,6 +80,21 @@ the loss even when parity is very poor:
 
 The UI reports both `MAE` and `parity = max(0, 100 - MAE)`.
 
+Before a high-MAE pair enters product visual distance, the generator checks
+capture-state consistency when both sides provide assertions:
+
+- declared theme and snapshot identity;
+- rendered luminance classification (`light`, `dark`, or `mixed`);
+- viewport metadata.
+
+If both assertions declare the same theme but one image is overwhelmingly dark
+and the other overwhelmingly light, the pair is classified as
+`capture-theme-mismatch`. It is excluded from product visual distance and
+charged to the harness/reliability ledger until a synchronized recapture closes
+the issue. The original images, declarations, luminance statistics, detection
+commit, resolution commits, and later parity range remain visible in the
+commit-level ledger.
+
 For accepted pairs:
 
 ```text

@@ -50,6 +50,34 @@ export function visualQualityBand(maePercent) {
         : 'close';
 }
 
+export function classifyRenderedTheme({
+  meanLuminance,
+  brightFraction,
+  darkFraction,
+}) {
+  if (meanLuminance <= 70 && darkFraction >= 0.75) return 'dark';
+  if (meanLuminance >= 190 && brightFraction >= 0.75) return 'light';
+  return 'mixed';
+}
+
+export function captureMismatchReason({
+  declaredLeftTheme,
+  declaredRightTheme,
+  renderedLeftTheme,
+  renderedRightTheme,
+}) {
+  if (
+    !declaredLeftTheme ||
+    declaredLeftTheme !== declaredRightTheme ||
+    renderedLeftTheme === 'mixed' ||
+    renderedRightTheme === 'mixed' ||
+    renderedLeftTheme === renderedRightTheme
+  ) {
+    return null;
+  }
+  return 'capture-theme-mismatch';
+}
+
 export function visualLossFromSamples(samples, targetSampleCount = 12) {
   const observedMedian = median(samples);
   if (observedMedian === null) {

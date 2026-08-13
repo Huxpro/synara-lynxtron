@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 
 import {
   calculateFidelityLoss,
+  captureMismatchReason,
+  classifyRenderedTheme,
   exponentialMovingAverage,
   isComparableImageGeometry,
   median,
@@ -43,6 +45,43 @@ test('keeps critical parity scored and recognizes Native titlebar geometry', () 
       { width: 900, height: 900 }
     ),
     false
+  );
+});
+
+test('separates capture theme mismatches from product visual loss', () => {
+  assert.equal(
+    classifyRenderedTheme({
+      meanLuminance: 21,
+      brightFraction: 0,
+      darkFraction: 0.97,
+    }),
+    'dark'
+  );
+  assert.equal(
+    classifyRenderedTheme({
+      meanLuminance: 252,
+      brightFraction: 0.97,
+      darkFraction: 0,
+    }),
+    'light'
+  );
+  assert.equal(
+    captureMismatchReason({
+      declaredLeftTheme: 'light',
+      declaredRightTheme: 'light',
+      renderedLeftTheme: 'dark',
+      renderedRightTheme: 'light',
+    }),
+    'capture-theme-mismatch'
+  );
+  assert.equal(
+    captureMismatchReason({
+      declaredLeftTheme: 'light',
+      declaredRightTheme: 'light',
+      renderedLeftTheme: 'light',
+      renderedRightTheme: 'light',
+    }),
+    null
   );
 });
 
