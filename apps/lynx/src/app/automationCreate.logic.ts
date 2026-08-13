@@ -13,6 +13,7 @@ export function buildAutomationCreateInput(input: {
   readonly projectId: ProjectId;
   readonly prompt: string;
   readonly schedule: CreateSchedule;
+  readonly timeOfDay: string;
   readonly worktreeMode: CreateWorktreeMode;
 }): AutomationCreateInput {
   return {
@@ -23,7 +24,7 @@ export function buildAutomationCreateInput(input: {
     schedule:
       input.schedule === 'manual'
         ? { type: 'manual' }
-        : { type: input.schedule, timeOfDay: '09:00' },
+        : { type: input.schedule, timeOfDay: input.timeOfDay },
     enabled: true,
     modelSelection: input.modelSelection,
     runtimeMode: 'approval-required',

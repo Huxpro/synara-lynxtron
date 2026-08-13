@@ -528,6 +528,20 @@
   line-height: 18px;
 }
 
+.AutomationCreateTime {
+  width: 112px;
+  height: 36px;
+  padding: 8px 12px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--input);
+  border-radius: 8px;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-size: 13px;
+  line-height: 18px;
+}
+
 .AutomationCreateProjects {
   display: flex;
   flex-direction: row;

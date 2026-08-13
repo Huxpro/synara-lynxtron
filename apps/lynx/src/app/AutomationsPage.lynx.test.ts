@@ -112,7 +112,11 @@ describe('Lynx Automations route', () => {
     );
     expect(createLogicSource).toContain("input.schedule === 'manual'");
     expect(createLogicSource).toContain(
-      "{ type: input.schedule, timeOfDay: '09:00' }"
+      '{ type: input.schedule, timeOfDay: input.timeOfDay }'
+    );
+    expect(dialogSource).toContain('<NativeTimeInput');
+    expect(dialogSource).toContain(
+      "/^(?:[01]\\d|2[0-3]):[0-5]\\d$/u.test(timeOfDay)"
     );
     expect(createLogicSource).toContain(
       "type CreateWorktreeMode = 'auto' | 'worktree'"

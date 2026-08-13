@@ -20,13 +20,17 @@ describe('Automation create payload', () => {
         name: '  Release review  ',
         prompt: '  Check regressions.  ',
         schedule,
+        timeOfDay: '14:30',
         worktreeMode: 'worktree',
       }),
     ).toMatchObject({
       projectId: 'project-1',
       name: 'Release review',
       prompt: 'Check regressions.',
-      schedule: expected,
+      schedule:
+        schedule === 'manual'
+          ? expected
+          : { ...expected, timeOfDay: '14:30' },
       worktreeMode: 'worktree',
       runtimeMode: 'approval-required',
     });

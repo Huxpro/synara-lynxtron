@@ -13,7 +13,7 @@
   - initial create dialog.
   - expanded create dialog with schedule and worktree choices.
 - Still missing and not claimed by this slice:
-  - create/edit dialog;
+  - the full Web-equivalent create/edit field set;
   - detail mutations other than pause/resume, including delete and run now;
   - detail with previous runs;
   - paused and needs-review list visual cells;

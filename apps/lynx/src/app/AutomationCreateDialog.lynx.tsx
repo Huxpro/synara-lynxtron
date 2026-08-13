@@ -44,6 +44,28 @@ function NativeNameInput({
   });
 }
 
+function NativeTimeInput({
+  disabled,
+  onInput,
+}: {
+  readonly disabled: boolean;
+  readonly onInput: (event: NativeTextInputEvent) => void;
+}) {
+  return createElement('input', {
+    className: 'AutomationCreateTime',
+    'accessibility-element': true,
+    'accessibility-label': 'Automation time',
+    defaultValue: '09:00',
+    disabled,
+    focusable: !disabled,
+    inputFilter: '[0-9:]*',
+    maxlength: 5,
+    placeholder: '09:00',
+    'send-composing-input': true,
+    bindinput: onInput,
+  });
+}
+
 function ProjectOption({
   disabled,
   project,
@@ -117,6 +139,7 @@ export function AutomationCreateDialog({
   const [prompt, setPrompt] = useState('');
   const [projectId, setProjectId] = useState(projects[0]?.id ?? '');
   const [schedule, setSchedule] = useState<CreateSchedule>('daily');
+  const [timeOfDay, setTimeOfDay] = useState('09:00');
   const [worktreeMode, setWorktreeMode] =
     useState<CreateWorktreeMode>('auto');
   useEffect(() => {
@@ -133,6 +156,7 @@ export function AutomationCreateDialog({
     !pending &&
     name.trim().length > 0 &&
     prompt.trim().length > 0 &&
+    (schedule === 'manual' || /^(?:[01]\d|2[0-3]):[0-5]\d$/u.test(timeOfDay)) &&
     Boolean(project && modelSelection);
 
   const submit = () => {
@@ -142,6 +166,7 @@ export function AutomationCreateDialog({
       name,
       prompt,
       schedule,
+      timeOfDay,
       modelSelection,
       worktreeMode,
     }));
@@ -229,13 +254,22 @@ export function AutomationCreateDialog({
               />
             </view>
           </view>
+          {schedule === 'manual' ? null : (
+            <view className="AutomationCreateField">
+              <text className="AutomationCreateLabel">Time</text>
+              <NativeTimeInput
+                disabled={pending}
+                onInput={(event) => setTimeOfDay(event.detail.value)}
+              />
+            </view>
+          )}
           <view className="AutomationCreateSummary">
             <text className="AutomationCreateSummaryText">
               {schedule === 'manual'
                 ? 'Manual'
                 : schedule === 'daily'
-                  ? 'Daily at 9:00'
-                  : 'Weekdays at 9:00'}{' '}
+                  ? `Daily at ${timeOfDay}`
+                  : `Weekdays at ${timeOfDay}`}{' '}
               · {worktreeMode === 'auto' ? 'Auto workspace' : 'New worktree'} ·{' '}
               {modelSelection?.model ?? 'Choose a project model'}
             </text>
