@@ -22,12 +22,15 @@ export function shouldDeleteDepartingTemporaryThread(
   return temporaryThreadId === departingThreadId;
 }
 
-export function useTemporaryThreadLifecycle(threadId: string): {
+export function useTemporaryThreadLifecycle(
+  threadId: string,
+  initialTemporary = false
+): {
   readonly temporary: boolean;
   readonly toggleTemporary: () => void;
 } {
   const [temporaryThreadId, setTemporaryThreadId] = useState<string | null>(
-    null
+    initialTemporary ? threadId : null
   );
   const temporaryThreadIdRef = useRef<string | null>(null);
   temporaryThreadIdRef.current = temporaryThreadId;

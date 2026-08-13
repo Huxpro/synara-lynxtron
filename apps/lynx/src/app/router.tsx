@@ -311,6 +311,7 @@ interface ThreadPageProps {
   readonly explorerQuery: string;
   readonly explorerSelectedPath: string | null;
   readonly initialEnvironmentOpen: boolean;
+  readonly initialTemporaryOpen: boolean;
   readonly initialExplorerWidth: number | null;
   readonly initialExplorerOpen: boolean;
   readonly initialExplorerCommentLine: number | null;
@@ -478,6 +479,7 @@ function ThreadPage(props: ThreadPageProps) {
     explorerQuery,
     explorerSelectedPath,
     initialEnvironmentOpen,
+    initialTemporaryOpen,
     initialExplorerWidth,
     initialExplorerCommentLine,
     initialExplorerOpen,
@@ -489,8 +491,10 @@ function ThreadPage(props: ThreadPageProps) {
     resolvedTheme,
     viewportWidth,
   } = props;
-  const { temporary, toggleTemporary } =
-    useTemporaryThreadLifecycle(threadId);
+  const { temporary, toggleTemporary } = useTemporaryThreadLifecycle(
+    threadId,
+    initialTemporaryOpen
+  );
   const [providerStatuses, setProviderStatuses] = useState<
     readonly ServerProviderStatus[]
   >([]);
@@ -745,6 +749,7 @@ function ThreadPage(props: ThreadPageProps) {
 
 export function SliceRouter({
   initialEnvironmentOpen,
+  initialTemporaryOpen,
   initialRoute,
   initialThreadBootstrap,
   initialExplorerOpen,
@@ -759,6 +764,7 @@ export function SliceRouter({
   onUiDensityChange,
 }: {
   readonly initialEnvironmentOpen: boolean;
+  readonly initialTemporaryOpen: boolean;
   readonly initialRoute: string | null;
   readonly initialThreadBootstrap: {
     readonly data: Awaited<ReturnType<typeof fetchThreadTranscriptRows>>;
@@ -1205,6 +1211,7 @@ export function SliceRouter({
         explorerQuery={explorerQuery}
         explorerSelectedPath={explorerSelectedPath}
         initialEnvironmentOpen={initialEnvironmentOpen}
+        initialTemporaryOpen={initialTemporaryOpen}
         initialExplorerWidth={initialExplorerWidth}
         initialExplorerOpen={initialExplorerOpen}
         initialExplorerCommentLine={initialExplorerCommentLine}
