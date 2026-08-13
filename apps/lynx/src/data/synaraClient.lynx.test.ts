@@ -81,6 +81,9 @@ describe('Lynx Synara relay state', () => {
       "transportRequest<AutomationDefinition>('automation.update', input)"
     );
     expect(source).toContain(
+      "transportRequest<AutomationDefinition>('automation.create', input)"
+    );
+    expect(source).toContain(
       "transportRequest('automation.delete', input)"
     );
   });

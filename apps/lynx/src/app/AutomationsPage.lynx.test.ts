@@ -86,4 +86,26 @@ describe('Lynx Automations route', () => {
     expect(detailSource).not.toContain('automation.delete');
     expect(detailSource).not.toContain('automation.runNow');
   });
+
+  it('creates a canonical daily automation from the real dialog', () => {
+    const pageSource = readFileSync(
+      new URL('./AutomationsPage.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const dialogSource = readFileSync(
+      new URL('./AutomationCreateDialog.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+
+    expect(pageSource).toContain('mutationFn: createAutomation');
+    expect(pageSource).toContain('<AutomationCreateDialog');
+    expect(pageSource).toContain(
+      'navigate(`/automations/${encodeURIComponent(definition.id)}`)'
+    );
+    expect(dialogSource).toContain("schedule: { type: 'daily', timeOfDay: '09:00' }");
+    expect(dialogSource).toContain("runtimeMode: 'approval-required'");
+    expect(dialogSource).toContain('project?.defaultModelSelection ?? null');
+    expect(dialogSource).toContain('Create automation');
+    expect(dialogSource).not.toContain("model: 'gpt-");
+  });
 });

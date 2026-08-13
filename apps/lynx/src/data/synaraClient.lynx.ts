@@ -3,6 +3,7 @@ import 'background-only';
 import type {
   AutomationListResult,
   AutomationDefinition,
+  AutomationCreateInput,
   AutomationDeleteInput,
   AutomationUpdateInput,
   ClientOrchestrationCommand,
@@ -360,6 +361,12 @@ export async function fetchSynaraSidebarSearchSnapshot(): Promise<OrchestrationS
 
 export async function fetchAutomations(): Promise<AutomationListResult> {
   return transportRequest<AutomationListResult>('automation.list', {});
+}
+
+export async function createAutomation(
+  input: AutomationCreateInput
+): Promise<AutomationDefinition> {
+  return transportRequest<AutomationDefinition>('automation.create', input);
 }
 
 export async function updateAutomation(

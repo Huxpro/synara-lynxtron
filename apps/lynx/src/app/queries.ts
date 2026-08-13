@@ -5,6 +5,7 @@ import { QueryClient } from '@tanstack/react-query';
 import type {
   AutomationListResult,
   AutomationDefinition,
+  AutomationCreateInput,
   AutomationDeleteInput,
   AutomationUpdateInput,
   MessageId,
@@ -177,6 +178,16 @@ export async function fetchAutomations(): Promise<AutomationListResult> {
     /* webpackMode: "eager" */ '../data/synaraClient'
   );
   return fetchAutomationList();
+}
+
+export async function createAutomation(
+  input: AutomationCreateInput
+): Promise<AutomationDefinition> {
+  'background only';
+  const { createAutomation: createAutomationDefinition } = await import(
+    /* webpackMode: "eager" */ '../data/synaraClient'
+  );
+  return createAutomationDefinition(input);
 }
 
 export async function updateAutomation(

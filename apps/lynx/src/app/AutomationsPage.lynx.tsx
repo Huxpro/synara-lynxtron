@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from '@lynx-js/react';
+import { useEffect, useMemo, useRef, useState } from '@lynx-js/react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import type { AutomationDefinitionRow, AutomationTriageRow } from '@synara/shared/automationList';
 import { projectAutomationList } from '@synara/shared/automationList';
@@ -8,12 +8,14 @@ import { RefreshCwIcon } from '../lib/icons';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { sleepOnHost } from '../platform/timer';
 import {
+  createAutomation,
   deleteAutomation,
   fetchAutomations,
   fetchSidebarSnapshot,
   queryClient,
   updateAutomation,
 } from './queries';
+import { AutomationCreateDialog } from './AutomationCreateDialog.lynx';
 import { AutomationDetailPage } from './AutomationDetailPage.lynx';
 import './automations-page.css';
 
@@ -135,6 +137,7 @@ export function AutomationsPage({
   readonly automationId?: string | null;
   readonly navigate: (to: string) => void;
 }) {
+  const [createOpen, setCreateOpen] = useState(false);
   const automations = useQuery({
     queryKey: ['automations'],
     queryFn: fetchAutomations,
@@ -154,6 +157,14 @@ export function AutomationsPage({
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['automations'] });
       navigate('/automations');
+    },
+  });
+  const createMutation = useMutation({
+    mutationFn: createAutomation,
+    onSuccess: async (definition) => {
+      await queryClient.invalidateQueries({ queryKey: ['automations'] });
+      setCreateOpen(false);
+      navigate(`/automations/${encodeURIComponent(definition.id)}`);
     },
   });
   useHostPolling(automations.refetch, 5_000);
@@ -253,7 +264,12 @@ export function AutomationsPage({
         >
           <RefreshCwIcon size={16} color="var(--foreground)" />
         </Button>
-        <Button size="sm" disabled aria-label="New automation">
+        <Button
+          size="sm"
+          disabled={(sidebar.data?.projects.length ?? 0) === 0}
+          aria-label="New automation"
+          onClick={() => setCreateOpen(true)}
+        >
           New automation
         </Button>
       </view>
@@ -347,6 +363,20 @@ export function AutomationsPage({
           ) : null}
         </view>
       </scroll-view>
+      <AutomationCreateDialog
+        open={createOpen}
+        projects={sidebar.data?.projects ?? []}
+        pending={createMutation.isPending}
+        error={
+          createMutation.error instanceof Error
+            ? createMutation.error.message
+            : createMutation.error
+              ? String(createMutation.error)
+              : null
+        }
+        onCreate={(input) => createMutation.mutate(input)}
+        onOpenChange={setCreateOpen}
+      />
     </view>
   );
 }

@@ -474,3 +474,120 @@
   color: var(--muted-foreground);
   font-size: 14px;
 }
+
+.LxDialogPopup.AutomationCreateDialog {
+  width: min(560px, calc(100vw - 32px));
+  max-height: min(680px, calc(100vh - 32px));
+}
+
+.AutomationCreatePanel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 16px;
+}
+
+.AutomationCreateField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.AutomationCreateLabel {
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+.AutomationCreatePrompt {
+  width: 100%;
+  min-height: 112px;
+  padding: 10px 12px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--input);
+  border-radius: 8px;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-size: 13px;
+  line-height: 19px;
+}
+
+.AutomationCreateName {
+  width: 100%;
+  height: 36px;
+  padding: 8px 12px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--input);
+  border-radius: 8px;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.AutomationCreateProjects {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.AutomationCreateProject {
+  padding: 6px 10px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--border);
+  border-radius: 7px;
+  background-color: transparent;
+}
+
+.AutomationCreateProject--selected {
+  border-color: var(--foreground);
+  background-color: var(--accent);
+}
+
+.AutomationCreateProject.ui-hover,
+.AutomationCreateProject.ui-pressed {
+  background-color: var(--accent);
+}
+
+.AutomationCreateProjectText {
+  color: var(--foreground);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.AutomationCreateSummary {
+  padding: 8px 10px;
+  border-radius: 7px;
+  background-color: var(--secondary);
+}
+
+.AutomationCreateSummaryText {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.AutomationCreateError {
+  padding: 8px 10px;
+  border-radius: 7px;
+  background-color: color-mix(
+    in srgb,
+    var(--destructive) 8%,
+    transparent
+  );
+}
+
+.AutomationCreateErrorText {
+  color: var(--destructive);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.AutomationCreateFooter {
+  gap: 8px;
+}
