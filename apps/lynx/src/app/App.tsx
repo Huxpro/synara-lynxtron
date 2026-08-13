@@ -41,6 +41,7 @@ import {
   fetchExplorerFile,
   fetchExplorerLocalPreviewUrl,
   fetchExplorerPdfMetadata,
+  fetchSidebarSnapshot,
   fetchThreadHeaderSummary,
   fetchThreadTranscriptRows,
   queryClient,
@@ -170,10 +171,14 @@ export function App() {
     void Promise.all([
       readPersistedAppearance(),
       threadMatch
-        ? Promise.all([
-            fetchThreadTranscriptRows(threadMatch[1]),
-            fetchThreadHeaderSummary(threadMatch[1]),
-          ])
+        ? fetchSidebarSnapshot()
+            .then((snapshot) => {
+              queryClient.setQueryData(['sidebar-snapshot'], snapshot);
+              return Promise.all([
+                fetchThreadTranscriptRows(threadMatch[1]),
+                fetchThreadHeaderSummary(threadMatch[1]),
+              ]);
+            })
             .then(async ([data, summary]) => {
               const explorerEntries = summary?.workspaceRoot
                 ? await fetchExplorerEntries({
