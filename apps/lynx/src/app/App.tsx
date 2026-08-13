@@ -84,6 +84,7 @@ export function App() {
   const initData = useInitData() as {
     readonly initialSystemDark?: unknown;
     readonly initialEnvironmentOpen?: unknown;
+    readonly initialTerminalOpen?: unknown;
     readonly initialTemporaryOpen?: unknown;
     readonly initialExplorerOpen?: unknown;
     readonly initialExplorerCommentLine?: unknown;
@@ -95,6 +96,7 @@ export function App() {
   };
   const systemDark = initData.initialSystemDark === true;
   const initialEnvironmentOpen = initData.initialEnvironmentOpen === true;
+  const initialTerminalOpen = initData.initialTerminalOpen === true;
   const initialTemporaryOpen = initData.initialTemporaryOpen === true;
   const initialRoute =
     typeof initData.initialRoute === 'string' &&
@@ -345,6 +347,7 @@ export function App() {
         {storageReady ? (
           <SliceRouter
             initialEnvironmentOpen={initialEnvironmentOpen}
+            initialTerminalOpen={initialTerminalOpen}
             initialTemporaryOpen={initialTemporaryOpen}
             initialRoute={initialRoute}
             initialThreadBootstrap={initialThreadBootstrap}

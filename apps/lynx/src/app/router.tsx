@@ -58,6 +58,7 @@ import {
 } from './FeatureListsPage';
 import { AutomationsPage } from './AutomationsPage.lynx';
 import { Composer } from '../components/composer/Composer.lynx';
+import { Button } from '../components/ui/button';
 import { Sidebar } from '../components/sidebar/Sidebar.lynx';
 import { CenteredEmptyLanding } from '@synara-web/components/CenteredEmptyLanding';
 import { CenteredEmptyLandingStack } from '@synara-web/components/CenteredEmptyLandingStack';
@@ -82,6 +83,7 @@ import { resolveSettingsBackTarget } from '@synara-web/components/SidebarSetting
 import { resolveThreadPageBodyState } from './threadPageState.logic';
 import { sleepOnHost } from '../platform/timer';
 import { EmptyThreadContextTray } from './EmptyThreadContextTray.lynx';
+import { ThreadTerminal } from './ThreadTerminal.lynx';
 import { DiffDock } from './DiffDock.lynx';
 import { ExplorerDock } from './ExplorerDock.lynx';
 import {
@@ -322,6 +324,7 @@ interface ThreadPageProps {
   readonly explorerQuery: string;
   readonly explorerSelectedPath: string | null;
   readonly initialEnvironmentOpen: boolean;
+  readonly initialTerminalOpen: boolean;
   readonly initialTemporaryOpen: boolean;
   readonly initialExplorerWidth: number | null;
   readonly initialExplorerOpen: boolean;
@@ -490,6 +493,7 @@ function ThreadPage(props: ThreadPageProps) {
     explorerQuery,
     explorerSelectedPath,
     initialEnvironmentOpen,
+    initialTerminalOpen,
     initialTemporaryOpen,
     initialExplorerWidth,
     initialExplorerCommentLine,
@@ -514,6 +518,7 @@ function ThreadPage(props: ThreadPageProps) {
   );
   const [diffOpen, setDiffOpen] = useState(false);
   const [explorerOpen, setExplorerOpen] = useState(initialExplorerOpen);
+  const [terminalOpen, setTerminalOpen] = useState(initialTerminalOpen);
   const [threadPageWidth, setThreadPageWidth] = useState(0);
   const [diffDockWidth, setDiffDockWidth] = useState<number | null>(null);
   const [explorerDockWidth, setExplorerDockWidth] = useState<number | null>(() =>
@@ -617,6 +622,19 @@ function ThreadPage(props: ThreadPageProps) {
           />
         </view>
         <view className="ThreadHeaderControls">
+          <Button
+            variant="ghost"
+            size="xs"
+            disabled={!currentThread?.workspaceRoot}
+            onClick={() => {
+              setEnvironmentOpen(false);
+              setExplorerOpen(false);
+              setDiffOpen(false);
+              setTerminalOpen((open) => !open);
+            }}
+          >
+            Terminal
+          </Button>
           <view
             className={`${explorerToggle.className}${
               explorerOpen ? ' ThreadFilesToggle--active' : ''
@@ -679,6 +697,14 @@ function ThreadPage(props: ThreadPageProps) {
         </view>
       )}
       {bodyState.kind === 'empty' ? null : composer}
+      {currentThread?.workspaceRoot ? (
+        <ThreadTerminal
+          open={terminalOpen}
+          threadId={threadId}
+          workspaceRoot={currentThread.workspaceRoot}
+          onOpenChange={setTerminalOpen}
+        />
+      ) : null}
       {currentThread ? (
         <EnvironmentPanel
           bootstrapOnly={
@@ -760,6 +786,7 @@ function ThreadPage(props: ThreadPageProps) {
 
 export function SliceRouter({
   initialEnvironmentOpen,
+  initialTerminalOpen,
   initialTemporaryOpen,
   initialRoute,
   initialThreadBootstrap,
@@ -775,6 +802,7 @@ export function SliceRouter({
   onUiDensityChange,
 }: {
   readonly initialEnvironmentOpen: boolean;
+  readonly initialTerminalOpen: boolean;
   readonly initialTemporaryOpen: boolean;
   readonly initialRoute: string | null;
   readonly initialThreadBootstrap: {
@@ -1222,6 +1250,7 @@ export function SliceRouter({
         explorerQuery={explorerQuery}
         explorerSelectedPath={explorerSelectedPath}
         initialEnvironmentOpen={initialEnvironmentOpen}
+        initialTerminalOpen={initialTerminalOpen}
         initialTemporaryOpen={initialTemporaryOpen}
         initialExplorerWidth={initialExplorerWidth}
         initialExplorerOpen={initialExplorerOpen}

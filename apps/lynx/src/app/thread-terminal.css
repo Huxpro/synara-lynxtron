@@ -1,0 +1,84 @@
+.ThreadTerminal {
+  display: flex;
+  flex-direction: column;
+  height: 260px;
+  min-height: 260px;
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: var(--border);
+  background-color: var(--background);
+}
+
+.ThreadTerminalHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  min-height: 36px;
+  padding: 0 10px 0 14px;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: var(--border);
+}
+
+.ThreadTerminalTitle {
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.ThreadTerminalStatus {
+  color: var(--muted-foreground);
+  font-size: 11px;
+}
+
+.ThreadTerminalSpacer {
+  flex: 1;
+}
+
+.ThreadTerminalOutputScroller {
+  flex: 1;
+  min-height: 0;
+  padding: 10px 14px;
+  background-color: #101010;
+}
+
+.ThreadTerminalOutput {
+  color: #e8e8e8;
+  font-family: "SFMono-Regular", ui-monospace, monospace;
+  font-size: 12px;
+  line-height: 18px;
+  white-space: pre-wrap;
+}
+
+.ThreadTerminalError {
+  padding: 6px 14px;
+  color: var(--destructive);
+  font-size: 11px;
+}
+
+.ThreadTerminalCommandRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 6px 10px 6px 14px;
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: var(--border);
+}
+
+.ThreadTerminalCommandInput {
+  flex: 1;
+  min-width: 0;
+  height: 32px;
+  padding: 6px 10px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--input);
+  border-radius: 7px;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: "SFMono-Regular", ui-monospace, monospace;
+  font-size: 12px;
+}

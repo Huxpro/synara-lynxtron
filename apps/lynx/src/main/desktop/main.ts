@@ -418,7 +418,25 @@ app.whenReady().then(() => {
       }
 
       try {
-        if (name === 'synaraRpc' || name === 'synaraRpcStream') {
+        if (
+          name === 'synaraRpc' ||
+          name === 'synaraRpcStream' ||
+          name === 'terminalOpen' ||
+          name === 'terminalWrite' ||
+          name === 'terminalClose'
+        ) {
+          const rpcName =
+            name === 'terminalOpen'
+              ? 'terminal.open'
+              : name === 'terminalWrite'
+                ? 'terminal.write'
+                : name === 'terminalClose'
+                  ? 'terminal.close'
+                  : data.tag;
+          const rpcData =
+            name === 'synaraRpc' || name === 'synaraRpcStream'
+              ? data
+              : { tag: rpcName, payload: data };
           const result =
             name === 'synaraRpc' &&
             data.tag === NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG
@@ -435,9 +453,13 @@ app.whenReady().then(() => {
                           : '',
                     })
                 )
-              : await handleNativeRpc(name, data, (event) => {
+              : await handleNativeRpc(
+                  name === 'synaraRpcStream' ? 'synaraRpcStream' : 'synaraRpc',
+                  rpcData,
+                  (event) => {
                   w.sendGlobalEvent('synara:git-action-progress', event);
-                });
+                  }
+                );
           callback.sendReply(
             JSON.stringify({
               _tag: 'NativeRpcResult',

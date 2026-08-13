@@ -651,6 +651,27 @@ async function handleBridgeCall(
     if (method === 'synaraRpcStream') {
       return await synaraRpc(params.baseUrl, params.tag, params.payload, true);
     }
+    if (method === 'terminalOpen') {
+      return await synaraRpc(
+        params.baseUrl,
+        'terminal.open',
+        params
+      );
+    }
+    if (method === 'terminalWrite') {
+      return await synaraRpc(
+        params.baseUrl,
+        'terminal.write',
+        params
+      );
+    }
+    if (method === 'terminalClose') {
+      return await synaraRpc(
+        params.baseUrl,
+        'terminal.close',
+        params
+      );
+    }
     if (method === 'timerSleep') {
       const milliseconds = Number(params.milliseconds ?? 0);
       if (Number.isFinite(milliseconds) && milliseconds > 0) {
@@ -818,6 +839,8 @@ async function handleBridgeCall(
 pendingInitialRoute = resolveWebInitialRoute(globalThis.location.search);
 const initialEnvironmentOpen =
   new URLSearchParams(globalThis.location.search).get('environment') === 'open';
+const initialTerminalOpen =
+  new URLSearchParams(globalThis.location.search).get('terminal') === 'open';
 const initialTemporaryOpen =
   new URLSearchParams(globalThis.location.search).get('temporary') === 'open';
 const initialExplorerOpen =
@@ -863,6 +886,7 @@ webDocument.body.innerHTML = `
   style="height:100vh; width:100vw;"
   init-data='${JSON.stringify({
     initialEnvironmentOpen,
+    initialTerminalOpen,
     initialTemporaryOpen,
     initialExplorerOpen,
     initialExplorerActionMenuOpen,

@@ -342,6 +342,7 @@ export function parseSynaraDeepLink(raw: string): string | null {
 
 export interface SynaraDeepLinkInitData {
   readonly initialEnvironmentOpen: boolean;
+  readonly initialTerminalOpen: boolean;
   readonly initialExplorerOpen: boolean;
   readonly initialExplorerCommentLine: number | null;
   readonly initialExplorerExpandedDirectories: readonly string[];
@@ -386,6 +387,7 @@ export function parseSynaraDeepLinkInitData(raw: string): SynaraDeepLinkInitData
     const explorerWidthValue = Number(url.searchParams.get('explorerWidth'));
     return {
       initialEnvironmentOpen: url.searchParams.get('environment') === 'open',
+      initialTerminalOpen: url.searchParams.get('terminal') === 'open',
       initialExplorerOpen: url.searchParams.get('explorer') === 'open',
       initialExplorerCommentLine:
         Number.isInteger(explorerCommentLineValue) && explorerCommentLineValue > 0

@@ -46,6 +46,8 @@ describe('Lynx-for-Web initial route harness', () => {
     expect(hostSource).toContain('initialRoute: pendingInitialRoute,');
     expect(hostSource).toContain("get('temporary') === 'open'");
     expect(hostSource).toContain('initialTemporaryOpen,');
+    expect(hostSource).toContain("get('terminal') === 'open'");
+    expect(hostSource).toContain('initialTerminalOpen,');
     expect(hostSource).toContain("if (method === 'shellRendererReady')");
     expect(hostSource).toContain('return { ok: true, route }');
     expect(hostSource).not.toContain(
