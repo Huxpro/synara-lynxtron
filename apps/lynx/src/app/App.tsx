@@ -28,6 +28,7 @@ import {
 import { useViewportLayout } from '~/hooks/useViewportLayout';
 
 import { sliceUiDensityClassName } from './appDensity.logic';
+import { readPersistedAppearanceFallback } from './appHydration.logic';
 import {
   resolveSliceThemeVariables,
   sliceThemeClassName,
@@ -183,7 +184,7 @@ export function App() {
     let active = true;
     const threadMatch = initialRoute?.match(/^\/thread\/([^/]+)$/);
     void Promise.all([
-      readPersistedAppearance(),
+      readPersistedAppearanceFallback(readPersistedAppearance),
       threadMatch
         ? fetchSidebarSnapshot()
             .then((snapshot) => {
