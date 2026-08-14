@@ -1788,12 +1788,8 @@ function EnvironmentProjectInstructions(props: {
   useEffect(() => {
     'background only';
     let active = true;
-    void useProjectInstructionsStore.persist.rehydrate().then(() => {
+    const applyHydratedInstructions = (next: string) => {
       if (!active) return;
-      const next =
-        useProjectInstructionsStore.getState().instructionsByProjectId[
-          props.projectId
-        ] ?? '';
       valueRef.current = next;
       committedRef.current = next;
       setValue(next);
@@ -1802,7 +1798,16 @@ function EnvironmentProjectInstructions(props: {
       textareaRef.current
         ?.invoke({ method: 'setValue', params: { value: next } })
         .exec();
-    });
+    };
+    void useProjectInstructionsStore.persist.rehydrate().then(
+      () =>
+        applyHydratedInstructions(
+          useProjectInstructionsStore.getState().instructionsByProjectId[
+            props.projectId
+          ] ?? ''
+        ),
+      () => applyHydratedInstructions(storedInstructions)
+    );
     return () => {
       active = false;
     };
@@ -1845,9 +1850,13 @@ function EnvironmentProjectInstructions(props: {
   function scheduleInstructionsSave() {
     'background only';
     const generation = ++saveGenerationRef.current;
-    void sleepOnHost(500).then(() => {
-      if (saveGenerationRef.current === generation) flushInstructions();
-    });
+    void sleepOnHost(500)
+      .then(() => {
+        if (saveGenerationRef.current === generation) flushInstructions();
+      })
+      .catch(() => {
+        // The next edit or explicit blur/close flush remains authoritative.
+      });
   }
 
   async function copyToNotepad() {

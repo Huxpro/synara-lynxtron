@@ -265,6 +265,12 @@ describe('Lynx Environment panel', () => {
     expect(panelSource).toContain('No unresolved review comments.');
     expect(queriesSource).toContain('lastKnownPr: thread.lastKnownPr ?? null');
     expect(panelSource).toContain('useProjectInstructionsStore.persist.rehydrate()');
+    expect(panelSource).toContain(
+      '() => applyHydratedInstructions(storedInstructions)'
+    );
+    expect(panelSource).toContain(
+      'The next edit or explicit blur/close flush remains authoritative.'
+    );
     expect(panelSource).toContain('state.instructionsByProjectId[props.projectId]');
     expect(panelSource).toContain('setInstructions(props.projectId as never, next)');
     expect(panelSource).toContain('mergeProjectInstructionsIntoThreadNotes({');
