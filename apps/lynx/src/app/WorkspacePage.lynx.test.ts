@@ -36,6 +36,8 @@ describe('Lynx workspace surface', () => {
     expect(pageSource).toContain('presentationMode="workspace"');
     expect(pageSource).toContain('terminalId="default"');
     expect(pageSource).toContain('autoOpen');
+    expect(pageSource).toContain('deleteWorkspaceWithTerminalCleanup({');
+    expect(pageSource).toContain('closeTerminal: platformTerminal.close');
   });
 
   it('wires the optional workspace sidebar surface and create action', () => {

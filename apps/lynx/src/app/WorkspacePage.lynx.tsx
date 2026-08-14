@@ -10,6 +10,8 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input.lynx';
 import { fetchPluginLibraryServerConfig } from './queries';
 import { ThreadTerminal } from './ThreadTerminal.lynx';
+import { deleteWorkspaceWithTerminalCleanup } from './workspaceDeletion.logic';
+import { platformTerminal } from '../platform/terminal';
 import './workspace-page.css';
 
 export function WorkspacePage({
@@ -73,9 +75,13 @@ export function WorkspacePage({
     renameWorkspace(workspace.id, draftTitle);
     setRenaming(false);
   };
-  const removeWorkspace = () => {
+  const removeWorkspace = async () => {
     'background only';
-    deleteWorkspace(workspace.id);
+    await deleteWorkspaceWithTerminalCleanup({
+      workspaceId: workspace.id,
+      closeTerminal: platformTerminal.close,
+      deleteWorkspace,
+    });
     const nextWorkspaceId = useWorkspaceStore.getState().workspacePages[0]?.id;
     navigate(nextWorkspaceId ? `/workspace/${nextWorkspaceId}` : '/');
   };
@@ -110,7 +116,11 @@ export function WorkspacePage({
         >
           Terminal
         </Button>
-        <Button variant="outline" size="xs" onClick={removeWorkspace}>
+        <Button
+          variant="outline"
+          size="xs"
+          onClick={() => void removeWorkspace()}
+        >
           Delete workspace
         </Button>
       </view>
