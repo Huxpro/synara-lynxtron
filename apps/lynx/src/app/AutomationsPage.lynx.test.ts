@@ -131,7 +131,14 @@ describe('Lynx Automations route', () => {
     expect(dialogSource).toContain('Stop on error');
     expect(dialogSource).toContain('Interaction mode');
     expect(createLogicSource).toContain("runtimeMode: 'approval-required'");
-    expect(dialogSource).toContain('project?.defaultModelSelection ?? null');
+    expect(dialogSource).toContain('project?.defaultModelSelection ?? {');
+    expect(dialogSource).toContain(
+      'provider: generalSettings.defaultProvider'
+    );
+    expect(dialogSource).toContain(
+      'model: getDefaultModel(generalSettings.defaultProvider)'
+    );
+    expect(dialogSource).toContain('Boolean(project)');
     expect(dialogSource).toContain('Create automation');
     expect(dialogSource).not.toContain("model: 'gpt-");
   });

@@ -1,7 +1,13 @@
 import { createElement, useEffect, useState } from '@lynx-js/react';
 import type { AutomationCreateInput } from '@synara/contracts';
+import { getDefaultModel } from '@synara/shared/model';
+import {
+  APP_SETTINGS_STORAGE_KEY,
+  readSettingsGeneralProjection,
+} from '@synara-web/appSettingsStorageProjection.logic';
 
 import type { ProjectSummary } from './queries';
+import { webStorage } from '../platform/storage';
 import { Button } from '../components/ui/button';
 import {
   Dialog,
@@ -31,6 +37,9 @@ function NativeNameInput({
   readonly disabled: boolean;
   readonly onInput: (event: NativeTextInputEvent) => void;
 }) {
+  const generalSettings = readSettingsGeneralProjection(
+    webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
+  );
   return createElement('input', {
     className: 'AutomationCreateName',
     'accessibility-element': true,
@@ -156,16 +165,20 @@ export function AutomationCreateDialog({
     }
   }, [projectId, projects]);
   const project = projects.find((candidate) => candidate.id === projectId);
-  const modelSelection = project?.defaultModelSelection ?? null;
+  const modelSelection =
+    project?.defaultModelSelection ?? {
+      provider: generalSettings.defaultProvider,
+      model: getDefaultModel(generalSettings.defaultProvider),
+    };
   const canCreate =
     !pending &&
     name.trim().length > 0 &&
     prompt.trim().length > 0 &&
     (schedule === 'manual' || /^(?:[01]\d|2[0-3]):[0-5]\d$/u.test(timeOfDay)) &&
-    Boolean(project && modelSelection);
+    Boolean(project);
 
   const submit = () => {
-    if (!canCreate || !project || !modelSelection) return;
+    if (!canCreate || !project) return;
     onCreate(buildAutomationCreateInput({
       projectId: project.id as AutomationCreateInput['projectId'],
       interactionMode,
