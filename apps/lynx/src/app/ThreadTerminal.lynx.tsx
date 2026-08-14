@@ -75,6 +75,7 @@ export function ThreadTerminal({
     setPending(true);
     void refresh()
       .catch((cause) => {
+        autoOpenAttemptKeyRef.current = null;
         setError(cause instanceof Error ? cause.message : String(cause));
       })
       .finally(() => setPending(false));
