@@ -26,10 +26,15 @@ function useHostPolling(poll: () => Promise<unknown>, delayMs: number): void {
     'background only';
     let cancelled = false;
     const schedule = () => {
-      void sleepOnHost(delayMs).then(() => {
-        if (cancelled) return;
-        void pollRef.current().finally(schedule);
-      });
+      void sleepOnHost(delayMs)
+        .then(async () => {
+          if (cancelled) return;
+          await pollRef.current().catch(() => undefined);
+          if (!cancelled) schedule();
+        })
+        .catch(() => {
+          if (!cancelled) schedule();
+        });
     };
     schedule();
     return () => {
