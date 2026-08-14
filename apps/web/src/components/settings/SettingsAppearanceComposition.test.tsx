@@ -23,6 +23,7 @@ describe("SettingsAppearanceComposition", () => {
         values={{ ...defaults, uiDensity: "compact" }}
         defaults={defaults}
         resolvedTheme="light"
+        showCodeThemeSelection
         showFontSmoothing
         showTimestampFormat
         themeState={DEFAULT_THEME_STATE}
@@ -34,6 +35,7 @@ describe("SettingsAppearanceComposition", () => {
     expect(markup).toContain("Use system UI font");
     expect(markup).toContain("Terminal font");
     expect(markup).toContain("Time and reading");
+    expect(markup).toContain('aria-label="Light theme code theme"');
     expect(markup).toContain("Reset ui density to default");
   });
 });

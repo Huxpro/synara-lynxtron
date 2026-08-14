@@ -40,6 +40,7 @@ export function SettingsAppearanceComposition(props: {
   readonly values: SettingsAppearanceValues;
   readonly defaults: SettingsAppearanceValues;
   readonly resolvedTheme: "light" | "dark";
+  readonly showCodeThemeSelection: boolean;
   readonly showFontSmoothing: boolean;
   readonly showTimestampFormat: boolean;
   readonly themeState: ThemeState;
@@ -117,6 +118,7 @@ export function SettingsAppearanceComposition(props: {
             return (
               <ThemePackEditorComposition
                 key={variant}
+                showCodeThemeSelection={props.showCodeThemeSelection}
                 variant={variant}
                 isActive={props.resolvedTheme === variant}
                 mode={props.values.themeMode}

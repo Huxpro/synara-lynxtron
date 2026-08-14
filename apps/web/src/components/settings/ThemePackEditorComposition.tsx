@@ -28,6 +28,7 @@ import type {
 } from "../../theme/theme.logic";
 
 export type ThemePackEditorCompositionProps = {
+  readonly showCodeThemeSelection: boolean;
   readonly variant: ThemeVariant;
   readonly isActive: boolean;
   readonly mode: ThemeMode;
@@ -65,14 +66,16 @@ export function ThemePackEditorComposition(
           variant={props.variant}
           shareString={props.shareString}
         />
-        <ThemePackCodeThemeControlElement
-          ariaLabel={`${model.titleLabel} code theme`}
-          value={props.pack.codeThemeId}
-          label={model.codeThemeLabel}
-          theme={theme}
-          options={model.codeThemes}
-          onChange={props.onSetCodeThemeId}
-        />
+        {props.showCodeThemeSelection ? (
+          <ThemePackCodeThemeControlElement
+            ariaLabel={`${model.titleLabel} code theme`}
+            value={props.pack.codeThemeId}
+            label={model.codeThemeLabel}
+            theme={theme}
+            options={model.codeThemes}
+            onChange={props.onSetCodeThemeId}
+          />
+        ) : null}
       </ThemePackHeaderElement>
 
       <ThemePackContextElement>{model.contextLabel}</ThemePackContextElement>

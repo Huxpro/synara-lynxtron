@@ -225,6 +225,7 @@ function SettingsRouteView() {
         timestampFormat: defaults.timestampFormat,
       }}
       resolvedTheme={resolvedTheme}
+      showCodeThemeSelection
       showFontSmoothing={shouldShowFontSmoothing}
       showTimestampFormat
       themeState={themeState}

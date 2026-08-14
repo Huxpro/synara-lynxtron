@@ -102,6 +102,9 @@ describe('shared settings navigation projection', () => {
     expect(source).toContain(
       'desktopStatus="System notifications are unavailable in this runtime."'
     );
+    expect(source).toContain('showCodeThemeSelection={false}');
+    expect(source).toContain('showFontSmoothing={false}');
+    expect(source).toContain('showTimestampFormat={false}');
     expect(source).toMatch(
       /<SettingsGeneralBooleanControlElement\s+checked=\{checked\}\s+disabled/s
     );

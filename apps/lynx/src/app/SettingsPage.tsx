@@ -815,6 +815,7 @@ export function SettingsPage({
                   values={appearance}
                   defaults={DEFAULT_SETTINGS_APPEARANCE_VALUES}
                   resolvedTheme={resolvedTheme}
+                  showCodeThemeSelection={false}
                   showFontSmoothing={false}
                   showTimestampFormat={false}
                   themeState={themeState}
