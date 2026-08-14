@@ -100,11 +100,13 @@ function TranscriptWorkEntries({
 }
 
 function TranscriptMessage({
+  chatFontSizePx,
   onOpenFileReference,
   row,
   threadId,
   workspaceRoot,
 }: {
+  readonly chatFontSizePx: number;
   readonly onOpenFileReference?: (relativePath: string) => void;
   row: MessageTranscriptRow;
   threadId: string;
@@ -169,7 +171,11 @@ function TranscriptMessage({
         <MessageUserBubbleComposition>
           <view
             className="TranscriptUserText"
-            style={getChatTranscriptUserMessageTextStyle() as Record<string, string>}
+            style={
+              getChatTranscriptUserMessageTextStyle(
+                chatFontSizePx
+              ) as Record<string, string>
+            }
           >
             <ChatMarkdown
               cwd={workspaceRoot}
@@ -209,7 +215,13 @@ function TranscriptMessage({
         <TranscriptWorkEntries entries={leadingWorkEntries} />
         {assistantText === null ? null : (
           <view className="TranscriptAssistantContent">
-            <view style={getChatTranscriptTextStyle() as Record<string, string>}>
+            <view
+              style={
+                getChatTranscriptTextStyle(
+                  chatFontSizePx
+                ) as Record<string, string>
+              }
+            >
               <ChatMarkdown
                 cwd={workspaceRoot}
                 onOpenFileReference={onOpenFileReference}
@@ -235,11 +247,13 @@ function TranscriptMessage({
 }
 
 function TranscriptRowContent({
+  chatFontSizePx,
   onOpenFileReference,
   row,
   threadId,
   workspaceRoot,
 }: {
+  readonly chatFontSizePx: number;
   readonly onOpenFileReference?: (relativePath: string) => void;
   row: ThreadTranscriptRow;
   threadId: string;
@@ -248,6 +262,7 @@ function TranscriptRowContent({
   if (row.kind === 'message') {
     return (
       <TranscriptMessage
+        chatFontSizePx={chatFontSizePx}
         onOpenFileReference={onOpenFileReference}
         row={row}
         threadId={threadId}
@@ -305,12 +320,14 @@ export interface TranscriptController {
 }
 
 export function Transcript({
+  chatFontSizePx,
   onOpenFileReference,
   rows,
   threadId,
   onController,
   workspaceRoot,
 }: {
+  readonly chatFontSizePx: number;
   readonly onOpenFileReference?: (relativePath: string) => void;
   readonly rows: readonly ThreadTranscriptRow[];
   readonly threadId: string;
@@ -472,9 +489,13 @@ export function Transcript({
           <list-item
             item-key={row.id}
             key={row.id}
-            estimated-main-axis-size-px={estimateTranscriptRowMainAxisSize(row)}
+            estimated-main-axis-size-px={estimateTranscriptRowMainAxisSize(
+              row,
+              chatFontSizePx
+            )}
           >
             <TranscriptRowContent
+              chatFontSizePx={chatFontSizePx}
               onOpenFileReference={onOpenFileReference}
               row={row}
               threadId={threadId}

@@ -20,7 +20,7 @@ import {
 import type { InputRef } from '@lynx-js/lynx-ui';
 import { useQuery } from '@tanstack/react-query';
 import type { ProviderKind, ServerProviderStatus } from '@synara/contracts';
-import type { UiDensity } from '@synara-web/lib/appDensity';
+import type { SettingsAppearanceValues } from '@synara-web/components/settings/SettingsAppearanceComposition.logic';
 import type { ThemeState } from '@synara-web/theme/theme.logic';
 import type { SettingsSectionId } from '@synara-web/settingsNavigation';
 import { isProviderKind } from '@synara-web/providerOrdering';
@@ -334,6 +334,7 @@ function ThreadsLandingPage(props: {
 }
 
 interface ThreadPageProps {
+  readonly appearance: SettingsAppearanceValues;
   readonly currentThread: Awaited<ReturnType<typeof fetchThreadHeaderSummary>>;
   readonly data: Awaited<ReturnType<typeof fetchThreadTranscriptRows>> | undefined;
   readonly error: unknown;
@@ -513,6 +514,7 @@ function ThreadRightDocks(
 
 function ThreadPage(props: ThreadPageProps) {
   const {
+    appearance,
     currentThread,
     data,
     error,
@@ -770,6 +772,7 @@ function ThreadPage(props: ThreadPageProps) {
     bodyState.kind === 'transcript' ? (
       <ComposerColumnFrameSurface className="ThreadTranscriptColumn">
         <Transcript
+          chatFontSizePx={appearance.chatFontSizePx}
           workspaceRoot={currentThread?.workspaceRoot ?? null}
           rows={bodyState.rows}
           threadId={threadId}
@@ -1081,6 +1084,7 @@ function ThreadPage(props: ThreadPageProps) {
 }
 
 export function SliceRouter({
+  appearance,
   initialEditorOpen,
   initialEnvironmentOpen,
   initialRenameOpen,
@@ -1096,9 +1100,10 @@ export function SliceRouter({
   initialExplorerWidth,
   resolvedTheme,
   viewportWidth,
+  onAppearanceChange,
   onThemeStateChange,
-  onUiDensityChange,
 }: {
+  readonly appearance: SettingsAppearanceValues;
   readonly initialEditorOpen: boolean;
   readonly initialEnvironmentOpen: boolean;
   readonly initialRenameOpen: boolean;
@@ -1140,8 +1145,8 @@ export function SliceRouter({
   readonly initialExplorerWidth: number | null;
   readonly resolvedTheme: 'dark' | 'light';
   readonly viewportWidth: number;
+  readonly onAppearanceChange: (appearance: SettingsAppearanceValues) => void;
   readonly onThemeStateChange: (state: ThemeState) => void;
-  readonly onUiDensityChange: (density: UiDensity) => void;
 }) {
   const [route, setRoute] = useRoute(initialRoute);
   const navigation = useMemoryNavigationState();
@@ -1551,14 +1556,15 @@ export function SliceRouter({
         sidebarOpen={sidebarOpen}
         openTitlebarControls={openTitlebarControls}
         closedTitlebarControls={closedTitlebarControls}
+        onAppearanceChange={onAppearanceChange}
         onThemeStateChange={onThemeStateChange}
-        onUiDensityChange={onUiDensityChange}
       />
     );
   } else if (route.pathname === '/thread/$threadId') {
     page = (
       <ThreadPage
         key={route.params.threadId}
+        appearance={appearance}
         currentThread={resolvedActiveThreadData?.summary}
         data={resolvedActiveThreadData?.data}
         environmentData={resolvedActiveThreadData?.environment ?? null}

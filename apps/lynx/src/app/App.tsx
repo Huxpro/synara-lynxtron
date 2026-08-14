@@ -5,13 +5,11 @@ import { QueryClientProvider } from '@tanstack/react-query';
 
 import {
   APP_SETTINGS_STORAGE_KEY,
+  DEFAULT_SETTINGS_APPEARANCE_VALUES,
   readSettingsAppearanceProjection,
   THEME_STORAGE_KEY,
 } from '@synara-web/appSettingsStorageProjection.logic';
-import {
-  DEFAULT_UI_DENSITY,
-  type UiDensity,
-} from '@synara-web/lib/appDensity';
+import type { SettingsAppearanceValues } from '@synara-web/components/settings/SettingsAppearanceComposition.logic';
 import {
   DEFAULT_THEME_STATE,
   parseStoredThemeState,
@@ -58,8 +56,8 @@ import { Button } from '../components/ui/button';
 import './App.css';
 
 async function readPersistedAppearance(): Promise<{
+  readonly appearance: SettingsAppearanceValues;
   readonly themeState: ThemeState;
-  readonly uiDensity: UiDensity;
 }> {
   'background only';
   const { hydrateStorage, webStorage } = await import(
@@ -78,11 +76,11 @@ async function readPersistedAppearance(): Promise<{
   ]);
   const themeRaw = webStorage.getItem(THEME_STORAGE_KEY);
   return {
-    themeState: parseStoredThemeState(themeRaw),
-    uiDensity: readSettingsAppearanceProjection(
+    appearance: readSettingsAppearanceProjection(
       webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
       themeRaw
-    ).uiDensity,
+    ),
+    themeState: parseStoredThemeState(themeRaw),
   };
 }
 
@@ -168,8 +166,9 @@ export function App() {
     readonly summary: Awaited<ReturnType<typeof fetchThreadHeaderSummary>>;
     readonly threadId: string;
   } | null>(null);
-  const [uiDensity, setUiDensity] =
-    useState<UiDensity>(DEFAULT_UI_DENSITY);
+  const [appearance, setAppearance] = useState<SettingsAppearanceValues>(
+    DEFAULT_SETTINGS_APPEARANCE_VALUES
+  );
   const [themeState, setThemeState] =
     useState<ThemeState>(DEFAULT_THEME_STATE);
   const viewportLayout = useViewportLayout();
@@ -273,7 +272,7 @@ export function App() {
         : null,
     ]).then(([appearance, thread]) => {
       if (!active) return;
-      setUiDensity(appearance.uiDensity);
+      setAppearance(appearance.appearance);
       setThemeState(appearance.themeState);
       if (threadMatch && thread) {
         setInitialThreadBootstrap({
@@ -310,7 +309,7 @@ export function App() {
         className={[
           'SliceRoot',
           sliceThemeClassName(themeState, systemDark),
-          sliceUiDensityClassName(uiDensity),
+          sliceUiDensityClassName(appearance.uiDensity),
           viewportLayoutClassName(viewportLayout),
           viewportBreakpointClassNames(viewportLayout),
           viewportHeightClassNames(viewportLayout),
@@ -371,10 +370,11 @@ export function App() {
               initialExplorerExpandedDirectories
             }
             initialExplorerWidth={initialExplorerWidth}
+            appearance={appearance}
             resolvedTheme={resolveThemeVariant(themeState.mode, systemDark)}
             viewportWidth={viewportLayout.width}
+            onAppearanceChange={setAppearance}
             onThemeStateChange={setThemeState}
-            onUiDensityChange={setUiDensity}
           />
         ) : (
           <view className="AppHydrationState">

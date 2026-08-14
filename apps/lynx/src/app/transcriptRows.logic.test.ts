@@ -202,6 +202,21 @@ describe('estimateTranscriptRowMainAxisSize', () => {
       )
     ).toBeGreaterThan(5_000);
   });
+
+  it('scales wrapping and line height with the configured chat font size', () => {
+    const row = messageRow({
+      message: {
+        ...messageRow().message,
+        text: 'Configured transcript typography remains aligned with virtualization. '.repeat(
+          12
+        ),
+      },
+    });
+
+    expect(estimateTranscriptRowMainAxisSize(row, 20)).toBeGreaterThan(
+      estimateTranscriptRowMainAxisSize(row, 11)
+    );
+  });
 });
 
 describe('transcriptRowVersion', () => {

@@ -1,4 +1,8 @@
 import type { ThreadTranscriptRow } from './queries';
+import {
+  DEFAULT_CHAT_FONT_SIZE_PX,
+  normalizeChatFontSizePx,
+} from '@synara-web/chatFontSize';
 
 export type MessageTranscriptRow = Extract<ThreadTranscriptRow, { kind: 'message' }>;
 export type WorkLogEntry = Extract<ThreadTranscriptRow, { kind: 'work' }>['groupedEntries'][number];
@@ -95,10 +99,16 @@ export function buildTranscriptScrollToBottomParams(
 }
 
 export function estimateTranscriptRowMainAxisSize(
-  row: ThreadTranscriptRow
+  row: ThreadTranscriptRow,
+  chatFontSizePx = DEFAULT_CHAT_FONT_SIZE_PX
 ): number {
   if (row.kind !== 'message') return 96;
 
+  const normalizedChatFontSizePx = normalizeChatFontSizePx(chatFontSizePx);
+  const typographyScale =
+    normalizedChatFontSizePx / DEFAULT_CHAT_FONT_SIZE_PX;
+  const estimatedCharsPerLine =
+    TRANSCRIPT_ESTIMATED_CHARS_PER_LINE / typographyScale;
   const text = row.message.text ?? '';
   const physicalLines = text.split('\n');
   const wrappedLineCount = physicalLines.reduce(
@@ -106,13 +116,13 @@ export function estimateTranscriptRowMainAxisSize(
       count +
       Math.max(
         1,
-        Math.ceil(line.length / TRANSCRIPT_ESTIMATED_CHARS_PER_LINE)
+        Math.ceil(line.length / estimatedCharsPerLine)
       ),
     0
   );
   const estimate =
     72 +
-    wrappedLineCount * TRANSCRIPT_ESTIMATED_LINE_HEIGHT_PX +
+    wrappedLineCount * TRANSCRIPT_ESTIMATED_LINE_HEIGHT_PX * typographyScale +
     Math.max(0, physicalLines.length - 1) * TRANSCRIPT_MARKDOWN_BLOCK_GAP_PX;
 
   return Math.max(row.message.role === 'user' ? 92 : 96, estimate);

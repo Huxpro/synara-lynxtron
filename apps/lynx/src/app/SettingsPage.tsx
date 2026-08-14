@@ -371,18 +371,16 @@ export function SettingsPage({
   sidebarOpen,
   openTitlebarControls,
   closedTitlebarControls,
+  onAppearanceChange,
   onThemeStateChange,
-  onUiDensityChange,
 }: {
   readonly initialSection?: SettingsSectionId;
   readonly onBack: () => void;
   readonly sidebarOpen: boolean;
   readonly openTitlebarControls: ReactNode;
   readonly closedTitlebarControls: ReactNode;
+  readonly onAppearanceChange: (appearance: SettingsAppearanceValues) => void;
   readonly onThemeStateChange: (state: ThemeState) => void;
-  readonly onUiDensityChange: (
-    density: SettingsAppearanceValues['uiDensity']
-  ) => void;
 }) {
   const [settings, setSettings] = useState(DEFAULT_SETTINGS_GENERAL_VALUES);
   const [appearance, setAppearance] = useState(
@@ -455,8 +453,8 @@ export function SettingsPage({
         setModelOptions(value.modelOptions);
         setKeybindings(value.keybindings);
         setThemeState(value.themeState);
+        onAppearanceChange(value.appearance);
         onThemeStateChange(value.themeState);
-        onUiDensityChange(value.appearance.uiDensity);
         setPersistenceState({ kind: 'loaded' });
         setHydrationState('ready');
       })
@@ -467,7 +465,7 @@ export function SettingsPage({
     return () => {
       active = false;
     };
-  }, [loadAttempt, onThemeStateChange, onUiDensityChange]);
+  }, [loadAttempt, onAppearanceChange, onThemeStateChange]);
 
   function runSave(
     operation: () => Promise<SettingsPersistOutcome | void>
@@ -536,8 +534,8 @@ export function SettingsPage({
     if (section === 'appearance') {
       setAppearance(DEFAULT_SETTINGS_APPEARANCE_VALUES);
       setThemeState(DEFAULT_THEME_STATE);
+      onAppearanceChange(DEFAULT_SETTINGS_APPEARANCE_VALUES);
       onThemeStateChange(DEFAULT_THEME_STATE);
-      onUiDensityChange(DEFAULT_SETTINGS_APPEARANCE_VALUES.uiDensity);
       runSave(() =>
         persistAppearanceSettings(
           DEFAULT_SETTINGS_APPEARANCE_VALUES,
@@ -644,10 +642,8 @@ export function SettingsPage({
     if (!ready) return;
     const next = { ...appearance, [key]: value };
     setAppearance(next);
+    onAppearanceChange(next);
     let nextThemeState = themeState;
-    if (key === 'uiDensity') {
-      onUiDensityChange(next.uiDensity);
-    }
     if (key === 'themeMode') {
       nextThemeState = {
         ...themeState,
