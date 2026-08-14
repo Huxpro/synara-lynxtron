@@ -105,7 +105,16 @@ export function PullRequestCodeDisclosureElement(
   );
 }
 
-export function PullRequestCodeLinesElement(props: ChildrenProps) {
+export function PullRequestCodeLinesElement(
+  props: ChildrenProps & { readonly wordWrap: boolean }
+) {
+  if (props.wordWrap) {
+    return (
+      <view className="SharedPrCodeLines SharedPrCodeLines--wrap">
+        <view className="SharedPrCodeLinesContent">{props.children}</view>
+      </view>
+    );
+  }
   return (
     <scroll-view
       className="SharedPrCodeLines"
@@ -121,6 +130,7 @@ export function PullRequestCodeLineElement(props: {
   readonly oldLine: number | null;
   readonly newLine: number | null;
   readonly text: string;
+  readonly wordWrap: boolean;
 }) {
   const prefix =
     props.kind === 'addition'
@@ -131,7 +141,11 @@ export function PullRequestCodeLineElement(props: {
           ? '@'
           : ' ';
   return (
-    <view className={`SharedPrCodeLine SharedPrCodeLine--${props.kind}`}>
+    <view
+      className={`SharedPrCodeLine SharedPrCodeLine--${props.kind}${
+        props.wordWrap ? ' SharedPrCodeLine--wrap' : ''
+      }`}
+    >
       <text className="SharedPrCodeLineNumber">{props.oldLine ?? ''}</text>
       <text className="SharedPrCodeLineNumber">{props.newLine ?? ''}</text>
       <text className="SharedPrCodeLinePrefix">{prefix}</text>

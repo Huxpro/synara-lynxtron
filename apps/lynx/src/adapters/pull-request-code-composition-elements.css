@@ -111,12 +111,21 @@
   min-width: 100%;
 }
 
+.SharedPrCodeLines--wrap,
+.SharedPrCodeLines--wrap .SharedPrCodeLinesContent {
+  width: 100%;
+}
+
 .SharedPrCodeLine {
   min-width: 100%;
   min-height: 20px;
   display: flex;
   flex-direction: row;
   align-items: stretch;
+}
+
+.SharedPrCodeLine--wrap {
+  min-width: 0;
 }
 
 .SharedPrCodeLine--addition {
@@ -173,6 +182,10 @@
   font-size: var(--app-font-size-chat-code, 11px);
   line-height: 20px;
   white-space: pre;
+}
+
+.SharedPrCodeLine--wrap .SharedPrCodeLineText {
+  white-space: pre-wrap;
 }
 
 .SharedPrCodeLine--hunk .SharedPrCodeLineText,

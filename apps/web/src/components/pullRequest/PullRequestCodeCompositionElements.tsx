@@ -70,8 +70,19 @@ export function PullRequestCodeDisclosureElement(
   return <DisclosureRegion open={props.expanded}>{props.children}</DisclosureRegion>;
 }
 
-export function PullRequestCodeLinesElement(props: ChildrenProps) {
-  return <div className="overflow-x-auto bg-background font-mono text-[11px] leading-5">{props.children}</div>;
+export function PullRequestCodeLinesElement(
+  props: ChildrenProps & { readonly wordWrap: boolean },
+) {
+  return (
+    <div
+      className={cn(
+        "bg-background font-mono text-[11px] leading-5",
+        props.wordWrap ? "overflow-x-hidden" : "overflow-x-auto",
+      )}
+    >
+      {props.children}
+    </div>
+  );
 }
 
 export function PullRequestCodeLineElement(props: {
@@ -79,14 +90,22 @@ export function PullRequestCodeLineElement(props: {
   readonly oldLine: number | null;
   readonly newLine: number | null;
   readonly text: string;
+  readonly wordWrap: boolean;
 }) {
   const prefix = props.kind === "addition" ? "+" : props.kind === "deletion" ? "-" : props.kind === "hunk" ? "@" : " ";
   return (
-    <div className={cn("flex min-w-max", props.kind === "addition" && "bg-success/10", props.kind === "deletion" && "bg-destructive/10", props.kind === "hunk" && "bg-muted/60 text-muted-foreground")}>
+    <div className={cn("flex", props.wordWrap ? "min-w-0" : "min-w-max", props.kind === "addition" && "bg-success/10", props.kind === "deletion" && "bg-destructive/10", props.kind === "hunk" && "bg-muted/60 text-muted-foreground")}>
       <span className="w-10 shrink-0 select-none px-1 text-right text-muted-foreground">{props.oldLine ?? ""}</span>
       <span className="w-10 shrink-0 select-none px-1 text-right text-muted-foreground">{props.newLine ?? ""}</span>
       <span className="w-5 shrink-0 select-none text-center">{prefix}</span>
-      <span className="whitespace-pre pr-3">{props.text}</span>
+      <span
+        className={cn(
+          "min-w-0 pr-3",
+          props.wordWrap ? "whitespace-pre-wrap wrap-break-word" : "whitespace-pre",
+        )}
+      >
+        {props.text}
+      </span>
     </div>
   );
 }

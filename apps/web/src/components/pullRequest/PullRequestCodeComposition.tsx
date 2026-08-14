@@ -42,6 +42,7 @@ export function PullRequestCodeStateComposition(props: {
 export function PullRequestCodeComposition(props: {
   readonly view: PullRequestCodeView;
   readonly truncated: boolean;
+  readonly wordWrap?: boolean;
   readonly expandedFileKeys: readonly string[];
   readonly visibleLineCounts: Readonly<Record<string, number>>;
   readonly rawVisibleLineCount: number;
@@ -72,9 +73,13 @@ export function PullRequestCodeComposition(props: {
               onActivate={() => {}}
             />
             <PullRequestCodeDisclosureElement expanded>
-              <PullRequestCodeLinesElement>
+              <PullRequestCodeLinesElement wordWrap={props.wordWrap ?? false}>
                 {props.view.lines.slice(0, props.rawVisibleLineCount).map((line) => (
-                  <PullRequestCodeLineElement key={line.id} {...line} />
+                  <PullRequestCodeLineElement
+                    key={line.id}
+                    {...line}
+                    wordWrap={props.wordWrap ?? false}
+                  />
                 ))}
               </PullRequestCodeLinesElement>
               {props.rawVisibleLineCount < props.view.lines.length ? (
@@ -107,9 +112,13 @@ export function PullRequestCodeComposition(props: {
                   onActivate={() => props.onToggleFile(file.key)}
                 />
                 <PullRequestCodeDisclosureElement expanded={isExpanded}>
-                    <PullRequestCodeLinesElement>
+                    <PullRequestCodeLinesElement wordWrap={props.wordWrap ?? false}>
                       {file.lines.slice(0, visibleLineCount).map((line) => (
-                        <PullRequestCodeLineElement key={line.id} {...line} />
+                        <PullRequestCodeLineElement
+                          key={line.id}
+                          {...line}
+                          wordWrap={props.wordWrap ?? false}
+                        />
                       ))}
                     </PullRequestCodeLinesElement>
                     {visibleLineCount < file.lines.length ? (

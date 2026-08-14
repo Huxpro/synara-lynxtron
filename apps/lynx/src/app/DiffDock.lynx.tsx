@@ -5,11 +5,16 @@ import {
   PullRequestCodeComposition,
 } from '@synara-web/components/pullRequest/PullRequestCodeComposition';
 import { buildPullRequestCodeView } from '@synara-web/components/pullRequest/pullRequestCode.logic';
+import {
+  APP_SETTINGS_STORAGE_KEY,
+  readSettingsBehaviorProjection,
+} from '@synara-web/appSettingsStorageProjection.logic';
 
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { RefreshCwIcon, XIcon } from '../lib/icons.lynx';
 import { fetchWorkingTreeDiff } from '../data/synaraClient.lynx';
 import { ResizableRightPanel } from './ResizableRightPanel.lynx';
+import { webStorage } from '../platform/storage';
 
 import './diff-dock.css';
 
@@ -31,6 +36,9 @@ export function DiffDock(props: {
   const [rawVisibleLineCount, setRawVisibleLineCount] = useState(
     PULL_REQUEST_DIFF_INITIAL_LINE_COUNT
   );
+  const diffWordWrap = readSettingsBehaviorProjection(
+    webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
+  ).diffWordWrap;
 
   useEffect(() => {
     'background only';
@@ -131,6 +139,7 @@ export function DiffDock(props: {
           </view>
         ) : (
           <PullRequestCodeComposition
+            wordWrap={diffWordWrap}
             view={view}
             truncated={false}
             expandedFileKeys={expandedFileKeys}
