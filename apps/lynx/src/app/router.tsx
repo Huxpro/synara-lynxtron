@@ -69,6 +69,7 @@ import {
 } from './FeatureListsPage';
 import { AutomationsPage } from './AutomationsPage.lynx';
 import { PluginLibraryPage } from './PluginLibraryPage.lynx';
+import { resolveLandingRoutePresentation } from './landingRoutePresentation.logic';
 import { WorkspacePage } from './WorkspacePage.lynx';
 import { Composer } from '../components/composer/Composer.lynx';
 import { Button } from '../components/ui/button';
@@ -299,12 +300,16 @@ function ThreadsLandingPage(props: {
   });
   const providerStatuses = landingBootstrap?.serverConfig.providers ?? [];
   const providerHealth = useProviderHealthBanner('codex', providerStatuses);
+  const routePresentation = resolveLandingRoutePresentation({
+    initialProjectId: props.initialProjectId,
+    projects: landingBootstrap?.projects ?? [],
+  });
   return (
     <view className="ThreadsLanding">
       <ChatSurfaceHeaderFrame>
         <view className="ThreadsLandingHeaderIdentity">
           <ChatSurfaceHeaderIdentity
-            title="New Chat"
+            title={routePresentation.headerTitle}
             icon={<OpenAIProviderIcon />}
             iconTitle="Codex"
           />
@@ -320,7 +325,9 @@ function ThreadsLandingPage(props: {
       >
         <view className="ThreadsLandingBodyInner">
           <CenteredEmptyLandingStack>
-            <CenteredEmptyLanding />
+            <CenteredEmptyLanding
+              projectName={routePresentation.projectName}
+            />
             <ComposerColumnFrameSurface>
               <LandingComposer
                 containerKind={props.containerKind}

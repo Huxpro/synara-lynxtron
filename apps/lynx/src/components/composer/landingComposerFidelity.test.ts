@@ -47,7 +47,12 @@ describe('landing composer fidelity contract', () => {
     );
 
     expect(routerSource).toContain('<CenteredEmptyLandingStack>');
-    expect(routerSource).toContain('<CenteredEmptyLanding />');
+    expect(routerSource).toContain(
+      'projectName={routePresentation.projectName}'
+    );
+    expect(routerSource).toContain(
+      'title={routePresentation.headerTitle}'
+    );
     expect(routerSource).toContain('<ComposerColumnFrameSurface>');
     expect(routerSource).toContain('<LandingComposer');
     expect(routerSource).toContain(
