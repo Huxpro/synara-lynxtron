@@ -97,3 +97,103 @@
   contribution remains `1.00`.
 - `native-studio-devtool-fixed-port`: harness blocker,
   contribution remains `0.00` product loss.
+
+## Paired visual continuation
+
+### Comparable harness
+
+- Reused the isolated state created for the project-scoped new-thread matrix:
+  `.synara-fidelity-new-thread-visual/dev/state.sqlite`.
+- Shared server: `ws://127.0.0.1:59140`.
+- Web authority trusted origin: `http://localhost:9141`.
+- Lynx-for-Web trusted origin: `http://localhost:8080`.
+- The server was restarted only to switch trusted origin; both renderers used
+  the same persisted snapshot.
+- Web `/studio` created/reused its draft through the real
+  `RestoreOrCreateChatRoute` flow and settled at draft route
+  `c4408d06-b53b-4899-9a8c-18fdfb651844`.
+
+### Baseline parity
+
+- Both renderers show:
+  - `New Chat`;
+  - `What should we work on?`;
+  - `Full access`;
+  - `GPT-5.5`;
+  - the Studio sidebar surface.
+- Web wide heading:
+  `x=607.81`, `y=407.25`, `320.36x34.5`.
+- Lynx wide heading:
+  `x=607.5`, `y=426`, `321x35`.
+- The `18.75px` vertical offset is retained as a visible composition residual,
+  not promoted to P0/P1 because the screen remains fully usable and its
+  semantic hierarchy matches.
+
+### Product loss
+
+- `lynx-studio-folder-picker-missing`: P1 interaction parity,
+  contribution `1.00 -> 0.00`.
+- Before:
+  - Web rendered `Use a folder` at `x=408`, `y=560.75`, `97.44x28`.
+  - Lynx hid the entire landing tray whenever
+    `containerKind === 'studio'`.
+- Root cause:
+  - Lynx already loaded the local folder catalog and already owned the shared
+    project/folder picker, but the Studio branch returned `null` instead of
+    rendering it.
+- Fix:
+  - Reuse the shared picker with Studio copy:
+    `Use a folder`, `Choose a folder`, `Don't use a folder`, and
+    `Search folders`.
+  - Keep Studio folder state separate from ordinary project selection.
+  - A picked folder changes only the composer workspace and the eventual
+    thread `worktreePath`.
+  - The hidden Studio project remains the `thread.create.projectId`; no
+    ordinary `project.create` is dispatched for a Studio folder choice.
+  - Resetting returns to the Studio root.
+- After:
+  - Lynx renders `Use a folder` at
+    `x=408`, `y=560`, `97.44x28`, matching Web's control width and horizontal
+    position.
+  - Compact `390x844` uses the compact root, no mounted sidebar, a
+    `366x133` composer, and the folder control remains visible.
+
+### Interaction and harness boundary
+
+- `agent-browser` can access the Studio textarea but Lynx Web Core still does
+  not expose the `bindtap` folder trigger/menu in its accessibility tree.
+- A rendered custom-element `.click()` was used only to attempt visual-state
+  setup. The menu could not be observed through the Web Core shadow boundary,
+  so no pointer/menu interaction pass is claimed.
+- The folder selection contract is covered by pure tests and source wiring,
+  while real Native folder dialog behavior remains unverified.
+- This stays classified under the existing
+  `lynx-web-pointer-to-bindtap` missing harness coverage, not a reopened
+  product loss.
+- The initial Web Studio capture occurred before route hydration and was
+  discarded.
+- Web console contains only Vite/React development messages.
+- Lynx console contains only the known upstream deprecated initialization
+  warning.
+
+### Verification
+
+- `bun run test -- src/components/composer/landingStudioFolder.logic.test.ts src/components/composer/landingComposerFidelity.test.ts src/components/composer/landingThreadCreation.logic.test.ts`
+  - 3 files, 8 tests passed.
+- `CI=1 bun run build` in `apps/lynx`
+  - Lynx production bundle and Desktop host built and staged.
+  - Existing optional `bufferutil` / `utf-8-validate` and Lynx CSS warnings
+    only.
+- Native remains unverified. User-owned PID `77846` on port `8901` was not
+  stopped or reused.
+- Owned ports `59140`, `9141`, `8080`, and `5971` were released.
+- Retained screenshot count under `shots/` is 33, below the 100-image limit.
+
+### Evidence
+
+- `shots/2026-08-14/studio/visual-matrix/web-wide-light.png`
+- `shots/2026-08-14/studio/visual-matrix/web-compact-light.png`
+- `shots/2026-08-14/studio/visual-matrix/web-compact-dark.png`
+- `shots/2026-08-14/studio/visual-matrix/lynx-wide-light-before.png`
+- `shots/2026-08-14/studio/visual-matrix/lynx-wide-light-after.png`
+- `shots/2026-08-14/studio/visual-matrix/lynx-compact-dark-after.png`

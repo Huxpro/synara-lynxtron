@@ -32,6 +32,7 @@ import {
   ensureLandingThreadCreated,
   type LandingThreadCreationState,
 } from './landingThreadCreation.logic';
+import { resolveLandingWorkspaceContext } from './landingStudioFolder.logic';
 
 import './landing-composer.css';
 
@@ -193,6 +194,7 @@ export function LandingComposer(props: {
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
     props.initialProjectId ?? null
   );
+  const [studioFolderPath, setStudioFolderPath] = useState<string | null>(null);
   const [interactionMode, setInteractionMode] = useState<
     'default' | 'plan'
   >('default');
@@ -239,44 +241,54 @@ export function LandingComposer(props: {
     (project) => project.id === selectedProjectId
   );
   const targetProject = selectedProject ?? data?.homeProject;
+  const workspaceContext = targetProject
+    ? resolveLandingWorkspaceContext({
+        containerKind: props.containerKind ?? 'chat',
+        projectWorkspaceRoot: targetProject.workspaceRoot,
+        studioFolderPath,
+      })
+    : null;
   const projectPickerModel = useMemo(
     () =>
       buildComposerProjectPickerModel({
         projects: [
-          ...(data?.projects ?? []).map((project) => {
-            const source = data?.normalizedProjects.find(
-              (candidate) => candidate.id === project.id
-            );
-            const space = data?.spaces.find(
-              (candidate) => candidate.id === source?.spaceId
-            );
-            return {
-              id: `project:${project.id}`,
-              kind: 'project' as const,
-              projectId: project.id as never,
-              workspaceRoot: project.workspaceRoot,
-              primaryLabel:
-                source?.localName?.trim() ||
-                projectWorkspaceLabel(project.workspaceRoot),
-              secondaryLabel:
-                source?.localName?.trim() &&
-                source.localName.trim() !==
-                  projectWorkspaceLabel(project.workspaceRoot)
-                  ? projectWorkspaceLabel(project.workspaceRoot)
-                  : null,
-              spaceId: source?.spaceId ?? null,
-              spaceName: space?.name ?? null,
-              spaceIcon: space?.icon ?? null,
-              spaceSortOrder: space?.sortOrder,
-            };
-          }),
+          ...(props.containerKind === 'studio'
+            ? []
+            : (data?.projects ?? []).map((project) => {
+                const source = data?.normalizedProjects.find(
+                  (candidate) => candidate.id === project.id
+                );
+                const space = data?.spaces.find(
+                  (candidate) => candidate.id === source?.spaceId
+                );
+                return {
+                  id: `project:${project.id}`,
+                  kind: 'project' as const,
+                  projectId: project.id as never,
+                  workspaceRoot: project.workspaceRoot,
+                  primaryLabel:
+                    source?.localName?.trim() ||
+                    projectWorkspaceLabel(project.workspaceRoot),
+                  secondaryLabel:
+                    source?.localName?.trim() &&
+                    source.localName.trim() !==
+                      projectWorkspaceLabel(project.workspaceRoot)
+                      ? projectWorkspaceLabel(project.workspaceRoot)
+                      : null,
+                  spaceId: source?.spaceId ?? null,
+                  spaceName: space?.name ?? null,
+                  spaceIcon: space?.icon ?? null,
+                  spaceSortOrder: space?.sortOrder,
+                };
+              })),
           ...(data?.localFolders ?? [])
             .filter(
               (folder) =>
                 !folder.name.startsWith('.') &&
-                !(data?.projects ?? []).some(
-                  (project) => project.workspaceRoot === folder.fullPath
-                )
+                (props.containerKind === 'studio' ||
+                  !(data?.projects ?? []).some(
+                    (project) => project.workspaceRoot === folder.fullPath
+                  ))
             )
             .map((folder) => ({
               id: `folder:${folder.fullPath}`,
@@ -291,12 +303,25 @@ export function LandingComposer(props: {
               spaceSortOrder: Number.MAX_SAFE_INTEGER,
             })),
         ],
-        selectedOptionId: selectedProjectId
-          ? `project:${selectedProjectId}`
-          : null,
+        selectedOptionId:
+          props.containerKind === 'studio'
+            ? studioFolderPath
+              ? `folder:${studioFolderPath}`
+              : null
+            : selectedProjectId
+              ? `project:${selectedProjectId}`
+              : null,
         query: projectQuery,
+        emptyTriggerLabel:
+          props.containerKind === 'studio' ? 'Use a folder' : undefined,
       }),
-    [data, projectQuery, selectedProjectId]
+    [
+      data,
+      projectQuery,
+      props.containerKind,
+      selectedProjectId,
+      studioFolderPath,
+    ]
   );
 
   const handleProjectPickerOpenChange = (open: boolean) => {
@@ -316,6 +341,11 @@ export function LandingComposer(props: {
     try {
       const workspaceRoot = await dialogs.pickFolder();
       if (!workspaceRoot) return;
+      if (props.containerKind === 'studio') {
+        setStudioFolderPath(workspaceRoot);
+        setProjectPickerOpen(false);
+        return;
+      }
       const projectId = landingId('project');
       await dispatchSynaraCommand({
         type: 'project.create',
@@ -354,7 +384,9 @@ export function LandingComposer(props: {
     readonly runtimeMode: 'full-access' | 'approval-required';
   }): Promise<void> {
     'background only';
-    if (!targetProject) throw new Error('The new chat workspace is not ready.');
+    if (!targetProject || !workspaceContext) {
+      throw new Error('The new chat workspace is not ready.');
+    }
     const threadId = threadIdRef.current;
     await ensureLandingThreadCreated({
       state: threadCreationRef.current,
@@ -370,7 +402,7 @@ export function LandingComposer(props: {
           interactionMode: input.interactionMode,
           envMode: data.generalSettings.defaultThreadEnvMode,
           branch: null,
-          worktreePath: null,
+          worktreePath: workspaceContext.worktreePath,
           createdAt: new Date().toISOString(),
         });
       },
@@ -433,7 +465,7 @@ export function LandingComposer(props: {
         interactionMode={interactionMode}
         sessionStatus={null}
         activeTurnId={null}
-        workspaceRoot={targetProject.workspaceRoot}
+        workspaceRoot={workspaceContext?.workspaceRoot ?? targetProject.workspaceRoot}
         providerStatuses={data.serverConfig.providers}
         initialModelCatalog={data.initialModelCatalog}
         emptyLanding={true}
@@ -449,7 +481,6 @@ export function LandingComposer(props: {
           ]);
         }}
       />
-      {props.containerKind === 'studio' ? null : (
       <view className="LandingComposerTray">
         <ComposerProjectPickerComposition
           model={projectPickerModel}
@@ -460,6 +491,11 @@ export function LandingComposer(props: {
           onQueryChange={setProjectQuery}
           onSelectOption={(option) => {
             'background only';
+            if (props.containerKind === 'studio') {
+              setStudioFolderPath(option.workspaceRoot);
+              setProjectPickerOpen(false);
+              return;
+            }
             if (option.projectId) {
               setSelectedProjectId(option.projectId);
               setProjectPickerOpen(false);
@@ -512,11 +548,25 @@ export function LandingComposer(props: {
             })();
           }}
           addActionLabel={
-            projectPickerBusy ? 'Adding project...' : 'New project'
+            projectPickerBusy
+              ? props.containerKind === 'studio'
+                ? 'Choosing folder...'
+                : 'Adding project...'
+              : props.containerKind === 'studio'
+                ? 'Choose a folder'
+                : 'New project'
           }
           addActionBusy={projectPickerBusy}
-          resetActionLabel="Don't work in a project"
-          searchPlaceholder="Search projects"
+          resetActionLabel={
+            props.containerKind === 'studio'
+              ? "Don't use a folder"
+              : "Don't work in a project"
+          }
+          searchPlaceholder={
+            props.containerKind === 'studio'
+              ? 'Search folders'
+              : 'Search projects'
+          }
           errorMessage={projectPickerError ?? data.localFoldersError}
           retryActionLabel={isFetching ? 'Retrying…' : 'Retry'}
           retryActionBusy={isFetching}
@@ -526,13 +576,16 @@ export function LandingComposer(props: {
           onAddProject={() => void handleAddProject()}
           onReset={() => {
             'background only';
-            setSelectedProjectId(null);
+            if (props.containerKind === 'studio') {
+              setStudioFolderPath(null);
+            } else {
+              setSelectedProjectId(null);
+            }
             setProjectPickerOpen(false);
           }}
           triggerClassName="LandingComposerProjectTrigger"
         />
       </view>
-      )}
     </view>
   );
 }

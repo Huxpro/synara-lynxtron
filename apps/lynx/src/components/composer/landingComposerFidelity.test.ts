@@ -73,9 +73,19 @@ describe('landing composer fidelity contract', () => {
     expect(landingSource).toContain('<ComposerProjectPickerComposition');
     expect(landingSource).toContain('draftId="lynx-landing-draft"');
     expect(landingSource).toContain('buildComposerProjectPickerModel');
-    expect(landingSource).toContain('searchPlaceholder="Search projects"');
+    expect(landingSource).toContain("'Search folders'");
+    expect(landingSource).toContain("'Search projects'");
+    expect(landingSource).toContain("\"Don't use a folder\"");
+    expect(landingSource).toContain("\"Don't work in a project\"");
+    expect(landingSource).toContain("'Use a folder'");
+    expect(landingSource).toMatch(
+      /if \(props\.containerKind === 'studio'\) \{\s+setStudioFolderPath\(option\.workspaceRoot\);/
+    );
+    expect(landingSource).toMatch(
+      /if \(props\.containerKind === 'studio'\) \{\s+setStudioFolderPath\(workspaceRoot\);/
+    );
     expect(landingSource).toContain(
-      'resetActionLabel="Don\'t work in a project"'
+      'worktreePath: workspaceContext.worktreePath'
     );
     expect(landingSource).toContain('localFoldersError');
     expect(landingSource.match(/serverConfig:\s*config/g)).toHaveLength(3);
