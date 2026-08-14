@@ -26,6 +26,30 @@ export function resolveAutomationModelSelection(input: {
   );
 }
 
+export function resolveAutomationModelSelectionForProjectChange(input: {
+  readonly currentModelSelection: ModelSelection;
+  readonly currentProjectModelSelection: ModelSelection | null | undefined;
+  readonly nextProjectModelSelection: ModelSelection | null | undefined;
+  readonly defaultProvider: ProviderKind;
+}): ModelSelection {
+  const currentDefault = resolveAutomationModelSelection({
+    projectModelSelection: input.currentProjectModelSelection,
+    defaultProvider: input.defaultProvider,
+  });
+  const nextDefault = resolveAutomationModelSelection({
+    projectModelSelection: input.nextProjectModelSelection,
+    defaultProvider: input.defaultProvider,
+  });
+  const sameOptions =
+    JSON.stringify(input.currentModelSelection.options ?? null) ===
+    JSON.stringify(currentDefault.options ?? null);
+  return input.currentModelSelection.provider === currentDefault.provider &&
+    input.currentModelSelection.model === currentDefault.model &&
+    sameOptions
+    ? nextDefault
+    : input.currentModelSelection;
+}
+
 export function buildAutomationCreateInput(input: {
   readonly interactionMode: ProviderInteractionMode;
   readonly completionPolicy: AutomationCompletionPolicy;

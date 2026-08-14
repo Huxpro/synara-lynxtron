@@ -28,6 +28,7 @@ import type {
   PullRequestSetPinnedResult,
   PullRequestState,
   ProviderComposerCapabilities,
+  ProviderListModelsResult,
   ProviderListPluginsResult,
   ProviderListSkillsResult,
   ServerConfig,
@@ -228,6 +229,25 @@ export async function fetchPluginLibraryServerConfig(): Promise<ServerConfig> {
     /* webpackMode: "eager" */ '../data/synaraClient'
   );
   return fetchServerConfig();
+}
+
+export async function fetchAutomationCreateServerConfig(): Promise<ServerConfig> {
+  'background only';
+  const { fetchFreshServerConfig } = await import(
+    /* webpackMode: "eager" */ '../data/synaraClient'
+  );
+  return fetchFreshServerConfig();
+}
+
+export async function fetchAutomationCreateModels(input: {
+  readonly provider: ProviderKind;
+  readonly cwd: string | null;
+}): Promise<ProviderListModelsResult> {
+  'background only';
+  const { fetchProviderModels } = await import(
+    /* webpackMode: "eager" */ '../data/synaraClient'
+  );
+  return fetchProviderModels(input);
 }
 
 export async function fetchPluginLibraryPlugins(): Promise<ProviderListPluginsResult> {

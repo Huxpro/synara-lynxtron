@@ -3,6 +3,7 @@ import { describe, expect, it } from '@rstest/core';
 import {
   buildAutomationCreateInput,
   resolveAutomationModelSelection,
+  resolveAutomationModelSelectionForProjectChange,
 } from './automationCreate.logic';
 
 const modelSelection = {
@@ -29,6 +30,34 @@ describe('Automation create payload', () => {
     ).toMatchObject({
       provider: 'claudeAgent',
     });
+  });
+
+  it('follows the next project default until the user customizes the model', () => {
+    const nextProjectModel = {
+      provider: 'claudeAgent',
+      model: 'claude-opus-4-8',
+    } as const;
+    expect(
+      resolveAutomationModelSelectionForProjectChange({
+        currentModelSelection: modelSelection,
+        currentProjectModelSelection: modelSelection,
+        nextProjectModelSelection: nextProjectModel,
+        defaultProvider: 'codex',
+      }),
+    ).toBe(nextProjectModel);
+
+    const customModel = {
+      provider: 'codex',
+      model: 'gpt-5.6-sol-custom',
+    } as const;
+    expect(
+      resolveAutomationModelSelectionForProjectChange({
+        currentModelSelection: customModel,
+        currentProjectModelSelection: modelSelection,
+        nextProjectModelSelection: nextProjectModel,
+        defaultProvider: 'codex',
+      }),
+    ).toBe(customModel);
   });
 
   it.each([

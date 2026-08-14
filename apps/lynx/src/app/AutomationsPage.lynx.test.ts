@@ -103,6 +103,10 @@ describe('Lynx Automations route', () => {
       new URL('./automationCreate.logic.ts', import.meta.url),
       'utf8'
     );
+    const queriesSource = readFileSync(
+      new URL('./queries.ts', import.meta.url),
+      'utf8'
+    );
 
     expect(pageSource).toContain('mutationFn: createAutomation');
     expect(pageSource).toContain('<AutomationCreateDialog');
@@ -172,8 +176,22 @@ describe('Lynx Automations route', () => {
     );
     expect(dialogSource).toContain('resolveAutomationModelSelection({');
     expect(dialogSource).toContain(
+      'resolveAutomationModelSelectionForProjectChange({'
+    );
+    expect(dialogSource).toContain(
       'defaultProvider: generalSettings.defaultProvider'
     );
+    expect(dialogSource).toContain('<ComposerModelControl');
+    expect(dialogSource).toContain('fetchAutomationCreateServerConfig');
+    expect(dialogSource).toContain('fetchAutomationCreateModels');
+    expect(queriesSource).toContain(
+      'export async function fetchAutomationCreateServerConfig()'
+    );
+    expect(queriesSource).toContain(
+      'export async function fetchAutomationCreateModels('
+    );
+    expect(dialogSource).toContain('enabled: open');
+    expect(dialogSource).toContain('runtimeModels={modelCatalog.data?.models ?? []}');
     expect(dialogSource.indexOf('const generalSettings')).toBeGreaterThan(
       dialogSource.indexOf('export function AutomationCreateDialog')
     );

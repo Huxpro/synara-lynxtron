@@ -224,8 +224,7 @@ Expanded create-dialog evidence is stored in `9b46ffd`.
 
 ### Remaining create-form coverage
 
-- Model selection and full retry/misfire policy editing remain missing
-  from the Lynx create form.
+- Full retry/misfire policy editing remains missing from the Lynx create form.
 - These remain functional coverage debt. They are not hidden by the local-mode
   fix or by the existing visual score.
 
@@ -369,3 +368,52 @@ Expanded create-dialog evidence is stored in `9b46ffd`.
     only.
 - This closes the render crash but does not claim the still-missing interactive
   model picker.
+
+## Model-selection continuation
+
+### Product loss
+
+- `lynx-automation-model-picker-missing`: P1 execution selection,
+  contribution `1.00 -> 0.00`.
+- Lynx automation creation inherited one project/default model and exposed no
+  way to choose another provider, model, effort, or speed option.
+- The selected model directly controls every scheduled run, so this was a
+  functional omission rather than visual-only parity.
+
+### Fix
+
+- Reuse the existing Lynx `ComposerModelControl`, including canonical provider
+  visibility/order, runtime model discovery, model grouping, traits, favorites,
+  and fast mode.
+- Query provider status and model catalogs only while the dialog is open.
+- Discover models against the selected project's workspace root.
+- Preserve Web's project-change rule:
+  - while the current selection still equals the old project default, moving
+    projects adopts the new project default;
+  - once the user customizes the model, project changes preserve that choice.
+- Keep the original precedence for initial state:
+  project default, then saved default provider.
+
+### Thread-boundary correction
+
+- The first implementation imported the background-only Synara client directly
+  into the main-thread dialog. Focused tests passed, but production build
+  correctly rejected it.
+- The requests now cross existing `app/queries.ts` background wrappers:
+  `fetchAutomationCreateServerConfig` and
+  `fetchAutomationCreateModels`.
+- This build failure is recorded as an implementation/thread-boundary catch,
+  not a product pass or a product regression.
+
+### Verification
+
+- `bun run test -- src/app/automationCreate.logic.test.ts src/app/AutomationsPage.lynx.test.ts src/components/composer/ComposerProviderPickerSettings.lynx.test.ts`
+  - 3 files, 20 tests passed.
+  - Covers initial precedence, project-default following, custom-model
+    preservation, provider settings, and all prior automation payload cases.
+- `CI=1 bun run build` in `apps/lynx`
+  - Lynx production bundle and Desktop host built and staged after moving
+    discovery behind the background boundary.
+  - Existing optional `bufferutil` / `utf-8-validate` and Lynx CSS warnings
+    only.
+- No model discovery result was fabricated and no automation was run.

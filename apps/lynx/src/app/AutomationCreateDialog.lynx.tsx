@@ -1,14 +1,25 @@
 import { createElement, useEffect, useState } from '@lynx-js/react';
-import type { AutomationCreateInput } from '@synara/contracts';
+import { useQuery } from '@tanstack/react-query';
+import type {
+  AutomationCreateInput,
+  ModelSelection,
+  ProviderKind,
+} from '@synara/contracts';
 import {
   APP_SETTINGS_STORAGE_KEY,
   readSettingsGeneralProjection,
 } from '@synara-web/appSettingsStorageProjection.logic';
 import { completionPolicyFromStopWhen } from '@synara-web/lib/automationCompletionPolicy';
 
-import type { ProjectSummary, ThreadSummary } from './queries';
+import {
+  fetchAutomationCreateModels,
+  fetchAutomationCreateServerConfig,
+  type ProjectSummary,
+  type ThreadSummary,
+} from './queries';
 import { webStorage } from '../platform/storage';
 import { dialogs } from '../platform/dialogs';
+import { ComposerModelControl } from '../components/composer/ComposerModelControl.lynx';
 import { Button } from '../components/ui/button';
 import {
   Dialog,
@@ -22,6 +33,7 @@ import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import {
   buildAutomationCreateInput,
   resolveAutomationModelSelection,
+  resolveAutomationModelSelectionForProjectChange,
   type CreateSchedule,
   type CreateWorktreeMode,
 } from './automationCreate.logic';
@@ -171,6 +183,16 @@ export function AutomationCreateDialog({
   const [name, setName] = useState('');
   const [prompt, setPrompt] = useState('');
   const [projectId, setProjectId] = useState(projects[0]?.id ?? '');
+  const initialProjectModelSelection = projects[0]?.defaultModelSelection;
+  const [modelSelection, setModelSelection] = useState<ModelSelection>(() =>
+    resolveAutomationModelSelection({
+      projectModelSelection: initialProjectModelSelection,
+      defaultProvider: generalSettings.defaultProvider,
+    })
+  );
+  const [modelCatalogProvider, setModelCatalogProvider] = useState<ProviderKind>(
+    modelSelection.provider
+  );
   const [mode, setMode] = useState<AutomationCreateInput['mode']>('standalone');
   const [targetThreadId, setTargetThreadId] = useState('');
   const [stopWhen, setStopWhen] = useState('');
@@ -186,14 +208,45 @@ export function AutomationCreateDialog({
   >('approval-required');
   const [worktreeMode, setWorktreeMode] =
     useState<CreateWorktreeMode>('auto');
+  const serverConfig = useQuery({
+    queryKey: ['automation-create', 'server-config'],
+    queryFn: fetchAutomationCreateServerConfig,
+    enabled: open,
+    staleTime: 30_000,
+  });
+  const modelCatalog = useQuery({
+    queryKey: [
+      'automation-create',
+      'models',
+      modelCatalogProvider,
+      projects.find((candidate) => candidate.id === projectId)?.workspaceRoot ??
+        null,
+    ],
+    queryFn: () =>
+      fetchAutomationCreateModels({
+        provider: modelCatalogProvider,
+        cwd:
+          projects.find((candidate) => candidate.id === projectId)
+            ?.workspaceRoot ?? null,
+      }),
+    enabled: open && Boolean(projects.find((candidate) => candidate.id === projectId)),
+    staleTime: 30_000,
+  });
   useEffect(() => {
     if (
       projects.length > 0 &&
       !projects.some((project) => project.id === projectId)
     ) {
-      setProjectId(projects[0]!.id);
+      const firstProject = projects[0]!;
+      const nextModelSelection = resolveAutomationModelSelection({
+        projectModelSelection: firstProject.defaultModelSelection,
+        defaultProvider: generalSettings.defaultProvider,
+      });
+      setProjectId(firstProject.id);
+      setModelSelection(nextModelSelection);
+      setModelCatalogProvider(nextModelSelection.provider);
     }
-  }, [projectId, projects]);
+  }, [generalSettings.defaultProvider, projectId, projects]);
   useEffect(() => {
     if (
       targetThreadId &&
@@ -210,10 +263,23 @@ export function AutomationCreateDialog({
     (thread) =>
       thread.projectId === projectId && (thread.archivedAt ?? null) === null
   );
-  const modelSelection = resolveAutomationModelSelection({
-    projectModelSelection: project?.defaultModelSelection,
-    defaultProvider: generalSettings.defaultProvider,
-  });
+  const chooseProject = (nextProjectId: string) => {
+    const currentProject = projects.find(
+      (candidate) => candidate.id === projectId
+    );
+    const nextProject = projects.find(
+      (candidate) => candidate.id === nextProjectId
+    );
+    const nextModelSelection = resolveAutomationModelSelectionForProjectChange({
+      currentModelSelection: modelSelection,
+      currentProjectModelSelection: currentProject?.defaultModelSelection,
+      nextProjectModelSelection: nextProject?.defaultModelSelection,
+      defaultProvider: generalSettings.defaultProvider,
+    });
+    setProjectId(nextProjectId);
+    setModelSelection(nextModelSelection);
+    setModelCatalogProvider(nextModelSelection.provider);
+  };
   const canCreate =
     !pending &&
     name.trim().length > 0 &&
@@ -292,10 +358,28 @@ export function AutomationCreateDialog({
                   disabled={pending}
                   project={candidate}
                   selected={candidate.id === projectId}
-                  onSelect={() => setProjectId(candidate.id)}
+                  onSelect={() => chooseProject(candidate.id)}
                 />
               ))}
             </view>
+          </view>
+          <view className="AutomationCreateField">
+            <text className="AutomationCreateLabel">Model</text>
+            <ComposerModelControl
+              modelSelection={modelSelection}
+              catalogProvider={modelCatalogProvider}
+              runtimeModels={modelCatalog.data?.models ?? []}
+              modelsLoading={
+                modelCatalog.isPending ||
+                (modelCatalog.isFetching && !modelCatalog.data)
+              }
+              providers={serverConfig.data?.providers ?? []}
+              onCatalogProviderChange={setModelCatalogProvider}
+              onModelSelectionChange={(selection) => {
+                setModelSelection(selection);
+                setModelCatalogProvider(selection.provider);
+              }}
+            />
           </view>
           <view className="AutomationCreateField">
             <text className="AutomationCreateLabel">Repeats</text>
