@@ -627,8 +627,8 @@ function ThreadPage(props: ThreadPageProps) {
   const setEnvironmentVisibility = useCallback((open: boolean) => {
     'background only';
     setEnvironmentUserOverride(open);
-    void import(/* webpackMode: "eager" */ '../platform/storage').then(
-      ({ setPersistedStorageItem, webStorage: storage }) =>
+    void import(/* webpackMode: "eager" */ '../platform/storage')
+      .then(({ setPersistedStorageItem, webStorage: storage }) =>
         setPersistedStorageItem(
           APP_SETTINGS_STORAGE_KEY,
           writeSettingsGeneralProjection(
@@ -637,11 +637,15 @@ function ThreadPage(props: ThreadPageProps) {
               ...readSettingsGeneralProjection(
                 storage.getItem(APP_SETTINGS_STORAGE_KEY)
               ),
-            environmentPanelDefaultOpen: open,
+              environmentPanelDefaultOpen: open,
             }
           )
         )
-    );
+      )
+      .catch(() => {
+        // Keep the explicit session override. Settings hydration owns
+        // persistence failure and retry presentation.
+      });
   }, []);
   const closeEnvironmentForAction = useCallback(() => {
     setEnvironmentUserOverride(false);

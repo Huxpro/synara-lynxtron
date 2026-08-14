@@ -538,6 +538,9 @@ describe('Lynx Environment panel', () => {
     expect(routerSource).toContain(
       'writeSettingsGeneralProjection('
     );
+    expect(routerSource).toContain(
+      'Keep the explicit session override.'
+    );
     expect(routerSource).toContain('open={resolvedEnvironmentOpen}');
     expect(routerSource).toContain('onChange={setEnvironmentVisibility}');
   });
