@@ -22,6 +22,14 @@ export function shouldDeleteDepartingTemporaryThread(
   return temporaryThreadId === departingThreadId;
 }
 
+export async function deleteTemporaryThreadBestEffort(input: {
+  readonly dispatchDelete: () => Promise<unknown>;
+  readonly invalidate: () => Promise<unknown>;
+}): Promise<void> {
+  await input.dispatchDelete().catch(() => undefined);
+  await input.invalidate().catch(() => undefined);
+}
+
 export function useTemporaryThreadLifecycle(
   threadId: string,
   initialTemporary = false
@@ -45,13 +53,20 @@ export function useTemporaryThreadLifecycle(
       ) {
         return;
       }
-      void dispatchSynaraCommand({
-        type: 'thread.delete',
-        commandId: temporaryCommandId() as never,
-        threadId: threadId as never,
-      }).finally(() => {
-        void queryClient.invalidateQueries({ queryKey: ['threads'] });
-        void queryClient.invalidateQueries({ queryKey: ['sidebar-snapshot'] });
+      void deleteTemporaryThreadBestEffort({
+        dispatchDelete: () =>
+          dispatchSynaraCommand({
+            type: 'thread.delete',
+            commandId: temporaryCommandId() as never,
+            threadId: threadId as never,
+          }),
+        invalidate: () =>
+          Promise.all([
+            queryClient.invalidateQueries({ queryKey: ['threads'] }),
+            queryClient.invalidateQueries({
+              queryKey: ['sidebar-snapshot'],
+            }),
+          ]),
       });
     };
   }, [threadId]);
