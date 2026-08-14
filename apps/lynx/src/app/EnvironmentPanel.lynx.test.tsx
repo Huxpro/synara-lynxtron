@@ -327,6 +327,10 @@ describe('Lynx Environment panel', () => {
     expect(panelSource).toContain("type: 'thread.meta.update'");
     expect(panelSource).toContain('THREAD_NOTES_MAX_CHARS');
     expect(panelSource).toContain('EnvironmentNotepadInput');
+    expect(panelSource).toContain('scheduleSave(0)');
+    expect(panelSource).toContain(
+      ".catch(() => {\n        if (saveGenerationRef.current !== generation) return;\n        return flushNotes();"
+    );
   });
 
   it('matches the Web overlay footprint and row rhythm', () => {

@@ -2557,10 +2557,15 @@ function EnvironmentNotepad(props: {
   function scheduleSave(delayMs = NOTES_SAVE_DELAY_MS) {
     'background only';
     const generation = ++saveGenerationRef.current;
-    void sleepOnHost(delayMs).then(() => {
-      if (saveGenerationRef.current !== generation) return;
-      return flushNotes();
-    });
+    void sleepOnHost(delayMs)
+      .then(() => {
+        if (saveGenerationRef.current !== generation) return;
+        return flushNotes();
+      })
+      .catch(() => {
+        if (saveGenerationRef.current !== generation) return;
+        return flushNotes();
+      });
   }
 
   return (
