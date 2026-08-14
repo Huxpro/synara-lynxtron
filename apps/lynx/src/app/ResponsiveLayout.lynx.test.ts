@@ -23,7 +23,8 @@ describe('Lynx responsive layout contract', () => {
     expect(hook).toContain(
       "useLynxGlobalEventListener('onWindowResize', update)"
     );
-    expect(hook).toContain('platformWindow.getViewportSize()');
+    expect(hook).toContain('.getViewportSize()');
+    expect(hook).toContain('.catch(() => {');
     expect(hook).toContain('platformWindow.onViewportResize');
     expect(host).toContain("w.sendGlobalEvent('viewport:resize'");
     expect(host).toContain(

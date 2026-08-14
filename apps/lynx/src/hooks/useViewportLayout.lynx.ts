@@ -44,9 +44,15 @@ export function useViewportLayout(): ViewportLayout {
   useEffect(() => {
     'background only';
     let active = true;
-    void platformWindow.getViewportSize().then((viewport) => {
-      if (active && viewport) update(viewport.width, viewport.height);
-    });
+    void platformWindow
+      .getViewportSize()
+      .then((viewport) => {
+        if (active && viewport) update(viewport.width, viewport.height);
+      })
+      .catch(() => {
+        // Keep the unknown responsive layout until either resize channel
+        // delivers the first valid viewport.
+      });
     const unsubscribe = platformWindow.onViewportResize((viewport) => {
       update(viewport.width, viewport.height);
     });
