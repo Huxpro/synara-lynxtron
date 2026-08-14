@@ -21,6 +21,7 @@ describe('Automation create payload', () => {
         modelSelection,
         name: '  Release review  ',
         prompt: '  Check regressions.  ',
+        runtimeMode: 'approval-required',
         schedule,
         stopOnError: false,
         timeOfDay: '14:30',
@@ -52,6 +53,7 @@ describe('Automation create payload', () => {
           modelSelection,
           name: 'Workspace mode',
           prompt: 'Check the selected workspace mode.',
+          runtimeMode: 'approval-required',
           schedule: 'manual',
           stopOnError: true,
           timeOfDay: '09:00',
@@ -62,6 +64,33 @@ describe('Automation create payload', () => {
       expect(result.acknowledgedRisks).toEqual(
         worktreeMode === 'local' ? ['local-checkout'] : [],
       );
+    },
+  );
+
+  it.each([
+    ['approval-required', 'auto', []],
+    ['approval-required', 'local', ['local-checkout']],
+    ['full-access', 'auto', ['full-access']],
+    ['full-access', 'local', ['full-access', 'local-checkout']],
+  ] as const)(
+    'maps %s with %s workspace to the required risk acknowledgements',
+    (runtimeMode, worktreeMode, acknowledgedRisks) => {
+      const result = buildAutomationCreateInput({
+        interactionMode: 'default',
+        projectId: 'project-1',
+        maxIterations: null,
+        modelSelection,
+        name: 'Permission mode',
+        prompt: 'Verify automation permissions.',
+        runtimeMode,
+        schedule: 'manual',
+        stopOnError: true,
+        timeOfDay: '09:00',
+        worktreeMode,
+      });
+
+      expect(result.runtimeMode).toBe(runtimeMode);
+      expect(result.acknowledgedRisks).toEqual(acknowledgedRisks);
     },
   );
 });

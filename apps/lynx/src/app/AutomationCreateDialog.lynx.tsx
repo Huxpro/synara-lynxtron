@@ -8,6 +8,7 @@ import {
 
 import type { ProjectSummary } from './queries';
 import { webStorage } from '../platform/storage';
+import { dialogs } from '../platform/dialogs';
 import { Button } from '../components/ui/button';
 import {
   Dialog,
@@ -154,6 +155,9 @@ export function AutomationCreateDialog({
   const [interactionMode, setInteractionMode] = useState<
     AutomationCreateInput['interactionMode']
   >('default');
+  const [runtimeMode, setRuntimeMode] = useState<
+    AutomationCreateInput['runtimeMode']
+  >('approval-required');
   const [worktreeMode, setWorktreeMode] =
     useState<CreateWorktreeMode>('auto');
   useEffect(() => {
@@ -184,6 +188,7 @@ export function AutomationCreateDialog({
       interactionMode,
       name,
       prompt,
+      runtimeMode,
       schedule,
       timeOfDay,
       maxIterations,
@@ -191,6 +196,13 @@ export function AutomationCreateDialog({
       stopOnError,
       worktreeMode,
     }));
+  };
+  const selectFullAccess = async () => {
+    'background only';
+    const confirmed = await dialogs.confirm(
+      'Allow this automation to run with full access?\n\nScheduled full-access runs can make changes without per-step approval.'
+    );
+    if (confirmed) setRuntimeMode('full-access');
   };
 
   return (
@@ -344,6 +356,23 @@ export function AutomationCreateDialog({
               />
             </view>
           </view>
+          <view className="AutomationCreateField">
+            <text className="AutomationCreateLabel">Permissions</text>
+            <view className="AutomationCreateChoices">
+              <ChoiceOption
+                disabled={pending}
+                label="Approval required"
+                selected={runtimeMode === 'approval-required'}
+                onSelect={() => setRuntimeMode('approval-required')}
+              />
+              <ChoiceOption
+                disabled={pending}
+                label="Full access"
+                selected={runtimeMode === 'full-access'}
+                onSelect={() => void selectFullAccess()}
+              />
+            </view>
+          </view>
           <view className="AutomationCreateSummary">
             <text className="AutomationCreateSummaryText">
               {schedule === 'manual'
@@ -364,6 +393,7 @@ export function AutomationCreateDialog({
                 : `${maxIterations} runs`}{' '}
               · {stopOnError ? 'Stops on error' : 'Continues after errors'}
               {' '}· {interactionMode === 'plan' ? 'Plan mode' : 'Default mode'}
+              {' '}· {runtimeMode === 'full-access' ? 'Full access' : 'Approval required'}
             </text>
           </view>
           {error ? (

@@ -4,6 +4,7 @@ import type {
   ModelSelection,
   ProviderInteractionMode,
   ProjectId,
+  RuntimeMode,
 } from '@synara/contracts';
 
 export type CreateSchedule = 'daily' | 'manual' | 'weekdays';
@@ -16,6 +17,7 @@ export function buildAutomationCreateInput(input: {
   readonly name: string;
   readonly projectId: ProjectId;
   readonly prompt: string;
+  readonly runtimeMode: RuntimeMode;
   readonly schedule: CreateSchedule;
   readonly stopOnError: boolean;
   readonly timeOfDay: string;
@@ -32,7 +34,7 @@ export function buildAutomationCreateInput(input: {
         : { type: input.schedule, timeOfDay: input.timeOfDay },
     enabled: true,
     modelSelection: input.modelSelection,
-    runtimeMode: 'approval-required',
+    runtimeMode: input.runtimeMode,
     interactionMode: input.interactionMode,
     worktreeMode: input.worktreeMode,
     mode: 'standalone',
@@ -44,7 +46,9 @@ export function buildAutomationCreateInput(input: {
     maxRuntimeSeconds: 3600,
     retryPolicy: { type: 'none' },
     misfirePolicy: 'coalesce',
-    acknowledgedRisks:
-      input.worktreeMode === 'local' ? ['local-checkout'] : [],
+    acknowledgedRisks: [
+      ...(input.runtimeMode === 'full-access' ? ['full-access' as const] : []),
+      ...(input.worktreeMode === 'local' ? ['local-checkout' as const] : []),
+    ],
   };
 }

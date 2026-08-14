@@ -224,8 +224,49 @@ Expanded create-dialog evidence is stored in `9b46ffd`.
 
 ### Remaining create-form coverage
 
-- Model selection, explicit runtime selection, heartbeat targeting, full retry
-  and misfire policy editing, and completion-policy approval remain missing
+- Model selection, heartbeat targeting, full retry and misfire policy editing,
+  and completion-policy approval remain missing
   from the Lynx create form.
 - These remain functional coverage debt. They are not hidden by the local-mode
   fix or by the existing visual score.
+
+## Runtime permission continuation
+
+### Product loss
+
+- `lynx-automation-runtime-mode-missing`: P1 execution behavior,
+  contribution `1.00 -> 0.00`.
+- Web exposes `Approval required` and `Full access`; Lynx hard-coded every
+  automation to `approval-required`.
+- For unattended workflows this could park runs waiting for approvals even
+  when the user intended and accepted full-access execution.
+
+### Safe implementation
+
+- Add explicit Permissions choices to the Lynx create dialog.
+- Keep `approval-required` as the default.
+- Selecting Full access opens a blocking confirmation with the same risk
+  statement used by Web:
+  `Scheduled full-access runs can make changes without per-step approval.`
+- Cancelling the confirmation leaves Approval required selected.
+- The canonical payload builder now accepts `RuntimeMode` and computes the
+  exact server-required risk set:
+  - approval + auto/worktree: `[]`;
+  - approval + local: `['local-checkout']`;
+  - full access + auto/worktree: `['full-access']`;
+  - full access + local:
+    `['full-access', 'local-checkout']`.
+- This preserves the server's create/run invariant instead of merely exposing
+  a visual toggle.
+
+### Verification
+
+- `bun run test -- src/app/automationCreate.logic.test.ts src/app/AutomationsPage.lynx.test.ts`
+  - 2 files, 15 tests passed.
+  - Includes all four runtime/workspace acknowledgement combinations and the
+    blocking confirmation source contract.
+- `CI=1 bun run build` in `apps/lynx`
+  - Lynx production bundle and Desktop host built and staged.
+  - Existing optional `bufferutil` / `utf-8-validate` and Lynx CSS warnings
+    only.
+- No automation was created or run during this safety-sensitive follow-up.

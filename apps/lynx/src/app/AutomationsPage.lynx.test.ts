@@ -138,7 +138,17 @@ describe('Lynx Automations route', () => {
     expect(dialogSource).toContain('Max iterations');
     expect(dialogSource).toContain('Stop on error');
     expect(dialogSource).toContain('Interaction mode');
-    expect(createLogicSource).toContain("runtimeMode: 'approval-required'");
+    expect(dialogSource).toContain('Permissions');
+    expect(dialogSource).toContain('label="Approval required"');
+    expect(dialogSource).toContain('label="Full access"');
+    expect(dialogSource).toContain('await dialogs.confirm(');
+    expect(dialogSource).toContain(
+      'Scheduled full-access runs can make changes without per-step approval.'
+    );
+    expect(createLogicSource).toContain('runtimeMode: input.runtimeMode');
+    expect(createLogicSource).toContain(
+      "input.runtimeMode === 'full-access' ? ['full-access' as const] : []"
+    );
     expect(dialogSource).toContain('project?.defaultModelSelection ?? {');
     expect(dialogSource).toContain(
       'provider: generalSettings.defaultProvider'
