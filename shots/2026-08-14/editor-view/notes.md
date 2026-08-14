@@ -480,6 +480,42 @@
   the same rendered state; runtime rail click evidence remains blocked by the
   shared dynamic-event issue.
 
+### Editor project switching investigation
+
+- Newly verified authority semantics used a second canonical project/thread
+  created through `orchestration.dispatchCommand`:
+  - project `editor-secondary-project`
+  - thread `editor-secondary-thread`
+  - workspace `/private/tmp/synara-editor-secondary`.
+- Web's real project picker listed both projects as radio items. Selecting
+  `Editor Secondary` navigated to
+  `/editor-secondary-thread?view=editor`, preserved Editor mode, and rendered
+  the secondary project, workspace, thread, and clean-diff state.
+- A Lynx implementation trial reused the existing Menu primitive and the
+  shared sidebar thread-ordering policy. Focused resolver tests and production
+  build passed, but real Lynx-for-Web startup rendered an empty root whenever
+  the Menu subtree was mounted in the Editor header, even with the menu closed.
+- A deterministic default-open variant produced the same failure. There was no
+  page-level JavaScript error, and a cold harness restart did not recover it.
+  This is a renderer/component integration failure, not passing project-switch
+  coverage.
+- The entire trial was reverted. No disabled picker, fake title-only switch,
+  approximate thread ordering, or empty-root regression remains.
+- `lynx-editor-project-switching` remains P2 missing coverage. Its verified
+  target contract is:
+  - select the latest non-archived thread under the configured sidebar sort;
+  - preserve Editor mode;
+  - create/open a new Editor draft when the target project has no thread.
+- Evidence:
+  - `/tmp/synara-editor-project-web-after.png`
+  - `/tmp/synara-editor-project-web-after.json`
+  - `/tmp/synara-editor-project-lynx-menu.png`
+  - `/tmp/synara-editor-project-lynx-primary.json`
+  - `/tmp/synara-editor-project-lynx-secondary.json`
+- Harness command noise: one Web readiness loop omitted URL quoting and zsh
+  treated `?view=editor` as a glob. The owned process was stopped and restarted
+  with a quoted URL; this contributes `0.00` product loss.
+
 ## Authority geometry
 
 After aligning global-sidebar state, Web authority and Lynx use the same
@@ -578,6 +614,8 @@ comparison; no Web screenshot pass is claimed.
   contribution `0.25 -> 0.00`.
 - `lynx-editor-search-mode`: P2 missing coverage,
   contribution `0.25 -> 0.00`.
+- `lynx-editor-project-switching`: P2 missing coverage,
+  contribution remains `0.25`.
 - `lynx-editor-chat-resize-tabs`: P2 missing coverage,
   contribution remains `0.25`.
 - `editor-web-boot-splash-capture`: harness loss,
