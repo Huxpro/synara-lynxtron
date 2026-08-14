@@ -21,7 +21,9 @@ describe('Lynx thread terminal', () => {
     );
     expect(terminalSource).toContain('await platformTerminal.open({');
     expect(terminalSource).toContain('await platformTerminal.write({');
-    expect(terminalSource).toContain('await platformTerminal.close({');
+    expect(terminalSource).toContain('await closeLynxTerminalSession({');
+    expect(terminalSource).toContain('close: platformTerminal.close');
+    expect(terminalSource).toContain('writeExit: platformTerminal.write');
     expect(terminalSource).toContain('await refresh();');
     expect(terminalSource).toContain('await sleepOnHost(120)');
     expect(terminalSource).toContain('snapshot?.history');

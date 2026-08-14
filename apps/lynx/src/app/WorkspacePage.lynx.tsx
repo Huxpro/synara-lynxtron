@@ -81,6 +81,7 @@ export function WorkspacePage({
       workspaceId: workspace.id,
       closeTerminal: platformTerminal.close,
       deleteWorkspace,
+      writeTerminalExit: platformTerminal.write,
     });
     const nextWorkspaceId = useWorkspaceStore.getState().workspacePages[0]?.id;
     navigate(nextWorkspaceId ? `/workspace/${nextWorkspaceId}` : '/');

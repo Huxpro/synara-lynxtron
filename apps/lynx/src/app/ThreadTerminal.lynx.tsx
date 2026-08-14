@@ -14,6 +14,7 @@ import { webStorage } from '../platform/storage';
 import { sleepOnHost } from '../platform/timer';
 import { platformTerminal } from '../platform/terminal';
 import { resolveLynxTerminalTypography } from './terminalAppearance.logic';
+import { closeLynxTerminalSession } from './terminalSessionCleanup.logic';
 import './thread-terminal.css';
 
 const DEFAULT_TERMINAL_ID = 'lynx-drawer';
@@ -139,10 +140,11 @@ export function ThreadTerminal({
     onOpenChange(false);
     try {
       if (snapshot) {
-        await platformTerminal.close({
+        await closeLynxTerminalSession({
           threadId,
           terminalId,
-          deleteHistory: true,
+          close: platformTerminal.close,
+          writeExit: platformTerminal.write,
         });
       }
     } finally {
