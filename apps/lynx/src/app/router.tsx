@@ -970,6 +970,7 @@ function ThreadPage(props: ThreadPageProps) {
                 <DiffDock
                   availableWidth={threadPageWidth || viewportWidth}
                   initialDiff={initialWorkingTreeDiff ?? undefined}
+                  initialSelectedFilePath={explorerSelectedPath}
                   onClose={() => setEditorCenterMode('file')}
                   onWidthChange={() => undefined}
                   open

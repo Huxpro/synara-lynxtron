@@ -39,6 +39,9 @@ describe('Lynx Editor view', () => {
     expect(routerSource).toContain(
       'initialDiff={initialWorkingTreeDiff ?? undefined}'
     );
+    expect(routerSource).toContain(
+      'initialSelectedFilePath={explorerSelectedPath}'
+    );
     expect(routerSource).toContain('presentation="editor"');
     expect(routerSource).toContain(
       'workspaceRoot={currentThread?.workspaceRoot ?? null}'
@@ -52,10 +55,21 @@ describe('Lynx Editor view', () => {
       "resizable={props.presentation === 'dock'}"
     );
     expect(diffDockSource).toContain(
-      "view.kind === 'files' && view.files[0] ? [view.files[0].key] : []"
+      '(selectedFile ? [selectedFile.key] : [])'
     );
+    expect(diffDockSource).toContain('className="DiffDockFileSidebar"');
+    expect(diffDockSource).toContain('<EditorDiffFileRow');
+    expect(diffDockSource).toContain('files: [selectedFile],');
+    expect(diffDockSource).toContain('setSelectedFilePath(file.path)');
     expect(appStyles).toMatch(
       /\.ThreadEditorChanges\s+\.DiffDock\s*\{[^}]*position:\s*relative;[^}]*width:\s*100%;[^}]*height:\s*100%;/s
+    );
+    const diffDockStyles = source('./diff-dock.css');
+    expect(diffDockStyles).toMatch(
+      /\.DiffDockFileSidebar\s*\{[^}]*width:\s*224px;[^}]*min-width:\s*224px;/s
+    );
+    expect(diffDockStyles).toMatch(
+      /\.SliceRoot--viewport-compact\s+\.ThreadEditorChanges\s+\.DiffDockFileSidebar,[\s\S]*?width:\s*100%;[\s\S]*?height:\s*176px;/s
     );
   });
 

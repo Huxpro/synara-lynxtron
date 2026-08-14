@@ -26,6 +26,7 @@ export function DiffDock(props: {
   readonly onWidthChange: (width: number) => void;
   readonly open: boolean;
   readonly initialDiff?: GitReadWorkingTreeDiffResult;
+  readonly initialSelectedFilePath?: string | null;
   readonly presentation?: 'dock' | 'editor';
   readonly workspaceRoot: string | null;
 }) {
@@ -35,6 +36,7 @@ export function DiffDock(props: {
     <OpenDiffDock
       availableWidth={props.availableWidth}
       initialDiff={props.initialDiff}
+      initialSelectedFilePath={props.initialSelectedFilePath}
       onClose={props.onClose}
       onWidthChange={props.onWidthChange}
       presentation={props.presentation ?? 'dock'}
@@ -46,6 +48,7 @@ export function DiffDock(props: {
 function OpenDiffDock(props: {
   readonly availableWidth: number;
   readonly initialDiff?: GitReadWorkingTreeDiffResult;
+  readonly initialSelectedFilePath?: string | null;
   readonly onClose: () => void;
   readonly onWidthChange: (width: number) => void;
   readonly presentation: 'dock' | 'editor';
@@ -54,6 +57,9 @@ function OpenDiffDock(props: {
   const [refreshGeneration, setRefreshGeneration] = useState(0);
   const [expandedFileKeys, setExpandedFileKeys] = useState<string[] | null>(
     props.presentation === 'editor' ? null : []
+  );
+  const [selectedFilePath, setSelectedFilePath] = useState<string | null>(
+    props.initialSelectedFilePath ?? null
   );
   const [visibleLineCounts, setVisibleLineCounts] = useState<
     Record<string, number>
@@ -80,9 +86,22 @@ function OpenDiffDock(props: {
     diff.data?.patch,
     `working-tree:${props.workspaceRoot ?? 'none'}`
   );
+  const selectedFile =
+    view.kind === 'files'
+      ? view.files.find((file) => file.path === selectedFilePath) ?? view.files[0]
+      : undefined;
+  const visibleView =
+    props.presentation === 'editor' && view.kind === 'files' && selectedFile
+      ? {
+          ...view,
+          additions: selectedFile.additions,
+          deletions: selectedFile.deletions,
+          files: [selectedFile],
+        }
+      : view;
   const visibleExpandedFileKeys =
     expandedFileKeys ??
-    (view.kind === 'files' && view.files[0] ? [view.files[0].key] : []);
+    (selectedFile ? [selectedFile.key] : []);
   const closeInteraction = useLynxInteractiveState({
     baseClassName: 'DiffDockClose',
     accessibleLabel: 'Close changes',
@@ -128,7 +147,37 @@ function OpenDiffDock(props: {
           />
         </view>
       </view>
-      <scroll-view className="DiffDockScroller" scroll-y enable-scroll-bar>
+      <view className="DiffDockBody">
+        {props.presentation === 'editor' && view.kind === 'files' ? (
+          <view className="DiffDockFileSidebar">
+            <view className="DiffDockFileSidebarHeader">
+              <text className="DiffDockFileSidebarTitle">Changed files</text>
+              <text className="DiffDockFileSidebarCount">
+                {view.files.length}
+              </text>
+            </view>
+            <scroll-view
+              className="DiffDockFileSidebarList"
+              scroll-orientation="vertical"
+            >
+              {view.files.map((file) => (
+                <EditorDiffFileRow
+                  key={file.key}
+                  additions={file.additions}
+                  deletions={file.deletions}
+                  path={file.path}
+                  selected={file.key === selectedFile?.key}
+                  onActivate={() => {
+                    'background only';
+                    setSelectedFilePath(file.path);
+                    setExpandedFileKeys([file.key]);
+                  }}
+                />
+              ))}
+            </scroll-view>
+          </view>
+        ) : null}
+        <scroll-view className="DiffDockScroller" scroll-y enable-scroll-bar>
         {diff.isPending ? (
           <view className="DiffDockState">
             <RefreshCwIcon
@@ -150,7 +199,7 @@ function OpenDiffDock(props: {
         ) : (
           <PullRequestCodeComposition
             wordWrap={diffWordWrap}
-            view={view}
+            view={visibleView}
             truncated={false}
             expandedFileKeys={visibleExpandedFileKeys}
             visibleLineCounts={visibleLineCounts}
@@ -177,7 +226,39 @@ function OpenDiffDock(props: {
             }
           />
         )}
-      </scroll-view>
+        </scroll-view>
+      </view>
     </ResizableRightPanel>
+  );
+}
+
+function EditorDiffFileRow(props: {
+  readonly additions: number;
+  readonly deletions: number;
+  readonly onActivate: () => void;
+  readonly path: string;
+  readonly selected: boolean;
+}) {
+  const interaction = useLynxInteractiveState({
+    baseClassName: `DiffDockFileRow${
+      props.selected ? ' DiffDockFileRow--selected' : ''
+    }`,
+    accessibleLabel: `Open ${props.path}`,
+    onActivate: props.onActivate,
+  });
+  const slash = props.path.lastIndexOf('/');
+  const directory = slash === -1 ? '' : props.path.slice(0, slash + 1);
+  const name = slash === -1 ? props.path : props.path.slice(slash + 1);
+  return (
+    <view className={interaction.className} {...interaction.eventProps}>
+      <view className="DiffDockFileIdentity">
+        <text className="DiffDockFileName">{name}</text>
+        {directory ? (
+          <text className="DiffDockFileDirectory">{directory}</text>
+        ) : null}
+      </view>
+      <text className="SharedPrCodeStatsAddition">+{props.additions}</text>
+      <text className="SharedPrCodeStatsDeletion">-{props.deletions}</text>
+    </view>
   );
 }

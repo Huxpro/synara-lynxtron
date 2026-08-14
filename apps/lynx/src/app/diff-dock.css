@@ -23,6 +23,96 @@
   border-bottom: 1px solid var(--border);
 }
 
+.DiffDockBody {
+  display: flex;
+  width: 100%;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+.DiffDockFileSidebar {
+  display: flex;
+  width: 224px;
+  min-width: 224px;
+  min-height: 0;
+  flex-direction: column;
+  border-right: 1px solid var(--border);
+  background-color: var(--color-background-surface);
+}
+
+.DiffDockFileSidebarHeader {
+  display: flex;
+  height: 40px;
+  min-height: 40px;
+  padding: 0 12px;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.DiffDockFileSidebarTitle {
+  min-width: 0;
+  flex: 1;
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.DiffDockFileSidebarCount {
+  padding: 1px 6px;
+  border-radius: 6px;
+  color: var(--muted-foreground);
+  background-color: var(--muted);
+  font-size: 10px;
+}
+
+.DiffDockFileSidebarList {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  padding: 4px;
+}
+
+.DiffDockFileRow {
+  display: flex;
+  width: 100%;
+  min-height: 32px;
+  padding: 6px 8px;
+  align-items: center;
+  gap: 6px;
+  border-radius: 6px;
+}
+
+.DiffDockFileRow.ui-hover,
+.DiffDockFileRow.ui-focus,
+.DiffDockFileRow.ui-pressed,
+.DiffDockFileRow--selected {
+  background-color: var(--color-background-button-secondary);
+}
+
+.DiffDockFileIdentity {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.DiffDockFileName {
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.DiffDockFileDirectory {
+  min-width: 0;
+  color: var(--muted-foreground);
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .DiffDockIdentity {
   display: flex;
   min-width: 0;
@@ -59,9 +149,25 @@
 }
 
 .DiffDockScroller {
-  width: 100%;
-  height: 100%;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
   padding: 12px;
+}
+
+.SliceRoot--viewport-compact .ThreadEditorChanges .DiffDockBody,
+.SliceRoot--viewport-medium .ThreadEditorChanges .DiffDockBody {
+  flex-direction: column;
+}
+
+.SliceRoot--viewport-compact .ThreadEditorChanges .DiffDockFileSidebar,
+.SliceRoot--viewport-medium .ThreadEditorChanges .DiffDockFileSidebar {
+  width: 100%;
+  min-width: 0;
+  height: 176px;
+  min-height: 176px;
+  border-right-width: 0;
+  border-bottom: 1px solid var(--border);
 }
 
 .DiffDockState {

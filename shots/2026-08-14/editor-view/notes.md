@@ -220,6 +220,52 @@
   A normal route reload exposed the stable tree; the empty snapshot was
   discarded and contributes `0.00` product loss.
 
+### Editor changed-files selection
+
+- Newly discovered scope: wide and compact Editor Changes with two real
+  tracked modifications:
+  - `index.ts`, `+2 -1`
+  - `src/helper.ts`, `+2 -1`
+- The fixture was prepared through normal Git operations in the canonical
+  workspace; no SQLite or renderer fixture data was written.
+- Web authority:
+  - wide changed-files sidebar: `x=48`, `224px` wide
+  - clicking `helper.ts` selected its row without changing the route URL
+  - the center projected only the selected helper patch.
+- Previous Lynx behavior displayed every file as collapsible sections in one
+  long stream. It had no authority-equivalent changed-files sidebar or
+  selected-file projection, so large workspaces could not browse one patch at
+  a time.
+- Fix:
+  - Editor-only `DiffDock` now renders a 224px changed-files sidebar from the
+    existing portable diff view;
+  - selection filters the shared `PullRequestCodeComposition` to one file;
+  - standalone Changes keeps its existing all-file stream;
+  - compact/medium Editor stacks the full-width sidebar at `176px` above the
+    selected patch, matching the existing responsive Editor anatomy.
+- Runtime evidence:
+  - wide default: sidebar `224x730`, center `623x730`, `index.ts` selected,
+    only its four unified-diff rows rendered;
+  - deterministic helper state: helper row selected, center path
+    `src/helper.ts`, helper baseline/change lines rendered;
+  - compact helper state: rail `48x798`, sidebar `342x176`, patch
+    `342x178`, Chat `342x399`;
+  - relay settled with zero pending requests and no transport/RPC error.
+- Evidence:
+  - `/tmp/synara-editor-multifile-web-helper.png`
+  - `/tmp/synara-editor-multifile-web-before.json`
+  - `/tmp/synara-editor-multifile-web-after.json`
+  - `/tmp/synara-editor-multifile-lynx.png`
+  - `/tmp/synara-editor-multifile-lynx.json`
+  - `/tmp/synara-editor-multifile-lynx-helper.png`
+  - `/tmp/synara-editor-multifile-lynx-helper.json`
+  - `/tmp/synara-editor-multifile-lynx-compact.png`
+  - `/tmp/synara-editor-multifile-lynx-compact.json`
+- Web authority supplied retained real click evidence. Lynx-for-Web runtime
+  row clicks remain under `lynx-web-pointer-to-bindtap`; deterministic
+  `explorerPath=src/helper.ts` verifies the identical product projection
+  without claiming that blocked interaction.
+
 ## Authority geometry
 
 After aligning global-sidebar state, Web authority and Lynx use the same
@@ -255,9 +301,11 @@ comparison; no Web screenshot pass is claimed.
   the only Files/Changes mode navigation.
 - **P1 compact readability closed:** compact/medium Files no longer restricts
   the selected code preview to 118px.
+- **P2 coverage closed:** Editor Changes now has a changed-files sidebar and
+  selected-file projection.
 - **P2 coverage remains:** Web Editor Search mode, project switching, editor
-  changed-files sidebar and selection, chat-history tabs, terminal rail tabs,
-  and resizable Chat width are not yet implemented in Lynx.
+  chat-history tabs, terminal rail tabs, and resizable Chat width are not yet
+  implemented in Lynx.
 - **Harness blocker:** Lynx-for-Web dynamic pointer-to-`bindtap` publication
   still prevents retained click evidence for the Editor/Chat buttons. The
   current-head static host-input probe receives `tap`, but stateful product
@@ -291,7 +339,7 @@ comparison; no Web screenshot pass is claimed.
 - `editor-compact-web-empty-a11y-snapshot`: harness timing noise,
   contribution `0.00` product loss.
 - `lynx-editor-changed-files-sidebar`: P2 missing coverage,
-  contribution remains `0.25`.
+  contribution `0.25 -> 0.00`.
 - `lynx-editor-search-mode`: P2 missing coverage,
   contribution remains `0.25`.
 - `lynx-editor-chat-resize-tabs`: P2 missing coverage,
