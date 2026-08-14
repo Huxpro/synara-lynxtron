@@ -11,6 +11,8 @@ export const UNSUPPORTED_SETTINGS_SEARCH_ENTRY_IDS = new Set([
   'providers:provider-updates',
   'providers:installed-clis',
   'advanced:release-history',
+  'appearance:font-smoothing',
+  'appearance:time-format',
 ]);
 
 export function rankLynxSettingsSearchEntries(

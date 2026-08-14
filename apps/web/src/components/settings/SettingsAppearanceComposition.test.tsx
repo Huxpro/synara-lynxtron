@@ -24,6 +24,7 @@ describe("SettingsAppearanceComposition", () => {
         defaults={defaults}
         resolvedTheme="light"
         showFontSmoothing
+        showTimestampFormat
         themeState={DEFAULT_THEME_STATE}
         onThemeStateChange={vi.fn()}
         onChange={vi.fn()}

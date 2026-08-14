@@ -31,6 +31,8 @@ describe('Lynx Settings search', () => {
       'provider updates',
       'installed clis',
       'release history',
+      'font smoothing',
+      'time format',
     ]) {
       const results = rankLynxSettingsSearchEntries(query);
       expect(

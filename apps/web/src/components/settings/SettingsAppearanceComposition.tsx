@@ -41,6 +41,7 @@ export function SettingsAppearanceComposition(props: {
   readonly defaults: SettingsAppearanceValues;
   readonly resolvedTheme: "light" | "dark";
   readonly showFontSmoothing: boolean;
+  readonly showTimestampFormat: boolean;
   readonly themeState: ThemeState;
   readonly onThemeStateChange: (state: ThemeState) => void;
   readonly onChange: <Key extends SettingsAppearanceKey>(
@@ -238,23 +239,25 @@ export function SettingsAppearanceComposition(props: {
 
       <SettingsAppearanceSectionElement title="Time and reading">
         <SettingsAppearanceCardElement>
-          {row(
-            "timestampFormat",
-            "Time format",
-            "System default follows your browser or OS clock preference.",
-            <SettingsAppearanceSelectControlElement
-              value={props.values.timestampFormat}
-              ariaLabel="Timestamp format"
-              options={SETTINGS_TIMESTAMP_OPTIONS}
-              onChange={(value) =>
-                props.onChange(
-                  "timestampFormat",
-                  value as SettingsAppearanceValues["timestampFormat"],
-                )
-              }
-            />,
-            true,
-          )}
+          {props.showTimestampFormat
+            ? row(
+                "timestampFormat",
+                "Time format",
+                "System default follows your browser or OS clock preference.",
+                <SettingsAppearanceSelectControlElement
+                  value={props.values.timestampFormat}
+                  ariaLabel="Timestamp format"
+                  options={SETTINGS_TIMESTAMP_OPTIONS}
+                  onChange={(value) =>
+                    props.onChange(
+                      "timestampFormat",
+                      value as SettingsAppearanceValues["timestampFormat"],
+                    )
+                  }
+                />,
+                true,
+              )
+            : null}
         </SettingsAppearanceCardElement>
       </SettingsAppearanceSectionElement>
     </SettingsAppearanceRootElement>

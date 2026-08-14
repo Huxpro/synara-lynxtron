@@ -226,6 +226,7 @@ function SettingsRouteView() {
       }}
       resolvedTheme={resolvedTheme}
       showFontSmoothing={shouldShowFontSmoothing}
+      showTimestampFormat
       themeState={themeState}
       onThemeStateChange={setThemeState}
       onChange={(key, value) => {
