@@ -388,6 +388,7 @@ interface ThreadPageProps {
   readonly initialEditorCenterMode: 'file' | 'diff';
   readonly initialEditorChatOpen: boolean | null;
   readonly initialWorkingTreeDiff: GitReadWorkingTreeDiffResult | null;
+  readonly initialWorkingTreeDiffUnavailableLabel: string | null;
   readonly initialRenameOpen: boolean;
   readonly initialTerminalOpen: boolean;
   readonly initialTemporaryOpen: boolean;
@@ -563,6 +564,7 @@ function ThreadPage(props: ThreadPageProps) {
     initialEditorCenterMode,
     initialEditorChatOpen,
     initialWorkingTreeDiff,
+    initialWorkingTreeDiffUnavailableLabel,
     initialRenameOpen,
     initialTerminalOpen,
     initialTemporaryOpen,
@@ -993,6 +995,7 @@ function ThreadPage(props: ThreadPageProps) {
                   availableWidth={threadPageWidth || viewportWidth}
                   initialDiff={initialWorkingTreeDiff ?? undefined}
                   initialSelectedFilePath={explorerSelectedPath}
+                  unavailableLabel={initialWorkingTreeDiffUnavailableLabel}
                   onClose={() => setEditorCenterMode('file')}
                   onWidthChange={() => undefined}
                   open
@@ -1237,6 +1240,7 @@ export function SliceRouter({
       boolean,
     ])[];
     readonly workingTreeDiff: GitReadWorkingTreeDiffResult | null;
+    readonly workingTreeDiffUnavailableLabel: string | null;
     readonly summary: Awaited<ReturnType<typeof fetchThreadHeaderSummary>>;
     readonly threadId: string;
   } | null;
@@ -1435,6 +1439,9 @@ export function SliceRouter({
         explorerDirectories: activeThreadData.explorerDirectories,
         workingTreeDiff:
           matchingInitialThreadBootstrap?.workingTreeDiff ?? null,
+        workingTreeDiffUnavailableLabel:
+          matchingInitialThreadBootstrap?.workingTreeDiffUnavailableLabel ??
+          null,
       }
     : matchingInitialThreadBootstrap ?? undefined;
   const resolvedActiveThreadPending =
@@ -1748,6 +1755,9 @@ export function SliceRouter({
         initialEditorChatOpen={initialEditorChatOpen}
         initialWorkingTreeDiff={
           resolvedActiveThreadData?.workingTreeDiff ?? null
+        }
+        initialWorkingTreeDiffUnavailableLabel={
+          resolvedActiveThreadData?.workingTreeDiffUnavailableLabel ?? null
         }
         initialRenameOpen={initialRenameOpen}
         initialTerminalOpen={initialTerminalOpen}

@@ -335,6 +335,38 @@
   Direct product-node `textContent` and geometry proved the authority state;
   the empty reads are retained as harness timing noise, not product loss.
 
+### Non-Git workspace state
+
+- Newly discovered failure state: the canonical Editor workspace temporarily
+  had its `.git` directory atomically renamed while keeping the same project,
+  thread, route, theme, and viewport.
+- Web authority rendered:
+  `Turn diffs are unavailable because this project is not a git repository.`
+- Pre-fix Lynx called `git.readWorkingTreeDiff`, received an empty patch from
+  the server projection, and rendered `No working tree changes.`. A non-Git
+  workspace was therefore indistinguishable from a healthy clean repository.
+- Fix:
+  - Editor bootstrap now probes `git.listBranches`;
+  - `isRepo=false` supplies an explicit unavailable state and skips the diff
+    query;
+  - repository-probe failures use the generic `Couldn’t load changes.` state
+    rather than claiming either clean or non-Git;
+  - `DiffDock` disables its query while an unavailable label is present.
+- Post-fix Lynx rendered:
+  `Changes are unavailable because this workspace is not a Git repository.`
+- Relay evidence contained `git.listBranches`, no
+  `git.readWorkingTreeDiff`, zero pending requests, and no transport/RPC
+  error. No empty changed-files sidebar was mounted.
+- The `.git` directory was restored to its original path after the owned
+  harness exited, and `git diff --quiet` returned success.
+- Evidence:
+  - `/tmp/synara-editor-failure-web.png`
+  - `/tmp/synara-editor-failure-web.json`
+  - `/tmp/synara-editor-failure-lynx.png`
+  - `/tmp/synara-editor-failure-lynx.json`
+  - `/tmp/synara-editor-failure-lynx-fixed.png`
+  - `/tmp/synara-editor-failure-lynx-fixed.json`
+
 ## Authority geometry
 
 After aligning global-sidebar state, Web authority and Lynx use the same
@@ -376,6 +408,8 @@ comparison; no Web screenshot pass is claimed.
   shared visibility preference and reclaiming the workspace.
 - **P1 semantic copy closed:** clean working-tree state no longer describes
   itself as a pull request.
+- **P1 failure-state accuracy closed:** a non-Git workspace no longer appears
+  as a clean Git repository.
 - **P2 coverage remains:** Web Editor Search mode, project switching, editor
   chat-history tabs, terminal rail tabs, and resizable Chat width are not yet
   implemented in Lynx.
@@ -416,6 +450,8 @@ comparison; no Web screenshot pass is claimed.
 - `lynx-editor-chat-visibility`: P2 missing coverage,
   contribution `0.25 -> 0.00`.
 - `lynx-editor-clean-copy-pull-request`: P1 semantic accuracy,
+  component contribution `1.00 -> 0.00`.
+- `lynx-editor-non-git-shown-clean`: P1 state accuracy,
   component contribution `1.00 -> 0.00`.
 - `lynx-editor-search-mode`: P2 missing coverage,
   contribution remains `0.25`.

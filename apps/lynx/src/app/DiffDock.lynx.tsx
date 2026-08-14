@@ -27,6 +27,7 @@ export function DiffDock(props: {
   readonly open: boolean;
   readonly initialDiff?: GitReadWorkingTreeDiffResult;
   readonly initialSelectedFilePath?: string | null;
+  readonly unavailableLabel?: string | null;
   readonly presentation?: 'dock' | 'editor';
   readonly workspaceRoot: string | null;
 }) {
@@ -40,6 +41,7 @@ export function DiffDock(props: {
       onClose={props.onClose}
       onWidthChange={props.onWidthChange}
       presentation={props.presentation ?? 'dock'}
+      unavailableLabel={props.unavailableLabel}
       workspaceRoot={props.workspaceRoot}
     />
   );
@@ -52,6 +54,7 @@ function OpenDiffDock(props: {
   readonly onClose: () => void;
   readonly onWidthChange: (width: number) => void;
   readonly presentation: 'dock' | 'editor';
+  readonly unavailableLabel?: string | null;
   readonly workspaceRoot: string;
 }) {
   const [refreshGeneration, setRefreshGeneration] = useState(0);
@@ -78,6 +81,7 @@ function OpenDiffDock(props: {
       return fetchWorkingTreeDiff(props.workspaceRoot);
     },
     initialData: refreshGeneration === 0 ? props.initialDiff : undefined,
+    enabled: !props.unavailableLabel,
     retry: false,
     staleTime: Number.POSITIVE_INFINITY,
   });
@@ -178,7 +182,11 @@ function OpenDiffDock(props: {
           </view>
         ) : null}
         <scroll-view className="DiffDockScroller" scroll-y enable-scroll-bar>
-        {diff.isPending ? (
+        {props.unavailableLabel ? (
+          <view className="DiffDockState">
+            <text className="DiffDockStateText">{props.unavailableLabel}</text>
+          </view>
+        ) : diff.isPending ? (
           <view className="DiffDockState">
             <RefreshCwIcon
               size={16}

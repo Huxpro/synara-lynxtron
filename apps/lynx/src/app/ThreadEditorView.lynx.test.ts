@@ -137,6 +137,7 @@ describe('Lynx Editor view', () => {
 
   it('supports deterministic Web and Native startup verification', () => {
     const appSource = source('./App.tsx');
+    const diffDockSource = source('./DiffDock.lynx.tsx');
     const webHostSource = source('../main/web/web-host.ts');
     const desktopSource = source('../main/desktop/shellRuntime.ts');
     expect(appSource).toContain(
@@ -145,8 +146,14 @@ describe('Lynx Editor view', () => {
     expect(webHostSource).toContain("get('editor') === 'open'");
     expect(webHostSource).toContain("get('editorMode') === 'diff'");
     expect(webHostSource).toContain("get('editorChat') === 'hidden'");
+    expect(appSource).toContain('await fetchWorkingTreeDiff(');
+    expect(appSource).toContain('await fetchGitBranches(summary.workspaceRoot)');
     expect(appSource).toContain(
-      "await fetchWorkingTreeDiff(summary.workspaceRoot).catch("
+      "'Changes are unavailable because this workspace is not a Git repository.'"
+    );
+    expect(diffDockSource).toContain('enabled: !props.unavailableLabel');
+    expect(diffDockSource).toContain(
+      '<text className="DiffDockStateText">{props.unavailableLabel}</text>'
     );
     expect(desktopSource).toContain(
       "initialEditorOpen: url.searchParams.get('editor') === 'open'"

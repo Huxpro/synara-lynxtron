@@ -63,6 +63,7 @@ import {
 } from '../adapters/useTheme.lynx';
 import { useSynaraTransportState } from '../data/useSynaraTransportState.lynx';
 import { fetchWorkingTreeDiff } from '../data/synaraClient.lynx';
+import { fetchGitBranches } from '../data/synaraClient.lynx';
 import { Button } from '../components/ui/button';
 import './App.css';
 
@@ -185,6 +186,7 @@ export function App() {
     readonly workingTreeDiff: Awaited<
       ReturnType<typeof fetchWorkingTreeDiff>
     > | null;
+    readonly workingTreeDiffUnavailableLabel: string | null;
     readonly summary: Awaited<ReturnType<typeof fetchThreadHeaderSummary>>;
     readonly threadId: string;
   } | null>(null);
@@ -282,14 +284,30 @@ export function App() {
                 initialEnvironmentOpen && summary?.workspaceRoot
                   ? await fetchEnvironmentBootstrapData(summary.workspaceRoot)
                   : null;
-              const workingTreeDiff =
+              const workingTreeDiffState =
                 initialEditorOpen &&
                 initialEditorCenterMode === 'diff' &&
                 summary?.workspaceRoot
-                  ? await fetchWorkingTreeDiff(summary.workspaceRoot).catch(
-                      () => null
-                    )
-                  : null;
+                  ? await fetchGitBranches(summary.workspaceRoot)
+                      .then(async (branches) =>
+                        branches.isRepo
+                          ? {
+                              diff: await fetchWorkingTreeDiff(
+                                summary.workspaceRoot!
+                              ),
+                              unavailableLabel: null,
+                            }
+                          : {
+                              diff: null,
+                              unavailableLabel:
+                                'Changes are unavailable because this workspace is not a Git repository.',
+                            }
+                      )
+                      .catch(() => ({
+                        diff: null,
+                        unavailableLabel: 'Couldn’t load changes.',
+                      }))
+                  : { diff: null, unavailableLabel: null };
               return {
                 data,
                 environment,
@@ -298,7 +316,9 @@ export function App() {
                 explorerFile,
                 explorerLocalPreview,
                 explorerPdfMetadata,
-                workingTreeDiff,
+                workingTreeDiff: workingTreeDiffState.diff,
+                workingTreeDiffUnavailableLabel:
+                  workingTreeDiffState.unavailableLabel,
                 summary,
                 threadId: threadMatch[1],
               };
