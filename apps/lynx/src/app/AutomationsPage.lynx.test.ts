@@ -118,6 +118,8 @@ describe('Lynx Automations route', () => {
       '{ type: input.schedule, timeOfDay: input.timeOfDay }'
     );
     expect(dialogSource).toContain('<NativeTimeInput');
+    expect(dialogSource).toContain("'default-value': '09:00'");
+    expect(dialogSource).not.toContain("defaultValue: '09:00'");
     expect(dialogSource).toContain(
       "/^(?:[01]\\d|2[0-3]):[0-5]\\d$/u.test(timeOfDay)"
     );

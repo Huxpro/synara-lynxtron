@@ -64,7 +64,7 @@ function NativeTimeInput({
     className: 'AutomationCreateTime',
     'accessibility-element': true,
     'accessibility-label': 'Automation time',
-    defaultValue: '09:00',
+    'default-value': '09:00',
     disabled,
     focusable: !disabled,
     inputFilter: '[0-9:]*',
