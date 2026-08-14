@@ -45,8 +45,7 @@ describe('Automation create payload', () => {
   it.each(['auto', 'local', 'worktree'] as const)(
     'preserves the %s workspace mode',
     (worktreeMode) => {
-      expect(
-        buildAutomationCreateInput({
+      const result = buildAutomationCreateInput({
           interactionMode: 'default',
           projectId: 'project-1',
           maxIterations: null,
@@ -57,8 +56,12 @@ describe('Automation create payload', () => {
           stopOnError: true,
           timeOfDay: '09:00',
           worktreeMode,
-        }).worktreeMode,
-      ).toBe(worktreeMode);
+        });
+
+      expect(result.worktreeMode).toBe(worktreeMode);
+      expect(result.acknowledgedRisks).toEqual(
+        worktreeMode === 'local' ? ['local-checkout'] : [],
+      );
     },
   );
 });

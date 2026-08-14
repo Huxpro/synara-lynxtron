@@ -208,6 +208,20 @@ Expanded create-dialog evidence is stored in `9b46ffd`.
   the newly closed payload branch.
 - Native remains unverified; no provider turn or worktree was created.
 
+### Local-mode safety correction
+
+- Follow-up audit against `AutomationService` found that the initial Local UI
+  change was incomplete: the server rejects `worktreeMode: local` unless
+  `acknowledgedRisks` contains `local-checkout`.
+- This was a real P1 payload loss, not a test-only concern. The visible option
+  could otherwise submit a definition that the server would refuse.
+- The payload builder now emits:
+  - `['local-checkout']` for Local;
+  - `[]` for Auto and Worktree.
+- Focused tests assert the exact risk list for all three workspace modes.
+- The same 11 focused tests and the full Lynx/Desktop production build passed
+  after the correction.
+
 ### Remaining create-form coverage
 
 - Model selection, explicit runtime selection, heartbeat targeting, full retry

@@ -44,6 +44,7 @@ export function buildAutomationCreateInput(input: {
     maxRuntimeSeconds: 3600,
     retryPolicy: { type: 'none' },
     misfirePolicy: 'coalesce',
-    acknowledgedRisks: [],
+    acknowledgedRisks:
+      input.worktreeMode === 'local' ? ['local-checkout'] : [],
   };
 }
