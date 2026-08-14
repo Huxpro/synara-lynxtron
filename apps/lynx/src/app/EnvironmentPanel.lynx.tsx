@@ -1702,12 +1702,12 @@ function EnvironmentRecap(props: {
       return;
     }
     const generation = ++generationRef.current;
-    void prepareThreadRecap(props.threadId).then(async (plan) => {
-      if (!plan || generationRef.current !== generation) return;
-      await sleepOnHost(recapIdleMs);
-      if (generationRef.current !== generation) return;
-      setGenerationState('pending');
-      try {
+    void prepareThreadRecap(props.threadId)
+      .then(async (plan) => {
+        if (!plan || generationRef.current !== generation) return;
+        await sleepOnHost(recapIdleMs);
+        if (generationRef.current !== generation) return;
+        setGenerationState('pending');
         const next = await generatePreparedThreadRecap({
           cwd: props.workspaceRoot,
           plan,
@@ -1716,12 +1716,12 @@ function EnvironmentRecap(props: {
         if (generationRef.current !== generation) return;
         if (next) setGeneratedRecap(next);
         setGenerationState('idle');
-      } catch {
+      })
+      .catch(() => {
         if (generationRef.current === generation) {
           setGenerationState('error');
         }
-      }
-    });
+      });
     return () => {
       if (generationRef.current === generation) generationRef.current += 1;
     };

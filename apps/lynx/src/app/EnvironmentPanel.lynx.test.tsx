@@ -310,6 +310,9 @@ describe('Lynx Environment panel', () => {
     expect(panelSource).toContain('resolveThreadRecapIdleMs({');
     expect(panelSource).toContain('fetchThreadRecapSummary(props.threadId)');
     expect(panelSource).toContain('prepareThreadRecap(props.threadId)');
+    expect(panelSource).toContain(
+      ".catch(() => {\n        if (generationRef.current === generation)"
+    );
     expect(panelSource).toContain('await generatePreparedThreadRecap({');
     expect(panelSource).toContain('<ChatMarkdown');
     expect(queriesSource).toContain('deriveThreadRecapSource({');
