@@ -971,7 +971,7 @@ function EnvironmentGitAction(props: {
             <textarea
               className="EnvironmentGitActionMessage"
               default-value={commitMessage}
-              readOnly={running}
+              readonly={running}
               aria-label="Commit message"
               aria-invalid={Boolean(error)}
               accessibility-element
