@@ -105,7 +105,10 @@ import {
 } from '../data/synaraClient.lynx';
 import { webStorage } from '../platform/storage';
 import { sleepOnHost } from '../platform/timer';
-import { platformWindow } from '../platform/window';
+import {
+  openExternalBestEffort,
+  platformWindow,
+} from '../platform/window';
 import { dialogs } from '../platform/dialogs';
 import {
   Dialog,
@@ -730,7 +733,7 @@ function EnvironmentGitAction(props: {
     if (item.disabled) return;
     if (item.kind === 'open_pr') {
       if (props.gitStatus?.pr?.url) {
-        void platformWindow.openExternal(props.gitStatus.pr.url);
+        openExternalBestEffort(props.gitStatus.pr.url);
       }
       return;
     }
@@ -1452,7 +1455,7 @@ function EnvironmentPullRequest(props: {
     .join(' ');
   const openUrl = (url: string) => {
     'background only';
-    void platformWindow.openExternal(url);
+    openExternalBestEffort(url);
   };
 
   return (

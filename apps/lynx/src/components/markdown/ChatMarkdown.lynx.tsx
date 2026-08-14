@@ -12,7 +12,7 @@ import { useLynxInteractiveState } from '../ui/interactive-state.lynx';
 import { CheckIcon, CopyIcon, TextWrapIcon } from '../../lib/icons.lynx';
 import { clipboard } from '../../platform/clipboard';
 import { sleepOnHost } from '../../platform/timer';
-import { platformWindow } from '../../platform/window';
+import { openExternalBestEffort } from '../../platform/window';
 import {
   parseMarkdown,
   type MarkdownNode,
@@ -75,7 +75,7 @@ function MarkdownInlineToken({
   const activate = externalTarget
     ? () => {
         'background only';
-        void platformWindow.openExternal(externalTarget);
+        openExternalBestEffort(externalTarget);
       }
     : fileReference && context.onOpenFileReference
       ? () => {
@@ -202,7 +202,7 @@ function MarkdownLink({
   const activate = external
     ? () => {
         'background only';
-        void platformWindow.openExternal(url);
+        openExternalBestEffort(url);
       }
     : undefined;
   const interaction = useLynxInteractiveState({

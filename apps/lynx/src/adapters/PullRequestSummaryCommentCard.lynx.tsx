@@ -8,7 +8,7 @@ import {
 
 import { ChatMarkdown } from '../components/markdown/ChatMarkdown.lynx';
 import { ChevronRightIcon } from '../lib/icons.lynx';
-import { platformWindow } from '../platform/window';
+import { openExternalBestEffort } from '../platform/window';
 import {
   disclosureChevronClassName,
   disclosureContentClassName,
@@ -101,7 +101,7 @@ export function PullRequestSummaryCommentCard(props: {
             <CommentReplyAction
               onActivate={() => {
                 'background only';
-                void platformWindow.openExternal(replyUrl);
+                openExternalBestEffort(replyUrl);
               }}
             />
           </view>

@@ -44,7 +44,7 @@ import {
   disclosureContentClassName,
   useLynxDisclosurePresence,
 } from '../platform/motion.lynx';
-import { platformWindow } from '../platform/window';
+import { openExternalBestEffort } from '../platform/window';
 import { queryClient } from './queries';
 import {
   isProviderToolDirty,
@@ -169,7 +169,7 @@ function ProviderDocLink(props: {
     accessibleLabel: `Open ${props.label} documentation`,
     onActivate: () => {
       'background only';
-      void platformWindow.openExternal(props.href);
+      openExternalBestEffort(props.href);
     },
   });
   return (

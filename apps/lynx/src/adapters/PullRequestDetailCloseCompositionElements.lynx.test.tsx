@@ -92,7 +92,7 @@ describe('Pull Request detail close fidelity', () => {
       'utf8'
     );
     expect(source).toContain("'background only';");
-    expect(source).toContain('void platformWindow.openExternal(props.url);');
+    expect(source).toContain('openExternalBestEffort(props.url);');
     expect(styles).toMatch(
       /\.SharedPrDetailExternalButton\s*\{[^}]*margin-left:\s*0;/s
     );

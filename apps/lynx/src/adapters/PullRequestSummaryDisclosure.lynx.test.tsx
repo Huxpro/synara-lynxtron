@@ -28,7 +28,7 @@ describe('Pull Request summary disclosure fidelity', () => {
       '<PullRequestCheckStatusIcon status={props.check.status} />'
     );
     expect(source).toContain(
-      'void platformWindow.openExternal(props.check.url!)'
+      'openExternalBestEffort(props.check.url!)'
     );
     expect(commentSource).toContain('actor={props.comment.author}');
     expect(commentSource).toContain('variant="comment"');
@@ -58,7 +58,7 @@ describe('Pull Request summary disclosure fidelity', () => {
       'const replyUrl = props.comment.url ?? props.prUrl'
     );
     expect(commentSource).toContain(
-      'void platformWindow.openExternal(replyUrl)'
+      'openExternalBestEffort(replyUrl)'
     );
     expect(source).toContain('prUrl={props.detail.url}');
     expect(source).toContain('disclosureContentClassName(');

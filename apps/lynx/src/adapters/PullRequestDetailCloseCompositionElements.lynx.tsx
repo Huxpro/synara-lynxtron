@@ -1,5 +1,5 @@
 import { ExternalLinkIcon, XIcon } from '../lib/icons.lynx';
-import { platformWindow } from '../platform/window';
+import { openExternalBestEffort } from '../platform/window';
 import './pull-request-detail-close-composition-elements.css';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 
@@ -29,7 +29,7 @@ export function PullRequestDetailExternalButtonElement(props: {
 }) {
   const openExternal = () => {
     'background only';
-    void platformWindow.openExternal(props.url);
+    openExternalBestEffort(props.url);
   };
   const interaction = useLynxInteractiveState({
     baseClassName:

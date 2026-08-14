@@ -20,7 +20,7 @@ import { PullRequestSummaryBranchRow } from './PullRequestSummaryBranchRow.lynx'
 import { PullRequestSummaryCommentCard } from './PullRequestSummaryCommentCard.lynx';
 import { PullRequestSummaryMetaIcon } from './PullRequestSummaryMetaIcon.lynx';
 import { PullRequestWarningBanner } from './PullRequestWarningBanner.lynx';
-import { platformWindow } from '../platform/window';
+import { openExternalBestEffort } from '../platform/window';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 import './pull-request-summary-composition-elements.css';
 
@@ -243,7 +243,7 @@ function PullRequestSummaryCheckRow(props: {
     onActivate: props.check.url
       ? () => {
           'background only';
-          void platformWindow.openExternal(props.check.url!);
+          openExternalBestEffort(props.check.url!);
         }
       : undefined,
   });

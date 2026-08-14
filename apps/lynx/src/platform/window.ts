@@ -63,8 +63,12 @@ export const platformWindow: WindowPort = {
     return result.opened;
   },
   openWindow: (url) => {
-    void platformWindow.openExternal(url);
+    openExternalBestEffort(url);
   },
   getZoomFactor: () => 1,
   onZoomFactorChange: () => () => undefined,
 };
+
+export function openExternalBestEffort(url: string): void {
+  void platformWindow.openExternal(url).catch(() => undefined);
+}
