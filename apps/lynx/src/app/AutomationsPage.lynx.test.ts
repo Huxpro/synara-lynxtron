@@ -168,5 +168,7 @@ describe('Lynx Automations route', () => {
     expect(editSource).toContain('id: definition.id');
     expect(editSource).toContain('name: name.trim()');
     expect(editSource).toContain('prompt: prompt.trim()');
+    expect(editSource).toContain('default-value={definition.prompt}');
+    expect(editSource).not.toContain('sleepOnHost(0)');
   });
 });

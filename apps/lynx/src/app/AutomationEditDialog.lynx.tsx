@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from '@lynx-js/react';
+import { useEffect, useState } from '@lynx-js/react';
 import type { AutomationDefinition, AutomationUpdateInput } from '@synara/contracts';
 
 import { Button } from '../components/ui/button';
@@ -11,7 +11,6 @@ import {
   DialogTitle,
 } from '../components/ui/dialog.lynx';
 import { Input } from '../components/ui/input.lynx';
-import { sleepOnHost } from '../platform/timer';
 
 interface NativeTextInputEvent {
   readonly detail: {
@@ -36,24 +35,10 @@ export function AutomationEditDialog({
 }) {
   const [name, setName] = useState(definition.name);
   const [prompt, setPrompt] = useState(definition.prompt);
-  const promptRef = useRef<React.ElementRef<'textarea'>>(null);
   useEffect(() => {
     if (!open) return;
-    let cancelled = false;
     setName(definition.name);
     setPrompt(definition.prompt);
-    void sleepOnHost(0).then(() => {
-      if (cancelled) return;
-      promptRef.current
-        ?.invoke({
-          method: 'setValue',
-          params: { value: definition.prompt },
-        })
-        .exec();
-    });
-    return () => {
-      cancelled = true;
-    };
   }, [definition.name, definition.prompt, open]);
   const canSave =
     !pending &&
@@ -85,7 +70,6 @@ export function AutomationEditDialog({
           <view className="AutomationCreateField">
             <text className="AutomationCreateLabel">Prompt</text>
             <textarea
-              ref={promptRef}
               key={`prompt:${definition.updatedAt}:${open}`}
               className="AutomationCreatePrompt"
               accessibility-element={true}
@@ -94,6 +78,7 @@ export function AutomationEditDialog({
               focusable={!pending}
               maxlength={64000}
               maxlines={10}
+              default-value={definition.prompt}
               send-composing-input={true}
               bindinput={(event: NativeTextInputEvent) =>
                 setPrompt(event.detail.value)
