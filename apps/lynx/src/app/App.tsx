@@ -69,7 +69,13 @@ async function readPersistedAppearance(): Promise<{
   const { hydrateLynxComposerDraftStore } = await import(
     /* webpackMode: "eager" */ '../adapters/composerDraftStore.lynx'
   );
-  await hydrateLynxComposerDraftStore();
+  const { useWorkspaceStore } = await import(
+    /* webpackMode: "eager" */ '@synara-web/workspaceStore'
+  );
+  await Promise.all([
+    hydrateLynxComposerDraftStore(),
+    useWorkspaceStore.persist.rehydrate(),
+  ]);
   const themeRaw = webStorage.getItem(THEME_STORAGE_KEY);
   return {
     themeState: parseStoredThemeState(themeRaw),

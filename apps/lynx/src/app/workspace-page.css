@@ -1,0 +1,75 @@
+.WorkspacePage {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  background-color: var(--background);
+}
+
+.WorkspacePageHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 46px;
+  min-height: 46px;
+  padding: 0 14px;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: var(--border);
+}
+
+.WorkspacePageTitleButton {
+  max-width: 320px;
+  justify-content: flex-start;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.WorkspacePageTitleInput {
+  width: 240px;
+  height: 30px;
+  padding: 5px 9px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--input);
+  border-radius: 7px;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-size: 12px;
+}
+
+.WorkspacePageHeaderSpacer {
+  flex: 1;
+}
+
+.WorkspacePageState {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  padding: 24px;
+}
+
+.WorkspacePageStateTitle {
+  color: var(--foreground);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.WorkspacePageStateCopy {
+  max-width: 360px;
+  margin-top: 6px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+}
+
+.WorkspacePageStateAction {
+  margin-top: 18px;
+}

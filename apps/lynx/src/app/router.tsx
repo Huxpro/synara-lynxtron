@@ -24,6 +24,7 @@ import type { ThemeState } from '@synara-web/theme/theme.logic';
 import type { SettingsSectionId } from '@synara-web/settingsNavigation';
 import { isProviderKind } from '@synara-web/providerOrdering';
 import { useStore } from '@synara-web/store';
+import { useWorkspaceStore } from '@synara-web/workspaceStore';
 import {
   APP_SETTINGS_STORAGE_KEY,
   readSettingsGeneralProjection,
@@ -64,6 +65,7 @@ import {
 } from './FeatureListsPage';
 import { AutomationsPage } from './AutomationsPage.lynx';
 import { PluginLibraryPage } from './PluginLibraryPage.lynx';
+import { WorkspacePage } from './WorkspacePage.lynx';
 import { Composer } from '../components/composer/Composer.lynx';
 import { Button } from '../components/ui/button';
 import { Sidebar } from '../components/sidebar/Sidebar.lynx';
@@ -167,6 +169,16 @@ function parseRoute(pathname: string): RouteState {
   }
   if (pathname === '/studio') {
     return { pathname: '/studio', params: {} };
+  }
+  const workspaceMatch = pathname.match(/^\/workspace\/([^/]+)$/);
+  if (workspaceMatch) {
+    return {
+      pathname: '/workspace/$workspaceId',
+      params: { workspaceId: decodeURIComponent(workspaceMatch[1]) },
+    };
+  }
+  if (pathname === '/workspace') {
+    return { pathname: '/workspace', params: {} };
   }
   if (pathname === '/kanban') {
     return { pathname: '/kanban', params: {} };
@@ -876,6 +888,7 @@ export function SliceRouter({
     refetchInterval: 5_000,
   });
   const routeProjects = useStore((state) => state.projects);
+  const workspacePages = useWorkspaceStore((state) => state.workspacePages);
   const studioSettings = readSettingsGeneralProjection(
     webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
   );
@@ -1161,6 +1174,14 @@ export function SliceRouter({
     }
   }, [route.pathname, studioSettings.showStudioSection]);
   useEffect(() => {
+    if (
+      route.pathname.startsWith('/workspace') &&
+      !studioSettings.showWorkspaceSection
+    ) {
+      history.replace('/');
+    }
+  }, [route.pathname, studioSettings.showWorkspaceSection]);
+  useEffect(() => {
     if (route.pathname !== '/studio') {
       setStudioLandingReady(false);
     }
@@ -1379,6 +1400,31 @@ export function SliceRouter({
         </view>
       </view>
     );
+  } else if (
+    route.pathname === '/workspace' &&
+    studioSettings.showWorkspaceSection
+  ) {
+    const workspaceId = workspacePages[0]?.id ?? null;
+    page = workspaceId ? (
+      <WorkspacePage
+        workspaceId={workspaceId}
+        navigate={(to) => history.replace(to)}
+      />
+    ) : (
+      <ThreadsLandingPage
+        onThreadCreated={(threadId) => navigate(`/thread/${threadId}`)}
+      />
+    );
+  } else if (
+    route.pathname === '/workspace/$workspaceId' &&
+    studioSettings.showWorkspaceSection
+  ) {
+    page = (
+      <WorkspacePage
+        workspaceId={route.params.workspaceId}
+        navigate={(to) => history.replace(to)}
+      />
+    );
   } else if (route.pathname === '/kanban') {
     page = <ProjectsPage navigate={(to) => history.push(to)} />;
   } else if (route.pathname === '/kanban/$projectId') {
@@ -1428,8 +1474,17 @@ export function SliceRouter({
           activeThreadId={
             route.pathname === '/thread/$threadId' ? route.params.threadId : null
           }
+          activeWorkspaceId={
+            route.pathname === '/workspace/$workspaceId'
+              ? route.params.workspaceId
+              : workspacePages[0]?.id ?? null
+          }
           activePath={
-            route.pathname === '/kanban/$projectId' ? '/kanban' : route.pathname
+            route.pathname === '/kanban/$projectId'
+              ? '/kanban'
+              : route.pathname === '/workspace/$workspaceId'
+                ? '/workspace'
+                : route.pathname
           }
           navigate={navigate}
           titlebarControls={openTitlebarControls}

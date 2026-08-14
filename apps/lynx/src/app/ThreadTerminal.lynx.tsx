@@ -1,4 +1,4 @@
-import { useRef, useState } from '@lynx-js/react';
+import { useEffect, useRef, useState } from '@lynx-js/react';
 import type { InputRef } from '@lynx-js/lynx-ui';
 import type { TerminalSessionSnapshot } from '@synara/contracts';
 
@@ -8,15 +8,21 @@ import { sleepOnHost } from '../platform/timer';
 import { platformTerminal } from '../platform/terminal';
 import './thread-terminal.css';
 
-const TERMINAL_ID = 'lynx-drawer';
+const DEFAULT_TERMINAL_ID = 'lynx-drawer';
 
 export function ThreadTerminal({
+  autoOpen = false,
   open,
+  presentationMode = 'drawer',
+  terminalId = DEFAULT_TERMINAL_ID,
   threadId,
   workspaceRoot,
   onOpenChange,
 }: {
+  readonly autoOpen?: boolean;
   readonly open: boolean;
+  readonly presentationMode?: 'drawer' | 'workspace';
+  readonly terminalId?: string;
   readonly threadId: string;
   readonly workspaceRoot: string;
   readonly onOpenChange: (open: boolean) => void;
@@ -26,14 +32,13 @@ export function ThreadTerminal({
   const [snapshot, setSnapshot] = useState<TerminalSessionSnapshot | null>(null);
   const [error, setError] = useState<string | null>(null);
   const commandInputRef = useRef<InputRef>(null);
-
-  if (!open) return null;
+  const autoOpenAttemptKeyRef = useRef<string | null>(null);
 
   const refresh = async () => {
     'background only';
     const next = await platformTerminal.open({
       threadId,
-      terminalId: TERMINAL_ID,
+      terminalId,
       cwd: workspaceRoot,
       cols: 100,
       rows: 24,
@@ -43,6 +48,29 @@ export function ThreadTerminal({
     setError(null);
     return next;
   };
+
+  useEffect(() => {
+    if (!open || !autoOpen || snapshot || pending) return;
+    const attemptKey = `${threadId}\0${terminalId}\0${workspaceRoot}`;
+    if (autoOpenAttemptKeyRef.current === attemptKey) return;
+    autoOpenAttemptKeyRef.current = attemptKey;
+    setPending(true);
+    void refresh()
+      .catch((cause) => {
+        setError(cause instanceof Error ? cause.message : String(cause));
+      })
+      .finally(() => setPending(false));
+  }, [
+    autoOpen,
+    open,
+    pending,
+    snapshot,
+    terminalId,
+    threadId,
+    workspaceRoot,
+  ]);
+
+  if (!open) return null;
 
   const submit = async () => {
     'background only';
@@ -54,7 +82,7 @@ export function ThreadTerminal({
       await refresh();
       await platformTerminal.write({
         threadId,
-        terminalId: TERMINAL_ID,
+        terminalId,
         data: `${value}\r`,
       });
       setCommand('');
@@ -76,7 +104,7 @@ export function ThreadTerminal({
       if (snapshot) {
         await platformTerminal.close({
           threadId,
-          terminalId: TERMINAL_ID,
+          terminalId,
           deleteHistory: true,
         });
       }
@@ -90,7 +118,9 @@ export function ThreadTerminal({
   };
 
   return (
-    <view className="ThreadTerminal">
+    <view
+      className={`ThreadTerminal ThreadTerminal--${presentationMode}`}
+    >
       <view className="ThreadTerminalHeader">
         <text className="ThreadTerminalTitle">Terminal</text>
         <text className="ThreadTerminalStatus">

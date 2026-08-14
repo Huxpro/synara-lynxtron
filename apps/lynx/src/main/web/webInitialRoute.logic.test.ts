@@ -21,6 +21,10 @@ describe('Lynx-for-Web initial route harness', () => {
     expect(resolveWebInitialRoute('?route=%2Fthread%2Fthread-1')).toBe(
       '/thread/thread-1'
     );
+    expect(resolveWebInitialRoute('?route=%2Fworkspace')).toBe('/workspace');
+    expect(resolveWebInitialRoute('?route=%2Fworkspace%2Fworkspace-1')).toBe(
+      '/workspace/workspace-1'
+    );
     expect(resolveWebInitialRoute('?route=https%3A%2F%2Fexample.com')).toBeNull();
     expect(resolveWebInitialRoute('?route=%2Funknown')).toBeNull();
   });

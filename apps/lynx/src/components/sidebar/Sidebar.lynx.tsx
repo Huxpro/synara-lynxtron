@@ -61,6 +61,7 @@ import {
   type SidebarProjectSortOrderValue,
   type SidebarThreadSortOrderValue,
 } from '@synara-web/sidebarSortDefaults';
+import { useWorkspaceStore } from '@synara-web/workspaceStore';
 import {
   SidebarListSectionHeaderAddProjectElement,
   SidebarListSectionHeaderSortElement,
@@ -294,11 +295,13 @@ async function persistProjectDisclosureState(
 
 export function Sidebar({
   activeThreadId,
+  activeWorkspaceId,
   activePath,
   navigate,
   titlebarControls,
 }: {
   readonly activeThreadId: string | null;
+  readonly activeWorkspaceId?: string | null;
   readonly activePath: string;
   readonly navigate: (to: string) => void;
   readonly titlebarControls?: ReactNode;
@@ -326,8 +329,11 @@ export function Sidebar({
   );
   const primarySidebarSurface = resolveSidebarPrimarySurface({
     isOnStudio: activePath === '/studio',
-    isOnWorkspace: false,
+    isOnWorkspace: activePath === '/workspace',
   });
+  const workspacePages = useWorkspaceStore((state) => state.workspacePages);
+  const createWorkspace = useWorkspaceStore((state) => state.createWorkspace);
+  const workspaceSectionVisible = initialSortSettings.showWorkspaceSection;
   const [persistedPinnedThreadIds, setPersistedPinnedThreadIds] = useState<
     readonly string[]
   >([]);
@@ -748,9 +754,30 @@ export function Sidebar({
             surfaceKey={primarySidebarSurface}
             picker={
           <SidebarSegmentedPicker
-            views={['studio', 'threads']}
-            activeView={activePath === '/studio' ? 'studio' : 'threads'}
-            onSelectView={(view) => navigate(view === 'studio' ? '/studio' : '/')}
+            views={[
+              'studio',
+              'threads',
+              ...(workspaceSectionVisible ? (['workspace'] as const) : []),
+            ]}
+            activeView={
+              activePath === '/studio'
+                ? 'studio'
+                : activePath === '/workspace'
+                  ? 'workspace'
+                  : 'threads'
+            }
+            onSelectView={(view) => {
+              if (view === 'studio') {
+                navigate('/studio');
+                return;
+              }
+              if (view === 'workspace') {
+                const workspaceId = workspacePages[0]?.id;
+                if (workspaceId) navigate(`/workspace/${workspaceId}`);
+                return;
+              }
+              navigate('/');
+            }}
           />
             }
             navigation={
@@ -766,6 +793,10 @@ export function Sidebar({
             newThreadShortcutLabel={LYNX_PRIMARY_SHORTCUT_LABELS.newThread}
             searchShortcutLabel={LYNX_PRIMARY_SHORTCUT_LABELS.search}
             onCreateThread={() => navigate('/')}
+            onCreateWorkspace={() => {
+              const workspaceId = createWorkspace();
+              navigate(`/workspace/${workspaceId}`);
+            }}
             onCreateStudioChat={() => navigate('/studio')}
             onOpenSearch={() => openSearchPalette()}
             onOpenKanban={() => navigate('/kanban')}
@@ -775,6 +806,28 @@ export function Sidebar({
             }
             body={
         <>
+          {primarySidebarSurface === 'workspace' ? (
+            <view className="AppSidebarWorkspace">
+              <text className="AppSidebarWorkspaceLabel">Workspace</text>
+              {workspacePages.map((workspace) => (
+                <SidebarNavigationRow
+                  key={workspace.id}
+                  className={`AppSidebarThread AppSidebarChatThread${
+                    activeWorkspaceId === workspace.id
+                      ? ' AppSidebarThread--active'
+                      : ''
+                  }`}
+                  label={workspace.title}
+                  onActivate={() => navigate(`/workspace/${workspace.id}`)}
+                >
+                  <text className="AppSidebarWorkspaceTitle">
+                    {workspace.title}
+                  </text>
+                </SidebarNavigationRow>
+              ))}
+            </view>
+          ) : (
+          <>
           <SidebarPinnedSection
             rows={sections.pinnedThreads}
             renderRow={(thread) => {
@@ -987,6 +1040,8 @@ export function Sidebar({
               );
             }}
           />
+          )}
+          </>
           )}
         </>
             }
