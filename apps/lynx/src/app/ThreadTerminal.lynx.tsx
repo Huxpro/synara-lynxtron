@@ -6,12 +6,15 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input.lynx';
 import { sleepOnHost } from '../platform/timer';
 import { platformTerminal } from '../platform/terminal';
+import { resolveLynxTerminalTypography } from './terminalAppearance.logic';
 import './thread-terminal.css';
 
 const DEFAULT_TERMINAL_ID = 'lynx-drawer';
 
 export function ThreadTerminal({
   autoOpen = false,
+  fontFamily,
+  fontSizePx,
   open,
   presentationMode = 'drawer',
   terminalId = DEFAULT_TERMINAL_ID,
@@ -20,6 +23,8 @@ export function ThreadTerminal({
   onOpenChange,
 }: {
   readonly autoOpen?: boolean;
+  readonly fontFamily: string;
+  readonly fontSizePx: number;
   readonly open: boolean;
   readonly presentationMode?: 'drawer' | 'workspace';
   readonly terminalId?: string;
@@ -33,6 +38,10 @@ export function ThreadTerminal({
   const [error, setError] = useState<string | null>(null);
   const commandInputRef = useRef<InputRef>(null);
   const autoOpenAttemptKeyRef = useRef<string | null>(null);
+  const typography = resolveLynxTerminalTypography({
+    fontFamily,
+    fontSizePx,
+  });
 
   const refresh = async () => {
     'background only';
@@ -145,7 +154,7 @@ export function ThreadTerminal({
         className="ThreadTerminalOutputScroller"
         scroll-orientation="vertical"
       >
-        <text className="ThreadTerminalOutput">
+        <text className="ThreadTerminalOutput" style={typography}>
           {snapshot?.replayPreamble ?? ''}
           {snapshot?.history || 'Terminal ready.'}
         </text>
@@ -158,6 +167,7 @@ export function ThreadTerminal({
           ref={commandInputRef}
           nativeInput
           className="ThreadTerminalCommandInput"
+          style={typography}
           accessibility-label="Terminal command"
           disabled={pending}
           placeholder="Enter a command"

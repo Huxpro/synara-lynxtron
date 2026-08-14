@@ -998,6 +998,8 @@ function ThreadPage(props: ThreadPageProps) {
       {bodyState.kind === 'empty' ? null : composer}
       {currentThread?.workspaceRoot ? (
         <ThreadTerminal
+          fontFamily={appearance.terminalFontFamily}
+          fontSizePx={appearance.terminalFontSizePx}
           open={terminalOpen}
           threadId={threadId}
           workspaceRoot={currentThread.workspaceRoot}
@@ -1682,6 +1684,7 @@ export function SliceRouter({
     const workspaceId = workspacePages[0]?.id ?? null;
     page = workspaceId ? (
       <WorkspacePage
+        appearance={appearance}
         workspaceId={workspaceId}
         navigate={(to) => history.replace(to)}
       />
@@ -1696,6 +1699,7 @@ export function SliceRouter({
   ) {
     page = (
       <WorkspacePage
+        appearance={appearance}
         workspaceId={route.params.workspaceId}
         navigate={(to) => history.replace(to)}
       />

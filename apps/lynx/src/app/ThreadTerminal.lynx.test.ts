@@ -39,6 +39,11 @@ describe('Lynx thread terminal', () => {
     );
     expect(terminalSource).not.toContain('value={command}');
     expect(terminalSource).toContain('streamOutput: false');
+    expect(terminalSource).toContain('resolveLynxTerminalTypography({');
+    expect(terminalSource).toContain(
+      '<text className="ThreadTerminalOutput" style={typography}>'
+    );
+    expect(terminalSource).toContain('style={typography}');
     expect(terminalPortSource).toContain("bridgeCall('terminalOpen', input)");
     expect(terminalPortSource).toContain("bridgeCall('terminalWrite', input)");
     expect(terminalPortSource).toContain("bridgeCall('terminalClose', input)");
@@ -64,6 +69,25 @@ describe('Lynx thread terminal', () => {
     );
     expect(routerSource).toContain('setTerminalOpen((open) => !open)');
     expect(routerSource).toContain('<ThreadTerminal');
+    expect(routerSource).toContain(
+      'fontFamily={appearance.terminalFontFamily}'
+    );
+    expect(routerSource).toContain(
+      'fontSizePx={appearance.terminalFontSizePx}'
+    );
     expect(routerSource).toContain('workspaceRoot={currentThread.workspaceRoot}');
+  });
+
+  it('applies the same appearance projection to workspace terminals', () => {
+    const workspaceSource = readFileSync(
+      new URL('./WorkspacePage.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(workspaceSource).toContain(
+      'fontFamily={appearance.terminalFontFamily}'
+    );
+    expect(workspaceSource).toContain(
+      'fontSizePx={appearance.terminalFontSizePx}'
+    );
   });
 });

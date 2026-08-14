@@ -4,6 +4,7 @@ import {
   useWorkspaceStore,
   workspaceThreadId,
 } from '@synara-web/workspaceStore';
+import type { SettingsAppearanceValues } from '@synara-web/components/settings/SettingsAppearanceComposition.logic';
 
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input.lynx';
@@ -12,9 +13,14 @@ import { ThreadTerminal } from './ThreadTerminal.lynx';
 import './workspace-page.css';
 
 export function WorkspacePage({
+  appearance,
   workspaceId,
   navigate,
 }: {
+  readonly appearance: Pick<
+    SettingsAppearanceValues,
+    'terminalFontFamily' | 'terminalFontSizePx'
+  >;
   readonly workspaceId: string;
   readonly navigate: (to: string) => void;
 }) {
@@ -111,6 +117,8 @@ export function WorkspacePage({
       {serverConfig?.homeDir && terminalOpen ? (
         <ThreadTerminal
           autoOpen
+          fontFamily={appearance.terminalFontFamily}
+          fontSizePx={appearance.terminalFontSizePx}
           open
           presentationMode="workspace"
           terminalId="default"
