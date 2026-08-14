@@ -516,6 +516,35 @@
   treated `?view=editor` as a glob. The owned process was stopped and restarted
   with a quoted URL; this contributes `0.00` product loss.
 
+### Multi-file light theme
+
+- Newly verified theme cell: wide `1280x820`, DPR 1, light, two-file Editor
+  Changes.
+- Theme was selected through the real Web Settings → Appearance → Light radio;
+  no storage value was written directly.
+- Web authority:
+  - root tokens: background `#ffffff`, foreground `#0d0d0d`
+  - changed-files sidebar: white surface, dark foreground, `224x774`
+  - selected patch viewport: `624x774`.
+- Lynx:
+  - root tokens exactly `#ffffff` / `#0d0d0d`
+  - changed-files sidebar: white surface, dark foreground,
+    `rgba(13,13,13,0.07)` divider, `224x774`
+  - selected patch viewport: `623x774`
+  - selected row: `rgba(13,13,13,0.04)`
+  - additions: `rgba(0,162,64,0.1)`
+  - deletions: `rgba(224,46,42,0.1)`
+  - Chat: `384x774`.
+- Relay settled at zero pending requests with no transport/RPC error.
+- No light-theme product loss was found. The 1px center-width difference is
+  the existing divider accounting and accepted rendering noise.
+- Evidence:
+  - `/tmp/synara-editor-light-web.png`
+  - `/tmp/synara-editor-light-web.json`
+  - `/tmp/synara-editor-light-lynx.png`
+  - `/tmp/synara-editor-light-lynx.json`
+  - `/tmp/synara-editor-light-lynx-relay.json`
+
 ## Authority geometry
 
 After aligning global-sidebar state, Web authority and Lynx use the same
@@ -565,6 +594,8 @@ comparison; no Web screenshot pass is claimed.
   title onto two lines while primary actions remain visible.
 - **P2 missing coverage closed:** Editor Search now uses the real workspace
   search and preview pipeline.
+- **Theme product pass:** multi-file light Editor matches the canonical root,
+  sidebar, selection, and diff semantic tokens.
 - **P2 coverage remains:** Web Editor project switching, chat-history tabs,
   terminal rail tabs, and resizable Chat width are not yet implemented in
   Lynx.
