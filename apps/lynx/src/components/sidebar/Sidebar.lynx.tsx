@@ -666,8 +666,8 @@ export function Sidebar({
     'background only';
     let active = true;
     let disposers: Array<() => void> = [];
-    void import(/* webpackMode: "eager" */ '../../platform/bridge').then(
-      ({ onGlobalEvent }) => {
+    void import(/* webpackMode: "eager" */ '../../platform/bridge')
+      .then(({ onGlobalEvent }) => {
         if (!active) return;
         disposers = [
           onGlobalEvent('shell:command', (command: string) => {
@@ -694,8 +694,11 @@ export function Sidebar({
             if (threadId) navigate(`/thread/${threadId}`);
           }),
         ];
-      }
-    );
+      })
+      .catch(() => {
+        // Sidebar pointer/tap navigation remains available without shell
+        // accelerators.
+      });
     return () => {
       active = false;
       for (const dispose of disposers) dispose();

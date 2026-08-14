@@ -1509,8 +1509,8 @@ export function SliceRouter({
     let disposeNavigate: (() => void) | null = null;
     let disposeHistory: (() => void) | null = null;
     let disposeCommand: (() => void) | null = null;
-    void import(/* webpackMode: "eager" */ '../platform/bridge').then(
-      ({ bridgeCall, onGlobalEvent }) => {
+    void import(/* webpackMode: "eager" */ '../platform/bridge')
+      .then(({ bridgeCall, onGlobalEvent }) => {
         if (cancelled) return;
         disposeNavigate = onGlobalEvent('shell:navigate', (target: unknown) => {
           if (typeof target === 'string' && target.startsWith('/')) {
@@ -1545,8 +1545,10 @@ export function SliceRouter({
           .catch(() => {
             // A host without route delivery still renders the default route.
           });
-      }
-    );
+      })
+      .catch(() => {
+        // Memory-history navigation remains available without shell events.
+      });
     return () => {
       cancelled = true;
       disposeNavigate?.();

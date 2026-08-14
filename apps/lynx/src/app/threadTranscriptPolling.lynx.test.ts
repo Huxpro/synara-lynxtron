@@ -48,6 +48,9 @@ describe('Lynx thread transcript polling', () => {
     expect(routerSource).toContain(
       "bridgeCall<{ readonly route?: unknown }>('shellRendererReady')"
     );
+    expect(routerSource).toContain(
+      'Memory-history navigation remains available without shell events.'
+    );
     expect(routerSource).toContain('setRoute(parseRoute(reply.route))');
     expect(routerSource).toContain('history.replace(reply.route)');
   });

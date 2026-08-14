@@ -105,6 +105,13 @@ describe('shared settings navigation projection', () => {
     expect(source).toContain('showCodeThemeSelection={false}');
     expect(source).toContain('showFontSmoothing={false}');
     expect(source).toContain('showTimestampFormat={false}');
+    const sidebarSource = readFileSync(
+      new URL('../components/sidebar/Sidebar.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(sidebarSource).toContain(
+      'Sidebar pointer/tap navigation remains available without shell'
+    );
     expect(source).toMatch(
       /<SettingsGeneralBooleanControlElement\s+checked=\{checked\}\s+disabled/s
     );
