@@ -54,6 +54,7 @@ import { SidebarSurfaceContent } from '@synara-web/components/SidebarSurfaceCont
 import { SidebarDesktopHeader } from '@synara-web/components/SidebarDesktopHeader';
 import {
   APP_SETTINGS_STORAGE_KEY,
+  readSettingsBehaviorProjection,
   readSettingsGeneralProjection,
   writeSidebarSortProjection,
 } from '@synara-web/appSettingsStorageProjection.logic';
@@ -477,7 +478,14 @@ export function Sidebar({
       return;
     }
 
-    const confirmation = nativeThreadContextConfirmation(action, thread.title);
+    const behaviorSettings = readSettingsBehaviorProjection(
+      webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
+    );
+    const confirmation = nativeThreadContextConfirmation(
+      action,
+      thread.title,
+      behaviorSettings
+    );
     if (confirmation) {
       const { dialogs } = await import(
         /* webpackMode: "eager" */ '../../platform/dialogs'

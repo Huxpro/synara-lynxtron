@@ -59,12 +59,34 @@ describe('native thread context actions', () => {
   });
 
   it('requires confirmation only for destructive visibility changes', () => {
-    expect(nativeThreadContextConfirmation('toggle-pin', 'A')).toBeNull();
-    expect(nativeThreadContextConfirmation('archive', 'A')).toContain(
+    const defaults = {
+      confirmThreadArchive: false,
+      confirmThreadDelete: true,
+    };
+    expect(
+      nativeThreadContextConfirmation('toggle-pin', 'A', defaults)
+    ).toBeNull();
+    expect(
+      nativeThreadContextConfirmation('archive', 'A', defaults)
+    ).toBeNull();
+    expect(
+      nativeThreadContextConfirmation('archive', 'A', {
+        ...defaults,
+        confirmThreadArchive: true,
+      })
+    ).toContain(
       'Archive thread "A"?'
     );
-    expect(nativeThreadContextConfirmation('delete', 'A')).toContain(
+    expect(
+      nativeThreadContextConfirmation('delete', 'A', defaults)
+    ).toContain(
       'permanently clears conversation history'
     );
+    expect(
+      nativeThreadContextConfirmation('delete', 'A', {
+        ...defaults,
+        confirmThreadDelete: false,
+      })
+    ).toBeNull();
   });
 });

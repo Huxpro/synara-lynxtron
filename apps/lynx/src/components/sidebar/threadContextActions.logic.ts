@@ -45,15 +45,19 @@ export function buildNativeThreadContextCommand(input: {
 
 export function nativeThreadContextConfirmation(
   action: ThreadContextMenuActionId,
-  title: string
+  title: string,
+  preferences: {
+    readonly confirmThreadArchive: boolean;
+    readonly confirmThreadDelete: boolean;
+  }
 ): string | null {
-  if (action === 'archive') {
+  if (action === 'archive' && preferences.confirmThreadArchive) {
     return [
       `Archive thread "${title}"?`,
       'Archived threads are hidden from the sidebar but can be restored later.',
     ].join('\n');
   }
-  if (action === 'delete') {
+  if (action === 'delete' && preferences.confirmThreadDelete) {
     return [
       `Delete thread "${title}"?`,
       'This permanently clears conversation history for this thread.',
