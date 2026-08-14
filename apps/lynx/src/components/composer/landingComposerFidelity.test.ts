@@ -82,14 +82,18 @@ describe('landing composer fidelity contract', () => {
     );
     expect(clientSource).toContain('providers: providerStatuses.providers');
     expect(landingSource).toContain('fetchFreshServerConfig()');
+    expect(landingSource).toContain('fetchServerSettings().catch(() => null)');
+    expect(landingSource).toContain(
+      'serverSettings?.defaultThreadEnvMode'
+    );
     expect(landingSource).toContain(
       'export async function loadLandingBootstrap('
     );
-    expect(routerSource).toContain(
-      "queryKey: ['landing-composer-bootstrap', initialModelProvider]"
+    expect(landingSource).toContain(
+      "'landing-composer-bootstrap',\n      initialModelProvider,"
     );
-    expect(routerSource).toContain(
-      'queryFn: () => loadLandingBootstrap(initialModelProvider)'
+    expect(landingSource).toContain(
+      'loadLandingBootstrap(\n        initialModelProvider,'
     );
     expect(routerSource).toContain(
       'landingBootstrap?.serverConfig.providers ?? []'
@@ -98,6 +102,21 @@ describe('landing composer fidelity contract', () => {
     expect(landingSource).toContain(
       'initialModelCatalog={data.initialModelCatalog}'
     );
+    expect(landingSource).toContain(
+      'props.initialModelProvider ?? generalSettings.defaultProvider'
+    );
+    expect(landingSource).toContain(
+      'provider: initialModelProvider'
+    );
+    expect(landingSource).toContain(
+      'model: getDefaultModel(initialModelProvider)'
+    );
+    expect(landingSource).toContain(
+      'envMode: data.generalSettings.defaultThreadEnvMode'
+    );
+    expect(landingSource).not.toContain("envMode: 'local'");
+    expect(landingSource).not.toContain("provider: 'codex'");
+    expect(landingSource).not.toContain("getDefaultModel('codex')");
     expect(landingSource).not.toContain('onProviderStatusesChange');
     expect(composerSource).toContain('fetchFreshServerConfig()');
     expect(landingSource).toContain('onRetry=');

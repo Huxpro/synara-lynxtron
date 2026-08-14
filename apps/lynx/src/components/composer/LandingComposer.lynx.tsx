@@ -10,6 +10,10 @@ import { PanelStateMessage } from '@synara-web/components/chat/PanelStateMessage
 import { ComposerProjectPickerComposition } from '@synara-web/components/chat/ComposerProjectPickerComposition';
 import { buildComposerProjectPickerModel } from '@synara-web/components/chat/ComposerProjectPicker.logic';
 import { useStore } from '@synara-web/store';
+import {
+  APP_SETTINGS_STORAGE_KEY,
+  readSettingsGeneralProjection,
+} from '@synara-web/appSettingsStorageProjection.logic';
 
 import { fetchSidebarSnapshot, queryClient } from '../../app/queries';
 import {
@@ -17,9 +21,11 @@ import {
   browseFilesystem,
   fetchFreshServerConfig,
   fetchProviderModels,
+  fetchServerSettings,
   fetchSynaraSidebarShellSnapshot,
 } from '../../data/synaraClient.lynx';
 import { dialogs } from '../../platform/dialogs';
+import { webStorage } from '../../platform/storage';
 import { Button } from '../ui/button';
 import { Composer } from './Composer.lynx';
 import {
@@ -45,11 +51,16 @@ export async function loadLandingBootstrap(
   containerKind: 'chat' | 'studio' = 'chat'
 ) {
   'background only';
-  const [snapshot, , config] = await Promise.all([
+  const [snapshot, , config, serverSettings] = await Promise.all([
     fetchSynaraSidebarShellSnapshot(),
     fetchSidebarSnapshot(),
     fetchFreshServerConfig(),
+    fetchServerSettings().catch(() => null),
   ]);
+  const generalSettings = readSettingsGeneralProjection(
+    webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
+    serverSettings?.defaultThreadEnvMode
+  );
   const spaces = useStore.getState().spaces;
   const normalizedProjects = useStore.getState().projects;
   const localFolderResult = config.homeDir
@@ -89,6 +100,7 @@ export async function loadLandingBootstrap(
       localFoldersError: localFolderResult.errorMessage,
       homeDir: config.homeDir ?? null,
       initialModelCatalog,
+      generalSettings,
       serverConfig: config,
     };
   }
@@ -133,6 +145,7 @@ export async function loadLandingBootstrap(
       localFoldersError: localFolderResult.errorMessage,
       homeDir: config.homeDir ?? null,
       initialModelCatalog,
+      generalSettings,
       serverConfig: config,
     };
   } catch (error) {
@@ -153,6 +166,7 @@ export async function loadLandingBootstrap(
         localFoldersError: localFolderResult.errorMessage,
         homeDir: config.homeDir ?? null,
         initialModelCatalog,
+        generalSettings,
         serverConfig: config,
       };
     }
@@ -166,6 +180,11 @@ export function LandingComposer(props: {
   readonly initialProjectId?: string | null;
   readonly onThreadCreated: (threadId: string) => void;
 }) {
+  const generalSettings = readSettingsGeneralProjection(
+    webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
+  );
+  const initialModelProvider =
+    props.initialModelProvider ?? generalSettings.defaultProvider;
   const threadIdRef = useRef(landingId('thread'));
   const threadCreationRef = useRef<LandingThreadCreationState>({
     created: false,
@@ -186,12 +205,12 @@ export function LandingComposer(props: {
   const { data, error, isFetching, isPending, refetch } = useQuery({
     queryKey: [
       'landing-composer-bootstrap',
-      props.initialModelProvider ?? null,
+      initialModelProvider,
       props.containerKind ?? 'chat',
     ],
     queryFn: () =>
       loadLandingBootstrap(
-        props.initialModelProvider ?? null,
+        initialModelProvider,
         props.containerKind ?? 'chat'
       ),
     staleTime: 30_000,
@@ -212,10 +231,10 @@ export function LandingComposer(props: {
       return data.homeProject.defaultModelSelection;
     }
     return {
-      provider: 'codex',
-      model: getDefaultModel('codex'),
+      provider: initialModelProvider,
+      model: getDefaultModel(initialModelProvider),
     };
-  }, [data, selectedProjectId]);
+  }, [data, initialModelProvider, selectedProjectId]);
   const selectedProject = data?.projects.find(
     (project) => project.id === selectedProjectId
   );
@@ -306,8 +325,8 @@ export function LandingComposer(props: {
         workspaceRoot,
         createWorkspaceRootIfMissing: false,
         defaultModelSelection: {
-          provider: 'codex',
-          model: getDefaultModel('codex'),
+          provider: initialModelProvider,
+          model: getDefaultModel(initialModelProvider),
         },
         isPinned: false,
         spaceId: null,
@@ -349,7 +368,7 @@ export function LandingComposer(props: {
           modelSelection: input.modelSelection,
           runtimeMode: input.runtimeMode,
           interactionMode: input.interactionMode,
-          envMode: 'local',
+          envMode: data.generalSettings.defaultThreadEnvMode,
           branch: null,
           worktreePath: null,
           createdAt: new Date().toISOString(),
@@ -467,8 +486,8 @@ export function LandingComposer(props: {
                   workspaceRoot: option.workspaceRoot,
                   createWorkspaceRootIfMissing: false,
                   defaultModelSelection: {
-                    provider: 'codex',
-                    model: getDefaultModel('codex'),
+                    provider: initialModelProvider,
+                    model: getDefaultModel(initialModelProvider),
                   },
                   isPinned: false,
                   spaceId: null,
