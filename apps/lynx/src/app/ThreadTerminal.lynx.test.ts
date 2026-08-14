@@ -39,6 +39,16 @@ describe('Lynx thread terminal', () => {
     );
     expect(terminalSource).not.toContain('value={command}');
     expect(terminalSource).toContain('streamOutput: false');
+    expect(terminalSource).toContain('readSettingsBehaviorProjection(');
+    expect(terminalSource).toContain(
+      'webStorage.getItem(APP_SETTINGS_STORAGE_KEY)'
+    );
+    expect(terminalSource).toContain("snapshot?.status === 'running'");
+    expect(terminalSource).toContain('if (pending || confirmingClose) return;');
+    expect(terminalSource).toContain('setConfirmingClose(true);');
+    expect(terminalSource).toContain('setConfirmingClose(false);');
+    expect(terminalSource).toContain('confirmTerminalTabClose({');
+    expect(terminalSource).toContain('confirmationEnabled');
     expect(terminalSource).toContain('resolveLynxTerminalTypography({');
     expect(terminalSource).toContain(
       '<text className="ThreadTerminalOutput" style={typography}>'

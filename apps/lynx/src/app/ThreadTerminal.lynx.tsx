@@ -1,9 +1,16 @@
 import { useEffect, useRef, useState } from '@lynx-js/react';
 import type { InputRef } from '@lynx-js/lynx-ui';
 import type { TerminalSessionSnapshot } from '@synara/contracts';
+import {
+  APP_SETTINGS_STORAGE_KEY,
+  readSettingsBehaviorProjection,
+} from '@synara-web/appSettingsStorageProjection.logic';
+import { confirmTerminalTabClose } from '@synara-web/lib/terminalCloseConfirmation';
 
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input.lynx';
+import { dialogs } from '../platform/dialogs';
+import { webStorage } from '../platform/storage';
 import { sleepOnHost } from '../platform/timer';
 import { platformTerminal } from '../platform/terminal';
 import { resolveLynxTerminalTypography } from './terminalAppearance.logic';
@@ -34,6 +41,7 @@ export function ThreadTerminal({
 }) {
   const [command, setCommand] = useState('');
   const [pending, setPending] = useState(false);
+  const [confirmingClose, setConfirmingClose] = useState(false);
   const [snapshot, setSnapshot] = useState<TerminalSessionSnapshot | null>(null);
   const [error, setError] = useState<string | null>(null);
   const commandInputRef = useRef<InputRef>(null);
@@ -107,6 +115,26 @@ export function ThreadTerminal({
 
   const close = async () => {
     'background only';
+    if (pending || confirmingClose) return;
+    const confirmationEnabled = readSettingsBehaviorProjection(
+      webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
+    ).confirmTerminalTabClose;
+    if (snapshot?.status === 'running') {
+      setConfirmingClose(true);
+      try {
+        if (
+          !(await confirmTerminalTabClose({
+            dialogs,
+            enabled: confirmationEnabled,
+            terminalTitle: 'Terminal',
+          }))
+        ) {
+          return;
+        }
+      } finally {
+        setConfirmingClose(false);
+      }
+    }
     setPending(true);
     onOpenChange(false);
     try {
@@ -146,7 +174,12 @@ export function ThreadTerminal({
         >
           Refresh
         </Button>
-        <Button variant="ghost" size="xs" onClick={() => void close()}>
+        <Button
+          variant="ghost"
+          size="xs"
+          disabled={pending || confirmingClose}
+          onClick={() => void close()}
+        >
           Close
         </Button>
       </view>
