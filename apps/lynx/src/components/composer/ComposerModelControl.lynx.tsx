@@ -10,6 +10,10 @@ import fastModeSvg from '@synara-central-icons-fill/zap.svg?raw';
 import {
   buildComposerProviderPickerItems,
 } from '@synara-web/components/chat/ComposerProviderPickerItems';
+import {
+  APP_SETTINGS_STORAGE_KEY,
+  readSettingsProviderPickerProjection,
+} from '@synara-web/appSettingsStorageProjection.logic';
 import { ComposerModelTriggerComposition } from '@synara-web/components/chat/ComposerModelTriggerComposition';
 import { ComposerTraitRadioSectionComposition } from '@synara-web/components/chat/ComposerTraitRadioSectionComposition';
 import { ProviderModelOptionGroupListComposition } from '@synara-web/components/chat/ProviderModelOptionGroupListComposition';
@@ -103,6 +107,9 @@ export function ComposerModelControl(props: {
     props.initialPanel ?? 'providers'
   );
   const activeProvider = props.modelSelection.provider;
+  const providerPickerSettings = readSettingsProviderPickerProjection(
+    webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
+  );
   const activeModel = props.modelSelection.model;
   const catalogProvider = props.catalogProvider;
   const catalogCurrentModel =
@@ -163,9 +170,16 @@ export function ComposerModelControl(props: {
     () =>
       buildComposerProviderPickerItems({
         providers: props.providers,
+        hiddenProviders: providerPickerSettings.hiddenProviders,
+        providerOrder: providerPickerSettings.providerOrder,
         protectedProviders: [activeProvider],
       }),
-    [activeProvider, props.providers]
+    [
+      activeProvider,
+      props.providers,
+      providerPickerSettings.hiddenProviders,
+      providerPickerSettings.providerOrder,
+    ]
   );
   const runtimeModel = useMemo(
     () =>
