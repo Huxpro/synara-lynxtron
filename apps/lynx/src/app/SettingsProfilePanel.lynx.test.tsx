@@ -236,6 +236,10 @@ describe('Settings Profile fidelity', () => {
     expect(profileSource).toContain('exportProfileShareCard({ svg: shareCardSvg })');
     expect(profileSource).toContain('dialogs.saveProfileShareCard({');
     expect(profileSource).toContain("platformWindow.openExternal(urls[target])");
+    expect(profileSource).toContain(
+      "if (!opened) throw new Error('Host did not open the share page.')"
+    );
+    expect(profileSource).toContain("message: 'Could not open the share page.'");
     expect(clipboardSource).toContain("bridgeCall('profileShareExport'");
     expect(dialogsSource).toContain("'dialogsSaveProfileShareCard'");
     expect(desktopHostSource).toContain("await import('sharp')");

@@ -411,18 +411,26 @@ function ProfileContent(props: {
         setShareStatus({ intent: 'error', message: String(error) })
       );
   };
-  const shareTo = (target: 'x' | 'linkedin' | 'reddit') => {
+  const shareTo = async (target: 'x' | 'linkedin' | 'reddit') => {
     'background only';
     const urls = {
       x: 'https://x.com/intent/post',
       linkedin: 'https://www.linkedin.com/sharing/share-offsite/',
       reddit: 'https://www.reddit.com/submit',
     } as const;
-    void copyShareCard().then(() =>
-      import(/* webpackMode: "eager" */ '../platform/window').then(
-        ({ platformWindow }) => platformWindow.openExternal(urls[target])
-      )
-    );
+    await copyShareCard();
+    try {
+      const { platformWindow } = await import(
+        /* webpackMode: "eager" */ '../platform/window'
+      );
+      const opened = await platformWindow.openExternal(urls[target]);
+      if (!opened) throw new Error('Host did not open the share page.');
+    } catch {
+      setShareStatus({
+        intent: 'error',
+        message: 'Could not open the share page.',
+      });
+    }
   };
   const openEdit = () => {
     setDraftName(displayName);
@@ -865,20 +873,24 @@ function ProfileContent(props: {
               <Button size="sm" variant="outline" onClick={saveShareCard}>
                 Save
               </Button>
-              <Button size="sm" variant="ghost" onClick={() => shareTo('x')}>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => void shareTo('x')}
+              >
                 X
               </Button>
               <Button
                 size="sm"
                 variant="ghost"
-                onClick={() => shareTo('linkedin')}
+                onClick={() => void shareTo('linkedin')}
               >
                 LinkedIn
               </Button>
               <Button
                 size="sm"
                 variant="ghost"
-                onClick={() => shareTo('reddit')}
+                onClick={() => void shareTo('reddit')}
               >
                 Reddit
               </Button>
