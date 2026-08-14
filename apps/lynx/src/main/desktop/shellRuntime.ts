@@ -348,6 +348,8 @@ export interface SynaraDeepLinkInitData {
   readonly initialEditorSearchOpen: boolean;
   readonly initialRenameOpen: boolean;
   readonly initialTerminalOpen: boolean;
+  readonly initialWorkspaceSettingsOpen: boolean;
+  readonly initialWorkspaceVisible: boolean;
   readonly initialExplorerOpen: boolean;
   readonly initialExplorerCommentLine: number | null;
   readonly initialExplorerExpandedDirectories: readonly string[];
@@ -405,6 +407,10 @@ export function parseSynaraDeepLinkInitData(raw: string): SynaraDeepLinkInitData
         url.searchParams.get('editorSearch') === 'open',
       initialRenameOpen: url.searchParams.get('rename') === 'open',
       initialTerminalOpen: url.searchParams.get('terminal') === 'open',
+      initialWorkspaceSettingsOpen:
+        url.searchParams.get('workspaceSettings') === 'open',
+      initialWorkspaceVisible:
+        url.searchParams.get('workspaceVisible') === 'open',
       initialExplorerOpen: url.searchParams.get('explorer') === 'open',
       initialExplorerCommentLine:
         Number.isInteger(explorerCommentLineValue) && explorerCommentLineValue > 0

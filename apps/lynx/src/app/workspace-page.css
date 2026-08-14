@@ -45,17 +45,45 @@
   flex: 1;
 }
 
-.WorkspacePageLayouts {
-  max-width: min(520px, 52vw);
-  min-width: 0;
-}
-
 .WorkspacePageLayoutChoices {
   display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  gap: 2px;
-  min-width: max-content;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.LxDialogPopup.WorkspaceSettingsDialog {
+  width: 420px;
+  max-width: calc(100vw - 32px);
+}
+
+.WorkspaceSettingsPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.WorkspaceSettingsIntro {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.WorkspaceSettingsLabel {
+  color: var(--foreground);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.WorkspaceSettingsCopy {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.WorkspaceSettingsPreset {
+  width: 100%;
+  justify-content: space-between;
 }
 
 .WorkspaceTerminalGrid {
@@ -146,6 +174,7 @@
   margin-top: 18px;
 }
 
-.SliceRoot--viewport-compact .WorkspacePageLayouts {
-  max-width: 130px;
+.SliceRoot--viewport-compact .LxDialogPopup.WorkspaceSettingsDialog {
+  width: calc(100vw - 24px);
+  max-width: none;
 }

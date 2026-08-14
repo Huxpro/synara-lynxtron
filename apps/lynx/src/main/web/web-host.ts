@@ -859,6 +859,12 @@ const initialTerminalOpen =
   new URLSearchParams(globalThis.location.search).get('terminal') === 'open';
 const initialTemporaryOpen =
   new URLSearchParams(globalThis.location.search).get('temporary') === 'open';
+const initialWorkspaceSettingsOpen =
+  new URLSearchParams(globalThis.location.search).get('workspaceSettings') ===
+  'open';
+const initialWorkspaceVisible =
+  new URLSearchParams(globalThis.location.search).get('workspaceVisible') ===
+  'open';
 const initialExplorerOpen =
   new URLSearchParams(globalThis.location.search).get('explorer') === 'open';
 const initialExplorerActionMenuOpen =
@@ -909,6 +915,8 @@ webDocument.body.innerHTML = `
     initialRenameOpen,
     initialTerminalOpen,
     initialTemporaryOpen,
+    initialWorkspaceSettingsOpen,
+    initialWorkspaceVisible,
     initialExplorerOpen,
     initialExplorerActionMenuOpen,
     initialExplorerPath,

@@ -337,3 +337,68 @@
 - `shots/2026-08-15/workspace-order/lynx-order-after.png`
 - `shots/2026-08-15/workspace-order/order-after.json`
 - `shots/2026-08-15/workspace-order/order-reloaded.json`
+
+## Workspace settings surface continuation
+
+### Product coverage closed
+
+- Web keeps layout presets in a dedicated right-side `Workspace settings`
+  sheet rather than compressing every preset into the 46px workspace header.
+- Previous Lynx exposed the same real preset mutations as six tiny horizontal
+  header buttons. Functionality existed, but the settings surface, explanatory
+  copy, pane counts, selected state, and compact treatment were missing.
+- Lynx now exposes one `Workspace settings` header action and a real Dialog
+  surface backed by the existing `setWorkspaceLayoutPreset` mutation.
+- The dialog includes:
+  - workspace-specific description;
+  - `Layout preset` section and immediate-apply copy;
+  - all six canonical `WORKSPACE_LAYOUT_PRESETS`;
+  - one/two/three/four-pane counts;
+  - selected preset presentation.
+- The old header preset strip was removed; Terminal and Delete workspace remain
+  primary header actions.
+
+### Runtime evidence
+
+- Reused `.synara-fidelity-workspace-order` and the real persisted
+  `Workspace 1` page.
+- Deterministic verification used
+  `workspaceVisible=open&workspaceSettings=open`; this bypasses only the
+  optional sidebar visibility gate and does not create workspace/store data.
+- Wide:
+  - dialog `420x311` at `(430,254.5)`;
+  - `Single · 1 pane` selected;
+  - all six presets rendered;
+  - the real workspace terminal remained `running`.
+- Compact:
+  - root `390x844`;
+  - dialog `366x329` at `(12,257.5)`, fully within the viewport;
+  - all six presets remained visible.
+- The compact runtime used the persisted light Appearance setting despite a
+  dark query hint. Geometry/content are retained; no dark-theme visual claim is
+  made for that frame.
+- Relay settled at zero pending requests. The existing empty-snapshot
+  `pullRequests.list Missing key at ["state"]` sidebar-polling noise remained
+  unrelated to Workspace settings.
+
+### Verification
+
+- `bun run test -- src/app/WorkspacePage.lynx.test.ts src/app/workspaceLayout.logic.test.ts src/main/desktop/shellRuntime.test.ts`
+  - 3 files, 24 tests passed.
+- `CI=1 bun run build` in `apps/lynx`
+  - Lynx and Desktop production bundles built and staged.
+- Exact-owned Native remains blocked by the user-owned DevTool client.
+
+### Evidence
+
+- `/tmp/synara-workspace-settings2-lynx.png`
+- `/tmp/synara-workspace-settings2-lynx.json`
+- `/tmp/synara-workspace-settings2-lynx-compact.png`
+- `/tmp/synara-workspace-settings2-lynx-compact.json`
+
+### Loss ledger
+
+- `lynx-workspace-settings-surface`: P2 missing coverage,
+  contribution `0.25 -> 0.00`.
+- `workspace-settings-first-state-missing`: harness state insufficiency,
+  contribution `0.00` product loss.

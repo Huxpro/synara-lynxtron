@@ -107,6 +107,7 @@ export function App() {
     readonly initialRenameOpen?: unknown;
     readonly initialTerminalOpen?: unknown;
     readonly initialTemporaryOpen?: unknown;
+    readonly initialWorkspaceVisible?: unknown;
     readonly initialExplorerOpen?: unknown;
     readonly initialExplorerCommentLine?: unknown;
     readonly initialExplorerPath?: unknown;
@@ -128,6 +129,7 @@ export function App() {
   const initialRenameOpen = initData.initialRenameOpen === true;
   const initialTerminalOpen = initData.initialTerminalOpen === true;
   const initialTemporaryOpen = initData.initialTemporaryOpen === true;
+  const initialWorkspaceVisible = initData.initialWorkspaceVisible === true;
   const initialRoute =
     typeof initData.initialRoute === 'string' &&
     initData.initialRoute.startsWith('/')
@@ -421,6 +423,7 @@ export function App() {
             initialRenameOpen={initialRenameOpen}
             initialTerminalOpen={initialTerminalOpen}
             initialTemporaryOpen={initialTemporaryOpen}
+            initialWorkspaceVisible={initialWorkspaceVisible}
             initialRoute={initialRoute}
             initialThreadBootstrap={initialThreadBootstrap}
             initialExplorerOpen={initialExplorerOpen}

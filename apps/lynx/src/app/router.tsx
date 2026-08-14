@@ -1241,6 +1241,7 @@ export function SliceRouter({
   initialRenameOpen,
   initialTerminalOpen,
   initialTemporaryOpen,
+  initialWorkspaceVisible,
   initialRoute,
   initialThreadBootstrap,
   initialExplorerOpen,
@@ -1263,6 +1264,7 @@ export function SliceRouter({
   readonly initialRenameOpen: boolean;
   readonly initialTerminalOpen: boolean;
   readonly initialTemporaryOpen: boolean;
+  readonly initialWorkspaceVisible: boolean;
   readonly initialRoute: string | null;
   readonly initialThreadBootstrap: {
     readonly data: Awaited<ReturnType<typeof fetchThreadTranscriptRows>>;
@@ -1335,6 +1337,8 @@ export function SliceRouter({
   const studioSettings = readSettingsGeneralProjection(
     webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
   );
+  const workspaceEnabled =
+    initialWorkspaceVisible || studioSettings.showWorkspaceSection;
   const activeThreadId =
     route.pathname === '/thread/$threadId'
       ? route.params.threadId
@@ -1626,11 +1630,11 @@ export function SliceRouter({
   useEffect(() => {
     if (
       route.pathname.startsWith('/workspace') &&
-      !studioSettings.showWorkspaceSection
+      !workspaceEnabled
     ) {
       history.replace('/');
     }
-  }, [route.pathname, studioSettings.showWorkspaceSection]);
+  }, [route.pathname, workspaceEnabled]);
   useEffect(() => {
     if (route.pathname !== '/studio') {
       setStudioLandingReady(false);
@@ -1866,7 +1870,7 @@ export function SliceRouter({
     );
   } else if (
     route.pathname === '/workspace' &&
-    studioSettings.showWorkspaceSection
+    workspaceEnabled
   ) {
     const workspaceId = workspacePages[0]?.id ?? null;
     page = workspaceId ? (
@@ -1882,7 +1886,7 @@ export function SliceRouter({
     );
   } else if (
     route.pathname === '/workspace/$workspaceId' &&
-    studioSettings.showWorkspaceSection
+    workspaceEnabled
   ) {
     page = (
       <WorkspacePage

@@ -1,4 +1,4 @@
-import { useEffect, useState } from '@lynx-js/react';
+import { useEffect, useInitData, useState } from '@lynx-js/react';
 import { useQuery } from '@tanstack/react-query';
 import {
   useWorkspaceStore,
@@ -12,6 +12,13 @@ import type { SettingsAppearanceValues } from '@synara-web/components/settings/S
 
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input.lynx';
+import {
+  Dialog,
+  DialogDescription,
+  DialogPanel,
+  DialogPopup,
+  DialogTitle,
+} from '../components/ui/dialog.lynx';
 import { fetchPluginLibraryServerConfig } from './queries';
 import { ThreadTerminal } from './ThreadTerminal.lynx';
 import { deleteWorkspaceWithTerminalCleanup } from './workspaceDeletion.logic';
@@ -44,6 +51,12 @@ export function WorkspacePage({
   );
   const [renaming, setRenaming] = useState(false);
   const [terminalOpen, setTerminalOpen] = useState(true);
+  const initData = useInitData() as {
+    readonly initialWorkspaceSettingsOpen?: unknown;
+  };
+  const [settingsOpen, setSettingsOpen] = useState(
+    initData.initialWorkspaceSettingsOpen === true
+  );
   const [draftTitle, setDraftTitle] = useState(workspace?.title ?? 'Workspace');
   const { data: serverConfig } = useQuery({
     queryKey: ['server-config'],
@@ -127,14 +140,41 @@ export function WorkspacePage({
         >
           Terminal
         </Button>
-        <scroll-view
-          className="WorkspacePageLayouts"
-          scroll-orientation="horizontal"
+        <Button
+          variant="outline"
+          size="xs"
+          aria-label="Workspace settings"
+          onClick={() => setSettingsOpen(true)}
         >
-          <view className="WorkspacePageLayoutChoices">
+          Settings
+        </Button>
+        <Button
+          variant="outline"
+          size="xs"
+          onClick={() => void removeWorkspace()}
+        >
+          Delete workspace
+        </Button>
+      </view>
+      <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
+        <DialogPopup className="WorkspaceSettingsDialog">
+          <DialogTitle>Workspace settings</DialogTitle>
+          <DialogDescription>
+            Choose how terminals are arranged inside {workspace.title}.
+          </DialogDescription>
+          <DialogPanel className="WorkspaceSettingsPanel">
+            <view className="WorkspaceSettingsIntro">
+              <text className="WorkspaceSettingsLabel">Layout preset</text>
+              <text className="WorkspaceSettingsCopy">
+                Changes apply immediately. Extra terminals stay available as
+                tabs.
+              </text>
+            </view>
+            <view className="WorkspacePageLayoutChoices">
             {WORKSPACE_LAYOUT_PRESETS.map((preset) => (
               <Button
                 key={preset.id}
+                className="WorkspaceSettingsPreset"
                 variant={
                   workspace.layoutPresetId === preset.id
                     ? 'secondary'
@@ -148,19 +188,14 @@ export function WorkspacePage({
                   )
                 }
               >
-                {preset.title}
+                {preset.title} · {preset.slotCount}{' '}
+                {preset.slotCount === 1 ? 'pane' : 'panes'}
               </Button>
             ))}
           </view>
-        </scroll-view>
-        <Button
-          variant="outline"
-          size="xs"
-          onClick={() => void removeWorkspace()}
-        >
-          Delete workspace
-        </Button>
-      </view>
+          </DialogPanel>
+        </DialogPopup>
+      </Dialog>
       {serverConfig?.homeDir && terminalOpen ? (
         <view
           className={`WorkspaceTerminalGrid WorkspaceTerminalGrid--${workspace.layoutPresetId}`}

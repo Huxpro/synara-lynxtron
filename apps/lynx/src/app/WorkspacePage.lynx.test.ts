@@ -36,6 +36,11 @@ describe('Lynx workspace surface', () => {
     expect(pageSource).toContain('presentationMode="workspace"');
     expect(pageSource).toContain('workspaceTerminalIdsForPreset');
     expect(pageSource).toContain('terminalId={terminalId}');
+    expect(pageSource).toContain('aria-label="Workspace settings"');
+    expect(pageSource).toContain('<Dialog open={settingsOpen}');
+    expect(pageSource).toContain('<DialogTitle>Workspace settings</DialogTitle>');
+    expect(pageSource).toContain('initialWorkspaceSettingsOpen === true');
+    expect(pageSource).toContain('setWorkspaceLayoutPreset(');
     expect(pageSource).toContain('autoOpen');
     expect(pageSource).toContain('WORKSPACE_LAYOUT_PRESETS.map');
     expect(pageSource).toContain('setWorkspaceLayoutPreset(');
