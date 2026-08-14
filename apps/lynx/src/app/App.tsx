@@ -1,6 +1,12 @@
 // P2-V1 vertical slice shell: providers + router outlet.
 
-import { useEffect, useInitData, useRef, useState } from '@lynx-js/react';
+import {
+  useEffect,
+  useInitData,
+  useMemo,
+  useRef,
+  useState,
+} from '@lynx-js/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 
 import {
@@ -178,6 +184,10 @@ export function App() {
   const viewportLayout = useViewportLayout();
   const transportState = useSynaraTransportState();
   const previousTransportStateRef = useRef(transportState);
+  const themeVariables = useMemo(
+    () => resolveSliceThemeVariables(themeState, systemDark),
+    [systemDark, themeState]
+  );
 
   useEffect(() => {
     'background only';
@@ -322,7 +332,7 @@ export function App() {
           .join(' ')}
         data-viewport-width={viewportLayout.width}
         data-viewport-height={viewportLayout.height}
-        style={resolveSliceThemeVariables(themeState, systemDark)}
+        style={themeVariables}
       >
         {transportState === 'reconnecting' || transportState === 'offline' ? (
           <view

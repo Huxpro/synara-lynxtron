@@ -1,4 +1,5 @@
 import { describe, expect, it } from '@rstest/core';
+import { readFileSync } from 'node:fs';
 import { DEFAULT_THEME_STATE } from '@synara-web/theme/theme.logic';
 
 import {
@@ -92,6 +93,17 @@ describe('slice root theme projection', () => {
     expect(variables['--codex-base-surface']).toBe('#fefefe');
     expect(variables['--foreground']).not.toBe(
       DEFAULT_THEME_STATE.chromeThemes.light.ink
+    );
+  });
+
+  it('memoizes the root token map outside unrelated App rerenders', () => {
+    const appSource = readFileSync(new URL('./App.tsx', import.meta.url), 'utf8');
+    expect(appSource).toContain(
+      'const themeVariables = useMemo(\n    () => resolveSliceThemeVariables(themeState, systemDark),'
+    );
+    expect(appSource).toContain('style={themeVariables}');
+    expect(appSource).not.toContain(
+      'style={resolveSliceThemeVariables(themeState, systemDark)}'
     );
   });
 });
