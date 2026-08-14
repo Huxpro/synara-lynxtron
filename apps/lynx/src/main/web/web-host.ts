@@ -122,7 +122,6 @@ interface LynxWebRuntimeConfig {
 }
 
 function buildTimeSynaraWsUrl(): unknown {
-  if (typeof process === 'undefined') return undefined;
   return process.env.SYNARA_WS_URL;
 }
 
@@ -853,6 +852,9 @@ const initialEditorChatOpen =
       : null;
 const initialEditorSearchOpen =
   new URLSearchParams(globalThis.location.search).get('editorSearch') === 'open';
+const initialEditorHistoryOpen =
+  new URLSearchParams(globalThis.location.search).get('editorHistory') ===
+  'open';
 const initialRenameOpen =
   new URLSearchParams(globalThis.location.search).get('rename') === 'open';
 const initialTerminalOpen =
@@ -912,6 +914,7 @@ webDocument.body.innerHTML = `
     initialEditorCenterMode,
     initialEditorChatOpen,
     initialEditorSearchOpen,
+    initialEditorHistoryOpen,
     initialRenameOpen,
     initialTerminalOpen,
     initialTemporaryOpen,

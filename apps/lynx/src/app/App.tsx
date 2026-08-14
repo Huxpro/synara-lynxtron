@@ -50,6 +50,7 @@ import {
   fetchExplorerLocalPreviewUrl,
   fetchExplorerPdfMetadata,
   fetchSidebarSnapshot,
+  fetchThreads,
   fetchThreadHeaderSummary,
   fetchThreadTranscriptRows,
   queryClient,
@@ -214,9 +215,10 @@ export function App() {
     void Promise.all([
       readPersistedAppearanceFallback(readPersistedAppearance),
       threadMatch
-        ? fetchSidebarSnapshot()
-            .then((snapshot) => {
+        ? Promise.all([fetchSidebarSnapshot(), fetchThreads()])
+            .then(([snapshot, threads]) => {
               queryClient.setQueryData(['sidebar-snapshot'], snapshot);
+              queryClient.setQueryData(['threads'], threads);
               return Promise.all([
                 fetchThreadTranscriptRows(threadMatch[1]),
                 fetchThreadHeaderSummary(threadMatch[1]),

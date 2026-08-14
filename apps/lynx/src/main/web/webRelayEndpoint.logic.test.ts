@@ -27,6 +27,35 @@ describe('Lynx-for-Web relay endpoint', () => {
     ).toBe('ws://127.0.0.1:58090');
   });
 
+  it('injects the isolated endpoint into both Web renderer bundles', () => {
+    const rsbuildConfig = fs.readFileSync(
+      new URL('../../../rsbuild.config.ts', import.meta.url),
+      'utf8'
+    );
+    const rspeedyConfig = fs.readFileSync(
+      new URL('../../../lynx.config.ts', import.meta.url),
+      'utf8'
+    );
+
+    expect(rsbuildConfig).toContain(
+      "const configuredSynaraWsUrl = process.env.SYNARA_WS_URL?.trim() ?? ''"
+    );
+    expect(rsbuildConfig).toContain(
+      "'process.env.SYNARA_WS_URL': JSON.stringify(configuredSynaraWsUrl)"
+    );
+    expect(rspeedyConfig).toContain(
+      "'process.env.SYNARA_WS_URL': JSON.stringify(configuredSynaraWsUrl)"
+    );
+    const host = fs.readFileSync(
+      new URL('./web-host.ts', import.meta.url),
+      'utf8'
+    );
+    expect(host).toContain('return process.env.SYNARA_WS_URL;');
+    expect(host).not.toContain(
+      "if (typeof process === 'undefined') return undefined;"
+    );
+  });
+
   it('keeps recovery active after both a dropped socket and a cold-start failure', () => {
     const host = fs.readFileSync(
       new URL('./web-host.ts', import.meta.url),

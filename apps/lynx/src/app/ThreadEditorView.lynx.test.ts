@@ -72,6 +72,53 @@ describe('Lynx Editor view', () => {
     );
   });
 
+  it('provides project-scoped chat history navigation without the Menu primitive', () => {
+    const routerSource = source('./router.tsx');
+    const historySource = source('./editorChatHistory.logic.ts');
+    const appStyles = source('./App.css');
+    expect(routerSource).toContain('aria-label="Chat history"');
+    expect(routerSource).toContain(
+      'className="ThreadEditorHistoryTrigger"'
+    );
+    expect(routerSource).toContain(
+      'onClick={() => setEditorChatHistoryOpen(true)}'
+    );
+    expect(routerSource).toContain(
+      'className="ThreadEditorHistoryDialog"'
+    );
+    expect(routerSource).toContain(
+      'className="ThreadEditorHistoryViewport"'
+    );
+    expect(routerSource).toContain(
+      'className="ThreadEditorHistoryBackdrop"'
+    );
+    expect(routerSource).toContain(
+      "if (event.key === 'Escape') setEditorChatHistoryOpen(false)"
+    );
+    expect(routerSource).toContain(
+      'resolveEditorChatHistoryThreads({'
+    );
+    expect(routerSource).toContain(
+      'onNavigateToThread={(threadId) => navigate(`/thread/${threadId}`)}'
+    );
+    expect(routerSource).not.toContain('<Menu');
+    expect(historySource).toContain(
+      'thread.projectId === input.projectId'
+    );
+    expect(historySource).toContain(
+      'sortThreadsForSidebar('
+    );
+    expect(historySource).toContain(
+      'export const EDITOR_CHAT_HISTORY_LIMIT = 30'
+    );
+    expect(appStyles).toMatch(
+      /\.LxButton\.ThreadEditorHistoryTrigger\s*\{[^}]*width:\s*24px;[^}]*height:\s*24px;[^}]*padding:\s*0;/s
+    );
+    expect(appStyles).toMatch(
+      /\.ThreadEditorHistoryDialog\s*\{[^}]*width:\s*420px;/s
+    );
+  });
+
   it('reuses the real Changes renderer as an Editor activity mode', () => {
     const routerSource = source('./router.tsx');
     const appStyles = source('./App.css');
@@ -180,15 +227,26 @@ describe('Lynx Editor view', () => {
   it('supports deterministic Web and Native startup verification', () => {
     const appSource = source('./App.tsx');
     const diffDockSource = source('./DiffDock.lynx.tsx');
+    const routerSource = source('./router.tsx');
     const webHostSource = source('../main/web/web-host.ts');
     const desktopSource = source('../main/desktop/shellRuntime.ts');
     expect(appSource).toContain(
       'const initialEditorOpen = initData.initialEditorOpen === true'
     );
+    expect(appSource).toContain(
+      'Promise.all([fetchSidebarSnapshot(), fetchThreads()])'
+    );
+    expect(appSource).toContain(
+      "queryClient.setQueryData(['threads'], threads)"
+    );
     expect(webHostSource).toContain("get('editor') === 'open'");
     expect(webHostSource).toContain("get('editorMode') === 'diff'");
     expect(webHostSource).toContain("get('editorChat') === 'hidden'");
+    expect(webHostSource).toContain("get('editorHistory') ===");
     expect(webHostSource).toContain("get('editorSearch') === 'open'");
+    expect(routerSource).toContain(
+      'initData.initialEditorHistoryOpen === true'
+    );
     expect(appSource).toContain('await fetchWorkingTreeDiff(');
     expect(appSource).toContain('await fetchGitBranches(summary.workspaceRoot)');
     expect(appSource).toContain(
@@ -203,6 +261,9 @@ describe('Lynx Editor view', () => {
     );
     expect(desktopSource).toContain(
       "url.searchParams.get('editorMode') === 'diff'"
+    );
+    expect(desktopSource).toContain(
+      "url.searchParams.get('editorHistory') === 'open'"
     );
     expect(desktopSource).toContain(
       "url.searchParams.get('editorSearch') === 'open'"

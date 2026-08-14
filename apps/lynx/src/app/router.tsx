@@ -55,6 +55,7 @@ import {
   fetchThreads,
   queryClient,
   type ExplorerEntriesResult,
+  type ThreadSummary,
 } from './queries';
 import { resolveStudioRestoreRoute } from './studioRoute.logic';
 import {
@@ -127,9 +128,11 @@ import {
 import { useTemporaryThreadLifecycle } from './temporaryThreadLifecycle.lynx';
 import { DesktopTitlebarControls } from '../adapters/DesktopTitlebarControls.lynx';
 import { SidebarDisclosure } from './SidebarDisclosure.lynx';
-import { FolderIcon, SearchIcon } from '../lib/icons.lynx';
+import { ClockIcon, FolderIcon, SearchIcon } from '../lib/icons.lynx';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { webStorage } from '../platform/storage';
+import { formatRelativeTime } from '@synara-web/lib/relativeTime';
+import { resolveEditorChatHistoryThreads } from './editorChatHistory.logic';
 import {
   resolveMemoryNavigationState,
   type MemoryNavigationState,
@@ -407,7 +410,9 @@ interface ThreadPageProps {
   readonly onExplorerQueryChange: (query: string) => void;
   readonly onExplorerSelectPath: (path: string) => void;
   readonly onExplorerToggleDirectory: (path: string) => void;
+  readonly onNavigateToThread: (threadId: string) => void;
   readonly threadId: string;
+  readonly threads: readonly ThreadSummary[];
   readonly resolvedTheme: 'dark' | 'light';
   readonly viewportWidth: number;
 }
@@ -542,6 +547,9 @@ function ThreadRightDocks(
 }
 
 function ThreadPage(props: ThreadPageProps) {
+  const initData = useInitData() as {
+    readonly initialEditorHistoryOpen?: unknown;
+  };
   const {
     appearance,
     currentThread,
@@ -584,7 +592,9 @@ function ThreadPage(props: ThreadPageProps) {
     onExplorerQueryChange,
     onExplorerSelectPath,
     onExplorerToggleDirectory,
+    onNavigateToThread,
     threadId,
+    threads,
     resolvedTheme,
     viewportWidth,
   } = props;
@@ -610,6 +620,9 @@ function ThreadPage(props: ThreadPageProps) {
   );
   const [editorChatOpen, setEditorChatOpen] = useState(
     () => initialEditorChatOpen ?? readEditorChatPaneVisible()
+  );
+  const [editorChatHistoryOpen, setEditorChatHistoryOpen] = useState(
+    initData.initialEditorHistoryOpen === true
   );
   const [editorCenterMode, setEditorCenterMode] = useState<'file' | 'diff'>(
     () =>
@@ -655,6 +668,13 @@ function ThreadPage(props: ThreadPageProps) {
   );
   const providerHealthVisible =
     resolveProviderHealthBannerPresentation(providerHealth.status) !== null;
+  const editorChatHistoryThreads = currentThread
+    ? resolveEditorChatHistoryThreads({
+        projectId: currentThread.projectId,
+        sortOrder: environmentSettings.sidebarThreadSortOrder,
+        threads,
+      })
+    : [];
   const bodyState = resolveThreadPageBodyState({
     isPending,
     error,
@@ -898,6 +918,11 @@ function ThreadPage(props: ThreadPageProps) {
       return next;
     });
   };
+  const openEditorHistoryThread = (nextThreadId: string) => {
+    'background only';
+    setEditorChatHistoryOpen(false);
+    if (nextThreadId !== threadId) onNavigateToThread(nextThreadId);
+  };
   useEffect(() => {
     if (!editorMode) return;
     storeEditorViewState(threadId, {
@@ -924,27 +949,28 @@ function ThreadPage(props: ThreadPageProps) {
 
   if (editorMode) {
     return (
-      <view className="ThreadEditorView">
-        <view className="ThreadEditorHeader AppWindowDragRegion">
-          <view className="ThreadEditorIdentity">
-            <text className="ThreadEditorProject">
-              {currentThread?.project ?? 'Workspace'}
+      <>
+        <view className="ThreadEditorView">
+          <view className="ThreadEditorHeader AppWindowDragRegion">
+            <view className="ThreadEditorIdentity">
+              <text className="ThreadEditorProject">
+                {currentThread?.project ?? 'Workspace'}
+              </text>
+              <text className="ThreadEditorPath">
+                {currentThread?.workspaceRoot ?? 'No workspace'}
+              </text>
+            </view>
+            <text className="ThreadEditorModeLabel">
+              {editorCenterMode === 'file' ? 'Files' : 'Changes'}
             </text>
-            <text className="ThreadEditorPath">
-              {currentThread?.workspaceRoot ?? 'No workspace'}
-            </text>
+            <Button size="xs" variant="outline" onClick={toggleEditorChat}>
+              {editorChatOpen ? 'Hide chat' : 'Show chat'}
+            </Button>
+            <Button size="xs" variant="outline" onClick={exitEditorMode}>
+              Chat
+            </Button>
           </view>
-          <text className="ThreadEditorModeLabel">
-            {editorCenterMode === 'file' ? 'Files' : 'Changes'}
-          </text>
-          <Button size="xs" variant="outline" onClick={toggleEditorChat}>
-            {editorChatOpen ? 'Hide chat' : 'Show chat'}
-          </Button>
-          <Button size="xs" variant="outline" onClick={exitEditorMode}>
-            Chat
-          </Button>
-        </view>
-        <view className="ThreadEditorBody">
+          <view className="ThreadEditorBody">
           <view className="ThreadEditorActivityRail">
             <view
               className={`ThreadEditorActivityItem${
@@ -1043,7 +1069,7 @@ function ThreadPage(props: ThreadPageProps) {
               </view>
             )}
           </view>
-          <ResizableRightPanel
+            <ResizableRightPanel
             availableWidth={threadPageWidth || viewportWidth}
             className={`ThreadEditorChat${
               editorChatOpen ? '' : ' ThreadEditorChat--hidden'
@@ -1056,21 +1082,104 @@ function ThreadPage(props: ThreadPageProps) {
               editorChatOpen && viewportWidth >= VIEWPORT_BREAKPOINTS.lg
             }
             storageKey={EDITOR_CHAT_PANE_STORAGE_KEY}
-          >
-            <ChatSurfaceHeaderFrame>
-              <view className="ThreadHeaderIdentity">
-                {threadHeaderIdentity}
-              </view>
-            </ChatSurfaceHeaderFrame>
-            <ProviderHealthBanner
-              status={providerHealth.status}
-              onDismiss={providerHealth.dismiss}
-            />
-            {chatBody}
-            {bodyState.kind === 'empty' ? null : composer}
-          </ResizableRightPanel>
+            >
+              <ChatSurfaceHeaderFrame>
+                <view className="ThreadHeaderIdentity">
+                  {threadHeaderIdentity}
+                </view>
+                <Button
+                  aria-label="Chat history"
+                  className="ThreadEditorHistoryTrigger"
+                  variant="ghost"
+                  onClick={() => setEditorChatHistoryOpen(true)}
+                >
+                  <ClockIcon size={15} color="var(--muted-foreground)" />
+                </Button>
+              </ChatSurfaceHeaderFrame>
+              <ProviderHealthBanner
+                status={providerHealth.status}
+                onDismiss={providerHealth.dismiss}
+              />
+              {chatBody}
+              {bodyState.kind === 'empty' ? null : composer}
+            </ResizableRightPanel>
+          </view>
         </view>
-      </view>
+        {editorChatHistoryOpen ? (
+          <view
+            className="ThreadEditorHistoryViewport"
+            accessibility-element
+            accessibility-label="Chat history dialog"
+            accessibility-traits="dialog"
+            bindkeydown={(event: { readonly key?: string }) => {
+              'background only';
+              if (event.key === 'Escape') setEditorChatHistoryOpen(false);
+            }}
+            tabindex={0}
+          >
+            <view
+              className="ThreadEditorHistoryBackdrop"
+              bindtap={() => setEditorChatHistoryOpen(false)}
+            />
+            <view
+              className="ThreadEditorHistoryDialog"
+              accessibility-element
+              accessibility-label="Chat history"
+              accessibility-traits="dialog"
+            >
+              <Button
+                aria-label="Close chat history"
+                className="ThreadEditorHistoryClose"
+                variant="ghost"
+                onClick={() => setEditorChatHistoryOpen(false)}
+              >
+                ×
+              </Button>
+              <text className="ThreadEditorHistoryHeading">Chat history</text>
+              <text className="ThreadEditorHistoryDescription">
+                Recent chats in {currentThread?.project ?? 'this project'}.
+              </text>
+              <scroll-view
+                className="ThreadEditorHistoryPanel"
+                scroll-orientation="vertical"
+              >
+              {threads.length === 0 ? (
+                <text className="ThreadEditorHistoryEmpty">
+                  Loading chat history…
+                </text>
+              ) : editorChatHistoryThreads.length === 0 ? (
+                  <text className="ThreadEditorHistoryEmpty">
+                    No chats in this project yet
+                  </text>
+                ) : (
+                  editorChatHistoryThreads.map((historyThread) => (
+                    <Button
+                      key={historyThread.id}
+                      className={`ThreadEditorHistoryItem${
+                        historyThread.id === threadId
+                          ? ' ThreadEditorHistoryItem--active'
+                          : ''
+                      }`}
+                      variant="ghost"
+                      onClick={() => openEditorHistoryThread(historyThread.id)}
+                    >
+                      <OpenAIProviderIcon provider={historyThread.provider} />
+                      <text className="ThreadEditorHistoryTitle">
+                        {historyThread.title}
+                      </text>
+                      <text className="ThreadEditorHistoryMeta">
+                        {historyThread.id === threadId
+                          ? '✓'
+                          : formatRelativeTime(historyThread.updatedAt)}
+                      </text>
+                    </Button>
+                  ))
+                )}
+              </scroll-view>
+            </view>
+          </view>
+        ) : null}
+      </>
     );
   }
 
@@ -1830,7 +1939,9 @@ export function SliceRouter({
             toggleExpandedDirectory(current, path)
           )
         }
+        onNavigateToThread={(threadId) => navigate(`/thread/${threadId}`)}
         threadId={route.params.threadId}
+        threads={routeThreads ?? []}
         resolvedTheme={resolvedTheme}
         viewportWidth={viewportWidth}
       />

@@ -70,6 +70,7 @@ import {
   upsertPersistedThreadRecap,
 } from '@synara-web/lib/threadRecap';
 import type { NativeSyntaxHighlightThemes } from '../main/syntaxHighlightingContract.logic';
+import { projectActiveThreadSummaries } from './threadSummaryProjection.logic';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -620,7 +621,11 @@ export async function fetchExplorerPdfMetadata(input: {
 
 export async function fetchThreads(): Promise<ThreadSummary[]> {
   'background only';
-  return (await fetchSidebarSnapshot()).threads as ThreadSummary[];
+  const { fetchSynaraShellSnapshot } = await import(
+    /* webpackMode: "eager" */ '../data/synaraClient'
+  );
+  const snapshot = await fetchSynaraShellSnapshot();
+  return projectActiveThreadSummaries(snapshot);
 }
 
 export async function fetchThreadHeaderSummary(
