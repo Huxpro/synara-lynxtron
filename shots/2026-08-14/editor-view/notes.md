@@ -135,6 +135,47 @@
   - `/tmp/synara-editor-geometry-lynx-fixed.png`
   - `/tmp/synara-editor-geometry-lynx-fixed.json`
 
+### Compact Editor mode navigation
+
+- Newly discovered scope: `390x844`, DPR 1, dark Editor Changes.
+- Harness identity matched the wide cell:
+  - same `.synara-fidelity-editor-changes` state and port `59260`
+  - same project, thread, workspace, and sole `index.ts +2 -1` patch
+  - Web and Lynx again ran sequentially with renderer-specific trusted origins.
+- Compact Web authority keeps the Editor activity rail:
+  - rail: `x=0`, `48x798`
+  - changed-files sidebar: `x=48`, `342x176`
+  - selected-file diff: `x=48`, `342x334`
+  - Chat rail: `x=48`, `342x288`
+- Pre-fix compact Lynx:
+  - activity rail: `display:none`, `0x0`
+  - diff center: `x=0`, `390x399`
+  - Chat rail: `x=0`, `390x399`
+  - the patch remained readable, but the only Files/Changes navigation was
+    removed, so the user could not switch Editor modes.
+- Root cause: the compact/medium fallback changed `ThreadEditorBody` to a
+  column and hid `ThreadEditorActivityRail` instead of preserving the
+  authority's fixed rail beside vertically stacked content.
+- Fix: compact and medium Editor now use a two-column, two-row grid. The 48px
+  activity rail spans both rows; center and Chat occupy the two rows to its
+  right.
+- Post-fix compact Lynx:
+  - rail: `x=0`, `48x798`, `grid-row: 1 / 3`
+  - diff center: `x=48`, `342x399`
+  - Chat rail: `x=48`, `342x399`
+  - four real patch rows remain visible
+  - relay remains healthy with zero pending requests and no RPC error.
+- Retained evidence:
+  - `/tmp/synara-editor-compact-web.png`
+  - `/tmp/synara-editor-compact-web.json`
+  - `/tmp/synara-editor-compact-lynx.png`
+  - `/tmp/synara-editor-compact-lynx.json`
+  - `/tmp/synara-editor-compact-lynx-fixed.png`
+  - `/tmp/synara-editor-compact-lynx-fixed.json`
+- The rail's product wiring is covered by focused source tests. Real
+  Lynx-for-Web click publication remains under the existing
+  `lynx-web-pointer-to-bindtap` harness blocker and is not claimed here.
+
 ## Authority geometry
 
 After aligning global-sidebar state, Web authority and Lynx use the same
@@ -166,6 +207,8 @@ comparison; no Web screenshot pass is claimed.
   Files and Changes activity modes, sharing the existing diff renderer.
 - **P1 layout/readability closed:** Editor Changes no longer leaves a 208px
   dead strip or hides the selected file's entire patch by default.
+- **P1 compact interaction closed:** compact/medium Editor no longer removes
+  the only Files/Changes mode navigation.
 - **P2 coverage remains:** Web Editor Search mode, project switching, editor
   changed-files sidebar and selection, chat-history tabs, terminal rail tabs,
   and resizable Chat width are not yet implemented in Lynx.
@@ -192,6 +235,8 @@ comparison; no Web screenshot pass is claimed.
 - `lynx-editor-changes-center-dead-space`: P1 layout usability,
   component contribution `0.245 -> 0.00`.
 - `lynx-editor-changes-patch-hidden`: P1 content readability,
+  component contribution `1.00 -> 0.00`.
+- `lynx-editor-compact-mode-navigation-hidden`: P1 interaction availability,
   component contribution `1.00 -> 0.00`.
 - `lynx-editor-changed-files-sidebar`: P2 missing coverage,
   contribution remains `0.25`.

@@ -71,6 +71,15 @@ describe('Lynx Editor view', () => {
     expect(explorerStyles).toMatch(
       /\.ExplorerDock--editor\s+\.ExplorerDockSidebar\s*\{[^}]*width:\s*224px;[^}]*min-width:\s*224px;/s
     );
+    expect(appStyles).toMatch(
+      /\.SliceRoot--viewport-compact\s+\.ThreadEditorBody,[\s\S]*?grid-template-columns:\s*48px minmax\(0,\s*1fr\);[\s\S]*?grid-template-rows:\s*minmax\(0,\s*1fr\) minmax\(0,\s*1fr\);/s
+    );
+    expect(appStyles).toMatch(
+      /\.SliceRoot--viewport-compact\s+\.ThreadEditorActivityRail,[\s\S]*?grid-column:\s*1;[\s\S]*?grid-row:\s*1\s*\/\s*3;/s
+    );
+    expect(appStyles).not.toMatch(
+      /\.SliceRoot--viewport-compact\s+\.ThreadEditorActivityRail,[^}]*display:\s*none;/s
+    );
   });
 
   it('supports deterministic Web and Native startup verification', () => {
