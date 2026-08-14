@@ -129,6 +129,9 @@
   color: var(--muted-foreground);
   font-size: 12px;
   line-height: 17px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .PluginLibraryRowStatus {

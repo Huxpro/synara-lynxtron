@@ -4,6 +4,10 @@ import type {
   ProviderPluginDescriptor,
   ProviderSkillDescriptor,
 } from '@synara/contracts';
+import {
+  normalizeProviderDiscoveryText,
+  resolveProviderDiscoveryStatus,
+} from '@synara/shared/providerDiscoveryPresentation';
 
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input.lynx';
@@ -16,10 +20,6 @@ import {
 import './plugin-library-page.css';
 
 type DiscoveryTab = 'plugins' | 'skills';
-
-function normalized(value: string): string {
-  return value.trim().toLowerCase();
-}
 
 function pluginLabel(plugin: ProviderPluginDescriptor): string {
   return plugin.interface?.displayName ?? plugin.name;
@@ -47,17 +47,6 @@ function skillDescription(skill: ProviderSkillDescriptor): string {
   );
 }
 
-function discoveryErrorMessage(
-  tab: DiscoveryTab,
-  error: unknown
-): string {
-  const message = error instanceof Error ? error.message : String(error ?? '');
-  if (message.includes('not installed or not executable')) {
-    return `Codex CLI is unavailable, so ${tab} cannot be loaded.`;
-  }
-  return `Could not load ${tab}.`;
-}
-
 function DiscoveryRow(props: {
   readonly description: string;
   readonly enabled: boolean;
@@ -71,7 +60,7 @@ function DiscoveryRow(props: {
       </view>
       <view className="PluginLibraryRowCopy">
         <text className="PluginLibraryRowTitle">{props.label}</text>
-        <text className="PluginLibraryRowDescription" maxlines={2}>
+        <text className="PluginLibraryRowDescription" maxlines={1}>
           {props.description}
         </text>
       </view>
@@ -109,7 +98,7 @@ export function PluginLibraryPage() {
       capabilities.data?.supportsSkillDiscovery === true,
     retry: false,
   });
-  const query = normalized(search);
+  const query = normalizeProviderDiscoveryText(search);
   const installedPlugins: Array<{
     readonly marketplace: string;
     readonly plugin: ProviderPluginDescriptor;
@@ -121,7 +110,7 @@ export function PluginLibraryPage() {
       if (!plugin.installed) continue;
       if (
         query &&
-        !normalized(
+        !normalizeProviderDiscoveryText(
           `${marketplaceName} ${pluginLabel(plugin)} ${pluginDescription(plugin)}`
         ).includes(query)
       ) {
@@ -134,7 +123,7 @@ export function PluginLibraryPage() {
   for (const skill of skills.data?.skills ?? []) {
     if (
       query &&
-      !normalized(
+      !normalizeProviderDiscoveryText(
         `${skillLabel(skill)} ${skillDescription(skill)} ${skill.path}`
       ).includes(query)
     ) {
@@ -147,15 +136,19 @@ export function PluginLibraryPage() {
     (tab === 'plugins' ? plugins.isPending : skills.isPending);
   const activeError =
     capabilities.error ?? (tab === 'plugins' ? plugins.error : skills.error);
-  const activeErrorMessage = discoveryErrorMessage(tab, activeError);
   const supported =
     tab === 'plugins'
       ? capabilities.data?.supportsPluginDiscovery === true
       : capabilities.data?.supportsSkillDiscovery === true;
-  const empty =
-    tab === 'plugins'
-      ? installedPlugins.length === 0
-      : discoveredSkills.length === 0;
+  const status = resolveProviderDiscoveryStatus({
+    error: activeError,
+    itemCount:
+      tab === 'plugins' ? installedPlugins.length : discoveredSkills.length,
+    pending: activePending,
+    providerLabel: 'Codex',
+    resource: tab,
+    supported,
+  });
 
   return (
     <view className="PluginLibraryPage">
@@ -195,18 +188,18 @@ export function PluginLibraryPage() {
               onInput={(value) => setSearch(value)}
             />
           </view>
-          {activePending ? (
+          {status.kind === 'loading' ? (
             <text className="PluginLibraryState">Loading {tab}…</text>
-          ) : activeError ? (
+          ) : status.kind === 'error' ? (
             <text className="PluginLibraryState PluginLibraryState--error">
-              {activeErrorMessage || `Could not load ${tab}.`}
+              {status.message}
             </text>
-          ) : !supported ? (
+          ) : status.kind === 'unsupported' ? (
             <text className="PluginLibraryState">
               {tab === 'plugins' ? 'Plugins' : 'Skills'} are unavailable for
               Codex.
             </text>
-          ) : empty ? (
+          ) : status.kind === 'empty' ? (
             <text className="PluginLibraryState">
               {tab === 'plugins'
                 ? 'No installed plugins found.'

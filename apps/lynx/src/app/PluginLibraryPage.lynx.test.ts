@@ -19,12 +19,12 @@ describe('Lynx plugin library', () => {
     expect(pageSource).toContain('fetchPluginLibraryCapabilities');
     expect(pageSource).toContain('fetchPluginLibraryPlugins');
     expect(pageSource).toContain('fetchPluginLibrarySkills');
-    expect(pageSource).toContain('.filter((plugin) => plugin.installed)');
+    expect(pageSource).toContain('if (!plugin.installed) continue;');
     expect(pageSource).toContain('supportsPluginDiscovery');
     expect(pageSource).toContain('supportsSkillDiscovery');
     expect(pageSource).toContain("tab === 'plugins'");
     expect(pageSource).toContain("tab === 'skills'");
-    expect(pageSource).toContain('Codex CLI is unavailable');
+    expect(pageSource).toContain('resolveProviderDiscoveryStatus');
     expect(queriesSource).toContain(
       "fetchProviderComposerCapabilities('codex')"
     );

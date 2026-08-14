@@ -53,3 +53,116 @@
   contribution remains `0.25`; initial slice is intentionally Codex-first.
 - `lynx-web-pointer-to-bindtap`: upstream Web Core P1 blocker,
   contribution remains `1.00`.
+
+## Visual and interaction continuation
+
+### Scope selection
+
+- The standalone Lynxtron `/update` page was evaluated first. Web has no
+  equivalent application-update screen; its provider-update UI is a different
+  product surface. `/update` is therefore non-comparable coverage, not a
+  Web/Lynx product loss.
+- `/plugins` was selected because both renderers own the route, while the
+  previous run had no valid paired visual matrix.
+- Shared isolated state:
+  `.synara-fidelity-plugins-visual/dev/state.sqlite`.
+- Both renderer phases used `ws://127.0.0.1:59120`. The server was restarted
+  only to switch its trusted browser origin between Web `localhost:9121` and
+  Lynx-for-Web `localhost:8080`; the state directory stayed unchanged.
+- Retained cells cover Plugins failure plus Skills populated/search at
+  `1280x820` and `390x844`, DPR 1, light and dark.
+
+### Product losses found and closed
+
+- `web-plugin-discovery-error-masked-as-empty`: P1 reliability,
+  contribution `1.00 -> 0.00`.
+  - The provider returned a real `Codex is not installed or not executable`
+    failure.
+  - Web kept placeholder empty data and rendered `No installed plugins found`,
+    while Lynx correctly rendered the failure.
+  - Both renderers now use
+    `@synara/shared/providerDiscoveryPresentation`; errors resolve before
+    unsupported/empty states.
+  - Web after renders
+    `Codex CLI is unavailable, so plugins cannot be loaded.` plus recovery
+    guidance.
+- `lynx-plugin-skill-row-unbounded-description`: P1 compact performance and
+  usability, contribution `1.00 -> 0.00`.
+  - `maxlines={2}` was not enforced by Lynx-for-Web. Long descriptions expanded
+    rows from the intended `70px` to as much as `311px`; 117 skills produced a
+    `16,913px` compact content surface.
+  - The row description now uses one-line overflow/ellipsis like Web.
+  - Runtime after: 117/117 rows are exactly `70px`; content height is `8,616px`.
+- `lynx-provider-search-separator-drift`: P1 interaction fidelity,
+  contribution `1.00 -> 0.00`.
+  - Web normalized `-`, `_`, `/`, and `:` to spaces; Lynx only lowercased.
+    Typing `react doctor` returned zero Lynx rows for `react-doctor`.
+  - Normalization now lives in the shared presentation module.
+  - A real rendered Lynx textbox input `react doctor` returns exactly the
+    `react-doctor` row.
+
+### Comparable runtime evidence
+
+- Plugins wide/light:
+  - Web and Lynx both use a `256px` sidebar and `1024x820` main surface.
+  - Web heading: `x=280`, `y=81`, `976x42`.
+  - Lynx heading: `x=362`, `y=86`, `812x36`.
+  - The composition remains intentionally renderer-specific; semantic failure
+    parity, not pixel identity, is the gate for this cell.
+- Skills populated:
+  - Both renderers discovered 117 real skills from the same isolated server
+    environment.
+  - Web compact heading wraps to `342x84`; Lynx compact heading remains
+    `358x36`. This is a visible typography/layout residual, but not a P0/P1
+    reliability or interaction loss.
+- Web Skills tab was exercised through the rendered button.
+- Lynx Web Core did not expose the tab in the accessibility tree or allow a
+  selector click through its shadow boundary. A rendered custom-element
+  `.click()` was used only to prepare the visual state. This is not claimed as
+  an interaction pass; `lynx-web-pointer-to-bindtap` remains open.
+
+### Harness losses and noise
+
+- Navigating Web first through `127.0.0.1:9121` while the server trusted
+  `localhost:9121` produced an empty rejected frame. It was discarded.
+- A fresh `agent-browser` session reset the viewport height to `633px` after
+  navigation. That PNG was discarded; retained frames verify runtime and PNG
+  dimensions after setting the viewport.
+- One Web snapshot ran before React hydration completed and returned no
+  interactive elements. The mounted DOM appeared immediately afterward with
+  no page error; the frame was discarded as capture timing loss.
+- The long-lived Web console initially included reconnect warnings from the
+  discarded wrong-origin page. A fresh session had only Vite/React development
+  messages.
+- Lynx console contains only the known upstream deprecated initialization
+  warning.
+
+### Verification
+
+- `packages/shared`: `bun run test -- src/providerDiscoveryPresentation.test.ts`
+  - 1 file, 4 tests passed.
+- `apps/web`:
+  `bun run test -- src/lib/providerDiscovery.test.ts src/components/PluginLibrary.test.ts`
+  - 2 files, 3 tests passed.
+- `apps/lynx`: `bun run test -- src/app/PluginLibraryPage.lynx.test.ts`
+  - 1 file, 2 tests passed.
+- `CI=1 bun run build` in `apps/web`: passed, 8,953 modules transformed.
+- `CI=1 bun run build` in `apps/lynx`: passed and staged the desktop bundle.
+  Existing optional `bufferutil` / `utf-8-validate` and Lynx CSS warnings only.
+- Native remains unverified. User-owned PID `77846` on port `8901` was not
+  stopped or reused, so no Native pass is claimed.
+- Owned ports `59120`, `9121`, `8080`, and `5971` were released.
+- Retained screenshot count under `shots/` is 20, below the 100-image limit.
+
+### Evidence
+
+- `shots/2026-08-14/plugins/visual-matrix/web-plugins-before-wide-light.png`
+- `shots/2026-08-14/plugins/visual-matrix/lynx-plugins-wide-light.png`
+- `shots/2026-08-14/plugins/visual-matrix/web-plugins-after-wide-light.png`
+- `shots/2026-08-14/plugins/visual-matrix/web-skills-wide-light.png`
+- `shots/2026-08-14/plugins/visual-matrix/lynx-skills-wide-light.png`
+- `shots/2026-08-14/plugins/visual-matrix/web-skills-compact-light.png`
+- `shots/2026-08-14/plugins/visual-matrix/lynx-skills-compact-light-before.png`
+- `shots/2026-08-14/plugins/visual-matrix/lynx-skills-compact-light-after.png`
+- `shots/2026-08-14/plugins/visual-matrix/web-skills-compact-dark.png`
+- `shots/2026-08-14/plugins/visual-matrix/lynx-skills-search-compact-dark-after.png`

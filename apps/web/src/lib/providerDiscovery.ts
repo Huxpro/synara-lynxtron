@@ -4,11 +4,14 @@
 // Exports: cwd resolution, search normalization, and provider skill/plugin display helpers.
 
 import { resolveThreadBranchSourceCwd } from "@synara/shared/threadEnvironment";
+import { normalizeProviderDiscoveryText } from "@synara/shared/providerDiscoveryPresentation";
 import type {
   ProviderNativeCommandDescriptor,
   ProviderPluginDescriptor,
   ProviderSkillDescriptor,
 } from "@synara/contracts";
+
+export { normalizeProviderDiscoveryText };
 
 // Prefer the most specific workspace context so discovery reflects the active thread first.
 export function resolveProviderDiscoveryCwd(options: {
@@ -22,15 +25,6 @@ export function resolveProviderDiscoveryCwd(options: {
       worktreePath: options.activeThreadWorktreePath,
     }) ?? options.serverCwd
   );
-}
-
-export function normalizeProviderDiscoveryText(value: string | undefined): string {
-  if (!value) return "";
-  return value
-    .toLowerCase()
-    .replace(/[:/_-]+/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
 }
 
 export interface ProviderDiscoverySearchField {

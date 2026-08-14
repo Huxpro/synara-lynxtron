@@ -64,6 +64,7 @@ import {
   useDesktopTopBarWindowControlsGutterClassName,
 } from "~/hooks/useDesktopTopBarGutter";
 import { Skeleton } from "./ui/skeleton";
+import { resolveProviderDiscoveryStatus } from "@synara/shared/providerDiscoveryPresentation";
 
 import { useDebouncedValue } from "@tanstack/react-pacer";
 // ── Types ──────────────────────────────────────────────────────────────────
@@ -529,6 +530,22 @@ export function PluginLibrary() {
   const filteredSkills = skillSearchQuery
     ? rankProviderDiscoveryItems(discoveredSkills, skillSearchQuery, buildSkillSearchFields)
     : discoveredSkills;
+  const pluginStatus = resolveProviderDiscoveryStatus({
+    error: pluginsQuery.error,
+    itemCount: filteredPluginEntries.length,
+    pending: pluginsQuery.isLoading && pluginEntries.length === 0,
+    providerLabel,
+    resource: "plugins",
+    supported: canListPlugins,
+  });
+  const skillStatus = resolveProviderDiscoveryStatus({
+    error: skillsQuery.error,
+    itemCount: filteredSkills.length,
+    pending: skillsQuery.isLoading && discoveredSkills.length === 0,
+    providerLabel,
+    resource: "skills",
+    supported: canListSkills,
+  });
 
   // ── Render ───────────────────────────────────────────────────────────────
 
@@ -641,20 +658,27 @@ export function PluginLibrary() {
           <div className="px-3 pb-10 sm:px-5">
             {selectedTab === "plugins" ? (
               <>
-                {!canListPlugins ? (
+                {pluginStatus.kind === "unsupported" ? (
                   <div className="mx-auto max-w-2xl">
                     <EmptyPanel
                       title={`Plugins unavailable for ${providerLabel}`}
                       description="This provider does not expose plugin discovery."
                     />
                   </div>
-                ) : pluginsQuery.isLoading && pluginEntries.length === 0 ? (
+                ) : pluginStatus.kind === "loading" ? (
                   <div className="space-y-1">
                     {["1", "2", "3", "4", "5", "6"].map((k) => (
                       <Skeleton key={k} className="h-[68px] w-full rounded-xl" />
                     ))}
                   </div>
-                ) : filteredPluginEntries.length === 0 ? (
+                ) : pluginStatus.kind === "error" ? (
+                  <div className="mx-auto max-w-2xl">
+                    <EmptyPanel
+                      title={pluginStatus.message}
+                      description="Verify the provider installation, then reload to try again."
+                    />
+                  </div>
+                ) : pluginStatus.kind === "empty" ? (
                   <EmptyPanel
                     title="No installed plugins found"
                     description="This view only shows plugins already available in your Codex setup."
@@ -676,20 +700,27 @@ export function PluginLibrary() {
               </>
             ) : (
               <>
-                {!canListSkills ? (
+                {skillStatus.kind === "unsupported" ? (
                   <div className="mx-auto max-w-2xl">
                     <EmptyPanel
                       title={`Skills unavailable for ${providerLabel}`}
                       description="This provider does not expose skill discovery."
                     />
                   </div>
-                ) : skillsQuery.isLoading && discoveredSkills.length === 0 ? (
+                ) : skillStatus.kind === "loading" ? (
                   <div className="space-y-1">
                     {["1", "2", "3", "4", "5", "6"].map((k) => (
                       <Skeleton key={k} className="h-[68px] w-full rounded-xl" />
                     ))}
                   </div>
-                ) : filteredSkills.length === 0 ? (
+                ) : skillStatus.kind === "error" ? (
+                  <div className="mx-auto max-w-2xl">
+                    <EmptyPanel
+                      title={skillStatus.message}
+                      description="Verify the provider installation, then reload to try again."
+                    />
+                  </div>
+                ) : skillStatus.kind === "empty" ? (
                   <EmptyPanel title="No skills found" description="No skills match this search." />
                 ) : (
                   <div>

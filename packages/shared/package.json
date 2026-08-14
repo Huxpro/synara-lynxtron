@@ -200,6 +200,10 @@
       "types": "./src/providerMetadata.ts",
       "import": "./src/providerMetadata.ts"
     },
+    "./providerDiscoveryPresentation": {
+      "types": "./src/providerDiscoveryPresentation.ts",
+      "import": "./src/providerDiscoveryPresentation.ts"
+    },
     "./providerTools": {
       "types": "./src/providerTools.ts",
       "import": "./src/providerTools.ts"
