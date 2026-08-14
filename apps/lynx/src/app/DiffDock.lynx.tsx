@@ -198,6 +198,7 @@ function OpenDiffDock(props: {
           </view>
         ) : (
           <PullRequestCodeComposition
+            emptyLabel="No working tree changes."
             wordWrap={diffWordWrap}
             view={visibleView}
             truncated={false}

@@ -42,6 +42,7 @@ export function PullRequestCodeStateComposition(props: {
 export function PullRequestCodeComposition(props: {
   readonly view: PullRequestCodeView;
   readonly truncated: boolean;
+  readonly emptyLabel?: string;
   readonly wordWrap?: boolean;
   readonly expandedFileKeys: readonly string[];
   readonly visibleLineCounts: Readonly<Record<string, number>>;
@@ -59,7 +60,9 @@ export function PullRequestCodeComposition(props: {
         </PullRequestCodeNoticeElement>
       ) : null}
       {props.view.kind === "empty" ? (
-        <PullRequestCodeNoticeElement>This pull request has no file changes.</PullRequestCodeNoticeElement>
+        <PullRequestCodeNoticeElement>
+          {props.emptyLabel ?? "This pull request has no file changes."}
+        </PullRequestCodeNoticeElement>
       ) : props.view.kind === "raw" ? (
         <>
           <PullRequestCodeNoticeElement intent="warning">{props.view.reason}</PullRequestCodeNoticeElement>

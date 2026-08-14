@@ -306,6 +306,35 @@
   the hidden/open layouts; Lynx-for-Web runtime toggle clicks remain under the
   shared dynamic-event blocker.
 
+### Clean working-tree state
+
+- Newly discovered scope: wide, dark Editor Changes after restoring both
+  tracked fixture files to a clean Git state.
+- Web authority rendered `No changes in the selected diff source.` with no
+  changed-file rows.
+- Previous Lynx reused the shared pull-request composition's default empty
+  copy, `This pull request has no file changes.`, inside a local working-tree
+  surface.
+- Fix: the portable pull-request composition accepts an optional empty label;
+  `DiffDock` supplies `No working tree changes.` while pull-request callers
+  retain their original copy.
+- Post-fix Lynx:
+  - `git.readWorkingTreeDiff` completed with zero pending/error;
+  - no empty changed-files sidebar was mounted;
+  - the notice reads `No working tree changes.`.
+- This is an intentional wording delta from Web's generic selected-source copy:
+  Lynx names the actual local working-tree scope and does not imply a pull
+  request.
+- Evidence:
+  - `/tmp/synara-editor-clean-web.png`
+  - `/tmp/synara-editor-clean-web.json`
+  - `/tmp/synara-editor-clean-lynx.png`
+  - `/tmp/synara-editor-clean-lynx.json`
+- The Web page was fully present in `#root`, but two ordinary
+  `agent-browser` accessibility/`innerText` reads returned empty output.
+  Direct product-node `textContent` and geometry proved the authority state;
+  the empty reads are retained as harness timing noise, not product loss.
+
 ## Authority geometry
 
 After aligning global-sidebar state, Web authority and Lynx use the same
@@ -345,6 +374,8 @@ comparison; no Web screenshot pass is claimed.
   selected-file projection.
 - **P2 coverage closed:** Editor Chat can be hidden and shown, preserving the
   shared visibility preference and reclaiming the workspace.
+- **P1 semantic copy closed:** clean working-tree state no longer describes
+  itself as a pull request.
 - **P2 coverage remains:** Web Editor Search mode, project switching, editor
   chat-history tabs, terminal rail tabs, and resizable Chat width are not yet
   implemented in Lynx.
@@ -384,6 +415,8 @@ comparison; no Web screenshot pass is claimed.
   contribution `0.25 -> 0.00`.
 - `lynx-editor-chat-visibility`: P2 missing coverage,
   contribution `0.25 -> 0.00`.
+- `lynx-editor-clean-copy-pull-request`: P1 semantic accuracy,
+  component contribution `1.00 -> 0.00`.
 - `lynx-editor-search-mode`: P2 missing coverage,
   contribution remains `0.25`.
 - `lynx-editor-chat-resize-tabs`: P2 missing coverage,

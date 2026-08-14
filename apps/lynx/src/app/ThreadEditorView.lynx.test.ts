@@ -82,6 +82,9 @@ describe('Lynx Editor view', () => {
       '(selectedFile ? [selectedFile.key] : [])'
     );
     expect(diffDockSource).toContain('className="DiffDockFileSidebar"');
+    expect(diffDockSource).toContain(
+      'emptyLabel="No working tree changes."'
+    );
     expect(diffDockSource).toContain('<EditorDiffFileRow');
     expect(diffDockSource).toContain('files: [selectedFile],');
     expect(diffDockSource).toContain('setSelectedFilePath(file.path)');
