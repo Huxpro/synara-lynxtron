@@ -134,7 +134,10 @@ const KeyboardInput = forwardRef<InputRef, KeyboardInputProps>(
   }, [props.value]);
   useEffect(() => {
     if (!controlled.current) {
-      void setValue(props.defaultValue ?? '').catch(() => undefined);
+      const timer = setTimeout(() => {
+        void setValue(props.defaultValue ?? '').catch(() => undefined);
+      }, 0);
+      return () => clearTimeout(timer);
     }
   }, []);
 
@@ -180,6 +183,8 @@ const KeyboardInput = forwardRef<InputRef, KeyboardInputProps>(
       disabled={props.disabled}
       focusable={!props.disabled}
       ignore-focus={true}
+      default-value={props.defaultValue}
+      value={props.value ?? props.defaultValue}
       placeholder={props.placeholder}
       confirm-type={props.confirmType}
       type={props.type}

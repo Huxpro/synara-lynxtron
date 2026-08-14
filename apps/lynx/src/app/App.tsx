@@ -91,6 +91,7 @@ export function App() {
     readonly initialSystemDark?: unknown;
     readonly initialEnvironmentOpen?: unknown;
     readonly initialEditorOpen?: unknown;
+    readonly initialRenameOpen?: unknown;
     readonly initialTerminalOpen?: unknown;
     readonly initialTemporaryOpen?: unknown;
     readonly initialExplorerOpen?: unknown;
@@ -104,6 +105,7 @@ export function App() {
   const systemDark = initData.initialSystemDark === true;
   const initialEnvironmentOpen = initData.initialEnvironmentOpen === true;
   const initialEditorOpen = initData.initialEditorOpen === true;
+  const initialRenameOpen = initData.initialRenameOpen === true;
   const initialTerminalOpen = initData.initialTerminalOpen === true;
   const initialTemporaryOpen = initData.initialTemporaryOpen === true;
   const initialRoute =
@@ -356,6 +358,7 @@ export function App() {
           <SliceRouter
             initialEnvironmentOpen={initialEnvironmentOpen}
             initialEditorOpen={initialEditorOpen}
+            initialRenameOpen={initialRenameOpen}
             initialTerminalOpen={initialTerminalOpen}
             initialTemporaryOpen={initialTemporaryOpen}
             initialRoute={initialRoute}

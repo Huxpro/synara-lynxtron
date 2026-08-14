@@ -1,4 +1,5 @@
 import type { ReactNode } from '@lynx-js/react';
+import { useLynxInteractiveState } from './useLynxInteractiveState';
 
 export function ChatSurfaceHeaderIdentityRootElement(props: {
   readonly highlighted: boolean;
@@ -26,5 +27,20 @@ export function ChatSurfaceHeaderIdentityTitleElement(props: {
   readonly title: string;
   readonly onRename?: () => void;
 }) {
-  return <text className="SharedChatHeaderIdentityTitle">{props.title}</text>;
+  const rename = useLynxInteractiveState({
+    baseClassName: 'SharedChatHeaderIdentityTitle',
+    accessibleLabel: props.onRename
+      ? `Rename thread ${props.title}`
+      : props.title,
+    disabled: !props.onRename,
+    onActivate: props.onRename ?? (() => {}),
+  });
+  return (
+    <text
+      className={rename.className}
+      {...rename.eventProps}
+    >
+      {props.title}
+    </text>
+  );
 }

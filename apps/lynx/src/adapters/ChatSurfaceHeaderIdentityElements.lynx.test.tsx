@@ -17,4 +17,20 @@ describe('chat surface header identity fidelity', () => {
     );
     expect(routerSource.match(/<ChatSurfaceHeaderIdentity/g)).toHaveLength(2);
   });
+
+  it('publishes the shared rename action instead of dropping it', () => {
+    const adapterSource = readFileSync(
+      new URL('./ChatSurfaceHeaderIdentityElements.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const routerSource = readFileSync(
+      new URL('../app/router.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(adapterSource).toContain('onActivate: props.onRename');
+    expect(adapterSource).toContain('`Rename thread ${props.title}`');
+    expect(routerSource).toContain("type: 'thread.meta.update'");
+    expect(routerSource).toContain('onRename={currentThread ? beginThreadRename');
+    expect(routerSource).toContain('onConfirm={() => void commitThreadRename()}');
+  });
 });

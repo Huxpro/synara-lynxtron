@@ -18,6 +18,11 @@ describe('Lynx Input accessibility contract', () => {
     expect(source).toContain('accessibility-label={props.accessibleLabel}');
     expect(source).toContain('ariaInvalid={ariaInvalid}');
     expect(source).toContain('aria-invalid={props.ariaInvalid}');
+    expect(source).toContain('default-value={props.defaultValue}');
+    expect(source).toContain('value={props.value ?? props.defaultValue}');
+    expect(source).toContain(
+      "void setValue(props.defaultValue ?? '').catch(() => undefined)"
+    );
     expect(source).toContain('{nativeInput || onKeyDown ? (');
     expect(source).toContain(
       'accessibility-state={props.disabled ? { disabled: true } : undefined}'

@@ -841,6 +841,8 @@ const initialEnvironmentOpen =
   new URLSearchParams(globalThis.location.search).get('environment') === 'open';
 const initialEditorOpen =
   new URLSearchParams(globalThis.location.search).get('editor') === 'open';
+const initialRenameOpen =
+  new URLSearchParams(globalThis.location.search).get('rename') === 'open';
 const initialTerminalOpen =
   new URLSearchParams(globalThis.location.search).get('terminal') === 'open';
 const initialTemporaryOpen =
@@ -889,6 +891,7 @@ webDocument.body.innerHTML = `
   init-data='${JSON.stringify({
     initialEnvironmentOpen,
     initialEditorOpen,
+    initialRenameOpen,
     initialTerminalOpen,
     initialTemporaryOpen,
     initialExplorerOpen,

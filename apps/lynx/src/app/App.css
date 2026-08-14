@@ -311,6 +311,40 @@
   flex: 1;
 }
 
+.ThreadHeaderRename {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  align-items: center;
+  gap: 8px;
+}
+
+.ThreadHeaderRenameInput {
+  width: 240px;
+  max-width: 100%;
+  height: 28px;
+  padding: 4px 8px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--input);
+  border-radius: 7px;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-size: 12px;
+}
+
+.ThreadHeaderRenameError {
+  color: var(--destructive);
+  font-size: 10px;
+}
+
+.SharedChatHeaderIdentityTitle.ui-hover,
+.SharedChatHeaderIdentityTitle.ui-focus,
+.SharedChatHeaderIdentityTitle.ui-pressed {
+  color: var(--foreground);
+  text-decoration: underline;
+}
+
 .ThreadFilesToggle {
   display: flex;
   width: 28px;

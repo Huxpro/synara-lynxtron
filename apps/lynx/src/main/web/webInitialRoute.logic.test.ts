@@ -53,6 +53,8 @@ describe('Lynx-for-Web initial route harness', () => {
     expect(hostSource).toContain('initialTemporaryOpen,');
     expect(hostSource).toContain("get('editor') === 'open'");
     expect(hostSource).toContain('initialEditorOpen,');
+    expect(hostSource).toContain("get('rename') === 'open'");
+    expect(hostSource).toContain('initialRenameOpen,');
     expect(hostSource).toContain("get('terminal') === 'open'");
     expect(hostSource).toContain('initialTerminalOpen,');
     expect(hostSource).toContain("if (method === 'shellRendererReady')");

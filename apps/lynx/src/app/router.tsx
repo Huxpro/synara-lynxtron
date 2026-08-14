@@ -17,6 +17,7 @@ import {
   useRef,
   useState,
 } from '@lynx-js/react';
+import type { InputRef } from '@lynx-js/lynx-ui';
 import { useQuery } from '@tanstack/react-query';
 import type { ProviderKind, ServerProviderStatus } from '@synara/contracts';
 import type { UiDensity } from '@synara-web/lib/appDensity';
@@ -46,6 +47,7 @@ import {
   fetchThreadHeaderSummary,
   fetchThreadTranscriptRows,
   fetchThreads,
+  queryClient,
   type ExplorerEntriesResult,
 } from './queries';
 import { resolveStudioRestoreRoute } from './studioRoute.logic';
@@ -68,6 +70,8 @@ import { PluginLibraryPage } from './PluginLibraryPage.lynx';
 import { WorkspacePage } from './WorkspacePage.lynx';
 import { Composer } from '../components/composer/Composer.lynx';
 import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input.lynx';
+import { dispatchSynaraCommand } from '../data/synaraClient.lynx';
 import { Sidebar } from '../components/sidebar/Sidebar.lynx';
 import { CenteredEmptyLanding } from '@synara-web/components/CenteredEmptyLanding';
 import { CenteredEmptyLandingStack } from '@synara-web/components/CenteredEmptyLandingStack';
@@ -361,6 +365,7 @@ interface ThreadPageProps {
   readonly explorerSelectedPath: string | null;
   readonly initialEnvironmentOpen: boolean;
   readonly initialEditorOpen: boolean;
+  readonly initialRenameOpen: boolean;
   readonly initialTerminalOpen: boolean;
   readonly initialTemporaryOpen: boolean;
   readonly initialExplorerWidth: number | null;
@@ -531,6 +536,7 @@ function ThreadPage(props: ThreadPageProps) {
     explorerSelectedPath,
     initialEnvironmentOpen,
     initialEditorOpen,
+    initialRenameOpen,
     initialTerminalOpen,
     initialTemporaryOpen,
     initialExplorerWidth,
@@ -558,6 +564,16 @@ function ThreadPage(props: ThreadPageProps) {
   const [explorerOpen, setExplorerOpen] = useState(initialExplorerOpen);
   const [terminalOpen, setTerminalOpen] = useState(initialTerminalOpen);
   const [editorMode, setEditorMode] = useState(initialEditorOpen);
+  const [renamingThread, setRenamingThread] = useState(initialRenameOpen);
+  const [threadTitleDraft, setThreadTitleDraft] = useState(
+    currentThread?.title ?? ''
+  );
+  const [threadRenamePending, setThreadRenamePending] = useState(false);
+  const [threadRenameError, setThreadRenameError] = useState<string | null>(
+    null
+  );
+  const threadRenameInputRef = useRef<InputRef>(null);
+  const threadRenameTouchedRef = useRef(false);
   const [threadPageWidth, setThreadPageWidth] = useState(0);
   const [diffDockWidth, setDiffDockWidth] = useState<number | null>(null);
   const [explorerDockWidth, setExplorerDockWidth] = useState<number | null>(() =>
@@ -630,6 +646,89 @@ function ThreadPage(props: ThreadPageProps) {
         onProviderStatusesChange={setProviderStatuses}
       />
     </ComposerColumnFrameSurface>
+  );
+  useEffect(() => {
+    if (
+      currentThread?.title &&
+      (!renamingThread || threadTitleDraft.length === 0)
+    ) {
+      setThreadTitleDraft(currentThread.title);
+      if (renamingThread && !threadRenameTouchedRef.current) {
+        void threadRenameInputRef.current?.setValue(currentThread.title);
+      }
+    }
+  }, [currentThread?.title, renamingThread, threadTitleDraft.length]);
+  const beginThreadRename = () => {
+    'background only';
+    if (!currentThread || threadRenamePending) return;
+    setThreadTitleDraft(currentThread.title);
+    threadRenameTouchedRef.current = false;
+    setThreadRenameError(null);
+    setRenamingThread(true);
+  };
+  const commitThreadRename = async () => {
+    'background only';
+    if (!currentThread || threadRenamePending) return;
+    const title = threadTitleDraft.trim();
+    if (!title || title === currentThread.title) {
+      setThreadTitleDraft(currentThread.title);
+      setThreadRenameError(null);
+      setRenamingThread(false);
+      return;
+    }
+    setThreadRenamePending(true);
+    setThreadRenameError(null);
+    try {
+      await dispatchSynaraCommand({
+        type: 'thread.meta.update',
+        commandId: `lynx-thread-rename-${Date.now()}-${Math.random()
+          .toString(16)
+          .slice(2)}`,
+        threadId: threadId as never,
+        title,
+      });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['thread-detail', threadId] }),
+        queryClient.invalidateQueries({ queryKey: ['threads'] }),
+        queryClient.invalidateQueries({ queryKey: ['sidebar-snapshot'] }),
+      ]);
+      setRenamingThread(false);
+    } catch (error) {
+      setThreadRenameError(
+        error instanceof Error ? error.message : 'Unable to rename thread.'
+      );
+    } finally {
+      setThreadRenamePending(false);
+    }
+  };
+  const threadHeaderIdentity = renamingThread ? (
+    <view className="ThreadHeaderRename">
+      <Input
+        ref={threadRenameInputRef}
+        key={`thread-rename:${currentThread?.title ?? threadId}`}
+        nativeInput
+        className="ThreadHeaderRenameInput"
+        accessibility-label="Thread title"
+        defaultValue={threadTitleDraft || currentThread?.title || ''}
+        disabled={threadRenamePending}
+        onInput={(value) => {
+          threadRenameTouchedRef.current = true;
+          setThreadTitleDraft(value);
+        }}
+        onConfirm={() => void commitThreadRename()}
+        onBlur={() => void commitThreadRename()}
+      />
+      {threadRenameError ? (
+        <text className="ThreadHeaderRenameError">{threadRenameError}</text>
+      ) : null}
+    </view>
+  ) : (
+    <ChatSurfaceHeaderIdentity
+      title={currentThread?.title ?? 'Thread'}
+      icon={<OpenAIProviderIcon provider={currentThread?.provider} />}
+      iconTitle={currentThread?.project ?? 'Synara'}
+      onRename={currentThread ? beginThreadRename : undefined}
+    />
   );
   const chatBody =
     bodyState.kind === 'transcript' ? (
@@ -776,11 +875,7 @@ function ThreadPage(props: ThreadPageProps) {
           <view className="ThreadEditorChat">
             <ChatSurfaceHeaderFrame>
               <view className="ThreadHeaderIdentity">
-                <ChatSurfaceHeaderIdentity
-                  title={currentThread?.title ?? 'Thread'}
-                  icon={<OpenAIProviderIcon provider={currentThread?.provider} />}
-                  iconTitle={currentThread?.project ?? 'Synara'}
-                />
+                {threadHeaderIdentity}
               </view>
             </ChatSurfaceHeaderFrame>
             <ProviderHealthBanner
@@ -818,11 +913,7 @@ function ThreadPage(props: ThreadPageProps) {
     >
       <ChatSurfaceHeaderFrame>
         <view className="ThreadHeaderIdentity">
-          <ChatSurfaceHeaderIdentity
-            title={currentThread?.title ?? 'Thread'}
-            icon={<OpenAIProviderIcon provider={currentThread?.provider} />}
-            iconTitle={currentThread?.project ?? 'Synara'}
-          />
+          {threadHeaderIdentity}
         </view>
         <view className="ThreadHeaderControls">
           <Button
@@ -956,6 +1047,7 @@ function ThreadPage(props: ThreadPageProps) {
 export function SliceRouter({
   initialEditorOpen,
   initialEnvironmentOpen,
+  initialRenameOpen,
   initialTerminalOpen,
   initialTemporaryOpen,
   initialRoute,
@@ -973,6 +1065,7 @@ export function SliceRouter({
 }: {
   readonly initialEditorOpen: boolean;
   readonly initialEnvironmentOpen: boolean;
+  readonly initialRenameOpen: boolean;
   readonly initialTerminalOpen: boolean;
   readonly initialTemporaryOpen: boolean;
   readonly initialRoute: string | null;
@@ -1485,6 +1578,7 @@ export function SliceRouter({
         explorerSelectedPath={explorerSelectedPath}
         initialEnvironmentOpen={initialEnvironmentOpen}
         initialEditorOpen={initialEditorOpen}
+        initialRenameOpen={initialRenameOpen}
         initialTerminalOpen={initialTerminalOpen}
         initialTemporaryOpen={initialTemporaryOpen}
         initialExplorerWidth={initialExplorerWidth}
