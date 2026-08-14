@@ -86,6 +86,55 @@
   `/tmp/synara-editor-changes-lynx-final.txt`, and
   `/tmp/synara-editor-changes-lynx-final.json`.
 
+### Changes center geometry and first-file readability
+
+- Newly discovered scope: the wide `1280x820`, dark Editor Changes layout
+  after the loading race was closed.
+- Harness identity was matched before classification:
+  - same `.synara-fidelity-editor-changes` server state
+  - same project `editor-changes-project`
+  - same thread `editor-changes-thread`
+  - same `/private/tmp/synara-editor-changes` Git workspace
+  - same sole tracked `index.ts` patch (`+2 -1`)
+  - same `1280x820`, DPR 1, dark theme
+  - Web and Lynx ran sequentially against port `59260` because each server
+    instance admitted only its configured renderer origin.
+- Web authority geometry:
+  - activity rail: `x=0`, `48x774`
+  - changed-files sidebar: `x=48`, `224x774`
+  - selected-file diff viewport: `x=272`, `624x774`
+  - Chat rail: `x=896`, `384x774`
+  - the selected `index.ts` patch lines were visible immediately.
+- Pre-fix Lynx geometry:
+  - activity rail: `x=0`, `48x774`
+  - Editor center: `x=48`, `848x774`
+  - embedded `DiffDock`: `x=48`, `640x774`
+  - dead center area: `208x774`, or `24.5%` of the Editor center width
+  - the only file was collapsed, so no patch line was visible.
+- Root cause: embedded Editor Changes reused the standalone right-dock
+  `ResizableRightPanel` defaults. Its calculated 640px width overrode the
+  Editor CSS `width: 100%`, and its standalone collapsed-file default was
+  carried into a selected-file authority state.
+- Fix: `DiffDock` now has an explicit `editor` presentation. Editor mode
+  disables right-dock resizing, fills the complete center, and defaults the
+  first real file open. The standalone Changes dock retains its resizable,
+  collapsed-file behavior.
+- Post-fix Lynx geometry:
+  - Editor center: `x=48`, `848x774`
+  - embedded `DiffDock`: `x=48`, `847x774`
+  - dead center area: effectively `0px` apart from the existing 1px divider
+  - four real unified-diff rows are rendered for `index.ts`
+  - no Editor resize sash is mounted
+  - relay diagnostics: `git.readWorkingTreeDiff`, zero pending requests, no
+    transport or RPC error.
+- Evidence:
+  - `/tmp/synara-editor-geometry-web.png`
+  - `/tmp/synara-editor-geometry-web.json`
+  - `/tmp/synara-editor-geometry-lynx.png`
+  - `/tmp/synara-editor-geometry-lynx.json`
+  - `/tmp/synara-editor-geometry-lynx-fixed.png`
+  - `/tmp/synara-editor-geometry-lynx-fixed.json`
+
 ## Authority geometry
 
 After aligning global-sidebar state, Web authority and Lynx use the same
@@ -115,9 +164,11 @@ comparison; no Web screenshot pass is claimed.
   working-tree patch instead of remaining at `Loading changes…`.
 - **P1 missing coverage closed:** Lynx Editor now has the Web authority's
   Files and Changes activity modes, sharing the existing diff renderer.
+- **P1 layout/readability closed:** Editor Changes no longer leaves a 208px
+  dead strip or hides the selected file's entire patch by default.
 - **P2 coverage remains:** Web Editor Search mode, project switching, editor
-  chat-history tabs, terminal rail tabs, and resizable Chat width are not yet
-  implemented in Lynx.
+  changed-files sidebar and selection, chat-history tabs, terminal rail tabs,
+  and resizable Chat width are not yet implemented in Lynx.
 - **Harness blocker:** Lynx-for-Web pointer-to-`bindtap` publication still
   prevents retained click evidence for the Editor/Chat buttons. Deterministic
   init data proves the rendered state; source/focused tests prove both actions
@@ -138,6 +189,12 @@ comparison; no Web screenshot pass is claimed.
   contribution `1.00 -> 0.00`.
 - `lynx-editor-changes-pre-relay-race`: P1 product reliability,
   contribution `1.00 -> 0.00`.
+- `lynx-editor-changes-center-dead-space`: P1 layout usability,
+  component contribution `0.245 -> 0.00`.
+- `lynx-editor-changes-patch-hidden`: P1 content readability,
+  component contribution `1.00 -> 0.00`.
+- `lynx-editor-changed-files-sidebar`: P2 missing coverage,
+  contribution remains `0.25`.
 - `lynx-editor-search-mode`: P2 missing coverage,
   contribution remains `0.25`.
 - `lynx-editor-chat-resize-tabs`: P2 missing coverage,

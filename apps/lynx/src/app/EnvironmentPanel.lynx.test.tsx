@@ -314,8 +314,15 @@ describe('Lynx Environment panel', () => {
     expect(diffDockSource).toContain('<PullRequestCodeComposition');
     expect(diffDockSource).toContain('<ResizableRightPanel');
     expect(diffDockSource).toContain('maxWidth={720}');
+    expect(diffDockSource).toContain(
+      "resizable={props.presentation === 'dock'}"
+    );
     expect(routerSource).toContain(
       "(diffOpen || explorerOpen) && rightDockWidth !== null"
+    );
+    expect(routerSource).toContain('open={diffOpen}');
+    expect(routerSource).not.toContain(
+      'open={diffOpen}\n        presentation="editor"'
     );
     expect(routerSource).toContain(
       "{ paddingRight: `${rightDockWidth}px` }"

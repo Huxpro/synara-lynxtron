@@ -973,6 +973,7 @@ function ThreadPage(props: ThreadPageProps) {
                   onClose={() => setEditorCenterMode('file')}
                   onWidthChange={() => undefined}
                   open
+                  presentation="editor"
                   workspaceRoot={currentThread?.workspaceRoot ?? null}
                 />
               </view>

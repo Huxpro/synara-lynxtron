@@ -1,5 +1,6 @@
 import { useState } from '@lynx-js/react';
 import { useQuery } from '@tanstack/react-query';
+import type { GitReadWorkingTreeDiffResult } from '@synara/contracts';
 import {
   PULL_REQUEST_DIFF_INITIAL_LINE_COUNT,
   PULL_REQUEST_DIFF_MORE_LINE_COUNT,
@@ -16,7 +17,6 @@ import { RefreshCwIcon, XIcon } from '../lib/icons.lynx';
 import { fetchWorkingTreeDiff } from '../data/synaraClient.lynx';
 import { ResizableRightPanel } from './ResizableRightPanel.lynx';
 import { webStorage } from '../platform/storage';
-import type { GitReadWorkingTreeDiffResult } from '@synara/contracts';
 
 import './diff-dock.css';
 
@@ -26,6 +26,7 @@ export function DiffDock(props: {
   readonly onWidthChange: (width: number) => void;
   readonly open: boolean;
   readonly initialDiff?: GitReadWorkingTreeDiffResult;
+  readonly presentation?: 'dock' | 'editor';
   readonly workspaceRoot: string | null;
 }) {
   if (!props.open || !props.workspaceRoot) return null;
@@ -36,6 +37,7 @@ export function DiffDock(props: {
       initialDiff={props.initialDiff}
       onClose={props.onClose}
       onWidthChange={props.onWidthChange}
+      presentation={props.presentation ?? 'dock'}
       workspaceRoot={props.workspaceRoot}
     />
   );
@@ -46,10 +48,13 @@ function OpenDiffDock(props: {
   readonly initialDiff?: GitReadWorkingTreeDiffResult;
   readonly onClose: () => void;
   readonly onWidthChange: (width: number) => void;
+  readonly presentation: 'dock' | 'editor';
   readonly workspaceRoot: string;
 }) {
   const [refreshGeneration, setRefreshGeneration] = useState(0);
-  const [expandedFileKeys, setExpandedFileKeys] = useState<string[]>([]);
+  const [expandedFileKeys, setExpandedFileKeys] = useState<string[] | null>(
+    props.presentation === 'editor' ? null : []
+  );
   const [visibleLineCounts, setVisibleLineCounts] = useState<
     Record<string, number>
   >({});
@@ -75,6 +80,9 @@ function OpenDiffDock(props: {
     diff.data?.patch,
     `working-tree:${props.workspaceRoot ?? 'none'}`
   );
+  const visibleExpandedFileKeys =
+    expandedFileKeys ??
+    (view.kind === 'files' && view.files[0] ? [view.files[0].key] : []);
   const closeInteraction = useLynxInteractiveState({
     baseClassName: 'DiffDockClose',
     accessibleLabel: 'Close changes',
@@ -99,7 +107,7 @@ function OpenDiffDock(props: {
       minimumMainWidth={320}
       minWidth={320}
       onWidthChange={props.onWidthChange}
-      resizable
+      resizable={props.presentation === 'dock'}
     >
       <view className="DiffDockHeader">
         <view className="DiffDockIdentity">
@@ -144,14 +152,14 @@ function OpenDiffDock(props: {
             wordWrap={diffWordWrap}
             view={view}
             truncated={false}
-            expandedFileKeys={expandedFileKeys}
+            expandedFileKeys={visibleExpandedFileKeys}
             visibleLineCounts={visibleLineCounts}
             rawVisibleLineCount={rawVisibleLineCount}
             onToggleFile={(fileKey) =>
-              setExpandedFileKeys((current) =>
-                current.includes(fileKey)
-                  ? current.filter((key) => key !== fileKey)
-                  : [...current, fileKey]
+              setExpandedFileKeys(
+                visibleExpandedFileKeys.includes(fileKey)
+                  ? visibleExpandedFileKeys.filter((key) => key !== fileKey)
+                  : [...visibleExpandedFileKeys, fileKey]
               )
             }
             onShowMoreFile={(fileKey) =>

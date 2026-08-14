@@ -39,8 +39,20 @@ describe('Lynx Editor view', () => {
     expect(routerSource).toContain(
       'initialDiff={initialWorkingTreeDiff ?? undefined}'
     );
+    expect(routerSource).toContain('presentation="editor"');
     expect(routerSource).toContain(
       'workspaceRoot={currentThread?.workspaceRoot ?? null}'
+    );
+    expect(routerSource).toContain('<DiffDock');
+    const diffDockSource = source('./DiffDock.lynx.tsx');
+    expect(diffDockSource).toContain(
+      "props.presentation === 'editor' ? null : []"
+    );
+    expect(diffDockSource).toContain(
+      "resizable={props.presentation === 'dock'}"
+    );
+    expect(diffDockSource).toContain(
+      "view.kind === 'files' && view.files[0] ? [view.files[0].key] : []"
     );
     expect(appStyles).toMatch(
       /\.ThreadEditorChanges\s+\.DiffDock\s*\{[^}]*position:\s*relative;[^}]*width:\s*100%;[^}]*height:\s*100%;/s
