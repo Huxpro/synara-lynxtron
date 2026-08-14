@@ -1,13 +1,16 @@
 import { useState } from '@lynx-js/react';
 import { useQuery } from '@tanstack/react-query';
 import type {
+  ProviderKind,
   ProviderPluginDescriptor,
   ProviderSkillDescriptor,
 } from '@synara/contracts';
+import { PROVIDER_DISPLAY_NAMES } from '@synara/contracts';
 import {
   normalizeProviderDiscoveryText,
   resolveProviderDiscoveryStatus,
 } from '@synara/shared/providerDiscoveryPresentation';
+import { DEFAULT_PROVIDER_ORDER } from '@synara-web/providerOrdering';
 
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input.lynx';
@@ -77,22 +80,23 @@ function DiscoveryRow(props: {
 
 export function PluginLibraryPage() {
   const [tab, setTab] = useState<DiscoveryTab>('plugins');
+  const [provider, setProvider] = useState<ProviderKind>('codex');
   const [search, setSearch] = useState('');
   const capabilities = useQuery({
-    queryKey: ['plugin-library', 'capabilities', 'codex'],
-    queryFn: fetchPluginLibraryCapabilities,
+    queryKey: ['plugin-library', 'capabilities', provider],
+    queryFn: () => fetchPluginLibraryCapabilities(provider),
   });
   const plugins = useQuery({
-    queryKey: ['plugin-library', 'plugins', 'codex'],
-    queryFn: fetchPluginLibraryPlugins,
+    queryKey: ['plugin-library', 'plugins', provider],
+    queryFn: () => fetchPluginLibraryPlugins(provider),
     enabled:
       tab === 'plugins' &&
       capabilities.data?.supportsPluginDiscovery === true,
     retry: false,
   });
   const skills = useQuery({
-    queryKey: ['plugin-library', 'skills', 'codex'],
-    queryFn: fetchPluginLibrarySkills,
+    queryKey: ['plugin-library', 'skills', provider],
+    queryFn: () => fetchPluginLibrarySkills(provider),
     enabled:
       tab === 'skills' &&
       capabilities.data?.supportsSkillDiscovery === true,
@@ -145,7 +149,7 @@ export function PluginLibraryPage() {
     itemCount:
       tab === 'plugins' ? installedPlugins.length : discoveredSkills.length,
     pending: activePending,
-    providerLabel: 'Codex',
+    providerLabel: PROVIDER_DISPLAY_NAMES[provider],
     resource: tab,
     supported,
   });
@@ -168,7 +172,26 @@ export function PluginLibraryPage() {
           Skills
         </Button>
         <view className="PluginLibraryHeaderSpacer" />
-        <text className="PluginLibraryProvider">Codex</text>
+        <scroll-view
+          className="PluginLibraryProviders"
+          scroll-orientation="horizontal"
+        >
+          <view className="PluginLibraryProviderChoices">
+            {DEFAULT_PROVIDER_ORDER.map((candidate) => (
+              <Button
+                key={candidate}
+                variant={provider === candidate ? 'secondary' : 'ghost'}
+                size="sm"
+                onClick={() => {
+                  setProvider(candidate);
+                  setSearch('');
+                }}
+              >
+                {PROVIDER_DISPLAY_NAMES[candidate]}
+              </Button>
+            ))}
+          </view>
+        </scroll-view>
       </view>
       <scroll-view
         className="PluginLibraryScroller"
@@ -176,7 +199,7 @@ export function PluginLibraryPage() {
       >
         <view className="PluginLibraryContent">
           <text className="PluginLibraryTitle">
-            Make Codex work your way
+            Make {PROVIDER_DISPLAY_NAMES[provider]} work your way
           </text>
           <view className="PluginLibrarySearch">
             <SearchIcon size={16} color="var(--muted-foreground)" />
@@ -197,7 +220,7 @@ export function PluginLibraryPage() {
           ) : status.kind === 'unsupported' ? (
             <text className="PluginLibraryState">
               {tab === 'plugins' ? 'Plugins' : 'Skills'} are unavailable for
-              Codex.
+              {PROVIDER_DISPLAY_NAMES[provider]}.
             </text>
           ) : status.kind === 'empty' ? (
             <text className="PluginLibraryState">

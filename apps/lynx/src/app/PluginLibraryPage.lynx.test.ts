@@ -25,8 +25,22 @@ describe('Lynx plugin library', () => {
     expect(pageSource).toContain("tab === 'plugins'");
     expect(pageSource).toContain("tab === 'skills'");
     expect(pageSource).toContain('resolveProviderDiscoveryStatus');
+    expect(pageSource).toContain("useState<ProviderKind>('codex')");
+    expect(pageSource).toContain('DEFAULT_PROVIDER_ORDER.map');
+    expect(pageSource).toContain('PROVIDER_DISPLAY_NAMES[provider]');
+    expect(pageSource).toContain(
+      'fetchPluginLibraryCapabilities(provider)'
+    );
+    expect(pageSource).toContain('fetchPluginLibraryPlugins(provider)');
+    expect(pageSource).toContain('fetchPluginLibrarySkills(provider)');
     expect(queriesSource).toContain(
-      "fetchProviderComposerCapabilities('codex')"
+      'return fetchProviderComposerCapabilities(provider)'
+    );
+    expect(queriesSource).toContain(
+      'return fetchProviderPlugins({ provider, cwd: config.cwd })'
+    );
+    expect(queriesSource).toContain(
+      'return fetchProviderSkills({ provider, cwd: config.cwd })'
     );
     expect(clientSource).toContain(
       "transportRequest<ProviderListPluginsResult>(\n    'provider.listPlugins'"

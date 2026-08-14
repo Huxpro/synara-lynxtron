@@ -50,7 +50,7 @@
 - `plugins-web-authority-isolated-snapshot`: harness gap,
   contribution `0.00` product loss.
 - `plugins-cross-provider-switching`: P2 product coverage,
-  contribution remains `0.25`; initial slice is intentionally Codex-first.
+  contribution `0.25 -> 0.00`.
 - `lynx-web-pointer-to-bindtap`: upstream Web Core P1 blocker,
   contribution remains `1.00`.
 
@@ -166,3 +166,58 @@
 - `shots/2026-08-14/plugins/visual-matrix/lynx-skills-compact-light-after.png`
 - `shots/2026-08-14/plugins/visual-matrix/web-skills-compact-dark.png`
 - `shots/2026-08-14/plugins/visual-matrix/lynx-skills-search-compact-dark-after.png`
+
+## Provider-switching continuation
+
+### Product coverage closed
+
+- Lynx was hard-coded to Codex for capabilities, queries, labels, and copy,
+  while Web authority supports all configured providers.
+- The page now renders the canonical provider order and display names.
+- Capabilities, Plugins queries, and Skills queries are keyed by the selected
+  provider, preventing stale Codex data from appearing under another label.
+- Search is reset when provider changes.
+- Unsupported provider/tab combinations render their real capability state
+  instead of issuing fake discovery requests.
+
+### Verified capability matrix
+
+- Plugins are currently available for Codex and Droid.
+- Skills are currently available for Codex, Cursor, Antigravity, and Pi.
+- Other provider/tab combinations remain visible but disabled by their actual
+  capability response; this matches the Web authority model.
+
+### Runtime evidence
+
+- Isolated server: `ws://127.0.0.1:59200`.
+- Route: `/plugins`, `1280x820`, DPR 1, light.
+- The rendered provider strip contains:
+  Codex, Claude, Cursor, Antigravity, Grok, Droid, Kilo, OpenCode, and Pi.
+- A rendered state setup selected Skills and Pi.
+- Result:
+  - title `Make Pi work your way`;
+  - 117 real skill rows;
+  - observed RPCs include Pi capability discovery and
+    `provider.listSkills`;
+  - `connectionAttempts=1`;
+  - no transport or RPC error.
+- The unrelated empty-snapshot pull-request poll warning did not recur in the
+  final state.
+
+### Verification
+
+- `bun run test -- src/app/PluginLibraryPage.lynx.test.ts src/app/settingsNavigation.test.ts`
+  - 2 files, 13 tests passed.
+- `CI=1 bun run build` in `apps/lynx`
+  - Lynx production bundle and Desktop host built and staged.
+  - Existing optional `bufferutil` / `utf-8-validate` and Lynx CSS warnings
+    only.
+- Native remains unverified. User-owned PID `77846` on port `8901` was not
+  stopped or reused.
+- Owned ports `59200`, `8080`, and `5971` were released.
+- Retained screenshot count under `shots/` is 44.
+
+### Evidence
+
+- `shots/2026-08-14/plugins/provider-switching/pi-skills-wide-light.png`
+- `shots/2026-08-14/plugins/provider-switching/pi-skills-runtime.json`

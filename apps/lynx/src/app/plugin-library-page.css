@@ -24,12 +24,17 @@
   flex: 1;
 }
 
-.PluginLibraryProvider {
-  padding: 4px 10px;
-  border-radius: 999px;
-  background-color: var(--secondary);
-  color: var(--muted-foreground);
-  font-size: 12px;
+.PluginLibraryProviders {
+  width: min(700px, 70%);
+  min-width: 0;
+}
+
+.PluginLibraryProviderChoices {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 2px;
+  min-width: max-content;
 }
 
 .PluginLibraryScroller {
