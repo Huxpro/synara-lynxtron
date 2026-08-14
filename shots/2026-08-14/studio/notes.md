@@ -93,7 +93,7 @@
   contribution `0.00` product loss.
 - `studio-persisted-empty-thread-fixture`: verification limitation,
   contribution `0.00` product loss.
-- `lynx-web-pointer-to-bindtap`: upstream Web Core P1 blocker,
+- `lynx-web-pointer-to-bindtap`: ReactLynx/Web Core dynamic-event P1 blocker,
   contribution remains `1.00`.
 - `native-studio-devtool-fixed-port`: harness blocker,
   contribution remains `0.00` product loss.

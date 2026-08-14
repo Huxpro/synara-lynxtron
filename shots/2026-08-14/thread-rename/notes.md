@@ -75,7 +75,7 @@
   contribution `1.00 -> 0.00`.
 - `lynx-native-input-initial-value`: P1 product reliability,
   contribution `1.00 -> 0.00`.
-- `lynx-web-pointer-to-bindtap`: upstream Web Core P1 blocker,
+- `lynx-web-pointer-to-bindtap`: ReactLynx/Web Core dynamic-event P1 blocker,
   contribution remains `1.00`.
 - `native-thread-rename-devtool-fixed-port`: harness blocker,
   contribution `0.00` product loss.

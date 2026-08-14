@@ -57,7 +57,7 @@
   contribution `1.00 -> 0.00`.
 - `lynx-terminal-live-stream`: intentional platform delta,
   contribution remains `0.25`.
-- `lynx-web-pointer-to-bindtap`: P1 harness coverage,
+- `lynx-web-pointer-to-bindtap`: ReactLynx/Web Core dynamic-event P1 harness coverage,
   contribution remains `1.00`.
 - `native-terminal-devtool-fixed-port`: harness blocker,
   contribution remains `0.00` product loss.

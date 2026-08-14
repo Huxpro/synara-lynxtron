@@ -51,7 +51,7 @@
   contribution `0.00` product loss.
 - `plugins-cross-provider-switching`: P2 product coverage,
   contribution `0.25 -> 0.00`.
-- `lynx-web-pointer-to-bindtap`: upstream Web Core P1 blocker,
+- `lynx-web-pointer-to-bindtap`: ReactLynx/Web Core dynamic-event P1 blocker,
   contribution remains `1.00`.
 
 ## Visual and interaction continuation
