@@ -9,7 +9,12 @@ import {
 } from '@synara-web/components/SidebarSearchPalette';
 import { buildSidebarSearchActions } from '@synara-web/components/SidebarSearchActions.logic';
 import { newCommandId } from '@synara-web/lib/utils';
+import {
+  APP_SETTINGS_STORAGE_KEY,
+  readSettingsGeneralProjection,
+} from '@synara-web/appSettingsStorageProjection.logic';
 import type { SidebarSnapshot } from '../../app/queries';
+import { webStorage } from '../../platform/storage';
 import {
   buildNativeSearchImportThreadCreateCommand,
   buildNativeSearchProjectCreateCommand,
@@ -49,6 +54,9 @@ export function SidebarSearchPaletteLynx(props: {
   readonly onCreateProjectThread: (projectId: string) => void;
   readonly onOpenSettings: (section?: 'usage') => void;
 }) {
+  const generalSettings = readSettingsGeneralProjection(
+    webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
+  );
   const [mode, setMode] = useState<SidebarSearchPaletteMode>('search');
   const projects = useMemo(
     () =>
@@ -96,6 +104,7 @@ export function SidebarSearchPaletteLynx(props: {
     const command = buildNativeSearchProjectCreateCommand({
       workspaceRoot,
       createIfMissing: options?.createIfMissing === true,
+      defaultProvider: generalSettings.defaultProvider,
     });
     await dispatchSynaraCommand(command);
     props.onOpenProject(command.projectId);
@@ -120,6 +129,7 @@ export function SidebarSearchPaletteLynx(props: {
       provider,
       model,
       externalId,
+      envMode: generalSettings.defaultThreadEnvMode,
     });
     let created = false;
     try {

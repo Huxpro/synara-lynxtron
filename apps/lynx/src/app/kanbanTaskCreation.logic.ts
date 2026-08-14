@@ -18,6 +18,7 @@ export function buildNativeKanbanTaskCreateCommand(input: {
   readonly commandId: string;
   readonly createdAt: string;
   readonly modelSelection: ModelSelection;
+  readonly envMode: 'local' | 'worktree';
   readonly projectId: ProjectId;
   readonly prompt: string;
   readonly threadId: string;
@@ -32,7 +33,7 @@ export function buildNativeKanbanTaskCreateCommand(input: {
     modelSelection: input.modelSelection,
     runtimeMode: 'full-access',
     interactionMode: 'default',
-    envMode: 'local',
+    envMode: input.envMode,
     branch: null,
     worktreePath: null,
     createdAt: input.createdAt as never,

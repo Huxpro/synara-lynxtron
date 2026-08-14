@@ -8,6 +8,7 @@ describe('native Kanban task creation', () => {
       buildNativeKanbanTaskCreateCommand({
         commandId: 'command-1',
         createdAt: '2026-08-10T00:00:00.000Z',
+        envMode: 'worktree',
         modelSelection: { provider: 'codex', model: 'gpt-5.6-sol' },
         projectId: 'project-1' as never,
         prompt: '  Fix the settings search layout and verify dark mode.  ',
@@ -22,7 +23,7 @@ describe('native Kanban task creation', () => {
       modelSelection: { provider: 'codex', model: 'gpt-5.6-sol' },
       runtimeMode: 'full-access',
       interactionMode: 'default',
-      envMode: 'local',
+      envMode: 'worktree',
       branch: null,
       worktreePath: null,
       createdAt: '2026-08-10T00:00:00.000Z',

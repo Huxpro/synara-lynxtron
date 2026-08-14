@@ -10,6 +10,7 @@ describe('Native sidebar search actions', () => {
     const command = buildNativeSearchProjectCreateCommand({
       workspaceRoot: '/tmp/example-project/',
       createIfMissing: true,
+      defaultProvider: 'claudeAgent',
     });
 
     expect(command).toMatchObject({
@@ -17,7 +18,10 @@ describe('Native sidebar search actions', () => {
       title: 'example-project',
       workspaceRoot: '/tmp/example-project/',
       createWorkspaceRootIfMissing: true,
-      defaultModelSelection: { provider: 'codex' },
+      defaultModelSelection: {
+        provider: 'claudeAgent',
+        model: 'claude-sonnet-5',
+      },
       spaceId: null,
     });
   });
@@ -28,6 +32,7 @@ describe('Native sidebar search actions', () => {
       provider: 'claudeAgent',
       model: 'claude-sonnet',
       externalId: 'session-1234567890',
+      envMode: 'worktree',
     });
 
     expect(command).toMatchObject({
@@ -38,7 +43,7 @@ describe('Native sidebar search actions', () => {
         provider: 'claudeAgent',
         model: 'claude-sonnet',
       },
-      envMode: 'local',
+      envMode: 'worktree',
       interactionMode: 'default',
       runtimeMode: 'full-access',
     });

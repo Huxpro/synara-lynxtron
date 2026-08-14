@@ -6,6 +6,10 @@ import type {
   ProjectId,
 } from '@synara/contracts';
 import { createElement, useRef, useState } from '@lynx-js/react';
+import {
+  APP_SETTINGS_STORAGE_KEY,
+  readSettingsGeneralProjection,
+} from '@synara-web/appSettingsStorageProjection.logic';
 
 import { useComposerDraftStore } from '../adapters/composerDraftStore.lynx';
 import { SynaraLogo } from '../adapters/SynaraLogo.lynx';
@@ -27,6 +31,7 @@ import {
   type ThreadCreationState,
 } from '../components/composer/landingThreadCreation.logic';
 import { queryClient, type ProjectSummary } from './queries';
+import { webStorage } from '../platform/storage';
 import {
   buildNativeKanbanTaskCreateCommand,
   createNativeKanbanTaskId,
@@ -153,6 +158,9 @@ export function KanbanNewTaskDialog(props: {
   readonly onTaskCreated: (threadId: string, started: boolean) => void;
   readonly projects: readonly ProjectSummary[];
 }) {
+  const generalSettings = readSettingsGeneralProjection(
+    webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
+  );
   const dispatchCommand = props.dispatchCommand ?? dispatchKanbanTaskCommand;
   const fetchShellSnapshot =
     props.fetchShellSnapshot ?? fetchKanbanTaskShellSnapshot;
@@ -182,8 +190,8 @@ export function KanbanNewTaskDialog(props: {
     props.projects.find((project) => project.id === projectId) ?? null;
   const modelSelection: ModelSelection =
     currentProject?.defaultModelSelection ?? {
-      provider: 'codex',
-      model: getDefaultModel('codex'),
+      provider: generalSettings.defaultProvider,
+      model: getDefaultModel(generalSettings.defaultProvider),
     };
   const normalizedPrompt = prompt.trim();
   const canCreate =
@@ -207,6 +215,7 @@ export function KanbanNewTaskDialog(props: {
           buildNativeKanbanTaskCreateCommand({
             commandId: createNativeKanbanTaskId('command'),
             createdAt: new Date().toISOString(),
+            envMode: generalSettings.defaultThreadEnvMode,
             modelSelection,
             projectId: currentProject.id as ProjectId,
             prompt: normalizedPrompt,
