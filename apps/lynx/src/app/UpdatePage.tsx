@@ -3,6 +3,26 @@ import { useEffect, useState } from '@lynx-js/react';
 import { Button } from '../components/ui/button';
 import type { UpdateCheckResult } from '../platform/updater';
 
+export type UpdatePageState =
+  | { readonly kind: 'idle' }
+  | { readonly kind: 'checking' }
+  | { readonly kind: 'error'; readonly message: string }
+  | { readonly kind: 'result'; readonly value: UpdateCheckResult };
+
+export async function runUpdateCheckState(
+  checkForUpdate: () => Promise<UpdateCheckResult>
+): Promise<UpdatePageState> {
+  try {
+    return { kind: 'result', value: await checkForUpdate() };
+  } catch (error) {
+    return {
+      kind: 'error',
+      message:
+        error instanceof Error ? error.message : 'Unable to check for updates.',
+    };
+  }
+}
+
 async function runUpdateCheck(): Promise<UpdateCheckResult> {
   'background only';
   const { checkForUpdate } = await import(
@@ -20,16 +40,23 @@ async function openDownloadPage(): Promise<void> {
 }
 
 export function UpdatePage() {
-  const [state, setState] = useState<
-    | { readonly kind: 'idle' }
-    | { readonly kind: 'checking' }
-    | { readonly kind: 'result'; readonly value: UpdateCheckResult }
-  >({ kind: 'idle' });
+  const [state, setState] = useState<UpdatePageState>({ kind: 'idle' });
+  const [downloadError, setDownloadError] = useState<string | null>(null);
 
   function check() {
     'background only';
     setState({ kind: 'checking' });
-    void runUpdateCheck().then((value) => setState({ kind: 'result', value }));
+    void runUpdateCheckState(runUpdateCheck).then(setState);
+  }
+
+  function openDownload() {
+    'background only';
+    setDownloadError(null);
+    void openDownloadPage().catch((error) => {
+      setDownloadError(
+        error instanceof Error ? error.message : 'Unable to open download page.'
+      );
+    });
   }
 
   useEffect(() => {
@@ -66,7 +93,11 @@ export function UpdatePage() {
           </view>
         ) : null}
 
-        {result?.error ? (
+        {state.kind === 'error' ? (
+          <text className="UpdateStatus UpdateStatus--error">
+            Could not check releases · {state.message}
+          </text>
+        ) : result?.error ? (
           <text className="UpdateStatus UpdateStatus--error">
             Could not check releases · {result.error}
           </text>
@@ -79,12 +110,17 @@ export function UpdatePage() {
             No download starts automatically and no installer is run.
           </text>
         )}
+        {downloadError ? (
+          <text className="UpdateStatus UpdateStatus--error">
+            Could not open download page · {downloadError}
+          </text>
+        ) : null}
 
         <view className="UpdateActions">
           <Button disabled={state.kind === 'checking'} onClick={check}>
             {state.kind === 'checking' ? 'Checking…' : 'Check for updates'}
           </Button>
-          <Button variant="outline" onClick={() => void openDownloadPage()}>
+          <Button variant="outline" onClick={openDownload}>
             Open download page
           </Button>
         </view>
