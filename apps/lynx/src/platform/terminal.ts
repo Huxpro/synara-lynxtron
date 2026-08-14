@@ -9,13 +9,32 @@ import type {
 
 import { bridgeCall } from './bridge';
 
+async function withTerminalRuntimeEndpoint<T extends Record<string, unknown>>(
+  input: T
+): Promise<T & { readonly baseUrl?: string }> {
+  const runtime = await bridgeCall<{ readonly wsUrl?: unknown }>(
+    'runtimeGetSynaraWsUrl'
+  ).catch(() => null);
+  const baseUrl =
+    typeof runtime?.wsUrl === 'string' ? runtime.wsUrl.trim() : '';
+  return baseUrl ? { ...input, baseUrl } : input;
+}
+
 export const platformTerminal = {
-  open: (input: TerminalOpenInput): Promise<TerminalSessionSnapshot> =>
-    bridgeCall('terminalOpen', input),
+  open: async (
+    input: TerminalOpenInput
+  ): Promise<TerminalSessionSnapshot> =>
+    bridgeCall('terminalOpen', await withTerminalRuntimeEndpoint(input)),
   write: async (input: TerminalWriteInput): Promise<void> => {
-    await bridgeCall('terminalWrite', input);
+    await bridgeCall(
+      'terminalWrite',
+      await withTerminalRuntimeEndpoint(input)
+    );
   },
   close: async (input: TerminalCloseInput): Promise<void> => {
-    await bridgeCall('terminalClose', input);
+    await bridgeCall(
+      'terminalClose',
+      await withTerminalRuntimeEndpoint(input)
+    );
   },
 };

@@ -113,3 +113,122 @@
   contribution `0.00` Workspace product loss.
 - `native-workspace-devtool-fixed-port`: harness blocker,
   contribution `0.00` product loss.
+
+## Paired matrix continuation
+
+### Fresh harness
+
+- The old `.synara-fidelity-workspace` state had already been removed, so this
+  run did not pretend to reuse it.
+- New isolated state:
+  `.synara-fidelity-workspace-matrix/dev/state.sqlite`.
+- Shared server: `ws://127.0.0.1:59160`.
+- Web authority: `http://localhost:9161`.
+- Lynx-for-Web: `http://localhost:8080`.
+- Workspace visibility was enabled through each renderer's real Settings
+  control. No SQLite or local-storage fixture was written directly.
+- Both renderers created/restored their shared default workspace identity:
+  `Workspace 1`.
+
+### Web authority capture recovered
+
+- The previous pure-white Web exporter frame was a harness failure.
+- A fresh named `agent-browser` session now retained valid Web authority
+  screenshots:
+  - wide `1280x820`, DPR 1, light;
+  - compact `390x844`, DPR 1, light and dark.
+- Web wide:
+  - sidebar `256x820`;
+  - title `x=276`, `y=13`, `83.73x20`;
+  - xterm `x=268`, `y=94`, `1000x704`;
+  - real split-right, split-down, new-tab, and settings controls.
+- Web compact:
+  - xterm `x=12`, `y=94`, `366x736`;
+  - sidebar closed.
+- This closes the previous Web screenshot harness gap. It does not by itself
+  certify Lynx product parity.
+
+### Product loss
+
+- `lynx-terminal-active-endpoint-dropped`: P1 transport reliability,
+  contribution `1.00 -> 0.00`.
+- Before:
+  - ordinary Lynx RPC used the active isolated endpoint `59160`;
+  - terminal bridge calls omitted `baseUrl`;
+  - the Web host fell back to its build/default endpoint `58090`;
+  - Workspace showed `WebSocket open failed for /ws/bootstrap`, disabled the
+    command input, and repeatedly retried.
+- Root cause:
+  - `platformTerminal.open/write/close` sent only the terminal payload.
+  - Unlike `synaraRpc`, terminal bridge methods had no active endpoint.
+- Fix:
+  - Resolve `runtimeGetSynaraWsUrl` before terminal open/write/close.
+  - Pass the same active endpoint to every terminal bridge operation.
+  - Preserve fallback behavior when the host cannot report an endpoint.
+- After:
+  - relay `activeBaseUrl=ws://127.0.0.1:59160`;
+  - `connectionAttempts=1`;
+  - `lastTransportError=null`;
+  - `lastRpcError=null`;
+  - observed RPCs include `terminal.open`, `terminal.write`, and the follow-up
+    `terminal.open` snapshot refresh;
+  - rendered input is enabled;
+  - the real command
+    `printf 'WORKSPACE_ENDPOINT_1786689883\n'` was sent through the product
+    textbox and appears in the retained terminal snapshot.
+
+### Current paired classification
+
+- Shared shell geometry remains aligned:
+  - wide sidebar `256x820`;
+  - main `1024x820`;
+  - header `1024x46`.
+- **Intentional platform delta remains:** Web uses xterm and exposes split/tab
+  controls; Lynx uses the host-backed snapshot terminal plus command row.
+- **P2 missing coverage remains:** Lynx workspace split panes, layout presets,
+  drag reorder, and the Web settings sheet.
+- Compact Lynx:
+  - root `SliceRoot--viewport-compact`;
+  - no mounted sidebar;
+  - page `390x844`;
+  - terminal `390x798` below the `46px` header.
+- The empty isolated snapshot still produces unrelated
+  `pullRequests.list Missing key at ["state"]` noise during sidebar polling.
+  It is excluded from Workspace product scoring.
+
+### Harness losses
+
+- An attempted `server.updateSettings({showWorkspaceSection:true})` was safely
+  ignored because Workspace visibility is a client setting, not a server
+  settings field. The redirected frame was discarded; the real rendered
+  Settings switch was used instead.
+- The first Lynx switch setup clicked a zero-sized wrapper rather than the
+  rendered switch. The hidden-route frame was discarded. The second setup
+  clicked the exact `32x20` switch; its thumb moved from off `x=1037` to on
+  `x=1049`.
+- Direct bootstrap probing proved `59160 /ws/bootstrap` healthy and `58090`
+  unavailable, separating endpoint drift from a server-route failure.
+- Lynx console contains only the known upstream deprecated initialization
+  warning after the fix.
+
+### Verification
+
+- `bun run test -- src/app/ThreadTerminal.lynx.test.ts src/app/WorkspacePage.lynx.test.ts src/main/web/webRelayEndpoint.logic.test.ts`
+  - 3 files, 10 tests passed.
+- `CI=1 bun run build` in `apps/lynx`
+  - Lynx production bundle and Desktop host built and staged.
+  - Existing optional `bufferutil` / `utf-8-validate` and Lynx CSS warnings
+    only.
+- Native remains unverified. User-owned PID `77846` on port `8901` was not
+  stopped or reused.
+- Owned ports `59160`, `9161`, `8080`, and `5971` were released.
+- Retained screenshot count under `shots/` is 39, below the 100-image limit.
+
+### Evidence
+
+- `shots/2026-08-14/workspace/visual-matrix/web-wide-light.png`
+- `shots/2026-08-14/workspace/visual-matrix/web-compact-light.png`
+- `shots/2026-08-14/workspace/visual-matrix/web-compact-dark.png`
+- `shots/2026-08-14/workspace/visual-matrix/lynx-wide-light-after.png`
+- `shots/2026-08-14/workspace/visual-matrix/lynx-compact-light-after.png`
+- `shots/2026-08-14/workspace/visual-matrix/lynx-compact-dark-after.png`

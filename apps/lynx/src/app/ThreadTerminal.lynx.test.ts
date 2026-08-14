@@ -62,9 +62,13 @@ describe('Lynx thread terminal', () => {
       '<text className="ThreadTerminalOutput" style={typography}>'
     );
     expect(terminalSource).toContain('style={typography}');
-    expect(terminalPortSource).toContain("bridgeCall('terminalOpen', input)");
-    expect(terminalPortSource).toContain("bridgeCall('terminalWrite', input)");
-    expect(terminalPortSource).toContain("bridgeCall('terminalClose', input)");
+    expect(terminalPortSource).toContain("'runtimeGetSynaraWsUrl'");
+    expect(terminalPortSource).toContain(
+      "bridgeCall('terminalOpen', await withTerminalRuntimeEndpoint(input))"
+    );
+    expect(terminalPortSource).toContain(
+      "await withTerminalRuntimeEndpoint(input)"
+    );
     expect(webHostSource).toContain("if (method === 'terminalOpen')");
     expect(webHostSource).toContain("'terminal.open'");
     expect(webHostSource).toContain("if (method === 'terminalWrite')");
