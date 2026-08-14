@@ -23,7 +23,27 @@ describe('Lynx Editor view', () => {
     expect(routerSource).toContain('onSelectPath={onExplorerSelectPath}');
     expect(routerSource).toContain('{chatBody}');
     expect(routerSource).toContain(
-      "storeEditorViewState(threadId, {\n      centerMode: 'file'"
+      'storeEditorViewState(threadId, {\n      centerMode: editorCenterMode'
+    );
+  });
+
+  it('reuses the real Changes renderer as an Editor activity mode', () => {
+    const routerSource = source('./router.tsx');
+    const appStyles = source('./App.css');
+    expect(routerSource).toContain(
+      "readEditorViewState(threadId)?.centerMode ?? 'file'"
+    );
+    expect(routerSource).toContain('accessibility-label="Changes"');
+    expect(routerSource).toContain("setEditorCenterMode('diff')");
+    expect(routerSource).toContain('<DiffDock');
+    expect(routerSource).toContain(
+      'initialDiff={initialWorkingTreeDiff ?? undefined}'
+    );
+    expect(routerSource).toContain(
+      'workspaceRoot={currentThread?.workspaceRoot ?? null}'
+    );
+    expect(appStyles).toMatch(
+      /\.ThreadEditorChanges\s+\.DiffDock\s*\{[^}]*position:\s*relative;[^}]*width:\s*100%;[^}]*height:\s*100%;/s
     );
   });
 
@@ -49,8 +69,15 @@ describe('Lynx Editor view', () => {
       'const initialEditorOpen = initData.initialEditorOpen === true'
     );
     expect(webHostSource).toContain("get('editor') === 'open'");
+    expect(webHostSource).toContain("get('editorMode') === 'diff'");
+    expect(appSource).toContain(
+      "await fetchWorkingTreeDiff(summary.workspaceRoot).catch("
+    );
     expect(desktopSource).toContain(
       "initialEditorOpen: url.searchParams.get('editor') === 'open'"
+    );
+    expect(desktopSource).toContain(
+      "url.searchParams.get('editorMode') === 'diff'"
     );
   });
 });

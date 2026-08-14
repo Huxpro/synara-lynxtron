@@ -19,7 +19,11 @@ import {
 } from '@lynx-js/react';
 import type { InputRef } from '@lynx-js/lynx-ui';
 import { useQuery } from '@tanstack/react-query';
-import type { ProviderKind, ServerProviderStatus } from '@synara/contracts';
+import type {
+  GitReadWorkingTreeDiffResult,
+  ProviderKind,
+  ServerProviderStatus,
+} from '@synara/contracts';
 import type { SettingsAppearanceValues } from '@synara-web/components/settings/SettingsAppearanceComposition.logic';
 import type { ThemeState } from '@synara-web/theme/theme.logic';
 import type { SettingsSectionId } from '@synara-web/settingsNavigation';
@@ -99,6 +103,7 @@ import { resolveSettingsBackTarget } from '@synara-web/components/SidebarSetting
 import { resolveThreadPageBodyState } from './threadPageState.logic';
 import { resolveDefaultEnvironmentPanelOpen } from '@synara-web/components/ChatView.logic';
 import {
+  readEditorViewState,
   storeEditorViewState,
 } from '@synara-web/editorViewState';
 import { sleepOnHost } from '../platform/timer';
@@ -378,6 +383,8 @@ interface ThreadPageProps {
   readonly explorerSelectedPath: string | null;
   readonly initialEnvironmentOpen: boolean;
   readonly initialEditorOpen: boolean;
+  readonly initialEditorCenterMode: 'file' | 'diff';
+  readonly initialWorkingTreeDiff: GitReadWorkingTreeDiffResult | null;
   readonly initialRenameOpen: boolean;
   readonly initialTerminalOpen: boolean;
   readonly initialTemporaryOpen: boolean;
@@ -550,6 +557,8 @@ function ThreadPage(props: ThreadPageProps) {
     explorerSelectedPath,
     initialEnvironmentOpen,
     initialEditorOpen,
+    initialEditorCenterMode,
+    initialWorkingTreeDiff,
     initialRenameOpen,
     initialTerminalOpen,
     initialTemporaryOpen,
@@ -581,6 +590,12 @@ function ThreadPage(props: ThreadPageProps) {
   const [explorerOpen, setExplorerOpen] = useState(initialExplorerOpen);
   const [terminalOpen, setTerminalOpen] = useState(initialTerminalOpen);
   const [editorMode, setEditorMode] = useState(initialEditorOpen);
+  const [editorCenterMode, setEditorCenterMode] = useState<'file' | 'diff'>(
+    () =>
+      initialEditorCenterMode === 'diff'
+        ? 'diff'
+        : readEditorViewState(threadId)?.centerMode ?? 'file'
+  );
   const [renamingThread, setRenamingThread] = useState(initialRenameOpen);
   const [threadTitleDraft, setThreadTitleDraft] = useState(
     currentThread?.title ?? ''
@@ -842,10 +857,10 @@ function ThreadPage(props: ThreadPageProps) {
   useEffect(() => {
     if (!editorMode) return;
     storeEditorViewState(threadId, {
-      centerMode: 'file',
+      centerMode: editorCenterMode,
       expandedDirectories: [...explorerExpandedDirectories],
     });
-  }, [editorMode, explorerExpandedDirectories, threadId]);
+  }, [editorCenterMode, editorMode, explorerExpandedDirectories, threadId]);
 
   if (editorMode && !currentThread) {
     return (
@@ -875,19 +890,45 @@ function ThreadPage(props: ThreadPageProps) {
               {currentThread?.workspaceRoot ?? 'No workspace'}
             </text>
           </view>
-          <text className="ThreadEditorModeLabel">Files</text>
+          <text className="ThreadEditorModeLabel">
+            {editorCenterMode === 'file' ? 'Files' : 'Changes'}
+          </text>
           <Button size="xs" variant="outline" onClick={exitEditorMode}>
             Chat
           </Button>
         </view>
         <view className="ThreadEditorBody">
           <view className="ThreadEditorActivityRail">
-            <view className="ThreadEditorActivityItem ThreadEditorActivityItem--active">
+            <view
+              className={`ThreadEditorActivityItem${
+                editorCenterMode === 'file'
+                  ? ' ThreadEditorActivityItem--active'
+                  : ''
+              }`}
+              accessibility-element
+              accessibility-label="Files"
+              accessibility-traits="button"
+              bindtap={() => setEditorCenterMode('file')}
+            >
               <FolderIcon size={18} color="var(--foreground)" />
+            </view>
+            <view
+              className={`ThreadEditorActivityItem${
+                editorCenterMode === 'diff'
+                  ? ' ThreadEditorActivityItem--active'
+                  : ''
+              }`}
+              accessibility-element
+              accessibility-label="Changes"
+              accessibility-traits="button"
+              bindtap={() => setEditorCenterMode('diff')}
+            >
+              <text className="ThreadEditorActivityGlyph">±</text>
             </view>
           </view>
           <view className="ThreadEditorCenter">
-            <ExplorerDock
+            {editorCenterMode === 'file' ? (
+              <ExplorerDock
               key={`editor-files:${threadId}:${
                 currentThread?.workspaceRoot ?? 'pending'
               }`}
@@ -923,7 +964,19 @@ function ThreadPage(props: ThreadPageProps) {
               onSelectPath={onExplorerSelectPath}
               onToggleDirectory={onExplorerToggleDirectory}
               onClose={exitEditorMode}
-            />
+              />
+            ) : (
+              <view className="ThreadEditorChanges">
+                <DiffDock
+                  availableWidth={threadPageWidth || viewportWidth}
+                  initialDiff={initialWorkingTreeDiff ?? undefined}
+                  onClose={() => setEditorCenterMode('file')}
+                  onWidthChange={() => undefined}
+                  open
+                  workspaceRoot={currentThread?.workspaceRoot ?? null}
+                />
+              </view>
+            )}
           </view>
           <view className="ThreadEditorChat">
             <ChatSurfaceHeaderFrame>
@@ -1103,6 +1156,7 @@ function ThreadPage(props: ThreadPageProps) {
 export function SliceRouter({
   appearance,
   initialEditorOpen,
+  initialEditorCenterMode,
   initialEnvironmentOpen,
   initialRenameOpen,
   initialTerminalOpen,
@@ -1122,6 +1176,7 @@ export function SliceRouter({
 }: {
   readonly appearance: SettingsAppearanceValues;
   readonly initialEditorOpen: boolean;
+  readonly initialEditorCenterMode: 'file' | 'diff';
   readonly initialEnvironmentOpen: boolean;
   readonly initialRenameOpen: boolean;
   readonly initialTerminalOpen: boolean;
@@ -1151,6 +1206,7 @@ export function SliceRouter({
       ExplorerEntriesResult['entries'],
       boolean,
     ])[];
+    readonly workingTreeDiff: GitReadWorkingTreeDiffResult | null;
     readonly summary: Awaited<ReturnType<typeof fetchThreadHeaderSummary>>;
     readonly threadId: string;
   } | null;
@@ -1347,6 +1403,8 @@ export function SliceRouter({
             : matchingInitialThreadBootstrap?.explorerPdfMetadata ??
               activeThreadData.explorerPdfMetadata,
         explorerDirectories: activeThreadData.explorerDirectories,
+        workingTreeDiff:
+          matchingInitialThreadBootstrap?.workingTreeDiff ?? null,
       }
     : matchingInitialThreadBootstrap ?? undefined;
   const resolvedActiveThreadPending =
@@ -1656,6 +1714,10 @@ export function SliceRouter({
         explorerSelectedPath={explorerSelectedPath}
         initialEnvironmentOpen={initialEnvironmentOpen}
         initialEditorOpen={initialEditorOpen}
+        initialEditorCenterMode={initialEditorCenterMode}
+        initialWorkingTreeDiff={
+          resolvedActiveThreadData?.workingTreeDiff ?? null
+        }
         initialRenameOpen={initialRenameOpen}
         initialTerminalOpen={initialTerminalOpen}
         initialTemporaryOpen={initialTemporaryOpen}

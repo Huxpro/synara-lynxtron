@@ -62,6 +62,7 @@ import {
   subscribeLynxThemeState,
 } from '../adapters/useTheme.lynx';
 import { useSynaraTransportState } from '../data/useSynaraTransportState.lynx';
+import { fetchWorkingTreeDiff } from '../data/synaraClient.lynx';
 import { Button } from '../components/ui/button';
 import './App.css';
 
@@ -99,6 +100,7 @@ export function App() {
     readonly initialSystemDark?: unknown;
     readonly initialEnvironmentOpen?: unknown;
     readonly initialEditorOpen?: unknown;
+    readonly initialEditorCenterMode?: unknown;
     readonly initialRenameOpen?: unknown;
     readonly initialTerminalOpen?: unknown;
     readonly initialTemporaryOpen?: unknown;
@@ -113,6 +115,8 @@ export function App() {
   const systemDark = initData.initialSystemDark === true;
   const initialEnvironmentOpen = initData.initialEnvironmentOpen === true;
   const initialEditorOpen = initData.initialEditorOpen === true;
+  const initialEditorCenterMode =
+    initData.initialEditorCenterMode === 'diff' ? 'diff' : 'file';
   const initialRenameOpen = initData.initialRenameOpen === true;
   const initialTerminalOpen = initData.initialTerminalOpen === true;
   const initialTemporaryOpen = initData.initialTemporaryOpen === true;
@@ -173,6 +177,9 @@ export function App() {
       Awaited<ReturnType<typeof fetchExplorerDirectory>>['entries'],
       boolean,
     ])[];
+    readonly workingTreeDiff: Awaited<
+      ReturnType<typeof fetchWorkingTreeDiff>
+    > | null;
     readonly summary: Awaited<ReturnType<typeof fetchThreadHeaderSummary>>;
     readonly threadId: string;
   } | null>(null);
@@ -270,6 +277,14 @@ export function App() {
                 initialEnvironmentOpen && summary?.workspaceRoot
                   ? await fetchEnvironmentBootstrapData(summary.workspaceRoot)
                   : null;
+              const workingTreeDiff =
+                initialEditorOpen &&
+                initialEditorCenterMode === 'diff' &&
+                summary?.workspaceRoot
+                  ? await fetchWorkingTreeDiff(summary.workspaceRoot).catch(
+                      () => null
+                    )
+                  : null;
               return {
                 data,
                 environment,
@@ -278,6 +293,7 @@ export function App() {
                 explorerFile,
                 explorerLocalPreview,
                 explorerPdfMetadata,
+                workingTreeDiff,
                 summary,
                 threadId: threadMatch[1],
               };
@@ -372,6 +388,7 @@ export function App() {
           <SliceRouter
             initialEnvironmentOpen={initialEnvironmentOpen}
             initialEditorOpen={initialEditorOpen}
+            initialEditorCenterMode={initialEditorCenterMode}
             initialRenameOpen={initialRenameOpen}
             initialTerminalOpen={initialTerminalOpen}
             initialTemporaryOpen={initialTemporaryOpen}

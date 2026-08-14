@@ -471,12 +471,39 @@
   box-shadow: inset 2px 0 0 var(--foreground);
 }
 
+.ThreadEditorActivityGlyph {
+  color: var(--foreground);
+  font-size: 18px;
+  font-weight: 600;
+}
+
 .ThreadEditorCenter {
   display: flex;
   flex: 1;
   min-width: 0;
   min-height: 0;
   border-right: 1px solid var(--border);
+}
+
+.ThreadEditorChanges {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+.ThreadEditorChanges .DiffDock {
+  position: relative;
+  top: auto;
+  right: auto;
+  bottom: auto;
+  z-index: auto;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  height: 100%;
+  border-left-width: 0;
 }
 
 .ThreadEditorChat {

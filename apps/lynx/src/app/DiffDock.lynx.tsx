@@ -1,4 +1,5 @@
-import { useEffect, useState } from '@lynx-js/react';
+import { useState } from '@lynx-js/react';
+import { useQuery } from '@tanstack/react-query';
 import {
   PULL_REQUEST_DIFF_INITIAL_LINE_COUNT,
   PULL_REQUEST_DIFF_MORE_LINE_COUNT,
@@ -15,6 +16,7 @@ import { RefreshCwIcon, XIcon } from '../lib/icons.lynx';
 import { fetchWorkingTreeDiff } from '../data/synaraClient.lynx';
 import { ResizableRightPanel } from './ResizableRightPanel.lynx';
 import { webStorage } from '../platform/storage';
+import type { GitReadWorkingTreeDiffResult } from '@synara/contracts';
 
 import './diff-dock.css';
 
@@ -23,11 +25,29 @@ export function DiffDock(props: {
   readonly onClose: () => void;
   readonly onWidthChange: (width: number) => void;
   readonly open: boolean;
+  readonly initialDiff?: GitReadWorkingTreeDiffResult;
   readonly workspaceRoot: string | null;
 }) {
-  const [patch, setPatch] = useState<string | undefined>();
-  const [pending, setPending] = useState(true);
-  const [error, setError] = useState(false);
+  if (!props.open || !props.workspaceRoot) return null;
+
+  return (
+    <OpenDiffDock
+      availableWidth={props.availableWidth}
+      initialDiff={props.initialDiff}
+      onClose={props.onClose}
+      onWidthChange={props.onWidthChange}
+      workspaceRoot={props.workspaceRoot}
+    />
+  );
+}
+
+function OpenDiffDock(props: {
+  readonly availableWidth: number;
+  readonly initialDiff?: GitReadWorkingTreeDiffResult;
+  readonly onClose: () => void;
+  readonly onWidthChange: (width: number) => void;
+  readonly workspaceRoot: string;
+}) {
   const [refreshGeneration, setRefreshGeneration] = useState(0);
   const [expandedFileKeys, setExpandedFileKeys] = useState<string[]>([]);
   const [visibleLineCounts, setVisibleLineCounts] = useState<
@@ -40,35 +60,19 @@ export function DiffDock(props: {
     webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
   ).diffWordWrap;
 
-  useEffect(() => {
-    'background only';
-    if (!props.open || !props.workspaceRoot) return;
-    let cancelled = false;
-    async function loadDiff() {
+  const diff = useQuery({
+    queryKey: ['working-tree-diff', props.workspaceRoot, refreshGeneration],
+    queryFn: () => {
       'background only';
-      setPending(true);
-      setError(false);
-      try {
-        const result = await fetchWorkingTreeDiff(props.workspaceRoot!);
-        if (!cancelled) {
-          setPatch(result.patch);
-          setPending(false);
-        }
-      } catch {
-        if (!cancelled) {
-          setPending(false);
-          setError(true);
-        }
-      }
-    }
-    void loadDiff();
-    return () => {
-      cancelled = true;
-    };
-  }, [props.open, props.workspaceRoot, refreshGeneration]);
+      return fetchWorkingTreeDiff(props.workspaceRoot);
+    },
+    initialData: refreshGeneration === 0 ? props.initialDiff : undefined,
+    retry: false,
+    staleTime: Number.POSITIVE_INFINITY,
+  });
 
   const view = buildPullRequestCodeView(
-    patch,
+    diff.data?.patch,
     `working-tree:${props.workspaceRoot ?? 'none'}`
   );
   const closeInteraction = useLynxInteractiveState({
@@ -81,8 +85,6 @@ export function DiffDock(props: {
     accessibleLabel: 'Retry loading changes',
     onActivate: () => setRefreshGeneration((current) => current + 1),
   });
-
-  if (!props.open) return null;
 
   return (
     <ResizableRightPanel
@@ -119,7 +121,7 @@ export function DiffDock(props: {
         </view>
       </view>
       <scroll-view className="DiffDockScroller" scroll-y enable-scroll-bar>
-        {pending ? (
+        {diff.isPending ? (
           <view className="DiffDockState">
             <RefreshCwIcon
               size={16}
@@ -127,7 +129,7 @@ export function DiffDock(props: {
             />
             <text className="DiffDockStateText">Loading changes…</text>
           </view>
-        ) : error ? (
+        ) : diff.error ? (
           <view className="DiffDockState">
             <text className="DiffDockStateText">Couldn’t load changes.</text>
             <view

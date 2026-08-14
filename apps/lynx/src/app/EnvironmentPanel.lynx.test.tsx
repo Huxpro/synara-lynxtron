@@ -294,7 +294,22 @@ describe('Lynx Environment panel', () => {
     expect(panelSource).toContain("type: 'thread.marker.remove'");
     expect(queriesSource).toContain('threadMarkers: thread.threadMarkers ?? []');
     expect(panelSource).toContain('onOpenViewer={props.onOpenChanges}');
-    expect(diffDockSource).toContain('fetchWorkingTreeDiff(props.workspaceRoot!)');
+    expect(diffDockSource).toContain(
+      'return fetchWorkingTreeDiff(props.workspaceRoot);'
+    );
+    expect(diffDockSource).toContain(
+      "queryKey: ['working-tree-diff', props.workspaceRoot, refreshGeneration]"
+    );
+    expect(diffDockSource).toContain(
+      "queryFn: () => {\n      'background only';\n      return fetchWorkingTreeDiff(props.workspaceRoot);"
+    );
+    expect(diffDockSource).toContain(
+      'initialData: refreshGeneration === 0 ? props.initialDiff : undefined'
+    );
+    expect(diffDockSource).toContain('function OpenDiffDock(');
+    expect(diffDockSource).not.toContain(
+      'enabled: props.open && Boolean(props.workspaceRoot)'
+    );
     expect(diffDockSource).toContain('buildPullRequestCodeView(');
     expect(diffDockSource).toContain('<PullRequestCodeComposition');
     expect(diffDockSource).toContain('<ResizableRightPanel');
