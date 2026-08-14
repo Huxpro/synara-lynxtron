@@ -508,6 +508,7 @@
 }
 
 .ThreadEditorChat {
+  position: relative;
   display: flex;
   width: 384px;
   min-width: 320px;

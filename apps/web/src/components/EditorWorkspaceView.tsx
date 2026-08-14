@@ -63,7 +63,13 @@ import { WorkspaceFilePreview } from "./WorkspaceFilePreview";
 import { webStorage } from "~/platform/storage";
 import { isBrowser } from "~/platform/env";
 import {
+  clampEditorChatPaneWidth,
+  EDITOR_CHAT_PANE_DEFAULT_WIDTH,
+  EDITOR_CHAT_PANE_MAX_WIDTH,
+  EDITOR_CHAT_PANE_MIN_WIDTH,
   readEditorChatPaneVisible,
+  readEditorChatPaneWidth,
+  storeEditorChatPaneWidth,
   storeEditorChatPaneVisible,
 } from "~/editorViewState";
 import { raf, cancelRaf } from "~/platform/frame";
@@ -77,11 +83,7 @@ import { addWindowEventListener, removeWindowEventListener } from "~/platform/ev
 type EditorCenterMode = "file" | "diff";
 type EditorActivityBarItem = EditorCenterMode | "search";
 
-const EDITOR_CHAT_PANE_STORAGE_KEY = "synara.editor.chatPaneWidth";
 const EDITOR_SIDEBAR_VISIBLE_STORAGE_KEY = "synara.editor.sidebarVisible";
-const EDITOR_CHAT_PANE_DEFAULT_WIDTH = 384;
-const EDITOR_CHAT_PANE_MIN_WIDTH = 320;
-const EDITOR_CHAT_PANE_MAX_WIDTH = 600;
 const EDITOR_CHAT_PANE_KEYBOARD_STEP = 24;
 
 interface EditorWorkspaceViewProps {
@@ -107,44 +109,6 @@ interface EditorWorkspaceViewProps {
   onAskWhyInChat?: (reference: ChatFileReference) => void;
   onCommentInChat?: (comment: FileCommentSelection) => void;
   onSelectProject?: (projectId: ProjectId) => void;
-}
-
-function clampEditorChatPaneWidth(width: number): number {
-  return Math.min(
-    EDITOR_CHAT_PANE_MAX_WIDTH,
-    Math.max(EDITOR_CHAT_PANE_MIN_WIDTH, Math.round(width)),
-  );
-}
-
-function readStoredEditorChatPaneWidth(): number {
-  if (!isBrowser()) {
-    return EDITOR_CHAT_PANE_DEFAULT_WIDTH;
-  }
-
-  try {
-    const rawValue = webStorage.getItem(EDITOR_CHAT_PANE_STORAGE_KEY);
-    const parsed = rawValue === null ? Number.NaN : Number.parseFloat(rawValue);
-    return Number.isFinite(parsed)
-      ? clampEditorChatPaneWidth(parsed)
-      : EDITOR_CHAT_PANE_DEFAULT_WIDTH;
-  } catch {
-    return EDITOR_CHAT_PANE_DEFAULT_WIDTH;
-  }
-}
-
-function storeEditorChatPaneWidth(width: number): void {
-  if (!isBrowser()) {
-    return;
-  }
-
-  try {
-    webStorage.setItem(
-      EDITOR_CHAT_PANE_STORAGE_KEY,
-      String(clampEditorChatPaneWidth(width)),
-    );
-  } catch {
-    // Best-effort preference persistence only.
-  }
 }
 
 function readStoredEditorVisibility(key: string): boolean {
@@ -375,7 +339,7 @@ export function EditorWorkspaceView(props: EditorWorkspaceViewProps) {
   // global sidebar is collapsed, so it has to clear the macOS traffic lights the
   // same way every other chat-surface header does.
   const trafficLightGutterClassName = useDesktopTopBarTrafficLightGutterClassName();
-  const [chatPaneWidth, setChatPaneWidth] = useState(readStoredEditorChatPaneWidth);
+  const [chatPaneWidth, setChatPaneWidth] = useState(readEditorChatPaneWidth);
   const chatPaneResizeStateRef = useRef<EditorChatPaneResizeState | null>(null);
   // Both side surfaces can be hidden so the main content takes the full width:
   // re-clicking the active activity-bar item collapses the sidebar (VS Code

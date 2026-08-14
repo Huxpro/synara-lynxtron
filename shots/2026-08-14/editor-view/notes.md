@@ -545,6 +545,46 @@
   - `/tmp/synara-editor-light-lynx.json`
   - `/tmp/synara-editor-light-lynx-relay.json`
 
+### Editor Chat resize contract
+
+- Newly closed explicit residual: wide Editor Chat width uses the authority's
+  persisted `320–600px` resize contract.
+- Web authority defines:
+  - default width `384`
+  - minimum `320`
+  - maximum `600`
+  - keyboard step `24`
+  - storage key `synara.editor.chatPaneWidth`
+  - resizing only in the wide row layout.
+- Fix:
+  - moved width constants, clamp, read, and write helpers into shared
+    `editorViewState`;
+  - Web continues using the same behavior through the shared helpers;
+  - Lynx wraps the Chat rail with the existing `ResizableRightPanel`, reusing
+    its right-edge pointer math, missed-mouseup recovery, bounds, and
+    persistence instead of adding another resize implementation;
+  - router viewport state explicitly disables resizing below `lg`, avoiding a
+    stale inline width during wide → compact transitions.
+- Lynx wide runtime:
+  - center: `848x774`
+  - Chat: `384x774`
+  - resize sash: `10x774` at the Chat left edge.
+- The first compact transition exposed a real responsive regression:
+  `ResizableRightPanel` briefly retained the 320px inline width and sash,
+  leaving a 22px dead strip in the 342px content column.
+- Post-fix compact:
+  - center: `342x498.75`
+  - Chat: `342x299.25`
+  - no resize sash.
+- Focused resize-logic tests cover right-edge direction, custom `320–600`
+  bounds, movement threshold, and missed mouseup. Real Lynx-for-Web drag
+  publication remains under the dynamic-event blocker and is not claimed.
+- Evidence:
+  - `/tmp/synara-editor-chat-resize-lynx-wide.png`
+  - `/tmp/synara-editor-chat-resize-lynx-wide.json`
+  - `/tmp/synara-editor-chat-resize-lynx-compact.json`
+  - `/tmp/synara-editor-chat-resize-lynx-compact-fixed.json`
+
 ## Authority geometry
 
 After aligning global-sidebar state, Web authority and Lynx use the same
@@ -596,6 +636,10 @@ comparison; no Web screenshot pass is claimed.
   search and preview pipeline.
 - **Theme product pass:** multi-file light Editor matches the canonical root,
   sidebar, selection, and diff semantic tokens.
+- **P2 missing coverage closed:** wide Editor Chat now shares the authority's
+  persisted resize bounds.
+- **P1 responsive regression closed:** compact Chat no longer retains a stale
+  wide inline width or resize sash.
 - **P2 coverage remains:** Web Editor project switching, chat-history tabs,
   terminal rail tabs, and resizable Chat width are not yet implemented in
   Lynx.
@@ -648,7 +692,11 @@ comparison; no Web screenshot pass is claimed.
 - `lynx-editor-project-switching`: P2 missing coverage,
   contribution remains `0.25`.
 - `lynx-editor-chat-resize-tabs`: P2 missing coverage,
-  contribution remains `0.25`.
+  contribution remains `0.25` for Chat-history/terminal tabs only.
+- `lynx-editor-chat-resize`: P2 missing coverage,
+  contribution `0.25 -> 0.00`.
+- `lynx-editor-chat-compact-stale-width`: P1 responsive layout,
+  contribution `1.00 -> 0.00`.
 - `editor-web-boot-splash-capture`: harness loss,
   contribution `0.00` product loss.
 - `lynx-web-pointer-to-bindtap`: ReactLynx/Web Core dynamic-event P1 blocker,

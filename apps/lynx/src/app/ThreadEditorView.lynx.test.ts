@@ -38,7 +38,17 @@ describe('Lynx Editor view', () => {
     expect(editorStateSource).toContain(
       'export function storeEditorChatPaneVisible(visible: boolean)'
     );
+    expect(editorStateSource).toContain(
+      'export const EDITOR_CHAT_PANE_STORAGE_KEY = "synara.editor.chatPaneWidth"'
+    );
+    expect(editorStateSource).toContain(
+      'export const EDITOR_CHAT_PANE_MIN_WIDTH = 320'
+    );
+    expect(editorStateSource).toContain(
+      'export const EDITOR_CHAT_PANE_MAX_WIDTH = 600'
+    );
     expect(webEditorSource).toContain('readEditorChatPaneVisible()');
+    expect(webEditorSource).toContain('useState(readEditorChatPaneWidth)');
     expect(webEditorSource).toContain('storeEditorChatPaneVisible(next)');
     expect(routerSource).toContain(
       'initialEditorChatOpen ?? readEditorChatPaneVisible()'
@@ -48,6 +58,15 @@ describe('Lynx Editor view', () => {
     );
     expect(routerSource).toContain('storeEditorChatPaneVisible(next)');
     expect(routerSource).toContain('ThreadEditorChat--hidden');
+    expect(routerSource).toContain('<ResizableRightPanel');
+    expect(routerSource).toContain(
+      'storageKey={EDITOR_CHAT_PANE_STORAGE_KEY}'
+    );
+    expect(routerSource).toContain('minWidth={EDITOR_CHAT_PANE_MIN_WIDTH}');
+    expect(routerSource).toContain('maxWidth={EDITOR_CHAT_PANE_MAX_WIDTH}');
+    expect(routerSource).toContain(
+      'editorChatOpen && viewportWidth >= VIEWPORT_BREAKPOINTS.lg'
+    );
     expect(routerSource).toContain(
       'storeEditorViewState(threadId, {\n      centerMode: editorCenterMode'
     );

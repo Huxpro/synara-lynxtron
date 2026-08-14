@@ -113,6 +113,13 @@ import { EmptyThreadContextTray } from './EmptyThreadContextTray.lynx';
 import { ThreadTerminal } from './ThreadTerminal.lynx';
 import { DiffDock } from './DiffDock.lynx';
 import { ExplorerDock } from './ExplorerDock.lynx';
+import { ResizableRightPanel } from './ResizableRightPanel.lynx';
+import {
+  EDITOR_CHAT_PANE_DEFAULT_WIDTH,
+  EDITOR_CHAT_PANE_MAX_WIDTH,
+  EDITOR_CHAT_PANE_MIN_WIDTH,
+  EDITOR_CHAT_PANE_STORAGE_KEY,
+} from '@synara-web/editorViewState';
 import {
   EnvironmentPanel,
   EnvironmentToggle,
@@ -1036,10 +1043,19 @@ function ThreadPage(props: ThreadPageProps) {
               </view>
             )}
           </view>
-          <view
+          <ResizableRightPanel
+            availableWidth={threadPageWidth || viewportWidth}
             className={`ThreadEditorChat${
               editorChatOpen ? '' : ' ThreadEditorChat--hidden'
             }`}
+            defaultWidth={EDITOR_CHAT_PANE_DEFAULT_WIDTH}
+            maxWidth={EDITOR_CHAT_PANE_MAX_WIDTH}
+            minimumMainWidth={320}
+            minWidth={EDITOR_CHAT_PANE_MIN_WIDTH}
+            resizable={
+              editorChatOpen && viewportWidth >= VIEWPORT_BREAKPOINTS.lg
+            }
+            storageKey={EDITOR_CHAT_PANE_STORAGE_KEY}
           >
             <ChatSurfaceHeaderFrame>
               <view className="ThreadHeaderIdentity">
@@ -1052,7 +1068,7 @@ function ThreadPage(props: ThreadPageProps) {
             />
             {chatBody}
             {bodyState.kind === 'empty' ? null : composer}
-          </view>
+          </ResizableRightPanel>
         </view>
       </view>
     );

@@ -11,6 +11,10 @@ import { isBrowser } from "~/platform/env";
 const EDITOR_VIEW_STATE_STORAGE_KEY = "synara.editor.viewStateByThreadId";
 const EDITOR_RAIL_CHAT_TABS_STORAGE_KEY = "synara.editor.railChatTabsByProjectId";
 const EDITOR_CHAT_PANE_VISIBLE_STORAGE_KEY = "synara.editor.chatPaneVisible";
+export const EDITOR_CHAT_PANE_STORAGE_KEY = "synara.editor.chatPaneWidth";
+export const EDITOR_CHAT_PANE_DEFAULT_WIDTH = 384;
+export const EDITOR_CHAT_PANE_MIN_WIDTH = 320;
+export const EDITOR_CHAT_PANE_MAX_WIDTH = 600;
 const MAX_PERSISTED_THREADS = 50;
 const MAX_EDITOR_RAIL_CHAT_TABS = 8;
 
@@ -101,6 +105,42 @@ export function storeEditorChatPaneVisible(visible: boolean): void {
   }
   try {
     webStorage.setItem(EDITOR_CHAT_PANE_VISIBLE_STORAGE_KEY, String(visible));
+  } catch {
+    // Best-effort preference persistence only.
+  }
+}
+
+export function clampEditorChatPaneWidth(width: number): number {
+  return Math.min(
+    EDITOR_CHAT_PANE_MAX_WIDTH,
+    Math.max(EDITOR_CHAT_PANE_MIN_WIDTH, Math.round(width)),
+  );
+}
+
+export function readEditorChatPaneWidth(): number {
+  if (!isBrowser()) {
+    return EDITOR_CHAT_PANE_DEFAULT_WIDTH;
+  }
+  try {
+    const rawValue = webStorage.getItem(EDITOR_CHAT_PANE_STORAGE_KEY);
+    const parsed = rawValue === null ? Number.NaN : Number.parseFloat(rawValue);
+    return Number.isFinite(parsed)
+      ? clampEditorChatPaneWidth(parsed)
+      : EDITOR_CHAT_PANE_DEFAULT_WIDTH;
+  } catch {
+    return EDITOR_CHAT_PANE_DEFAULT_WIDTH;
+  }
+}
+
+export function storeEditorChatPaneWidth(width: number): void {
+  if (!isBrowser()) {
+    return;
+  }
+  try {
+    webStorage.setItem(
+      EDITOR_CHAT_PANE_STORAGE_KEY,
+      String(clampEditorChatPaneWidth(width)),
+    );
   } catch {
     // Best-effort preference persistence only.
   }
