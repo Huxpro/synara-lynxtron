@@ -132,25 +132,27 @@ function OpenDiffDock(props: {
       onWidthChange={props.onWidthChange}
       resizable={props.presentation === 'dock'}
     >
-      <view className="DiffDockHeader">
-        <view className="DiffDockIdentity">
-          <text className="DiffDockTitle">Changes</text>
-          {view.kind === 'files' ? (
-            <text className="DiffDockStats">
-              +{view.additions} −{view.deletions}
-            </text>
-          ) : null}
+      {props.presentation === 'dock' ? (
+        <view className="DiffDockHeader">
+          <view className="DiffDockIdentity">
+            <text className="DiffDockTitle">Changes</text>
+            {view.kind === 'files' ? (
+              <text className="DiffDockStats">
+                +{view.additions} −{view.deletions}
+              </text>
+            ) : null}
+          </view>
+          <view
+            className={closeInteraction.className}
+            {...closeInteraction.eventProps}
+          >
+            <XIcon
+              size={14}
+              color="var(--muted-foreground)"
+            />
+          </view>
         </view>
-        <view
-          className={closeInteraction.className}
-          {...closeInteraction.eventProps}
-        >
-          <XIcon
-            size={14}
-            color="var(--muted-foreground)"
-          />
-        </view>
-      </view>
+      ) : null}
       <view className="DiffDockBody">
         {props.presentation === 'editor' && view.kind === 'files' ? (
           <view className="DiffDockFileSidebar">

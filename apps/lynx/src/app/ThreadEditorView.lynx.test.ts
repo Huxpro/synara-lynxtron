@@ -79,6 +79,9 @@ describe('Lynx Editor view', () => {
       "resizable={props.presentation === 'dock'}"
     );
     expect(diffDockSource).toContain(
+      "{props.presentation === 'dock' ? ("
+    );
+    expect(diffDockSource).toContain(
       '(selectedFile ? [selectedFile.key] : [])'
     );
     expect(diffDockSource).toContain('className="DiffDockFileSidebar"');
@@ -119,7 +122,7 @@ describe('Lynx Editor view', () => {
       /\.SliceRoot--viewport-compact[\s\S]*?\.ExplorerDock--editor[\s\S]*?\.ExplorerDockSidebar,[\s\S]*?width:\s*100%;[\s\S]*?min-width:\s*0;[\s\S]*?height:\s*176px;/s
     );
     expect(appStyles).toMatch(
-      /\.SliceRoot--viewport-compact\s+\.ThreadEditorBody,[\s\S]*?grid-template-columns:\s*48px minmax\(0,\s*1fr\);[\s\S]*?grid-template-rows:\s*minmax\(0,\s*1fr\) minmax\(0,\s*1fr\);/s
+      /\.SliceRoot--viewport-compact\s+\.ThreadEditorBody,[\s\S]*?grid-template-columns:\s*48px minmax\(0,\s*1fr\);[\s\S]*?grid-template-rows:\s*minmax\(0,\s*5fr\) minmax\(0,\s*3fr\);/s
     );
     expect(appStyles).toMatch(
       /\.SliceRoot--viewport-compact\s+\.ThreadEditorActivityRail,[\s\S]*?grid-column:\s*1;[\s\S]*?grid-row:\s*1\s*\/\s*3;/s

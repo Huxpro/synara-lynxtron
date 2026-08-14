@@ -367,6 +367,45 @@
   - `/tmp/synara-editor-failure-lynx-fixed.png`
   - `/tmp/synara-editor-failure-lynx-fixed.json`
 
+### Medium Editor Changes allocation
+
+- Newly discovered viewport: `800x820`, DPR 1, dark, two-file Editor Changes.
+- Web authority:
+  - activity rail: `48x774`
+  - changed-files sidebar: `752x176`
+  - selected patch: `752x310`
+  - Chat: `752x288`
+- Pre-fix Lynx:
+  - repeated an embedded 44px `Changes` header already represented by the
+    Editor header;
+  - split the remaining body 50/50;
+  - sidebar: `752x176`
+  - selected patch: only `752x166`
+  - Chat: `752x387`.
+- Root cause: the embedded dock retained standalone header chrome, while the
+  compact/medium Editor grid used equal rows instead of the authority's
+  workspace-first allocation.
+- Fix:
+  - Editor presentation omits standalone `DiffDockHeader`; standalone Changes
+    keeps it;
+  - compact/medium Editor uses `5fr / 3fr` workspace/Chat rows.
+- Post-fix Lynx:
+  - no embedded dock header
+  - sidebar: `752x176`
+  - selected patch: `752x306.75`
+  - Chat: `752x290.25`
+  - both real changed files remain present and relay diagnostics are clean.
+- The remaining approximately 3px row-allocation difference is accepted
+  rendering noise from fractional grid distribution, not interaction or
+  content loss.
+- Evidence:
+  - `/tmp/synara-editor-medium-web.png`
+  - `/tmp/synara-editor-medium-web.json`
+  - `/tmp/synara-editor-medium-lynx.png`
+  - `/tmp/synara-editor-medium-lynx.json`
+  - `/tmp/synara-editor-medium-lynx-fixed.png`
+  - `/tmp/synara-editor-medium-lynx-fixed.json`
+
 ## Authority geometry
 
 After aligning global-sidebar state, Web authority and Lynx use the same
@@ -410,6 +449,8 @@ comparison; no Web screenshot pass is claimed.
   itself as a pull request.
 - **P1 failure-state accuracy closed:** a non-Git workspace no longer appears
   as a clean Git repository.
+- **P1 medium layout closed:** redundant dock chrome and equal row allocation
+  no longer halve the usable selected-patch height.
 - **P2 coverage remains:** Web Editor Search mode, project switching, editor
   chat-history tabs, terminal rail tabs, and resizable Chat width are not yet
   implemented in Lynx.
@@ -453,6 +494,8 @@ comparison; no Web screenshot pass is claimed.
   component contribution `1.00 -> 0.00`.
 - `lynx-editor-non-git-shown-clean`: P1 state accuracy,
   component contribution `1.00 -> 0.00`.
+- `lynx-editor-medium-patch-compression`: P1 content usability,
+  component height loss `0.465 -> 0.00`.
 - `lynx-editor-search-mode`: P2 missing coverage,
   contribution remains `0.25`.
 - `lynx-editor-chat-resize-tabs`: P2 missing coverage,
