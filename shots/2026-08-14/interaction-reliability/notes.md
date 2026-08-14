@@ -84,3 +84,42 @@
   registration/lookup table, after DOM capture and before the ReactLynx
   callback. No local product workaround is retained because every tested
   transport either failed to deliver state or destabilized renderer startup.
+
+## Current-head refresh (2026-08-15)
+
+- Rebuilt and ran the repository's dedicated host-input probe against the
+  currently resolved Web stack:
+  - Web Core `0.23.0`
+  - Web Elements `0.12.7`
+  - generated product bundles currently resolve ReactLynx runtime `0.123.3`
+- A real low-level browser sequence over the probe control delivered
+  `mousedown`, `mouseup`, and `tap` exactly once. This disproves the older,
+  over-broad interpretation that Web Core cannot publish any `tap`.
+- The same low-level sequence over the real compact Editor Files control did
+  not change `Changes` to `Files`; URL and `performance.timeOrigin` remained
+  stable, so no reload masked the failure.
+- Generated-bundle comparison isolates the difference:
+  - the probe's inline handler is installed during snapshot creation through a
+    static `__AddEvent(..., "tap", ...)`;
+  - product handlers that close over component state or arrive through props
+    compile to ReactLynx `updateEvent(...)`;
+  - `updateEvent` calls `__AddEvent`, but the resulting dynamic handler ID is
+    not published when Web Core dispatches the DOM click through
+    `common_event_handler(...)`.
+- Local remediation trials were repeated on the real Editor rail:
+  - explicit `'background only'` handlers;
+  - extraction into a child component;
+  - direct `bindtap` inside that child;
+  - `useLynxInteractiveState` spread props.
+- All dynamic forms remained nonfunctional and were reverted. No one-off
+  global callback registry or browser-only product mutation was retained.
+- Updated classification:
+  - static host-input probe delivery is a product/harness pass;
+  - `lynx-web-pointer-to-bindtap` remains P1 missing fast-loop interaction
+    coverage specifically for ReactLynx dynamic event registration;
+  - Native `bindtap` behavior is not implicated by this Web-only result.
+- Evidence:
+  - `/tmp/synara-host-input-probe-current.json`
+  - `/tmp/synara-bindtap-files.json`
+  - `/tmp/synara-bindtap-changes.json`
+  - `/tmp/synara-bindtap-experiment.diff`
