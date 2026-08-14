@@ -415,8 +415,8 @@ export function Sidebar({
       'background only';
       setProjectSortOrder(nextProjectSortOrder);
       setThreadSortOrder(nextThreadSortOrder);
-      void import(/* webpackMode: "eager" */ '../../platform/storage').then(
-        ({ setPersistedStorageItem, webStorage: storage }) =>
+      void import(/* webpackMode: "eager" */ '../../platform/storage')
+        .then(({ setPersistedStorageItem, webStorage: storage }) =>
           setPersistedStorageItem(
             APP_SETTINGS_STORAGE_KEY,
             writeSidebarSortProjection(
@@ -427,7 +427,11 @@ export function Sidebar({
               }
             )
           )
-      );
+        )
+        .catch(() => {
+          // Keep the immediate sort selection. Settings hydration owns
+          // durable storage failure and retry presentation.
+        });
     },
     []
   );
@@ -528,19 +532,24 @@ export function Sidebar({
   useEffect(() => {
     'background only';
     let active = true;
-    void readPersistedSidebarListState().then((value) => {
-      if (!active) return;
-      setChatsExpanded(value.expanded);
-      setChatExtraPages(value.chatExtraPages);
-      setProjectExtraPagesByCwd(value.projectExtraPagesByCwd);
-      setExpandedProjectCwds(
-        value.expandedProjectCwds.length > 0
-          ? new Set(value.expandedProjectCwds)
-          : null
-      );
-      setPersistedPinnedThreadIds(value.pinnedThreadIds);
-      setPersistedPinnedProjectIds(value.pinnedProjectIds);
-    });
+    void readPersistedSidebarListState()
+      .then((value) => {
+        if (!active) return;
+        setChatsExpanded(value.expanded);
+        setChatExtraPages(value.chatExtraPages);
+        setProjectExtraPagesByCwd(value.projectExtraPagesByCwd);
+        setExpandedProjectCwds(
+          value.expandedProjectCwds.length > 0
+            ? new Set(value.expandedProjectCwds)
+            : null
+        );
+        setPersistedPinnedThreadIds(value.pinnedThreadIds);
+        setPersistedPinnedProjectIds(value.pinnedProjectIds);
+      })
+      .catch(() => {
+        // The initialized Sidebar defaults remain usable when persistence is
+        // unavailable.
+      });
     return () => {
       active = false;
     };

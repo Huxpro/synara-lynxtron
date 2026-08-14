@@ -147,6 +147,10 @@ describe('sidebar list section header actions', () => {
     expect(sidebarSource).toContain(
       'setPersistedStorageItem(\n            APP_SETTINGS_STORAGE_KEY'
     );
+    expect(sidebarSource).toContain('Keep the immediate sort selection.');
+    expect(sidebarSource).toContain(
+      'The initialized Sidebar defaults remain usable'
+    );
     expect(sidebarSource).toContain('projectSortOrder,');
     expect(sidebarSource).toContain('threadSortOrder,');
   });
