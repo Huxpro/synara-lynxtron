@@ -118,6 +118,7 @@ import {
   resolveMemoryNavigationState,
   type MemoryNavigationState,
 } from './routerHistory.logic';
+import { readPersistedLastThreadRouteFallback } from './routerPersistence.logic';
 export const history = createMemoryHistory({ initialEntries: ['/'] });
 
 async function readPersistedLastThreadRoute(): Promise<LastThreadRoute | null> {
@@ -1353,11 +1354,13 @@ export function SliceRouter({
   useEffect(() => {
     'background only';
     let active = true;
-    void readPersistedLastThreadRoute().then((value) => {
-      if (!active) return;
-      setPersistedLastRoute(value);
-      setLastRouteHydrated(true);
-    });
+    void readPersistedLastThreadRouteFallback(readPersistedLastThreadRoute).then(
+      (value) => {
+        if (!active) return;
+        setPersistedLastRoute(value);
+        setLastRouteHydrated(true);
+      }
+    );
     return () => {
       active = false;
     };
