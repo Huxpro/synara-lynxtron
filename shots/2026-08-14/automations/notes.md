@@ -224,9 +224,10 @@ Expanded create-dialog evidence is stored in `9b46ffd`.
 
 ### Remaining create-form coverage
 
-- Full retry/misfire policy editing remains missing from the Lynx create form.
-- These remain functional coverage debt. They are not hidden by the local-mode
-  fix or by the existing visual score.
+- Retry and misfire policy editing is absent in both current Web authority and
+  Lynx create forms. Both use the same canonical defaults (`none` and
+  `coalesce`), so this is shared product coverage rather than a remaining
+  Web/Lynx fidelity loss.
 
 ## Runtime permission continuation
 
@@ -417,3 +418,87 @@ Expanded create-dialog evidence is stored in `9b46ffd`.
   - Existing optional `bufferutil` / `utf-8-validate` and Lynx CSS warnings
     only.
 - No model discovery result was fabricated and no automation was run.
+
+## Expanded create matrix
+
+### Canonical fixture
+
+- Isolated state:
+  `.synara-fidelity-automation-expanded/dev/state.sqlite`.
+- Shared server: `ws://127.0.0.1:59180`.
+- Canonical RPC created:
+  - project `automation-expanded-project`, title `Automation Fidelity`;
+  - thread `automation-expanded-thread`, title `Release readiness`.
+- The thread has no provider turn. It exists only to exercise the Heartbeat
+  target form state.
+- SQLite was never written directly.
+
+### Web authority
+
+- Route: `/automations`.
+- Retained Heartbeat create dialog at `1280x820`, DPR 1, light.
+- Dialog: `768x374` at `(256, 223)`.
+- Web exposes:
+  - project and model;
+  - schedule;
+  - workspace mode;
+  - Standalone/Heartbeat;
+  - target thread;
+  - Stop when;
+  - max iterations and stop-on-error;
+  - permissions.
+
+### Lynx runtime evidence
+
+- Relay:
+  - `activeBaseUrl=ws://127.0.0.1:59180`;
+  - `connectionAttempts=1`;
+  - zero pending requests;
+  - no transport or RPC error.
+- Observed real RPCs include provider refresh and model discovery.
+- The top frame renders:
+  - project `Automation Fidelity`;
+  - model `GPT-5.6 Sol`;
+  - Manual/Daily/Weekdays;
+  - Auto/Worktree/Local;
+  - Standalone/Heartbeat.
+- The dialog panel is a real scroll-view:
+  - viewport `420px`;
+  - content `920px` in Standalone and `1062px` in Heartbeat.
+- After selecting rendered Heartbeat:
+  - target `Release readiness` is visible;
+  - Stop when is a native textbox;
+  - permissions and summary remain reachable by scrolling.
+- Real inputs set name, prompt, and stop condition. After selecting the real
+  target, `Create automation` became enabled.
+- Create was not clicked; no automation or provider run was produced.
+
+### Harness interpretation correction
+
+- Initial deep geometry showed lower fields at document coordinates below the
+  dialog popup. That was first suspected as overflow.
+- Inspecting the actual `scroll-view` proved those were content coordinates:
+  `scrollHeight > clientHeight`, `overflow-y: scroll`, and `scrollTop=642`
+  reached the footer and enabled Create action.
+- The suspected overflow is therefore rejected as probe interpretation noise,
+  not a product loss.
+- Lynx Web Core still does not expose `bindtap` choice controls in its
+  accessibility tree. Rendered custom-element clicks were used only for
+  visual/state setup; this remains under the existing pointer harness gap.
+
+### Current create-form classification
+
+- All explicit Web-owned execution semantics now have a Lynx path:
+  schedule subset shown by the authority matrix, project, model, workspace
+  mode, heartbeat targeting, stop condition, max iterations, stop-on-error,
+  interaction mode, and permissions.
+- Web supports additional schedule kinds and richer policy editing outside the
+  retained comparison cell. Those are broader feature coverage, not hidden by
+  this matrix.
+
+### Evidence
+
+- `shots/2026-08-14/automations/expanded-create-matrix/web-heartbeat-wide-light.png`
+- `shots/2026-08-14/automations/expanded-create-matrix/lynx-dialog-top-wide-light.png`
+- `shots/2026-08-14/automations/expanded-create-matrix/lynx-heartbeat-bottom-wide-light.png`
+- `shots/2026-08-14/automations/expanded-create-matrix/lynx-heartbeat-ready-wide-light.png`

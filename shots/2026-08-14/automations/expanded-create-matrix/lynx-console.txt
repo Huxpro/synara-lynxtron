@@ -1,0 +1,6 @@
+[info] [rsbuild] WebSocket connecting...
+[log] [Lynxtron Web] Configuring nodejs module with script: http://localhost:8080/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://localhost:8080/9e8b0ac5-0257-4f2f-b0e3-896af2a955c6
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://localhost:8080/c6661dc3-905a-42e0-9948-269a81cd5f51", nodejs: "blob:http://localhost:8080/9e8b0ac5-0257-4f2f-b0e3-896af2a955c6"}
+[info] [rsbuild] WebSocket connected.
+[warning] using deprecated parameters for the initialization function; pass a single object instead
