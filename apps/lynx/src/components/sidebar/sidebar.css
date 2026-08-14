@@ -153,12 +153,20 @@
 }
 
 .AppSidebarWorkspaceTitle {
+  flex: 1;
   min-width: 0;
   color: var(--sidebar-foreground);
   font-size: 12px;
   font-weight: 500;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.AppSidebarWorkspaceOrder {
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+  margin-left: auto;
 }
 
 .AppSidebarProject {

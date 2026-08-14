@@ -91,6 +91,7 @@ import {
 } from '../../lib/icons';
 import { colorizeLynxSvg } from '../../lib/themedSvg.lynx';
 import { useTheme } from '../../adapters/useTheme.lynx';
+import { Button } from '../ui/button';
 import { useLynxInteractiveState } from '../ui/interactive-state.lynx';
 import { deriveSidebarSections } from './sidebar.logic';
 import { SidebarSearchPaletteLynx } from './SidebarSearchPalette.lynx';
@@ -334,6 +335,9 @@ export function Sidebar({
   });
   const workspacePages = useWorkspaceStore((state) => state.workspacePages);
   const createWorkspace = useWorkspaceStore((state) => state.createWorkspace);
+  const reorderWorkspace = useWorkspaceStore(
+    (state) => state.reorderWorkspace
+  );
   const chatsSectionVisible = initialSortSettings.showChatsSection;
   const studioSectionVisible = initialSortSettings.showStudioSection;
   const workspaceSectionVisible = initialSortSettings.showWorkspaceSection;
@@ -831,7 +835,7 @@ export function Sidebar({
           {primarySidebarSurface === 'workspace' ? (
             <view className="AppSidebarWorkspace">
               <text className="AppSidebarWorkspaceLabel">Workspace</text>
-              {workspacePages.map((workspace) => (
+              {workspacePages.map((workspace, workspaceIndex) => (
                 <SidebarNavigationRow
                   key={workspace.id}
                   className={`AppSidebarThread AppSidebarChatThread${
@@ -845,6 +849,30 @@ export function Sidebar({
                   <text className="AppSidebarWorkspaceTitle">
                     {workspace.title}
                   </text>
+                  <view className="AppSidebarWorkspaceOrder">
+                    <Button
+                      variant="ghost"
+                      size="icon-xs"
+                      disabled={workspaceIndex === 0}
+                      aria-label={`Move ${workspace.title} up`}
+                      onClick={() =>
+                        reorderWorkspace(workspace.id, workspaceIndex - 1)
+                      }
+                    >
+                      ↑
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon-xs"
+                      disabled={workspaceIndex === workspacePages.length - 1}
+                      aria-label={`Move ${workspace.title} down`}
+                      onClick={() =>
+                        reorderWorkspace(workspace.id, workspaceIndex + 1)
+                      }
+                    >
+                      ↓
+                    </Button>
+                  </view>
                 </SidebarNavigationRow>
               ))}
             </view>

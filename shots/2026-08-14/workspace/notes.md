@@ -83,8 +83,8 @@
 - **Intentional platform delta:** Web uses interactive xterm; this Lynx slice
   uses the existing snapshot terminal plus command row. The PTY and lifecycle
   are real, but native terminal emulation is not claimed.
-- **P2 coverage remains:** drag reorder and the Web settings-sheet treatment
-  are not yet implemented in Lynx.
+- **P2 coverage remains:** the Web settings-sheet treatment is not implemented
+  in Lynx.
 - **Harness loss:** the Web screenshot exporter produced a pure-white
   `1280x820` PNG (one color, zero standard deviation) while `#root` was fully
   rendered. That PNG was rejected and deleted. Web `textContent`, geometry,
@@ -295,3 +295,45 @@
 - `shots/2026-08-14/workspace/split-layout/web-two-columns-geometry.json`
 - `shots/2026-08-14/workspace/split-layout/lynx-two-columns-wide-light.png`
 - `shots/2026-08-14/workspace/split-layout/lynx-two-columns-runtime.json`
+
+## Workspace ordering continuation
+
+### Product coverage closed
+
+- Web uses drag reorder; Lynx now exposes deterministic Move up / Move down
+  controls backed by the same persisted `reorderWorkspace` operation.
+- Controls are boundary-disabled for the first and last workspace.
+- This is an intentional interaction delta: native buttons replace drag and
+  drop while preserving ordering semantics and accessibility.
+
+### Runtime evidence
+
+- Isolated server: `ws://127.0.0.1:59240`.
+- Three workspaces were created through the rendered New workspace action:
+  `Workspace 1`, `Workspace 2`, `Workspace 3`.
+- The rendered `Move Workspace 3 up` action changed the order to:
+  `Workspace 1`, `Workspace 3`, `Workspace 2`.
+- Reload preserved that exact order, proving shared-store persistence rather
+  than transient DOM reordering.
+- The first/last boundary controls rendered disabled.
+
+### Verification
+
+- `bun run test -- src/app/WorkspacePage.lynx.test.ts src/app/workspaceLayout.logic.test.ts`
+  - 2 files, 10 tests passed.
+- `bun run test -- src/workspaceStore.test.ts` in `apps/web`
+  - 1 file, 6 tests passed.
+- `CI=1 bun run build` in `apps/lynx`
+  - Lynx production bundle and Desktop host built and staged.
+  - Existing optional `bufferutil` / `utf-8-validate` and Lynx CSS warnings
+    only.
+- Native remains unverified. User-owned PID `77846` on port `8901` was not
+  stopped or reused.
+- Owned ports `59240`, `8080`, and `5971` were released.
+- Retained screenshot count under `shots/` is 47.
+
+### Evidence
+
+- `shots/2026-08-15/workspace-order/lynx-order-after.png`
+- `shots/2026-08-15/workspace-order/order-after.json`
+- `shots/2026-08-15/workspace-order/order-reloaded.json`

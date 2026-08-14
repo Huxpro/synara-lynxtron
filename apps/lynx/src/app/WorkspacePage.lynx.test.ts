@@ -58,5 +58,14 @@ describe('Lynx workspace surface', () => {
     expect(sidebarSource).toContain('initialSortSettings.showWorkspaceSection');
     expect(sidebarSource).toContain('onCreateWorkspace={() => {');
     expect(sidebarSource).toContain('activeWorkspaceId === workspace.id');
+    expect(sidebarSource).toContain(
+      '(state) => state.reorderWorkspace'
+    );
+    expect(sidebarSource).toContain(
+      'reorderWorkspace(workspace.id, workspaceIndex - 1)'
+    );
+    expect(sidebarSource).toContain(
+      'reorderWorkspace(workspace.id, workspaceIndex + 1)'
+    );
   });
 });
