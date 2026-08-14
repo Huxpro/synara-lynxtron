@@ -90,6 +90,7 @@ export function App() {
   const initData = useInitData() as {
     readonly initialSystemDark?: unknown;
     readonly initialEnvironmentOpen?: unknown;
+    readonly initialEditorOpen?: unknown;
     readonly initialTerminalOpen?: unknown;
     readonly initialTemporaryOpen?: unknown;
     readonly initialExplorerOpen?: unknown;
@@ -102,6 +103,7 @@ export function App() {
   };
   const systemDark = initData.initialSystemDark === true;
   const initialEnvironmentOpen = initData.initialEnvironmentOpen === true;
+  const initialEditorOpen = initData.initialEditorOpen === true;
   const initialTerminalOpen = initData.initialTerminalOpen === true;
   const initialTemporaryOpen = initData.initialTemporaryOpen === true;
   const initialRoute =
@@ -353,6 +355,7 @@ export function App() {
         {storageReady ? (
           <SliceRouter
             initialEnvironmentOpen={initialEnvironmentOpen}
+            initialEditorOpen={initialEditorOpen}
             initialTerminalOpen={initialTerminalOpen}
             initialTemporaryOpen={initialTemporaryOpen}
             initialRoute={initialRoute}

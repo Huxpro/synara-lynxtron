@@ -283,6 +283,7 @@ export function ExplorerDock(props: {
   readonly onToggleDirectory: (path: string) => void;
   readonly onWidthChange: (width: number) => void;
   readonly open: boolean;
+  readonly presentationMode?: 'dock' | 'editor';
   readonly pdfMetadataError: boolean;
   readonly pdfMetadataPending: boolean;
   readonly pdfPageCount: number;
@@ -299,27 +300,15 @@ export function ExplorerDock(props: {
   });
   if (!props.open) return null;
 
-  return (
-    <ResizableRightPanel
-      availableWidth={props.availableWidth}
-      className="ExplorerDock"
-      defaultWidth={
-        props.initialWidth ??
-        (props.availableWidth > 0
-          ? Math.round(props.availableWidth / 2)
-          : 640)
-      }
-      maxWidth={960}
-      minimumMainWidth={320}
-      minWidth={480}
-      onWidthChange={props.onWidthChange}
-      resizable
-    >
+  const content = (
+    <>
       <view className="ExplorerDockHeader">
         <text className="ExplorerDockTitle">Files</text>
-        <view className={close.className} {...close.eventProps}>
-          <XIcon size={14} color="var(--muted-foreground)" />
-        </view>
+        {props.presentationMode === 'editor' ? null : (
+          <view className={close.className} {...close.eventProps}>
+            <XIcon size={14} color="var(--muted-foreground)" />
+          </view>
+        )}
       </view>
       <view className="ExplorerDockBody">
         <view className="ExplorerDockSidebar">
@@ -453,6 +442,32 @@ export function ExplorerDock(props: {
           </view>
         </view>
       </view>
+    </>
+  );
+
+  if (props.presentationMode === 'editor') {
+    return (
+      <view className="ExplorerDock ExplorerDock--editor">{content}</view>
+    );
+  }
+
+  return (
+    <ResizableRightPanel
+      availableWidth={props.availableWidth}
+      className="ExplorerDock"
+      defaultWidth={
+        props.initialWidth ??
+        (props.availableWidth > 0
+          ? Math.round(props.availableWidth / 2)
+          : 640)
+      }
+      maxWidth={960}
+      minimumMainWidth={320}
+      minWidth={480}
+      onWidthChange={props.onWidthChange}
+      resizable
+    >
+      {content}
     </ResizableRightPanel>
   );
 }

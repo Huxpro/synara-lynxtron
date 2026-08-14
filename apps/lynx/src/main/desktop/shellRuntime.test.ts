@@ -88,10 +88,11 @@ describe('shellRuntime', () => {
   it('preserves supported startup surface state from desktop deep links', () => {
     expect(
       parseSynaraDeepLinkInitData(
-        'synara://thread/abc-123?environment=open&terminal=open&explorer=open&explorerPath=reports%2Fpreview.pdf&explorerQuery=report&explorerCommentLine=7&explorerExpanded=reports&explorerExpanded=reports%2F2026&explorerWidth=520'
+        'synara://thread/abc-123?environment=open&editor=open&terminal=open&explorer=open&explorerPath=reports%2Fpreview.pdf&explorerQuery=report&explorerCommentLine=7&explorerExpanded=reports&explorerExpanded=reports%2F2026&explorerWidth=520'
       )
     ).toEqual({
       initialEnvironmentOpen: true,
+      initialEditorOpen: true,
       initialTerminalOpen: true,
       initialExplorerOpen: true,
       initialExplorerCommentLine: 7,

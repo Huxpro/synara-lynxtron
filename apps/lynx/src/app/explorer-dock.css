@@ -13,6 +13,24 @@
   background-color: var(--background);
 }
 
+.ExplorerDock--editor {
+  position: relative;
+  top: auto;
+  right: auto;
+  bottom: auto;
+  z-index: 0;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  height: 100%;
+  border-left-width: 0;
+}
+
+.ExplorerDock--editor .ExplorerDockSidebar {
+  width: 224px;
+  min-width: 224px;
+}
+
 .ExplorerDockHeader {
   display: flex;
   height: 44px;

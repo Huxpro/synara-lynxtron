@@ -839,6 +839,8 @@ async function handleBridgeCall(
 pendingInitialRoute = resolveWebInitialRoute(globalThis.location.search);
 const initialEnvironmentOpen =
   new URLSearchParams(globalThis.location.search).get('environment') === 'open';
+const initialEditorOpen =
+  new URLSearchParams(globalThis.location.search).get('editor') === 'open';
 const initialTerminalOpen =
   new URLSearchParams(globalThis.location.search).get('terminal') === 'open';
 const initialTemporaryOpen =
@@ -886,6 +888,7 @@ webDocument.body.innerHTML = `
   style="height:100vh; width:100vw;"
   init-data='${JSON.stringify({
     initialEnvironmentOpen,
+    initialEditorOpen,
     initialTerminalOpen,
     initialTemporaryOpen,
     initialExplorerOpen,

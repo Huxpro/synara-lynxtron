@@ -90,6 +90,9 @@ import {
 import { useRestoreOrCreateChatRouteController } from '@synara-web/components/useRestoreOrCreateChatRoute.logic';
 import { resolveSettingsBackTarget } from '@synara-web/components/SidebarSettingsBack.logic';
 import { resolveThreadPageBodyState } from './threadPageState.logic';
+import {
+  storeEditorViewState,
+} from '@synara-web/editorViewState';
 import { sleepOnHost } from '../platform/timer';
 import { EmptyThreadContextTray } from './EmptyThreadContextTray.lynx';
 import { ThreadTerminal } from './ThreadTerminal.lynx';
@@ -357,6 +360,7 @@ interface ThreadPageProps {
   readonly explorerQuery: string;
   readonly explorerSelectedPath: string | null;
   readonly initialEnvironmentOpen: boolean;
+  readonly initialEditorOpen: boolean;
   readonly initialTerminalOpen: boolean;
   readonly initialTemporaryOpen: boolean;
   readonly initialExplorerWidth: number | null;
@@ -526,6 +530,7 @@ function ThreadPage(props: ThreadPageProps) {
     explorerQuery,
     explorerSelectedPath,
     initialEnvironmentOpen,
+    initialEditorOpen,
     initialTerminalOpen,
     initialTemporaryOpen,
     initialExplorerWidth,
@@ -552,6 +557,7 @@ function ThreadPage(props: ThreadPageProps) {
   const [diffOpen, setDiffOpen] = useState(false);
   const [explorerOpen, setExplorerOpen] = useState(initialExplorerOpen);
   const [terminalOpen, setTerminalOpen] = useState(initialTerminalOpen);
+  const [editorMode, setEditorMode] = useState(initialEditorOpen);
   const [threadPageWidth, setThreadPageWidth] = useState(0);
   const [diffDockWidth, setDiffDockWidth] = useState<number | null>(null);
   const [explorerDockWidth, setExplorerDockWidth] = useState<number | null>(() =>
@@ -625,6 +631,170 @@ function ThreadPage(props: ThreadPageProps) {
       />
     </ComposerColumnFrameSurface>
   );
+  const chatBody =
+    bodyState.kind === 'transcript' ? (
+      <ComposerColumnFrameSurface className="ThreadTranscriptColumn">
+        <Transcript
+          workspaceRoot={currentThread?.workspaceRoot ?? null}
+          rows={bodyState.rows}
+          threadId={threadId}
+          onController={registerTranscriptController}
+          onOpenFileReference={openExplorerFileReference}
+        />
+      </ComposerColumnFrameSurface>
+    ) : bodyState.kind === 'empty' ? (
+      <CenteredEmptyLandingStack>
+        <CenteredEmptyLanding projectName={currentThread?.project} />
+        {composer}
+        <EmptyThreadContextTray
+          branch={currentThread?.branch ?? null}
+          envMode={currentThread?.envMode ?? 'local'}
+          onTemporaryChange={toggleTemporary}
+          projectName={currentThread?.project ?? 'this folder'}
+          temporary={temporary}
+        />
+      </CenteredEmptyLandingStack>
+    ) : (
+      <view className="ThreadTranscriptState">
+        <PanelStateMessage
+          fill="flex"
+          intent={bodyState.kind === 'loading' ? 'status' : 'alert'}
+          announcement={
+            bodyState.kind === 'loading'
+              ? 'Loading conversation'
+              : bodyState.kind === 'offline'
+                ? 'Synara is offline. Reconnect to load this conversation.'
+                : 'Unable to load this conversation.'
+          }
+        >
+          {bodyState.kind === 'loading'
+            ? 'Loading conversation…'
+            : bodyState.kind === 'offline'
+              ? 'Synara is offline. Reconnect to load this conversation.'
+              : 'Unable to load this conversation.'}
+        </PanelStateMessage>
+      </view>
+    );
+  const enterEditorMode = () => {
+    'background only';
+    setEnvironmentOpen(false);
+    setExplorerOpen(false);
+    setDiffOpen(false);
+    setTerminalOpen(false);
+    setEditorMode(true);
+  };
+  const exitEditorMode = () => {
+    'background only';
+    setEditorMode(false);
+  };
+  useEffect(() => {
+    if (!editorMode) return;
+    storeEditorViewState(threadId, {
+      centerMode: 'file',
+      expandedDirectories: [...explorerExpandedDirectories],
+    });
+  }, [editorMode, explorerExpandedDirectories, threadId]);
+
+  if (editorMode && !currentThread) {
+    return (
+      <view className="ThreadEditorView">
+        <view className="ThreadTranscriptState">
+          <PanelStateMessage
+            fill="flex"
+            intent="status"
+            announcement="Opening editor view"
+          >
+            Opening editor view…
+          </PanelStateMessage>
+        </view>
+      </view>
+    );
+  }
+
+  if (editorMode) {
+    return (
+      <view className="ThreadEditorView">
+        <view className="ThreadEditorHeader AppWindowDragRegion">
+          <view className="ThreadEditorIdentity">
+            <text className="ThreadEditorProject">
+              {currentThread?.project ?? 'Workspace'}
+            </text>
+            <text className="ThreadEditorPath">
+              {currentThread?.workspaceRoot ?? 'No workspace'}
+            </text>
+          </view>
+          <text className="ThreadEditorModeLabel">Files</text>
+          <Button size="xs" variant="outline" onClick={exitEditorMode}>
+            Chat
+          </Button>
+        </view>
+        <view className="ThreadEditorBody">
+          <view className="ThreadEditorActivityRail">
+            <view className="ThreadEditorActivityItem ThreadEditorActivityItem--active">
+              <FolderIcon size={18} color="var(--foreground)" />
+            </view>
+          </view>
+          <view className="ThreadEditorCenter">
+            <ExplorerDock
+              key={`editor-files:${threadId}:${
+                currentThread?.workspaceRoot ?? 'pending'
+              }`}
+              availableWidth={threadPageWidth || viewportWidth}
+              entries={explorerEntries}
+              entriesError={explorerEntriesError}
+              entriesPending={explorerEntriesPending}
+              directoryEntries={explorerDirectoryEntries}
+              directoryErrors={explorerDirectoryErrors}
+              directoryPending={explorerDirectoryPending}
+              expandedDirectories={explorerExpandedDirectories}
+              initialWidth={initialExplorerWidth}
+              initialCommentLine={initialExplorerCommentLine}
+              file={explorerFile}
+              fileError={explorerFileError}
+              filePending={explorerFilePending}
+              fileSyntaxHighlight={explorerFileSyntaxHighlight}
+              localPreviewUrl={explorerLocalPreviewUrl}
+              localPreviewError={explorerLocalPreviewError}
+              localPreviewPending={explorerLocalPreviewPending}
+              pdfPageCount={explorerPdfPageCount}
+              pdfMetadataError={explorerPdfMetadataError}
+              pdfMetadataPending={explorerPdfMetadataPending}
+              open
+              presentationMode="editor"
+              query={explorerQuery}
+              selectedPath={explorerSelectedPath}
+              threadId={threadId}
+              theme={resolvedTheme}
+              workspaceRoot={currentThread.workspaceRoot}
+              onWidthChange={() => {}}
+              onQueryChange={onExplorerQueryChange}
+              onSelectPath={onExplorerSelectPath}
+              onToggleDirectory={onExplorerToggleDirectory}
+              onClose={exitEditorMode}
+            />
+          </view>
+          <view className="ThreadEditorChat">
+            <ChatSurfaceHeaderFrame>
+              <view className="ThreadHeaderIdentity">
+                <ChatSurfaceHeaderIdentity
+                  title={currentThread?.title ?? 'Thread'}
+                  icon={<OpenAIProviderIcon provider={currentThread?.provider} />}
+                  iconTitle={currentThread?.project ?? 'Synara'}
+                />
+              </view>
+            </ChatSurfaceHeaderFrame>
+            <ProviderHealthBanner
+              status={providerHealth.status}
+              onDismiss={providerHealth.dismiss}
+            />
+            {chatBody}
+            {bodyState.kind === 'empty' ? null : composer}
+          </view>
+        </view>
+      </view>
+    );
+  }
+
   return (
     <view
       className={`Page ThreadPage${
@@ -668,6 +838,14 @@ function ThreadPage(props: ThreadPageProps) {
           >
             Terminal
           </Button>
+          <Button
+            variant="ghost"
+            size="xs"
+            disabled={!currentThread?.workspaceRoot}
+            onClick={enterEditorMode}
+          >
+            Editor
+          </Button>
           <view
             className={`${explorerToggle.className}${
               explorerOpen ? ' ThreadFilesToggle--active' : ''
@@ -686,49 +864,7 @@ function ThreadPage(props: ThreadPageProps) {
         status={providerHealth.status}
         onDismiss={providerHealth.dismiss}
       />
-      {bodyState.kind === 'transcript' ? (
-        <ComposerColumnFrameSurface className="ThreadTranscriptColumn">
-          <Transcript
-            workspaceRoot={currentThread?.workspaceRoot ?? null}
-            rows={bodyState.rows}
-            threadId={threadId}
-            onController={registerTranscriptController}
-            onOpenFileReference={openExplorerFileReference}
-          />
-        </ComposerColumnFrameSurface>
-      ) : bodyState.kind === 'empty' ? (
-        <CenteredEmptyLandingStack>
-          <CenteredEmptyLanding projectName={currentThread?.project} />
-          {composer}
-          <EmptyThreadContextTray
-            branch={currentThread?.branch ?? null}
-            envMode={currentThread?.envMode ?? 'local'}
-            onTemporaryChange={toggleTemporary}
-            projectName={currentThread?.project ?? 'this folder'}
-            temporary={temporary}
-          />
-        </CenteredEmptyLandingStack>
-      ) : (
-        <view className="ThreadTranscriptState">
-          <PanelStateMessage
-            fill="flex"
-            intent={bodyState.kind === 'loading' ? 'status' : 'alert'}
-            announcement={
-              bodyState.kind === 'loading'
-                ? 'Loading conversation'
-                : bodyState.kind === 'offline'
-                  ? 'Synara is offline. Reconnect to load this conversation.'
-                  : 'Unable to load this conversation.'
-            }
-          >
-            {bodyState.kind === 'loading'
-              ? 'Loading conversation…'
-              : bodyState.kind === 'offline'
-                ? 'Synara is offline. Reconnect to load this conversation.'
-                : 'Unable to load this conversation.'}
-          </PanelStateMessage>
-        </view>
-      )}
+      {chatBody}
       {bodyState.kind === 'empty' ? null : composer}
       {currentThread?.workspaceRoot ? (
         <ThreadTerminal
@@ -770,7 +906,7 @@ function ThreadPage(props: ThreadPageProps) {
             setDiffDockWidth(null);
             setDiffOpen(true);
           }}
-          onOpenEditorView={() => setExplorerVisibility(true)}
+          onOpenEditorView={enterEditorMode}
           onOpenSettings={() => {
             setEnvironmentOpen(false);
             history.push('/settings/general');
@@ -818,6 +954,7 @@ function ThreadPage(props: ThreadPageProps) {
 }
 
 export function SliceRouter({
+  initialEditorOpen,
   initialEnvironmentOpen,
   initialTerminalOpen,
   initialTemporaryOpen,
@@ -834,6 +971,7 @@ export function SliceRouter({
   onThemeStateChange,
   onUiDensityChange,
 }: {
+  readonly initialEditorOpen: boolean;
   readonly initialEnvironmentOpen: boolean;
   readonly initialTerminalOpen: boolean;
   readonly initialTemporaryOpen: boolean;
@@ -1346,6 +1484,7 @@ export function SliceRouter({
         explorerQuery={explorerQuery}
         explorerSelectedPath={explorerSelectedPath}
         initialEnvironmentOpen={initialEnvironmentOpen}
+        initialEditorOpen={initialEditorOpen}
         initialTerminalOpen={initialTerminalOpen}
         initialTemporaryOpen={initialTemporaryOpen}
         initialExplorerWidth={initialExplorerWidth}

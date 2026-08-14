@@ -352,6 +352,135 @@
   justify-content: center;
 }
 
+.ThreadEditorView {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 90;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  min-width: 0;
+  min-height: 0;
+  flex-direction: column;
+  background-color: var(--background);
+}
+
+.ThreadEditorHeader {
+  display: flex;
+  height: 46px;
+  min-height: 46px;
+  padding: 0 12px;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.ThreadEditorIdentity {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.ThreadEditorProject {
+  color: var(--foreground);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.ThreadEditorPath {
+  min-width: 0;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ThreadEditorModeLabel {
+  color: var(--muted-foreground);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.ThreadEditorBody {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  flex-direction: row;
+}
+
+.ThreadEditorActivityRail {
+  display: flex;
+  width: 48px;
+  min-width: 48px;
+  height: 100%;
+  align-items: center;
+  flex-direction: column;
+  border-right: 1px solid var(--border);
+  background-color: var(--color-background-surface);
+}
+
+.ThreadEditorActivityItem {
+  display: flex;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.68;
+}
+
+.ThreadEditorActivityItem--active {
+  opacity: 1;
+  box-shadow: inset 2px 0 0 var(--foreground);
+}
+
+.ThreadEditorCenter {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  border-right: 1px solid var(--border);
+}
+
+.ThreadEditorChat {
+  display: flex;
+  width: 384px;
+  min-width: 320px;
+  min-height: 0;
+  flex-direction: column;
+}
+
+.ThreadEditorChat .ThreadTranscriptColumn {
+  padding-top: 8px;
+}
+
+.SliceRoot--viewport-compact .ThreadEditorBody,
+.SliceRoot--viewport-medium .ThreadEditorBody {
+  flex-direction: column;
+}
+
+.SliceRoot--viewport-compact .ThreadEditorActivityRail,
+.SliceRoot--viewport-medium .ThreadEditorActivityRail {
+  display: none;
+}
+
+.SliceRoot--viewport-compact .ThreadEditorCenter,
+.SliceRoot--viewport-medium .ThreadEditorCenter {
+  min-height: 50%;
+  border-right-width: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.SliceRoot--viewport-compact .ThreadEditorChat,
+.SliceRoot--viewport-medium .ThreadEditorChat {
+  width: 100%;
+  min-width: 0;
+  min-height: 50%;
+}
+
 .FeaturePage {
   width: 100%;
   height: 100%;
