@@ -167,3 +167,51 @@ Expanded create-dialog evidence is stored in `9b46ffd`.
 - Web console had no page errors.
 - Lynx-for-Web console had only the known upstream deprecated initialization
   warning.
+
+## Workspace-mode continuation
+
+### Product loss
+
+- `lynx-automation-local-workspace-mode-missing`: P1 execution semantics,
+  contribution `1.00 -> 0.00`.
+- The retained create-dialog matrix already showed that Web exposed the full
+  workspace mode contract while Lynx exposed only `Auto` and `Worktree`.
+- The canonical contract supports `auto`, `local`, and `worktree`.
+- Missing `local` meant a Lynx user could not explicitly require an automation
+  to run in the existing checkout. That changes where writes land and is not a
+  cosmetic form difference.
+
+### Fix
+
+- Derive the Lynx create-dialog mode type directly from canonical
+  `AutomationWorktreeMode` instead of maintaining a narrower local union.
+- Add the rendered `Local` choice.
+- Preserve `local` unchanged in `AutomationCreateInput.worktreeMode`.
+- Show `Local checkout` in the dialog summary.
+- Existing safety remains unchanged:
+  - runtime defaults to `approval-required`;
+  - completion policy remains `none`;
+  - no automation run was started.
+
+### Verification
+
+- `bun run test -- src/app/automationCreate.logic.test.ts src/app/AutomationsPage.lynx.test.ts`
+  - 2 files, 11 tests passed.
+  - Covers all three workspace modes plus existing schedule, dialog, create,
+    detail, and edit contracts.
+- `CI=1 bun run build` in `apps/lynx`
+  - Lynx production bundle and Desktop host built and staged.
+  - Existing optional `bufferutil` / `utf-8-validate` and Lynx CSS warnings
+    only.
+- No new screenshot is claimed for this source-backed follow-up. The valid
+  create-dialog matrix remains the discovery evidence; the focused tests cover
+  the newly closed payload branch.
+- Native remains unverified; no provider turn or worktree was created.
+
+### Remaining create-form coverage
+
+- Model selection, explicit runtime selection, heartbeat targeting, full retry
+  and misfire policy editing, and completion-policy approval remain missing
+  from the Lynx create form.
+- These remain functional coverage debt. They are not hidden by the local-mode
+  fix or by the existing visual score.

@@ -124,8 +124,11 @@ describe('Lynx Automations route', () => {
       "/^(?:[01]\\d|2[0-3]):[0-5]\\d$/u.test(timeOfDay)"
     );
     expect(createLogicSource).toContain(
-      "type CreateWorktreeMode = 'auto' | 'worktree'"
+      'export type CreateWorktreeMode = AutomationWorktreeMode'
     );
+    expect(dialogSource).toContain('label="Local"');
+    expect(dialogSource).toContain("setWorktreeMode('local')");
+    expect(dialogSource).toContain("'Local checkout'");
     expect(createLogicSource).toContain('worktreeMode: input.worktreeMode');
     expect(createLogicSource).toContain('maxIterations: input.maxIterations');
     expect(createLogicSource).toContain('stopOnError: input.stopOnError');

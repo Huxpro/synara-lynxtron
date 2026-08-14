@@ -1,12 +1,13 @@
 import type {
   AutomationCreateInput,
+  AutomationWorktreeMode,
   ModelSelection,
   ProviderInteractionMode,
   ProjectId,
 } from '@synara/contracts';
 
 export type CreateSchedule = 'daily' | 'manual' | 'weekdays';
-export type CreateWorktreeMode = 'auto' | 'worktree';
+export type CreateWorktreeMode = AutomationWorktreeMode;
 
 export function buildAutomationCreateInput(input: {
   readonly interactionMode: ProviderInteractionMode;

@@ -273,6 +273,12 @@ export function AutomationCreateDialog({
                 selected={worktreeMode === 'worktree'}
                 onSelect={() => setWorktreeMode('worktree')}
               />
+              <ChoiceOption
+                disabled={pending}
+                label="Local"
+                selected={worktreeMode === 'local'}
+                onSelect={() => setWorktreeMode('local')}
+              />
             </view>
           </view>
           {schedule === 'manual' ? null : (
@@ -345,7 +351,13 @@ export function AutomationCreateDialog({
                 : schedule === 'daily'
                   ? `Daily at ${timeOfDay}`
                   : `Weekdays at ${timeOfDay}`}{' '}
-              · {worktreeMode === 'auto' ? 'Auto workspace' : 'New worktree'} ·{' '}
+              ·{' '}
+              {worktreeMode === 'auto'
+                ? 'Auto workspace'
+                : worktreeMode === 'worktree'
+                  ? 'New worktree'
+                  : 'Local checkout'}{' '}
+              ·{' '}
               {modelSelection?.model ?? 'Choose a project model'} ·{' '}
               {maxIterations === null
                 ? 'Unlimited runs'
