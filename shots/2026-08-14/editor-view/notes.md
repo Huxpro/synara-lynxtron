@@ -406,6 +406,37 @@
   - `/tmp/synara-editor-medium-lynx-fixed.png`
   - `/tmp/synara-editor-medium-lynx-fixed.json`
 
+### Compact Editor header
+
+- Newly discovered scope: `390x844`, dark Editor header with Chat visible.
+- Web authority:
+  - project title: `94.7x19.5`
+  - workspace path: hidden
+  - Switch project: `28x28`
+  - Hide Chat: `34x28`
+  - Chat exit: `88x28`
+  - every action remained within the 390px header.
+- Pre-fix Lynx actions were still usable, so this was not promoted to P1.
+  However, the workspace path and mode label remained visible, compressing
+  `Editor Changes` into a `64.2x32` two-line block while Web intentionally
+  hides secondary identity at this width.
+- Fix:
+  - project title does not wrap;
+  - compact/medium Editor hides workspace path and redundant mode label;
+  - Hide Chat and Chat controls remain unchanged.
+- Post-fix Lynx:
+  - project title: `94.7x16`, one line
+  - path and mode: `display:none`, `0x0`
+  - Hide Chat ends at `x=332.8`
+  - Chat exit ends at `x=378`, inside the 390px viewport.
+- Evidence:
+  - `/tmp/synara-editor-header-web.png`
+  - `/tmp/synara-editor-header-web.json`
+  - `/tmp/synara-editor-header-lynx.png`
+  - `/tmp/synara-editor-header-lynx.json`
+  - `/tmp/synara-editor-header-lynx-fixed.png`
+  - `/tmp/synara-editor-header-lynx-fixed.json`
+
 ## Authority geometry
 
 After aligning global-sidebar state, Web authority and Lynx use the same
@@ -451,6 +482,8 @@ comparison; no Web screenshot pass is claimed.
   as a clean Git repository.
 - **P1 medium layout closed:** redundant dock chrome and equal row allocation
   no longer halve the usable selected-patch height.
+- **P2 compact header closed:** secondary identity no longer forces the project
+  title onto two lines while primary actions remain visible.
 - **P2 coverage remains:** Web Editor Search mode, project switching, editor
   chat-history tabs, terminal rail tabs, and resizable Chat width are not yet
   implemented in Lynx.
@@ -496,6 +529,8 @@ comparison; no Web screenshot pass is claimed.
   component contribution `1.00 -> 0.00`.
 - `lynx-editor-medium-patch-compression`: P1 content usability,
   component height loss `0.465 -> 0.00`.
+- `lynx-editor-compact-header-identity-wrap`: P2 visual hierarchy,
+  contribution `0.25 -> 0.00`.
 - `lynx-editor-search-mode`: P2 missing coverage,
   contribution remains `0.25`.
 - `lynx-editor-chat-resize-tabs`: P2 missing coverage,

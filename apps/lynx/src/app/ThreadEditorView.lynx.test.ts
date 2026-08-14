@@ -110,6 +110,12 @@ describe('Lynx Editor view', () => {
       /\.ThreadEditorActivityRail\s*\{[^}]*width:\s*48px;[^}]*min-width:\s*48px;/s
     );
     expect(appStyles).toMatch(
+      /\.ThreadEditorProject\s*\{[^}]*white-space:\s*nowrap;/s
+    );
+    expect(appStyles).toMatch(
+      /\.SliceRoot--viewport-compact\s+\.ThreadEditorPath,[\s\S]*?\.SliceRoot--viewport-medium\s+\.ThreadEditorModeLabel\s*\{[^}]*display:\s*none;/s
+    );
+    expect(appStyles).toMatch(
       /\.ThreadEditorChat\s*\{[^}]*width:\s*384px;[^}]*min-width:\s*320px;/s
     );
     expect(explorerStyles).toMatch(
