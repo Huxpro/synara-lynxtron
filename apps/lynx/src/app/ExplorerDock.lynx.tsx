@@ -283,7 +283,7 @@ export function ExplorerDock(props: {
   readonly onToggleDirectory: (path: string) => void;
   readonly onWidthChange: (width: number) => void;
   readonly open: boolean;
-  readonly presentationMode?: 'dock' | 'editor';
+  readonly presentationMode?: 'dock' | 'editor' | 'editor-search';
   readonly pdfMetadataError: boolean;
   readonly pdfMetadataPending: boolean;
   readonly pdfPageCount: number;
@@ -304,7 +304,7 @@ export function ExplorerDock(props: {
     <>
       <view className="ExplorerDockHeader">
         <text className="ExplorerDockTitle">Files</text>
-        {props.presentationMode === 'editor' ? null : (
+        {props.presentationMode?.startsWith('editor') ? null : (
           <view className={close.className} {...close.eventProps}>
             <XIcon size={14} color="var(--muted-foreground)" />
           </view>
@@ -445,9 +445,17 @@ export function ExplorerDock(props: {
     </>
   );
 
-  if (props.presentationMode === 'editor') {
+  if (props.presentationMode?.startsWith('editor')) {
     return (
-      <view className="ExplorerDock ExplorerDock--editor">{content}</view>
+      <view
+        className={`ExplorerDock ExplorerDock--editor${
+          props.presentationMode === 'editor-search'
+            ? ' ExplorerDock--editor-search'
+            : ''
+        }`}
+      >
+        {content}
+      </view>
     );
   }
 

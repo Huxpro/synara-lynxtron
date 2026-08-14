@@ -103,6 +103,7 @@ export function App() {
     readonly initialEditorOpen?: unknown;
     readonly initialEditorCenterMode?: unknown;
     readonly initialEditorChatOpen?: unknown;
+    readonly initialEditorSearchOpen?: unknown;
     readonly initialRenameOpen?: unknown;
     readonly initialTerminalOpen?: unknown;
     readonly initialTemporaryOpen?: unknown;
@@ -123,6 +124,7 @@ export function App() {
     typeof initData.initialEditorChatOpen === 'boolean'
       ? initData.initialEditorChatOpen
       : null;
+  const initialEditorSearchOpen = initData.initialEditorSearchOpen === true;
   const initialRenameOpen = initData.initialRenameOpen === true;
   const initialTerminalOpen = initData.initialTerminalOpen === true;
   const initialTemporaryOpen = initData.initialTemporaryOpen === true;
@@ -415,6 +417,7 @@ export function App() {
             initialEditorOpen={initialEditorOpen}
             initialEditorCenterMode={initialEditorCenterMode}
             initialEditorChatOpen={initialEditorChatOpen}
+            initialEditorSearchOpen={initialEditorSearchOpen}
             initialRenameOpen={initialRenameOpen}
             initialTerminalOpen={initialTerminalOpen}
             initialTemporaryOpen={initialTemporaryOpen}

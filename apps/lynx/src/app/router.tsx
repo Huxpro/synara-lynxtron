@@ -120,7 +120,7 @@ import {
 import { useTemporaryThreadLifecycle } from './temporaryThreadLifecycle.lynx';
 import { DesktopTitlebarControls } from '../adapters/DesktopTitlebarControls.lynx';
 import { SidebarDisclosure } from './SidebarDisclosure.lynx';
-import { FolderIcon } from '../lib/icons.lynx';
+import { FolderIcon, SearchIcon } from '../lib/icons.lynx';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { webStorage } from '../platform/storage';
 import {
@@ -387,6 +387,7 @@ interface ThreadPageProps {
   readonly initialEditorOpen: boolean;
   readonly initialEditorCenterMode: 'file' | 'diff';
   readonly initialEditorChatOpen: boolean | null;
+  readonly initialEditorSearchOpen: boolean;
   readonly initialWorkingTreeDiff: GitReadWorkingTreeDiffResult | null;
   readonly initialWorkingTreeDiffUnavailableLabel: string | null;
   readonly initialRenameOpen: boolean;
@@ -563,6 +564,7 @@ function ThreadPage(props: ThreadPageProps) {
     initialEditorOpen,
     initialEditorCenterMode,
     initialEditorChatOpen,
+    initialEditorSearchOpen,
     initialWorkingTreeDiff,
     initialWorkingTreeDiffUnavailableLabel,
     initialRenameOpen,
@@ -596,6 +598,9 @@ function ThreadPage(props: ThreadPageProps) {
   const [explorerOpen, setExplorerOpen] = useState(initialExplorerOpen);
   const [terminalOpen, setTerminalOpen] = useState(initialTerminalOpen);
   const [editorMode, setEditorMode] = useState(initialEditorOpen);
+  const [editorSearchActive, setEditorSearchActive] = useState(
+    initialEditorSearchOpen
+  );
   const [editorChatOpen, setEditorChatOpen] = useState(
     () => initialEditorChatOpen ?? readEditorChatPaneVisible()
   );
@@ -863,6 +868,21 @@ function ThreadPage(props: ThreadPageProps) {
     'background only';
     setEditorMode(false);
   };
+  const showEditorFiles = () => {
+    'background only';
+    setEditorSearchActive(false);
+    setEditorCenterMode('file');
+  };
+  const showEditorChanges = () => {
+    'background only';
+    setEditorSearchActive(false);
+    setEditorCenterMode('diff');
+  };
+  const showEditorSearch = () => {
+    'background only';
+    setEditorSearchActive(true);
+    setEditorCenterMode('file');
+  };
   const toggleEditorChat = () => {
     'background only';
     setEditorChatOpen((current) => {
@@ -921,29 +941,40 @@ function ThreadPage(props: ThreadPageProps) {
           <view className="ThreadEditorActivityRail">
             <view
               className={`ThreadEditorActivityItem${
-                editorCenterMode === 'file'
+                editorCenterMode === 'file' && !editorSearchActive
                   ? ' ThreadEditorActivityItem--active'
                   : ''
               }`}
               accessibility-element
               accessibility-label="Files"
               accessibility-traits="button"
-              bindtap={() => setEditorCenterMode('file')}
+              bindtap={showEditorFiles}
             >
               <FolderIcon size={18} color="var(--foreground)" />
             </view>
             <view
               className={`ThreadEditorActivityItem${
-                editorCenterMode === 'diff'
+                editorCenterMode === 'diff' && !editorSearchActive
                   ? ' ThreadEditorActivityItem--active'
                   : ''
               }`}
               accessibility-element
               accessibility-label="Changes"
               accessibility-traits="button"
-              bindtap={() => setEditorCenterMode('diff')}
+              bindtap={showEditorChanges}
             >
               <text className="ThreadEditorActivityGlyph">±</text>
+            </view>
+            <view
+              className={`ThreadEditorActivityItem${
+                editorSearchActive ? ' ThreadEditorActivityItem--active' : ''
+              }`}
+              accessibility-element
+              accessibility-label="Search files"
+              accessibility-traits="button"
+              bindtap={showEditorSearch}
+            >
+              <SearchIcon size={18} color="var(--foreground)" />
             </view>
           </view>
           <view
@@ -977,7 +1008,7 @@ function ThreadPage(props: ThreadPageProps) {
               pdfMetadataError={explorerPdfMetadataError}
               pdfMetadataPending={explorerPdfMetadataPending}
               open
-              presentationMode="editor"
+              presentationMode={editorSearchActive ? 'editor-search' : 'editor'}
               query={explorerQuery}
               selectedPath={explorerSelectedPath}
               threadId={threadId}
@@ -1189,6 +1220,7 @@ export function SliceRouter({
   initialEditorOpen,
   initialEditorCenterMode,
   initialEditorChatOpen,
+  initialEditorSearchOpen,
   initialEnvironmentOpen,
   initialRenameOpen,
   initialTerminalOpen,
@@ -1210,6 +1242,7 @@ export function SliceRouter({
   readonly initialEditorOpen: boolean;
   readonly initialEditorCenterMode: 'file' | 'diff';
   readonly initialEditorChatOpen: boolean | null;
+  readonly initialEditorSearchOpen: boolean;
   readonly initialEnvironmentOpen: boolean;
   readonly initialRenameOpen: boolean;
   readonly initialTerminalOpen: boolean;
@@ -1753,6 +1786,7 @@ export function SliceRouter({
         initialEditorOpen={initialEditorOpen}
         initialEditorCenterMode={initialEditorCenterMode}
         initialEditorChatOpen={initialEditorChatOpen}
+        initialEditorSearchOpen={initialEditorSearchOpen}
         initialWorkingTreeDiff={
           resolvedActiveThreadData?.workingTreeDiff ?? null
         }

@@ -851,6 +851,8 @@ const initialEditorChatOpen =
     : new URLSearchParams(globalThis.location.search).get('editorChat') === 'open'
       ? true
       : null;
+const initialEditorSearchOpen =
+  new URLSearchParams(globalThis.location.search).get('editorSearch') === 'open';
 const initialRenameOpen =
   new URLSearchParams(globalThis.location.search).get('rename') === 'open';
 const initialTerminalOpen =
@@ -903,6 +905,7 @@ webDocument.body.innerHTML = `
     initialEditorOpen,
     initialEditorCenterMode,
     initialEditorChatOpen,
+    initialEditorSearchOpen,
     initialRenameOpen,
     initialTerminalOpen,
     initialTemporaryOpen,

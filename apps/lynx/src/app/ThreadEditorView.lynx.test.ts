@@ -11,7 +11,9 @@ describe('Lynx Editor view', () => {
     expect(routerSource).toContain('onOpenEditorView={enterEditorMode}');
     expect(routerSource).toContain('className="ThreadEditorView"');
     expect(routerSource).toContain('className="ThreadEditorActivityRail"');
-    expect(routerSource).toContain('presentationMode="editor"');
+    expect(routerSource).toContain(
+      "presentationMode={editorSearchActive ? 'editor-search' : 'editor'}"
+    );
     expect(routerSource).toContain('onClick={exitEditorMode}');
   });
 
@@ -58,6 +60,11 @@ describe('Lynx Editor view', () => {
       "readEditorViewState(threadId)?.centerMode ?? 'file'"
     );
     expect(routerSource).toContain('accessibility-label="Changes"');
+    expect(routerSource).toContain('accessibility-label="Search files"');
+    expect(routerSource).toContain('bindtap={showEditorSearch}');
+    expect(routerSource).toContain(
+      "presentationMode={editorSearchActive ? 'editor-search' : 'editor'}"
+    );
     expect(routerSource).toContain("setEditorCenterMode('diff')");
     expect(routerSource).toContain('<DiffDock');
     expect(routerSource).toContain(
@@ -106,6 +113,7 @@ describe('Lynx Editor view', () => {
   it('matches the Web authority rail boundaries', () => {
     const appStyles = source('./App.css');
     const explorerStyles = source('./explorer-dock.css');
+    const explorerSource = source('./ExplorerDock.lynx.tsx');
     expect(appStyles).toMatch(
       /\.ThreadEditorActivityRail\s*\{[^}]*width:\s*48px;[^}]*min-width:\s*48px;/s
     );
@@ -120,6 +128,12 @@ describe('Lynx Editor view', () => {
     );
     expect(explorerStyles).toMatch(
       /\.ExplorerDock--editor\s+\.ExplorerDockSidebar\s*\{[^}]*width:\s*224px;[^}]*min-width:\s*224px;/s
+    );
+    expect(explorerStyles).toMatch(
+      /\.ExplorerDock--editor-search\s+\.ExplorerDockHeader\s*\{[^}]*display:\s*none;/s
+    );
+    expect(explorerSource).toContain(
+      "props.presentationMode === 'editor-search'"
     );
     expect(explorerStyles).toMatch(
       /\.SliceRoot--viewport-compact[\s\S]*?\.ExplorerDock--editor[\s\S]*?\.ExplorerDockBody,[\s\S]*?flex-direction:\s*column;/s
@@ -155,6 +169,7 @@ describe('Lynx Editor view', () => {
     expect(webHostSource).toContain("get('editor') === 'open'");
     expect(webHostSource).toContain("get('editorMode') === 'diff'");
     expect(webHostSource).toContain("get('editorChat') === 'hidden'");
+    expect(webHostSource).toContain("get('editorSearch') === 'open'");
     expect(appSource).toContain('await fetchWorkingTreeDiff(');
     expect(appSource).toContain('await fetchGitBranches(summary.workspaceRoot)');
     expect(appSource).toContain(
@@ -169,6 +184,9 @@ describe('Lynx Editor view', () => {
     );
     expect(desktopSource).toContain(
       "url.searchParams.get('editorMode') === 'diff'"
+    );
+    expect(desktopSource).toContain(
+      "url.searchParams.get('editorSearch') === 'open'"
     );
   });
 });

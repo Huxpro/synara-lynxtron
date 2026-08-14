@@ -437,6 +437,49 @@
   - `/tmp/synara-editor-header-lynx-fixed.png`
   - `/tmp/synara-editor-header-lynx-fixed.json`
 
+### Editor Search activity
+
+- Newly closed explicit residual: the Web Editor activity rail's third Search
+  mode.
+- Web authority was entered through the real `Search files` rail button:
+  - third rail action became `Hide search sidebar`
+  - search sidebar: `x=48`, `224x774`
+  - search input: `205x21`
+  - preview center: `x=272`, `624x774`
+  - route URL remained unchanged.
+- Fix:
+  - added the third Lynx rail item using the existing `SearchIcon`;
+  - Search mode reuses `ExplorerDock` query, result, selection, preview,
+    syntax, image, PDF, and Markdown data instead of adding a parallel search
+    implementation;
+  - selecting Files or Changes exits Search while preserving the underlying
+    Files/Changes center mode;
+  - `editor-search` presentation removes the duplicate Files header;
+  - deterministic Web/Native init accepts `editorSearch=open`.
+- Post-fix Lynx wide:
+  - third rail item is the sole active item
+  - no duplicate Explorer header
+  - sidebar: `x=48`, `224x774`
+  - preview: `x=272`, `623x774`
+  - search input: `207x28`.
+- Post-fix Lynx compact:
+  - rail: `48x798`
+  - search sidebar: `342x176`
+  - preview: `342x321.75`
+  - Chat: `342x299.25`.
+- The input-height difference is an accepted native-control rendering delta;
+  sidebar and preview boundaries, state semantics, and real data paths match.
+- Evidence:
+  - `/tmp/synara-editor-search-web.png`
+  - `/tmp/synara-editor-search-web.json`
+  - `/tmp/synara-editor-search-lynx.png`
+  - `/tmp/synara-editor-search-lynx.json`
+  - `/tmp/synara-editor-search-lynx-compact.png`
+  - `/tmp/synara-editor-search-lynx-compact.json`
+- Web supplied the retained real rail click. Lynx deterministic init proves
+  the same rendered state; runtime rail click evidence remains blocked by the
+  shared dynamic-event issue.
+
 ## Authority geometry
 
 After aligning global-sidebar state, Web authority and Lynx use the same
@@ -484,9 +527,11 @@ comparison; no Web screenshot pass is claimed.
   no longer halve the usable selected-patch height.
 - **P2 compact header closed:** secondary identity no longer forces the project
   title onto two lines while primary actions remain visible.
-- **P2 coverage remains:** Web Editor Search mode, project switching, editor
-  chat-history tabs, terminal rail tabs, and resizable Chat width are not yet
-  implemented in Lynx.
+- **P2 missing coverage closed:** Editor Search now uses the real workspace
+  search and preview pipeline.
+- **P2 coverage remains:** Web Editor project switching, chat-history tabs,
+  terminal rail tabs, and resizable Chat width are not yet implemented in
+  Lynx.
 - **Harness blocker:** Lynx-for-Web dynamic pointer-to-`bindtap` publication
   still prevents retained click evidence for the Editor/Chat buttons. The
   current-head static host-input probe receives `tap`, but stateful product
@@ -532,7 +577,7 @@ comparison; no Web screenshot pass is claimed.
 - `lynx-editor-compact-header-identity-wrap`: P2 visual hierarchy,
   contribution `0.25 -> 0.00`.
 - `lynx-editor-search-mode`: P2 missing coverage,
-  contribution remains `0.25`.
+  contribution `0.25 -> 0.00`.
 - `lynx-editor-chat-resize-tabs`: P2 missing coverage,
   contribution remains `0.25`.
 - `editor-web-boot-splash-capture`: harness loss,
