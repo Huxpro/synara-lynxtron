@@ -74,7 +74,10 @@ describe('Lynx Environment panel', () => {
     expect(routerSource).toContain('<EnvironmentToggle');
     expect(routerSource).toContain('<EnvironmentPanel');
     expect(routerSource).toContain(
-      'const [environmentOpen, setEnvironmentOpen] = useState(\n    initialEnvironmentOpen'
+      'const [environmentUserOverride, setEnvironmentUserOverride] = useState<'
+    );
+    expect(routerSource).toContain(
+      'const resolvedEnvironmentOpen ='
     );
     expect(appSource).toContain(
       'await fetchEnvironmentBootstrapData(summary.workspaceRoot)'
@@ -513,5 +516,29 @@ describe('Lynx Environment panel', () => {
     ]) {
       expect(panelSource).toContain(`visibility.${key}`);
     }
+  });
+
+  it('honors and persists the canonical default-open preference', () => {
+    const routerSource = readFileSync(
+      new URL('./router.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(routerSource).toContain(
+      'resolveDefaultEnvironmentPanelOpen({'
+    );
+    expect(routerSource).toContain(
+      "isCenteredEmptyLanding: bodyState.kind === 'empty'"
+    );
+    expect(routerSource).toContain(
+      'settingsDefaultOpen: environmentSettings.environmentPanelDefaultOpen'
+    );
+    expect(routerSource).toContain(
+      'environmentPanelDefaultOpen: open'
+    );
+    expect(routerSource).toContain(
+      'writeSettingsGeneralProjection('
+    );
+    expect(routerSource).toContain('open={resolvedEnvironmentOpen}');
+    expect(routerSource).toContain('onChange={setEnvironmentVisibility}');
   });
 });

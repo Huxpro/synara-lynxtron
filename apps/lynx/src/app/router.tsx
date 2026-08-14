@@ -29,6 +29,7 @@ import { useWorkspaceStore } from '@synara-web/workspaceStore';
 import {
   APP_SETTINGS_STORAGE_KEY,
   readSettingsGeneralProjection,
+  writeSettingsGeneralProjection,
 } from '@synara-web/appSettingsStorageProjection.logic';
 import { resolveProviderHealthBannerPresentation } from '@synara-web/components/chat/ProviderHealthBanner.logic';
 import { findProviderStatus } from '@synara-web/lib/providerAvailability';
@@ -94,6 +95,7 @@ import {
 import { useRestoreOrCreateChatRouteController } from '@synara-web/components/useRestoreOrCreateChatRoute.logic';
 import { resolveSettingsBackTarget } from '@synara-web/components/SidebarSettingsBack.logic';
 import { resolveThreadPageBodyState } from './threadPageState.logic';
+import { resolveDefaultEnvironmentPanelOpen } from '@synara-web/components/ChatView.logic';
 import {
   storeEditorViewState,
 } from '@synara-web/editorViewState';
@@ -557,9 +559,12 @@ function ThreadPage(props: ThreadPageProps) {
   const [providerStatuses, setProviderStatuses] = useState<
     readonly ServerProviderStatus[]
   >([]);
-  const [environmentOpen, setEnvironmentOpen] = useState(
-    initialEnvironmentOpen
+  const environmentSettings = readSettingsGeneralProjection(
+    webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
   );
+  const [environmentUserOverride, setEnvironmentUserOverride] = useState<
+    boolean | null
+  >(initialEnvironmentOpen ? true : null);
   const [diffOpen, setDiffOpen] = useState(false);
   const [explorerOpen, setExplorerOpen] = useState(initialExplorerOpen);
   const [terminalOpen, setTerminalOpen] = useState(initialTerminalOpen);
@@ -607,13 +612,44 @@ function ThreadPage(props: ThreadPageProps) {
     error,
     rows: data,
   });
+  const resolvedEnvironmentOpen =
+    environmentUserOverride ??
+    resolveDefaultEnvironmentPanelOpen({
+      environmentEnabled: currentThread !== undefined,
+      isCenteredEmptyLanding: bodyState.kind === 'empty',
+      isTerminalPrimarySurface: false,
+      isConstrainedChatLayout: false,
+      settingsDefaultOpen: environmentSettings.environmentPanelDefaultOpen,
+    });
+  const setEnvironmentVisibility = useCallback((open: boolean) => {
+    'background only';
+    setEnvironmentUserOverride(open);
+    void import(/* webpackMode: "eager" */ '../platform/storage').then(
+      ({ setPersistedStorageItem, webStorage: storage }) =>
+        setPersistedStorageItem(
+          APP_SETTINGS_STORAGE_KEY,
+          writeSettingsGeneralProjection(
+            storage.getItem(APP_SETTINGS_STORAGE_KEY),
+            {
+              ...readSettingsGeneralProjection(
+                storage.getItem(APP_SETTINGS_STORAGE_KEY)
+              ),
+            environmentPanelDefaultOpen: open,
+            }
+          )
+        )
+    );
+  }, []);
+  const closeEnvironmentForAction = useCallback(() => {
+    setEnvironmentUserOverride(false);
+  }, []);
   const setExplorerVisibility = useCallback((open: boolean) => {
-    setEnvironmentOpen(false);
+    closeEnvironmentForAction();
     setDiffOpen(false);
     setDiffDockWidth(null);
     setExplorerDockWidth(null);
     setExplorerOpen(open);
-  }, []);
+  }, [closeEnvironmentForAction]);
   const openExplorerFileReference = useCallback(
     (relativePath: string) => {
       onExplorerQueryChange('');
@@ -776,7 +812,7 @@ function ThreadPage(props: ThreadPageProps) {
     );
   const enterEditorMode = () => {
     'background only';
-    setEnvironmentOpen(false);
+    closeEnvironmentForAction();
     setExplorerOpen(false);
     setDiffOpen(false);
     setTerminalOpen(false);
@@ -893,7 +929,7 @@ function ThreadPage(props: ThreadPageProps) {
   return (
     <view
       className={`Page ThreadPage${
-        environmentOpen ? ' ThreadPage--environment-open' : ''
+        resolvedEnvironmentOpen ? ' ThreadPage--environment-open' : ''
       }${diffOpen ? ' ThreadPage--diff-open' : ''}${
         explorerOpen ? ' ThreadPage--explorer-open' : ''
       }${
@@ -921,7 +957,7 @@ function ThreadPage(props: ThreadPageProps) {
             size="xs"
             disabled={!currentThread?.workspaceRoot}
             onClick={() => {
-              setEnvironmentOpen(false);
+              closeEnvironmentForAction();
               setExplorerOpen(false);
               setDiffOpen(false);
               setTerminalOpen((open) => !open);
@@ -946,8 +982,8 @@ function ThreadPage(props: ThreadPageProps) {
             <FolderIcon size={16} color="var(--muted-foreground)" />
           </view>
           <EnvironmentToggle
-            open={environmentOpen}
-            onChange={setEnvironmentOpen}
+            open={resolvedEnvironmentOpen}
+            onChange={setEnvironmentVisibility}
           />
         </view>
       </ChatSurfaceHeaderFrame>
@@ -971,7 +1007,7 @@ function ThreadPage(props: ThreadPageProps) {
             initialEnvironmentOpen && environmentData !== null
           }
           initialData={environmentData}
-          open={environmentOpen}
+          open={resolvedEnvironmentOpen}
           threadId={threadId}
           projectId={currentThread.projectId}
           pinnedMessages={currentThread.pinnedMessages}
@@ -991,7 +1027,7 @@ function ThreadPage(props: ThreadPageProps) {
             transcriptControllerRef.current?.scrollToMessage(messageId)
           }
           onOpenChanges={() => {
-            setEnvironmentOpen(false);
+            closeEnvironmentForAction();
             setExplorerOpen(false);
             setExplorerDockWidth(null);
             setDiffDockWidth(null);
@@ -999,7 +1035,7 @@ function ThreadPage(props: ThreadPageProps) {
           }}
           onOpenEditorView={enterEditorMode}
           onOpenSettings={() => {
-            setEnvironmentOpen(false);
+            closeEnvironmentForAction();
             history.push('/settings/general');
           }}
         />
