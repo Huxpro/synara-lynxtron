@@ -333,6 +333,8 @@ export function Sidebar({
   });
   const workspacePages = useWorkspaceStore((state) => state.workspacePages);
   const createWorkspace = useWorkspaceStore((state) => state.createWorkspace);
+  const chatsSectionVisible = initialSortSettings.showChatsSection;
+  const studioSectionVisible = initialSortSettings.showStudioSection;
   const workspaceSectionVisible = initialSortSettings.showWorkspaceSection;
   const [persistedPinnedThreadIds, setPersistedPinnedThreadIds] = useState<
     readonly string[]
@@ -755,7 +757,7 @@ export function Sidebar({
             picker={
           <SidebarSegmentedPicker
             views={[
-              'studio',
+              ...(studioSectionVisible ? (['studio'] as const) : []),
               'threads',
               ...(workspaceSectionVisible ? (['workspace'] as const) : []),
             ]}
@@ -1048,7 +1050,10 @@ export function Sidebar({
             trailing={
           <SidebarChatsSection
             visible={
-              primarySidebarSurface === 'threads' && !isPending && !error
+              chatsSectionVisible &&
+              primarySidebarSurface === 'threads' &&
+              !isPending &&
+              !error
             }
             expanded={chatsExpanded}
             rows={chatRows.visibleEntries}

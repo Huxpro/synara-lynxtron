@@ -128,7 +128,7 @@ describe('Lynx Environment panel', () => {
       "? 'Usage is currently unavailable.'"
     );
     expect(panelSource).toContain(
-      '!props.bootstrapOnly ? ('
+      '!props.bootstrapOnly && visibility.showEnvironmentUsage ? ('
     );
     expect(routerSource).toContain('className="ThreadHeaderControls"');
     expect(routerSource).toContain('ThreadPage--environment-open');
@@ -491,6 +491,27 @@ describe('Lynx Environment panel', () => {
       const index = renderSource.indexOf(section);
       expect(index).toBeGreaterThan(previousIndex);
       previousIndex = index;
+    }
+  });
+
+  it('consumes every canonical Environment visibility setting', () => {
+    const panelSource = readFileSync(
+      new URL('./EnvironmentPanel.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(panelSource).toContain('readSettingsGeneralProjection(');
+    for (const key of [
+      'showEnvironmentUsage',
+      'showEnvironmentRepository',
+      'showEnvironmentPullRequest',
+      'showEnvironmentEditor',
+      'showEnvironmentRecap',
+      'showEnvironmentPinned',
+      'showEnvironmentMarkers',
+      'showEnvironmentInstructions',
+      'showEnvironmentNotepad',
+    ]) {
+      expect(panelSource).toContain(`visibility.${key}`);
     }
   });
 });

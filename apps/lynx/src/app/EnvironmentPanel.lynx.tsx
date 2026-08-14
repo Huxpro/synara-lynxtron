@@ -22,6 +22,10 @@ import {
   mergeProjectInstructionsIntoThreadNotes,
   useProjectInstructionsStore,
 } from '@synara-web/projectInstructionsStore';
+import {
+  APP_SETTINGS_STORAGE_KEY,
+  readSettingsGeneralProjection,
+} from '@synara-web/appSettingsStorageProjection.logic';
 import { displayLabelFor, normalizePinLabel } from '@synara/shared/pinnedMessages';
 import {
   deriveThreadMarkerLabel,
@@ -2617,6 +2621,9 @@ export function EnvironmentPanel(props: {
   readonly workspaceRoot: string | null;
 }) {
   const { svgColors } = useTheme();
+  const visibility = readSettingsGeneralProjection(
+    webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
+  );
   const liveQueriesEnabled = props.open && !props.bootstrapOnly;
   const [gitStatus, setGitStatus] = useState<GitStatusResult | null>(null);
   const [gitRefreshGeneration, setGitRefreshGeneration] = useState(0);
@@ -2715,7 +2722,7 @@ export function EnvironmentPanel(props: {
               initialData={props.initialData?.localServers ?? null}
             />
 
-            {!props.bootstrapOnly ? (
+            {!props.bootstrapOnly && visibility.showEnvironmentUsage ? (
               <>
                 <view className="EnvironmentDivider" />
                 <EnvironmentSectionLabel>Usage</EnvironmentSectionLabel>
@@ -2733,7 +2740,7 @@ export function EnvironmentPanel(props: {
               </>
             ) : null}
 
-            {props.workspaceRoot ? (
+            {props.workspaceRoot && visibility.showEnvironmentRepository ? (
               <EnvironmentRepository
                 bootstrapOnly={props.bootstrapOnly}
                 initialRepository={props.initialData?.repository ?? null}
@@ -2742,7 +2749,9 @@ export function EnvironmentPanel(props: {
               />
             ) : null}
 
-            {props.workspaceRoot && props.pullRequest?.state === 'open' ? (
+            {props.workspaceRoot &&
+            visibility.showEnvironmentPullRequest &&
+            props.pullRequest?.state === 'open' ? (
               <EnvironmentPullRequest
                 open={liveQueriesEnabled}
                 pullRequest={props.pullRequest}
@@ -2750,7 +2759,7 @@ export function EnvironmentPanel(props: {
               />
             ) : null}
 
-            {props.workspaceRoot ? (
+            {props.workspaceRoot && visibility.showEnvironmentEditor ? (
               <EnvironmentEditor
                 bootstrapOnly={props.bootstrapOnly}
                 initialConfig={props.initialData?.config ?? null}
@@ -2760,7 +2769,7 @@ export function EnvironmentPanel(props: {
               />
             ) : null}
 
-            {props.workspaceRoot ? (
+            {props.workspaceRoot && visibility.showEnvironmentRecap ? (
               <EnvironmentRecap
                 open={liveQueriesEnabled}
                 revision={props.recapRevision}
@@ -2769,7 +2778,8 @@ export function EnvironmentPanel(props: {
               />
             ) : null}
 
-            {props.pinnedMessages.length > 0 ? (
+            {visibility.showEnvironmentPinned &&
+            props.pinnedMessages.length > 0 ? (
               <>
                 <view className="EnvironmentDivider" />
                 <EnvironmentPinned
@@ -2781,7 +2791,8 @@ export function EnvironmentPanel(props: {
               </>
             ) : null}
 
-            {props.threadMarkers.length > 0 ? (
+            {visibility.showEnvironmentMarkers &&
+            props.threadMarkers.length > 0 ? (
               <>
                 <view className="EnvironmentDivider" />
                 <EnvironmentMarkers
@@ -2793,20 +2804,28 @@ export function EnvironmentPanel(props: {
               </>
             ) : null}
 
-            <view className="EnvironmentDivider" />
-            <EnvironmentProjectInstructions
-              key={props.projectId}
-              projectId={props.projectId}
-              threadId={props.threadId}
-              notes={props.notes}
-            />
+            {visibility.showEnvironmentInstructions ? (
+              <>
+                <view className="EnvironmentDivider" />
+                <EnvironmentProjectInstructions
+                  key={props.projectId}
+                  projectId={props.projectId}
+                  threadId={props.threadId}
+                  notes={props.notes}
+                />
+              </>
+            ) : null}
 
-            <view className="EnvironmentDivider" />
-            <EnvironmentNotepad
-              key={props.threadId}
-              threadId={props.threadId}
-              notes={props.notes}
-            />
+            {visibility.showEnvironmentNotepad ? (
+              <>
+                <view className="EnvironmentDivider" />
+                <EnvironmentNotepad
+                  key={props.threadId}
+                  threadId={props.threadId}
+                  notes={props.notes}
+                />
+              </>
+            ) : null}
           </view>
         </scroll-view>
       </view>

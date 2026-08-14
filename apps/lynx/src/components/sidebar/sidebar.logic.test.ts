@@ -1,4 +1,5 @@
 import { describe, expect, it } from '@rstest/core';
+import { readFileSync } from 'node:fs';
 
 import { deriveSidebarSections } from './sidebar.logic';
 import { pruneProjectThreadListPagingForCollapsedProjects } from '@synara-web/components/SidebarProjectPaging.logic';
@@ -247,5 +248,25 @@ describe('shared sidebar surface routing', () => {
         isOnWorkspace: false,
       })
     ).toBe('studio');
+  });
+
+  it('consumes all optional sidebar-section visibility settings', () => {
+    const source = readFileSync(
+      new URL('./Sidebar.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(source).toContain(
+      'const chatsSectionVisible = initialSortSettings.showChatsSection'
+    );
+    expect(source).toContain(
+      'const studioSectionVisible = initialSortSettings.showStudioSection'
+    );
+    expect(source).toContain(
+      'const workspaceSectionVisible = initialSortSettings.showWorkspaceSection'
+    );
+    expect(source).toContain(
+      "...(studioSectionVisible ? (['studio'] as const) : [])"
+    );
+    expect(source).toContain('chatsSectionVisible &&');
   });
 });
