@@ -1,6 +1,9 @@
 import { describe, expect, it } from '@rstest/core';
 
-import { buildAutomationCreateInput } from './automationCreate.logic';
+import {
+  buildAutomationCreateInput,
+  resolveAutomationModelSelection,
+} from './automationCreate.logic';
 
 const modelSelection = {
   provider: 'codex',
@@ -8,6 +11,26 @@ const modelSelection = {
 } as const;
 
 describe('Automation create payload', () => {
+  it('uses the project model before the saved default provider', () => {
+    expect(
+      resolveAutomationModelSelection({
+        projectModelSelection: modelSelection,
+        defaultProvider: 'claudeAgent',
+      }),
+    ).toBe(modelSelection);
+  });
+
+  it('falls back to the saved default provider when the project has no model', () => {
+    expect(
+      resolveAutomationModelSelection({
+        projectModelSelection: null,
+        defaultProvider: 'claudeAgent',
+      }),
+    ).toMatchObject({
+      provider: 'claudeAgent',
+    });
+  });
+
   it.each([
     ['manual', { type: 'manual' }],
     ['daily', { type: 'daily', timeOfDay: '09:00' }],

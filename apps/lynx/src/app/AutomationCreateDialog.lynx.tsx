@@ -1,6 +1,5 @@
 import { createElement, useEffect, useState } from '@lynx-js/react';
 import type { AutomationCreateInput } from '@synara/contracts';
-import { getDefaultModel } from '@synara/shared/model';
 import {
   APP_SETTINGS_STORAGE_KEY,
   readSettingsGeneralProjection,
@@ -22,6 +21,7 @@ import {
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import {
   buildAutomationCreateInput,
+  resolveAutomationModelSelection,
   type CreateSchedule,
   type CreateWorktreeMode,
 } from './automationCreate.logic';
@@ -39,9 +39,6 @@ function NativeNameInput({
   readonly disabled: boolean;
   readonly onInput: (event: NativeTextInputEvent) => void;
 }) {
-  const generalSettings = readSettingsGeneralProjection(
-    webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
-  );
   return createElement('input', {
     className: 'AutomationCreateName',
     'accessibility-element': true,
@@ -168,6 +165,9 @@ export function AutomationCreateDialog({
   readonly onCreate: (input: AutomationCreateInput) => void;
   readonly onOpenChange: (open: boolean) => void;
 }) {
+  const generalSettings = readSettingsGeneralProjection(
+    webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
+  );
   const [name, setName] = useState('');
   const [prompt, setPrompt] = useState('');
   const [projectId, setProjectId] = useState(projects[0]?.id ?? '');
@@ -210,11 +210,10 @@ export function AutomationCreateDialog({
     (thread) =>
       thread.projectId === projectId && (thread.archivedAt ?? null) === null
   );
-  const modelSelection =
-    project?.defaultModelSelection ?? {
-      provider: generalSettings.defaultProvider,
-      model: getDefaultModel(generalSettings.defaultProvider),
-    };
+  const modelSelection = resolveAutomationModelSelection({
+    projectModelSelection: project?.defaultModelSelection,
+    defaultProvider: generalSettings.defaultProvider,
+  });
   const canCreate =
     !pending &&
     name.trim().length > 0 &&

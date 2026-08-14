@@ -170,12 +170,12 @@ describe('Lynx Automations route', () => {
     expect(createLogicSource).toContain(
       "input.runtimeMode === 'full-access' ? ['full-access' as const] : []"
     );
-    expect(dialogSource).toContain('project?.defaultModelSelection ?? {');
+    expect(dialogSource).toContain('resolveAutomationModelSelection({');
     expect(dialogSource).toContain(
-      'provider: generalSettings.defaultProvider'
+      'defaultProvider: generalSettings.defaultProvider'
     );
-    expect(dialogSource).toContain(
-      'model: getDefaultModel(generalSettings.defaultProvider)'
+    expect(dialogSource.indexOf('const generalSettings')).toBeGreaterThan(
+      dialogSource.indexOf('export function AutomationCreateDialog')
     );
     expect(dialogSource).toContain('Boolean(project)');
     expect(dialogSource).toContain('Create automation');

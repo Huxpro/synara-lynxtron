@@ -7,10 +7,24 @@ import type {
   ProviderInteractionMode,
   ProjectId,
   RuntimeMode,
+  ProviderKind,
 } from '@synara/contracts';
+import { getDefaultModel } from '@synara/shared/model';
 
 export type CreateSchedule = 'daily' | 'manual' | 'weekdays';
 export type CreateWorktreeMode = AutomationWorktreeMode;
+
+export function resolveAutomationModelSelection(input: {
+  readonly projectModelSelection: ModelSelection | null | undefined;
+  readonly defaultProvider: ProviderKind;
+}): ModelSelection {
+  return (
+    input.projectModelSelection ?? {
+      provider: input.defaultProvider,
+      model: getDefaultModel(input.defaultProvider),
+    }
+  );
+}
 
 export function buildAutomationCreateInput(input: {
   readonly interactionMode: ProviderInteractionMode;

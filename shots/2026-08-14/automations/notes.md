@@ -336,3 +336,36 @@ Expanded create-dialog evidence is stored in `9b46ffd`.
   - Existing optional `bufferutil` / `utf-8-validate` and Lynx CSS warnings
     only.
 - No heartbeat or completion-evaluation run was started.
+
+## Model fallback crash correction
+
+### Product loss
+
+- `lynx-automation-model-fallback-scope-crash`: P0 create-dialog crash,
+  contribution `1.00 -> 0.00`.
+- Model-picker audit found that `AutomationCreateDialog` referenced
+  `generalSettings` in the component body even though it was declared only
+  inside `NativeNameInput`.
+- A project without `defaultModelSelection` would therefore evaluate an
+  out-of-scope identifier while rendering the dialog.
+
+### Fix
+
+- Move the canonical General settings projection into the dialog component
+  scope.
+- Remove the unused settings read from the name input.
+- Extract deterministic model fallback precedence:
+  1. project default model selection;
+  2. saved default provider plus its canonical default model.
+
+### Verification
+
+- `bun run test -- src/app/automationCreate.logic.test.ts src/app/AutomationsPage.lynx.test.ts`
+  - 2 files, 18 tests passed.
+  - Covers project-model precedence and saved-provider fallback.
+- `CI=1 bun run build` in `apps/lynx`
+  - Lynx production bundle and Desktop host built and staged.
+  - Existing optional `bufferutil` / `utf-8-validate` and Lynx CSS warnings
+    only.
+- This closes the render crash but does not claim the still-missing interactive
+  model picker.
