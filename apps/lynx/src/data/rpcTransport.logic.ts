@@ -203,9 +203,14 @@ export function createRpcSocketManager(input: {
       }
     })();
     recoveryPromise = pending;
-    void pending.finally(() => {
-      if (recoveryPromise === pending) recoveryPromise = null;
-    });
+    void pending
+      .finally(() => {
+        if (recoveryPromise === pending) recoveryPromise = null;
+      })
+      .catch(() => {
+        // Background recovery has no caller to observe the original promise.
+        // A later request or state transition can start a fresh recovery loop.
+      });
   };
 
   const invalidate = (socket: RpcTransportSocket, error: Error) => {

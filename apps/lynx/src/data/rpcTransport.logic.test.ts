@@ -1,4 +1,5 @@
 import { describe, expect, it } from '@rstest/core';
+import { readFileSync } from 'node:fs';
 
 import {
   createRpcSocketManager,
@@ -6,6 +7,22 @@ import {
   type RpcTransportSocket,
   type StartRpcTimeout,
 } from './rpcTransport.logic';
+
+describe('RPC pending cleanup contract', () => {
+  it('contains derived finally rejections for connection and recovery promises', () => {
+    const source = readFileSync(
+      new URL('./rpcTransport.logic.ts', import.meta.url),
+      'utf8'
+    );
+    expect(source.match(/\.finally\(\(\) => \{/g)).toHaveLength(2);
+    expect(source).toContain(
+      'if (recoveryPromise === pending) recoveryPromise = null;\n      })\n      .catch'
+    );
+    expect(source).toContain(
+      'if (connectionPromise === pending && activeSocket === null) {\n        connectionPromise = null;\n      }\n    }).catch'
+    );
+  });
+});
 
 class FakeSocket implements RpcTransportSocket {
   readonly listeners = new Map<string, Array<(event: any) => void>>();
