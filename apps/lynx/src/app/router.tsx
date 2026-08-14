@@ -998,6 +998,7 @@ function ThreadPage(props: ThreadPageProps) {
       {bodyState.kind === 'empty' ? null : composer}
       {currentThread?.workspaceRoot ? (
         <ThreadTerminal
+          autoOpen
           fontFamily={appearance.terminalFontFamily}
           fontSizePx={appearance.terminalFontSizePx}
           open={terminalOpen}

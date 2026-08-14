@@ -78,7 +78,7 @@ describe('Lynx thread terminal', () => {
       'const [terminalOpen, setTerminalOpen] = useState(initialTerminalOpen)'
     );
     expect(routerSource).toContain('setTerminalOpen((open) => !open)');
-    expect(routerSource).toContain('<ThreadTerminal');
+    expect(routerSource).toContain('<ThreadTerminal\n          autoOpen');
     expect(routerSource).toContain(
       'fontFamily={appearance.terminalFontFamily}'
     );
