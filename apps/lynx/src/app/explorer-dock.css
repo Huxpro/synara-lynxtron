@@ -31,6 +31,29 @@
   min-width: 224px;
 }
 
+.SliceRoot--viewport-compact
+  .ExplorerDock--editor
+  .ExplorerDockBody,
+.SliceRoot--viewport-medium
+  .ExplorerDock--editor
+  .ExplorerDockBody {
+  flex-direction: column;
+}
+
+.SliceRoot--viewport-compact
+  .ExplorerDock--editor
+  .ExplorerDockSidebar,
+.SliceRoot--viewport-medium
+  .ExplorerDock--editor
+  .ExplorerDockSidebar {
+  width: 100%;
+  min-width: 0;
+  height: 176px;
+  min-height: 176px;
+  border-right-width: 0;
+  border-bottom: 1px solid var(--border);
+}
+
 .ExplorerDockHeader {
   display: flex;
   height: 44px;

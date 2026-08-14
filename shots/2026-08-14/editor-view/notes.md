@@ -176,6 +176,50 @@
   Lynx-for-Web click publication remains under the existing
   `lynx-web-pointer-to-bindtap` harness blocker and is not claimed here.
 
+### Compact Editor Files readability
+
+- Newly discovered scope: `390x844`, DPR 1, dark Editor Files with canonical
+  `editorFilePath=index.ts` / `explorerPath=index.ts` selection.
+- Identity remained matched to the same project, thread, workspace, server
+  state, and viewport used by compact Changes.
+- Web authority:
+  - activity rail: `x=0`, `48x798`
+  - file tree: `x=48`, `342x176`
+  - selected file preview: `x=48`, `342x334`
+  - Chat rail: `x=48`, `342x288`
+  - the real two-line TypeScript file was readable across the full 342px
+    content width.
+- Pre-fix Lynx:
+  - activity rail: `x=0`, `48x798`
+  - Editor center: `x=48`, `342x399`
+  - file tree: `x=48`, `224x354`
+  - selected file preview: `x=272`, `118x354`
+  - the file data and syntax highlighting were healthy, but the fixed wide
+    sidebar left only 34.5% of the center width for code.
+- Root cause: `ExplorerDock--editor` fixed its sidebar at 224px and always kept
+  `ExplorerDockBody` in a row. Unlike Web's responsive workspace sidebar, it
+  had no compact/medium editor presentation override.
+- Fix: compact and medium embedded Explorer bodies stack vertically. The file
+  tree becomes `100% x 176px`; the preview consumes the remaining height.
+  Wide Editor and the standalone Explorer dock keep their horizontal layout.
+- Post-fix Lynx:
+  - file tree: `x=48`, `342x176`
+  - selected file preview: `x=48`, `342x178`
+  - real `index.ts` contents remain visible
+  - `projects.listDirectories`, `projects.readFile`, and TypeScript syntax
+    highlighting completed with no relay error.
+- Evidence:
+  - `/tmp/synara-editor-files-web.png`
+  - `/tmp/synara-editor-files-web.json`
+  - `/tmp/synara-editor-files-lynx.png`
+  - `/tmp/synara-editor-files-lynx.json`
+  - `/tmp/synara-editor-files-lynx-fixed.png`
+  - `/tmp/synara-editor-files-lynx-fixed.json`
+- Harness timing noise: the first Web accessibility snapshot reported an
+  empty page even though `#root` already contained the complete Editor DOM.
+  A normal route reload exposed the stable tree; the empty snapshot was
+  discarded and contributes `0.00` product loss.
+
 ## Authority geometry
 
 After aligning global-sidebar state, Web authority and Lynx use the same
@@ -209,6 +253,8 @@ comparison; no Web screenshot pass is claimed.
   dead strip or hides the selected file's entire patch by default.
 - **P1 compact interaction closed:** compact/medium Editor no longer removes
   the only Files/Changes mode navigation.
+- **P1 compact readability closed:** compact/medium Files no longer restricts
+  the selected code preview to 118px.
 - **P2 coverage remains:** Web Editor Search mode, project switching, editor
   changed-files sidebar and selection, chat-history tabs, terminal rail tabs,
   and resizable Chat width are not yet implemented in Lynx.
@@ -238,6 +284,10 @@ comparison; no Web screenshot pass is claimed.
   component contribution `1.00 -> 0.00`.
 - `lynx-editor-compact-mode-navigation-hidden`: P1 interaction availability,
   component contribution `1.00 -> 0.00`.
+- `lynx-editor-compact-file-preview-cramped`: P1 content readability,
+  component width loss `0.655 -> 0.00`.
+- `editor-compact-web-empty-a11y-snapshot`: harness timing noise,
+  contribution `0.00` product loss.
 - `lynx-editor-changed-files-sidebar`: P2 missing coverage,
   contribution remains `0.25`.
 - `lynx-editor-search-mode`: P2 missing coverage,

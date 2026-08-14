@@ -71,6 +71,12 @@ describe('Lynx Editor view', () => {
     expect(explorerStyles).toMatch(
       /\.ExplorerDock--editor\s+\.ExplorerDockSidebar\s*\{[^}]*width:\s*224px;[^}]*min-width:\s*224px;/s
     );
+    expect(explorerStyles).toMatch(
+      /\.SliceRoot--viewport-compact[\s\S]*?\.ExplorerDock--editor[\s\S]*?\.ExplorerDockBody,[\s\S]*?flex-direction:\s*column;/s
+    );
+    expect(explorerStyles).toMatch(
+      /\.SliceRoot--viewport-compact[\s\S]*?\.ExplorerDock--editor[\s\S]*?\.ExplorerDockSidebar,[\s\S]*?width:\s*100%;[\s\S]*?min-width:\s*0;[\s\S]*?height:\s*176px;/s
+    );
     expect(appStyles).toMatch(
       /\.SliceRoot--viewport-compact\s+\.ThreadEditorBody,[\s\S]*?grid-template-columns:\s*48px minmax\(0,\s*1fr\);[\s\S]*?grid-template-rows:\s*minmax\(0,\s*1fr\) minmax\(0,\s*1fr\);/s
     );
