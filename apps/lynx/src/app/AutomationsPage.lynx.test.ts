@@ -143,6 +143,9 @@ describe('Lynx Automations route', () => {
     expect(dialogSource).toContain('label="Standalone"');
     expect(dialogSource).toContain('label="Heartbeat"');
     expect(dialogSource).toContain('Target thread');
+    expect(dialogSource).toContain('Stop when');
+    expect(dialogSource).toContain('Heartbeat stop condition');
+    expect(dialogSource).toContain('completionPolicyFromStopWhen(stopWhen)');
     expect(dialogSource).toContain('No threads in this project');
     expect(dialogSource).toContain(
       "mode === 'standalone' || targetThreadId.length > 0"
@@ -160,6 +163,10 @@ describe('Lynx Automations route', () => {
     expect(createLogicSource).toContain(
       "input.mode === 'heartbeat' ? input.targetThreadId : null"
     );
+    expect(createLogicSource).toContain(
+      "input.mode === 'heartbeat'"
+    );
+    expect(createLogicSource).toContain('input.completionPolicy');
     expect(createLogicSource).toContain(
       "input.runtimeMode === 'full-access' ? ['full-access' as const] : []"
     );

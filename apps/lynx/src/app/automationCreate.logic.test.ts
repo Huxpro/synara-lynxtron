@@ -15,6 +15,7 @@ describe('Automation create payload', () => {
   ] as const)('maps %s schedules to the canonical contract', (schedule, expected) => {
     expect(
       buildAutomationCreateInput({
+        completionPolicy: { type: 'none' },
         interactionMode: 'plan',
         projectId: 'project-1',
         maxIterations: 25,
@@ -49,6 +50,7 @@ describe('Automation create payload', () => {
     'preserves the %s workspace mode',
     (worktreeMode) => {
       const result = buildAutomationCreateInput({
+          completionPolicy: { type: 'none' },
           interactionMode: 'default',
           projectId: 'project-1',
           maxIterations: null,
@@ -80,6 +82,7 @@ describe('Automation create payload', () => {
     'maps %s with %s workspace to the required risk acknowledgements',
     (runtimeMode, worktreeMode, acknowledgedRisks) => {
       const result = buildAutomationCreateInput({
+        completionPolicy: { type: 'none' },
         interactionMode: 'default',
         projectId: 'project-1',
         maxIterations: null,
@@ -102,6 +105,11 @@ describe('Automation create payload', () => {
 
   it('keeps a heartbeat target and clears standalone targets', () => {
     const base = {
+      completionPolicy: {
+        type: 'ai-evaluated' as const,
+        stopWhen: 'PR is ready to merge',
+        confidenceThreshold: 0.8,
+      },
       interactionMode: 'default' as const,
       projectId: 'project-1' as const,
       maxIterations: null,
@@ -122,6 +130,11 @@ describe('Automation create payload', () => {
         targetThreadId: 'thread-1',
       }),
     ).toMatchObject({
+      completionPolicy: {
+        type: 'ai-evaluated',
+        stopWhen: 'PR is ready to merge',
+        confidenceThreshold: 0.8,
+      },
       mode: 'heartbeat',
       targetThreadId: 'thread-1',
     });
@@ -132,6 +145,7 @@ describe('Automation create payload', () => {
         targetThreadId: 'thread-1',
       }),
     ).toMatchObject({
+      completionPolicy: { type: 'none' },
       mode: 'standalone',
       targetThreadId: null,
     });

@@ -5,6 +5,7 @@ import {
   APP_SETTINGS_STORAGE_KEY,
   readSettingsGeneralProjection,
 } from '@synara-web/appSettingsStorageProjection.logic';
+import { completionPolicyFromStopWhen } from '@synara-web/lib/automationCompletionPolicy';
 
 import type { ProjectSummary, ThreadSummary } from './queries';
 import { webStorage } from '../platform/storage';
@@ -71,6 +72,26 @@ function NativeTimeInput({
     inputFilter: '[0-9:]*',
     maxlength: 5,
     placeholder: '09:00',
+    'send-composing-input': true,
+    bindinput: onInput,
+  });
+}
+
+function NativeStopWhenInput({
+  disabled,
+  onInput,
+}: {
+  readonly disabled: boolean;
+  readonly onInput: (event: NativeTextInputEvent) => void;
+}) {
+  return createElement('input', {
+    className: 'AutomationCreateName',
+    'accessibility-element': true,
+    'accessibility-label': 'Heartbeat stop condition',
+    disabled,
+    focusable: !disabled,
+    maxlength: 2000,
+    placeholder: 'PR is ready to merge',
     'send-composing-input': true,
     bindinput: onInput,
   });
@@ -152,6 +173,7 @@ export function AutomationCreateDialog({
   const [projectId, setProjectId] = useState(projects[0]?.id ?? '');
   const [mode, setMode] = useState<AutomationCreateInput['mode']>('standalone');
   const [targetThreadId, setTargetThreadId] = useState('');
+  const [stopWhen, setStopWhen] = useState('');
   const [schedule, setSchedule] = useState<CreateSchedule>('daily');
   const [timeOfDay, setTimeOfDay] = useState('09:00');
   const [maxIterations, setMaxIterations] = useState<number | null>(null);
@@ -204,6 +226,7 @@ export function AutomationCreateDialog({
   const submit = () => {
     if (!canCreate || !project) return;
     onCreate(buildAutomationCreateInput({
+      completionPolicy: completionPolicyFromStopWhen(stopWhen),
       projectId: project.id as AutomationCreateInput['projectId'],
       interactionMode,
       mode,
@@ -336,26 +359,35 @@ export function AutomationCreateDialog({
             </view>
           </view>
           {mode === 'heartbeat' ? (
-            <view className="AutomationCreateField">
-              <text className="AutomationCreateLabel">Target thread</text>
-              <view className="AutomationCreateProjects">
-                {projectThreads.length === 0 ? (
-                  <text className="AutomationCreateLabel">
-                    No threads in this project
-                  </text>
-                ) : (
-                  projectThreads.map((thread) => (
-                    <ChoiceOption
-                      key={thread.id}
-                      disabled={pending}
-                      label={thread.title.trim() || 'New thread'}
-                      selected={targetThreadId === thread.id}
-                      onSelect={() => setTargetThreadId(thread.id)}
-                    />
-                  ))
-                )}
+            <>
+              <view className="AutomationCreateField">
+                <text className="AutomationCreateLabel">Target thread</text>
+                <view className="AutomationCreateProjects">
+                  {projectThreads.length === 0 ? (
+                    <text className="AutomationCreateLabel">
+                      No threads in this project
+                    </text>
+                  ) : (
+                    projectThreads.map((thread) => (
+                      <ChoiceOption
+                        key={thread.id}
+                        disabled={pending}
+                        label={thread.title.trim() || 'New thread'}
+                        selected={targetThreadId === thread.id}
+                        onSelect={() => setTargetThreadId(thread.id)}
+                      />
+                    ))
+                  )}
+                </view>
               </view>
-            </view>
+              <view className="AutomationCreateField">
+                <text className="AutomationCreateLabel">Stop when</text>
+                <NativeStopWhenInput
+                  disabled={pending}
+                  onInput={(event) => setStopWhen(event.detail.value)}
+                />
+              </view>
+            </>
           ) : null}
           {schedule === 'manual' ? null : (
             <view className="AutomationCreateField">

@@ -224,8 +224,7 @@ Expanded create-dialog evidence is stored in `9b46ffd`.
 
 ### Remaining create-form coverage
 
-- Model selection, heartbeat completion-policy editing, full retry and misfire
-  policy editing remain missing
+- Model selection and full retry/misfire policy editing remain missing
   from the Lynx create form.
 - These remain functional coverage debt. They are not hidden by the local-mode
   fix or by the existing visual score.
@@ -306,3 +305,34 @@ Expanded create-dialog evidence is stored in `9b46ffd`.
   - Existing optional `bufferutil` / `utf-8-validate` and Lynx CSS warnings
     only.
 - No automation was created or run.
+
+## Heartbeat completion continuation
+
+### Product loss
+
+- `lynx-automation-heartbeat-stop-policy-missing`: P1 termination semantics,
+  contribution `1.00 -> 0.00`.
+- Web lets a heartbeat define a natural-language `Stop when` condition; Lynx
+  always persisted `completionPolicy: none`.
+- Without this field, a heartbeat cannot stop on task completion and must rely
+  only on max iterations or errors.
+
+### Fix
+
+- Reuse Web's pure `completionPolicyFromStopWhen` helper and canonical
+  confidence threshold.
+- Show a `Stop when` native input only for Heartbeat mode.
+- Map non-empty input to `ai-evaluated`; trim it before persistence.
+- Force standalone automations back to `completionPolicy: none`, even if a
+  stale stop condition remains in local dialog state.
+
+### Verification
+
+- `bun run test -- src/app/automationCreate.logic.test.ts src/app/AutomationsPage.lynx.test.ts`
+  - 2 files, 16 tests passed.
+  - Heartbeat preserves the AI-evaluated policy; standalone clears it.
+- `CI=1 bun run build` in `apps/lynx`
+  - Lynx production bundle and Desktop host built and staged.
+  - Existing optional `bufferutil` / `utf-8-validate` and Lynx CSS warnings
+    only.
+- No heartbeat or completion-evaluation run was started.
