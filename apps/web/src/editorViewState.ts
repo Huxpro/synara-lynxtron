@@ -10,6 +10,7 @@ import { webStorage } from "~/platform/storage";
 import { isBrowser } from "~/platform/env";
 const EDITOR_VIEW_STATE_STORAGE_KEY = "synara.editor.viewStateByThreadId";
 const EDITOR_RAIL_CHAT_TABS_STORAGE_KEY = "synara.editor.railChatTabsByProjectId";
+const EDITOR_CHAT_PANE_VISIBLE_STORAGE_KEY = "synara.editor.chatPaneVisible";
 const MAX_PERSISTED_THREADS = 50;
 const MAX_EDITOR_RAIL_CHAT_TABS = 8;
 
@@ -78,6 +79,28 @@ export function storeEditorViewState(threadId: string, snapshot: EditorViewState
         });
     }
     webStorage.setItem(EDITOR_VIEW_STATE_STORAGE_KEY, JSON.stringify(map));
+  } catch {
+    // Best-effort preference persistence only.
+  }
+}
+
+export function readEditorChatPaneVisible(): boolean {
+  if (!isBrowser()) {
+    return true;
+  }
+  try {
+    return webStorage.getItem(EDITOR_CHAT_PANE_VISIBLE_STORAGE_KEY) !== "false";
+  } catch {
+    return true;
+  }
+}
+
+export function storeEditorChatPaneVisible(visible: boolean): void {
+  if (!isBrowser()) {
+    return;
+  }
+  try {
+    webStorage.setItem(EDITOR_CHAT_PANE_VISIBLE_STORAGE_KEY, String(visible));
   } catch {
     // Best-effort preference persistence only.
   }

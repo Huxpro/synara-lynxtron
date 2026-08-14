@@ -266,6 +266,46 @@
   `explorerPath=src/helper.ts` verifies the identical product projection
   without claiming that blocked interaction.
 
+### Editor Chat visibility
+
+- Newly discovered scope: compact `390x844` Editor Changes with the Chat pane
+  hidden through the real Web header control.
+- Web authority after the retained click:
+  - activity rail: `48x798`
+  - changed-files sidebar: `342x176`
+  - selected patch viewport expanded from `342x334` to `342x622`
+  - Chat pane: `display:none`, `0x0`
+  - header action changed from `Hide chat panel` to `Show chat panel`.
+- Previous Lynx behavior always mounted a 384px wide Chat pane on wide screens
+  and half-height Chat on compact/medium screens. Users could not reclaim the
+  workspace even though the authority exposed this as a primary Editor header
+  action.
+- Fix:
+  - moved the existing `synara.editor.chatPaneVisible` preference into shared
+    `editorViewState` APIs used by both renderers;
+  - added a Lynx `Hide chat` / `Show chat` header action;
+  - hidden Chat remains mounted in both renderers and is removed from layout
+    through each renderer's hidden presentation;
+  - compact/medium centers span both grid rows while Chat is hidden;
+  - deterministic Web and Native init accept `editorChat=hidden|open`.
+- Post-fix Lynx:
+  - compact: rail `48x798`, center `342x798`, changed-files sidebar
+    `342x176`, patch `342x577`, Chat `0x0`;
+  - wide: rail `48x774`, center `1232x774`, sidebar `224x730`, patch
+    `1007x730`, Chat `0x0`;
+  - header reads `Show chat`;
+  - relay settled with no pending requests or RPC error.
+- Evidence:
+  - `/tmp/synara-editor-chat-hidden-web.png`
+  - `/tmp/synara-editor-chat-hidden-web.json`
+  - `/tmp/synara-editor-chat-hidden-lynx.png`
+  - `/tmp/synara-editor-chat-hidden-lynx.json`
+  - `/tmp/synara-editor-chat-hidden-lynx-wide.png`
+  - `/tmp/synara-editor-chat-hidden-lynx-wide.json`
+- Web supplied the real retained toggle click. Lynx deterministic init proves
+  the hidden/open layouts; Lynx-for-Web runtime toggle clicks remain under the
+  shared dynamic-event blocker.
+
 ## Authority geometry
 
 After aligning global-sidebar state, Web authority and Lynx use the same
@@ -303,6 +343,8 @@ comparison; no Web screenshot pass is claimed.
   the selected code preview to 118px.
 - **P2 coverage closed:** Editor Changes now has a changed-files sidebar and
   selected-file projection.
+- **P2 coverage closed:** Editor Chat can be hidden and shown, preserving the
+  shared visibility preference and reclaiming the workspace.
 - **P2 coverage remains:** Web Editor Search mode, project switching, editor
   chat-history tabs, terminal rail tabs, and resizable Chat width are not yet
   implemented in Lynx.
@@ -339,6 +381,8 @@ comparison; no Web screenshot pass is claimed.
 - `editor-compact-web-empty-a11y-snapshot`: harness timing noise,
   contribution `0.00` product loss.
 - `lynx-editor-changed-files-sidebar`: P2 missing coverage,
+  contribution `0.25 -> 0.00`.
+- `lynx-editor-chat-visibility`: P2 missing coverage,
   contribution `0.25 -> 0.00`.
 - `lynx-editor-search-mode`: P2 missing coverage,
   contribution remains `0.25`.

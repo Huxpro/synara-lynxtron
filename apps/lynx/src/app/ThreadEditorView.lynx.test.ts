@@ -17,11 +17,35 @@ describe('Lynx Editor view', () => {
 
   it('reuses the real explorer preview beside the live chat rail', () => {
     const routerSource = source('./router.tsx');
-    expect(routerSource).toContain('className="ThreadEditorCenter"');
-    expect(routerSource).toContain('className="ThreadEditorChat"');
+    const editorStateSource = source('../../../web/src/editorViewState.ts');
+    const webEditorSource = source(
+      '../../../web/src/components/EditorWorkspaceView.tsx'
+    );
+    expect(routerSource).toContain(
+      "editorChatOpen ? '' : ' ThreadEditorCenter--chat-hidden'"
+    );
+    expect(routerSource).toContain(
+      "editorChatOpen ? '' : ' ThreadEditorChat--hidden'"
+    );
     expect(routerSource).toContain('explorerFileSyntaxHighlight');
     expect(routerSource).toContain('onSelectPath={onExplorerSelectPath}');
     expect(routerSource).toContain('{chatBody}');
+    expect(editorStateSource).toContain(
+      'export function readEditorChatPaneVisible()'
+    );
+    expect(editorStateSource).toContain(
+      'export function storeEditorChatPaneVisible(visible: boolean)'
+    );
+    expect(webEditorSource).toContain('readEditorChatPaneVisible()');
+    expect(webEditorSource).toContain('storeEditorChatPaneVisible(next)');
+    expect(routerSource).toContain(
+      'initialEditorChatOpen ?? readEditorChatPaneVisible()'
+    );
+    expect(routerSource).toContain(
+      "{editorChatOpen ? 'Hide chat' : 'Show chat'}"
+    );
+    expect(routerSource).toContain('storeEditorChatPaneVisible(next)');
+    expect(routerSource).toContain('ThreadEditorChat--hidden');
     expect(routerSource).toContain(
       'storeEditorViewState(threadId, {\n      centerMode: editorCenterMode'
     );
@@ -100,6 +124,12 @@ describe('Lynx Editor view', () => {
     expect(appStyles).not.toMatch(
       /\.SliceRoot--viewport-compact\s+\.ThreadEditorActivityRail,[^}]*display:\s*none;/s
     );
+    expect(appStyles).toMatch(
+      /\.ThreadEditorChat--hidden\s*\{[^}]*display:\s*none;/s
+    );
+    expect(appStyles).toMatch(
+      /\.SliceRoot--viewport-compact\s+\.ThreadEditorCenter--chat-hidden,[\s\S]*?grid-row:\s*1\s*\/\s*3;/s
+    );
   });
 
   it('supports deterministic Web and Native startup verification', () => {
@@ -111,6 +141,7 @@ describe('Lynx Editor view', () => {
     );
     expect(webHostSource).toContain("get('editor') === 'open'");
     expect(webHostSource).toContain("get('editorMode') === 'diff'");
+    expect(webHostSource).toContain("get('editorChat') === 'hidden'");
     expect(appSource).toContain(
       "await fetchWorkingTreeDiff(summary.workspaceRoot).catch("
     );

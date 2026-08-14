@@ -103,7 +103,9 @@ import { resolveSettingsBackTarget } from '@synara-web/components/SidebarSetting
 import { resolveThreadPageBodyState } from './threadPageState.logic';
 import { resolveDefaultEnvironmentPanelOpen } from '@synara-web/components/ChatView.logic';
 import {
+  readEditorChatPaneVisible,
   readEditorViewState,
+  storeEditorChatPaneVisible,
   storeEditorViewState,
 } from '@synara-web/editorViewState';
 import { sleepOnHost } from '../platform/timer';
@@ -384,6 +386,7 @@ interface ThreadPageProps {
   readonly initialEnvironmentOpen: boolean;
   readonly initialEditorOpen: boolean;
   readonly initialEditorCenterMode: 'file' | 'diff';
+  readonly initialEditorChatOpen: boolean | null;
   readonly initialWorkingTreeDiff: GitReadWorkingTreeDiffResult | null;
   readonly initialRenameOpen: boolean;
   readonly initialTerminalOpen: boolean;
@@ -558,6 +561,7 @@ function ThreadPage(props: ThreadPageProps) {
     initialEnvironmentOpen,
     initialEditorOpen,
     initialEditorCenterMode,
+    initialEditorChatOpen,
     initialWorkingTreeDiff,
     initialRenameOpen,
     initialTerminalOpen,
@@ -590,6 +594,9 @@ function ThreadPage(props: ThreadPageProps) {
   const [explorerOpen, setExplorerOpen] = useState(initialExplorerOpen);
   const [terminalOpen, setTerminalOpen] = useState(initialTerminalOpen);
   const [editorMode, setEditorMode] = useState(initialEditorOpen);
+  const [editorChatOpen, setEditorChatOpen] = useState(
+    () => initialEditorChatOpen ?? readEditorChatPaneVisible()
+  );
   const [editorCenterMode, setEditorCenterMode] = useState<'file' | 'diff'>(
     () =>
       initialEditorCenterMode === 'diff'
@@ -854,6 +861,14 @@ function ThreadPage(props: ThreadPageProps) {
     'background only';
     setEditorMode(false);
   };
+  const toggleEditorChat = () => {
+    'background only';
+    setEditorChatOpen((current) => {
+      const next = !current;
+      storeEditorChatPaneVisible(next);
+      return next;
+    });
+  };
   useEffect(() => {
     if (!editorMode) return;
     storeEditorViewState(threadId, {
@@ -893,6 +908,9 @@ function ThreadPage(props: ThreadPageProps) {
           <text className="ThreadEditorModeLabel">
             {editorCenterMode === 'file' ? 'Files' : 'Changes'}
           </text>
+          <Button size="xs" variant="outline" onClick={toggleEditorChat}>
+            {editorChatOpen ? 'Hide chat' : 'Show chat'}
+          </Button>
           <Button size="xs" variant="outline" onClick={exitEditorMode}>
             Chat
           </Button>
@@ -926,7 +944,11 @@ function ThreadPage(props: ThreadPageProps) {
               <text className="ThreadEditorActivityGlyph">±</text>
             </view>
           </view>
-          <view className="ThreadEditorCenter">
+          <view
+            className={`ThreadEditorCenter${
+              editorChatOpen ? '' : ' ThreadEditorCenter--chat-hidden'
+            }`}
+          >
             {editorCenterMode === 'file' ? (
               <ExplorerDock
               key={`editor-files:${threadId}:${
@@ -980,7 +1002,11 @@ function ThreadPage(props: ThreadPageProps) {
               </view>
             )}
           </view>
-          <view className="ThreadEditorChat">
+          <view
+            className={`ThreadEditorChat${
+              editorChatOpen ? '' : ' ThreadEditorChat--hidden'
+            }`}
+          >
             <ChatSurfaceHeaderFrame>
               <view className="ThreadHeaderIdentity">
                 {threadHeaderIdentity}
@@ -1159,6 +1185,7 @@ export function SliceRouter({
   appearance,
   initialEditorOpen,
   initialEditorCenterMode,
+  initialEditorChatOpen,
   initialEnvironmentOpen,
   initialRenameOpen,
   initialTerminalOpen,
@@ -1179,6 +1206,7 @@ export function SliceRouter({
   readonly appearance: SettingsAppearanceValues;
   readonly initialEditorOpen: boolean;
   readonly initialEditorCenterMode: 'file' | 'diff';
+  readonly initialEditorChatOpen: boolean | null;
   readonly initialEnvironmentOpen: boolean;
   readonly initialRenameOpen: boolean;
   readonly initialTerminalOpen: boolean;
@@ -1717,6 +1745,7 @@ export function SliceRouter({
         initialEnvironmentOpen={initialEnvironmentOpen}
         initialEditorOpen={initialEditorOpen}
         initialEditorCenterMode={initialEditorCenterMode}
+        initialEditorChatOpen={initialEditorChatOpen}
         initialWorkingTreeDiff={
           resolvedActiveThreadData?.workingTreeDiff ?? null
         }

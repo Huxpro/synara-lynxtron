@@ -101,6 +101,7 @@ export function App() {
     readonly initialEnvironmentOpen?: unknown;
     readonly initialEditorOpen?: unknown;
     readonly initialEditorCenterMode?: unknown;
+    readonly initialEditorChatOpen?: unknown;
     readonly initialRenameOpen?: unknown;
     readonly initialTerminalOpen?: unknown;
     readonly initialTemporaryOpen?: unknown;
@@ -117,6 +118,10 @@ export function App() {
   const initialEditorOpen = initData.initialEditorOpen === true;
   const initialEditorCenterMode =
     initData.initialEditorCenterMode === 'diff' ? 'diff' : 'file';
+  const initialEditorChatOpen =
+    typeof initData.initialEditorChatOpen === 'boolean'
+      ? initData.initialEditorChatOpen
+      : null;
   const initialRenameOpen = initData.initialRenameOpen === true;
   const initialTerminalOpen = initData.initialTerminalOpen === true;
   const initialTemporaryOpen = initData.initialTemporaryOpen === true;
@@ -389,6 +394,7 @@ export function App() {
             initialEnvironmentOpen={initialEnvironmentOpen}
             initialEditorOpen={initialEditorOpen}
             initialEditorCenterMode={initialEditorCenterMode}
+            initialEditorChatOpen={initialEditorChatOpen}
             initialRenameOpen={initialRenameOpen}
             initialTerminalOpen={initialTerminalOpen}
             initialTemporaryOpen={initialTemporaryOpen}

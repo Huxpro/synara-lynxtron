@@ -845,6 +845,12 @@ const initialEditorCenterMode =
   new URLSearchParams(globalThis.location.search).get('editorMode') === 'diff'
     ? 'diff'
     : 'file';
+const initialEditorChatOpen =
+  new URLSearchParams(globalThis.location.search).get('editorChat') === 'hidden'
+    ? false
+    : new URLSearchParams(globalThis.location.search).get('editorChat') === 'open'
+      ? true
+      : null;
 const initialRenameOpen =
   new URLSearchParams(globalThis.location.search).get('rename') === 'open';
 const initialTerminalOpen =
@@ -896,6 +902,7 @@ webDocument.body.innerHTML = `
     initialEnvironmentOpen,
     initialEditorOpen,
     initialEditorCenterMode,
+    initialEditorChatOpen,
     initialRenameOpen,
     initialTerminalOpen,
     initialTemporaryOpen,

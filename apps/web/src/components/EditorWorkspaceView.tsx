@@ -62,6 +62,10 @@ import { WorkspaceFilePreview } from "./WorkspaceFilePreview";
 
 import { webStorage } from "~/platform/storage";
 import { isBrowser } from "~/platform/env";
+import {
+  readEditorChatPaneVisible,
+  storeEditorChatPaneVisible,
+} from "~/editorViewState";
 import { raf, cancelRaf } from "~/platform/frame";
 import {
   applyBodyResizeStyles,
@@ -75,7 +79,6 @@ type EditorActivityBarItem = EditorCenterMode | "search";
 
 const EDITOR_CHAT_PANE_STORAGE_KEY = "synara.editor.chatPaneWidth";
 const EDITOR_SIDEBAR_VISIBLE_STORAGE_KEY = "synara.editor.sidebarVisible";
-const EDITOR_CHAT_PANE_VISIBLE_STORAGE_KEY = "synara.editor.chatPaneVisible";
 const EDITOR_CHAT_PANE_DEFAULT_WIDTH = 384;
 const EDITOR_CHAT_PANE_MIN_WIDTH = 320;
 const EDITOR_CHAT_PANE_MAX_WIDTH = 600;
@@ -382,7 +385,7 @@ export function EditorWorkspaceView(props: EditorWorkspaceViewProps) {
     readStoredEditorVisibility(EDITOR_SIDEBAR_VISIBLE_STORAGE_KEY),
   );
   const [chatPaneVisible, setChatPaneVisible] = useState(() =>
-    readStoredEditorVisibility(EDITOR_CHAT_PANE_VISIBLE_STORAGE_KEY),
+    readEditorChatPaneVisible(),
   );
   // The search pane replaces the explorer/diff sidebar without touching the
   // center mode, so picking a result simply opens it in the file preview. The
@@ -415,7 +418,7 @@ export function EditorWorkspaceView(props: EditorWorkspaceViewProps) {
   const toggleChatPaneVisible = () => {
     setChatPaneVisible((previous) => {
       const next = !previous;
-      storeEditorVisibility(EDITOR_CHAT_PANE_VISIBLE_STORAGE_KEY, next);
+      storeEditorChatPaneVisible(next);
       return next;
     });
   };
