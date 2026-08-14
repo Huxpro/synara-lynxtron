@@ -1,4 +1,5 @@
 import {
+  buildThemeCssVariables,
   resolveThemePack,
   resolveThemeVariant,
   type ThemeState,
@@ -36,4 +37,19 @@ export function resolveSliceUiFontFamily(
       resolveThemePack(themeState, variant).theme.fonts.ui
     ) ?? 'system-ui'
   );
+}
+
+export function resolveSliceThemeVariables(
+  themeState: ThemeState,
+  systemDark = false
+): Record<string, string> {
+  const variant = resolveSliceThemeVariant(themeState, systemDark);
+  return {
+    ...buildThemeCssVariables(resolveThemePack(themeState, variant), variant, {
+      electron: false,
+      isMac: true,
+      systemUiFont: themeState.systemUiFont,
+    }).variables,
+    '--font-ui-family': resolveSliceUiFontFamily(themeState, systemDark),
+  };
 }

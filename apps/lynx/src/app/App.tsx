@@ -29,7 +29,7 @@ import { useViewportLayout } from '~/hooks/useViewportLayout';
 
 import { sliceUiDensityClassName } from './appDensity.logic';
 import {
-  resolveSliceUiFontFamily,
+  resolveSliceThemeVariables,
   sliceThemeClassName,
 } from './appTheme.logic';
 import {
@@ -321,12 +321,7 @@ export function App() {
           .join(' ')}
         data-viewport-width={viewportLayout.width}
         data-viewport-height={viewportLayout.height}
-        style={{
-          '--font-ui-family': resolveSliceUiFontFamily(
-            themeState,
-            systemDark
-          ),
-        }}
+        style={resolveSliceThemeVariables(themeState, systemDark)}
       >
         {transportState === 'reconnecting' || transportState === 'offline' ? (
           <view

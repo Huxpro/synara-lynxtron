@@ -3,6 +3,7 @@ import { DEFAULT_THEME_STATE } from '@synara-web/theme/theme.logic';
 
 import {
   resolveSliceUiFontFamily,
+  resolveSliceThemeVariables,
   resolveSliceThemeVariant,
   sliceThemeClassName,
 } from './appTheme.logic';
@@ -68,5 +69,29 @@ describe('slice root theme projection', () => {
         },
       })
     ).toBe('system-ui');
+  });
+
+  it('projects the active theme pack into root color tokens', () => {
+    const customState = {
+      ...DEFAULT_THEME_STATE,
+      mode: 'light' as const,
+      chromeThemes: {
+        ...DEFAULT_THEME_STATE.chromeThemes,
+        light: {
+          ...DEFAULT_THEME_STATE.chromeThemes.light,
+          accent: '#ff3366',
+          ink: '#112233',
+          surface: '#fefefe',
+        },
+      },
+    };
+    const variables = resolveSliceThemeVariables(customState);
+
+    expect(variables['--codex-base-accent']).toBe('#ff3366');
+    expect(variables['--codex-base-ink']).toBe('#112233');
+    expect(variables['--codex-base-surface']).toBe('#fefefe');
+    expect(variables['--foreground']).not.toBe(
+      DEFAULT_THEME_STATE.chromeThemes.light.ink
+    );
   });
 });
