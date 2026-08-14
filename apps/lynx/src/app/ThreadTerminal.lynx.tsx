@@ -146,6 +146,7 @@ export function ThreadTerminal({
         });
       }
     } finally {
+      autoOpenAttemptKeyRef.current = null;
       setSnapshot(null);
       setCommand('');
       await commandInputRef.current?.setValue('');

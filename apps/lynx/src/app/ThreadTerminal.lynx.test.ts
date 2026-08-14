@@ -28,6 +28,9 @@ describe('Lynx thread terminal', () => {
     expect(terminalSource).toContain(
       'onOpenChange(false)'
     );
+    expect(terminalSource).toContain(
+      'autoOpenAttemptKeyRef.current = null;'
+    );
     expect(terminalSource).toContain('<Input');
     expect(terminalSource).toContain('ref={commandInputRef}');
     expect(terminalSource).toContain('nativeInput');
