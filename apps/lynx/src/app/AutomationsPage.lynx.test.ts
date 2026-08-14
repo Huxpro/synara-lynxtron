@@ -106,6 +106,7 @@ describe('Lynx Automations route', () => {
 
     expect(pageSource).toContain('mutationFn: createAutomation');
     expect(pageSource).toContain('<AutomationCreateDialog');
+    expect(pageSource).toContain('threads={sidebar.data?.threads ?? []}');
     expect(pageSource).toContain(
       'navigate(`/automations/${encodeURIComponent(definition.id)}`)'
     );
@@ -139,6 +140,16 @@ describe('Lynx Automations route', () => {
     expect(dialogSource).toContain('Stop on error');
     expect(dialogSource).toContain('Interaction mode');
     expect(dialogSource).toContain('Permissions');
+    expect(dialogSource).toContain('label="Standalone"');
+    expect(dialogSource).toContain('label="Heartbeat"');
+    expect(dialogSource).toContain('Target thread');
+    expect(dialogSource).toContain('No threads in this project');
+    expect(dialogSource).toContain(
+      "mode === 'standalone' || targetThreadId.length > 0"
+    );
+    expect(dialogSource).toContain(
+      'thread.id === targetThreadId && thread.projectId === projectId'
+    );
     expect(dialogSource).toContain('label="Approval required"');
     expect(dialogSource).toContain('label="Full access"');
     expect(dialogSource).toContain('await dialogs.confirm(');
@@ -146,6 +157,9 @@ describe('Lynx Automations route', () => {
       'Scheduled full-access runs can make changes without per-step approval.'
     );
     expect(createLogicSource).toContain('runtimeMode: input.runtimeMode');
+    expect(createLogicSource).toContain(
+      "input.mode === 'heartbeat' ? input.targetThreadId : null"
+    );
     expect(createLogicSource).toContain(
       "input.runtimeMode === 'full-access' ? ['full-access' as const] : []"
     );

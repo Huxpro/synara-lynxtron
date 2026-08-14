@@ -18,12 +18,14 @@ describe('Automation create payload', () => {
         interactionMode: 'plan',
         projectId: 'project-1',
         maxIterations: 25,
+        mode: 'standalone',
         modelSelection,
         name: '  Release review  ',
         prompt: '  Check regressions.  ',
         runtimeMode: 'approval-required',
         schedule,
         stopOnError: false,
+        targetThreadId: null,
         timeOfDay: '14:30',
         worktreeMode: 'worktree',
       }),
@@ -50,12 +52,14 @@ describe('Automation create payload', () => {
           interactionMode: 'default',
           projectId: 'project-1',
           maxIterations: null,
+          mode: 'standalone',
           modelSelection,
           name: 'Workspace mode',
           prompt: 'Check the selected workspace mode.',
           runtimeMode: 'approval-required',
           schedule: 'manual',
           stopOnError: true,
+          targetThreadId: null,
           timeOfDay: '09:00',
           worktreeMode,
         });
@@ -79,12 +83,14 @@ describe('Automation create payload', () => {
         interactionMode: 'default',
         projectId: 'project-1',
         maxIterations: null,
+        mode: 'standalone',
         modelSelection,
         name: 'Permission mode',
         prompt: 'Verify automation permissions.',
         runtimeMode,
         schedule: 'manual',
         stopOnError: true,
+        targetThreadId: null,
         timeOfDay: '09:00',
         worktreeMode,
       });
@@ -93,4 +99,41 @@ describe('Automation create payload', () => {
       expect(result.acknowledgedRisks).toEqual(acknowledgedRisks);
     },
   );
+
+  it('keeps a heartbeat target and clears standalone targets', () => {
+    const base = {
+      interactionMode: 'default' as const,
+      projectId: 'project-1' as const,
+      maxIterations: null,
+      modelSelection,
+      name: 'Continue a thread',
+      prompt: 'Keep working.',
+      runtimeMode: 'approval-required' as const,
+      schedule: 'manual' as const,
+      stopOnError: true,
+      timeOfDay: '09:00',
+      worktreeMode: 'auto' as const,
+    };
+
+    expect(
+      buildAutomationCreateInput({
+        ...base,
+        mode: 'heartbeat',
+        targetThreadId: 'thread-1',
+      }),
+    ).toMatchObject({
+      mode: 'heartbeat',
+      targetThreadId: 'thread-1',
+    });
+    expect(
+      buildAutomationCreateInput({
+        ...base,
+        mode: 'standalone',
+        targetThreadId: 'thread-1',
+      }),
+    ).toMatchObject({
+      mode: 'standalone',
+      targetThreadId: null,
+    });
+  });
 });

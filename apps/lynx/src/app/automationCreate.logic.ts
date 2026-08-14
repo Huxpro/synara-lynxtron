@@ -1,4 +1,5 @@
 import type {
+  AutomationMode,
   AutomationCreateInput,
   AutomationWorktreeMode,
   ModelSelection,
@@ -13,6 +14,7 @@ export type CreateWorktreeMode = AutomationWorktreeMode;
 export function buildAutomationCreateInput(input: {
   readonly interactionMode: ProviderInteractionMode;
   readonly maxIterations: number | null;
+  readonly mode: AutomationMode;
   readonly modelSelection: ModelSelection;
   readonly name: string;
   readonly projectId: ProjectId;
@@ -20,6 +22,7 @@ export function buildAutomationCreateInput(input: {
   readonly runtimeMode: RuntimeMode;
   readonly schedule: CreateSchedule;
   readonly stopOnError: boolean;
+  readonly targetThreadId: AutomationCreateInput['targetThreadId'];
   readonly timeOfDay: string;
   readonly worktreeMode: CreateWorktreeMode;
 }): AutomationCreateInput {
@@ -37,8 +40,9 @@ export function buildAutomationCreateInput(input: {
     runtimeMode: input.runtimeMode,
     interactionMode: input.interactionMode,
     worktreeMode: input.worktreeMode,
-    mode: 'standalone',
-    targetThreadId: null,
+    mode: input.mode,
+    targetThreadId:
+      input.mode === 'heartbeat' ? input.targetThreadId : null,
     maxIterations: input.maxIterations,
     stopOnError: input.stopOnError,
     completionPolicy: { type: 'none' },

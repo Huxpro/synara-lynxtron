@@ -224,8 +224,8 @@ Expanded create-dialog evidence is stored in `9b46ffd`.
 
 ### Remaining create-form coverage
 
-- Model selection, heartbeat targeting, full retry and misfire policy editing,
-  and completion-policy approval remain missing
+- Model selection, heartbeat completion-policy editing, full retry and misfire
+  policy editing remain missing
   from the Lynx create form.
 - These remain functional coverage debt. They are not hidden by the local-mode
   fix or by the existing visual score.
@@ -270,3 +270,39 @@ Expanded create-dialog evidence is stored in `9b46ffd`.
   - Existing optional `bufferutil` / `utf-8-validate` and Lynx CSS warnings
     only.
 - No automation was created or run during this safety-sensitive follow-up.
+
+## Heartbeat targeting continuation
+
+### Product loss
+
+- `lynx-automation-heartbeat-mode-missing`: P1 execution semantics,
+  contribution `1.00 -> 0.00`.
+- Lynx could create only standalone automations, while Web supports heartbeat
+  automations that continue one existing thread.
+- This changes the execution model, thread identity, concurrency behavior, and
+  eventual stop-policy semantics; it is not a cosmetic field omission.
+
+### Fix
+
+- Add Standalone and Heartbeat mode choices.
+- Pass real sidebar thread summaries into the create dialog.
+- Filter target choices to active threads in the selected project.
+- Clear the selected target when project changes make it invalid.
+- Disable Create while Heartbeat has no target.
+- Preserve the target only for heartbeat payloads; standalone always sends
+  `targetThreadId: null`.
+- Show an explicit `No threads in this project` state rather than allowing an
+  invalid heartbeat definition.
+
+### Verification
+
+- `bun run test -- src/app/automationCreate.logic.test.ts src/app/AutomationsPage.lynx.test.ts`
+  - 2 files, 16 tests passed.
+  - Covers heartbeat target preservation, standalone target clearing, project
+    filtering source contracts, and all prior schedule/workspace/permission
+    cases.
+- `CI=1 bun run build` in `apps/lynx`
+  - Lynx production bundle and Desktop host built and staged.
+  - Existing optional `bufferutil` / `utf-8-validate` and Lynx CSS warnings
+    only.
+- No automation was created or run.

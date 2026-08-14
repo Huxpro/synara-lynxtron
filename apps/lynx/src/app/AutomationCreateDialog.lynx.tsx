@@ -6,7 +6,7 @@ import {
   readSettingsGeneralProjection,
 } from '@synara-web/appSettingsStorageProjection.logic';
 
-import type { ProjectSummary } from './queries';
+import type { ProjectSummary, ThreadSummary } from './queries';
 import { webStorage } from '../platform/storage';
 import { dialogs } from '../platform/dialogs';
 import { Button } from '../components/ui/button';
@@ -133,6 +133,7 @@ function ChoiceOption({
 export function AutomationCreateDialog({
   open,
   projects,
+  threads,
   pending,
   error,
   onCreate,
@@ -140,6 +141,7 @@ export function AutomationCreateDialog({
 }: {
   readonly open: boolean;
   readonly projects: readonly ProjectSummary[];
+  readonly threads: readonly ThreadSummary[];
   readonly pending: boolean;
   readonly error: string | null;
   readonly onCreate: (input: AutomationCreateInput) => void;
@@ -148,6 +150,8 @@ export function AutomationCreateDialog({
   const [name, setName] = useState('');
   const [prompt, setPrompt] = useState('');
   const [projectId, setProjectId] = useState(projects[0]?.id ?? '');
+  const [mode, setMode] = useState<AutomationCreateInput['mode']>('standalone');
+  const [targetThreadId, setTargetThreadId] = useState('');
   const [schedule, setSchedule] = useState<CreateSchedule>('daily');
   const [timeOfDay, setTimeOfDay] = useState('09:00');
   const [maxIterations, setMaxIterations] = useState<number | null>(null);
@@ -168,7 +172,22 @@ export function AutomationCreateDialog({
       setProjectId(projects[0]!.id);
     }
   }, [projectId, projects]);
+  useEffect(() => {
+    if (
+      targetThreadId &&
+      !threads.some(
+        (thread) =>
+          thread.id === targetThreadId && thread.projectId === projectId
+      )
+    ) {
+      setTargetThreadId('');
+    }
+  }, [projectId, targetThreadId, threads]);
   const project = projects.find((candidate) => candidate.id === projectId);
+  const projectThreads = threads.filter(
+    (thread) =>
+      thread.projectId === projectId && (thread.archivedAt ?? null) === null
+  );
   const modelSelection =
     project?.defaultModelSelection ?? {
       provider: generalSettings.defaultProvider,
@@ -179,13 +198,15 @@ export function AutomationCreateDialog({
     name.trim().length > 0 &&
     prompt.trim().length > 0 &&
     (schedule === 'manual' || /^(?:[01]\d|2[0-3]):[0-5]\d$/u.test(timeOfDay)) &&
-    Boolean(project);
+    Boolean(project) &&
+    (mode === 'standalone' || targetThreadId.length > 0);
 
   const submit = () => {
     if (!canCreate || !project) return;
     onCreate(buildAutomationCreateInput({
       projectId: project.id as AutomationCreateInput['projectId'],
       interactionMode,
+      mode,
       name,
       prompt,
       runtimeMode,
@@ -194,6 +215,10 @@ export function AutomationCreateDialog({
       maxIterations,
       modelSelection,
       stopOnError,
+      targetThreadId:
+        mode === 'heartbeat'
+          ? (targetThreadId as AutomationCreateInput['targetThreadId'])
+          : null,
       worktreeMode,
     }));
   };
@@ -293,6 +318,45 @@ export function AutomationCreateDialog({
               />
             </view>
           </view>
+          <view className="AutomationCreateField">
+            <text className="AutomationCreateLabel">Mode</text>
+            <view className="AutomationCreateChoices">
+              <ChoiceOption
+                disabled={pending}
+                label="Standalone"
+                selected={mode === 'standalone'}
+                onSelect={() => setMode('standalone')}
+              />
+              <ChoiceOption
+                disabled={pending}
+                label="Heartbeat"
+                selected={mode === 'heartbeat'}
+                onSelect={() => setMode('heartbeat')}
+              />
+            </view>
+          </view>
+          {mode === 'heartbeat' ? (
+            <view className="AutomationCreateField">
+              <text className="AutomationCreateLabel">Target thread</text>
+              <view className="AutomationCreateProjects">
+                {projectThreads.length === 0 ? (
+                  <text className="AutomationCreateLabel">
+                    No threads in this project
+                  </text>
+                ) : (
+                  projectThreads.map((thread) => (
+                    <ChoiceOption
+                      key={thread.id}
+                      disabled={pending}
+                      label={thread.title.trim() || 'New thread'}
+                      selected={targetThreadId === thread.id}
+                      onSelect={() => setTargetThreadId(thread.id)}
+                    />
+                  ))
+                )}
+              </view>
+            </view>
+          ) : null}
           {schedule === 'manual' ? null : (
             <view className="AutomationCreateField">
               <text className="AutomationCreateLabel">Time</text>
@@ -394,6 +458,7 @@ export function AutomationCreateDialog({
               · {stopOnError ? 'Stops on error' : 'Continues after errors'}
               {' '}· {interactionMode === 'plan' ? 'Plan mode' : 'Default mode'}
               {' '}· {runtimeMode === 'full-access' ? 'Full access' : 'Approval required'}
+              {' '}· {mode === 'heartbeat' ? 'Heartbeat' : 'Standalone'}
             </text>
           </view>
           {error ? (

@@ -379,6 +379,7 @@ export function AutomationsPage({
       <AutomationCreateDialog
         open={createOpen}
         projects={sidebar.data?.projects ?? []}
+        threads={sidebar.data?.threads ?? []}
         pending={createMutation.isPending}
         error={
           createMutation.error instanceof Error
