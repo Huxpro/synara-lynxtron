@@ -1,6 +1,8 @@
 import { describe, expect, it } from '@rstest/core';
+import { DEFAULT_THEME_STATE } from '@synara-web/theme/theme.logic';
 
 import {
+  resolveSliceUiFontFamily,
   resolveSliceThemeVariant,
   sliceThemeClassName,
 } from './appTheme.logic';
@@ -23,5 +25,48 @@ describe('slice root theme projection', () => {
     expect(sliceThemeClassName({ mode: 'system' }, true)).toBe(
       'SliceRoot--theme-dark'
     );
+  });
+
+  it('uses the system stack when requested and the active theme font otherwise', () => {
+    expect(resolveSliceUiFontFamily(DEFAULT_THEME_STATE)).toBe('system-ui');
+
+    const customState = {
+      ...DEFAULT_THEME_STATE,
+      systemUiFont: false,
+      chromeThemes: {
+        ...DEFAULT_THEME_STATE.chromeThemes,
+        light: {
+          ...DEFAULT_THEME_STATE.chromeThemes.light,
+          fonts: {
+            ...DEFAULT_THEME_STATE.chromeThemes.light.fonts,
+            ui: 'IBM Plex Sans',
+          },
+        },
+        dark: {
+          ...DEFAULT_THEME_STATE.chromeThemes.dark,
+          fonts: {
+            ...DEFAULT_THEME_STATE.chromeThemes.dark.fonts,
+            ui: 'Inter',
+          },
+        },
+      },
+    };
+
+    expect(resolveSliceUiFontFamily(customState, false)).toBe(
+      '"IBM Plex Sans"'
+    );
+    expect(resolveSliceUiFontFamily(customState, true)).toBe('Inter');
+    expect(
+      resolveSliceUiFontFamily({
+        ...customState,
+        chromeThemes: {
+          ...customState.chromeThemes,
+          light: {
+            ...customState.chromeThemes.light,
+            fonts: { ...customState.chromeThemes.light.fonts, ui: null },
+          },
+        },
+      })
+    ).toBe('system-ui');
   });
 });
