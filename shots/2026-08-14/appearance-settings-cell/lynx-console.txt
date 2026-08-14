@@ -1,0 +1,17 @@
+[info] [rsbuild] WebSocket connecting...
+[log] [Lynxtron Web] Configuring nodejs module with script: http://localhost:8080/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://localhost:8080/554e73c8-065a-4c6f-93b1-1b112e549438
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://localhost:8080/3acc4893-df35-4063-bc0b-02faec43857e", nodejs: "blob:http://localhost:8080/554e73c8-065a-4c6f-93b1-1b112e549438"}
+[info] [rsbuild] WebSocket connected.
+[info] [rsbuild] WebSocket connecting...
+[log] [Lynxtron Web] Configuring nodejs module with script: http://localhost:8080/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://localhost:8080/5925630f-3067-4076-b7cc-67598dfc6e95
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://localhost:8080/be7e4d86-2b19-48a1-ad67-f11d3b4a50ce", nodejs: "blob:http://localhost:8080/5925630f-3067-4076-b7cc-67598dfc6e95"}
+[info] [rsbuild] WebSocket connected.
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[info] [rsbuild] WebSocket connecting...
+[log] [Lynxtron Web] Configuring nodejs module with script: http://localhost:8080/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://localhost:8080/bc7d723d-eaff-452c-87ed-5c78e8451977
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://localhost:8080/bcce2ee9-6414-48a5-a56f-432f2bc422b4", nodejs: "blob:http://localhost:8080/bc7d723d-eaff-452c-87ed-5c78e8451977"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[info] [rsbuild] WebSocket connected.

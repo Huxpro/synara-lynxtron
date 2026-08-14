@@ -38,6 +38,7 @@ import {
   isSupportedLocalPdfPath,
   isSupportedLocalPreviewFilePath,
 } from '@synara/shared/localPreviewFiles';
+import { VIEWPORT_BREAKPOINTS } from '@synara-web/responsiveLayout.logic';
 
 import {
   fetchExplorerDirectory,
@@ -119,6 +120,7 @@ import {
   type MemoryNavigationState,
 } from './routerHistory.logic';
 import { readPersistedLastThreadRouteFallback } from './routerPersistence.logic';
+import { resolveResponsiveSidebarOpen } from './sidebarVisibility.logic';
 export const history = createMemoryHistory({ initialEntries: ['/'] });
 
 async function readPersistedLastThreadRoute(): Promise<LastThreadRoute | null> {
@@ -1158,7 +1160,22 @@ export function SliceRouter({
 }) {
   const [route, setRoute] = useRoute(initialRoute);
   const navigation = useMemoryNavigationState();
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarUserOverride, setSidebarUserOverride] = useState<
+    boolean | null
+  >(null);
+  const sidebarOpen = resolveResponsiveSidebarOpen({
+    userOverride: sidebarUserOverride,
+    viewportWidth,
+    desktopMinimumWidth: VIEWPORT_BREAKPOINTS.md,
+  });
+  const setSidebarOpen = useCallback(
+    (next: boolean | ((current: boolean) => boolean)) => {
+      setSidebarUserOverride(
+        typeof next === 'function' ? next(sidebarOpen) : next
+      );
+    },
+    [sidebarOpen]
+  );
   const {
     data: routeThreads,
     isPending: routeThreadsPending,
