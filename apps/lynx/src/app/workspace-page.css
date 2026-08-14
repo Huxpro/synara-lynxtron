@@ -45,6 +45,78 @@
   flex: 1;
 }
 
+.WorkspacePageLayouts {
+  max-width: min(520px, 52vw);
+  min-width: 0;
+}
+
+.WorkspacePageLayoutChoices {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 2px;
+  min-width: max-content;
+}
+
+.WorkspaceTerminalGrid {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  gap: 1px;
+  background-color: var(--border);
+}
+
+.WorkspaceTerminalGrid--single {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.WorkspaceTerminalGrid--two-columns {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.WorkspaceTerminalGrid--two-rows {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+.WorkspaceTerminalGrid--top-main {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+.WorkspaceTerminalGrid--top-main .WorkspaceTerminalPane:first-child {
+  grid-column: 1 / span 2;
+}
+
+.WorkspaceTerminalGrid--left-main {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+.WorkspaceTerminalGrid--left-main .WorkspaceTerminalPane:first-child {
+  grid-row: 1 / span 2;
+}
+
+.WorkspaceTerminalGrid--quad {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+.WorkspaceTerminalPane {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  background-color: var(--background);
+}
+
+.WorkspaceTerminalPane .ThreadTerminal {
+  width: 100%;
+  height: 100%;
+}
+
 .WorkspacePageState {
   display: flex;
   flex: 1;
@@ -72,4 +144,8 @@
 
 .WorkspacePageStateAction {
   margin-top: 18px;
+}
+
+.SliceRoot--viewport-compact .WorkspacePageLayouts {
+  max-width: 130px;
 }

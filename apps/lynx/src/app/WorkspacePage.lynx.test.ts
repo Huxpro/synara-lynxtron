@@ -34,9 +34,16 @@ describe('Lynx workspace surface', () => {
     );
     expect(pageSource).toContain('workspaceThreadId(workspace.id)');
     expect(pageSource).toContain('presentationMode="workspace"');
-    expect(pageSource).toContain('terminalId="default"');
+    expect(pageSource).toContain('workspaceTerminalIdsForPreset');
+    expect(pageSource).toContain('terminalId={terminalId}');
     expect(pageSource).toContain('autoOpen');
+    expect(pageSource).toContain('WORKSPACE_LAYOUT_PRESETS.map');
+    expect(pageSource).toContain('setWorkspaceLayoutPreset(');
+    expect(pageSource).toContain(
+      'WorkspaceTerminalGrid--${workspace.layoutPresetId}'
+    );
     expect(pageSource).toContain('deleteWorkspaceWithTerminalCleanup({');
+    expect(pageSource).toContain('terminalIds,');
     expect(pageSource).toContain('closeTerminal: platformTerminal.close');
     expect(pageSource).toContain('writeTerminalExit: platformTerminal.write');
   });

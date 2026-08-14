@@ -14,17 +14,24 @@ describe('deleteWorkspaceWithTerminalCleanup', () => {
 
     await deleteWorkspaceWithTerminalCleanup({
       workspaceId: 'workspace-1',
+      terminalIds: ['default', 'workspace-2'],
       closeTerminal,
       deleteWorkspace,
       writeTerminalExit: async () => undefined,
     });
 
+    expect(closeTerminal).toHaveBeenCalledTimes(2);
     expect(closeTerminal).toHaveBeenCalledWith({
       threadId: 'workspace:workspace-1',
       terminalId: 'default',
       deleteHistory: true,
     });
-    expect(calls).toEqual(['close', 'delete']);
+    expect(closeTerminal).toHaveBeenCalledWith({
+      threadId: 'workspace:workspace-1',
+      terminalId: 'workspace-2',
+      deleteHistory: true,
+    });
+    expect(calls).toEqual(['close', 'close', 'delete']);
   });
 
   it('still deletes the page when terminal cleanup is already unavailable', async () => {
@@ -33,6 +40,7 @@ describe('deleteWorkspaceWithTerminalCleanup', () => {
 
     await deleteWorkspaceWithTerminalCleanup({
       workspaceId: 'workspace-1',
+      terminalIds: ['default'],
       closeTerminal: async () => {
         throw new Error('terminal already exited');
       },

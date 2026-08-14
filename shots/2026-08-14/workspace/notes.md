@@ -83,8 +83,8 @@
 - **Intentional platform delta:** Web uses interactive xterm; this Lynx slice
   uses the existing snapshot terminal plus command row. The PTY and lifecycle
   are real, but native terminal emulation is not claimed.
-- **P2 coverage remains:** workspace layout presets, split panes, drag reorder,
-  and the Web settings sheet are not yet implemented in Lynx.
+- **P2 coverage remains:** drag reorder and the Web settings-sheet treatment
+  are not yet implemented in Lynx.
 - **Harness loss:** the Web screenshot exporter produced a pure-white
   `1280x820` PNG (one color, zero standard deviation) while `#root` was fully
   rendered. That PNG was rejected and deleted. Web `textContent`, geometry,
@@ -106,7 +106,7 @@
 - `lynx-workspace-xterm-emulation`: intentional platform delta,
   contribution remains `0.25`.
 - `lynx-workspace-multipane-presets`: P2 missing coverage,
-  contribution remains `0.25`.
+  contribution `0.25 -> 0.00`.
 - `workspace-web-server-port-6931`: harness mismatch,
   contribution `0.00` product loss.
 - `workspace-empty-snapshot-pull-requests`: unrelated harness/server noise,
@@ -232,3 +232,66 @@
 - `shots/2026-08-14/workspace/visual-matrix/lynx-wide-light-after.png`
 - `shots/2026-08-14/workspace/visual-matrix/lynx-compact-light-after.png`
 - `shots/2026-08-14/workspace/visual-matrix/lynx-compact-dark-after.png`
+
+## Split-layout continuation
+
+### Product coverage closed
+
+- Lynx now consumes the same persisted Workspace layout preset IDs as Web:
+  Single, Two Columns, Two Rows, Top + Bottom, Left + Stack, and Quad.
+- Each preset maps to stable synthetic terminal IDs:
+  `default`, `workspace-2`, `workspace-3`, and `workspace-4`.
+- Every visible pane is a real host-backed `ThreadTerminal`; no static pane
+  fixture is rendered.
+- Workspace deletion now closes and clears every terminal belonging to the
+  active preset before removing the page.
+- The layout control persists through the shared Workspace store.
+
+### Paired Two Columns state
+
+- Isolated server: `ws://127.0.0.1:59220`.
+- Web authority:
+  - two xterm panes;
+  - each `487.5x704`;
+  - pane origins `x=268` and `x=780.5`.
+- Lynx:
+  - grid `1024x774` below the shared `46px` header;
+  - two real terminal panes;
+  - each `511.5x774`;
+  - pane origins `x=256` and `x=768.5`;
+  - two observed `terminal.open` RPCs;
+  - `connectionAttempts=1`;
+  - no transport or RPC error.
+- The width/inner-padding difference is the accepted xterm-versus-snapshot
+  renderer delta, not a missing split-pane implementation.
+
+### Harness noise
+
+- A two-marker command attempt used a stale textbox ref after the first
+  terminal refresh. The subsequent unscoped Enter navigated the browser
+  session to `about:blank`.
+- That run was discarded as automation/harness misuse. It is not reported as a
+  product crash.
+- Stable terminal identity is instead covered by exact preset-to-ID tests,
+  distinct rendered pane geometry, two `terminal.open` RPCs, and multi-terminal
+  cleanup tests.
+
+### Verification
+
+- `bun run test -- src/app/workspaceLayout.logic.test.ts src/app/workspaceDeletion.logic.test.ts src/app/WorkspacePage.lynx.test.ts src/app/ThreadTerminal.lynx.test.ts`
+  - 4 files, 15 tests passed.
+- `CI=1 bun run build` in `apps/lynx`
+  - Lynx production bundle and Desktop host built and staged.
+  - Existing optional `bufferutil` / `utf-8-validate` and Lynx CSS warnings
+    only.
+- Native remains unverified. User-owned PID `77846` on port `8901` was not
+  stopped or reused.
+- Owned ports `59220`, `9201`, `8080`, and `5971` were released.
+- Retained screenshot count under `shots/` is 46.
+
+### Evidence
+
+- `shots/2026-08-14/workspace/split-layout/web-two-columns-wide-light.png`
+- `shots/2026-08-14/workspace/split-layout/web-two-columns-geometry.json`
+- `shots/2026-08-14/workspace/split-layout/lynx-two-columns-wide-light.png`
+- `shots/2026-08-14/workspace/split-layout/lynx-two-columns-runtime.json`

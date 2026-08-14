@@ -4,6 +4,10 @@ import {
   useWorkspaceStore,
   workspaceThreadId,
 } from '@synara-web/workspaceStore';
+import {
+  WORKSPACE_LAYOUT_PRESETS,
+  type WorkspaceLayoutPresetId,
+} from '@synara-web/workspaceTerminalLayoutPresets';
 import type { SettingsAppearanceValues } from '@synara-web/components/settings/SettingsAppearanceComposition.logic';
 
 import { Button } from '../components/ui/button';
@@ -12,6 +16,7 @@ import { fetchPluginLibraryServerConfig } from './queries';
 import { ThreadTerminal } from './ThreadTerminal.lynx';
 import { deleteWorkspaceWithTerminalCleanup } from './workspaceDeletion.logic';
 import { platformTerminal } from '../platform/terminal';
+import { workspaceTerminalIdsForPreset } from './workspaceLayout.logic';
 import './workspace-page.css';
 
 export function WorkspacePage({
@@ -34,6 +39,9 @@ export function WorkspacePage({
   );
   const renameWorkspace = useWorkspaceStore((state) => state.renameWorkspace);
   const deleteWorkspace = useWorkspaceStore((state) => state.deleteWorkspace);
+  const setWorkspaceLayoutPreset = useWorkspaceStore(
+    (state) => state.setWorkspaceLayoutPreset
+  );
   const [renaming, setRenaming] = useState(false);
   const [terminalOpen, setTerminalOpen] = useState(true);
   const [draftTitle, setDraftTitle] = useState(workspace?.title ?? 'Workspace');
@@ -75,10 +83,12 @@ export function WorkspacePage({
     renameWorkspace(workspace.id, draftTitle);
     setRenaming(false);
   };
+  const terminalIds = workspaceTerminalIdsForPreset(workspace.layoutPresetId);
   const removeWorkspace = async () => {
     'background only';
     await deleteWorkspaceWithTerminalCleanup({
       workspaceId: workspace.id,
+      terminalIds,
       closeTerminal: platformTerminal.close,
       deleteWorkspace,
       writeTerminalExit: platformTerminal.write,
@@ -117,6 +127,32 @@ export function WorkspacePage({
         >
           Terminal
         </Button>
+        <scroll-view
+          className="WorkspacePageLayouts"
+          scroll-orientation="horizontal"
+        >
+          <view className="WorkspacePageLayoutChoices">
+            {WORKSPACE_LAYOUT_PRESETS.map((preset) => (
+              <Button
+                key={preset.id}
+                variant={
+                  workspace.layoutPresetId === preset.id
+                    ? 'secondary'
+                    : 'ghost'
+                }
+                size="xs"
+                onClick={() =>
+                  setWorkspaceLayoutPreset(
+                    workspace.id,
+                    preset.id as WorkspaceLayoutPresetId
+                  )
+                }
+              >
+                {preset.title}
+              </Button>
+            ))}
+          </view>
+        </scroll-view>
         <Button
           variant="outline"
           size="xs"
@@ -126,17 +162,32 @@ export function WorkspacePage({
         </Button>
       </view>
       {serverConfig?.homeDir && terminalOpen ? (
-        <ThreadTerminal
-          autoOpen
-          fontFamily={appearance.terminalFontFamily}
-          fontSizePx={appearance.terminalFontSizePx}
-          open
-          presentationMode="workspace"
-          terminalId="default"
-          threadId={workspaceThreadId(workspace.id)}
-          workspaceRoot={serverConfig.homeDir}
-          onOpenChange={setTerminalOpen}
-        />
+        <view
+          className={`WorkspaceTerminalGrid WorkspaceTerminalGrid--${workspace.layoutPresetId}`}
+        >
+          {terminalIds.map((terminalId) => (
+            <view
+              key={terminalId}
+              className="WorkspaceTerminalPane"
+            >
+              <ThreadTerminal
+                autoOpen
+                fontFamily={appearance.terminalFontFamily}
+                fontSizePx={appearance.terminalFontSizePx}
+                open
+                presentationMode="workspace"
+                terminalId={terminalId}
+                threadId={workspaceThreadId(workspace.id)}
+                workspaceRoot={serverConfig.homeDir}
+                onOpenChange={(open) => {
+                  if (!open && terminalIds.length === 1) {
+                    setTerminalOpen(false);
+                  }
+                }}
+              />
+            </view>
+          ))}
+        </view>
       ) : serverConfig?.homeDir ? (
         <view className="WorkspacePageState">
           <text className="WorkspacePageStateTitle">

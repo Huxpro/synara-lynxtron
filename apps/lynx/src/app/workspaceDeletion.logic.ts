@@ -2,6 +2,7 @@ import { closeLynxTerminalSession } from './terminalSessionCleanup.logic';
 
 export async function deleteWorkspaceWithTerminalCleanup(input: {
   readonly workspaceId: string;
+  readonly terminalIds: readonly string[];
   readonly closeTerminal: (input: {
     readonly threadId: string;
     readonly terminalId: string;
@@ -14,11 +15,15 @@ export async function deleteWorkspaceWithTerminalCleanup(input: {
     readonly data: string;
   }) => Promise<void>;
 }): Promise<void> {
-  await closeLynxTerminalSession({
-    threadId: `workspace:${input.workspaceId}`,
-    terminalId: 'default',
-    close: input.closeTerminal,
-    writeExit: input.writeTerminalExit,
-  });
+  await Promise.all(
+    input.terminalIds.map((terminalId) =>
+      closeLynxTerminalSession({
+        threadId: `workspace:${input.workspaceId}`,
+        terminalId,
+        close: input.closeTerminal,
+        writeExit: input.writeTerminalExit,
+      })
+    )
+  );
   input.deleteWorkspace(input.workspaceId);
 }
