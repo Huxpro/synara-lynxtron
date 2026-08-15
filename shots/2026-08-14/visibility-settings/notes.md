@@ -130,3 +130,26 @@ The exact-client warning/error console stayed empty.
 
 Native optional sidebar visibility is now covered. Environment section
 roundtrips remain open.
+
+## Native Environment switch harness boundary
+
+An isolated exact-owned Native run located all nine Environment switches and
+proved they initially rendered checked:
+
+- Usage, Repository, Pull request, Editor, Recap;
+- Pinned messages, Text markers, Project instructions, Notepad.
+
+All controls were below the current `820px` Settings viewport. Three supported
+DevTool positioning paths were tested without mutating product state:
+
+1. pointer drag on `SettingsContent`;
+2. `DOM.scrollIntoViewIfNeeded`;
+3. `Input.emulateTouchFromMouseEvent` with `mouseWheel` / `deltaY`.
+
+Every command reported success, but switch box coordinates remained
+`y=876..1418`, and viewport hit-testing continued to resolve the earlier
+Settings rows. No switch was touched and no setting changed.
+
+This is `native-settings-scroll-devtool-noop`, a harness loss with
+`0.00` product contribution. It blocks retained exact-owned Environment switch
+interaction evidence; it is not a product pass or regression.

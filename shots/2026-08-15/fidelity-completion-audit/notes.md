@@ -786,3 +786,16 @@ former dynamic-event P1 is no longer a valid blocker.
   `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
 - Native optional sidebar visibility is now covered; Environment section
   switches remain open.
+
+## 2026-08-16 Native Environment visibility harness audit
+
+- Exact-owned Native located all nine checked Environment visibility switches,
+  but every control was below the current Settings viewport.
+- Pointer drag, `DOM.scrollIntoViewIfNeeded`, and supported mouse-wheel
+  emulation each returned success without changing switch coordinates or
+  viewport hit targets.
+- No switch was touched and no setting changed; the run does not claim product
+  pass or regression.
+- `native-settings-scroll-devtool-noop` is classified as harness loss with
+  `0.00` product contribution. Exact-owned Environment switch interaction
+  coverage remains open.
