@@ -121,6 +121,7 @@ The fast loop has been validated end to end: Composer, transcript follow/switchi
 - Keep the Web relay a compile-time Web-only capability. The Web bundle may contain `synaraRpc`, browser storage, and the `0.5.5-lynx-web` build id; the Desktop/Lynx bundle must compile with relay disabled and must not contain those Web-only markers. Never hardcode a certification port into product code.
 - Start one isolated Synara server with an empty inherited auth token and a temporary home. Point Web original and Lynx-for-Web at that server; use the same snapshot, route, theme, viewport, DPR, and product state.
 - Use separate named `agent-browser` sessions. A useful default cell is `1280×820`, DPR 1, light. Verify runtime dimensions before capture and PNG dimensions after capture.
+- Every shell workflow that opens `agent-browser` must install an exit trap before the first browser command: `trap 'bun run browser:cleanup' EXIT`. Run `bun run browser:cleanup` again after the final cell and require a zero exit status before retaining evidence. A successful `agent-browser close` or `close --all` message is not sufficient: the cleanup gate polls until `session list --json` is empty and no agent-browser or remote-debugging browser process remains.
 - Create required states through canonical product RPC/mutations. Never write fixtures directly into SQLite. Read SQLite only to verify projections such as structured skills, mentions, messages, or persistence.
 - Use Web original as the design and composition authority, not an infallible behavior oracle. If Web leaks state or violates the intended contract, preserve the correct product behavior in Lynx and record the intentional delta instead of copying the bug.
 - Measure before patching. Record relevant bounding boxes, font sizes, scrollTop/scrollHeight/clientHeight, accessible names, action order, and console output. Screenshots establish visual structure; numeric probes make iteration fast and falsifiable.
@@ -177,7 +178,7 @@ Classify rendering, content, layout, token, and interaction differences as produ
 - Use a named, isolated `agent-browser` session. Do not attach to the user's Chrome profile or rely on a shared preview screenshot exporter.
 - Set the viewport and scale explicitly for each cell, such as `agent-browser --session p8q2-web-evidence set viewport 1280 820 1`.
 - Before capture, read `innerWidth`, `innerHeight`, `visualViewport.width`, `visualViewport.height`, and `devicePixelRatio` from that same session. After capture, inspect the PNG pixel dimensions. Reject the image if either check differs from the requested matrix cell.
-- Reuse the same named session for navigation and capture, then close that session explicitly. Do not close unrelated browser sessions.
+- Reuse the same named session for navigation and capture. Close it explicitly, then run `bun run browser:cleanup`; do not consider the browser cell complete until that gate passes. Do not close unrelated user browser sessions.
 
 ### Native production capture
 
