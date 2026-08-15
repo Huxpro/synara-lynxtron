@@ -127,6 +127,30 @@ This is retained as a harness identity catch, not a product failure.
   `1.00 -> 0.00`;
 - component product-loss contribution: `0.00 -> 0.00`.
 
+## Native Edit/Cancel roundtrip
+
+Another exact-owned run added the first current-head Native Edit dialog
+initial-value and cancellation proof:
+
+1. Canonical `automation.create` produced a disabled/manual definition named
+   `Native edit original` with prompt `Original native edit prompt.` and zero
+   runs.
+2. Real touches opened the rendered list row and the rendered Edit control.
+3. The Native dialog retained the canonical original values:
+   - Name input `value` and `default-value`: `Native edit original`;
+   - Prompt textarea `default-value`: `Original native edit prompt.`.
+4. Save was initially disabled because no field had changed.
+5. The rendered Cancel button (`66x32` border box at `(704,581)`) received a
+   real touch. The dialog unmounted while the detail remained open.
+6. The server definition's name, prompt, and `updatedAt` were byte-for-byte
+   unchanged; runs remained zero and the exact-client warning/error console
+   stayed empty.
+7. Canonical delete restored zero definitions and zero runs.
+
+- `native-automations-edit-cancel-interaction`: missing coverage
+  `1.00 -> 0.00`;
+- component product-loss contribution: `0.00 -> 0.00`.
+
 ## Harness losses kept separate
 
 The first Lynx-for-Web probes were invalid for three independent harness
@@ -169,6 +193,7 @@ agent-browser-owned processes.
 - Native PID/session/bundle identity: passed.
 - Native rendered list-row touch to detail: passed.
 - Native rendered Resume/Pause mutation roundtrip: passed.
+- Native Edit initial values and Cancel no-mutation path: passed.
 - Native warning/error console: zero.
 - Corrected Lynx-for-Web shadow-root/relay cell: passed.
 - Lynx-for-Web shared icon requests: `404 -> 200`.

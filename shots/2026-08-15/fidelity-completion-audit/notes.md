@@ -336,3 +336,18 @@ former dynamic-event P1 is no longer a valid blocker.
   directory was removed. This is harness identity evidence, not product loss.
 - No new P0/P1/P2 product loss was found. Other Native interactions, theme/size
   cells, and discovery exhaustion remain open.
+
+## 2026-08-16 Native Automations edit continuation
+
+- Active discovery added the first current-head exact-owned Native Edit dialog
+  initial-value and Cancel no-mutation path.
+- Real touches opened the automation row and Edit control. The dialog retained
+  the canonical name/prompt, Save was disabled before changes, and a real
+  Cancel touch unmounted the dialog while keeping the detail open.
+- Server name, prompt, and `updatedAt` remained exactly unchanged; runs stayed
+  zero and the exact-client warning/error console was empty.
+- Canonical delete restored zero definitions/runs.
+- `native-automations-edit-cancel-interaction`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- No new P0/P1/P2 product loss was found. Native edited-value/Save behavior,
+  other route/theme/size interactions, and discovery exhaustion remain open.
