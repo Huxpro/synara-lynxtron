@@ -870,3 +870,19 @@ former dynamic-event P1 is no longer a valid blocker.
 - `native-update-available-dark-1440`: missing coverage
   `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
 - Update network-error retry and external-download handoff remain open.
+
+## 2026-08-16 Native Pull Requests filter continuation
+
+- Active discovery returned to a new Native PR interaction state rather than
+  repeating list/detail/tabs/pin/theme/size cells.
+- Real Open -> Closed -> Open touches each activated the correct pill and
+  settled with 50 live rows. Host calls issued canonical list queries for
+  `state:closed` and then `state:open`.
+- Real Reviewing activated Reviewing, deactivated All, and produced the valid
+  settled `No pull requests found` state for the current account; All restored
+  the ordinary list.
+- No GitHub or local pin mutation occurred. Exact-client warning/error console
+  stayed empty.
+- `native-pull-requests-state-involvement-filters`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- Native search typing remains behind the Desktop keyboard-input boundary.

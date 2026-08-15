@@ -175,3 +175,29 @@ No PR mutation occurred. Isolated theme/window/runtime state was removed.
 - `native-pull-requests-populated-dark-1440-detail`: missing coverage
   `1.00 -> 0.00`.
 - Product-loss contribution: `0.00 -> 0.00`.
+
+## Native state and involvement filter continuation
+
+A fresh exact-owned light `1280x820` run added real filter interactions without
+mutating any pull request:
+
+- initial All + Open state: 50 real rows;
+- real Closed pill: Closed active, Open inactive, 50 settled closed rows;
+- real Open pill: Open active, 50 settled open rows;
+- host calls were `pullRequests.list(state:closed)` followed by
+  `pullRequests.list(state:open)`;
+- real Reviewing pill: Reviewing active, All inactive, valid settled
+  `No pull requests found` state for the current account/snapshot;
+- real All pill restored the ordinary list.
+
+State changes correctly close any selected detail through the existing route
+contract. No GitHub mutation, local pin mutation, comment, review, or state
+change occurred.
+
+The exact-client warning/error console stayed empty.
+
+`native-pull-requests-state-involvement-filters`: missing coverage
+`1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+
+Native search typing remains constrained by the Desktop DevTool keyboard-input
+boundary; state and involvement filtering are now covered.
