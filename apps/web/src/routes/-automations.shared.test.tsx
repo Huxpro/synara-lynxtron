@@ -15,6 +15,7 @@ import {
   type AutomationRun,
   type ProviderStartOptions,
 } from "@synara/contracts";
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
 import {
@@ -127,6 +128,26 @@ function definitionWith(overrides: Partial<AutomationDefinition>): AutomationDef
 }
 
 describe("automation shared route helpers", () => {
+  it("stacks detail panes before the small-screen breakpoint", () => {
+    const detailRouteSource = readFileSync(
+      new URL("./_chat.automations.$automationId.tsx", import.meta.url),
+      "utf8",
+    );
+
+    expect(detailRouteSource).toContain(
+      "flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden sm:flex-row",
+    );
+    expect(detailRouteSource).toContain(
+      "h-[200px] min-h-0 min-w-0 shrink-0 flex-col overflow-hidden sm:h-auto sm:flex-1",
+    );
+    expect(detailRouteSource).toContain(
+      "w-full flex-1 flex-col overflow-hidden sm:w-80 sm:flex-none",
+    );
+    expect(detailRouteSource).toContain(
+      "border-t border-[var(--app-surface-divider)] sm:border-l sm:border-t-0",
+    );
+  });
+
   it("preserves manual and new schedule kinds", () => {
     expect(scheduleKindFromSchedule({ type: "manual" })).toBe("manual");
     expect(scheduleKindFromSchedule({ type: "once", runAt: "2026-06-19T10:15:00.000Z" })).toBe(

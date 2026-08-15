@@ -331,12 +331,12 @@ function AutomationDetailView() {
     <RouteInsetSurface>
       <div
         className={cn(
-          "flex min-h-0 min-w-0 flex-1 flex-row overflow-hidden",
+          "flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden sm:flex-row",
           CHAT_BACKGROUND_CLASS_NAME,
         )}
       >
         {/* Left column: breadcrumb header + the prompt. */}
-        <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+        <div className="flex h-[200px] min-h-0 min-w-0 shrink-0 flex-col overflow-hidden sm:h-auto sm:flex-1">
           <header
             className={cn(
               CHAT_SURFACE_HEADER_PADDING_X_CLASS,
@@ -382,7 +382,7 @@ function AutomationDetailView() {
             hairline (horizontal), and the body below carries the vertical seam — so the vertical
             line starts at the header's bottom edge instead of running up through it. Both use the
             same --app-surface-divider token and meet cleanly at the corner. */}
-        <div className="flex min-h-0 w-80 shrink-0 flex-col overflow-hidden">
+        <div className="flex min-h-0 w-full flex-1 flex-col overflow-hidden sm:w-80 sm:flex-none">
           <header
             className={cn(
               CHAT_SURFACE_HEADER_PADDING_X_CLASS,
@@ -446,7 +446,7 @@ function AutomationDetailView() {
             </div>
           </header>
 
-          <div className="min-h-0 flex-1 overflow-y-auto border-l border-[var(--app-surface-divider)]">
+          <div className="min-h-0 flex-1 overflow-y-auto border-t border-[var(--app-surface-divider)] sm:border-l sm:border-t-0">
             <div className="flex flex-col gap-6 px-4 py-8">
               <AutomationApprovalBanner
                 warnings={approvalGaps.warnings}

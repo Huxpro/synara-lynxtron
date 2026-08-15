@@ -90,6 +90,26 @@ describe('Lynx Automations route', () => {
     expect(detailSource).not.toContain('automation.runNow');
   });
 
+  it('stacks automation detail panes at compact widths', () => {
+    const detailStyles = readFileSync(
+      new URL('./automations-page.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(detailStyles).toContain(
+      '.SliceRoot--viewport-compact .AutomationDetailPage'
+    );
+    expect(detailStyles).toContain('flex-direction: column;');
+    expect(detailStyles).toContain(
+      '.SliceRoot--viewport-compact .AutomationDetailMain'
+    );
+    expect(detailStyles).toContain('flex: 0 0 200px;');
+    expect(detailStyles).toContain(
+      '.SliceRoot--viewport-compact .AutomationDetailAside'
+    );
+    expect(detailStyles).toContain('min-width: 0;');
+  });
+
   it('creates a canonical daily automation from the real dialog', () => {
     const pageSource = readFileSync(
       new URL('./AutomationsPage.lynx.tsx', import.meta.url),

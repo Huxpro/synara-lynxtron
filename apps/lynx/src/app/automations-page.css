@@ -292,6 +292,30 @@
   min-height: 0;
 }
 
+.SliceRoot--viewport-compact .AutomationDetailPage {
+  flex-direction: column;
+}
+
+.SliceRoot--viewport-compact .AutomationDetailMain {
+  flex: 0 0 200px;
+  width: 100%;
+  height: 200px;
+}
+
+.SliceRoot--viewport-compact .AutomationDetailAside {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  height: auto;
+}
+
+.SliceRoot--viewport-compact .AutomationDetailAsideScroller {
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: var(--border);
+  border-left-width: 0;
+}
+
 .AutomationDetailActionsHeader {
   justify-content: flex-end;
   padding: 0 12px;

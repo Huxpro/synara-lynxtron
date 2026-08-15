@@ -151,6 +151,50 @@ initial-value and cancellation proof:
   `1.00 -> 0.00`;
 - component product-loss contribution: `0.00 -> 0.00`.
 
+## Compact Web and Lynx-for-Web detail
+
+Active discovery added a new `320x568`, DPR 1, light list-to-detail cell for
+both browser renderers. The canonical disabled/manual fixture was again created
+and deleted through automation RPCs, produced zero runs, and preserved snapshot
+sequence `4`.
+
+The first valid compact frames exposed a shared P1 usability loss rather than
+a renderer mismatch:
+
+- Web kept the detail root in a fixed horizontal row with a `320px` aside. Its
+  prompt main collapsed to `48px`, and the `h1` content width collapsed to
+  `0px` while growing to `96px` tall.
+- Lynx-for-Web used the same fixed row and aside contract. Its main collapsed
+  to `0px`; title/prompt widths were `0px`, producing `704px` and `864px`
+  vertical text boxes behind the aside.
+- Both pages avoided document-level horizontal overflow only because the
+  fixed aside fully covered the viewport. This was not an acceptable
+  responsive layout.
+
+Both renderers now use the same compact composition:
+
+- detail root stacks vertically below the small-screen breakpoint;
+- prompt pane is `320x200`, with a `320x46` header and `320x154` scroller;
+- title is visible at `256px` wide in Lynx and `272px` wide in Web;
+- detail pane is `320x368` starting at `y=200`;
+- the details scroller is `320x322` starting at `y=246`;
+- the vertical seam becomes a top seam on compact and remains a left seam on
+  wider screens.
+
+Web main width changed `48px -> 320px`; Lynx main width changed
+`0px -> 320px`. Both clients retained the canonical copy, real list-row
+navigation, light theme, and zero page errors. Lynx relay remained one
+connection with zero pending requests and no transport/RPC error.
+
+- `shared-automation-detail-compact-collapse`: P1 contribution
+  `1.00 -> 0.00`;
+- Web detail layout contribution: `1.00 -> 0.00`;
+- Lynx detail layout contribution: `1.00 -> 0.00`.
+
+No screenshot was added because the repository was already at its 100-image
+limit. Geometry, runtime, and behavior evidence was retained without exceeding
+the cap.
+
 ## Harness losses kept separate
 
 The first Lynx-for-Web probes were invalid for three independent harness
@@ -194,6 +238,7 @@ agent-browser-owned processes.
 - Native rendered list-row touch to detail: passed.
 - Native rendered Resume/Pause mutation roundtrip: passed.
 - Native Edit initial values and Cancel no-mutation path: passed.
+- Compact Web/Lynx-for-Web detail composition: passed after shared fix.
 - Native warning/error console: zero.
 - Corrected Lynx-for-Web shadow-root/relay cell: passed.
 - Lynx-for-Web shared icon requests: `404 -> 200`.

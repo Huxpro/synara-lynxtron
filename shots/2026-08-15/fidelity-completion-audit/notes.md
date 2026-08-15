@@ -351,3 +351,28 @@ former dynamic-event P1 is no longer a valid blocker.
   `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
 - No new P0/P1/P2 product loss was found. Native edited-value/Save behavior,
   other route/theme/size interactions, and discovery exhaustion remain open.
+
+## 2026-08-16 compact Automations detail continuation
+
+- Active discovery added a new Web and Lynx-for-Web
+  `320x568`/DPR 1/light list-to-detail interaction cell.
+- The valid before state exposed a shared P1 responsive loss: the fixed
+  horizontal detail row plus `320px` aside collapsed Web main content to
+  `48px` and Lynx main content to `0px`; both titles had `0px` content width.
+- Both renderers now stack the prompt and details panes below the small-screen
+  breakpoint while preserving the existing wide `704px + 320px` contract.
+- Final compact geometry is a `320x200` prompt pane above a `320x368` detail
+  pane. Web main width is `48px -> 320px`; Lynx main width is
+  `0px -> 320px`; the details pane scrolls independently without horizontal
+  overflow.
+- `shared-automation-detail-compact-collapse`: P1 contribution
+  `1.00 -> 0.00`, with Web and Lynx component contributions each
+  `1.00 -> 0.00`.
+- Focused coverage passes Web `33/33` and Lynx `6/6`; explicit
+  Lynx-for-Web production build passes. The final Lynx cell has one relay
+  connection, zero pending requests, no transport/RPC error, and empty page
+  errors.
+- Canonical cleanup restored zero definitions/runs and preserved sequence `4`.
+  No screenshot was added because the repository remains at the 100-image cap.
+- Other Native route/state/theme/size interactions and discovery exhaustion
+  remain open.
