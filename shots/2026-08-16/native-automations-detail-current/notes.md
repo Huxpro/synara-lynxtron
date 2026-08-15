@@ -267,6 +267,35 @@ state/runtime directories were removed.
 - `native-automations-dark-1440-detail`: missing coverage `1.00 -> 0.00`;
 - component product-loss contribution: `0.00 -> 0.00`.
 
+## Native create dialog open and cancel
+
+An exact-owned run against the empty automation list added the first
+current-head Native create-dialog open/cancel proof:
+
+- the rendered New automation button had a `117x28` border box and opened
+  through a real touch;
+- the dialog exposed Name and Prompt inputs, the selected
+  `Automation Fidelity` project, model picker, Manual/Daily/Weekdays,
+  Auto/Worktree/Local, Standalone/Heartbeat, time, max iterations,
+  stop-on-error, interaction mode, and permissions;
+- model discovery settled from the transient `Choose model` label to
+  `GPT-5.6 Sol`;
+- Daily, Auto, Standalone, Unlimited, On, Default, and Approval required were
+  selected by default;
+- Name and Prompt were empty, so Create automation remained disabled;
+- the rendered Cancel button (`66x32` at `(626,632)`) received a real touch,
+  unmounted the dialog, and restored the ordinary empty Automations state;
+- the server remained zero definitions and zero runs, and the exact-client
+  warning/error console stayed empty.
+
+The model label was intentionally checked after discovery settled; the
+transient `Choose model` state is loading behavior, not missing model
+selection.
+
+- `native-automations-create-dialog-cancel`: missing coverage
+  `1.00 -> 0.00`;
+- component product-loss contribution: `0.00 -> 0.00`.
+
 ## Harness losses kept separate
 
 The first Lynx-for-Web probes were invalid for three independent harness
@@ -314,6 +343,7 @@ agent-browser-owned processes.
 - Native stale deep-link not-found and Back recovery: passed.
 - Native dark list/detail geometry and token resolution: passed.
 - Native dark `1440x900` list/detail geometry: passed.
+- Native create dialog structure and Cancel no-mutation path: passed.
 - Native warning/error console: zero.
 - Corrected Lynx-for-Web shadow-root/relay cell: passed.
 - Lynx-for-Web shared icon requests: `404 -> 200`.

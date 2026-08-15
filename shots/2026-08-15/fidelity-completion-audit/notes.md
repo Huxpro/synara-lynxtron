@@ -422,3 +422,20 @@ former dynamic-event P1 is no longer a valid blocker.
   product-loss contribution remains `0.00 -> 0.00`.
 - No new P0/P1/P2 loss was found. Remaining Native interactions and global
   discovery exhaustion remain open.
+
+## 2026-08-16 Native Automations create-dialog continuation
+
+- Active discovery added the first current-head exact-owned Native New
+  automation dialog open/cancel cell against an empty automation list.
+- A real New automation touch opened the dialog. It retained the complete
+  project/model/schedule/workspace/mode/time/iteration/error/interaction/
+  permission structure and canonical default selections.
+- Model discovery settled from `Choose model` to `GPT-5.6 Sol`; empty required
+  fields kept Create automation disabled.
+- A real Cancel touch unmounted the dialog and restored the empty list. The
+  server remained zero definitions/runs and the exact-client warning/error
+  console stayed empty.
+- `native-automations-create-dialog-cancel`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- No new P0/P1/P2 loss was found. Native create submission/input semantics,
+  remaining interactions, and global discovery exhaustion remain open.
