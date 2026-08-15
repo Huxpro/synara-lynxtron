@@ -66,9 +66,39 @@ function publishMatrix(matrix: HostInputProbeMatrix): void {
   NativeModules.bridge?.call?.('hostInputProbePublish', { matrix }, () => {});
 }
 
+function DynamicPropControl(props: {
+  readonly count: number;
+  readonly onActivate: () => void;
+}) {
+  return (
+    <view
+      id="host-input-probe-dynamic-prop"
+      className="HostInputProbeControl"
+      accessibility-element={true}
+      accessibility-label="Dynamic component prop event control"
+      bindtap={props.onActivate}
+    >
+      <text>{`Dynamic prop taps: ${props.count}`}</text>
+    </view>
+  );
+}
+
 export function HostInputProbe() {
   const [matrix, setMatrix] = useState(createBoundMatrix);
+  const [dynamicSpreadTapCount, setDynamicSpreadTapCount] = useState(0);
+  const [dynamicFixedTapCount, setDynamicFixedTapCount] = useState(0);
+  const [dynamicPropTapCount, setDynamicPropTapCount] = useState(0);
   const summary = hostInputProbeSummary(matrix);
+  const dynamicFixedTap = () => {
+    'background only';
+    setDynamicFixedTapCount((count) => count + 1);
+  };
+  const dynamicSpreadEvents = {
+    bindtap: () => {
+      'background only';
+      setDynamicSpreadTapCount((count) => count + 1);
+    },
+  };
 
   const record = (
     eventName: string,
@@ -107,6 +137,28 @@ export function HostInputProbe() {
       <text className="HostInputProbeSummary" id="host-input-probe-summary">
         {`bound=${summary.bound}/${summary.total} delivered=${summary.delivered}/${summary.total}`}
       </text>
+      <view
+        id="host-input-probe-dynamic-spread"
+        className="HostInputProbeControl"
+        accessibility-element={true}
+        accessibility-label="Dynamic spread event control"
+        {...dynamicSpreadEvents}
+      >
+        <text>{`Dynamic spread taps: ${dynamicSpreadTapCount}`}</text>
+      </view>
+      <view
+        id="host-input-probe-dynamic-fixed"
+        className="HostInputProbeControl"
+        accessibility-element={true}
+        accessibility-label="Dynamic fixed event control"
+        bindtap={dynamicFixedTap}
+      >
+        <text>{`Dynamic fixed taps: ${dynamicFixedTapCount}`}</text>
+      </view>
+      <DynamicPropControl
+        count={dynamicPropTapCount}
+        onActivate={() => setDynamicPropTapCount((count) => count + 1)}
+      />
       <view
         id="host-input-probe-view-control"
         className="HostInputProbeControl"

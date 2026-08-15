@@ -260,6 +260,7 @@
     },
   },
   "patchedDependencies": {
+    "@lynx-js/react@0.123.1": "patches/@lynx-js%2Freact@0.123.1.patch",
     "@effect/platform-node-shared@https://pkg.pr.new/Effect-TS/effect-smol/@effect/platform-node-shared@8881a9b606d84a6f5eb6615279138322984f5368": "patches/@effect%2Fplatform-node-shared@8881a9b.patch",
   },
   "overrides": {

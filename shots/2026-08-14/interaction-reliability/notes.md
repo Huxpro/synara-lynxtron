@@ -123,3 +123,45 @@
   - `/tmp/synara-bindtap-files.json`
   - `/tmp/synara-bindtap-changes.json`
   - `/tmp/synara-bindtap-experiment.diff`
+
+## Runtime patch refinement (2026-08-15)
+
+- The earlier “dynamic handler ID is not published” conclusion was too broad.
+  Instrumented Web Core evidence showed:
+  - `__AddEvent` registered complete dynamic ids such as
+    `62:0:bindtap`;
+  - trusted DOM clicks reached `common_event_handler` with complete bubble
+    paths;
+  - Web Core called main-to-background `publishEvent` with the same complete
+    handler id.
+- The ReactLynx background snapshot was the first confirmed loss point:
+  - `updateSpread` transformed function values into handler-id strings and
+    replaced the background `__values` object before background dispatch;
+  - `updateEvent` similarly replaced a fixed dynamic function with its
+    handler-id string even when no main-thread elements existed;
+  - later `getValueBySign(handlerName)` therefore returned a string instead of
+    the original callback.
+- Added a pinned `@lynx-js/react@0.123.1` dependency patch:
+  - background snapshots retain original functions;
+  - main-thread snapshots still commit the transformed handler ids and register
+    events with Web Core.
+- The dedicated host-input probe now contains three independent real-click
+  controls:
+  - dynamic spread event;
+  - dynamic fixed event;
+  - dynamic component-prop event.
+- On the freshly installed patched dependency, all three controls advanced
+  from `0` to `1` through trusted browser mouse input.
+- **Remaining product boundary:** the large Editor composition still did not
+  commit its Files/Plus state changes even after the three minimal dynamic
+  paths passed. Attempts to force a local component boundary were reverted
+  because they did not close that real product interaction.
+- Updated classification:
+  - ReactLynx primitive dynamic-event registration/lookup: P1 product/runtime
+    loss, `1.00 -> 0.00`;
+  - Editor complex-composition interaction: P1 product integration residual,
+    contribution `1.00`, still open;
+  - browser/session leakage discovered during this investigation is a harness
+    loss. The retained cleanup gate is `agent-browser close --all`, followed by
+    `session list == No active sessions` and zero
+    `agent-browser`/`remote-debugging-port` processes.

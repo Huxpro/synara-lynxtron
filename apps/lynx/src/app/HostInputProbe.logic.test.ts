@@ -1,4 +1,5 @@
 import { describe, expect, it } from '@rstest/core';
+import { readFileSync } from 'node:fs';
 
 import {
   createHostInputProbeMatrix,
@@ -9,6 +10,22 @@ import {
 } from './HostInputProbe.logic';
 
 describe('host input probe matrix', () => {
+  it('includes a dynamic spread event control', () => {
+    const source = readFileSync(
+      new URL('./HostInputProbe.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(source).toContain('id="host-input-probe-dynamic-spread"');
+    expect(source).toContain('{...dynamicSpreadEvents}');
+    expect(source).toContain('Dynamic spread taps: ${dynamicSpreadTapCount}');
+    expect(source).toContain('id="host-input-probe-dynamic-fixed"');
+    expect(source).toContain('bindtap={dynamicFixedTap}');
+    expect(source).toContain('Dynamic fixed taps: ${dynamicFixedTapCount}');
+    expect(source).toContain('id="host-input-probe-dynamic-prop"');
+    expect(source).toContain('bindtap={props.onActivate}');
+    expect(source).toContain('Dynamic prop taps: ${props.count}');
+  });
+
   it('distinguishes binding existence from event delivery', () => {
     const initial = createHostInputProbeMatrix('Lynx-for-Web', 100);
     const bound = recordHostEventBinding(
