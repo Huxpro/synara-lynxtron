@@ -1,0 +1,13 @@
+{
+  "cls": "LxButton LxButton--outline LxButton--xs",
+  "inside": true,
+  "label": "Hide chat",
+  "rect": {
+    "height": 24,
+    "width": 63.1875,
+    "x": 269.625,
+    "y": 10.5
+  },
+  "x": 301,
+  "y": 23
+}

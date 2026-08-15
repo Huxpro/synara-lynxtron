@@ -1,0 +1,13 @@
+{
+  "cls": "LxButton LxButton--outline LxButton--xs",
+  "inside": true,
+  "label": "Show chat",
+  "rect": {
+    "height": 24,
+    "width": 67.28125,
+    "x": 265.53125,
+    "y": 10.5
+  },
+  "x": 299,
+  "y": 23
+}

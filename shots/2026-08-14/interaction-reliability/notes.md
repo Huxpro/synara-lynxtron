@@ -214,3 +214,21 @@
     capture identity mismatch;
   - selector, decimal-coordinate, and CDP attachment scripting failures were
     cleaned up and not counted as product observations.
+
+## Compact Editor interaction refresh (2026-08-15)
+
+- Extended the closed Editor composition fix to a new compact interaction cell:
+  `390x844`, DPR 1, dark.
+- Trusted pointer input passed the complete activity sequence
+  Changes -> Files -> Search -> Changes.
+- Trusted pointer input also passed Hide chat -> Show chat. The workspace
+  expanded to the full `798px` content height and restored the original
+  `498.75px / 299.25px` workspace/Chat split exactly.
+- `editor-complex-composition-interaction` remains closed at contribution
+  `0.00`; the compact rail and Chat interaction components each add a new
+  observed pass at `0.00 -> 0.00`.
+- Failed selector, decimal-coordinate, stdin-forwarding, authority hydration,
+  and `dev/` versus `userdata/` snapshot-identity attempts remained harness
+  losses and did not enter product accounting.
+- Retained evidence:
+  `shots/2026-08-15/editor-compact-interactions/`.

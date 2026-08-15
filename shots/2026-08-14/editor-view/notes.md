@@ -703,3 +703,27 @@ comparison; no Web screenshot pass is claimed.
   contribution remains `1.00`.
 - `native-editor-devtool-fixed-port`: harness blocker,
   contribution `0.00` product loss.
+
+## Compact interaction refresh (2026-08-15)
+
+- Added a new real-interaction cell at `390x844`, DPR 1, dark, using the same
+  `.synara-fidelity-editor-changes` snapshot and `58090` relay.
+- Trusted pointer input passed:
+  - Changes -> Files -> Search -> Changes;
+  - Hide chat -> full-height workspace -> Show chat -> original split.
+- The rail remained `48x798`. Chat hide expanded the center from
+  `342x498.75` to `342x798`, reduced Chat to `0x0`, and restored the initial
+  geometry exactly.
+- `errors.json` is empty; the only console warning is the known upstream Web
+  Core deprecated-initialization warning.
+- New-scope accounting:
+  - `lynx-editor-compact-rail-interaction`: product pass, component
+    contribution `0.00 -> 0.00`;
+  - `lynx-editor-compact-chat-toggle-interaction`: product pass, component
+    contribution `0.00 -> 0.00`.
+- No Native pass is claimed. A fresh equivalent Web authority interaction
+  cell remains missing because the isolated authority intermittently failed
+  its hydration gate; empty frames and snapshot-mismatched `userdata/` runs
+  were rejected as harness losses.
+- Evidence:
+  `shots/2026-08-15/editor-compact-interactions/notes.md`.
