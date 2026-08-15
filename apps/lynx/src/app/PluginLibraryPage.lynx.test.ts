@@ -22,6 +22,12 @@ describe('Lynx plugin library', () => {
     expect(pageSource).toContain('if (!plugin.installed) continue;');
     expect(pageSource).toContain('supportsPluginDiscovery');
     expect(pageSource).toContain('supportsSkillDiscovery');
+    expect(pageSource).toContain(
+      '(supported && (tab ==='
+    );
+    expect(pageSource).toContain(
+      'are unavailable for ${PROVIDER_DISPLAY_NAMES[provider]}.'
+    );
     expect(pageSource).toContain("tab === 'plugins'");
     expect(pageSource).toContain("tab === 'skills'");
     expect(pageSource).toContain('resolveProviderDiscoveryStatus');

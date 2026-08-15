@@ -135,15 +135,15 @@ export function PluginLibraryPage() {
     }
     discoveredSkills.push(skill);
   }
-  const activePending =
-    capabilities.isPending ||
-    (tab === 'plugins' ? plugins.isPending : skills.isPending);
-  const activeError =
-    capabilities.error ?? (tab === 'plugins' ? plugins.error : skills.error);
   const supported =
     tab === 'plugins'
       ? capabilities.data?.supportsPluginDiscovery === true
       : capabilities.data?.supportsSkillDiscovery === true;
+  const activePending =
+    capabilities.isPending ||
+    (supported && (tab === 'plugins' ? plugins.isPending : skills.isPending));
+  const activeError =
+    capabilities.error ?? (tab === 'plugins' ? plugins.error : skills.error);
   const status = resolveProviderDiscoveryStatus({
     error: activeError,
     itemCount:
@@ -219,8 +219,7 @@ export function PluginLibraryPage() {
             </text>
           ) : status.kind === 'unsupported' ? (
             <text className="PluginLibraryState">
-              {tab === 'plugins' ? 'Plugins' : 'Skills'} are unavailable for
-              {PROVIDER_DISPLAY_NAMES[provider]}.
+              {`${tab === 'plugins' ? 'Plugins' : 'Skills'} are unavailable for ${PROVIDER_DISPLAY_NAMES[provider]}.`}
             </text>
           ) : status.kind === 'empty' ? (
             <text className="PluginLibraryState">

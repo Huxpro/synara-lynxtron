@@ -221,3 +221,30 @@
 
 - `shots/2026-08-14/plugins/provider-switching/pi-skills-wide-light.png`
 - `shots/2026-08-14/plugins/provider-switching/pi-skills-runtime.json`
+
+## Unsupported-capability interaction closure (2026-08-15)
+
+- Newly unblocked real pointer coverage selected Claude Plugins and Claude
+  Skills on the same mounted route.
+- **P1 product state loss closed:** Claude Plugins stayed on
+  `Loading plugins…` forever with zero pending relay requests because the
+  disabled resource query's `isPending` value outranked the unsupported
+  capability state.
+- Resource-query pending now contributes only after capabilities confirm that
+  the selected provider supports the selected resource.
+- **P1 copy loss closed:** the unsupported sentence now renders as one Lynx
+  text value, preserving the space in
+  `Plugins are unavailable for Claude.` rather than `forClaude`.
+- Claude Skills remains a product pass with `118` real rows.
+- Loss ledger:
+  - `lynx-plugin-unsupported-perpetual-loading`: `1.00 -> 0.00`;
+  - `lynx-plugin-unsupported-copy-spacing`: `1.00 -> 0.00`.
+- Evidence:
+  - `shots/2026-08-15/plugins-unsupported-capability/notes.md`
+  - `shots/2026-08-15/plugins-unsupported-capability/plugins.json`
+  - `shots/2026-08-15/plugins-unsupported-capability/skills.json`
+  - `shots/2026-08-15/plugins-unsupported-capability/claude-plugins-unsupported.png`
+  - `shots/2026-08-15/plugins-unsupported-capability/claude-skills-content.png`
+- Codex plugin content remains an environment/missing-coverage boundary in the
+  isolated server because `codex` is not on `PATH`; it is not counted as a
+  Lynx product failure.
