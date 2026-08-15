@@ -407,3 +407,18 @@ former dynamic-event P1 is no longer a valid blocker.
   product-loss contribution remains `0.00 -> 0.00`.
 - No new P0/P1/P2 loss was found. Native larger-size and remaining interaction
   cells plus global discovery exhaustion remain open.
+
+## 2026-08-16 Native Automations 1440 continuation
+
+- Active discovery added exact-owned Native Automations dark at `1440x900`.
+- The root reported the intended viewport and retained a `256px` sidebar,
+  `1184px` page, centered `768px` list rail, and `704px` title/row rail.
+- A real row touch opened detail. The wider split remained `864px + 320px`,
+  while prompt/title stayed bounded to `704px`; the aside retained its
+  canonical `287px` content rail.
+- Exact-client warning/error console stayed empty; canonical cleanup restored
+  zero definitions/runs and removed isolated theme/window/runtime state.
+- `native-automations-dark-1440-detail`: missing coverage `1.00 -> 0.00`;
+  product-loss contribution remains `0.00 -> 0.00`.
+- No new P0/P1/P2 loss was found. Remaining Native interactions and global
+  discovery exhaustion remain open.

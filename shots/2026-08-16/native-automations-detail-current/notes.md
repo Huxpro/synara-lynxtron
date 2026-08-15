@@ -244,6 +244,29 @@ runtime directories were removed without changing user theme state.
 - `native-automations-dark-list-detail`: missing coverage `1.00 -> 0.00`;
 - component product-loss contribution: `0.00 -> 0.00`.
 
+## Native dark 1440x900
+
+The larger-size Native axis was then exercised with isolated dark theme and
+persisted `1440x900` window bounds:
+
+- root reported `data-viewport-width=1440`,
+  `data-viewport-height=900`, and `SliceRoot--theme-dark`;
+- sidebar remained `256px`, leaving an `1184x900` Automations page;
+- list content remained centered at `x=464` with a `768px` outer rail;
+- title and row inner rails remained `704px` wide at `x=488`;
+- a real row touch opened detail;
+- detail split remained `864px + 320px`;
+- prompt/title remained bounded to `704px` at `x=288`, instead of stretching
+  with the extra viewport width;
+- aside content remained the canonical `287px` rail and No-runs geometry;
+- exact-client warning/error console stayed empty.
+
+Canonical cleanup restored zero definitions/runs, and the isolated KV/window
+state/runtime directories were removed.
+
+- `native-automations-dark-1440-detail`: missing coverage `1.00 -> 0.00`;
+- component product-loss contribution: `0.00 -> 0.00`.
+
 ## Harness losses kept separate
 
 The first Lynx-for-Web probes were invalid for three independent harness
@@ -290,6 +313,7 @@ agent-browser-owned processes.
 - Compact Web/Lynx-for-Web detail composition: passed after shared fix.
 - Native stale deep-link not-found and Back recovery: passed.
 - Native dark list/detail geometry and token resolution: passed.
+- Native dark `1440x900` list/detail geometry: passed.
 - Native warning/error console: zero.
 - Corrected Lynx-for-Web shadow-root/relay cell: passed.
 - Lynx-for-Web shared icon requests: `404 -> 200`.
