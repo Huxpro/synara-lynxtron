@@ -574,3 +574,35 @@ former dynamic-event P1 is no longer a valid blocker.
   nonempty session or owned process is harness failure that blocks evidence,
   commit, push, and the next loop. This loop's gate passed with
   `sessions: []` and zero owned browser processes.
+
+## 2026-08-16 Native Update continuation
+
+- Active discovery moved to another current-head top-level screen and added
+  exact-owned Native `/update` light at `1280x820`.
+- `/update` is a Lynxtron-only application-update surface with no Web
+  equivalent. The missing Web cell is an intentional platform delta, not
+  product loss.
+- The real GitHub release authority returned HTTP `200` and current tag
+  `v0.7.2`; Native rendered Installed `v0.5.5-lynx.0`, Latest release
+  `v0.7.2`, and `A newer release is available.`
+- The centered `560x420` card retained complete mark, title, description,
+  `490x90` version panel, status, and two-action geometry with canonical light
+  tokens.
+- A real rendered-control touch on `Check for updates` issued a second
+  `updaterCheck`, returned to the same complete result, and restored the
+  enabled action label. Exact-client warning/error console stayed empty.
+- `Open download page` was not activated because it intentionally calls
+  `shell.openExternal`; avoiding an external browser side effect leaves that
+  handoff explicitly unverified rather than inferred.
+- `Accessibility.getFullAXTree` is unsupported by Desktop LynxView, and one
+  zsh newline-list probe required a Bash-array retry. Both are harness
+  boundaries, not product losses.
+- Focused Update tests pass `5/5`; Native/Desktop production build passes and
+  output/staged bundles are byte-identical.
+- `native-update-available-retry-light-1280`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- Evidence is under `shots/2026-08-16/native-update-current/`. No screenshot
+  was added at the 100-image cap.
+- No new P0/P1/P2 product loss was found. Update dark/1440, network-error
+  retry, external-download handoff, other routes, and global discovery
+  exhaustion remain open.
