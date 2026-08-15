@@ -93,3 +93,35 @@ it is external list evolution, not row recycling or detail identity loss.
 
 - `native-pull-requests-detail-tabs`: missing coverage `1.00 -> 0.00`.
 - Product-loss contribution: `0.00 -> 0.00`.
+
+## Native Pin/Unpin roundtrip
+
+A follow-up exact-owned run added the first current-head Native PR pin
+roundtrip using the current canonical first-row identity rather than a list
+index:
+
+- PR `Emanuele-web04/synara#699`, project
+  `automation-expanded-project`;
+- initial canonical state `isPinned:false`;
+- initial Native control: `Pin pull request #699 in Automation Fidelity`,
+  `aria-pressed=false`, `Not pinned`, `28x28`.
+
+A real touch pinned the PR through canonical `pullRequests.setPinned`:
+
+- canonical list changed to `isPinned:true`;
+- Native changed to `SharedPrPin--pinned`,
+  `aria-pressed=true`, `Pinned`, and the Unpin label;
+- the row moved from its ordinary group to the pinned group, shifting the pin
+  control from `y=225` to `y=175`. That membership movement is expected.
+
+A second real touch used the new pinned-group box center and restored:
+
+- canonical `isPinned:false`;
+- `SharedPrPin--unpinned`;
+- `aria-pressed=false`, `Not pinned`, and the original Pin label.
+
+The exact-client warning/error console stayed empty. The final canonical state
+matches the recorded initial state; no GitHub PR data was changed.
+
+- `native-pull-requests-pin-roundtrip`: missing coverage `1.00 -> 0.00`.
+- Product-loss contribution: `0.00 -> 0.00`.

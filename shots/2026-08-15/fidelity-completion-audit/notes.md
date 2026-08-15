@@ -475,3 +475,22 @@ former dynamic-event P1 is no longer a valid blocker.
   product-loss contribution remains `0.00 -> 0.00`.
 - No new P0/P1/P2 loss was found. Native PR theme/size axes, remaining
   interactions, other routes, and discovery exhaustion remain open.
+
+## 2026-08-16 Native Pull Requests pin continuation
+
+- Active discovery added the first exact-owned Native Pin -> Unpin roundtrip
+  for current PR `#699`, identified by project/repository/number rather than
+  list index.
+- Real touches dispatched canonical `pullRequests.setPinned`; canonical and
+  Native states changed
+  `unpinned -> pinned -> unpinned`, including aria pressed/value/label and
+  visual class updates.
+- Pinning moved the row into the pinned group, shifting its control upward;
+  the second touch used the remeasured pinned-group box. Final canonical state
+  exactly matched the initial `isPinned:false` state.
+- Exact-client warning/error console stayed empty and no GitHub PR data was
+  changed.
+- `native-pull-requests-pin-roundtrip`: missing coverage `1.00 -> 0.00`;
+  product-loss contribution remains `0.00 -> 0.00`.
+- No new P0/P1/P2 loss was found. Native PR theme/size axes, remaining
+  interactions, other routes, and discovery exhaustion remain open.
