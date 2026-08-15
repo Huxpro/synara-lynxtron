@@ -48,7 +48,7 @@ trap 'forward_signal HUP 129' HUP
 trap 'forward_signal INT 130' INT
 trap 'forward_signal TERM 143' TERM
 
-"$@" &
+"$@" <&0 &
 child_pid=$!
 wait "$child_pid"
 command_status=$?
