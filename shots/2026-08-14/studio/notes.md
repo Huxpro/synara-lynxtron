@@ -93,8 +93,9 @@
   contribution `0.00` product loss.
 - `studio-persisted-empty-thread-fixture`: verification limitation,
   contribution `0.00` product loss.
-- `lynx-web-pointer-to-bindtap`: ReactLynx/Web Core dynamic-event P1 blocker,
-  contribution remains `1.00`.
+- `lynx-web-pointer-to-bindtap`: historical ReactLynx/Web Core dynamic-event
+  P1 coverage, contribution `1.00 -> 0.00` globally. Studio folder/dialog
+  controls still require route-specific current-head interaction coverage.
 - `native-studio-devtool-fixed-port`: harness blocker,
   contribution remains `0.00` product loss.
 
@@ -167,9 +168,10 @@
   so no pointer/menu interaction pass is claimed.
 - The folder selection contract is covered by pure tests and source wiring,
   while real Native folder dialog behavior remains unverified.
-- This stays classified under the existing
-  `lynx-web-pointer-to-bindtap` missing harness coverage, not a reopened
-  product loss.
+- This older cell remains route-specific missing interaction coverage, not a
+  reopened product loss. The later global dynamic-event closure does not prove
+  the Native folder dialog or retroactively convert this sample into a click
+  pass.
 - The initial Web Studio capture occurred before route hydration and was
   discarded.
 - Web console contains only Vite/React development messages.

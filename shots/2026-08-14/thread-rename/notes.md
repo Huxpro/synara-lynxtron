@@ -75,7 +75,9 @@
   contribution `1.00 -> 0.00`.
 - `lynx-native-input-initial-value`: P1 product reliability,
   contribution `1.00 -> 0.00`.
-- `lynx-web-pointer-to-bindtap`: ReactLynx/Web Core dynamic-event P1 blocker,
-  contribution remains `1.00`.
+- `lynx-web-pointer-to-bindtap`: historical ReactLynx/Web Core dynamic-event
+  P1 coverage, contribution `1.00 -> 0.00` globally. This rename cell still
+  needs its own current-head rendered-input rerun and remains route-specific
+  missing interaction coverage.
 - `native-thread-rename-devtool-fixed-port`: harness blocker,
   contribution `0.00` product loss.

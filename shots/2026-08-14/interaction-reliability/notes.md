@@ -232,3 +232,30 @@
   losses and did not enter product accounting.
 - Retained evidence:
   `shots/2026-08-15/editor-compact-interactions/`.
+
+## Dynamic product interaction closure (2026-08-15)
+
+- The earlier `lynx-web-pointer-to-bindtap` P1 classification is superseded.
+- Two independent defects were closed:
+  - ReactLynx background snapshots now retain callback functions while the
+    main-thread snapshot receives event ids;
+  - Composer missing-draft selectors now return stable empty arrays, preventing
+    synchronous render recursion from starving event RPC.
+- Current-head trusted input now passes across multiple dynamic product owners:
+  - Editor Changes -> Files -> Search -> Changes;
+  - Editor Hide chat -> Show chat;
+  - populated Pull Requests list -> detail -> Summary/Timeline/Code;
+  - Pull Requests Code disclosure, close, search, state filters, and pin
+    persistence;
+  - Plugins search and Automation controls.
+- Global loss accounting:
+  - `lynx-web-pointer-to-bindtap`: P1 fast-loop interaction coverage,
+    contribution `1.00 -> 0.00`;
+  - `editor-complex-composition-interaction` remains closed at `0.00`.
+- This does not retroactively turn older deterministic-only route cells into
+  click evidence. Those controls remain route-specific missing coverage until
+  rerun, not a global dynamic-event blocker.
+- Retained closure evidence:
+  - `shots/2026-08-15/editor-interaction-starvation/`
+  - `shots/2026-08-15/editor-compact-interactions/`
+  - `shots/2026-08-15/pull-requests-populated-interactions/`

@@ -34,40 +34,42 @@ manifests, and pixel scores are supporting evidence only.
 | --- | --- | --- |
 | 1. Active discovery | `shots/2026-08-14/editor-view/notes.md` records newly discovered wide, compact, medium, light, clean, non-Git, multi-file, Search, Chat-hidden, resize, header, and project-switch states. | Passing for the current loop; discovery is still active. |
 | Web authority | Real Web controls were used for Changes file selection, Search, Chat visibility, project switching, theme selection, and settings navigation. Evidence paths are listed per slice in the Editor ledger. | Passing for retained Web cells. |
-| Lynx-for-Web | Named isolated browser sessions used real canonical server snapshots and deterministic init only where the dynamic-event blocker prevents retained clicks. | Passing for rendered/geometry states; interaction coverage remains blocked. |
+| Lynx-for-Web | Named isolated browser sessions use real canonical server snapshots. Later current-head cells retain trusted pointer and keyboard interactions for Editor rail/Chat, populated Pull Requests list/detail/tabs/disclosure/close/filters/pins, Plugins search, and Automation controls. | Passing for the newly exercised interaction paths; route-specific untested interactions remain missing coverage. |
 | Native | Production bundles build and stage, but no exact-owned Native Editor client can coexist with the user-owned PID `77846` on fixed DevTool port `8901`. | Incomplete; harness blocker, not product loss. |
 | 2. Identity preflight | Editor ledger records `.synara-fidelity-editor-changes`, server port `59260`, canonical project/thread/workspace IDs, viewport/DPR/theme, sequential trusted origins, PNG dimensions, and relay identity. | Passing for retained fast-loop cells. |
 | Harness mismatch separation | Empty accessibility snapshots, unquoted zsh URL globbing, origin mismatch, capture timing, fixed Native port, and provider CLI absence are explicitly classified separately. | Passing. |
-| 3. Screenshot evidence | Retained `/tmp/synara-editor-*.png` paths are enumerated in the Editor ledger. Local screenshot count was rechecked at `47`, below the 100-image cap. | Passing. |
+| 3. Screenshot evidence | Retained Editor and populated Pull Requests evidence paths are enumerated in their ledgers. Local screenshot count was rechecked at `82`, below the 100-image cap. | Passing. |
 | Geometry evidence | Each Editor slice records measured rail/sidebar/preview/Chat/header boundaries before and after. | Passing. |
 | Style/token evidence | Light-theme root, sidebar, selected-row, addition, deletion, divider, and foreground tokens are recorded. | Passing. |
 | Console/relay evidence | Retained cells record Web console state and Lynx relay connection count, pending count, RPC tags, transport error, and RPC error. | Passing where applicable. |
-| Behavior evidence | Web retained real clicks for changed-file selection, Search, Chat visibility, project switching, and theme. Lynx deterministic projections are explicitly not mislabeled as click evidence. | Partial because dynamic product handlers do not publish in Lynx-for-Web. |
+| Behavior evidence | Web retained real clicks for changed-file selection, Search, Chat visibility, project switching, and theme. Lynx now retains trusted pointer/keyboard evidence across Editor and populated Pull Requests, while older deterministic-only cells remain labeled as such. | Passing for retained interaction cells; no deterministic projection was relabeled as a click. |
 | Ledger update | `shots/2026-08-14/editor-view/notes.md` contains before/after values and residual classifications for every current Editor slice. | Passing. |
 | 4. Highest loss first | P1 Editor losses closed include missing Editor/Changes, pre-relay loading, dead center area, hidden patch, compact navigation, cramped preview, clean-copy semantics, non-Git misclassification, medium compression, compact stale width, and header hierarchy. | Passing for discovered local losses. |
 | No score manipulation | Loss changes come from product implementation and measured geometry/state changes; no weight/filter/scope reduction was used. | Passing. |
-| 5. Focused tests | Relevant Rstest/Vitest suites were run after each slice. Recent examples: Editor 5/5, Editor+resize 9/9, Editor+Desktop 19/19, Web Editor 15/15. | Passing for committed slices. |
-| Production build | `CI=1 bun run build` in `apps/lynx` passed after each code slice, staging Lynx and Desktop bundles. Existing optional `bufferutil` / `utf-8-validate` and unsupported CSS warnings remain named. | Passing. |
+| 5. Focused tests | Relevant Rstest/Vitest suites were run after each slice. Current-head examples include compact Editor 12/12, populated PR route/detail 20/20 plus shared Web tabs 2/2, disclosure/close 6/6, filters 16/16, and pins 16/16. | Passing for committed slices. |
+| Production build | Root `CI=1 bun run build` passed 6/6 after the latest code slice, staging Web, Lynx, Desktop, and server artifacts. Existing optional `bufferutil` / `utf-8-validate`, unsupported CSS, and `original-fs` external warnings remain named. | Passing. |
 | Web validation | Real Web authority cells were captured for every paired Editor slice. | Passing. |
 | Lynx validation | Real canonical RPC data, geometry, tokens, and relay state were captured for every paired Editor slice. | Passing. |
 | Native validation | Exact-owned Native Editor certification was not performed because the workspace executable and user-owned app contend for the fixed DevTool listener. | Incomplete harness boundary. |
-| 6. Independent commits | Recent coherent commits range from `f90858e94` through `e99b1c36b`; every code/evidence slice was pushed immediately. | Passing. |
+| 6. Independent commits | Recent coherent slices include the interaction fix and evidence commits through `e350ffc9e`; every code/evidence slice was pushed immediately. | Passing. |
 | Commit trailer | Recent commit messages were checked and contain exactly one `Co-authored-by: TRAE CLI <noreply@bytedance.com>` trailer. | Passing. |
-| Remote state | Local `HEAD` and `origin/huxcx/lynxtron-port-current-state` were repeatedly compared after push. | Passing at the last checked commit. |
+| Remote state | Local `HEAD` and `origin/huxcx/lynxtron-port-current-state` were repeatedly compared after push. | Passing at `e350ffc9e` before this audit-only correction. |
 | Working tree hygiene | Only pre-existing `.p10-view/` and `.p10-view-native/` remain untracked and untouched. | Passing. |
 | 7. No new scope | New Editor states continued to produce real P1/P2 findings, so exhaustion has not yet been proven. | Not achieved. |
-| All P0/P1 closed | Local discovered Editor P1 product losses are closed. `lynx-web-pointer-to-bindtap` remains a P1 fast-loop interaction blocker for ReactLynx dynamic event registration. | Not achieved. |
+| All P0/P1 closed | Local discovered product P1 losses are closed. The former `lynx-web-pointer-to-bindtap` blocker was closed by the ReactLynx background-snapshot patch plus the Composer stable-snapshot fix, then verified through multiple real dynamic product interactions. | Passing for discovered P0/P1 losses; discovery exhaustion and Native coverage remain separate completion requirements. |
 
 ## Verifier coverage audit
 
 - Focused tests cover contracts and source wiring but cannot prove browser event
   publication, exact Native input semantics, or visual geometry by themselves.
 - `CI=1 bun run build` proves bundle production/staging, not behavior.
-- The host-input probe proves static `tap` delivery, but the real Editor rail
-  proves dynamic handler IDs compiled through ReactLynx `updateEvent` still do
-  not publish. The probe is therefore not a global interaction pass.
-- Deterministic init states prove product rendering and data projection, not
-  the blocked click that would normally enter those states.
+- The host-input probe alone was never treated as a global interaction pass.
+  Later real product evidence closes the dynamic-handler boundary: Editor
+  Changes/Files/Search and Chat controls, Pull Requests list/detail/tabs/code
+  disclosure/close/filter/pin controls, Plugins search, and Automation
+  controls all publish through current-head dynamic handlers.
+- Deterministic init states still prove only rendering/data projection for the
+  older cells that were not rerun; they are not retroactively relabeled.
 - Web screenshots with empty accessibility/`innerText` extraction were rejected
   unless direct product-node DOM and geometry proved the state.
 - Native production builds do not certify the running executable, staged
@@ -75,9 +77,11 @@ manifests, and pixel scores are supporting evidence only.
 
 ## Missing and uncovered requirements
 
-1. **P1 harness blocker:** `lynx-web-pointer-to-bindtap` remains open for
-   ReactLynx dynamic event registration. Static snapshot events work; handlers
-   compiled through `updateEvent` do not reach product callbacks.
+1. **Closed P1, retained historical boundary:** `lynx-web-pointer-to-bindtap`
+   moved from `1.00 -> 0.00`. The runtime patch preserved background callback
+   functions, and the Composer fix stopped synchronous render recursion from
+   starving event RPC. Older route-specific deterministic cells still need
+   their own interaction reruns before those individual controls are claimed.
 2. **Native certification:** exact-owned Editor cells remain blocked while the
    user-owned PID `77846` occupies the fixed DevTool port `8901`.
 3. **P2 Editor coverage:** project switching and Chat-history/terminal tab
@@ -89,5 +93,6 @@ manifests, and pixel scores are supporting evidence only.
 ## Completion decision
 
 The active objective is **not achieved**. No `update_goal complete` call is
-permitted while the dynamic-event P1 blocker, Native certification boundary,
-and discovery-exhaustion requirement remain open.
+permitted while the Native certification boundary, route-specific missing
+interaction coverage, and discovery-exhaustion requirement remain open. The
+former dynamic-event P1 is no longer a valid blocker.

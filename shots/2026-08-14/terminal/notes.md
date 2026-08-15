@@ -57,7 +57,9 @@
   contribution `1.00 -> 0.00`.
 - `lynx-terminal-live-stream`: intentional platform delta,
   contribution remains `0.25`.
-- `lynx-web-pointer-to-bindtap`: ReactLynx/Web Core dynamic-event P1 harness coverage,
-  contribution remains `1.00`.
+- `lynx-web-pointer-to-bindtap`: historical ReactLynx/Web Core dynamic-event
+  P1 coverage, contribution `1.00 -> 0.00` globally. This Terminal cell itself
+  still lacks a rendered-control rerun and remains route-specific missing
+  interaction coverage.
 - `native-terminal-devtool-fixed-port`: harness blocker,
   contribution remains `0.00` product loss.

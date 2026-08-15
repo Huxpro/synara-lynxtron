@@ -47,7 +47,7 @@ Read-only SQLite inspection was used only after a harness discrepancy to confirm
 | --- | --- | --- |
 | Missing Lynx Editor Chat-history entry and list | product loss, P2 (`0.25`) | closed for presentation/data/navigation contract |
 | Web menu navigation preserving `view=editor` | authority behavior | passed by real rendered click |
-| Lynx-for-Web history row click | ReactLynx/Web Core dynamic-event P1 blocker | not reclassified as history failure; no fake click/pass |
+| Lynx-for-Web history row click | historical dynamic-event blocker | this cell was not reclassified as a pass; the global blocker was closed later, but this history-row interaction still needs a current-head rerun |
 | Initial `58090` relay despite isolated `59260` build | harness loss | fixed: Web host now consumes the compile-time isolated endpoint |
 | Initial WS rejection from `localhost:8080` | harness origin mismatch | fixed by phase-specific server `--dev-url http://localhost:8080/`; security policy unchanged |
 | Empty Dialog UI overlay in fixed Editor root | intentional platform implementation delta | replaced with stable fixed modal; visible/data contract passed |

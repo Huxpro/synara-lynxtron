@@ -51,8 +51,11 @@
   contribution `0.00` product loss.
 - `plugins-cross-provider-switching`: P2 product coverage,
   contribution `0.25 -> 0.00`.
-- `lynx-web-pointer-to-bindtap`: ReactLynx/Web Core dynamic-event P1 blocker,
-  contribution remains `1.00`.
+- `lynx-web-pointer-to-bindtap`: historical ReactLynx/Web Core dynamic-event
+  P1 coverage, contribution `1.00 -> 0.00` globally. Later current-head
+  Plugins search input publishes through the real product path; the older
+  provider-tab cell remains route-specific missing interaction coverage until
+  rerun.
 
 ## Visual and interaction continuation
 
@@ -118,8 +121,10 @@
 - Web Skills tab was exercised through the rendered button.
 - Lynx Web Core did not expose the tab in the accessibility tree or allow a
   selector click through its shadow boundary. A rendered custom-element
-  `.click()` was used only to prepare the visual state. This is not claimed as
-  an interaction pass; `lynx-web-pointer-to-bindtap` remains open.
+  `.click()` was used only to prepare the visual state. This older cell is not
+  claimed as an interaction pass. The later global dynamic-event closure does
+  not retroactively convert this provider-tab sample into trusted click
+  evidence.
 
 ### Harness losses and noise
 

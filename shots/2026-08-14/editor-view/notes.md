@@ -643,12 +643,12 @@ comparison; no Web screenshot pass is claimed.
 - **P2 coverage remains:** Web Editor project switching, chat-history tabs,
   terminal rail tabs, and resizable Chat width are not yet implemented in
   Lynx.
-- **Harness blocker:** Lynx-for-Web dynamic pointer-to-`bindtap` publication
-  still prevents retained click evidence for the Editor/Chat buttons. The
-  current-head static host-input probe receives `tap`, but stateful product
-  handlers compiled through ReactLynx `updateEvent` do not. Deterministic init
-  data proves the rendered states; source/focused tests prove the actions are
-  wired.
+- **Historical harness blocker closed:** the earlier deterministic Editor cells
+  predate the ReactLynx background-snapshot and Composer stable-snapshot fixes.
+  Current-head trusted pointer evidence now covers Changes/Files/Search and
+  Hide/Show Chat. Older file-row, project-switch, resize-drag, and tab cells
+  remain route-specific interaction coverage rather than a global `bindtap`
+  failure.
 - **Environment noise:** the isolated machine lacks an executable Codex CLI,
   so `provider.listModels` reports the real provider error. File and thread
   data remain healthy.
@@ -699,8 +699,9 @@ comparison; no Web screenshot pass is claimed.
   contribution `1.00 -> 0.00`.
 - `editor-web-boot-splash-capture`: harness loss,
   contribution `0.00` product loss.
-- `lynx-web-pointer-to-bindtap`: ReactLynx/Web Core dynamic-event P1 blocker,
-  contribution remains `1.00`.
+- `lynx-web-pointer-to-bindtap`: ReactLynx/Web Core dynamic-event P1 coverage,
+  contribution `1.00 -> 0.00`; closed by the runtime callback-preservation and
+  Composer stable-snapshot fixes, with real Editor and Pull Requests evidence.
 - `native-editor-devtool-fixed-port`: harness blocker,
   contribution `0.00` product loss.
 
