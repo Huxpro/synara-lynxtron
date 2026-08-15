@@ -17,6 +17,24 @@ coverage.
 
 The current historical scope contains 379 stories and 1,856 images.
 
+## Per-loop browser lifecycle invariant
+
+Every discovery, fast, and Native loop begins and ends with
+`bun run browser:cleanup`, even when that loop does not intend to use a browser.
+Any command sequence that can invoke `agent-browser` runs wholly inside
+`bun run browser:run -- ...`.
+
+A loop is not closed until both conditions are observed:
+
+- `agent-browser session list --json` reports `sessions: []`;
+- the repository cleanup script reports zero agent-browser-owned daemon or
+  browser processes.
+
+Any remainder is classified as harness loss, not product loss. It blocks
+retained evidence, commit, push, and the next loop until cleanup succeeds. The
+ownership filter must never terminate unrelated Chrome or remote-debugging
+processes.
+
 ## Equation
 
 ```text

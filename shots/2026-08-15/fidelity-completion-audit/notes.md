@@ -547,3 +547,30 @@ former dynamic-event P1 is no longer a valid blocker.
   the 100-image cap.
 - Other Native Plugin theme/size/search states, remaining routes, and global
   discovery exhaustion remain open.
+
+## 2026-08-16 Native Plugin Library dark 1440 continuation
+
+- Active discovery added the exact-owned Native Plugin Library dark-theme,
+  `1440x900`, Claude Skills populated cell.
+- Real rendered-control touches switched Codex -> Claude and Plugins -> Skills;
+  the final tree contained 118 actual `PluginLibraryRow` nodes.
+- The route retained a `256px` sidebar, `1184px` page, `860px` content rail,
+  `812px` title/row rail, and canonical `405x70` two-column skill rows.
+- Dark tokens resolved to `rgb(16,16,16)` canvas,
+  `rgb(252,252,252)` title/row foreground, muted
+  `rgba(252,252,252,0.576471)`, and enabled `rgb(16,185,129)`.
+- Desktop LynxView rejected unsupported `Input.dispatchTouchEvent`; the
+  supported `Input.emulateTouchFromMouseEvent` product path succeeded. The
+  rejected call is harness API mismatch, not product loss.
+- Exact-client warning/error console stayed empty and no plugin, skill,
+  provider, or settings mutation occurred.
+- `native-plugin-library-claude-skills-dark-1440`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- No new P0/P1/P2 product loss was found. Plugin search/enable interactions,
+  remaining routes, and global discovery exhaustion remain open.
+- Agent-browser leakage is now a per-loop invariant in the repository
+  instructions, verification playbook, loss method, and cell notes template:
+  every discovery/fast/Native loop runs cleanup at entry and exit; any
+  nonempty session or owned process is harness failure that blocks evidence,
+  commit, push, and the next loop. This loop's gate passed with
+  `sessions: []` and zero owned browser processes.

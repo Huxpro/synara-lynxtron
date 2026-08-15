@@ -1,5 +1,21 @@
 # <screen> — fidelity certification
 
+## Browser lifecycle gate
+
+Complete this checklist for every fast or Native loop, including loops that do
+not intend to open a browser:
+
+- Entry `bun run browser:cleanup`: `pass | fail`
+- All browser commands wrapped by `bun run browser:run -- ...`: `yes | n/a`
+- Exit `bun run browser:cleanup`: `pass | fail`
+- Final `agent-browser session list --json`: `sessions: [] | fail`
+- Final agent-browser-owned daemon/browser process count: `0 | fail`
+
+Any nonzero session or owned process is a harness leak. Stop the loop, clean it
+up, record the harness failure, and do not retain evidence, commit, push, or
+start the next loop until both final values are zero. Never terminate unrelated
+Chrome or remote-debugging processes.
+
 ## Run identity
 
 - Task:

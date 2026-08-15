@@ -61,3 +61,39 @@ or settings mutation was performed.
 - Claude Skills populated state: 118 rows.
 - Product-loss contribution after reachability fix: `0.00`.
 - No screenshot was added because the repository remains at the 100-image cap.
+
+## Dark 1440 Claude Skills continuation
+
+The exact-owned Native matrix was extended to dark theme at `1440x900` using
+an isolated user directory whose only product KV override was
+`synara:theme=dark`.
+
+- root: `SliceRoot--theme-dark SliceRoot--viewport-wide`, `1440x900`;
+- page/header/scroller: `(256,0,1184x900)`, `(256,0,1184x46)`,
+  `(256,46,1184x854)`;
+- centered content/title rails: `(418,46,860x4468)` and
+  `(442,86,812x36)`;
+- canvas/title tokens: `rgb(16,16,16)` and
+  `rgb(252,252,252)`, title `28px/36px/600`;
+- search surface: `(512,146,672x42)`, `rgb(19,19,19)`;
+- Skills rows: 118 actual `PluginLibraryRow` nodes in the canonical two-column
+  grid; first row `(442,212,405x70)`;
+- first-row title/description/status:
+  `(508,229,278x17)`, `(508,248,278x17)`, `(798,241,37x13)`;
+  title `14px/500 rgb(252,252,252)`, description
+  `12px/17px rgba(252,252,252,0.576471)`, enabled status
+  `11px rgb(16,185,129)`.
+
+Real rendered controls switched Codex -> Claude and Plugins -> Skills through
+`Input.emulateTouchFromMouseEvent`. Desktop LynxView does not implement
+`Input.dispatchTouchEvent`; that rejected probe was a harness API mismatch and
+did not change product state. The final exact-client warning/error console was
+empty.
+
+`native-plugin-library-claude-skills-dark-1440`: missing coverage
+`1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`. No new
+P0/P1/P2 product loss was found.
+
+The per-loop browser lifecycle gate passed before cleanup:
+`bun run browser:cleanup` reported zero owned browser processes and
+`agent-browser session list --json` reported `sessions: []`.
