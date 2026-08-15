@@ -1,0 +1,30 @@
+{
+  "dialogRect": {
+    "height": 123,
+    "width": 240,
+    "x": 520,
+    "y": 348.5
+  },
+  "items": [
+    {
+      "cls": "LxButton LxButton--ghost LxButton--default ThreadEditorNewItem",
+      "rect": {
+        "height": 34,
+        "width": 214,
+        "x": 533,
+        "y": 386.5
+      },
+      "text": "New chat"
+    },
+    {
+      "cls": "LxButton LxButton--ghost LxButton--default ThreadEditorNewItem",
+      "rect": {
+        "height": 34,
+        "width": 214,
+        "x": 533,
+        "y": 424.5
+      },
+      "text": ">_New terminal"
+    }
+  ]
+}

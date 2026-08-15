@@ -52,3 +52,26 @@ Web `New chat` does not immediately create a durable thread. It opens a project-
   - `agent-browser session list` -> `No active sessions`
   - no `agent-browser` or `remote-debugging-port` process remained.
 - Local screenshot count: 51, below the 100-image limit.
+
+## Current-head trigger closure
+
+- Re-ran the route after the global dynamic-event fix on
+  `.synara-fidelity-editor-changes`.
+- Trusted pointer input opened `New editor rail item`:
+  - dialog: `240x123` at `(520,348.5)`;
+  - `New chat` and `New terminal` rows: `214x34`.
+- Trusted pointer input selected `New chat`.
+- The menu closed and the real draft rail mounted at `384x728` with:
+  - `New chat` header;
+  - `What should we do in Editor Changes?`;
+  - real permission/model/project composer controls.
+- Relay remained connected with zero pending requests. No
+  `orchestration.dispatchCommand` occurred during the trigger flow.
+- Read-only SQLite verification after server shutdown still found exactly two
+  durable threads in `editor-changes-project`; opening the draft did not create
+  a thread.
+- `lynx-editor-new-chat-trigger`: P2 route-specific interaction coverage,
+  contribution `0.25 -> 0.00`.
+- Real first send/provider promotion remains missing environment coverage and
+  is not claimed.
+- Evidence: `current-interaction/`.
