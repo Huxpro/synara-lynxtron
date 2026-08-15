@@ -439,3 +439,23 @@ former dynamic-event P1 is no longer a valid blocker.
   `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
 - No new P0/P1/P2 loss was found. Native create submission/input semantics,
   remaining interactions, and global discovery exhaustion remain open.
+
+## 2026-08-16 Native populated Pull Requests continuation
+
+- Active discovery moved to a new screen and added the first current-head
+  exact-owned Native populated Pull Requests list-to-detail-to-list cell.
+- Canonical RPC returned 50 open entries across two repositories with zero
+  source errors. The first Native row was `960x48` at `(272,165)`.
+- A real row touch opened PR `#693` in a `512x774` detail dock with Summary,
+  Timeline, and Code tabs. A real close touch removed the dock and restored all
+  50 rows.
+- Exact-client warning/error console stayed empty; no pull request mutation was
+  performed.
+- `native-pull-requests-populated-list-detail`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- Evidence is under
+  `shots/2026-08-16/native-pull-requests-populated-current/`. No screenshot was
+  added because the local count remains capped at 100.
+- No new P0/P1/P2 loss was found. Populated detail tab interactions, Native
+  theme/size axes on this screen, other routes, and discovery exhaustion remain
+  open.
