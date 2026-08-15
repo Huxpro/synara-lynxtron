@@ -109,6 +109,34 @@ manifests, and pixel scores are supporting evidence only.
 | All P0/P1 closed | Current ledgers plus the terminal remount before/after evidence | Passing for discovered product losses. |
 | No remaining verifiable scope | Project switch, Native certification, first-send provider promotion, and other route-specific cells remain | **Not achieved.** |
 
+## 2026-08-16 continuation
+
+- Active discovery added a new populated project-board × compact × dark × card
+  action × cancel/pin round-trip cell under
+  `shots/2026-08-16/kanban-card-actions-compact/`.
+- The initial Lynx chooser passed containment and cancel restoration but exposed
+  a real P2 capability loss: it omitted Pin/Unpin, Copy Path, Copy Thread ID,
+  and Delete even though those platform ports already exist and Web exposes the
+  same card actions.
+- The complete action policy now lives in shared
+  `apps/web/src/components/kanban/kanbanMutation.logic.ts`; Web's context menu
+  and Lynx's chooser consume one action order/copy/capability model.
+- Post-fix runtime evidence shows eight contained controls, canonical
+  Pin -> Unpin dispatches, a visible pin projection, action-copy transition,
+  zero pending RPCs/errors, and exact restoration of the read-only thread
+  projection.
+- `lynx-kanban-card-action-capability-parity`: P2 contribution
+  `1.00 -> 0.00`.
+- Focused tests pass `13/13` Web and `15/15` Lynx. Root production build passes
+  `6/6`, explicit Lynx-for-Web production build passes, and React diagnostics
+  report zero errors/warnings.
+- Web authority attempts remain excluded: two startup attempts failed harness
+  readiness, and the corrected split server/Vite run hydrated an empty Web
+  board against the populated canonical snapshot. No empty frame is counted as
+  a Web pass or product regression.
+- Native card actions remain missing certification coverage. Discovery
+  exhaustion is still not proven, so the active objective remains incomplete.
+
 ## Completion decision
 
 The active objective is **not achieved**. No `update_goal complete` call is

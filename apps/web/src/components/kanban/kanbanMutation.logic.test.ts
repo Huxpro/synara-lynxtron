@@ -5,6 +5,7 @@ import type { SidebarThreadSummary } from "../../types";
 import type { KanbanCard } from "./kanban.logic";
 import {
   createKanbanMutationGate,
+  resolveKanbanCardActions,
   resolveKanbanMutationActions,
 } from "./kanbanMutation.logic";
 
@@ -72,6 +73,66 @@ describe("resolveKanbanMutationActions", () => {
     });
     expect(resolveKanbanMutationActions(localDraft, { canSupplyStartPrompt: false })).toEqual([
       { id: "start", label: "Start task" },
+    ]);
+  });
+});
+
+describe("resolveKanbanCardActions", () => {
+  it("shares the complete thread-backed card action surface", () => {
+    expect(
+      resolveKanbanCardActions(card(), {
+        canSupplyStartPrompt: true,
+        copyPathAvailable: true,
+      }),
+    ).toEqual([
+      { id: "start", label: "Start task" },
+      { id: "rename", label: "Rename task" },
+      { id: "toggle-pin", label: "Pin thread" },
+      { id: "copy-path", label: "Copy Path", separatorBefore: true },
+      { id: "copy-thread-id", label: "Copy Thread ID" },
+      {
+        id: "archive",
+        label: "Archive task",
+        destructive: true,
+        separatorBefore: true,
+      },
+      { id: "delete", label: "Delete", destructive: true, separatorBefore: false },
+    ]);
+  });
+
+  it("keeps live-work and local-draft actions capability truthful", () => {
+    expect(
+      resolveKanbanCardActions(card({ column: "inProgress" }), {
+        canSupplyStartPrompt: true,
+        copyPathAvailable: false,
+        deleteAvailable: false,
+      }),
+    ).toEqual([
+      { id: "rename", label: "Rename task" },
+      { id: "toggle-pin", label: "Pin thread" },
+      { id: "copy-thread-id", label: "Copy Thread ID" },
+    ]);
+
+    expect(
+      resolveKanbanCardActions(
+        card({
+          cardId: `draft:${THREAD_ID}`,
+          thread: null,
+        }),
+        {
+          canSupplyStartPrompt: true,
+          copyPathAvailable: true,
+        },
+      ),
+    ).toEqual([
+      { id: "start", label: "Start task" },
+      { id: "copy-path", label: "Copy Path", separatorBefore: true },
+      {
+        id: "delete",
+        label: "Delete draft",
+        destructive: true,
+        separatorBefore: true,
+      },
     ]);
   });
 });

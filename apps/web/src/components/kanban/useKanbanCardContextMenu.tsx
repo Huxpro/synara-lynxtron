@@ -16,7 +16,6 @@ import { RenameThreadDialog } from "~/components/RenameThreadDialog";
 import { useCopyPathToClipboard, useCopyThreadIdToClipboard } from "~/hooks/useCopyToClipboard";
 import { deleteActiveThreadFromClient } from "~/lib/activeThreadDelete";
 import { gitRemoveWorktreeMutationOptions } from "~/lib/gitReactQuery";
-import { pinActionLabel } from "~/lib/pin";
 import { archiveThreadFromClient } from "~/lib/threadArchive";
 import { dispatchThreadRename } from "~/lib/threadRename";
 import { newCommandId } from "~/lib/utils";
@@ -29,7 +28,7 @@ import { isThreadRunningTurn } from "../../session-logic";
 import { getThreadFromState } from "../../threadDerivation";
 import { toastManager } from "../ui/toast";
 import { isKanbanDraftOnlyCard, type KanbanCard } from "./kanban.logic";
-import { resolveKanbanMutationActions } from "./kanbanMutation.logic";
+import { resolveKanbanCardActions } from "./kanbanMutation.logic";
 import { useKanbanDraftStart } from "./useKanbanDraftStart";
 
 import { dialogs } from "~/platform/dialogs";
@@ -140,51 +139,14 @@ export function useKanbanCardContextMenu(
     const deletesOnlyDraft = !isThreadBacked || isDraftOnlyCard;
     const isThreadActionCard = isThreadBacked && !isDraftOnlyCard;
     const workspacePath = resolveCardWorkspacePath(card);
-    const mutationActions = resolveKanbanMutationActions(card, {
+    const actions = resolveKanbanCardActions(card, {
       canSupplyStartPrompt: false,
+      copyPathAvailable: workspacePath !== null,
     });
 
     void (async () => {
       const clicked = await api.contextMenu.show(
-        [
-          ...mutationActions
-            .filter((action) => action.id === "start")
-            .map((action) => ({ id: action.id, label: action.label })),
-          ...(isThreadActionCard
-            ? [
-                {
-                  id: "rename",
-                  label:
-                    mutationActions.find((action) => action.id === "rename")?.label ??
-                    "Rename task",
-                },
-                {
-                  id: "toggle-pin",
-                  label: pinActionLabel("thread", card.thread?.isPinned ?? false),
-                },
-              ]
-            : []),
-          ...(workspacePath
-            ? [{ id: "copy-path", label: "Copy Path", separatorBefore: true }]
-            : []),
-          ...(isThreadBacked ? [{ id: "copy-thread-id", label: "Copy Thread ID" }] : []),
-          ...(isThreadActionCard
-            ? mutationActions
-                .filter((action) => action.id === "archive")
-                .map((action) => ({
-                  id: action.id,
-                  label: action.label,
-                  destructive: action.destructive,
-                  separatorBefore: true,
-                }))
-            : []),
-          {
-            id: "delete",
-            label: deletesOnlyDraft ? "Delete draft" : "Delete",
-            destructive: true,
-            separatorBefore: !isThreadActionCard,
-          },
-        ],
+        actions,
         position,
       );
 

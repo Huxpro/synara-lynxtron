@@ -29,9 +29,17 @@ import {
 import {
   KANBAN_MUTATION_COPY,
   createKanbanMutationGate,
+  resolveKanbanCardActions,
   resolveKanbanMutationActions,
+  type KanbanCardActionId,
   type KanbanMutationActionId,
 } from '@synara-web/components/kanban/kanbanMutation.logic';
+import { isKanbanDraftOnlyCard } from '@synara-web/components/kanban/kanban.logic';
+import {
+  APP_SETTINGS_STORAGE_KEY,
+  readSettingsBehaviorProjection,
+} from '@synara-web/appSettingsStorageProjection.logic';
+import { resolveThreadWorkspaceCwd } from '@synara/shared/threadEnvironment';
 import {
   PullRequestListComposition,
   PullRequestListEmptyComposition,
@@ -103,6 +111,11 @@ import { KanbanNewTaskDialog } from './KanbanNewTaskDialog.lynx';
 import { PullRequestsUnavailableState } from '../adapters/PullRequestsUnavailableState.lynx';
 import { PullRequestDetailExternalButtonElement } from '../adapters/PullRequestDetailCloseCompositionElements.lynx';
 import { PullRequestWarningBanner } from '../adapters/PullRequestWarningBanner.lynx';
+import { webStorage } from '../platform/storage';
+import {
+  buildNativeThreadContextCommand,
+  nativeThreadContextConfirmation,
+} from '../components/sidebar/threadContextActions.logic';
 
 export function ProjectsPage({ navigate }: { readonly navigate: (to: string) => void }) {
   const [newTaskProjectId, setNewTaskProjectId] =
@@ -365,11 +378,96 @@ export function KanbanProjectPage({
 
   const selectKanbanMutationAction = async (
     card: KanbanCard,
-    action: KanbanMutationActionId
+    action: KanbanCardActionId
   ) => {
     'background only';
     setMutationChooserCard(null);
     setMutationNotice(null);
+    const isDraftOnly = isKanbanDraftOnlyCard(card);
+    const workspacePath = resolveThreadWorkspaceCwd({
+      projectCwd: project?.workspaceRoot ?? null,
+      envMode: card.envMode,
+      worktreePath: card.worktreePath,
+    });
+    try {
+      if (action === 'copy-path' || action === 'copy-thread-id') {
+        const { clipboard } = await import(
+          /* webpackMode: "eager" */ '../platform/clipboard'
+        );
+        await clipboard.writeText(
+          action === 'copy-path' ? workspacePath ?? '' : card.threadId
+        );
+        setMutationNotice(
+          action === 'copy-path' ? 'Task path copied' : 'Task ID copied'
+        );
+        return;
+      }
+      if (action === 'delete' && (card.thread === null || isDraftOnly)) {
+        const behaviorSettings = readSettingsBehaviorProjection(
+          webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
+        );
+        if (behaviorSettings.confirmThreadDelete) {
+          const { dialogs } = await import(
+            /* webpackMode: "eager" */ '../platform/dialogs'
+          );
+          if (
+            !(await dialogs.confirm(
+              'Delete this draft? This removes its unsent prompt.'
+            ))
+          ) {
+            return;
+          }
+        }
+        if (card.thread === null) {
+          useComposerDraftStore.getState().discardDraft(card.threadId);
+        } else {
+          useComposerDraftStore.getState().clearDraft(card.threadId);
+        }
+        setMutationNotice('Draft deleted');
+        return;
+      }
+      if (action === 'toggle-pin' || action === 'delete') {
+        const behaviorSettings = readSettingsBehaviorProjection(
+          webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
+        );
+        const confirmation = nativeThreadContextConfirmation(
+          action,
+          card.title,
+          behaviorSettings
+        );
+        if (confirmation) {
+          const { dialogs } = await import(
+            /* webpackMode: "eager" */ '../platform/dialogs'
+          );
+          if (!(await dialogs.confirm(confirmation))) return;
+        }
+        const command = buildNativeThreadContextCommand({
+          action,
+          commandId: newKanbanCommandId(action),
+          isPinned: card.thread?.isPinned ?? false,
+          threadId: card.threadId,
+        });
+        if (!command) return;
+        const { dispatchSynaraCommand } = await import(
+          /* webpackMode: "eager" */ '../data/synaraClient'
+        );
+        await dispatchSynaraCommand(command);
+        await queryClient.invalidateQueries({
+          queryKey: ['sidebar-snapshot'],
+        });
+        setMutationNotice(
+          action === 'toggle-pin'
+            ? card.thread?.isPinned
+              ? 'Task unpinned'
+              : 'Task pinned'
+            : 'Task deleted'
+        );
+        return;
+      }
+    } catch (actionError) {
+      setMutationNotice(resolveNativeKanbanMutationError(actionError));
+      return;
+    }
     if (action === 'archive') {
       const { dialogs } = await import(
         /* webpackMode: "eager" */ '../platform/dialogs'
@@ -399,8 +497,15 @@ export function KanbanProjectPage({
     event.preventDefault();
     event.stopPropagation();
     await (async () => {
-      const actions = resolveKanbanMutationActions(card, {
+      const actions = resolveKanbanCardActions(card, {
         canSupplyStartPrompt: true,
+        deleteAvailable: card.column !== 'inProgress',
+        copyPathAvailable:
+          resolveThreadWorkspaceCwd({
+            projectCwd: project?.workspaceRoot ?? null,
+            envMode: card.envMode,
+            worktreePath: card.worktreePath,
+          }) !== null,
       });
       if (actions.length === 0) return;
       const { showContextMenu } = await import(
@@ -580,8 +685,15 @@ export function KanbanProjectPage({
             </text>
           </view>
           <view className="KanbanMutationActions KanbanMutationActions--chooser">
-            {resolveKanbanMutationActions(mutationChooserCard, {
+            {resolveKanbanCardActions(mutationChooserCard, {
               canSupplyStartPrompt: true,
+              deleteAvailable: mutationChooserCard.column !== 'inProgress',
+              copyPathAvailable:
+                resolveThreadWorkspaceCwd({
+                  projectCwd: project?.workspaceRoot ?? null,
+                  envMode: mutationChooserCard.envMode,
+                  worktreePath: mutationChooserCard.worktreePath,
+                }) !== null,
             }).map((action) => (
               <Button
                 key={action.id}

@@ -1,12 +1,26 @@
 import type { KanbanCard } from "./kanban.logic";
 import { isKanbanDraftOnlyCard, resolveDraftDropAction } from "./kanban.logic";
+import { pinActionLabel } from "~/lib/pin.logic";
 
 export type KanbanMutationActionId = "start" | "rename" | "archive";
+export type KanbanCardActionId =
+  | KanbanMutationActionId
+  | "toggle-pin"
+  | "copy-path"
+  | "copy-thread-id"
+  | "delete";
 
 export interface KanbanMutationActionPolicy {
   readonly id: KanbanMutationActionId;
   readonly label: string;
   readonly destructive?: boolean;
+}
+
+export interface KanbanCardActionPolicy {
+  readonly id: KanbanCardActionId;
+  readonly label: string;
+  readonly destructive?: boolean;
+  readonly separatorBefore?: boolean;
 }
 
 export const KANBAN_MUTATION_COPY = {
@@ -52,6 +66,70 @@ export function resolveKanbanMutationActions(
     ...(hasThreadActionSurface && card.column !== "inProgress"
       ? [{ id: "archive", label: "Archive task", destructive: true } as const]
       : []),
+  ];
+}
+
+export function resolveKanbanCardActions(
+  card: KanbanCard,
+  options: {
+    readonly canSupplyStartPrompt: boolean;
+    readonly copyPathAvailable: boolean;
+    readonly deleteAvailable?: boolean;
+  },
+): readonly KanbanCardActionPolicy[] {
+  const mutationActions = resolveKanbanMutationActions(card, {
+    canSupplyStartPrompt: options.canSupplyStartPrompt,
+  });
+  const isDraftOnly = isKanbanDraftOnlyCard(card);
+  const isThreadBacked = card.thread !== null;
+  const isThreadActionCard = isThreadBacked && !isDraftOnly;
+
+  return [
+    ...mutationActions.filter((action) => action.id === "start"),
+    ...(isThreadActionCard
+      ? [
+          {
+            id: "rename",
+            label:
+              mutationActions.find((action) => action.id === "rename")?.label ??
+              "Rename task",
+          },
+          {
+            id: "toggle-pin",
+            label: pinActionLabel("thread", card.thread?.isPinned ?? false),
+          },
+        ] satisfies KanbanCardActionPolicy[]
+      : []),
+    ...(options.copyPathAvailable
+      ? [
+          {
+            id: "copy-path",
+            label: "Copy Path",
+            separatorBefore: true,
+          } as const,
+        ]
+      : []),
+    ...(isThreadBacked
+      ? [{ id: "copy-thread-id", label: "Copy Thread ID" } as const]
+      : []),
+    ...(isThreadActionCard
+      ? mutationActions
+          .filter((action) => action.id === "archive")
+          .map((action) => ({
+            ...action,
+            separatorBefore: true,
+          }))
+      : []),
+    ...(options.deleteAvailable === false
+      ? []
+      : [
+          {
+            id: "delete",
+            label: !isThreadBacked || isDraftOnly ? "Delete draft" : "Delete",
+            destructive: true,
+            separatorBefore: !isThreadActionCard,
+          } as const,
+        ]),
   ];
 }
 
