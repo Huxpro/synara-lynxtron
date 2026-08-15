@@ -494,3 +494,20 @@ former dynamic-event P1 is no longer a valid blocker.
   product-loss contribution remains `0.00 -> 0.00`.
 - No new P0/P1/P2 loss was found. Native PR theme/size axes, remaining
   interactions, other routes, and discovery exhaustion remain open.
+
+## 2026-08-16 Native populated Pull Requests dark continuation
+
+- Active discovery added the first exact-owned Native populated PR dark-theme
+  list-to-detail cell at `1280x820`.
+- The canvas/foreground resolved to `rgb(16,16,16)` /
+  `rgb(252,252,252)`, 50 rows retained their canonical geometry, and a real row
+  touch opened the `512x774` detail dock.
+- Dock surface resolved `rgb(17,17,17)`; Summary title was `18px/24px/600`,
+  section titles were `14px/20px/500`, and the exact tabs geometry remained.
+- The probe waited for detail RPC settlement, the exact-client warning/error
+  console stayed empty, no PR mutation occurred, and isolated theme/runtime
+  state was removed.
+- `native-pull-requests-populated-dark-detail`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- No new P0/P1/P2 loss was found. Native PR larger-size and remaining
+  interaction cells, other routes, and discovery exhaustion remain open.

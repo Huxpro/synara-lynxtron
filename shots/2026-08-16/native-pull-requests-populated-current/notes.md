@@ -125,3 +125,28 @@ matches the recorded initial state; no GitHub PR data was changed.
 
 - `native-pull-requests-pin-roundtrip`: missing coverage `1.00 -> 0.00`.
 - Product-loss contribution: `0.00 -> 0.00`.
+
+## Native populated dark list and detail
+
+An isolated exact-owned KV preloaded only `synara:theme=dark`, adding the first
+current-head populated Native PR dark-theme list-to-detail cell at `1280x820`:
+
+- root/canvas resolved `rgb(16,16,16)` with primary foreground
+  `rgb(252,252,252)`;
+- route title remained `14px/20px` at `(276,13)`;
+- 50 interactive rows rendered, and the current first row retained the
+  `960x48` geometry at `(272,165)`;
+- a real row touch opened the `512x774` detail dock;
+- dock surface resolved `rgb(17,17,17)` with foreground `rgb(252,252,252)`;
+- Summary title resolved `18px/24px/600`;
+- section title resolved `14px/20px/500`, all in the dark primary foreground;
+- Summary, Timeline, and Code tabs retained their exact `218x28` group;
+- exact-client warning/error console stayed empty.
+
+The Summary probe waited for the canonical detail RPC to settle rather than
+treating the initial tabs-only loading frame as final evidence. No PR mutation
+was performed. The isolated theme/runtime directories were removed.
+
+- `native-pull-requests-populated-dark-detail`: missing coverage
+  `1.00 -> 0.00`.
+- Product-loss contribution: `0.00 -> 0.00`.
