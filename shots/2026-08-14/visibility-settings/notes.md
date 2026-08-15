@@ -102,3 +102,31 @@ and server state were removed afterward.
 
 Native Studio/Chats visibility roundtrips and Environment section switches
 remain unverified.
+
+## Native Studio and Chats continuation
+
+A second isolated exact-owned run covered the two remaining optional sidebar
+consumers:
+
+- `Show the Chats section in the sidebar`: on -> off;
+- `Show the Studio section in the sidebar`: on -> off.
+
+Both real switches updated checked/value/class state and persisted
+`showChatsSection:false` / `showStudioSection:false` while Workspace remained
+off.
+
+After restarting Native with the same isolated user-data directory:
+
+- no Studio segmented button mounted;
+- no Chats section mounted;
+- the single remaining Threads/Projects surface omitted the now-redundant
+  segmented picker entirely;
+- New thread, Search, Settings, and the ordinary landing remained functional.
+
+The exact-client warning/error console stayed empty.
+
+`native-sidebar-studio-chats-visibility-restart`: missing coverage
+`1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+
+Native optional sidebar visibility is now covered. Environment section
+roundtrips remain open.

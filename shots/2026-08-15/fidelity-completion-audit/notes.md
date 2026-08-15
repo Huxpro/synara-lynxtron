@@ -770,3 +770,19 @@ former dynamic-event P1 is no longer a valid blocker.
 - `native-workspace-visibility-roundtrip-restart`: missing coverage
   `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
 - Native Chats/Studio visibility and Environment section switches remain open.
+
+## 2026-08-16 Native Studio and Chats visibility continuation
+
+- A second isolated Settings roundtrip disabled both optional Native sidebar
+  consumers through real controls: Chats and Studio.
+- Their checked/value/class state changed to off and persisted
+  `showChatsSection:false` / `showStudioSection:false`.
+- Restarting Native with the same user data mounted no Studio segmented button
+  and no Chats section. With only the ordinary Threads/Projects surface
+  remaining, the redundant segmented picker was correctly omitted.
+- New thread, Search, Settings, and the landing composer remained present;
+  exact-client warning/error console stayed empty.
+- `native-sidebar-studio-chats-visibility-restart`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- Native optional sidebar visibility is now covered; Environment section
+  switches remain open.
