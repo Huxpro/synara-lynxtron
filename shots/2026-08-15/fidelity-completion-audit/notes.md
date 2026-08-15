@@ -196,6 +196,27 @@ manifests, and pixel scores are supporting evidence only.
   Lynx-for-Web loop. Native IME/provider/continuation certification and global
   discovery exhaustion remain open.
 
+## 2026-08-16 Web authority hydration and toast continuation
+
+- The recurring empty Web Kanban frame was isolated to cold Vite dependency
+  optimization: the same page was empty at five seconds, populated at thirty
+  seconds, and populated after a warm reload. Retained Web authority cells now
+  wait for a named product control instead of using a fixed short delay.
+- The valid populated Web cell exposed a new P1: the persistent provider-update
+  toast body covered the first compact Kanban card action at z-index 9999 and
+  intercepted pointer input.
+- Toast roots/content now pass background pointer events through, while Copy,
+  primary/secondary actions, close, and archive undo remain interactive.
+- Post-fix hit testing proves both the card action and `Review updates` button
+  are independently reachable. The real card action opens the complete
+  six-item Web context menu and Escape closes it without mutation.
+- `web-toast-background-pointer-shield`: P1 contribution `1.00 -> 0.00`.
+- Focused toast tests pass `6/6`, root/Web production builds pass, and React
+  diagnostics report zero warnings/errors.
+- The Web populated-hydration blocker is no longer a valid missing-coverage
+  reason when the warm named-control gate is used. Native certification and
+  discovery exhaustion remain open.
+
 ## Completion decision
 
 The active objective is **not achieved**. No `update_goal complete` call is

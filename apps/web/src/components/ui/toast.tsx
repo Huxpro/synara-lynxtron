@@ -227,7 +227,7 @@ function ToastActions({
       {copyText && (
         <Button
           aria-label={isCopied ? "Copied error message" : "Copy error message"}
-          className="self-start rounded-md border-[var(--notification-fg)]/20 bg-[var(--notification-fg)]/10 text-[var(--notification-fg)] hover:bg-[var(--notification-fg)]/20"
+          className="pointer-events-auto self-start rounded-md border-[var(--notification-fg)]/20 bg-[var(--notification-fg)]/10 text-[var(--notification-fg)] hover:bg-[var(--notification-fg)]/20"
           onClick={() => {
             copyToClipboard(copyText, undefined);
           }}
@@ -244,7 +244,7 @@ function ToastActions({
           {...actionProps}
           className={cn(
             buttonVariants({ size: "xs", variant: "outline" }),
-            "self-start rounded-md border-[var(--notification-fg)]/20 bg-[var(--notification-fg)]/10 text-[var(--notification-fg)] hover:bg-[var(--notification-fg)]/20",
+            "pointer-events-auto self-start rounded-md border-[var(--notification-fg)]/20 bg-[var(--notification-fg)]/10 text-[var(--notification-fg)] hover:bg-[var(--notification-fg)]/20",
             actionProps.className,
           )}
           data-slot="toast-action"
@@ -256,7 +256,7 @@ function ToastActions({
         <Button
           {...secondaryActionProps}
           className={cn(
-            "self-start rounded-md border-[var(--notification-fg)]/20 bg-[var(--notification-fg)]/10 text-[var(--notification-fg)] hover:bg-[var(--notification-fg)]/20",
+            "pointer-events-auto self-start rounded-md border-[var(--notification-fg)]/20 bg-[var(--notification-fg)]/10 text-[var(--notification-fg)] hover:bg-[var(--notification-fg)]/20",
             secondaryActionProps.className,
           )}
           size={secondaryActionProps.size ?? "xs"}
@@ -400,7 +400,7 @@ function ToastSurface({
   return (
     <Toast.Content
       className={cn(
-        "pointer-events-auto relative flex overflow-hidden transition-opacity duration-250 data-expanded:opacity-100",
+        "pointer-events-none relative flex overflow-hidden transition-opacity duration-250 data-expanded:opacity-100",
         compact
           ? "items-center gap-2 px-3 py-1.5 pr-1.5 text-[length:var(--app-font-size-ui-sm,11px)] leading-normal"
           : "items-start gap-2 px-3.5 py-3 pr-10 text-sm",
@@ -515,7 +515,7 @@ function Toasts({ position = "top-center" }: { position: ToastPosition }) {
           return (
             <Toast.Root
               className={cn(
-                "absolute z-[calc(9999-var(--toast-index))] h-(--toast-calc-height) select-none [transition:transform_.5s_cubic-bezier(.22,1,.36,1),opacity_.5s,height_.15s]",
+                "pointer-events-none absolute z-[calc(9999-var(--toast-index))] h-(--toast-calc-height) select-none [transition:transform_.5s_cubic-bezier(.22,1,.36,1),opacity_.5s,height_.15s]",
                 archiveUndoToast
                   ? cn(
                       ARCHIVE_UNDO_TOAST_SURFACE_CLASS_NAME,
