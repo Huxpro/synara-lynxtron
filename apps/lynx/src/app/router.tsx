@@ -131,6 +131,7 @@ import { SidebarDisclosure } from './SidebarDisclosure.lynx';
 import {
   ClockIcon,
   FolderIcon,
+  MessageCircleIcon,
   PlusIcon,
   SearchIcon,
 } from '../lib/icons.lynx';
@@ -554,6 +555,7 @@ function ThreadRightDocks(
 function ThreadPage(props: ThreadPageProps) {
   const initData = useInitData() as {
     readonly initialEditorHistoryOpen?: unknown;
+    readonly initialEditorNewChatOpen?: unknown;
     readonly initialEditorNewOpen?: unknown;
   };
   const {
@@ -636,6 +638,9 @@ function ThreadPage(props: ThreadPageProps) {
   const [editorRailSurface, setEditorRailSurface] = useState<
     'chat' | 'terminal'
   >(initialEditorOpen && initialTerminalOpen ? 'terminal' : 'chat');
+  const [editorRailDraftOpen, setEditorRailDraftOpen] = useState(
+    initData.initialEditorNewChatOpen === true
+  );
   const [editorCenterMode, setEditorCenterMode] = useState<'file' | 'diff'>(
     () =>
       initialEditorCenterMode === 'diff'
@@ -938,8 +943,15 @@ function ThreadPage(props: ThreadPageProps) {
   const openEditorTerminal = () => {
     'background only';
     setEditorRailNewOpen(false);
+    setEditorRailDraftOpen(false);
     setTerminalOpen(true);
     setEditorRailSurface('terminal');
+  };
+  const openEditorNewChat = () => {
+    'background only';
+    setEditorRailNewOpen(false);
+    setEditorRailDraftOpen(true);
+    setEditorRailSurface('chat');
   };
   const closeEditorTerminal = () => {
     'background only';
@@ -1108,7 +1120,15 @@ function ThreadPage(props: ThreadPageProps) {
             >
               <ChatSurfaceHeaderFrame>
                 <view className="ThreadHeaderIdentity">
-                  {threadHeaderIdentity}
+                  {editorRailDraftOpen ? (
+                    <ChatSurfaceHeaderIdentity
+                      title="New chat"
+                      icon={<OpenAIProviderIcon />}
+                      iconTitle={currentThread?.project ?? 'Synara'}
+                    />
+                  ) : (
+                    threadHeaderIdentity
+                  )}
                 </view>
                 <Button
                   aria-label="New editor rail item"
@@ -1135,7 +1155,10 @@ function ThreadPage(props: ThreadPageProps) {
                         : ''
                     }`}
                     variant="ghost"
-                    onClick={() => setEditorRailSurface('chat')}
+                    onClick={() => {
+                      setEditorRailDraftOpen(false);
+                      setEditorRailSurface('chat');
+                    }}
                   >
                     Chat
                   </Button>
@@ -1170,12 +1193,32 @@ function ThreadPage(props: ThreadPageProps) {
                 />
               ) : (
                 <>
-                  <ProviderHealthBanner
-                    status={providerHealth.status}
-                    onDismiss={providerHealth.dismiss}
-                  />
-                  {chatBody}
-                  {bodyState.kind === 'empty' ? null : composer}
+                  {editorRailDraftOpen && currentThread ? (
+                    <view className="ThreadEditorNewChat">
+                      <CenteredEmptyLandingStack>
+                        <CenteredEmptyLanding
+                          projectName={currentThread.project}
+                        />
+                        <ComposerColumnFrameSurface>
+                          <LandingComposer
+                            initialProjectId={currentThread.projectId}
+                            onThreadCreated={(newThreadId) =>
+                              onNavigateToThread(newThreadId)
+                            }
+                          />
+                        </ComposerColumnFrameSurface>
+                      </CenteredEmptyLandingStack>
+                    </view>
+                  ) : (
+                    <>
+                      <ProviderHealthBanner
+                        status={providerHealth.status}
+                        onDismiss={providerHealth.dismiss}
+                      />
+                      {chatBody}
+                      {bodyState.kind === 'empty' ? null : composer}
+                    </>
+                  )}
                 </>
               )}
             </ResizableRightPanel>
@@ -1275,6 +1318,17 @@ function ThreadPage(props: ThreadPageProps) {
               <text className="ThreadEditorNewHeading">
                 New editor rail item
               </text>
+              <Button
+                className="ThreadEditorNewItem"
+                variant="ghost"
+                onClick={openEditorNewChat}
+              >
+                <MessageCircleIcon
+                  size={15}
+                  color="var(--muted-foreground)"
+                />
+                New chat
+              </Button>
               <Button
                 className="ThreadEditorNewItem"
                 variant="ghost"
@@ -1743,6 +1797,8 @@ export function SliceRouter({
   const [lastRouteHydrated, setLastRouteHydrated] = useState(false);
   const [coldStartRoutePending, setColdStartRoutePending] = useState(true);
   const [studioLandingReady, setStudioLandingReady] = useState(false);
+  const [editorContinuationThreadId, setEditorContinuationThreadId] =
+    useState<string | null>(null);
 
   useEffect(() => {
     'background only';
@@ -1857,6 +1913,14 @@ export function SliceRouter({
       setStudioLandingReady(false);
     }
   }, [route.pathname]);
+  useEffect(() => {
+    if (
+      route.pathname === '/thread/$threadId' &&
+      route.params.threadId === editorContinuationThreadId
+    ) {
+      setEditorContinuationThreadId(null);
+    }
+  }, [editorContinuationThreadId, route.params.threadId, route.pathname]);
 
   const navigate = useCallback((to: string) => {
     const threadMatch = to.match(/^\/thread\/([^/]+)$/);
@@ -2020,7 +2084,10 @@ export function SliceRouter({
         explorerQuery={explorerQuery}
         explorerSelectedPath={explorerSelectedPath}
         initialEnvironmentOpen={initialEnvironmentOpen}
-        initialEditorOpen={initialEditorOpen}
+        initialEditorOpen={
+          initialEditorOpen ||
+          editorContinuationThreadId === route.params.threadId
+        }
         initialEditorCenterMode={initialEditorCenterMode}
         initialEditorChatOpen={initialEditorChatOpen}
         initialEditorSearchOpen={initialEditorSearchOpen}
@@ -2047,7 +2114,10 @@ export function SliceRouter({
             toggleExpandedDirectory(current, path)
           )
         }
-        onNavigateToThread={(threadId) => navigate(`/thread/${threadId}`)}
+        onNavigateToThread={(threadId) => {
+          setEditorContinuationThreadId(threadId);
+          navigate(`/thread/${threadId}`);
+        }}
         threadId={route.params.threadId}
         threads={routeThreads ?? []}
         resolvedTheme={resolvedTheme}

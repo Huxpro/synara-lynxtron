@@ -347,6 +347,7 @@ export interface SynaraDeepLinkInitData {
   readonly initialEditorChatOpen: boolean | null;
   readonly initialEditorHistoryOpen: boolean;
   readonly initialEditorNewOpen: boolean;
+  readonly initialEditorNewChatOpen: boolean;
   readonly initialEditorSearchOpen: boolean;
   readonly initialRenameOpen: boolean;
   readonly initialTerminalOpen: boolean;
@@ -409,6 +410,8 @@ export function parseSynaraDeepLinkInitData(raw: string): SynaraDeepLinkInitData
         url.searchParams.get('editorHistory') === 'open',
       initialEditorNewOpen:
         url.searchParams.get('editorNew') === 'open',
+      initialEditorNewChatOpen:
+        url.searchParams.get('editorNewChat') === 'open',
       initialEditorSearchOpen:
         url.searchParams.get('editorSearch') === 'open',
       initialRenameOpen: url.searchParams.get('rename') === 'open',

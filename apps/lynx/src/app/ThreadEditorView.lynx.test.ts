@@ -99,8 +99,12 @@ describe('Lynx Editor view', () => {
       'resolveEditorChatHistoryThreads({'
     );
     expect(routerSource).toContain(
-      'onNavigateToThread={(threadId) => navigate(`/thread/${threadId}`)}'
+      'onNavigateToThread={(threadId) => {'
     );
+    expect(routerSource).toContain(
+      'setEditorContinuationThreadId(threadId);'
+    );
+    expect(routerSource).toContain('navigate(`/thread/${threadId}`);');
     expect(routerSource).not.toContain('<Menu');
     expect(historySource).toContain(
       'thread.projectId === input.projectId'
@@ -119,7 +123,7 @@ describe('Lynx Editor view', () => {
     );
   });
 
-  it('opens a real terminal surface from the Editor rail without faking New chat', () => {
+  it('opens real chat and terminal surfaces from the Editor rail', () => {
     const routerSource = source('./router.tsx');
     const appStyles = source('./App.css');
     expect(routerSource).toContain('aria-label="New editor rail item"');
@@ -133,7 +137,17 @@ describe('Lynx Editor view', () => {
     expect(routerSource).toContain('terminalId="lynx-editor-rail"');
     expect(routerSource).toContain('className="ThreadEditorRailTabs"');
     expect(routerSource).toContain('New terminal');
-    expect(routerSource).not.toContain('>New chat</Button>');
+    expect(routerSource).toContain('onClick={openEditorNewChat}');
+    expect(routerSource).toContain('<LandingComposer');
+    expect(routerSource).toContain(
+      'initialProjectId={currentThread.projectId}'
+    );
+    expect(routerSource).toContain(
+      'setEditorContinuationThreadId(threadId)'
+    );
+    expect(routerSource).toContain(
+      'editorContinuationThreadId === route.params.threadId'
+    );
     expect(appStyles).toMatch(
       /\.LxButton\.ThreadEditorNewTrigger\s*\{[^}]*width:\s*24px;[^}]*height:\s*24px;[^}]*padding:\s*0;/s
     );
@@ -267,6 +281,7 @@ describe('Lynx Editor view', () => {
     expect(webHostSource).toContain("get('editorChat') === 'hidden'");
     expect(webHostSource).toContain("get('editorHistory') ===");
     expect(webHostSource).toContain("get('editorNew') === 'open'");
+    expect(webHostSource).toContain("get('editorNewChat') ===");
     expect(webHostSource).toContain("get('editorSearch') === 'open'");
     expect(routerSource).toContain(
       'initData.initialEditorHistoryOpen === true'
@@ -291,6 +306,9 @@ describe('Lynx Editor view', () => {
     );
     expect(desktopSource).toContain(
       "url.searchParams.get('editorNew') === 'open'"
+    );
+    expect(desktopSource).toContain(
+      "url.searchParams.get('editorNewChat') === 'open'"
     );
     expect(desktopSource).toContain(
       "url.searchParams.get('editorSearch') === 'open'"
