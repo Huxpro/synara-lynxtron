@@ -268,5 +268,9 @@ describe('shared sidebar surface routing', () => {
       "...(studioSectionVisible ? (['studio'] as const) : [])"
     );
     expect(source).toContain('chatsSectionVisible &&');
+    expect(source).toContain(
+      "fetchPullRequests({\n        state: 'open',\n        projectId: null,"
+    );
+    expect(source).not.toContain('queryFn: fetchPullRequests');
   });
 });

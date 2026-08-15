@@ -128,7 +128,12 @@ import {
 import { useTemporaryThreadLifecycle } from './temporaryThreadLifecycle.lynx';
 import { DesktopTitlebarControls } from '../adapters/DesktopTitlebarControls.lynx';
 import { SidebarDisclosure } from './SidebarDisclosure.lynx';
-import { ClockIcon, FolderIcon, SearchIcon } from '../lib/icons.lynx';
+import {
+  ClockIcon,
+  FolderIcon,
+  PlusIcon,
+  SearchIcon,
+} from '../lib/icons.lynx';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { webStorage } from '../platform/storage';
 import { formatRelativeTime } from '@synara-web/lib/relativeTime';
@@ -549,6 +554,7 @@ function ThreadRightDocks(
 function ThreadPage(props: ThreadPageProps) {
   const initData = useInitData() as {
     readonly initialEditorHistoryOpen?: unknown;
+    readonly initialEditorNewOpen?: unknown;
   };
   const {
     appearance,
@@ -624,6 +630,12 @@ function ThreadPage(props: ThreadPageProps) {
   const [editorChatHistoryOpen, setEditorChatHistoryOpen] = useState(
     initData.initialEditorHistoryOpen === true
   );
+  const [editorRailNewOpen, setEditorRailNewOpen] = useState(
+    initData.initialEditorNewOpen === true
+  );
+  const [editorRailSurface, setEditorRailSurface] = useState<
+    'chat' | 'terminal'
+  >(initialEditorOpen && initialTerminalOpen ? 'terminal' : 'chat');
   const [editorCenterMode, setEditorCenterMode] = useState<'file' | 'diff'>(
     () =>
       initialEditorCenterMode === 'diff'
@@ -923,6 +935,17 @@ function ThreadPage(props: ThreadPageProps) {
     setEditorChatHistoryOpen(false);
     if (nextThreadId !== threadId) onNavigateToThread(nextThreadId);
   };
+  const openEditorTerminal = () => {
+    'background only';
+    setEditorRailNewOpen(false);
+    setTerminalOpen(true);
+    setEditorRailSurface('terminal');
+  };
+  const closeEditorTerminal = () => {
+    'background only';
+    setTerminalOpen(false);
+    setEditorRailSurface('chat');
+  };
   useEffect(() => {
     if (!editorMode) return;
     storeEditorViewState(threadId, {
@@ -1088,6 +1111,14 @@ function ThreadPage(props: ThreadPageProps) {
                   {threadHeaderIdentity}
                 </view>
                 <Button
+                  aria-label="New editor rail item"
+                  className="ThreadEditorNewTrigger"
+                  variant="ghost"
+                  onClick={() => setEditorRailNewOpen(true)}
+                >
+                  <PlusIcon size={15} color="var(--muted-foreground)" />
+                </Button>
+                <Button
                   aria-label="Chat history"
                   className="ThreadEditorHistoryTrigger"
                   variant="ghost"
@@ -1095,13 +1126,58 @@ function ThreadPage(props: ThreadPageProps) {
                 >
                   <ClockIcon size={15} color="var(--muted-foreground)" />
                 </Button>
+                {terminalOpen ? (
+                  <view className="ThreadEditorRailTabs">
+                  <Button
+                    className={`ThreadEditorRailTab${
+                      editorRailSurface === 'chat'
+                        ? ' ThreadEditorRailTab--active'
+                        : ''
+                    }`}
+                    variant="ghost"
+                    onClick={() => setEditorRailSurface('chat')}
+                  >
+                    Chat
+                  </Button>
+                  <Button
+                    className={`ThreadEditorRailTab${
+                      editorRailSurface === 'terminal'
+                        ? ' ThreadEditorRailTab--active'
+                        : ''
+                    }`}
+                    variant="ghost"
+                    onClick={() => setEditorRailSurface('terminal')}
+                  >
+                    Terminal
+                  </Button>
+                  </view>
+                ) : null}
               </ChatSurfaceHeaderFrame>
-              <ProviderHealthBanner
-                status={providerHealth.status}
-                onDismiss={providerHealth.dismiss}
-              />
-              {chatBody}
-              {bodyState.kind === 'empty' ? null : composer}
+              {editorRailSurface === 'terminal' &&
+              currentThread?.workspaceRoot ? (
+                <ThreadTerminal
+                  autoOpen
+                  fontFamily={appearance.terminalFontFamily}
+                  fontSizePx={appearance.terminalFontSizePx}
+                  open={terminalOpen}
+                  presentationMode="workspace"
+                  terminalId="lynx-editor-rail"
+                  threadId={threadId}
+                  workspaceRoot={currentThread.workspaceRoot}
+                  onOpenChange={(open) => {
+                    if (!open) closeEditorTerminal();
+                  }}
+                />
+              ) : (
+                <>
+                  <ProviderHealthBanner
+                    status={providerHealth.status}
+                    onDismiss={providerHealth.dismiss}
+                  />
+                  {chatBody}
+                  {bodyState.kind === 'empty' ? null : composer}
+                </>
+              )}
             </ResizableRightPanel>
           </view>
         </view>
@@ -1176,6 +1252,38 @@ function ThreadPage(props: ThreadPageProps) {
                   ))
                 )}
               </scroll-view>
+            </view>
+          </view>
+        ) : null}
+        {editorRailNewOpen ? (
+          <view
+            className="ThreadEditorNewViewport"
+            accessibility-element
+            accessibility-label="New editor rail item dialog"
+            accessibility-traits="dialog"
+            bindkeydown={(event: { readonly key?: string }) => {
+              'background only';
+              if (event.key === 'Escape') setEditorRailNewOpen(false);
+            }}
+            tabindex={0}
+          >
+            <view
+              className="ThreadEditorNewBackdrop"
+              bindtap={() => setEditorRailNewOpen(false)}
+            />
+            <view className="ThreadEditorNewDialog">
+              <text className="ThreadEditorNewHeading">
+                New editor rail item
+              </text>
+              <Button
+                className="ThreadEditorNewItem"
+                variant="ghost"
+                disabled={!currentThread?.workspaceRoot}
+                onClick={openEditorTerminal}
+              >
+                <text className="ThreadEditorNewTerminalGlyph">&gt;_</text>
+                New terminal
+              </Button>
             </view>
           </view>
         ) : null}

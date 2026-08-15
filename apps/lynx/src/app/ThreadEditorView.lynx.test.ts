@@ -119,6 +119,29 @@ describe('Lynx Editor view', () => {
     );
   });
 
+  it('opens a real terminal surface from the Editor rail without faking New chat', () => {
+    const routerSource = source('./router.tsx');
+    const appStyles = source('./App.css');
+    expect(routerSource).toContain('aria-label="New editor rail item"');
+    expect(routerSource).toContain(
+      'onClick={() => setEditorRailNewOpen(true)}'
+    );
+    expect(routerSource).toContain('onClick={openEditorTerminal}');
+    expect(routerSource).toContain("setEditorRailSurface('terminal')");
+    expect(routerSource).toContain("setEditorRailSurface('chat')");
+    expect(routerSource).toContain('presentationMode="workspace"');
+    expect(routerSource).toContain('terminalId="lynx-editor-rail"');
+    expect(routerSource).toContain('className="ThreadEditorRailTabs"');
+    expect(routerSource).toContain('New terminal');
+    expect(routerSource).not.toContain('>New chat</Button>');
+    expect(appStyles).toMatch(
+      /\.LxButton\.ThreadEditorNewTrigger\s*\{[^}]*width:\s*24px;[^}]*height:\s*24px;[^}]*padding:\s*0;/s
+    );
+    expect(appStyles).toMatch(
+      /\.ThreadEditorNewDialog\s*\{[^}]*width:\s*240px;/s
+    );
+  });
+
   it('reuses the real Changes renderer as an Editor activity mode', () => {
     const routerSource = source('./router.tsx');
     const appStyles = source('./App.css');
@@ -243,6 +266,7 @@ describe('Lynx Editor view', () => {
     expect(webHostSource).toContain("get('editorMode') === 'diff'");
     expect(webHostSource).toContain("get('editorChat') === 'hidden'");
     expect(webHostSource).toContain("get('editorHistory') ===");
+    expect(webHostSource).toContain("get('editorNew') === 'open'");
     expect(webHostSource).toContain("get('editorSearch') === 'open'");
     expect(routerSource).toContain(
       'initData.initialEditorHistoryOpen === true'
@@ -264,6 +288,9 @@ describe('Lynx Editor view', () => {
     );
     expect(desktopSource).toContain(
       "url.searchParams.get('editorHistory') === 'open'"
+    );
+    expect(desktopSource).toContain(
+      "url.searchParams.get('editorNew') === 'open'"
     );
     expect(desktopSource).toContain(
       "url.searchParams.get('editorSearch') === 'open'"

@@ -318,7 +318,11 @@ export function Sidebar({
   });
   const { data: pullRequests } = useQuery({
     queryKey: ['pull-requests', 'sidebar-review-count'],
-    queryFn: fetchPullRequests,
+    queryFn: () =>
+      fetchPullRequests({
+        state: 'open',
+        projectId: null,
+      }),
     refetchInterval: 30_000,
   });
   const pullRequestsReviewBadge = resolvePullRequestReviewBadge(
