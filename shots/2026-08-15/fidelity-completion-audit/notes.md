@@ -390,3 +390,20 @@ former dynamic-event P1 is no longer a valid blocker.
   `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
 - No new P0/P1/P2 loss was found. Other Native route/state/theme/size
   interactions and discovery exhaustion remain open.
+
+## 2026-08-16 Native Automations dark continuation
+
+- Active discovery added the first current-head exact-owned Native Automations
+  dark-theme list-to-detail cell at `1280x820`.
+- An isolated KV preloaded only canonical `synara:theme=dark`; root/canvas and
+  foreground resolved to `rgb(16,16,16)` / `rgb(252,252,252)`.
+- A real row touch opened detail. Wide geometry remained exact at
+  `704px + 320px`, title `(288,78,640x32)`, and group/No-runs dark tokens
+  resolved to `rgba(252,252,252,0.576471)` with canonical typography.
+- Exact-client warning/error console stayed empty, canonical cleanup restored
+  zero definitions/runs, and the isolated theme/runtime directories were
+  removed.
+- `native-automations-dark-list-detail`: missing coverage `1.00 -> 0.00`;
+  product-loss contribution remains `0.00 -> 0.00`.
+- No new P0/P1/P2 loss was found. Native larger-size and remaining interaction
+  cells plus global discovery exhaustion remain open.

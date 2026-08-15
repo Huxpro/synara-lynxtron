@@ -219,6 +219,31 @@ product defect.
   `1.00 -> 0.00`;
 - component product-loss contribution: `0.00 -> 0.00`.
 
+## Native dark list and detail
+
+An isolated exact-owned user-data directory preloaded only the canonical
+`synara:theme` value `dark`, adding the first current-head Native Automations
+dark-theme list-to-detail cell at `1280x820`:
+
+- root resolved `SliceRoot--theme-dark`;
+- canvas/background resolved `rgb(16,16,16)`;
+- primary foreground resolved `rgb(252,252,252)`;
+- list title remained `24px/32px`, and the real row retained the exact
+  `720x44` border geometry at `(408,160)`;
+- a real row touch opened detail;
+- detail page remained `1024x820`, main/aside remained `704px + 320px`, and
+  title remained `(288,78,640x32)`;
+- detail title resolved `rgb(252,252,252)`, `24px/32px/400`;
+- group and No-runs copy resolved
+  `rgba(252,252,252,0.576471)`, `12px/16px`, with the group at weight `500`;
+- exact-client warning/error console stayed empty.
+
+Canonical delete restored zero definitions and zero runs. The isolated KV and
+runtime directories were removed without changing user theme state.
+
+- `native-automations-dark-list-detail`: missing coverage `1.00 -> 0.00`;
+- component product-loss contribution: `0.00 -> 0.00`.
+
 ## Harness losses kept separate
 
 The first Lynx-for-Web probes were invalid for three independent harness
@@ -264,6 +289,7 @@ agent-browser-owned processes.
 - Native Edit initial values and Cancel no-mutation path: passed.
 - Compact Web/Lynx-for-Web detail composition: passed after shared fix.
 - Native stale deep-link not-found and Back recovery: passed.
+- Native dark list/detail geometry and token resolution: passed.
 - Native warning/error console: zero.
 - Corrected Lynx-for-Web shadow-root/relay cell: passed.
 - Lynx-for-Web shared icon requests: `404 -> 200`.
