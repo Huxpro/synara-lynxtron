@@ -132,10 +132,18 @@ describe('Lynx Editor view', () => {
     expect(routerSource).toContain('className="ThreadEditorProjectSwitchDialog"');
     expect(routerSource).toContain('resolveEditorProjectSwitchOptions({');
     expect(routerSource).toContain(
-      'if (!option.selected) onNavigateToThread(option.threadId);'
+      'resolveEditorProjectSwitchTarget(option);'
     );
+    expect(routerSource).toContain(
+      'setEditorRailDraftProjectId(target.projectId);'
+    );
+    expect(routerSource).toContain("setEditorRailSurface('chat')");
+    expect(routerSource).not.toContain('disabled={option.threadId === null}');
     expect(routerSource).not.toContain('<ProjectMenuPicker');
     expect(projectSwitchSource).toContain('sortThreadsForSidebar(');
+    expect(projectSwitchSource).toContain(
+      "return { kind: 'draft', projectId: option.id };"
+    );
     expect(projectSwitchSource).toContain("project.kind !== 'project'");
     expect(projectSwitchSource).toContain('thread.archivedAt == null');
     expect(appStyles).toMatch(
@@ -170,7 +178,7 @@ describe('Lynx Editor view', () => {
     expect(routerSource).toContain('onClick={openEditorNewChat}');
     expect(routerSource).toContain('<LandingComposer');
     expect(routerSource).toContain(
-      'initialProjectId={currentThread.projectId}'
+      'initialProjectId={editorRailDraftProject.id}'
     );
     expect(routerSource).toContain(
       'setEditorContinuationThreadId(threadId)'

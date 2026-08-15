@@ -141,7 +141,10 @@ import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { webStorage } from '../platform/storage';
 import { formatRelativeTime } from '@synara-web/lib/relativeTime';
 import { resolveEditorChatHistoryThreads } from './editorChatHistory.logic';
-import { resolveEditorProjectSwitchOptions } from './editorProjectSwitch.logic';
+import {
+  resolveEditorProjectSwitchOptions,
+  resolveEditorProjectSwitchTarget,
+} from './editorProjectSwitch.logic';
 import {
   resolveMemoryNavigationState,
   type MemoryNavigationState,
@@ -643,9 +646,14 @@ function ThreadPage(props: ThreadPageProps) {
   const [editorRailSurface, setEditorRailSurface] = useState<
     'chat' | 'terminal'
   >(initialEditorOpen && initialTerminalOpen ? 'terminal' : 'chat');
-  const [editorRailDraftOpen, setEditorRailDraftOpen] = useState(
+  const [editorRailDraftProjectId, setEditorRailDraftProjectId] = useState<
+    string | null
+  >(
     initData.initialEditorNewChatOpen === true
+      ? currentThread?.projectId ?? null
+      : null
   );
+  const editorRailDraftOpen = editorRailDraftProjectId !== null;
   const [editorCenterMode, setEditorCenterMode] = useState<'file' | 'diff'>(
     () =>
       initialEditorCenterMode === 'diff'
@@ -707,6 +715,12 @@ function ThreadPage(props: ThreadPageProps) {
     sortOrder: environmentSettings.sidebarThreadSortOrder,
     threads,
   });
+  const editorRailDraftProject =
+    editorRailDraftProjectId === null
+      ? null
+      : props.projects.find(
+          (project) => project.id === editorRailDraftProjectId
+        ) ?? null;
   const bodyState = resolveThreadPageBodyState({
     isPending,
     error,
@@ -958,14 +972,14 @@ function ThreadPage(props: ThreadPageProps) {
   const openEditorTerminal = () => {
     'background only';
     setEditorRailNewOpen(false);
-    setEditorRailDraftOpen(false);
+    setEditorRailDraftProjectId(null);
     setTerminalOpen(true);
     setEditorRailSurface('terminal');
   };
   const openEditorNewChat = () => {
     'background only';
     setEditorRailNewOpen(false);
-    setEditorRailDraftOpen(true);
+    setEditorRailDraftProjectId(currentThread?.projectId ?? null);
     setEditorRailSurface('chat');
   };
   const closeEditorTerminal = () => {
@@ -1181,7 +1195,7 @@ function ThreadPage(props: ThreadPageProps) {
                     }`}
                     variant="ghost"
                     onClick={() => {
-                      setEditorRailDraftOpen(false);
+                      setEditorRailDraftProjectId(null);
                       setEditorRailSurface('chat');
                     }}
                   >
@@ -1208,15 +1222,15 @@ function ThreadPage(props: ThreadPageProps) {
                     : ' ThreadEditorChatSurface--hidden'
                 }`}
               >
-                {editorRailDraftOpen && currentThread ? (
+                {editorRailDraftOpen && editorRailDraftProject ? (
                   <view className="ThreadEditorNewChat">
                     <CenteredEmptyLandingStack>
                       <CenteredEmptyLanding
-                        projectName={currentThread.project}
+                        projectName={editorRailDraftProject.name}
                       />
                       <ComposerColumnFrameSurface>
                         <LandingComposer
-                          initialProjectId={currentThread.projectId}
+                          initialProjectId={editorRailDraftProject.id}
                           onThreadCreated={(newThreadId) =>
                             onNavigateToThread(newThreadId)
                           }
@@ -1369,7 +1383,7 @@ function ThreadPage(props: ThreadPageProps) {
                 Switch project
               </text>
               <text className="ThreadEditorProjectSwitchDescription">
-                Open the latest chat in another project.
+                Open the latest chat or start a new one.
               </text>
               <scroll-view
                 className="ThreadEditorProjectSwitchPanel"
@@ -1384,11 +1398,19 @@ function ThreadPage(props: ThreadPageProps) {
                         : ''
                     }`}
                     variant="ghost"
-                    disabled={option.threadId === null}
                     onClick={() => {
-                      if (!option.threadId) return;
                       setEditorProjectSwitchOpen(false);
-                      if (!option.selected) onNavigateToThread(option.threadId);
+                      const target =
+                        resolveEditorProjectSwitchTarget(option);
+                      if (target.kind === 'current') return;
+                      if (target.kind === 'thread') {
+                        setEditorRailDraftProjectId(null);
+                        onNavigateToThread(target.threadId);
+                      } else {
+                        setEditorRailDraftProjectId(target.projectId);
+                        setEditorChatOpen(true);
+                        setEditorRailSurface('chat');
+                      }
                     }}
                   >
                     <text className="ThreadEditorProjectSwitchTitle">
@@ -1399,7 +1421,7 @@ function ThreadPage(props: ThreadPageProps) {
                         ? '✓'
                         : option.threadId
                           ? 'Open'
-                          : 'No chats yet'}
+                          : 'New chat'}
                     </text>
                   </Button>
                 ))}

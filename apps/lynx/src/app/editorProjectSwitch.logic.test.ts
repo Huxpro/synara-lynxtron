@@ -1,7 +1,10 @@
 import { describe, expect, it } from '@rstest/core';
 
 import type { ThreadSummary } from './queries';
-import { resolveEditorProjectSwitchOptions } from './editorProjectSwitch.logic';
+import {
+  resolveEditorProjectSwitchOptions,
+  resolveEditorProjectSwitchTarget,
+} from './editorProjectSwitch.logic';
 
 function thread(
   id: string,
@@ -58,5 +61,32 @@ describe('Editor project switch options', () => {
         title: 'Project B',
       },
     ]);
+  });
+
+  it('opens an existing thread or a project-scoped draft without dead options', () => {
+    expect(
+      resolveEditorProjectSwitchTarget({
+        id: 'project-a',
+        selected: true,
+        threadId: 'thread-a',
+        title: 'Project A',
+      })
+    ).toEqual({ kind: 'current' });
+    expect(
+      resolveEditorProjectSwitchTarget({
+        id: 'project-b',
+        selected: false,
+        threadId: 'thread-b',
+        title: 'Project B',
+      })
+    ).toEqual({ kind: 'thread', threadId: 'thread-b' });
+    expect(
+      resolveEditorProjectSwitchTarget({
+        id: 'project-c',
+        selected: false,
+        threadId: null,
+        title: 'Project C',
+      })
+    ).toEqual({ kind: 'draft', projectId: 'project-c' });
   });
 });

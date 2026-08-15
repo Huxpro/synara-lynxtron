@@ -160,6 +160,25 @@ manifests, and pixel scores are supporting evidence only.
   a DevTool listener/client. The owned process was stopped and no Native
   product pass or failure was inferred.
 
+## 2026-08-16 empty-project Editor continuation
+
+- The previously explicit Editor residual, switching to an ordinary project
+  with no thread, produced a real P2 functional loss: the option was disabled
+  and labeled `No chats yet`.
+- Editor project switching now resolves current/existing-thread/project-draft
+  targets through one pure helper. Empty projects open the existing Editor rail
+  New chat composition scoped to that project; first send will reuse the
+  existing `onThreadCreated` navigation path.
+- A temporary zero-thread project was created and deleted through canonical
+  orchestration commands. Retained runtime evidence shows the enabled
+  `New chat` option, target-project landing/composer, unchanged main Editor
+  route, zero created threads, settled RPCs, and successful canonical cleanup.
+- `lynx-editor-project-switch-empty-project`: P2 contribution `1.00 -> 0.00`.
+- Focused tests pass `10/10`; root build passes `6/6`, explicit Web build
+  passes, and React diagnostics report zero warnings/errors.
+- Editor first-send/provider promotion and Native certification remain
+  uncovered, so completion is still not achieved.
+
 ## Completion decision
 
 The active objective is **not achieved**. No `update_goal complete` call is

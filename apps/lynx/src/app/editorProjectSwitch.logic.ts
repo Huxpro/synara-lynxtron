@@ -16,6 +16,21 @@ export interface EditorProjectSwitchOption {
   readonly title: string;
 }
 
+export type EditorProjectSwitchTarget =
+  | { readonly kind: 'current' }
+  | { readonly kind: 'thread'; readonly threadId: string }
+  | { readonly kind: 'draft'; readonly projectId: string };
+
+export function resolveEditorProjectSwitchTarget(
+  option: EditorProjectSwitchOption
+): EditorProjectSwitchTarget {
+  if (option.selected) return { kind: 'current' };
+  if (option.threadId) {
+    return { kind: 'thread', threadId: option.threadId };
+  }
+  return { kind: 'draft', projectId: option.id };
+}
+
 export function resolveEditorProjectSwitchOptions(input: {
   readonly currentProjectId: string | null;
   readonly projects: readonly EditorProjectSwitchProject[];
