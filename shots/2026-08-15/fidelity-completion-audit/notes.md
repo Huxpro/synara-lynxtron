@@ -277,3 +277,33 @@ former dynamic-event P1 is no longer a valid blocker.
 - Native startup/populated-structure certification is restored. Native
   card-action interaction coverage and global discovery exhaustion remain
   open, so the objective is still incomplete.
+
+## 2026-08-16 Native Automations detail continuation
+
+- Active discovery added the first current-head exact-owned Native populated
+  Automations list-to-detail interaction in light mode at `1280x820`.
+- A disabled/manual definition was created through canonical
+  `automation.create`; it produced zero runs and was removed through canonical
+  `automation.delete`. Snapshot sequence `4` and the original project/thread
+  remained unchanged.
+- A real Native touch on the rendered `720x44` automation row opened the
+  read-only detail. The exact client retained `Manual`, `Paused`, project,
+  model, execution settings, and `No runs yet.` with an empty warning/error
+  console.
+- Web and Native match the `704px + 320px` columns and exact
+  `(288,78,640x32)` title. Details and Previous runs differ by one Native
+  whole-pixel step, classified as accepted rendering noise.
+- `native-automations-populated-detail-coverage`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- The same snapshot's Web authority was valid. Lynx-for-Web remained an empty
+  host after an explicit production rebuild and logged four missing reversed
+  icon assets, so that cell is retained as harness loss rather than a product
+  failure or pass.
+- Browser preflight/failure/success paths all ran through `browser:run` and
+  ended with `sessions: []` and zero owned browser processes.
+- Evidence is under
+  `shots/2026-08-16/native-automations-detail-current/`. The retained frame is
+  `2560x1640`, and the repository now has exactly 100 local screenshots.
+- No new P0/P1/P2 product loss was found in this scope. Native Automations
+  coverage is improved, but Lynx-for-Web harness repair, other Native
+  route/state/theme/size interactions, and discovery exhaustion remain open.
