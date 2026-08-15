@@ -821,3 +821,21 @@ former dynamic-event P1 is no longer a valid blocker.
   `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
 - The DevTool arbitrary-scroll no-op remains a harness limitation, but no
   longer blocks this standard product workflow.
+
+## 2026-08-16 Native Provider updates target continuation
+
+- Active discovery verified the second allowlisted Settings target instead of
+  assuming the Environment success generalized.
+- Exact-owned `provider-updates` startup exposed a P1: the visible Native
+  Provider updates summary had no matching shared anchor, causing
+  `no node found for selector '#provider-updates'` and a runtime error.
+- The Lynx Provider tools panel now assigns the shared
+  `SETTINGS_TARGETS.providerUpdates` id to that summary row.
+- Final exact-owned startup scrolled the anchor to `(457,0,622x60)` and
+  retained Automatic CLI update checks, Provider updates, Provider picker,
+  Installed CLIs, and nine provider disclosure rows.
+- Exact-client warning/error console stayed empty.
+- `native-provider-updates-target-missing-anchor`: P1 contribution
+  `1.00 -> 0.00`.
+- Focused tests pass `21/21`; Native/Desktop build passes with output/staged
+  hashes identical.

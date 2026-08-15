@@ -105,6 +105,7 @@ describe('Settings Provider tools fidelity', () => {
     expect(source).toContain('shouldShowProviderUpdateStatus({');
     expect(source).toContain('Automatic CLI update checks');
     expect(source).toContain('Provider updates');
+    expect(source).toContain('id={SETTINGS_TARGETS.providerUpdates}');
     expect(source).toContain('Installed CLIs');
     expect(source).toContain('Reset provider tools to default');
     expect(source).toContain('useLynxDisclosurePresence(props.open)');

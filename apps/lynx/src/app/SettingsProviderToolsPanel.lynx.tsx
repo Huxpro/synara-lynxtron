@@ -22,6 +22,7 @@ import {
   withProviderUpdateTimeout,
 } from '@synara-web/providerUpdates';
 import { SettingsSection } from '@synara-web/components/settings/SettingsSection';
+import { SETTINGS_TARGETS } from '@synara-web/settingsNavigation';
 
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -529,7 +530,10 @@ export function SettingsProviderToolsPanel(props: {
             onChange={props.onEnableProviderUpdateChecksChange}
           />
         </view>
-        <view className="SettingsProviderToolsSummaryRow SettingsProviderToolsSummaryRow--updates">
+        <view
+          id={SETTINGS_TARGETS.providerUpdates}
+          className="SettingsProviderToolsSummaryRow SettingsProviderToolsSummaryRow--updates"
+        >
           <view className="SettingsProviderToolsSummaryMain">
             <view className="SettingsProviderToolsSummaryCopy">
               <view className="SettingsProviderToolsTitleLine">
