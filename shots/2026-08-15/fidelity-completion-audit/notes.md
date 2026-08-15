@@ -915,3 +915,21 @@ former dynamic-event P1 is no longer a valid blocker.
 - `native-workspace-dark-1440-two-columns`: missing coverage
   `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
 - Workspace compact Native and keyboard/IME remain open.
+
+## 2026-08-16 Native New Thread minimum-window continuation
+
+- Active discovery replaced the unrepresentable `390px` Native Desktop compact
+  cell with the host's real minimum window: `900x650`.
+- The exact-owned root resolved to `SliceRoot--viewport-medium`, with a
+  `256x650` sidebar, `644x650` main area, `596x35` project heading,
+  `620x133` composer, and `620x58` tray.
+- The canonical `Minimum Project` fixture inherited `GPT-5.6 Sol`; no durable
+  thread was created, and canonical cleanup returned to 0 live projects.
+- Exact-client warning/error console stayed empty.
+- `native-new-thread-minimum-window`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- Native Desktop enforces `minWidth:900` and `minHeight:650`, so the
+  Web/Lynx-for-Web `390px` compact renderer is an intentional platform
+  boundary, not missing Native evidence.
+- This loop passed the mandatory browser lifecycle gate at entry and exit:
+  final state was `sessions: []` with zero agent-browser-owned processes.

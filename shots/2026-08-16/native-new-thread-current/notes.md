@@ -103,3 +103,30 @@ interaction coverage rather than inferred passes.
 No additional P0/P1/P2 product loss was found. Remaining Native project draft
 scope includes textarea/IME, first send and durable promotion, provider/model
 switching, project switching, dark, compact, and `1440x900`.
+
+## Native Desktop minimum-window continuation
+
+The host enforces a real `900x650` minimum (`main.ts` minWidth/minHeight and
+`resolveRestoredBounds`). Therefore the Web/Lynx-for-Web `390px` compact draft
+is not a representable Native Desktop state. It remains an intentional platform
+boundary, not missing Native evidence.
+
+A fresh exact-owned project draft was instead certified at the real minimum:
+
+- root: `900x650`, `SliceRoot--viewport-medium`;
+- fixed sidebar: `(0,0,256x650)`;
+- main/project draft: `(256,0,644x650)`;
+- heading frame: `(256,266,644x111)`;
+- project heading: `(280,322,596x35)`;
+- composer: `(268,376,620x133)`;
+- tray: `(268,451,620x58)`.
+
+The canonical `Minimum Project` fixture inherited `GPT-5.6 Sol`; no durable
+thread was created. Exact-client warning/error console stayed empty, and
+canonical cleanup returned to 0 live projects.
+
+`native-new-thread-minimum-window`: missing coverage
+`1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+
+Native dark/1440 and keyboard/first-send interactions remain open. The
+`390px` compact renderer remains Web/Lynx-for-Web scope by host design.
