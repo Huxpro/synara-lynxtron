@@ -987,3 +987,24 @@ former dynamic-event P1 is no longer a valid blocker.
   mismatch and corrected against the same owned process.
 - Final owned ports/runtime/state and browser sessions were clean; screenshot
   count remained `100`.
+
+## 2026-08-16 Native New Thread direct-model continuation
+
+- Active discovery opened the real provider-first model popup from a
+  project-scoped Native draft.
+- The isolated provider status marked Codex unavailable and disabled that row.
+  Expecting an immediate Codex model list was a harness expectation mismatch;
+  Codex-specific selection remains environment-blocked missing coverage.
+- The same popup exposed enabled OpenCode. Real touches selected OpenCode,
+  settled seven dynamic model rows, and selected
+  `DeepSeek V4 Flash Free`.
+- Heading/project context remained `Model Project` / `synara`, the trigger
+  changed to the selected model, the popup closed, and the composer draft
+  persisted `opencode / opencode/deepseek-v4-flash-free`.
+- Canonical projection remained at zero durable threads. Cleanup returned to
+  0 live projects / 0 live threads.
+- `native-new-thread-direct-model-selection`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- Exact-client console was empty, output/staged hashes matched, all owned
+  runtime/state was removed, final browser state was clean, and screenshot
+  count remained `100`.

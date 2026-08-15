@@ -256,3 +256,53 @@ processes; screenshot count remained `100`.
 Native keyboard/IME and first send/durable promotion remain open. Static
 provider/model inheritance plus project-driven model switching are now
 covered; direct model-picker interaction remains separate missing coverage.
+
+## Native direct model-picker continuation
+
+A fresh exact-owned `1280x820` light project draft exercised the direct model
+menu without changing project identity or sending a message.
+
+Initial state:
+
+- heading: `What should we do in Model Project?`;
+- project trigger: `synara`;
+- model trigger: `GPT-5.6 Sol`;
+- durable threads: `0`.
+
+The real model trigger opened the provider-first popup. The isolated provider
+status marked Codex `Unavailable` and disabled its provider row even though the
+project's active Codex model remained displayable. A first probe incorrectly
+expected the popup to start on the model list; a second touch on disabled Codex
+correctly produced no model rows. Both are harness/environment boundaries, not
+product loss.
+
+The same popup exposed enabled OpenCode. Real touches then completed:
+
+1. `OpenCode` provider selection;
+2. settled dynamic model catalog with seven options;
+3. `DeepSeek V4 Flash Free` model selection.
+
+After selection:
+
+- heading remained `What should we do in Model Project?`;
+- project trigger remained `synara`;
+- model trigger became `DeepSeek V4 Flash Free`;
+- model popup closed;
+- persisted composer draft selection was
+  `opencode / opencode/deepseek-v4-flash-free`;
+- canonical projection still contained zero durable threads.
+
+Exact-client warning/error console stayed empty. Output/staged bundle hashes
+were identical at
+`715b648f359a1198a69647ef9b600856414c87c219d7857a97028e5a00fd4a18`.
+Canonical cleanup removed the explicit project and landing-created Home
+container, returning to 0 live projects / 0 live threads. Owned ports/runtime/
+state were removed; final browser state was `sessions: []` with zero owned
+processes; screenshot count remained `100`.
+
+`native-new-thread-direct-model-selection`: missing coverage
+`1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+
+Direct enabled-provider/model selection is covered. Codex-specific submenu
+selection remains environment-blocked missing coverage until an exact-owned
+runtime reports Codex available; it is not inferred from the OpenCode pass.
