@@ -94,18 +94,33 @@ No new P0/P1/P2 product loss was found in this Native cell:
 
 ## Harness losses kept separate
 
-The same snapshot's Web authority was valid, but the current Lynx-for-Web cell
-was invalid even after an explicit `bun run --cwd apps/lynx build:web`:
+The first Lynx-for-Web probes were invalid for three independent harness
+reasons:
 
-- the page loaded `main.web.bundle`, but no product root or relay diagnostics
-  mounted;
-- body/custom-element and shadow-aware probes remained empty;
-- the static server logged missing
-  `central-icons-reversed/{compose-pencil,columns-3-wide,magnifying-glass,clock}.svg`;
-- browser page-error output itself was empty.
+- `body.innerText` and light-DOM selectors do not see Lynx `raw-text[text]`
+  values or the product tree inside `lynx-view.shadowRoot`;
+- `localhost:8080` resolved to a pre-existing IPv6 Rsbuild dev server while
+  the owned static server listened on IPv4, so some probes loaded a stale
+  endpoint and bundle;
+- moving the static server to another origin without updating the server's
+  configured `devUrl` caused the WebSocket origin gate to reject reconnects.
 
-That cell is a Lynx-for-Web harness startup/asset loss. It is not counted as an
-Automations product regression or a passing comparison.
+None of those frames are counted as product failures or passes. A corrected
+shadow-root probe on an unambiguous static origin, paired with the same origin
+as the server's configured `devUrl`, proved the real Automations page:
+
+- `AutomationsPage` at `(256,0,1024x820)`;
+- title at `(408,78,720x32)`;
+- canonical `No automations yet` state;
+- relay `socketState=1`, one connection, zero pending requests, and no
+  transport/RPC error.
+
+The investigation did expose one real harness packaging loss: the standalone
+Web build did not stage the Web-owned absolute icon URLs. Requests for
+`compose-pencil`, `columns-3-wide`, `magnifying-glass`, and `clock` returned
+404. The Web output now copies both canonical `central-icons-reversed` and
+`central-icons-fill` directories; all four requests return 200 after the
+explicit production build.
 
 Every browser attempt ran through `bun run browser:run -- ...`. Successful,
 failed, and shadow-aware probes all ended with `sessions: []` and zero
@@ -119,5 +134,7 @@ agent-browser-owned processes.
 - Native PID/session/bundle identity: passed.
 - Native rendered list-row touch to detail: passed.
 - Native warning/error console: zero.
+- Corrected Lynx-for-Web shadow-root/relay cell: passed.
+- Lynx-for-Web shared icon requests: `404 -> 200`.
 - Canonical fixture cleanup: passed.
 - Local screenshot count: `100`.

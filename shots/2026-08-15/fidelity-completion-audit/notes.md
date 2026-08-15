@@ -295,15 +295,23 @@ former dynamic-event P1 is no longer a valid blocker.
   whole-pixel step, classified as accepted rendering noise.
 - `native-automations-populated-detail-coverage`: missing coverage
   `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
-- The same snapshot's Web authority was valid. Lynx-for-Web remained an empty
-  host after an explicit production rebuild and logged four missing reversed
-  icon assets, so that cell is retained as harness loss rather than a product
-  failure or pass.
+- The same snapshot's Web authority was valid. Initial Lynx-for-Web probes
+  incorrectly treated light-DOM/`innerText` emptiness as an empty product,
+  collided with a pre-existing IPv6 `localhost:8080` dev server, and then used
+  an origin not configured as the server's trusted `devUrl`. Those cells are
+  invalid harness evidence, not product failures.
+- The corrected shadow-root probe on an unambiguous trusted origin renders the
+  canonical Automations empty state with one relay connection and no
+  transport/RPC error. It also isolated one real harness packaging loss:
+  four Web-owned absolute icon URLs returned 404 because the standalone build
+  did not stage the public icon directories. Both canonical icon directories
+  are now copied and those requests return 200.
 - Browser preflight/failure/success paths all ran through `browser:run` and
   ended with `sessions: []` and zero owned browser processes.
 - Evidence is under
   `shots/2026-08-16/native-automations-detail-current/`. The retained frame is
   `2560x1640`, and the repository now has exactly 100 local screenshots.
 - No new P0/P1/P2 product loss was found in this scope. Native Automations
-  coverage is improved, but Lynx-for-Web harness repair, other Native
-  route/state/theme/size interactions, and discovery exhaustion remain open.
+  coverage is improved and this Lynx-for-Web harness path is repaired, but
+  other Native route/state/theme/size interactions and discovery exhaustion
+  remain open.

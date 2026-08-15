@@ -56,6 +56,22 @@ describe('Lynx-for-Web relay endpoint', () => {
     );
   });
 
+  it('stages shared public icon URLs for the standalone Web renderer', () => {
+    const rsbuildConfig = fs.readFileSync(
+      new URL('../../../rsbuild.config.ts', import.meta.url),
+      'utf8'
+    );
+
+    expect(rsbuildConfig).toContain(
+      "from: '../web/public/central-icons-reversed/'"
+    );
+    expect(rsbuildConfig).toContain("to: 'central-icons-reversed'");
+    expect(rsbuildConfig).toContain(
+      "from: '../web/public/central-icons-fill/'"
+    );
+    expect(rsbuildConfig).toContain("to: 'central-icons-fill'");
+  });
+
   it('keeps recovery active after both a dropped socket and a cold-start failure', () => {
     const host = fs.readFileSync(
       new URL('./web-host.ts', import.meta.url),

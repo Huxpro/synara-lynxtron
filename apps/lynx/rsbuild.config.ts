@@ -99,6 +99,14 @@ export default defineConfig({
               : './output/bundle/web/',
             to: '.',
           },
+          {
+            from: '../web/public/central-icons-reversed/',
+            to: 'central-icons-reversed',
+          },
+          {
+            from: '../web/public/central-icons-fill/',
+            to: 'central-icons-fill',
+          },
         ],
       },
       html: {
