@@ -394,6 +394,12 @@ export function parseSynaraDeepLinkInitData(raw: string): SynaraDeepLinkInitData
       initialRoute = workspaceId
         ? `/workspace/${encodeURIComponent(decodeURIComponent(workspaceId))}`
         : '/workspace';
+    } else if (url.hostname === 'new-thread') {
+      const projectId = url.pathname.replace(/^\/+/, '').split('/')[0];
+      if (!projectId) return null;
+      initialRoute = `/new-thread/${encodeURIComponent(
+        decodeURIComponent(projectId)
+      )}`;
     } else if (url.hostname === 'thread') {
       const id = url.pathname.replace(/^\/+/, '').split('/')[0];
       if (!id) return null;

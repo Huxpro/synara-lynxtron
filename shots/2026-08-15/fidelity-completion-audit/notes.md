@@ -690,3 +690,31 @@ former dynamic-event P1 is no longer a valid blocker.
   `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
 - Remaining Workspace scope is rename, command typing/confirm, close/reopen
   confirmation, multi-pane deletion, restart persistence, and theme/size axes.
+
+## 2026-08-16 Native project-scoped New Thread continuation
+
+- Active discovery moved to the shared project-scoped fresh-draft route, whose
+  Web/Lynx-for-Web pair existed but exact-owned Native remained unverified.
+- A P1 reachability loss remained: the desktop shell did not map
+  `synara://new-thread/<projectId>`, so standard Native cold start fell through
+  to `/`.
+- The shell now maps non-empty encoded project IDs and rejects the empty form.
+  `native-new-thread-deep-link-reachability`: P1 contribution
+  `1.00 -> 0.00`.
+- A project fixture was created and verified through canonical negotiated RPC:
+  `Native Fidelity`, `/Users/bytedance/github/synara`,
+  `codex / gpt-5.6-sol`.
+- Exact-owned cold start rendered `New thread`,
+  `What should we do in Native Fidelity?`, `GPT-5.6 Sol`, `Full access`, and
+  the `synara` project picker with the established wide geometry.
+- Read-only projection verification confirmed zero durable threads before
+  first send, matching the draft contract. Exact-client warning/error console
+  stayed empty.
+- The explicit project and landing-created Home container were removed through
+  canonical `project.delete`; final state was 0 live projects and 0 threads.
+- Focused tests pass `19/19`; Native/Desktop build passes with output/staged
+  hashes identical.
+- Evidence is under `shots/2026-08-16/native-new-thread-current/`; no screenshot
+  was added at the 100-image cap.
+- Native textarea/IME, first-send promotion, provider/project interactions,
+  and theme/size axes remain open.

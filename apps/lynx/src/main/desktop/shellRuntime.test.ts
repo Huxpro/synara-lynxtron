@@ -85,6 +85,10 @@ describe('shellRuntime', () => {
     expect(parseSynaraDeepLink('synara://workspace/workspace%20one')).toBe(
       '/workspace/workspace%20one'
     );
+    expect(parseSynaraDeepLink('synara://new-thread/project%20one')).toBe(
+      '/new-thread/project%20one'
+    );
+    expect(parseSynaraDeepLink('synara://new-thread')).toBeNull();
     expect(parseSynaraDeepLink('synara://thread/abc-123')).toBe('/thread/abc-123');
     expect(parseSynaraDeepLink('synara://fidelity-reference')).toBe('/');
     expect(parseSynaraDeepLink('https://example.com')).toBeNull();
