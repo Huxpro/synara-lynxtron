@@ -116,6 +116,37 @@ label from the collapsed custom-element DOM, while the expanded state publishes
 label contract. This is recorded as a Web Core attribute-projection delta, not
 as Native accessibility certification.
 
+## Search and state-filter interaction
+
+A wide follow-up cell exercised the real editable search control and state
+filter:
+
+1. focused the rendered search field;
+2. typed `simulator-beta` through real keyboard input;
+3. opened the single matching PR;
+4. selected the rendered `Closed` pill;
+5. waited for the live GitHub list request to settle.
+
+Results:
+
+- Open list started with 50 visible rows;
+- keyboard input reduced the visible rows to one without another list RPC;
+- the only match was the real
+  `Support Xcode 27 beta's relocated SimulatorKit.framework` PR;
+- selecting it opened the detail dock through `pullRequests.detail`;
+- selecting `Closed` immediately removed the detail dock and activated the
+  Closed pill;
+- the settled Closed request returned 50 real rows, zero page errors,
+  `pendingRequests=0`, and a final `pullRequests.list` RPC tag.
+
+The custom-element probe does not expose a useful `.value` property for the
+Lynx input wrapper. The row-count and selected-result changes establish that
+the real keyboard event reached the product search state.
+
+An intermediate Closed frame showed zero rows while the list RPC was still
+pending. It was rejected as a timing sample and is not retained or counted as
+an empty-state observation.
+
 ## Classification
 
 - **Populated list/detail/tabs: product pass.**
@@ -128,6 +159,10 @@ as Native accessibility certification.
 - `lynx-pull-requests-code-disclosure-interaction`: new component contribution
   `0.00 -> 0.00`.
 - `lynx-pull-requests-compact-close-return`: new component contribution
+  `0.00 -> 0.00`.
+- `lynx-pull-requests-search-keyboard-filter`: new component contribution
+  `0.00 -> 0.00`.
+- `lynx-pull-requests-state-filter-detail-reset`: new component contribution
   `0.00 -> 0.00`.
 - No P0/P1 product loss was found in these cells. No weighting, sample
   filtering, or scope reduction was used.
@@ -169,3 +204,10 @@ as Native accessibility certification.
 - `compact/code-close-console.json`
 - `compact/errors.json`
 - `compact/console.json`
+- `filters/00-open-list.{png,json}`
+- `filters/01-search-filtered.{png,json}`
+- `filters/02-detail-open.{png,json}`
+- `filters/03-closed-settled.{png,json}`
+- `filters/search-errors.json`
+- `filters/search-console.json`
+- `filters/closed-errors.json`

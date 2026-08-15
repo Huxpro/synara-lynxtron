@@ -1,0 +1,156 @@
+{
+  "bodyClass": "SharedPrRouteBody SharedPrRouteBody--detail-open",
+  "dims": [
+    1280,
+    820,
+    1
+  ],
+  "dockRect": {
+    "bottom": 820,
+    "height": 774,
+    "right": 1280,
+    "width": 512,
+    "x": 768,
+    "y": 46
+  },
+  "input": {
+    "nativeRect": {
+      "bottom": 128,
+      "height": 28,
+      "right": 708,
+      "width": 424,
+      "x": 284,
+      "y": 100
+    },
+    "nativeTag": "X-VIEW",
+    "nativeValue": null,
+    "rect": {
+      "bottom": 128,
+      "height": 28,
+      "right": 708,
+      "width": 424,
+      "x": 284,
+      "y": 100
+    },
+    "tag": "X-VIEW",
+    "value": null
+  },
+  "pills": [
+    {
+      "cls": "SharedPrFilterPill SharedPrFilterPill--active",
+      "rect": {
+        "bottom": 88,
+        "height": 26,
+        "right": 318.15625,
+        "width": 34.15625,
+        "x": 284,
+        "y": 62
+      },
+      "text": "All"
+    },
+    {
+      "cls": "SharedPrFilterPill",
+      "rect": {
+        "bottom": 88,
+        "height": 26,
+        "right": 399.46875,
+        "width": 77.3125,
+        "x": 322.15625,
+        "y": 62
+      },
+      "text": "Reviewing"
+    },
+    {
+      "cls": "SharedPrFilterPill",
+      "rect": {
+        "bottom": 88,
+        "height": 26,
+        "right": 475.40625,
+        "width": 71.9375,
+        "x": 403.46875,
+        "y": 62
+      },
+      "text": "Authored"
+    },
+    {
+      "cls": "SharedPrFilterPill SharedPrFilterPill--active",
+      "rect": {
+        "bottom": 88,
+        "height": 26,
+        "right": 533.859375,
+        "width": 50.453125,
+        "x": 483.40625,
+        "y": 62
+      },
+      "text": "Open"
+    },
+    {
+      "cls": "SharedPrFilterPill",
+      "rect": {
+        "bottom": 88,
+        "height": 26,
+        "right": 597.09375,
+        "width": 59.234375,
+        "x": 537.859375,
+        "y": 62
+      },
+      "text": "Closed"
+    },
+    {
+      "cls": "SharedPrFilterPill",
+      "rect": {
+        "bottom": 88,
+        "height": 26,
+        "right": 664.375,
+        "width": 63.28125,
+        "x": 601.09375,
+        "y": 62
+      },
+      "text": "Merged"
+    }
+  ],
+  "relay": {
+    "activeBaseUrl": "ws://127.0.0.1:58090",
+    "configuredBaseUrl": "ws://127.0.0.1:58090",
+    "connectionAttempts": 1,
+    "explorerPreviewActionCount": 0,
+    "interactionEventCount": 0,
+    "lastExplorerPreviewAction": null,
+    "lastInteractionEvent": null,
+    "lastRpcError": null,
+    "lastSyntaxHighlightResult": null,
+    "lastTransportError": null,
+    "pendingRequests": 0,
+    "readyBaseUrl": null,
+    "recentRpcTags": [
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "pullRequests.list",
+      "pullRequests.list",
+      "orchestration.getShellSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getSidebarSearchSnapshot",
+      "pullRequests.detail"
+    ],
+    "rendererReadyRoute": "/pull-requests",
+    "socketState": 1,
+    "syntaxHighlightCallCount": 0
+  },
+  "rowCount": 1,
+  "rows": [
+    {
+      "rect": {
+        "bottom": 216,
+        "height": 50,
+        "right": 720,
+        "width": 448,
+        "x": 272,
+        "y": 166
+      },
+      "text": "Support Xcode 27 beta's relocated SimulatorKit.frameworkSynara Pull Requests·Emanuele-web04/synara·hotfix/simulator-beta1h+185-19"
+    }
+  ]
+}

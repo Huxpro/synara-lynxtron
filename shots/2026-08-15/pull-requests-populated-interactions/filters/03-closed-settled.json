@@ -1,0 +1,90 @@
+{
+  "active": [
+    "All",
+    "Closed"
+  ],
+  "bodyText": "AllReviewingAuthoredOpenClosedMergedOthersPreview HTML files in the file pane instead of sourceSynara Pull Requests·Emanuele-web04/synara·preview-html-in-file-pane18h+211-39feat(server): add OpenCode usage tracking from local CLI archiveSynara Pull Requests·Emanuele-web04/synara·feat/opencode-native-usage-tracking23h+521-5docs: add StockTwits MCP plugin implementation planSynara Pull Requests·Emanuele-web04/synara·codex/stocktwits-mcp-plugin5d+1,125-0DO NOT MERGE: fix(server): brand thread id in device lifecycle testSynara Pull Requests·Emanuele-web04/synara·fix/upstream-device-test-threadid5d+2-1Fix queued turns and runtime lifecycle gapsSynara Pull Requests·Emanuele-web04/synara·codex/fix-core-reliability-audit5d+734-58fix(opencode): normalize tool details before persistenceSynara Pull Requests·Emanuele-web04/synara·fix/opencode-normalize-tool-details6d+13-6feat(automations): conversational setup for chat-created automationsSynara Pull Requests·Emanuele-web04/synara·feat/automation-conversational-setup1w+519-20feat(automations): one-click approval for blocked automationsSynara Pull Requests·Emanuele-web04/synara·feat/automation-approval-gate1w+305-2fix(typecheck): restore green typecheck on mainSynara Pull Requests·Emanuele-web04/synara·fix/windows-process-typecheck1w+98-101feat: add complete Simplified Chinese localizationSynara Pull Requests·Emanuele-web04/synara·agent/add-zh-cn-localization1w+2,124-687feat: run coding sessions on remote hosts over SSHSynara Pull Requests",
+  "dims": [
+    1280,
+    820,
+    1
+  ],
+  "relay": {
+    "activeBaseUrl": "ws://127.0.0.1:58090",
+    "configuredBaseUrl": "ws://127.0.0.1:58090",
+    "connectionAttempts": 1,
+    "explorerPreviewActionCount": 0,
+    "interactionEventCount": 0,
+    "lastExplorerPreviewAction": null,
+    "lastInteractionEvent": null,
+    "lastRpcError": null,
+    "lastSyntaxHighlightResult": null,
+    "lastTransportError": null,
+    "pendingRequests": 0,
+    "readyBaseUrl": null,
+    "recentRpcTags": [
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "pullRequests.list",
+      "pullRequests.list",
+      "orchestration.getShellSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getSidebarSearchSnapshot",
+      "pullRequests.list"
+    ],
+    "rendererReadyRoute": "/pull-requests",
+    "socketState": 1,
+    "syntaxHighlightCallCount": 0
+  },
+  "rowCount": 50,
+  "rows": [
+    {
+      "rect": {
+        "height": 50,
+        "width": 960,
+        "x": 272,
+        "y": 166
+      },
+      "text": "Preview HTML files in the file pane instead of sourceSynara Pull Requests·Emanuele-web04/synara·preview-html-in-file-pane18h+211-39"
+    },
+    {
+      "rect": {
+        "height": 50,
+        "width": 960,
+        "x": 272,
+        "y": 218
+      },
+      "text": "feat(server): add OpenCode usage tracking from local CLI archiveSynara Pull Requests·Emanuele-web04/synara·feat/opencode-native-usage-tracking23h+521-5"
+    },
+    {
+      "rect": {
+        "height": 50,
+        "width": 960,
+        "x": 272,
+        "y": 270
+      },
+      "text": "docs: add StockTwits MCP plugin implementation planSynara Pull Requests·Emanuele-web04/synara·codex/stocktwits-mcp-plugin5d+1,125-0"
+    },
+    {
+      "rect": {
+        "height": 50,
+        "width": 960,
+        "x": 272,
+        "y": 322
+      },
+      "text": "DO NOT MERGE: fix(server): brand thread id in device lifecycle testSynara Pull Requests·Emanuele-web04/synara·fix/upstream-device-test-threadid5d+2-1"
+    },
+    {
+      "rect": {
+        "height": 50,
+        "width": 960,
+        "x": 272,
+        "y": 374
+      },
+      "text": "Fix queued turns and runtime lifecycle gapsSynara Pull Requests·Emanuele-web04/synara·codex/fix-core-reliability-audit5d+734-58"
+    }
+  ]
+}
