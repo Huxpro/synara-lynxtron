@@ -150,3 +150,28 @@ was performed. The isolated theme/runtime directories were removed.
 - `native-pull-requests-populated-dark-detail`: missing coverage
   `1.00 -> 0.00`.
 - Product-loss contribution: `0.00 -> 0.00`.
+
+## Native populated dark 1440x900
+
+The larger Native size axis retained the same dynamic 50-entry list at
+`1440x900`:
+
+- sidebar `256px`, route page `1184x900`, body `1184x854`;
+- filters/list rails `968px` wide at `x=364`;
+- row visual surface `960x48` at `x=352`;
+- root stayed dark with the already-certified dark tokens.
+
+A real current-row touch opened a responsive `592x854` detail dock at
+`x=848`, exactly half of the `1184px` route body:
+
+- dock header `591x48`;
+- tabs remained `218x28`;
+- settled Summary content used the full `591px` dock;
+- Summary title remained `24px` high with a `551px` content rail;
+- exact-client warning/error console stayed empty.
+
+No PR mutation occurred. Isolated theme/window/runtime state was removed.
+
+- `native-pull-requests-populated-dark-1440-detail`: missing coverage
+  `1.00 -> 0.00`.
+- Product-loss contribution: `0.00 -> 0.00`.

@@ -511,3 +511,17 @@ former dynamic-event P1 is no longer a valid blocker.
   `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
 - No new P0/P1/P2 loss was found. Native PR larger-size and remaining
   interaction cells, other routes, and discovery exhaustion remain open.
+
+## 2026-08-16 Native populated Pull Requests 1440 continuation
+
+- Active discovery added exact-owned Native populated PR dark at `1440x900`.
+- The list retained a `256px` sidebar, `1184px` route page, centered `968px`
+  filter/list rails, and `960x48` row surfaces.
+- A real row touch opened the responsive `592x854` detail dock, exactly half
+  the route body. Tabs remained `218x28`, settled Summary used the full dock,
+  and the exact-client warning/error console stayed empty.
+- No mutation occurred; isolated theme/window/runtime state was removed.
+- `native-pull-requests-populated-dark-1440-detail`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- No new P0/P1/P2 loss was found. Remaining Native interactions, other routes,
+  and discovery exhaustion remain open.
