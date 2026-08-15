@@ -606,3 +606,39 @@ former dynamic-event P1 is no longer a valid blocker.
 - No new P0/P1/P2 product loss was found. Update dark/1440, network-error
   retry, external-download handoff, other routes, and global discovery
   exhaustion remain open.
+
+## 2026-08-16 Native Studio continuation
+
+- Active discovery moved to the shared Studio surface. The existing
+  `shots/2026-08-14/studio/` Web/Lynx-for-Web pair remained the composition
+  authority, while this continuation used a fresh exact-owned Native snapshot
+  rather than claiming cross-run capture identity.
+- Fresh Native cold start exposed a P1 correctness loss before Studio
+  navigation: two different `project.create` commands persisted two live Home
+  containers for `/Users/bytedance`, 83ms apart.
+- Root cause was a split landing-bootstrap query key. The outer landing owner
+  used init-data `null`; the inner composer independently fell back to
+  `codex`, so both side-effectful queries ran concurrently.
+- A shared provider resolver now makes both owners use the same resolved
+  provider/query key. Fresh exact-owned reruns retained exactly one Home and,
+  after a real Studio segmented-control touch, exactly one Studio container.
+- `native-landing-duplicate-home-bootstrap`: P1 contribution
+  `1.00 -> 0.00`.
+- The same run actively exercised the previously unverified Native
+  `Use a folder` interaction and found another P1: opening the picker crashed
+  with `ReferenceError: FolderIcon is not defined`, leaving an expanded trigger
+  without a popup.
+- Importing the canonical `FolderIcon` closed the runtime defect. Final real
+  touches opened a visible project-picker popup with `Search folders`,
+  `Choose a folder`, and `Don't use a folder`, then backdrop dismissal restored
+  `aria-expanded=false` and unmounted it.
+- `native-studio-folder-picker-runtime-crash`: P1 contribution
+  `1.00 -> 0.00`.
+- Final exact-client warning/error console was empty. Focused tests pass
+  `8/8`; Native/Desktop production build passes with output/staged hashes
+  identical.
+- Evidence is under `shots/2026-08-16/native-studio-current/`; no screenshot
+  was added at the 100-image cap.
+- Native dark/1440, actual system folder-dialog selection/cancel, selected-folder
+  first send, restored populated Studio threads, other routes, and global
+  discovery exhaustion remain open.

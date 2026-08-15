@@ -24,6 +24,10 @@ describe('composer project picker trigger icon', () => {
     expect(source).not.toContain(
       '<FolderIcon className="ComposerProjectPickerTriggerIconLynx"'
     );
+    expect(source).toMatch(
+      /import\s*\{[^}]*FolderIcon,[^}]*\}\s*from '\.\.\/lib\/icons\.lynx';/s
+    );
+    expect(source).toMatch(/\?\s*PaletteIcon\s*:\s*FolderIcon\s*;/s);
     expect(styles).toMatch(
       /\.ComposerProjectPickerTriggerIconLynx\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*flex-shrink:\s*0;/s
     );

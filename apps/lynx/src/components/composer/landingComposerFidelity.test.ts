@@ -104,11 +104,20 @@ describe('landing composer fidelity contract', () => {
     expect(landingSource).toContain(
       'export async function loadLandingBootstrap('
     );
+    expect(routerSource).toContain(
+      'const initialModelProvider = resolveLandingModelProvider('
+    );
     expect(landingSource).toContain(
+      "'landing-composer-bootstrap',\n      initialModelProvider,"
+    );
+    expect(routerSource).toContain(
       "'landing-composer-bootstrap',\n      initialModelProvider,"
     );
     expect(landingSource).toContain(
       'loadLandingBootstrap(\n        initialModelProvider,'
+    );
+    expect(routerSource).toContain(
+      'initialModelProvider={initialModelProvider}'
     );
     expect(routerSource).toContain(
       'landingBootstrap?.serverConfig.providers ?? []'

@@ -8,6 +8,7 @@ import {
   BrainIcon,
   CheckIcon,
   DeviceLaptopIcon,
+  FolderIcon,
   PaletteIcon,
   PlusIcon,
   RefreshCwIcon,

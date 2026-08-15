@@ -28,7 +28,6 @@ import type { SettingsAppearanceValues } from '@synara-web/components/settings/S
 import type { ThemeState } from '@synara-web/theme/theme.logic';
 import type { SettingsSectionId } from '@synara-web/settingsNavigation';
 import type { Project } from '@synara-web/types';
-import { isProviderKind } from '@synara-web/providerOrdering';
 import { useStore } from '@synara-web/store';
 import { useWorkspaceStore } from '@synara-web/workspaceStore';
 import {
@@ -93,6 +92,7 @@ import {
   LandingComposer,
   loadLandingBootstrap,
 } from '../components/composer/LandingComposer.lynx';
+import { resolveLandingModelProvider } from '../components/composer/landingModelProvider.logic';
 import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
 import { ProviderHealthBanner } from '../components/ProviderHealthBanner.lynx';
 import {
@@ -309,11 +309,13 @@ function ThreadsLandingPage(props: {
   const initData = useInitData() as {
     readonly initialComposerModelProvider?: unknown;
   };
-  const initialModelProvider =
-    typeof initData.initialComposerModelProvider === 'string' &&
-    isProviderKind(initData.initialComposerModelProvider)
-      ? initData.initialComposerModelProvider
-      : null;
+  const generalSettings = readSettingsGeneralProjection(
+    webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
+  );
+  const initialModelProvider = resolveLandingModelProvider(
+    initData.initialComposerModelProvider,
+    generalSettings.defaultProvider
+  );
   const { data: landingBootstrap } = useQuery({
     queryKey: [
       'landing-composer-bootstrap',
