@@ -376,3 +376,17 @@ former dynamic-event P1 is no longer a valid blocker.
   No screenshot was added because the repository remains at the 100-image cap.
 - Other Native route/state/theme/size interactions and discovery exhaustion
   remain open.
+
+## 2026-08-16 Native Automations stale-link continuation
+
+- Active discovery added an exact-owned Native cold-start deep link to a
+  missing automation against the canonical empty automation list.
+- The correct `Automation not found.` state rendered. A real touch on the
+  rendered Back to automations button navigated to the ordinary empty list and
+  unmounted the not-found subtree.
+- Automation definitions/runs remained empty and the exact-client
+  warning/error console stayed clean.
+- `native-automations-stale-link-recovery`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- No new P0/P1/P2 loss was found. Other Native route/state/theme/size
+  interactions and discovery exhaustion remain open.

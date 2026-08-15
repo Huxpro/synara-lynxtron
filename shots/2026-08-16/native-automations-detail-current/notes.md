@@ -195,6 +195,30 @@ No screenshot was added because the repository was already at its 100-image
 limit. Geometry, runtime, and behavior evidence was retained without exceeding
 the cap.
 
+## Native stale deep link and recovery
+
+An exact-owned cold start with
+`synara://automations/automation%3Astale-native` added the first current-head
+Native stale-definition recovery cell against an empty canonical automation
+list:
+
+- the startup route rendered `AutomationDetailNotFoundPage`;
+- the canonical `Automation not found.` copy was visible;
+- the rendered Back to automations button had a `141x28` border box at
+  `(698,434)`;
+- a real touch at its center navigated to the ordinary Automations empty state;
+- the not-found subtree unmounted, the Automations page remained mounted, and
+  the exact-client warning/error console stayed empty;
+- the server list remained zero definitions and zero runs.
+
+The DevTool wrapper node around the button did not expose a box model, while
+the actual interactive VIEW child did. That is a measurement boundary, not a
+product defect.
+
+- `native-automations-stale-link-recovery`: missing coverage
+  `1.00 -> 0.00`;
+- component product-loss contribution: `0.00 -> 0.00`.
+
 ## Harness losses kept separate
 
 The first Lynx-for-Web probes were invalid for three independent harness
@@ -239,6 +263,7 @@ agent-browser-owned processes.
 - Native rendered Resume/Pause mutation roundtrip: passed.
 - Native Edit initial values and Cancel no-mutation path: passed.
 - Compact Web/Lynx-for-Web detail composition: passed after shared fix.
+- Native stale deep-link not-found and Back recovery: passed.
 - Native warning/error console: zero.
 - Corrected Lynx-for-Web shadow-root/relay cell: passed.
 - Lynx-for-Web shared icon requests: `404 -> 200`.
