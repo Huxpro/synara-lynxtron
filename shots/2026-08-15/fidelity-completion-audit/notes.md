@@ -1,5 +1,28 @@
 # Fidelity Loss Loop completion audit
 
+## Browser lifecycle gate for every loop
+
+Read and satisfy this gate at the start and end of every Fidelity Loss Loop,
+including loops that expect to use only Native:
+
+1. Start with `bun run browser:cleanup`. Do not begin discovery while an
+   earlier `agent-browser` session, daemon, or agent-browser-owned Chrome
+   process remains.
+2. Run every command that can open `agent-browser` through
+   `bun run browser:run -- <command> [args...]`. Never invoke
+   `agent-browser open`, a named session, or a browser helper from an
+   unguarded shell.
+3. Reuse named sessions inside that one wrapped workflow instead of creating a
+   new browser process for each probe.
+4. End the loop with `bun run browser:cleanup`, then require both
+   `agent-browser session list --json` to contain `sessions: []` and the
+   cleanup script to report zero agent-browser-owned browser processes.
+5. If preflight or final cleanup fails, stop the loop and repair the harness.
+   Do not retain evidence, commit the slice, or continue opening browsers.
+
+The cleanup process must only match agent-browser-owned daemons/profiles.
+Unrelated Chrome or remote-debugging processes are never cleanup targets.
+
 ## Objective as concrete completion criteria
 
 The active Fidelity Loss Loop is complete only when all of the following are

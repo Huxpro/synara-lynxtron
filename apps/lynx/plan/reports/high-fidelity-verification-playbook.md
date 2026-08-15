@@ -20,6 +20,28 @@ status.
 
 ## Two-tier loop
 
+### Browser lifecycle gate
+
+Apply this gate to every fast or Native verification loop before doing product
+work:
+
+1. Run `bun run browser:cleanup` at loop entry.
+2. Any workflow that can open `agent-browser` must run as
+   `bun run browser:run -- <command> [args...]`; keep the complete
+   open/interact/capture/close sequence inside that wrapper.
+3. Reuse named sessions inside the wrapped workflow. Do not launch a fresh
+   browser for each measurement.
+4. At loop exit, run `bun run browser:cleanup` again and verify
+   `agent-browser session list --json` reports `sessions: []`. The cleanup
+   command must also report zero agent-browser-owned daemon or browser
+   processes.
+5. Treat any nonzero remainder as a harness failure that blocks retained
+   evidence, commit, push, and the next loop.
+
+Never terminate unrelated Chrome or remote-debugging processes. Ownership is
+defined by the agent-browser daemon/profile markers in the repository cleanup
+script, not by the presence of a debugging port.
+
 ### Fast Lynx-for-Web loop
 
 Use this by default for layout, composition, ordinary pointer and keyboard
