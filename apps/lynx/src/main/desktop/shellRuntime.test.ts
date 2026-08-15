@@ -72,6 +72,7 @@ describe('shellRuntime', () => {
     );
     expect(parseSynaraDeepLink('synara://update')).toBe('/update');
     expect(parseSynaraDeepLink('synara://pull-requests')).toBe('/pull-requests');
+    expect(parseSynaraDeepLink('synara://plugins')).toBe('/plugins');
     expect(parseSynaraDeepLink('synara://automations')).toBe('/automations');
     expect(
       parseSynaraDeepLink('synara://automations/automation%3Aone')

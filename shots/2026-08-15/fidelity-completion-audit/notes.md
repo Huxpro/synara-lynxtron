@@ -525,3 +525,25 @@ former dynamic-event P1 is no longer a valid blocker.
   `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
 - No new P0/P1/P2 loss was found. Remaining Native interactions, other routes,
   and discovery exhaustion remain open.
+
+## 2026-08-16 Native plugin-library continuation
+
+- Active discovery moved to another screen and found a P1 Native reachability
+  loss: ReactLynx implemented `/plugins`, but the desktop shell did not accept
+  `synara://plugins` and the Native sidebar had no Plugins entry.
+- The shell now maps `synara://plugins` to `/plugins`; focused route tests pass
+  `14/14` and the explicit Native/Desktop build passes.
+- Exact-owned cold start opened PluginLibraryPage directly. Real touches
+  switched Codex -> Claude and Plugins -> Skills.
+- Claude Plugins rendered the canonical unsupported state; Claude Skills
+  rendered 118 real rows with the expected two-column geometry.
+- Codex Plugins reported `codex not found in PATH`, classified as environment
+  loss rather than Native UI loss. The exact-client warning/error console
+  remained empty and no mutation occurred.
+- `native-plugin-library-deep-link-reachability`: P1 contribution
+  `1.00 -> 0.00`.
+- Evidence is under
+  `shots/2026-08-16/native-plugin-library-current/`; no screenshot was added at
+  the 100-image cap.
+- Other Native Plugin theme/size/search states, remaining routes, and global
+  discovery exhaustion remain open.
