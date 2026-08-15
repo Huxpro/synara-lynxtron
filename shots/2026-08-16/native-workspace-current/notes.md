@@ -101,3 +101,29 @@ row. That remains an intentional platform delta, not product loss.
 No additional P0/P1/P2 product loss was found. Remaining Native Workspace scope
 includes command typing/confirm, terminal close/reopen confirmation, rename,
 new workspace, ordering, deletion cleanup, dark, compact, and `1440x900`.
+
+## Native lifecycle continuation
+
+A second fresh exact-owned run extended coverage through the complete temporary
+workspace lifecycle:
+
+1. `New workspace` at `(128,104)` created and activated `Workspace 2`.
+2. `Move Workspace 2 up` at `(192,199.5)` reordered the sidebar to
+   `Workspace 2`, `Workspace 1`.
+3. The shared KV persisted the same order with stable IDs and timestamps.
+4. `Delete workspace` at `(1214.5,23.5)` removed the active temporary page.
+5. The host sent `terminalClose` for Workspace 2's `default` terminal with
+   `deleteHistory:true` against `ws://127.0.0.1:58090`.
+6. The UI and KV returned to exactly one active `Workspace 1`.
+
+The temporary terminal had no command history, so cleanup correctly required
+`terminalClose` but no preceding `exit` write. Exact-client warning/error
+console stayed empty.
+
+`native-workspace-create-reorder-delete`: missing coverage
+`1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+
+This closes Native creation, ordering, deletion, persistence, active fallback,
+and PTY cleanup for the single-pane case. Rename, command typing/confirm,
+close/reopen confirmation, multi-pane deletion, theme/size axes, and restart
+persistence remain open.

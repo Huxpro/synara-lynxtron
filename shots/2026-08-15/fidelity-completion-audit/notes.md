@@ -671,3 +671,22 @@ former dynamic-event P1 is no longer a valid blocker.
   was added at the 100-image cap.
 - Remaining Native Workspace scope includes typing/confirm, close/reopen,
   rename, creation, ordering, deletion, dark, compact, and `1440x900`.
+
+## 2026-08-16 Native Workspace lifecycle continuation
+
+- Active discovery extended the exact-owned Workspace screen through a fresh
+  create -> reorder -> delete lifecycle instead of repeating the default page.
+- Real `New workspace` created and activated `Workspace 2`; real
+  `Move Workspace 2 up` changed both rendered order and shared KV to
+  `Workspace 2`, `Workspace 1`.
+- Real `Delete workspace` removed the active temporary page, restored
+  `Workspace 1` as the sole active page, and persisted the one-page KV.
+- Host evidence recorded `terminalClose` for Workspace 2's `default` PTY with
+  `deleteHistory:true` against the isolated endpoint. No `exit` write was
+  expected because the terminal had no command history.
+- Exact-client warning/error console stayed empty and all owned runtime/state
+  was removed.
+- `native-workspace-create-reorder-delete`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- Remaining Workspace scope is rename, command typing/confirm, close/reopen
+  confirmation, multi-pane deletion, restart persistence, and theme/size axes.
