@@ -179,6 +179,7 @@ export function LandingComposer(props: {
   readonly containerKind?: 'chat' | 'studio';
   readonly initialModelProvider?: ProviderKind | null;
   readonly initialProjectId?: string | null;
+  readonly onProjectSelectionChange?: (projectId: string | null) => void;
   readonly onThreadCreated: (threadId: string) => void;
 }) {
   const generalSettings = readSettingsGeneralProjection(
@@ -194,6 +195,9 @@ export function LandingComposer(props: {
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
     props.initialProjectId ?? null
   );
+  useEffect(() => {
+    setSelectedProjectId(props.initialProjectId ?? null);
+  }, [props.initialProjectId]);
   const [studioFolderPath, setStudioFolderPath] = useState<string | null>(null);
   const [interactionMode, setInteractionMode] = useState<
     'default' | 'plan'
@@ -333,6 +337,12 @@ export function LandingComposer(props: {
     }
   };
 
+  const selectProject = (projectId: string | null) => {
+    'background only';
+    setSelectedProjectId(projectId);
+    props.onProjectSelectionChange?.(projectId);
+  };
+
   const handleAddProject = async () => {
     'background only';
     if (projectPickerBusy) return;
@@ -367,7 +377,7 @@ export function LandingComposer(props: {
       });
       const refreshed = await loadLandingBootstrap();
       queryClient.setQueryData(['landing-composer-bootstrap'], refreshed);
-      setSelectedProjectId(projectId);
+      selectProject(projectId);
       setProjectPickerOpen(false);
     } catch (error) {
       setProjectPickerError(
@@ -497,7 +507,7 @@ export function LandingComposer(props: {
               return;
             }
             if (option.projectId) {
-              setSelectedProjectId(option.projectId);
+              selectProject(option.projectId);
               setProjectPickerOpen(false);
               return;
             }
@@ -509,7 +519,7 @@ export function LandingComposer(props: {
                   (project) => project.workspaceRoot === option.workspaceRoot
                 );
                 if (existing) {
-                  setSelectedProjectId(existing.id);
+                  selectProject(existing.id);
                   setProjectPickerOpen(false);
                   return;
                 }
@@ -534,7 +544,7 @@ export function LandingComposer(props: {
                   ['landing-composer-bootstrap'],
                   refreshed
                 );
-                setSelectedProjectId(projectId);
+                selectProject(projectId);
                 setProjectPickerOpen(false);
               } catch (selectionError) {
                 setProjectPickerError(
@@ -579,7 +589,7 @@ export function LandingComposer(props: {
             if (props.containerKind === 'studio') {
               setStudioFolderPath(null);
             } else {
-              setSelectedProjectId(null);
+              selectProject(null);
             }
             setProjectPickerOpen(false);
           }}

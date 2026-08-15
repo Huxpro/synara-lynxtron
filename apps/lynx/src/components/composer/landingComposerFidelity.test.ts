@@ -68,7 +68,22 @@ describe('landing composer fidelity contract', () => {
       /\.ThreadsLandingBodyInner\s*\{[^}]*min-height:\s*100%;[^}]*align-items:\s*center;/s
     );
     expect(routerSource).toContain(
-      'initialProjectId={props.initialProjectId}'
+      'initialProjectId={selectedProjectId}'
+    );
+    expect(routerSource).toContain(
+      'onProjectSelectionChange={setSelectedProjectId}'
+    );
+    expect(routerSource).toContain(
+      'onProjectSelectionChange={\n                            setEditorRailDraftProjectId'
+    );
+    expect(routerSource).toContain(
+      'const [editorRailDraftOpen, setEditorRailDraftOpen] = useState('
+    );
+    expect(routerSource).toContain(
+      'projectName={editorRailDraftProject?.name ?? null}'
+    );
+    expect(routerSource).toContain(
+      'initialProjectId={editorRailDraftProject?.id ?? null}'
     );
     expect(landingSource).toContain('<ComposerProjectPickerComposition');
     expect(landingSource).toContain('draftId="lynx-landing-draft"');
@@ -78,6 +93,17 @@ describe('landing composer fidelity contract', () => {
     expect(landingSource).toContain("\"Don't use a folder\"");
     expect(landingSource).toContain("\"Don't work in a project\"");
     expect(landingSource).toContain("'Use a folder'");
+    expect(landingSource).toContain(
+      'props.onProjectSelectionChange?.(projectId)'
+    );
+    expect(landingSource).toContain(
+      'setSelectedProjectId(props.initialProjectId ?? null)'
+    );
+    expect(landingSource).toContain('selectProject(option.projectId)');
+    expect(landingSource).toContain('selectProject(existing.id)');
+    expect(landingSource).toContain('selectProject(projectId)');
+    expect(landingSource).toContain('selectProject(null)');
+    expect(landingSource).not.toContain('setSelectedProjectId(option.projectId)');
     expect(landingSource).toMatch(
       /if \(props\.containerKind === 'studio'\) \{\s+setStudioFolderPath\(option\.workspaceRoot\);/
     );

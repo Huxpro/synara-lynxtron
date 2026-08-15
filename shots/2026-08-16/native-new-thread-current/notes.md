@@ -175,3 +175,84 @@ agent-browser-owned processes. Screenshot count remained `100`.
 
 Native keyboard/IME, first send and durable promotion, provider/model
 switching, and project switching remain open.
+
+## Native project/model switching continuation
+
+Active discovery exercised the project picker rather than replaying the static
+draft matrix. Two canonical projects intentionally used different workspaces
+and default models:
+
+- `Synara Alpha`: `/Users/bytedance/github/synara`,
+  `codex / gpt-5.6-sol`;
+- `Octane Beta`: `/Users/bytedance/github/octane`,
+  `claudeAgent / sonnet`.
+
+The initial exact-owned `1280x820` light draft correctly rendered Alpha:
+
+- heading: `What should we do in Synara Alpha?`;
+- project trigger: `synara`;
+- model trigger: `GPT-5.6 Sol`.
+
+A real rendered-control touch opened the shared project picker. Alpha was
+selected and the Beta `octane` option was available. Touching Beta exposed a
+P1 context split:
+
+- project trigger changed to `octane`;
+- model trigger changed to `Sonnet`;
+- popup closed;
+- heading incorrectly remained `What should we do in Synara Alpha?`.
+
+`native-new-thread-project-presentation-split`: P1 contribution
+`1.00 -> 0.00`.
+
+The root cause was two independent project identities. `LandingComposer`
+owned mutable `selectedProjectId`, while `ThreadsLandingPage` computed the
+header/heading only from immutable route `initialProjectId`.
+
+The fix lifts selected project identity into the landing host and routes every
+existing-project, existing-folder, new-project, and reset transition through a
+single callback. The same callback updates the Editor rail host. Editor draft
+open/closed state is now independent from nullable project selection so
+resetting to Home does not accidentally close the Editor draft.
+
+The final staged bundle passed a fresh exact-owned cold-start chain:
+
+1. Alpha: `Synara Alpha` / `synara` / `GPT-5.6 Sol`.
+2. Real Beta touch: `Octane Beta` / `octane` / `Sonnet`.
+3. Real `Don't work in a project` touch:
+   `New Chat` / `What should we work on?` / `Work in a project`.
+
+All transitions closed the popup and remained pre-send with zero durable
+threads. Fixed Beta geometry remained:
+
+- heading: `(424,407,688x35)`, `30px/35px/400`;
+- composer: `(400,461,736x133)`;
+- tray: `(400,536,736x58)`;
+- model trigger: `(927,521,89x28)`;
+- project trigger: `(408,560,70x28)`.
+
+Exact-client warning/error console stayed empty. The runtime-validated
+output/staged SHA-256 was identical at
+`08845aa23c36575a81e758f76b9589d9bebbbab4fae69b11dabd0649f1899040`.
+
+A final source review then added prop-to-internal project synchronization for
+Editor rail project changes. Focused tests and the production build passed
+again; the final output/staged bundle hash is identically
+`715b648f359a1198a69647ef9b600856414c87c219d7857a97028e5a00fd4a18`.
+That final prop-sync is covered by source contract plus build, not relabeled as
+additional Native Editor interaction evidence.
+
+One before-state probe selected the model chevron child instead of the menu
+trigger. The corrected ancestor probe passed against the same owned process;
+this was selector harness mismatch, not product loss.
+
+Focused tests passed `3` files / `13` tests. Native/Desktop production build
+passed with only the registered unsupported CSS and optional WebSocket addon
+warnings. Canonical cleanup removed both projects and the landing-created Home
+container, returning to 0 live projects / 0 live threads. Owned ports/runtime/
+state were removed; final browser state was `sessions: []` with zero owned
+processes; screenshot count remained `100`.
+
+Native keyboard/IME and first send/durable promotion remain open. Static
+provider/model inheritance plus project-driven model switching are now
+covered; direct model-picker interaction remains separate missing coverage.

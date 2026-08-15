@@ -956,3 +956,34 @@ former dynamic-event P1 is no longer a valid blocker.
   passed against the same owned process.
 - Owned ports/runtime/state were removed, screenshot count remained `100`, and
   the final browser gate reported `sessions: []` with zero owned processes.
+
+## 2026-08-16 Native New Thread project-switch continuation
+
+- Active discovery used two canonical projects with different workspace and
+  default-model identities, then exercised the real Native project picker.
+- Before repair, touching `Octane Beta` atomically changed the tray to `octane`
+  and model to `Sonnet`, but left the heading on `Synara Alpha`.
+- This was a P1 product context split, not capture mismatch:
+  `native-new-thread-project-presentation-split` contribution
+  `1.00 -> 0.00`.
+- Root cause was independent identity ownership: mutable project selection
+  lived inside `LandingComposer`, while route presentation consumed immutable
+  `initialProjectId`.
+- The landing host now owns selected project identity and receives every
+  picker selection/reset transition. Editor rail uses the same callback and
+  keeps draft-open state separate from nullable Home/project selection.
+- The final staged bundle passed a fresh exact-owned chain:
+  `Alpha/synara/GPT-5.6 Sol -> Beta/octane/Sonnet -> Home/Work in a project`.
+  Heading, project trigger, model trigger, and popup state remained atomic.
+- A final source review added prop-to-internal project synchronization for
+  Editor rail project changes. Focused tests and production build passed again;
+  this source/build check is not mislabeled as Native Editor interaction.
+- Canonical snapshot stayed at zero durable threads. Cleanup removed both
+  explicit projects and the landing-created Home container, returning to
+  0 live projects / 0 live threads.
+- Focused tests passed `3` files / `13` tests; Native/Desktop production build
+  passed; output/staged bundle hashes matched; exact-client console was empty.
+- A model-chevron selector mistake was separately classified as harness
+  mismatch and corrected against the same owned process.
+- Final owned ports/runtime/state and browser sessions were clean; screenshot
+  count remained `100`.

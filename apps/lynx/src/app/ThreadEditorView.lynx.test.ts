@@ -178,7 +178,13 @@ describe('Lynx Editor view', () => {
     expect(routerSource).toContain('onClick={openEditorNewChat}');
     expect(routerSource).toContain('<LandingComposer');
     expect(routerSource).toContain(
-      'initialProjectId={editorRailDraftProject.id}'
+      'initialProjectId={editorRailDraftProject?.id ?? null}'
+    );
+    expect(routerSource).toContain(
+      'onProjectSelectionChange={\n                            setEditorRailDraftProjectId'
+    );
+    expect(routerSource).toContain(
+      'projectName={editorRailDraftProject?.name ?? null}'
     );
     expect(routerSource).toContain(
       'setEditorContinuationThreadId(threadId)'

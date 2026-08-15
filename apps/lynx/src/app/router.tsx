@@ -306,6 +306,9 @@ function ThreadsLandingPage(props: {
   readonly initialProjectId?: string | null;
   readonly onThreadCreated: (threadId: string) => void;
 }) {
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
+    props.initialProjectId ?? null
+  );
   const initData = useInitData() as {
     readonly initialComposerModelProvider?: unknown;
   };
@@ -332,7 +335,7 @@ function ThreadsLandingPage(props: {
   const providerStatuses = landingBootstrap?.serverConfig.providers ?? [];
   const providerHealth = useProviderHealthBanner('codex', providerStatuses);
   const routePresentation = resolveLandingRoutePresentation({
-    initialProjectId: props.initialProjectId,
+    initialProjectId: selectedProjectId,
     projects: landingBootstrap?.projects ?? [],
   });
   return (
@@ -363,7 +366,8 @@ function ThreadsLandingPage(props: {
               <LandingComposer
                 containerKind={props.containerKind}
                 initialModelProvider={initialModelProvider}
-                initialProjectId={props.initialProjectId}
+                initialProjectId={selectedProjectId}
+                onProjectSelectionChange={setSelectedProjectId}
                 onThreadCreated={props.onThreadCreated}
               />
             </ComposerColumnFrameSurface>
@@ -655,7 +659,9 @@ function ThreadPage(props: ThreadPageProps) {
       ? currentThread?.projectId ?? null
       : null
   );
-  const editorRailDraftOpen = editorRailDraftProjectId !== null;
+  const [editorRailDraftOpen, setEditorRailDraftOpen] = useState(
+    initData.initialEditorNewChatOpen === true
+  );
   const [editorCenterMode, setEditorCenterMode] = useState<'file' | 'diff'>(
     () =>
       initialEditorCenterMode === 'diff'
@@ -974,6 +980,7 @@ function ThreadPage(props: ThreadPageProps) {
   const openEditorTerminal = () => {
     'background only';
     setEditorRailNewOpen(false);
+    setEditorRailDraftOpen(false);
     setEditorRailDraftProjectId(null);
     setTerminalOpen(true);
     setEditorRailSurface('terminal');
@@ -981,6 +988,7 @@ function ThreadPage(props: ThreadPageProps) {
   const openEditorNewChat = () => {
     'background only';
     setEditorRailNewOpen(false);
+    setEditorRailDraftOpen(true);
     setEditorRailDraftProjectId(currentThread?.projectId ?? null);
     setEditorRailSurface('chat');
   };
@@ -1197,6 +1205,7 @@ function ThreadPage(props: ThreadPageProps) {
                     }`}
                     variant="ghost"
                     onClick={() => {
+                      setEditorRailDraftOpen(false);
                       setEditorRailDraftProjectId(null);
                       setEditorRailSurface('chat');
                     }}
@@ -1224,15 +1233,18 @@ function ThreadPage(props: ThreadPageProps) {
                     : ' ThreadEditorChatSurface--hidden'
                 }`}
               >
-                {editorRailDraftOpen && editorRailDraftProject ? (
+                {editorRailDraftOpen ? (
                   <view className="ThreadEditorNewChat">
                     <CenteredEmptyLandingStack>
                       <CenteredEmptyLanding
-                        projectName={editorRailDraftProject.name}
+                        projectName={editorRailDraftProject?.name ?? null}
                       />
                       <ComposerColumnFrameSurface>
                         <LandingComposer
-                          initialProjectId={editorRailDraftProject.id}
+                          initialProjectId={editorRailDraftProject?.id ?? null}
+                          onProjectSelectionChange={
+                            setEditorRailDraftProjectId
+                          }
                           onThreadCreated={(newThreadId) =>
                             onNavigateToThread(newThreadId)
                           }
@@ -1406,9 +1418,11 @@ function ThreadPage(props: ThreadPageProps) {
                         resolveEditorProjectSwitchTarget(option);
                       if (target.kind === 'current') return;
                       if (target.kind === 'thread') {
+                        setEditorRailDraftOpen(false);
                         setEditorRailDraftProjectId(null);
                         onNavigateToThread(target.threadId);
                       } else {
+                        setEditorRailDraftOpen(true);
                         setEditorRailDraftProjectId(target.projectId);
                         setEditorChatOpen(true);
                         setEditorRailSurface('chat');
