@@ -933,3 +933,26 @@ former dynamic-event P1 is no longer a valid blocker.
   boundary, not missing Native evidence.
 - This loop passed the mandatory browser lifecycle gate at entry and exit:
   final state was `sessions: []` with zero agent-browser-owned processes.
+
+## 2026-08-16 Native New Thread dark 1440 continuation
+
+- Active discovery added the representable Native project-draft theme/size
+  cell: dark `1440x900`.
+- Exact-owned PID-derived DevTool identity loaded the staged production file
+  bundle and resolved `SliceRoot--theme-dark SliceRoot--viewport-wide`.
+- The `1184x900` main area retained a centered `736x133` composer, `688x35`
+  project heading, inherited `GPT-5.6 Sol`, and exact recursive visible text
+  `What should we do in Dark Project?`.
+- Dark heading/composer/tray tokens resolved correctly; output and staged
+  bundle hashes were identical; exact-client warning/error console stayed
+  empty.
+- Canonical projection proved zero durable threads before send. Canonical
+  cleanup removed the explicit project and landing-created Home container,
+  returning to 0 live projects / 0 live threads.
+- `native-new-thread-dark-1440`: missing coverage `1.00 -> 0.00`;
+  product-loss contribution remains `0.00 -> 0.00`.
+- Two unsupported `mapfile` probes and one flat split-text assertion were
+  probe-only harness noise. The retained POSIX PID and recursive-text probes
+  passed against the same owned process.
+- Owned ports/runtime/state were removed, screenshot count remained `100`, and
+  the final browser gate reported `sessions: []` with zero owned processes.

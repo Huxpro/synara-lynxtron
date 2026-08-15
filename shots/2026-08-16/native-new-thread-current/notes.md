@@ -128,5 +128,50 @@ canonical cleanup returned to 0 live projects.
 `native-new-thread-minimum-window`: missing coverage
 `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
 
-Native dark/1440 and keyboard/first-send interactions remain open. The
-`390px` compact renderer remains Web/Lynx-for-Web scope by host design.
+Native keyboard/first-send interactions remained open after this minimum-size
+cell. The `390px` compact renderer remains Web/Lynx-for-Web scope by host
+design; dark/1440 is covered by the continuation below.
+
+## Native dark 1440 continuation
+
+A separate fresh exact-owned run added the dark `1440x900` project draft cell:
+
+- root: `SliceRoot--theme-dark SliceRoot--viewport-wide`, exact `1440x900`;
+- sidebar/main: `(0,0,256x900)` / `(256,0,1184x900)`;
+- heading frame: `(480,391,736x111)`;
+- project heading: `(504,447,688x35)`, `30px/35px/400`;
+- composer/input surface: `(480,501,736x133)` /
+  `(480,501,736x95)`;
+- tray: `(480,576,736x58)`.
+
+The canonical `Dark Project` fixture inherited `GPT-5.6 Sol`, and recursive
+visible text resolved exactly to `What should we do in Dark Project?`.
+Resolved dark tokens included:
+
+- heading: `rgb(252,252,252)`;
+- composer input surface: `rgb(23,23,23)`;
+- tray: `rgba(252,252,252,0.00392157)`.
+
+The production session loaded the staged file bundle from the PID-derived
+`localhost:8901` client, and output/staged SHA-256 hashes were identical at
+`830c5888ffd2d3312337e07de9cf249481ba97db6bed6ae6f79a488b4832c98e`.
+Exact-client warning/error console stayed empty.
+
+Canonical pre-cleanup projection contained the explicit project plus the
+landing-created Home container and zero durable threads. Canonical deletion
+returned to 0 live projects / 0 live threads. Owned ports, runtime, user data,
+server state, and probe files were removed.
+
+Three probe-only harness failures changed no product state: zsh and the local
+legacy Bash lacked `mapfile`, and one flat text assertion did not account for
+the heading's split Lynx text nodes. The retained POSIX PID probe and recursive
+visible-text assertion passed against the same already-running owned process.
+
+`native-new-thread-dark-1440`: missing coverage `1.00 -> 0.00`;
+product-loss contribution remains `0.00 -> 0.00`.
+
+The loop's final browser gate reported `sessions: []` and zero
+agent-browser-owned processes. Screenshot count remained `100`.
+
+Native keyboard/IME, first send and durable promotion, provider/model
+switching, and project switching remain open.
