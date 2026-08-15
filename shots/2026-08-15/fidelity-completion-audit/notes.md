@@ -315,3 +315,24 @@ former dynamic-event P1 is no longer a valid blocker.
   coverage is improved and this Lynx-for-Web harness path is repaired, but
   other Native route/state/theme/size interactions and discovery exhaustion
   remain open.
+
+## 2026-08-16 Native Automations action continuation
+
+- Active discovery added the first current-head exact-owned Native
+  Resume/Pause mutation roundtrip for a disabled/manual automation.
+- A real touch opened the rendered Paused row; real touches on the rendered
+  Resume and Pause controls dispatched canonical `automation.update`.
+- Server projection and Native detail changed
+  `Paused/Resume -> Active/Pause -> Paused/Resume` without reload. No provider
+  run or worktree was created, runs remained zero, and the exact-client
+  warning/error console stayed empty.
+- Canonical delete restored zero definitions/runs while preserving snapshot
+  sequence `4` and the original project/thread.
+- `native-automations-resume-pause-interaction`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- A server-only preflight initially selected the isolated `userdata/` database
+  instead of the intended `dev/` snapshot. The project identity gate rejected
+  canonical create before any definition was written; the sequence-zero
+  directory was removed. This is harness identity evidence, not product loss.
+- No new P0/P1/P2 product loss was found. Other Native interactions, theme/size
+  cells, and discovery exhaustion remain open.

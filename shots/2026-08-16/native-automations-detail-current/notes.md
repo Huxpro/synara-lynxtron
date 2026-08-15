@@ -92,6 +92,41 @@ No new P0/P1/P2 product loss was found in this Native cell:
   `1.00 -> 0.00`;
 - component product-loss contribution: `0.00 -> 0.00`.
 
+## Native Resume/Pause roundtrip
+
+A follow-up exact-owned run added the first current-head Native status-mutation
+roundtrip without triggering a provider:
+
+1. Canonical `automation.create` produced
+   `automation:8e0d7f7e-a566-4bd4-b52d-3e54220a1d3d` as a disabled/manual
+   definition with zero runs.
+2. The rendered `720x44` Paused row opened through a real DevTool touch at its
+   box center.
+3. The rendered Resume button (`69x28` border box at `(1199,9)`) received a
+   real touch. Native dispatched canonical `automation.update {enabled:true}`;
+   the server projection changed to enabled, the detail changed immediately to
+   Active/Pause, and runs remained zero.
+4. The rendered Pause button (`57x28` border box at `(1211,9)`) received a real
+   touch. Native dispatched canonical `automation.update {enabled:false}`;
+   the projection and detail returned immediately to Paused/Resume, and runs
+   remained zero.
+5. The exact-client warning/error console stayed empty throughout.
+6. Canonical `automation.delete` restored zero definitions and zero runs;
+   snapshot sequence remained `4`, and the original project/thread remained
+   present.
+
+An initial server-only preflight omitted `VITE_DEV_SERVER_URL`, selecting the
+isolated `userdata/` database instead of the intended `dev/` database.
+Canonical create correctly failed with `Automation project was not found`.
+No definition was created. The run was stopped, the newly initialized
+sequence-zero `userdata/` directory was removed, and the server was restarted
+only after the snapshot gate proved sequence `4` and the expected project.
+This is retained as a harness identity catch, not a product failure.
+
+- `native-automations-resume-pause-interaction`: missing coverage
+  `1.00 -> 0.00`;
+- component product-loss contribution: `0.00 -> 0.00`.
+
 ## Harness losses kept separate
 
 The first Lynx-for-Web probes were invalid for three independent harness
@@ -133,6 +168,7 @@ agent-browser-owned processes.
 - Web authority dimensions/theme/content: passed.
 - Native PID/session/bundle identity: passed.
 - Native rendered list-row touch to detail: passed.
+- Native rendered Resume/Pause mutation roundtrip: passed.
 - Native warning/error console: zero.
 - Corrected Lynx-for-Web shadow-root/relay cell: passed.
 - Lynx-for-Web shared icon requests: `404 -> 200`.
