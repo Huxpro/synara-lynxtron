@@ -1288,7 +1288,7 @@
 }
 
 .KanbanMutationTextarea {
-  width: 100%;
+  width: calc(100% - 22px);
   min-height: 38px;
   padding: 9px 10px;
   border: 1px solid var(--input);

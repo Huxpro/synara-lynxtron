@@ -137,6 +137,29 @@ manifests, and pixel scores are supporting evidence only.
 - Native card actions remain missing certification coverage. Discovery
   exhaustion is still not proven, so the active objective remains incomplete.
 
+## 2026-08-16 narrow Kanban continuation
+
+- Active discovery added a `320x568` populated Kanban project-board cell rather
+  than replaying the existing `390x844` evidence.
+- The complete eight-action chooser remained contained, but Rename exposed a
+  P2 shadow-textarea box-model loss: the input exceeded the panel by `9px` and
+  its padded content edge by `21px`.
+- `KanbanMutationTextarea` now compensates the shadow control's horizontal
+  padding and border with `width:calc(100% - 22px)`.
+- Fresh runtime evidence records padded-content overflow `21px -> 0px`, real
+  keyboard editing, Cancel restoration, zero dispatches, and an unchanged
+  thread projection.
+- `lynx-kanban-mutation-textarea-content-overflow`: P2 contribution
+  `1.00 -> 0.00`.
+- Focused coverage passes `10/10` plus the dedicated `1/1` regression; root
+  production build passes `6/6`, explicit Web bundle build passes, and React
+  diagnostics report zero warnings/errors.
+- Native ownership contention is no longer current, but certification remains
+  blocked for a different harness reason: the restored official
+  `@lynx-js/lynxtron@0.0.9` host renders the exact-owned app without publishing
+  a DevTool listener/client. The owned process was stopped and no Native
+  product pass or failure was inferred.
+
 ## Completion decision
 
 The active objective is **not achieved**. No `update_goal complete` call is
