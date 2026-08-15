@@ -74,3 +74,31 @@
   contribution `0.00` product loss.
 - `native-visibility-devtool-fixed-port`: harness blocker,
   contribution `0.00` product loss.
+
+## 2026-08-16 exact-owned Native continuation
+
+The former fixed-port boundary is no longer current. A fresh isolated Native
+run opened `synara://settings/general` with a temporary diagnostic host and
+exercised the real Workspace visibility switch.
+
+- initial state: `aria-checked=false`, accessibility value `Off`;
+- switch center: `(1051,679)`;
+- real touch sequence: `off -> on -> off -> on`;
+- each transition updated `aria-checked`, accessibility value, visual `--on`
+  class, and `synara:app-settings:v1`;
+- final persisted projection retained `showWorkspaceSection:true` without
+  changing Chats or Studio visibility.
+
+The Native app was then restarted with the same isolated user-data directory
+but ordinary `synara://threads` startup. The sidebar rendered exactly one
+Workspace segmented button, proving consumer-side restart persistence rather
+than only the Settings control state.
+
+The exact-client warning/error console stayed empty. All runtime, user data,
+and server state were removed afterward.
+
+`native-workspace-visibility-roundtrip-restart`: missing coverage
+`1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+
+Native Studio/Chats visibility roundtrips and Environment section switches
+remain unverified.

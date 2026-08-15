@@ -754,3 +754,19 @@ former dynamic-event P1 is no longer a valid blocker.
   `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
 - Confirmation-enabled close, command history, Native typing, and restart
   persistence remain open.
+
+## 2026-08-16 Native Workspace visibility continuation
+
+- Active discovery moved to a Settings -> consumer persistence state that had
+  only Lynx-for-Web evidence.
+- Exact-owned Native General settings started with Workspace visibility off.
+  Real touches completed `off -> on -> off -> on`, updating checked/value/class
+  state and the isolated `synara:app-settings:v1` projection each time.
+- Restarting Native with the same user-data directory on ordinary Threads
+  startup rendered exactly one Workspace segmented button, proving the sidebar
+  consumed the persisted setting.
+- Chats and Studio visibility remained unchanged; exact-client warning/error
+  console stayed empty.
+- `native-workspace-visibility-roundtrip-restart`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- Native Chats/Studio visibility and Environment section switches remain open.
