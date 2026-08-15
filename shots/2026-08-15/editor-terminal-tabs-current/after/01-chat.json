@@ -1,0 +1,95 @@
+{
+  "buttons": [
+    {
+      "rect": {
+        "height": 0,
+        "width": 0,
+        "x": 0,
+        "y": 0
+      },
+      "text": "Refresh"
+    },
+    {
+      "rect": {
+        "height": 0,
+        "width": 0,
+        "x": 0,
+        "y": 0
+      },
+      "text": "Close"
+    }
+  ],
+  "chatSurfaceClass": "ThreadEditorChatSurface",
+  "closeCount": 0,
+  "openCount": 1,
+  "relay": {
+    "activeBaseUrl": "ws://127.0.0.1:58090",
+    "configuredBaseUrl": "ws://127.0.0.1:58090",
+    "connectionAttempts": 1,
+    "explorerPreviewActionCount": 0,
+    "interactionEventCount": 0,
+    "lastExplorerPreviewAction": null,
+    "lastInteractionEvent": null,
+    "lastRpcError": null,
+    "lastSyntaxHighlightResult": null,
+    "lastTransportError": null,
+    "pendingRequests": 0,
+    "readyBaseUrl": null,
+    "recentRpcTags": [
+      "orchestration.getShellSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getSidebarSearchSnapshot",
+      "orchestration.getThreadDetailSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getThreadDetailSnapshot",
+      "projects.listDirectories",
+      "provider.listModels",
+      "server.getConfig",
+      "server.refreshProviders",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "pullRequests.list",
+      "orchestration.getThreadDetailSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getThreadDetailSnapshot",
+      "terminal.open",
+      "provider.listModels"
+    ],
+    "rendererReadyRoute": "/thread/editor-changes-thread",
+    "socketState": 1,
+    "syntaxHighlightCallCount": 0
+  },
+  "tabs": [
+    {
+      "cls": "LxButton LxButton--ghost LxButton--default ThreadEditorRailTab ThreadEditorRailTab--active",
+      "rect": {
+        "height": 24,
+        "width": 47.265625,
+        "x": 1131.34375,
+        "y": 56.5
+      },
+      "text": "Chat"
+    },
+    {
+      "cls": "LxButton LxButton--ghost LxButton--default ThreadEditorRailTab",
+      "rect": {
+        "height": 24,
+        "width": 69.390625,
+        "x": 1182.609375,
+        "y": 56.5
+      },
+      "text": "Terminal"
+    }
+  ],
+  "terminalExists": true,
+  "terminalRect": {
+    "height": 0,
+    "width": 0,
+    "x": 0,
+    "y": 0
+  },
+  "terminalSurfaceClass": "ThreadEditorTerminalSurface ThreadEditorTerminalSurface--hidden"
+}

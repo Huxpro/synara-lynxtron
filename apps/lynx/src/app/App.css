@@ -371,6 +371,19 @@
   color: var(--foreground);
 }
 
+.ThreadEditorChatSurface,
+.ThreadEditorTerminalSurface {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+}
+
+.ThreadEditorChatSurface--hidden,
+.ThreadEditorTerminalSurface--hidden {
+  display: none;
+}
+
 .ThreadEditorNewViewport {
   position: fixed;
   left: 0;

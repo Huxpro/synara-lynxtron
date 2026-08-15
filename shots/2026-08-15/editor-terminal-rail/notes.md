@@ -58,3 +58,43 @@ The fix keeps the attempt key after an automatic failure. A given thread/termina
   - `agent-browser session list` -> `No active sessions`
   - no `agent-browser` or `remote-debugging-port` owned process remained.
 - Local screenshot count: 50, below the 100-image limit.
+
+## Current-head tab lifecycle and P1 closure
+
+- Re-ran the real Editor terminal tabs after closing the global dynamic-event
+  blocker.
+- Initial trusted interaction passed:
+  - New editor rail item -> New terminal;
+  - Terminal -> Chat -> Terminal;
+  - Close -> real browser confirmation -> terminal close.
+- That first run exposed a new P1 reliability/performance loss:
+  - switching to Chat conditionally unmounted `ThreadTerminal`;
+  - switching back remounted it with `autoOpen`;
+  - recent RPC tags contained two `terminal.open` calls for one logical tab.
+- Root cause was the Editor rail's conditional component ownership, not the
+  PTY service. Both Chat and Terminal trees were rebuilt on every tab switch.
+- Fix:
+  - Chat and Terminal now remain mounted while the terminal tab exists;
+  - `ThreadEditorChatSurface--hidden` and
+    `ThreadEditorTerminalSurface--hidden` remove only the inactive surface from
+    layout;
+  - `ThreadTerminal` unmounts only when the terminal is actually closed.
+- Fresh production Lynx-for-Web bundle:
+  - `web-host.js`:
+    `a5ca07e6fb314eb3f986cffa26911622d8937aab6b8d0fd6fcd427a1c6a6e577`
+  - `main.web.bundle`:
+    `fed9a1b95fc0caf97d6781f48fcd89086ccaee69f833df45aad94993f1a89163`
+- Post-fix trusted interaction:
+  - initial Terminal: component visible, `terminal.open` count `1`;
+  - Chat: same Terminal component remains mounted at `0x0`, count stays `1`;
+  - Terminal restored: `384x728`, count stays `1`;
+  - confirmed Close: `terminal.close` count `1`, tabs and component removed;
+  - page errors empty; no PTY process remained after owned server exit.
+- A runtime attempt made before `build:web` was rejected as stale-bundle
+  harness evidence; root `bun run build` updates Lynx/desktop but not
+  `apps/lynx/dist/web`.
+- `lynx-editor-terminal-tab-remount`: P1 reliability/performance,
+  contribution `1.00 -> 0.00`.
+- `lynx-editor-terminal-tab-lifecycle`: P2 route-specific interaction coverage,
+  contribution `0.25 -> 0.00`.
+- Evidence: `shots/2026-08-15/editor-terminal-tabs-current/`.

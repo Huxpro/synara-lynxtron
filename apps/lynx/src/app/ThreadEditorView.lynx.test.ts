@@ -136,6 +136,16 @@ describe('Lynx Editor view', () => {
     expect(routerSource).toContain('presentationMode="workspace"');
     expect(routerSource).toContain('terminalId="lynx-editor-rail"');
     expect(routerSource).toContain('className="ThreadEditorRailTabs"');
+    expect(routerSource).toContain('className={`ThreadEditorChatSurface${');
+    expect(routerSource).toContain(
+      'className={`ThreadEditorTerminalSurface${'
+    );
+    expect(routerSource).toContain(
+      '{terminalOpen && currentThread?.workspaceRoot ? ('
+    );
+    expect(routerSource).not.toContain(
+      "{editorRailSurface === 'terminal' &&\n              currentThread?.workspaceRoot ? ("
+    );
     expect(routerSource).toContain('New terminal');
     expect(routerSource).toContain('onClick={openEditorNewChat}');
     expect(routerSource).toContain('<LandingComposer');
@@ -153,6 +163,9 @@ describe('Lynx Editor view', () => {
     );
     expect(appStyles).toMatch(
       /\.ThreadEditorNewDialog\s*\{[^}]*width:\s*240px;/s
+    );
+    expect(appStyles).toMatch(
+      /\.ThreadEditorChatSurface--hidden,[\s\S]*?\.ThreadEditorTerminalSurface--hidden\s*\{[^}]*display:\s*none;/s
     );
   });
 

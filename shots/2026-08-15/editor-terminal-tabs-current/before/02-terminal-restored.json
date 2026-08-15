@@ -1,0 +1,97 @@
+{
+  "buttons": [
+    {
+      "rect": {
+        "height": 24,
+        "width": 54,
+        "x": 1164.296875,
+        "y": 97.5
+      },
+      "text": "Refresh"
+    },
+    {
+      "rect": {
+        "height": 24,
+        "width": 43.703125,
+        "x": 1226.296875,
+        "y": 97.5
+      },
+      "text": "Close"
+    }
+  ],
+  "relay": {
+    "activeBaseUrl": "ws://127.0.0.1:58090",
+    "configuredBaseUrl": "ws://127.0.0.1:58090",
+    "connectionAttempts": 1,
+    "explorerPreviewActionCount": 0,
+    "interactionEventCount": 0,
+    "lastExplorerPreviewAction": null,
+    "lastInteractionEvent": null,
+    "lastRpcError": null,
+    "lastSyntaxHighlightResult": null,
+    "lastTransportError": null,
+    "pendingRequests": 0,
+    "readyBaseUrl": null,
+    "recentRpcTags": [
+      "orchestration.getShellSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getSidebarSearchSnapshot",
+      "orchestration.getThreadDetailSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getThreadDetailSnapshot",
+      "projects.listDirectories",
+      "git.listBranches",
+      "git.readWorkingTreeDiff",
+      "provider.listModels",
+      "server.getConfig",
+      "server.refreshProviders",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "pullRequests.list",
+      "orchestration.getThreadDetailSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getThreadDetailSnapshot",
+      "provider.listModels",
+      "terminal.open",
+      "provider.listModels",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getSidebarSearchSnapshot",
+      "terminal.open"
+    ],
+    "rendererReadyRoute": "/thread/editor-changes-thread",
+    "socketState": 1,
+    "syntaxHighlightCallCount": 0
+  },
+  "tabs": [
+    {
+      "cls": "LxButton LxButton--ghost LxButton--default ThreadEditorRailTab",
+      "rect": {
+        "height": 24,
+        "width": 47.265625,
+        "x": 1131.34375,
+        "y": 56.5
+      },
+      "text": "Chat"
+    },
+    {
+      "cls": "LxButton LxButton--ghost LxButton--default ThreadEditorRailTab ThreadEditorRailTab--active",
+      "rect": {
+        "height": 24,
+        "width": 69.390625,
+        "x": 1182.609375,
+        "y": 56.5
+      },
+      "text": "Terminal"
+    }
+  ],
+  "terminalRect": {
+    "height": 728,
+    "width": 384,
+    "x": 896,
+    "y": 92
+  },
+  "terminalText": "TerminalrunningRefreshClose\u001b[?1h\u001b[?66h\u001b[?2004h \u001b[34m\u001b[01msynara-editor-changes\u001b[22m \u001b[90mgit/main* \u001b[39m \u001b[33m\u001b[39m \u001b]2;bytedance@MacBook-Pro-3:/private/tmp/synara-editor-changes\u0007\u001b]1;..ditor-changes\u0007\u001b]7;file://MacBook-Pro-3.local/private/tmp/synara-editor-changes\u001b\\ \u001b[0m\u001b[27m\u001b[24m\u001b[35mλ\u001b[39m \u001b[90m\u001b[3"
+}

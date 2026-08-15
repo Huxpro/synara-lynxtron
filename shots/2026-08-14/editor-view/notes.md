@@ -694,7 +694,10 @@ comparison; no Web screenshot pass is claimed.
 - `lynx-editor-chat-resize-tabs`: P2 missing coverage,
   Chat-history interaction contribution `0.25 -> 0.00`; terminal/New chat
   route-specific interaction coverage remains. New chat trigger coverage later
-  moved `0.25 -> 0.00`; first-send promotion and terminal-tab lifecycle remain.
+  moved `0.25 -> 0.00`; terminal-tab lifecycle later moved `0.25 -> 0.00`.
+  First-send promotion remains environment coverage.
+- `lynx-editor-terminal-tab-remount`: P1 reliability/performance,
+  contribution `1.00 -> 0.00`.
 - `lynx-editor-chat-resize`: P2 missing coverage,
   contribution `0.25 -> 0.00`.
 - `lynx-editor-chat-compact-stale-width`: P1 responsive layout,

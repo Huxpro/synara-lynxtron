@@ -1176,51 +1176,63 @@ function ThreadPage(props: ThreadPageProps) {
                   </view>
                 ) : null}
               </ChatSurfaceHeaderFrame>
-              {editorRailSurface === 'terminal' &&
-              currentThread?.workspaceRoot ? (
-                <ThreadTerminal
-                  autoOpen
-                  fontFamily={appearance.terminalFontFamily}
-                  fontSizePx={appearance.terminalFontSizePx}
-                  open={terminalOpen}
-                  presentationMode="workspace"
-                  terminalId="lynx-editor-rail"
-                  threadId={threadId}
-                  workspaceRoot={currentThread.workspaceRoot}
-                  onOpenChange={(open) => {
-                    if (!open) closeEditorTerminal();
-                  }}
-                />
-              ) : (
-                <>
-                  {editorRailDraftOpen && currentThread ? (
-                    <view className="ThreadEditorNewChat">
-                      <CenteredEmptyLandingStack>
-                        <CenteredEmptyLanding
-                          projectName={currentThread.project}
-                        />
-                        <ComposerColumnFrameSurface>
-                          <LandingComposer
-                            initialProjectId={currentThread.projectId}
-                            onThreadCreated={(newThreadId) =>
-                              onNavigateToThread(newThreadId)
-                            }
-                          />
-                        </ComposerColumnFrameSurface>
-                      </CenteredEmptyLandingStack>
-                    </view>
-                  ) : (
-                    <>
-                      <ProviderHealthBanner
-                        status={providerHealth.status}
-                        onDismiss={providerHealth.dismiss}
+              <view
+                className={`ThreadEditorChatSurface${
+                  editorRailSurface === 'chat'
+                    ? ''
+                    : ' ThreadEditorChatSurface--hidden'
+                }`}
+              >
+                {editorRailDraftOpen && currentThread ? (
+                  <view className="ThreadEditorNewChat">
+                    <CenteredEmptyLandingStack>
+                      <CenteredEmptyLanding
+                        projectName={currentThread.project}
                       />
-                      {chatBody}
-                      {bodyState.kind === 'empty' ? null : composer}
-                    </>
-                  )}
-                </>
-              )}
+                      <ComposerColumnFrameSurface>
+                        <LandingComposer
+                          initialProjectId={currentThread.projectId}
+                          onThreadCreated={(newThreadId) =>
+                            onNavigateToThread(newThreadId)
+                          }
+                        />
+                      </ComposerColumnFrameSurface>
+                    </CenteredEmptyLandingStack>
+                  </view>
+                ) : (
+                  <>
+                    <ProviderHealthBanner
+                      status={providerHealth.status}
+                      onDismiss={providerHealth.dismiss}
+                    />
+                    {chatBody}
+                    {bodyState.kind === 'empty' ? null : composer}
+                  </>
+                )}
+              </view>
+              {terminalOpen && currentThread?.workspaceRoot ? (
+                <view
+                  className={`ThreadEditorTerminalSurface${
+                    editorRailSurface === 'terminal'
+                      ? ''
+                      : ' ThreadEditorTerminalSurface--hidden'
+                  }`}
+                >
+                  <ThreadTerminal
+                    autoOpen
+                    fontFamily={appearance.terminalFontFamily}
+                    fontSizePx={appearance.terminalFontSizePx}
+                    open={terminalOpen}
+                    presentationMode="workspace"
+                    terminalId="lynx-editor-rail"
+                    threadId={threadId}
+                    workspaceRoot={currentThread.workspaceRoot}
+                    onOpenChange={(open) => {
+                      if (!open) closeEditorTerminal();
+                    }}
+                  />
+                </view>
+              ) : null}
             </ResizableRightPanel>
           </view>
         </view>
