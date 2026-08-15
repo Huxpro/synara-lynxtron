@@ -147,6 +147,26 @@ An intermediate Closed frame showed zero rows while the list RPC was still
 pending. It was rejected as a timing sample and is not retained or counted as
 an empty-state observation.
 
+## Pin persistence round trip
+
+A wide follow-up clicked the real pin control on the second list row, reloaded
+the route, and clicked the retained pin again:
+
+- before: PR `#689` first, PR `#687` second; both unpinned;
+- pinning `#687` issued `pullRequests.setPinned`, refreshed the list, moved
+  `#687` to the first row, and changed the control to
+  `Unpin pull request #687 in Synara Pull Requests` with
+  `aria-pressed=true`;
+- after a full route reload, `#687` remained first and pinned;
+- unpinning issued another `pullRequests.setPinned`, restored `#689` then
+  `#687`, and returned both controls to the unpinned state;
+- read-only SQLite verification after the owned server exited found zero rows
+  in `project_pull_request_pins`;
+- page errors remained empty.
+
+This mutation only changes Synara's isolated local pin projection. It does not
+write to GitHub or mutate the live pull request.
+
 ## Classification
 
 - **Populated list/detail/tabs: product pass.**
@@ -163,6 +183,8 @@ an empty-state observation.
 - `lynx-pull-requests-search-keyboard-filter`: new component contribution
   `0.00 -> 0.00`.
 - `lynx-pull-requests-state-filter-detail-reset`: new component contribution
+  `0.00 -> 0.00`.
+- `lynx-pull-requests-pin-persistence-roundtrip`: new component contribution
   `0.00 -> 0.00`.
 - No P0/P1 product loss was found in these cells. No weighting, sample
   filtering, or scope reduction was used.
@@ -211,3 +233,8 @@ an empty-state observation.
 - `filters/search-errors.json`
 - `filters/search-console.json`
 - `filters/closed-errors.json`
+- `pin/00-before.{png,json}`
+- `pin/01-pinned.{png,json}`
+- `pin/02-reloaded.{png,json}`
+- `pin/03-unpinned.{png,json}`
+- `pin/errors.json`

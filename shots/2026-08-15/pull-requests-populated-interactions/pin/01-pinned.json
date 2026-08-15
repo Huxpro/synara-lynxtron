@@ -1,0 +1,119 @@
+{
+  "relay": {
+    "activeBaseUrl": "ws://127.0.0.1:58090",
+    "configuredBaseUrl": "ws://127.0.0.1:58090",
+    "connectionAttempts": 1,
+    "explorerPreviewActionCount": 0,
+    "interactionEventCount": 0,
+    "lastExplorerPreviewAction": null,
+    "lastInteractionEvent": null,
+    "lastRpcError": null,
+    "lastSyntaxHighlightResult": null,
+    "lastTransportError": null,
+    "pendingRequests": 0,
+    "readyBaseUrl": null,
+    "recentRpcTags": [
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "pullRequests.list",
+      "pullRequests.list",
+      "orchestration.getShellSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getSidebarSearchSnapshot",
+      "pullRequests.setPinned",
+      "pullRequests.list"
+    ],
+    "rendererReadyRoute": "/pull-requests",
+    "socketState": 1,
+    "syntaxHighlightCallCount": 0
+  },
+  "rows": [
+    {
+      "cls": "SharedPrRow",
+      "pin": {
+        "cls": "SharedPrPin SharedPrPin--pinned",
+        "label": "Unpin pull request #687 in Synara Pull Requests",
+        "pressed": "true",
+        "rect": {
+          "height": 28,
+          "width": 28,
+          "x": 1232,
+          "y": 177
+        }
+      },
+      "rect": {
+        "height": 50,
+        "width": 992,
+        "x": 272,
+        "y": 166
+      },
+      "text": "Support Xcode 27 beta's relocated SimulatorKit.frameworkSynara Pull Requests·Emanuele-web04/synara·hotfix/simulator-beta1h+185-19"
+    },
+    {
+      "cls": "SharedPrRow",
+      "pin": {
+        "cls": "SharedPrPin SharedPrPin--unpinned",
+        "label": "Pin pull request #689 in Synara Pull Requests",
+        "pressed": null,
+        "rect": {
+          "height": 28,
+          "width": 28,
+          "x": 1232,
+          "y": 261
+        }
+      },
+      "rect": {
+        "height": 50,
+        "width": 992,
+        "x": 272,
+        "y": 250
+      },
+      "text": "docs: refresh README and docs to match the websiteSynara Pull Requests·Emanuele-web04/synara·docs/readme-and-docs-refresh41m+505-47"
+    },
+    {
+      "cls": "SharedPrRow",
+      "pin": {
+        "cls": "SharedPrPin SharedPrPin--unpinned",
+        "label": "Pin pull request #646 in Synara Pull Requests",
+        "pressed": null,
+        "rect": {
+          "height": 28,
+          "width": 28,
+          "x": 1232,
+          "y": 313
+        }
+      },
+      "rect": {
+        "height": 50,
+        "width": 992,
+        "x": 272,
+        "y": 302
+      },
+      "text": "WIP: Add CommandCode provider harnessSynara Pull Requests·Emanuele-web04/synara·ibrahim/commandcode-provider2h+1,708-13"
+    },
+    {
+      "cls": "SharedPrRow",
+      "pin": {
+        "cls": "SharedPrPin SharedPrPin--unpinned",
+        "label": "Pin pull request #686 in Synara Pull Requests",
+        "pressed": null,
+        "rect": {
+          "height": 28,
+          "width": 28,
+          "x": 1232,
+          "y": 365
+        }
+      },
+      "rect": {
+        "height": 50,
+        "width": 992,
+        "x": 272,
+        "y": 354
+      },
+      "text": "Stop Cursor fast mode from staying on when the lightning bolt is offSynara Pull Requests·Emanuele-web04/synara·fix/cursor-fast-mode-disabled4h+182-4"
+    }
+  ]
+}
