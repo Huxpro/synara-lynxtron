@@ -145,12 +145,13 @@
   - background snapshots retain original functions;
   - main-thread snapshots still commit the transformed handler ids and register
     events with Web Core.
-- The dedicated host-input probe now contains three independent real-click
+- The dedicated host-input probe now contains four independent real-click
   controls:
   - dynamic spread event;
   - dynamic fixed event;
-  - dynamic component-prop event.
-- On the freshly installed patched dependency, all three controls advanced
+  - dynamic component-prop event;
+  - Lynx UI Button component event.
+- On the freshly installed patched dependency, all four controls advanced
   from `0` to `1` through trusted browser mouse input.
 - **Remaining product boundary:** the large Editor composition still did not
   commit its Files/Plus state changes even after the three minimal dynamic

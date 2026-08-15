@@ -7,6 +7,7 @@ import {
   recordHostEventBinding,
   type HostInputProbeMatrix,
 } from './HostInputProbe.logic';
+import { Button } from '../components/ui/button';
 import './HostInputProbe.css';
 
 declare const NativeModules: {
@@ -88,6 +89,7 @@ export function HostInputProbe() {
   const [dynamicSpreadTapCount, setDynamicSpreadTapCount] = useState(0);
   const [dynamicFixedTapCount, setDynamicFixedTapCount] = useState(0);
   const [dynamicPropTapCount, setDynamicPropTapCount] = useState(0);
+  const [lynxButtonTapCount, setLynxButtonTapCount] = useState(0);
   const summary = hostInputProbeSummary(matrix);
   const dynamicFixedTap = () => {
     'background only';
@@ -159,6 +161,13 @@ export function HostInputProbe() {
         count={dynamicPropTapCount}
         onActivate={() => setDynamicPropTapCount((count) => count + 1)}
       />
+      <Button
+        aria-label="Lynx button event control"
+        className="HostInputProbeControl"
+        onClick={() => setLynxButtonTapCount((count) => count + 1)}
+      >
+        {`Lynx button taps: ${lynxButtonTapCount}`}
+      </Button>
       <view
         id="host-input-probe-view-control"
         className="HostInputProbeControl"

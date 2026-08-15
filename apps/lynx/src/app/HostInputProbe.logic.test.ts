@@ -24,6 +24,8 @@ describe('host input probe matrix', () => {
     expect(source).toContain('id="host-input-probe-dynamic-prop"');
     expect(source).toContain('bindtap={props.onActivate}');
     expect(source).toContain('Dynamic prop taps: ${props.count}');
+    expect(source).toContain('aria-label="Lynx button event control"');
+    expect(source).toContain('Lynx button taps: ${lynxButtonTapCount}');
   });
 
   it('distinguishes binding existence from event delivery', () => {
