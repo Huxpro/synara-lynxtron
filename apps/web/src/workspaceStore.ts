@@ -14,6 +14,7 @@ import {
   normalizeServerWorkspacePaths,
   type ServerWorkspacePaths,
 } from "./lib/serverWorkspacePaths";
+import { randomUUID } from "./lib/utils";
 
 import { webStorage } from "~/platform/storage";
 interface WorkspacePage {
@@ -42,13 +43,6 @@ interface WorkspaceStoreState {
 }
 
 const WORKSPACE_STORE_STORAGE_KEY = "synara:workspace-pages:v2";
-
-function randomWorkspaceId(): string {
-  if (typeof crypto.randomUUID === "function") {
-    return crypto.randomUUID();
-  }
-  return Math.random().toString(36).slice(2, 10);
-}
 
 function nowIso(): string {
   return new Date().toISOString();
@@ -83,7 +77,7 @@ function createWorkspacePage(
 ): WorkspacePage {
   const createdAt = nowIso();
   return {
-    id: input?.id ?? randomWorkspaceId(),
+    id: input?.id ?? randomUUID(),
     title: trimWorkspaceTitle(input?.title ?? "") || nextWorkspaceTitle(workspacePages),
     layoutPresetId: getWorkspaceLayoutPreset(
       input?.layoutPresetId ?? DEFAULT_WORKSPACE_LAYOUT_PRESET_ID,
@@ -224,7 +218,7 @@ export const useWorkspaceStore = create<WorkspaceStoreState>()(
           };
         }),
       createWorkspace: () => {
-        const workspaceId = randomWorkspaceId();
+        const workspaceId = randomUUID();
         set((state) => ({
           workspacePages: [
             ...state.workspacePages,

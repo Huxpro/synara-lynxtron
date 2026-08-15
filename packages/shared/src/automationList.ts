@@ -63,30 +63,55 @@ function weekdayLabel(value: number): string {
   return ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][value] ?? "Sun";
 }
 
+const MONTH_LABELS = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+] as const;
+
+function formatFallbackTime(date: Date): string {
+  return `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+}
+
+function formatFallbackDateTime(date: Date): string {
+  return `${date.getDate()} ${MONTH_LABELS[date.getMonth()] ?? "Jan"} ${date.getFullYear()}, ${formatFallbackTime(date)}`;
+}
+
+function formatDateTime(
+  date: Date,
+  options: Intl.DateTimeFormatOptions,
+  fallback: () => string,
+): string {
+  const DateTimeFormat = globalThis.Intl?.DateTimeFormat;
+  if (typeof DateTimeFormat !== "function") return fallback();
+  return new DateTimeFormat(undefined, options).format(date);
+}
+
 function formatTimestampValue(value: string): string {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return value;
-  return date.toLocaleString(undefined, {
-    dateStyle: "medium",
-    timeStyle: "short",
-  });
+  return formatDateTime(
+    date,
+    {
+      dateStyle: "medium",
+      timeStyle: "short",
+    },
+    () => formatFallbackDateTime(date),
+  );
 }
 
 function startOfLocalDay(date: Date): number {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
 }
-
-const AUTOMATION_RUN_TIME_FORMATTER = new Intl.DateTimeFormat(undefined, {
-  hour: "2-digit",
-  minute: "2-digit",
-});
-const AUTOMATION_RUN_DATE_TIME_FORMATTER = new Intl.DateTimeFormat(undefined, {
-  day: "numeric",
-  month: "short",
-  year: "numeric",
-  hour: "2-digit",
-  minute: "2-digit",
-});
 
 export function formatAutomationRunTimestamp(
   value: string | null,
@@ -96,25 +121,48 @@ export function formatAutomationRunTimestamp(
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return value;
   const now = new Date(nowMs);
-  const time = AUTOMATION_RUN_TIME_FORMATTER.format(date);
+  const time = formatDateTime(
+    date,
+    {
+      hour: "2-digit",
+      minute: "2-digit",
+    },
+    () => formatFallbackTime(date),
+  );
   const dayDelta = Math.round(
     (startOfLocalDay(date) - startOfLocalDay(now)) / 86_400_000,
   );
   if (dayDelta === 0) return `Today at ${time}`;
   if (dayDelta === 1) return `Tomorrow at ${time}`;
   if (dayDelta === -1) return `Yesterday at ${time}`;
-  return AUTOMATION_RUN_DATE_TIME_FORMATTER.format(date);
+  return formatDateTime(
+    date,
+    {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    },
+    () => formatFallbackDateTime(date),
+  );
 }
 
 export function formatAutomationCadence(schedule: AutomationSchedule): string {
   switch (schedule.type) {
     case "manual":
       return "Manual";
-    case "once":
-      return new Date(schedule.runAt).toLocaleString(undefined, {
-        dateStyle: "medium",
-        timeStyle: "short",
-      });
+    case "once": {
+      const date = new Date(schedule.runAt);
+      return formatDateTime(
+        date,
+        {
+          dateStyle: "medium",
+          timeStyle: "short",
+        },
+        () => formatFallbackDateTime(date),
+      );
+    }
     case "interval": {
       const minutes = schedule.everySeconds / 60;
       if (Number.isInteger(minutes)) {

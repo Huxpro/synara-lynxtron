@@ -54,6 +54,23 @@ describe("workspaceStore", () => {
     expect(useWorkspaceStore.getState().homeDir).toBeNull();
   });
 
+  it("initializes and creates workspace pages without Web Crypto", async () => {
+    installMemoryLocalStorage();
+    vi.stubGlobal("crypto", undefined);
+    vi.resetModules();
+
+    const { useWorkspaceStore } = await import("./workspaceStore");
+    const initialWorkspaceId = useWorkspaceStore.getState().workspacePages[0]?.id;
+    const createdWorkspaceId = useWorkspaceStore.getState().createWorkspace();
+
+    expect(initialWorkspaceId).toMatch(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
+    );
+    expect(createdWorkspaceId).toMatch(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
+    );
+  });
+
   it("keeps chat workspace root while server config is still loading", async () => {
     installMemoryLocalStorage();
     vi.resetModules();

@@ -17,8 +17,9 @@ export function isWindowsPlatform(platform: string): boolean {
 }
 
 export function randomUUID(): string {
-  if (typeof crypto.randomUUID === "function") {
-    return crypto.randomUUID();
+  const nativeRandomUUID = globalThis.crypto?.randomUUID;
+  if (typeof nativeRandomUUID === "function") {
+    return nativeRandomUUID.call(globalThis.crypto);
   }
   return Effect.runSync(Random.nextUUIDv4);
 }

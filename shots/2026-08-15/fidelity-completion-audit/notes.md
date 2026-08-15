@@ -223,3 +223,34 @@ The active objective is **not achieved**. No `update_goal complete` call is
 permitted while the Native certification boundary, route-specific missing
 interaction coverage, and discovery-exhaustion requirement remain open. The
 former dynamic-event P1 is no longer a valid blocker.
+
+## 2026-08-16 Native runtime bootstrap continuation
+
+- The temporary published `@lynx-js/lynxtron@0.0.9-dev` host restored an
+  exact-owned PID-derived DevTool client for the current staged workspace
+  bundle without changing repository dependencies.
+- The first current-head Native startup exposed two new P1 runtime losses
+  before route certification: an undeclared `crypto` probe in the shared UUID
+  helper, followed by top-level `Intl.DateTimeFormat` construction in the
+  shared automation projection.
+- UUID generation now probes `globalThis.crypto` safely, and workspace IDs
+  reuse that helper instead of maintaining a second unsafe fallback.
+  Automation timestamp formatting now probes `globalThis.Intl` lazily and has
+  deterministic local date/time fallbacks for PrimJS.
+- `native-runtime-missing-crypto`: P1 contribution `1.00 -> 0.00`.
+- `native-runtime-missing-intl`: P1 contribution `1.00 -> 0.00`.
+- The final exact-owned client points to the staged `main.lynx.bundle`,
+  completes canonical RPC bootstrap, has an empty warning/error console, and
+  renders the populated Kanban project board with two real cards. The retained
+  frame is `2560x1640`; evidence is under
+  `shots/2026-08-16/native-runtime-bootstrap/`.
+- `Input.emulateTouchFromMouseEvent` returned success at the card-action box
+  center but did not dispatch its `catchtap`; this is classified as a Native
+  DevTool interaction harness limitation. The action chooser is not claimed as
+  Native interaction-certified from this cell.
+- Focused tests pass `5/5` shared plus `13/13` Web, explicit Native/Desktop
+  build passes, staged/output bundle hashes match, and the staged bundle
+  contains zero bare `typeof crypto.randomUUID` probes.
+- Native startup/populated-structure certification is restored. Native
+  card-action interaction coverage and global discovery exhaustion remain
+  open, so the objective is still incomplete.

@@ -3,9 +3,10 @@ import type {
   AutomationListResult,
   AutomationRun,
 } from "@synara/contracts";
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
+  formatAutomationCadence,
   formatAutomationRunTimestamp,
   projectAutomationDetail,
   projectAutomationList,
@@ -89,6 +90,10 @@ function run(overrides: Partial<AutomationRun> = {}): AutomationRun {
 }
 
 describe("automation list projection", () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
   it("projects current, paused, heartbeat, and unread triage rows", () => {
     const data: AutomationListResult = {
       definitions: [
@@ -199,5 +204,29 @@ describe("automation list projection", () => {
       ),
     ).toMatch(/^Tomorrow at /u);
     expect(formatAutomationRunTimestamp(null, now.getTime())).toBe("—");
+  });
+
+  it("formats automation timestamps without Intl", () => {
+    vi.stubGlobal("Intl", undefined);
+    const now = new Date(2026, 7, 14, 12, 0, 0);
+
+    expect(
+      formatAutomationRunTimestamp(
+        new Date(2026, 7, 14, 9, 30, 0).toISOString(),
+        now.getTime(),
+      ),
+    ).toBe("Today at 09:30");
+    expect(
+      formatAutomationRunTimestamp(
+        new Date(2026, 7, 20, 9, 30, 0).toISOString(),
+        now.getTime(),
+      ),
+    ).toBe("20 Aug 2026, 09:30");
+    expect(
+      formatAutomationCadence({
+        type: "once",
+        runAt: new Date(2026, 7, 20, 9, 30, 0).toISOString(),
+      }),
+    ).toBe("20 Aug 2026, 09:30");
   });
 });
