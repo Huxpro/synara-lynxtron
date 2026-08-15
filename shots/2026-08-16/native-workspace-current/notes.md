@@ -127,3 +127,32 @@ This closes Native creation, ordering, deletion, persistence, active fallback,
 and PTY cleanup for the single-pane case. Rename, command typing/confirm,
 close/reopen confirmation, multi-pane deletion, theme/size axes, and restart
 persistence remain open.
+
+## Native terminal close/reopen continuation
+
+A third fresh exact-owned run exercised the default terminal lifecycle through
+rendered controls:
+
+1. the Workspace cold start opened `default` against
+   `ws://127.0.0.1:58090`;
+2. real `Close` at `(1248,64)` sent `terminalClose` with
+   `deleteHistory:true`;
+3. `ThreadTerminal` unmounted and the page rendered
+   `This workspace has no open terminals`;
+4. real `New terminal` at `(768.5,471.5)` remounted the terminal;
+5. the host sent a new `terminalOpen` for the same workspace/default identity;
+6. the rebuilt surface rendered `Terminal ready.` and a `ready` status.
+
+The host call sequence was exactly:
+
+`terminalOpen -> terminalClose(deleteHistory:true) -> terminalOpen`
+
+All calls used the isolated runtime endpoint. Exact-client warning/error
+console stayed empty.
+
+`native-workspace-terminal-close-reopen`: missing coverage
+`1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+
+Close/reopen without history is now covered. Confirmation-enabled close, a
+terminal with command history, Native command typing, and restart persistence
+remain open.

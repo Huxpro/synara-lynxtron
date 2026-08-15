@@ -736,3 +736,21 @@ former dynamic-event P1 is no longer a valid blocker.
   `1.00 -> 0.00`.
 - Focused tests pass `19/19`; Native/Desktop build passes. The router/hostname
   matrix now has no known route-level desktop deep-link gap.
+
+## 2026-08-16 Native Workspace terminal lifecycle continuation
+
+- Active discovery returned to a distinct Workspace interaction state:
+  terminal close -> empty -> reopen, not the previously covered route or
+  preset cells.
+- Real `Close` sent `terminalClose(deleteHistory:true)`, unmounted the terminal,
+  and rendered `This workspace has no open terminals`.
+- Real `New terminal` remounted the surface and issued a new `terminalOpen` for
+  the same workspace/default identity on the isolated endpoint.
+- The final surface rendered `Terminal ready.` with status `ready`; exact-client
+  warning/error console stayed empty.
+- Host sequence was exactly
+  `terminalOpen -> terminalClose -> terminalOpen`.
+- `native-workspace-terminal-close-reopen`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- Confirmation-enabled close, command history, Native typing, and restart
+  persistence remain open.
