@@ -854,3 +854,19 @@ former dynamic-event P1 is no longer a valid blocker.
   `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
 - An earlier shell-script syntax failure occurred before any interaction and
   changed no state; it is harness noise, not product evidence.
+
+## 2026-08-16 Native Update dark 1440 continuation
+
+- Active discovery added the Native-only Update dark-theme `1440x900` cell.
+- The first launch used an obsolete flat window-state schema; Lynxtron rejected
+  it and rewrote default `1280x820` bounds. That cell was invalidated as
+  harness mismatch before product scoring.
+- With the current `version:1` plus nested `bounds` schema, the exact root was
+  `1440x900` dark. The `560x420` card stayed centered in the `1184x900` route
+  page and retained its established content geometry.
+- Dark card/title/muted/version tokens resolved correctly, the live GitHub
+  result remained Installed `v0.5.5-lynx.0` / Latest `v0.7.2`, and exact-client
+  warning/error console stayed empty.
+- `native-update-available-dark-1440`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- Update network-error retry and external-download handoff remain open.

@@ -105,3 +105,41 @@ unverified.
 
 No new P0/P1/P2 product loss was found. Remaining Update scope includes dark,
 `1440x900`, network-error retry, and external-download handoff.
+
+## Dark 1440 continuation
+
+The Native-only Update matrix now includes a valid dark `1440x900` cell.
+
+Preflight initially used the obsolete flat window-state shape. Lynxtron
+rejected it, rewrote the default `1280x820` bounds, and rendered dark at the
+wrong size. That cell was invalidated as harness mismatch before product
+classification.
+
+The retry used the current persisted schema:
+
+`{"version":1,"bounds":{"x":80,"y":80,"width":1440,"height":900},...}`
+
+Final identity:
+
+- root: `1440x900`, `SliceRoot--theme-dark`;
+- route page: `(256,0,1184x900)`;
+- centered card: `(568,240,560x420)`;
+- title: `(750,363,197x30)`;
+- description: `(631,401,435x26)`;
+- version panel: `(603,451,490x90)`;
+- status: `(782,559,133x12)`.
+
+Dark tokens:
+
+- card `rgb(19,19,19)`;
+- title/status `rgb(252,252,252)`;
+- description `rgba(252,252,252,0.576471)`;
+- version panel `rgba(252,252,252,0.00392157)`.
+
+The live result remained Installed `v0.5.5-lynx.0`, Latest `v0.7.2`, and
+`A newer release is available.` Exact-client warning/error console was empty.
+
+`native-update-available-dark-1440`: missing coverage
+`1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+
+Remaining Update scope is network-error retry and external-download handoff.
