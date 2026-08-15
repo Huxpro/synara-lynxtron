@@ -901,3 +901,17 @@ former dynamic-event P1 is no longer a valid blocker.
   empty.
 - `native-pull-requests-project-filter-roundtrip`: missing coverage
   `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+
+## 2026-08-16 Native Workspace dark 1440 continuation
+
+- Active discovery moved to a new Workspace theme/size/layout cell: dark
+  `1440x900` with two real PTY panes.
+- The route retained an `1184x900` main page, `46px` header, and two
+  `592x854` panes at `x=256` and `x=849`.
+- Host calls opened `default` and `workspace-2` on the isolated endpoint; the
+  shared KV persisted the two-columns preset.
+- Page/terminal surfaces, separators, and terminal output resolved to the
+  intended dark tokens. Exact-client warning/error console stayed empty.
+- `native-workspace-dark-1440-two-columns`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- Workspace compact Native and keyboard/IME remain open.

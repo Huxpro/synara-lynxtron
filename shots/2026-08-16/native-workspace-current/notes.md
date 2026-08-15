@@ -156,3 +156,28 @@ console stayed empty.
 Close/reopen without history is now covered. Confirmation-enabled close, a
 terminal with command history, Native command typing, and restart persistence
 remain open.
+
+## Dark 1440 two-column continuation
+
+A fresh exact-owned Native run added Workspace dark at `1440x900` with two real
+PTY panes:
+
+- root: `SliceRoot--theme-dark`, exact `1440x900`;
+- route page: `1184x900` after the `256px` sidebar;
+- two-column grid below the `46px` header;
+- panes: `(256,46,592x854)` and `(849,46,592x854)`;
+- host opened `default` and `workspace-2` against the isolated endpoint;
+- shared KV persisted `layoutPresetId:"two-columns"`.
+
+Resolved dark tokens:
+
+- page and terminal surfaces `rgb(16,16,16)`;
+- header separators `rgba(252,252,252,0.0705882)`;
+- terminal output `rgb(232,232,232)`, `12px/18px`.
+
+The exact-client warning/error console stayed empty.
+
+`native-workspace-dark-1440-two-columns`: missing coverage
+`1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+
+Workspace compact Native and Native keyboard/IME remain open.
