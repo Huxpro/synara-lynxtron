@@ -7,6 +7,10 @@ describe('Kanban route header fidelity', () => {
       new URL('./kanban-route-header-composition-elements.css', import.meta.url),
       'utf8'
     );
+    const appStyles = readFileSync(
+      new URL('../app/App.css', import.meta.url),
+      'utf8'
+    );
     const source = readFileSync(
       new URL('./KanbanRouteHeaderCompositionElements.lynx.tsx', import.meta.url),
       'utf8'
@@ -38,5 +42,8 @@ describe('Kanban route header fidelity', () => {
     );
     expect(source).not.toContain('SharedKanbanRouteBackGlyph');
     expect(source).not.toContain('＋ New task');
+    expect(appStyles).toMatch(
+      /\.SliceRoot--viewport-compact[\s\S]*?\.AppMain--sidebar-closed[\s\S]*?\.SharedKanbanRouteHeader,[\s\S]*?\.SliceRoot--viewport-medium[\s\S]*?\.SharedPrRouteHeader\s*\{[^}]*padding-left:\s*20px;/s
+    );
   });
 });

@@ -192,6 +192,21 @@
   padding-left: 212px;
 }
 
+.SliceRoot--viewport-compact
+  .AppMain--sidebar-closed
+  .SharedKanbanRouteHeader,
+.SliceRoot--viewport-medium
+  .AppMain--sidebar-closed
+  .SharedKanbanRouteHeader,
+.SliceRoot--viewport-compact
+  .AppMain--sidebar-closed
+  .SharedPrRouteHeader,
+.SliceRoot--viewport-medium
+  .AppMain--sidebar-closed
+  .SharedPrRouteHeader {
+  padding-left: 20px;
+}
+
 .TransportStatusNotice {
   position: absolute;
   top: 8px;
