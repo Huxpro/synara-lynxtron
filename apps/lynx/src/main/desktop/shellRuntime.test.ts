@@ -111,6 +111,7 @@ describe('shellRuntime', () => {
       initialEditorSearchOpen: true,
       initialRenameOpen: true,
       initialTerminalOpen: true,
+      initialSettingsTarget: null,
       initialWorkspaceSettingsOpen: true,
       initialWorkspaceVisible: true,
       initialExplorerOpen: true,
@@ -129,6 +130,21 @@ describe('shellRuntime', () => {
       initialRoute: '/workspace/workspace-one',
       initialWorkspaceSettingsOpen: true,
       initialWorkspaceVisible: true,
+    });
+    expect(
+      parseSynaraDeepLinkInitData(
+        'synara://settings/general?target=environment-panel'
+      )
+    ).toMatchObject({
+      initialRoute: '/settings/general',
+      initialSettingsTarget: 'environment-panel',
+    });
+    expect(
+      parseSynaraDeepLinkInitData(
+        'synara://settings/general?target=unknown'
+      )
+    ).toMatchObject({
+      initialSettingsTarget: null,
     });
     expect(
       parseSynaraDeepLinkInitData(

@@ -108,6 +108,7 @@ export function App() {
     readonly initialRenameOpen?: unknown;
     readonly initialTerminalOpen?: unknown;
     readonly initialTemporaryOpen?: unknown;
+    readonly initialSettingsTarget?: unknown;
     readonly initialWorkspaceVisible?: unknown;
     readonly initialExplorerOpen?: unknown;
     readonly initialExplorerCommentLine?: unknown;
@@ -130,6 +131,11 @@ export function App() {
   const initialRenameOpen = initData.initialRenameOpen === true;
   const initialTerminalOpen = initData.initialTerminalOpen === true;
   const initialTemporaryOpen = initData.initialTemporaryOpen === true;
+  const initialSettingsTarget =
+    initData.initialSettingsTarget === 'environment-panel' ||
+    initData.initialSettingsTarget === 'provider-updates'
+      ? initData.initialSettingsTarget
+      : null;
   const initialWorkspaceVisible = initData.initialWorkspaceVisible === true;
   const initialRoute =
     typeof initData.initialRoute === 'string' &&
@@ -425,6 +431,7 @@ export function App() {
             initialRenameOpen={initialRenameOpen}
             initialTerminalOpen={initialTerminalOpen}
             initialTemporaryOpen={initialTemporaryOpen}
+            initialSettingsTarget={initialSettingsTarget}
             initialWorkspaceVisible={initialWorkspaceVisible}
             initialRoute={initialRoute}
             initialThreadBootstrap={initialThreadBootstrap}

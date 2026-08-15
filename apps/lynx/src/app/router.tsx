@@ -1645,6 +1645,7 @@ export function SliceRouter({
   initialRenameOpen,
   initialTerminalOpen,
   initialTemporaryOpen,
+  initialSettingsTarget,
   initialWorkspaceVisible,
   initialRoute,
   initialThreadBootstrap,
@@ -1668,6 +1669,7 @@ export function SliceRouter({
   readonly initialRenameOpen: boolean;
   readonly initialTerminalOpen: boolean;
   readonly initialTemporaryOpen: boolean;
+  readonly initialSettingsTarget: string | null;
   readonly initialWorkspaceVisible: boolean;
   readonly initialRoute: string | null;
   readonly initialThreadBootstrap: {
@@ -2150,6 +2152,7 @@ export function SliceRouter({
         initialSection={
           (route.params.section as SettingsSectionId | undefined) ?? 'general'
         }
+        initialTarget={initialSettingsTarget}
         onBack={navigateBackFromSettings}
         sidebarOpen={sidebarOpen}
         openTitlebarControls={openTitlebarControls}

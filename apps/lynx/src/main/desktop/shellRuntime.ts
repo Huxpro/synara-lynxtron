@@ -351,6 +351,7 @@ export interface SynaraDeepLinkInitData {
   readonly initialEditorSearchOpen: boolean;
   readonly initialRenameOpen: boolean;
   readonly initialTerminalOpen: boolean;
+  readonly initialSettingsTarget: 'environment-panel' | 'provider-updates' | null;
   readonly initialWorkspaceSettingsOpen: boolean;
   readonly initialWorkspaceVisible: boolean;
   readonly initialExplorerOpen: boolean;
@@ -429,6 +430,13 @@ export function parseSynaraDeepLinkInitData(raw: string): SynaraDeepLinkInitData
         url.searchParams.get('editorSearch') === 'open',
       initialRenameOpen: url.searchParams.get('rename') === 'open',
       initialTerminalOpen: url.searchParams.get('terminal') === 'open',
+      initialSettingsTarget:
+        url.searchParams.get('target') === 'environment-panel' ||
+        url.searchParams.get('target') === 'provider-updates'
+          ? (url.searchParams.get('target') as
+              | 'environment-panel'
+              | 'provider-updates')
+          : null,
       initialWorkspaceSettingsOpen:
         url.searchParams.get('workspaceSettings') === 'open',
       initialWorkspaceVisible:

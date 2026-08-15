@@ -367,6 +367,7 @@ async function persistThemeState(themeState: ThemeState): Promise<void> {
 
 export function SettingsPage({
   initialSection = 'general',
+  initialTarget = null,
   onBack,
   sidebarOpen,
   openTitlebarControls,
@@ -375,6 +376,7 @@ export function SettingsPage({
   onThemeStateChange,
 }: {
   readonly initialSection?: SettingsSectionId;
+  readonly initialTarget?: string | null;
   readonly onBack: () => void;
   readonly sidebarOpen: boolean;
   readonly openTitlebarControls: ReactNode;
@@ -420,7 +422,7 @@ export function SettingsPage({
   const [section, setSection] = useState<SettingsSectionId>(initialSection);
   const [searchQuery, setSearchQuery] = useState('');
   const [pendingSearchTarget, setPendingSearchTarget] = useState<string | null>(
-    null
+    initialTarget
   );
   const ready = hydrationState === 'ready';
   const searchResults = rankLynxSettingsSearchEntries(searchQuery);

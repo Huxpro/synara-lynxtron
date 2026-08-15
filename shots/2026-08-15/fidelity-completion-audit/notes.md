@@ -799,3 +799,25 @@ former dynamic-event P1 is no longer a valid blocker.
 - `native-settings-scroll-devtool-noop` is classified as harness loss with
   `0.00` product contribution. Exact-owned Environment switch interaction
   coverage remains open.
+
+## 2026-08-16 Native Settings target and Environment continuation
+
+- The scrolling harness audit revealed a Web/Native product-path gap: Web
+  supports stable Settings `?target=…` deep links, while Native discarded the
+  target.
+- Native now passes allowlisted `environment-panel` / `provider-updates`
+  targets from desktop deep-link init data through App/Router into
+  `SettingsPage`, which reuses the existing post-hydration native scroll helper.
+- `synara://settings/general?target=environment-panel` placed all nine
+  Environment switches within the viewport. Real touches disabled every
+  optional section and persisted all nine false values.
+- A canonical RPC-created project/thread was opened with
+  `environment=open`. All nine optional labels were absent while `Changes`,
+  `Commit and Push`, and `Local Servers` remained.
+- Exact-client warning/error console stayed empty; canonical cleanup returned
+  0 live projects / 0 live threads.
+- `native-settings-target-parity`: P1 contribution `1.00 -> 0.00`.
+- `native-environment-visibility-roundtrip`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- The DevTool arbitrary-scroll no-op remains a harness limitation, but no
+  longer blocks this standard product workflow.

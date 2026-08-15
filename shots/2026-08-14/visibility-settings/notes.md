@@ -153,3 +153,43 @@ Settings rows. No switch was touched and no setting changed.
 This is `native-settings-scroll-devtool-noop`, a harness loss with
 `0.00` product contribution. It blocks retained exact-owned Environment switch
 interaction evidence; it is not a product pass or regression.
+
+## Native settings target and Environment continuation
+
+The failed scrolling audit exposed a product parity gap rather than a reason to
+inject state: Web supports stable Settings `?target=…` deep links, while Native
+discarded the target and could not reach below-fold anchors through its
+standard product path.
+
+Native now carries an allowlisted Settings target from desktop deep-link init
+data through `App` and `SliceRouter` into `SettingsPage`. The existing native
+`scrollLynxElementIntoViewById` runs after hydration. Supported targets are:
+
+- `environment-panel`;
+- `provider-updates`.
+
+`synara://settings/general?target=environment-panel` placed all nine
+Environment switches inside the `1280x820` viewport at `y=175..717`.
+
+Real touches disabled every optional section. Checked state and persisted
+projection changed to false for:
+
+- Usage, Repository, Pull request, Editor, Recap;
+- Pinned messages, Text markers, Project instructions, Notepad.
+
+A canonical RPC-created project/thread was then opened through
+`synara://thread/env-thread?environment=open` with the same isolated user data.
+The Environment consumer proved:
+
+- all nine optional labels absent;
+- `Changes`, `Commit and Push`, and `Local Servers` retained;
+- exact-client warning/error console empty.
+
+Canonical `thread.delete` and `project.delete` restored 0 live projects /
+0 live threads.
+
+- `native-settings-target-parity`: P1 contribution `1.00 -> 0.00`.
+- `native-environment-visibility-roundtrip`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- `native-settings-scroll-devtool-noop` remains valid harness evidence for
+  arbitrary DevTool scrolling, but no longer blocks this product workflow.
