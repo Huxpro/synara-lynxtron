@@ -1,0 +1,74 @@
+{
+  "cards": [
+    {
+      "cls": "SharedKanbanCard",
+      "label": null,
+      "rect": {
+        "height": 64.5,
+        "width": 314.65625,
+        "x": 276,
+        "y": 94
+      },
+      "text": "Editor changes review•••main30mDraft"
+    },
+    {
+      "cls": "SharedKanbanCard",
+      "label": null,
+      "rect": {
+        "height": 64.5,
+        "width": 314.65625,
+        "x": 276,
+        "y": 166.5
+      },
+      "text": "Review chat history navigation•••main17hDraft"
+    }
+  ],
+  "dialog": null,
+  "dialogClose": [],
+  "dialogText": "",
+  "newTask": [
+    {
+      "cls": "SharedKanbanRouteNewTask",
+      "label": "New task",
+      "rect": {
+        "height": 28,
+        "width": 92.21875,
+        "x": 1167.78125,
+        "y": 9
+      },
+      "text": "New task"
+    }
+  ],
+  "overviewHeaders": [],
+  "relay": {
+    "activeBaseUrl": "ws://127.0.0.1:58090",
+    "configuredBaseUrl": "ws://127.0.0.1:58090",
+    "connectionAttempts": 1,
+    "explorerPreviewActionCount": 0,
+    "interactionEventCount": 0,
+    "lastExplorerPreviewAction": null,
+    "lastInteractionEvent": null,
+    "lastRpcError": null,
+    "lastSyntaxHighlightResult": null,
+    "lastTransportError": null,
+    "pendingRequests": 0,
+    "readyBaseUrl": null,
+    "recentRpcTags": [
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "pullRequests.list",
+      "orchestration.getShellSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getSidebarSearchSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getSidebarSearchSnapshot"
+    ],
+    "rendererReadyRoute": "/kanban",
+    "socketState": 1,
+    "syntaxHighlightCallCount": 0
+  },
+  "routeTitle": "Editor Changes"
+}

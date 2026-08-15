@@ -1,0 +1,106 @@
+{
+  "cards": [
+    {
+      "cls": "SharedKanbanCard",
+      "label": null,
+      "rect": {
+        "height": 64.375,
+        "width": 280,
+        "x": 276,
+        "y": 90
+      },
+      "text": "Editor changes reviewmain30mDraft"
+    },
+    {
+      "cls": "SharedKanbanCard",
+      "label": null,
+      "rect": {
+        "height": 64.375,
+        "width": 280,
+        "x": 276,
+        "y": 162.375
+      },
+      "text": "Review chat history navigationmain17hDraft"
+    },
+    {
+      "cls": "SharedKanbanCard",
+      "label": null,
+      "rect": {
+        "height": 64.375,
+        "width": 280,
+        "x": 580,
+        "y": 90
+      },
+      "text": "Secondary editor reviewmain18hDraft"
+    }
+  ],
+  "dialog": null,
+  "dialogClose": [],
+  "dialogText": "",
+  "newTask": [
+    {
+      "cls": "SharedKanbanRouteNewTask",
+      "label": "New task",
+      "rect": {
+        "height": 28,
+        "width": 92.21875,
+        "x": 1167.78125,
+        "y": 9
+      },
+      "text": "New task"
+    }
+  ],
+  "overviewHeaders": [
+    {
+      "cls": "SharedKanbanOverviewProjectHeader",
+      "label": null,
+      "rect": {
+        "height": 28,
+        "width": 260,
+        "x": 272,
+        "y": 58
+      },
+      "text": "Editor Changes2"
+    },
+    {
+      "cls": "SharedKanbanOverviewProjectHeader",
+      "label": null,
+      "rect": {
+        "height": 28,
+        "width": 260,
+        "x": 576,
+        "y": 58
+      },
+      "text": "Editor Secondary1"
+    }
+  ],
+  "relay": {
+    "activeBaseUrl": "ws://127.0.0.1:58090",
+    "configuredBaseUrl": "ws://127.0.0.1:58090",
+    "connectionAttempts": 1,
+    "explorerPreviewActionCount": 0,
+    "interactionEventCount": 0,
+    "lastExplorerPreviewAction": null,
+    "lastInteractionEvent": null,
+    "lastRpcError": null,
+    "lastSyntaxHighlightResult": null,
+    "lastTransportError": null,
+    "pendingRequests": 0,
+    "readyBaseUrl": null,
+    "recentRpcTags": [
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "pullRequests.list",
+      "orchestration.getShellSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getSidebarSearchSnapshot"
+    ],
+    "rendererReadyRoute": "/kanban",
+    "socketState": 1,
+    "syntaxHighlightCallCount": 0
+  },
+  "routeTitle": "Kanban"
+}

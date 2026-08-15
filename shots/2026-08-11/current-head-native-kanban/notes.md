@@ -23,3 +23,33 @@
 - No product patch was required; this is current-head route certification.
 - Boundary: this closes the overview empty light/1280 cell only. Project board,
   populated cards, dark, and 1440 remain pending.
+
+## Populated interaction refresh (2026-08-15)
+
+- Reused the canonical `.synara-fidelity-editor-changes` snapshot with two
+  real project containers and three active threads; no Kanban fixture or SQLite
+  write was added.
+- Lynx-for-Web at `1280x820`, DPR 1, dark rendered:
+  - `Editor Changes` project column with two cards;
+  - `Editor Secondary` project column with one card.
+- Trusted pointer input opened the `Editor Changes` project board:
+  - route title changed from `Kanban` to `Editor Changes`;
+  - two real cards remained visible in the project board.
+- Trusted pointer input opened the rendered `New task` action:
+  - dialog: `560x228` at `(360,296)`;
+  - project: `Editor Changes`;
+  - real prompt, draft switch, and Create task controls.
+- Trusted pointer input used the Dialog primitive's default close control:
+  - dialog closed;
+  - board and both cards remained;
+  - active thread count stayed `3 -> 3`;
+  - no orchestration command was dispatched;
+  - page errors were empty and relay pending requests stayed at zero.
+- `lynx-kanban-populated-overview-to-board`: new P2 interaction coverage,
+  contribution `0.25 -> 0.00`.
+- `lynx-kanban-new-task-open-cancel`: new P2 interaction coverage,
+  contribution `0.25 -> 0.00`.
+- Native populated cards/project board, dark, and 1440 remain missing
+  certification coverage; the earlier Native empty cell is not used as a
+  proxy.
+- Evidence: `shots/2026-08-15/kanban-populated-interactions/`.
