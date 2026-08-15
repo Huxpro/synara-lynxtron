@@ -1,0 +1,62 @@
+{
+  "active": [
+    {
+      "cls": "AppSidebarThread AppSidebarThread--active",
+      "label": "Review chat history navigation",
+      "text": "Review chat history navigation"
+    }
+  ],
+  "editorVisible": true,
+  "hasOld": true,
+  "hasTarget": true,
+  "historyOpen": false,
+  "relay": {
+    "activeBaseUrl": "ws://127.0.0.1:58090",
+    "configuredBaseUrl": "ws://127.0.0.1:58090",
+    "connectionAttempts": 1,
+    "explorerPreviewActionCount": 0,
+    "interactionEventCount": 0,
+    "lastExplorerPreviewAction": null,
+    "lastInteractionEvent": null,
+    "lastRpcError": "Synara RPC provider.listModels failed: [{\"_tag\":\"Fail\",\"error\":{\"_tag\":\"WsRpcError\",\"message\":\"Provider adapter request failed (codex) for model/list: Codex CLI version check failed. Error: codex not found in PATH\",\"cause\":{\"message\":\"Provider adapter request failed (codex) for model/list: Codex CLI version check failed. Error: codex not found in PATH\",\"name\":\"Error\"}}}]",
+    "lastSyntaxHighlightResult": null,
+    "lastTransportError": null,
+    "pendingRequests": 0,
+    "readyBaseUrl": null,
+    "recentRpcTags": [
+      "orchestration.getShellSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getSidebarSearchSnapshot",
+      "orchestration.getThreadDetailSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getThreadDetailSnapshot",
+      "projects.listDirectories",
+      "git.listBranches",
+      "git.readWorkingTreeDiff",
+      "provider.listModels",
+      "server.getConfig",
+      "server.refreshProviders",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "pullRequests.list",
+      "orchestration.getThreadDetailSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getThreadDetailSnapshot",
+      "provider.listModels",
+      "orchestration.getThreadDetailSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getThreadDetailSnapshot",
+      "projects.listDirectories",
+      "provider.listModels",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getSidebarSearchSnapshot",
+      "provider.listModels"
+    ],
+    "rendererReadyRoute": "/thread/editor-changes-thread",
+    "socketState": 1,
+    "syntaxHighlightCallCount": 0
+  }
+}

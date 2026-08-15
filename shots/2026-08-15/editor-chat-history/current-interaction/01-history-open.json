@@ -1,0 +1,85 @@
+{
+  "dialogRect": {
+    "height": 156,
+    "width": 420,
+    "x": 430,
+    "y": 332
+  },
+  "header": "Editor Changes/private/tmp/synara-editor-changesChangesHide chatChat",
+  "items": [
+    {
+      "cls": "LxButton LxButton--ghost LxButton--default ThreadEditorHistoryItem",
+      "rect": {
+        "height": 34,
+        "width": 386,
+        "x": 447,
+        "y": 401
+      },
+      "text": "Review chat history navigation16h"
+    },
+    {
+      "cls": "LxButton LxButton--ghost LxButton--default ThreadEditorHistoryItem ThreadEditorHistoryItem--active",
+      "rect": {
+        "height": 34,
+        "width": 386,
+        "x": 447,
+        "y": 437
+      },
+      "text": "Editor changes review✓"
+    }
+  ],
+  "relay": {
+    "activeBaseUrl": "ws://127.0.0.1:58090",
+    "configuredBaseUrl": "ws://127.0.0.1:58090",
+    "connectionAttempts": 1,
+    "explorerPreviewActionCount": 0,
+    "interactionEventCount": 0,
+    "lastExplorerPreviewAction": null,
+    "lastInteractionEvent": null,
+    "lastRpcError": null,
+    "lastSyntaxHighlightResult": null,
+    "lastTransportError": null,
+    "pendingRequests": 0,
+    "readyBaseUrl": null,
+    "recentRpcTags": [
+      "orchestration.getShellSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getSidebarSearchSnapshot",
+      "orchestration.getThreadDetailSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getThreadDetailSnapshot",
+      "projects.listDirectories",
+      "git.listBranches",
+      "git.readWorkingTreeDiff",
+      "provider.listModels",
+      "server.getConfig",
+      "server.refreshProviders",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "pullRequests.list",
+      "orchestration.getThreadDetailSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getThreadDetailSnapshot",
+      "provider.listModels"
+    ],
+    "rendererReadyRoute": "/thread/editor-changes-thread",
+    "socketState": 1,
+    "syntaxHighlightCallCount": 0
+  },
+  "triggerRect": {
+    "height": 24,
+    "width": 24,
+    "x": 1236,
+    "y": 57
+  },
+  "url": "http://localhost:8080/index.html?route=%2Fthread%2Feditor-changes-thread&editor=open&editorMode=diff",
+  "viewRect": {
+    "height": 820,
+    "width": 1280,
+    "x": 0,
+    "y": 0
+  }
+}

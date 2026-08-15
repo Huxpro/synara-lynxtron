@@ -58,3 +58,24 @@ Read-only SQLite inspection was used only after a harness discrepancy to confirm
 - Focused Rstest: 27/27 passed across Editor history projection, shell projection, Editor contract, relay endpoint, and desktop deep-link suites.
 - `CI=1 bun run build` in `apps/lynx`: passed. Existing warnings only: unsupported `color-scheme` / `overflow-wrap`, optional `bufferutil` / `utf-8-validate`.
 - Screenshot count after retained captures: 49 (under the 100-image limit).
+
+## Current-head interaction closure
+
+- Re-ran the route after the global dynamic-event fix on the same
+  `.synara-fidelity-editor-changes` snapshot.
+- Trusted pointer input opened the real `Chat history` trigger:
+  - dialog: `420x156` at `(430,332)`;
+  - non-active row: `Review chat history navigation`;
+  - active row: `Editor changes review`.
+- Trusted pointer input selected the non-active row.
+- The dialog closed and the Editor composition remained mounted.
+- A separate current-thread oracle read the real sidebar projection:
+  - active thread label became `Review chat history navigation`;
+  - `ThreadEditorHistoryDialog` was absent;
+  - `ThreadEditorView` remained present;
+  - relay stayed connected with zero pending requests.
+- The relay's `provider.listModels` error is the known isolated-environment
+  `codex not found in PATH` noise and did not affect navigation.
+- `lynx-editor-chat-history-row-interaction`: P2 route-specific coverage,
+  contribution `0.25 -> 0.00`.
+- Evidence: `current-interaction/`.

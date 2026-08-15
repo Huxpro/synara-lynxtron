@@ -692,7 +692,8 @@ comparison; no Web screenshot pass is claimed.
 - `lynx-editor-project-switching`: P2 missing coverage,
   contribution remains `0.25`.
 - `lynx-editor-chat-resize-tabs`: P2 missing coverage,
-  contribution remains `0.25` for Chat-history/terminal tabs only.
+  Chat-history interaction contribution `0.25 -> 0.00`; terminal/New chat
+  route-specific interaction coverage remains.
 - `lynx-editor-chat-resize`: P2 missing coverage,
   contribution `0.25 -> 0.00`.
 - `lynx-editor-chat-compact-stale-width`: P1 responsive layout,
