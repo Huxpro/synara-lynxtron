@@ -1,0 +1,92 @@
+{
+  "activeTab": "Code",
+  "bodyClass": "SharedPrRouteBody SharedPrRouteBody--detail-open",
+  "close": {
+    "cls": "SharedPrDetailCloseButton",
+    "label": "Close pull request panel",
+    "rect": {
+      "bottom": 84,
+      "height": 28,
+      "right": 382,
+      "width": 24.78125,
+      "x": 357.21875,
+      "y": 56
+    }
+  },
+  "dims": [
+    390,
+    844,
+    1
+  ],
+  "disclosure": {
+    "cls": null,
+    "rect": null,
+    "text": ""
+  },
+  "dockRect": {
+    "bottom": 844,
+    "height": 798,
+    "right": 390,
+    "width": 390,
+    "x": 0,
+    "y": 46
+  },
+  "firstHeader": {
+    "cls": "SharedPrCodeFileHeader",
+    "expanded": null,
+    "label": null,
+    "rect": {
+      "bottom": 167,
+      "height": 32,
+      "right": 377,
+      "width": 364,
+      "x": 13,
+      "y": 135
+    }
+  },
+  "firstRow": {
+    "rect": {
+      "bottom": 450,
+      "height": 50,
+      "right": 32,
+      "width": 16,
+      "x": 16,
+      "y": 400
+    },
+    "text": "docs: refresh README and docs to match the websiteSynara Pull Requests·Emanuele-web04/synara·docs/readme-and-docs-refresh31m+505-47"
+  },
+  "listScrollerRect": {
+    "bottom": 844,
+    "height": 798,
+    "right": 0,
+    "width": 0,
+    "x": 0,
+    "y": 46
+  },
+  "relay": {
+    "activeBaseUrl": "ws://127.0.0.1:58090",
+    "configuredBaseUrl": "ws://127.0.0.1:58090",
+    "connectionAttempts": 1,
+    "explorerPreviewActionCount": 0,
+    "interactionEventCount": 0,
+    "lastExplorerPreviewAction": null,
+    "lastInteractionEvent": null,
+    "lastRpcError": null,
+    "lastSyntaxHighlightResult": null,
+    "lastTransportError": null,
+    "pendingRequests": 0,
+    "readyBaseUrl": null,
+    "recentRpcTags": [
+      "pullRequests.list",
+      "orchestration.getShellSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getSidebarSearchSnapshot",
+      "pullRequests.detail",
+      "pullRequests.diff"
+    ],
+    "rendererReadyRoute": "/pull-requests",
+    "socketState": 1,
+    "syntaxHighlightCallCount": 0
+  },
+  "rootClass": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable SliceRoot--viewport-compact"
+}

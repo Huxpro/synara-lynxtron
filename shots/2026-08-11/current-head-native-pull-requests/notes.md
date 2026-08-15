@@ -51,7 +51,14 @@
 - New-scope loss accounting:
   - `lynx-pull-requests-populated-list-detail`: `0.00 -> 0.00`;
   - `lynx-pull-requests-summary-timeline-code-interaction`: `0.00 -> 0.00`;
-  - `lynx-pull-requests-compact-master-detail`: `0.00 -> 0.00`.
+  - `lynx-pull-requests-compact-master-detail`: `0.00 -> 0.00`;
+  - `lynx-pull-requests-code-disclosure-interaction`: `0.00 -> 0.00`;
+  - `lynx-pull-requests-compact-close-return`: `0.00 -> 0.00`.
+- A compact follow-up expanded and collapsed the first real Code file, then
+  closed the detail dock and restored the full-width list. Lynx-for-Web's
+  collapsed custom-element DOM omitted false-valued `aria-expanded`; Native
+  accessibility remains a separate certification boundary rather than being
+  inferred from that browser projection.
 - No P0/P1 product loss was found. Populated Web interaction remains missing
   because the isolated authority did not pass its hydration gate under
   agent-browser. Populated Native detail/tabs also remain uncertified; the

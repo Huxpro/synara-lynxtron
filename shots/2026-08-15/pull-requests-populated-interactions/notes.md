@@ -87,6 +87,35 @@ All three compact PNGs are exactly `390x844`.
 - The retained Code states include `pullRequests.diff` in the recent RPC tags.
 - Local screenshot count after retention: 70, below the 100-image limit.
 
+## Code disclosure and compact exit
+
+A follow-up compact interaction cell continued from the real Code tab:
+
+1. clicked the first `SharedPrCodeFileHeader`;
+2. verified the disclosure opened with the real patch;
+3. clicked the same header to collapse it;
+4. clicked the real `Close pull request panel` control.
+
+Results:
+
+- collapsed file: `364x32` header at `(13,135)`, no disclosure body;
+- expanded file: `aria-expanded=true`, a `364x180` disclosure body, and the
+  real `IosSimulatorBackend.ts` hunk;
+- second click removed the disclosure body again;
+- close control ended at `x=382`, inside the viewport;
+- after close, the detail dock was absent, route body lost
+  `SharedPrRouteBody--detail-open`, and the list scroller returned to
+  `390x798`;
+- the first row returned at `326x50` inside the compact list;
+- the follow-up page-error file is empty.
+
+Lynx-for-Web omits the false-valued `aria-expanded` and generated accessible
+label from the collapsed custom-element DOM, while the expanded state publishes
+`aria-expanded=true`. Source and focused adapter tests retain the Native
+`Collapsed`/`Expanded` accessibility value and `Expand`/`Collapse <path>`
+label contract. This is recorded as a Web Core attribute-projection delta, not
+as Native accessibility certification.
+
 ## Classification
 
 - **Populated list/detail/tabs: product pass.**
@@ -95,6 +124,10 @@ All three compact PNGs are exactly `390x844`.
 - `lynx-pull-requests-summary-timeline-code-interaction`: new component
   contribution `0.00 -> 0.00`.
 - `lynx-pull-requests-compact-master-detail`: new component contribution
+  `0.00 -> 0.00`.
+- `lynx-pull-requests-code-disclosure-interaction`: new component contribution
+  `0.00 -> 0.00`.
+- `lynx-pull-requests-compact-close-return`: new component contribution
   `0.00 -> 0.00`.
 - No P0/P1 product loss was found in these cells. No weighting, sample
   filtering, or scope reduction was used.
@@ -128,5 +161,11 @@ All three compact PNGs are exactly `390x844`.
 - `compact/00-summary.{png,json}`
 - `compact/01-timeline.{png,json}`
 - `compact/02-code.{png,json}`
+- `compact/00-code-collapsed.{png,json}`
+- `compact/01-code-expanded.{png,json}`
+- `compact/02-code-collapsed-again.{png,json}`
+- `compact/03-list-restored.{png,json}`
+- `compact/code-close-errors.json`
+- `compact/code-close-console.json`
 - `compact/errors.json`
 - `compact/console.json`
