@@ -373,7 +373,8 @@ export function parseSynaraDeepLinkInitData(raw: string): SynaraDeepLinkInitData
       initialRoute = section
         ? `/settings/${encodeURIComponent(decodeURIComponent(section))}`
         : '/settings';
-    } else if (url.hostname === 'update') initialRoute = '/update';
+    } else if (url.hostname === 'studio') initialRoute = '/studio';
+    else if (url.hostname === 'update') initialRoute = '/update';
     else if (url.hostname === 'pull-requests') initialRoute = '/pull-requests';
     else if (url.hostname === 'plugins') initialRoute = '/plugins';
     else if (url.hostname === 'automations') {

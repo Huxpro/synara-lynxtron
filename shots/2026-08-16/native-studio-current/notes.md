@@ -130,3 +130,31 @@ environment state, not Studio UI loss.
 Remaining Studio scope includes Native dark/1440, actual system folder-dialog
 selection/cancel, first send with a selected folder, restored populated Studio
 threads, and a newly synchronized three-client visual pair.
+
+## Standard deep-link continuation
+
+A route/deep-link matrix audit compared every route accepted by the Native
+memory router with every hostname handled by the desktop shell. Studio was the
+only remaining supported route without a standard deep link:
+
+- before: `synara://studio` fell through to `/`;
+- after: `synara://studio` maps directly to `/studio`.
+
+A fresh exact-owned cold start using only `synara://studio` proved:
+
+- Studio segmented button active, Projects inactive;
+- `New Chat`, `What should we work on?`, and `Use a folder` rendered directly;
+- exactly one live `studio` container at
+  `/Users/bytedance/Documents/Synara/Studio`;
+- zero Home container pollution;
+- exact-client warning/error console empty.
+
+The final Studio container was removed through canonical `project.delete`, and
+the shell snapshot returned to 0 live projects / 0 threads.
+
+`native-studio-deep-link-reachability`: P1 contribution
+`1.00 -> 0.00`.
+
+Focused shell/Studio/composer tests pass `19/19`; the Native/Desktop production
+build passes. This closes the last route-level desktop deep-link gap found by
+the router/hostname matrix.

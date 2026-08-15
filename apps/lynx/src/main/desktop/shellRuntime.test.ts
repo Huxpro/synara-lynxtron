@@ -70,6 +70,7 @@ describe('shellRuntime', () => {
     expect(parseSynaraDeepLink('synara://settings/appearance')).toBe(
       '/settings/appearance'
     );
+    expect(parseSynaraDeepLink('synara://studio')).toBe('/studio');
     expect(parseSynaraDeepLink('synara://update')).toBe('/update');
     expect(parseSynaraDeepLink('synara://pull-requests')).toBe('/pull-requests');
     expect(parseSynaraDeepLink('synara://plugins')).toBe('/plugins');

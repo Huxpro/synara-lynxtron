@@ -718,3 +718,21 @@ former dynamic-event P1 is no longer a valid blocker.
   was added at the 100-image cap.
 - Native textarea/IME, first-send promotion, provider/project interactions,
   and theme/size axes remain open.
+
+## 2026-08-16 Native route/deep-link matrix continuation
+
+- A machine-readable audit compared all Native memory-router routes against all
+  desktop shell deep-link hostnames after the Workspace and project-draft
+  fixes.
+- Studio was the only remaining supported route without a standard desktop
+  deep link. `synara://studio` previously fell through to `/`; it now maps to
+  `/studio`.
+- Fresh exact-owned cold start rendered Studio directly with Studio active,
+  `New Chat`, `What should we work on?`, and `Use a folder`.
+- Read-only projection showed exactly one Studio container and no Home
+  pollution. Exact-client warning/error console stayed empty.
+- Canonical cleanup returned the snapshot to 0 live projects / 0 threads.
+- `native-studio-deep-link-reachability`: P1 contribution
+  `1.00 -> 0.00`.
+- Focused tests pass `19/19`; Native/Desktop build passes. The router/hostname
+  matrix now has no known route-level desktop deep-link gap.
