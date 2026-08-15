@@ -1,0 +1,1886 @@
+{
+  "bodyClass": "SharedPrRouteBody SharedPrRouteBody--detail-open",
+  "dims": [
+    1280,
+    820,
+    1
+  ],
+  "dockRect": {
+    "height": 774,
+    "width": 512,
+    "x": 768,
+    "y": 46
+  },
+  "interesting": [
+    {
+      "cls": "SharedPrDetailDock",
+      "rect": {
+        "height": 774,
+        "width": 512,
+        "x": 768,
+        "y": 46
+      },
+      "text": "SummaryTimelineCodeConvert to draft42 files+505-47apps/server/src/device/IosSimulatorBackend.ts+1-1assets/prod/readme-screenshot.jpeg+0-0assets/prod/synara-hero.jpeg+0-0docs/archive/canary.mdfrom docs/canary.md+0-0docs/archive/device-pane-spec.mdfrom docs/device-pane-spec.md+0-0docs/archive/performance/2026-08-09-thread-runtime-and-chatview-audit.mdfrom docs/performance/2026-08-09-thread-runtime-and-chatview-audit.md+0-0docs/archive/performance/2026-08-14-streaming-pipeline-baseline.mdfrom docs/"
+    },
+    {
+      "cls": "SharedPrDetailDockHeader",
+      "rect": {
+        "height": 48,
+        "width": 511,
+        "x": 769,
+        "y": 46
+      },
+      "text": "SummaryTimelineCodeConvert to draft"
+    },
+    {
+      "cls": "SharedPrDetailTabs",
+      "rect": {
+        "height": 28,
+        "width": 232.484375,
+        "x": 777,
+        "y": 56
+      },
+      "text": "SummaryTimelineCode"
+    },
+    {
+      "cls": "SharedPrDetailTab",
+      "rect": {
+        "height": 28,
+        "width": 88.875,
+        "x": 777,
+        "y": 56
+      },
+      "text": "Summary"
+    },
+    {
+      "cls": "SharedPrDetailTabText",
+      "rect": {
+        "height": 18,
+        "width": 68.875,
+        "x": 787,
+        "y": 61
+      },
+      "text": "Summary"
+    },
+    {
+      "cls": "SharedPrDetailTab",
+      "rect": {
+        "height": 28,
+        "width": 80.984375,
+        "x": 867.875,
+        "y": 56
+      },
+      "text": "Timeline"
+    },
+    {
+      "cls": "SharedPrDetailTabText",
+      "rect": {
+        "height": 18,
+        "width": 60.984375,
+        "x": 877.875,
+        "y": 61
+      },
+      "text": "Timeline"
+    },
+    {
+      "cls": "SharedPrDetailTab SharedPrDetailTab--active",
+      "rect": {
+        "height": 28,
+        "width": 58.625,
+        "x": 950.859375,
+        "y": 56
+      },
+      "text": "Code"
+    },
+    {
+      "cls": "SharedPrDetailTabText SharedPrDetailTabText--active",
+      "rect": {
+        "height": 18,
+        "width": 38.625,
+        "x": 960.859375,
+        "y": 61
+      },
+      "text": "Code"
+    },
+    {
+      "cls": "SharedPrDetailDockActions",
+      "rect": {
+        "height": 28,
+        "width": 180,
+        "x": 1092,
+        "y": 56
+      },
+      "text": "Convert to draft"
+    },
+    {
+      "cls": "SharedPrDetailCloseButton SharedPrDetailExternalButton",
+      "rect": {
+        "height": 28,
+        "width": 28,
+        "x": 1212,
+        "y": 56
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrDetailCloseButton",
+      "rect": {
+        "height": 28,
+        "width": 28,
+        "x": 1244,
+        "y": 56
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrDetailDockScroller",
+      "rect": {
+        "height": 726,
+        "width": 511,
+        "x": 769,
+        "y": 94
+      },
+      "text": "42 files+505-47apps/server/src/device/IosSimulatorBackend.ts+1-1assets/prod/readme-screenshot.jpeg+0-0assets/prod/synara-hero.jpeg+0-0docs/archive/canary.mdfrom docs/canary.md+0-0docs/archive/device-pane-spec.mdfrom docs/device-pane-spec.md+0-0docs/archive/performance/2026-08-09-thread-runtime-and-chatview-audit.mdfrom docs/performance/2026-08-09-thread-runtime-and-chatview-audit.md+0-0docs/archive/performance/2026-08-14-streaming-pipeline-baseline.mdfrom docs/performance/2026-08-14-streaming-pi"
+    },
+    {
+      "cls": "SharedPrCodeRoot",
+      "rect": {
+        "height": 1972,
+        "width": 511,
+        "x": 769,
+        "y": 94
+      },
+      "text": "42 files+505-47apps/server/src/device/IosSimulatorBackend.ts+1-1assets/prod/readme-screenshot.jpeg+0-0assets/prod/synara-hero.jpeg+0-0docs/archive/canary.mdfrom docs/canary.md+0-0docs/archive/device-pane-spec.mdfrom docs/device-pane-spec.md+0-0docs/archive/performance/2026-08-09-thread-runtime-and-chatview-audit.mdfrom docs/performance/2026-08-09-thread-runtime-and-chatview-audit.md+0-0docs/archive/performance/2026-08-14-streaming-pipeline-baseline.mdfrom docs/performance/2026-08-14-streaming-pi"
+    },
+    {
+      "cls": "SharedPrCodeStats",
+      "rect": {
+        "height": 16,
+        "width": 487,
+        "x": 781,
+        "y": 106
+      },
+      "text": "42 files+505-47"
+    },
+    {
+      "cls": "SharedPrCodeStatsText",
+      "rect": {
+        "height": 16,
+        "width": 41.828125,
+        "x": 781,
+        "y": 106
+      },
+      "text": "42 files"
+    },
+    {
+      "cls": "SharedPrCodeStatsAddition",
+      "rect": {
+        "height": 16,
+        "width": 29.96875,
+        "x": 830.828125,
+        "y": 106
+      },
+      "text": "+505"
+    },
+    {
+      "cls": "SharedPrCodeStatsDeletion",
+      "rect": {
+        "height": 16,
+        "width": 20.234375,
+        "x": 868.796875,
+        "y": 106
+      },
+      "text": "-47"
+    },
+    {
+      "cls": "SharedPrCodeFile",
+      "rect": {
+        "height": 34,
+        "width": 487,
+        "x": 781,
+        "y": 134
+      },
+      "text": "apps/server/src/device/IosSimulatorBackend.ts+1-1"
+    },
+    {
+      "cls": "SharedPrCodeFileHeader",
+      "rect": {
+        "height": 32,
+        "width": 485,
+        "x": 782,
+        "y": 135
+      },
+      "text": "apps/server/src/device/IosSimulatorBackend.ts+1-1"
+    },
+    {
+      "cls": "LynxDisclosureChevron SharedPrCodeFileChevron",
+      "rect": {
+        "height": 10,
+        "width": 10,
+        "x": 794,
+        "y": 146
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrCodeFilePath",
+      "rect": {
+        "height": 16,
+        "width": 402.609375,
+        "x": 812,
+        "y": 143
+      },
+      "text": "apps/server/src/device/IosSimulatorBackend.ts"
+    },
+    {
+      "cls": "SharedPrCodeStatsAddition",
+      "rect": {
+        "height": 16,
+        "width": 13.140625,
+        "x": 1222.609375,
+        "y": 143
+      },
+      "text": "+1"
+    },
+    {
+      "cls": "SharedPrCodeStatsDeletion",
+      "rect": {
+        "height": 16,
+        "width": 11.25,
+        "x": 1243.75,
+        "y": 143
+      },
+      "text": "-1"
+    },
+    {
+      "cls": "SharedPrCodeFile",
+      "rect": {
+        "height": 34,
+        "width": 487,
+        "x": 781,
+        "y": 180
+      },
+      "text": "assets/prod/readme-screenshot.jpeg+0-0"
+    },
+    {
+      "cls": "SharedPrCodeFileHeader",
+      "rect": {
+        "height": 32,
+        "width": 485,
+        "x": 782,
+        "y": 181
+      },
+      "text": "assets/prod/readme-screenshot.jpeg+0-0"
+    },
+    {
+      "cls": "LynxDisclosureChevron SharedPrCodeFileChevron",
+      "rect": {
+        "height": 10,
+        "width": 10,
+        "x": 794,
+        "y": 192
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrCodeFilePath",
+      "rect": {
+        "height": 16,
+        "width": 398.640625,
+        "x": 812,
+        "y": 189
+      },
+      "text": "assets/prod/readme-screenshot.jpeg"
+    },
+    {
+      "cls": "SharedPrCodeStatsAddition",
+      "rect": {
+        "height": 16,
+        "width": 15.125,
+        "x": 1218.640625,
+        "y": 189
+      },
+      "text": "+0"
+    },
+    {
+      "cls": "SharedPrCodeStatsDeletion",
+      "rect": {
+        "height": 16,
+        "width": 13.234375,
+        "x": 1241.765625,
+        "y": 189
+      },
+      "text": "-0"
+    },
+    {
+      "cls": "SharedPrCodeFile",
+      "rect": {
+        "height": 34,
+        "width": 487,
+        "x": 781,
+        "y": 226
+      },
+      "text": "assets/prod/synara-hero.jpeg+0-0"
+    },
+    {
+      "cls": "SharedPrCodeFileHeader",
+      "rect": {
+        "height": 32,
+        "width": 485,
+        "x": 782,
+        "y": 227
+      },
+      "text": "assets/prod/synara-hero.jpeg+0-0"
+    },
+    {
+      "cls": "LynxDisclosureChevron SharedPrCodeFileChevron",
+      "rect": {
+        "height": 10,
+        "width": 10,
+        "x": 794,
+        "y": 238
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrCodeFilePath",
+      "rect": {
+        "height": 16,
+        "width": 398.640625,
+        "x": 812,
+        "y": 235
+      },
+      "text": "assets/prod/synara-hero.jpeg"
+    },
+    {
+      "cls": "SharedPrCodeStatsAddition",
+      "rect": {
+        "height": 16,
+        "width": 15.125,
+        "x": 1218.640625,
+        "y": 235
+      },
+      "text": "+0"
+    },
+    {
+      "cls": "SharedPrCodeStatsDeletion",
+      "rect": {
+        "height": 16,
+        "width": 13.234375,
+        "x": 1241.765625,
+        "y": 235
+      },
+      "text": "-0"
+    },
+    {
+      "cls": "SharedPrCodeFile",
+      "rect": {
+        "height": 34,
+        "width": 487,
+        "x": 781,
+        "y": 272
+      },
+      "text": "docs/archive/canary.mdfrom docs/canary.md+0-0"
+    },
+    {
+      "cls": "SharedPrCodeFileHeader",
+      "rect": {
+        "height": 32,
+        "width": 485,
+        "x": 782,
+        "y": 273
+      },
+      "text": "docs/archive/canary.mdfrom docs/canary.md+0-0"
+    },
+    {
+      "cls": "LynxDisclosureChevron SharedPrCodeFileChevron",
+      "rect": {
+        "height": 10,
+        "width": 10,
+        "x": 794,
+        "y": 284
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrCodeFilePath",
+      "rect": {
+        "height": 16,
+        "width": 271.265625,
+        "x": 812,
+        "y": 281
+      },
+      "text": "docs/archive/canary.md"
+    },
+    {
+      "cls": "SharedPrCodeFilePrevious",
+      "rect": {
+        "height": 16,
+        "width": 119.375,
+        "x": 1091.265625,
+        "y": 281
+      },
+      "text": "from docs/canary.md"
+    },
+    {
+      "cls": "SharedPrCodeStatsAddition",
+      "rect": {
+        "height": 16,
+        "width": 15.125,
+        "x": 1218.640625,
+        "y": 281
+      },
+      "text": "+0"
+    },
+    {
+      "cls": "SharedPrCodeStatsDeletion",
+      "rect": {
+        "height": 16,
+        "width": 13.234375,
+        "x": 1241.765625,
+        "y": 281
+      },
+      "text": "-0"
+    },
+    {
+      "cls": "SharedPrCodeFile",
+      "rect": {
+        "height": 34,
+        "width": 487,
+        "x": 781,
+        "y": 318
+      },
+      "text": "docs/archive/device-pane-spec.mdfrom docs/device-pane-spec.md+0-0"
+    },
+    {
+      "cls": "SharedPrCodeFileHeader",
+      "rect": {
+        "height": 32,
+        "width": 485,
+        "x": 782,
+        "y": 319
+      },
+      "text": "docs/archive/device-pane-spec.mdfrom docs/device-pane-spec.md+0-0"
+    },
+    {
+      "cls": "LynxDisclosureChevron SharedPrCodeFileChevron",
+      "rect": {
+        "height": 10,
+        "width": 10,
+        "x": 794,
+        "y": 330
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrCodeFilePath",
+      "rect": {
+        "height": 16,
+        "width": 270.640625,
+        "x": 812,
+        "y": 327
+      },
+      "text": "docs/archive/device-pane-spec.md"
+    },
+    {
+      "cls": "SharedPrCodeFilePrevious",
+      "rect": {
+        "height": 16,
+        "width": 120,
+        "x": 1090.640625,
+        "y": 327
+      },
+      "text": "from docs/device-pane-spec.md"
+    },
+    {
+      "cls": "SharedPrCodeStatsAddition",
+      "rect": {
+        "height": 16,
+        "width": 15.125,
+        "x": 1218.640625,
+        "y": 327
+      },
+      "text": "+0"
+    },
+    {
+      "cls": "SharedPrCodeStatsDeletion",
+      "rect": {
+        "height": 16,
+        "width": 13.234375,
+        "x": 1241.765625,
+        "y": 327
+      },
+      "text": "-0"
+    },
+    {
+      "cls": "SharedPrCodeFile",
+      "rect": {
+        "height": 34,
+        "width": 487,
+        "x": 781,
+        "y": 364
+      },
+      "text": "docs/archive/performance/2026-08-09-thread-runtime-and-chatview-audit.mdfrom docs/performance/2026-08-09-thread-runtime-and-chatview-audit.md+0-0"
+    },
+    {
+      "cls": "SharedPrCodeFileHeader",
+      "rect": {
+        "height": 32,
+        "width": 485,
+        "x": 782,
+        "y": 365
+      },
+      "text": "docs/archive/performance/2026-08-09-thread-runtime-and-chatview-audit.mdfrom docs/performance/2026-08-09-thread-runtime-and-chatview-audit.md+0-0"
+    },
+    {
+      "cls": "LynxDisclosureChevron SharedPrCodeFileChevron",
+      "rect": {
+        "height": 10,
+        "width": 10,
+        "x": 794,
+        "y": 376
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrCodeFilePath",
+      "rect": {
+        "height": 16,
+        "width": 270.640625,
+        "x": 812,
+        "y": 373
+      },
+      "text": "docs/archive/performance/2026-08-09-thread-runtime-and-chatview-audit.md"
+    },
+    {
+      "cls": "SharedPrCodeFilePrevious",
+      "rect": {
+        "height": 16,
+        "width": 120,
+        "x": 1090.640625,
+        "y": 373
+      },
+      "text": "from docs/performance/2026-08-09-thread-runtime-and-chatview-audit.md"
+    },
+    {
+      "cls": "SharedPrCodeStatsAddition",
+      "rect": {
+        "height": 16,
+        "width": 15.125,
+        "x": 1218.640625,
+        "y": 373
+      },
+      "text": "+0"
+    },
+    {
+      "cls": "SharedPrCodeStatsDeletion",
+      "rect": {
+        "height": 16,
+        "width": 13.234375,
+        "x": 1241.765625,
+        "y": 373
+      },
+      "text": "-0"
+    },
+    {
+      "cls": "SharedPrCodeFile",
+      "rect": {
+        "height": 34,
+        "width": 487,
+        "x": 781,
+        "y": 410
+      },
+      "text": "docs/archive/performance/2026-08-14-streaming-pipeline-baseline.mdfrom docs/performance/2026-08-14-streaming-pipeline-baseline.md+0-0"
+    },
+    {
+      "cls": "SharedPrCodeFileHeader",
+      "rect": {
+        "height": 32,
+        "width": 485,
+        "x": 782,
+        "y": 411
+      },
+      "text": "docs/archive/performance/2026-08-14-streaming-pipeline-baseline.mdfrom docs/performance/2026-08-14-streaming-pipeline-baseline.md+0-0"
+    },
+    {
+      "cls": "LynxDisclosureChevron SharedPrCodeFileChevron",
+      "rect": {
+        "height": 10,
+        "width": 10,
+        "x": 794,
+        "y": 422
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrCodeFilePath",
+      "rect": {
+        "height": 16,
+        "width": 270.640625,
+        "x": 812,
+        "y": 419
+      },
+      "text": "docs/archive/performance/2026-08-14-streaming-pipeline-baseline.md"
+    },
+    {
+      "cls": "SharedPrCodeFilePrevious",
+      "rect": {
+        "height": 16,
+        "width": 120,
+        "x": 1090.640625,
+        "y": 419
+      },
+      "text": "from docs/performance/2026-08-14-streaming-pipeline-baseline.md"
+    },
+    {
+      "cls": "SharedPrCodeStatsAddition",
+      "rect": {
+        "height": 16,
+        "width": 15.125,
+        "x": 1218.640625,
+        "y": 419
+      },
+      "text": "+0"
+    },
+    {
+      "cls": "SharedPrCodeStatsDeletion",
+      "rect": {
+        "height": 16,
+        "width": 13.234375,
+        "x": 1241.765625,
+        "y": 419
+      },
+      "text": "-0"
+    },
+    {
+      "cls": "SharedPrCodeFile",
+      "rect": {
+        "height": 34,
+        "width": 487,
+        "x": 781,
+        "y": 456
+      },
+      "text": "docs/archive/performance/2026-08-14-streaming-pipeline-optimized.mdfrom docs/performance/2026-08-14-streaming-pipeline-optimized.md+1-1"
+    },
+    {
+      "cls": "SharedPrCodeFileHeader",
+      "rect": {
+        "height": 32,
+        "width": 485,
+        "x": 782,
+        "y": 457
+      },
+      "text": "docs/archive/performance/2026-08-14-streaming-pipeline-optimized.mdfrom docs/performance/2026-08-14-streaming-pipeline-optimized.md+1-1"
+    },
+    {
+      "cls": "LynxDisclosureChevron SharedPrCodeFileChevron",
+      "rect": {
+        "height": 10,
+        "width": 10,
+        "x": 794,
+        "y": 468
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrCodeFilePath",
+      "rect": {
+        "height": 16,
+        "width": 274.609375,
+        "x": 812,
+        "y": 465
+      },
+      "text": "docs/archive/performance/2026-08-14-streaming-pipeline-optimized.md"
+    },
+    {
+      "cls": "SharedPrCodeFilePrevious",
+      "rect": {
+        "height": 16,
+        "width": 120,
+        "x": 1094.609375,
+        "y": 465
+      },
+      "text": "from docs/performance/2026-08-14-streaming-pipeline-optimized.md"
+    },
+    {
+      "cls": "SharedPrCodeStatsAddition",
+      "rect": {
+        "height": 16,
+        "width": 13.140625,
+        "x": 1222.609375,
+        "y": 465
+      },
+      "text": "+1"
+    },
+    {
+      "cls": "SharedPrCodeStatsDeletion",
+      "rect": {
+        "height": 16,
+        "width": 11.25,
+        "x": 1243.75,
+        "y": 465
+      },
+      "text": "-1"
+    },
+    {
+      "cls": "SharedPrCodeFile",
+      "rect": {
+        "height": 34,
+        "width": 487,
+        "x": 781,
+        "y": 502
+      },
+      "text": "docs/archive/plans/drag-drop-file-attachments.mdfrom docs/plans/drag-drop-file-attachments.md+0-0"
+    },
+    {
+      "cls": "SharedPrCodeFileHeader",
+      "rect": {
+        "height": 32,
+        "width": 485,
+        "x": 782,
+        "y": 503
+      },
+      "text": "docs/archive/plans/drag-drop-file-attachments.mdfrom docs/plans/drag-drop-file-attachments.md+0-0"
+    },
+    {
+      "cls": "LynxDisclosureChevron SharedPrCodeFileChevron",
+      "rect": {
+        "height": 10,
+        "width": 10,
+        "x": 794,
+        "y": 514
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrCodeFilePath",
+      "rect": {
+        "height": 16,
+        "width": 270.640625,
+        "x": 812,
+        "y": 511
+      },
+      "text": "docs/archive/plans/drag-drop-file-attachments.md"
+    },
+    {
+      "cls": "SharedPrCodeFilePrevious",
+      "rect": {
+        "height": 16,
+        "width": 120,
+        "x": 1090.640625,
+        "y": 511
+      },
+      "text": "from docs/plans/drag-drop-file-attachments.md"
+    },
+    {
+      "cls": "SharedPrCodeStatsAddition",
+      "rect": {
+        "height": 16,
+        "width": 15.125,
+        "x": 1218.640625,
+        "y": 511
+      },
+      "text": "+0"
+    },
+    {
+      "cls": "SharedPrCodeStatsDeletion",
+      "rect": {
+        "height": 16,
+        "width": 13.234375,
+        "x": 1241.765625,
+        "y": 511
+      },
+      "text": "-0"
+    },
+    {
+      "cls": "SharedPrCodeFile",
+      "rect": {
+        "height": 34,
+        "width": 487,
+        "x": 781,
+        "y": 548
+      },
+      "text": "docs/archive/pr-screenshots/issue-204/after.pngfrom docs/pr-screenshots/issue-204/after.png+0-0"
+    },
+    {
+      "cls": "SharedPrCodeFileHeader",
+      "rect": {
+        "height": 32,
+        "width": 485,
+        "x": 782,
+        "y": 549
+      },
+      "text": "docs/archive/pr-screenshots/issue-204/after.pngfrom docs/pr-screenshots/issue-204/after.png+0-0"
+    },
+    {
+      "cls": "LynxDisclosureChevron SharedPrCodeFileChevron",
+      "rect": {
+        "height": 10,
+        "width": 10,
+        "x": 794,
+        "y": 560
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrCodeFilePath",
+      "rect": {
+        "height": 16,
+        "width": 270.640625,
+        "x": 812,
+        "y": 557
+      },
+      "text": "docs/archive/pr-screenshots/issue-204/after.png"
+    },
+    {
+      "cls": "SharedPrCodeFilePrevious",
+      "rect": {
+        "height": 16,
+        "width": 120,
+        "x": 1090.640625,
+        "y": 557
+      },
+      "text": "from docs/pr-screenshots/issue-204/after.png"
+    },
+    {
+      "cls": "SharedPrCodeStatsAddition",
+      "rect": {
+        "height": 16,
+        "width": 15.125,
+        "x": 1218.640625,
+        "y": 557
+      },
+      "text": "+0"
+    },
+    {
+      "cls": "SharedPrCodeStatsDeletion",
+      "rect": {
+        "height": 16,
+        "width": 13.234375,
+        "x": 1241.765625,
+        "y": 557
+      },
+      "text": "-0"
+    },
+    {
+      "cls": "SharedPrCodeFile",
+      "rect": {
+        "height": 34,
+        "width": 487,
+        "x": 781,
+        "y": 594
+      },
+      "text": "docs/archive/pr-screenshots/issue-204/before.pngfrom docs/pr-screenshots/issue-204/before.png+0-0"
+    },
+    {
+      "cls": "SharedPrCodeFileHeader",
+      "rect": {
+        "height": 32,
+        "width": 485,
+        "x": 782,
+        "y": 595
+      },
+      "text": "docs/archive/pr-screenshots/issue-204/before.pngfrom docs/pr-screenshots/issue-204/before.png+0-0"
+    },
+    {
+      "cls": "LynxDisclosureChevron SharedPrCodeFileChevron",
+      "rect": {
+        "height": 10,
+        "width": 10,
+        "x": 794,
+        "y": 606
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrCodeFilePath",
+      "rect": {
+        "height": 16,
+        "width": 270.640625,
+        "x": 812,
+        "y": 603
+      },
+      "text": "docs/archive/pr-screenshots/issue-204/before.png"
+    },
+    {
+      "cls": "SharedPrCodeFilePrevious",
+      "rect": {
+        "height": 16,
+        "width": 120,
+        "x": 1090.640625,
+        "y": 603
+      },
+      "text": "from docs/pr-screenshots/issue-204/before.png"
+    },
+    {
+      "cls": "SharedPrCodeStatsAddition",
+      "rect": {
+        "height": 16,
+        "width": 15.125,
+        "x": 1218.640625,
+        "y": 603
+      },
+      "text": "+0"
+    },
+    {
+      "cls": "SharedPrCodeStatsDeletion",
+      "rect": {
+        "height": 16,
+        "width": 13.234375,
+        "x": 1241.765625,
+        "y": 603
+      },
+      "text": "-0"
+    },
+    {
+      "cls": "SharedPrCodeFile",
+      "rect": {
+        "height": 34,
+        "width": 487,
+        "x": 781,
+        "y": 640
+      },
+      "text": "docs/archive/pr-screenshots/issue-283/after.pngfrom docs/pr-screenshots/issue-283/after.png+0-0"
+    },
+    {
+      "cls": "SharedPrCodeFileHeader",
+      "rect": {
+        "height": 32,
+        "width": 485,
+        "x": 782,
+        "y": 641
+      },
+      "text": "docs/archive/pr-screenshots/issue-283/after.pngfrom docs/pr-screenshots/issue-283/after.png+0-0"
+    },
+    {
+      "cls": "LynxDisclosureChevron SharedPrCodeFileChevron",
+      "rect": {
+        "height": 10,
+        "width": 10,
+        "x": 794,
+        "y": 652
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrCodeFilePath",
+      "rect": {
+        "height": 16,
+        "width": 270.640625,
+        "x": 812,
+        "y": 649
+      },
+      "text": "docs/archive/pr-screenshots/issue-283/after.png"
+    },
+    {
+      "cls": "SharedPrCodeFilePrevious",
+      "rect": {
+        "height": 16,
+        "width": 120,
+        "x": 1090.640625,
+        "y": 649
+      },
+      "text": "from docs/pr-screenshots/issue-283/after.png"
+    },
+    {
+      "cls": "SharedPrCodeStatsAddition",
+      "rect": {
+        "height": 16,
+        "width": 15.125,
+        "x": 1218.640625,
+        "y": 649
+      },
+      "text": "+0"
+    },
+    {
+      "cls": "SharedPrCodeStatsDeletion",
+      "rect": {
+        "height": 16,
+        "width": 13.234375,
+        "x": 1241.765625,
+        "y": 649
+      },
+      "text": "-0"
+    },
+    {
+      "cls": "SharedPrCodeFile",
+      "rect": {
+        "height": 34,
+        "width": 487,
+        "x": 781,
+        "y": 686
+      },
+      "text": "docs/archive/pr-screenshots/issue-283/before.pngfrom docs/pr-screenshots/issue-283/before.png+0-0"
+    },
+    {
+      "cls": "SharedPrCodeFileHeader",
+      "rect": {
+        "height": 32,
+        "width": 485,
+        "x": 782,
+        "y": 687
+      },
+      "text": "docs/archive/pr-screenshots/issue-283/before.pngfrom docs/pr-screenshots/issue-283/before.png+0-0"
+    },
+    {
+      "cls": "LynxDisclosureChevron SharedPrCodeFileChevron",
+      "rect": {
+        "height": 10,
+        "width": 10,
+        "x": 794,
+        "y": 698
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrCodeFilePath",
+      "rect": {
+        "height": 16,
+        "width": 270.640625,
+        "x": 812,
+        "y": 695
+      },
+      "text": "docs/archive/pr-screenshots/issue-283/before.png"
+    },
+    {
+      "cls": "SharedPrCodeFilePrevious",
+      "rect": {
+        "height": 16,
+        "width": 120,
+        "x": 1090.640625,
+        "y": 695
+      },
+      "text": "from docs/pr-screenshots/issue-283/before.png"
+    },
+    {
+      "cls": "SharedPrCodeStatsAddition",
+      "rect": {
+        "height": 16,
+        "width": 15.125,
+        "x": 1218.640625,
+        "y": 695
+      },
+      "text": "+0"
+    },
+    {
+      "cls": "SharedPrCodeStatsDeletion",
+      "rect": {
+        "height": 16,
+        "width": 13.234375,
+        "x": 1241.765625,
+        "y": 695
+      },
+      "text": "-0"
+    },
+    {
+      "cls": "SharedPrCodeFile",
+      "rect": {
+        "height": 34,
+        "width": 487,
+        "x": 781,
+        "y": 732
+      },
+      "text": "docs/archive/pr-screenshots/issue-640/after.pngfrom docs/pr-screenshots/issue-640/after.png+0-0"
+    },
+    {
+      "cls": "SharedPrCodeFileHeader",
+      "rect": {
+        "height": 32,
+        "width": 485,
+        "x": 782,
+        "y": 733
+      },
+      "text": "docs/archive/pr-screenshots/issue-640/after.pngfrom docs/pr-screenshots/issue-640/after.png+0-0"
+    },
+    {
+      "cls": "LynxDisclosureChevron SharedPrCodeFileChevron",
+      "rect": {
+        "height": 10,
+        "width": 10,
+        "x": 794,
+        "y": 744
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrCodeFilePath",
+      "rect": {
+        "height": 16,
+        "width": 270.640625,
+        "x": 812,
+        "y": 741
+      },
+      "text": "docs/archive/pr-screenshots/issue-640/after.png"
+    },
+    {
+      "cls": "SharedPrCodeFilePrevious",
+      "rect": {
+        "height": 16,
+        "width": 120,
+        "x": 1090.640625,
+        "y": 741
+      },
+      "text": "from docs/pr-screenshots/issue-640/after.png"
+    },
+    {
+      "cls": "SharedPrCodeStatsAddition",
+      "rect": {
+        "height": 16,
+        "width": 15.125,
+        "x": 1218.640625,
+        "y": 741
+      },
+      "text": "+0"
+    },
+    {
+      "cls": "SharedPrCodeStatsDeletion",
+      "rect": {
+        "height": 16,
+        "width": 13.234375,
+        "x": 1241.765625,
+        "y": 741
+      },
+      "text": "-0"
+    },
+    {
+      "cls": "SharedPrCodeFile",
+      "rect": {
+        "height": 34,
+        "width": 487,
+        "x": 781,
+        "y": 778
+      },
+      "text": "docs/archive/pr-screenshots/issue-640/before.pngfrom docs/pr-screenshots/issue-640/before.png+0-0"
+    },
+    {
+      "cls": "SharedPrCodeFileHeader",
+      "rect": {
+        "height": 32,
+        "width": 485,
+        "x": 782,
+        "y": 779
+      },
+      "text": "docs/archive/pr-screenshots/issue-640/before.pngfrom docs/pr-screenshots/issue-640/before.png+0-0"
+    },
+    {
+      "cls": "LynxDisclosureChevron SharedPrCodeFileChevron",
+      "rect": {
+        "height": 10,
+        "width": 10,
+        "x": 794,
+        "y": 790
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrCodeFilePath",
+      "rect": {
+        "height": 16,
+        "width": 270.640625,
+        "x": 812,
+        "y": 787
+      },
+      "text": "docs/archive/pr-screenshots/issue-640/before.png"
+    },
+    {
+      "cls": "SharedPrCodeFilePrevious",
+      "rect": {
+        "height": 16,
+        "width": 120,
+        "x": 1090.640625,
+        "y": 787
+      },
+      "text": "from docs/pr-screenshots/issue-640/before.png"
+    },
+    {
+      "cls": "SharedPrCodeStatsAddition",
+      "rect": {
+        "height": 16,
+        "width": 15.125,
+        "x": 1218.640625,
+        "y": 787
+      },
+      "text": "+0"
+    },
+    {
+      "cls": "SharedPrCodeStatsDeletion",
+      "rect": {
+        "height": 16,
+        "width": 13.234375,
+        "x": 1241.765625,
+        "y": 787
+      },
+      "text": "-0"
+    },
+    {
+      "cls": "SharedPrCodeFile",
+      "rect": {
+        "height": 34,
+        "width": 487,
+        "x": 781,
+        "y": 824
+      },
+      "text": "docs/archive/pr-screenshots/issue-640/menu.pngfrom docs/pr-screenshots/issue-640/menu.png+0-0"
+    },
+    {
+      "cls": "SharedPrCodeFileHeader",
+      "rect": {
+        "height": 32,
+        "width": 485,
+        "x": 782,
+        "y": 825
+      },
+      "text": "docs/archive/pr-screenshots/issue-640/menu.pngfrom docs/pr-screenshots/issue-640/menu.png+0-0"
+    },
+    {
+      "cls": "LynxDisclosureChevron SharedPrCodeFileChevron",
+      "rect": {
+        "height": 10,
+        "width": 10,
+        "x": 794,
+        "y": 836
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrCodeFilePath",
+      "rect": {
+        "height": 16,
+        "width": 270.640625,
+        "x": 812,
+        "y": 833
+      },
+      "text": "docs/archive/pr-screenshots/issue-640/menu.png"
+    },
+    {
+      "cls": "SharedPrCodeFilePrevious",
+      "rect": {
+        "height": 16,
+        "width": 120,
+        "x": 1090.640625,
+        "y": 833
+      },
+      "text": "from docs/pr-screenshots/issue-640/menu.png"
+    },
+    {
+      "cls": "SharedPrCodeStatsAddition",
+      "rect": {
+        "height": 16,
+        "width": 15.125,
+        "x": 1218.640625,
+        "y": 833
+      },
+      "text": "+0"
+    },
+    {
+      "cls": "SharedPrCodeStatsDeletion",
+      "rect": {
+        "height": 16,
+        "width": 13.234375,
+        "x": 1241.765625,
+        "y": 833
+      },
+      "text": "-0"
+    },
+    {
+      "cls": "SharedPrCodeFile",
+      "rect": {
+        "height": 34,
+        "width": 487,
+        "x": 781,
+        "y": 870
+      },
+      "text": "docs/archive/RECAP-desktop-backend-shutdown.mdfrom docs/RECAP-desktop-backend-shutdown.md+4-4"
+    },
+    {
+      "cls": "SharedPrCodeFileHeader",
+      "rect": {
+        "height": 32,
+        "width": 485,
+        "x": 782,
+        "y": 871
+      },
+      "text": "docs/archive/RECAP-desktop-backend-shutdown.mdfrom docs/RECAP-desktop-backend-shutdown.md+4-4"
+    },
+    {
+      "cls": "LynxDisclosureChevron SharedPrCodeFileChevron",
+      "rect": {
+        "height": 10,
+        "width": 10,
+        "x": 794,
+        "y": 882
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrCodeFilePath",
+      "rect": {
+        "height": 16,
+        "width": 270.296875,
+        "x": 812,
+        "y": 879
+      },
+      "text": "docs/archive/RECAP-desktop-backend-shutdown.md"
+    },
+    {
+      "cls": "SharedPrCodeFilePrevious",
+      "rect": {
+        "height": 16,
+        "width": 120,
+        "x": 1090.296875,
+        "y": 879
+      },
+      "text": "from docs/RECAP-desktop-backend-shutdown.md"
+    },
+    {
+      "cls": "SharedPrCodeStatsAddition",
+      "rect": {
+        "height": 16,
+        "width": 15.296875,
+        "x": 1218.296875,
+        "y": 879
+      },
+      "text": "+4"
+    },
+    {
+      "cls": "SharedPrCodeStatsDeletion",
+      "rect": {
+        "height": 16,
+        "width": 13.40625,
+        "x": 1241.59375,
+        "y": 879
+      },
+      "text": "-4"
+    },
+    {
+      "cls": "SharedPrCodeFile",
+      "rect": {
+        "height": 34,
+        "width": 487,
+        "x": 781,
+        "y": 916
+      },
+      "text": "docs/archive/RECAP-discord-support-link.mdfrom docs/RECAP-discord-support-link.md+5-5"
+    },
+    {
+      "cls": "SharedPrCodeFileHeader",
+      "rect": {
+        "height": 32,
+        "width": 485,
+        "x": 782,
+        "y": 917
+      },
+      "text": "docs/archive/RECAP-discord-support-link.mdfrom docs/RECAP-discord-support-link.md+5-5"
+    },
+    {
+      "cls": "LynxDisclosureChevron SharedPrCodeFileChevron",
+      "rect": {
+        "height": 10,
+        "width": 10,
+        "x": 794,
+        "y": 928
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrCodeFilePath",
+      "rect": {
+        "height": 16,
+        "width": 270.921875,
+        "x": 812,
+        "y": 925
+      },
+      "text": "docs/archive/RECAP-discord-support-link.md"
+    },
+    {
+      "cls": "SharedPrCodeFilePrevious",
+      "rect": {
+        "height": 16,
+        "width": 120,
+        "x": 1090.921875,
+        "y": 925
+      },
+      "text": "from docs/RECAP-discord-support-link.md"
+    },
+    {
+      "cls": "SharedPrCodeStatsAddition",
+      "rect": {
+        "height": 16,
+        "width": 14.984375,
+        "x": 1218.921875,
+        "y": 925
+      },
+      "text": "+5"
+    },
+    {
+      "cls": "SharedPrCodeStatsDeletion",
+      "rect": {
+        "height": 16,
+        "width": 13.09375,
+        "x": 1241.90625,
+        "y": 925
+      },
+      "text": "-5"
+    },
+    {
+      "cls": "SharedPrCodeFile",
+      "rect": {
+        "height": 34,
+        "width": 487,
+        "x": 781,
+        "y": 962
+      },
+      "text": "docs/archive/RECAP-droid-gpt-5-6-effort.mdfrom docs/RECAP-droid-gpt-5-6-effort.md+1-1"
+    },
+    {
+      "cls": "SharedPrCodeFileHeader",
+      "rect": {
+        "height": 32,
+        "width": 485,
+        "x": 782,
+        "y": 963
+      },
+      "text": "docs/archive/RECAP-droid-gpt-5-6-effort.mdfrom docs/RECAP-droid-gpt-5-6-effort.md+1-1"
+    },
+    {
+      "cls": "LynxDisclosureChevron SharedPrCodeFileChevron",
+      "rect": {
+        "height": 10,
+        "width": 10,
+        "x": 794,
+        "y": 974
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrCodeFilePath",
+      "rect": {
+        "height": 16,
+        "width": 274.609375,
+        "x": 812,
+        "y": 971
+      },
+      "text": "docs/archive/RECAP-droid-gpt-5-6-effort.md"
+    },
+    {
+      "cls": "SharedPrCodeFilePrevious",
+      "rect": {
+        "height": 16,
+        "width": 120,
+        "x": 1094.609375,
+        "y": 971
+      },
+      "text": "from docs/RECAP-droid-gpt-5-6-effort.md"
+    },
+    {
+      "cls": "SharedPrCodeStatsAddition",
+      "rect": {
+        "height": 16,
+        "width": 13.140625,
+        "x": 1222.609375,
+        "y": 971
+      },
+      "text": "+1"
+    },
+    {
+      "cls": "SharedPrCodeStatsDeletion",
+      "rect": {
+        "height": 16,
+        "width": 11.25,
+        "x": 1243.75,
+        "y": 971
+      },
+      "text": "-1"
+    },
+    {
+      "cls": "SharedPrCodeFile",
+      "rect": {
+        "height": 34,
+        "width": 487,
+        "x": 781,
+        "y": 1008
+      },
+      "text": "docs/archive/RECAP-droid-reliability-and-task-state.mdfrom docs/RECAP-droid-reliability-and-task-state.md+0-0"
+    },
+    {
+      "cls": "SharedPrCodeFileHeader",
+      "rect": {
+        "height": 32,
+        "width": 485,
+        "x": 782,
+        "y": 1009
+      },
+      "text": "docs/archive/RECAP-droid-reliability-and-task-state.mdfrom docs/RECAP-droid-reliability-and-task-state.md+0-0"
+    },
+    {
+      "cls": "LynxDisclosureChevron SharedPrCodeFileChevron",
+      "rect": {
+        "height": 10,
+        "width": 10,
+        "x": 794,
+        "y": 1020
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrCodeFilePath",
+      "rect": {
+        "height": 16,
+        "width": 270.640625,
+        "x": 812,
+        "y": 1017
+      },
+      "text": "docs/archive/RECAP-droid-reliability-and-task-state.md"
+    },
+    {
+      "cls": "SharedPrCodeFilePrevious",
+      "rect": {
+        "height": 16,
+        "width": 120,
+        "x": 1090.640625,
+        "y": 1017
+      },
+      "text": "from docs/RECAP-droid-reliability-and-task-state.md"
+    },
+    {
+      "cls": "SharedPrCodeStatsAddition",
+      "rect": {
+        "height": 16,
+        "width": 15.125,
+        "x": 1218.640625,
+        "y": 1017
+      },
+      "text": "+0"
+    },
+    {
+      "cls": "SharedPrCodeStatsDeletion",
+      "rect": {
+        "height": 16,
+        "width": 13.234375,
+        "x": 1241.765625,
+        "y": 1017
+      },
+      "text": "-0"
+    },
+    {
+      "cls": "SharedPrCodeFile",
+      "rect": {
+        "height": 34,
+        "width": 487,
+        "x": 781,
+        "y": 1054
+      },
+      "text": "docs/archive/RECAP-grok-provider.mdfrom docs/RECAP-grok-provider.md+0-0"
+    },
+    {
+      "cls": "SharedPrCodeFileHeader",
+      "rect": {
+        "height": 32,
+        "width": 485,
+        "x": 782,
+        "y": 1055
+      },
+      "text": "docs/archive/RECAP-grok-provider.mdfrom docs/RECAP-grok-provider.md+0-0"
+    },
+    {
+      "cls": "LynxDisclosureChevron SharedPrCodeFileChevron",
+      "rect": {
+        "height": 10,
+        "width": 10,
+        "x": 794,
+        "y": 1066
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrCodeFilePath",
+      "rect": {
+        "height": 16,
+        "width": 270.640625,
+        "x": 812,
+        "y": 1063
+      },
+      "text": "docs/archive/RECAP-grok-provider.md"
+    },
+    {
+      "cls": "SharedPrCodeFilePrevious",
+      "rect": {
+        "height": 16,
+        "width": 120,
+        "x": 1090.640625,
+        "y": 1063
+      },
+      "text": "from docs/RECAP-grok-provider.md"
+    },
+    {
+      "cls": "SharedPrCodeStatsAddition",
+      "rect": {
+        "height": 16,
+        "width": 15.125,
+        "x": 1218.640625,
+        "y": 1063
+      },
+      "text": "+0"
+    },
+    {
+      "cls": "SharedPrCodeStatsDeletion",
+      "rect": {
+        "height": 16,
+        "width": 13.234375,
+        "x": 1241.765625,
+        "y": 1063
+      },
+      "text": "-0"
+    },
+    {
+      "cls": "SharedPrCodeFile",
+      "rect": {
+        "height": 34,
+        "width": 487,
+        "x": 781,
+        "y": 1100
+      },
+      "text": "docs/archive/RECAP-plan-mode-user-input-submit.mdfrom docs/RECAP-plan-mode-user-input-submit.md+0-0"
+    },
+    {
+      "cls": "SharedPrCodeFileHeader",
+      "rect": {
+        "height": 32,
+        "width": 485,
+        "x": 782,
+        "y": 1101
+      },
+      "text": "docs/archive/RECAP-plan-mode-user-input-submit.mdfrom docs/RECAP-plan-mode-user-input-submit.md+0-0"
+    },
+    {
+      "cls": "LynxDisclosureChevron SharedPrCodeFileChevron",
+      "rect": {
+        "height": 10,
+        "width": 10,
+        "x": 794,
+        "y": 1112
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrCodeFilePath",
+      "rect": {
+        "height": 16,
+        "width": 270.640625,
+        "x": 812,
+        "y": 1109
+      },
+      "text": "docs/archive/RECAP-plan-mode-user-input-submit.md"
+    },
+    {
+      "cls": "SharedPrCodeFilePrevious",
+      "rect": {
+        "height": 16,
+        "width": 120,
+        "x": 1090.640625,
+        "y": 1109
+      },
+      "text": "from docs/RECAP-plan-mode-user-input-submit.md"
+    },
+    {
+      "cls": "SharedPrCodeStatsAddition",
+      "rect": {
+        "height": 16,
+        "width": 15.125,
+        "x": 1218.640625,
+        "y": 1109
+      },
+      "text": "+0"
+    },
+    {
+      "cls": "SharedPrCodeStatsDeletion",
+      "rect": {
+        "height": 16,
+        "width": 13.234375,
+        "x": 1241.765625,
+        "y": 1109
+      },
+      "text": "-0"
+    },
+    {
+      "cls": "SharedPrCodeFile",
+      "rect": {
+        "height": 34,
+        "width": 487,
+        "x": 781,
+        "y": 1146
+      },
+      "text": "docs/archive/RECAP-pr-fix-keeps-environment-open.mdfrom docs/RECAP-pr-fix-keeps-environment-open.md+0-0"
+    },
+    {
+      "cls": "SharedPrCodeFileHeader",
+      "rect": {
+        "height": 32,
+        "width": 485,
+        "x": 782,
+        "y": 1147
+      },
+      "text": "docs/archive/RECAP-pr-fix-keeps-environment-open.mdfrom docs/RECAP-pr-fix-keeps-environment-open.md+0-0"
+    },
+    {
+      "cls": "LynxDisclosureChevron SharedPrCodeFileChevron",
+      "rect": {
+        "height": 10,
+        "width": 10,
+        "x": 794,
+        "y": 1158
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrCodeFilePath",
+      "rect": {
+        "height": 16,
+        "width": 270.640625,
+        "x": 812,
+        "y": 1155
+      },
+      "text": "docs/archive/RECAP-pr-fix-keeps-environment-open.md"
+    },
+    {
+      "cls": "SharedPrCodeFilePrevious",
+      "rect": {
+        "height": 16,
+        "width": 120,
+        "x": 1090.640625,
+        "y": 1155
+      },
+      "text": "from docs/RECAP-pr-fix-keeps-environment-open.md"
+    },
+    {
+      "cls": "SharedPrCodeStatsAddition",
+      "rect": {
+        "height": 16,
+        "width": 15.125,
+        "x": 1218.640625,
+        "y": 1155
+      },
+      "text": "+0"
+    },
+    {
+      "cls": "SharedPrCodeStatsDeletion",
+      "rect": {
+        "height": 16,
+        "width": 13.234375,
+        "x": 1241.765625,
+        "y": 1155
+      },
+      "text": "-0"
+    },
+    {
+      "cls": "SharedPrCodeFile",
+      "rect": {
+        "height": 34,
+        "width": 487,
+        "x": 781,
+        "y": 1192
+      },
+      "text": "docs/archive/RECAP-provider-notifications.mdfrom docs/RECAP-provider-notifications.md+1-1"
+    },
+    {
+      "cls": "SharedPrCodeFileHeader",
+      "rect": {
+        "height": 32,
+        "width": 485,
+        "x": 782,
+        "y": 1193
+      },
+      "text": "docs/archive/RECAP-provider-notifications.mdfrom docs/RECAP-provider-notifications.md+1-1"
+    },
+    {
+      "cls": "LynxDisclosureChevron SharedPrCodeFileChevron",
+      "rect": {
+        "height": 10,
+        "width": 10,
+        "x": 794,
+        "y": 1204
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrCodeFilePath",
+      "rect": {
+        "height": 16,
+        "width": 274.609375,
+        "x": 812,
+        "y": 1201
+      },
+      "text": "docs/archive/RECAP-provider-notifications.md"
+    }
+  ],
+  "relay": {
+    "activeBaseUrl": "ws://127.0.0.1:58090",
+    "configuredBaseUrl": "ws://127.0.0.1:58090",
+    "connectionAttempts": 1,
+    "explorerPreviewActionCount": 0,
+    "interactionEventCount": 0,
+    "lastExplorerPreviewAction": null,
+    "lastInteractionEvent": null,
+    "lastRpcError": null,
+    "lastSyntaxHighlightResult": null,
+    "lastTransportError": null,
+    "pendingRequests": 0,
+    "readyBaseUrl": null,
+    "recentRpcTags": [
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "pullRequests.list",
+      "pullRequests.list",
+      "orchestration.getShellSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getSidebarSearchSnapshot",
+      "pullRequests.detail",
+      "pullRequests.diff"
+    ],
+    "rendererReadyRoute": "/pull-requests",
+    "socketState": 1,
+    "syntaxHighlightCallCount": 0
+  },
+  "rootClass": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up",
+  "tabs": [
+    {
+      "aria": null,
+      "cls": "SharedPrDetailTab",
+      "pressed": null,
+      "rect": {
+        "height": 28,
+        "width": 88.875,
+        "x": 777,
+        "y": 56
+      },
+      "text": "Summary"
+    },
+    {
+      "aria": null,
+      "cls": "SharedPrDetailTab",
+      "pressed": null,
+      "rect": {
+        "height": 28,
+        "width": 80.984375,
+        "x": 867.875,
+        "y": 56
+      },
+      "text": "Timeline"
+    },
+    {
+      "aria": null,
+      "cls": "SharedPrDetailTab SharedPrDetailTab--active",
+      "pressed": "true",
+      "rect": {
+        "height": 28,
+        "width": 58.625,
+        "x": 950.859375,
+        "y": 56
+      },
+      "text": "Code"
+    }
+  ]
+}

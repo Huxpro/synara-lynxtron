@@ -1,0 +1,472 @@
+{
+  "actions": [
+    {
+      "cls": "SharedPrDetailTabs",
+      "rect": {
+        "bottom": 84,
+        "height": 28,
+        "right": 218.796875,
+        "width": 210.796875,
+        "x": 8,
+        "y": 56
+      },
+      "text": "SummaryTimelineCode"
+    },
+    {
+      "cls": "SharedPrDetailTab",
+      "rect": {
+        "bottom": 84,
+        "height": 28,
+        "right": 88,
+        "width": 80,
+        "x": 8,
+        "y": 56
+      },
+      "text": "Summary"
+    },
+    {
+      "cls": "SharedPrDetailTabText",
+      "rect": {
+        "bottom": 88,
+        "height": 36,
+        "right": 78,
+        "width": 60,
+        "x": 18,
+        "y": 52
+      },
+      "text": "Summary"
+    },
+    {
+      "cls": "SharedPrDetailTab",
+      "rect": {
+        "bottom": 84,
+        "height": 28,
+        "right": 163.140625,
+        "width": 73.140625,
+        "x": 90,
+        "y": 56
+      },
+      "text": "Timeline"
+    },
+    {
+      "cls": "SharedPrDetailTabText",
+      "rect": {
+        "bottom": 88,
+        "height": 36,
+        "right": 153.140625,
+        "width": 53.140625,
+        "x": 100,
+        "y": 52
+      },
+      "text": "Timeline"
+    },
+    {
+      "cls": "SharedPrDetailTab SharedPrDetailTab--active",
+      "rect": {
+        "bottom": 84,
+        "height": 28,
+        "right": 218.796875,
+        "width": 53.65625,
+        "x": 165.140625,
+        "y": 56
+      },
+      "text": "Code"
+    },
+    {
+      "cls": "SharedPrDetailTabText SharedPrDetailTabText--active",
+      "rect": {
+        "bottom": 88,
+        "height": 36,
+        "right": 208.796875,
+        "width": 33.65625,
+        "x": 175.140625,
+        "y": 52
+      },
+      "text": "Code"
+    },
+    {
+      "cls": "LxButton LxButton--default LxButton--sm SharedPrHeaderPrimaryAction",
+      "rect": {
+        "bottom": 84,
+        "height": 28,
+        "right": 324.4375,
+        "width": 105.640625,
+        "x": 218.796875,
+        "y": 56
+      },
+      "text": "Convert to draft"
+    },
+    {
+      "cls": "LxButton__text",
+      "rect": {
+        "bottom": 88,
+        "height": 36,
+        "right": 311.4375,
+        "width": 79.640625,
+        "x": 231.796875,
+        "y": 52
+      },
+      "text": "Convert to draft"
+    },
+    {
+      "cls": "SharedPrDetailCloseButton SharedPrDetailExternalButton",
+      "rect": {
+        "bottom": 84,
+        "height": 28,
+        "right": 353.21875,
+        "width": 24.78125,
+        "x": 328.4375,
+        "y": 56
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrDetailCloseButton",
+      "rect": {
+        "bottom": 84,
+        "height": 28,
+        "right": 382,
+        "width": 24.78125,
+        "x": 357.21875,
+        "y": 56
+      },
+      "text": ""
+    }
+  ],
+  "bodyClass": "SharedPrRouteBody SharedPrRouteBody--detail-open",
+  "content": [
+    {
+      "cls": "SharedPrCodeRoot",
+      "rect": {
+        "bottom": 2066,
+        "height": 1972,
+        "right": 390,
+        "width": 390,
+        "x": 0,
+        "y": 94
+      },
+      "text": "42 files+505-47apps/server/src/device/IosSimulatorBackend.ts+1-1assets/prod/readme-screenshot.jpeg+0-0assets/prod/synara-hero.jpeg+0-0docs/archive/canary.mdfrom docs/canary.md+0-0docs/archive/device-pane-spec.mdfrom docs/device-pane-spec.md+0-0docs/archive/performance/2026-08-09-thread-runtime-and-c"
+    },
+    {
+      "cls": "SharedPrCodeStats",
+      "rect": {
+        "bottom": 122,
+        "height": 16,
+        "right": 378,
+        "width": 366,
+        "x": 12,
+        "y": 106
+      },
+      "text": "42 files+505-47"
+    },
+    {
+      "cls": "SharedPrCodeStatsText",
+      "rect": {
+        "bottom": 122,
+        "height": 16,
+        "right": 53.828125,
+        "width": 41.828125,
+        "x": 12,
+        "y": 106
+      },
+      "text": "42 files"
+    },
+    {
+      "cls": "SharedPrCodeStatsAddition",
+      "rect": {
+        "bottom": 122,
+        "height": 16,
+        "right": 91.796875,
+        "width": 29.96875,
+        "x": 61.828125,
+        "y": 106
+      },
+      "text": "+505"
+    },
+    {
+      "cls": "SharedPrCodeStatsDeletion",
+      "rect": {
+        "bottom": 122,
+        "height": 16,
+        "right": 120.03125,
+        "width": 20.234375,
+        "x": 99.796875,
+        "y": 106
+      },
+      "text": "-47"
+    },
+    {
+      "cls": "SharedPrCodeFile",
+      "rect": {
+        "bottom": 168,
+        "height": 34,
+        "right": 378,
+        "width": 366,
+        "x": 12,
+        "y": 134
+      },
+      "text": "apps/server/src/device/IosSimulatorBackend.ts+1-1"
+    },
+    {
+      "cls": "SharedPrCodeFileHeader",
+      "rect": {
+        "bottom": 167,
+        "height": 32,
+        "right": 377,
+        "width": 364,
+        "x": 13,
+        "y": 135
+      },
+      "text": "apps/server/src/device/IosSimulatorBackend.ts+1-1"
+    },
+    {
+      "cls": "LynxDisclosureChevron SharedPrCodeFileChevron",
+      "rect": {
+        "bottom": 156,
+        "height": 10,
+        "right": 35,
+        "width": 10,
+        "x": 25,
+        "y": 146
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrCodeFilePath",
+      "rect": {
+        "bottom": 159,
+        "height": 16,
+        "right": 324.609375,
+        "width": 281.609375,
+        "x": 43,
+        "y": 143
+      },
+      "text": "apps/server/src/device/IosSimulatorBackend.ts"
+    },
+    {
+      "cls": "SharedPrCodeStatsAddition",
+      "rect": {
+        "bottom": 159,
+        "height": 16,
+        "right": 345.75,
+        "width": 13.140625,
+        "x": 332.609375,
+        "y": 143
+      },
+      "text": "+1"
+    },
+    {
+      "cls": "SharedPrCodeStatsDeletion",
+      "rect": {
+        "bottom": 159,
+        "height": 16,
+        "right": 365,
+        "width": 11.25,
+        "x": 353.75,
+        "y": 143
+      },
+      "text": "-1"
+    },
+    {
+      "cls": "SharedPrCodeFile",
+      "rect": {
+        "bottom": 214,
+        "height": 34,
+        "right": 378,
+        "width": 366,
+        "x": 12,
+        "y": 180
+      },
+      "text": "assets/prod/readme-screenshot.jpeg+0-0"
+    },
+    {
+      "cls": "SharedPrCodeFileHeader",
+      "rect": {
+        "bottom": 213,
+        "height": 32,
+        "right": 377,
+        "width": 364,
+        "x": 13,
+        "y": 181
+      },
+      "text": "assets/prod/readme-screenshot.jpeg+0-0"
+    },
+    {
+      "cls": "LynxDisclosureChevron SharedPrCodeFileChevron",
+      "rect": {
+        "bottom": 202,
+        "height": 10,
+        "right": 35,
+        "width": 10,
+        "x": 25,
+        "y": 192
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrCodeFilePath",
+      "rect": {
+        "bottom": 205,
+        "height": 16,
+        "right": 320.640625,
+        "width": 277.640625,
+        "x": 43,
+        "y": 189
+      },
+      "text": "assets/prod/readme-screenshot.jpeg"
+    },
+    {
+      "cls": "SharedPrCodeStatsAddition",
+      "rect": {
+        "bottom": 205,
+        "height": 16,
+        "right": 343.765625,
+        "width": 15.125,
+        "x": 328.640625,
+        "y": 189
+      },
+      "text": "+0"
+    },
+    {
+      "cls": "SharedPrCodeStatsDeletion",
+      "rect": {
+        "bottom": 205,
+        "height": 16,
+        "right": 365,
+        "width": 13.234375,
+        "x": 351.765625,
+        "y": 189
+      },
+      "text": "-0"
+    },
+    {
+      "cls": "SharedPrCodeFile",
+      "rect": {
+        "bottom": 260,
+        "height": 34,
+        "right": 378,
+        "width": 366,
+        "x": 12,
+        "y": 226
+      },
+      "text": "assets/prod/synara-hero.jpeg+0-0"
+    },
+    {
+      "cls": "SharedPrCodeFileHeader",
+      "rect": {
+        "bottom": 259,
+        "height": 32,
+        "right": 377,
+        "width": 364,
+        "x": 13,
+        "y": 227
+      },
+      "text": "assets/prod/synara-hero.jpeg+0-0"
+    },
+    {
+      "cls": "LynxDisclosureChevron SharedPrCodeFileChevron",
+      "rect": {
+        "bottom": 248,
+        "height": 10,
+        "right": 35,
+        "width": 10,
+        "x": 25,
+        "y": 238
+      },
+      "text": ""
+    }
+  ],
+  "dims": [
+    390,
+    844,
+    1
+  ],
+  "dockRect": {
+    "bottom": 844,
+    "height": 798,
+    "right": 390,
+    "width": 390,
+    "x": 0,
+    "y": 46
+  },
+  "headerRect": {
+    "bottom": 94,
+    "height": 48,
+    "right": 390,
+    "width": 390,
+    "x": 0,
+    "y": 46
+  },
+  "listScrollerRect": {
+    "bottom": 844,
+    "height": 798,
+    "right": 0,
+    "width": 0,
+    "x": 0,
+    "y": 46
+  },
+  "relay": {
+    "activeBaseUrl": "ws://127.0.0.1:58090",
+    "configuredBaseUrl": "ws://127.0.0.1:58090",
+    "connectionAttempts": 1,
+    "explorerPreviewActionCount": 0,
+    "interactionEventCount": 0,
+    "lastExplorerPreviewAction": null,
+    "lastInteractionEvent": null,
+    "lastRpcError": null,
+    "lastSyntaxHighlightResult": null,
+    "lastTransportError": null,
+    "pendingRequests": 0,
+    "readyBaseUrl": null,
+    "recentRpcTags": [
+      "pullRequests.list",
+      "orchestration.getShellSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getSidebarSearchSnapshot",
+      "pullRequests.detail",
+      "pullRequests.diff"
+    ],
+    "rendererReadyRoute": "/pull-requests",
+    "socketState": 1,
+    "syntaxHighlightCallCount": 0
+  },
+  "rootClass": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable SliceRoot--viewport-compact",
+  "tabs": [
+    {
+      "cls": "SharedPrDetailTab",
+      "rect": {
+        "bottom": 84,
+        "height": 28,
+        "right": 88,
+        "width": 80,
+        "x": 8,
+        "y": 56
+      },
+      "text": "Summary"
+    },
+    {
+      "cls": "SharedPrDetailTab",
+      "rect": {
+        "bottom": 84,
+        "height": 28,
+        "right": 163.140625,
+        "width": 73.140625,
+        "x": 90,
+        "y": 56
+      },
+      "text": "Timeline"
+    },
+    {
+      "cls": "SharedPrDetailTab SharedPrDetailTab--active",
+      "rect": {
+        "bottom": 84,
+        "height": 28,
+        "right": 218.796875,
+        "width": 53.65625,
+        "x": 165.140625,
+        "y": 56
+      },
+      "text": "Code"
+    }
+  ]
+}

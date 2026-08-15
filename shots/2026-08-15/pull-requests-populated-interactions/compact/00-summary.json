@@ -1,0 +1,471 @@
+{
+  "actions": [
+    {
+      "cls": "SharedPrDetailTabs",
+      "rect": {
+        "bottom": 84,
+        "height": 28,
+        "right": 218.796875,
+        "width": 210.796875,
+        "x": 8,
+        "y": 56
+      },
+      "text": "SummaryTimelineCode"
+    },
+    {
+      "cls": "SharedPrDetailTab SharedPrDetailTab--active",
+      "rect": {
+        "bottom": 84,
+        "height": 28,
+        "right": 88,
+        "width": 80,
+        "x": 8,
+        "y": 56
+      },
+      "text": "Summary"
+    },
+    {
+      "cls": "SharedPrDetailTabText SharedPrDetailTabText--active",
+      "rect": {
+        "bottom": 88,
+        "height": 36,
+        "right": 78,
+        "width": 60,
+        "x": 18,
+        "y": 52
+      },
+      "text": "Summary"
+    },
+    {
+      "cls": "SharedPrDetailTab",
+      "rect": {
+        "bottom": 84,
+        "height": 28,
+        "right": 163.140625,
+        "width": 73.140625,
+        "x": 90,
+        "y": 56
+      },
+      "text": "Timeline"
+    },
+    {
+      "cls": "SharedPrDetailTabText",
+      "rect": {
+        "bottom": 88,
+        "height": 36,
+        "right": 153.140625,
+        "width": 53.140625,
+        "x": 100,
+        "y": 52
+      },
+      "text": "Timeline"
+    },
+    {
+      "cls": "SharedPrDetailTab",
+      "rect": {
+        "bottom": 84,
+        "height": 28,
+        "right": 218.796875,
+        "width": 53.65625,
+        "x": 165.140625,
+        "y": 56
+      },
+      "text": "Code"
+    },
+    {
+      "cls": "SharedPrDetailTabText",
+      "rect": {
+        "bottom": 88,
+        "height": 36,
+        "right": 208.796875,
+        "width": 33.65625,
+        "x": 175.140625,
+        "y": 52
+      },
+      "text": "Code"
+    },
+    {
+      "cls": "LxButton LxButton--default LxButton--sm SharedPrHeaderPrimaryAction",
+      "rect": {
+        "bottom": 84,
+        "height": 28,
+        "right": 324.4375,
+        "width": 105.640625,
+        "x": 218.796875,
+        "y": 56
+      },
+      "text": "Convert to draft"
+    },
+    {
+      "cls": "LxButton__text",
+      "rect": {
+        "bottom": 88,
+        "height": 36,
+        "right": 311.4375,
+        "width": 79.640625,
+        "x": 231.796875,
+        "y": 52
+      },
+      "text": "Convert to draft"
+    },
+    {
+      "cls": "SharedPrDetailCloseButton SharedPrDetailExternalButton",
+      "rect": {
+        "bottom": 84,
+        "height": 28,
+        "right": 353.21875,
+        "width": 24.78125,
+        "x": 328.4375,
+        "y": 56
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrDetailCloseButton",
+      "rect": {
+        "bottom": 84,
+        "height": 28,
+        "right": 382,
+        "width": 24.78125,
+        "x": 357.21875,
+        "y": 56
+      },
+      "text": ""
+    }
+  ],
+  "bodyClass": "SharedPrRouteBody SharedPrRouteBody--detail-open",
+  "content": [
+    {
+      "cls": "SharedPrSummary",
+      "rect": {
+        "bottom": 2293.5,
+        "height": 2199.5,
+        "right": 390,
+        "width": 390,
+        "x": 0,
+        "y": 94
+      },
+      "text": "docs: refresh README and docs to match the websitekartikkabadi·25m·Ready for reviewBranchdocs/readme-and-docs-refresh›main+505-47ReviewersNoneComments1 commentChecksAll checks passedDescriptionSummaryRefreshes the repository documentation to match the current product copy that powers trysynara.com, "
+    },
+    {
+      "cls": "SharedPrSummaryOverview",
+      "rect": {
+        "bottom": 348,
+        "height": 254,
+        "right": 390,
+        "width": 390,
+        "x": 0,
+        "y": 94
+      },
+      "text": "docs: refresh README and docs to match the websitekartikkabadi·25m·Ready for reviewBranchdocs/readme-and-docs-refresh›main+505-47ReviewersNoneComments1 commentChecksAll checks passed"
+    },
+    {
+      "cls": "SharedPrSummaryIntro",
+      "rect": {
+        "bottom": 186,
+        "height": 72,
+        "right": 370,
+        "width": 350,
+        "x": 20,
+        "y": 114
+      },
+      "text": "docs: refresh README and docs to match the websitekartikkabadi·25m·Ready for review"
+    },
+    {
+      "cls": "SharedPrSummaryTitle",
+      "rect": {
+        "bottom": 162,
+        "height": 48,
+        "right": 370,
+        "width": 350,
+        "x": 20,
+        "y": 114
+      },
+      "text": "docs: refresh README and docs to match the website"
+    },
+    {
+      "cls": "SharedPrSummaryByline",
+      "rect": {
+        "bottom": 186,
+        "height": 18,
+        "right": 370,
+        "width": 350,
+        "x": 20,
+        "y": 168
+      },
+      "text": "kartikkabadi·25m·Ready for review"
+    },
+    {
+      "cls": "SharedPrSummaryBylineText",
+      "rect": {
+        "bottom": 186,
+        "height": 18,
+        "right": 143.265625,
+        "width": 4.4375,
+        "x": 138.828125,
+        "y": 168
+      },
+      "text": "·"
+    },
+    {
+      "cls": "SharedPrSummaryBylineText",
+      "rect": {
+        "bottom": 186,
+        "height": 18,
+        "right": 181.796875,
+        "width": 32.53125,
+        "x": 149.265625,
+        "y": 168
+      },
+      "text": "25m"
+    },
+    {
+      "cls": "SharedPrSummaryBylineText",
+      "rect": {
+        "bottom": 186,
+        "height": 18,
+        "right": 192.234375,
+        "width": 4.4375,
+        "x": 187.796875,
+        "y": 168
+      },
+      "text": "·"
+    },
+    {
+      "cls": "SharedPrSummaryBylineText",
+      "rect": {
+        "bottom": 186,
+        "height": 18,
+        "right": 318.921875,
+        "width": 120.6875,
+        "x": 198.234375,
+        "y": 168
+      },
+      "text": "Ready for review"
+    },
+    {
+      "cls": "SharedPrSummaryMetaRows",
+      "rect": {
+        "bottom": 328,
+        "height": 126,
+        "right": 370,
+        "width": 350,
+        "x": 20,
+        "y": 202
+      },
+      "text": "Branchdocs/readme-and-docs-refresh›main+505-47ReviewersNoneComments1 commentChecksAll checks passed"
+    },
+    {
+      "cls": "SharedPrSummaryMetaRow",
+      "rect": {
+        "bottom": 232,
+        "height": 30,
+        "right": 370,
+        "width": 350,
+        "x": 20,
+        "y": 202
+      },
+      "text": "Branchdocs/readme-and-docs-refresh›main+505-47"
+    },
+    {
+      "cls": "SharedPrSummaryMetaLabel SharedPrSummaryMetaLabel--icon",
+      "rect": {
+        "bottom": 226,
+        "height": 18,
+        "right": 116,
+        "width": 96,
+        "x": 20,
+        "y": 208
+      },
+      "text": "Branch"
+    },
+    {
+      "cls": "SharedPrSummaryMetaLabelIcon",
+      "rect": {
+        "bottom": 224,
+        "height": 14,
+        "right": 34,
+        "width": 14,
+        "x": 20,
+        "y": 210
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrSummaryMetaLabelText",
+      "rect": {
+        "bottom": 226,
+        "height": 18,
+        "right": 91.265625,
+        "width": 51.265625,
+        "x": 40,
+        "y": 208
+      },
+      "text": "Branch"
+    },
+    {
+      "cls": "SharedPrSummaryBranchValue",
+      "rect": {
+        "bottom": 226,
+        "height": 18,
+        "right": 370,
+        "width": 254,
+        "x": 116,
+        "y": 208
+      },
+      "text": "docs/readme-and-docs-refresh›main+505-47"
+    },
+    {
+      "cls": "SharedPrSummaryBranchName",
+      "rect": {
+        "bottom": 226,
+        "height": 18,
+        "right": 251.9375,
+        "width": 135.9375,
+        "x": 116,
+        "y": 208
+      },
+      "text": "docs/readme-and-docs-refresh"
+    },
+    {
+      "cls": "SharedPrSummaryBranchArrow",
+      "rect": {
+        "bottom": 226,
+        "height": 18,
+        "right": 264.75,
+        "width": 6.8125,
+        "x": 257.9375,
+        "y": 208
+      },
+      "text": "›"
+    },
+    {
+      "cls": "SharedPrSummaryBranchName",
+      "rect": {
+        "bottom": 226,
+        "height": 18,
+        "right": 291.296875,
+        "width": 20.546875,
+        "x": 270.75,
+        "y": 208
+      },
+      "text": "main"
+    },
+    {
+      "cls": "SharedPrSummaryDiffStat",
+      "rect": {
+        "bottom": 226,
+        "height": 18,
+        "right": 370,
+        "width": 68.703125,
+        "x": 301.296875,
+        "y": 208
+      },
+      "text": "+505-47"
+    },
+    {
+      "cls": "SharedPrSummaryDiffStat--addition",
+      "rect": {
+        "bottom": 226,
+        "height": 18,
+        "right": 339.984375,
+        "width": 38.6875,
+        "x": 301.296875,
+        "y": 208
+      },
+      "text": "+505"
+    }
+  ],
+  "dims": [
+    390,
+    844,
+    1
+  ],
+  "dockRect": {
+    "bottom": 844,
+    "height": 798,
+    "right": 390,
+    "width": 390,
+    "x": 0,
+    "y": 46
+  },
+  "headerRect": {
+    "bottom": 94,
+    "height": 48,
+    "right": 390,
+    "width": 390,
+    "x": 0,
+    "y": 46
+  },
+  "listScrollerRect": {
+    "bottom": 844,
+    "height": 798,
+    "right": 0,
+    "width": 0,
+    "x": 0,
+    "y": 46
+  },
+  "relay": {
+    "activeBaseUrl": "ws://127.0.0.1:58090",
+    "configuredBaseUrl": "ws://127.0.0.1:58090",
+    "connectionAttempts": 1,
+    "explorerPreviewActionCount": 0,
+    "interactionEventCount": 0,
+    "lastExplorerPreviewAction": null,
+    "lastInteractionEvent": null,
+    "lastRpcError": null,
+    "lastSyntaxHighlightResult": null,
+    "lastTransportError": null,
+    "pendingRequests": 0,
+    "readyBaseUrl": null,
+    "recentRpcTags": [
+      "pullRequests.list",
+      "orchestration.getShellSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getSidebarSearchSnapshot",
+      "pullRequests.detail"
+    ],
+    "rendererReadyRoute": "/pull-requests",
+    "socketState": 1,
+    "syntaxHighlightCallCount": 0
+  },
+  "rootClass": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable SliceRoot--viewport-compact",
+  "tabs": [
+    {
+      "cls": "SharedPrDetailTab SharedPrDetailTab--active",
+      "rect": {
+        "bottom": 84,
+        "height": 28,
+        "right": 88,
+        "width": 80,
+        "x": 8,
+        "y": 56
+      },
+      "text": "Summary"
+    },
+    {
+      "cls": "SharedPrDetailTab",
+      "rect": {
+        "bottom": 84,
+        "height": 28,
+        "right": 163.140625,
+        "width": 73.140625,
+        "x": 90,
+        "y": 56
+      },
+      "text": "Timeline"
+    },
+    {
+      "cls": "SharedPrDetailTab",
+      "rect": {
+        "bottom": 84,
+        "height": 28,
+        "right": 218.796875,
+        "width": 53.65625,
+        "x": 165.140625,
+        "y": 56
+      },
+      "text": "Code"
+    }
+  ]
+}

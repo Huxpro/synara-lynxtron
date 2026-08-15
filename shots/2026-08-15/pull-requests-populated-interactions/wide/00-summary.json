@@ -1,0 +1,1205 @@
+{
+  "bodyClass": "SharedPrRouteBody SharedPrRouteBody--detail-open",
+  "dims": [
+    1280,
+    820,
+    1
+  ],
+  "dockRect": {
+    "height": 774,
+    "width": 512,
+    "x": 768,
+    "y": 46
+  },
+  "interesting": [
+    {
+      "cls": "SharedPrDetailDock",
+      "rect": {
+        "height": 774,
+        "width": 512,
+        "x": 768,
+        "y": 46
+      },
+      "text": "SummaryTimelineCodeConvert to draftdocs: refresh README and docs to match the websitekartikkabadi·22m·Ready for reviewBranchdocs/readme-and-docs-refresh›main+505-47ReviewersNoneComments1 commentChecksAll checks passedDescriptionSummaryRefreshes the repository documentation to match the current product copy that powers trysynara.com, and clears stale work logs out of docs/.•README.md — rewritten around the current product: multi-provider workspace (Claude Code, Codex, OpenCode, Cursor, Antigravit"
+    },
+    {
+      "cls": "SharedPrDetailDockHeader",
+      "rect": {
+        "height": 48,
+        "width": 511,
+        "x": 769,
+        "y": 46
+      },
+      "text": "SummaryTimelineCodeConvert to draft"
+    },
+    {
+      "cls": "SharedPrDetailTabs",
+      "rect": {
+        "height": 28,
+        "width": 232.484375,
+        "x": 777,
+        "y": 56
+      },
+      "text": "SummaryTimelineCode"
+    },
+    {
+      "cls": "SharedPrDetailTab SharedPrDetailTab--active",
+      "rect": {
+        "height": 28,
+        "width": 88.875,
+        "x": 777,
+        "y": 56
+      },
+      "text": "Summary"
+    },
+    {
+      "cls": "SharedPrDetailTabText SharedPrDetailTabText--active",
+      "rect": {
+        "height": 18,
+        "width": 68.875,
+        "x": 787,
+        "y": 61
+      },
+      "text": "Summary"
+    },
+    {
+      "cls": "SharedPrDetailTab",
+      "rect": {
+        "height": 28,
+        "width": 80.984375,
+        "x": 867.875,
+        "y": 56
+      },
+      "text": "Timeline"
+    },
+    {
+      "cls": "SharedPrDetailTabText",
+      "rect": {
+        "height": 18,
+        "width": 60.984375,
+        "x": 877.875,
+        "y": 61
+      },
+      "text": "Timeline"
+    },
+    {
+      "cls": "SharedPrDetailTab",
+      "rect": {
+        "height": 28,
+        "width": 58.625,
+        "x": 950.859375,
+        "y": 56
+      },
+      "text": "Code"
+    },
+    {
+      "cls": "SharedPrDetailTabText",
+      "rect": {
+        "height": 18,
+        "width": 38.625,
+        "x": 960.859375,
+        "y": 61
+      },
+      "text": "Code"
+    },
+    {
+      "cls": "SharedPrDetailDockActions",
+      "rect": {
+        "height": 28,
+        "width": 180,
+        "x": 1092,
+        "y": 56
+      },
+      "text": "Convert to draft"
+    },
+    {
+      "cls": "SharedPrDetailCloseButton SharedPrDetailExternalButton",
+      "rect": {
+        "height": 28,
+        "width": 28,
+        "x": 1212,
+        "y": 56
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrDetailCloseButton",
+      "rect": {
+        "height": 28,
+        "width": 28,
+        "x": 1244,
+        "y": 56
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrDetailDockScroller",
+      "rect": {
+        "height": 726,
+        "width": 511,
+        "x": 769,
+        "y": 94
+      },
+      "text": "docs: refresh README and docs to match the websitekartikkabadi·22m·Ready for reviewBranchdocs/readme-and-docs-refresh›main+505-47ReviewersNoneComments1 commentChecksAll checks passedDescriptionSummaryRefreshes the repository documentation to match the current product copy that powers trysynara.com, and clears stale work logs out of docs/.•README.md — rewritten around the current product: multi-provider workspace (Claude Code, Codex, OpenCode, Cursor, Antigravity, Grok Build, Kilo Code, Pi, Facto"
+    },
+    {
+      "cls": "SharedPrSummary",
+      "rect": {
+        "height": 1923.5,
+        "width": 511,
+        "x": 769,
+        "y": 94
+      },
+      "text": "docs: refresh README and docs to match the websitekartikkabadi·22m·Ready for reviewBranchdocs/readme-and-docs-refresh›main+505-47ReviewersNoneComments1 commentChecksAll checks passedDescriptionSummaryRefreshes the repository documentation to match the current product copy that powers trysynara.com, and clears stale work logs out of docs/.•README.md — rewritten around the current product: multi-provider workspace (Claude Code, Codex, OpenCode, Cursor, Antigravity, Grok Build, Kilo Code, Pi, Facto"
+    },
+    {
+      "cls": "SharedPrSummaryOverview",
+      "rect": {
+        "height": 230,
+        "width": 511,
+        "x": 769,
+        "y": 94
+      },
+      "text": "docs: refresh README and docs to match the websitekartikkabadi·22m·Ready for reviewBranchdocs/readme-and-docs-refresh›main+505-47ReviewersNoneComments1 commentChecksAll checks passed"
+    },
+    {
+      "cls": "SharedPrSummaryIntro",
+      "rect": {
+        "height": 48,
+        "width": 471,
+        "x": 789,
+        "y": 114
+      },
+      "text": "docs: refresh README and docs to match the websitekartikkabadi·22m·Ready for review"
+    },
+    {
+      "cls": "SharedPrSummaryTitle",
+      "rect": {
+        "height": 24,
+        "width": 471,
+        "x": 789,
+        "y": 114
+      },
+      "text": "docs: refresh README and docs to match the website"
+    },
+    {
+      "cls": "SharedPrSummaryByline",
+      "rect": {
+        "height": 18,
+        "width": 471,
+        "x": 789,
+        "y": 144
+      },
+      "text": "kartikkabadi·22m·Ready for review"
+    },
+    {
+      "cls": "SharedPrSummaryBylineText",
+      "rect": {
+        "height": 18,
+        "width": 4.4375,
+        "x": 907.828125,
+        "y": 144
+      },
+      "text": "·"
+    },
+    {
+      "cls": "SharedPrSummaryBylineText",
+      "rect": {
+        "height": 18,
+        "width": 32.296875,
+        "x": 918.265625,
+        "y": 144
+      },
+      "text": "22m"
+    },
+    {
+      "cls": "SharedPrSummaryBylineText",
+      "rect": {
+        "height": 18,
+        "width": 4.4375,
+        "x": 956.5625,
+        "y": 144
+      },
+      "text": "·"
+    },
+    {
+      "cls": "SharedPrSummaryBylineText",
+      "rect": {
+        "height": 18,
+        "width": 120.6875,
+        "x": 967,
+        "y": 144
+      },
+      "text": "Ready for review"
+    },
+    {
+      "cls": "SharedPrSummaryMetaRows",
+      "rect": {
+        "height": 126,
+        "width": 471,
+        "x": 789,
+        "y": 178
+      },
+      "text": "Branchdocs/readme-and-docs-refresh›main+505-47ReviewersNoneComments1 commentChecksAll checks passed"
+    },
+    {
+      "cls": "SharedPrSummaryMetaRow",
+      "rect": {
+        "height": 30,
+        "width": 471,
+        "x": 789,
+        "y": 178
+      },
+      "text": "Branchdocs/readme-and-docs-refresh›main+505-47"
+    },
+    {
+      "cls": "SharedPrSummaryMetaLabel SharedPrSummaryMetaLabel--icon",
+      "rect": {
+        "height": 18,
+        "width": 96,
+        "x": 789,
+        "y": 184
+      },
+      "text": "Branch"
+    },
+    {
+      "cls": "SharedPrSummaryMetaLabelIcon",
+      "rect": {
+        "height": 14,
+        "width": 14,
+        "x": 789,
+        "y": 186
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrSummaryMetaLabelText",
+      "rect": {
+        "height": 18,
+        "width": 51.265625,
+        "x": 809,
+        "y": 184
+      },
+      "text": "Branch"
+    },
+    {
+      "cls": "SharedPrSummaryBranchValue",
+      "rect": {
+        "height": 18,
+        "width": 375,
+        "x": 885,
+        "y": 184
+      },
+      "text": "docs/readme-and-docs-refresh›main+505-47"
+    },
+    {
+      "cls": "SharedPrSummaryBranchName",
+      "rect": {
+        "height": 18,
+        "width": 230.28125,
+        "x": 885,
+        "y": 184
+      },
+      "text": "docs/readme-and-docs-refresh"
+    },
+    {
+      "cls": "SharedPrSummaryBranchArrow",
+      "rect": {
+        "height": 18,
+        "width": 6.8125,
+        "x": 1121.28125,
+        "y": 184
+      },
+      "text": "›"
+    },
+    {
+      "cls": "SharedPrSummaryBranchName",
+      "rect": {
+        "height": 18,
+        "width": 34.796875,
+        "x": 1134.09375,
+        "y": 184
+      },
+      "text": "main"
+    },
+    {
+      "cls": "SharedPrSummaryDiffStat",
+      "rect": {
+        "height": 18,
+        "width": 68.703125,
+        "x": 1178.890625,
+        "y": 184
+      },
+      "text": "+505-47"
+    },
+    {
+      "cls": "SharedPrSummaryDiffStat--addition",
+      "rect": {
+        "height": 18,
+        "width": 38.6875,
+        "x": 1178.890625,
+        "y": 184
+      },
+      "text": "+505"
+    },
+    {
+      "cls": "SharedPrSummaryDiffStat--deletion",
+      "rect": {
+        "height": 18,
+        "width": 26.015625,
+        "x": 1221.578125,
+        "y": 184
+      },
+      "text": "-47"
+    },
+    {
+      "cls": "SharedPrSummaryMetaRow",
+      "rect": {
+        "height": 30,
+        "width": 471,
+        "x": 789,
+        "y": 208
+      },
+      "text": "ReviewersNone"
+    },
+    {
+      "cls": "SharedPrSummaryMetaLabel SharedPrSummaryMetaLabel--icon",
+      "rect": {
+        "height": 18,
+        "width": 96,
+        "x": 789,
+        "y": 214
+      },
+      "text": "Reviewers"
+    },
+    {
+      "cls": "SharedPrSummaryMetaLabelIcon",
+      "rect": {
+        "height": 14,
+        "width": 14,
+        "x": 789,
+        "y": 216
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrSummaryMetaLabelText",
+      "rect": {
+        "height": 18,
+        "width": 73.6875,
+        "x": 809,
+        "y": 214
+      },
+      "text": "Reviewers"
+    },
+    {
+      "cls": "SharedPrSummaryMetaValue SharedPrSummaryMetaValue--muted",
+      "rect": {
+        "height": 18,
+        "width": 375,
+        "x": 885,
+        "y": 214
+      },
+      "text": "None"
+    },
+    {
+      "cls": "SharedPrSummaryMetaRow",
+      "rect": {
+        "height": 36,
+        "width": 471,
+        "x": 789,
+        "y": 238
+      },
+      "text": "Comments1 comment"
+    },
+    {
+      "cls": "SharedPrSummaryMetaLabel SharedPrSummaryMetaLabel--icon",
+      "rect": {
+        "height": 36,
+        "width": 96,
+        "x": 789,
+        "y": 238
+      },
+      "text": "Comments"
+    },
+    {
+      "cls": "SharedPrSummaryMetaLabelIcon",
+      "rect": {
+        "height": 14,
+        "width": 14,
+        "x": 789,
+        "y": 249
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrSummaryMetaLabelText",
+      "rect": {
+        "height": 36,
+        "width": 76,
+        "x": 809,
+        "y": 238
+      },
+      "text": "Comments"
+    },
+    {
+      "cls": "SharedPrSummaryMetaValue",
+      "rect": {
+        "height": 18,
+        "width": 375,
+        "x": 885,
+        "y": 247
+      },
+      "text": "1 comment"
+    },
+    {
+      "cls": "SharedPrSummaryMetaRow",
+      "rect": {
+        "height": 30,
+        "width": 471,
+        "x": 789,
+        "y": 274
+      },
+      "text": "ChecksAll checks passed"
+    },
+    {
+      "cls": "SharedPrSummaryMetaLabel SharedPrSummaryMetaLabel--icon",
+      "rect": {
+        "height": 18,
+        "width": 96,
+        "x": 789,
+        "y": 280
+      },
+      "text": "Checks"
+    },
+    {
+      "cls": "SharedPrSummaryMetaLabelIcon",
+      "rect": {
+        "height": 14,
+        "width": 14,
+        "x": 789,
+        "y": 282
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrSummaryMetaLabelText",
+      "rect": {
+        "height": 18,
+        "width": 53.84375,
+        "x": 809,
+        "y": 280
+      },
+      "text": "Checks"
+    },
+    {
+      "cls": "SharedPrSummaryMetaValue",
+      "rect": {
+        "height": 18,
+        "width": 375,
+        "x": 885,
+        "y": 280
+      },
+      "text": "All checks passed"
+    },
+    {
+      "cls": "SharedPrSummarySection",
+      "rect": {
+        "height": 1089.5,
+        "width": 511,
+        "x": 769,
+        "y": 324
+      },
+      "text": "DescriptionSummaryRefreshes the repository documentation to match the current product copy that powers trysynara.com, and clears stale work logs out of docs/.•README.md — rewritten around the current product: multi-provider workspace (Claude Code, Codex, OpenCode, Cursor, Antigravity, Grok Build, Kilo Code, Pi, Factory Droid), parallel agents + worktrees, terminals/browser/diffs, handoffs and automations, Agent Gateway and External MCP, Plan/Debug modes, thread goals, pull-request workspace, and"
+    },
+    {
+      "cls": "SharedPrSummarySectionHeader",
+      "rect": {
+        "height": 44,
+        "width": 511,
+        "x": 769,
+        "y": 325
+      },
+      "text": "Description"
+    },
+    {
+      "cls": "SharedPrSummarySectionTitle",
+      "rect": {
+        "height": 20,
+        "width": 85.234375,
+        "x": 789,
+        "y": 337
+      },
+      "text": "Description"
+    },
+    {
+      "cls": "LynxDisclosureChevron LynxDisclosureChevron--open SharedPrSummarySectionChevron",
+      "rect": {
+        "height": 14,
+        "width": 14,
+        "x": 880.234375,
+        "y": 340
+      },
+      "text": ""
+    },
+    {
+      "cls": "LynxDisclosureMotion LynxDisclosureMotion--open SharedPrSummarySectionBody",
+      "rect": {
+        "height": 1044.5,
+        "width": 511,
+        "x": 769,
+        "y": 369
+      },
+      "text": "SummaryRefreshes the repository documentation to match the current product copy that powers trysynara.com, and clears stale work logs out of docs/.•README.md — rewritten around the current product: multi-provider workspace (Claude Code, Codex, OpenCode, Cursor, Antigravity, Grok Build, Kilo Code, Pi, Factory Droid), parallel agents + worktrees, terminals/browser/diffs, handoffs and automations, Agent Gateway and External MCP, Plan/Debug modes, thread goals, pull-request workspace, and the local-"
+    },
+    {
+      "cls": "SharedPrSummarySection",
+      "rect": {
+        "height": 331,
+        "width": 511,
+        "x": 769,
+        "y": 1413.5
+      },
+      "text": "Checks9Format, Lint, Typecheck, Test, Browser Test, BuildSucceededPrepare PR size configSucceededCollect PR targetsSucceededSync PR size label definitionsSkippedWindows Process RegressionSucceededLabel PR 689SucceededMigration LineageSucceededLabel PR sizeSucceededRelease SmokeSucceeded"
+    },
+    {
+      "cls": "SharedPrSummarySectionHeader",
+      "rect": {
+        "height": 44,
+        "width": 511,
+        "x": 769,
+        "y": 1414.5
+      },
+      "text": "Checks9"
+    },
+    {
+      "cls": "SharedPrSummarySectionTitle",
+      "rect": {
+        "height": 20,
+        "width": 55.046875,
+        "x": 789,
+        "y": 1426.5
+      },
+      "text": "Checks"
+    },
+    {
+      "cls": "LynxDisclosureChevron LynxDisclosureChevron--open SharedPrSummarySectionChevron",
+      "rect": {
+        "height": 14,
+        "width": 14,
+        "x": 850.046875,
+        "y": 1429.5
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrSummarySectionCount",
+      "rect": {
+        "height": 18,
+        "width": 9.875,
+        "x": 870.046875,
+        "y": 1427.5
+      },
+      "text": "9"
+    },
+    {
+      "cls": "LynxDisclosureMotion LynxDisclosureMotion--open SharedPrSummarySectionBody",
+      "rect": {
+        "height": 286,
+        "width": 511,
+        "x": 769,
+        "y": 1458.5
+      },
+      "text": "Format, Lint, Typecheck, Test, Browser Test, BuildSucceededPrepare PR size configSucceededCollect PR targetsSucceededSync PR size label definitionsSkippedWindows Process RegressionSucceededLabel PR 689SucceededMigration LineageSucceededLabel PR sizeSucceededRelease SmokeSucceeded"
+    },
+    {
+      "cls": "SharedPrSummaryChecks",
+      "rect": {
+        "height": 270,
+        "width": 471,
+        "x": 789,
+        "y": 1458.5
+      },
+      "text": "Format, Lint, Typecheck, Test, Browser Test, BuildSucceededPrepare PR size configSucceededCollect PR targetsSucceededSync PR size label definitionsSkippedWindows Process RegressionSucceededLabel PR 689SucceededMigration LineageSucceededLabel PR sizeSucceededRelease SmokeSucceeded"
+    },
+    {
+      "cls": "SharedPrSummaryCheckRow",
+      "rect": {
+        "height": 30,
+        "width": 487,
+        "x": 781,
+        "y": 1458.5
+      },
+      "text": "Format, Lint, Typecheck, Test, Browser Test, BuildSucceeded"
+    },
+    {
+      "cls": "SharedPrSummaryCheckStatusIcon",
+      "rect": {
+        "height": 16,
+        "width": 16,
+        "x": 789,
+        "y": 1465.5
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrSummaryCheckName",
+      "rect": {
+        "height": 18,
+        "width": 357.296875,
+        "x": 813,
+        "y": 1464.5
+      },
+      "text": "Format, Lint, Typecheck, Test, Browser Test, Build"
+    },
+    {
+      "cls": "SharedPrSummaryCheckStatus",
+      "rect": {
+        "height": 18,
+        "width": 81.703125,
+        "x": 1178.296875,
+        "y": 1464.5
+      },
+      "text": "Succeeded"
+    },
+    {
+      "cls": "SharedPrSummaryCheckRow",
+      "rect": {
+        "height": 30,
+        "width": 487,
+        "x": 781,
+        "y": 1488.5
+      },
+      "text": "Prepare PR size configSucceeded"
+    },
+    {
+      "cls": "SharedPrSummaryCheckStatusIcon",
+      "rect": {
+        "height": 16,
+        "width": 16,
+        "x": 789,
+        "y": 1495.5
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrSummaryCheckName",
+      "rect": {
+        "height": 18,
+        "width": 357.296875,
+        "x": 813,
+        "y": 1494.5
+      },
+      "text": "Prepare PR size config"
+    },
+    {
+      "cls": "SharedPrSummaryCheckStatus",
+      "rect": {
+        "height": 18,
+        "width": 81.703125,
+        "x": 1178.296875,
+        "y": 1494.5
+      },
+      "text": "Succeeded"
+    },
+    {
+      "cls": "SharedPrSummaryCheckRow",
+      "rect": {
+        "height": 30,
+        "width": 487,
+        "x": 781,
+        "y": 1518.5
+      },
+      "text": "Collect PR targetsSucceeded"
+    },
+    {
+      "cls": "SharedPrSummaryCheckStatusIcon",
+      "rect": {
+        "height": 16,
+        "width": 16,
+        "x": 789,
+        "y": 1525.5
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrSummaryCheckName",
+      "rect": {
+        "height": 18,
+        "width": 357.296875,
+        "x": 813,
+        "y": 1524.5
+      },
+      "text": "Collect PR targets"
+    },
+    {
+      "cls": "SharedPrSummaryCheckStatus",
+      "rect": {
+        "height": 18,
+        "width": 81.703125,
+        "x": 1178.296875,
+        "y": 1524.5
+      },
+      "text": "Succeeded"
+    },
+    {
+      "cls": "SharedPrSummaryCheckRow",
+      "rect": {
+        "height": 30,
+        "width": 487,
+        "x": 781,
+        "y": 1548.5
+      },
+      "text": "Sync PR size label definitionsSkipped"
+    },
+    {
+      "cls": "SharedPrSummaryCheckStatusIcon SharedPrSummaryCheckStatusIcon--neutral",
+      "rect": {
+        "height": 14,
+        "width": 14,
+        "x": 790,
+        "y": 1556.5
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrSummaryCheckName",
+      "rect": {
+        "height": 18,
+        "width": 379.84375,
+        "x": 813,
+        "y": 1554.5
+      },
+      "text": "Sync PR size label definitions"
+    },
+    {
+      "cls": "SharedPrSummaryCheckStatus",
+      "rect": {
+        "height": 18,
+        "width": 59.15625,
+        "x": 1200.84375,
+        "y": 1554.5
+      },
+      "text": "Skipped"
+    },
+    {
+      "cls": "SharedPrSummaryCheckRow",
+      "rect": {
+        "height": 30,
+        "width": 487,
+        "x": 781,
+        "y": 1578.5
+      },
+      "text": "Windows Process RegressionSucceeded"
+    },
+    {
+      "cls": "SharedPrSummaryCheckStatusIcon",
+      "rect": {
+        "height": 16,
+        "width": 16,
+        "x": 789,
+        "y": 1585.5
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrSummaryCheckName",
+      "rect": {
+        "height": 18,
+        "width": 357.296875,
+        "x": 813,
+        "y": 1584.5
+      },
+      "text": "Windows Process Regression"
+    },
+    {
+      "cls": "SharedPrSummaryCheckStatus",
+      "rect": {
+        "height": 18,
+        "width": 81.703125,
+        "x": 1178.296875,
+        "y": 1584.5
+      },
+      "text": "Succeeded"
+    },
+    {
+      "cls": "SharedPrSummaryCheckRow",
+      "rect": {
+        "height": 30,
+        "width": 487,
+        "x": 781,
+        "y": 1608.5
+      },
+      "text": "Label PR 689Succeeded"
+    },
+    {
+      "cls": "SharedPrSummaryCheckStatusIcon",
+      "rect": {
+        "height": 16,
+        "width": 16,
+        "x": 789,
+        "y": 1615.5
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrSummaryCheckName",
+      "rect": {
+        "height": 18,
+        "width": 357.296875,
+        "x": 813,
+        "y": 1614.5
+      },
+      "text": "Label PR 689"
+    },
+    {
+      "cls": "SharedPrSummaryCheckStatus",
+      "rect": {
+        "height": 18,
+        "width": 81.703125,
+        "x": 1178.296875,
+        "y": 1614.5
+      },
+      "text": "Succeeded"
+    },
+    {
+      "cls": "SharedPrSummaryCheckRow",
+      "rect": {
+        "height": 30,
+        "width": 487,
+        "x": 781,
+        "y": 1638.5
+      },
+      "text": "Migration LineageSucceeded"
+    },
+    {
+      "cls": "SharedPrSummaryCheckStatusIcon",
+      "rect": {
+        "height": 16,
+        "width": 16,
+        "x": 789,
+        "y": 1645.5
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrSummaryCheckName",
+      "rect": {
+        "height": 18,
+        "width": 357.296875,
+        "x": 813,
+        "y": 1644.5
+      },
+      "text": "Migration Lineage"
+    },
+    {
+      "cls": "SharedPrSummaryCheckStatus",
+      "rect": {
+        "height": 18,
+        "width": 81.703125,
+        "x": 1178.296875,
+        "y": 1644.5
+      },
+      "text": "Succeeded"
+    },
+    {
+      "cls": "SharedPrSummaryCheckRow",
+      "rect": {
+        "height": 30,
+        "width": 487,
+        "x": 781,
+        "y": 1668.5
+      },
+      "text": "Label PR sizeSucceeded"
+    },
+    {
+      "cls": "SharedPrSummaryCheckStatusIcon",
+      "rect": {
+        "height": 16,
+        "width": 16,
+        "x": 789,
+        "y": 1675.5
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrSummaryCheckName",
+      "rect": {
+        "height": 18,
+        "width": 357.296875,
+        "x": 813,
+        "y": 1674.5
+      },
+      "text": "Label PR size"
+    },
+    {
+      "cls": "SharedPrSummaryCheckStatus",
+      "rect": {
+        "height": 18,
+        "width": 81.703125,
+        "x": 1178.296875,
+        "y": 1674.5
+      },
+      "text": "Succeeded"
+    },
+    {
+      "cls": "SharedPrSummaryCheckRow",
+      "rect": {
+        "height": 30,
+        "width": 487,
+        "x": 781,
+        "y": 1698.5
+      },
+      "text": "Release SmokeSucceeded"
+    },
+    {
+      "cls": "SharedPrSummaryCheckStatusIcon",
+      "rect": {
+        "height": 16,
+        "width": 16,
+        "x": 789,
+        "y": 1705.5
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrSummaryCheckName",
+      "rect": {
+        "height": 18,
+        "width": 357.296875,
+        "x": 813,
+        "y": 1704.5
+      },
+      "text": "Release Smoke"
+    },
+    {
+      "cls": "SharedPrSummaryCheckStatus",
+      "rect": {
+        "height": 18,
+        "width": 81.703125,
+        "x": 1178.296875,
+        "y": 1704.5
+      },
+      "text": "Succeeded"
+    },
+    {
+      "cls": "SharedPrSummarySection",
+      "rect": {
+        "height": 273,
+        "width": 511,
+        "x": 769,
+        "y": 1744.5
+      },
+      "text": "Comments1chatgpt-codex-connector54mYou have reached your Codex usage limits for code reviews. You can see your limits in the Codex usage dashboard.Reply"
+    },
+    {
+      "cls": "SharedPrSummarySectionHeader",
+      "rect": {
+        "height": 44,
+        "width": 511,
+        "x": 769,
+        "y": 1745.5
+      },
+      "text": "Comments1"
+    },
+    {
+      "cls": "SharedPrSummarySectionTitle",
+      "rect": {
+        "height": 20,
+        "width": 80.625,
+        "x": 789,
+        "y": 1757.5
+      },
+      "text": "Comments"
+    },
+    {
+      "cls": "LynxDisclosureChevron LynxDisclosureChevron--open SharedPrSummarySectionChevron",
+      "rect": {
+        "height": 14,
+        "width": 14,
+        "x": 875.625,
+        "y": 1760.5
+      },
+      "text": ""
+    },
+    {
+      "cls": "SharedPrSummarySectionCount",
+      "rect": {
+        "height": 18,
+        "width": 7.109375,
+        "x": 895.625,
+        "y": 1758.5
+      },
+      "text": "1"
+    },
+    {
+      "cls": "LynxDisclosureMotion LynxDisclosureMotion--open SharedPrSummarySectionBody",
+      "rect": {
+        "height": 228,
+        "width": 511,
+        "x": 769,
+        "y": 1789.5
+      },
+      "text": "chatgpt-codex-connector54mYou have reached your Codex usage limits for code reviews. You can see your limits in the Codex usage dashboard.Reply"
+    },
+    {
+      "cls": "SharedPrSummaryComments",
+      "rect": {
+        "height": 212,
+        "width": 471,
+        "x": 789,
+        "y": 1789.5
+      },
+      "text": "chatgpt-codex-connector54mYou have reached your Codex usage limits for code reviews. You can see your limits in the Codex usage dashboard.Reply"
+    },
+    {
+      "cls": "SharedPrSummaryComment",
+      "rect": {
+        "height": 140,
+        "width": 471,
+        "x": 789,
+        "y": 1789.5
+      },
+      "text": "chatgpt-codex-connector54mYou have reached your Codex usage limits for code reviews. You can see your limits in the Codex usage dashboard.Reply"
+    },
+    {
+      "cls": "SharedPrSummaryCommentHeader",
+      "rect": {
+        "height": 38,
+        "width": 471,
+        "x": 789,
+        "y": 1789.5
+      },
+      "text": "chatgpt-codex-connector54m"
+    },
+    {
+      "cls": "SharedPrSummaryCommentTime",
+      "rect": {
+        "height": 18,
+        "width": 33.171875,
+        "x": 1204.828125,
+        "y": 1799.5
+      },
+      "text": "54m"
+    },
+    {
+      "cls": "LynxDisclosureChevron LynxDisclosureChevron--open SharedPrSummaryCommentChevron",
+      "rect": {
+        "height": 14,
+        "width": 14,
+        "x": 1246,
+        "y": 1801.5
+      },
+      "text": ""
+    },
+    {
+      "cls": "LynxDisclosureMotion LynxDisclosureMotion--open SharedPrSummaryCommentBody",
+      "rect": {
+        "height": 102,
+        "width": 471,
+        "x": 789,
+        "y": 1827.5
+      },
+      "text": "You have reached your Codex usage limits for code reviews. You can see your limits in the Codex usage dashboard.Reply"
+    },
+    {
+      "cls": "SharedPrSummaryCommentActions",
+      "rect": {
+        "height": 22,
+        "width": 471,
+        "x": 789,
+        "y": 1895.5
+      },
+      "text": "Reply"
+    },
+    {
+      "cls": "SharedPrSummaryCommentReply",
+      "rect": {
+        "height": 22,
+        "width": 53.375,
+        "x": 1206.625,
+        "y": 1895.5
+      },
+      "text": "Reply"
+    },
+    {
+      "cls": "SharedPrSummaryCommentReplyText",
+      "rect": {
+        "height": 18,
+        "width": 41.375,
+        "x": 1212.625,
+        "y": 1897.5
+      },
+      "text": "Reply"
+    }
+  ],
+  "relay": {
+    "activeBaseUrl": "ws://127.0.0.1:58090",
+    "configuredBaseUrl": "ws://127.0.0.1:58090",
+    "connectionAttempts": 1,
+    "explorerPreviewActionCount": 0,
+    "interactionEventCount": 0,
+    "lastExplorerPreviewAction": null,
+    "lastInteractionEvent": null,
+    "lastRpcError": null,
+    "lastSyntaxHighlightResult": null,
+    "lastTransportError": null,
+    "pendingRequests": 0,
+    "readyBaseUrl": null,
+    "recentRpcTags": [
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "pullRequests.list",
+      "pullRequests.list",
+      "orchestration.getShellSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getSidebarSearchSnapshot",
+      "pullRequests.detail"
+    ],
+    "rendererReadyRoute": "/pull-requests",
+    "socketState": 1,
+    "syntaxHighlightCallCount": 0
+  },
+  "rootClass": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up",
+  "tabs": [
+    {
+      "aria": null,
+      "cls": "SharedPrDetailTab SharedPrDetailTab--active",
+      "pressed": "true",
+      "rect": {
+        "height": 28,
+        "width": 88.875,
+        "x": 777,
+        "y": 56
+      },
+      "text": "Summary"
+    },
+    {
+      "aria": null,
+      "cls": "SharedPrDetailTab",
+      "pressed": null,
+      "rect": {
+        "height": 28,
+        "width": 80.984375,
+        "x": 867.875,
+        "y": 56
+      },
+      "text": "Timeline"
+    },
+    {
+      "aria": null,
+      "cls": "SharedPrDetailTab",
+      "pressed": null,
+      "rect": {
+        "height": 28,
+        "width": 58.625,
+        "x": 950.859375,
+        "y": 56
+      },
+      "text": "Code"
+    }
+  ]
+}

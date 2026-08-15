@@ -32,3 +32,29 @@
   Native/Desktop production builds pass.
 - This certifies the empty light/1280 route only. Populated list/detail states,
   dark, and 1440 remain pending.
+
+## Populated interaction refresh (2026-08-15)
+
+- Added a canonical live-GitHub snapshot with one project created through
+  `orchestration.dispatchCommand`; no SQLite fixture was written.
+- `pullRequests.list` returned 50 real open entries with zero repository
+  errors. Wide and compact Lynx-for-Web cells selected PR `#689` through
+  trusted pointer input.
+- Real interaction passed:
+  - populated list -> selected detail;
+  - Summary -> Timeline -> Code;
+  - wide Code -> Summary restoration.
+- Code issued `pullRequests.diff` and rendered 42 files with `+505/-47`.
+- Wide detail used the expected `512x774` split dock. Compact detail replaced
+  the list with a full `390x798` master-detail surface; all tab, primary,
+  external, and close actions remained within the 390px header.
+- New-scope loss accounting:
+  - `lynx-pull-requests-populated-list-detail`: `0.00 -> 0.00`;
+  - `lynx-pull-requests-summary-timeline-code-interaction`: `0.00 -> 0.00`;
+  - `lynx-pull-requests-compact-master-detail`: `0.00 -> 0.00`.
+- No P0/P1 product loss was found. Populated Web interaction remains missing
+  because the isolated authority did not pass its hydration gate under
+  agent-browser. Populated Native detail/tabs also remain uncertified; the
+  earlier empty Native cell is not used as a proxy.
+- Evidence:
+  `shots/2026-08-15/pull-requests-populated-interactions/notes.md`.

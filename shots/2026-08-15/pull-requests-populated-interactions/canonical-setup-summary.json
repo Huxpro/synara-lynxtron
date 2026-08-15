@@ -1,0 +1,81 @@
+{
+  "command": {
+    "type": "project.create",
+    "commandId": "cmd-pr-populated-project-create",
+    "projectId": "project-pr-populated",
+    "kind": "project",
+    "title": "Synara Pull Requests",
+    "workspaceRoot": "/Users/bytedance/github/synara"
+  },
+  "project": {
+    "id": "project-pr-populated",
+    "kind": "project",
+    "title": "Synara Pull Requests",
+    "workspaceRoot": "/Users/bytedance/github/synara",
+    "defaultModelSelection": null,
+    "scripts": [],
+    "isPinned": false,
+    "spaceId": null,
+    "createdAt": "2026-08-15T13:06:42.820Z",
+    "updatedAt": "2026-08-15T13:06:42.820Z",
+    "deletedAt": null
+  },
+  "entryCount": 50,
+  "firstEntries": [
+    {
+      "projectId": "project-pr-populated",
+      "repository": "Emanuele-web04/synara",
+      "number": 689,
+      "title": "docs: refresh README and docs to match the website",
+      "state": "open",
+      "url": "https://github.com/Emanuele-web04/synara/pull/689"
+    },
+    {
+      "projectId": "project-pr-populated",
+      "repository": "Emanuele-web04/synara",
+      "number": 687,
+      "title": "Support Xcode 27 beta's relocated SimulatorKit.framework",
+      "state": "open",
+      "url": "https://github.com/Emanuele-web04/synara/pull/687"
+    },
+    {
+      "projectId": "project-pr-populated",
+      "repository": "Emanuele-web04/synara",
+      "number": 646,
+      "title": "WIP: Add CommandCode provider harness",
+      "state": "open",
+      "url": "https://github.com/Emanuele-web04/synara/pull/646"
+    },
+    {
+      "projectId": "project-pr-populated",
+      "repository": "Emanuele-web04/synara",
+      "number": 686,
+      "title": "Stop Cursor fast mode from staying on when the lightning bolt is off",
+      "state": "open",
+      "url": "https://github.com/Emanuele-web04/synara/pull/686"
+    },
+    {
+      "projectId": "project-pr-populated",
+      "repository": "Emanuele-web04/synara",
+      "number": 685,
+      "title": "fix(desktop): refresh the Windows taskbar icon when the app icon changes",
+      "state": "open",
+      "url": "https://github.com/Emanuele-web04/synara/pull/685"
+    }
+  ],
+  "errors": [],
+  "repositoryBatches": [
+    {
+      "projectId": "project-pr-populated",
+      "projectTitle": "Synara Pull Requests",
+      "repository": "Huxpro/synara-lynxtron",
+      "truncated": false
+    },
+    {
+      "projectId": "project-pr-populated",
+      "projectTitle": "Synara Pull Requests",
+      "repository": "Emanuele-web04/synara",
+      "truncated": true
+    }
+  ]
+}
