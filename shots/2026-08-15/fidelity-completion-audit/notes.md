@@ -179,6 +179,23 @@ manifests, and pixel scores are supporting evidence only.
 - Editor first-send/provider promotion and Native certification remain
   uncovered, so completion is still not achieved.
 
+## 2026-08-16 Editor first-send continuation
+
+- The empty-project Editor draft now has retained real first-send evidence.
+- A canonical temporary project was selected through the fixed switcher, the
+  exact prompt `Reply READY_EDITOR_PROMOTION only.` was entered, and the
+  rendered Send control created a durable thread and started a real Codex turn.
+- The existing `onThreadCreated` path preserved Editor mode while promoting the
+  rail from draft to the new thread. The transcript rendered the expected
+  provider reply and all RPCs settled cleanly.
+- The temporary thread and project were then canonically deleted; no files were
+  created and all pre-existing threads remained unchanged.
+- `lynx-editor-empty-project-first-send-promotion`: P2 contribution
+  `0.25 -> 0.00`.
+- The Editor empty-project draft/first-send residual is closed for the fast
+  Lynx-for-Web loop. Native IME/provider/continuation certification and global
+  discovery exhaustion remain open.
+
 ## Completion decision
 
 The active objective is **not achieved**. No `update_goal complete` call is
