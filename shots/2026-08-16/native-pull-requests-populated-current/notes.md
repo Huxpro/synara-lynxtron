@@ -68,3 +68,28 @@ remained empty throughout.
 - No P0/P1/P2 product loss was found in this cell.
 - No screenshot was added because the repository remains at its 100-image
   local cap.
+
+## Native detail tab roundtrip
+
+A follow-up exact-owned run exercised the populated detail tabs with real
+touches:
+
+1. Summary was initially selected.
+2. Timeline touch selected Timeline and mounted real
+   `SharedPrTimelineRoot` events.
+3. Code touch selected Code and mounted `SharedPrCodeRoot`; the host dispatched
+   canonical `pullRequests.diff` for the selected PR.
+4. Summary touch restored Summary, including overview, description, checks,
+   and comments, while Timeline and Code roots unmounted.
+
+The exact-client warning/error console remained empty throughout. No PR action,
+pin, comment, review, or state mutation was performed.
+
+The live upstream list changed between the preceding list/detail run and this
+tab run: new PRs `#698`, `#697`, and `#696` moved ahead of `#693`. The current
+first row and detail were therefore `#697`, and the Code RPC correctly requested
+`#697`. This was verified against a fresh canonical list before classification;
+it is external list evolution, not row recycling or detail identity loss.
+
+- `native-pull-requests-detail-tabs`: missing coverage `1.00 -> 0.00`.
+- Product-loss contribution: `0.00 -> 0.00`.

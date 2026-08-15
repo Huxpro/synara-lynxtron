@@ -459,3 +459,19 @@ former dynamic-event P1 is no longer a valid blocker.
 - No new P0/P1/P2 loss was found. Populated detail tab interactions, Native
   theme/size axes on this screen, other routes, and discovery exhaustion remain
   open.
+
+## 2026-08-16 Native Pull Requests tab continuation
+
+- Active discovery exercised exact-owned Native Summary -> Timeline -> Code ->
+  Summary with real touches on a populated PR detail.
+- Timeline mounted real event rows; Code mounted the code surface and
+  dispatched canonical `pullRequests.diff`; Summary restored overview,
+  description, checks, and comments. The exact-client warning/error console
+  stayed empty and no PR mutation occurred.
+- The upstream list gained PRs `#698/#697/#696` between runs. A fresh canonical
+  list proved the current first row was `#697`, matching both detail and Code
+  RPC identity. This is external list evolution, not a row-recycling defect.
+- `native-pull-requests-detail-tabs`: missing coverage `1.00 -> 0.00`;
+  product-loss contribution remains `0.00 -> 0.00`.
+- No new P0/P1/P2 loss was found. Native PR theme/size axes, remaining
+  interactions, other routes, and discovery exhaustion remain open.
