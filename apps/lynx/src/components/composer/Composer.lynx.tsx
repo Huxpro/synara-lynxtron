@@ -145,12 +145,14 @@ import {
 import './composer.css';
 
 type ComposerTokenSegment = Exclude<ComposerPromptSegment, { readonly type: 'text' }>;
+const EMPTY_ASSISTANT_SELECTIONS = [];
 const EMPTY_MENTIONS: ReadonlyArray<
   Extract<ComposerCommandItem, { type: 'thread' }>['mention']
 > = [];
 const EMPTY_PASTED_TEXTS: ReadonlyArray<PastedTextDraft> = [];
 const EMPTY_FILES: ReadonlyArray<NativeComposerFileAttachment> = [];
 const EMPTY_IMAGES: ReadonlyArray<NativeComposerImageAttachment> = [];
+const EMPTY_NON_PERSISTED_IMAGE_IDS: ReadonlyArray<string> = [];
 const EMPTY_FILE_COMMENTS = [];
 const EMPTY_SKILLS: ReadonlyArray<ProviderSkillReference> = [];
 const EMPTY_COMMAND_ITEMS: ReadonlyArray<ComposerCommandItem> = [];
@@ -373,7 +375,8 @@ export function Composer({
   );
   const assistantSelections = useComposerDraftStore(
     (state) =>
-      state.draftsByThreadId[brandedThreadId]?.assistantSelections ?? []
+      state.draftsByThreadId[brandedThreadId]?.assistantSelections ??
+      EMPTY_ASSISTANT_SELECTIONS
   );
   const pastedTexts = useComposerDraftStore(
     (state) =>
@@ -388,7 +391,8 @@ export function Composer({
   );
   const nonPersistedImageIds = useComposerDraftStore(
     (state) =>
-      state.draftsByThreadId[brandedThreadId]?.nonPersistedImageIds ?? []
+      state.draftsByThreadId[brandedThreadId]?.nonPersistedImageIds ??
+      EMPTY_NON_PERSISTED_IMAGE_IDS
   );
   const nonPersistedImageIdSet = useMemo(
     () => new Set(nonPersistedImageIds),

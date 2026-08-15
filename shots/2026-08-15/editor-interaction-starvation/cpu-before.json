@@ -1,0 +1,34 @@
+{
+  "durationMicros": 2103333,
+  "samples": 12897,
+  "idleSamples": 0,
+  "dominantFrames": [
+    {
+      "functionName": "clearMarks",
+      "count": 521
+    },
+    {
+      "functionName": "clearMarks",
+      "count": 290
+    },
+    {
+      "functionName": "clearMarks",
+      "count": 271
+    },
+    {
+      "functionName": "clearMarks",
+      "count": 261
+    },
+    {
+      "functionName": "clearMarks",
+      "count": 247
+    },
+    {
+      "functionName": "l",
+      "url": "./main.web.bundle//app-service.js",
+      "line": 10,
+      "column": 128988,
+      "count": 229
+    }
+  ]
+}

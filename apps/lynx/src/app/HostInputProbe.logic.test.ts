@@ -26,6 +26,11 @@ describe('host input probe matrix', () => {
     expect(source).toContain('Dynamic prop taps: ${props.count}');
     expect(source).toContain('aria-label="Lynx button event control"');
     expect(source).toContain('Lynx button taps: ${lynxButtonTapCount}');
+    expect(source).toContain('id="host-input-probe-post-hydration"');
+    expect(source).toContain('setPostHydrationMounted(true)');
+    expect(source).toContain(
+      'Post-hydration taps: ${postHydrationTapCount}'
+    );
   });
 
   it('distinguishes binding existence from event delivery', () => {

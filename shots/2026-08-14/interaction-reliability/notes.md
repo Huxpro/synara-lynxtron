@@ -166,3 +166,51 @@
     loss. The retained cleanup gate is `agent-browser close --all`, followed by
     `session list == No active sessions` and zero
     `agent-browser`/`remote-debugging-port` processes.
+
+## Editor composition starvation closure (2026-08-15)
+
+- **P1 product loss closed:** trusted Lynx-for-Web input now switches the real
+  Editor activity rail `Changes -> Files -> Changes`.
+- Root cause was not Web Core event registration, event-table GC, shadow DOM
+  traversal, payload cloning, first-screen hydration, or positive snapshot IDs.
+  The Composer had two Zustand selectors whose missing-draft fallback was a new
+  `[]` on every snapshot read:
+  - `assistantSelections ?? []`
+  - `nonPersistedImageIds ?? []`
+- Zustand uses `useSyncExternalStore`; a fresh reference for an unchanged store
+  snapshot caused synchronous background render recursion. The Lynx background
+  worker remained busy rendering and could not service the event RPC that the
+  main thread had already published.
+- Both selectors now use module-level stable empty arrays. A new
+  post-hydration dynamic-event oracle also covers controls mounted after the
+  initial screen, preventing the primitive probe from only exercising
+  first-screen negative snapshot IDs.
+- Quantitative attribution:
+  - before: a 2-second `lynx-bg` CPU profile captured `12,897` active samples,
+    dominated by ReactLynx render/profile work;
+  - after: `12,706` samples included `12,616` idle samples, leaving about `90`
+    non-idle samples;
+  - `editor-complex-composition-interaction`: contribution `1.00 -> 0.00`.
+- Retained evidence:
+  - `shots/2026-08-15/editor-interaction-starvation/lynx-changes-before.png`
+  - `shots/2026-08-15/editor-interaction-starvation/lynx-files-after.png`
+  - `shots/2026-08-15/editor-interaction-starvation/lynx-changes-after.png`
+  - `shots/2026-08-15/editor-interaction-starvation/after.json`
+  - `shots/2026-08-15/editor-interaction-starvation/console.txt`
+  - `shots/2026-08-15/editor-interaction-starvation/errors.txt`
+  - `shots/2026-08-15/editor-interaction-starvation/cpu-before.json`
+  - `shots/2026-08-15/editor-interaction-starvation/cpu-after.json`
+- Evidence identity:
+  - snapshot `.synara-fidelity-editor-changes`;
+  - project `editor-changes-project`, thread `editor-changes-thread`;
+  - route `/thread/editor-changes-thread`, Editor Changes;
+  - Lynx-for-Web `1280x820`, DPR 1, dark;
+  - relay `ws://127.0.0.1:58090`, one connection, no transport error;
+  - all retained PNGs are exactly `1280x820`.
+- Harness losses excluded from product accounting:
+  - the initial static bundle contained reverted diagnostics and was rejected as
+    stale;
+  - one run paired a `58090` bundle with a `59260` server and was rejected for
+    capture identity mismatch;
+  - selector, decimal-coordinate, and CDP attachment scripting failures were
+    cleaned up and not counted as product observations.

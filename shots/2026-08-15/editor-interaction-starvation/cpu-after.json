@@ -1,0 +1,90 @@
+{
+  "durationMicros": 2085711,
+  "samples": 12706,
+  "top": [
+    {
+      "count": 12616,
+      "functionName": "(idle)",
+      "url": "",
+      "line": -1,
+      "column": -1
+    },
+    {
+      "count": 5,
+      "functionName": "l",
+      "url": "./main.web.bundle//app-service.js",
+      "line": 10,
+      "column": 129420
+    },
+    {
+      "count": 3,
+      "functionName": "e.onmessage",
+      "url": "http://localhost:8080/web-core-worker-chunk.js",
+      "line": 0,
+      "column": 204
+    },
+    {
+      "count": 2,
+      "functionName": "postMessage",
+      "url": "",
+      "line": -1,
+      "column": -1
+    },
+    {
+      "count": 2,
+      "functionName": "clearMarks",
+      "url": "",
+      "line": -1,
+      "column": -1
+    },
+    {
+      "count": 2,
+      "functionName": "mark",
+      "url": "",
+      "line": -1,
+      "column": -1
+    },
+    {
+      "count": 1,
+      "functionName": "profileStart",
+      "url": "http://localhost:8080/lynx-core-chunk.js",
+      "line": 4,
+      "column": 15804
+    },
+    {
+      "count": 1,
+      "functionName": "Q",
+      "url": "http://localhost:8080/web-core-worker-chunk.js",
+      "line": 0,
+      "column": 5366
+    },
+    {
+      "count": 1,
+      "functionName": "i.__c.i.__",
+      "url": "./main.web.bundle//app-service.js",
+      "line": 10,
+      "column": 123512
+    },
+    {
+      "count": 1,
+      "functionName": "batch",
+      "url": "./main.web.bundle//app-service.js",
+      "line": 37,
+      "column": 39349
+    },
+    {
+      "count": 1,
+      "functionName": "",
+      "url": "./main.web.bundle//app-service.js",
+      "line": 10,
+      "column": 138961
+    },
+    {
+      "count": 1,
+      "functionName": "M",
+      "url": "./main.web.bundle//app-service.js",
+      "line": 10,
+      "column": 124710
+    }
+  ]
+}

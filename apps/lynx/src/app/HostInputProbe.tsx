@@ -90,6 +90,8 @@ export function HostInputProbe() {
   const [dynamicFixedTapCount, setDynamicFixedTapCount] = useState(0);
   const [dynamicPropTapCount, setDynamicPropTapCount] = useState(0);
   const [lynxButtonTapCount, setLynxButtonTapCount] = useState(0);
+  const [postHydrationMounted, setPostHydrationMounted] = useState(false);
+  const [postHydrationTapCount, setPostHydrationTapCount] = useState(0);
   const summary = hostInputProbeSummary(matrix);
   const dynamicFixedTap = () => {
     'background only';
@@ -117,6 +119,11 @@ export function HostInputProbe() {
     'background only';
     publishMatrix(matrix);
   }, [matrix]);
+
+  useEffect(() => {
+    'background only';
+    setPostHydrationMounted(true);
+  }, []);
 
   useEffect(() => {
     'background only';
@@ -168,6 +175,20 @@ export function HostInputProbe() {
       >
         {`Lynx button taps: ${lynxButtonTapCount}`}
       </Button>
+      {postHydrationMounted ? (
+        <view
+          id="host-input-probe-post-hydration"
+          className="HostInputProbeControl"
+          accessibility-element={true}
+          accessibility-label="Post-hydration event control"
+          bindtap={() => {
+            'background only';
+            setPostHydrationTapCount((count) => count + 1);
+          }}
+        >
+          <text>{`Post-hydration taps: ${postHydrationTapCount}`}</text>
+        </view>
+      ) : null}
       <view
         id="host-input-probe-view-control"
         className="HostInputProbeControl"
