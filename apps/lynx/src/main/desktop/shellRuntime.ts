@@ -389,6 +389,11 @@ export function parseSynaraDeepLinkInitData(raw: string): SynaraDeepLinkInitData
       initialRoute = projectId
         ? `/kanban/${encodeURIComponent(decodeURIComponent(projectId))}`
         : '/kanban';
+    } else if (url.hostname === 'workspace') {
+      const workspaceId = url.pathname.replace(/^\/+/, '').split('/')[0];
+      initialRoute = workspaceId
+        ? `/workspace/${encodeURIComponent(decodeURIComponent(workspaceId))}`
+        : '/workspace';
     } else if (url.hostname === 'thread') {
       const id = url.pathname.replace(/^\/+/, '').split('/')[0];
       if (!id) return null;

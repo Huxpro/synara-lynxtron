@@ -81,6 +81,10 @@ describe('shellRuntime', () => {
     expect(parseSynaraDeepLink('synara://kanban/project%20one')).toBe(
       '/kanban/project%20one'
     );
+    expect(parseSynaraDeepLink('synara://workspace')).toBe('/workspace');
+    expect(parseSynaraDeepLink('synara://workspace/workspace%20one')).toBe(
+      '/workspace/workspace%20one'
+    );
     expect(parseSynaraDeepLink('synara://thread/abc-123')).toBe('/thread/abc-123');
     expect(parseSynaraDeepLink('synara://fidelity-reference')).toBe('/');
     expect(parseSynaraDeepLink('https://example.com')).toBeNull();
@@ -111,6 +115,15 @@ describe('shellRuntime', () => {
       initialExplorerQuery: 'report',
       initialExplorerWidth: 520,
       initialRoute: '/thread/abc-123',
+    });
+    expect(
+      parseSynaraDeepLinkInitData(
+        'synara://workspace/workspace-one?workspaceSettings=open&workspaceVisible=open'
+      )
+    ).toMatchObject({
+      initialRoute: '/workspace/workspace-one',
+      initialWorkspaceSettingsOpen: true,
+      initialWorkspaceVisible: true,
     });
     expect(
       parseSynaraDeepLinkInitData(

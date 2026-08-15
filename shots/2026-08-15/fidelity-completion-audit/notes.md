@@ -642,3 +642,32 @@ former dynamic-event P1 is no longer a valid blocker.
 - Native dark/1440, actual system folder-dialog selection/cancel, selected-folder
   first send, restored populated Studio threads, other routes, and global
   discovery exhaustion remain open.
+
+## 2026-08-16 Native Workspace continuation
+
+- Active discovery moved to Workspace, whose synchronized Web/Lynx-for-Web
+  evidence already covered terminal transport, split presets, ordering, and
+  settings but explicitly left exact-owned Native unverified.
+- A P1 reachability loss remained: the desktop shell parsed
+  `workspaceVisible=open` and `workspaceSettings=open` but mapped
+  `synara://workspace` to `/`, so standard Native cold start could not reach
+  Workspace.
+- The shell now maps root and ID-scoped Workspace deep links. Focused route
+  tests cover both route forms plus combined init data.
+- `native-workspace-deep-link-reachability`: P1 contribution
+  `1.00 -> 0.00`.
+- Exact-owned cold start mounted `WorkspacePage`, restored `Workspace 1`,
+  opened the settings dialog, and issued real `terminalOpen` for `default`
+  against the isolated `ws://127.0.0.1:58090` endpoint.
+- A real `Two Columns` preset touch persisted the shared Workspace KV, opened
+  real second terminal `workspace-2`, and mounted two `512x774` terminal panes.
+  Closing the dialog retained the two-column grid.
+- Exact-client warning/error console stayed empty. Focused tests pass `21/21`;
+  Native/Desktop production build passes with output/staged hashes identical.
+- Native keyboard text injection is unsupported by the current DevTool CDP
+  surface, so command typing/confirm remains missing interaction coverage
+  rather than an inferred pass.
+- Evidence is under `shots/2026-08-16/native-workspace-current/`; no screenshot
+  was added at the 100-image cap.
+- Remaining Native Workspace scope includes typing/confirm, close/reopen,
+  rename, creation, ordering, deletion, dark, compact, and `1440x900`.
