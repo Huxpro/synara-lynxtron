@@ -84,10 +84,10 @@ manifests, and pixel scores are supporting evidence only.
    their own interaction reruns before those individual controls are claimed.
 2. **Native certification:** exact-owned Editor cells remain blocked while the
    user-owned PID `77846` occupies the fixed DevTool port `8901`.
-3. **P2 Editor coverage:** Chat-history navigation, New chat trigger, and
-   terminal tab lifecycle now have current-head trusted interaction evidence.
-   Project switching remains absent from the Lynx Editor header, and New chat
-   first-send/provider promotion remains environment coverage.
+3. **P2 Editor coverage:** Chat-history navigation, New chat trigger, terminal
+   tab lifecycle, and project switching to an existing target thread now have
+   current-head trusted interaction evidence. Project switching to a project
+   with no thread and New chat first-send/provider promotion remain coverage.
 4. **Discovery exhaustion:** other route/state/theme/viewport combinations have
    not been proven exhausted.
 

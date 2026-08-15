@@ -501,8 +501,7 @@
   coverage.
 - The entire trial was reverted. No disabled picker, fake title-only switch,
   approximate thread ordering, or empty-root regression remains.
-- `lynx-editor-project-switching` remains P2 missing coverage. Its verified
-  target contract is:
+- Its verified target contract is:
   - select the latest non-archived thread under the configured sidebar sort;
   - preserve Editor mode;
   - create/open a new Editor draft when the target project has no thread.
@@ -515,6 +514,42 @@
 - Harness command noise: one Web readiness loop omitted URL quoting and zsh
   treated `?view=editor` as a glob. The owned process was stopped and restarted
   with a quoted URL; this contributes `0.00` product loss.
+
+#### Current-head project-switch closure
+
+- Reimplemented the switcher as the same stable fixed-overlay pattern used by
+  Editor history instead of remounting the Menu subtree that emptied the Lynx
+  root.
+- A shared pure resolver:
+  - includes only `project` containers;
+  - excludes archived threads;
+  - selects the latest thread under the configured sidebar sort.
+- Trusted pointer input opened the real `Switch project` control:
+  - trigger: `24x24`;
+  - dialog: `420x160`;
+  - `Editor Changes` active row and `Editor Secondary` target row:
+    `386x34`.
+- Trusted pointer input switched:
+  - `Editor Changes` / `Editor changes review`
+  - to `Editor Secondary` / `Secondary editor review`
+  - and back to the original project/thread.
+- Both directions preserved `ThreadEditorView`, closed the dialog, updated the
+  active sidebar thread, and left the relay connected with zero pending
+  requests. Page errors were empty.
+- Bundle identity:
+  - `web-host.js`:
+    `a5ca07e6fb314eb3f986cffa26911622d8937aab6b8d0fd6fcd427a1c6a6e577`
+  - `main.web.bundle`:
+    `701fe87b7c4bef333318e05a23dbbdb8af9f6280dbbadccc54cf885907a77eb2`
+- The retained interaction preceded a single-pass resolver optimization
+  required by React Doctor. The final rebuild changes only that pure iteration
+  shape; focused resolver tests and React Doctor both pass with no diagnostics.
+- `lynx-editor-project-switching`: P2 existing-thread interaction coverage,
+  contribution `0.25 -> 0.00`.
+- A project with no thread is shown disabled as `No chats yet`; creating a new
+  Editor draft for that project remains P2 coverage rather than being faked by
+  approximate navigation.
+- Evidence: `shots/2026-08-15/editor-project-switch-current/`.
 
 ### Multi-file light theme
 
@@ -690,7 +725,7 @@ comparison; no Web screenshot pass is claimed.
 - `lynx-editor-search-mode`: P2 missing coverage,
   contribution `0.25 -> 0.00`.
 - `lynx-editor-project-switching`: P2 missing coverage,
-  contribution remains `0.25`.
+  existing-thread contribution `0.25 -> 0.00`; no-thread draft creation remains.
 - `lynx-editor-chat-resize-tabs`: P2 missing coverage,
   Chat-history interaction contribution `0.25 -> 0.00`; terminal/New chat
   route-specific interaction coverage remains. New chat trigger coverage later

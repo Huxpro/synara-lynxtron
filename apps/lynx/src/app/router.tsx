@@ -27,6 +27,7 @@ import type {
 import type { SettingsAppearanceValues } from '@synara-web/components/settings/SettingsAppearanceComposition.logic';
 import type { ThemeState } from '@synara-web/theme/theme.logic';
 import type { SettingsSectionId } from '@synara-web/settingsNavigation';
+import type { Project } from '@synara-web/types';
 import { isProviderKind } from '@synara-web/providerOrdering';
 import { useStore } from '@synara-web/store';
 import { useWorkspaceStore } from '@synara-web/workspaceStore';
@@ -130,6 +131,7 @@ import { DesktopTitlebarControls } from '../adapters/DesktopTitlebarControls.lyn
 import { SidebarDisclosure } from './SidebarDisclosure.lynx';
 import {
   ClockIcon,
+  ChevronDownIcon,
   FolderIcon,
   MessageCircleIcon,
   PlusIcon,
@@ -139,6 +141,7 @@ import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { webStorage } from '../platform/storage';
 import { formatRelativeTime } from '@synara-web/lib/relativeTime';
 import { resolveEditorChatHistoryThreads } from './editorChatHistory.logic';
+import { resolveEditorProjectSwitchOptions } from './editorProjectSwitch.logic';
 import {
   resolveMemoryNavigationState,
   type MemoryNavigationState,
@@ -417,6 +420,7 @@ interface ThreadPageProps {
   readonly onExplorerSelectPath: (path: string) => void;
   readonly onExplorerToggleDirectory: (path: string) => void;
   readonly onNavigateToThread: (threadId: string) => void;
+  readonly projects: readonly Project[];
   readonly threadId: string;
   readonly threads: readonly ThreadSummary[];
   readonly resolvedTheme: 'dark' | 'light';
@@ -632,6 +636,7 @@ function ThreadPage(props: ThreadPageProps) {
   const [editorChatHistoryOpen, setEditorChatHistoryOpen] = useState(
     initData.initialEditorHistoryOpen === true
   );
+  const [editorProjectSwitchOpen, setEditorProjectSwitchOpen] = useState(false);
   const [editorRailNewOpen, setEditorRailNewOpen] = useState(
     initData.initialEditorNewOpen === true
   );
@@ -692,6 +697,16 @@ function ThreadPage(props: ThreadPageProps) {
         threads,
       })
     : [];
+  const editorProjectSwitchOptions = resolveEditorProjectSwitchOptions({
+    currentProjectId: currentThread?.projectId ?? null,
+    projects: props.projects.map((project) => ({
+      id: project.id,
+      kind: project.kind,
+      title: project.name,
+    })),
+    sortOrder: environmentSettings.sidebarThreadSortOrder,
+    threads,
+  });
   const bodyState = resolveThreadPageBodyState({
     isPending,
     error,
@@ -995,6 +1010,16 @@ function ThreadPage(props: ThreadPageProps) {
                 {currentThread?.workspaceRoot ?? 'No workspace'}
               </text>
             </view>
+            {editorProjectSwitchOptions.length > 0 ? (
+              <Button
+                aria-label="Switch project"
+                className="ThreadEditorProjectSwitchTrigger"
+                variant="ghost"
+                onClick={() => setEditorProjectSwitchOpen(true)}
+              >
+                <ChevronDownIcon size={14} color="var(--muted-foreground)" />
+              </Button>
+            ) : null}
             <text className="ThreadEditorModeLabel">
               {editorCenterMode === 'file' ? 'Files' : 'Changes'}
             </text>
@@ -1306,6 +1331,78 @@ function ThreadPage(props: ThreadPageProps) {
                     </Button>
                   ))
                 )}
+              </scroll-view>
+            </view>
+          </view>
+        ) : null}
+        {editorProjectSwitchOpen ? (
+          <view
+            className="ThreadEditorProjectSwitchViewport"
+            accessibility-element
+            accessibility-label="Switch project dialog"
+            accessibility-traits="dialog"
+            bindkeydown={(event: { readonly key?: string }) => {
+              'background only';
+              if (event.key === 'Escape') setEditorProjectSwitchOpen(false);
+            }}
+            tabindex={0}
+          >
+            <view
+              className="ThreadEditorProjectSwitchBackdrop"
+              bindtap={() => setEditorProjectSwitchOpen(false)}
+            />
+            <view
+              className="ThreadEditorProjectSwitchDialog"
+              accessibility-element
+              accessibility-label="Switch project"
+              accessibility-traits="dialog"
+            >
+              <Button
+                aria-label="Close project switcher"
+                className="ThreadEditorProjectSwitchClose"
+                variant="ghost"
+                onClick={() => setEditorProjectSwitchOpen(false)}
+              >
+                ×
+              </Button>
+              <text className="ThreadEditorProjectSwitchHeading">
+                Switch project
+              </text>
+              <text className="ThreadEditorProjectSwitchDescription">
+                Open the latest chat in another project.
+              </text>
+              <scroll-view
+                className="ThreadEditorProjectSwitchPanel"
+                scroll-orientation="vertical"
+              >
+                {editorProjectSwitchOptions.map((option) => (
+                  <Button
+                    key={option.id}
+                    className={`ThreadEditorProjectSwitchItem${
+                      option.selected
+                        ? ' ThreadEditorProjectSwitchItem--active'
+                        : ''
+                    }`}
+                    variant="ghost"
+                    disabled={option.threadId === null}
+                    onClick={() => {
+                      if (!option.threadId) return;
+                      setEditorProjectSwitchOpen(false);
+                      if (!option.selected) onNavigateToThread(option.threadId);
+                    }}
+                  >
+                    <text className="ThreadEditorProjectSwitchTitle">
+                      {option.title}
+                    </text>
+                    <text className="ThreadEditorProjectSwitchMeta">
+                      {option.selected
+                        ? '✓'
+                        : option.threadId
+                          ? 'Open'
+                          : 'No chats yet'}
+                    </text>
+                  </Button>
+                ))}
               </scroll-view>
             </view>
           </view>
@@ -2130,6 +2227,7 @@ export function SliceRouter({
           setEditorContinuationThreadId(threadId);
           navigate(`/thread/${threadId}`);
         }}
+        projects={routeProjects}
         threadId={route.params.threadId}
         threads={routeThreads ?? []}
         resolvedTheme={resolvedTheme}

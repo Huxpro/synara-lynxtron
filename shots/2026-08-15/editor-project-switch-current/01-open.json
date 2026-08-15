@@ -1,0 +1,82 @@
+{
+  "active": [
+    "Editor changes review"
+  ],
+  "dialog": {
+    "height": 160,
+    "width": 420,
+    "x": 430,
+    "y": 330
+  },
+  "editor": true,
+  "items": [
+    {
+      "cls": "LxButton LxButton--ghost LxButton--default ThreadEditorProjectSwitchItem ThreadEditorProjectSwitchItem--active",
+      "rect": {
+        "height": 34,
+        "width": 386,
+        "x": 447,
+        "y": 405
+      },
+      "text": "Editor Changes✓"
+    },
+    {
+      "cls": "LxButton LxButton--ghost LxButton--default ThreadEditorProjectSwitchItem",
+      "rect": {
+        "height": 34,
+        "width": 386,
+        "x": 447,
+        "y": 439
+      },
+      "text": "Editor SecondaryOpen"
+    }
+  ],
+  "project": "Editor Changes",
+  "relay": {
+    "activeBaseUrl": "ws://127.0.0.1:58090",
+    "configuredBaseUrl": "ws://127.0.0.1:58090",
+    "connectionAttempts": 1,
+    "explorerPreviewActionCount": 0,
+    "interactionEventCount": 0,
+    "lastExplorerPreviewAction": null,
+    "lastInteractionEvent": null,
+    "lastRpcError": null,
+    "lastSyntaxHighlightResult": null,
+    "lastTransportError": null,
+    "pendingRequests": 0,
+    "readyBaseUrl": null,
+    "recentRpcTags": [
+      "orchestration.getShellSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getSidebarSearchSnapshot",
+      "orchestration.getThreadDetailSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getThreadDetailSnapshot",
+      "projects.listDirectories",
+      "git.listBranches",
+      "git.readWorkingTreeDiff",
+      "provider.listModels",
+      "server.getConfig",
+      "server.refreshProviders",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "provider.getComposerCapabilities",
+      "pullRequests.list",
+      "orchestration.getThreadDetailSnapshot",
+      "orchestration.getSidebarShellSnapshot",
+      "orchestration.getThreadDetailSnapshot",
+      "provider.listModels"
+    ],
+    "rendererReadyRoute": "/thread/editor-changes-thread",
+    "socketState": 1,
+    "syntaxHighlightCallCount": 0
+  },
+  "trigger": {
+    "height": 24,
+    "width": 24,
+    "x": 1076.640625,
+    "y": 10.5
+  }
+}

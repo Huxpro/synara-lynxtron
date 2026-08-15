@@ -123,6 +123,26 @@ describe('Lynx Editor view', () => {
     );
   });
 
+  it('switches Editor projects through a stable fixed overlay', () => {
+    const routerSource = source('./router.tsx');
+    const projectSwitchSource = source('./editorProjectSwitch.logic.ts');
+    const appStyles = source('./App.css');
+
+    expect(routerSource).toContain('aria-label="Switch project"');
+    expect(routerSource).toContain('className="ThreadEditorProjectSwitchDialog"');
+    expect(routerSource).toContain('resolveEditorProjectSwitchOptions({');
+    expect(routerSource).toContain(
+      'if (!option.selected) onNavigateToThread(option.threadId);'
+    );
+    expect(routerSource).not.toContain('<ProjectMenuPicker');
+    expect(projectSwitchSource).toContain('sortThreadsForSidebar(');
+    expect(projectSwitchSource).toContain("project.kind !== 'project'");
+    expect(projectSwitchSource).toContain('thread.archivedAt == null');
+    expect(appStyles).toMatch(
+      /\.ThreadEditorProjectSwitchDialog\s*\{[^}]*width:\s*420px;[\s\S]*?border-radius:\s*24px;/s
+    );
+  });
+
   it('opens real chat and terminal surfaces from the Editor rail', () => {
     const routerSource = source('./router.tsx');
     const appStyles = source('./App.css');
