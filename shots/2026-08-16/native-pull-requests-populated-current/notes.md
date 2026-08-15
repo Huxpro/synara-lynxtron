@@ -201,3 +201,23 @@ The exact-client warning/error console stayed empty.
 
 Native search typing remains constrained by the Desktop DevTool keyboard-input
 boundary; state and involvement filtering are now covered.
+
+## Native project filter continuation
+
+A separate exact-owned run exercised the menu-based project filter:
+
+1. the initial trigger read `Filter pull requests by project: All projects`;
+2. a real touch opened the menu with `All projects` selected and
+   `Automation Fidelity` available;
+3. selecting `Automation Fidelity` issued
+   `pullRequests.list(state:open, projectId:automation-expanded-project)`;
+4. the trigger changed to the project label and pressed state;
+5. 50 real rows remained because every current entry belongs to that project;
+6. reopening the menu and selecting `All projects` issued the unscoped list
+   request and restored the unpressed trigger.
+
+The menu opened/closed through the rendered Native controls, no PR or pin
+mutation occurred, and exact-client warning/error console stayed empty.
+
+`native-pull-requests-project-filter-roundtrip`: missing coverage
+`1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.

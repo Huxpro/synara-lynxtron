@@ -886,3 +886,18 @@ former dynamic-event P1 is no longer a valid blocker.
 - `native-pull-requests-state-involvement-filters`: missing coverage
   `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
 - Native search typing remains behind the Desktop keyboard-input boundary.
+
+## 2026-08-16 Native Pull Requests project-filter continuation
+
+- A separate exact-owned cell opened the real project-filter menu, whose
+  initial selection was All projects and whose only concrete option was
+  Automation Fidelity.
+- Selecting Automation Fidelity issued a scoped canonical list request for
+  `automation-expanded-project`, updated the trigger label/pressed state, and
+  retained 50 real rows because all current entries belong to that project.
+- Selecting All projects again issued the unscoped list request and restored
+  the unpressed trigger.
+- No PR or pin mutation occurred; exact-client warning/error console stayed
+  empty.
+- `native-pull-requests-project-filter-roundtrip`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
