@@ -58,3 +58,28 @@ The exact-client warning/error console was empty.
 No additional product loss was found in the target state. Provider disclosure
 editing, update execution, and target behavior in dark/compact remain separate
 interaction scope.
+
+## Automatic checks lifecycle
+
+A second fresh exact-owned run exercised the server-backed switch through the
+ordinary Providers route:
+
+1. initial `Automatic CLI update checks`: On;
+2. real touch at `(1051,180)`: Off;
+3. host dispatched `server.updateSettings({enableProviderUpdateChecks:false})`;
+4. second real touch: On;
+5. host dispatched `server.updateSettings({enableProviderUpdateChecks:true})`;
+6. isolated `settings.json` persisted
+   `settings.enableProviderUpdateChecks:true`.
+
+Restarting Native with the same user and server state restored the switch as
+On. The `provider-updates` anchor remained present, and exact-client
+warning/error console stayed empty.
+
+`native-provider-update-checks-roundtrip-restart`: missing coverage
+`1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+
+The first lifecycle script failed before interaction because of a Bash function
+syntax error and used a target layout where the preceding switch was above the
+viewport. No state changed in that attempt; the ordinary Providers route was
+then used for the real switch roundtrip.

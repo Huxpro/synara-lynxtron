@@ -839,3 +839,18 @@ former dynamic-event P1 is no longer a valid blocker.
   `1.00 -> 0.00`.
 - Focused tests pass `21/21`; Native/Desktop build passes with output/staged
   hashes identical.
+
+## 2026-08-16 Native provider update-check lifecycle
+
+- A fresh exact-owned ordinary Providers route exercised Automatic CLI update
+  checks through real controls: `on -> off -> on`.
+- Host calls matched both transitions:
+  `server.updateSettings(false)` then `server.updateSettings(true)`.
+- Isolated server persistence ended at
+  `settings.enableProviderUpdateChecks:true`; restarting Native restored the
+  switch On and retained the fixed provider-updates anchor.
+- Exact-client warning/error console stayed empty.
+- `native-provider-update-checks-roundtrip-restart`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- An earlier shell-script syntax failure occurred before any interaction and
+  changed no state; it is harness noise, not product evidence.
