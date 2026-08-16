@@ -305,6 +305,16 @@
 .SliceRoot--viewport-short-height
   .ThreadPage
   > .ExplorerDock
+  .ExplorerDockPreview--markdown.ExplorerDockPreview--truncated
+  .ExplorerDockPreviewHeader {
+  width: 84px;
+  padding: 0 4px;
+  gap: 4px;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
   .ExplorerDockPreview--markdown
   .ExplorerDockPreviewPath {
   display: none;
@@ -553,6 +563,13 @@
   line-height: 16px;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.ExplorerDockPreviewTruncated {
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  font-size: 10px;
+  line-height: 14px;
 }
 
 .ExplorerDockPreviewActions {
@@ -926,10 +943,4 @@
   min-width: 0;
   max-width: none;
   margin: 5px 6px 8px;
-}
-
-.ExplorerDockTruncated {
-  margin-top: 12px;
-  color: var(--muted-foreground);
-  font-size: 10px;
 }

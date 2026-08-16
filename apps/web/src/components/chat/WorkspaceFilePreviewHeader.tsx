@@ -126,8 +126,12 @@ export const WorkspaceFilePreviewHeader = function WorkspaceFilePreviewHeader(
       </nav>
 
       {props.truncated ? (
-        <span className="hidden shrink-0 text-[10px] text-muted-foreground/70 @sm/header-actions:inline">
-          Shown partially
+        <span
+          className="shrink-0 text-[10px] text-muted-foreground/70"
+          aria-label="Preview truncated at 1 MB."
+        >
+          <span className="@sm/header-actions:hidden">Partial</span>
+          <span className="hidden @sm/header-actions:inline">Shown partially</span>
         </span>
       ) : null}
 

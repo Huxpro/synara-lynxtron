@@ -23,7 +23,6 @@ export function ExplorerSyntaxPreview(props: {
   }) => void;
   readonly path: string;
   readonly theme: 'dark' | 'light';
-  readonly truncated: boolean;
 }) {
   const highlighted = props.highlighted?.[props.theme] ?? null;
   const [commentLine, setCommentLine] = useState<number | null>(
@@ -61,11 +60,6 @@ export function ExplorerSyntaxPreview(props: {
       ) : (
         <text className="ExplorerDockCode">{props.contents}</text>
       )}
-      {props.truncated ? (
-        <text className="ExplorerDockTruncated">
-          Preview truncated at 1 MB.
-        </text>
-      ) : null}
     </scroll-view>
   );
 }

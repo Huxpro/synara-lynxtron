@@ -46,7 +46,7 @@ describe('Explorer syntax preview', () => {
     expect(source).toContain('<ExplorerFileCommentEditor');
     expect(source).toContain('color: token.color');
     expect(source).toContain('className="ExplorerDockCode"');
-    expect(source).toContain('Preview truncated at 1 MB.');
+    expect(source).not.toContain('ExplorerDockTruncated');
     expect(desktopSource).toContain(
       'data.tag === NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG'
     );

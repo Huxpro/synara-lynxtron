@@ -50,6 +50,7 @@ function fileName(path: string): string {
 function ExplorerPreviewHeader(props: {
   readonly path: string;
   readonly threadId: string;
+  readonly truncated: boolean;
 }) {
   const initData = useInitData() as {
     readonly initialExplorerActionMenuOpen?: unknown;
@@ -69,6 +70,14 @@ function ExplorerPreviewHeader(props: {
   return (
     <view className="ExplorerDockPreviewHeader">
       <text className="ExplorerDockPreviewPath">{props.path}</text>
+      {props.truncated ? (
+        <text
+          className="ExplorerDockPreviewTruncated"
+          accessibility-label="Preview truncated at 1 MB."
+        >
+          Partial
+        </text>
+      ) : null}
       <Menu open={menuOpen} onOpenChange={setMenuOpen}>
         <MenuTrigger
           ariaLabel="More actions"
@@ -370,13 +379,14 @@ export function ExplorerDock(props: {
                 : props.selectedPath &&
                     isMarkdownPath(props.selectedPath)
                   ? ' ExplorerDockPreview--markdown'
-              : ''
-          }`}
+                  : ''
+          }${props.file?.truncated ? ' ExplorerDockPreview--truncated' : ''}`}
         >
           {props.selectedPath ? (
             <ExplorerPreviewHeader
               path={props.selectedPath}
               threadId={props.threadId}
+              truncated={props.file?.truncated ?? false}
             />
           ) : null}
           <view className="ExplorerDockPreviewContent">
@@ -449,7 +459,6 @@ export function ExplorerDock(props: {
                 }
                 path={props.selectedPath}
                 theme={props.theme}
-                truncated={props.file?.truncated ?? false}
               />
             )}
           </view>

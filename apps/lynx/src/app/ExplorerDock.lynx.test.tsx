@@ -53,6 +53,10 @@ describe('Lynx Explorer dock', () => {
     expect(source).toContain('<ChatMarkdown');
     expect(source).toContain('onOpenFileReference={props.onSelectPath}');
     expect(source).toContain('<ExplorerPreviewHeader');
+    expect(source).toContain('truncated={props.file?.truncated ?? false}');
+    expect(source).toContain("' ExplorerDockPreview--truncated'");
+    expect(source).toContain('className="ExplorerDockPreviewTruncated"');
+    expect(source).toContain('accessibility-label="Preview truncated at 1 MB."');
     expect(source).toContain('ariaLabel="More actions"');
     expect(source).toContain('Reference in chat');
     expect(source).toContain('Ask why this changed');
@@ -223,6 +227,9 @@ describe('Lynx Explorer dock', () => {
       /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockPreview--markdown\s+\.ExplorerDockPreviewHeader\s*\{[^}]*position:\s*absolute;[^}]*right:\s*4px;[^}]*top:\s*4px;[^}]*width:\s*28px;[^}]*height:\s*28px;/s
     );
     expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockPreview--markdown\.ExplorerDockPreview--truncated\s+\.ExplorerDockPreviewHeader\s*\{[^}]*width:\s*84px;[^}]*padding:\s*0 4px;[^}]*gap:\s*4px;/s
+    );
+    expect(styles).toMatch(
       /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockPreview--markdown\s+\.ExplorerDockPreviewContent\s*\{[^}]*height:\s*100%;[^}]*padding:\s*2px;/s
     );
     expect(styles).toMatch(
@@ -277,6 +284,9 @@ describe('Lynx Explorer dock', () => {
     );
     expect(styles).toMatch(
       /\.ExplorerDockPreviewPath\s*\{[^}]*min-width:\s*0;[^}]*flex:\s*1;[^}]*overflow:\s*hidden;[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s
+    );
+    expect(styles).toMatch(
+      /\.ExplorerDockPreviewTruncated\s*\{[^}]*flex-shrink:\s*0;[^}]*font-size:\s*10px;[^}]*line-height:\s*14px;/s
     );
     expect(styles).toMatch(
       /\.ExplorerDockPreviewContent\s*\{[^}]*flex:\s*1;[^}]*padding:\s*12px;/s

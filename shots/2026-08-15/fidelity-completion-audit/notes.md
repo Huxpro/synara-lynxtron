@@ -3138,3 +3138,26 @@ former dynamic-event P1 is no longer a valid blocker.
   passed with registered warnings only.
 - Detailed evidence:
   `shots/2026-08-17/explorer-long-line-short-height/notes.md`.
+
+## 2026-08-17 Explorer truncated preview at 320x200
+
+- Active discovery selected real text and Markdown files above the canonical
+  `1,000,000` byte read limit. `projects.readFile` returned exactly
+  `1,000,000` characters with `truncated:true`.
+- Before, Lynx placed its only disclosure after the one-megabyte content body:
+  `784594px` below the compact viewport and `522424px` below the normal
+  `1280x820` viewport.
+- `lynx-explorer-truncated-disclosure-buried`: P1 contribution
+  `1.00 -> 0.00`.
+- Truncation is now fixed preview identity: Lynx shows accessible `Partial` in
+  ordinary, normal, and compact Markdown headers; Web shows `Partial` at narrow
+  width and `Shown partially` at its existing header breakpoint.
+- Compact ordinary filename, disclosure, and More actions have zero overlap.
+  Compact Markdown keeps its full-height content and a non-overlapping
+  `Partial` + More overlay.
+- Lynx focused tests passed `5/5`, Web focused test passed `1/1`, and all three
+  production builds passed.
+- Exact Web runtime hydration published no body or controls and was classified
+  as harness loss rather than product evidence.
+- Detailed evidence:
+  `shots/2026-08-17/explorer-truncated-preview-short-height/notes.md`.
