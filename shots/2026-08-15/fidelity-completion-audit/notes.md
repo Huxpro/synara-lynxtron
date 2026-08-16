@@ -1174,3 +1174,17 @@ former dynamic-event P1 is no longer a valid blocker.
 - Focused tests passed `3` files / `31` tests; Native/Desktop build and
   output/staged hash equality passed.
 - Canonical and process/browser cleanup gates passed.
+
+## 2026-08-16 Native Workspace asymmetric minimum layout
+
+- Active discovery added Left + Stack at the real `900x650` Desktop minimum.
+- Before repair, the intended primary left pane occupied only the top-left
+  cell; the third pane occupied bottom-left and bottom-right was empty.
+- `native-workspace-asymmetric-primary-pane`: P1 contribution
+  `1.00 -> 0.00`.
+- Native panes now project an explicit primary class instead of relying on an
+  encoded `:first-child` selector.
+- Final Left + Stack used one `322x604` left pane plus two `322x302` right
+  panes. Top + Bottom used one `644x302` top pane plus two bottom panes.
+- Focused tests passed `3` files / `12` tests; Native/Desktop build, bundle
+  hashes, console, and cleanup gates passed.

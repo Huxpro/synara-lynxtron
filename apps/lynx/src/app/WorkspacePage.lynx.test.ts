@@ -29,6 +29,7 @@ describe('Lynx workspace surface', () => {
 
   it('uses the shared workspace store and a host-backed terminal', () => {
     const pageSource = source('./WorkspacePage.lynx.tsx');
+    const pageStyles = source('./workspace-page.css');
     expect(pageSource).toContain(
       "from '@synara-web/workspaceStore'"
     );
@@ -47,6 +48,16 @@ describe('Lynx workspace surface', () => {
     expect(pageSource).toContain(
       'WorkspaceTerminalGrid--${workspace.layoutPresetId}'
     );
+    expect(pageSource).toContain(
+      "terminalIndex === 0 ? ' WorkspaceTerminalPane--primary' : ''"
+    );
+    expect(pageStyles).toContain(
+      '.WorkspaceTerminalGrid--top-main .WorkspaceTerminalPane--primary'
+    );
+    expect(pageStyles).toContain(
+      '.WorkspaceTerminalGrid--left-main .WorkspaceTerminalPane--primary'
+    );
+    expect(pageStyles).not.toContain('.WorkspaceTerminalPane:first-child');
     expect(pageSource).toContain('deleteWorkspaceWithTerminalCleanup({');
     expect(pageSource).toContain('terminalIds,');
     expect(pageSource).toContain('closeTerminal: platformTerminal.close');

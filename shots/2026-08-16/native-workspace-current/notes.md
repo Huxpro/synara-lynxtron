@@ -299,6 +299,43 @@ completed restoration; this is harness script error, not product loss.
 Exact-client console and all process/browser cleanup gates passed; screenshot
 count remained `100`.
 
+## Minimum-window three-pane continuation
+
+Active discovery added Native `900x650` Left + Stack, a three-pane asymmetric
+layout not covered by the earlier wide preset-selection evidence.
+
+Before repair, the three pane boxes were:
+
+- `(256,46,322x302)`;
+- `(579,46,322x302)`;
+- `(256,349,322x302)`.
+
+The nominal primary left pane did not span both rows; the bottom-right grid cell
+was empty. `:first-child` in the encoded Native CSS did not reliably identify
+the primary pane.
+
+`native-workspace-asymmetric-primary-pane`: P1 contribution `1.00 -> 0.00`.
+
+Workspace panes now project an explicit `WorkspaceTerminalPane--primary` class.
+Both asymmetric layouts target that class instead of `:first-child`.
+
+Final exact-owned `900x650` geometry:
+
+- Left + Stack primary: `(256,46,322x604)`;
+- right top/bottom: `(579,46,322x302)` and `(579,349,322x302)`;
+- Top + Bottom primary: `(256,46,644x302)`;
+- bottom left/right: `(256,349,322x302)` and `(579,349,322x302)`.
+
+All three terminal command rows remained reachable, all three PTYs opened, and
+exact-client warning/error console stayed empty.
+
+Focused tests passed `3` files / `12` tests. Native/Desktop production build
+passed with registered warnings only. Output/staged SHA-256 was identical at
+`75a0399a48b584ca4976270df7eaf2dc6d999bae6b1cbc911f0c7a33af592040`.
+
+Owned ports/runtime/state and browser processes were removed; screenshot count
+remained `100`.
+
 ## Workspace ordering restart continuation
 
 A fresh exact-owned run used real controls to create Workspace 2 and move it

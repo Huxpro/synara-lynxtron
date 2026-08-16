@@ -200,10 +200,12 @@ export function WorkspacePage({
         <view
           className={`WorkspaceTerminalGrid WorkspaceTerminalGrid--${workspace.layoutPresetId}`}
         >
-          {terminalIds.map((terminalId) => (
+          {terminalIds.map((terminalId, terminalIndex) => (
             <view
               key={terminalId}
-              className="WorkspaceTerminalPane"
+              className={`WorkspaceTerminalPane${
+                terminalIndex === 0 ? ' WorkspaceTerminalPane--primary' : ''
+              }`}
             >
               <ThreadTerminal
                 autoOpen

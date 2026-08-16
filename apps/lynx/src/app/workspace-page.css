@@ -115,7 +115,7 @@
   grid-template-rows: repeat(2, minmax(0, 1fr));
 }
 
-.WorkspaceTerminalGrid--top-main .WorkspaceTerminalPane:first-child {
+.WorkspaceTerminalGrid--top-main .WorkspaceTerminalPane--primary {
   grid-column: 1 / span 2;
 }
 
@@ -124,7 +124,7 @@
   grid-template-rows: repeat(2, minmax(0, 1fr));
 }
 
-.WorkspaceTerminalGrid--left-main .WorkspaceTerminalPane:first-child {
+.WorkspaceTerminalGrid--left-main .WorkspaceTerminalPane--primary {
   grid-row: 1 / span 2;
 }
 
