@@ -3221,3 +3221,22 @@ former dynamic-event P1 is no longer a valid blocker.
   classified as accepted environment noise.
 - Detailed evidence:
   `shots/2026-08-17/explorer-binary-file-short-height/notes.md`.
+
+## 2026-08-17 Explorer nested directory error at 320x200
+
+- Active discovery exposed a root directory successfully, then produced a real
+  nested `projects.listDirectories` `EACCES` failure on expansion.
+- Before, the 28px error began at `y=184.921` and ended at `212.921`, below
+  the 43px entries owner and viewport. A real wheel interaction left
+  `scrollTop=0`, so the nominal scroll range did not make it reachable.
+- `lynx-explorer-nested-directory-error-clipped`: P1 contribution
+  `1.00 -> 0.00`.
+- Short-height ordinary Explorer now compresses only nested loading/error state
+  rows to 12px with 9px meta type; normal-size and Editor contracts remain
+  unchanged.
+- After, the 28px directory row plus `152.5x12 @ (4,188)` error fit exactly
+  inside the entries owner, ending at `y=200` without scrolling.
+- Focused tests passed `2/2`; Lynx-for-Web and Native/Desktop production builds
+  passed.
+- Detailed evidence:
+  `shots/2026-08-17/explorer-nested-directory-error-short-height/notes.md`.

@@ -210,6 +210,9 @@ describe('Lynx Explorer dock', () => {
       /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockEntryPath\s*\{[^}]*display:\s*none;/s
     );
     expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockDirectoryState\s*\{[^}]*height:\s*12px;[^}]*min-height:\s*12px;[^}]*font-size:\s*9px;[^}]*line-height:\s*12px;/s
+    );
+    expect(styles).toMatch(
       /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockPreview--pdf\s+\.ExplorerDockPreviewHeader\s*\{[^}]*position:\s*absolute;[^}]*right:\s*4px;[^}]*top:\s*32px;[^}]*width:\s*28px;[^}]*height:\s*28px;/s
     );
     expect(styles).toMatch(
