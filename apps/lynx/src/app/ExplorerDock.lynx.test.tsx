@@ -122,6 +122,9 @@ describe('Lynx Explorer dock', () => {
     expect(routerSource).toContain('pdfPageCount={explorerPdfPageCount}');
     expect(pdfSource).toContain('buildPdfPagePreviewUrl({');
     expect(pdfSource).toContain('className="ExplorerDockPdfPageImage"');
+    expect(source).toContain("' ExplorerDockPreview--pdf'");
+    expect(pdfSource).toContain('className="ExplorerDockPdfPrevious"');
+    expect(pdfSource).toContain('className="ExplorerDockPdfNext"');
     expect(pdfSource).toContain('aria-label="Previous PDF page"');
     expect(pdfSource).toContain('aria-label="Next PDF page"');
     expect(pdfSource).toContain('mode="aspectFit"');
@@ -190,6 +193,15 @@ describe('Lynx Explorer dock', () => {
     );
     expect(styles).toMatch(
       /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockEntryPath\s*\{[^}]*display:\s*none;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockPreview--pdf\s+\.ExplorerDockPreviewHeader\s*\{[^}]*position:\s*absolute;[^}]*right:\s*4px;[^}]*top:\s*32px;[^}]*width:\s*28px;[^}]*height:\s*28px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height[\s\S]*?\.ExplorerDockPdfIdentity,[\s\S]*?\.ExplorerDockPdfPrevious,[\s\S]*?\.ExplorerDockPdfNext\s*\{[^}]*display:\s*none;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockPdfControls\s*\{[^}]*width:\s*100%;[^}]*padding-right:\s*32px;[^}]*justify-content:\s*space-between;/s
     );
     expect(styles).toMatch(
       /\.ExplorerDockSidebar\s*\{[^}]*width:\s*240px;[^}]*min-width:\s*240px;[^}]*border-right:\s*1px solid var\(--border\);/s

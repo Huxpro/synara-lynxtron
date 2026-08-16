@@ -359,7 +359,14 @@ export function ExplorerDock(props: {
             )}
           </scroll-view>
         </view>
-        <view className="ExplorerDockPreview">
+        <view
+          className={`ExplorerDockPreview${
+            props.selectedPath &&
+            isSupportedLocalPdfPath(props.selectedPath)
+              ? ' ExplorerDockPreview--pdf'
+              : ''
+          }`}
+        >
           {props.selectedPath ? (
             <ExplorerPreviewHeader
               path={props.selectedPath}

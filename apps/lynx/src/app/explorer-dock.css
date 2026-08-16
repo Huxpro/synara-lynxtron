@@ -73,6 +73,87 @@
   display: none;
 }
 
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockPreview--pdf
+  .ExplorerDockPreviewHeader {
+  position: absolute;
+  right: 4px;
+  top: 32px;
+  z-index: 2;
+  width: 28px;
+  height: 28px;
+  min-height: 28px;
+  padding: 0;
+  border-bottom-width: 0;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockPreview--pdf
+  .ExplorerDockPreviewHeader
+  .ExplorerDockPreviewPath {
+  display: none;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockPreview--pdf
+  .ExplorerDockPreviewContent {
+  height: 100%;
+  padding: 0;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockPdfToolbar {
+  min-height: 32px;
+  padding: 2px 4px;
+  gap: 2px;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockPdfIdentity,
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockPdfPrevious,
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockPdfNext {
+  display: none;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockPdfControls {
+  width: 100%;
+  padding-right: 32px;
+  justify-content: space-between;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockPdfPageFrame {
+  padding: 2px;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockPdfOpen {
+  margin-left: 0;
+}
+
 .ExplorerDock--editor {
   position: relative;
   top: auto;

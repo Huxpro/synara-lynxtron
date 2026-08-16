@@ -67,6 +67,7 @@ export function ExplorerPdfFallback(props: {
         </view>
         <view className="ExplorerDockPdfControls">
           <Button
+            className="ExplorerDockPdfPrevious"
             variant="ghost"
             size="sm"
             disabled={page <= 1}
@@ -82,6 +83,7 @@ export function ExplorerPdfFallback(props: {
             {pageCount > 0 ? `${page} / ${pageCount}` : '— / —'}
           </text>
           <Button
+            className="ExplorerDockPdfNext"
             variant="ghost"
             size="sm"
             disabled={pageCount === 0 || page >= pageCount}

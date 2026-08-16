@@ -2940,3 +2940,22 @@ former dynamic-event P1 is no longer a valid blocker.
   passed with registered warnings only.
 - Detailed evidence:
   `shots/2026-08-17/explorer-selected-preview-short-height/notes.md`.
+
+## 2026-08-17 Explorer PDF at 320x200
+
+- Active discovery continued into the distinct PDF fallback branch using a
+  canonical one-page PDF fixture.
+- Before, the nested 44px PDF toolbar overflowed to `x=414.125`; the safe Open
+  action was offscreen and the page frame began at `y=208`.
+- `lynx-explorer-pdf-compact-toolbar-overflow`: P1 contribution
+  `1.00 -> 0.00`.
+- Short-height PDF fallback now uses full preview height, a 32px toolbar,
+  page-count + Open controls, a 28px More actions overlay, and hides only the
+  duplicate identity plus disabled single-page navigation.
+- After, Open ends at `x=284`; the page image is
+  `155.5x43 @ (162.5,155)` and ends at `y=198`.
+- Focused tests passed `2/2`; Lynx-for-Web and Native/Desktop production builds
+  passed with registered warnings only. Open was not activated because it
+  would launch an external application.
+- Detailed evidence:
+  `shots/2026-08-17/explorer-pdf-short-height/notes.md`.
