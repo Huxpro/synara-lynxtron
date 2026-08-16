@@ -2169,6 +2169,17 @@ former dynamic-event P1 is no longer a valid blocker.
 - DOM clicks established sidebar states because raw pointer publication remains
   a route-specific harness gap; no toggle interaction pass is claimed.
 
+## 2026-08-16 Plugin closed responsive roundtrip
+
+- A single dark Plugin session preserved the closed-sidebar user override
+  across `800x568 -> 1280x820 -> 800x568`.
+- Root classes changed medium -> wide -> medium while `AppMain--sidebar-closed`
+  remained stable.
+- Header geometry restored exactly `800x92 -> 1280x46 -> 800x92`; no stale
+  compact/medium height survived the wide transition.
+- This is a responsive-state product pass, contribution `0.00 -> 0.00`; no
+  code change was required.
+
 ## 2026-08-16 Short-height compact headers
 
 - A new `320x200` viewport axis checked the cost of recent 92px compact
