@@ -77,6 +77,9 @@ Web output/stage SHA-256:
 ## Gates
 
 - Focused desktop drag/header contract: `4/4`.
+- React Doctor line-scope scan against parent
+  `2c3e3f803e583593f3bbba55f2f3c91b2f5a9bd7`: `0` errors, `0` warnings,
+  complete for the two changed React files.
 - Lynx-for-Web production build: passed.
 - Native/Desktop production build: passed with registered warnings only.
 - No screenshot retained; local count remained `100`.
