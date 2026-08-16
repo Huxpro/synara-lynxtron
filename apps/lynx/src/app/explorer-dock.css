@@ -13,6 +13,51 @@
   background-color: var(--background);
 }
 
+.SliceRoot--viewport-compact .ThreadPage > .ExplorerDock {
+  left: 0;
+  top: 92px;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  > .ExplorerDockHeader {
+  height: 28px;
+  min-height: 28px;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockSearch {
+  padding: 4px;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockSearchIcon {
+  left: 14px;
+  top: 11px;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockPreviewContent {
+  padding: 4px;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockEntries {
+  padding: 3px;
+}
+
 .ExplorerDock--editor {
   position: relative;
   top: auto;

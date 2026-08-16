@@ -171,6 +171,21 @@ describe('Lynx Explorer dock', () => {
       /\.ExplorerDock\s*\{[^}]*width:\s*50%;[^}]*min-width:\s*480px;[^}]*max-width:\s*960px;/s
     );
     expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.ThreadPage > \.ExplorerDock\s*\{[^}]*left:\s*0;[^}]*top:\s*92px;[^}]*width:\s*100%;[^}]*min-width:\s*0;[^}]*max-width:\s*none;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+>\s+\.ExplorerDockHeader\s*\{[^}]*height:\s*28px;[^}]*min-height:\s*28px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockSearch\s*\{[^}]*padding:\s*4px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockPreviewContent\s*\{[^}]*padding:\s*4px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockEntries\s*\{[^}]*padding:\s*3px;/s
+    );
+    expect(styles).toMatch(
       /\.ExplorerDockSidebar\s*\{[^}]*width:\s*240px;[^}]*min-width:\s*240px;[^}]*border-right:\s*1px solid var\(--border\);/s
     );
     expect(styles).toMatch(

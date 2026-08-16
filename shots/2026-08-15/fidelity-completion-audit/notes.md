@@ -2894,3 +2894,26 @@ former dynamic-event P1 is no longer a valid blocker.
   DevTool client, so Native DOM/interaction remains harness missing coverage.
 - Detailed evidence:
   `shots/2026-08-17/temporary-thread-short-height/notes.md`.
+
+## 2026-08-17 Explorer query at 320x200
+
+- Active discovery combined an ordinary Thread Explorer, a real repository,
+  populated/no-result queries, dark theme, and the extreme `320x200` viewport.
+  Previous search evidence covered normal and Editor compact sizes only.
+- Before, the desktop `480px` minimum placed the dock at `x=-160..320`.
+  Search, results, and `No matching files.` were almost entirely offscreen;
+  the dock also started at `y=46`, inside the 92px compact Thread header.
+- `lynx-explorer-query-compact-offscreen`: P1 contribution
+  `1.00 -> 0.00`.
+- The compact ordinary Thread dock now clamps to `320x108 @ (0,92)` while
+  preserving Web's horizontal 240px sidebar + flexible preview anatomy.
+- Search is `231x28 @ (5,124)`. The result owner is
+  `239x43 @ (1,157)` with `scrollHeight=3478`; its first 40px result ends
+  exactly at `y=200`. The no-result copy ends at `y=187.5`.
+- Focused Explorer tests passed `2/2`; Lynx-for-Web and Native/Desktop
+  production builds passed with registered warnings only. Native build is
+  supporting evidence because the host cannot represent `320x200`.
+- A Web authority hydration failure was rejected and separately classified;
+  it was not used as product evidence.
+- Detailed evidence:
+  `shots/2026-08-17/explorer-query-short-height/notes.md`.
