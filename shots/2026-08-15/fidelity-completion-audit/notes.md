@@ -1944,3 +1944,28 @@ former dynamic-event P1 is no longer a valid blocker.
   no retained screenshot, and local count `100`.
 - Detailed evidence:
   `shots/2026-08-16/automations-header-320/notes.md`.
+
+## 2026-08-16 Automation detail breadcrumb at 320px
+
+- Active discovery added populated detail breadcrumb/action hit ownership at
+  `320x568`, beyond the prior compact pane geometry coverage.
+- Before, breadcrumb center `(160,23)` overlapped fixed titlebar controls
+  `x=90..174`, `y=0..46` and hit a navigation icon; a real pointer sequence did
+  not navigate.
+- `lynx-automation-detail-320-breadcrumb-titlebar-overlap`: P1 contribution
+  `1.00 -> 0.00`.
+- Compact detail now uses a `92px` header with the breadcrumb in row two and a
+  `246px` main pane, preserving prompt-body height. Medium/wide are unchanged.
+- After, breadcrumb moved to `y=58.5..78.5`; center `(160,69)` hit its own text.
+  Edit/Delete/Resume remained contained below it.
+- Nested-shadow selector/pointer behavior remains an interaction harness gap;
+  it is not claimed as a product interaction pass. Native compact behavior
+  remains for the next batch certification.
+- Focused suite passed `8/8`; Web and Native/Desktop builds passed. Web bundle:
+  `c578b2bf7856a12a1f75e7c7ada0c3bb2ddd1edeff1085521ae4915226883831`.
+- Every browser attempt used the guarded wrapper. Entry/failure/exit cleanup
+  returned `sessions: []` with zero agent-browser-owned processes; unrelated
+  Playwright jobs were traced and not killed. No screenshot was retained and
+  local count remained `100`.
+- Detailed evidence:
+  `shots/2026-08-16/automation-detail-header-320/notes.md`.

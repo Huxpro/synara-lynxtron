@@ -103,11 +103,22 @@ describe('Lynx Automations route', () => {
     expect(detailStyles).toContain(
       '.SliceRoot--viewport-compact .AutomationDetailMain'
     );
-    expect(detailStyles).toContain('flex: 0 0 200px;');
+    expect(detailStyles).toContain('flex: 0 0 246px;');
     expect(detailStyles).toContain(
       '.SliceRoot--viewport-compact .AutomationDetailAside'
     );
     expect(detailStyles).toContain('min-width: 0;');
+  });
+
+  it('keeps the compact detail breadcrumb below desktop titlebar controls', () => {
+    const detailStyles = readFileSync(
+      new URL('./automations-page.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(detailStyles).toMatch(
+      /\.SliceRoot--viewport-compact \.AutomationDetailHeader\s*\{[^}]*height:\s*92px;[^}]*min-height:\s*92px;[^}]*padding:\s*46px 20px 0;/s
+    );
   });
 
   it('keeps compact list actions outside desktop titlebar controls', () => {
