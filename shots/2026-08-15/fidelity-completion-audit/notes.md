@@ -1089,3 +1089,13 @@ former dynamic-event P1 is no longer a valid blocker.
 - Legacy single-selection migration remains focused-test evidence only, not
   claimed Native legacy-state evidence.
 - Both consoles and all canonical/process/browser cleanup gates passed.
+
+## 2026-08-16 Native legacy provider-memory migration
+
+- A real legacy KV contained only Pi/GPT-5.5 `modelSelection`, without the new
+  provider map.
+- Exact-owned cold start restored GPT-5.5 and rewrote KV with
+  `modelSelectionByProvider.pi`.
+- `native-provider-model-memory-legacy-migration`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- Console and all process/browser cleanup gates passed.

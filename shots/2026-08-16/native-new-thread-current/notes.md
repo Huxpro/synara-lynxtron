@@ -437,6 +437,28 @@ relabelled as a Native legacy-state run. Both exact-owned cold starts had empty
 warning/error console. Canonical/process/browser cleanup passed and screenshot
 count remained `100`.
 
+## Native legacy provider-memory migration continuation
+
+A fresh isolated user-data run preloaded the previous v1 shape with only:
+
+`modelSelection: { provider: "pi", model: "openai/gpt-5.5" }`
+
+and no `modelSelectionByProvider`.
+
+The exact-owned cold start:
+
+- restored `GPT-5.5` in the visible model trigger;
+- emitted no warning/error console entry;
+- rewrote persisted KV with active Pi/GPT-5.5 plus
+  `modelSelectionByProvider.pi`.
+
+`native-provider-model-memory-legacy-migration`: missing coverage
+`1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+
+This closes the Native legacy-state boundary that the preceding restart cell
+deliberately left as focused-test evidence. Owned ports/runtime/state and
+browser processes were removed; screenshot count remained `100`.
+
 `native-new-thread-direct-model-selection`: missing coverage
 `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
 
