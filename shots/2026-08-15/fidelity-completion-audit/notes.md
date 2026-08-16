@@ -2420,3 +2420,24 @@ former dynamic-event P1 is no longer a valid blocker.
   claimed.
 - Every browser workflow used `bun run browser:run -- ...` and returned through
   its zero-session/zero-owned-process cleanup gate.
+
+## 2026-08-17 Kanban new-task dialog at 320x200
+
+- A canonical project created through `project.create` exposed the rendered
+  Kanban `New task` control at `320x200`, dark.
+- The dialog remained inside the viewport at `288x160 @ (16,20)`. Its shared
+  panel retained a vertical scroll owner (`clientHeight=54`,
+  `scrollHeight=100`), while the draft switch and complete 32px Create task
+  hit area remained visible below it.
+- At `320x568`, the same dialog expanded to `288x246`; the panel was
+  `100/100` and the action remained 32px. The short-height delta is therefore a
+  constrained shared-panel layout rather than page-level overflow.
+- This is a short-height dialog-shell pass, contribution `0.00 -> 0.00`; no
+  product code change was required.
+- The native textarea reported `0x0` in Lynx-for-Web at both 200px and 568px
+  heights. Input visibility, focus, and enabled-submit behavior remain Native
+  missing coverage and are not claimed as a browser pass or scored as a
+  short-height product loss.
+- DOM activation established the dialog because raw agent-browser pointer
+  publication for Lynx custom elements remains a harness gap. Every browser
+  workflow ran through `bun run browser:run -- ...` and passed final cleanup.
