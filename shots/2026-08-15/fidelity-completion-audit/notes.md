@@ -2786,3 +2786,14 @@ former dynamic-event P1 is no longer a valid blocker.
   and Default permissions remained fully visible.
 - This is a short-height layout pass, contribution `0.00 -> 0.00`; no product
   code change was required and no permission mode was changed.
+
+## 2026-08-17 Environment multi-server fixture attempt
+
+- Five owned temporary HTTP listeners were started on isolated ports to extend
+  the earlier one-server Local Servers menu into a long-list state.
+- A single process with five listeners correctly projected as one row. Five
+  separate child processes also projected as one row, so the scanner applies
+  higher-level ownership/filtering rather than one-row-per-listener or PID.
+- The intended multi-row prerequisite was therefore not established. This is a
+  fixture/harness gap, not a repeated one-row pass and not a product loss.
+- All owned listeners were stopped and ports `58111..58115` were verified free.
