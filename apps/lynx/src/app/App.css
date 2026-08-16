@@ -197,14 +197,15 @@
   .SharedKanbanRouteHeader,
 .SliceRoot--viewport-medium
   .AppMain--sidebar-closed
-  .SharedKanbanRouteHeader,
+  .SharedKanbanRouteHeader {
+  padding-left: 20px;
+}
+
 .SliceRoot--viewport-compact
   .AppMain--sidebar-closed
-  .SharedPrRouteHeader,
-.SliceRoot--viewport-medium
-  .AppMain--sidebar-closed
   .SharedPrRouteHeader {
-  padding-left: 20px;
+  height: 92px;
+  padding: 46px 20px 0;
 }
 
 .TransportStatusNotice {

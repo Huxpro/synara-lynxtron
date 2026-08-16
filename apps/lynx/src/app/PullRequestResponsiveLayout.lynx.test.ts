@@ -43,4 +43,18 @@ describe('Pull Request responsive layout', () => {
     expect(source).toContain('minWidth={416}');
     expect(source).not.toContain('pull_requests_detail_panel_width');
   });
+
+  it('keeps compact route chrome below desktop titlebar controls', () => {
+    const styles = readFileSync(
+      new URL('./App.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact\s+\.AppMain--sidebar-closed\s+\.SharedPrRouteHeader\s*\{[^}]*height:\s*92px;[^}]*padding:\s*46px 20px 0;/s
+    );
+    expect(styles).not.toMatch(
+      /\.SliceRoot--viewport-medium\s+\.AppMain--sidebar-closed\s+\.SharedPrRouteHeader\s*\{[^}]*padding-left:\s*20px;/s
+    );
+  });
 });

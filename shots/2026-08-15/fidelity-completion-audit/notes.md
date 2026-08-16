@@ -2005,3 +2005,25 @@ former dynamic-event P1 is no longer a valid blocker.
   guarded wrapper; screenshot count remained `100`.
 - Detailed evidence:
   `shots/2026-08-16/editor-header-titlebar-320/notes.md`.
+
+## 2026-08-16 Pull Requests header at 320px
+
+- Active discovery added list-route header hit ownership at `320x568`, distinct
+  from prior minimum-window populated detail/close coverage.
+- Before, `Pull requests` extended to `x=105.75`; its visible right segment hit
+  fixed controls beginning at `x=90`. Refresh at `x=272..300` was safe.
+- `lynx-pull-requests-320-titlebar-overlap`: P1 contribution `1.00 -> 0.00`.
+- Compact PR now reserves a first 46px titlebar row and renders shared route
+  controls in row two. PR medium retains one-row shell geometry; Kanban rules
+  are unchanged.
+- After, title moved to `y=59..79`, Refresh to `y=55..83`, and both centers hit
+  their own content. Medium `800x568` remained one row.
+- Raw pointer publication for Refresh remained a route-specific harness gap
+  and is not claimed as behavior evidence.
+- Focused suite passed `4/4`, expanded PR suites `11/11`, and Web plus
+  Native/Desktop builds passed. Web bundle:
+  `fe8231d29424e64825f788ab8b3ede684a0723c39c0daff88c7f184bc5579701`.
+- Every browser command used the guarded wrapper; screenshot count remained
+  `100`.
+- Detailed evidence:
+  `shots/2026-08-16/pull-requests-header-320/notes.md`.
