@@ -518,6 +518,49 @@ Exact-client warning/error console remained empty.
 - Final owned ports `58090`, `8891`, and `8901` were free.
 - No screenshots were retained; local screenshot count remained `100`.
 
+## Pause cold-restart persistence
+
+Active discovery then moved from edit parity to a new lifecycle state:
+pause followed by an exact-owned Native cold restart.
+
+The isolated fixture was an enabled standalone daily automation,
+`Pause restart proof`, with a future persisted `next_run_at` and zero runs.
+Initial Native detail at `900x650` rendered Status `Active` and the real Pause
+control.
+
+A real Native touch on Pause sent the canonical update
+`{enabled:false}`. The live detail changed to:
+
+- Status `Paused`;
+- action `Resume`.
+
+Read-only SQLite projection confirmed `enabled=0`. The stored
+`next_run_at` remained present, which is persistence-layer behavior rather than
+visible scheduling state.
+
+The owned Lynxtron process was then stopped and cold-started against the same
+production bundle, isolated server snapshot, and user-data directory. After
+restart Native restored:
+
+- Status `Paused`;
+- action `Resume`;
+- `Next run` value `—`, proving the detail projection did not expose the stale
+  persisted timestamp while disabled.
+
+Exact-client warning/error console remained empty. Bundle SHA-256:
+`652f681314935d4a6c4e1a7e94c8a006dfec5546d6a638b50e0d7f86330f685c`.
+
+- `native-automations-pause-cold-restart`: missing coverage
+  `1.00 -> 0.00`.
+- Component product-loss contribution remained `0.00 -> 0.00`.
+- This was a real touch, canonical mutation, process restart, and post-restart
+  UI check; tests or stored state alone were not used as proof.
+- Canonical cleanup returned zero visible definitions/runs; the fixture project
+  and all isolated state/runtime/user directories were removed. Owned ports
+  `58090`, `8891`, and `8901` were free, and browser state ended at
+  `sessions: []` with zero owned processes.
+- No screenshots were retained; local screenshot count remained `100`.
+
 ## Heartbeat Stop when edit parity
 
 The next discovery loop reused the same semantic Heartbeat state but exercised

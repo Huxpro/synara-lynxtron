@@ -1414,3 +1414,20 @@ former dynamic-event P1 is no longer a valid blocker.
   free. Port `8901` belonged to an unrelated t3code archaeology Lynxtron run
   (PID `78196`) started after this loop; it was not terminated and is classified
   as external port competition, not a Synara harness leak.
+
+## 2026-08-16 Native Pause cold restart
+
+- Active discovery added an enabled standalone daily automation at `900x650`,
+  then exercised Pause and a real Native cold restart.
+- A real Pause touch changed live Status to `Paused` and the action to
+  `Resume`; canonical state stored `enabled=0`.
+- After restarting the owned Lynxtron process against the same snapshot and
+  user-data directory, Native restored `Paused`, `Resume`, and `Next run —`.
+- `native-automations-pause-cold-restart`: missing coverage `1.00 -> 0.00`;
+  product-loss contribution remained `0.00 -> 0.00`.
+- Exact-client warning/error console was empty. Bundle SHA-256:
+  `652f681314935d4a6c4e1a7e94c8a006dfec5546d6a638b50e0d7f86330f685c`.
+- Canonical cleanup returned zero visible definitions/runs; fixture state,
+  runtime, and user-data directories were removed. Owned ports were free and
+  browser cleanup ended at `sessions: []` with zero owned processes.
+- No screenshots were retained; local count remained `100`.
