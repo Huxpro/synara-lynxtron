@@ -110,6 +110,29 @@ describe('Lynx Automations route', () => {
     expect(detailStyles).toContain('min-width: 0;');
   });
 
+  it('keeps compact list actions outside desktop titlebar controls', () => {
+    const pageSource = readFileSync(
+      new URL('./AutomationsPage.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const styles = readFileSync(
+      new URL('./automations-page.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(pageSource).toContain('className="AutomationsNewAction"');
+    expect(pageSource).toContain('aria-label="New automation"');
+    expect(pageSource).toContain(
+      '<PlusIcon className="AutomationsNewActionIcon" size={14} />'
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.AutomationsNewAction\s*\{[^}]*width:\s*32px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.AutomationsNewActionText\s*\{[^}]*display:\s*none;/s
+    );
+  });
+
   it('creates a canonical daily automation from the real dialog', () => {
     const pageSource = readFileSync(
       new URL('./AutomationsPage.lynx.tsx', import.meta.url),

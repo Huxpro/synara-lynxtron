@@ -1920,3 +1920,27 @@ former dynamic-event P1 is no longer a valid blocker.
 - Entry/exit cleanup passed with `sessions: []`, zero browser-owned processes,
   no retained screenshot, and local count `100`.
 - Detailed evidence: `shots/2026-08-16/update-actions-320/notes.md`.
+
+## 2026-08-16 Automations list header at 320px
+
+- Header audit added the Automations list at `320x568`, distinct from existing
+  compact detail/create coverage.
+- Before, Refresh `x=156..188` overlapped fixed titlebar controls `x=90..174`;
+  its center hit a disabled navigation control.
+- `lynx-automations-320-refresh-titlebar-overlap`: P1 contribution
+  `1.00 -> 0.00`.
+- New automation now owns icon/text/accessibility state; compact hides only the
+  text and keeps it `32px`, moving Refresh/New to `x=240/276`.
+- Real Refresh increased `automation.list` calls `2 -> 3` while preserving the
+  empty state and clean relay.
+- Exact-owned Native `900x650` retained the one-row header, full New automation
+  text, and real Refresh behavior with empty console.
+- A wrong Native node-id report failed before interaction and was rejected as
+  harness script error; corrected node `124` completed the touch.
+- Focused suites passed `7/7`, expanded suites passed `32/32`, and both builds
+  passed. Bundle:
+  `0e9a00958e4813e1c999a81f7f9fa1ca111b25788c59472b551046a065e14665`.
+- Entry/exit cleanup passed with `sessions: []`, zero browser-owned processes,
+  no retained screenshot, and local count `100`.
+- Detailed evidence:
+  `shots/2026-08-16/automations-header-320/notes.md`.

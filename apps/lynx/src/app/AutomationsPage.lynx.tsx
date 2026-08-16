@@ -4,7 +4,7 @@ import type { AutomationDefinitionRow, AutomationTriageRow } from '@synara/share
 import { projectAutomationList } from '@synara/shared/automationList';
 
 import { Button } from '../components/ui/button';
-import { RefreshCwIcon } from '../lib/icons';
+import { PlusIcon, RefreshCwIcon } from '../lib/icons';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { sleepOnHost } from '../platform/timer';
 import {
@@ -278,12 +278,16 @@ export function AutomationsPage({
           <RefreshCwIcon size={16} color="var(--foreground)" />
         </Button>
         <Button
+          className="AutomationsNewAction"
           size="sm"
           disabled={(sidebar.data?.projects.length ?? 0) === 0}
           aria-label="New automation"
           onClick={() => setCreateOpen(true)}
         >
-          New automation
+          <PlusIcon className="AutomationsNewActionIcon" size={14} />
+          <text className="LxButton__text AutomationsNewActionText">
+            New automation
+          </text>
         </Button>
       </view>
       <scroll-view
