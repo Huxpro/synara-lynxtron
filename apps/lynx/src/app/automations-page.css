@@ -329,6 +329,15 @@
   padding: 46px 20px 0;
 }
 
+.SliceRoot--viewport-medium
+  .AppMain--sidebar-closed
+  .AutomationDetailHeader,
+.SliceRoot--viewport-medium
+  .AppMain--sidebar-closed
+  .AutomationDetailNotFoundHeader {
+  padding-left: 180px;
+}
+
 .SliceRoot--viewport-compact .AutomationDetailAside {
   flex: 1;
   width: 100%;

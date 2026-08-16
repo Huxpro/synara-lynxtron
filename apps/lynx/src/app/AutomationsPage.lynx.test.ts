@@ -132,6 +132,17 @@ describe('Lynx Automations route', () => {
     );
   });
 
+  it('keeps medium detail headers outside closed desktop titlebar controls', () => {
+    const detailStyles = readFileSync(
+      new URL('./automations-page.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(detailStyles).toMatch(
+      /\.SliceRoot--viewport-medium\s+\.AppMain--sidebar-closed\s+\.AutomationDetailHeader,[\s\S]*?\.SliceRoot--viewport-medium\s+\.AppMain--sidebar-closed\s+\.AutomationDetailNotFoundHeader\s*\{[^}]*padding-left:\s*180px;/s
+    );
+  });
+
   it('keeps compact list actions outside desktop titlebar controls', () => {
     const pageSource = readFileSync(
       new URL('./AutomationsPage.lynx.tsx', import.meta.url),

@@ -2171,3 +2171,20 @@ former dynamic-event P1 is no longer a valid blocker.
   missing prerequisite, not product evidence.
 - Detailed evidence:
   `shots/2026-08-16/workspace-header-medium-closed/notes.md`.
+
+## 2026-08-16 Automation detail headers at medium width with sidebar closed
+
+- Active discovery added populated and not-found detail owners at `800x568`,
+  medium, closed; list-header evidence did not cover them.
+- Not-found title `x=20..103.36` and populated breadcrumb `x=20..460` both
+  crossed fixed controls `x=90..174`.
+- `lynx-automation-not-found-medium-closed-title-overlap`: P1
+  `1.00 -> 0.00`.
+- `lynx-automation-detail-medium-closed-breadcrumb-overlap`: P1
+  `1.00 -> 0.00`.
+- Both left headers retain 46px height and use `padding-left:180px`; populated
+  actions at `x=480..800` and sidebar-open geometry remain unchanged.
+- Focused suite passed `10/10`; Web and Native/Desktop builds passed. Web
+  bundle: `cd3a164f4c2cef288b8acf0b047b6de5040c2837d5169cb61fcd619251000b2d`.
+- Detailed evidence:
+  `shots/2026-08-16/automation-detail-medium-closed/notes.md`.
