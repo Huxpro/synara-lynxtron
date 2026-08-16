@@ -3,6 +3,7 @@
 // Layer: Chat workspace file preview regression test
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { readFileSync } from "node:fs";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 
@@ -31,5 +32,15 @@ describe("WorkspaceFilePreviewHeader", () => {
     expect(markup).toContain(">Partial</span>");
     expect(markup).toContain("hidden @sm/header-actions:inline");
     expect(markup).toContain(">Shown partially</span>");
+  });
+
+  it("keeps successful zero-byte files distinguishable from loading and errors", () => {
+    const previewSource = readFileSync(
+      new URL("../WorkspaceFilePreview.tsx", import.meta.url),
+      "utf8",
+    );
+
+    expect(previewSource).toContain("fileContents.length === 0");
+    expect(previewSource).toContain("<p>Empty file.</p>");
   });
 });

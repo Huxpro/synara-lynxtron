@@ -444,6 +444,8 @@ export function ExplorerDock(props: {
               <text className="ExplorerDockState ExplorerDockState--error">
                 Could not read this file.
               </text>
+            ) : props.file?.contents.length === 0 ? (
+              <text className="ExplorerDockState">Empty file.</text>
             ) : isMarkdownPath(props.selectedPath) ? (
               <scroll-view className="ExplorerDockPreviewScroll" scroll-orientation="vertical">
                 <ChatMarkdown

@@ -92,6 +92,12 @@ describe('Lynx Explorer dock', () => {
       /<ExplorerImagePreview[\s\S]{0,180}previewUrl=\{props\.localPreviewUrl\}/
     );
     expect(source).toContain('Could not load this image.');
+    expect(source).toContain(
+      "props.file?.contents.length === 0"
+    );
+    expect(source).toContain(
+      '<text className="ExplorerDockState">Empty file.</text>'
+    );
     expect(source).toContain('<ExplorerPdfFallback');
     expect(source).toContain('<ExplorerSyntaxPreview');
     expect(source).toContain('isSupportedLocalPdfPath(props.selectedPath)');

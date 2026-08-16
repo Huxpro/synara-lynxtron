@@ -3278,3 +3278,21 @@ former dynamic-event P1 is no longer a valid blocker.
   passed.
 - Detailed evidence:
   `shots/2026-08-17/explorer-truncated-search-short-height/notes.md`.
+
+## 2026-08-17 Explorer empty source at 320x200
+
+- A canonical zero-byte text file returned successfully with content length
+  `0` and `truncated:false`.
+- Before, both Web source and Lynx rendered an unexplained blank code surface;
+  Lynx's code element had zero height and no state copy.
+- `explorer-empty-file-indistinguishable`: P1 contribution
+  `1.00 -> 0.00`.
+- Successful zero-byte reads now show `Empty file.` through each renderer's
+  shared compact state component.
+- In Lynx, the state measured
+  `59.9375x18 @ (210.28125,171)` and ended at `y=189`; the empty source
+  scroller/code no longer mounted.
+- Focused Lynx and Web tests passed `2/2` each; all three production builds
+  passed.
+- Detailed evidence:
+  `shots/2026-08-17/explorer-empty-source-short-height/notes.md`.

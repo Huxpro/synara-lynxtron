@@ -566,6 +566,10 @@ export function WorkspaceFilePreview(props: WorkspaceFilePreviewProps) {
             {fileQuery.error instanceof Error ? fileQuery.error.message : "Could not read file."}
           </p>
         </PanelStateMessage>
+      ) : fileContents.length === 0 ? (
+        <PanelStateMessage density="compact" fill="flex">
+          <p>Empty file.</p>
+        </PanelStateMessage>
       ) : (
         <div
           ref={contentsRef}
