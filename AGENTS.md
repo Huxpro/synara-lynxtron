@@ -114,7 +114,13 @@ Use the harness in two distinct modes. Do not pay final-certification costs on e
 1. **Fast Lynx-for-Web loop** — the default for layout, composition, ordinary pointer/keyboard interaction, query state, transcript behavior, and rendered Markdown. Run Web original and Lynx-for-Web against one isolated server and one real snapshot. Iterate in named browser sessions, collect paired screenshots plus numeric geometry, and run focused tests. A complete production build is required at the validated slice boundary, not after every edit.
 2. **Native batch / certification loop** — required for platform semantics and release evidence. Batch several Web-proven slices into one exact-owned Lynxtron run, then verify Native input, focus, accessibility, host integration, persistence, restart, and DevTool console. The full route × theme × size matrix and packaged-app checks belong here.
 
-Every discovery, fast, and Native loop must run `bun run browser:cleanup` at both entry and exit, including loops that do not expect to open a browser. A loop is not complete until `agent-browser session list --json` reports `sessions: []` and the cleanup script reports zero agent-browser-owned daemon/browser processes. Any remainder is a harness leak: stop, record it as harness failure, and do not retain evidence, commit, push, or begin the next loop until cleanup passes. Never terminate unrelated Chrome or remote-debugging processes.
+Every discovery, fast, and Native loop must use this browser-ownership checklist, including loops that do not expect to open a browser:
+
+1. At loop entry, run `bun run browser:cleanup`, then independently run `bun run browser:run -- agent-browser session list --json`.
+2. After every timeout, interruption, failed script, failed probe, or failed browser command, stop the loop and repeat both checks before any retry or other work.
+3. At loop exit, repeat both checks before retaining evidence, committing, pushing, or beginning the next loop.
+
+Both checks must report `sessions: []` and zero agent-browser-owned daemon/browser processes. Any remainder is a harness leak: stop, record it as harness failure, and do not continue until an independent retry of both checks passes. Never infer cleanup from `agent-browser close` output alone, reuse a leaked session, or terminate unrelated Chrome, Playwright, remote-debugging, Lynxtron, Lynx Explorer, or other application processes.
 
 The fast loop has been validated end to end: Composer, transcript follow/switching, Markdown code actions, and structured mention/skill rendering developed through Lynx-for-Web all passed a later real Lynxtron batch, including canonical send, provider response, restart persistence, scroll, wrap, copy, and a clean exact-client console. Keep the evidence under `shots/2026-08-02/harness/` and `shots/2026-08-02/native-regression/` as the reference run.
 

@@ -3119,3 +3119,22 @@ former dynamic-event P1 is no longer a valid blocker.
   evidence, not claimed pointer evidence.
 - Detailed evidence:
   `shots/2026-08-17/explorer-close-short-height/notes.md`.
+
+## 2026-08-17 Explorer long source line at 320x200
+
+- Active discovery selected a real JSON file containing one 500-character
+  unbroken line.
+- Before, the compact source code retained `white-space:pre` inside a
+  vertical-only Lynx scroll owner. The code measured `117.5x17`, and almost
+  all 512 characters were clipped with no horizontal interaction path.
+- `lynx-explorer-source-long-line-clipped`: P1 contribution
+  `1.00 -> 0.00`.
+- Short-height ordinary Thread Explorer now uses `pre-wrap` plus `break-word`
+  for syntax content. Normal-height and Editor Explorer rendering remain
+  unchanged.
+- After, the code is `117.5x527`, the syntax container is `151.5x544`, and
+  the existing scroller has `scrollHeight=544` with no horizontal overflow.
+- Focused tests passed `2/2`; Lynx-for-Web and Native/Desktop production builds
+  passed with registered warnings only.
+- Detailed evidence:
+  `shots/2026-08-17/explorer-long-line-short-height/notes.md`.

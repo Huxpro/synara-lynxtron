@@ -834,6 +834,14 @@
   white-space: pre;
 }
 
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockSyntaxCode {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
 .ExplorerDockCommentEditor {
   display: flex;
   width: 440px;

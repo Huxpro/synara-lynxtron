@@ -281,5 +281,8 @@ describe('Lynx Explorer dock', () => {
     expect(styles).toMatch(
       /\.ExplorerDockPreviewContent\s*\{[^}]*flex:\s*1;[^}]*padding:\s*12px;/s
     );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockSyntaxCode\s*\{[^}]*white-space:\s*pre-wrap;[^}]*word-break:\s*break-word;/s
+    );
   });
 });
