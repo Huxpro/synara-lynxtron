@@ -2353,6 +2353,15 @@ former dynamic-event P1 is no longer a valid blocker.
 - Detailed evidence:
   `shots/2026-08-16/automation-populated-short-height/notes.md`.
 
+## 2026-08-16 Automation create dialog at 320x200
+
+- A canonical project enabled the rendered create dialog at `320x200`.
+- Popup remained fully visible: `288x168 @ (16,16)`.
+- Form panel retained a real 48px viewport with `scrollHeight=810`.
+- Footer and both actions were fully visible at `y=135..167`.
+- This is a short-height product pass, contribution `0.00 -> 0.00`; no code
+  change was required.
+
 ## 2026-08-16 Empty Editor Chat rail responsive matrix
 
 - Empty Editor Chat was newly tested at `320x200`, `320x568`, `800x568`, and
