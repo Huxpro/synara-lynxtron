@@ -1263,3 +1263,14 @@ former dynamic-event P1 is no longer a valid blocker.
 - `native-automations-create-dialog-minimum-window`: missing coverage
   `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
 - Console, canonical cleanup, and all process/browser gates passed.
+
+## 2026-08-16 Native Chat/Studio draft isolation
+
+- A preloaded Chat landing draft carried DeepSeek, Default permissions, and
+  Plan On into Studio because both containers shared one fixed draft ID.
+- `native-landing-draft-container-leak`: P1 contribution `1.00 -> 0.00`.
+- Chat retains the legacy draft key; Studio now has its own stable draft key.
+- Final exact-owned Studio restored GPT-5.5, Full access, and Plan Off while
+  leaving the ordinary Chat draft untouched.
+- Focused tests passed `3` files / `21` tests; Native/Desktop build, hashes,
+  console, canonical cleanup, and process/browser gates passed.

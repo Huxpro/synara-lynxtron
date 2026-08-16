@@ -33,11 +33,10 @@ import {
   ensureLandingThreadCreated,
   type LandingThreadCreationState,
 } from './landingThreadCreation.logic';
+import { landingDraftId } from './landingDraftIdentity.logic';
 import { resolveLandingWorkspaceContext } from './landingStudioFolder.logic';
 
 import './landing-composer.css';
-
-const LANDING_DRAFT_ID = 'lynx-landing-draft';
 
 function landingId(kind: 'command' | 'project' | 'thread'): string {
   'background only';
@@ -188,6 +187,7 @@ export function LandingComposer(props: {
   const generalSettings = readSettingsGeneralProjection(
     webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
   );
+  const draftId = landingDraftId(props.containerKind);
   const initialModelProvider =
     props.initialModelProvider ?? generalSettings.defaultProvider;
   const threadIdRef = useRef(landingId('thread'));
@@ -204,11 +204,11 @@ export function LandingComposer(props: {
   const [studioFolderPath, setStudioFolderPath] = useState<string | null>(null);
   const interactionMode =
     useComposerDraftStore(
-      (state) => state.draftsByThreadId[LANDING_DRAFT_ID]?.interactionMode
+      (state) => state.draftsByThreadId[draftId]?.interactionMode
     ) ?? 'default';
   const runtimeMode =
     useComposerDraftStore(
-      (state) => state.draftsByThreadId[LANDING_DRAFT_ID]?.runtimeMode
+      (state) => state.draftsByThreadId[draftId]?.runtimeMode
     ) ?? 'full-access';
   const setInteractionMode = useComposerDraftStore(
     (state) => state.setInteractionMode
@@ -480,7 +480,7 @@ export function LandingComposer(props: {
         </view>
       ) : null}
       <Composer
-        draftId={LANDING_DRAFT_ID}
+        draftId={draftId}
         threadId={threadIdRef.current}
         modelSelection={modelSelection}
         runtimeMode={runtimeMode}
@@ -493,10 +493,10 @@ export function LandingComposer(props: {
         emptyLanding={true}
         onBeforeSend={ensureThread}
         onSetInteractionMode={(nextInteractionMode) =>
-          setInteractionMode(LANDING_DRAFT_ID, nextInteractionMode)
+          setInteractionMode(draftId, nextInteractionMode)
         }
         onSetRuntimeMode={(nextRuntimeMode) =>
-          setRuntimeMode(LANDING_DRAFT_ID, nextRuntimeMode)
+          setRuntimeMode(draftId, nextRuntimeMode)
         }
         onSendSucceeded={() => {
           'background only';

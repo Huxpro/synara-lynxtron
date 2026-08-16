@@ -258,3 +258,41 @@ as harness cleanup failure, not product loss.
 
 Canonical, process, browser, and screenshot-count cleanup gates passed after
 the final run.
+
+## Native Chat/Studio draft isolation continuation
+
+Active discovery preloaded an ordinary Chat landing draft with:
+
+- OpenCode / `DeepSeek V4 Flash Free`;
+- Default permissions;
+- Plan mode On.
+
+Cold-starting Studio with that user data exposed a P1 cross-container leak:
+Studio inherited all three Chat choices even though its folder context and
+container were separate.
+
+`native-landing-draft-container-leak`: P1 contribution `1.00 -> 0.00`.
+
+The root cause was one fixed `lynx-landing-draft` identity shared by Chat and
+Studio. Landing draft identity is now container-scoped:
+
+- Chat keeps the legacy `lynx-landing-draft` key for compatibility;
+- Studio uses `lynx-studio-landing-draft`.
+
+The final exact-owned Studio cold start against the same preloaded Chat draft
+restored:
+
+- Studio default model `GPT-5.5`, not DeepSeek;
+- Full access, not Default permissions;
+- Plan mode Off;
+- `Use a folder`;
+- the original Chat draft remained present and unchanged;
+- no Studio draft key was created until Studio itself changed state.
+
+Focused tests passed `3` files / `21` tests. Native/Desktop production build
+passed with registered warnings only. Output/staged SHA-256 was identical at
+`3d0b773ec11cda88cc8fc7aced13dfe17b0731fa86c72f16cea8dbf1ac0ba202`.
+Exact-client warning/error console stayed empty.
+
+Canonical and all process/browser cleanup gates passed; screenshot count
+remained `100`.

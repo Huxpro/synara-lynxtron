@@ -86,7 +86,10 @@ describe('landing composer fidelity contract', () => {
       'initialProjectId={editorRailDraftProject?.id ?? null}'
     );
     expect(landingSource).toContain('<ComposerProjectPickerComposition');
-    expect(landingSource).toContain('draftId={LANDING_DRAFT_ID}');
+    expect(landingSource).toContain('draftId={draftId}');
+    expect(landingSource).toContain(
+      'const draftId = landingDraftId(props.containerKind)'
+    );
     expect(landingSource).toContain('buildComposerProjectPickerModel');
     expect(landingSource).toContain("'Search folders'");
     expect(landingSource).toContain("'Search projects'");
@@ -199,10 +202,10 @@ describe('landing composer fidelity contract', () => {
       'onThreadCreated={props.onThreadCreated}'
     );
     expect(landingSource).toContain(
-      'setInteractionMode(LANDING_DRAFT_ID, nextInteractionMode)'
+      'setInteractionMode(draftId, nextInteractionMode)'
     );
     expect(landingSource).toContain(
-      'setRuntimeMode(LANDING_DRAFT_ID, nextRuntimeMode)'
+      'setRuntimeMode(draftId, nextRuntimeMode)'
     );
     expect(landingSource).toContain('interactionMode={interactionMode}');
     expect(landingSource).toContain('runtimeMode={runtimeMode}');
