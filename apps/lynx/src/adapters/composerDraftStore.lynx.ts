@@ -46,6 +46,8 @@ interface LynxComposerDraft {
   readonly mentions: ReadonlyArray<ProviderMentionReference>;
   readonly modelSelection?: ModelSelection;
   readonly modelSelectionByProvider?: Readonly<Record<string, ModelSelection>>;
+  readonly runtimeMode?: 'full-access' | 'approval-required';
+  readonly interactionMode?: 'default' | 'plan';
   readonly pastedTexts: ReadonlyArray<PastedTextDraft>;
   readonly prompt: string;
   readonly skills: ReadonlyArray<ProviderSkillReference>;
@@ -80,6 +82,14 @@ interface LynxComposerDraftStoreState {
   readonly setModelSelection: (
     threadId: string,
     modelSelection: ModelSelection
+  ) => void;
+  readonly setRuntimeMode: (
+    threadId: string,
+    runtimeMode: 'full-access' | 'approval-required'
+  ) => void;
+  readonly setInteractionMode: (
+    threadId: string,
+    interactionMode: 'default' | 'plan'
   ) => void;
   readonly setMentions: (
     threadId: string,
@@ -258,6 +268,14 @@ export function parsePersistedLynxComposerDrafts(
           : [],
         ...(modelSelection ? { modelSelection } : {}),
         ...(modelSelectionByProvider ? { modelSelectionByProvider } : {}),
+        ...(candidate.runtimeMode === 'full-access' ||
+        candidate.runtimeMode === 'approval-required'
+          ? { runtimeMode: candidate.runtimeMode }
+          : {}),
+        ...(candidate.interactionMode === 'default' ||
+        candidate.interactionMode === 'plan'
+          ? { interactionMode: candidate.interactionMode }
+          : {}),
         pastedTexts: Array.isArray(candidate.pastedTexts)
           ? (candidate.pastedTexts as PastedTextDraft[])
           : [],
@@ -298,7 +316,9 @@ function shouldRemoveDraft(draft: LynxComposerDraft): boolean {
     draft.pastedTexts.length === 0 &&
     draft.skills.length === 0 &&
     draft.modelSelection === undefined &&
-    Object.keys(draft.modelSelectionByProvider ?? {}).length === 0
+    Object.keys(draft.modelSelectionByProvider ?? {}).length === 0 &&
+    draft.runtimeMode === undefined &&
+    draft.interactionMode === undefined
   );
 }
 
@@ -474,6 +494,8 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()(
             mentions: [],
             modelSelection: current.modelSelection,
             modelSelectionByProvider: current.modelSelectionByProvider,
+            runtimeMode: current.runtimeMode,
+            interactionMode: current.interactionMode,
             pastedTexts: [],
             prompt: '',
             skills: [],
@@ -591,6 +613,28 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()(
                 [modelSelection.provider]: modelSelection,
               },
             },
+          },
+        };
+      }),
+    setRuntimeMode: (threadId, runtimeMode) =>
+      set((state) => {
+        const current = state.draftsByThreadId[threadId] ?? emptyDraft();
+        if (current.runtimeMode === runtimeMode) return state;
+        return {
+          draftsByThreadId: {
+            ...state.draftsByThreadId,
+            [threadId]: { ...current, runtimeMode },
+          },
+        };
+      }),
+    setInteractionMode: (threadId, interactionMode) =>
+      set((state) => {
+        const current = state.draftsByThreadId[threadId] ?? emptyDraft();
+        if (current.interactionMode === interactionMode) return state;
+        return {
+          draftsByThreadId: {
+            ...state.draftsByThreadId,
+            [threadId]: { ...current, interactionMode },
           },
         };
       }),

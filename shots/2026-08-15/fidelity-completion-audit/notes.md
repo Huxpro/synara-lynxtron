@@ -1159,3 +1159,18 @@ former dynamic-event P1 is no longer a valid blocker.
 - An initial selector expected an `LxButton` instead of the shared primary
   action and failed before interaction; the corrected selector passed.
 - Console and all cleanup gates passed.
+
+## 2026-08-16 Native New Thread mode restart
+
+- Web authority persists draft runtime and interaction modes; Lynx previously
+  held both only in local Landing state.
+- Real controls set Default permissions and Plan On, but KV had no mode fields;
+  restart reverted both controls.
+- `native-new-thread-presend-mode-restart`: P1 contribution `1.00 -> 0.00`.
+- Lynx draft persistence now owns validated runtime/interaction mode fields,
+  shared by Landing and Composer through one draft ID.
+- Final exact-owned set -> persist -> restart restored Default permissions and
+  Plan checked state with an empty console.
+- Focused tests passed `3` files / `31` tests; Native/Desktop build and
+  output/staged hash equality passed.
+- Canonical and process/browser cleanup gates passed.

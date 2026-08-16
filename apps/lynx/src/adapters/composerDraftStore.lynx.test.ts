@@ -376,6 +376,25 @@ describe('Lynx composer draft attachment subset', () => {
     });
   });
 
+  it('persists pre-send runtime and interaction modes', () => {
+    const store = useComposerDraftStore.getState();
+    store.setRuntimeMode('thread-1', 'approval-required');
+    store.setInteractionMode('thread-1', 'plan');
+
+    const draft =
+      useComposerDraftStore.getState().draftsByThreadId['thread-1'];
+    expect(draft?.runtimeMode).toBe('approval-required');
+    expect(draft?.interactionMode).toBe('plan');
+    expect(
+      parsePersistedLynxComposerDrafts(
+        webStorage.getItem(LYNX_COMPOSER_DRAFT_STORAGE_KEY)
+      )['thread-1']
+    ).toMatchObject({
+      runtimeMode: 'approval-required',
+      interactionMode: 'plan',
+    });
+  });
+
   it('migrates a legacy single provider selection into provider memory', () => {
     const drafts = parsePersistedLynxComposerDrafts(
       JSON.stringify({

@@ -414,6 +414,41 @@ Canonical cleanup removed the explicit Pi project and landing-created Home
 container. Owned ports/runtime/state were removed; final browser state was
 `sessions: []` with zero owned processes; screenshot count remained `100`.
 
+## Native pre-send mode restart continuation
+
+Web authority persists draft `runtimeMode` and `interactionMode`. Before this
+repair, Lynx kept both as `LandingComposer` local state.
+
+A real exact-owned draft set:
+
+- `Default permissions`;
+- Plan mode On.
+
+Both controls updated in the live UI, but persisted KV contained no landing
+draft mode fields. Restarting with the same user data reverted to Full access
+and Plan Off.
+
+`native-new-thread-presend-mode-restart`: P1 contribution `1.00 -> 0.00`.
+
+The Lynx draft facade now persists validated runtime and interaction modes.
+`LandingComposer` reads and writes those fields through the same
+`lynx-landing-draft` identity used by `Composer`; defaults remain Full access /
+Default when no override exists.
+
+The final staged bundle passed:
+
+1. real controls set Default permissions and Plan On;
+2. KV persisted `approval-required` and `plan`;
+3. restart with the same user data restored the Default permissions trigger;
+4. reopening extras restored Plan `aria-checked:true`;
+5. exact-client warning/error console stayed empty.
+
+Focused tests passed `3` files / `31` tests. Native/Desktop production build
+passed with registered warnings only. Output/staged SHA-256 was identical at
+`a48548c4b279053cbab806c699c98cdba24c0766796477965c24325bf796b866`.
+
+Canonical, process, browser, and screenshot-count cleanup gates passed.
+
 ## Native provider-model memory restart continuation
 
 A separate isolated user-data run preloaded the new provider-memory shape:

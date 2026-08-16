@@ -16,6 +16,7 @@ import {
 } from '@synara-web/appSettingsStorageProjection.logic';
 
 import { fetchSidebarSnapshot, queryClient } from '../../app/queries';
+import { useComposerDraftStore } from '../../adapters/composerDraftStore.lynx';
 import {
   dispatchSynaraCommand,
   browseFilesystem,
@@ -35,6 +36,8 @@ import {
 import { resolveLandingWorkspaceContext } from './landingStudioFolder.logic';
 
 import './landing-composer.css';
+
+const LANDING_DRAFT_ID = 'lynx-landing-draft';
 
 function landingId(kind: 'command' | 'project' | 'thread'): string {
   'background only';
@@ -199,12 +202,18 @@ export function LandingComposer(props: {
     setSelectedProjectId(props.initialProjectId ?? null);
   }, [props.initialProjectId]);
   const [studioFolderPath, setStudioFolderPath] = useState<string | null>(null);
-  const [interactionMode, setInteractionMode] = useState<
-    'default' | 'plan'
-  >('default');
-  const [runtimeMode, setRuntimeMode] = useState<
-    'full-access' | 'approval-required'
-  >('full-access');
+  const interactionMode =
+    useComposerDraftStore(
+      (state) => state.draftsByThreadId[LANDING_DRAFT_ID]?.interactionMode
+    ) ?? 'default';
+  const runtimeMode =
+    useComposerDraftStore(
+      (state) => state.draftsByThreadId[LANDING_DRAFT_ID]?.runtimeMode
+    ) ?? 'full-access';
+  const setInteractionMode = useComposerDraftStore(
+    (state) => state.setInteractionMode
+  );
+  const setRuntimeMode = useComposerDraftStore((state) => state.setRuntimeMode);
   const [projectPickerOpen, setProjectPickerOpen] = useState(false);
   const [projectQuery, setProjectQuery] = useState('');
   const [projectPickerBusy, setProjectPickerBusy] = useState(false);
@@ -471,7 +480,7 @@ export function LandingComposer(props: {
         </view>
       ) : null}
       <Composer
-        draftId="lynx-landing-draft"
+        draftId={LANDING_DRAFT_ID}
         threadId={threadIdRef.current}
         modelSelection={modelSelection}
         runtimeMode={runtimeMode}
@@ -483,8 +492,12 @@ export function LandingComposer(props: {
         initialModelCatalog={data.initialModelCatalog}
         emptyLanding={true}
         onBeforeSend={ensureThread}
-        onSetInteractionMode={setInteractionMode}
-        onSetRuntimeMode={setRuntimeMode}
+        onSetInteractionMode={(nextInteractionMode) =>
+          setInteractionMode(LANDING_DRAFT_ID, nextInteractionMode)
+        }
+        onSetRuntimeMode={(nextRuntimeMode) =>
+          setRuntimeMode(LANDING_DRAFT_ID, nextRuntimeMode)
+        }
         onSendSucceeded={() => {
           'background only';
           props.onThreadCreated(threadIdRef.current);
