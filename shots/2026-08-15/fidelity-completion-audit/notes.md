@@ -3039,6 +3039,20 @@ former dynamic-event P1 is no longer a valid blocker.
 - Detailed evidence:
   `shots/2026-08-17/explorer-read-error-short-height/notes.md`.
 
+## 2026-08-17 Explorer expanded tree at 320x200
+
+- A real nested workspace mounted root plus two expanded directory levels in
+  the ordinary compact Explorer.
+- All rows remained `152.5x28`; indentation was 8/20/32px for
+  root/child/grandchild, and copy stayed inside `x=148.5`.
+- The entries owner was `158.5x43` with `scrollHeight=174`, and three canonical
+  directory-list RPCs loaded the hierarchy.
+- This is a compact tree product pass, contribution `0.00 -> 0.00`; no code
+  change was required. Deterministic expansion and measured scroll range are
+  not claimed as pointer or wheel evidence.
+- Detailed evidence:
+  `shots/2026-08-17/explorer-tree-short-height/notes.md`.
+
 ## 2026-08-17 Explorer close transition at 320x200
 
 - A selected source preview was closed from the ordinary compact Explorer.
