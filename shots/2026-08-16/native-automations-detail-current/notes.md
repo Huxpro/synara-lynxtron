@@ -518,6 +518,47 @@ Exact-client warning/error console remained empty.
 - Final owned ports `58090`, `8891`, and `8901` were free.
 - No screenshots were retained; local screenshot count remained `100`.
 
+## Cron schedule parity
+
+Active discovery added a weekday-morning Cron schedule at `900x650`:
+
+`{"type":"cron","expression":"0 9 * * 1-5","timezone":"Asia/Seoul"}`
+
+Web authority used the same isolated snapshot and exposed selected schedule
+`cron`, editable expression `0 9 * * 1-5`, timezone `Asia/Seoul`, Status
+`Active`, Next run `Tomorrow at 09:00 AM`, and Pause.
+
+Exact-owned Native used PID-derived DevTool client `localhost:8902` because the
+unrelated t3code client remained on `8901`. Native rendered:
+
+- Status `Active`;
+- Repeats `Cron`;
+- Cron `0 9 * * 1-5`;
+- Timezone `Asia/Seoul`;
+- Repeats row `(597,290,287x30)`;
+- Cron row `(597,320,287x30)`;
+- Timezone row `(597,350,287x30)`;
+- Pause.
+
+All rows remained inside the `320px` detail aside (`right=884` inside the
+`900px` viewport). Real Native Pause/Resume touches at `(859.5,23)` and
+`(853.5,23)` restored Active while preserving expression and timezone.
+Exact-client warning/error console remained empty.
+
+- `native-automations-cron-pause-resume`: missing coverage `1.00 -> 0.00`.
+- Component product-loss contribution remained `0.00 -> 0.00`.
+- Shared projection tests passed `1` file / `6` tests.
+- Lynx route tests passed `1` file / `6` tests.
+- Native/Desktop production build passed with only registered unsupported-CSS
+  and optional WebSocket acceleration warnings.
+- Bundle SHA-256:
+  `652f681314935d4a6c4e1a7e94c8a006dfec5546d6a638b50e0d7f86330f685c`.
+- Browser attempts returned to `sessions: []` with zero owned processes.
+- Canonical cleanup returned zero visible definitions/runs; fixture state,
+  runtime, and user-data directories were removed. Owned ports `58090` and
+  `8891` were free; the unrelated t3code client remained outside the run.
+- No screenshots were retained; local screenshot count remained `100`.
+
 ## Weekly schedule parity
 
 Active discovery added a weekly schedule at `900x650`:
