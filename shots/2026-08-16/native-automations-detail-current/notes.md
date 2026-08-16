@@ -518,6 +518,57 @@ Exact-client warning/error console remained empty.
 - Final owned ports `58090`, `8891`, and `8901` were free.
 - No screenshots were retained; local screenshot count remained `100`.
 
+## Hourly schedule parity and pause roundtrip
+
+Active discovery added an enabled `interval` schedule whose
+`everySeconds=3600`, the canonical Hourly preset, at `900x650`.
+
+Web authority used the same isolated snapshot and rendered:
+
+- Status `Active`;
+- a future Today Next run;
+- the selected schedule value `hourly`;
+- action `Pause`.
+
+The body text contained all schedule options because they are native select
+options. An initial assertion incorrectly expected the static text sequence
+`Repeats\nHourly`; the actual selected value was correctly exposed through the
+select control as `hourly`. That assertion failure is harness error, not
+product loss.
+
+Exact-owned Native detail rendered:
+
+- Status `Active`;
+- a future Today Next run;
+- Repeats `Hourly`;
+- action `Pause`.
+
+Real Native touches completed a bidirectional lifecycle roundtrip:
+
+- Pause at `(859.5,23)` changed to Paused/Resume;
+- Resume at `(853.5,23)` restored Active/Pause;
+- Repeats remained `Hourly`.
+
+Exact-client warning/error console stayed empty.
+
+- `native-automations-hourly-pause-resume`: missing coverage
+  `1.00 -> 0.00`.
+- Component product-loss contribution remained `0.00 -> 0.00`.
+- Shared projection tests passed `1` file / `6` tests.
+- Lynx route tests passed `1` file / `6` tests.
+- Native/Desktop production build passed with only registered unsupported-CSS
+  and optional WebSocket acceleration warnings.
+- Bundle SHA-256:
+  `652f681314935d4a6c4e1a7e94c8a006dfec5546d6a638b50e0d7f86330f685c`.
+- Browser attempts returned to `sessions: []` with zero owned processes.
+- Canonical cleanup returned zero visible definitions/runs; fixture state,
+  runtime, and user-data directories were removed. Owned ports `58090` and
+  `8891` were free.
+- Port `8901` was occupied by an unrelated t3code Lynxtron
+  (`/var/.../t3-mts-product-sNMTGX/desktop`, PID `18721`). It was not
+  terminated and is external contention, not a Synara leak.
+- No screenshots were retained; local screenshot count remained `100`.
+
 ## Manual schedule parity and pause roundtrip
 
 Active discovery added a manual schedule at the real `900x650` Desktop

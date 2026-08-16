@@ -1541,3 +1541,29 @@ former dynamic-event P1 is no longer a valid blocker.
   screenshots were retained; local count remained `100`.
 - Canonical cleanup returned zero visible definitions/runs; fixture state,
   runtime, and user-data directories were removed. Owned ports were free.
+
+## 2026-08-16 Native Hourly schedule
+
+- Active discovery added an enabled `{type:"interval", everySeconds:3600}`
+  automation at `900x650`.
+- Web authority exposed selected schedule value `hourly`, Status `Active`, a
+  future Today Next run, and Pause.
+- Native rendered Status `Active`, Repeats `Hourly`, a future Today Next run,
+  and Pause.
+- Real Native Pause/Resume touches completed a bidirectional mutation
+  roundtrip while preserving Hourly cadence.
+- `native-automations-hourly-pause-resume`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remained `0.00 -> 0.00`.
+- The first Web assertion incorrectly searched all select-option text for a
+  static label sequence; the selected `hourly` value was valid. This was
+  harness assertion error, not product loss.
+- Shared projection and Lynx route focused suites passed `6/6` each.
+  Native/Desktop production build and exact-client console passed.
+- Bundle SHA-256:
+  `652f681314935d4a6c4e1a7e94c8a006dfec5546d6a638b50e0d7f86330f685c`.
+- Canonical cleanup returned zero visible definitions/runs; fixture state,
+  runtime, and user-data directories were removed. Owned ports `58090` and
+  `8891` were free.
+- Port `8901` belonged to an unrelated t3code Lynxtron process (PID `18721`);
+  it was not terminated and is external contention, not a Synara leak.
+- No screenshots were retained; local count remained `100`.
