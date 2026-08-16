@@ -1030,3 +1030,15 @@ former dynamic-event P1 is no longer a valid blocker.
   coverage, not a claimed Plan roundtrip.
 - Canonical cleanup returned to 0 projects / 0 threads; all owned runtime and
   browser processes were removed; screenshot count stayed `100`.
+
+## 2026-08-16 Native New Thread Plan-mode continuation
+
+- A fresh exact-owned draft used the precise extras host to verify
+  `aria-expanded` and the Plan switch's `aria-checked` state.
+- Real controls completed `off -> on`, close/reopen persistence at `on`, then
+  `on -> off`, with zero durable threads and no visible or console error.
+- `native-new-thread-plan-mode-roundtrip`: missing coverage `1.00 -> 0.00`;
+  product-loss contribution remains `0.00 -> 0.00`.
+- An earlier undefined-node probe followed an accidental popup close and is
+  classified as harness operation error, not product loss.
+- Canonical and process/browser cleanup passed; screenshot count stayed `100`.

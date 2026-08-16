@@ -300,6 +300,37 @@ container, returning to 0 live projects / 0 live threads. Owned ports/runtime/
 state were removed; final browser state was `sessions: []` with zero owned
 processes; screenshot count remained `100`.
 
+## Native pre-send Plan mode continuation
+
+A separate fresh exact-owned draft closed the remaining Plan checked-state
+coverage with the precise `ComposerExtrasTriggerHostLynx` control.
+
+Real rendered-control sequence:
+
+1. extras host `aria-expanded: false -> true`;
+2. Plan switch `aria-checked: false -> true`;
+3. extras host close/reopen preserved `aria-checked: true`;
+4. Plan switch returned `true -> false`.
+
+No visible send error or exact-client warning/error appeared, and canonical
+projection remained at zero durable threads. Heading/project/model/runtime
+context did not change.
+
+The first attempt toggled Plan on successfully, then accidentally clicked the
+still-open host and closed the popup before looking up the switch. Its
+subsequent undefined-node probe is harness operation error, not product loss.
+The corrected collapsed -> open sequence completed the roundtrip against the
+same product contract.
+
+`native-new-thread-plan-mode-roundtrip`: missing coverage `1.00 -> 0.00`;
+product-loss contribution remains `0.00 -> 0.00`.
+
+Output/staged hash remained
+`1dd5867a053596c75e6343cf81d170a7108977eab427bd07504bc1962688af7c`.
+Canonical cleanup removed the project and Home container; owned ports/runtime/
+state were removed; final browser state was `sessions: []` with zero owned
+processes; screenshot count remained `100`.
+
 `native-new-thread-direct-model-selection`: missing coverage
 `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
 
