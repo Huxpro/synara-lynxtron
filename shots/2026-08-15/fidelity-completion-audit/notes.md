@@ -2676,3 +2676,14 @@ former dynamic-event P1 is no longer a valid blocker.
   range.
 - Focused Settings General suite passed `3/3`; Lynx-for-Web and Native/Desktop
   production builds passed with registered warnings only.
+
+## 2026-08-17 Appearance terminal-font popup interaction gap
+
+- The rendered terminal-font input and passive menu trigger were scrolled into
+  view at `320x200`, dark.
+- Neither synthetic focus publication nor rendered-trigger DOM activation
+  caused the controlled `SharedSettingsAppearanceFontPopup` to mount in
+  Lynx-for-Web.
+- This is interaction/harness missing coverage, not a product pass or loss.
+  The declared 320px suggestion-list maximum is not scored without a real
+  mounted popup; no speculative CSS patch was applied.
