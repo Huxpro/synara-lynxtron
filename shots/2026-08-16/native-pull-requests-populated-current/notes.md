@@ -221,3 +221,33 @@ mutation occurred, and exact-client warning/error console stayed empty.
 
 `native-pull-requests-project-filter-roundtrip`: missing coverage
 `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+
+## Native minimum-window detail continuation
+
+A fresh exact-owned run added populated Pull Requests detail at the real
+`900x650` Desktop minimum.
+
+The initial route had no canonical project and therefore rendered a valid empty
+result. That cell was invalidated as harness data incompleteness. A canonical
+`project.create` for the current repository produced 50 real rows without
+writing SQLite.
+
+A real touch opened pull request `#698`. Final medium-viewport geometry:
+
+- root: `900x650`, `SliceRoot--viewport-medium`;
+- route body: `(256,46,644x604)`;
+- list scroller: hidden at `0x0`;
+- detail dock: `(256,46,644x604)`, width `100%`, `min-width:0`,
+  no left border;
+- detail header: `(256,46,644x48)`;
+- tabs: `(264,56,218x28)`;
+- detail scroller: `(256,94,644x556)`.
+
+This proves the current-head single-surface master-detail contract at the Native
+host minimum, rather than inferring it from responsive CSS tests.
+
+`native-pull-requests-detail-minimum-window`: missing coverage
+`1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+
+Exact-client warning/error console stayed empty. Canonical project cleanup and
+all process/browser gates passed; screenshot count remained `100`.

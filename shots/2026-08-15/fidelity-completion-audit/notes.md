@@ -1211,3 +1211,15 @@ former dynamic-event P1 is no longer a valid blocker.
 - `native-studio-container-restart`: missing coverage `1.00 -> 0.00`;
   product-loss contribution remains `0.00 -> 0.00`.
 - Canonical and all process/browser cleanup gates passed.
+
+## 2026-08-16 Native Pull Requests minimum detail
+
+- Active discovery added populated PR detail at Native `900x650`.
+- The first empty result lacked a canonical project and was invalidated as
+  harness data incompleteness. Canonical project creation then produced 50 rows.
+- A real row touch opened #698 in a full `644x604` detail dock while the list
+  scroller became `display:none` / `0x0`.
+- Header, tabs, and detail scroller all remained within the minimum viewport.
+- `native-pull-requests-detail-minimum-window`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- Console, canonical cleanup, and all process/browser gates passed.
