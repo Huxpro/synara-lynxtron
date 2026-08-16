@@ -211,13 +211,10 @@
   white-space: nowrap;
 }
 
-.SliceRoot--viewport-medium
-  .AppMain--sidebar-closed
-  .SharedKanbanRouteHeader {
-  padding-left: 20px;
-}
-
 .SliceRoot--viewport-compact
+  .AppMain--sidebar-closed
+  .SharedKanbanRouteHeader,
+.SliceRoot--viewport-medium
   .AppMain--sidebar-closed
   .SharedKanbanRouteHeader {
   height: 92px;

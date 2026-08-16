@@ -43,10 +43,7 @@ describe('Kanban route header fidelity', () => {
     expect(source).not.toContain('SharedKanbanRouteBackGlyph');
     expect(source).not.toContain('＋ New task');
     expect(appStyles).toMatch(
-      /\.SliceRoot--viewport-compact\s+\.AppMain--sidebar-closed\s+\.SharedKanbanRouteHeader\s*\{[^}]*height:\s*92px;[^}]*padding:\s*46px 20px 0;/s
-    );
-    expect(appStyles).toMatch(
-      /\.SliceRoot--viewport-medium\s+\.AppMain--sidebar-closed\s+\.SharedKanbanRouteHeader\s*\{[^}]*padding-left:\s*20px;/s
+      /\.SliceRoot--viewport-compact\s+\.AppMain--sidebar-closed\s+\.SharedKanbanRouteHeader,[\s\S]*?\.SliceRoot--viewport-medium\s+\.AppMain--sidebar-closed\s+\.SharedKanbanRouteHeader\s*\{[^}]*height:\s*92px;[^}]*padding:\s*46px 20px 0;/s
     );
   });
 });

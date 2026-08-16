@@ -2104,3 +2104,20 @@ former dynamic-event P1 is no longer a valid blocker.
   `sessions: []` and zero owned processes.
 - Detailed evidence:
   `shots/2026-08-16/native-compact-header-batch/notes.md`.
+
+## 2026-08-16 Kanban medium closed-sidebar header
+
+- Active discovery added `800x568` medium plus sidebar-closed, which was not
+  covered by the earlier compact-closed and medium-open cells.
+- Before, `0 tasks` center `(102,23)` hit fixed titlebar controls.
+- `lynx-kanban-medium-closed-count-overlap`: P1 contribution `1.00 -> 0.00`.
+- Compact and medium closed Kanban now use a two-row header; medium open remains
+  one row at `x=208..800`.
+- After, count center `(102,69)` hit its own text and New task remained
+  contained.
+- DOM click established the closed state because raw pointer publication is a
+  route-specific harness gap; no interaction pass is claimed.
+- Header contract passed `1/1`; Web and Native/Desktop builds passed. Web
+  bundle: `6d11e3fbd9108d26f6e71e34cb5e6fbaeda2eee0aff7bf97f4da1937245bee86`.
+- Detailed evidence:
+  `shots/2026-08-16/kanban-header-medium-closed/notes.md`.
