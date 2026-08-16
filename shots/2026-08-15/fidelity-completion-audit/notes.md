@@ -2726,3 +2726,14 @@ former dynamic-event P1 is no longer a valid blocker.
   valid current product state, not filtered evidence.
 - This is a short-height layout pass, contribution `0.00 -> 0.00`; a future
   snapshot with PR data across multiple projects remains separate scope.
+
+## 2026-08-17 Appearance select menu availability
+
+- No `SharedSettingsAppearanceSelect` trigger was mounted in the current Lynx
+  Appearance page.
+- Source confirms the platform boundary is explicit:
+  `showCodeThemeSelection={false}` and `showTimestampFormat={false}`.
+- The shared Appearance select popup is therefore current-build missing
+  coverage, not a product pass or loss. The failed discovery probe exited
+  through `browser:run`, followed by an immediate zero-session/zero-process
+  cleanup gate.
