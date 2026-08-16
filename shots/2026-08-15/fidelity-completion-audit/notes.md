@@ -2379,3 +2379,26 @@ former dynamic-event P1 is no longer a valid blocker.
 - Focused suites passed `12/12`; Web and Native/Desktop builds passed.
 - Detailed evidence:
   `shots/2026-08-16/editor-empty-short-height/notes.md`.
+
+## 2026-08-16 Settings Appearance at 320x200
+
+- Appearance owns one full-viewport vertical `SettingsContent` scroll-view:
+  `clientHeight=200`, `scrollHeight=2253`.
+- UI density controls begin offscreen at `y=1679`, but a controlled anatomy
+  probe at `scrollTop=1550` placed all three rendered controls fully inside the
+  viewport at `y=129..157`.
+- This is a short-height layout pass, contribution `0.00 -> 0.00`; no product
+  code change was required.
+- Agent-browser could not resolve `.SettingsContent` through the Lynx custom
+  element shadow tree for a real `scroll --selector` action. The failed probe
+  exited through `browser:run`; cleanup and a separate session-list gate then
+  reconfirmed `sessions: []` and zero agent-browser-owned processes before the
+  next probe. Real wheel reachability remains a harness gap and is not claimed
+  as an interaction pass.
+- The current Vite origin served the Web route assets but left `#root`
+  unhydrated with no page errors, controls, or scroll owners. That Web authority
+  cell is invalid harness evidence and is recorded separately from the Lynx
+  product result.
+- Every browser workflow used `bun run browser:run -- ...` and its final cleanup
+  passed. No screenshots were retained; the repository screenshot count
+  remained 100.
