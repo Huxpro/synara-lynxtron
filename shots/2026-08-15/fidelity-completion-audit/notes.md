@@ -2047,3 +2047,26 @@ former dynamic-event P1 is no longer a valid blocker.
 - Every browser command used the guarded wrapper; screenshot count remained
   `100`.
 - Detailed evidence: `shots/2026-08-16/kanban-header-320/notes.md`.
+
+## 2026-08-16 Shared Landing and Thread header at 320px
+
+- Active discovery added compact shared chat headers, previously covered only
+  by wide Landing typography evidence.
+- Landing remained contained, but ordinary Thread's 212px inset left title
+  width `0px` and a `378px` line box; its nominal center hit Terminal.
+- `lynx-thread-header-320-identity-collapse`: P1 contribution `1.00 -> 0.00`.
+- Explicit Landing/ordinary-Thread owner classes now use a compact two-row
+  header; Thread title is single-line ellipsis. Editor rail headers are not
+  targeted.
+- After, Thread identity measured `120.55x18`, controls remained within
+  `x=140.55..300`, no overflow; Landing title was safe. Medium Thread stayed
+  one row and compact Editor rail stayed `46px`.
+- Focused header contract passed `4/4`; Web and Native/Desktop builds passed.
+  Web bundle:
+  `121e1da1c90e2d46868da5543997ba4f631d3e3d17b4d1aceb92a4c8b83a125d`.
+- Two unrelated source-contract tests remain stale and were explicitly not
+  counted as this slice's validation: identity usage count `2 -> 3` and a
+  removed Environment `presentationMode="editor"` literal.
+- Every browser command used the guarded wrapper; screenshot count remained
+  `100`.
+- Detailed evidence: `shots/2026-08-16/shared-chat-header-320/notes.md`.

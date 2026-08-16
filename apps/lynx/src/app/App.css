@@ -192,6 +192,25 @@
   padding-left: 212px;
 }
 
+.SliceRoot--viewport-compact
+  .AppMain--sidebar-closed
+  .ThreadsLandingHeader,
+.SliceRoot--viewport-compact
+  .AppMain--sidebar-closed
+  .ThreadPageHeader {
+  height: 92px;
+  padding: 46px 20px 0;
+}
+
+.SliceRoot--viewport-compact
+  .ThreadPageHeader
+  .SharedChatHeaderIdentityTitle {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .SliceRoot--viewport-medium
   .AppMain--sidebar-closed
   .SharedKanbanRouteHeader {

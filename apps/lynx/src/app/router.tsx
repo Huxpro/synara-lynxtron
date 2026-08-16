@@ -340,7 +340,7 @@ function ThreadsLandingPage(props: {
   });
   return (
     <view className="ThreadsLanding">
-      <ChatSurfaceHeaderFrame>
+      <ChatSurfaceHeaderFrame className="ThreadsLandingHeader">
         <view className="ThreadsLandingHeaderIdentity">
           <ChatSurfaceHeaderIdentity
             title={routePresentation.headerTitle}
@@ -1513,7 +1513,7 @@ function ThreadPage(props: ThreadPageProps) {
           : undefined
       }
     >
-      <ChatSurfaceHeaderFrame>
+      <ChatSurfaceHeaderFrame className="ThreadPageHeader">
         <view className="ThreadHeaderIdentity">
           {threadHeaderIdentity}
         </view>

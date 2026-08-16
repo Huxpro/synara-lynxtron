@@ -28,6 +28,10 @@ const appStyles = fs.readFileSync(
   path.resolve(__dirname, '../app/App.css'),
   'utf8'
 );
+const routerSource = fs.readFileSync(
+  path.resolve(__dirname, '../app/router.tsx'),
+  'utf8'
+);
 const sidebarStyles = fs.readFileSync(
   path.resolve(__dirname, '../components/sidebar/sidebar.css'),
   'utf8'
@@ -47,6 +51,18 @@ describe('desktop window drag regions', () => {
     expect(chatHeaderSource).toContain('AppWindowDragRegion--padded');
     expect(appStyles).toMatch(
       /\.AppWindowDragRegion--padded\s*\{[^}]*padding-left:\s*20px;[^}]*padding-right:\s*20px;/s
+    );
+    expect(appStyles).toMatch(
+      /\.SliceRoot--viewport-compact\s+\.AppMain--sidebar-closed\s+\.ThreadsLandingHeader,[\s\S]*?\.SliceRoot--viewport-compact\s+\.AppMain--sidebar-closed\s+\.ThreadPageHeader\s*\{[^}]*height:\s*92px;[^}]*padding:\s*46px 20px 0;/s
+    );
+    expect(routerSource).toContain(
+      '<ChatSurfaceHeaderFrame className="ThreadsLandingHeader">'
+    );
+    expect(routerSource).toContain(
+      '<ChatSurfaceHeaderFrame className="ThreadPageHeader">'
+    );
+    expect(appStyles).toMatch(
+      /\.SliceRoot--viewport-compact\s+\.ThreadPageHeader\s+\.SharedChatHeaderIdentityTitle\s*\{[^}]*overflow:\s*hidden;[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s
     );
   });
 
