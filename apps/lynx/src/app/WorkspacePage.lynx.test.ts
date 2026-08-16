@@ -107,6 +107,20 @@ describe('Lynx workspace surface', () => {
     );
   });
 
+  it('preserves the workspace settings title and scroll owner at short heights', () => {
+    const pageStyles = source('./workspace-page.css');
+
+    expect(pageStyles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.WorkspaceSettingsDialog\s+>\s+\.LxDialogTitle\s*\{[^}]*flex-shrink:\s*0;[^}]*min-height:\s*21px;/s
+    );
+    expect(pageStyles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.WorkspaceSettingsDialog\s+>\s+\.LxDialogDescription\s*\{[^}]*display:\s*none;/s
+    );
+    expect(pageStyles).toMatch(
+      /\.SliceRoot--viewport-short-height \.WorkspaceSettingsPanel\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;[^}]*margin-top:\s*8px;/s
+    );
+  });
+
   it('wires the optional workspace sidebar surface and create action', () => {
     const sidebarSource = source(
       '../components/sidebar/Sidebar.lynx.tsx'

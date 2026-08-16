@@ -212,6 +212,25 @@
   max-width: none;
 }
 
+.SliceRoot--viewport-short-height
+  .WorkspaceSettingsDialog
+  > .LxDialogTitle {
+  flex-shrink: 0;
+  min-height: 21px;
+}
+
+.SliceRoot--viewport-short-height
+  .WorkspaceSettingsDialog
+  > .LxDialogDescription {
+  display: none;
+}
+
+.SliceRoot--viewport-short-height .WorkspaceSettingsPanel {
+  flex: 1;
+  min-height: 0;
+  margin-top: 8px;
+}
+
 .SliceRoot--viewport-compact .WorkspacePageHeaderAction {
   width: 28px;
   padding-left: 7px;

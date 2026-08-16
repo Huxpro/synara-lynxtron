@@ -2441,3 +2441,25 @@ former dynamic-event P1 is no longer a valid blocker.
 - DOM activation established the dialog because raw agent-browser pointer
   publication for Lynx custom elements remains a harness gap. Every browser
   workflow ran through `bun run browser:run -- ...` and passed final cleanup.
+
+## 2026-08-17 Workspace settings dialog at 320x200
+
+- Workspace was enabled and created through rendered product controls before
+  opening its settings dialog at `320x200`, dark.
+- Before, the popup remained in bounds and the preset panel had a real scroll
+  owner, but flex shrink collapsed the `Workspace settings` title to
+  `8/21px`; the description disappeared without an intentional short-height
+  contract.
+- `lynx-workspace-settings-short-title-collapsed`: P1 contribution
+  `1.00 -> 0.00`.
+- The workspace-scoped short-height fix keeps the title at `21/21px`, hides the
+  secondary description intentionally, and gives the preset panel the remaining
+  `97px` as its scroll viewport.
+- At maximum `scrollTop=159`, the final `Quad · 4 panes` preset was fully
+  visible at `y=139..163`; the close action remained a full `30x30` hit area.
+- Focused Workspace suite passed `6/6`; Lynx-for-Web and Native/Desktop
+  production builds passed with registered warnings only.
+- The first post-setup probe used a fresh named browser session and therefore
+  lacked session-local Workspace state. It was rejected as a harness
+  prerequisite mismatch; cleanup immediately reconfirmed `sessions: []` and
+  zero agent-browser-owned processes before the combined setup/probe.
