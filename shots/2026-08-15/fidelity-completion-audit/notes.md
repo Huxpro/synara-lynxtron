@@ -2750,3 +2750,15 @@ former dynamic-event P1 is no longer a valid blocker.
   coverage, not a product pass or loss; no branch switch or Git mutation was
   attempted.
 - The declared 320px maximum is not scored without a mounted popup.
+
+## 2026-08-17 Environment Local Servers menu at 320x200
+
+- A canonical branch-backed local thread exposed the rendered `Local Servers`
+  control at `320x200`, dark.
+- The real scanner returned one running server. Popup measured
+  `288x116 @ (32,84)` and ended exactly at `y=200`; header, refresh action, and
+  the complete server row remained in bounds.
+- This is a current one-server layout pass, contribution `0.00 -> 0.00`; no
+  product code change was required.
+- No extra process was launched to inflate the list. A naturally occurring
+  multi-server state remains separate future scope.
