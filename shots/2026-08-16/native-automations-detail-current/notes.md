@@ -518,6 +518,62 @@ Exact-client warning/error console remained empty.
 - Final owned ports `58090`, `8891`, and `8901` were free.
 - No screenshots were retained; local screenshot count remained `100`.
 
+## Future once schedule parity
+
+Active discovery added a new schedule × lifecycle × viewport combination: an
+enabled future one-time automation at the real `900x650` Desktop minimum.
+
+The canonical fixture used schedule:
+
+`{"type":"once","runAt":"2026-08-17T05:38:36.087Z"}`
+
+with `nextRunAt` equal to the same instant and zero runs.
+
+Web authority used the same isolated server, light theme, `900x650` viewport,
+project, and automation definition. Its valid detail cell rendered:
+
+- Status `Scheduled`;
+- Next run `Tomorrow at 02:38 PM`;
+- Repeats `Once`;
+- a real `datetime-local` Run at control with value
+  `2026-08-17T14:38:36`;
+- no Pause or Resume action.
+
+An earlier authority probe looked for static labels in an interactive-only
+accessibility snapshot and exited before the DOM probe. That attempt is
+classified as harness assertion error and contributes no product result.
+
+Exact-owned Native detail rendered:
+
+- detail page `(256,0,644x650)`;
+- aside `(580,0,320x650)`;
+- aside scroller `(580,46,320x604)`;
+- Status `Scheduled`;
+- Next run `Tomorrow at 02:38 PM`;
+- Repeats `Once`;
+- Run at `Aug 17, 2026, 2:38 PM`;
+- Run at row `(597,320,287x30)`;
+- no Pause or Resume action.
+
+The Web control and Native formatted read-only value are an intentional
+renderer interaction difference; schedule identity and lifecycle semantics
+match. Exact-client warning/error console was empty.
+
+- `native-automations-future-once-detail`: missing coverage `1.00 -> 0.00`.
+- Component product-loss contribution remained `0.00 -> 0.00`.
+- Shared projection tests passed `1` file / `6` tests.
+- Lynx route tests passed `1` file / `6` tests.
+- Native/Desktop production build passed with only registered unsupported-CSS
+  and optional WebSocket acceleration warnings.
+- Bundle SHA-256:
+  `652f681314935d4a6c4e1a7e94c8a006dfec5546d6a638b50e0d7f86330f685c`.
+- All browser attempts ran through `browser:run` and returned to
+  `sessions: []` with zero agent-browser-owned processes.
+- Canonical cleanup returned zero visible definitions/runs; the fixture project
+  and all isolated state/runtime/user directories were removed. Owned ports
+  `58090`, `8891`, and `8901` were free.
+- No screenshots were retained; local screenshot count remained `100`.
+
 ## Pause cold-restart persistence
 
 Active discovery then moved from edit parity to a new lifecycle state:

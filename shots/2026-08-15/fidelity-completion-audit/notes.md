@@ -1498,3 +1498,25 @@ former dynamic-event P1 is no longer a valid blocker.
 - Port `8901` was later occupied by an unrelated t3code archaeology verification
   process (PID `73718`) started after cleanup. It was not terminated and is
   external contention, not a Synara leak.
+
+## 2026-08-16 Native future once automation
+
+- Active discovery added a future one-time automation detail at `900x650`.
+- Web authority and Native used the same canonical `once` schedule and light
+  snapshot.
+- Both rendered Status `Scheduled`, Next run `Tomorrow at 02:38 PM`, Repeats
+  `Once`, and no Pause/Resume action.
+- Web exposed the editable `datetime-local` Run at control; Native exposed the
+  equivalent formatted read-only row `Aug 17, 2026, 2:38 PM`. This is an
+  intentional renderer interaction difference, not product loss.
+- `native-automations-future-once-detail`: missing coverage `1.00 -> 0.00`;
+  product-loss contribution remained `0.00 -> 0.00`.
+- Shared projection and Lynx route focused suites passed `6/6` each.
+  Native/Desktop production build and exact-client console passed.
+- Bundle SHA-256:
+  `652f681314935d4a6c4e1a7e94c8a006dfec5546d6a638b50e0d7f86330f685c`.
+- The first interactive-only authority assertion was rejected as harness error.
+  Browser attempts still ended at `sessions: []` with zero owned processes.
+- Canonical cleanup returned zero visible definitions/runs; fixture state,
+  runtime, and user-data directories were removed. Owned ports were free.
+- No screenshots were retained; local count remained `100`.
