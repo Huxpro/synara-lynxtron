@@ -2810,3 +2810,22 @@ former dynamic-event P1 is no longer a valid blocker.
 - This is a deterministic short-height layout pass, contribution
   `0.00 -> 0.00`; no product code change was required and neither chat action
   was activated.
+
+## 2026-08-17 Explorer line-comment editor at 320x200
+
+- A canonical branch-backed thread used `explorer=open`,
+  `explorerPath=package.json`, and `explorerCommentLine=1` to mount the real
+  syntax-preview comment editor at `320x200`, dark.
+- `README.md` was rejected as an invalid fixture because Markdown preview has
+  no line-number comment editor.
+- Before, the preview scroller ended at `x=308`, but the fixed 240px comment
+  editor reached `x=367` and actions `x=352`; no horizontal owner existed.
+- `lynx-explorer-comment-compact-horizontal-overflow`: P1 contribution
+  `1.00 -> 0.00`.
+- Compact Explorer now removes the fixed minimum width and uses
+  `width: calc(100% - 12px)` with 6px side margins.
+- After, editor ended at `x=302` and actions at `x=287`, both inside the preview
+  boundary `x=308`. Vertical content remains owned by the real
+  `ExplorerDockPreviewScroll`.
+- Focused Explorer suite passed `2/2`; Lynx-for-Web and Native/Desktop
+  production builds passed with registered warnings only.

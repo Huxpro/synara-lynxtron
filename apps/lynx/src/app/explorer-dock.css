@@ -596,6 +596,13 @@
   gap: 4px;
 }
 
+.SliceRoot--viewport-compact .ExplorerDockCommentEditor {
+  width: calc(100% - 12px);
+  min-width: 0;
+  max-width: none;
+  margin: 5px 6px 8px;
+}
+
 .ExplorerDockTruncated {
   margin-top: 12px;
   color: var(--muted-foreground);
