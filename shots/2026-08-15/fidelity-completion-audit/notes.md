@@ -2339,3 +2339,16 @@ former dynamic-event P1 is no longer a valid blocker.
   `72f816522a670d24f5e48d855075fc5ef9351e66e40c3bbb74fce4e5364e421c`.
 - Detailed evidence:
   `shots/2026-08-16/thread-populated-short-height/notes.md`.
+
+## 2026-08-16 Populated Automation detail at 320x200
+
+- Before, fixed `246px` main exceeded the 200px viewport; aside height was zero
+  and Edit/Delete/Resume began at `y=246`.
+- `lynx-automation-populated-short-actions-unreachable`: P1 contribution
+  `1.00 -> 0.00`.
+- Compact short detail now uses a 120px main and 80px aside. Actions are fully
+  visible at `y=120..166`; metadata retains a 34px scroll viewport.
+- Normal `320x568` allocation remains `246/322`.
+- Focused suite passed `11/11`; Web and Native/Desktop builds passed.
+- Detailed evidence:
+  `shots/2026-08-16/automation-populated-short-height/notes.md`.

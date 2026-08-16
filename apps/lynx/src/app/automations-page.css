@@ -323,6 +323,12 @@
   height: 246px;
 }
 
+.SliceRoot--viewport-short-height.SliceRoot--viewport-compact
+  .AutomationDetailMain {
+  flex: 0 0 120px;
+  height: 120px;
+}
+
 .SliceRoot--viewport-compact .AutomationDetailHeader {
   height: 92px;
   min-height: 92px;

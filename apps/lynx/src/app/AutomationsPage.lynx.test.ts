@@ -143,6 +143,17 @@ describe('Lynx Automations route', () => {
     );
   });
 
+  it('keeps compact detail actions reachable at short heights', () => {
+    const detailStyles = readFileSync(
+      new URL('./automations-page.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(detailStyles).toMatch(
+      /\.SliceRoot--viewport-short-height\.SliceRoot--viewport-compact\s+\.AutomationDetailMain\s*\{[^}]*flex:\s*0 0 120px;[^}]*height:\s*120px;/s
+    );
+  });
+
   it('keeps compact list actions outside desktop titlebar controls', () => {
     const pageSource = readFileSync(
       new URL('./AutomationsPage.lynx.tsx', import.meta.url),
