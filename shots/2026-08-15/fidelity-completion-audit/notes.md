@@ -2538,3 +2538,22 @@ former dynamic-event P1 is no longer a valid blocker.
   form reached its final content.
 - Focused Automations suite passed `11/11`; Lynx-for-Web and Native/Desktop
   production builds passed with registered warnings only.
+
+## 2026-08-17 Environment Git action dialog prerequisite
+
+- A canonical project/thread was created against the current repository, then
+  recreated under a fresh thread id with the exact current branch and worktree
+  path after the first fixture exposed `No branch`.
+- Direct read-only `git.status` RPC succeeded and reported the current branch,
+  upstream, and real working-tree changes. The rendered Environment panel,
+  however, remained at `Loading changes…`; `Commit and Push` stayed disabled.
+- The Git action dialog therefore could not be opened through a valid rendered
+  product path. This is runtime/harness missing coverage, not a product pass or
+  loss; no disabled state was bypassed and no Git mutation was attempted.
+- Reusing the deleted thread id failed the orchestration invariant as expected.
+  The failed browser workflow exited through `browser:run`, and cleanup
+  immediately reconfirmed `sessions: []` and zero agent-browser-owned
+  processes before creating the replacement fixture.
+- Canonical cleanup removed the replacement thread and project. The user's
+  pre-existing `.p10-view*` working-tree content was read by status only and
+  never modified.
