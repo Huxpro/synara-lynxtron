@@ -2463,3 +2463,23 @@ former dynamic-event P1 is no longer a valid blocker.
   lacked session-local Workspace state. It was rejected as a harness
   prerequisite mismatch; cleanup immediately reconfirmed `sessions: []` and
   zero agent-browser-owned processes before the combined setup/probe.
+
+## 2026-08-17 Advanced release-history dialog at 320x200
+
+- The rendered Advanced `View release history` action opened the real fixed
+  release-history dialog at `320x200`, dark.
+- Before, the `626.390625px` popup was centered at `y=-213.19..413.20`.
+  Title, close affordance, and header were above the viewport, while the footer
+  and Close action were below it. The internal release list scroller could not
+  make those fixed controls reachable.
+- `lynx-release-history-short-dialog-offscreen`: P1 contribution
+  `1.00 -> 0.00`.
+- The release-dialog-specific short-height contract now uses
+  `height: calc(100vh - 32px)`, keeps header/footer fixed, intentionally hides
+  the secondary description, and gives the panel the remaining scrollable
+  height.
+- After, popup was `288x168 @ (16,16)`, title `24px @ y=27`, panel
+  `86/4158 @ y=53`, footer `44px @ y=139`, top close `30x30`, and footer Close
+  `52.53x28 @ y=147`; all fixed controls were in bounds.
+- Focused Advanced suite passed `3/3`; Lynx-for-Web and Native/Desktop
+  production builds passed with registered warnings only.

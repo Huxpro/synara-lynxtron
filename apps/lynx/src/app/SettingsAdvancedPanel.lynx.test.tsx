@@ -136,6 +136,21 @@ describe('Settings Advanced fidelity', () => {
       /\.SettingsAdvancedReleaseDialog \.LxDialogFooter\s*\{[^}]*height:\s*52px;[^}]*padding:\s*12px 16px;/s
     );
     expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.LxDialogPopup\.SettingsAdvancedReleaseDialog\s*\{[^}]*height:\s*calc\(100vh - 32px\);[^}]*max-height:\s*calc\(100vh - 32px\);/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height \.SettingsAdvancedReleaseHeader\s*\{[^}]*flex-shrink:\s*0;[^}]*padding:\s*10px 48px 2px 16px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.SettingsAdvancedReleaseHeader\s+\.LxDialogDescription\s*\{[^}]*display:\s*none;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height \.SettingsAdvancedReleasePanel\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;[^}]*height:\s*auto;[^}]*max-height:\s*none;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.SettingsAdvancedReleaseDialog\s+\.LxDialogFooter\s*\{[^}]*flex-shrink:\s*0;[^}]*height:\s*44px;[^}]*padding:\s*8px 16px;/s
+    );
+    expect(styles).toMatch(
       /\.SettingsAdvancedReleaseAction,\s*\.SettingsAdvancedReleaseClose\s*\{[^}]*padding-left:\s*9px;[^}]*padding-right:\s*9px;/s
     );
   });

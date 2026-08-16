@@ -310,6 +310,38 @@
   line-height: 18px;
 }
 
+.SliceRoot--viewport-short-height
+  .LxDialogPopup.SettingsAdvancedReleaseDialog {
+  height: calc(100vh - 32px);
+  max-height: calc(100vh - 32px);
+}
+
+.SliceRoot--viewport-short-height .SettingsAdvancedReleaseHeader {
+  flex-shrink: 0;
+  padding: 10px 48px 2px 16px;
+}
+
+.SliceRoot--viewport-short-height
+  .SettingsAdvancedReleaseHeader
+  .LxDialogDescription {
+  display: none;
+}
+
+.SliceRoot--viewport-short-height .SettingsAdvancedReleasePanel {
+  flex: 1;
+  min-height: 0;
+  height: auto;
+  max-height: none;
+}
+
+.SliceRoot--viewport-short-height
+  .SettingsAdvancedReleaseDialog
+  .LxDialogFooter {
+  flex-shrink: 0;
+  height: 44px;
+  padding: 8px 16px;
+}
+
 .SettingsAdvancedNotice {
   display: flex;
   width: 100%;
