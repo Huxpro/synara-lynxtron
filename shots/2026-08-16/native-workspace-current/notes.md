@@ -298,3 +298,25 @@ completed restoration; this is harness script error, not product loss.
 
 Exact-client console and all process/browser cleanup gates passed; screenshot
 count remained `100`.
+
+## Workspace ordering restart continuation
+
+A fresh exact-owned run used real controls to create Workspace 2 and move it
+above Workspace 1. Persisted order was:
+
+1. Workspace 2;
+2. Workspace 1.
+
+Restarting with the same user data and `workspaceVisible=open` restored the
+same sidebar order and opened Workspace 2 as the active first workspace.
+
+`native-workspace-order-active-restart`: missing coverage `1.00 -> 0.00`;
+product-loss contribution remains `0.00 -> 0.00`.
+
+The first New workspace probe looked only for an `LxButton`; the actual shared
+primary action uses `SharedSidebarPrimaryActionButton`, so that probe returned
+no node before interaction. The corrected selector completed the same owned
+run and is classified as harness selector mismatch.
+
+Exact-client console and all process/browser cleanup gates passed; screenshot
+count remained `100`.

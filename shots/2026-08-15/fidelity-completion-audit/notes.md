@@ -1148,3 +1148,14 @@ former dynamic-event P1 is no longer a valid blocker.
 - A heredoc command-concatenation error interrupted the first restoration
   probe after Single; the continuation reused that owned state and passed.
 - Console and all cleanup gates passed.
+
+## 2026-08-16 Native Workspace ordering restart
+
+- Real controls created Workspace 2 and moved it above Workspace 1.
+- Restarting with the same user data restored `Workspace 2, Workspace 1` and
+  opened Workspace 2 as the active first page.
+- `native-workspace-order-active-restart`: missing coverage `1.00 -> 0.00`;
+  product-loss contribution remains `0.00 -> 0.00`.
+- An initial selector expected an `LxButton` instead of the shared primary
+  action and failed before interaction; the corrected selector passed.
+- Console and all cleanup gates passed.
