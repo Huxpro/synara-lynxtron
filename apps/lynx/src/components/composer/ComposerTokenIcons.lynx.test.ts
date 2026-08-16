@@ -72,4 +72,18 @@ describe('Composer token icon fidelity', () => {
       /\.ComposerChip\s*\{[^}]*background-color:\s*var\(--accent\);/s
     );
   });
+
+  it('keeps the model picker inside short viewports with a scroll owner', () => {
+    const styles = readFileSync(
+      new URL('./composer.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ComposerModelPopupLynx\.LxMenuPopup\s*\{[^}]*height:\s*calc\(100vh - 16px\);[^}]*max-height:\s*calc\(100vh - 16px\);/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height \.ComposerProviderOptionListLynx,\s*\.SliceRoot--viewport-short-height \.ComposerModelOptionListLynx\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;[^}]*max-height:\s*none;/s
+    );
+  });
 });

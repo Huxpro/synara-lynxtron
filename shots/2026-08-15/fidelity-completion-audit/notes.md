@@ -2590,3 +2590,19 @@ former dynamic-event P1 is no longer a valid blocker.
   `70/220 @ y=58`, and footer `57px @ y=134`; all fixed regions were in bounds.
 - Focused Command suite passed `9/9`; Lynx-for-Web and Native/Desktop
   production builds passed with registered warnings only.
+
+## 2026-08-17 Composer model picker at 320x200
+
+- The rendered Landing `Choose model` control opened the provider picker at
+  `320x200`, dark.
+- Before, popup measured `260x300 @ (0,0)` and extended 100px beyond the
+  viewport. Its provider list was `288/288`, so no internal scroll range could
+  recover the clipped providers.
+- `lynx-composer-model-picker-short-overflow`: P1 contribution `1.00 -> 0.00`.
+- The short-height model popup now uses `calc(100vh - 16px)` and lets provider /
+  model option lists flex into the remaining height with explicit scroll
+  ownership.
+- After, popup was `260x184 @ (0,16)` and provider list `172/288 @ y=22`;
+  the complete overlay stayed in bounds with 116px of real scroll range.
+- Focused Composer suite passed `3/3`; Lynx-for-Web and Native/Desktop
+  production builds passed with registered warnings only.

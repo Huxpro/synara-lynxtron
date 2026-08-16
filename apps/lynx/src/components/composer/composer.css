@@ -688,6 +688,19 @@
   max-height: 298px;
 }
 
+.SliceRoot--viewport-short-height
+  .ComposerModelPopupLynx.LxMenuPopup {
+  height: calc(100vh - 16px);
+  max-height: calc(100vh - 16px);
+}
+
+.SliceRoot--viewport-short-height .ComposerProviderOptionListLynx,
+.SliceRoot--viewport-short-height .ComposerModelOptionListLynx {
+  flex: 1;
+  min-height: 0;
+  max-height: none;
+}
+
 .ComposerModelGroupLynx {
   display: flex;
   flex-direction: column;
