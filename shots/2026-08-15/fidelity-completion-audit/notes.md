@@ -2281,3 +2281,19 @@ former dynamic-event P1 is no longer a valid blocker.
   bundle: `cd3a164f4c2cef288b8acf0b047b6de5040c2837d5169cb61fcd619251000b2d`.
 - Detailed evidence:
   `shots/2026-08-16/automation-detail-medium-closed/notes.md`.
+
+## 2026-08-16 Empty Thread at 320x200
+
+- Canonical empty Thread combined the compact header, provider banner, hero,
+  composer, and context tray at short height.
+- Before, composer was `296x95 @ y=192`, almost entirely below the viewport;
+  Thread owned no vertical scroll-view and wheel input moved no scroll owner.
+- `lynx-empty-thread-short-composer-unreachable`: P1 contribution
+  `1.00 -> 0.00`.
+- Short-height ordinary Thread now hides hero/context/banner and keeps the full
+  composer at `y=98.5..193.5`.
+- At `320x568`, banner, hero, composer, and context tray all remain.
+- Focused suites passed `8/8`; Web and Native/Desktop builds passed. Web bundle:
+  `3430636cc7403b7bb43d00ac8fa6915b65566673b10af8deb48747f516a43f6a`.
+- Detailed evidence:
+  `shots/2026-08-16/thread-empty-short-height/notes.md`.

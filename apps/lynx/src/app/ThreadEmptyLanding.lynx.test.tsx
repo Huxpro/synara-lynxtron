@@ -8,9 +8,10 @@ describe('empty Thread landing fidelity', () => {
       'utf8'
     );
 
-    expect(routerSource).toContain(
-      "bodyState.kind === 'empty' ? (\n        <CenteredEmptyLandingStack>"
+    const emptyThreadBranch = routerSource.slice(
+      routerSource.indexOf("bodyState.kind === 'empty' ? (")
     );
+    expect(emptyThreadBranch).toContain('<CenteredEmptyLandingStack>');
     expect(routerSource).toContain(
       '<CenteredEmptyLanding projectName={currentThread?.project} />'
     );
@@ -83,6 +84,23 @@ describe('empty Thread landing fidelity', () => {
     );
     expect(headingStyles).toMatch(
       /\.SliceRoot--viewport-compact \.CenteredEmptyLandingHeading\s*\{[^}]*width:\s*calc\(100% - 48px\);/s
+    );
+  });
+
+  it('prioritizes the composer in short Thread viewports', () => {
+    const appStyles = readFileSync(
+      new URL('./App.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(appStyles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+\.CenteredEmptyLandingFrame,[\s\S]*?\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+\.EmptyThreadContextTray\s*\{[^}]*display:\s*none;/s
+    );
+    expect(appStyles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ProviderHealthBannerFrame\s*\{[^}]*display:\s*none;/s
+    );
+    expect(appStyles).not.toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ThreadsLanding\s+\.CenteredEmptyLandingFrame\s*\{[^}]*display:\s*none;/s
     );
   });
 });

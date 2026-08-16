@@ -283,6 +283,21 @@
   align-items: center;
 }
 
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  .CenteredEmptyLandingFrame,
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  .EmptyThreadContextTray {
+  display: none;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ProviderHealthBannerFrame {
+  display: none;
+}
+
 .ThreadsLandingHeaderIdentity {
   margin-left: 0;
 }
