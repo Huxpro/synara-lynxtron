@@ -94,13 +94,16 @@ describe('Lynx workspace surface', () => {
       /\.SliceRoot--viewport-compact \.WorkspacePageHeaderActionText\s*\{[^}]*display:\s*none;/s
     );
     expect(pageStyles).toMatch(
-      /\.SliceRoot--viewport-compact \.WorkspacePageHeader\s*\{[^}]*height:\s*92px;[^}]*flex-direction:\s*column;/s
+      /\.SliceRoot--viewport-compact \.WorkspacePageHeader,[\s\S]*?\.SliceRoot--viewport-medium\s+\.AppMain--sidebar-closed\s+\.WorkspacePageHeader\s*\{[^}]*height:\s*92px;[^}]*flex-direction:\s*column;/s
     );
     expect(pageStyles).toMatch(
-      /\.SliceRoot--viewport-compact \.WorkspacePageTitleRow\s*\{[^}]*height:\s*46px;[^}]*padding-left:\s*180px;/s
+      /\.SliceRoot--viewport-compact \.WorkspacePageTitleRow,[\s\S]*?\.SliceRoot--viewport-medium\s+\.AppMain--sidebar-closed\s+\.WorkspacePageTitleRow\s*\{[^}]*height:\s*46px;[^}]*padding-left:\s*180px;/s
     );
     expect(pageStyles).toMatch(
-      /\.SliceRoot--viewport-compact \.WorkspacePageActions\s*\{[^}]*height:\s*46px;[^}]*justify-content:\s*flex-end;/s
+      /\.SliceRoot--viewport-compact \.WorkspacePageActions,[\s\S]*?\.SliceRoot--viewport-medium\s+\.AppMain--sidebar-closed\s+\.WorkspacePageActions\s*\{[^}]*height:\s*46px;[^}]*justify-content:\s*flex-end;/s
+    );
+    expect(pageStyles).not.toMatch(
+      /\.SliceRoot--viewport-medium[\s\S]*?\.WorkspacePageHeaderActionText\s*\{[^}]*display:\s*none;/s
     );
   });
 

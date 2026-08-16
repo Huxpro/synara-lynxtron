@@ -222,7 +222,10 @@
   display: none;
 }
 
-.SliceRoot--viewport-compact .WorkspacePageHeader {
+.SliceRoot--viewport-compact .WorkspacePageHeader,
+.SliceRoot--viewport-medium
+  .AppMain--sidebar-closed
+  .WorkspacePageHeader {
   height: 92px;
   min-height: 92px;
   padding: 0;
@@ -231,7 +234,10 @@
   gap: 0;
 }
 
-.SliceRoot--viewport-compact .WorkspacePageTitleRow {
+.SliceRoot--viewport-compact .WorkspacePageTitleRow,
+.SliceRoot--viewport-medium
+  .AppMain--sidebar-closed
+  .WorkspacePageTitleRow {
   height: 46px;
   min-height: 46px;
   display: flex;
@@ -241,16 +247,28 @@
 }
 
 .SliceRoot--viewport-compact .WorkspacePageTitleButton,
-.SliceRoot--viewport-compact .WorkspacePageTitleInput {
+.SliceRoot--viewport-compact .WorkspacePageTitleInput,
+.SliceRoot--viewport-medium
+  .AppMain--sidebar-closed
+  .WorkspacePageTitleButton,
+.SliceRoot--viewport-medium
+  .AppMain--sidebar-closed
+  .WorkspacePageTitleInput {
   width: 100%;
   max-width: none;
 }
 
-.SliceRoot--viewport-compact .WorkspacePageHeaderSpacer {
+.SliceRoot--viewport-compact .WorkspacePageHeaderSpacer,
+.SliceRoot--viewport-medium
+  .AppMain--sidebar-closed
+  .WorkspacePageHeaderSpacer {
   display: none;
 }
 
-.SliceRoot--viewport-compact .WorkspacePageActions {
+.SliceRoot--viewport-compact .WorkspacePageActions,
+.SliceRoot--viewport-medium
+  .AppMain--sidebar-closed
+  .WorkspacePageActions {
   height: 46px;
   min-height: 46px;
   display: flex;

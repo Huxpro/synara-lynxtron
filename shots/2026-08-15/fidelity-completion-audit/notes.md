@@ -2155,3 +2155,19 @@ former dynamic-event P1 is no longer a valid blocker.
 - Workspace medium closed remains a separate real-terminal state.
 - Detailed evidence:
   `shots/2026-08-16/plugin-header-medium-closed/notes.md`.
+
+## 2026-08-16 Workspace header at medium width with sidebar closed
+
+- Active discovery added real Workspace/terminal at `800x568`, medium, closed.
+- Before, title `x=14..113.19` overlapped fixed controls from `x=90`.
+- `lynx-workspace-medium-closed-title-overlap`: P1 contribution
+  `1.00 -> 0.00`.
+- Medium closed Workspace now uses separate title/action rows while preserving
+  full labels. Title starts at `x=180`; actions occupy `y=46..92`.
+- Real terminal remained running. Medium open retained one `46px` row.
+- Focused suite passed `5/5`; Web and Native/Desktop builds passed. Web bundle:
+  `2a20a4d953a9c661c55c41d1f69200e43c4954227684562e5664fd47b945dffa`.
+- The first route attempt lacked `workspaceVisible=open` and was rejected as a
+  missing prerequisite, not product evidence.
+- Detailed evidence:
+  `shots/2026-08-16/workspace-header-medium-closed/notes.md`.
