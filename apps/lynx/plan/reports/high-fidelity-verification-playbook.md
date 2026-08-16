@@ -35,7 +35,10 @@ work:
    `agent-browser session list --json` reports `sessions: []`. The cleanup
    command must also report zero agent-browser-owned daemon or browser
    processes.
-5. Treat any nonzero remainder as a harness failure that blocks retained
+5. Treat a timeout, interruption, failed probe, or malformed helper as an
+   immediate cleanup boundary. Rerun cleanup and reconfirm both zero conditions
+   before the next browser command.
+6. Treat any nonzero remainder as a harness failure that blocks retained
    evidence, commit, push, and the next loop.
 
 Never terminate unrelated Chrome or remote-debugging processes. Ownership is

@@ -7,6 +7,8 @@ not intend to open a browser:
 
 - Entry `bun run browser:cleanup`: `pass | fail`
 - All browser commands wrapped by `bun run browser:run -- ...`: `yes | n/a`
+- After every browser timeout, interruption, or script failure, cleanup reran
+  before the next command: `pass | n/a | fail`
 - Exit `bun run browser:cleanup`: `pass | fail`
 - Final `agent-browser session list --json`: `sessions: [] | fail`
 - Final agent-browser-owned daemon/browser process count: `0 | fail`

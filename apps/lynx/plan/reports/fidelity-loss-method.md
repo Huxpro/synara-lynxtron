@@ -35,6 +35,11 @@ retained evidence, commit, push, and the next loop until cleanup succeeds. The
 ownership filter must never terminate unrelated Chrome or remote-debugging
 processes.
 
+Timeouts, interruptions, failed probes, and malformed helper scripts are
+intermediate loop exits for this invariant. Run `bun run browser:cleanup` and
+reconfirm both zero conditions before issuing any next browser command; do not
+defer cleanup until the nominal end of the loop.
+
 ## Equation
 
 ```text
