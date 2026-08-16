@@ -2557,3 +2557,20 @@ former dynamic-event P1 is no longer a valid blocker.
 - Canonical cleanup removed the replacement thread and project. The user's
   pre-existing `.p10-view*` working-tree content was read by status only and
   never modified.
+
+## 2026-08-17 Theme import sheet at 320x200
+
+- The rendered Appearance `Import` action opened the compact theme-import sheet
+  at `320x200`, dark. Both light/dark pack triggers were present; the first
+  rendered pack established the measured state.
+- The sheet was `320x152 @ (0,48)`. Its complete header, 96px textarea, and
+  stacked 96px footer exceeded the initial viewport, but all content belonged
+  to one explicit `SharedThemePackImportScroll` owner (`151/301`).
+- At maximum `scrollTop=150`, Import was fully visible at `y=115.5..147.5`
+  and Cancel at `155.5..187.5`; the independent close action remained
+  `32x32 @ (280,57)`.
+- This is a short-height layout pass, contribution `0.00 -> 0.00`; no product
+  code change was required.
+- Programmatic offset is anatomy evidence only. Real wheel publication through
+  the Lynx custom scroll-view remains harness missing coverage and is not
+  claimed as an interaction pass.
