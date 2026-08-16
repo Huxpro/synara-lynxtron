@@ -1124,3 +1124,16 @@ former dynamic-event P1 is no longer a valid blocker.
 - A restart without `workspaceVisible=open` rendered landing and was
   invalidated as mismatched harness state, not product failure.
 - Console and all cleanup gates passed.
+
+## 2026-08-16 Native Workspace Quad deletion
+
+- Active discovery preloaded a Quad workspace and opened four real PTYs.
+- Real deletion issued matching close calls for `default`, `workspace-2`,
+  `workspace-3`, and `workspace-4`, all with `deleteHistory:true`.
+- The remaining single pane belonged to a newly generated fallback Workspace,
+  not leaked Quad state.
+- `native-workspace-quad-delete-cleanup`: missing coverage `1.00 -> 0.00`;
+  product-loss contribution remains `0.00 -> 0.00`.
+- Confirmation-enabled close remains a Native host-dialog boundary because a
+  background run could raise a system dialog over the user's desktop.
+- Console and all cleanup gates passed.

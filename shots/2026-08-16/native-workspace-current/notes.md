@@ -241,3 +241,34 @@ failure.
 
 Owned ports/runtime/state and browser processes were removed; screenshot count
 remained `100`.
+
+## Close-confirmation host boundary
+
+The remaining confirmation-enabled terminal close path invokes the native host
+dialog service while the terminal is running. Triggering that dialog from a
+background `showInactive()` verification instance can still raise a system
+dialog over the user's desktop. Without an owned foreground/Computer Use
+session, this remains a Native host-dialog boundary rather than inferred
+interaction coverage.
+
+## Quad workspace deletion continuation
+
+A fresh exact-owned run preloaded a stable `Quad Workspace` and opened four
+real Native panes:
+
+- `default`;
+- `workspace-2`;
+- `workspace-3`;
+- `workspace-4`.
+
+The route rendered `WorkspaceTerminalGrid--quad` with four panes. A real
+`Delete workspace` touch then issued four matching
+`terminalClose(deleteHistory:true)` calls for the old `quad-workspace`
+identity before replacing it with a new single-pane fallback Workspace 1.
+
+`native-workspace-quad-delete-cleanup`: missing coverage `1.00 -> 0.00`;
+product-loss contribution remains `0.00 -> 0.00`.
+
+The final UI contained one `WorkspaceTerminalGrid--single` pane owned by the
+new fallback workspace, not any leaked Quad PTY. Exact-client console and all
+process/browser cleanup gates passed; screenshot count remained `100`.
