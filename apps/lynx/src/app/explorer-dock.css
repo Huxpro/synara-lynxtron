@@ -546,10 +546,13 @@
 .ExplorerDockPreviewPath {
   min-width: 0;
   flex: 1;
+  overflow: hidden;
   color: var(--foreground);
   font-size: 12px;
   font-weight: 500;
   line-height: 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .ExplorerDockPreviewActions {

@@ -3009,3 +3009,18 @@ former dynamic-event P1 is no longer a valid blocker.
   passed with registered warnings only.
 - Detailed evidence:
   `shots/2026-08-17/explorer-pdf-multi-page-short-height/notes.md`.
+
+## 2026-08-17 Explorer long selected path at 320x200
+
+- Active discovery selected a deeply nested JSON file with a long filename.
+- Before, the path became `99.5x128 @ (172.5,75.5)` and painted through its
+  40px header into the content; header `scrollHeight` was 84px.
+- `lynx-explorer-long-path-header-wrap`: P1 contribution `1.00 -> 0.00`.
+- The shared preview-path owner now enforces one-line ellipsis with hidden
+  overflow.
+- After, the path is `99.5x16 @ (172.5,131.5)`, header `scrollHeight=39`, and
+  More actions remains in bounds.
+- Focused tests passed `2/2`; Lynx-for-Web and Native/Desktop production builds
+  passed with registered warnings only.
+- Detailed evidence:
+  `shots/2026-08-17/explorer-long-path-short-height/notes.md`.
