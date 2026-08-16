@@ -3095,6 +3095,18 @@ former dynamic-event P1 is no longer a valid blocker.
 - Detailed evidence:
   `shots/2026-08-17/explorer-persisted-width-short-height/notes.md`.
 
+## 2026-08-17 Explorer root-list error at 320x200
+
+- A canonical project/thread lost its real workspace root before Explorer
+  opened, producing a genuine `projects.listDirectories` failure.
+- `Could not load files.` measured
+  `112.828125x18 @ (23.828125,169.5)` and ended at `y=187.5`.
+- Search, Close, entries owner, and empty preview all remained in bounds.
+- This is a compact failure-boundary pass, contribution `0.00 -> 0.00`; no code
+  change was required and no automatic retry is claimed.
+- Detailed evidence:
+  `shots/2026-08-17/explorer-list-error-short-height/notes.md`.
+
 ## 2026-08-17 Explorer close transition at 320x200
 
 - A selected source preview was closed from the ordinary compact Explorer.
