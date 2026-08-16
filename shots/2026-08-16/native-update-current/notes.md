@@ -143,3 +143,62 @@ The live result remained Installed `v0.5.5-lynx.0`, Latest `v0.7.2`, and
 `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
 
 Remaining Update scope is network-error retry and external-download handoff.
+
+## Network-error retry continuation
+
+The Native-only Update matrix now includes a real host-fetch failure followed
+by a successful retry in the same exact-owned process.
+
+The failure was injected only into the owned Lynxtron host with a temporary
+`NODE_OPTIONS --require` shim under `/tmp`. It intercepted exactly the first
+fetch to the canonical GitHub latest-release API, rejected it with
+`Synthetic update network offline`, then delegated all subsequent fetches to
+the original runtime implementation. It did not modify product code, global
+network settings, DNS, system proxy state, or another process.
+
+The injection log proved the host path:
+
+- first automatic check: `FAIL https://api.github.com/repos/Emanuele-web04/synara/releases/latest`;
+- real Retry check: `PASS https://api.github.com/repos/Emanuele-web04/synara/releases/latest`.
+
+After the automatic failure, Native rendered:
+
+- `Could not check releases · Synthetic update network offline`;
+- enabled `Check for updates`;
+- `Open download page`.
+
+A real touch on `Check for updates` at `(689,512)` retried through the same
+host bridge. The result recovered to:
+
+- Installed `v0.5.5-lynx.0`;
+- Latest release `v0.7.2`;
+- `A newer release is available.`;
+- enabled `Check for updates`;
+- no stale synthetic error text.
+
+Recovered geometry remained identical to the valid light `1280x820` cell:
+
+- page `(256,0,1024x820)`;
+- card `(488,200,560x420)`;
+- version panel `(523,411,490x90)`;
+- status `(702,519,133x12)`;
+- actions `(623,553,290x32)`.
+
+Exact-client warning/error console remained empty.
+
+- `native-update-network-error-retry`: missing coverage `1.00 -> 0.00`.
+- Component product-loss contribution remained `0.00 -> 0.00`.
+- Focused Update tests passed `2` files / `5` tests.
+- Native/Desktop production build passed with only registered unsupported-CSS
+  and optional WebSocket acceleration warnings.
+- Validated bundle SHA-256:
+  `652f681314935d4a6c4e1a7e94c8a006dfec5546d6a638b50e0d7f86330f685c`.
+- The owned Native/server processes, temporary fetch shim, isolated
+  state/runtime/user directories, and diagnostic proxy files were removed.
+  Ports `58090`, `8891`, `8901`, and `58888` were free. Browser cleanup ended
+  at `sessions: []` with zero agent-browser-owned processes.
+- No screenshot was retained; local screenshot count remained `100`.
+
+The only remaining Update scope is the external-download handoff. It still has
+an external browser side effect and requires an explicitly owned handoff
+harness rather than being inferred from the rendered button.

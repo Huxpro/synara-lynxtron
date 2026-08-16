@@ -1431,3 +1431,29 @@ former dynamic-event P1 is no longer a valid blocker.
   runtime, and user-data directories were removed. Owned ports were free and
   browser cleanup ended at `sessions: []` with zero owned processes.
 - No screenshots were retained; local count remained `100`.
+
+## 2026-08-16 Native Update network-error retry
+
+- Active discovery closed the remaining Update network-error state with a real
+  host failure and retry in one exact-owned Native process.
+- A temporary owned-process-only `NODE_OPTIONS` shim rejected exactly the first
+  canonical GitHub release fetch, then delegated later requests to the original
+  `fetch`. No product code or system network configuration was changed.
+- Native rendered `Could not check releases · Synthetic update network offline`
+  and an enabled retry control.
+- A real `Check for updates` touch retried the host call and recovered to
+  Installed `v0.5.5-lynx.0`, Latest `v0.7.2`, and
+  `A newer release is available.` with no stale error.
+- `native-update-network-error-retry`: missing coverage `1.00 -> 0.00`;
+  product-loss contribution remained `0.00 -> 0.00`.
+- Focused tests passed `2` files / `5` tests; Native/Desktop production build
+  passed; exact-client console was clean.
+- Bundle SHA-256:
+  `652f681314935d4a6c4e1a7e94c8a006dfec5546d6a638b50e0d7f86330f685c`.
+- The external-download handoff remains unverified because it has an external
+  browser side effect and needs an explicitly owned handoff harness.
+- Owned processes, the temporary fetch shim, isolated directories, and
+  diagnostic proxy files were removed. Ports `58090`, `8891`, `8901`, and
+  `58888` were free; browser cleanup ended at `sessions: []` with zero owned
+  processes.
+- No screenshots were retained; local count remained `100`.
