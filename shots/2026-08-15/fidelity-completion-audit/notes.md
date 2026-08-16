@@ -2169,6 +2169,20 @@ former dynamic-event P1 is no longer a valid blocker.
 - DOM clicks established sidebar states because raw pointer publication remains
   a route-specific harness gap; no toggle interaction pass is claimed.
 
+## 2026-08-16 Short-height compact headers
+
+- A new `320x200` viewport axis checked the cost of recent 92px compact
+  headers.
+- Automation not-found passed: its body retained `108px`; message and Back to
+  automations button were fully visible, with page `scrollHeight=clientHeight`.
+- Plugin retained a `108px` scroller with `scrollHeight=417`; content extends
+  beyond the viewport.
+- Agent-browser wheel input did not move the Lynx custom scroll-view
+  (`scrollTop` remained zero). Plugin short-height content reachability
+  therefore remains missing interaction coverage/harness gap, not a product
+  pass or loss.
+- No code change was made; product-loss contribution stayed `0.00 -> 0.00`.
+
 ## 2026-08-16 Workspace header at medium width with sidebar closed
 
 - Active discovery added real Workspace/terminal at `800x568`, medium, closed.
