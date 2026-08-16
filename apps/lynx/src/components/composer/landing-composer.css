@@ -122,6 +122,22 @@
   padding: 2px 0;
 }
 
+.SliceRoot--viewport-short-height
+  .ComposerProjectPickerPopupLynx.LxMenuPopup {
+  height: calc(100vh - 16px);
+  max-height: calc(100vh - 16px);
+}
+
+.SliceRoot--viewport-short-height .ComposerProjectPickerPanelLynx {
+  height: 100%;
+}
+
+.SliceRoot--viewport-short-height .ComposerProjectPickerListLynx {
+  flex: 1;
+  min-height: 0;
+  max-height: none;
+}
+
 .ComposerProjectPickerGroupLynx {
   display: flex;
   flex-direction: column;

@@ -2631,3 +2631,20 @@ former dynamic-event P1 is no longer a valid blocker.
 - A DOM activation of Plan mode did not publish a `LxMenuSubPopup` in
   Lynx-for-Web. Nested submenu geometry remains interaction/harness missing
   coverage and is not included in the primary-menu pass.
+
+## 2026-08-17 Composer project picker at 320x200
+
+- Two projects were created through canonical `project.create`, then the
+  rendered Landing project control opened the real searchable picker at
+  `320x200`, dark.
+- Before, popup measured `288x258 @ (20,0)` and extended 58px below the
+  viewport. The list had a real scroll owner, but the popup shell itself was
+  outside the valid cell.
+- `lynx-composer-project-picker-short-overflow`: P1 contribution
+  `1.00 -> 0.00`.
+- The short-height picker now uses `calc(100vh - 16px)` and lets its list flex
+  into the remaining height while search/footer retain their fixed allocation.
+- After, popup was `288x184 @ (20,16)`, search `43px @ y=17`, and list
+  `74/797 @ y=60`; the overlay stayed in bounds with a real scroll range.
+- Focused Landing composer suite passed `3/3`; Lynx-for-Web and Native/Desktop
+  production builds passed with registered warnings only.

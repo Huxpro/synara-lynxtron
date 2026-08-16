@@ -2,6 +2,20 @@ import { describe, expect, it } from '@rstest/core';
 import { readFileSync } from 'node:fs';
 
 describe('landing composer fidelity contract', () => {
+  it('keeps the project picker inside short viewports', () => {
+    const styles = readFileSync(
+      new URL('./landing-composer.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ComposerProjectPickerPopupLynx\.LxMenuPopup\s*\{[^}]*height:\s*calc\(100vh - 16px\);[^}]*max-height:\s*calc\(100vh - 16px\);/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height \.ComposerProjectPickerListLynx\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;[^}]*max-height:\s*none;/s
+    );
+  });
+
   it('uses the shared Web landing stack and composer frame without duplicate spacing', () => {
     const routerSource = readFileSync(
       new URL('../../app/router.tsx', import.meta.url),
