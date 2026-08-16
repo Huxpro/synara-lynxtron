@@ -2402,3 +2402,21 @@ former dynamic-event P1 is no longer a valid blocker.
 - Every browser workflow used `bun run browser:run -- ...` and its final cleanup
   passed. No screenshots were retained; the repository screenshot count
   remained 100.
+
+## 2026-08-17 Settings sidebar at 320x200
+
+- The open Settings sidebar preserves a fixed 46px titlebar and gives its body
+  an independent vertical scroll owner: `clientHeight=154`,
+  `scrollHeight=604`, maximum `scrollTop=450`.
+- At maximum offset, the final five navigation rows were fully reachable below
+  the titlebar: Providers `y=46..74`, Skills `76..104`, Usage `106..134`,
+  Integrations `136..164`, and Advanced `166..194`.
+- This is a short-height sidebar layout pass, contribution `0.00 -> 0.00`; no
+  product code change was required.
+- A DOM click on the rendered `Toggle thread sidebar` control established the
+  deterministic open state because raw agent-browser pointer publication for
+  Lynx custom elements remains a harness gap. The controlled `scrollTop`
+  mutation is anatomy evidence only; no pointer or wheel interaction pass is
+  claimed.
+- Every browser workflow used `bun run browser:run -- ...` and returned through
+  its zero-session/zero-owned-process cleanup gate.
