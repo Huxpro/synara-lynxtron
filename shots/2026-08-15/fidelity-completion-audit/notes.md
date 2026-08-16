@@ -3068,6 +3068,20 @@ former dynamic-event P1 is no longer a valid blocker.
 - Detailed evidence:
   `shots/2026-08-17/explorer-reference-action-short-height/notes.md`.
 
+## 2026-08-17 Explorer Ask why this changed at 320x200
+
+- The second compact Explorer action was activated through its real accessible
+  menuitem ref for `package.json`.
+- The composer received the exact Ask-why prompt and a structured
+  `ComposerChip--mention` measuring
+  `92.5625x19.5 @ (154.984375,120)`.
+- The mention placeholder stayed between the prompt prefix/suffix, and the
+  projected sentence remained complete.
+- This is a compact action product pass, contribution `0.00 -> 0.00`; no code
+  change was required. Explorer Close is controlled DOM activation only.
+- Detailed evidence:
+  `shots/2026-08-17/explorer-ask-why-action-short-height/notes.md`.
+
 ## 2026-08-17 Explorer close transition at 320x200
 
 - A selected source preview was closed from the ordinary compact Explorer.
