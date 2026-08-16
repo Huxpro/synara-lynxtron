@@ -2797,3 +2797,16 @@ former dynamic-event P1 is no longer a valid blocker.
 - The intended multi-row prerequisite was therefore not established. This is a
   fixture/harness gap, not a repeated one-row pass and not a product loss.
 - All owned listeners were stopped and ports `58111..58115` were verified free.
+
+## 2026-08-17 Explorer preview actions at 320x200
+
+- A canonical branch-backed thread used the explicit Web harness identity:
+  `explorer=open`, `explorerPath=README.md`, and
+  `explorerActionMenu=open`.
+- The real selected-file preview mounted its `More actions` menu at
+  `320x200`, dark.
+- Popup measured `208x116 @ (100,84)` and ended exactly at `y=200`.
+  `Reference in chat` and `Ask why this changed` remained fully visible.
+- This is a deterministic short-height layout pass, contribution
+  `0.00 -> 0.00`; no product code change was required and neither chat action
+  was activated.
