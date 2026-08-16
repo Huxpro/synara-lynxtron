@@ -382,6 +382,15 @@ export function projectAutomationDetail(input: {
       label: "Mode",
       value: input.definition.mode === "heartbeat" ? "Heartbeat" : "Standalone",
     },
+    ...(input.definition.mode === "heartbeat" &&
+    input.definition.completionPolicy.type === "ai-evaluated"
+      ? [
+          {
+            label: "Stop when",
+            value: input.definition.completionPolicy.stopWhen,
+          },
+        ]
+      : []),
     {
       label: "Max iterations",
       value:

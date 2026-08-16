@@ -428,3 +428,92 @@ SQLite projection after the interaction confirmed
 - No browser was opened in this Native-only slice. Final state was
   `sessions: []`, zero agent-browser-owned processes, and all owned ports free.
   Local screenshot count remained `100`.
+
+## Heartbeat target selection and detail stop condition
+
+Active discovery continued beyond Heartbeat mode reachability into a new
+interaction/state combination at the real `900x650` Desktop minimum:
+
+- one canonical project, `Heartbeat Create Project`;
+- one canonical target thread, `Heartbeat Create Target`;
+- Heartbeat mode;
+- target-thread selection;
+- an AI-evaluated completion policy, `Thread reports COMPLETE`;
+- the populated automation list and detail surfaces in Web authority and
+  Native.
+
+Preflight proved both renderers used the same isolated server on
+`127.0.0.1:58090`, the same canonical project/thread IDs (`hbc-p` / `hbc-t`),
+the same light theme and `900x650` logical viewport, and zero initial
+definitions/runs. The Native client was derived from the owned Lynxtron PID,
+not a remembered DevTool port.
+
+Native real touches opened the create dialog, selected Heartbeat, and selected
+`Heartbeat Create Target`; the choice exposed `Selected` in its accessibility
+value. The dynamic form then measured:
+
+- panel: `(257,74,386x420)`;
+- target choice: `(257,470,155x26)`;
+- Stop when input: `(257,516,386x32)`;
+- summary: `(257,784,386x48)`;
+- fixed footer: `(257,508,386x32)`.
+
+The DevTool-supported `DOM.scrollIntoViewIfNeeded`, wheel events, touch drags,
+and PID-targeted inactive macOS scroll events did not move the Native
+`scroll-view`. The panel itself retained `scroll-y=true`, a `404px` computed
+height, and a `420px` maximum. macOS Accessibility exposed only the Lynxtron
+host window, not the Lynx content tree. Therefore inactive Native scrolling and
+typing remain a harness capability gap; this loop does not claim Native
+end-to-end creation and does not count the failed injections as product loss.
+
+Web authority provided the equivalent fully operable Heartbeat path. Real
+rendered controls selected Heartbeat and the same target thread, entered the
+same stop condition, and created `Heartbeat creation proof`. Canonical
+projection confirmed:
+
+- `mode=heartbeat`;
+- `target_thread_id=hbc-t`;
+- `completion_policy_json` =
+  `{"type":"ai-evaluated","stopWhen":"Thread reports COMPLETE","confidenceThreshold":0.8}`;
+- zero runs.
+
+The definition synchronized into Native through the shared server without a
+restart. A real Native row touch opened detail at `900x650`. Before the fix,
+Web authority displayed `Stop when` and `Thread reports COMPLETE`, while Native
+detail omitted the condition entirely despite receiving the same definition.
+This is a P1 product loss: Native users could not audit the condition that
+terminates a Heartbeat automation.
+
+Root cause was the shared `projectAutomationDetail` projection dropping
+`completionPolicy`; it was not a transport or renderer data-loss issue. The
+shared projection now adds `Stop when` after `Mode` for Heartbeat definitions
+whose policy is `ai-evaluated`.
+
+Final exact-owned Native verification on bundle
+`841c1809cb39adb6b0e015d61b9e5f589ef548a49f465eabb40bf8407e035d2a`
+rendered:
+
+- detail page: `(256,0,644x650)`;
+- detail aside: `(580,0,320x650)`;
+- aside scroller: `(580,46,320x604)`;
+- Stop when row: `(597,441,287x30)`;
+- value: `Thread reports COMPLETE`.
+
+Exact-client warning/error console remained empty.
+
+- `native-automations-heartbeat-stop-condition-detail`: P1 contribution
+  `1.00 -> 0.00`.
+- `native-automations-heartbeat-create-input-scroll`: missing coverage remains
+  `1.00`; blocked by the currently unavailable inactive Native input/scroll
+  harness, not classified as a product loss.
+- Shared projection focused test: `1` file / `6` tests passed.
+- Lynx route focused test: `1` file / `6` tests passed.
+- Native/Desktop production build passed with only registered unsupported-CSS
+  and optional WebSocket acceleration warnings.
+- All agent-browser attempts ran through `browser:run`; successful and failed
+  harness probes returned to `sessions: []` and zero owned browser processes.
+- Canonical API cleanup returned zero visible definitions/runs. The persisted
+  definition and project rows were soft-deleted as designed, then the isolated
+  state/runtime/user directories were removed.
+- Final owned ports `58090`, `8891`, and `8901` were free.
+- No screenshots were retained; local screenshot count remained `100`.

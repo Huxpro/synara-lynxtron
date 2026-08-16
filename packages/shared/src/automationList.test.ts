@@ -189,6 +189,31 @@ describe("automation list projection", () => {
     });
   });
 
+  it("projects the Heartbeat stop condition into read-only detail", () => {
+    const detail = projectAutomationDetail({
+      definition: definition({
+        mode: "heartbeat",
+        targetThreadId: "thread-1",
+        completionPolicy: {
+          type: "ai-evaluated",
+          stopWhen: "Thread reports COMPLETE",
+          confidenceThreshold: 0.8,
+        },
+      }),
+      projectName: "Synara",
+      runs: [],
+      targetThreadTitle: "Fix fidelity",
+    });
+
+    expect(detail.detailRows).toEqual(
+      expect.arrayContaining([
+        { label: "Mode", value: "Heartbeat" },
+        { label: "Stop when", value: "Thread reports COMPLETE" },
+        { label: "Thread", value: "Fix fidelity" },
+      ]),
+    );
+  });
+
   it("formats detail timestamps relative to the current local day", () => {
     const now = new Date(2026, 7, 14, 12, 0, 0);
     expect(

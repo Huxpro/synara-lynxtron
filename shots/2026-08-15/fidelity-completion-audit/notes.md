@@ -1319,3 +1319,35 @@ former dynamic-event P1 is no longer a valid blocker.
 - No agent-browser session was opened. Entry and exit gates both passed with
   `sessions: []`, zero agent-browser-owned processes, all owned ports free, and
   screenshot count still `100`.
+
+## 2026-08-16 Heartbeat target and Stop when detail
+
+- Active discovery continued from mode reachability into target-thread
+  selection, completion-policy entry, cross-renderer synchronization, populated
+  list, and detail at `900x650`.
+- Web authority created a real Heartbeat definition through rendered controls.
+  Canonical projection preserved `target_thread_id=hbc-t` and
+  `stopWhen=Thread reports COMPLETE`; Native received the same definition.
+- Web authority showed `Stop when` in detail, while Native omitted it.
+  `native-automations-heartbeat-stop-condition-detail`: P1 contribution
+  `1.00 -> 0.00`.
+- Root cause was shared `projectAutomationDetail` dropping the AI-evaluated
+  completion policy. The shared projection now emits `Stop when` directly
+  after `Mode` for applicable Heartbeat definitions.
+- Final Native detail at `900x650` rendered the row at
+  `(597,441,287x30)` with value `Thread reports COMPLETE`; exact-client console
+  was clean.
+- Shared projection tests passed `6/6`, Lynx route tests passed `6/6`, and the
+  Native/Desktop production build passed. Bundle SHA-256:
+  `841c1809cb39adb6b0e015d61b9e5f589ef548a49f465eabb40bf8407e035d2a`.
+- Native inactive create-form scrolling/typing remains missing coverage:
+  DevTool scroll/touch injection, PID-targeted wheel events, and macOS AX could
+  not operate the Lynx content without foreground interaction. This is a
+  harness capability gap, not a product pass or failure.
+- Every browser command remained inside `browser:run`; failed parser/probe
+  attempts were classified as harness errors and still ended with
+  `sessions: []` and zero agent-browser-owned processes.
+- Canonical cleanup returned zero visible definitions/runs; soft-deleted
+  persistence rows and all isolated state/runtime/user directories were then
+  removed. Owned ports `58090`, `8891`, and `8901` were free.
+- No screenshots were retained; local count remained `100`.
