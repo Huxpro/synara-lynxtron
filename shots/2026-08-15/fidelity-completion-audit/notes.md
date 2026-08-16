@@ -3296,3 +3296,20 @@ former dynamic-event P1 is no longer a valid blocker.
   passed.
 - Detailed evidence:
   `shots/2026-08-17/explorer-empty-source-short-height/notes.md`.
+
+## 2026-08-17 Explorer long search result at 320x200
+
+- A real root-level filename with 241 characters matched a compact Explorer
+  search.
+- Before, the result row grew to `152.5x248`, its name grew to 240px tall, and
+  the same root filename rendered twice as name and path.
+- `lynx-explorer-long-search-result-wrap`: P1 contribution
+  `1.00 -> 0.00`.
+- Result copy now clips overflow, name/path use one-line ellipsis, and
+  root-level auxiliary paths are omitted when identical to the filename.
+- After, the row returned to `152.5x28 @ (4,160)` and the name to
+  `116.5x16 @ (32,166)` with no duplicate path.
+- Focused tests passed `2/2`; Lynx-for-Web and Native/Desktop production builds
+  passed.
+- Detailed evidence:
+  `shots/2026-08-17/explorer-long-search-result-short-height/notes.md`.

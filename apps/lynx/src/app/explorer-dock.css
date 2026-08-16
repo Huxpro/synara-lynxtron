@@ -542,15 +542,20 @@
   display: flex;
   min-width: 0;
   flex: 1;
+  overflow: hidden;
   align-items: baseline;
   gap: 6px;
 }
 
 .ExplorerDockEntryName {
+  min-width: 0;
+  overflow: hidden;
   color: var(--foreground);
   font-size: 12px;
   line-height: 16px;
   opacity: 0.78;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .ExplorerDockEntry--directory .ExplorerDockEntryName {
@@ -566,9 +571,13 @@
 }
 
 .ExplorerDockEntryPath {
+  min-width: 0;
+  overflow: hidden;
   color: var(--muted-foreground);
   font-size: 10px;
   line-height: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .ExplorerDockPreview {

@@ -126,6 +126,9 @@ describe('Lynx Explorer dock', () => {
     expect(source).toContain('Loading directory…');
     expect(source).toContain('Could not load directory.');
     expect(source).toContain('showPaths={Boolean(props.query.trim())}');
+    expect(source).toContain(
+      'props.showPath && props.entry.path !== fileName(props.entry.path)'
+    );
     expect(queriesSource).toContain('export async function fetchExplorerDirectory');
     expect(queriesSource).toContain('relativePath: input.relativePath');
     expect(routerSource).toContain('fetchExplorerDirectory({');
@@ -298,6 +301,15 @@ describe('Lynx Explorer dock', () => {
     );
     expect(styles).toMatch(
       /\.ExplorerDockEntryName\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;[^}]*opacity:\s*0\.78;/s
+    );
+    expect(styles).toMatch(
+      /\.ExplorerDockEntryCopy\s*\{[^}]*min-width:\s*0;[^}]*flex:\s*1;[^}]*overflow:\s*hidden;/s
+    );
+    expect(styles).toMatch(
+      /\.ExplorerDockEntryName\s*\{[^}]*min-width:\s*0;[^}]*overflow:\s*hidden;[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s
+    );
+    expect(styles).toMatch(
+      /\.ExplorerDockEntryPath\s*\{[^}]*min-width:\s*0;[^}]*overflow:\s*hidden;[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s
     );
     expect(styles).toMatch(
       /\.ExplorerDockEntry--directory \.ExplorerDockEntryName\s*\{[^}]*font-weight:\s*500;[^}]*opacity:\s*0\.8;/s

@@ -160,7 +160,7 @@ function ExplorerEntryRow(props: {
         <text className="ExplorerDockEntryName">
           {fileName(props.entry.path)}
         </text>
-        {props.showPath ? (
+        {props.showPath && props.entry.path !== fileName(props.entry.path) ? (
           <text className="ExplorerDockEntryPath">{props.entry.path}</text>
         ) : null}
       </view>
