@@ -237,3 +237,45 @@ is external port competition, not a Synara-owned leak.
 Future verification needs a host-level injectable `openExternal` dependency or
 an owned OS/browser protocol handler; a render-only button check is still
 insufficient.
+
+## Up-to-date continuation
+
+The Native-only Update matrix now also covers a successful release response
+whose version exactly matches the installed app.
+
+An owned-process-only temporary fetch shim returned canonical GitHub release
+JSON with tag `v0.5.5-lynx.0`, matching the installed
+`v0.5.5-lynx.0`. It recorded each target fetch under `/tmp` and did not modify
+product code or global network configuration.
+
+The automatic check rendered:
+
+- Installed `v0.5.5-lynx.0`;
+- Latest release `v0.5.5-lynx.0`;
+- `You are up to date.`;
+- enabled `Check for updates`;
+- `Open download page`.
+
+A real touch on `Check for updates` performed a second owned host fetch. The
+capture log contained exactly two canonical release-API calls, and the UI
+remained in the same complete up-to-date state without transient or stale error
+text. Exact-client warning/error console remained empty.
+
+- `native-update-up-to-date-retry`: missing coverage `1.00 -> 0.00`.
+- Component product-loss contribution remained `0.00 -> 0.00`.
+- The same current HEAD and byte-identical bundle had just passed focused
+  Update tests `2` files / `5` tests and the Native/Desktop production build in
+  the preceding network-error slice.
+- Validated bundle SHA-256:
+  `652f681314935d4a6c4e1a7e94c8a006dfec5546d6a638b50e0d7f86330f685c`.
+- The owned Native/server processes, fetch shim, and isolated
+  state/runtime/user directories were removed. Ports `58090`, `8891`, and
+  `8901` were free; browser cleanup ended at `sessions: []` with zero owned
+  processes.
+Before commit, port `8901` was later occupied by an unrelated
+`/Users/bytedance/github/t3code-archaeology-verify3` verification process
+(PID `73718`) started after this loop's cleanup. It was not terminated and is
+external contention, not a Synara leak.
+- No screenshot was retained; local screenshot count remained `100`.
+
+The external-download handoff remains the only open Update scope.

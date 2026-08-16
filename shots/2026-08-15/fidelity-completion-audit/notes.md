@@ -1476,3 +1476,25 @@ former dynamic-event P1 is no longer a valid blocker.
 - Port `8901` was later occupied by an unrelated t3code archaeology verification
   process (PID `44768`) started after this loop's cleanup. It was not terminated
   and is external contention, not a Synara leak.
+
+## 2026-08-16 Native Update up-to-date retry
+
+- An owned-process-only fetch shim returned a canonical release response with
+  tag `v0.5.5-lynx.0`, equal to the installed app version.
+- Native rendered Installed/Latest `v0.5.5-lynx.0` and
+  `You are up to date.`.
+- A real `Check for updates` touch issued a second captured host fetch and
+  restored the same complete state with no error.
+- `native-update-up-to-date-retry`: missing coverage `1.00 -> 0.00`;
+  product-loss contribution remained `0.00 -> 0.00`.
+- Exact-client console was clean. The same HEAD/bundle had just passed focused
+  Update tests `5/5` and the Native/Desktop production build.
+- Bundle SHA-256:
+  `652f681314935d4a6c4e1a7e94c8a006dfec5546d6a638b50e0d7f86330f685c`.
+- External-download handoff remains the only open Update scope.
+- Owned processes, fetch shim, and isolated directories were removed. Ports
+  `58090`, `8891`, and `8901` were free; browser cleanup ended at
+  `sessions: []` with zero owned processes.
+- Port `8901` was later occupied by an unrelated t3code archaeology verification
+  process (PID `73718`) started after cleanup. It was not terminated and is
+  external contention, not a Synara leak.
