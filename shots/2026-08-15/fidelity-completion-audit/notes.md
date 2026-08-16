@@ -2777,3 +2777,12 @@ former dynamic-event P1 is no longer a valid blocker.
   direct-entry result is classified as a harness/hydration prerequisite
   mismatch, not a product loss.
 - No editor launch action was activated.
+
+## 2026-08-17 Composer runtime-permissions menu at 320x200
+
+- The rendered Landing `Full access — change permissions` control opened the
+  distinct runtime menu at `320x200`, dark.
+- Popup measured `188x116 @ (40,84)` and ended exactly at `y=200`. Full access
+  and Default permissions remained fully visible.
+- This is a short-height layout pass, contribution `0.00 -> 0.00`; no product
+  code change was required and no permission mode was changed.
