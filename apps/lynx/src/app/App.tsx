@@ -36,7 +36,12 @@ import {
   readSystemDarkEvent,
   SYSTEM_APPEARANCE_EVENT,
 } from '../main/systemAppearanceEvent.logic';
+import {
+  readReducedMotionEvent,
+  REDUCED_MOTION_EVENT,
+} from '../main/reducedMotionEvent.logic';
 import { onGlobalEvent } from '../platform/bridge';
+import { setLynxReducedMotion } from '../platform/motion.lynx';
 
 import { sliceUiDensityClassName } from './appDensity.logic';
 import { readPersistedAppearanceFallback } from './appHydration.logic';
@@ -122,9 +127,13 @@ export function App() {
     readonly initialExplorerExpandedDirectories?: unknown;
     readonly initialExplorerWidth?: unknown;
     readonly initialRoute?: unknown;
+    readonly initialReducedMotion?: unknown;
   };
   const [systemDark, setSystemDark] = useState(
     initData.initialSystemDark === true
+  );
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(
+    initData.initialReducedMotion === true
   );
   const initialEnvironmentOpen = initData.initialEnvironmentOpen === true;
   const initialEditorOpen = initData.initialEditorOpen === true;
@@ -369,6 +378,17 @@ export function App() {
     return onGlobalEvent(SYSTEM_APPEARANCE_EVENT, (value: unknown) => {
       const next = readSystemDarkEvent(value);
       if (next !== null) setSystemDark(next);
+    });
+  }, []);
+  useEffect(() => {
+    'background only';
+    setLynxReducedMotion(prefersReducedMotion);
+  }, [prefersReducedMotion]);
+  useEffect(() => {
+    'background only';
+    return onGlobalEvent(REDUCED_MOTION_EVENT, (value: unknown) => {
+      const next = readReducedMotionEvent(value);
+      if (next !== null) setPrefersReducedMotion(next);
     });
   }, []);
   useEffect(() => {

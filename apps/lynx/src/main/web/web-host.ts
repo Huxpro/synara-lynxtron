@@ -11,6 +11,7 @@ import {
 import { resolveWebInitialRoute } from './webInitialRoute.logic';
 import { resolveWebRelayEndpoint } from './webRelayEndpoint.logic';
 import { NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG } from '../syntaxHighlightingContract.logic';
+import { REDUCED_MOTION_EVENT } from '../reducedMotionEvent.logic';
 import { SYSTEM_APPEARANCE_EVENT } from '../systemAppearanceEvent.logic';
 
 const bundleUrl = './main.web.bundle';
@@ -911,6 +912,10 @@ const systemAppearanceQuery = globalThis.matchMedia(
   '(prefers-color-scheme: dark)'
 );
 const initialSystemDark = systemAppearanceQuery.matches;
+const reducedMotionQuery = globalThis.matchMedia(
+  '(prefers-reduced-motion: reduce)'
+);
+const initialReducedMotion = reducedMotionQuery.matches;
 webDocument.body.innerHTML = `
 <lynx-view
   id="root-view"
@@ -938,6 +943,7 @@ webDocument.body.innerHTML = `
     initialExplorerWidth,
     initialComposerModelMenuOpen,
     initialComposerModelProvider,
+    initialReducedMotion,
     initialSystemDark,
     initialRoute: pendingInitialRoute,
   })}'
@@ -1117,12 +1123,17 @@ const publishViewportSize = () => {
 const publishSystemAppearance = (event: MediaQueryListEvent) => {
   lynxView.sendGlobalEvent?.(SYSTEM_APPEARANCE_EVENT, [event.matches]);
 };
+const publishReducedMotion = (event: MediaQueryListEvent) => {
+  lynxView.sendGlobalEvent?.(REDUCED_MOTION_EVENT, [event.matches]);
+};
 globalThis.addEventListener('resize', publishViewportSize);
 systemAppearanceQuery.addEventListener('change', publishSystemAppearance);
+reducedMotionQuery.addEventListener('change', publishReducedMotion);
 
 globalThis.addEventListener('pagehide', () => {
   globalThis.removeEventListener('resize', publishViewportSize);
   systemAppearanceQuery.removeEventListener('change', publishSystemAppearance);
+  reducedMotionQuery.removeEventListener('change', publishReducedMotion);
   interactionBridgeController.abort();
   safeClose(relaySocket);
   rejectPendingRequests(new Error('Synara relay page closed'));

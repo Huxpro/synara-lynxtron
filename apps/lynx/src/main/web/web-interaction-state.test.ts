@@ -483,6 +483,19 @@ describe('Lynx-for-Web interaction state bridge', () => {
     expect(source).toContain(
       "systemAppearanceQuery.removeEventListener('change', publishSystemAppearance)"
     );
+    expect(source).toContain(
+      "globalThis.matchMedia(\n  '(prefers-reduced-motion: reduce)'\n)"
+    );
+    expect(source).toContain('initialReducedMotion,');
+    expect(source).toContain(
+      "reducedMotionQuery.addEventListener('change', publishReducedMotion)"
+    );
+    expect(source).toContain(
+      'lynxView.sendGlobalEvent?.(REDUCED_MOTION_EVENT, [event.matches])'
+    );
+    expect(source).toContain(
+      "reducedMotionQuery.removeEventListener('change', publishReducedMotion)"
+    );
     expect(source).toContain('initialSystemDark,');
     expect(source).toContain('initialComposerModelMenuOpen,');
     expect(source).toContain(

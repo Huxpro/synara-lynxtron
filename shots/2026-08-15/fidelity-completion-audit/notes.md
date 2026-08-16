@@ -1783,3 +1783,25 @@ former dynamic-event P1 is no longer a valid blocker.
   independently; it was not terminated or classified as a Synara leak.
 - Detailed evidence:
   `shots/2026-08-16/live-system-appearance/notes.md`.
+
+## 2026-08-16 Reduced-motion disclosure cleanup
+
+- Active discovery added a compact OpenCode disclosure close-timing cell under
+  `prefers-reduced-motion: reduce`, plus a live no-preference -> reduce change.
+- Web authority removed closed content immediately and returned to `44px`.
+- Lynx before retained the `483px` disclosure at the first probe and `80ms`,
+  then removed it only after the fixed `220ms + 40ms` presence timer.
+- `lynx-reduced-motion-presence-delay`: P1 contribution `1.00 -> 0.00`.
+- The Web host now publishes initial/live `synara:reduced-motion` events and
+  cleans its listener on pagehide. The shared Lynx motion owner immediately
+  unmounts closed content when reduced motion is active.
+- Lynx after was `44px` with content absent on the first, `80ms`, and `320ms`
+  probes. A live preference change also closed immediately without reload;
+  relay connection attempts remained `1`.
+- Focused suites passed `21/21`; Web and Native/Desktop production builds
+  passed. Native bundle SHA-256:
+  `0ff05243b2eb35ef838091e01b89e6001afb2a7561d9c7b7a9b78539aeca0114`.
+- Entry/exit browser cleanup passed with `sessions: []`, zero owned browser
+  processes, no retained screenshot, and local count `100`.
+- Detailed evidence:
+  `shots/2026-08-16/reduced-motion-disclosure/notes.md`.

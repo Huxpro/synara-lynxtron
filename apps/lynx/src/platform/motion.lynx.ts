@@ -14,6 +14,25 @@ export const DISCLOSURE_CONTENT_OPEN_CLASS = 'LynxDisclosureMotion--open';
 export const DISCLOSURE_CONTENT_CLOSED_CLASS = 'LynxDisclosureMotion--closed';
 export const DISCLOSURE_CHEVRON_MOTION_CLASS = 'LynxDisclosureChevron';
 
+let reducedMotion = false;
+const reducedMotionListeners = new Set<(value: boolean) => void>();
+
+export function setLynxReducedMotion(value: boolean): void {
+  if (reducedMotion === value) return;
+  reducedMotion = value;
+  for (const listener of reducedMotionListeners) listener(value);
+}
+
+function useLynxReducedMotion(): boolean {
+  const [value, setValue] = useState(reducedMotion);
+  useEffect(() => {
+    'background only';
+    reducedMotionListeners.add(setValue);
+    return () => reducedMotionListeners.delete(setValue);
+  }, []);
+  return value;
+}
+
 function classNames(...values: ReadonlyArray<string | undefined>): string {
   return values.filter(Boolean).join(' ');
 }
@@ -66,6 +85,7 @@ export function useLynxDisclosurePresence(
   options: { readonly preserveOnClose?: boolean } = {}
 ): boolean {
   const preserveOnClose = options.preserveOnClose ?? true;
+  const prefersReducedMotion = useLynxReducedMotion();
   const [present, setPresent] = useState(open);
 
   useEffect(() => {
@@ -75,7 +95,7 @@ export function useLynxDisclosurePresence(
       return;
     }
     if (!present) return;
-    if (!preserveOnClose) {
+    if (!preserveOnClose || prefersReducedMotion) {
       setPresent(false);
       return;
     }
@@ -84,7 +104,7 @@ export function useLynxDisclosurePresence(
       DISCLOSURE_TRANSITION_MS + DISCLOSURE_CLEANUP_BUFFER_MS
     );
     return () => clearTimeout(timeout);
-  }, [open, preserveOnClose, present]);
+  }, [open, prefersReducedMotion, preserveOnClose, present]);
 
   return present;
 }
