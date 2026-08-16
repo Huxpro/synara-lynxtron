@@ -1201,3 +1201,13 @@ former dynamic-event P1 is no longer a valid blocker.
   were classified as harness mistakes.
 - System folder selection remains a background-unsafe host-dialog boundary.
 - Console and all cleanup gates passed.
+
+## 2026-08-16 Native Studio container restart
+
+- Dark `1440x900` Studio restarted with the same user and server state.
+- The same single Studio project ID survived; no Home or duplicate Studio
+  container was created.
+- Studio remained active with the same landing presentation and empty console.
+- `native-studio-container-restart`: missing coverage `1.00 -> 0.00`;
+  product-loss contribution remains `0.00 -> 0.00`.
+- Canonical and all process/browser cleanup gates passed.

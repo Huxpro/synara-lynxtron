@@ -192,3 +192,26 @@ The actual system folder-dialog selection remains a host-dialog boundary for a
 background run. First send and restart persistence remain open. Owned
 ports/runtime/state and browser processes were removed; screenshot count
 remained `100`.
+
+## Native restart continuation
+
+A fresh exact-owned dark `1440x900` Studio run recorded its canonical Studio
+container ID, then restarted Native with the same user data and isolated server
+state.
+
+After restart:
+
+- exactly one live project remained;
+- its ID matched the first launch;
+- kind/title remained `studio` / `Studio`;
+- no Home container or second Studio container was created;
+- root remained dark `1440x900`;
+- Studio stayed active with `What should we work on?`;
+- exact-client warning/error console stayed empty.
+
+`native-studio-container-restart`: missing coverage `1.00 -> 0.00`;
+product-loss contribution remains `0.00 -> 0.00`.
+
+This closes the restart duplicate-container boundary that previously produced a
+real race before the shared landing-provider bootstrap fix. Canonical,
+process, browser, and screenshot-count cleanup gates passed.
