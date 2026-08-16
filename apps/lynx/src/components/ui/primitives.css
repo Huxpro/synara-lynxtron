@@ -233,6 +233,36 @@
   padding-bottom: 15vh;
 }
 
+.SliceRoot--viewport-short-height
+  .LxDialogViewport.LxCommandDialogViewport {
+  padding: 8px;
+}
+
+.SliceRoot--viewport-short-height
+  .LxDialogPopup.LxCommandDialogPopup {
+  height: calc(100vh - 16px);
+  max-height: calc(100vh - 16px);
+}
+
+.SliceRoot--viewport-short-height .LxCommand {
+  height: 100%;
+}
+
+.SliceRoot--viewport-short-height .LxCommandPanel {
+  flex: 1;
+  min-height: 0;
+}
+
+.SliceRoot--viewport-short-height .LxCommandInput,
+.SliceRoot--viewport-short-height .LxCommandFooter {
+  flex-shrink: 0;
+}
+
+.SliceRoot--viewport-short-height .LxCommandList {
+  flex: 1;
+  min-height: 0;
+}
+
 .LxCommand {
   display: flex;
   flex-direction: column;

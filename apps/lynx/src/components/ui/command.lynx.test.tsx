@@ -85,6 +85,18 @@ describe('Lynx CommandItem interaction contract', () => {
       /\.LxDialogPopup\.LxCommandDialogPopup\s*\{[^}]*border-radius:\s*18px;[^}]*box-shadow:\s*0 10px 15px -3px rgba\(0,\s*0,\s*0,\s*0\.05\),\s*0 4px 6px -4px rgba\(0,\s*0,\s*0,\s*0\.05\);/s
     );
     expect(primitiveStyles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.LxDialogViewport\.LxCommandDialogViewport\s*\{[^}]*padding:\s*8px;/s
+    );
+    expect(primitiveStyles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.LxDialogPopup\.LxCommandDialogPopup\s*\{[^}]*height:\s*calc\(100vh - 16px\);[^}]*max-height:\s*calc\(100vh - 16px\);/s
+    );
+    expect(primitiveStyles).toMatch(
+      /\.SliceRoot--viewport-short-height \.LxCommandPanel\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;/s
+    );
+    expect(primitiveStyles).toMatch(
+      /\.SliceRoot--viewport-short-height \.LxCommandList\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;/s
+    );
+    expect(primitiveStyles).toMatch(
       /\.LxCommandPanel\s*\{[^}]*border-top-left-radius:\s*14px;[^}]*border-top-right-radius:\s*14px;[^}]*box-shadow:\s*0 1px 2px 0 rgba\(0,\s*0,\s*0,\s*0\.05\);/s
     );
     expect(primitiveStyles).toMatch(

@@ -2574,3 +2574,19 @@ former dynamic-event P1 is no longer a valid blocker.
 - Programmatic offset is anatomy evidence only. Real wheel publication through
   the Lynx custom scroll-view remains harness missing coverage and is not
   claimed as an interaction pass.
+
+## 2026-08-17 Sidebar command palette at 320x200
+
+- The rendered sidebar `Search` action opened the physical-shared command
+  palette at `320x200`, dark.
+- Before, the popup measured about `272x229 @ (18,-25.66)`: the 48px search
+  input was above the viewport and the 56px footer extended below it.
+- `lynx-command-palette-short-popup-offscreen`: P1 contribution
+  `1.00 -> 0.00`.
+- The shared short-height command contract removes proportional viewport
+  padding, constrains the popup to `calc(100vh - 16px)`, fixes input/footer,
+  and gives the result list the remaining scrollable height.
+- After, popup was `262.8x184 @ (22.6,8)`, input `48px @ y=10`, list
+  `70/220 @ y=58`, and footer `57px @ y=134`; all fixed regions were in bounds.
+- Focused Command suite passed `9/9`; Lynx-for-Web and Native/Desktop
+  production builds passed with registered warnings only.
