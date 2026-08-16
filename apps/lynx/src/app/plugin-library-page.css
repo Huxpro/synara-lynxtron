@@ -24,6 +24,12 @@
   flex: 1;
 }
 
+.PluginLibraryTabs {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+}
+
 .PluginLibraryProviders {
   width: min(700px, 70%);
   min-width: 0;
@@ -165,6 +171,33 @@
 
 .SliceRoot--viewport-compact .PluginLibraryRows {
   grid-template-columns: 1fr;
+}
+
+.SliceRoot--viewport-compact .PluginLibraryHeader {
+  height: 92px;
+  min-height: 92px;
+  padding: 0;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+}
+
+.SliceRoot--viewport-compact .PluginLibraryTabs {
+  height: 46px;
+  min-height: 46px;
+  padding-left: 180px;
+  padding-right: 16px;
+  align-items: center;
+}
+
+.SliceRoot--viewport-compact .PluginLibraryHeaderSpacer {
+  display: none;
+}
+
+.SliceRoot--viewport-compact .PluginLibraryProviders {
+  width: 100%;
+  height: 46px;
+  padding: 9px 16px;
 }
 
 .SliceRoot--viewport-compact .PluginLibraryContent {

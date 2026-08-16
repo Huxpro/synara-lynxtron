@@ -157,20 +157,22 @@ export function PluginLibraryPage() {
   return (
     <view className="PluginLibraryPage">
       <view className="PluginLibraryHeader">
-        <Button
-          variant={tab === 'plugins' ? 'secondary' : 'ghost'}
-          size="sm"
-          onClick={() => setTab('plugins')}
-        >
-          Plugins
-        </Button>
-        <Button
-          variant={tab === 'skills' ? 'secondary' : 'ghost'}
-          size="sm"
-          onClick={() => setTab('skills')}
-        >
-          Skills
-        </Button>
+        <view className="PluginLibraryTabs">
+          <Button
+            variant={tab === 'plugins' ? 'secondary' : 'ghost'}
+            size="sm"
+            onClick={() => setTab('plugins')}
+          >
+            Plugins
+          </Button>
+          <Button
+            variant={tab === 'skills' ? 'secondary' : 'ghost'}
+            size="sm"
+            onClick={() => setTab('skills')}
+          >
+            Skills
+          </Button>
+        </view>
         <view className="PluginLibraryHeaderSpacer" />
         <scroll-view
           className="PluginLibraryProviders"

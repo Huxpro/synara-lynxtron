@@ -64,4 +64,29 @@ describe('Lynx plugin library', () => {
     );
     expect(routerSource).toContain('<PluginLibraryPage />');
   });
+
+  it('keeps compact tabs outside the desktop titlebar control hit area', () => {
+    const pageSource = readFileSync(
+      new URL('./PluginLibraryPage.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const styles = readFileSync(
+      new URL('./plugin-library-page.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(pageSource).toContain('className="PluginLibraryTabs"');
+    expect(styles).toMatch(
+      /\.PluginLibraryHeader\s*\{[^}]*height:\s*46px;[^}]*min-height:\s*46px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.PluginLibraryHeader\s*\{[^}]*height:\s*92px;[^}]*flex-direction:\s*column;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.PluginLibraryTabs\s*\{[^}]*height:\s*46px;[^}]*padding-left:\s*180px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.PluginLibraryProviders\s*\{[^}]*width:\s*100%;[^}]*height:\s*46px;/s
+    );
+  });
 });

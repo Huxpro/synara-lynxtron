@@ -1853,3 +1853,28 @@ former dynamic-event P1 is no longer a valid blocker.
   processes, no retained screenshot, and local count `100`.
 - Detailed evidence:
   `shots/2026-08-16/workspace-header-dark-320/notes.md`.
+
+## 2026-08-16 Plugin Library header at 320px
+
+- Active discovery added a 320px Plugin header with tab hit testing and the
+  full provider-strip scroll range.
+- Before, Skills center `x=102` overlapped fixed desktop controls
+  `x=90..174`; `elementFromPoint` returned a titlebar icon and real pointer
+  activation failed. The same action passed at 1280px.
+- `lynx-plugin-320-tab-titlebar-overlap`: P1 contribution `1.00 -> 0.00`.
+- Compact Plugin header now uses a 46px tab row inset to `x=180` and a separate
+  46px full-width provider row. Medium/wide remains one 46px row.
+- After, Skills hit its own text and selected through a real pointer. Provider
+  viewport widened `166px -> 320px`, and far-end Pi remained fully reachable.
+- Exact-owned Native `900x650` retained the single-row header; a real
+  exact-client Skills touch selected it and console stayed empty.
+- Early Pi/Skills timing and missing accessibility refs were rejected as
+  harness gaps, not product evidence. Codex missing from PATH remained an
+  environment capability boundary.
+- Focused suites passed `3/3`, expanded suites passed `28/28`, and Web plus
+  Native/Desktop builds passed. Bundle SHA-256:
+  `063c487d08768d22c6052bcc295731d80ee62fe8fa78e69ab2e4bdec9edffef9`.
+- Entry/exit browser cleanup passed with `sessions: []`, zero browser-owned
+  processes, no retained screenshot, and local count `100`.
+- Detailed evidence:
+  `shots/2026-08-16/plugin-header-320/notes.md`.
