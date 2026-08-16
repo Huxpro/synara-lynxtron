@@ -202,3 +202,38 @@ Exact-client warning/error console remained empty.
 The only remaining Update scope is the external-download handoff. It still has
 an external browser side effect and requires an explicitly owned handoff
 harness rather than being inferred from the rendered button.
+
+## Invalid external-download handoff attempt
+
+An attempted owned handoff harness did not satisfy that requirement and is
+explicitly rejected as evidence.
+
+The run used a temporary `NODE_OPTIONS --require` shim intended to wrap
+`@lynx-js/lynxtron`'s `shell.openExternal`, capture the URL under `/tmp`, and
+return success without opening a user browser. A standalone module-loader probe
+proved the shim's intended contract, but the real Lynxtron host did not load the
+module through that intercepted CommonJS path.
+
+A real touch on `Open download page` therefore produced:
+
+- host call `bridge.updaterOpenDownload`;
+- no owned capture log;
+- no proof that `shell.openExternal` was intercepted.
+
+Because the product host call occurred without the required capture artifact,
+the cell is a harness isolation failure. It is not counted as a product pass,
+product loss, or closed coverage. It may have caused one real external-browser
+handoff side effect, so the interaction was not repeated.
+
+The owned Native/server processes, shim, runtime, user data, and state were
+removed. Ports `58090`, `8891`, and `8901` were free, browser state ended at
+`sessions: []` with zero owned processes, and screenshot count remained `100`.
+Before commit, port `8901` was later occupied by an unrelated
+`/Users/bytedance/github/t3code-archaeology-verify3` verification process
+(PID `44768`) that started after this loop's cleanup. It was not terminated and
+is external port competition, not a Synara-owned leak.
+
+`native-update-external-download-handoff` remains missing coverage `1.00`.
+Future verification needs a host-level injectable `openExternal` dependency or
+an owned OS/browser protocol handler; a render-only button check is still
+insufficient.

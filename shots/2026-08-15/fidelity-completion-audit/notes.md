@@ -1457,3 +1457,22 @@ former dynamic-event P1 is no longer a valid blocker.
   `58888` were free; browser cleanup ended at `sessions: []` with zero owned
   processes.
 - No screenshots were retained; local count remained `100`.
+
+## 2026-08-16 Invalid Update external handoff
+
+- A temporary CommonJS module-loader shim was intended to capture
+  `shell.openExternal` for the owned Lynxtron process without opening a user
+  browser.
+- The standalone shim probe passed, but the real host did not use the
+  intercepted load path.
+- A real `Open download page` touch emitted `bridge.updaterOpenDownload` but no
+  owned URL capture log. The cell is invalid harness evidence and may have
+  produced one real external-browser side effect; it was not repeated.
+- `native-update-external-download-handoff` remains missing coverage `1.00`.
+  It is not classified as product pass or loss.
+- Cleanup removed the owned process, shim, and isolated directories. Ports were
+  free, browser state returned to `sessions: []`, and screenshot count remained
+  `100`.
+- Port `8901` was later occupied by an unrelated t3code archaeology verification
+  process (PID `44768`) started after this loop's cleanup. It was not terminated
+  and is external contention, not a Synara leak.
