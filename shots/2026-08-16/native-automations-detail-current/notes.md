@@ -518,6 +518,47 @@ Exact-client warning/error console remained empty.
 - Final owned ports `58090`, `8891`, and `8901` were free.
 - No screenshots were retained; local screenshot count remained `100`.
 
+## Weekdays weekend-boundary parity
+
+Active discovery ran on Sunday and added:
+
+`{"type":"weekdays","timeOfDay":"09:00","timezone":"Asia/Seoul"}`
+
+The canonical scheduler produced `nextRunAt=2026-08-17T00:00:00.000Z`, the
+following Monday at 09:00 KST.
+
+Web authority used the same isolated snapshot and exposed selected schedule
+`weekdays`, time `09:00`, timezone `Asia/Seoul`, Status `Active`, Next run
+`Tomorrow at 09:00 AM`, and Pause.
+
+Exact-owned Native used PID-derived `localhost:8902` and rendered:
+
+- Status `Active`;
+- Next run `Tomorrow at 09:00 AM`;
+- Repeats `Weekdays`;
+- Time `9:00`;
+- Timezone `Asia/Seoul`;
+- Pause.
+
+Real Native Pause/Resume touches at `(859.5,23)` and `(853.5,23)` restored
+Active while preserving Weekdays, time, and timezone. Exact-client
+warning/error console remained empty.
+
+- `native-automations-weekdays-weekend-boundary`: missing coverage
+  `1.00 -> 0.00`.
+- Component product-loss contribution remained `0.00 -> 0.00`.
+- Shared projection tests passed `1` file / `6` tests.
+- Lynx route tests passed `1` file / `6` tests.
+- Native/Desktop production build passed with only registered unsupported-CSS
+  and optional WebSocket acceleration warnings.
+- Bundle SHA-256:
+  `652f681314935d4a6c4e1a7e94c8a006dfec5546d6a638b50e0d7f86330f685c`.
+- Browser attempts returned to `sessions: []` with zero owned processes.
+- Canonical cleanup returned zero visible definitions/runs; fixture state,
+  runtime, and user-data directories were removed. Owned ports `58090` and
+  `8891` were free; the unrelated t3code client remained outside the run.
+- No screenshots were retained; local screenshot count remained `100`.
+
 ## Cron schedule parity
 
 Active discovery added a weekday-morning Cron schedule at `900x650`:

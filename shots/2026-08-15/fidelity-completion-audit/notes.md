@@ -1638,3 +1638,24 @@ former dynamic-event P1 is no longer a valid blocker.
   runtime, and user-data directories were removed. Owned ports were free; the
   unrelated t3code client remained outside the run.
 - No screenshots were retained; local count remained `100`.
+
+## 2026-08-16 Native Weekdays weekend boundary
+
+- Active discovery ran on Sunday with Weekdays 09:00 `Asia/Seoul`.
+- Canonical scheduler produced Monday `2026-08-17T00:00:00.000Z`.
+- Web authority and Native both rendered Active, Next run
+  `Tomorrow at 09:00 AM`, Weekdays, time, timezone, and Pause.
+- Real Native Pause/Resume touches completed a bidirectional mutation
+  roundtrip while preserving all schedule fields.
+- `native-automations-weekdays-weekend-boundary`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remained `0.00 -> 0.00`.
+- Owned Native used PID-derived `localhost:8902`; unrelated t3code `8901` was
+  not touched.
+- Shared projection and Lynx route focused suites passed `6/6` each; build and
+  console passed.
+- Bundle SHA-256:
+  `652f681314935d4a6c4e1a7e94c8a006dfec5546d6a638b50e0d7f86330f685c`.
+- Canonical cleanup returned zero visible definitions/runs; fixture state,
+  runtime, and user-data directories were removed. Owned ports were free; the
+  unrelated t3code client remained outside the run.
+- No screenshots were retained; local count remained `100`.
