@@ -3053,6 +3053,21 @@ former dynamic-event P1 is no longer a valid blocker.
 - Detailed evidence:
   `shots/2026-08-17/explorer-tree-short-height/notes.md`.
 
+## 2026-08-17 Explorer Reference in chat at 320x200
+
+- The previously unexecuted `Reference in chat` menuitem was activated through
+  its real accessibility ref for selected `package.json`.
+- The menu closed and the composer received a structured mention placeholder.
+  After revealing the composer, `ComposerChip--mention` measured
+  `92.5625x19.5 @ (27,120.25)` with label `package.json`.
+- This is a compact action product pass, contribution `0.00 -> 0.00`; no code
+  change was required.
+- A failed direct text-selector probe was cleaned before the retained ref-based
+  interaction. Explorer Close was controlled DOM activation only and is not
+  claimed pointer evidence here.
+- Detailed evidence:
+  `shots/2026-08-17/explorer-reference-action-short-height/notes.md`.
+
 ## 2026-08-17 Explorer close transition at 320x200
 
 - A selected source preview was closed from the ordinary compact Explorer.
