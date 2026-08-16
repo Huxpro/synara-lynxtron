@@ -518,6 +518,45 @@ Exact-client warning/error console remained empty.
 - Final owned ports `58090`, `8891`, and `8901` were free.
 - No screenshots were retained; local screenshot count remained `100`.
 
+## Weekly schedule parity
+
+Active discovery added a weekly schedule at `900x650`:
+
+`{"type":"weekly","dayOfWeek":1,"timeOfDay":"09:00","timezone":"Asia/Seoul"}`
+
+Web authority used the same isolated snapshot and exposed selected schedule
+`weekly`, selected day `1`, time `09:00`, timezone `Asia/Seoul`, Status
+`Active`, Next run `Tomorrow at 09:00 AM`, and Pause.
+
+Exact-owned Native used PID-derived DevTool client `localhost:8902` because an
+unrelated t3code client occupied `8901`. Native rendered:
+
+- Status `Active`;
+- Repeats `Weekly`;
+- Day `Mon`;
+- Time `9:00`;
+- Timezone `Asia/Seoul`;
+- Pause.
+
+Real Native touches completed Pause and Resume at `(859.5,23)` and
+`(853.5,23)`, restoring Active while preserving all weekly fields.
+Exact-client warning/error console remained empty.
+
+- `native-automations-weekly-pause-resume`: missing coverage
+  `1.00 -> 0.00`.
+- Component product-loss contribution remained `0.00 -> 0.00`.
+- Shared projection tests passed `1` file / `6` tests.
+- Lynx route tests passed `1` file / `6` tests.
+- Native/Desktop production build passed with only registered unsupported-CSS
+  and optional WebSocket acceleration warnings.
+- Bundle SHA-256:
+  `652f681314935d4a6c4e1a7e94c8a006dfec5546d6a638b50e0d7f86330f685c`.
+- Browser attempts returned to `sessions: []` with zero owned processes.
+- Canonical cleanup returned zero visible definitions/runs; fixture state,
+  runtime, and user-data directories were removed. Owned ports `58090` and
+  `8891` were free; the unrelated t3code client remained outside the run.
+- No screenshots were retained; local screenshot count remained `100`.
+
 ## Custom 30-minute interval parity
 
 Active discovery added a non-hourly interval schedule at `900x650`:
