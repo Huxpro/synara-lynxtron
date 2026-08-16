@@ -3082,6 +3082,19 @@ former dynamic-event P1 is no longer a valid blocker.
 - Detailed evidence:
   `shots/2026-08-17/explorer-ask-why-action-short-height/notes.md`.
 
+## 2026-08-17 Explorer persisted width at 320x200
+
+- A deterministic `explorerWidth=960` restoration tested inline width
+  precedence against the compact responsive dock.
+- At `320x200`, runtime clamped to a `320x108 @ (0,92)` dock with 159.5px
+  sidebar/preview halves and Thread `padding-right:0`.
+- At `1280x820`, the same request restored to 704px with matching Thread
+  padding, preserving the 320px minimum main content area.
+- This is a persisted-width responsive pass, contribution `0.00 -> 0.00`; no
+  code change or resize interaction was required.
+- Detailed evidence:
+  `shots/2026-08-17/explorer-persisted-width-short-height/notes.md`.
+
 ## 2026-08-17 Explorer close transition at 320x200
 
 - A selected source preview was closed from the ordinary compact Explorer.
