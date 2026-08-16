@@ -2959,3 +2959,19 @@ former dynamic-event P1 is no longer a valid blocker.
   would launch an external application.
 - Detailed evidence:
   `shots/2026-08-17/explorer-pdf-short-height/notes.md`.
+
+## 2026-08-17 Explorer image at 320x200
+
+- Active discovery continued into the distinct image-preview branch using a
+  real `32x24` PNG fixture.
+- Before, the 40px selected-file header plus filename footer and frame gap left
+  the aspect-fit image only `151.5x8`.
+- `lynx-explorer-image-compact-preview-collapsed`: P1 contribution
+  `1.00 -> 0.00`.
+- Short-height image preview now uses full content height, hides only duplicate
+  path/filename copy, and keeps More actions as a 28px overlay.
+- After, the image is `155.5x76 @ (162.5,122)` and ends at `y=198`.
+- Focused tests passed `2/2`; Lynx-for-Web and Native/Desktop production builds
+  passed with registered warnings only.
+- Detailed evidence:
+  `shots/2026-08-17/explorer-image-short-height/notes.md`.

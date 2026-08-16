@@ -364,6 +364,9 @@ export function ExplorerDock(props: {
             props.selectedPath &&
             isSupportedLocalPdfPath(props.selectedPath)
               ? ' ExplorerDockPreview--pdf'
+              : props.selectedPath &&
+                  isSupportedLocalImagePath(props.selectedPath)
+                ? ' ExplorerDockPreview--image'
               : ''
           }`}
         >

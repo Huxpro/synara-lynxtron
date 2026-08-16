@@ -154,6 +154,52 @@
   margin-left: 0;
 }
 
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockPreview--image
+  .ExplorerDockPreviewHeader {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  z-index: 2;
+  width: 28px;
+  height: 28px;
+  min-height: 28px;
+  padding: 0;
+  border-bottom-width: 0;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockPreview--image
+  .ExplorerDockPreviewPath,
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockPreview--image
+  .ExplorerDockImageName {
+  display: none;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockPreview--image
+  .ExplorerDockPreviewContent {
+  height: 100%;
+  padding: 2px;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockPreview--image
+  .ExplorerDockImageFrame {
+  gap: 0;
+}
+
 .ExplorerDock--editor {
   position: relative;
   top: auto;
