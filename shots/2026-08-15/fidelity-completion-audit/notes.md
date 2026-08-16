@@ -2137,3 +2137,21 @@ former dynamic-event P1 is no longer a valid blocker.
   probe produced the retained result.
 - DOM click was used only to establish sidebar-closed state; no toggle
   interaction pass is claimed.
+
+## 2026-08-16 Medium closed app headers
+
+- Active discovery crossed `800x568` medium with sidebar-closed for
+  Automations and Plugin Library.
+- Automations passed: Refresh/New remained at `x>=616`; contribution stayed
+  `0.00 -> 0.00`.
+- Plugin exposed a P1: Skills `x=97.38..127.92` was covered by fixed controls.
+- `lynx-plugin-medium-closed-titlebar-overlap`: P1 contribution
+  `1.00 -> 0.00`.
+- Medium Plugin now uses its two-row header only when the sidebar is closed;
+  medium open remains `592x46 @ (208,0)`.
+- After, tabs began at `x=191/261` and providers occupied row two.
+- Focused Plugin suite passed `3/3`; Web and Native/Desktop builds passed. Web
+  bundle: `c0ad94f21a061d646d856f50beadd1d1d99b0f46450e2179eaa54bd904013eee`.
+- Workspace medium closed remains a separate real-terminal state.
+- Detailed evidence:
+  `shots/2026-08-16/plugin-header-medium-closed/notes.md`.

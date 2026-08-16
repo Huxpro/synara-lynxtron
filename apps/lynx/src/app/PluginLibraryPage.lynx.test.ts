@@ -65,7 +65,7 @@ describe('Lynx plugin library', () => {
     expect(routerSource).toContain('<PluginLibraryPage />');
   });
 
-  it('keeps compact tabs outside the desktop titlebar control hit area', () => {
+  it('keeps closed-sidebar tabs outside the desktop titlebar control hit area', () => {
     const pageSource = readFileSync(
       new URL('./PluginLibraryPage.lynx.tsx', import.meta.url),
       'utf8'
@@ -80,13 +80,13 @@ describe('Lynx plugin library', () => {
       /\.PluginLibraryHeader\s*\{[^}]*height:\s*46px;[^}]*min-height:\s*46px;/s
     );
     expect(styles).toMatch(
-      /\.SliceRoot--viewport-compact \.PluginLibraryHeader\s*\{[^}]*height:\s*92px;[^}]*flex-direction:\s*column;/s
+      /\.SliceRoot--viewport-compact \.PluginLibraryHeader,[\s\S]*?\.SliceRoot--viewport-medium\s+\.AppMain--sidebar-closed\s+\.PluginLibraryHeader\s*\{[^}]*height:\s*92px;[^}]*flex-direction:\s*column;/s
     );
     expect(styles).toMatch(
-      /\.SliceRoot--viewport-compact \.PluginLibraryTabs\s*\{[^}]*height:\s*46px;[^}]*padding-left:\s*180px;/s
+      /\.SliceRoot--viewport-compact \.PluginLibraryTabs,[\s\S]*?\.SliceRoot--viewport-medium\s+\.AppMain--sidebar-closed\s+\.PluginLibraryTabs\s*\{[^}]*height:\s*46px;[^}]*padding-left:\s*180px;/s
     );
     expect(styles).toMatch(
-      /\.SliceRoot--viewport-compact \.PluginLibraryProviders\s*\{[^}]*width:\s*100%;[^}]*height:\s*46px;/s
+      /\.SliceRoot--viewport-compact \.PluginLibraryProviders,[\s\S]*?\.SliceRoot--viewport-medium\s+\.AppMain--sidebar-closed\s+\.PluginLibraryProviders\s*\{[^}]*width:\s*100%;[^}]*height:\s*46px;/s
     );
   });
 });
