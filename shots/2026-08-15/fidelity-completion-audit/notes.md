@@ -2308,3 +2308,17 @@ former dynamic-event P1 is no longer a valid blocker.
   viewport.
 - This is a density/short-height boundary pass, contribution
   `0.00 -> 0.00`; no additional code change was required.
+
+## 2026-08-16 Update actions at 320x200
+
+- A six-route short-height interaction matrix identified Update as the only
+  primary-action surface offscreen without a real vertical scroll owner.
+- Before, actions began at `y=192/233` in a 200px viewport.
+- `lynx-update-short-actions-unreachable`: P1 contribution `1.00 -> 0.00`.
+- Short-height Update now hides secondary decoration/detail and keeps both
+  full-width actions at `y=76/114`, ending at `y=146`.
+- Normal `320x568` layout retains mark, description, spacing, and original
+  action positions.
+- Focused suite passed `5/5`; Web and Native/Desktop builds passed. Web bundle:
+  `2dbbacc557364f7c475d1b2d6facf502fc974a5d693a17f1044e9e8fbe699ca7`.
+- Detailed evidence: `shots/2026-08-16/update-short-height/notes.md`.

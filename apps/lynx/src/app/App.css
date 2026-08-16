@@ -1459,6 +1459,37 @@
   width: 100%;
 }
 
+.SliceRoot--viewport-short-height .UpdatePage {
+  align-items: flex-start;
+  padding: 8px;
+}
+
+.SliceRoot--viewport-short-height .UpdateCard {
+  width: 100%;
+  padding: 12px;
+}
+
+.SliceRoot--viewport-short-height .UpdateMark,
+.SliceRoot--viewport-short-height .UpdateCard .FeatureEyebrow,
+.SliceRoot--viewport-short-height .UpdateDescription,
+.SliceRoot--viewport-short-height .UpdateVersionPanel {
+  display: none;
+}
+
+.SliceRoot--viewport-short-height .UpdateTitle {
+  margin-bottom: 4px;
+  font-size: 18px;
+}
+
+.SliceRoot--viewport-short-height .UpdateStatus {
+  margin-top: 8px;
+}
+
+.SliceRoot--viewport-short-height .UpdateActions {
+  margin-top: 10px;
+  gap: 6px;
+}
+
 .TranscriptShell {
   position: relative;
   display: flex;

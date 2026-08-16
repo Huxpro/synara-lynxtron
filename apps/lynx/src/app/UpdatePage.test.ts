@@ -55,4 +55,18 @@ describe('runUpdateCheckState', () => {
       /\.SliceRoot--viewport-compact \.UpdateActions \.LxButton\s*\{[^}]*width:\s*100%;/s
     );
   });
+
+  it('keeps update actions reachable in short viewports', () => {
+    const styles = readFileSync(new URL('./App.css', import.meta.url), 'utf8');
+
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height \.UpdatePage\s*\{[^}]*align-items:\s*flex-start;[^}]*padding:\s*8px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height \.UpdateMark,[\s\S]*?\.SliceRoot--viewport-short-height \.UpdateVersionPanel\s*\{[^}]*display:\s*none;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height \.UpdateActions\s*\{[^}]*margin-top:\s*10px;[^}]*gap:\s*6px;/s
+    );
+  });
 });
