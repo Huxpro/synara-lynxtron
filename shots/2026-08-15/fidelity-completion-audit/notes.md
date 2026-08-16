@@ -2737,3 +2737,16 @@ former dynamic-event P1 is no longer a valid blocker.
   coverage, not a product pass or loss. The failed discovery probe exited
   through `browser:run`, followed by an immediate zero-session/zero-process
   cleanup gate.
+
+## 2026-08-17 Environment branch menu interaction gap
+
+- A canonical local thread was created with the exact current branch and
+  worktree path, exposing an enabled rendered `Choose branch` trigger at
+  `320x200`, dark.
+- Read-only `git.listBranches` succeeded with 140 total branches and two local
+  branches, so the menu data source was healthy.
+- Rendered-trigger DOM activation did not publish an
+  `EnvironmentBranchPopup` in Lynx-for-Web. This is interaction/harness missing
+  coverage, not a product pass or loss; no branch switch or Git mutation was
+  attempted.
+- The declared 320px maximum is not scored without a mounted popup.
