@@ -3025,6 +3025,20 @@ former dynamic-event P1 is no longer a valid blocker.
 - Detailed evidence:
   `shots/2026-08-17/explorer-long-path-short-height/notes.md`.
 
+## 2026-08-17 Explorer read-error recovery at 320x200
+
+- A real missing selected path produced canonical `projects.readFile` failure
+  in the ordinary compact Explorer.
+- `Could not read this file.` measured `131.71875x18 @ (174.390625,171)` and
+  ended at `y=189`; path and More actions remained in bounds.
+- Controlled activation of a real sibling file changed the selected path,
+  removed the error, loaded `available`, and issued a fresh read RPC.
+- This is a compact failure-boundary and recovery pass, contribution
+  `0.00 -> 0.00`; no product code change was required. Activation is
+  handler/state evidence, not claimed pointer evidence.
+- Detailed evidence:
+  `shots/2026-08-17/explorer-read-error-short-height/notes.md`.
+
 ## 2026-08-17 Explorer close transition at 320x200
 
 - A selected source preview was closed from the ordinary compact Explorer.
