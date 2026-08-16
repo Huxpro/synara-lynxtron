@@ -1,5 +1,6 @@
 import { app, shell } from '@lynx-js/lynxtron';
 import { compareVersions } from './update.logic';
+import { openUpdateDownload } from './updateHandoff.logic';
 
 const RELEASE_OWNER = 'Emanuele-web04';
 const RELEASE_REPO = 'synara';
@@ -68,7 +69,12 @@ export async function handleUpdater(method: string): Promise<unknown> {
     case 'updaterCheck':
       return JSON.stringify(await checkForUpdate());
     case 'updaterOpenDownload':
-      await shell.openExternal(RELEASES_PAGE);
+      await openUpdateDownload({
+        capturePath:
+          process.env.SYNARA_UPDATE_OPEN_EXTERNAL_CAPTURE?.trim() || null,
+        openExternal: (url) => shell.openExternal(url),
+        url: RELEASES_PAGE,
+      });
       return JSON.stringify({ opened: true, url: RELEASES_PAGE });
     default:
       return JSON.stringify({ error: `unknown updater method ${method}` });

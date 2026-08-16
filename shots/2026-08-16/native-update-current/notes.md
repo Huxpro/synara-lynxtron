@@ -238,6 +238,59 @@ Future verification needs a host-level injectable `openExternal` dependency or
 an owned OS/browser protocol handler; a render-only button check is still
 insufficient.
 
+## Captured external-download handoff
+
+The host now provides the missing opt-in capture boundary:
+
+`SYNARA_UPDATE_OPEN_EXTERNAL_CAPTURE=/path/to/capture.jsonl`
+
+When unset, production behavior is unchanged and still delegates to
+`shell.openExternal`. When explicitly set by an owned verification run, the
+host appends `{"url":...}` to the requested file and returns the same successful
+bridge result without opening a user browser.
+
+Focused tests prove both branches:
+
+- capture mode writes the exact URL and does not call the platform handoff;
+- default mode calls the supplied external opener.
+
+The first focused run failed because Rstest does not expose the imported `vi`
+mock helper in this configuration. The test was rewritten with a plain call
+recorder; that was test-harness API misuse, not a product defect. Final Update
+focused suites passed `3` files / `7` tests.
+
+An exact-owned Native run then set the capture env to a temporary JSONL path.
+After the automatic release check settled to Latest `v0.7.2`, a real touch on
+`Open download page` at `(838.5,569)` produced exactly one retained record:
+
+`{"url":"https://github.com/Emanuele-web04/synara/releases/latest"}`
+
+The Update page remained in the available state, no
+`Could not open download page` error appeared, exact-client warning/error
+console stayed empty, and agent-browser remained at `sessions: []`.
+
+- `native-update-external-download-handoff`: missing coverage
+  `1.00 -> 0.00`.
+- Component product-loss contribution remained `0.00 -> 0.00`; the code change
+  is a verification/safety boundary with unchanged default product behavior.
+- Native/Desktop production build passed with only registered unsupported-CSS
+  and optional WebSocket acceleration warnings.
+- Bundle SHA-256:
+  `652f681314935d4a6c4e1a7e94c8a006dfec5546d6a638b50e0d7f86330f685c`.
+- React Doctor `0.9.12` scanned all three changed Lynx source/test files,
+  including the new helper and tests, with zero errors and zero warnings.
+- Final lifecycle cleanup stopped the exact-owned Native PID `84442` and its
+  isolated server, removed the capture file plus all temporary state/runtime
+  and user-data paths, and left owned ports `58090` and `8891` free.
+- The loop's agent-browser entry gate had passed before verification. Its
+  explicit exit gate used
+  `bun run browser:run -- agent-browser session list --json` and returned
+  `sessions: []`; `bun run browser:cleanup` separately reported zero
+  agent-browser-owned processes. No browser screenshot was retained, and the
+  local screenshot count remained `100`.
+
+This closes the last explicitly tracked Update scope.
+
 ## Up-to-date continuation
 
 The Native-only Update matrix now also covers a successful release response

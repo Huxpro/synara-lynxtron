@@ -15,10 +15,19 @@ including loops that expect to use only Native:
 3. Reuse named sessions inside that one wrapped workflow instead of creating a
    new browser process for each probe.
 4. End the loop with `bun run browser:cleanup`, then require both
-   `agent-browser session list --json` to contain `sessions: []` and the
-   cleanup script to report zero agent-browser-owned browser processes.
+   `bun run browser:run -- agent-browser session list --json` to contain
+   `sessions: []` and the cleanup script to report zero agent-browser-owned
+   browser processes.
 5. If preflight or final cleanup fails, stop the loop and repair the harness.
    Do not retain evidence, commit the slice, or continue opening browsers.
+6. Every loop's ledger entry must explicitly record all four lifecycle
+   results: entry cleanup, exit `sessions: []`, exit owned-process count zero,
+   and whether any browser screenshots were retained. A global or earlier
+   loop result is not evidence for the current loop.
+7. After an interrupted command, failed wrapper invocation, timeout, or
+   unexpected process exit, rerun `bun run browser:cleanup` before any next
+   probe. Treat any non-empty session/process result as a blocking harness
+   leak, not as harmless background state.
 
 The cleanup process must only match agent-browser-owned daemons/profiles.
 Unrelated Chrome or remote-debugging processes are never cleanup targets.
@@ -1476,6 +1485,36 @@ former dynamic-event P1 is no longer a valid blocker.
 - Port `8901` was later occupied by an unrelated t3code archaeology verification
   process (PID `44768`) started after this loop's cleanup. It was not terminated
   and is external contention, not a Synara leak.
+
+## 2026-08-16 Captured Update external handoff
+
+- The host gained an explicit opt-in capture boundary,
+  `SYNARA_UPDATE_OPEN_EXTERNAL_CAPTURE`, while preserving the default
+  `shell.openExternal` behavior when unset.
+- Focused tests cover capture-without-open and default platform handoff.
+- The first test run used an unavailable Rstest `vi` mock helper and was
+  rejected as test-harness API misuse; the plain-recorder retry passed.
+- An exact-owned real `Open download page` touch captured exactly
+  `https://github.com/Emanuele-web04/synara/releases/latest` without opening a
+  user browser or changing the visible available-update state.
+- `native-update-external-download-handoff`: missing coverage `1.00 -> 0.00`;
+  product-loss contribution remained `0.00 -> 0.00`.
+- Focused suites passed `3` files / `7` tests; Native/Desktop build and
+  exact-client console passed.
+- Bundle SHA-256:
+  `652f681314935d4a6c4e1a7e94c8a006dfec5546d6a638b50e0d7f86330f685c`.
+- React Doctor `0.9.12` scanned all three changed Lynx source/test files,
+  including the new helper/tests, with zero errors and zero warnings.
+- Final lifecycle cleanup stopped exact-owned Native PID `84442` and its
+  isolated server, removed the capture file plus all temporary state/runtime
+  and user-data paths, and left owned ports `58090` and `8891` free.
+- This loop's entry cleanup passed before verification. The explicit exit
+  query ran through
+  `bun run browser:run -- agent-browser session list --json` and returned
+  `sessions: []`; the standalone cleanup gate separately reported zero
+  agent-browser-owned processes. No browser screenshot was retained, and the
+  local screenshot count remained `100`.
+- The last explicitly tracked Update scope is closed.
 
 ## 2026-08-16 Native Update up-to-date retry
 
