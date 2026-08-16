@@ -59,7 +59,11 @@ export function ExplorerPdfFallback(props: {
   }
 
   return (
-    <view className="ExplorerDockPdf">
+    <view
+      className={`ExplorerDockPdf${
+        pageCount > 1 ? ' ExplorerDockPdf--multi-page' : ''
+      }`}
+    >
       <view className="ExplorerDockPdfToolbar">
         <view className="ExplorerDockPdfIdentity">
           <text className="ExplorerDockPdfTitle">{fileName(props.path)}</text>
@@ -77,7 +81,8 @@ export function ExplorerPdfFallback(props: {
               setPage((current) => Math.max(1, current - 1));
             }}
           >
-            Previous
+            <text className="ExplorerDockPdfCompactNav">‹</text>
+            <text className="ExplorerDockPdfNavLabel">Previous</text>
           </Button>
           <text className="ExplorerDockPdfPage">
             {pageCount > 0 ? `${page} / ${pageCount}` : '— / —'}
@@ -93,7 +98,8 @@ export function ExplorerPdfFallback(props: {
               setPage((current) => Math.min(pageCount, current + 1));
             }}
           >
-            Next
+            <text className="ExplorerDockPdfCompactNav">›</text>
+            <text className="ExplorerDockPdfNavLabel">Next</text>
           </Button>
           <Button
             className="ExplorerDockPdfOpen"
@@ -106,7 +112,10 @@ export function ExplorerPdfFallback(props: {
               void openInDefaultApp();
             }}
           >
-            {opening ? 'Opening…' : 'Open'}
+            <text className="ExplorerDockPdfCompactOpen">↗</text>
+            <text className="ExplorerDockPdfOpenLabel">
+              {opening ? 'Opening…' : 'Open'}
+            </text>
           </Button>
         </view>
       </view>

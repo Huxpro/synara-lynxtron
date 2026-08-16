@@ -2992,3 +2992,20 @@ former dynamic-event P1 is no longer a valid blocker.
   passed with registered warnings only.
 - Detailed evidence:
   `shots/2026-08-17/explorer-markdown-short-height/notes.md`.
+
+## 2026-08-17 Explorer multi-page PDF at 320x200
+
+- Active discovery rechecked compact PDF with a real two-page fixture instead
+  of extrapolating the single-page fallback.
+- Before, `1 / 2` rendered but Previous and Next were both `display:none`.
+- `lynx-explorer-pdf-compact-navigation-hidden`: P1 contribution
+  `1.00 -> 0.00`.
+- Multi-page compact PDFs now restore 28px `‹`/`›` navigation and a 28px Open
+  glyph in one non-overlapping toolbar; single-page PDFs still hide ineffective
+  navigation.
+- Controlled activation changed `1 / 2 -> 2 / 2` and the preview URL from
+  `page=1` to `page=2`. This is handler evidence, not claimed pointer evidence.
+- Focused tests passed `2/2`; Lynx-for-Web and Native/Desktop production builds
+  passed with registered warnings only.
+- Detailed evidence:
+  `shots/2026-08-17/explorer-pdf-multi-page-short-height/notes.md`.

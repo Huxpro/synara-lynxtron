@@ -119,6 +119,13 @@
 .SliceRoot--viewport-short-height
   .ThreadPage
   > .ExplorerDock
+  .ExplorerDockPdf {
+  position: relative;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
   .ExplorerDockPdfIdentity,
 .SliceRoot--viewport-short-height
   .ThreadPage
@@ -152,6 +159,85 @@
   > .ExplorerDock
   .ExplorerDockPdfOpen {
   margin-left: 0;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockPdf--multi-page
+  .ExplorerDockPdfPrevious,
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockPdf--multi-page
+  .ExplorerDockPdfNext {
+  display: flex;
+  width: 28px;
+  min-width: 28px;
+  padding: 0;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockPdf--multi-page
+  .ExplorerDockPdfPrevious
+  .ExplorerDockPdfNavLabel,
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockPdf--multi-page
+  .ExplorerDockPdfNext
+  .ExplorerDockPdfNavLabel {
+  display: none;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockPdf--multi-page
+  .ExplorerDockPdfCompactNav {
+  display: flex;
+  font-size: 16px;
+  line-height: 18px;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockPdf--multi-page
+  .ExplorerDockPdfOpen {
+  width: 28px;
+  min-width: 28px;
+  margin-left: 0;
+  padding: 0;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockPdf--multi-page
+  .ExplorerDockPdfControls {
+  padding-right: 0;
+  gap: 2px;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockPdf--multi-page
+  .ExplorerDockPdfOpenLabel {
+  display: none;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockPdf--multi-page
+  .ExplorerDockPdfCompactOpen {
+  display: flex;
+  font-size: 14px;
+  line-height: 18px;
 }
 
 .SliceRoot--viewport-short-height
@@ -618,6 +704,14 @@
 
 .ExplorerDockPdfOpen {
   margin-left: 4px;
+}
+
+.ExplorerDockPdfCompactNav {
+  display: none;
+}
+
+.ExplorerDockPdfCompactOpen {
+  display: none;
 }
 
 .ExplorerDockPdfStatus {
