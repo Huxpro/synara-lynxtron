@@ -2238,6 +2238,17 @@ former dynamic-event P1 is no longer a valid blocker.
   interaction coverage/harness gap, not a product pass or loss.
 - No code change was made; product-loss contribution stayed `0.00 -> 0.00`.
 
+## 2026-08-16 Workspace short-height terminal
+
+- A real host-backed Workspace terminal was measured at `320x200`.
+- The 92px compact header left a `320x108` terminal pane containing:
+  - terminal header `36px`;
+  - output viewport `27px`;
+  - command row `45px`;
+  - command input `239.64x32 @ (14,162)`, fully inside the viewport.
+- This is an extreme short-height product pass, contribution
+  `0.00 -> 0.00`; no code change was required.
+
 ## 2026-08-16 Workspace header at medium width with sidebar closed
 
 - Active discovery added real Workspace/terminal at `800x568`, medium, closed.
