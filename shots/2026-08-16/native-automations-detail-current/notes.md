@@ -518,6 +518,51 @@ Exact-client warning/error console remained empty.
 - Final owned ports `58090`, `8891`, and `8901` were free.
 - No screenshots were retained; local screenshot count remained `100`.
 
+## Custom 30-minute interval parity
+
+Active discovery added a non-hourly interval schedule at `900x650`:
+
+`{"type":"interval","everySeconds":1800}`
+
+Web authority used the same isolated snapshot and exposed selected values
+`custom` and `1800`, Status `Active`, a future Today Next run, and Pause. Its
+visible option label was `Every 30 min`.
+
+Exact-owned Native used a PID-derived DevTool client at `localhost:8902`
+because unrelated t3code Lynxtron PID `18721` already owned `8901`. The
+external client was not touched.
+
+Native detail rendered:
+
+- Status `Active`;
+- Repeats `Custom`;
+- Every `Every 30 minutes`;
+- Repeats row `(597,290,287x30)`;
+- Every row `(597,320,287x30)`;
+- Pause.
+
+The `30 min` versus `30 minutes` wording is an accepted rendering/copy
+difference; both renderers project the same canonical 1800-second schedule.
+
+Real Native touches completed Pause and Resume at `(859.5,23)` and
+`(853.5,23)`, restoring Active while preserving Custom / Every 30 minutes.
+Exact-client warning/error console remained empty.
+
+- `native-automations-custom-interval-pause-resume`: missing coverage
+  `1.00 -> 0.00`.
+- Component product-loss contribution remained `0.00 -> 0.00`.
+- Shared projection tests passed `1` file / `6` tests.
+- Lynx route tests passed `1` file / `6` tests.
+- Native/Desktop production build passed with only registered unsupported-CSS
+  and optional WebSocket acceleration warnings.
+- Bundle SHA-256:
+  `652f681314935d4a6c4e1a7e94c8a006dfec5546d6a638b50e0d7f86330f685c`.
+- Browser attempts returned to `sessions: []` with zero owned processes.
+- Canonical cleanup returned zero visible definitions/runs; fixture state,
+  runtime, and user-data directories were removed. Owned ports `58090` and
+  `8891` were free. The unrelated t3code client remained outside this run.
+- No screenshots were retained; local screenshot count remained `100`.
+
 ## Hourly schedule parity and pause roundtrip
 
 Active discovery added an enabled `interval` schedule whose

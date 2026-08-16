@@ -1567,3 +1567,26 @@ former dynamic-event P1 is no longer a valid blocker.
 - Port `8901` belonged to an unrelated t3code Lynxtron process (PID `18721`);
   it was not terminated and is external contention, not a Synara leak.
 - No screenshots were retained; local count remained `100`.
+
+## 2026-08-16 Native Custom interval
+
+- Active discovery added a canonical 1800-second Custom interval at `900x650`.
+- Web authority selected `custom` / `1800`, showed `Every 30 min`, Active,
+  future Next run, and Pause.
+- Native rendered Repeats `Custom`, Every `Every 30 minutes`, Active, future
+  Next run, and Pause.
+- `30 min` vs `30 minutes` is accepted copy variation over the same schedule,
+  not product loss.
+- Real Native Pause/Resume touches completed a bidirectional mutation
+  roundtrip while preserving cadence.
+- `native-automations-custom-interval-pause-resume`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remained `0.00 -> 0.00`.
+- Owned Native DevTool used `localhost:8902` because unrelated t3code PID
+  `18721` owned `8901`; the external client was not touched.
+- Focused shared and Lynx suites passed `6/6` each; build and console passed.
+- Bundle SHA-256:
+  `652f681314935d4a6c4e1a7e94c8a006dfec5546d6a638b50e0d7f86330f685c`.
+- Canonical cleanup returned zero visible definitions/runs; fixture state,
+  runtime, and user-data directories were removed. Owned ports were free; the
+  unrelated t3code client remained outside this run.
+- No screenshots were retained; local count remained `100`.
