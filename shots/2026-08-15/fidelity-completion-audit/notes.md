@@ -2829,3 +2829,14 @@ former dynamic-event P1 is no longer a valid blocker.
   `ExplorerDockPreviewScroll`.
 - Focused Explorer suite passed `2/2`; Lynx-for-Web and Native/Desktop
   production builds passed with registered warnings only.
+
+## 2026-08-17 Editor chat-history dialog at 320x200
+
+- A canonical thread used `editor=open` and `editorHistory=open` to mount the
+  real custom chat-history overlay at `320x200`, dark.
+- Dialog measured `296x120 @ (12,40)` with its close action in bounds.
+  Heading was `21px @ y=57`, description `15px @ y=82`, and the active
+  34px history row fit at `y=109..143`.
+- This is a deterministic one-item short-height layout pass, contribution
+  `0.00 -> 0.00`; no product code change was required and no history item was
+  activated.
