@@ -93,6 +93,7 @@ import {
   runComposerSendTransaction,
 } from './composerDispatch.logic';
 import { resolveComposerInputTransition } from './composerPastedTextInput.logic';
+import { resolveCatalogModelSelection } from './composerModelCatalog.logic';
 import {
   cutComposerNativeEditorSelection,
   normalizeComposerNativeEditorSnapshot,
@@ -426,6 +427,10 @@ export function Composer({
   const draftModelSelection = useComposerDraftStore(
     (state) =>
       state.draftsByThreadId[brandedThreadId]?.modelSelection
+  );
+  const draftModelSelectionByProvider = useComposerDraftStore(
+    (state) =>
+      state.draftsByThreadId[brandedThreadId]?.modelSelectionByProvider
   );
   const addPastedText = useComposerDraftStore((state) => state.addPastedText);
   const addFiles = useComposerDraftStore((state) => state.addFiles);
@@ -1765,6 +1770,15 @@ export function Composer({
                 <ComposerModelControl
                   modelSelection={activeModelSelection as never}
                   catalogProvider={discoveryProvider ?? activeModelSelection.provider}
+                  catalogModelSelection={resolveCatalogModelSelection({
+                    provider:
+                      discoveryProvider ?? activeModelSelection.provider,
+                    activeSelection: modelSelection,
+                    rememberedSelection:
+                      draftModelSelectionByProvider?.[
+                        discoveryProvider ?? activeModelSelection.provider
+                      ],
+                  })}
                   initialPanel={
                     initialModelCatalogProvider ? 'models' : 'providers'
                   }

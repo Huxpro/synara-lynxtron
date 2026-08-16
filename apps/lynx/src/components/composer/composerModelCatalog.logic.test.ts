@@ -1,8 +1,41 @@
 import { describe, expect, it } from '@rstest/core';
 
-import { resolveLynxProviderModelOptions } from './composerModelCatalog.logic';
+import {
+  resolveCatalogModelSelection,
+  resolveLynxProviderModelOptions,
+} from './composerModelCatalog.logic';
 
 describe('Lynx provider model catalog', () => {
+  it('prefers provider memory and falls back to the matching base selection', () => {
+    const basePi = { provider: 'pi' as const, model: 'openai/gpt-5.5' };
+    const rememberedPi = {
+      provider: 'pi' as const,
+      model: 'openai/gpt-5.6',
+    };
+
+    expect(
+      resolveCatalogModelSelection({
+        provider: 'pi',
+        activeSelection: basePi,
+        rememberedSelection: rememberedPi,
+      })
+    ).toEqual(rememberedPi);
+    expect(
+      resolveCatalogModelSelection({
+        provider: 'pi',
+        activeSelection: basePi,
+        rememberedSelection: undefined,
+      })
+    ).toEqual(basePi);
+    expect(
+      resolveCatalogModelSelection({
+        provider: 'opencode',
+        activeSelection: basePi,
+        rememberedSelection: undefined,
+      })
+    ).toBeUndefined();
+  });
+
   it('uses the Web dynamic merge policy for a runtime-owned provider catalog', () => {
     const options = resolveLynxProviderModelOptions({
       provider: 'opencode',

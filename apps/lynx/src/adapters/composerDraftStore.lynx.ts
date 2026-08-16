@@ -45,6 +45,7 @@ interface LynxComposerDraft {
   readonly fileComments: ReadonlyArray<FileCommentDraft>;
   readonly mentions: ReadonlyArray<ProviderMentionReference>;
   readonly modelSelection?: ModelSelection;
+  readonly modelSelectionByProvider?: Readonly<Record<string, ModelSelection>>;
   readonly pastedTexts: ReadonlyArray<PastedTextDraft>;
   readonly prompt: string;
   readonly skills: ReadonlyArray<ProviderSkillReference>;
@@ -220,6 +221,26 @@ export function parsePersistedLynxComposerDrafts(
       if (!isStringRecord(candidate) || typeof candidate.prompt !== 'string') {
         continue;
       }
+      const modelSelection =
+        isStringRecord(candidate.modelSelection) &&
+        typeof candidate.modelSelection.provider === 'string' &&
+        typeof candidate.modelSelection.model === 'string'
+          ? (candidate.modelSelection as ModelSelection)
+          : undefined;
+      const modelSelectionByProvider = isStringRecord(
+        candidate.modelSelectionByProvider
+      )
+        ? Object.fromEntries(
+            Object.entries(candidate.modelSelectionByProvider).filter(
+              (entry): entry is [string, ModelSelection] =>
+                isStringRecord(entry[1]) &&
+                typeof entry[1].provider === 'string' &&
+                typeof entry[1].model === 'string'
+            )
+          )
+        : modelSelection
+          ? { [modelSelection.provider]: modelSelection }
+          : undefined;
       drafts[threadId] = {
         assistantSelections: parseAssistantSelections(
           candidate.assistantSelections
@@ -235,11 +256,8 @@ export function parsePersistedLynxComposerDrafts(
         mentions: Array.isArray(candidate.mentions)
           ? (candidate.mentions as ProviderMentionReference[])
           : [],
-        ...(isStringRecord(candidate.modelSelection) &&
-        typeof candidate.modelSelection.provider === 'string' &&
-        typeof candidate.modelSelection.model === 'string'
-          ? { modelSelection: candidate.modelSelection as ModelSelection }
-          : {}),
+        ...(modelSelection ? { modelSelection } : {}),
+        ...(modelSelectionByProvider ? { modelSelectionByProvider } : {}),
         pastedTexts: Array.isArray(candidate.pastedTexts)
           ? (candidate.pastedTexts as PastedTextDraft[])
           : [],
@@ -279,7 +297,8 @@ function shouldRemoveDraft(draft: LynxComposerDraft): boolean {
     draft.mentions.length === 0 &&
     draft.pastedTexts.length === 0 &&
     draft.skills.length === 0 &&
-    draft.modelSelection === undefined
+    draft.modelSelection === undefined &&
+    Object.keys(draft.modelSelectionByProvider ?? {}).length === 0
   );
 }
 
@@ -454,6 +473,7 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()(
             fileComments: [],
             mentions: [],
             modelSelection: current.modelSelection,
+            modelSelectionByProvider: current.modelSelectionByProvider,
             pastedTexts: [],
             prompt: '',
             skills: [],
@@ -552,13 +572,25 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()(
     setModelSelection: (threadId, modelSelection) =>
       set((state) => {
         const current = state.draftsByThreadId[threadId] ?? emptyDraft();
-        if (modelSelectionsEqual(current.modelSelection, modelSelection)) {
+        const remembered =
+          current.modelSelectionByProvider?.[modelSelection.provider];
+        if (
+          modelSelectionsEqual(current.modelSelection, modelSelection) &&
+          modelSelectionsEqual(remembered, modelSelection)
+        ) {
           return state;
         }
         return {
           draftsByThreadId: {
             ...state.draftsByThreadId,
-            [threadId]: { ...current, modelSelection },
+            [threadId]: {
+              ...current,
+              modelSelection,
+              modelSelectionByProvider: {
+                ...current.modelSelectionByProvider,
+                [modelSelection.provider]: modelSelection,
+              },
+            },
           },
         };
       }),

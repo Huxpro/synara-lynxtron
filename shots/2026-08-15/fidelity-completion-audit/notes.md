@@ -1056,3 +1056,23 @@ former dynamic-event P1 is no longer a valid blocker.
   `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
 - This is intentional draft precedence, not an unapplied project default.
   Console, canonical zero-thread state, and cleanup gates passed.
+
+## 2026-08-16 Native provider-model memory continuation
+
+- Active discovery tested OpenCode -> Pi provider memory, matching Web's
+  per-provider draft-selection authority.
+- An initial Pi browse had an empty dynamic catalog and was classified as an
+  environment boundary. A Pi-default canonical project then supplied known
+  valid `pi / openai/gpt-5.5` state.
+- Before repair, selecting OpenCode/DeepSeek and returning to Pi lost the prior
+  GPT-5.5 row entirely.
+- `native-composer-provider-model-memory`: P1 contribution `1.00 -> 0.00`.
+- Lynx drafts now retain `modelSelectionByProvider` alongside the compatible
+  active selection, migrate legacy single-selection persistence, and fall back
+  to matching base project/thread selection when provider memory is absent.
+- Final exact-owned Pi -> OpenCode/DeepSeek -> Pi restored GPT-5.5 as the active
+  Pi row while leaving the visible active trigger on DeepSeek.
+- Focused tests passed `4` files / `25` tests; Native/Desktop build passed;
+  output/staged hashes matched; exact-client console and canonical zero-thread
+  state were clean.
+- Canonical, process, browser, and screenshot-count cleanup gates passed.

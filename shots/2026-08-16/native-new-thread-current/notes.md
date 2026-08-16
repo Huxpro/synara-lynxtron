@@ -362,6 +362,58 @@ The retained model is intentional draft precedence, not a failure to apply the
 Beta project default. Canonical and process/browser cleanup passed; screenshot
 count remained `100`.
 
+## Native provider-scoped model memory continuation
+
+Active discovery exercised provider memory rather than another one-way model
+selection. Web authority stores the last explicit model/options separately per
+provider and restores that selection when browsing the provider again.
+
+The first exact-owned attempt selected OpenCode / DeepSeek, then opened Pi.
+Pi's dynamic catalog was empty in the isolated environment, so that attempt was
+environment-blocked and did not establish a product result.
+
+A second fresh run used a canonical Pi-default project with known-valid
+`pi / openai/gpt-5.5`:
+
+1. initial trigger rendered `GPT-5.5`;
+2. real OpenCode and DeepSeek touches changed the active draft;
+3. returning to Pi produced no model rows and no active GPT-5.5 row.
+
+`native-composer-provider-model-memory`: P1 contribution `1.00 -> 0.00`.
+
+The root cause was structural:
+
+- Web drafts retain `modelSelectionByProvider` plus an active provider;
+- the Lynx facade persisted only one `modelSelection`;
+- browsing a non-active provider therefore had neither remembered selection
+  nor the original project model available to seed its catalog.
+
+The Lynx draft facade now persists provider-scoped selections while retaining
+the existing active `modelSelection` for compatibility. Legacy v1 drafts with
+only one selection migrate that value into the provider map. Catalog selection
+resolution prefers remembered provider state and otherwise falls back to the
+matching base project/thread selection.
+
+The final staged bundle passed a fresh Pi-default roundtrip:
+
+- initial Pi model: `GPT-5.5`;
+- active override after real touches: OpenCode / `DeepSeek V4 Flash Free`;
+- reopening Pi: a synthesized `GPT-5.5` row restored as active even though
+  runtime discovery remained empty;
+- the visible trigger correctly stayed on the current DeepSeek selection;
+- exact-client warning/error console stayed empty;
+- canonical projection remained at zero durable threads.
+
+Focused tests passed `4` files / `25` tests, including legacy persistence
+migration, per-provider memory, and base-selection fallback. Native/Desktop
+production build passed with registered warnings only. Output/staged SHA-256
+was identical at
+`fb07896304278f46608ca0682c72eca32a2af0b3ee3b6c592c9c46cb889e5729`.
+
+Canonical cleanup removed the explicit Pi project and landing-created Home
+container. Owned ports/runtime/state were removed; final browser state was
+`sessions: []` with zero owned processes; screenshot count remained `100`.
+
 `native-new-thread-direct-model-selection`: missing coverage
 `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
 

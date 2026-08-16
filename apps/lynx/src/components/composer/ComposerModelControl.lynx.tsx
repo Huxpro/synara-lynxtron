@@ -86,6 +86,7 @@ function ComposerProviderOptionElement(props: {
 
 export function ComposerModelControl(props: {
   readonly modelSelection: ModelSelection;
+  readonly catalogModelSelection?: ModelSelection;
   readonly catalogProvider: ProviderKind;
   readonly initialPanel?: ComposerModelPopupPanel;
   readonly runtimeModels: ReadonlyArray<ProviderModelDescriptor>;
@@ -112,8 +113,13 @@ export function ComposerModelControl(props: {
   );
   const activeModel = props.modelSelection.model;
   const catalogProvider = props.catalogProvider;
-  const catalogCurrentModel =
-    catalogProvider === activeProvider ? activeModel : null;
+  const catalogModelSelection =
+    props.catalogModelSelection?.provider === catalogProvider
+      ? props.catalogModelSelection
+      : catalogProvider === activeProvider
+        ? props.modelSelection
+        : null;
+  const catalogCurrentModel = catalogModelSelection?.model ?? null;
   const options = useMemo(
     () =>
       resolveLynxProviderModelOptions({
@@ -409,7 +415,7 @@ export function ComposerModelControl(props: {
                   groupedOptions={groupedOptions}
                   provider={catalogProvider}
                   activeModel={
-                    catalogProvider === activeProvider ? activeModel : ''
+                    catalogModelSelection?.model ?? ''
                   }
                   isSearching={false}
                   favoriteProvider={favoriteProvider}
@@ -420,9 +426,7 @@ export function ComposerModelControl(props: {
                       buildModelSelection(
                         catalogProvider,
                         nextModel,
-                        catalogProvider === activeProvider
-                          ? props.modelSelection.options
-                          : undefined
+                        catalogModelSelection?.options
                       )
                     );
                     setModelOpen(false);

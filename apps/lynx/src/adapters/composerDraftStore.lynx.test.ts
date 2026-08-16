@@ -88,6 +88,12 @@ describe('Lynx composer draft attachment subset', () => {
         provider: 'codex',
         model: 'gpt-5.6-sol',
       },
+      modelSelectionByProvider: {
+        codex: {
+          provider: 'codex',
+          model: 'gpt-5.6-sol',
+        },
+      },
     });
   });
 
@@ -344,6 +350,50 @@ describe('Lynx composer draft attachment subset', () => {
       provider: 'codex',
       model: 'gpt-5.6-sol',
       options: { reasoningEffort: 'high' },
+    });
+  });
+
+  it('remembers each provider selection while switching the active provider', () => {
+    const store = useComposerDraftStore.getState();
+    const openCode = {
+      provider: 'opencode' as const,
+      model: 'opencode/deepseek-v4-flash-free',
+    };
+    const pi = {
+      provider: 'pi' as const,
+      model: 'openai/gpt-5.5',
+    };
+
+    store.setModelSelection('thread-1', pi);
+    store.setModelSelection('thread-1', openCode);
+
+    const draft =
+      useComposerDraftStore.getState().draftsByThreadId['thread-1'];
+    expect(draft?.modelSelection).toEqual(openCode);
+    expect(draft?.modelSelectionByProvider).toEqual({
+      pi,
+      opencode: openCode,
+    });
+  });
+
+  it('migrates a legacy single provider selection into provider memory', () => {
+    const drafts = parsePersistedLynxComposerDrafts(
+      JSON.stringify({
+        'thread-1': {
+          prompt: '',
+          modelSelection: {
+            provider: 'pi',
+            model: 'openai/gpt-5.5',
+          },
+        },
+      })
+    );
+
+    expect(drafts['thread-1']?.modelSelectionByProvider).toEqual({
+      pi: {
+        provider: 'pi',
+        model: 'openai/gpt-5.5',
+      },
     });
   });
 
