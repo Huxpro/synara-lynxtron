@@ -1520,3 +1520,24 @@ former dynamic-event P1 is no longer a valid blocker.
 - Canonical cleanup returned zero visible definitions/runs; fixture state,
   runtime, and user-data directories were removed. Owned ports were free.
 - No screenshots were retained; local count remained `100`.
+
+## 2026-08-16 Native Manual schedule
+
+- Active discovery added an enabled Manual automation at `900x650`.
+- Web authority and Native both rendered Status `Active`, Next run `—`,
+  Repeats `Manual`, and action `Pause`.
+- The first Web shell-only result was invalidated as hydration incompleteness;
+  the retained authority cell used a fresh session and complete detail state.
+- Real Native Pause and Resume touches completed a bidirectional canonical
+  mutation roundtrip. Final projection was `enabled=1`, `next_run_at=null`, and
+  `schedule_json={"type":"manual"}`.
+- `native-automations-manual-pause-resume`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remained `0.00 -> 0.00`.
+- Shared projection and Lynx route focused suites passed `6/6` each.
+  Native/Desktop production build and exact-client console passed.
+- Bundle SHA-256:
+  `652f681314935d4a6c4e1a7e94c8a006dfec5546d6a638b50e0d7f86330f685c`.
+- Browser attempts ended at `sessions: []` with zero owned processes. No
+  screenshots were retained; local count remained `100`.
+- Canonical cleanup returned zero visible definitions/runs; fixture state,
+  runtime, and user-data directories were removed. Owned ports were free.

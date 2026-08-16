@@ -518,6 +518,58 @@ Exact-client warning/error console remained empty.
 - Final owned ports `58090`, `8891`, and `8901` were free.
 - No screenshots were retained; local screenshot count remained `100`.
 
+## Manual schedule parity and pause roundtrip
+
+Active discovery added a manual schedule at the real `900x650` Desktop
+minimum. The canonical definition was enabled, used
+`{"type":"manual"}`, had `nextRunAt=null`, and had zero runs.
+
+The first Web authority attempt reached only the shell before hydration and is
+classified as harness incompleteness. A fresh named session with a longer wait
+used the same server snapshot, light theme, and viewport and rendered:
+
+- Status `Active`;
+- Next run `—`;
+- Repeats `Manual`;
+- a real Manual schedule select value;
+- action `Pause`.
+
+Exact-owned Native detail rendered the same semantic state:
+
+- Status `Active`;
+- Next run `—`;
+- Repeats `Manual`;
+- action `Pause`.
+
+Real Native touches then completed a bidirectional mutation roundtrip:
+
+- Pause at `(859.5,23)` changed Status to `Paused` and action to `Resume`;
+- Resume at `(853.5,23)` restored Status `Active` and action `Pause`.
+
+After the roundtrip, read-only canonical projection remained:
+
+- `enabled=1`;
+- `next_run_at=null`;
+- `schedule_json={"type":"manual"}`.
+
+Exact-client warning/error console remained empty.
+
+- `native-automations-manual-pause-resume`: missing coverage
+  `1.00 -> 0.00`.
+- Component product-loss contribution remained `0.00 -> 0.00`.
+- Shared projection tests passed `1` file / `6` tests.
+- Lynx route tests passed `1` file / `6` tests.
+- Native/Desktop production build passed with only registered unsupported-CSS
+  and optional WebSocket acceleration warnings.
+- Bundle SHA-256:
+  `652f681314935d4a6c4e1a7e94c8a006dfec5546d6a638b50e0d7f86330f685c`.
+- All browser attempts ran through `browser:run` and returned to
+  `sessions: []` with zero agent-browser-owned processes.
+- Canonical cleanup returned zero visible definitions/runs; fixture state,
+  runtime, and user-data directories were removed. Owned ports `58090`,
+  `8891`, and `8901` were free.
+- No screenshots were retained; local screenshot count remained `100`.
+
 ## Future once schedule parity
 
 Active discovery added a new schedule × lifecycle × viewport combination: an
