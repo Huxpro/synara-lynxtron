@@ -22,10 +22,18 @@
 }
 
 .WorkspacePageTitleButton {
+  min-width: 0;
   max-width: 320px;
+  flex-shrink: 1;
   justify-content: flex-start;
   font-size: 12px;
   font-weight: 600;
+}
+
+.WorkspacePageTitleButton .LxButton__text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .WorkspacePageTitleInput {
@@ -43,6 +51,17 @@
 
 .WorkspacePageHeaderSpacer {
   flex: 1;
+}
+
+.WorkspacePageHeaderAction {
+  flex-shrink: 0;
+  gap: 4px;
+}
+
+.WorkspacePageHeaderActionIcon {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
 }
 
 .WorkspacePageLayoutChoices {
@@ -177,4 +196,14 @@
 .SliceRoot--viewport-compact .LxDialogPopup.WorkspaceSettingsDialog {
   width: calc(100vw - 24px);
   max-width: none;
+}
+
+.SliceRoot--viewport-compact .WorkspacePageHeaderAction {
+  width: 28px;
+  padding-left: 7px;
+  padding-right: 7px;
+}
+
+.SliceRoot--viewport-compact .WorkspacePageHeaderActionText {
+  display: none;
 }

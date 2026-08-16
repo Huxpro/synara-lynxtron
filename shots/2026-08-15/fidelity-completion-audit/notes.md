@@ -1805,3 +1805,31 @@ former dynamic-event P1 is no longer a valid blocker.
   processes, no retained screenshot, and local count `100`.
 - Detailed evidence:
   `shots/2026-08-16/reduced-motion-disclosure/notes.md`.
+
+## 2026-08-16 Workspace header at 320px
+
+- Active discovery added a `320x650` Workspace header, narrower than the prior
+  compact matrix and separate from the covered Native asymmetric presets.
+- Web authority kept the full Workspace 1 title plus two `28x28` compact
+  actions.
+- Lynx before retained three text actions and compressed the default title text
+  from `73.19px` to `55.78px`, clipping route identity.
+- `lynx-workspace-320-header-title-clip`: P1 contribution `1.00 -> 0.00`.
+- Lynx actions now own icons, explicit text nodes, and accessibility labels.
+  Compact CSS keeps each action at `28px` and hides only visual action text;
+  medium/wide retains labels. Title owns shrink and ellipsis semantics.
+- Lynx after restored the full `73.19x15` title text and three `28x24` icon
+  actions. A real Settings touch opened a contained `296x329` dialog while the
+  terminal remained mounted.
+- Exact-owned Native `900x650` medium regression kept visible text for all
+  actions without overlap; PID-derived `8902/session 1`, exact bundle, and
+  warning/error console all passed.
+- Long-title rename attempts were rejected as harness input failures and were
+  not scored; the retained default-title loss requires no fixture mutation.
+- Focused suites passed `5/5`, expanded suites passed `25/25`, and Web plus
+  Native/Desktop builds passed. Bundle SHA-256:
+  `666f57f34f77dc0ee9e11bd0fa28ca75ff5373b81a5195a8de2497e493c318e4`.
+- Entry/exit browser cleanup passed with `sessions: []`, zero browser-owned
+  processes, no retained screenshot, and local count `100`.
+- Detailed evidence:
+  `shots/2026-08-16/workspace-header-320/notes.md`.

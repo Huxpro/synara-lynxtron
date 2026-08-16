@@ -24,6 +24,7 @@ import { ThreadTerminal } from './ThreadTerminal.lynx';
 import { deleteWorkspaceWithTerminalCleanup } from './workspaceDeletion.logic';
 import { platformTerminal } from '../platform/terminal';
 import { workspaceTerminalIdsForPreset } from './workspaceLayout.logic';
+import { PlusIcon, SettingsIcon, Trash2 } from '../lib/icons.lynx';
 import './workspace-page.css';
 
 export function WorkspacePage({
@@ -134,26 +135,40 @@ export function WorkspacePage({
         )}
         <view className="WorkspacePageHeaderSpacer" />
         <Button
+          className="WorkspacePageHeaderAction"
           variant="outline"
           size="xs"
+          aria-label="New terminal"
           onClick={() => setTerminalOpen(true)}
         >
-          Terminal
+          <PlusIcon className="WorkspacePageHeaderActionIcon" size={12} />
+          <text className="LxButton__text WorkspacePageHeaderActionText">
+            Terminal
+          </text>
         </Button>
         <Button
+          className="WorkspacePageHeaderAction"
           variant="outline"
           size="xs"
           aria-label="Workspace settings"
           onClick={() => setSettingsOpen(true)}
         >
-          Settings
+          <SettingsIcon className="WorkspacePageHeaderActionIcon" size={12} />
+          <text className="LxButton__text WorkspacePageHeaderActionText">
+            Settings
+          </text>
         </Button>
         <Button
+          className="WorkspacePageHeaderAction"
           variant="outline"
           size="xs"
+          aria-label="Delete workspace"
           onClick={() => void removeWorkspace()}
         >
-          Delete workspace
+          <Trash2 className="WorkspacePageHeaderActionIcon" size={12} />
+          <text className="LxButton__text WorkspacePageHeaderActionText">
+            Delete workspace
+          </text>
         </Button>
       </view>
       <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>

@@ -64,6 +64,31 @@ describe('Lynx workspace surface', () => {
     expect(pageSource).toContain('writeTerminalExit: platformTerminal.write');
   });
 
+  it('preserves compact title space with accessible icon actions', () => {
+    const pageSource = source('./WorkspacePage.lynx.tsx');
+    const pageStyles = source('./workspace-page.css');
+
+    expect(pageSource).toContain('aria-label="New terminal"');
+    expect(pageSource).toContain('aria-label="Workspace settings"');
+    expect(pageSource).toContain('aria-label="Delete workspace"');
+    expect(pageSource.match(/className="WorkspacePageHeaderAction"/g)).toHaveLength(
+      3
+    );
+    expect(pageSource.match(/WorkspacePageHeaderActionText/g)).toHaveLength(3);
+    expect(pageStyles).toMatch(
+      /\.WorkspacePageTitleButton\s*\{[^}]*min-width:\s*0;[^}]*flex-shrink:\s*1;/s
+    );
+    expect(pageStyles).toMatch(
+      /\.WorkspacePageTitleButton \.LxButton__text\s*\{[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s
+    );
+    expect(pageStyles).toMatch(
+      /\.SliceRoot--viewport-compact \.WorkspacePageHeaderAction\s*\{[^}]*width:\s*28px;/s
+    );
+    expect(pageStyles).toMatch(
+      /\.SliceRoot--viewport-compact \.WorkspacePageHeaderActionText\s*\{[^}]*display:\s*none;/s
+    );
+  });
+
   it('wires the optional workspace sidebar surface and create action', () => {
     const sidebarSource = source(
       '../components/sidebar/Sidebar.lynx.tsx'
