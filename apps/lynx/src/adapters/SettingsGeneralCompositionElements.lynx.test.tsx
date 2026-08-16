@@ -42,6 +42,9 @@ describe('Settings General fidelity', () => {
     expect(
       elementTree.root?.querySelector('.OpenAIProviderIcon')
     ).not.toBeNull();
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height \.SharedSettingsGeneralSelectPopup\s*\{[^}]*height:\s*calc\(100vh - 16px\);[^}]*max-height:\s*calc\(100vh - 16px\);[^}]*overflow-y:\s*scroll;/s
+    );
     expect(
       elementTree.root?.querySelector('.SharedSettingsGeneralProviderLabel')
         ?.textContent

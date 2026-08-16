@@ -2660,3 +2660,19 @@ former dynamic-event P1 is no longer a valid blocker.
 - This is current-build missing coverage, not a product pass or loss. The
   adapter owner remains future scope if code-theme selection becomes enabled;
   no synthetic trigger or hidden state was forced.
+
+## 2026-08-17 Settings default-provider menu at 320x200
+
+- The rendered General default-provider control opened the real nine-option
+  provider menu at `320x200`, dark.
+- Before, popup measured `220x302 @ (63,0)`, extended 102px below the viewport,
+  and had no scroll range despite the nine rows.
+- `lynx-settings-provider-select-short-overflow`: P1 contribution
+  `1.00 -> 0.00`.
+- The shared Settings select popup now uses `calc(100vh - 16px)` and owns
+  vertical scrolling at short heights.
+- After, popup was `220x184 @ (63,16)` with `clientHeight=182` and
+  `scrollHeight=294`; the complete menu stayed in bounds with 112px of scroll
+  range.
+- Focused Settings General suite passed `3/3`; Lynx-for-Web and Native/Desktop
+  production builds passed with registered warnings only.

@@ -185,6 +185,12 @@
   width: 220px;
 }
 
+.SliceRoot--viewport-short-height .SharedSettingsGeneralSelectPopup {
+  height: calc(100vh - 16px);
+  max-height: calc(100vh - 16px);
+  overflow-y: scroll;
+}
+
 .SharedSettingsGeneralProviderOption {
   min-width: 0;
   flex: 1;
