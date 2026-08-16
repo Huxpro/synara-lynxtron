@@ -501,7 +501,8 @@
 
 .LxDialogPopup.AutomationCreateDialog {
   width: min(560px, calc(100vw - 32px));
-  max-height: min(680px, calc(100vh - 32px));
+  height: calc(100vh - 32px);
+  max-height: 680px;
 }
 
 .LxDialogPopup.AutomationEditDialog {
@@ -518,7 +519,9 @@
 
 .AutomationCreatePanel {
   display: flex;
+  flex: 1;
   flex-direction: column;
+  min-height: 0;
   gap: 16px;
   padding-top: 16px;
 }
@@ -652,4 +655,36 @@
 
 .AutomationCreateFooter {
   gap: 8px;
+}
+
+.SliceRoot--viewport-medium .AutomationCreatePanel,
+.SliceRoot--viewport-compact .AutomationCreatePanel {
+  gap: 8px;
+}
+
+.SliceRoot--viewport-medium .AutomationCreateField,
+.SliceRoot--viewport-compact .AutomationCreateField {
+  gap: 4px;
+}
+
+.SliceRoot--viewport-medium .AutomationCreatePrompt,
+.SliceRoot--viewport-compact .AutomationCreatePrompt {
+  height: 56px;
+  min-height: 56px;
+}
+
+.SliceRoot--viewport-medium .AutomationCreateName,
+.SliceRoot--viewport-medium .AutomationCreateTime,
+.SliceRoot--viewport-compact .AutomationCreateName,
+.SliceRoot--viewport-compact .AutomationCreateTime {
+  height: 32px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.SliceRoot--viewport-medium .AutomationCreateChoice,
+.SliceRoot--viewport-medium .AutomationCreateProject,
+.SliceRoot--viewport-compact .AutomationCreateChoice,
+.SliceRoot--viewport-compact .AutomationCreateProject {
+  padding: 4px 8px;
 }

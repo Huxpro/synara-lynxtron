@@ -1289,3 +1289,33 @@ former dynamic-event P1 is no longer a valid blocker.
   exited without intervention. No foreign process was stopped.
 - Exact-client console, canonical cleanup, and all owned process/browser gates
   passed.
+
+## 2026-08-16 Native Automations minimum Heartbeat
+
+- Active discovery expanded the `900x650` create-dialog cell into Heartbeat
+  mode and found the choice at `y=620`, outside the `y=122..524` panel and
+  `y=65..585` dialog. A real touch hit the backdrop and closed the dialog.
+- `native-automations-heartbeat-minimum-reachability`: P1 contribution
+  `1.00 -> 0.00`.
+- An intermediate scroll-owner repair collapsed the flex panel to `16px`; exact
+  Native verification rejected it before retention. A later stale-node-id
+  touch was separately classified as harness operation error.
+- The final repair uses the shared `DialogPanel`, an explicit
+  `calc(100vh - 32px)` dialog height capped at `680px`, and an explicit `56px`
+  medium/compact textarea height.
+- Final Native geometry was dialog `(240,16,420x618)`, panel
+  `(257,74,386x420)`, Heartbeat `(345,424,75x26)`, and footer
+  `(257,508,386x32)`.
+- A real live-node touch rendered `Target thread` and `Stop when` while the
+  dialog/footer remained mounted. Console stayed clean and the read-only
+  projection remained zero definitions / zero runs.
+- Focused tests passed `2` files / `20` tests; Native/Desktop production build
+  passed. Bundle SHA-256:
+  `6c0997a008f1f357e5f06a4a2f80f1a4c4fe995e0861268f6aff1a2fdbc80f95`.
+- Browser leakage remains a hard per-loop invariant in both this checklist and
+  `AGENTS.md`: cleanup runs at entry and exit even for Native-only loops, every
+  agent-browser invocation is wrapped by `browser:run`, and any non-empty
+  session or owned process blocks evidence, commit, push, and the next loop.
+- No agent-browser session was opened. Entry and exit gates both passed with
+  `sessions: []`, zero agent-browser-owned processes, all owned ports free, and
+  screenshot count still `100`.

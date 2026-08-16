@@ -372,3 +372,59 @@ remained `100`.
 - Lynx-for-Web shared icon requests: `404 -> 200`.
 - Canonical fixture cleanup: passed.
 - Local screenshot count: `100`.
+
+## Native minimum-window Heartbeat reachability
+
+Active discovery expanded the same exact-owned `900x650` create-dialog cell
+from the default Standalone state into the dynamic Heartbeat state.
+
+The initial Native layout exposed a P1 product loss:
+
+- dialog: `(240,65,420x520)`;
+- panel: `(257,122,386x402)`;
+- footer: `(257,538,386x31)`;
+- Heartbeat choice: `(349,620,79x30)`.
+
+Heartbeat was below both the panel and dialog. A real touch therefore landed on
+the backdrop and closed the dialog instead of changing mode.
+
+The first attempted repair correctly introduced a scroll owner but allowed the
+flex child to collapse to zero height. Exact Native verification rejected that
+intermediate state: the dialog shrank to `137px`, the panel to `16px`, and the
+Heartbeat choice remained outside the touchable viewport. This was kept as a
+failed product-fix iteration, not passing evidence. A later fixed-node-id touch
+also targeted a stale node after the model control rerendered; that operation
+error is classified as harness error and contributes no product result.
+
+The final repair preserves the shared `DialogPanel` scroll contract, gives the
+create dialog an explicit Native-supported height budget, and gives the
+medium/compact textarea an explicit `56px` height rather than relying on an
+ineffective minimum. The final exact-owned production bundle
+`6c0997a008f1f357e5f06a4a2f80f1a4c4fe995e0861268f6aff1a2fdbc80f95`
+produced:
+
+- dialog: `(240,16,420x618)`;
+- panel: `(257,74,386x420)`;
+- Heartbeat choice: `(345,424,75x26)`, fully inside the panel;
+- footer: `(257,508,386x32)`;
+- Cancel: `(436,508,66x32)`.
+
+A real touch at the live Heartbeat box center `(382.5,437)` rendered both
+`Target thread` and `Stop when`. The dialog, panel, footer, and Cancel control
+remained mounted. Exact-client warning/error console was empty. Read-only
+SQLite projection after the interaction confirmed
+`automation_definitions=0` and `automation_runs=0`; no automation was created.
+
+- `native-automations-heartbeat-minimum-reachability`: P1 contribution
+  `1.00 -> 0.00`.
+- Focused validation: `2` files / `20` tests passed.
+- Native/Desktop production build passed with only registered unsupported-CSS
+  and optional WebSocket acceleration warnings.
+- The repository-wide browser lifecycle gate passed at both loop entry and
+  exit: every discovery, fast, and Native loop runs
+  `bun run browser:cleanup`; every browser command runs through
+  `bun run browser:run -- agent-browser ...`; any non-empty session list or
+  agent-browser-owned process blocks evidence, commit, push, and the next loop.
+- No browser was opened in this Native-only slice. Final state was
+  `sessions: []`, zero agent-browser-owned processes, and all owned ports free.
+  Local screenshot count remained `100`.

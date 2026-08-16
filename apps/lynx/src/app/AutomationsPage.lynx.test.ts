@@ -127,6 +127,10 @@ describe('Lynx Automations route', () => {
       new URL('./queries.ts', import.meta.url),
       'utf8'
     );
+    const styles = readFileSync(
+      new URL('./automations-page.css', import.meta.url),
+      'utf8'
+    );
 
     expect(pageSource).toContain('mutationFn: createAutomation');
     expect(pageSource).toContain('<AutomationCreateDialog');
@@ -168,6 +172,21 @@ describe('Lynx Automations route', () => {
     expect(dialogSource).toContain('label="Heartbeat"');
     expect(dialogSource).toContain('Target thread');
     expect(dialogSource).toContain('Stop when');
+    expect(dialogSource).toContain(
+      '<DialogPanel className="AutomationCreatePanel">'
+    );
+    expect(styles).toMatch(
+      /\.LxDialogPopup\.AutomationCreateDialog\s*\{[^}]*height:\s*calc\(100vh - 32px\);[^}]*max-height:\s*680px;/s
+    );
+    expect(styles).toMatch(
+      /\.AutomationCreatePanel\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-medium \.AutomationCreatePanel,[^{]*\{[^}]*gap:\s*8px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-medium \.AutomationCreatePrompt,[^{]*\{[^}]*height:\s*56px;[^}]*min-height:\s*56px;/s
+    );
     expect(dialogSource).toContain('Heartbeat stop condition');
     expect(dialogSource).toContain('completionPolicyFromStopWhen(stopWhen)');
     expect(dialogSource).toContain('No threads in this project');
