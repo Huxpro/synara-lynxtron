@@ -966,6 +966,61 @@
   grid-template-rows: minmax(0, 5fr) minmax(0, 3fr);
 }
 
+.SliceRoot--viewport-short-height .ThreadEditorBody {
+  grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadEditorChat
+  > .AppWindowDragRegion,
+.SliceRoot--viewport-short-height
+  .ThreadEditorChat
+  .CenteredEmptyLandingFrame,
+.SliceRoot--viewport-short-height
+  .ThreadEditorChat
+  .EmptyThreadContextTray,
+.SliceRoot--viewport-short-height
+  .ThreadEditorChat
+  .ProviderHealthBannerFrame {
+  display: none;
+}
+
+.SliceRoot--viewport-short-height .ThreadEditorChat {
+  --app-density-composer-editor-min-height: 20px;
+  --app-density-composer-editor-padding-top: 4px;
+  --app-density-composer-editor-padding-bottom: 2px;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadEditorChat
+  .TranscriptBottomInset {
+  height: 8px;
+}
+
+.SliceRoot--viewport-compact
+  .ThreadEditorChat
+  .CenteredEmptyLandingFrame,
+.SliceRoot--viewport-medium
+  .ThreadEditorChat
+  .CenteredEmptyLandingFrame,
+.SliceRoot--viewport-compact
+  .ThreadEditorChat
+  .EmptyThreadContextTray,
+.SliceRoot--viewport-medium
+  .ThreadEditorChat
+  .EmptyThreadContextTray {
+  display: none;
+}
+
+.SliceRoot--viewport-compact
+  .ThreadEditorChat
+  .ProviderHealthBannerFrame,
+.SliceRoot--viewport-medium
+  .ThreadEditorChat
+  .ProviderHealthBannerFrame {
+  display: none;
+}
+
 .SliceRoot--viewport-compact .ThreadEditorPath,
 .SliceRoot--viewport-medium .ThreadEditorPath,
 .SliceRoot--viewport-compact .ThreadEditorModeLabel,

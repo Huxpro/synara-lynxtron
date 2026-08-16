@@ -2352,3 +2352,21 @@ former dynamic-event P1 is no longer a valid blocker.
 - Focused suite passed `11/11`; Web and Native/Desktop builds passed.
 - Detailed evidence:
   `shots/2026-08-16/automation-populated-short-height/notes.md`.
+
+## 2026-08-16 Empty Editor Chat rail responsive matrix
+
+- Empty Editor Chat was newly tested at `320x200`, `320x568`, `800x568`, and
+  `1280x820`.
+- Before, short Chat had only `57.75px` but header/hero/composer required over
+  350px; compact and medium composers also extended below the rail.
+- Closed P1s:
+  - `lynx-editor-short-empty-chat-unreachable` `1.00 -> 0.00`;
+  - `lynx-editor-compact-empty-chat-unreachable` `1.00 -> 0.00`;
+  - `lynx-editor-medium-empty-chat-overflow` `1.00 -> 0.00`.
+- Short uses equal rows and a compact composer; compact/medium omit redundant
+  empty hero/context and provider banner. Wide retains full composition.
+- After, short composer ends at `y=192.5`; compact/medium at `y=540.63`, all
+  within their Chat rails.
+- Focused suites passed `12/12`; Web and Native/Desktop builds passed.
+- Detailed evidence:
+  `shots/2026-08-16/editor-empty-short-height/notes.md`.

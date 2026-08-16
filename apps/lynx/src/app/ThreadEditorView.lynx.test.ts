@@ -295,6 +295,21 @@ describe('Lynx Editor view', () => {
       /\.SliceRoot--viewport-compact\s+\.ThreadEditorBody,[\s\S]*?grid-template-columns:\s*48px minmax\(0,\s*1fr\);[\s\S]*?grid-template-rows:\s*minmax\(0,\s*5fr\) minmax\(0,\s*3fr\);/s
     );
     expect(appStyles).toMatch(
+      /\.SliceRoot--viewport-short-height \.ThreadEditorBody\s*\{[^}]*grid-template-rows:\s*minmax\(0,\s*1fr\) minmax\(0,\s*1fr\);/s
+    );
+    expect(appStyles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ThreadEditorChat\s+>\s+\.AppWindowDragRegion,[\s\S]*?\.SliceRoot--viewport-short-height\s+\.ThreadEditorChat\s+\.ProviderHealthBannerFrame\s*\{[^}]*display:\s*none;/s
+    );
+    expect(appStyles).toMatch(
+      /\.SliceRoot--viewport-short-height \.ThreadEditorChat\s*\{[^}]*--app-density-composer-editor-min-height:\s*20px;/s
+    );
+    expect(appStyles).toMatch(
+      /\.SliceRoot--viewport-compact\s+\.ThreadEditorChat\s+\.CenteredEmptyLandingFrame,[\s\S]*?\.SliceRoot--viewport-medium\s+\.ThreadEditorChat\s+\.EmptyThreadContextTray\s*\{[^}]*display:\s*none;/s
+    );
+    expect(appStyles).toMatch(
+      /\.SliceRoot--viewport-compact\s+\.ThreadEditorChat\s+\.ProviderHealthBannerFrame,[\s\S]*?\.SliceRoot--viewport-medium\s+\.ThreadEditorChat\s+\.ProviderHealthBannerFrame\s*\{[^}]*display:\s*none;/s
+    );
+    expect(appStyles).toMatch(
       /\.SliceRoot--viewport-compact\s+\.ThreadEditorActivityRail,[\s\S]*?grid-column:\s*1;[\s\S]*?grid-row:\s*1\s*\/\s*3;/s
     );
     expect(appStyles).not.toMatch(
