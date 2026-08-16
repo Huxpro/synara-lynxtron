@@ -1351,3 +1351,37 @@ former dynamic-event P1 is no longer a valid blocker.
   persistence rows and all isolated state/runtime/user directories were then
   removed. Owned ports `58090`, `8891`, and `8901` were free.
 - No screenshots were retained; local count remained `100`.
+
+## 2026-08-16 Heartbeat Stop when edit parity
+
+- Active discovery compared a saved Heartbeat completion policy in Web
+  authority and Native Edit at `900x650`.
+- Web authority exposed `Original stop condition` as an editable Stop when
+  textbox. Native Edit initially offered only Name and Prompt.
+- `native-automations-heartbeat-stop-condition-edit`: P1 contribution
+  `1.00 -> 0.00`.
+- Native Edit now reuses the shared completion-policy extractor/builder,
+  renders a Heartbeat-only Stop when input, resets it on open, includes policy
+  only when changed, and maps an empty condition to `none`.
+- Dirty checking and update construction moved into focused shared logic.
+  Tests passed `2` files / `9` tests, including unchanged, changed, and cleared
+  policy payloads.
+- React Doctor `0.9.12` scanned all four changed Lynx source/test files against
+  `fe17175bf` with zero diagnostics; the commit hook's generic warning did not
+  represent a real finding.
+- Final Native geometry was dialog `(240,167,420x317)`, panel
+  `(257,225,386x196)`, Stop when `(268,390,364x30)`, footer
+  `(257,435,386x32)`, and Save `(588,435,55x32)`.
+- The field carried `Original stop condition`, untouched Save was disabled,
+  and exact-client console was clean. Bundle SHA-256:
+  `cb087679d8589bc0df34abb5026c5cf20d1c13da4dcbc97c903291784a4fd236`.
+- Native foreground typing/save remains missing coverage because the inactive
+  harness cannot inject keyboard input into Lynx content. This is not claimed
+  as a real Native save roundtrip.
+- Browser lifecycle gates remained mandatory; the first insufficient-wait Web
+  probe was harness incompleteness, not product loss, and all attempts ended
+  with `sessions: []` plus zero agent-browser-owned processes.
+- Canonical cleanup returned zero visible definitions/runs; fixture
+  project/thread and all isolated state/runtime/user directories were removed.
+  Owned ports `58090`, `8891`, and `8901` were free.
+- No screenshots were retained; local count remained `100`.

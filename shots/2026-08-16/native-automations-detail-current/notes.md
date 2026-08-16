@@ -517,3 +517,73 @@ Exact-client warning/error console remained empty.
   state/runtime/user directories were removed.
 - Final owned ports `58090`, `8891`, and `8901` were free.
 - No screenshots were retained; local screenshot count remained `100`.
+
+## Heartbeat Stop when edit parity
+
+The next discovery loop reused the same semantic Heartbeat state but exercised
+a different capability: editing the saved completion policy.
+
+An isolated canonical fixture contained:
+
+- project `Heartbeat Edit Project` (`hbe-p`);
+- target thread `Heartbeat Edit Target` (`hbe-t`);
+- automation `Heartbeat edit proof`;
+- `mode=heartbeat`;
+- `completionPolicy.stopWhen=Original stop condition`;
+- zero runs.
+
+At Web authority `900x650`, the detail surface exposed a real editable textbox
+with placeholder `Never` and value `Original stop condition`. The initial
+Native detail showed the same read-only condition after the previous fix, but a
+real touch on `Edit` opened a dialog whose description and controls were
+limited to Name and Prompt. There was no Stop when field or completion-policy
+update path. This was a P1 capability loss: Native users could audit the
+Heartbeat termination rule but could not modify it as they could in Web
+authority.
+
+Root cause was local to `AutomationEditDialog`: it owned only name/prompt state,
+dirty checking, and update payload construction. The repair:
+
+- reuses the shared completion-policy extractor and builder;
+- displays a Heartbeat-only Stop when input;
+- resets that input from the current definition whenever the dialog opens;
+- enables Save when the condition changes;
+- includes `completionPolicy` only when the condition changed, so unrelated
+  name/prompt edits do not rewrite policy version metadata;
+- maps a cleared condition to `{type: "none"}`;
+- moves dirty checking and payload construction into
+  `automationEdit.logic.ts` for direct testing.
+
+Final exact-owned Native verification on bundle
+`cb087679d8589bc0df34abb5026c5cf20d1c13da4dcbc97c903291784a4fd236`
+rendered:
+
+- dialog: `(240,167,420x317)`;
+- panel: `(257,225,386x196)`;
+- Stop when input: `(268,390,364x30)`;
+- footer: `(257,435,386x32)`;
+- Save: `(588,435,55x32)`.
+
+The Native input carried both `default-value` and `value` equal to
+`Original stop condition`, and the untouched Save control remained disabled.
+Exact-client warning/error console was empty.
+
+- `native-automations-heartbeat-stop-condition-edit`: P1 contribution
+  `1.00 -> 0.00`.
+- Focused validation: `2` files / `9` tests passed, including unchanged,
+  changed, and cleared policy payloads.
+- React Doctor `0.9.12` scanned the four changed Lynx source/test files against
+  parent `fe17175bf` with zero errors and zero warnings. The commit hook's
+  generic warning was a tool-invocation fallback, not a reported diagnostic.
+- Native/Desktop production build passed with only registered unsupported-CSS
+  and optional WebSocket acceleration warnings.
+- Native foreground typing/save remains outside this inactive harness. The
+  field/value, dirty-state, and payload contracts are verified, but this loop
+  does not claim a real Native keyboard-edit roundtrip.
+- Every Web authority command ran through `browser:run`; the initial
+  insufficient-wait probe was classified as harness incompleteness and all
+  attempts returned to `sessions: []` with zero owned browser processes.
+- Canonical cleanup returned zero visible definitions/runs; the fixture
+  project/thread were deleted and all isolated state/runtime/user directories
+  were removed. Owned ports `58090`, `8891`, and `8901` were free.
+- No screenshots were retained; local screenshot count remained `100`.

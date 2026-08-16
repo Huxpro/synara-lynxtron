@@ -11,6 +11,11 @@ import {
   DialogTitle,
 } from '../components/ui/dialog.lynx';
 import { Input } from '../components/ui/input.lynx';
+import {
+  automationEditIsDirty,
+  automationEditStopWhen,
+  buildAutomationEditInput,
+} from './automationEdit.logic';
 
 interface NativeTextInputEvent {
   readonly detail: {
@@ -35,23 +40,27 @@ export function AutomationEditDialog({
 }) {
   const [name, setName] = useState(definition.name);
   const [prompt, setPrompt] = useState(definition.prompt);
+  const initialStopWhen = automationEditStopWhen(definition);
+  const [stopWhen, setStopWhen] = useState(initialStopWhen);
   useEffect(() => {
     if (!open) return;
     setName(definition.name);
     setPrompt(definition.prompt);
-  }, [definition.name, definition.prompt, open]);
+    setStopWhen(initialStopWhen);
+  }, [definition.name, definition.prompt, initialStopWhen, open]);
+  const normalizedStopWhen = stopWhen.trim();
   const canSave =
     !pending &&
     name.trim().length > 0 &&
     prompt.trim().length > 0 &&
-    (name.trim() !== definition.name || prompt.trim() !== definition.prompt);
+    automationEditIsDirty({ definition, name, prompt, stopWhen });
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogPopup className="AutomationEditDialog">
         <DialogTitle>Edit automation</DialogTitle>
         <DialogDescription>
-          Update the name and prompt without changing its schedule or policy.
+          Update the name, prompt, and Heartbeat stop condition.
         </DialogDescription>
         <DialogPanel className="AutomationEditPanel">
           <view className="AutomationCreateField">
@@ -85,6 +94,22 @@ export function AutomationEditDialog({
               }
             />
           </view>
+          {definition.mode === 'heartbeat' ? (
+            <view className="AutomationCreateField">
+              <text className="AutomationCreateLabel">Stop when</text>
+              <Input
+                key={`stop-when:${definition.updatedAt}:${open}`}
+                nativeInput
+                accessibleLabel="Heartbeat stop condition"
+                className="AutomationEditStopWhen"
+                defaultValue={initialStopWhen}
+                disabled={pending}
+                maxLength={2000}
+                placeholder="PR is ready to merge"
+                onChange={(event) => setStopWhen(event.target.value)}
+              />
+            </view>
+          ) : null}
           {error ? (
             <view className="AutomationCreateError" accessibility-element>
               <text className="AutomationCreateErrorText">{error}</text>
@@ -102,11 +127,14 @@ export function AutomationEditDialog({
           <Button
             disabled={!canSave}
             onClick={() =>
-              onSave({
-                id: definition.id,
-                name: name.trim(),
-                prompt: prompt.trim(),
-              })
+              onSave(
+                buildAutomationEditInput({
+                  definition,
+                  name,
+                  prompt,
+                  stopWhen: normalizedStopWhen,
+                })
+              )
             }
           >
             {pending ? 'Saving...' : 'Save'}

@@ -252,16 +252,24 @@ describe('Lynx Automations route', () => {
       new URL('./AutomationEditDialog.lynx.tsx', import.meta.url),
       'utf8'
     );
+    const editLogicSource = readFileSync(
+      new URL('./automationEdit.logic.ts', import.meta.url),
+      'utf8'
+    );
 
     expect(pageSource).toContain('onEdit={(input) =>');
     expect(pageSource).toContain('updateMutation.mutate(input, {');
     expect(detailSource).toContain('<AutomationEditDialog');
     expect(detailSource).toContain('onEditOpenChange(true)');
     expect(editSource).toContain('<DialogTitle>Edit automation</DialogTitle>');
-    expect(editSource).toContain('id: definition.id');
-    expect(editSource).toContain('name: name.trim()');
-    expect(editSource).toContain('prompt: prompt.trim()');
+    expect(editSource).toContain('buildAutomationEditInput({');
     expect(editSource).toContain('default-value={definition.prompt}');
+    expect(editSource).toContain('automationEditStopWhen(definition)');
+    expect(editSource).toContain("definition.mode === 'heartbeat'");
+    expect(editSource).toContain('accessibleLabel="Heartbeat stop condition"');
+    expect(editLogicSource).toContain(
+      'completionPolicyFromStopWhen(stopWhen)'
+    );
     expect(editSource).not.toContain('sleepOnHost(0)');
   });
 });
