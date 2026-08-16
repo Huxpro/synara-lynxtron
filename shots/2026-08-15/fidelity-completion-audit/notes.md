@@ -2917,3 +2917,26 @@ former dynamic-event P1 is no longer a valid blocker.
   it was not used as product evidence.
 - Detailed evidence:
   `shots/2026-08-17/explorer-query-short-height/notes.md`.
+
+## 2026-08-17 Explorer selected preview at 320x200
+
+- Discovery continued from the newly reachable compact query list into its
+  selected-file state rather than treating search reachability as full
+  Explorer coverage.
+- With the desktop 240px sidebar retained, the selected preview received only
+  79px. `package.json` collapsed to a `19x96` path and escaped its 40px header;
+  the source scroller was only 71px wide.
+- `lynx-explorer-selected-preview-compact-cramped`: P1 contribution
+  `1.00 -> 0.00`.
+- Compact ordinary Thread Explorer now splits the dock 50/50 while preserving
+  Web's horizontal sidebar + preview anatomy. Auxiliary result paths hide only
+  at short height; filenames and canonical result rows remain.
+- After, sidebar and preview are each about `159.5px`; the filename is
+  `99.5x16`, the 28px More actions control remains in bounds, and the source
+  scroller is `151.5px` wide with its full vertical range.
+- The preceding query cell was reverified: its first result is a complete 28px
+  row ending at `y=188`, so the continuation does not regress search.
+- Focused tests passed `2/2`; Lynx-for-Web and Native/Desktop production builds
+  passed with registered warnings only.
+- Detailed evidence:
+  `shots/2026-08-17/explorer-selected-preview-short-height/notes.md`.

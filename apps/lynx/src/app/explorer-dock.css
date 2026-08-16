@@ -21,6 +21,14 @@
   max-width: none;
 }
 
+.SliceRoot--viewport-compact
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockSidebar {
+  width: 50%;
+  min-width: 0;
+}
+
 .SliceRoot--viewport-short-height
   .ThreadPage
   > .ExplorerDock
@@ -56,6 +64,13 @@
   > .ExplorerDock
   .ExplorerDockEntries {
   padding: 3px;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockEntryPath {
+  display: none;
 }
 
 .ExplorerDock--editor {
