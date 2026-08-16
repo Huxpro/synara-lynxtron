@@ -3024,3 +3024,16 @@ former dynamic-event P1 is no longer a valid blocker.
   passed with registered warnings only.
 - Detailed evidence:
   `shots/2026-08-17/explorer-long-path-short-height/notes.md`.
+
+## 2026-08-17 Explorer close transition at 320x200
+
+- A selected source preview was closed from the ordinary compact Explorer.
+- Before, the dock was `320x108 @ (0,92)`, Files was active, and the composer
+  input was `296x62 @ (12,115)`.
+- Controlled activation unmounted the dock/Close control, removed the active
+  Files class, kept `padding-right:0`, and preserved the composer geometry.
+- This is a compact close-transition product pass, contribution
+  `0.00 -> 0.00`; no code change was required. Activation is handler/state
+  evidence, not claimed pointer evidence.
+- Detailed evidence:
+  `shots/2026-08-17/explorer-close-short-height/notes.md`.
