@@ -414,6 +414,29 @@ Canonical cleanup removed the explicit Pi project and landing-created Home
 container. Owned ports/runtime/state were removed; final browser state was
 `sessions: []` with zero owned processes; screenshot count remained `100`.
 
+## Native provider-model memory restart continuation
+
+A separate isolated user-data run preloaded the new provider-memory shape:
+
+- active: OpenCode / `DeepSeek V4 Flash Free`;
+- remembered Pi: `pi / openai/gpt-5.5`.
+
+The first cold start restored DeepSeek in the visible trigger. Opening Pi
+restored a synthesized `GPT-5.5` row as active despite the empty dynamic Pi
+catalog.
+
+Native then exited and restarted with the same exact-owned user data. The
+second cold start again restored the DeepSeek trigger, and persisted KV retained
+both `opencode` and `pi` provider slots with OpenCode active.
+
+`native-provider-model-memory-restart`: missing coverage `1.00 -> 0.00`;
+product-loss contribution remains `0.00 -> 0.00`.
+
+Legacy single-selection migration remains focused-test evidence only; it is not
+relabelled as a Native legacy-state run. Both exact-owned cold starts had empty
+warning/error console. Canonical/process/browser cleanup passed and screenshot
+count remained `100`.
+
 `native-new-thread-direct-model-selection`: missing coverage
 `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
 

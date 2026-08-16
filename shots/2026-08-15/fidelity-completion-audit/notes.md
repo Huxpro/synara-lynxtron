@@ -1076,3 +1076,16 @@ former dynamic-event P1 is no longer a valid blocker.
   output/staged hashes matched; exact-client console and canonical zero-thread
   state were clean.
 - Canonical, process, browser, and screenshot-count cleanup gates passed.
+
+## 2026-08-16 Native provider-memory restart continuation
+
+- An isolated KV preloaded active OpenCode/DeepSeek plus remembered Pi/GPT-5.5.
+- Cold start restored the DeepSeek trigger and the active GPT-5.5 Pi row despite
+  empty Pi discovery.
+- Restarting with the same user data restored DeepSeek again; persisted KV
+  retained both provider slots and the active OpenCode selection.
+- `native-provider-model-memory-restart`: missing coverage `1.00 -> 0.00`;
+  product-loss contribution remains `0.00 -> 0.00`.
+- Legacy single-selection migration remains focused-test evidence only, not
+  claimed Native legacy-state evidence.
+- Both consoles and all canonical/process/browser cleanup gates passed.
