@@ -73,3 +73,43 @@
 .EmptyThreadTemporaryButton--active .EmptyThreadTemporaryLabel {
   color: var(--accent-foreground);
 }
+
+.SliceRoot--viewport-short-height .ThreadPage .EmptyThreadContextTray {
+  position: fixed;
+  left: calc(50% - 14px);
+  top: auto;
+  bottom: 2px;
+  z-index: 2;
+  width: 28px;
+  min-height: 28px;
+  margin: 0;
+  padding: 0;
+  border-radius: 8px;
+  background-color: transparent;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  .EmptyThreadContextIdentity,
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  .EmptyThreadContextStatus,
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  .EmptyThreadContextSpacer,
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  .EmptyThreadTemporaryLabel {
+  display: none;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  .EmptyThreadTemporaryButton {
+  width: 28px;
+  min-width: 28px;
+  height: 28px;
+  min-height: 28px;
+  padding: 7px;
+  gap: 0;
+}

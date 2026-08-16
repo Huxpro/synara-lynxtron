@@ -2868,3 +2868,29 @@ former dynamic-event P1 is no longer a valid blocker.
 - Every failed or successful browser workflow ran through
   `bun run browser:run -- ...`. Each failure was followed by an independent
   `browser:cleanup` plus `session list` gate before continuing.
+
+## 2026-08-17 Temporary Thread marker at 320x200
+
+- Active discovery combined an ordinary empty Thread, dark theme,
+  `temporary=open`, and the extreme `320x200` viewport. Earlier temporary
+  coverage tested departure cleanup but not active-state reachability.
+- Web authority retained a real icon-only `Temporary chat` control at
+  `32x32 @ (144,161.671875)`. A rendered browser click set
+  `aria-pressed=true` without viewport overflow.
+- Lynx received the same active state but hid the complete context tray at
+  short height, leaving a destructive-on-departure state with no visible or
+  operable marker.
+- `lynx-temporary-thread-short-marker-hidden`: P1 contribution
+  `1.00 -> 0.00`.
+- The short-height Thread contract still hides the decorative hero and direct
+  provider banner, but now degrades the shared context tray to a centered
+  icon-only `28x28 @ (146,170)` Temporary control with 2px bottom clearance.
+  It does not overlap the Composer footer at `y=142..170`.
+- `accessibility-label=Temporary chat`, button traits, and active state remain.
+  At `320x568`, the original `296x58` tray and `102x28` button are unchanged.
+- Focused tests passed `6/6`; Lynx-for-Web and Native/Desktop production builds
+  passed with registered warnings only. Native loaded the same current bundle
+  and snapshot in a background exact-owned instance but published no new
+  DevTool client, so Native DOM/interaction remains harness missing coverage.
+- Detailed evidence:
+  `shots/2026-08-17/temporary-thread-short-height/notes.md`.

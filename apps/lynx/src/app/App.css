@@ -285,10 +285,7 @@
 
 .SliceRoot--viewport-short-height
   .ThreadPage
-  .CenteredEmptyLandingFrame,
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  .EmptyThreadContextTray {
+  .CenteredEmptyLandingFrame {
   display: none;
 }
 

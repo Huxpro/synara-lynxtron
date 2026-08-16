@@ -92,9 +92,25 @@ describe('empty Thread landing fidelity', () => {
       new URL('./App.css', import.meta.url),
       'utf8'
     );
+    const trayStyles = readFileSync(
+      new URL('./empty-thread-context-tray.css', import.meta.url),
+      'utf8'
+    );
 
     expect(appStyles).toMatch(
-      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+\.CenteredEmptyLandingFrame,[\s\S]*?\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+\.EmptyThreadContextTray\s*\{[^}]*display:\s*none;/s
+      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+\.CenteredEmptyLandingFrame\s*\{[^}]*display:\s*none;/s
+    );
+    expect(appStyles).not.toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+\.EmptyThreadContextTray\s*\{[^}]*display:\s*none;/s
+    );
+    expect(trayStyles).toMatch(
+      /\.SliceRoot--viewport-short-height \.ThreadPage \.EmptyThreadContextTray\s*\{[^}]*position:\s*fixed;[^}]*left:\s*calc\(50% - 14px\);[^}]*bottom:\s*2px;[^}]*width:\s*28px;[^}]*min-height:\s*28px;/s
+    );
+    expect(trayStyles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+\.EmptyThreadTemporaryButton\s*\{[^}]*width:\s*28px;[^}]*min-width:\s*28px;[^}]*height:\s*28px;[^}]*min-height:\s*28px;/s
+    );
+    expect(trayStyles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+\.EmptyThreadTemporaryLabel\s*\{[^}]*display:\s*none;/s
     );
     expect(appStyles).toMatch(
       /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ProviderHealthBannerFrame\s*\{[^}]*display:\s*none;/s
