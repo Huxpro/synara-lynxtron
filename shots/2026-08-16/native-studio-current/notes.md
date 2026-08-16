@@ -158,3 +158,37 @@ the shell snapshot returned to 0 live projects / 0 threads.
 Focused shell/Studio/composer tests pass `19/19`; the Native/Desktop production
 build passes. This closes the last route-level desktop deep-link gap found by
 the router/hostname matrix.
+
+## Native dark 1440 continuation
+
+A fresh exact-owned run added Studio dark at `1440x900`:
+
+- root: `SliceRoot--theme-dark SliceRoot--viewport-wide`;
+- route: `(256,0,1184x900)`;
+- heading: `(688,447,321x35)`, `30px/35px/400`,
+  `rgb(252,252,252)`;
+- composer: `(480,501,736x133)`;
+- input surface: `(480,501,736x95)`, `rgb(23,23,23)`;
+- tray: `(480,576,736x58)`;
+- folder trigger: `(488,600,97x28)`, `Use a folder`.
+
+The canonical snapshot contained exactly one `kind:studio`, title `Studio`
+container. There was no duplicate Home/Studio bootstrap. Exact-client
+warning/error console stayed empty.
+
+`native-studio-dark-1440`: missing coverage `1.00 -> 0.00`;
+product-loss contribution remains `0.00 -> 0.00`.
+
+Two harness assumptions were rejected separately:
+
+- a temporary IDs file without `.json` was loaded through Node `require()` and
+  parsed as JavaScript instead of JSON;
+- the canonical assertion expected a Home container, while Studio correctly
+  owns one Studio container.
+
+Neither changed product state or contributed product loss.
+
+The actual system folder-dialog selection remains a host-dialog boundary for a
+background run. First send and restart persistence remain open. Owned
+ports/runtime/state and browser processes were removed; screenshot count
+remained `100`.

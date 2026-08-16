@@ -1188,3 +1188,16 @@ former dynamic-event P1 is no longer a valid blocker.
   panes. Top + Bottom used one `644x302` top pane plus two bottom panes.
 - Focused tests passed `3` files / `12` tests; Native/Desktop build, bundle
   hashes, console, and cleanup gates passed.
+
+## 2026-08-16 Native Studio dark 1440
+
+- Active discovery added Studio dark at `1440x900`.
+- The `1184x900` route retained a centered `736x133` composer, dark input/tray
+  tokens, and the `Use a folder` trigger.
+- Canonical state contained exactly one Studio container and no Home pollution.
+- `native-studio-dark-1440`: missing coverage `1.00 -> 0.00`; product-loss
+  contribution remains `0.00 -> 0.00`.
+- A non-`.json` temporary-file parse and an incorrect Home-container assertion
+  were classified as harness mistakes.
+- System folder selection remains a background-unsafe host-dialog boundary.
+- Console and all cleanup gates passed.
