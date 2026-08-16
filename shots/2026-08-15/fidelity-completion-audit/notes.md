@@ -2703,3 +2703,13 @@ former dynamic-event P1 is no longer a valid blocker.
   range.
 - Focused Custom Models suite passed `2/2`; Lynx-for-Web and Native/Desktop
   production builds passed with registered warnings only.
+
+## 2026-08-17 Sidebar project/thread sort menu at 320x200
+
+- A canonical project exposed the rendered sidebar `Sort projects` control,
+  which opened the combined three-project/two-thread option menu at
+  `320x200`, dark.
+- Popup measured `176x192 @ (94,8)` and ended exactly at `y=200`. All group
+  labels and five 26px options remained in bounds with no content overflow.
+- This is a short-height layout pass, contribution `0.00 -> 0.00`; no product
+  code change was required.
