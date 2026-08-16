@@ -2606,3 +2606,16 @@ former dynamic-event P1 is no longer a valid blocker.
   the complete overlay stayed in bounds with 116px of real scroll range.
 - Focused Composer suite passed `3/3`; Lynx-for-Web and Native/Desktop
   production builds passed with registered warnings only.
+
+## 2026-08-17 Composer traits menu at 320x200
+
+- The rendered `Change effort, context, and speed` control opened the distinct
+  traits menu at `320x200`, dark.
+- The current Codex state rendered one 179px trait section. Popup measured
+  `260x191 @ (59,9)` and ended exactly at `y=200`; its section remained fully
+  inside at `y=15..194`.
+- This is a current-state short-height layout pass, contribution
+  `0.00 -> 0.00`; no product code change was required.
+- The pass is scoped to the real one-section capability state. Providers that
+  expose additional simultaneous trait sections remain separate future scope,
+  not inferred coverage.
