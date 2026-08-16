@@ -2072,3 +2072,17 @@ former dynamic-event P1 is no longer a valid blocker.
 - Every browser command used the guarded wrapper; screenshot count remained
   `100`.
 - Detailed evidence: `shots/2026-08-16/shared-chat-header-320/notes.md`.
+
+## 2026-08-16 Shared header verification-contract refresh
+
+- The shared-header expanded suite exposed two stale source contracts rather
+  than product regressions.
+- Header identity coverage no longer assumes exactly two component usages; it
+  asserts the Landing, ordinary Thread, and Editor New chat identities
+  individually.
+- Environment Editor coverage now asserts the current dynamic
+  `editor-search | editor` presentation contract instead of a removed static
+  literal.
+- Focused identity and Environment suites passed `10/10`.
+- This closes verification debt only; product-loss contribution remained
+  `0.00 -> 0.00`.

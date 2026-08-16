@@ -15,7 +15,11 @@ describe('chat surface header identity fidelity', () => {
     expect(styles).toMatch(
       /\.SharedChatHeaderIdentityTitle\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;[^}]*font-weight:\s*400;/s
     );
-    expect(routerSource.match(/<ChatSurfaceHeaderIdentity/g)).toHaveLength(2);
+    expect(routerSource).toContain('title={routePresentation.headerTitle}');
+    expect(routerSource).toContain(
+      "title={currentThread?.title ?? 'Thread'}"
+    );
+    expect(routerSource).toContain('title="New chat"');
   });
 
   it('publishes the shared rename action instead of dropping it', () => {

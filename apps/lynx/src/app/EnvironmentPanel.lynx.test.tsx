@@ -245,7 +245,9 @@ describe('Lynx Environment panel', () => {
     expect(panelSource).toContain('label="Editor view"');
     expect(routerSource).toContain('onOpenEditorView={enterEditorMode}');
     expect(routerSource).toContain('className="ThreadEditorView"');
-    expect(routerSource).toContain('presentationMode="editor"');
+    expect(routerSource).toContain(
+      "presentationMode={editorSearchActive ? 'editor-search' : 'editor'}"
+    );
     expect(panelSource).toContain('fetchGitHubRepository(props.workspaceRoot)');
     expect(panelSource).toContain('platformWindow.openExternal(repository.url)');
     expect(panelSource).toContain('repository.nameWithOwner');
