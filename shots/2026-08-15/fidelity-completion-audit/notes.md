@@ -2211,6 +2211,18 @@ former dynamic-event P1 is no longer a valid blocker.
 - No code change was required; product-loss contribution stayed
   `0.00 -> 0.00`.
 
+## 2026-08-16 Spacious-density compact Plugin
+
+- UI density was changed through the rendered Settings Appearance
+  `UI density: Spacious` control, then verified after navigating to Plugin at
+  `320x568`.
+- Root projected `SliceRoot--density-spacious`; this was not a synthetic class
+  mutation.
+- Plugin header remained `320x92`, tabs stayed at `x=191/261`, provider strip
+  stayed `320x45 @ y=46`, and header `scrollWidth=clientWidth=320`.
+- This is a density/compact product pass, contribution `0.00 -> 0.00`; no code
+  change was required.
+
 ## 2026-08-16 Workspace header at medium width with sidebar closed
 
 - Active discovery added real Workspace/terminal at `800x568`, medium, closed.
