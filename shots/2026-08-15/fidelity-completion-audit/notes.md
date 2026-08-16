@@ -2027,3 +2027,23 @@ former dynamic-event P1 is no longer a valid blocker.
   `100`.
 - Detailed evidence:
   `shots/2026-08-16/pull-requests-header-320/notes.md`.
+
+## 2026-08-16 Kanban header at 320px
+
+- Active discovery added overview-header hit ownership at `320x568`, distinct
+  from prior `390px` project action-overflow and card-action coverage.
+- Before, `0 tasks` occupied `x=81.70..122.47`; its center and visible right
+  portion hit fixed desktop titlebar icons from `x=90`.
+- `lynx-kanban-320-count-titlebar-overlap`: P1 contribution `1.00 -> 0.00`.
+- Compact Kanban now reserves the first 46px row and renders title/count/action
+  in row two. Medium retains the prior one-row 20px inset contract.
+- After, count center `(102,69)` hit its own text; title and New task remained
+  contained. Medium `800x568` remained one row.
+- The prior PR selector split exposed an omitted Kanban adapter contract test;
+  it was updated and passed `1/1`. Actual existing mutation/dialog suites
+  passed `6/6`; nonexistent test arguments were not counted.
+- Web and Native/Desktop builds passed. Web bundle:
+  `f5b70082f493c43a9d2faab6cb23e64f9a8cbf342b4c1870888f437c31a231dc`.
+- Every browser command used the guarded wrapper; screenshot count remained
+  `100`.
+- Detailed evidence: `shots/2026-08-16/kanban-header-320/notes.md`.
