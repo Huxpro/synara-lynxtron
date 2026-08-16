@@ -215,3 +215,46 @@ product-loss contribution remains `0.00 -> 0.00`.
 This closes the restart duplicate-container boundary that previously produced a
 real race before the shared landing-provider bootstrap fix. Canonical,
 process, browser, and screenshot-count cleanup gates passed.
+
+## Native minimum-window continuation
+
+A fresh exact-owned Studio run added the real `900x650` Desktop minimum.
+Heading, composer, tray, and `Use a folder` remained reachable, but the
+provider-health banner measured `(210,58,736x68)`:
+
+- it intruded `46px` into the `256px` sidebar;
+- it extended `46px` beyond the `900px` window;
+- the same screen's composer correctly owned `(268,376,620x133)`.
+
+`native-provider-health-banner-medium-overflow`: P1 contribution
+`1.00 -> 0.00`.
+
+The banner's fixed `736px` transcript width ignored the medium main rail.
+Medium/compact banner frames now use `12px` horizontal gutters and the banner
+fills that frame.
+
+The first repair removed overflow but double-subtracted frame padding, producing
+`(288,58,580x68)`. The final exact-owned build aligned exactly with the
+composer rail at `(268,58,620x68)`.
+
+The rest of the minimum Studio geometry remained:
+
+- body: `(256,126,644x524)`;
+- heading: `(418,322,321x35)`;
+- composer: `(268,376,620x133)`;
+- tray: `(268,451,620x58)`;
+- folder trigger: `(276,475,97x28)`.
+
+Focused tests passed `3` files / `7` tests. Native/Desktop production build
+passed with registered warnings only. Output/staged SHA-256 was identical at
+`f71ae0e9350527e482617036e1ffbf4ff479307b9832181d7e87a4fa36b5e354`.
+Exact-client warning/error console stayed empty.
+
+The first final-validation preflight found the preceding owned Studio/server
+processes still listening because their PTYs had not been closed. The loop
+stopped, closed those exact owned sessions, removed their state, and required
+all three ports plus the browser gate to pass before retrying. This is retained
+as harness cleanup failure, not product loss.
+
+Canonical, process, browser, and screenshot-count cleanup gates passed after
+the final run.

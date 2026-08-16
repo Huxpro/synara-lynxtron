@@ -19,6 +19,17 @@
   box-shadow: 0 4px 18px -6px rgba(0, 0, 0, 0.3);
 }
 
+.SliceRoot--viewport-medium .ProviderHealthBannerFrame,
+.SliceRoot--viewport-compact .ProviderHealthBannerFrame {
+  padding-right: 12px;
+  padding-left: 12px;
+}
+
+.SliceRoot--viewport-medium .ProviderHealthBanner,
+.SliceRoot--viewport-compact .ProviderHealthBanner {
+  width: 100%;
+}
+
 .SliceRoot--theme-light .ProviderHealthBanner {
   border-color: rgba(1, 105, 204, 0.14);
   background-color: rgba(1, 105, 204, 0.1);

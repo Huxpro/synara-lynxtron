@@ -1234,3 +1234,21 @@ former dynamic-event P1 is no longer a valid blocker.
   produced a real `shellOpenExternal` side effect. It is explicitly classified
   as harness operation error, not Close evidence.
 - No unrelated browser was terminated; canonical and owned cleanup gates passed.
+
+## 2026-08-16 Native Studio minimum banner
+
+- Active discovery added Studio at the real `900x650` minimum.
+- The fixed `736px` provider banner intruded into the sidebar and overflowed the
+  window by `46px` on each side.
+- `native-provider-health-banner-medium-overflow`: P1 contribution
+  `1.00 -> 0.00`.
+- Medium/compact frames now use `12px` gutters and a full-width banner. Final
+  geometry aligned with the composer rail at `x=268`, width `620`.
+- An intermediate fix over-shrank the banner to `580px`; exact verification
+  rejected it before the final correction.
+- Focused tests passed `3` files / `7` tests; Native/Desktop build, hashes, and
+  console passed.
+- A final-preflight port check caught still-running owned Studio/server PTYs.
+  They were closed and removed before the retained retry; this is harness
+  cleanup failure, not product loss.
+- Canonical and all process/browser cleanup gates passed after the final run.
