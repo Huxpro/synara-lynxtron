@@ -2519,3 +2519,22 @@ former dynamic-event P1 is no longer a valid blocker.
   footer.
 - Focused Profile suite passed `5/5`; Lynx-for-Web and Native/Desktop
   production builds passed with registered warnings only.
+
+## 2026-08-17 Automation edit dialog at 320x200
+
+- A canonical project and manual automation were created through RPC, then the
+  rendered detail `Edit` action opened the real edit dialog at `320x200`, dark.
+- Before, title collapsed to `6/21px`, description to `9/30px`, and footer to
+  `9/32px`. The form panel had a real scroll owner, but all fixed dialog
+  regions participated in flex shrink.
+- `lynx-automation-edit-short-fixed-regions-collapsed`: P1 contribution
+  `1.00 -> 0.00`.
+- The edit-specific short-height contract now fixes the 168px popup and title /
+  footer allocation, intentionally hides secondary description, and gives the
+  panel the remaining scrollable height.
+- After, popup was `288x168 @ (16,16)`, title `21/21`, panel `73/268`, footer
+  `40/40`, and Cancel/Save retained full 36px hit areas at `y=131..167`.
+- At maximum `scrollTop=195`, title/footer/buttons remained fixed while the
+  form reached its final content.
+- Focused Automations suite passed `11/11`; Lynx-for-Web and Native/Desktop
+  production builds passed with registered warnings only.

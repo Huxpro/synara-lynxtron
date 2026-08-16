@@ -323,6 +323,10 @@ describe('Lynx Automations route', () => {
       new URL('./automationEdit.logic.ts', import.meta.url),
       'utf8'
     );
+    const styles = readFileSync(
+      new URL('./automations-page.css', import.meta.url),
+      'utf8'
+    );
 
     expect(pageSource).toContain('onEdit={(input) =>');
     expect(pageSource).toContain('updateMutation.mutate(input, {');
@@ -340,5 +344,20 @@ describe('Lynx Automations route', () => {
       'completionPolicyFromStopWhen(stopWhen)'
     );
     expect(editSource).not.toContain('sleepOnHost(0)');
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.LxDialogPopup\.AutomationEditDialog\s*\{[^}]*height:\s*calc\(100vh - 32px\);[^}]*max-height:\s*calc\(100vh - 32px\);/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.AutomationEditDialog\s+>\s+\.LxDialogTitle\s*\{[^}]*flex-shrink:\s*0;[^}]*min-height:\s*21px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.AutomationEditDialog\s+>\s+\.LxDialogDescription\s*\{[^}]*display:\s*none;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height \.AutomationEditPanel\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;[^}]*padding-top:\s*8px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.AutomationEditDialog\s+>\s+\.AutomationCreateFooter\s*\{[^}]*flex-shrink:\s*0;[^}]*height:\s*40px;[^}]*margin-top:\s*0;/s
+    );
   });
 });
