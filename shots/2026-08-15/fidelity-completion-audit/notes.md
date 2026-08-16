@@ -2223,6 +2223,21 @@ former dynamic-event P1 is no longer a valid blocker.
 - This is a density/compact product pass, contribution `0.00 -> 0.00`; no code
   change was required.
 
+## 2026-08-16 Spacious-density Landing composer
+
+- UI density was selected through the rendered Settings control and persisted
+  to Landing as `SliceRoot--density-spacious`.
+- At `320x568`, spacious Landing composer remained contained:
+  `296x142.72 @ (12,370.64)`, with editor `67.83px` and footer `34.89px`.
+- At `320x200`, both comfortable and spacious layouts place the composer below
+  the initial 64px body viewport. Full anatomy shows this is a real vertical
+  scroll-view (`clientHeight=64`, `scrollHeight=279`), not static content lost
+  outside its owner.
+- Agent-browser wheel input did not move the Lynx custom scroll-view
+  (`scrollTop=0`). Short-height composer reachability therefore remains missing
+  interaction coverage/harness gap, not a product pass or loss.
+- No code change was made; product-loss contribution stayed `0.00 -> 0.00`.
+
 ## 2026-08-16 Workspace header at medium width with sidebar closed
 
 - Active discovery added real Workspace/terminal at `800x568`, medium, closed.
