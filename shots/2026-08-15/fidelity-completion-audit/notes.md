@@ -1274,3 +1274,18 @@ former dynamic-event P1 is no longer a valid blocker.
   leaving the ordinary Chat draft untouched.
 - Focused tests passed `3` files / `21` tests; Native/Desktop build, hashes,
   console, canonical cleanup, and process/browser gates passed.
+
+## 2026-08-16 Native Editor project draft
+
+- Canonical project/thread state cold-started directly into Editor with
+  `editorNewChat=open`.
+- Native retained the main Editor and a project-scoped New chat rail
+  simultaneously, with the correct heading, project, model, and geometry.
+- Canonical projection remained at one original thread; opening the draft
+  created no durable thread.
+- `native-editor-project-draft`: missing coverage `1.00 -> 0.00`; product-loss
+  contribution remains `0.00 -> 0.00`.
+- A transient unrelated process occupied fixed port `8901` during preflight and
+  exited without intervention. No foreign process was stopped.
+- Exact-client console, canonical cleanup, and all owned process/browser gates
+  passed.

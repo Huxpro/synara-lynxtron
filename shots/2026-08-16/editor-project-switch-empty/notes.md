@@ -84,3 +84,40 @@
 - `errors.json`
 - `console.json`
 - `bundle.sha256`
+
+## Native project-draft continuation
+
+A fresh exact-owned Native run closed the certification boundary that the fast
+loop left open.
+
+Canonical setup created one ordinary project and one durable empty thread
+through orchestration commands, then cold-started:
+
+`synara://thread/editor-native-thread?editor=open&editorChat=open&editorNewChat=open`
+
+Native rendered:
+
+- one full Editor surface: `(0,0,1280x820)`;
+- unchanged main center: `(48,46,848x774)`;
+- right chat rail: `(896,46,384x774)`;
+- project-scoped New chat surface: `(896,92,384x728)`;
+- composer: `(924,462,328x133)`;
+- heading: `What should we do in Editor Native?`;
+- project/model: `synara` / `GPT-5.6 Sol`;
+- rail header: `New chat`.
+
+Canonical projection stayed at exactly the original
+`editor-native-thread`; opening the draft created no second thread. Main Editor
+and right-rail draft remained mounted simultaneously. Exact-client
+warning/error console stayed empty.
+
+`native-editor-project-draft`: missing coverage `1.00 -> 0.00`;
+product-loss contribution remains `0.00 -> 0.00`.
+
+The fixed DevTool-port blocker recorded in the original fast-loop evidence was
+not present in this exact-owned run. One unrelated Lynxtron briefly occupied
+`8901` during preflight and exited on its own; no foreign process was stopped.
+Preflight resumed only after the port was free.
+
+The thread and project were deleted canonically. Owned ports/runtime/state and
+browser processes were removed; screenshot count remained `100`.
