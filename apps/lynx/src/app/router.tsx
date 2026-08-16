@@ -2171,6 +2171,7 @@ export function SliceRouter({
         sidebarOpen={sidebarOpen}
         openTitlebarControls={openTitlebarControls}
         closedTitlebarControls={closedTitlebarControls}
+        resolvedTheme={resolvedTheme}
         onAppearanceChange={onAppearanceChange}
         onThemeStateChange={onThemeStateChange}
       />

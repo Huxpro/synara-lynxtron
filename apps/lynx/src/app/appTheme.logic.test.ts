@@ -106,4 +106,23 @@ describe('slice root theme projection', () => {
       'style={resolveSliceThemeVariables(themeState, systemDark)}'
     );
   });
+
+  it('keeps Settings on the root-resolved system appearance', () => {
+    const settingsSource = readFileSync(
+      new URL('./SettingsPage.tsx', import.meta.url),
+      'utf8'
+    );
+    const routerSource = readFileSync(
+      new URL('./router.tsx', import.meta.url),
+      'utf8'
+    );
+
+    expect(settingsSource).toContain(
+      "readonly resolvedTheme: 'dark' | 'light';"
+    );
+    expect(settingsSource).not.toContain(
+      'resolveSliceThemeVariant(themeState)'
+    );
+    expect(routerSource).toContain('resolvedTheme={resolvedTheme}');
+  });
 });

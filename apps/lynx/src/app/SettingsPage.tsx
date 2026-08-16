@@ -86,7 +86,6 @@ import {
   serializeThemeState,
   type ThemeState,
 } from '@synara-web/theme/theme.logic';
-import { resolveSliceThemeVariant } from './appTheme.logic';
 import {
   resolveSettingsPersistencePresentation,
   shouldApplySettingsSaveResult,
@@ -372,6 +371,7 @@ export function SettingsPage({
   sidebarOpen,
   openTitlebarControls,
   closedTitlebarControls,
+  resolvedTheme,
   onAppearanceChange,
   onThemeStateChange,
 }: {
@@ -381,6 +381,7 @@ export function SettingsPage({
   readonly sidebarOpen: boolean;
   readonly openTitlebarControls: ReactNode;
   readonly closedTitlebarControls: ReactNode;
+  readonly resolvedTheme: 'dark' | 'light';
   readonly onAppearanceChange: (appearance: SettingsAppearanceValues) => void;
   readonly onThemeStateChange: (state: ThemeState) => void;
 }) {
@@ -677,7 +678,6 @@ export function SettingsPage({
     runSave(() => persistThemeState(next));
   }
 
-  const resolvedTheme = resolveSliceThemeVariant(themeState);
   const persistencePresentation =
     resolveSettingsPersistencePresentation(persistenceState);
 

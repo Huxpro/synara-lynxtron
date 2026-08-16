@@ -1733,3 +1733,28 @@ former dynamic-event P1 is no longer a valid blocker.
 - Unrelated t3code PID `18721` on `8901` was not touched.
 - Detailed evidence:
   `shots/2026-08-16/provider-update-label-compact/notes.md`.
+
+## 2026-08-16 System-dark Settings theme owner
+
+- Active discovery added Appearance Settings in `system` mode under host dark
+  media at compact `390x844`.
+- Web authority rendered the active dark variant and
+  `System is currently using this dark slot.`
+- Lynx before had a dark root but a light Settings page and incorrectly
+  rendered `System is currently using this light slot.`
+- `lynx-settings-system-dark-owner-drift`: P1 contribution `1.00 -> 0.00`.
+- Root cause was Settings independently resolving system mode without the
+  host appearance signal. The canonical resolved variant now flows
+  `App -> SliceRouter -> SettingsPage`.
+- Lynx after had dark root/page classes and the authoritative current-dark-slot
+  copy, with no current-light marker.
+- Native system appearance remains a documented host capability boundary; its
+  shared light fallback is intentional and was not relabeled as a product pass.
+- Focused suites passed `6/6`, expanded suites passed `33/33`, and both Web and
+  Native/Desktop production builds passed. Native bundle SHA-256:
+  `7c0e8f4672111b4538670943f81c0e3bc1b80ff167b1640c20d1de4e5931ce4c`.
+- Entry cleanup passed. Exit returned `sessions: []`, zero agent-browser-owned
+  processes, owned ports free, and no retained browser screenshot. Local count
+  remained `100`.
+- Detailed evidence:
+  `shots/2026-08-16/system-dark-settings-owner/notes.md`.
