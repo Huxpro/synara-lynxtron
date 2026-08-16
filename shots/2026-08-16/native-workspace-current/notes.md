@@ -272,3 +272,29 @@ product-loss contribution remains `0.00 -> 0.00`.
 The final UI contained one `WorkspaceTerminalGrid--single` pane owned by the
 new fallback workspace, not any leaked Quad PTY. Exact-client console and all
 process/browser cleanup gates passed; screenshot count remained `100`.
+
+## Quad-to-Single session retention continuation
+
+A fresh exact-owned Quad workspace exercised the settings copy that extra
+terminals remain available when reducing pane count.
+
+Real controls completed:
+
+1. Quad with `default`, `workspace-2`, `workspace-3`, and `workspace-4`;
+2. `Single`, rendering only the default pane;
+3. `Quad`, restoring all four panes.
+
+Host evidence contained no `terminalClose` while switching to Single. Returning
+to Quad remounted `workspace-2`, `workspace-3`, and `workspace-4` against the
+same `workspace:preset-workspace` identity.
+
+`native-workspace-preset-session-retention`: missing coverage
+`1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+
+The first combined probe reached Single successfully but concatenated a shell
+command onto a heredoc terminator, producing a script syntax error before the
+Quad restoration. The continuation reused the same owned Single state and
+completed restoration; this is harness script error, not product loss.
+
+Exact-client console and all process/browser cleanup gates passed; screenshot
+count remained `100`.

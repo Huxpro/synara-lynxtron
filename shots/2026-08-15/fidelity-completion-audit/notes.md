@@ -1137,3 +1137,14 @@ former dynamic-event P1 is no longer a valid blocker.
 - Confirmation-enabled close remains a Native host-dialog boundary because a
   background run could raise a system dialog over the user's desktop.
 - Console and all cleanup gates passed.
+
+## 2026-08-16 Native Workspace preset session retention
+
+- Real controls completed Quad -> Single -> Quad.
+- Reducing to Single emitted no terminal-close call; restoring Quad remounted
+  `workspace-2`, `workspace-3`, and `workspace-4` for the same workspace.
+- `native-workspace-preset-session-retention`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- A heredoc command-concatenation error interrupted the first restoration
+  probe after Single; the continuation reused that owned state and passed.
+- Console and all cleanup gates passed.
