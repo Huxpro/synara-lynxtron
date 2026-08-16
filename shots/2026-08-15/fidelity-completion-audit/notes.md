@@ -2619,3 +2619,15 @@ former dynamic-event P1 is no longer a valid blocker.
 - The pass is scoped to the real one-section capability state. Providers that
   expose additional simultaneous trait sections remain separate future scope,
   not inferred coverage.
+
+## 2026-08-17 Composer extras menu at 320x200
+
+- The rendered `Composer extras` control opened the real three-row menu at
+  `320x200`, dark.
+- Popup measured `142x108 @ (19,92)` and ended exactly at `y=200`. Add files,
+  Plan mode, and Fast retained complete 26px rows at `y=98..194`.
+- This is a primary-menu short-height layout pass, contribution
+  `0.00 -> 0.00`; no product code change was required.
+- A DOM activation of Plan mode did not publish a `LxMenuSubPopup` in
+  Lynx-for-Web. Nested submenu geometry remains interaction/harness missing
+  coverage and is not included in the primary-menu pass.
