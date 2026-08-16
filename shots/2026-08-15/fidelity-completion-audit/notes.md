@@ -2762,3 +2762,18 @@ former dynamic-event P1 is no longer a valid blocker.
   product code change was required.
 - No extra process was launched to inflate the list. A naturally occurring
   multi-server state remains separate future scope.
+
+## 2026-08-17 Environment editor menu at 320x200
+
+- A canonical branch-backed local thread and real server config exposed seven
+  available editor targets: Cursor, Trae, VS Code, Ghostty, Terminal, Xcode,
+  and file manager.
+- Entering directly at 200px did not mount the lower Environment editor section.
+  After the same named session hydrated at `320x568` and resized to `320x200`,
+  the rendered `Open in Cursor` trigger opened the real seven-option menu.
+- Popup measured `176x192 @ (144,8)` and ended exactly at `y=200`; all options
+  remained in bounds with no content overflow.
+- This is a short-height layout pass, contribution `0.00 -> 0.00`. The first
+  direct-entry result is classified as a harness/hydration prerequisite
+  mismatch, not a product loss.
+- No editor launch action was activated.
