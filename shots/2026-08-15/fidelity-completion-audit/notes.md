@@ -1099,3 +1099,16 @@ former dynamic-event P1 is no longer a valid blocker.
 - `native-provider-model-memory-legacy-migration`: missing coverage
   `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
 - Console and all process/browser cleanup gates passed.
+
+## 2026-08-16 Native Workspace two-pane deletion
+
+- Active discovery combined two-column layout with workspace deletion.
+- Real controls opened `default` and `workspace-2`, then deleted the workspace.
+- Host calls closed both old terminal identities with `deleteHistory:true`.
+- The remaining single pane belonged to a new fallback Workspace ID and was
+  not a leaked old terminal.
+- `native-workspace-two-pane-delete-cleanup`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- An exact-text preset selector failed before interaction because the rendered
+  button includes `· 2 panes`; the corrected selector completed the run.
+- Console and all process/browser cleanup gates passed.

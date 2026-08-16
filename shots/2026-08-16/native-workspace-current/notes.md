@@ -181,3 +181,37 @@ The exact-client warning/error console stayed empty.
 `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
 
 Workspace compact Native and Native keyboard/IME remain open.
+
+## Two-pane workspace deletion continuation
+
+A fresh exact-owned run combined the previously separate two-column and
+workspace-deletion states.
+
+Real controls selected `Two Columns`, producing two Native panes and real host
+sessions for:
+
+- `default`;
+- `workspace-2`.
+
+After closing the settings dialog, a real `Delete workspace` touch removed the
+two-column workspace. Exact host calls closed both old workspace identities
+with `deleteHistory:true` before state replacement:
+
+- `terminalClose(default)`;
+- `terminalClose(workspace-2)`.
+
+The remaining single pane belonged to a newly created fallback Workspace 1
+with a different workspace ID and `layoutPresetId:"single"`. It is the
+minimum-workspace product contract, not a leaked pane from the deleted
+workspace.
+
+`native-workspace-two-pane-delete-cleanup`: missing coverage
+`1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+
+The first preset selector matched only exact `Two Columns` text and returned no
+button node because the rendered button includes `· 2 panes`. That failed
+before interaction and is classified as selector harness mismatch. The
+corrected preset-button selector completed the same owned run.
+
+Exact-client warning/error console stayed empty. Owned ports/runtime/state and
+browser processes were removed; screenshot count remained `100`.
