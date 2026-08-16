@@ -2194,6 +2194,23 @@ former dynamic-event P1 is no longer a valid blocker.
   pass or loss.
 - No code change was made; product-loss contribution stayed `0.00 -> 0.00`.
 
+## 2026-08-16 Closed-sidebar route overlap matrix
+
+- A production-bundle scanner covered 14 empty/no-fixture cells:
+  `/`, `/kanban`, `/pull-requests`, `/plugins`, `/automations`,
+  `/automations/missing`, and `/update`, each at `320x568` and `800x568`.
+- Every medium cell was deterministically moved to sidebar-closed before
+  scanning.
+- The scanner compared visible text, buttons, and accessible controls against
+  the measured fixed titlebar rectangle and excluded the titlebar subtree
+  itself.
+- All 14 cells returned zero non-titlebar overlap candidates.
+- This supports header-ownership exhaustion for the listed empty routes only.
+  It does not replace the separate fixture evidence for Thread, Workspace,
+  populated Automation detail, or other interaction states.
+- No code change was required; product-loss contribution stayed
+  `0.00 -> 0.00`.
+
 ## 2026-08-16 Workspace header at medium width with sidebar closed
 
 - Active discovery added real Workspace/terminal at `800x568`, medium, closed.
