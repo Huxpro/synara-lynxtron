@@ -4,6 +4,7 @@ import { Button } from '../components/ui/button.lynx';
 import { openPathInEditor } from '../data/synaraClient.lynx';
 import { resolveExplorerPdfOpenTarget } from './explorerPdf.logic';
 import { buildPdfPagePreviewUrl } from './localPreview.logic';
+import { ExplorerPdfPageImage } from './ExplorerPdfPageImage.lynx';
 
 function fileName(path: string): string {
   return path.replace(/\\/g, '/').split('/').pop() || path;
@@ -132,12 +133,10 @@ export function ExplorerPdfFallback(props: {
             </text>
           </view>
         ) : (
-          <image
-            className="ExplorerDockPdfPageImage"
-            src={pageUrl}
-            mode="aspectFit"
-            accessibility-element={true}
-            accessibility-label={`${fileName(props.path)}, page ${page} of ${pageCount}`}
+          <ExplorerPdfPageImage
+            key={pageUrl}
+            pageUrl={pageUrl}
+            accessibilityLabel={`${fileName(props.path)}, page ${page} of ${pageCount}`}
           />
         )}
       </view>

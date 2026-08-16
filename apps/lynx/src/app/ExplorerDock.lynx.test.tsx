@@ -27,6 +27,10 @@ describe('Lynx Explorer dock', () => {
       new URL('./ExplorerPdfFallback.lynx.tsx', import.meta.url),
       'utf8'
     );
+    const pdfPageSource = readFileSync(
+      new URL('./ExplorerPdfPageImage.lynx.tsx', import.meta.url),
+      'utf8'
+    );
     const webHostSource = readFileSync(
       new URL('../main/web/web-host.ts', import.meta.url),
       'utf8'
@@ -132,7 +136,10 @@ describe('Lynx Explorer dock', () => {
     expect(routerSource).toContain('explorerPdfPageCount={explorerPdfPageCount}');
     expect(routerSource).toContain('pdfPageCount={explorerPdfPageCount}');
     expect(pdfSource).toContain('buildPdfPagePreviewUrl({');
-    expect(pdfSource).toContain('className="ExplorerDockPdfPageImage"');
+    expect(pdfSource).toContain('<ExplorerPdfPageImage');
+    expect(pdfSource).toContain('key={pageUrl}');
+    expect(pdfPageSource).toContain('className="ExplorerDockPdfPageImage"');
+    expect(pdfPageSource).toContain('binderror={() => {');
     expect(source).toContain("' ExplorerDockPreview--pdf'");
     expect(source).toContain("' ExplorerDockPreview--image'");
     expect(source).toContain("' ExplorerDockPreview--markdown'");
@@ -142,7 +149,7 @@ describe('Lynx Explorer dock', () => {
     expect(pdfSource).toContain('className="ExplorerDockPdfCompactOpen"');
     expect(pdfSource).toContain('aria-label="Previous PDF page"');
     expect(pdfSource).toContain('aria-label="Next PDF page"');
-    expect(pdfSource).toContain('mode="aspectFit"');
+    expect(pdfPageSource).toContain('mode="aspectFit"');
     expect(pdfSource).not.toContain('<webview');
     expect(webHostSource).toContain(
       'relaySocketBaseUrl ??\n          relayReadyBaseUrl ??\n          configuredRelayBaseUrl()'

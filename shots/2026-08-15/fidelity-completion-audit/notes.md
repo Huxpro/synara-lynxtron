@@ -3240,3 +3240,21 @@ former dynamic-event P1 is no longer a valid blocker.
   passed.
 - Detailed evidence:
   `shots/2026-08-17/explorer-nested-directory-error-short-height/notes.md`.
+
+## 2026-08-17 Explorer PDF page load failure at 320x200
+
+- A valid two-page PDF returned metadata and rendered page 1 successfully.
+  After the owned file was deleted, a real browser pointer activated Next.
+- Before, the state changed to `2 / 2` and the page endpoint returned HTTP
+  `422`, but Lynx retained a blank `155.5x43` page image with no error.
+- `lynx-explorer-pdf-page-load-failure-blank`: P1 contribution
+  `1.00 -> 0.00`.
+- A URL-keyed `ExplorerPdfPageImage` now handles the real `binderror`, unmounts
+  the failed image, and renders the existing PDF error state.
+- After, `Could not render this PDF.` measured
+  `137.828125x26 @ (171.328125,163.5)`, ending at `y=189.5`; pending requests
+  remained zero.
+- Focused tests passed `3/3`; Lynx-for-Web and Native/Desktop production builds
+  passed.
+- Detailed evidence:
+  `shots/2026-08-17/explorer-pdf-page-load-failure-short-height/notes.md`.
