@@ -1878,3 +1878,26 @@ former dynamic-event P1 is no longer a valid blocker.
   processes, no retained screenshot, and local count `100`.
 - Detailed evidence:
   `shots/2026-08-16/plugin-header-320/notes.md`.
+
+## 2026-08-16 Workspace title hit ownership at 320px
+
+- Active discovery checked hit ownership across the visible compact Workspace
+  title, separate from the previously fixed title width.
+- Before, title center was clickable but its visible right edge hit a fixed
+  desktop titlebar icon because title `x=14..113` overlapped controls
+  `x=90..174`.
+- `lynx-workspace-320-title-hit-overlap`: P1 contribution `1.00 -> 0.00`.
+- Compact Workspace now uses a 46px title row inset to `x=180` and a separate
+  46px action row. All sampled title points hit Workspace text and real click
+  entered rename; Settings still opened a contained dialog.
+- Exact-owned Native rejected the first `display: contents` implementation:
+  actions stacked vertically from `y=-14..58`. The final explicit flex wrappers
+  restored a 46px medium header with horizontal `281x24` actions and clean
+  console.
+- Focused suites passed `5/5`, expanded suites passed `25/25`, and both builds
+  passed. Bundle SHA-256:
+  `cd08ea00106775c117e2e5b177472a160083504be96feae9cc3bd59f050c2581`.
+- Entry/exit browser cleanup passed with `sessions: []`, zero owned browser
+  processes, no retained screenshot, and local count `100`.
+- Detailed evidence:
+  `shots/2026-08-16/workspace-title-hit-320/notes.md`.

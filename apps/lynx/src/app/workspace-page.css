@@ -30,6 +30,20 @@
   font-weight: 600;
 }
 
+.WorkspacePageTitleRow {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+
+.WorkspacePageActions {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
 .WorkspacePageTitleButton .LxButton__text {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -206,4 +220,42 @@
 
 .SliceRoot--viewport-compact .WorkspacePageHeaderActionText {
   display: none;
+}
+
+.SliceRoot--viewport-compact .WorkspacePageHeader {
+  height: 92px;
+  min-height: 92px;
+  padding: 0;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+}
+
+.SliceRoot--viewport-compact .WorkspacePageTitleRow {
+  height: 46px;
+  min-height: 46px;
+  display: flex;
+  padding-left: 180px;
+  padding-right: 14px;
+  align-items: center;
+}
+
+.SliceRoot--viewport-compact .WorkspacePageTitleButton,
+.SliceRoot--viewport-compact .WorkspacePageTitleInput {
+  width: 100%;
+  max-width: none;
+}
+
+.SliceRoot--viewport-compact .WorkspacePageHeaderSpacer {
+  display: none;
+}
+
+.SliceRoot--viewport-compact .WorkspacePageActions {
+  height: 46px;
+  min-height: 46px;
+  display: flex;
+  padding: 0 14px;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
 }

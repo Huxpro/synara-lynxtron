@@ -71,6 +71,12 @@ describe('Lynx workspace surface', () => {
     expect(pageSource).toContain('aria-label="New terminal"');
     expect(pageSource).toContain('aria-label="Workspace settings"');
     expect(pageSource).toContain('aria-label="Delete workspace"');
+    expect(pageSource).toContain('className="WorkspacePageTitleRow"');
+    expect(pageSource).toContain('className="WorkspacePageActions"');
+    expect(pageStyles).not.toContain('display: contents');
+    expect(pageStyles).toMatch(
+      /\.WorkspacePageActions\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*row;/s
+    );
     expect(pageSource.match(/className="WorkspacePageHeaderAction"/g)).toHaveLength(
       3
     );
@@ -86,6 +92,15 @@ describe('Lynx workspace surface', () => {
     );
     expect(pageStyles).toMatch(
       /\.SliceRoot--viewport-compact \.WorkspacePageHeaderActionText\s*\{[^}]*display:\s*none;/s
+    );
+    expect(pageStyles).toMatch(
+      /\.SliceRoot--viewport-compact \.WorkspacePageHeader\s*\{[^}]*height:\s*92px;[^}]*flex-direction:\s*column;/s
+    );
+    expect(pageStyles).toMatch(
+      /\.SliceRoot--viewport-compact \.WorkspacePageTitleRow\s*\{[^}]*height:\s*46px;[^}]*padding-left:\s*180px;/s
+    );
+    expect(pageStyles).toMatch(
+      /\.SliceRoot--viewport-compact \.WorkspacePageActions\s*\{[^}]*height:\s*46px;[^}]*justify-content:\s*flex-end;/s
     );
   });
 

@@ -114,62 +114,66 @@ export function WorkspacePage({
   return (
     <view className="WorkspacePage">
       <view className="WorkspacePageHeader AppWindowDragRegion">
-        {renaming ? (
-          <Input
-            nativeInput
-            className="WorkspacePageTitleInput"
-            accessibility-label="Workspace name"
-            value={draftTitle}
-            onInput={setDraftTitle}
-            onConfirm={commitRename}
-            onBlur={commitRename}
-          />
-        ) : (
-          <Button
-            className="WorkspacePageTitleButton"
-            variant="ghost"
-            onClick={() => setRenaming(true)}
-          >
-            {workspace.title}
-          </Button>
-        )}
+        <view className="WorkspacePageTitleRow">
+          {renaming ? (
+            <Input
+              nativeInput
+              className="WorkspacePageTitleInput"
+              accessibility-label="Workspace name"
+              value={draftTitle}
+              onInput={setDraftTitle}
+              onConfirm={commitRename}
+              onBlur={commitRename}
+            />
+          ) : (
+            <Button
+              className="WorkspacePageTitleButton"
+              variant="ghost"
+              onClick={() => setRenaming(true)}
+            >
+              {workspace.title}
+            </Button>
+          )}
+        </view>
         <view className="WorkspacePageHeaderSpacer" />
-        <Button
-          className="WorkspacePageHeaderAction"
-          variant="outline"
-          size="xs"
-          aria-label="New terminal"
-          onClick={() => setTerminalOpen(true)}
-        >
-          <PlusIcon className="WorkspacePageHeaderActionIcon" size={12} />
-          <text className="LxButton__text WorkspacePageHeaderActionText">
-            Terminal
-          </text>
-        </Button>
-        <Button
-          className="WorkspacePageHeaderAction"
-          variant="outline"
-          size="xs"
-          aria-label="Workspace settings"
-          onClick={() => setSettingsOpen(true)}
-        >
-          <SettingsIcon className="WorkspacePageHeaderActionIcon" size={12} />
-          <text className="LxButton__text WorkspacePageHeaderActionText">
-            Settings
-          </text>
-        </Button>
-        <Button
-          className="WorkspacePageHeaderAction"
-          variant="outline"
-          size="xs"
-          aria-label="Delete workspace"
-          onClick={() => void removeWorkspace()}
-        >
-          <Trash2 className="WorkspacePageHeaderActionIcon" size={12} />
-          <text className="LxButton__text WorkspacePageHeaderActionText">
-            Delete workspace
-          </text>
-        </Button>
+        <view className="WorkspacePageActions">
+          <Button
+            className="WorkspacePageHeaderAction"
+            variant="outline"
+            size="xs"
+            aria-label="New terminal"
+            onClick={() => setTerminalOpen(true)}
+          >
+            <PlusIcon className="WorkspacePageHeaderActionIcon" size={12} />
+            <text className="LxButton__text WorkspacePageHeaderActionText">
+              Terminal
+            </text>
+          </Button>
+          <Button
+            className="WorkspacePageHeaderAction"
+            variant="outline"
+            size="xs"
+            aria-label="Workspace settings"
+            onClick={() => setSettingsOpen(true)}
+          >
+            <SettingsIcon className="WorkspacePageHeaderActionIcon" size={12} />
+            <text className="LxButton__text WorkspacePageHeaderActionText">
+              Settings
+            </text>
+          </Button>
+          <Button
+            className="WorkspacePageHeaderAction"
+            variant="outline"
+            size="xs"
+            aria-label="Delete workspace"
+            onClick={() => void removeWorkspace()}
+          >
+            <Trash2 className="WorkspacePageHeaderActionIcon" size={12} />
+            <text className="LxButton__text WorkspacePageHeaderActionText">
+              Delete workspace
+            </text>
+          </Button>
+        </view>
       </view>
       <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
         <DialogPopup className="WorkspaceSettingsDialog">
