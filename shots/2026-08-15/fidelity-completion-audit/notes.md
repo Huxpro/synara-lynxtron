@@ -1223,3 +1223,14 @@ former dynamic-event P1 is no longer a valid blocker.
 - `native-pull-requests-detail-minimum-window`: missing coverage
   `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
 - Console, canonical cleanup, and all process/browser gates passed.
+
+## 2026-08-16 Native Pull Requests minimum Close
+
+- A precise `Close pull request panel` touch unmounted detail and restored the
+  50-row `644x604` list at `900x650`.
+- `native-pull-requests-minimum-detail-close`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- An earlier class-first selector activated the external-browser button and
+  produced a real `shellOpenExternal` side effect. It is explicitly classified
+  as harness operation error, not Close evidence.
+- No unrelated browser was terminated; canonical and owned cleanup gates passed.

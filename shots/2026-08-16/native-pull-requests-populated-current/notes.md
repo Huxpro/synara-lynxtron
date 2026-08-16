@@ -251,3 +251,28 @@ host minimum, rather than inferring it from responsive CSS tests.
 
 Exact-client warning/error console stayed empty. Canonical project cleanup and
 all process/browser gates passed; screenshot count remained `100`.
+
+## Native minimum-window detail close continuation
+
+A separate exact-owned `900x650` populated run opened #698 and exercised the
+detail Close control.
+
+The precise `Close pull request panel` touch:
+
+- unmounted the detail dock;
+- restored all 50 real rows;
+- restored the list scroller to `(256,46,644x604)`;
+- retained an empty exact-client warning/error console.
+
+`native-pull-requests-minimum-detail-close`: missing coverage
+`1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+
+The first selector matched the shared close-button class before checking the
+accessible label and therefore activated `Open in external browser`. Host logs
+confirmed a real `shellOpenExternal` call for PR #698. This was a harness
+operation error with an external side effect, not product Close evidence. The
+retained Close result comes only from the later exact accessible-label control.
+No unrelated browser process was terminated during cleanup.
+
+Canonical project cleanup and all owned process/browser gates passed;
+screenshot count remained `100`.
