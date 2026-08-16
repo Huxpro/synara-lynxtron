@@ -1833,3 +1833,23 @@ former dynamic-event P1 is no longer a valid blocker.
   processes, no retained screenshot, and local count `100`.
 - Detailed evidence:
   `shots/2026-08-16/workspace-header-320/notes.md`.
+
+## 2026-08-16 Workspace header dark at 320px
+
+- Active discovery extended the repaired 320px Workspace header to dark theme
+  and a real Settings interaction.
+- Title remained complete at `73.19x15`, and all three compact actions remained
+  `28x24` with `12x12` icons and accessibility labels.
+- Every icon used explicit dark foreground `#fcfcfc`; no black/invisible SVG
+  regression occurred.
+- A real Settings touch opened a fully contained `296x329` dark dialog with
+  correct foreground/surface colors.
+- `lynx-workspace-header-dark-320`: missing coverage `1.00 -> 0.00`;
+  product-loss contribution remained `0.00 -> 0.00`.
+- The first selector overmatched text helpers and failed before interaction;
+  it was classified as harness error and replaced by an exact class-token
+  probe.
+- Entry/exit browser cleanup passed with `sessions: []`, zero owned browser
+  processes, no retained screenshot, and local count `100`.
+- Detailed evidence:
+  `shots/2026-08-16/workspace-header-dark-320/notes.md`.
