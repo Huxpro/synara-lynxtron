@@ -215,3 +215,29 @@ corrected preset-button selector completed the same owned run.
 
 Exact-client warning/error console stayed empty. Owned ports/runtime/state and
 browser processes were removed; screenshot count remained `100`.
+
+## Two-column restart continuation
+
+A fresh exact-owned run selected `Two Columns` and persisted one stable
+Workspace 1 ID with `layoutPresetId:"two-columns"`. Before restart, two Native
+panes and both real PTYs were mounted.
+
+Restarting with the same user data and equivalent
+`synara://workspace?workspaceVisible=open` state restored:
+
+- the same Workspace 1 title and persisted ID;
+- `WorkspaceTerminalGrid--two-columns`;
+- two terminal panes;
+- real `default` and `workspace-2` terminal reopen calls;
+- empty exact-client warning/error console.
+
+`native-workspace-two-column-restart`: missing coverage `1.00 -> 0.00`;
+product-loss contribution remains `0.00 -> 0.00`.
+
+An intermediate restart omitted `workspaceVisible=open`, rendered the ordinary
+landing, and had no Workspace panes. That cell used a different startup state
+and was invalidated as harness mismatch rather than scored as persistence
+failure.
+
+Owned ports/runtime/state and browser processes were removed; screenshot count
+remained `100`.

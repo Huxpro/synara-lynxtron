@@ -1112,3 +1112,15 @@ former dynamic-event P1 is no longer a valid blocker.
 - An exact-text preset selector failed before interaction because the rendered
   button includes `· 2 panes`; the corrected selector completed the run.
 - Console and all process/browser cleanup gates passed.
+
+## 2026-08-16 Native Workspace two-column restart
+
+- A persisted two-column Workspace restarted with the same user data and
+  equivalent `workspaceVisible=open` startup state.
+- The same workspace identity, two-column grid, two panes, and both terminal
+  reopen calls were restored.
+- `native-workspace-two-column-restart`: missing coverage `1.00 -> 0.00`;
+  product-loss contribution remains `0.00 -> 0.00`.
+- A restart without `workspaceVisible=open` rendered landing and was
+  invalidated as mismatched harness state, not product failure.
+- Console and all cleanup gates passed.
