@@ -2648,3 +2648,15 @@ former dynamic-event P1 is no longer a valid blocker.
   `74/797 @ y=60`; the overlay stayed in bounds with a real scroll range.
 - Focused Landing composer suite passed `3/3`; Lynx-for-Web and Native/Desktop
   production builds passed with registered warnings only.
+
+## 2026-08-17 Theme pack code-theme menu availability
+
+- The full Appearance theme-pack editor rendered at both normal and short
+  heights, including dark/light color, font, translucency, contrast, Import,
+  and Copy controls.
+- No `SharedThemePackCodeSelect` trigger was mounted in the current Lynx
+  capability state, so the code-theme `MenuPopup` could not be opened through a
+  rendered product path.
+- This is current-build missing coverage, not a product pass or loss. The
+  adapter owner remains future scope if code-theme selection becomes enabled;
+  no synthetic trigger or hidden state was forced.
