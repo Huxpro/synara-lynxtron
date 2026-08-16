@@ -54,6 +54,7 @@ describe('Automation edit payload', () => {
       name: current.name,
       prompt: current.prompt,
       stopWhen: 'Original stop condition',
+      maxIterations: null,
     };
 
     expect(automationEditIsDirty(input)).toBe(false);
@@ -71,6 +72,7 @@ describe('Automation edit payload', () => {
       name: current.name,
       prompt: current.prompt,
       stopWhen: '  Updated stop condition  ',
+      maxIterations: null,
     };
 
     expect(automationEditIsDirty(input)).toBe(true);
@@ -92,9 +94,29 @@ describe('Automation edit payload', () => {
         name: current.name,
         prompt: current.prompt,
         stopWhen: '   ',
+        maxIterations: null,
       })
     ).toMatchObject({
       completionPolicy: { type: 'none' },
+    });
+  });
+
+  it('updates Max iterations without rewriting the completion policy', () => {
+    const current = definition();
+    const input = {
+      definition: current,
+      name: current.name,
+      prompt: current.prompt,
+      stopWhen: 'Original stop condition',
+      maxIterations: 10,
+    };
+
+    expect(automationEditIsDirty(input)).toBe(true);
+    expect(buildAutomationEditInput(input)).toEqual({
+      id: current.id,
+      name: current.name,
+      prompt: current.prompt,
+      maxIterations: 10,
     });
   });
 });

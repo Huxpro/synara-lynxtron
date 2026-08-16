@@ -1385,3 +1385,32 @@ former dynamic-event P1 is no longer a valid blocker.
   project/thread and all isolated state/runtime/user directories were removed.
   Owned ports `58090`, `8891`, and `8901` were free.
 - No screenshots were retained; local count remained `100`.
+
+## 2026-08-16 Native Max iterations edit
+
+- Active discovery selected Max iterations because it supports a complete
+  Native touch/save/canonical roundtrip without keyboard injection.
+- Web authority's valid populated detail cell exposes Unlimited plus
+  10/25/50/100/250-run choices. A fresh fixture-specific Web fallback/Back
+  surface was invalidated as hydration incompleteness.
+- Precise Native Edit-subtree inspection showed no Max iterations controls.
+  `native-automations-max-iterations-edit`: P1 contribution `1.00 -> 0.00`.
+- The create-dialog choice interaction is now shared as
+  `AutomationChoiceOption`; Edit reuses it for the authority-aligned presets
+  and sends `maxIterations` only when changed.
+- Focused tests passed `3` files / `24` tests. Native/Desktop production build
+  passed.
+- React Doctor `0.9.12` scanned the six changed Lynx source/test files against
+  `405e4ddae` with zero diagnostics.
+- Real Native touches selected `10 runs`, enabled Save, saved, and unmounted
+  the dialog. Canonical list returned `maxIterations=10`, unchanged
+  `completionPolicy.stopWhen=Done`, and zero runs.
+- Exact-client console was clean. Bundle SHA-256:
+  `652f681314935d4a6c4e1a7e94c8a006dfec5546d6a638b50e0d7f86330f685c`.
+- Browser commands remained wrapped and returned to `sessions: []` with zero
+  owned processes. No screenshots were retained; local count remained `100`.
+- Canonical cleanup returned zero visible definitions/runs and removed all
+  isolated state/runtime/user directories. Owned ports `58090` and `8891` were
+  free. Port `8901` belonged to an unrelated t3code archaeology Lynxtron run
+  (PID `78196`) started after this loop; it was not terminated and is classified
+  as external port competition, not a Synara harness leak.

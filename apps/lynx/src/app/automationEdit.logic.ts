@@ -18,6 +18,7 @@ export function buildAutomationEditInput(input: {
   readonly name: string;
   readonly prompt: string;
   readonly stopWhen: string;
+  readonly maxIterations: number | null;
 }): AutomationUpdateInput {
   const name = input.name.trim();
   const prompt = input.prompt.trim();
@@ -32,6 +33,9 @@ export function buildAutomationEditInput(input: {
     stopWhen !== initialStopWhen
       ? { completionPolicy: completionPolicyFromStopWhen(stopWhen) }
       : {}),
+    ...(input.maxIterations !== input.definition.maxIterations
+      ? { maxIterations: input.maxIterations }
+      : {}),
   };
 }
 
@@ -40,10 +44,12 @@ export function automationEditIsDirty(input: {
   readonly name: string;
   readonly prompt: string;
   readonly stopWhen: string;
+  readonly maxIterations: number | null;
 }): boolean {
   return (
     input.name.trim() !== input.definition.name ||
     input.prompt.trim() !== input.definition.prompt ||
+    input.maxIterations !== input.definition.maxIterations ||
     (input.definition.mode === 'heartbeat' &&
       input.stopWhen.trim() !== automationEditStopWhen(input.definition))
   );

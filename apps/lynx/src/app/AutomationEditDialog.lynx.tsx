@@ -11,6 +11,7 @@ import {
   DialogTitle,
 } from '../components/ui/dialog.lynx';
 import { Input } from '../components/ui/input.lynx';
+import { AutomationChoiceOption } from './AutomationChoiceOption.lynx';
 import {
   automationEditIsDirty,
   automationEditStopWhen,
@@ -42,18 +43,34 @@ export function AutomationEditDialog({
   const [prompt, setPrompt] = useState(definition.prompt);
   const initialStopWhen = automationEditStopWhen(definition);
   const [stopWhen, setStopWhen] = useState(initialStopWhen);
+  const [maxIterations, setMaxIterations] = useState<number | null>(
+    definition.maxIterations
+  );
   useEffect(() => {
     if (!open) return;
     setName(definition.name);
     setPrompt(definition.prompt);
     setStopWhen(initialStopWhen);
-  }, [definition.name, definition.prompt, initialStopWhen, open]);
+    setMaxIterations(definition.maxIterations);
+  }, [
+    definition.maxIterations,
+    definition.name,
+    definition.prompt,
+    initialStopWhen,
+    open,
+  ]);
   const normalizedStopWhen = stopWhen.trim();
   const canSave =
     !pending &&
     name.trim().length > 0 &&
     prompt.trim().length > 0 &&
-    automationEditIsDirty({ definition, name, prompt, stopWhen });
+    automationEditIsDirty({
+      definition,
+      name,
+      prompt,
+      stopWhen,
+      maxIterations,
+    });
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -110,6 +127,29 @@ export function AutomationEditDialog({
               />
             </view>
           ) : null}
+          <view className="AutomationCreateField">
+            <text className="AutomationCreateLabel">Max iterations</text>
+            <view className="AutomationCreateChoices">
+              {(
+                [
+                  [null, 'Unlimited'],
+                  [10, '10 runs'],
+                  [25, '25 runs'],
+                  [50, '50 runs'],
+                  [100, '100 runs'],
+                  [250, '250 runs'],
+                ] as const
+              ).map(([value, label]) => (
+                <AutomationChoiceOption
+                  key={label}
+                  disabled={pending}
+                  label={label}
+                  selected={maxIterations === value}
+                  onSelect={() => setMaxIterations(value)}
+                />
+              ))}
+            </view>
+          </view>
           {error ? (
             <view className="AutomationCreateError" accessibility-element>
               <text className="AutomationCreateErrorText">{error}</text>
@@ -133,6 +173,7 @@ export function AutomationEditDialog({
                   name,
                   prompt,
                   stopWhen: normalizedStopWhen,
+                  maxIterations,
                 })
               )
             }

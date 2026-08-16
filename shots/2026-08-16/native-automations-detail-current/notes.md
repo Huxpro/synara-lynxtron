@@ -587,3 +587,69 @@ Exact-client warning/error console was empty.
   project/thread were deleted and all isolated state/runtime/user directories
   were removed. Owned ports `58090`, `8891`, and `8901` were free.
 - No screenshots were retained; local screenshot count remained `100`.
+
+## Max iterations edit roundtrip
+
+Active discovery moved to a policy control that can be fully certified without
+Native keyboard injection: Max iterations.
+
+Web authority had already exposed the canonical `Unlimited`, `10 runs`,
+`25 runs`, `50 runs`, `100 runs`, and `250 runs` combobox in a valid populated
+detail cell. The fresh fixture-specific Web probe reached only the fallback
+Automations/Back surface and is classified as hydration incompleteness; it is
+not counted as authority evidence or product loss.
+
+The isolated Native fixture was a Heartbeat automation with
+`maxIterations=null`, completion policy `Done`, and zero runs. A real Native
+touch opened Edit. Precise inspection of the `AutomationEditDialog` subtree
+confirmed that the dialog contained Name, Prompt, and Stop when, but no Max
+iterations label or choices. This was a P1 capability loss: Web authority could
+change the run cap while Native could only read `Unlimited` in detail.
+
+The repair extracts the existing create-dialog choice interaction into shared
+`AutomationChoiceOption`, then reuses it in both Create and Edit. Native Edit
+now:
+
+- displays the authority-aligned preset set;
+- initializes the selected value from the definition;
+- treats a changed cap as dirty state;
+- includes `maxIterations` only when changed;
+- leaves the Heartbeat completion policy untouched.
+
+Focused tests passed `3` files / `24` tests. The new payload test proves that
+selecting `10 runs` produces `maxIterations: 10` without rewriting
+`completionPolicy`.
+
+React Doctor `0.9.12` scanned the six changed Lynx source/test files against
+parent `405e4ddae` with zero errors and zero warnings.
+
+Final exact-owned production verification used bundle
+`652f681314935d4a6c4e1a7e94c8a006dfec5546d6a638b50e0d7f86330f685c`.
+Real Native touches:
+
+- opened Edit at `(748.5,23)`;
+- selected `10 runs` at `(365,415)`;
+- observed `Selected` on that choice and an enabled Save control;
+- touched Save at `(615.5,490)`;
+- observed the dialog unmount.
+
+Exact-client warning/error console was empty. Canonical `automation.list`
+returned:
+
+- `maxIterations=10`;
+- unchanged `completionPolicy.stopWhen=Done`;
+- zero runs.
+
+- `native-automations-max-iterations-edit`: P1 contribution
+  `1.00 -> 0.00`.
+- This cell is a complete Native interaction/mutation roundtrip; unlike text
+  editing, it is not blocked by the inactive keyboard harness.
+- Every browser attempt ran inside `browser:run` and returned to
+  `sessions: []` with zero agent-browser-owned processes.
+- Canonical cleanup returned zero visible definitions/runs; the fixture
+  project/thread and all isolated state/runtime/user directories were removed.
+- Owned ports `58090` and `8891` were free. Port `8901` was occupied only by
+  an unrelated `/Users/bytedance/github/t3code-archaeology-verify3` Lynxtron
+  run (PID `78196`) that started after this loop's owned runtime. It was not
+  terminated and is recorded as external port competition, not a Synara leak.
+- No screenshots were retained; local screenshot count remained `100`.
