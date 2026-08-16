@@ -2713,3 +2713,16 @@ former dynamic-event P1 is no longer a valid blocker.
   labels and five 26px options remained in bounds with no content overflow.
 - This is a short-height layout pass, contribution `0.00 -> 0.00`; no product
   code change was required.
+
+## 2026-08-17 Pull Request project filter at 320x200
+
+- A canonical current-repository project exposed the rendered PR project-filter
+  control at `320x200`, dark.
+- Popup measured `256x116 @ (36,84)`, ending exactly at `y=200`; the list was
+  `68/68` and both `All projects` plus the current populated project remained
+  visible.
+- Adding eight more canonical projects did not expand the filter because they
+  had no projected PR data. The measured two-option state is therefore the
+  valid current product state, not filtered evidence.
+- This is a short-height layout pass, contribution `0.00 -> 0.00`; a future
+  snapshot with PR data across multiple projects remains separate scope.
