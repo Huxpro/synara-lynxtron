@@ -2086,3 +2086,21 @@ former dynamic-event P1 is no longer a valid blocker.
 - Focused identity and Environment suites passed `10/10`.
 - This closes verification debt only; product-loss contribution remained
   `0.00 -> 0.00`.
+
+## 2026-08-16 Native compact-header batch preflight
+
+- An exact-owned Native batch attempted to certify the recent `320px` header
+  fixes with isolated user data and an explicit `320x568` window state.
+- Repository-local Lynxtron normalized the window to `1280x820`; both persisted
+  state and CoreGraphics confirmed the enforced minimum. DevTool root reported
+  `SliceRoot--viewport-wide`.
+- `native-compact-header-batch`: missing coverage remains `1.00`; this is a
+  host minimum/platform harness boundary, not a Native product pass or loss.
+- PID-derived client `localhost:8903` was `@synara/lynx`, session 1, exact
+  staged bundle. Wide Landing retained `984x46` header and `56x18` New Chat;
+  warning/error console was empty.
+- Owned PID/state/server were removed; `8903` disappeared. Unrelated t3code
+  `8901` and iOS Explorer `8902` remained untouched. Browser gate returned
+  `sessions: []` and zero owned processes.
+- Detailed evidence:
+  `shots/2026-08-16/native-compact-header-batch/notes.md`.
