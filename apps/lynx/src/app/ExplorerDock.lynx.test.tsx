@@ -45,8 +45,22 @@ describe('Lynx Explorer dock', () => {
     expect(clientSource).toContain("'projects.readFile'");
     expect(source).not.toContain('useQuery');
     expect(source).toContain('entriesPending: boolean');
+    expect(source).toContain('entriesTruncated: boolean');
+    expect(source).toContain('className="ExplorerDockSearchTruncated"');
+    expect(source).toContain("' ExplorerDockEntries--truncated'");
+    expect(source).toContain('Showing top matches. Refine search.');
     expect(source).toContain('onQueryChange: (query: string) => void');
     expect(routerSource).toContain('fetchExplorerEntries({');
+    expect(routerSource).toContain(
+      'resolvedActiveThreadData?.explorerEntries.value?.truncated ?? false'
+    );
+    expect(routerSource).toContain(
+      'entriesTruncated={explorerEntriesTruncated}'
+    );
+    expect(routerSource).toContain("| 'explorerEntriesTruncated'");
+    expect(routerSource).toContain(
+      'explorerEntriesPending,\n    explorerEntriesTruncated,'
+    );
     expect(routerSource).toContain('fetchExplorerFile({');
     expect(routerSource).toContain("'background only'");
     expect(routerSource).toContain(
@@ -212,6 +226,15 @@ describe('Lynx Explorer dock', () => {
     );
     expect(styles).toMatch(
       /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockEntries\s*\{[^}]*padding:\s*3px;/s
+    );
+    expect(styles).toMatch(
+      /\.ExplorerDockSearchTruncated\s*\{[^}]*height:\s*22px;[^}]*padding:\s*4px 8px;[^}]*border-top:\s*1px solid var\(--border\);/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockSearchTruncated\s*\{[^}]*height:\s*14px;[^}]*padding:\s*0 4px;[^}]*font-size:\s*9px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockEntries--truncated\s*\{[^}]*padding:\s*0;/s
     );
     expect(styles).toMatch(
       /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockEntryPath\s*\{[^}]*display:\s*none;/s

@@ -272,6 +272,7 @@ export function ExplorerDock(props: {
   readonly entries: ExplorerEntriesResult['entries'];
   readonly entriesError: boolean;
   readonly entriesPending: boolean;
+  readonly entriesTruncated: boolean;
   readonly directoryEntries: Readonly<
     Record<string, ExplorerEntriesResult['entries']>
   >;
@@ -340,7 +341,16 @@ export function ExplorerDock(props: {
               }}
             />
           </view>
-          <scroll-view className="ExplorerDockEntries" scroll-orientation="vertical">
+          <scroll-view
+            className={`ExplorerDockEntries${
+              props.query.trim() &&
+              props.entries.length > 0 &&
+              props.entriesTruncated
+                ? ' ExplorerDockEntries--truncated'
+                : ''
+            }`}
+            scroll-orientation="vertical"
+          >
             {!props.workspaceRoot ? (
               <text className="ExplorerDockState">No workspace.</text>
             ) : props.entriesPending ? (
@@ -368,6 +378,13 @@ export function ExplorerDock(props: {
               />
             )}
           </scroll-view>
+          {props.query.trim() &&
+          props.entries.length > 0 &&
+          props.entriesTruncated ? (
+            <text className="ExplorerDockSearchTruncated">
+              Showing top matches. Refine search.
+            </text>
+          ) : null}
         </view>
         <view
           className={`ExplorerDockPreview${

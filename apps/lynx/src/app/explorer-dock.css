@@ -457,6 +457,33 @@
   padding: 4px;
 }
 
+.ExplorerDockSearchTruncated {
+  flex-shrink: 0;
+  height: 22px;
+  padding: 4px 8px;
+  border-top: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-size: 10px;
+  line-height: 14px;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockSearchTruncated {
+  height: 14px;
+  padding: 0 4px;
+  font-size: 9px;
+  line-height: 14px;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockEntries--truncated {
+  padding: 0;
+}
+
 .ExplorerDockEntry {
   display: flex;
   min-height: 28px;

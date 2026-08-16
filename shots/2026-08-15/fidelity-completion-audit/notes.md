@@ -3258,3 +3258,23 @@ former dynamic-event P1 is no longer a valid blocker.
   passed.
 - Detailed evidence:
   `shots/2026-08-17/explorer-pdf-page-load-failure-short-height/notes.md`.
+
+## 2026-08-17 Explorer truncated search at 320x200
+
+- A canonical 100-file workspace returned exactly 80 `match` results with
+  `truncated:true`.
+- Before, Lynx rendered all 80 returned rows but discarded the truncation flag,
+  giving no indication that 20 matches were omitted.
+- `lynx-explorer-search-truncation-hidden`: P1 contribution
+  `1.00 -> 0.00`.
+- The flag now flows through active thread data and both Explorer
+  presentations. A shared footer asks the user to refine the search.
+- At short height, the first row is `158.5x28 @ (1,157)` and the footer is
+  `158.5x14 @ (1,186)`; both are fully visible and the footer ends at `y=200`.
+- Intermediate empty-renderer probes were classified as harness failures. One
+  revealed and fixed a missing ThreadPage prop destructure before final
+  evidence was retained.
+- Focused tests passed `2/2`; Lynx-for-Web and Native/Desktop production builds
+  passed.
+- Detailed evidence:
+  `shots/2026-08-17/explorer-truncated-search-short-height/notes.md`.

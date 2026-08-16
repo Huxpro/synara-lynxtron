@@ -389,6 +389,7 @@ interface ThreadPageProps {
   >['entries'];
   readonly explorerEntriesError: boolean;
   readonly explorerEntriesPending: boolean;
+  readonly explorerEntriesTruncated: boolean;
   readonly explorerDirectoryEntries: Readonly<
     Record<string, ExplorerEntriesResult['entries']>
   >;
@@ -446,6 +447,7 @@ function ThreadRightDocks(
     | 'explorerEntries'
     | 'explorerEntriesError'
     | 'explorerEntriesPending'
+    | 'explorerEntriesTruncated'
     | 'explorerExpandedDirectories'
     | 'explorerFile'
     | 'explorerFileError'
@@ -485,6 +487,7 @@ function ThreadRightDocks(
     explorerEntries,
     explorerEntriesError,
     explorerEntriesPending,
+    explorerEntriesTruncated,
     explorerExpandedDirectories,
     explorerFile,
     explorerFileError,
@@ -530,6 +533,7 @@ function ThreadRightDocks(
         entries={explorerEntries}
         entriesError={explorerEntriesError}
         entriesPending={explorerEntriesPending}
+        entriesTruncated={explorerEntriesTruncated}
         directoryEntries={explorerDirectoryEntries}
         directoryErrors={explorerDirectoryErrors}
         directoryPending={explorerDirectoryPending}
@@ -580,6 +584,7 @@ function ThreadPage(props: ThreadPageProps) {
     explorerEntries,
     explorerEntriesError,
     explorerEntriesPending,
+    explorerEntriesTruncated,
     explorerDirectoryEntries,
     explorerDirectoryErrors,
     explorerDirectoryPending,
@@ -1108,6 +1113,7 @@ function ThreadPage(props: ThreadPageProps) {
               entries={explorerEntries}
               entriesError={explorerEntriesError}
               entriesPending={explorerEntriesPending}
+              entriesTruncated={explorerEntriesTruncated}
               directoryEntries={explorerDirectoryEntries}
               directoryErrors={explorerDirectoryErrors}
               directoryPending={explorerDirectoryPending}
@@ -1618,6 +1624,7 @@ function ThreadPage(props: ThreadPageProps) {
         explorerEntries={explorerEntries}
         explorerEntriesError={explorerEntriesError}
         explorerEntriesPending={explorerEntriesPending}
+        explorerEntriesTruncated={explorerEntriesTruncated}
         explorerExpandedDirectories={explorerExpandedDirectories}
         explorerFile={explorerFile}
         explorerFileError={explorerFileError}
@@ -2192,6 +2199,9 @@ export function SliceRouter({
           resolvedActiveThreadData?.explorerEntries.error ?? false
         }
         explorerEntriesPending={resolvedActiveThreadPending}
+        explorerEntriesTruncated={
+          resolvedActiveThreadData?.explorerEntries.value?.truncated ?? false
+        }
         explorerDirectoryEntries={explorerDirectoryData}
         explorerDirectoryErrors={explorerDirectoryErrors}
         explorerDirectoryPending={explorerDirectoryPending}
