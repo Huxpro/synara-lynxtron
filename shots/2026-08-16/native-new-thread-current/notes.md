@@ -306,3 +306,55 @@ processes; screenshot count remained `100`.
 Direct enabled-provider/model selection is covered. Codex-specific submenu
 selection remains environment-blocked missing coverage until an exact-owned
 runtime reports Codex available; it is not inferred from the OpenCode pass.
+
+## Native pre-send permissions continuation
+
+Active discovery exercised the permission control before first send, when the
+project draft intentionally has no durable thread.
+
+Before repair, a real `Full access -> Default permissions` touch failed:
+
+- the trigger remained `Full access`;
+- the popup closed;
+- the composer showed `Unable to update permissions.`;
+- exact-client console reported
+  `thread.runtime-mode.set` invariant failure because the generated landing
+  thread did not exist;
+- canonical projection correctly remained at zero durable threads.
+
+`native-new-thread-presend-runtime-command`: P1 contribution
+`1.00 -> 0.00`.
+
+The root cause was asymmetric pre-send handling. Landing already supplied
+`onSetInteractionMode` so Plan mode stayed local until first send, but runtime
+mode always dispatched a thread-scoped command.
+
+`Composer` now accepts an optional `onSetRuntimeMode` callback before falling
+back to the canonical command used by durable threads. `LandingComposer` owns
+the pre-send runtime state and passes it to both the visible control and
+`ensureThread`, so first send will create the thread with the selected
+permission mode.
+
+The final staged bundle passed a fresh exact-owned run:
+
+- real `Full access -> Default permissions` touch changed the trigger;
+- no visible send error appeared;
+- exact-client warning/error console stayed empty;
+- heading/project/model context remained unchanged;
+- canonical projection stayed at zero durable threads.
+
+Focused tests passed `3` files / `17` tests. Native/Desktop production build
+passed with only the registered CSS and optional WebSocket addon warnings.
+Output/staged SHA-256 was identical at
+`1dd5867a053596c75e6343cf81d170a7108977eab427bd07504bc1962688af7c`.
+
+A real Plan mode touch was issued from the extras menu and produced no product
+error, but a later attempt to reopen the menu did not find the switch. That
+reopen is retained as harness interaction mismatch; Plan checked-state
+roundtrip remains missing coverage and is not inferred from the permission
+pass.
+
+Canonical cleanup removed the explicit project and landing-created Home
+container, returning to 0 live projects / 0 live threads. Owned ports/runtime/
+state were removed; final browser state was `sessions: []` with zero owned
+processes; screenshot count remained `100`.

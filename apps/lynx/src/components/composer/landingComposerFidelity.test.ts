@@ -201,7 +201,16 @@ describe('landing composer fidelity contract', () => {
     expect(landingSource).toContain(
       'onSetInteractionMode={setInteractionMode}'
     );
+    expect(landingSource).toContain('onSetRuntimeMode={setRuntimeMode}');
     expect(landingSource).toContain('interactionMode={interactionMode}');
+    expect(landingSource).toContain('runtimeMode={runtimeMode}');
+    expect(composerSource).toContain('if (onSetRuntimeMode) {');
+    expect(composerSource).toContain(
+      'await onSetRuntimeMode(nextRuntimeMode);'
+    );
+    expect(composerSource).toContain(
+      'buildComposerRuntimeModeSetCommand({'
+    );
     expect(landingStyles).not.toMatch(/\.LandingComposer\s*\{[^}]*margin-top:/s);
     expect(frameStyles).toMatch(
       /\.ComposerColumnFrameSurfaceLynx[^}]*width:\s*calc\(100% - 24px\);[^}]*max-width:\s*736px;/s

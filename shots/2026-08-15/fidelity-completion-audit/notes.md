@@ -1008,3 +1008,25 @@ former dynamic-event P1 is no longer a valid blocker.
 - Exact-client console was empty, output/staged hashes matched, all owned
   runtime/state was removed, final browser state was clean, and screenshot
   count remained `100`.
+
+## 2026-08-16 Native New Thread pre-send permissions continuation
+
+- A real `Full access -> Default permissions` touch exposed a P1: the landing
+  draft dispatched `thread.runtime-mode.set` for a thread that does not exist
+  until first send.
+- The trigger stayed Full access, a visible permissions error appeared, and
+  exact-client console retained the orchestration invariant failure.
+- `native-new-thread-presend-runtime-command`: P1 contribution
+  `1.00 -> 0.00`.
+- `Composer` now accepts a local runtime-mode callback before its durable-thread
+  command fallback. Landing owns that pre-send state and supplies it to
+  `ensureThread`.
+- Final exact-owned touch changed the trigger to Default permissions with no
+  visible or console error and zero durable threads.
+- Focused tests passed `3` files / `17` tests; Native/Desktop build passed;
+  output/staged hashes matched.
+- Plan mode received a real touch, but a later menu-reopen probe could not
+  recover its switch. This remains harness mismatch plus missing checked-state
+  coverage, not a claimed Plan roundtrip.
+- Canonical cleanup returned to 0 projects / 0 threads; all owned runtime and
+  browser processes were removed; screenshot count stayed `100`.

@@ -202,6 +202,9 @@ export function LandingComposer(props: {
   const [interactionMode, setInteractionMode] = useState<
     'default' | 'plan'
   >('default');
+  const [runtimeMode, setRuntimeMode] = useState<
+    'full-access' | 'approval-required'
+  >('full-access');
   const [projectPickerOpen, setProjectPickerOpen] = useState(false);
   const [projectQuery, setProjectQuery] = useState('');
   const [projectPickerBusy, setProjectPickerBusy] = useState(false);
@@ -471,7 +474,7 @@ export function LandingComposer(props: {
         draftId="lynx-landing-draft"
         threadId={threadIdRef.current}
         modelSelection={modelSelection}
-        runtimeMode="full-access"
+        runtimeMode={runtimeMode}
         interactionMode={interactionMode}
         sessionStatus={null}
         activeTurnId={null}
@@ -481,6 +484,7 @@ export function LandingComposer(props: {
         emptyLanding={true}
         onBeforeSend={ensureThread}
         onSetInteractionMode={setInteractionMode}
+        onSetRuntimeMode={setRuntimeMode}
         onSendSucceeded={() => {
           'background only';
           props.onThreadCreated(threadIdRef.current);

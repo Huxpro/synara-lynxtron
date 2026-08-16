@@ -334,6 +334,9 @@ interface ComposerProps {
   readonly onSetInteractionMode?: (
     interactionMode: 'default' | 'plan'
   ) => void | Promise<void>;
+  readonly onSetRuntimeMode?: (
+    runtimeMode: 'full-access' | 'approval-required'
+  ) => void | Promise<void>;
   readonly onSendSucceeded?: () => void | Promise<void>;
 }
 
@@ -357,6 +360,7 @@ export function Composer({
   onBeforeSend,
   onProviderStatusesChange,
   onSetInteractionMode,
+  onSetRuntimeMode,
   onSendSucceeded,
 }: ComposerProps) {
   const initData = useInitData() as {
@@ -1468,6 +1472,10 @@ export function Composer({
     'background only';
     setSendError(null);
     try {
+      if (onSetRuntimeMode) {
+        await onSetRuntimeMode(nextRuntimeMode);
+        return;
+      }
       await dispatchSynaraCommand(
         buildComposerRuntimeModeSetCommand({
           commandId: createComposerDispatchId('command'),
