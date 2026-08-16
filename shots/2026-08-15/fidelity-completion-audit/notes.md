@@ -2297,3 +2297,14 @@ former dynamic-event P1 is no longer a valid blocker.
   `3430636cc7403b7bb43d00ac8fa6915b65566673b10af8deb48747f516a43f6a`.
 - Detailed evidence:
   `shots/2026-08-16/thread-empty-short-height/notes.md`.
+
+## 2026-08-16 Spacious empty Thread at 320x200
+
+- The short-height Thread fix was reverified at maximum UI density selected
+  through the rendered Settings control.
+- Root projected `SliceRoot--density-spacious`.
+- Hero/context/banner remained hidden; the uncompressed spacious composer was
+  `296x104.72 @ (12,93.64)` and ended at `y=198.36`, fully inside the 200px
+  viewport.
+- This is a density/short-height boundary pass, contribution
+  `0.00 -> 0.00`; no additional code change was required.
