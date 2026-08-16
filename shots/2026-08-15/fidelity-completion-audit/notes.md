@@ -1758,3 +1758,28 @@ former dynamic-event P1 is no longer a valid blocker.
   remained `100`.
 - Detailed evidence:
   `shots/2026-08-16/system-dark-settings-owner/notes.md`.
+
+## 2026-08-16 Live system appearance
+
+- Active discovery changed host appearance dark -> light -> dark inside one
+  long-lived compact Appearance session.
+- Web authority followed each change. Lynx before remained dark after the host
+  media query became light.
+- `lynx-live-system-appearance-drift`: P1 contribution `1.00 -> 0.00`.
+- The Web host now publishes a shared `synara:system-appearance` global event
+  and removes its media listener on pagehide. App accepts boolean payloads and
+  updates the same `systemDark` state used by root tokens and Settings.
+- After the fix, root/page/current-slot changed
+  `dark -> light -> dark` without reload. Relay connection attempts remained
+  `1`, socket stayed open, and page errors were empty.
+- Native behavior remains the documented light fallback because no reliable
+  native appearance event exists.
+- Focused suites passed `24/24`; Web and Native/Desktop production builds
+  passed. Native bundle SHA-256:
+  `3ba6c39573b90e9cd9a4a1c60ff3f6cb55e283e7a7b2f9dd13b1f1cd05fb07a5`.
+- Entry and exit browser cleanup passed with `sessions: []`, zero owned
+  browser processes, no retained screenshot, and local count `100`.
+- A transient unrelated `8902` listener appeared after owned cleanup and exited
+  independently; it was not terminated or classified as a Synara leak.
+- Detailed evidence:
+  `shots/2026-08-16/live-system-appearance/notes.md`.

@@ -11,6 +11,7 @@ import {
 import { resolveWebInitialRoute } from './webInitialRoute.logic';
 import { resolveWebRelayEndpoint } from './webRelayEndpoint.logic';
 import { NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG } from '../syntaxHighlightingContract.logic';
+import { SYSTEM_APPEARANCE_EVENT } from '../systemAppearanceEvent.logic';
 
 const bundleUrl = './main.web.bundle';
 const nodejsAdapterUrl = './nodejs-adapter-web.js';
@@ -906,9 +907,10 @@ const initialComposerModelProvider =
   new URLSearchParams(globalThis.location.search).get(
     COMPOSER_MODEL_PROVIDER_QUERY
   );
-const initialSystemDark = globalThis.matchMedia(
+const systemAppearanceQuery = globalThis.matchMedia(
   '(prefers-color-scheme: dark)'
-).matches;
+);
+const initialSystemDark = systemAppearanceQuery.matches;
 webDocument.body.innerHTML = `
 <lynx-view
   id="root-view"
@@ -1112,10 +1114,15 @@ const publishViewportSize = () => {
     globalThis.innerHeight,
   ]);
 };
+const publishSystemAppearance = (event: MediaQueryListEvent) => {
+  lynxView.sendGlobalEvent?.(SYSTEM_APPEARANCE_EVENT, [event.matches]);
+};
 globalThis.addEventListener('resize', publishViewportSize);
+systemAppearanceQuery.addEventListener('change', publishSystemAppearance);
 
 globalThis.addEventListener('pagehide', () => {
   globalThis.removeEventListener('resize', publishViewportSize);
+  systemAppearanceQuery.removeEventListener('change', publishSystemAppearance);
   interactionBridgeController.abort();
   safeClose(relaySocket);
   rejectPendingRequests(new Error('Synara relay page closed'));

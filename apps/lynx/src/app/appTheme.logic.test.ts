@@ -108,6 +108,7 @@ describe('slice root theme projection', () => {
   });
 
   it('keeps Settings on the root-resolved system appearance', () => {
+    const appSource = readFileSync(new URL('./App.tsx', import.meta.url), 'utf8');
     const settingsSource = readFileSync(
       new URL('./SettingsPage.tsx', import.meta.url),
       'utf8'
@@ -124,5 +125,10 @@ describe('slice root theme projection', () => {
       'resolveSliceThemeVariant(themeState)'
     );
     expect(routerSource).toContain('resolvedTheme={resolvedTheme}');
+    expect(appSource).toContain(
+      'return onGlobalEvent(SYSTEM_APPEARANCE_EVENT, (value: unknown) =>'
+    );
+    expect(appSource).toContain('const next = readSystemDarkEvent(value);');
+    expect(appSource).toContain('if (next !== null) setSystemDark(next);');
   });
 });

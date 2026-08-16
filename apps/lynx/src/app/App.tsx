@@ -32,6 +32,11 @@ import {
   viewportLayoutClassName,
 } from '@synara-web/responsiveLayout.logic';
 import { useViewportLayout } from '~/hooks/useViewportLayout';
+import {
+  readSystemDarkEvent,
+  SYSTEM_APPEARANCE_EVENT,
+} from '../main/systemAppearanceEvent.logic';
+import { onGlobalEvent } from '../platform/bridge';
 
 import { sliceUiDensityClassName } from './appDensity.logic';
 import { readPersistedAppearanceFallback } from './appHydration.logic';
@@ -118,7 +123,9 @@ export function App() {
     readonly initialExplorerWidth?: unknown;
     readonly initialRoute?: unknown;
   };
-  const systemDark = initData.initialSystemDark === true;
+  const [systemDark, setSystemDark] = useState(
+    initData.initialSystemDark === true
+  );
   const initialEnvironmentOpen = initData.initialEnvironmentOpen === true;
   const initialEditorOpen = initData.initialEditorOpen === true;
   const initialEditorCenterMode =
@@ -357,6 +364,13 @@ export function App() {
     'background only';
     setLynxThemeState(themeState, systemDark);
   }, [systemDark, themeState]);
+  useEffect(() => {
+    'background only';
+    return onGlobalEvent(SYSTEM_APPEARANCE_EVENT, (value: unknown) => {
+      const next = readSystemDarkEvent(value);
+      if (next !== null) setSystemDark(next);
+    });
+  }, []);
   useEffect(() => {
     'background only';
     return subscribeLynxThemeState(setThemeState);

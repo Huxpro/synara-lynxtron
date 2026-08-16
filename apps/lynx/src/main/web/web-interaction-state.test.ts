@@ -472,7 +472,16 @@ describe('Lynx-for-Web interaction state bridge', () => {
     );
     expect(source).toContain('initialComposerModelProvider,');
     expect(source).toContain(
-      "globalThis.matchMedia(\n  '(prefers-color-scheme: dark)'\n).matches"
+      "globalThis.matchMedia(\n  '(prefers-color-scheme: dark)'\n)"
+    );
+    expect(source).toContain(
+      "systemAppearanceQuery.addEventListener('change', publishSystemAppearance)"
+    );
+    expect(source).toContain(
+      'lynxView.sendGlobalEvent?.(SYSTEM_APPEARANCE_EVENT, [event.matches])'
+    );
+    expect(source).toContain(
+      "systemAppearanceQuery.removeEventListener('change', publishSystemAppearance)"
     );
     expect(source).toContain('initialSystemDark,');
     expect(source).toContain('initialComposerModelMenuOpen,');
