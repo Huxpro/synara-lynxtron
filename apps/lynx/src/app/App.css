@@ -1414,6 +1414,15 @@
   gap: 9px;
 }
 
+.SliceRoot--viewport-compact .UpdateActions {
+  width: 100%;
+  flex-direction: column;
+}
+
+.SliceRoot--viewport-compact .UpdateActions .LxButton {
+  width: 100%;
+}
+
 .TranscriptShell {
   position: relative;
   display: flex;

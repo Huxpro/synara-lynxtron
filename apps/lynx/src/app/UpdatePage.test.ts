@@ -41,4 +41,18 @@ describe('runUpdateCheckState', () => {
     expect(source).toContain('Could not open download page · {downloadError}');
     expect(source).toContain('Could not check releases · {state.message}');
   });
+
+  it('stacks full-width actions in compact viewports', () => {
+    const styles = readFileSync(new URL('./App.css', import.meta.url), 'utf8');
+
+    expect(styles).toMatch(
+      /\.UpdateActions\s*\{[^}]*flex-direction:\s*row;[^}]*gap:\s*9px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.UpdateActions\s*\{[^}]*width:\s*100%;[^}]*flex-direction:\s*column;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.UpdateActions \.LxButton\s*\{[^}]*width:\s*100%;/s
+    );
+  });
 });

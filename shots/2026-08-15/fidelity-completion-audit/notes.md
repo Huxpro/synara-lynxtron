@@ -1901,3 +1901,22 @@ former dynamic-event P1 is no longer a valid blocker.
   processes, no retained screenshot, and local count `100`.
 - Detailed evidence:
   `shots/2026-08-16/workspace-title-hit-320/notes.md`.
+
+## 2026-08-16 Update actions at 320px
+
+- Active discovery added a Native-only Update compact layout preflight at
+  `320x568` plus exact-owned Native minimum regression.
+- Before, two actions shared a `178px` row and compressed to `80/89px` wide,
+  each growing to `61px` high with multiline labels.
+- `lynx-update-320-action-compression`: P1 contribution `1.00 -> 0.00`.
+- Compact actions now stack full-width; both measured `178x32`, while the card
+  remained contained.
+- Exact-owned Native `900x650` preserved the ordinary `290x32` horizontal row
+  and real retry issued a second `bridge.updaterCheck`; console stayed empty.
+- `/update` remains an intentional Web-platform delta. Lynx-for-Web supplied
+  layout evidence only; Native supplied host/update behavior.
+- Focused suite passed `4/4`; Web and Native/Desktop builds passed. Bundle:
+  `ca86d22a1236c459352d723eac73ba99ef4bfe204707de56c5bdb25cb530c50d`.
+- Entry/exit cleanup passed with `sessions: []`, zero browser-owned processes,
+  no retained screenshot, and local count `100`.
+- Detailed evidence: `shots/2026-08-16/update-actions-320/notes.md`.
