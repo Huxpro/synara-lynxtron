@@ -13,6 +13,12 @@ import { resolveWebRelayEndpoint } from './webRelayEndpoint.logic';
 import { NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG } from '../syntaxHighlightingContract.logic';
 import { REDUCED_MOTION_EVENT } from '../reducedMotionEvent.logic';
 import { SYSTEM_APPEARANCE_EVENT } from '../systemAppearanceEvent.logic';
+import {
+  describeWebRpcDefect,
+  parseWebRpcResponse,
+  type WebRpcChunkFrame,
+  type WebRpcExitFrame,
+} from './webRpcFrame.logic';
 
 const bundleUrl = './main.web.bundle';
 const nodejsAdapterUrl = './nodejs-adapter-web.js';
@@ -52,20 +58,6 @@ const PROTOCOL = {
   maxRevision: 1,
   capabilities: ['orchestration.cursor-safe-streams', 'rpc.typed-errors'],
 } as const;
-
-interface RpcExit {
-  readonly _tag: 'Exit';
-  readonly requestId: string;
-  readonly exit:
-    | { readonly _tag: 'Success'; readonly value: unknown }
-    | { readonly _tag: 'Failure'; readonly cause?: unknown };
-}
-
-interface RpcChunk {
-  readonly _tag: 'Chunk';
-  readonly requestId: string;
-  readonly values: readonly unknown[];
-}
 
 interface PendingRelayRequest {
   readonly tag: string;
@@ -252,15 +244,6 @@ function connectWithPath(baseUrl: string, path: string): Promise<WebSocket> {
   });
 }
 
-function parseResponse(data: unknown): RpcExit | RpcChunk | null {
-  try {
-    const parsed = JSON.parse(String(data)) as RpcExit | RpcChunk;
-    return parsed?._tag === 'Exit' || parsed?._tag === 'Chunk' ? parsed : null;
-  } catch {
-    return null;
-  }
-}
-
 async function negotiate(baseUrl: string): Promise<{
   readonly protocolEpoch: number;
   readonly negotiatedRevision: number;
@@ -274,7 +257,7 @@ async function negotiate(baseUrl: string): Promise<{
         reject(new Error('Synara bootstrap negotiation timed out'));
       }, SOCKET_OPEN_TIMEOUT_MS);
       socket.onmessage = (event) => {
-        const message = parseResponse(event.data);
+        const message = parseWebRpcResponse(event.data);
         if (!message || message._tag !== 'Exit' || message.requestId !== id) return;
         clearTimeout(timer);
         if (message.exit._tag === 'Success') {
@@ -342,6 +325,11 @@ function invalidateRelaySocket(socket: WebSocket, baseUrl: string, error: Error)
   startRelayRecovery(baseUrl);
 }
 
+function rejectPendingRpcDefect(error: SynaraRpcResponseError): void {
+  relayLastRpcError = error.message;
+  rejectPendingRequests(error);
+}
+
 async function openFeatureSocket(baseUrl: string): Promise<WebSocket> {
   const compatibility = await negotiate(baseUrl);
   const query = new URLSearchParams({
@@ -352,12 +340,20 @@ async function openFeatureSocket(baseUrl: string): Promise<WebSocket> {
   });
   const socket = await connectWithPath(baseUrl, `/ws?${query}`);
   socket.onmessage = (event) => {
-    const message = parseResponse(event.data);
+    const message = parseWebRpcResponse(event.data);
     if (!message) return;
+    if (message._tag === 'Defect') {
+      rejectPendingRpcDefect(
+        new SynaraRpcResponseError(
+          `Synara RPC defect: ${describeWebRpcDefect(message)}`
+        )
+      );
+      return;
+    }
     const pending = relayPending.get(message.requestId);
     if (!pending) return;
     if (message._tag === 'Chunk') {
-      pending.chunks?.push(...message.values);
+      pending.chunks?.push(...(message as WebRpcChunkFrame).values);
       for (const value of message.values) publishRelayGitActionProgress?.(value);
       try {
         socket.send(
@@ -379,14 +375,15 @@ async function openFeatureSocket(baseUrl: string): Promise<WebSocket> {
     }
     relayPending.delete(message.requestId);
     if (pending.timer !== null) clearTimeout(pending.timer);
-    if (message.exit._tag === 'Success') {
+    const exitMessage = message as WebRpcExitFrame;
+    if (exitMessage.exit._tag === 'Success') {
       relayLastRpcError = null;
-      pending.resolve(pending.chunks ?? message.exit.value);
+      pending.resolve(pending.chunks ?? exitMessage.exit.value);
       return;
     }
     const error = new SynaraRpcResponseError(
       `Synara RPC ${pending.tag} failed: ${JSON.stringify(
-        message.exit.cause
+        exitMessage.exit.cause
       )}`
     );
     relayLastRpcError = error.message;

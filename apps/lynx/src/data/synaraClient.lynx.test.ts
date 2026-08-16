@@ -49,6 +49,31 @@ describe('Lynx Synara relay state', () => {
     expect(relayRequest).toContain("setRelayState('connected')");
   });
 
+  it('settles connection-level RPC defects without taking the socket offline', () => {
+    const hostSource = readFileSync(
+      new URL('../main/web/web-host.ts', import.meta.url),
+      'utf8'
+    );
+    const featureSocketSource = hostSource.slice(
+      hostSource.indexOf('async function openFeatureSocket')
+    );
+    const messageHandler = featureSocketSource.slice(
+      featureSocketSource.indexOf('socket.onmessage = (event) => {'),
+      featureSocketSource.indexOf('socket.onerror = () => {')
+    );
+    const defectBranch = messageHandler.slice(
+      messageHandler.indexOf("if (message._tag === 'Defect')"),
+      messageHandler.indexOf('const pending = relayPending.get(message.requestId)')
+    );
+
+    expect(messageHandler).toContain("message._tag === 'Defect'");
+    expect(messageHandler).toContain('rejectPendingRpcDefect(');
+    expect(messageHandler.indexOf("message._tag === 'Defect'")).toBeLessThan(
+      messageHandler.indexOf('relayPending.get(message.requestId)')
+    );
+    expect(defectBranch).not.toContain('invalidateRelaySocket');
+  });
+
   it('keeps streamed RPC backpressure and completion explicit on Web', () => {
     const hostSource = readFileSync(
       new URL('../main/web/web-host.ts', import.meta.url),

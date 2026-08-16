@@ -3180,3 +3180,29 @@ former dynamic-event P1 is no longer a valid blocker.
   builds passed.
 - Detailed evidence:
   `shots/2026-08-17/explorer-corrupt-image-short-height/notes.md`.
+
+## 2026-08-17 Explorer corrupt PDF at 320x200
+
+- Active discovery selected a real malformed PDF whose canonical metadata RPC
+  failed with `InvalidPDFException: Invalid PDF structure.`.
+- The same thread without a selected PDF hydrated normally. With the corrupt
+  PDF path, Lynx-for-Web remained on `Preparing Synara…` for more than
+  20 seconds and never published Explorer or local error UI.
+- Raw wire evidence showed an Effect RPC `Defect` frame without a request id.
+  The Web relay parsed only `Exit`/`Chunk`, dropped the defect, and left
+  `projects.inspectPdf` pending forever.
+- `lynx-web-rpc-defect-bootstrap-deadlock`: P0 contribution
+  `1.00 -> 0.00`.
+- The relay now recognizes connection-level defects, clears and rejects all
+  pending RPCs as business failures, preserves the healthy socket, and lets
+  existing local error boundaries settle.
+- After, the compact Explorer rendered `Could not render this PDF.` in a
+  `137.828125x26` error container ending at `y=190.5`; a later canonical
+  snapshot RPC succeeded on the same connection.
+- A nine-second stability run held `pendingRequests=0` and a stable
+  `projects.inspectPdf` count, rejecting the initial transient pending sample
+  as a leak.
+- Focused tests passed `8/8`; Lynx-for-Web and Native/Desktop production builds
+  passed.
+- Detailed evidence:
+  `shots/2026-08-17/explorer-corrupt-pdf-short-height/notes.md`.
