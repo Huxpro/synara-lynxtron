@@ -18,6 +18,12 @@ up, record the harness failure, and do not retain evidence, commit, push, or
 start the next loop until both final values are zero. Never terminate unrelated
 Chrome or remote-debugging processes.
 
+Use `scripts/cleanup-agent-browser.sh` as the process-ownership authority. Its
+matching is limited to the agent-browser daemon and Chrome/Chromium processes
+whose profile belongs to agent-browser. Do not use a broad `pgrep
+agent-browser` check: it can match the probe command itself, create a false
+leak report, and encourage terminating unrelated browser processes.
+
 ## Run identity
 
 - Task:

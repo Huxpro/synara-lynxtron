@@ -2840,3 +2840,31 @@ former dynamic-event P1 is no longer a valid blocker.
 - This is a deterministic one-item short-height layout pass, contribution
   `0.00 -> 0.00`; no product code change was required and no history item was
   activated.
+
+## 2026-08-17 Editor new-rail-item dialog at 320x200
+
+- Canonical `project.create` and `thread.create` commands established
+  `project-fidelity-editor-new` and `thread-fidelity-editor-new`; the read
+  model advanced from sequence `0` to `2` without direct SQLite writes.
+- The explicit Web harness identity `editor=open&editorNew=open` mounted the
+  real `New editor rail item` overlay on a direct cold `320x200` entry, dark.
+- Dialog measured `240x123 @ (40,38.5)` with `clientHeight=121` and
+  `scrollHeight=121`. `New chat` occupied `y=76.5..110.5`; `New terminal`
+  occupied `y=114.5..148.5`. The complete dialog ended at `y=161.5`.
+- A separate `320x568 -> 320x200` hydration probe produced identical geometry,
+  so the direct short entry does not depend on a taller initial viewport.
+- This is a deterministic short-height layout pass, contribution
+  `0.00 -> 0.00`; no product code change was required and neither creation
+  action was activated.
+- Rejected harness probes were kept separate: Web authority was sampled before
+  usable hydration, a static server entry was addressed as `/lynx/index.html`
+  instead of `/index.html`, and a standalone `8904` origin was not trusted by
+  the isolated server. None was scored as product evidence. The accepted cell
+  used Vite's existing `/lynx` development surface on trusted origin `8891`.
+- The accepted relay had one connection attempt, zero pending requests, and no
+  transport error. The environment-only `provider.listModels` error
+  (`codex not found in PATH`) remains accepted noise and did not affect the
+  mounted dialog or its geometry.
+- Every failed or successful browser workflow ran through
+  `bun run browser:run -- ...`. Each failure was followed by an independent
+  `browser:cleanup` plus `session list` gate before continuing.
