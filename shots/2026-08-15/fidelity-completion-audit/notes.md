@@ -2156,6 +2156,19 @@ former dynamic-event P1 is no longer a valid blocker.
 - Detailed evidence:
   `shots/2026-08-16/plugin-header-medium-closed/notes.md`.
 
+## 2026-08-16 Plugin light open-close-open transition
+
+- A fresh `800x568`, light Plugin cell exercised open -> closed -> open in one
+  renderer session after the medium header fix.
+- Root remained `SliceRoot--theme-light` with white background throughout.
+- Header geometry restored exactly `592x46 @ x=208` ->
+  `800x92 @ x=0` -> `592x46 @ x=208`.
+- Skills restored `x=305.38` -> `x=261.38` -> `x=305.38`.
+- This is a product/theme/responsive-state pass, contribution
+  `0.00 -> 0.00`; no code change was required.
+- DOM clicks established sidebar states because raw pointer publication remains
+  a route-specific harness gap; no toggle interaction pass is claimed.
+
 ## 2026-08-16 Workspace header at medium width with sidebar closed
 
 - Active discovery added real Workspace/terminal at `800x568`, medium, closed.
