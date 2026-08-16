@@ -152,7 +152,9 @@ function ProviderStatusRow(props: {
             size={12}
             color="var(--foreground)"
           />
-          {props.updating ? 'Updating…' : 'Update'}
+          <text className="LxButton__text">
+            {props.updating ? 'Updating…' : 'Update'}
+          </text>
         </Button>
       ) : (
         <text className="SettingsProviderToolsManual">Manual update</text>
@@ -326,7 +328,9 @@ function ProviderToolRow(props: {
               size={12}
               color="var(--foreground)"
             />
-            {props.updating ? 'Updating…' : 'Update'}
+            <text className="LxButton__text">
+              {props.updating ? 'Updating…' : 'Update'}
+            </text>
           </Button>
         ) : null}
       </view>

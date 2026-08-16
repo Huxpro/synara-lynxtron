@@ -1698,3 +1698,38 @@ former dynamic-event P1 is no longer a valid blocker.
   runtime, and user-data directories were removed. Owned ports were free; the
   unrelated t3code client remained outside the run.
 - No screenshots were retained; local count remained `100`.
+
+## 2026-08-16 Compact dark Provider Update labels
+
+- Active discovery added `390x844` / dark / Providers with real update rows,
+  OpenCode expanded, WebSocket `Off -> On -> Off`, and collapse/reopen.
+- Existing wide light/dark and OpenCode anatomy cells were treated as prior
+  coverage, not counted again.
+- Web authority rendered icon-and-label Update actions at `73.05x28`.
+- Lynx before rendered `28x24` icon-only actions; the `Update` raw text had a
+  `0x0` box.
+- `lynx-provider-update-visible-label`: P1 contribution `1.00 -> 0.00`.
+- Both Provider Update owners now render an explicit
+  `TEXT.LxButton__text`; compact Lynx after measured `69.84x24` with a visible
+  `35.84x15` text node.
+- The real OpenCode switch roundtrip persisted `true`, restored `false`, and
+  remained Off after disclosure collapse/reopen. SQLite stayed byte-identical.
+- Exact-owned minimum Native used PID `48616`, PID-derived
+  `localhost:8902/session 1`, dark `900x650`, and the exact staged production
+  bundle. Each Update action measured `70x24`, with real `36x15` Update text;
+  warning/error console was empty.
+- The initial Vite SPA fallback was rejected as capture-identity harness loss.
+  Fractional-coordinate browser scripts that failed before pointer dispatch
+  were rejected as harness errors and produced no product mutation.
+- The published `0.0.9` host rendered but had no owned DevTool listener; it was
+  not counted as Native evidence. The temporary `0.0.9-dev` diagnostic host
+  supplied the exact-owned certification client.
+- Focused Provider/Settings suites passed `15/15`; Native/Desktop production
+  build passed. Bundle SHA-256:
+  `8b7a3c52b5775b4f11e9a460a99f078d6bc3f1d4dd8f6252d8e4fbec5bb95662`.
+- Entry cleanup passed. Exit returned `sessions: []`, zero agent-browser-owned
+  processes, owned ports `58090/8891/8902` free, and no retained browser
+  screenshot. Local screenshot count remained `100`.
+- Unrelated t3code PID `18721` on `8901` was not touched.
+- Detailed evidence:
+  `shots/2026-08-16/provider-update-label-compact/notes.md`.
