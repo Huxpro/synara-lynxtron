@@ -1989,3 +1989,19 @@ former dynamic-event P1 is no longer a valid blocker.
   and local count remained `100`.
 - Detailed evidence:
   `shots/2026-08-16/automation-not-found-header-320/notes.md`.
+
+## 2026-08-16 Editor header titlebar ownership at 320px
+
+- A global drag-header audit selected the full-window Editor as the remaining
+  high-risk compact header not already covered by titlebar inset rules.
+- Editor intentionally owns the first row at `z-index:90`, above global closed
+  controls at `z-index:80`.
+- Project samples across `x=22..160` all hit project text; Switch project,
+  Hide chat, and Chat centers hit their own rendered content and remained
+  within `x<=308`.
+- `lynx-editor-header-320-titlebar-ownership`: product pass, contribution
+  `0.00 -> 0.00`; no product change was made.
+- Canonical project/thread setup used RPC only; every browser command used the
+  guarded wrapper; screenshot count remained `100`.
+- Detailed evidence:
+  `shots/2026-08-16/editor-header-titlebar-320/notes.md`.
