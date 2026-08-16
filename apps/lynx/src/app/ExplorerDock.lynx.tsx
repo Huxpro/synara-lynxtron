@@ -31,6 +31,7 @@ import type { ExplorerEntriesResult } from './queries';
 import type { NativeSyntaxHighlightThemes } from '../main/syntaxHighlightingContract.logic';
 import { ResizableRightPanel } from './ResizableRightPanel.lynx';
 import { ExplorerPdfFallback } from './ExplorerPdfFallback.lynx';
+import { ExplorerImagePreview } from './ExplorerImagePreview.lynx';
 import {
   applyExplorerChatAction,
   applyExplorerFileComment,
@@ -414,17 +415,11 @@ export function ExplorerDock(props: {
                   Could not load this image.
                 </text>
               ) : props.localPreviewUrl ? (
-                <view className="ExplorerDockImageFrame">
-                  <image
-                    className="ExplorerDockImage"
-                    src={props.localPreviewUrl}
-                    mode="aspectFit"
-                    accessibility-element={false}
-                  />
-                  <text className="ExplorerDockImageName">
-                    {fileName(props.selectedPath)}
-                  </text>
-                </view>
+                <ExplorerImagePreview
+                  key={props.localPreviewUrl}
+                  path={props.selectedPath}
+                  previewUrl={props.localPreviewUrl}
+                />
               ) : null
             ) : props.filePending ? (
               <text className="ExplorerDockState">Loading file…</text>

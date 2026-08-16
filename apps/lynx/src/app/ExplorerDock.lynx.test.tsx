@@ -31,6 +31,10 @@ describe('Lynx Explorer dock', () => {
       new URL('../main/web/web-host.ts', import.meta.url),
       'utf8'
     );
+    const imageSource = readFileSync(
+      new URL('./ExplorerImagePreview.lynx.tsx', import.meta.url),
+      'utf8'
+    );
 
     expect(clientSource).toContain("'projects.listDirectories'");
     expect(clientSource).toContain("'projects.searchEntries'");
@@ -61,10 +65,13 @@ describe('Lynx Explorer dock', () => {
     expect(source).toContain('Reference in chat');
     expect(source).toContain('Ask why this changed');
     expect(source).toContain('applyExplorerChatAction({');
-    expect(source).toContain('className="ExplorerDockImage"');
-    expect(source).toContain('mode="aspectFit"');
+    expect(source).toContain('<ExplorerImagePreview');
+    expect(source).toContain('key={props.localPreviewUrl}');
+    expect(imageSource).toContain('className="ExplorerDockImage"');
+    expect(imageSource).toContain('mode="aspectFit"');
+    expect(imageSource).toContain('binderror={() => {');
     expect(source).toMatch(
-      /className="ExplorerDockImage"[\s\S]{0,160}accessibility-element=\{false\}/
+      /<ExplorerImagePreview[\s\S]{0,180}previewUrl=\{props\.localPreviewUrl\}/
     );
     expect(source).toContain('Could not load this image.');
     expect(source).toContain('<ExplorerPdfFallback');
@@ -295,4 +302,5 @@ describe('Lynx Explorer dock', () => {
       /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockSyntaxCode\s*\{[^}]*white-space:\s*pre-wrap;[^}]*word-break:\s*break-word;/s
     );
   });
+
 });

@@ -3161,3 +3161,22 @@ former dynamic-event P1 is no longer a valid blocker.
   as harness loss rather than product evidence.
 - Detailed evidence:
   `shots/2026-08-17/explorer-truncated-preview-short-height/notes.md`.
+
+## 2026-08-17 Explorer corrupt image at 320x200
+
+- Active discovery selected a real `.png` whose 30-byte body was not valid PNG
+  data. The local-image request returned HTTP `200`, isolating decode failure
+  from URL, transport, authorization, and missing-file errors.
+- Before, Lynx retained a `155.5x76` blank image/frame with no error copy after
+  decode failed.
+- `lynx-explorer-image-decode-failure-blank`: P1 contribution
+  `1.00 -> 0.00`.
+- A keyed `ExplorerImagePreview` now handles the real `binderror`, unmounts the
+  failed image, and renders the existing `Could not load this image.` state.
+- After, the error measured `147.59375x18 @ (166.453125,151)` and ended at
+  `y=169`, fully inside the compact viewport. Runtime evidence came from the
+  browser decoder, not synthetic state mutation.
+- Focused Lynx tests passed `3/3`; Lynx-for-Web and Native/Desktop production
+  builds passed.
+- Detailed evidence:
+  `shots/2026-08-17/explorer-corrupt-image-short-height/notes.md`.
