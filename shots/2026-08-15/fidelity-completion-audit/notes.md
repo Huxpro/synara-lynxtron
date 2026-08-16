@@ -1969,3 +1969,23 @@ former dynamic-event P1 is no longer a valid blocker.
   local count remained `100`.
 - Detailed evidence:
   `shots/2026-08-16/automation-detail-header-320/notes.md`.
+
+## 2026-08-16 Automation not-found title at 320px
+
+- Active discovery added the independent not-found detail state at `320x568`.
+- Before, `Automations` extended through `x=103.36`; its visible right segment
+  overlapped fixed controls from `x=90`, hitting the sidebar toggle/icon.
+- `lynx-automation-not-found-320-title-overlap`: P1 contribution
+  `1.00 -> 0.00`.
+- Compact not-found detail now reserves the first 46px titlebar row and renders
+  its title in a second row. Medium/wide remain unchanged.
+- After, title moved to `y=58.5..78.5`; left, center, overlap-range, and right
+  samples all hit the title. The body Back action remained safe.
+- An initial after edge probe retained the before y-coordinate and was rejected
+  as harness script error before the corrected `y=69` probe.
+- Focused suite passed `9/9`; Web and Native/Desktop builds passed. Web bundle:
+  `cb5e993d0b0b98b71d3553cfdae399b84b07b14b39447236519a05f24d1f5fbd`.
+- Every browser command used the guarded wrapper; no screenshot was retained
+  and local count remained `100`.
+- Detailed evidence:
+  `shots/2026-08-16/automation-not-found-header-320/notes.md`.

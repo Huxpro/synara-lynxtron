@@ -510,6 +510,12 @@
   line-height: 20px;
 }
 
+.SliceRoot--viewport-compact .AutomationDetailNotFoundHeader {
+  height: 92px;
+  min-height: 92px;
+  padding: 46px 20px 0;
+}
+
 .AutomationDetailNotFound {
   display: flex;
   flex: 1;

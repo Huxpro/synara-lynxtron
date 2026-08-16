@@ -121,6 +121,17 @@ describe('Lynx Automations route', () => {
     );
   });
 
+  it('keeps the compact not-found title below desktop titlebar controls', () => {
+    const detailStyles = readFileSync(
+      new URL('./automations-page.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(detailStyles).toMatch(
+      /\.SliceRoot--viewport-compact \.AutomationDetailNotFoundHeader\s*\{[^}]*height:\s*92px;[^}]*min-height:\s*92px;[^}]*padding:\s*46px 20px 0;/s
+    );
+  });
+
   it('keeps compact list actions outside desktop titlebar controls', () => {
     const pageSource = readFileSync(
       new URL('./AutomationsPage.lynx.tsx', import.meta.url),
