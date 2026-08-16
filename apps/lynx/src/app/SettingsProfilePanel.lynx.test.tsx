@@ -233,6 +233,9 @@ describe('Settings Profile fidelity', () => {
       "import shareSvg from '@synara-central-icons/share-os.svg?raw';"
     );
     expect(profileSource).toContain('className="SettingsProfileShareDialog"');
+    expect(profileSource).toContain(
+      '<DialogPanel className="SettingsProfileShareBody">'
+    );
     expect(profileSource).toContain('exportProfileShareCard({ svg: shareCardSvg })');
     expect(profileSource).toContain('dialogs.saveProfileShareCard({');
     expect(profileSource).toContain("platformWindow.openExternal(urls[target])");
@@ -256,6 +259,18 @@ describe('Settings Profile fidelity', () => {
     );
     expect(styles).toMatch(
       /\.SettingsProfileSharePreview\s*\{[^}]*width:\s*100%;[^}]*height:\s*246px;[^}]*border-radius:\s*16px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.LxDialogPopup\.SettingsProfileShareDialog\s*\{[^}]*height:\s*calc\(100vh - 32px\);[^}]*max-height:\s*calc\(100vh - 32px\);/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height \.SettingsProfileShareTitle\s*\{[^}]*flex-shrink:\s*0;[^}]*min-height:\s*28px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height \.SettingsProfileShareBody\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;[^}]*gap:\s*12px;[^}]*margin-top:\s*4px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height \.SettingsProfileSharePreview\s*\{[^}]*flex-shrink:\s*0;[^}]*height:\s*64px;/s
     );
   });
 

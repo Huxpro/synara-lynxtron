@@ -18,6 +18,7 @@ import { Button } from '../components/ui/button';
 import {
   Dialog,
   DialogFooter,
+  DialogPanel,
   DialogPopup,
   DialogTitle,
 } from '../components/ui/dialog.lynx';
@@ -850,7 +851,7 @@ function ProfileContent(props: {
           <DialogTitle className="SettingsProfileShareTitle">
             Share your activity
           </DialogTitle>
-          <view className="SettingsProfileShareBody">
+          <DialogPanel className="SettingsProfileShareBody">
             <view
               className="SettingsProfileSharePreview"
               style={{
@@ -906,7 +907,7 @@ function ProfileContent(props: {
                 {shareStatus.message}
               </text>
             ) : null}
-          </view>
+          </DialogPanel>
         </DialogPopup>
       </Dialog>
     </view>

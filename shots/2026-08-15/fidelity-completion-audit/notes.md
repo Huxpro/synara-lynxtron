@@ -2483,3 +2483,20 @@ former dynamic-event P1 is no longer a valid blocker.
   `52.53x28 @ y=147`; all fixed controls were in bounds.
 - Focused Advanced suite passed `3/3`; Lynx-for-Web and Native/Desktop
   production builds passed with registered warnings only.
+
+## 2026-08-17 Profile share dialog at 320x200
+
+- The rendered Profile `Share` action opened the real share-card dialog at
+  `320x200`, dark.
+- Before, flex shrink collapsed the title to `7/28px`; the body had no scroll
+  owner, and LinkedIn/Reddit actions ended at `y=210`, outside the viewport.
+- `lynx-profile-share-short-title-and-actions`: P1 contribution
+  `1.00 -> 0.00`.
+- The share body now uses the shared `DialogPanel` scroll owner. Its
+  short-height contract keeps the title at `28/28px`, constrains the popup to
+  `288x168 @ (16,16)`, and reduces only the preview to 64px.
+- The body measured `102/140`; at maximum `scrollTop=38`, LinkedIn and Reddit
+  were fully visible at `y=139..167`, while Copy/Save/X remained at
+  `y=103..131`.
+- Focused Profile suite passed `5/5`; Lynx-for-Web and Native/Desktop
+  production builds passed with registered warnings only.

@@ -528,6 +528,34 @@
   text-align: center;
 }
 
+.SliceRoot--viewport-short-height
+  .LxDialogPopup.SettingsProfileShareDialog {
+  height: calc(100vh - 32px);
+  max-height: calc(100vh - 32px);
+}
+
+.SliceRoot--viewport-short-height .SettingsProfileShareTitle {
+  flex-shrink: 0;
+  min-height: 28px;
+}
+
+.SliceRoot--viewport-short-height .SettingsProfileShareBody {
+  flex: 1;
+  min-height: 0;
+  gap: 12px;
+  margin-top: 4px;
+  padding-bottom: 0;
+}
+
+.SliceRoot--viewport-short-height .SettingsProfileSharePreview {
+  flex-shrink: 0;
+  height: 64px;
+}
+
+.SliceRoot--viewport-short-height .SettingsProfileShareActions {
+  row-gap: 8px;
+}
+
 .SettingsProfileEditTitle {
   padding: 16px 16px 0;
   font-size: 18px;
