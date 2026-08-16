@@ -2975,3 +2975,20 @@ former dynamic-event P1 is no longer a valid blocker.
   passed with registered warnings only.
 - Detailed evidence:
   `shots/2026-08-17/explorer-image-short-height/notes.md`.
+
+## 2026-08-17 Explorer Markdown at 320x200
+
+- Active discovery continued into the shared Markdown-renderer branch with the
+  canonical repository `README.md`.
+- Before, the 40px selected-file header left a 32px Markdown scroll owner; the
+  first 30px heading ended at `y=209` and was clipped.
+- `lynx-explorer-markdown-compact-preview-collapsed`: P1 contribution
+  `1.00 -> 0.00`.
+- Short-height Markdown preview now uses full content height, hides only the
+  duplicate path, and keeps More actions as a 28px overlay.
+- After, the scroll owner is `155.5x76 @ (162.5,122)` and the first heading is
+  fully visible at `y=137..167`.
+- Focused tests passed `2/2`; Lynx-for-Web and Native/Desktop production builds
+  passed with registered warnings only.
+- Detailed evidence:
+  `shots/2026-08-17/explorer-markdown-short-height/notes.md`.

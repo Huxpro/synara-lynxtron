@@ -367,6 +367,9 @@ export function ExplorerDock(props: {
               : props.selectedPath &&
                   isSupportedLocalImagePath(props.selectedPath)
                 ? ' ExplorerDockPreview--image'
+                : props.selectedPath &&
+                    isMarkdownPath(props.selectedPath)
+                  ? ' ExplorerDockPreview--markdown'
               : ''
           }`}
         >

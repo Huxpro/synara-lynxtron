@@ -124,6 +124,7 @@ describe('Lynx Explorer dock', () => {
     expect(pdfSource).toContain('className="ExplorerDockPdfPageImage"');
     expect(source).toContain("' ExplorerDockPreview--pdf'");
     expect(source).toContain("' ExplorerDockPreview--image'");
+    expect(source).toContain("' ExplorerDockPreview--markdown'");
     expect(pdfSource).toContain('className="ExplorerDockPdfPrevious"');
     expect(pdfSource).toContain('className="ExplorerDockPdfNext"');
     expect(pdfSource).toContain('aria-label="Previous PDF page"');
@@ -209,6 +210,12 @@ describe('Lynx Explorer dock', () => {
     );
     expect(styles).toMatch(
       /\.SliceRoot--viewport-short-height[\s\S]*?\.ExplorerDockPreview--image[\s\S]*?\.ExplorerDockPreviewPath,[\s\S]*?\.ExplorerDockImageName\s*\{[^}]*display:\s*none;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockPreview--markdown\s+\.ExplorerDockPreviewHeader\s*\{[^}]*position:\s*absolute;[^}]*right:\s*4px;[^}]*top:\s*4px;[^}]*width:\s*28px;[^}]*height:\s*28px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockPreview--markdown\s+\.ExplorerDockPreviewContent\s*\{[^}]*height:\s*100%;[^}]*padding:\s*2px;/s
     );
     expect(styles).toMatch(
       /\.ExplorerDockSidebar\s*\{[^}]*width:\s*240px;[^}]*min-width:\s*240px;[^}]*border-right:\s*1px solid var\(--border\);/s

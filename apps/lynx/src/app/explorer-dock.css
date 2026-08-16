@@ -200,6 +200,39 @@
   gap: 0;
 }
 
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockPreview--markdown
+  .ExplorerDockPreviewHeader {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  z-index: 2;
+  width: 28px;
+  height: 28px;
+  min-height: 28px;
+  padding: 0;
+  border-bottom-width: 0;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockPreview--markdown
+  .ExplorerDockPreviewPath {
+  display: none;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .ExplorerDock
+  .ExplorerDockPreview--markdown
+  .ExplorerDockPreviewContent {
+  height: 100%;
+  padding: 2px;
+}
+
 .ExplorerDock--editor {
   position: relative;
   top: auto;
