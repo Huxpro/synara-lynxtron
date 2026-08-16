@@ -3206,3 +3206,18 @@ former dynamic-event P1 is no longer a valid blocker.
   passed.
 - Detailed evidence:
   `shots/2026-08-17/explorer-corrupt-pdf-short-height/notes.md`.
+
+## 2026-08-17 Explorer binary file at 320x200
+
+- Active discovery selected a real file containing NUL/non-text bytes,
+  exercising a distinct canonical `projects.readFile` failure.
+- The ordinary compact Explorer rendered `Could not read this file.` at
+  `131.71875x18 @ (174.390625,171)`, ending at `y=189`.
+- The renderer reached its ready route, transport stayed healthy, and
+  `projects.readFile` remained at one call.
+- This is a compact failure-boundary pass, contribution `0.00 -> 0.00`; no
+  product code change was required.
+- The known `provider.listModels: codex not found in PATH` failure was
+  classified as accepted environment noise.
+- Detailed evidence:
+  `shots/2026-08-17/explorer-binary-file-short-height/notes.md`.
