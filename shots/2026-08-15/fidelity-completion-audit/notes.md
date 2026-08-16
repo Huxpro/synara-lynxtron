@@ -2322,3 +2322,20 @@ former dynamic-event P1 is no longer a valid blocker.
 - Focused suite passed `5/5`; Web and Native/Desktop builds passed. Web bundle:
   `2dbbacc557364f7c475d1b2d6facf502fc974a5d693a17f1044e9e8fbe699ca7`.
 - Detailed evidence: `shots/2026-08-16/update-short-height/notes.md`.
+
+## 2026-08-16 Populated Thread at 320x200
+
+- A public `thread.activity.append` fixture exercised the real transcript path
+  without provider execution.
+- Before final repair, the composer was visible but the 80px bottom inset filled
+  the entire 46px transcript viewport; all visible points were blank inset.
+- `lynx-populated-thread-short-transcript-hidden`: P1 contribution
+  `1.00 -> 0.00`.
+- Short Thread now uses a 20px one-line editor and an 8px Thread-only transcript
+  inset. Composer remains full-width with complete footer.
+- After, TranscriptList was `46/46`, and points `y=96/105/120` hit the retained
+  activity row.
+- Focused suites passed `8/8`; Web and Native/Desktop builds passed. Web bundle:
+  `72f816522a670d24f5e48d855075fc5ef9351e66e40c3bbb74fce4e5364e421c`.
+- Detailed evidence:
+  `shots/2026-08-16/thread-populated-short-height/notes.md`.

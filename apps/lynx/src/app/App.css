@@ -298,6 +298,18 @@
   display: none;
 }
 
+.SliceRoot--viewport-short-height .ThreadPage {
+  --app-density-composer-editor-min-height: 20px;
+  --app-density-composer-editor-padding-top: 4px;
+  --app-density-composer-editor-padding-bottom: 2px;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  .TranscriptBottomInset {
+  height: 8px;
+}
+
 .ThreadsLandingHeaderIdentity {
   margin-left: 0;
 }

@@ -99,6 +99,12 @@ describe('empty Thread landing fidelity', () => {
     expect(appStyles).toMatch(
       /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ProviderHealthBannerFrame\s*\{[^}]*display:\s*none;/s
     );
+    expect(appStyles).toMatch(
+      /\.SliceRoot--viewport-short-height \.ThreadPage\s*\{[^}]*--app-density-composer-editor-min-height:\s*20px;[^}]*--app-density-composer-editor-padding-top:\s*4px;[^}]*--app-density-composer-editor-padding-bottom:\s*2px;/s
+    );
+    expect(appStyles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+\.TranscriptBottomInset\s*\{[^}]*height:\s*8px;/s
+    );
     expect(appStyles).not.toMatch(
       /\.SliceRoot--viewport-short-height\s+\.ThreadsLanding\s+\.CenteredEmptyLandingFrame\s*\{[^}]*display:\s*none;/s
     );
