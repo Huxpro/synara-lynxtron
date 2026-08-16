@@ -731,7 +731,7 @@ function ProfileContent(props: {
           <DialogTitle className="SettingsProfileEditTitle">
             Edit profile
           </DialogTitle>
-          <view className="SettingsProfileEditBody">
+          <DialogPanel className="SettingsProfileEditBody">
             <view
               className="SettingsProfileEditAvatar"
               style={{ backgroundColor: draftColor }}
@@ -828,7 +828,7 @@ function ProfileContent(props: {
                 </view>
               </view>
             </view>
-          </view>
+          </DialogPanel>
           <DialogFooter className="SettingsProfileEditFooter">
             <Button
               variant="ghost"

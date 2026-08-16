@@ -2500,3 +2500,22 @@ former dynamic-event P1 is no longer a valid blocker.
   `y=103..131`.
 - Focused Profile suite passed `5/5`; Lynx-for-Web and Native/Desktop
   production builds passed with registered warnings only.
+
+## 2026-08-17 Profile edit dialog at 320x200
+
+- The rendered Profile `Edit` action opened the real edit dialog at
+  `320x200`, dark.
+- Before, the title collapsed to `22/40px`, avatar to `10/80px`, and fields to
+  `16/121px`; the body had no scroll owner. Footer content also extended beyond
+  the popup even though Cancel/Save remained partly visible.
+- `lynx-profile-edit-short-form-collapsed`: P1 contribution `1.00 -> 0.00`.
+- The edit body now uses the shared `DialogPanel`. The short-height contract
+  fixes title/footer allocation, reduces the avatar to 48px, and gives the form
+  body the remaining scrollable height.
+- After, popup was `288x168 @ (16,16)`, title `40/40`, body `74/253`, footer
+  `52/52`, and Cancel/Save retained full 36px hit areas at `y=135..171`.
+- At maximum `scrollTop=179`, the complete 123px fields block aligned to the
+  body bottom, proving the form remains reachable without moving the fixed
+  footer.
+- Focused Profile suite passed `5/5`; Lynx-for-Web and Native/Desktop
+  production builds passed with registered warnings only.

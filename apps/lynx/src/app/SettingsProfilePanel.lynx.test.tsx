@@ -138,6 +138,9 @@ describe('Settings Profile fidelity', () => {
     expect(profileSource).toContain("'synara:profile:avatarImage:v1'");
     expect(profileSource).toContain('className="SettingsProfileEditAction"');
     expect(profileSource).toContain('className="SettingsProfileEditDialog"');
+    expect(profileSource).toContain(
+      '<DialogPanel className="SettingsProfileEditBody">'
+    );
     expect(profileSource).toContain('<ProfileColorOption');
     expect(profileSource).toContain(
       "accessibilityValue: props.active ? 'Selected' : 'Not selected'"
@@ -161,6 +164,18 @@ describe('Settings Profile fidelity', () => {
     expect(webHostSource).toContain("method === 'dialogsPickProfileImage'");
     expect(styles).toMatch(
       /\.LxDialogPopup\.SettingsProfileEditDialog\s*\{[^}]*width:\s*500px;[^}]*border-radius:\s*24px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.LxDialogPopup\.SettingsProfileEditDialog\s*\{[^}]*height:\s*calc\(100vh - 32px\);[^}]*max-height:\s*calc\(100vh - 32px\);/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height \.SettingsProfileEditTitle\s*\{[^}]*flex-shrink:\s*0;[^}]*min-height:\s*40px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height \.SettingsProfileEditBody\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;[^}]*gap:\s*10px;[^}]*padding-top:\s*8px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height \.SettingsProfileEditFooter\s*\{[^}]*flex-shrink:\s*0;[^}]*height:\s*52px;[^}]*padding:\s*4px 16px;/s
     );
     expect(styles).toMatch(
       /\.SettingsProfileEditAvatar\s*\{[^}]*width:\s*80px;[^}]*height:\s*80px;[^}]*border-radius:\s*40px;/s
