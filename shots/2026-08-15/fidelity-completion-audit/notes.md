@@ -2687,3 +2687,19 @@ former dynamic-event P1 is no longer a valid blocker.
 - This is interaction/harness missing coverage, not a product pass or loss.
   The declared 320px suggestion-list maximum is not scored without a real
   mounted popup; no speculative CSS patch was applied.
+
+## 2026-08-17 Custom Models provider menu at 320x200
+
+- The rendered Models provider control opened the real eight-option menu at
+  `320x200`, dark.
+- Before, popup measured `160x270 @ (80,0)`, extended 70px below the viewport,
+  and had no scroll range.
+- `lynx-custom-model-provider-menu-short-overflow`: P1 contribution
+  `1.00 -> 0.00`.
+- The Custom Models provider popup now uses `calc(100vh - 16px)` and owns
+  vertical scrolling at short heights.
+- After, popup was `160x184 @ (80,16)` with `clientHeight=182` and
+  `scrollHeight=262`; the complete menu stayed in bounds with 80px of scroll
+  range.
+- Focused Custom Models suite passed `2/2`; Lynx-for-Web and Native/Desktop
+  production builds passed with registered warnings only.

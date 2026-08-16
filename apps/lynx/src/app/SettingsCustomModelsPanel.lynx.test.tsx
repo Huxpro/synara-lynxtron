@@ -63,6 +63,9 @@ describe('Settings Custom Models fidelity', () => {
     expect(settingsSource).toContain('<SettingsCustomModelsPanel');
     expect(settingsSource).toContain('onSettingsChange={applyModelSettings}');
     expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height \.SettingsCustomModelsProviderPopup\s*\{[^}]*height:\s*calc\(100vh - 16px\);[^}]*max-height:\s*calc\(100vh - 16px\);[^}]*overflow-y:\s*scroll;/s
+    );
+    expect(styles).toMatch(
       /\.SettingsCustomModelsSection\s*\{[^}]*gap:\s*6px;/s
     );
     expect(styles).toMatch(

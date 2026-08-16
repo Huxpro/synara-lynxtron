@@ -113,6 +113,12 @@
   width: 160px;
 }
 
+.SliceRoot--viewport-short-height .SettingsCustomModelsProviderPopup {
+  height: calc(100vh - 16px);
+  max-height: calc(100vh - 16px);
+  overflow-y: scroll;
+}
+
 .SettingsCustomModelsInput {
   min-width: 0;
   height: 28px;
