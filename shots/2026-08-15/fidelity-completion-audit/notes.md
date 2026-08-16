@@ -1252,3 +1252,14 @@ former dynamic-event P1 is no longer a valid blocker.
   They were closed and removed before the retained retry; this is harness
   cleanup failure, not product loss.
 - Canonical and all process/browser cleanup gates passed after the final run.
+
+## 2026-08-16 Native Automations minimum create dialog
+
+- A canonical project enabled the real create dialog at Native `900x650`.
+- The `420x520` dialog, `386x402` panel, footer, summary, Cancel, and disabled
+  Create controls all remained inside the viewport.
+- Real Cancel restored the empty route; `automation.list` remained zero
+  definitions / zero runs.
+- `native-automations-create-dialog-minimum-window`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- Console, canonical cleanup, and all process/browser gates passed.

@@ -344,6 +344,29 @@ agent-browser-owned processes.
 - Native dark list/detail geometry and token resolution: passed.
 - Native dark `1440x900` list/detail geometry: passed.
 - Native create dialog structure and Cancel no-mutation path: passed.
+
+## Native minimum-window create dialog
+
+A fresh exact-owned run added the create dialog at the real `900x650` Desktop
+minimum with one canonical project and zero automation definitions/runs.
+
+The real New automation control opened:
+
+- dialog: `(240,65,420x520)`;
+- panel: `(257,122,386x402)`;
+- footer: `(257,538,386x31)`;
+- all fields through the final summary remained inside the dialog;
+- Cancel and disabled Create automation controls remained visible.
+
+The precise rendered Cancel button closed the dialog, restored the empty
+Automations route, and left `automation.list` at zero definitions / zero runs.
+Exact-client warning/error console stayed empty.
+
+`native-automations-create-dialog-minimum-window`: missing coverage
+`1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+
+Canonical project cleanup and all process/browser gates passed; screenshot count
+remained `100`.
 - Native warning/error console: zero.
 - Corrected Lynx-for-Web shadow-root/relay cell: passed.
 - Lynx-for-Web shared icon requests: `404 -> 200`.
