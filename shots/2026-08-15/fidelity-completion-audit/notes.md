@@ -2121,3 +2121,19 @@ former dynamic-event P1 is no longer a valid blocker.
   bundle: `6d11e3fbd9108d26f6e71e34cb5e6fbaeda2eee0aff7bf97f4da1937245bee86`.
 - Detailed evidence:
   `shots/2026-08-16/kanban-header-medium-closed/notes.md`.
+
+## 2026-08-16 Medium closed-sidebar header family
+
+- The same `800x568` closed-sidebar state was exercised for Pull Requests and
+  ordinary Thread after the Kanban fix.
+- Pull Requests retained one row: title `x=212..297.75`, Refresh
+  `x=752..780`, outside fixed controls ending at `x=174`.
+- Thread retained one row: title `x=234..409.56`, controls
+  `x=620.55..780`, no overflow.
+- Both are product passes with contribution `0.00 -> 0.00`; no additional code
+  change was required.
+- A generic PR probe assumed an optional scope element existed in the empty
+  state and failed before evidence. Cleanup reran, and a PR-specific nullable
+  probe produced the retained result.
+- DOM click was used only to establish sidebar-closed state; no toggle
+  interaction pass is claimed.
