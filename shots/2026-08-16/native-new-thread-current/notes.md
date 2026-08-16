@@ -331,6 +331,37 @@ Canonical cleanup removed the project and Home container; owned ports/runtime/
 state were removed; final browser state was `sessions: []` with zero owned
 processes; screenshot count remained `100`.
 
+## Native model-override/project-switch intersection
+
+Active discovery combined two previously separate interactions:
+
+1. Alpha project default `codex / gpt-5.6-sol`;
+2. direct model override to
+   `opencode / opencode/deepseek-v4-flash-free`;
+3. project switch to Beta, whose default was
+   `claudeAgent / sonnet`.
+
+Web authority moves an existing empty draft between projects while preserving
+its composer draft state. Therefore the explicit user model override outranks
+the destination project's default; replacing it with Sonnet would be a loss.
+
+The exact-owned Native chain matched that contract:
+
+- before project switch:
+  `Cross Alpha` / `synara` / `DeepSeek V4 Flash Free`;
+- after real Beta touch:
+  `Cross Beta` / `octane` / `DeepSeek V4 Flash Free`;
+- project popup closed;
+- exact-client warning/error console stayed empty;
+- canonical projection remained at zero durable threads.
+
+`native-new-thread-model-override-project-switch`: missing coverage
+`1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+
+The retained model is intentional draft precedence, not a failure to apply the
+Beta project default. Canonical and process/browser cleanup passed; screenshot
+count remained `100`.
+
 `native-new-thread-direct-model-selection`: missing coverage
 `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
 

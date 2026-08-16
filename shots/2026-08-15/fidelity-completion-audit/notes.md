@@ -1042,3 +1042,17 @@ former dynamic-event P1 is no longer a valid blocker.
 - An earlier undefined-node probe followed an accidental popup close and is
   classified as harness operation error, not product loss.
 - Canonical and process/browser cleanup passed; screenshot count stayed `100`.
+
+## 2026-08-16 Native model/project precedence intersection
+
+- Active discovery combined a direct OpenCode/DeepSeek draft override with a
+  subsequent Alpha -> Beta project switch.
+- Web authority preserves composer draft state while moving an empty draft, so
+  the explicit model override intentionally outranks the destination project's
+  Claude/Sonnet default.
+- Native changed heading/project from `Cross Alpha` / `synara` to
+  `Cross Beta` / `octane` while retaining `DeepSeek V4 Flash Free`.
+- `native-new-thread-model-override-project-switch`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution remains `0.00 -> 0.00`.
+- This is intentional draft precedence, not an unapplied project default.
+  Console, canonical zero-thread state, and cleanup gates passed.
