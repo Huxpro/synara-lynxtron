@@ -43,5 +43,8 @@ After real query input and Enter:
 - Native/Desktop production build passed: `4286.5 kB`.
 - Staged Native bundle SHA-256:
   `6a1397fde840bb0ff43ee93c050f6ae661a1e36a1e854892163d35eafc15036e`.
+- The commit hook printed its generic React Doctor fallback warning. A real
+  uncached changed-lines scan against parent `94caa24d6` inspected two files,
+  scored `89/100`, and reported `No issues found`.
 - Final cleanup reported `sessions: []`, zero agent-browser-owned processes,
   removed state/workspace, and repository screenshot count `100`.
