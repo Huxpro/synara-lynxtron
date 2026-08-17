@@ -4354,3 +4354,27 @@ former dynamic-event P1 is no longer a valid blocker.
   agent-browser-owned processes.
 - Detailed evidence:
   `shots/2026-08-17/native-diff-file-jump-close-paths/notes.md`.
+
+## 2026-08-17 Native Environment owned Local Server Stop
+
+- Active discovery moved to a different screen and exercised Environment
+  Local Servers against a real current-run-owned Node server titled
+  `Native Owned Server` on port `58191`.
+- The exact rendered title identified its own `274x42` row; only that row's
+  `24x24` Stop control received real Native touch at `(866,332)`.
+- Host logs independently proved
+  `server.stopLocalServer { pid: <owned pid>, port: 58191 }`.
+- The exact child was reaped, port `58191` was released, its rendered title
+  disappeared, and the Local Servers popup remained mounted.
+- `native-environment-owned-local-server-stop`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- Final PID/lsof-derived client was `localhost:8904/session 1`; no fixed-port
+  assumption or unrelated DevTool client was used.
+- Fixture-contract, zombie-process, and whitespace-console mistakes were
+  rejected as harness losses. Every failure boundary and exit passed
+  `browser:gate` with `sessions: []` and zero agent-browser-owned processes.
+- Native warning/error console had no entry, temporary JPEG was `1800x1300`,
+  all owned resources were removed, both owned ports were free, and screenshot
+  count remained `100`.
+- Detailed evidence:
+  `shots/2026-08-17/native-environment-owned-local-server-stop/notes.md`.
