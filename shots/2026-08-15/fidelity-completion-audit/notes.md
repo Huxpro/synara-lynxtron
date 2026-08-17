@@ -4746,3 +4746,23 @@ former dynamic-event P1 is no longer a valid blocker.
   browser gate exited with `sessions: []`.
 - Detailed evidence:
   `shots/2026-08-18/native-composer-permission-popup-fidelity/notes.md`.
+
+## 2026-08-18 Native Cmd+R full reload
+
+- Lynxtron's Electron-style reload roles rendered menu labels but had no
+  `webContents` target, so the visible Reload action was a no-op.
+- The View menu now owns explicit `CmdOrCtrl+R` and
+  `CmdOrCtrl+Shift+R` actions that reload the current Lynx bundle through
+  `LynxWindow.loadFile` / `loadURL`.
+- Renderer memory-history mirrors its complete href to the host; reload resets
+  route delivery and restores the same pathname/query state when the renderer
+  becomes ready.
+- A real foreground Cmd+R produced
+  `renderer reload requested route=/` in the host log while Native PID `87471`
+  and the established `58090` connection remained unchanged.
+- Focused tests passed `19/19`; Native/Desktop production build passed;
+  `SliceRoot` remounted and a fresh warning/error console read was empty.
+- No screenshot was added, count remained `100`, and every failed input probe
+  returned through an empty browser ownership gate.
+- Detailed evidence:
+  `shots/2026-08-18/native-cmd-r-reload/notes.md`.

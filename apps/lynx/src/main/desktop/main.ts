@@ -66,6 +66,7 @@ let mainWindow: LynxWindow | null = null;
 let searchNavigationEnabled = false;
 let routeDeliveryState: ShellRouteDeliveryState =
   INITIAL_SHELL_ROUTE_DELIVERY_STATE;
+let rendererRoute: string | null = null;
 let viewportProbeStarted = false;
 
 function startViewportProbe(w: LynxWindow): void {
@@ -130,6 +131,44 @@ function initDataFromArguments(argv: readonly string[]) {
     if (initData) return initData;
   }
   return null;
+}
+
+function reloadLynxWindow(w: LynxWindow): void {
+  const startupInitData = initDataFromArguments(process.argv);
+  const route =
+    rendererRoute ??
+    routeDeliveryState.pendingRoute ??
+    startupInitData?.initialRoute ??
+    null;
+  routeDeliveryState = reduceShellRouteDelivery(routeDeliveryState, {
+    type: 'renderer-reset',
+  }).state;
+  if (route) {
+    routeDeliveryState = reduceShellRouteDelivery(routeDeliveryState, {
+      type: 'route-requested',
+      route,
+    }).state;
+  }
+  const loadOptions = {
+    data: {
+      ...(startupInitData ?? {}),
+      initialRoute: route,
+    },
+  };
+  if (isDev) {
+    w.loadURL('http://localhost:5971/main.lynx.bundle', loadOptions);
+  } else {
+    w.loadFile(LYNX_BUNDLE_PATH, loadOptions);
+  }
+  appendShellLog(
+    resolveShellPaths(
+      resolveShellUserDataDir(
+        app.getPath('userData'),
+        process.env.SYNARA_LYNX_USER_DATA_DIR
+      )
+    ).logFile,
+    `renderer reload requested route=${route ?? '/'}`
+  );
 }
 
 function installApplicationMenu(w: LynxWindow): void {
@@ -260,8 +299,20 @@ function installApplicationMenu(w: LynxWindow): void {
           click: () => dispatchShellCommand('chat.visible.next'),
         },
         { type: 'separator' },
-        { role: 'reload' },
-        { role: 'forceReload' },
+        {
+          id: 'reloadBundle',
+          label: 'Reload',
+          accelerator: 'CmdOrCtrl+R',
+          registerAccelerator: true,
+          click: () => reloadLynxWindow(w),
+        },
+        {
+          id: 'forceReloadBundle',
+          label: 'Force Reload',
+          accelerator: 'CmdOrCtrl+Shift+R',
+          registerAccelerator: true,
+          click: () => reloadLynxWindow(w),
+        },
         ...(isDev ? [{ role: 'toggleDevTools' }] : []),
       ],
     },
@@ -503,6 +554,16 @@ app.whenReady().then(() => {
           callback.sendReply(
             JSON.stringify({ ok: true, route: delivery.routeToDispatch })
           );
+        } else if (name === 'shellRouteChanged') {
+          const route =
+            typeof data?.route === 'string' && data.route.startsWith('/')
+              ? data.route
+              : null;
+          if (route) rendererRoute = route;
+          callback.sendReply(JSON.stringify({ ok: true }));
+        } else if (name === 'shellReload') {
+          reloadLynxWindow(w);
+          callback.sendReply(JSON.stringify({ ok: true }));
         } else if (name === 'shellSetSearchNavigationEnabled') {
           const enabled = data?.enabled === true;
           if (searchNavigationEnabled !== enabled) {
@@ -581,17 +642,8 @@ app.whenReady().then(() => {
       route: startupRoute,
     }).state;
   }
-  const loadOptions = {
-    data: {
-      ...(startupInitData ?? {}),
-      initialRoute: startupRoute,
-    },
-  };
-  if (isDev) {
-    w.loadURL('http://localhost:5971/main.lynx.bundle', loadOptions);
-  } else {
-    w.loadFile(LYNX_BUNDLE_PATH, loadOptions);
-  }
+  rendererRoute = startupRoute;
+  reloadLynxWindow(w);
   w.on('close', () => {
     unsubscribeTransportState();
     disposeNativeRpcHost();

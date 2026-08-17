@@ -1735,6 +1735,31 @@ export function SliceRouter({
 }) {
   const [route, setRoute] = useRoute(initialRoute);
   const navigation = useMemoryNavigationState();
+  useEffect(() => {
+    'background only';
+    let cancelled = false;
+    let unsubscribe: (() => void) | null = null;
+    void import(/* webpackMode: "eager" */ '../platform/bridge')
+      .then(({ bridgeCall }) => {
+        if (cancelled) return;
+        const publishRoute = () => {
+          void bridgeCall('shellRouteChanged', {
+            route: history.location.href,
+          }).catch(() => {
+            // Web and older hosts do not need the desktop reload route mirror.
+          });
+        };
+        publishRoute();
+        unsubscribe = history.subscribe(publishRoute);
+      })
+      .catch(() => {
+        // Web and older hosts do not need the desktop reload route mirror.
+      });
+    return () => {
+      cancelled = true;
+      unsubscribe?.();
+    };
+  }, []);
   const [sidebarUserOverride, setSidebarUserOverride] = useState<
     boolean | null
   >(null);
