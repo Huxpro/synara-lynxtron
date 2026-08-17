@@ -4104,6 +4104,38 @@ former dynamic-event P1 is no longer a valid blocker.
 - Detailed evidence:
   `shots/2026-08-17/pull-requests-project-state-roundtrip/notes.md`.
 
+## 2026-08-17 Pull Requests special empty at constrained compact height
+
+- A new two-repository, React-scoped, Reviewing + Merged dark `320x320`
+  interaction exposed a P1 in both Web and Lynx-for-Web.
+- Before, desktop empty-state spacing produced 256px shells. Web clipped the
+  title tail and all description; Lynx exposed only 30/84px of the title and
+  no description. Real wheel input left both scrollers at `scrollTop=0`.
+- A named `<=480px` constrained-height class now combines with compact width
+  to remove the empty minimum height/padding and compensate the parent gap.
+  The existing `<320px` short-height contract remains unchanged.
+- After, Web rendered `280x100 @ y=174..274`; Lynx rendered
+  `264x100 @ y=218..318`. Both two-line titles and descriptions are fully
+  visible at the initial scroll position.
+- A `390x844` non-regression cell did not receive the constrained class and
+  retained the original 64px vertical padding and 228px empty anatomy.
+- React project, Reviewing, Merged, URL state, and the return-to-Open
+  roundtrip remained correct in both clients.
+- `pull-requests-special-empty-compact-unreachable`: P1 product contribution
+  `1.00 -> 0.00`; new combined interaction missing coverage `1.00 -> 0.00`.
+- Focused tests passed Web `17/17` and Lynx `18/18`; Web, Lynx-for-Web, and
+  Native/Desktop production builds passed.
+- Intermittent Web Vite/TanStack `_nonReactive` console output remains
+  explicitly classified as non-deterministic development-harness noise and
+  residual risk; no affected run is described as console clean.
+- Every failed/interrupted harness boundary and retained exit passed
+  `browser:gate`; ports/state/projects/temp PNGs were cleaned and screenshot
+  count remained `100`.
+- Native runtime remains harness missing coverage under the existing
+  exact-owned DevTool registration blocker.
+- Detailed evidence:
+  `shots/2026-08-17/pull-requests-special-empty-compact/notes.md`.
+
 ## 2026-08-17 Long Local Server identity at 320x200
 
 - Four real rows included an extremely long page title.

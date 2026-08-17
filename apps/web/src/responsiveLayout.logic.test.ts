@@ -41,12 +41,18 @@ describe("responsive viewport layout", () => {
   });
 
   it("projects a short-height class without changing width bands", () => {
+    expect(VIEWPORT_HEIGHT_BREAKPOINTS.constrained).toBe(480);
     expect(VIEWPORT_HEIGHT_BREAKPOINTS.short).toBe(320);
     expect(
-      viewportHeightClassNames(resolveViewportLayout({ width: 900, height: 319 })),
-    ).toBe("SliceRoot--viewport-short-height");
+      viewportHeightClassNames(resolveViewportLayout({ width: 900, height: 480 })),
+    ).toBe("SliceRoot--viewport-constrained-height");
     expect(
-      viewportHeightClassNames(resolveViewportLayout({ width: 900, height: 320 })),
+      viewportHeightClassNames(resolveViewportLayout({ width: 900, height: 319 })),
+    ).toBe(
+      "SliceRoot--viewport-constrained-height SliceRoot--viewport-short-height",
+    );
+    expect(
+      viewportHeightClassNames(resolveViewportLayout({ width: 900, height: 481 })),
     ).toBe("");
   });
 });

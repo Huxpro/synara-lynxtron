@@ -1,5 +1,6 @@
 import type { PullRequestListEntry } from "@synara/contracts";
 import { renderToStaticMarkup } from "react-dom/server";
+import { readFileSync } from "node:fs";
 import { describe, expect, it, vi } from "vitest";
 
 import {
@@ -91,6 +92,11 @@ describe("PullRequestListComposition", () => {
     expect(emptyMarkup).toContain("Try another involvement");
     expect(emptyMarkup).toContain('role="status"');
     expect(emptyMarkup).toContain('aria-live="polite"');
+    expect(emptyMarkup).toContain("SharedPrEmpty");
+    const appStyles = readFileSync(new URL("../../index.css", import.meta.url), "utf8");
+    expect(appStyles).toMatch(
+      /@media \(max-width: 480px\) and \(max-height: 480px\)\s*\{[\s\S]*?\.SharedPrEmpty\s*\{[^}]*min-height:\s*0;[^}]*margin-top:\s*-8px;[^}]*padding:\s*0;/,
+    );
     expect(loadingMarkup.match(/data-slot="skeleton"/g)).toHaveLength(3);
     expect(loadingMarkup).toContain('role="status"');
     expect(loadingMarkup).toContain('aria-label="Loading pull requests…"');

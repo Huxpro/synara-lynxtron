@@ -9,6 +9,7 @@ export const VIEWPORT_BREAKPOINTS = {
 } as const;
 
 export const VIEWPORT_HEIGHT_BREAKPOINTS = {
+  constrained: 480,
   short: 320,
 } as const;
 
@@ -72,7 +73,14 @@ export function viewportBreakpointClassNames(layout: ViewportLayout): string {
 
 export function viewportHeightClassNames(layout: ViewportLayout): string {
   if (layout.height <= 0) return "";
-  return layout.height < VIEWPORT_HEIGHT_BREAKPOINTS.short
-    ? "SliceRoot--viewport-short-height"
-    : "";
+  return [
+    layout.height <= VIEWPORT_HEIGHT_BREAKPOINTS.constrained
+      ? "SliceRoot--viewport-constrained-height"
+      : "",
+    layout.height < VIEWPORT_HEIGHT_BREAKPOINTS.short
+      ? "SliceRoot--viewport-short-height"
+      : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
 }

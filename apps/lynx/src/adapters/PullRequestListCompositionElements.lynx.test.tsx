@@ -36,6 +36,9 @@ describe('Pull Request list state fidelity', () => {
     expect(styles).toMatch(
       /\.SharedPrEmptyDescription\s*\{[^}]*max-width:\s*384px;[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;[^}]*margin-top:\s*4px;/s
     );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact\.SliceRoot--viewport-constrained-height\s+\.SharedPrEmpty\s*\{[^}]*min-height:\s*0;[^}]*margin-top:\s*-8px;[^}]*padding:\s*0;/s
+    );
   });
 
   it('uses the full shared muted surface for loading rows', () => {

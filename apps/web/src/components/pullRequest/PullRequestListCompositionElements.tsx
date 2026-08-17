@@ -63,7 +63,7 @@ export function PullRequestListEmptyElement(props: {
       role={semantics.role}
       aria-live={semantics.live}
       aria-atomic={semantics.atomic}
-      className="py-16"
+      className="SharedPrEmpty py-16"
     >
       <EmptyHeader>
         <EmptyTitle>{props.title}</EmptyTitle>
