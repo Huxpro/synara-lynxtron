@@ -3892,3 +3892,19 @@ former dynamic-event P1 is no longer a valid blocker.
   processes.
 - Detailed evidence:
   `shots/2026-08-17/standalone-diff-large-reopen/notes.md`.
+
+## 2026-08-17 Multi-file progressive isolation at 320x320
+
+- Two canonical 200-line files were expanded simultaneously.
+- Baseline: both files rendered `120` rows with `Show 81 more lines`.
+- After a real Show-more activation for `a.txt`, it rendered all `201` rows
+  and removed its control; `b.txt` remained at `120` rows with
+  `Show 81 more lines`.
+- `standalone-diff-multifile-progressive-isolation`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- Per-file visible-line state remained isolated with no remount or pending
+  request.
+- Browser failure and exit cleanup returned `sessions: []` with zero owned
+  processes.
+- Detailed evidence:
+  `shots/2026-08-17/standalone-diff-multifile-progressive/notes.md`.
