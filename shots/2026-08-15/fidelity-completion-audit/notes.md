@@ -4040,6 +4040,32 @@ former dynamic-event P1 is no longer a valid blocker.
 - Detailed evidence:
   `shots/2026-08-17/native-medium-devtool-preflight/notes.md`.
 
+## 2026-08-17 Native DevTool registration restored
+
+- Stable Lynxtron `0.0.9` and `0.0.10` artifacts omit
+  `LynxDebugResources.bundle`; enabling DevTool cannot register
+  `LynxViewStateObserver`.
+- Pinned `0.0.12-dev` is the first published artifact checked here that
+  contains the inspector resources. Its npm JS/API surface is unchanged from
+  `0.0.9`.
+- Root `trustedDependencies` now owns Bun lifecycle trust; the former
+  workspace `allowScripts` never executed postinstall in a fresh workspace.
+- A prebuild verifier fails early when the executable or inspector resources
+  are missing. Fresh Bun installation and verifier tests passed.
+- Exact-owned workspace and packaged-app launches each exposed a PID-derived
+  dynamic client/session, returned a `SliceRoot` DOM, had empty warning/error
+  consoles, and captured `1800x1300` LynxView JPEGs at a `900x650` window.
+- The packaged DMG build passed and included the inspector resources plus the
+  current staged Native bundle.
+- `native-medium-devtool-registration`: harness missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- The pre-release host pin remains an explicit residual risk. Exact version,
+  clean-install, prebuild, workspace, and packaged certification bound it.
+- This restores the Native certification surface; previously blocked product
+  cells are not retroactively marked passing.
+- Detailed evidence:
+  `shots/2026-08-17/native-devtool-registration-restored/notes.md`.
+
 ## 2026-08-17 Pull Requests multi-project filter at 320x320
 
 - Two canonical projects pointed at distinct real public repositories and

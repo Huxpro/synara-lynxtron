@@ -7,7 +7,7 @@
   "main": "main.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development concurrently -k --prefix none \"rspeedy dev --environment lynx\" \"dev-ready-rspeedy && rsbuild dev --environment desktop\"",
-    "build": "rspeedy build --environment lynx && rsbuild build --environment desktop && node scripts/stage-sharp-runtime.mjs",
+    "build": "node scripts/verify-lynxtron-runtime.mjs && rspeedy build --environment lynx && rsbuild build --environment desktop && node scripts/stage-sharp-runtime.mjs",
     "start": "bun run build && lynxtron dist/desktop",
     "dev:web": "cross-env NODE_ENV=development concurrently -k --prefix node \"rspeedy dev --environment web\" \"dev-ready-rspeedy && rsbuild dev --environment web\"",
     "generate:icons": "node scripts/generate-lynx-icons.mjs",
@@ -47,7 +47,7 @@
     "@lynx-js/config-rsbuild-plugin": "0.2.0",
     "@lynx-js/css-serializer": "0.1.7",
     "@lynx-js/lynx-core": "0.1.4",
-    "@lynx-js/lynxtron": "0.0.9",
+    "@lynx-js/lynxtron": "0.0.12-dev",
     "@lynx-js/lynxtron-builder": "0.0.9",
     "@lynx-js/lynxtron-dev-plugins": "0.0.9",
     "@lynx-js/preact-devtools": "5.0.1-20260721114100-d7da994",
@@ -77,11 +77,6 @@
   },
   "engines": {
     "node": ">=22.18.0"
-  },
-  "allowScripts": {
-    "@lynx-js/lynxtron@0.0.9": true,
-    "@lynx-js/lynxtron-builder@0.0.9": true,
-    "electron-winstaller@5.4.0": true
   },
   "dependencies": {
     "@lynx-js/lynx-ui": "^3.135.3",
