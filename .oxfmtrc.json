@@ -2,6 +2,8 @@
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
   "ignorePatterns": [
     ".plans",
+    ".p10-view",
+    ".p10-view-native",
     "dist",
     "dist-electron",
     "node_modules",

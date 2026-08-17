@@ -18,8 +18,9 @@ function readViewportSize(): ViewportSize {
 
 function subscribe(listener: () => void): () => void {
   if (!isBrowser()) return () => {};
-  window.addEventListener("resize", listener);
-  return () => window.removeEventListener("resize", listener);
+  const viewportWindow = globalThis.window;
+  viewportWindow.addEventListener("resize", listener);
+  return () => viewportWindow.removeEventListener("resize", listener);
 }
 
 function readSnapshot(): string {

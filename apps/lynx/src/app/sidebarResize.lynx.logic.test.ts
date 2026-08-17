@@ -17,7 +17,13 @@ describe('Lynx sidebar resize logic', () => {
     ).toBe(300);
     expect(readLynxSidebarPointerX({})).toBeNull();
     expect(isLynxSidebarPrimaryPointer({ button: 0 })).toBe(true);
+    expect(
+      isLynxSidebarPrimaryPointer({ button: 1, buttons: 1 })
+    ).toBe(true);
     expect(isLynxSidebarPrimaryPointer({ button: 2 })).toBe(false);
+    expect(
+      isLynxSidebarPrimaryPointer({ button: 1, buttons: 2 })
+    ).toBe(false);
   });
 
   it('uses the Web desktop bounds and compact offcanvas width', () => {

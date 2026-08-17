@@ -59,16 +59,18 @@ describe("provider tools configuration", () => {
     )?.fields.find((field) => field.kind === "password");
     const openCode = PROVIDER_TOOL_CONFIGS.find((config) => config.provider === "opencode");
     const openCodePassword = openCode?.fields.find((field) => field.kind === "password");
+    const codex = PROVIDER_TOOL_CONFIGS.find((config) => config.provider === "codex");
+    const codexBinary = codex?.fields.find((field) => field.settingsKey === "codexBinaryPath");
 
     expect(kiloPassword?.configuredKey).toBe("kiloServerPasswordConfigured");
     expect(openCodePassword?.configuredKey).toBe("openCodeServerPasswordConfigured");
     expect(openCode?.docs.map((doc) => doc.label)).toEqual(["Install", "Update", "Config"]);
     expect(
       providerToolDescriptionText(
-        PROVIDER_TOOL_CONFIGS[0].fields[0].description,
+        codexBinary?.description ?? [],
       ),
     ).toBe("Leave blank to use codex from your PATH.");
-    expect(PROVIDER_TOOL_CONFIGS[0].fields[0].description).toContainEqual({
+    expect(codexBinary?.description).toContainEqual({
       text: "codex",
       code: true,
     });

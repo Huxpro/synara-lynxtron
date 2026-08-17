@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
+import type { ServerProviderUsageSnapshot } from "@synara/contracts";
 
 import {
   deriveProviderUsageLimitDisplay,
@@ -101,7 +102,7 @@ describe("providerUsageDisplay", () => {
   });
 
   it("keeps prior provider cards when a forced refresh omits a transient result", () => {
-    const previous = [
+    const previous: ServerProviderUsageSnapshot[] = [
       {
         provider: "codex" as const,
         updatedAt: "2026-06-09T12:00:00.000Z",
@@ -119,10 +120,14 @@ describe("providerUsageDisplay", () => {
         status: "ok" as const,
       },
     ];
-    const next = [
+    const next: ServerProviderUsageSnapshot[] = [
       {
-        ...previous[0],
+        provider: "codex",
         updatedAt: "2026-06-09T12:01:00.000Z",
+        limits: [],
+        usageLines: [],
+        source: "codex",
+        status: "ok",
       },
     ];
 

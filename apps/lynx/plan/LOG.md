@@ -5554,7 +5554,7 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   10px。focused tests **6/6**，两端build通过。
 - Usage card content stack此前12px，而Web `space-y-3.5`为14px；调整details owner
   后notice/meters/lines恢复14px rhythm。Header同时补Web的`min-w-0 flex-1 +
-  truncate` title与`shrink-0` pill contract，避免长provider/plan文字相撞。
+truncate` title与`shrink-0` pill contract，避免长provider/plan文字相撞。
   focused tests **6/6**，两端build通过；本轮Usage source matrix无剩余具体差异。
 - Usage line list此前沿用meter column，把label/value纵向堆叠。现拆分Meters与Lines
   owners：line header横向justify-between、item gap2、list gap6；meters与lines同时
@@ -5571,7 +5571,7 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
   Lynx focused tests **6/6**；三端build通过。
 - 该refresh commit hook显示“React Doctor found staged regressions”，但global hook
   对任意nonzero（含tool启动失败）都输出同一文案。实际`pnpm dlx react-doctor@latest
-  --verbose --scope changed`因commit后无changed scope退化为full scan；其
+--verbose --scope changed`因commit后无changed scope退化为full scan；其
   `diagnostics.json`对`SettingsUsagePanel.tsx`与Web
   `ProviderUsageSettingsPanel.tsx`筛选结果均为空，故本slice无Doctor finding。
 - Usage footer从简写说明恢复为Web完整凭据、OAuth token refresh与CLI重新认证文案，
@@ -8587,3 +8587,24 @@ New task` 44px header 与真实 unavailable state 正常，console error/warning
 - exact-owned Native production PID36935加载final bundle并连接58930真实thread/workspace；
   当前Native menu点击未取得exact-client输入证据，因此不冒充认证。证据在
   `shots/2026-08-10/explorer-chat-actions-current/`。
+
+### Native Sidebar real-mouse resize and connection audit
+
+- 纠正早先 synthetic event 结论：真实macOS左键在Desktop Clay路径中即使开启
+  `alignMouseEventWithW3C`仍上报`button=1, buttons=1`。Synara只接受W3C
+  `button=0`，因此sash能hover但mousedown永远不创建resize session。
+- Lynx事件兼容层现在同时接受W3C primary 0和Desktop primary bit组合1/1，
+  其他非primary组合仍拒绝；focused Sidebar tests **8/8**。
+- exact-owned Native真实鼠标拖动使sash从`x=249..259`移到`x=329..339`，
+  `chat_thread_sidebar_width`持久化为336；cold restart后的新PID/新DevTool client
+  恢复同一336px宽度。
+- 上游Desktop W3C button issue已提交：
+  https://github.com/lynx-family/lynx/issues/8664。
+- 10轮独立bootstrap + `orchestration.getSnapshot`全部通过，延迟7..17ms、同一
+  server instance/snapshot sequence；Native reconnect/backoff focused tests
+  **18/18**。本轮未发现连接问题属于Lynx/Lynxtron blocker。
+- Codex canonical refresh为ready/authenticated；Claude CLI可用但本地OAuth仍未完成，
+  UI保持真实Sign in状态。exact-client warning/error console为空。
+- `Cannot find 'error' field in json`定位到Lynx DevTool LogBox摘要解析fallback噪声，
+  未进入应用console、未打开LogBox、未作为产品错误冒充上报。完整证据在
+  `shots/2026-08-18/native-sidebar-resize-connection-audit/`。

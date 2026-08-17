@@ -309,7 +309,7 @@ function AutomationsRouteView() {
             ))}
           </div>
         </div>
-        {triageRuns.length === 0 ? (
+        {triageRows.length === 0 ? (
           <div className="px-2 py-4 text-xs text-muted-foreground">No unread runs.</div>
         ) : (
           <div className="flex flex-col">{triageRows.map(renderTriageRow)}</div>

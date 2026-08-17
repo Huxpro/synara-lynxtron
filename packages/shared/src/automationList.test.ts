@@ -3,6 +3,7 @@ import type {
   AutomationListResult,
   AutomationRun,
 } from "@synara/contracts";
+import { AutomationId, ThreadId } from "@synara/contracts";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
@@ -99,12 +100,12 @@ describe("automation list projection", () => {
       definitions: [
         definition(),
         definition({
-          id: "automation-2",
+          id: AutomationId.makeUnsafe("automation-2"),
           name: "Heartbeat check",
           enabled: false,
           mode: "heartbeat",
-          targetThreadId: "thread-1",
-          sourceThreadId: "thread-source",
+          targetThreadId: ThreadId.makeUnsafe("thread-1"),
+          sourceThreadId: ThreadId.makeUnsafe("thread-source"),
         }),
       ],
       runs: [run()],
@@ -193,7 +194,7 @@ describe("automation list projection", () => {
     const detail = projectAutomationDetail({
       definition: definition({
         mode: "heartbeat",
-        targetThreadId: "thread-1",
+        targetThreadId: ThreadId.makeUnsafe("thread-1"),
         completionPolicy: {
           type: "ai-evaluated",
           stopWhen: "Thread reports COMPLETE",

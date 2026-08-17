@@ -271,6 +271,7 @@ export function projectAutomationDetail(input: {
   readonly targetThreadTitle?: string | null;
   readonly nowMs?: number;
 }): AutomationDetailProjection {
+  const completionPolicy = input.definition.completionPolicy;
   const latestFinishedRun =
     input.runs.find((run) => run.finishedAt !== null || run.startedAt !== null) ??
     null;
@@ -383,11 +384,11 @@ export function projectAutomationDetail(input: {
       value: input.definition.mode === "heartbeat" ? "Heartbeat" : "Standalone",
     },
     ...(input.definition.mode === "heartbeat" &&
-    input.definition.completionPolicy.type === "ai-evaluated"
+    completionPolicy?.type === "ai-evaluated"
       ? [
           {
             label: "Stop when",
-            value: input.definition.completionPolicy.stopWhen,
+            value: completionPolicy.stopWhen,
           },
         ]
       : []),
@@ -453,26 +454,30 @@ export function projectAutomationList(input: {
   const definitionRow = (definition: AutomationDefinition): AutomationDefinitionRow => {
     const latestRun = latestRuns.get(definition.id) ?? null;
     const live =
-      latestRun?.status === "pending" ||
-      latestRun?.status === "claimed" ||
-      latestRun?.status === "running" ||
-      latestRun?.status === "waiting-for-approval";
+      latestRun !== null &&
+      (latestRun.status === "pending" ||
+        latestRun.status === "claimed" ||
+        latestRun.status === "running" ||
+        latestRun.status === "waiting-for-approval");
     const attention = latestRun ? isAutomationTriageRun(latestRun) : false;
+    let meta: string;
+    if (latestRun && live) {
+      meta = automationRunStatusLabel(latestRun.status);
+    } else if (latestRun && attention) {
+      meta =
+        latestRun.status === "succeeded" && latestRun.result?.unread
+          ? "New result"
+          : automationRunStatusLabel(latestRun.status);
+    } else if (definition.enabled) {
+      meta = formatAutomationCadence(definition.schedule);
+    } else {
+      meta = definition.schedule.type === "once" ? "Done" : "Paused";
+    }
     return {
       definition,
       detail: detail(definition),
       latestRun,
-      meta: live
-        ? automationRunStatusLabel(latestRun.status)
-        : attention
-          ? latestRun.status === "succeeded" && latestRun.result?.unread
-            ? "New result"
-            : automationRunStatusLabel(latestRun.status)
-          : definition.enabled
-            ? formatAutomationCadence(definition.schedule)
-            : definition.schedule.type === "once"
-              ? "Done"
-              : "Paused",
+      meta,
       tone: !definition.enabled ? "muted" : live ? "live" : attention ? "attention" : "active",
     };
   };

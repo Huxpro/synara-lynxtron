@@ -1,6 +1,8 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "ignorePatterns": [
+    ".p10-view",
+    ".p10-view-native",
     "dist",
     "dist-electron",
     "node_modules",

@@ -58,7 +58,6 @@ async function loadPdf(input: LocalPdfPreviewInput) {
   const pdfjs = await loadPdfjs();
   const document = await pdfjs.getDocument({
     data,
-    disableWorker: true,
     useSystemFonts: true,
   }).promise;
   if (document.numPages < 1 || document.numPages > MAX_PDF_PAGES) {
@@ -101,7 +100,6 @@ export async function renderLocalPdfPage(
     const pdfjs = await loadPdfjs();
     const document = await pdfjs.getDocument({
       data,
-      disableWorker: true,
       useSystemFonts: true,
     }).promise;
     try {

@@ -77,10 +77,12 @@ export function readLynxSidebarButtons(
 export function isLynxSidebarPrimaryPointer(
   event: LynxSidebarPointerEvent
 ): boolean {
+  const buttons = readLynxSidebarButtons(event);
   return (
     event.touches !== undefined ||
     event.button === undefined ||
-    event.button === 0
+    event.button === 0 ||
+    (event.button === 1 && buttons === 1)
   );
 }
 
