@@ -3517,3 +3517,15 @@ former dynamic-event P1 is no longer a valid blocker.
 - `shared-diff-mode-change-missing`: P1 contribution `1.00 -> 0.00`.
 - Detailed evidence:
   `shots/2026-08-17/standalone-diff-mode-short-height/notes.md`.
+
+## 2026-08-17 Standalone rename Changes at 320x200
+
+- A real staged `git mv` produced the canonical 100%-similarity rename patch,
+  and `git.readWorkingTreeDiff` confirmed that Changes includes it.
+- Compact UI rendered `new/renamed.txt` at `x=56..130.5625` and
+  `from old/name.txt` at `x=138.5625..238.640625`, with an `8px` gap and no
+  clipping or overlap.
+- `standalone-diff-rename-identity`: missing coverage `1.00 -> 0.00`;
+  product-loss contribution `0.00 -> 0.00`.
+- Detailed evidence:
+  `shots/2026-08-17/standalone-diff-rename-short-height/notes.md`.
