@@ -4008,3 +4008,17 @@ former dynamic-event P1 is no longer a valid blocker.
   passed.
 - Detailed evidence:
   `shots/2026-08-17/environment-local-server-feedback-lifecycle/notes.md`.
+
+## 2026-08-17 Four Local Servers with stop alert at 320x200
+
+- Four real rows were combined with the real resistant-server stop alert.
+- Popup remained `288x184 @ y=16..200`; the 23px alert stayed fixed above a
+  `124/174` scrollable list.
+- `environment-local-servers-alert-scroll-composition`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- One unrelated provider-discovery request was pending during the geometry
+  sample, so this cell is not used as a new settled behavior pass.
+- All auxiliary processes were current-run owned and all ports/browser
+  processes were clear at exit.
+- Detailed evidence:
+  `shots/2026-08-17/environment-local-server-alert-combination/notes.md`.
