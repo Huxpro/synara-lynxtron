@@ -3944,3 +3944,17 @@ former dynamic-event P1 is no longer a valid blocker.
   processes.
 - Detailed evidence:
   `shots/2026-08-17/environment-local-servers-refresh/notes.md`.
+
+## 2026-08-17 Environment owned Local Server Stop
+
+- A popup with Synara Vite and one harness-owned Python server received a real
+  Stop activation on the owned row only.
+- The exact owned PID exited, port `58141` was released, and the row disappeared.
+- Header changed to `1 server running`; Synara Vite and the open popup remained.
+- `environment-local-server-owned-stop`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- No unrelated process or Stop control was touched; pending requests returned
+  to zero.
+- Browser lifecycle ended at `sessions: []` with zero owned processes.
+- Detailed evidence:
+  `shots/2026-08-17/environment-local-server-stop/notes.md`.
