@@ -10,6 +10,7 @@ import {
   isComparableImageGeometry,
   median,
   normalizeEvidenceName,
+  reliabilityLossFromPoints,
   resolveEvidenceSourceCommit,
   visualQualityBand,
   visualLossFromSamples,
@@ -153,6 +154,16 @@ test('combines independently bounded loss components', () => {
     visual: 0.2,
     reliability: 0.1,
   });
+});
+
+test('keeps historical reliability normalization stable as future events are added', () => {
+  assert.equal(reliabilityLossFromPoints(1), 0.1);
+  assert.equal(reliabilityLossFromPoints(4), 0.4);
+  assert.equal(reliabilityLossFromPoints(13), 1);
+  assert.throws(
+    () => reliabilityLossFromPoints(1, 0),
+    /capacity must be positive/u
+  );
 });
 
 test('calculates a stable exponential moving average', () => {

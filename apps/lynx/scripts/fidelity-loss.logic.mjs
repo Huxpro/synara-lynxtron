@@ -4,6 +4,7 @@ export const FIDELITY_LOSS_WEIGHTS = Object.freeze({
   visual: 0.35,
   reliability: 0.1,
 });
+export const RELIABILITY_DEBT_CAPACITY = 10;
 
 export function clamp01(value) {
   return Math.min(1, Math.max(0, value));
@@ -135,6 +136,16 @@ export function calculateFidelityLoss({
     loss: weighted * 100,
     components,
   };
+}
+
+export function reliabilityLossFromPoints(
+  points,
+  capacity = RELIABILITY_DEBT_CAPACITY
+) {
+  if (!Number.isFinite(capacity) || capacity <= 0) {
+    throw new RangeError('Reliability debt capacity must be positive');
+  }
+  return clamp01(points / capacity);
 }
 
 export function exponentialMovingAverage(values, alpha = 0.22) {

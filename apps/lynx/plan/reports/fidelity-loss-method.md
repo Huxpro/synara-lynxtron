@@ -139,14 +139,17 @@ Reliability is an explicit commit-bounded ledger, not keyword sentiment:
 
 - viewport hydration race and duplicate resize subscriptions;
 - titlebar controls participating in the drag region;
-- Explorer preview initialization crashing Native startup.
+- Explorer preview initialization crashing Native startup;
+- Native Diff nested wheel routing blocking an overflowing outer scroll view.
 
 Each event has an introducing commit, an optional fixing commit, and severity
 points. The daily end-of-day point includes only events active at that commit.
+Severity points are normalized against the versioned 10-point reliability debt
+capacity. Adding a future event therefore cannot rewrite historical loss.
 
 ## Time and commit binding
 
-The interval contains 1,027 commits. Of those, 687 are evidence-bearing or
+The interval contains 1,029 commits. Of those, 688 are evidence-bearing or
 reliability-event commits:
 
 - a screenshot, metric, note, or generated evidence artifact was added or
@@ -157,7 +160,7 @@ Each of those commits has a measured loss point. A story, client cell, or visual
 pair activates only when the corresponding files first enter Git. A reliability
 event activates and deactivates at its exact introducing and fixing commits.
 
-The chart also retains ten end-of-day anchors for readable labels. They are
+The chart also retains 15 end-of-day anchors for readable labels. They are
 derived from the same commit-point ledger.
 
 The thick trend line is an exponential moving average with `alpha=0.18`. It is

@@ -23,6 +23,7 @@ import {
   isComparableImageGeometry,
   median,
   normalizeEvidenceName,
+  reliabilityLossFromPoints,
   resolveEvidenceSourceCommit,
   visualQualityBand,
   visualLossFromSamples,
@@ -552,11 +553,6 @@ const commitIndexByHash = new Map(
   evidenceCommits.map((commit, index) => [commit.hash, index])
 );
 const firstCommitByFile = firstAddedCommitByFile(days[0], days.at(-1));
-const maximumReliabilityPoints = Math.max(
-  1,
-  ledger.reduce((total, entry) => total + entry.severityPoints, 0) +
-    harnessLedger.reduce((total, entry) => total + entry.severityPoints, 0)
-);
 const allSamples = await visualSamples(
   archive.stories,
   commitIndexByHash,
@@ -686,7 +682,7 @@ for (let commitIndex = 0; commitIndex < evidenceCommits.length; commitIndex += 1
     scopeCoverage,
     clientCompleteness,
     visualLoss: visual.loss,
-    reliabilityLoss: reliabilityPoints / maximumReliabilityPoints,
+    reliabilityLoss: reliabilityLossFromPoints(reliabilityPoints),
   });
   bestLoss = Math.min(bestLoss, calculated.loss);
   const componentContributions = previousComponents
@@ -783,7 +779,7 @@ for (let commitIndex = 0; commitIndex < evidenceCommits.length; commitIndex += 1
           : visual.medianPercent - previousVisual.medianPercent,
     },
     reliability: {
-      loss: reliabilityPoints / maximumReliabilityPoints,
+      loss: reliabilityLossFromPoints(reliabilityPoints),
       activeEvents: events.map(({ introducedMetadata, fixedMetadata, ...event }) => event),
       activeHarnessIssues: harnessEvents.map(
         ({
