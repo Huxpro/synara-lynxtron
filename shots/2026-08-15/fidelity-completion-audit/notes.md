@@ -4509,3 +4509,27 @@ former dynamic-event P1 is no longer a valid blocker.
   agent-browser-owned processes.
 - Detailed evidence:
   `shots/2026-08-17/native-settings-diff-word-wrap-restart/notes.md`.
+
+## 2026-08-17 Native Settings Diff word wrap Off restart consumption
+
+- A new exact-owned Native reverse roundtrip exercised
+  `Off -> On -> Off -> cold restart -> thread Changes`.
+- The exact switch received two real touches at `(847,250)` and returned from
+  `aria-checked=true` / `On` to `aria-checked=false` / `Off`.
+- After closing the first owned app and restarting with the same isolated user
+  data, real Changes/header touches expanded the same `2225`-byte long-line
+  patch.
+- The line container resolved only `SharedPrCodeLines`, without the wrap class,
+  and the addition row returned to `20px` height.
+- `native-settings-diff-word-wrap-off-restart-consumption`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- An incorrect assumption about which Native DOM box carries horizontal width
+  was rejected as harness geometry, not product loss; existing Lynx-for-Web
+  evidence remains the horizontal-overflow authority.
+- Native console had no warning/error entry, temporary JPEG was `1800x1300`,
+  all owned resources were removed, port `58090` was free, and screenshot
+  count remained `100`.
+- Entry/failure/exit `browser:gate` returned `sessions: []` and zero
+  agent-browser-owned processes.
+- Detailed evidence:
+  `shots/2026-08-17/native-settings-diff-word-wrap-off-restart/notes.md`.
