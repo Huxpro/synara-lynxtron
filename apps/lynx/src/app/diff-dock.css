@@ -246,6 +246,14 @@
   gap: 8px;
 }
 
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .DiffDock
+  .DiffDockState {
+  height: 100%;
+  min-height: 100%;
+}
+
 .DiffDockStateText {
   color: var(--muted-foreground);
   font-size: 12px;

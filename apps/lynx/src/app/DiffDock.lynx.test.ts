@@ -18,4 +18,15 @@ describe('Diff Dock chrome fidelity', () => {
     }
     expect(styles).not.toContain('background-color: var(--accent)');
   });
+
+  it('fits standalone state feedback inside a short thread dock', () => {
+    const styles = readFileSync(
+      new URL('./diff-dock.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height[\s\S]*?\.ThreadPage[\s\S]*?> \.DiffDock[\s\S]*?\.DiffDockState\s*\{[^}]*height:\s*100%;[^}]*min-height:\s*100%;/s
+    );
+  });
 });

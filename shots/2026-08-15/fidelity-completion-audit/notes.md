@@ -3428,3 +3428,20 @@ former dynamic-event P1 is no longer a valid blocker.
   `1.00 -> 0.00`.
 - Detailed evidence:
   `shots/2026-08-17/environment-close-containment-short-height/notes.md`.
+
+## 2026-08-17 Standalone Changes error at 320x200
+
+- A valid hydrated Git workspace was removed before opening standalone
+  Changes, producing a real `git.readWorkingTreeDiff` typed failure.
+- The `110px` dock body retained a `180px` state minimum: the error copy ended
+  at `y=201`, Retry at `y=206`, and the state itself at `y=282`.
+- Short-height standalone state feedback now fills its actual scroller:
+  state `295x86 @ y=102..188`, copy ending at `154`, Retry ending at `159`,
+  and scroller `110/110` client/scroll height.
+- A real Retry mouse click increased `git.readWorkingTreeDiff` calls from
+  `1` to `2`; the repeated failure stayed local and pending requests returned
+  to zero.
+- `lynx-standalone-diff-error-short-overflow`: P1 contribution
+  `1.00 -> 0.00`.
+- Detailed evidence:
+  `shots/2026-08-17/standalone-diff-error-short-height/notes.md`.
