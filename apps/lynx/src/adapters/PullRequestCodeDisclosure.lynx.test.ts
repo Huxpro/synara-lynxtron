@@ -126,6 +126,10 @@ describe('Pull Request Code disclosure fidelity', () => {
     );
     expect(composition).toContain('file.binary ? (');
     expect(composition).toContain('Binary file changed.');
+    expect(composition).toContain('file.modeChange ? (');
+    expect(composition).toContain(
+      'File mode changed from {file.modeChange.previous} to {file.modeChange.next}.'
+    );
     expect(composition).not.toContain('{isExpanded ? (');
     expect(composition).toContain('disabled={props.retrying}');
     expect(composition).toContain('onActivate={props.onRetry}');

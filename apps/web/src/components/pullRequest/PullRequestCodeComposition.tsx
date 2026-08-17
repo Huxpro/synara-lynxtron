@@ -118,6 +118,11 @@ export function PullRequestCodeComposition(props: {
                     {file.binary ? (
                       <PullRequestCodeNoticeElement>Binary file changed.</PullRequestCodeNoticeElement>
                     ) : null}
+                    {file.modeChange ? (
+                      <PullRequestCodeNoticeElement>
+                        File mode changed from {file.modeChange.previous} to {file.modeChange.next}.
+                      </PullRequestCodeNoticeElement>
+                    ) : null}
                     <PullRequestCodeLinesElement wordWrap={props.wordWrap ?? false}>
                       {file.lines.slice(0, visibleLineCount).map((line) => (
                         <PullRequestCodeLineElement

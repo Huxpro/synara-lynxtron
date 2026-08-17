@@ -94,6 +94,7 @@ describe("buildPullRequestCodeView", () => {
       additions: 0,
       deletions: 0,
       binary: true,
+      modeChange: null,
       lines: [],
     });
 
@@ -101,6 +102,38 @@ describe("buildPullRequestCodeView", () => {
     expect(portable?.files[0]).toMatchObject({
       path: "assets/data.bin",
       binary: true,
+      lines: [],
+    });
+  });
+
+  it("preserves file mode changes in parsed and portable views", () => {
+    const modePatch = [
+      "diff --git a/scripts/run.sh b/scripts/run.sh",
+      "old mode 100644",
+      "new mode 100755",
+      "",
+    ].join("\n");
+
+    const parsed = buildPullRequestCodeView(modePatch, "pull-request:mode-test");
+    expect(parsed.kind).toBe("files");
+    if (parsed.kind !== "files") return;
+    expect(parsed.files[0]).toMatchObject({
+      path: "scripts/run.sh",
+      binary: false,
+      modeChange: {
+        previous: "100644",
+        next: "100755",
+      },
+      lines: [],
+    });
+
+    const portable = buildPortableUnifiedDiffView(modePatch);
+    expect(portable?.files[0]).toMatchObject({
+      path: "scripts/run.sh",
+      modeChange: {
+        previous: "100644",
+        next: "100755",
+      },
       lines: [],
     });
   });

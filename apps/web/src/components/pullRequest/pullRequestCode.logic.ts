@@ -28,6 +28,10 @@ export interface PullRequestDiffFileView {
   readonly additions: number;
   readonly deletions: number;
   readonly binary: boolean;
+  readonly modeChange: {
+    readonly previous: string;
+    readonly next: string;
+  } | null;
   readonly lines: readonly PullRequestDiffLineView[];
 }
 
@@ -159,6 +163,38 @@ function binaryFilePaths(patch: string | undefined): ReadonlySet<string> {
   return paths;
 }
 
+function fileModeChanges(
+  patch: string | undefined,
+): ReadonlyMap<string, { readonly previous: string; readonly next: string }> {
+  const body = unifiedDiffBody(patch);
+  if (!body) return new Map();
+  const changes = new Map<string, { previous: string; next: string }>();
+  let currentPath: string | null = null;
+  let previousMode: string | null = null;
+  for (const line of body.split(/\r?\n/)) {
+    const fileMatch = /^diff --git a\/(.+) b\/(.+)$/.exec(line);
+    if (fileMatch) {
+      currentPath = stripGitPathPrefix(fileMatch[2] ?? "");
+      previousMode = null;
+      continue;
+    }
+    if (!currentPath) continue;
+    const oldModeMatch = /^old mode (\d+)$/.exec(line);
+    if (oldModeMatch) {
+      previousMode = oldModeMatch[1] ?? null;
+      continue;
+    }
+    const newModeMatch = /^new mode (\d+)$/.exec(line);
+    if (newModeMatch && previousMode) {
+      changes.set(currentPath, {
+        previous: previousMode,
+        next: newModeMatch[1] ?? "",
+      });
+    }
+  }
+  return changes;
+}
+
 /**
  * Pure-string fallback for runtimes where @pierre's parser cannot project a
  * valid unified patch. It deliberately covers the portable model only; Web's
@@ -179,6 +215,10 @@ export function buildPortableUnifiedDiffView(
         additions: number;
         deletions: number;
         binary: boolean;
+        modeChange: {
+          previous: string;
+          next: string;
+        } | null;
         lines: PullRequestDiffLineView[];
         oldLine: number;
         newLine: number;
@@ -195,6 +235,7 @@ export function buildPortableUnifiedDiffView(
       additions: current.additions,
       deletions: current.deletions,
       binary: current.binary,
+      modeChange: current.modeChange,
       lines: current.lines,
     });
   };
@@ -212,6 +253,7 @@ export function buildPortableUnifiedDiffView(
         additions: 0,
         deletions: 0,
         binary: false,
+        modeChange: null,
         lines: [],
         oldLine: 0,
         newLine: 0,
@@ -222,6 +264,22 @@ export function buildPortableUnifiedDiffView(
     if (!current) continue;
     if (/^Binary files .+ and .+ differ$/.test(line)) {
       current.binary = true;
+      continue;
+    }
+    const oldModeMatch = /^old mode (\d+)$/.exec(line);
+    if (oldModeMatch) {
+      current.modeChange = {
+        previous: oldModeMatch[1] ?? "",
+        next: "",
+      };
+      continue;
+    }
+    const newModeMatch = /^new mode (\d+)$/.exec(line);
+    if (newModeMatch && current.modeChange) {
+      current.modeChange = {
+        previous: current.modeChange.previous,
+        next: newModeMatch[1] ?? "",
+      };
       continue;
     }
     const hunkMatch = /^@@ -(\d+)(?:,\d+)? \+(\d+)(?:,\d+)? @@/.exec(line);
@@ -305,6 +363,7 @@ export function buildPullRequestCodeView(
     };
   }
   const binaryPaths = binaryFilePaths(patch);
+  const modeChanges = fileModeChanges(patch);
   const files = renderableFiles.map((file) => {
     const stats = summarizeFileDiffStats([file]);
     const path = resolveFileDiffPath(file);
@@ -316,6 +375,7 @@ export function buildPullRequestCodeView(
       additions: stats.additions,
       deletions: stats.deletions,
       binary: binaryPaths.has(path),
+      modeChange: modeChanges.get(path) ?? null,
       lines: projectFileLines(file),
     };
   });

@@ -3503,3 +3503,17 @@ former dynamic-event P1 is no longer a valid blocker.
   `1.00 -> 0.00`.
 - Detailed evidence:
   `shots/2026-08-17/standalone-diff-binary-short-height/notes.md`.
+
+## 2026-08-17 Standalone file-mode Changes at 320x200
+
+- A real executable-bit change produced the canonical
+  `old mode 100644` / `new mode 100755` patch.
+- Before, the shared portable model exposed only `run.sh +0/-0`; expanding it
+  produced no mode transition.
+- Mode metadata now belongs to the shared parsed/portable model, and the
+  shared composition renders
+  `File mode changed from 100644 to 100755.`.
+- The after notice was fully visible at `269x16 @ y=175..191`.
+- `shared-diff-mode-change-missing`: P1 contribution `1.00 -> 0.00`.
+- Detailed evidence:
+  `shots/2026-08-17/standalone-diff-mode-short-height/notes.md`.
