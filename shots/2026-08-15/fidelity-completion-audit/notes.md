@@ -3624,3 +3624,13 @@ former dynamic-event P1 is no longer a valid blocker.
 - `lynx-diff-file-jump-confirm-missing`: P1 contribution `1.00 -> 0.00`.
 - Detailed evidence:
   `shots/2026-08-17/standalone-diff-file-jump-keyboard/notes.md`.
+
+## 2026-08-17 Standalone Changes ambiguous file confirmation
+
+- Two files matched `target`; a real Enter key left the picker open, retained
+  both rows, and kept both file cards collapsed at `34px`.
+- No arbitrary first result was selected and pending requests remained zero.
+- `lynx-diff-file-jump-ambiguous-confirm`: missing coverage
+  `1.00 -> 0.00`; product-loss contribution `0.00 -> 0.00`.
+- Detailed evidence:
+  `shots/2026-08-17/standalone-diff-file-jump-ambiguous/notes.md`.
