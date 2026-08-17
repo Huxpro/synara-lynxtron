@@ -4378,3 +4378,29 @@ former dynamic-event P1 is no longer a valid blocker.
   count remained `100`.
 - Detailed evidence:
   `shots/2026-08-17/native-environment-owned-local-server-stop/notes.md`.
+
+## 2026-08-17 Native Environment resistant Local Server Stop
+
+- A new exact-owned Native failure-state cell used a current-run-owned server
+  on `58191` that deliberately ignored `SIGTERM`.
+- Exact rendered address identified its own row; only that row's `24x24` Stop
+  control received real touch at `(866,332)`.
+- Host logs proved
+  `server.stopLocalServer { pid: <owned pid>, port: 58191 }`.
+- After complete settlement the PID/port and row remained, the popup stayed
+  open, and the exact server message rendered:
+  `Stop signal sent; the process is still shutting down.`.
+- The same Stop control recovered to `focusable=true`,
+  `aria-disabled=false`, and complete event bindings, preserving retry.
+- `native-environment-resistant-local-server-stop-feedback`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- Exact-title enrichment and premature 2.5-second samples were rejected as
+  harness/readiness boundaries. The retained six-second settlement used exact
+  address ownership.
+- Native console had no warning/error entry, temporary JPEG was `1800x1300`,
+  the resistant process was terminated only during owned cleanup, both owned
+  ports were free, and screenshot count remained `100`.
+- Every failure boundary and exit passed `browser:gate` with `sessions: []`
+  and zero agent-browser-owned processes.
+- Detailed evidence:
+  `shots/2026-08-17/native-environment-resistant-local-server-stop/notes.md`.
