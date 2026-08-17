@@ -19,6 +19,7 @@ import {
   type WebRpcChunkFrame,
   type WebRpcExitFrame,
 } from './webRpcFrame.logic';
+import { isWebSocketOpen } from './webSocketState.logic';
 
 const bundleUrl = './main.web.bundle';
 const nodejsAdapterUrl = './nodejs-adapter-web.js';
@@ -104,6 +105,7 @@ let lastSyntaxHighlightResult: {
 let relayConnectionAttempts = 0;
 let relayRecoveryGeneration = 0;
 let relayRecoveryActive = false;
+const relayLifecycleEvents: Array<Record<string, unknown>> = [];
 let pendingInitialRoute: string | null = null;
 let lastRendererReadyRoute: string | null = null;
 let publishRelayTransportState:
@@ -133,6 +135,7 @@ declare global {
         readonly rendererReadyRoute: string | null;
         readonly lastTransportError: string | null;
         readonly lastRpcError: string | null;
+        readonly lifecycleEvents: readonly Record<string, unknown>[];
       })
     | undefined;
 }
@@ -163,6 +166,18 @@ function describeError(error: unknown): string {
 
 function sleep(milliseconds: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
+function recordRelayLifecycleEvent(
+  event: string,
+  detail: Record<string, unknown> = {}
+): void {
+  relayLifecycleEvents.push({
+    at: Date.now(),
+    event,
+    ...detail,
+  });
+  if (relayLifecycleEvents.length > 80) relayLifecycleEvents.shift();
 }
 
 function positionInitialOverlayWhenReady(position: () => boolean): void {
@@ -312,6 +327,12 @@ function rejectPendingRequests(error: Error): void {
 }
 
 function invalidateRelaySocket(socket: WebSocket, baseUrl: string, error: Error): void {
+  recordRelayLifecycleEvent('invalidate', {
+    activeSocket: relaySocket === socket,
+    baseUrl,
+    message: error.message,
+    readyState: socket.readyState,
+  });
   if (relaySocket && relaySocket !== socket) {
     safeClose(socket);
     return;
@@ -339,6 +360,10 @@ async function openFeatureSocket(baseUrl: string): Promise<WebSocket> {
     'x-synara-server-instance': compatibility.serverInstanceId,
   });
   const socket = await connectWithPath(baseUrl, `/ws?${query}`);
+  recordRelayLifecycleEvent('feature-open', {
+    baseUrl,
+    serverInstanceId: compatibility.serverInstanceId,
+  });
   socket.onmessage = (event) => {
     const message = parseWebRpcResponse(event.data);
     if (!message) return;
@@ -390,6 +415,10 @@ async function openFeatureSocket(baseUrl: string): Promise<WebSocket> {
     pending.reject(error);
   };
   socket.onerror = () => {
+    recordRelayLifecycleEvent('feature-error', {
+      baseUrl,
+      readyState: socket.readyState,
+    });
     relayLastTransportError = 'Synara relay socket failed';
     invalidateRelaySocket(
       socket,
@@ -397,7 +426,13 @@ async function openFeatureSocket(baseUrl: string): Promise<WebSocket> {
       new Error('Synara relay socket failed')
     );
   };
-  socket.onclose = () => {
+  socket.onclose = (event) => {
+    recordRelayLifecycleEvent('feature-close', {
+      baseUrl,
+      code: event.code,
+      reason: event.reason,
+      wasClean: event.wasClean,
+    });
     relayLastTransportError = 'Synara relay socket closed';
     invalidateRelaySocket(
       socket,
@@ -412,12 +447,25 @@ async function connectWithBackoff(baseUrl: string): Promise<WebSocket> {
   let lastError: Error | null = null;
   for (let attempt = 0; attempt <= MAX_RECONNECT_ATTEMPTS; attempt += 1) {
     relayConnectionAttempts += 1;
+    recordRelayLifecycleEvent('connect-attempt', {
+      attempt,
+      baseUrl,
+    });
     try {
       const socket = await openFeatureSocket(baseUrl);
+      recordRelayLifecycleEvent('connect-success', {
+        attempt,
+        baseUrl,
+      });
       relayLastTransportError = null;
       return socket;
     } catch (error) {
       lastError = error instanceof Error ? error : new Error(String(error));
+      recordRelayLifecycleEvent('connect-failure', {
+        attempt,
+        baseUrl,
+        message: lastError.message,
+      });
       relayLastTransportError = lastError.message;
       if (attempt >= MAX_RECONNECT_ATTEMPTS) break;
       await sleep(
@@ -435,7 +483,7 @@ async function ensureRelaySocket(baseUrl: string): Promise<WebSocket> {
   if (
     relaySocket &&
     relaySocketBaseUrl === baseUrl &&
-    relaySocket.readyState === WebSocket.OPEN
+    isWebSocketOpen(relaySocket)
   ) {
     return relaySocket;
   }
@@ -453,11 +501,15 @@ async function ensureRelaySocket(baseUrl: string): Promise<WebSocket> {
   relayReadyBaseUrl = baseUrl;
   try {
     const socket = await pending;
-    if (socket.readyState !== WebSocket.OPEN) {
+    if (!isWebSocketOpen(socket)) {
+      safeClose(socket);
       throw new Error('Synara relay socket closed while connecting');
     }
     relaySocket = socket;
     relaySocketBaseUrl = baseUrl;
+    recordRelayLifecycleEvent('socket-owned', {
+      baseUrl,
+    });
     return socket;
   } finally {
     if (relayReady === pending) {
@@ -968,6 +1020,7 @@ globalThis.__SYNARA_LYNX_RELAY_DIAGNOSTICS__ = () => ({
   rendererReadyRoute: lastRendererReadyRoute,
   lastTransportError: relayLastTransportError,
   lastRpcError: relayLastRpcError,
+  lifecycleEvents: [...relayLifecycleEvents],
   explorerPreviewActionCount,
   lastExplorerPreviewAction,
   interactionEventCount,

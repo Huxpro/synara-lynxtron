@@ -1,0 +1,28 @@
+{
+  "web": {
+    "pageErrors": [],
+    "warnings": []
+  },
+  "lynxBefore": {
+    "pageErrors": [],
+    "warnings": [
+      "using deprecated parameters for the initialization function; pass a single object instead"
+    ],
+    "lastTransportError": null,
+    "lastRpcError": null
+  },
+  "lynxAfter": {
+    "pageErrors": [],
+    "warnings": [
+      "using deprecated parameters for the initialization function; pass a single object instead"
+    ],
+    "lastTransportError": null,
+    "lastRpcError": null
+  },
+  "native": {
+    "client": "localhost:8902",
+    "session": 1,
+    "errors": [],
+    "warnings": []
+  }
+}

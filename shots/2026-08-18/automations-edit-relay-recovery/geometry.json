@@ -1,0 +1,83 @@
+{
+  "cell": {
+    "route": "/automations/automation:e449db20-be07-49c0-a7aa-5ada0f8f66c4",
+    "theme": "dark",
+    "viewport": {
+      "width": 900,
+      "height": 650,
+      "devicePixelRatio": 1
+    },
+    "pngDimensions": {
+      "web": [900, 650],
+      "lynxBefore": [900, 650],
+      "lynxAfter": [900, 650]
+    }
+  },
+  "web": {
+    "details": {
+      "x": 597,
+      "y": 209,
+      "width": 287,
+      "height": 342,
+      "bottom": 551
+    },
+    "maxIterations": {
+      "x": 800,
+      "y": 494,
+      "width": 82,
+      "height": 28,
+      "bottom": 522,
+      "value": "250"
+    },
+    "stopWhen": {
+      "x": 717,
+      "y": 464,
+      "width": 165,
+      "height": 28,
+      "bottom": 492
+    }
+  },
+  "lynxBefore": {
+    "connectionAttempts": 2,
+    "activeBaseUrl": null,
+    "readyBaseUrl": null,
+    "socketState": null,
+    "offlineBanner": true
+  },
+  "lynxAfter": {
+    "connectionAttempts": 1,
+    "activeBaseUrl": "ws://127.0.0.1:58090",
+    "readyBaseUrl": null,
+    "socketState": 1,
+    "offlineBanner": false,
+    "edit": {
+      "x": 716.03125,
+      "y": 8.5,
+      "width": 44.453125,
+      "height": 28
+    },
+    "dialog": {
+      "x": 170,
+      "y": 109,
+      "width": 560,
+      "height": 432,
+      "bottom": 541
+    },
+    "panel": {
+      "x": 187,
+      "y": 166,
+      "width": 526,
+      "height": 312,
+      "bottom": 478,
+      "scrollHeight": 312,
+      "clientHeight": 312
+    },
+    "footer": {
+      "x": 187,
+      "y": 492,
+      "width": 526,
+      "height": 32,
+      "bottom": 524
+    }
+  }
+}

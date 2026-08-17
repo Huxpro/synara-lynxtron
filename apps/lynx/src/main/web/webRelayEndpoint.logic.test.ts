@@ -81,6 +81,9 @@ describe('Lynx-for-Web relay endpoint', () => {
     expect(host).toContain('startRelayRecovery(baseUrl);');
     expect(host).toContain('startRelayRecovery(configuredRelayBaseUrl());');
     expect(host).toContain('invalidateRelaySocket(socket, baseUrl, error);');
-    expect(host).toContain("socket.readyState !== WebSocket.OPEN");
+    expect(host).toContain("import { isWebSocketOpen } from './webSocketState.logic';");
+    expect(host).toContain('if (!isWebSocketOpen(socket))');
+    expect(host).toContain('isWebSocketOpen(relaySocket)');
+    expect(host).not.toContain('WebSocket.OPEN');
   });
 });

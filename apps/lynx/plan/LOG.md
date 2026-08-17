@@ -8641,3 +8641,26 @@ truncate` title与`shrink-0` pill contract，避免长provider/plan文字相撞�
 - 五种产品scroll-view配置已在旧轮逐项排除且全部revert；P1 contribution保持
   `1.00 -> 1.00`，不通过改权重或降级classification关闭。上游Lynx blocker：
   https://github.com/lynx-family/lynx/issues/8665。
+
+### Automations Edit Lynx-for-Web relay recovery
+
+- 新 scope：同一 canonical heartbeat Automation、dark、`900x650`，Web authority
+  通过真实列表行进入 detail 并完成 Max iterations `250 -> 100 -> 250` mutation
+  roundtrip；Lynx-for-Web current pre-fix bundle稳定显示`Synara is offline.`，
+  Edit/Delete不可达。
+- 严格排除stale bundle harness mismatch后，current build仍复现：runtime endpoint为
+  `ws://127.0.0.1:58090`，两次连接后active/ready socket均为null、无transport/RPC
+  error。手工同browser/bootstrap/feature协议保持OPEN并返回snapshot sequence183，
+  排除server、protocol和browser network。
+- bounded lifecycle diagnostics定位为
+  `connect-attempt -> feature-open -> connect-success`后缺`socket-owned`。根因是
+  Web host用`WebSocket.OPEN`判断Lynx Web兼容socket；实例遵守WHATWG
+  `readyState=1`，但host bundle不能依赖构造器静态属性，真实open socket被拒绝且泄露。
+- 修复改为纯逻辑`isWebSocketOpen({readyState})`使用协议值1，并显式关闭ownership
+  transfer拒绝的socket；保留80条bounded lifecycle ring供后续连接审计。修复后一次
+  handshake即`socket-owned`，active relay为58090，Edit/Delete/Resume恢复，
+  P1 contribution `1.00 -> 0.00`。
+- Web/Lynx retained frames均`900x650`；Lynx真实坐标点击Edit后dialog
+  `560x432`、panel `526x312`且`scrollHeight=clientHeight=312`、footer完全可达。
+  Native exact PID51253 / `localhost:8902/session1` warning/error console为空。
+  证据：`shots/2026-08-18/automations-edit-relay-recovery/`。

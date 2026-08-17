@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "lynx-web-relay-open-state-misclassified",
+      "severity": "P1",
+      "classification": "product-reliability-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx-for-Web relay socket ownership"
+    },
+    {
+      "id": "automations-edit-first-stale-bundle",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx-for-Web build identity preflight"
+    },
+    {
+      "id": "automations-edit-native-inline-field-parity",
+      "severity": "coverage",
+      "classification": "missing-coverage",
+      "before": 1,
+      "after": 1,
+      "owner": "Automation detail editing parity"
+    }
+  ]
+}
