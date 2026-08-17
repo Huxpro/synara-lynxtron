@@ -3927,3 +3927,20 @@ former dynamic-event P1 is no longer a valid blocker.
   passed; all owned server/browser processes were removed.
 - Detailed evidence:
   `shots/2026-08-17/environment-local-servers-multi-short-height/notes.md`.
+
+## 2026-08-17 Environment Local Servers dynamic refresh
+
+- The popup remained open through a real `3 -> 4 -> 3` server sequence.
+- Starting a third harness-owned Python server and activating rendered Refresh
+  updated the header to `4 servers running` and added the correct row.
+- After the harness stopped only that owned process, a second real Refresh
+  returned the popup to the original three rows.
+- Popup mount count stayed one and pending requests returned to zero after each
+  transition.
+- `environment-local-servers-dynamic-refresh`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- No Stop action or unrelated process termination occurred.
+- Failure/retry/exit browser gates returned `sessions: []` with zero owned
+  processes.
+- Detailed evidence:
+  `shots/2026-08-17/environment-local-servers-refresh/notes.md`.
