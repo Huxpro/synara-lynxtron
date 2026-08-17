@@ -3474,3 +3474,17 @@ former dynamic-event P1 is no longer a valid blocker.
   claimed pass.
 - Detailed evidence:
   `shots/2026-08-17/standalone-diff-populated-short-height/notes.md`.
+
+## 2026-08-17 Standalone Changes wheel attribution
+
+- A 30-line expanded patch produced a real `110/796` client/scroll-height
+  range, with the second file header at `y=829..861`.
+- A real `agent-browser mouse wheel 220` left `scrollTop=0` and both file
+  headers at identical positions in Lynx-for-Web.
+- This is not promoted to a Native product loss: the verification contract
+  requires exact-owned Native certification for wheel/gesture and native
+  scroll-view semantics.
+- `standalone-diff-native-wheel`: missing coverage remains `1.00`;
+  product-loss contribution remains unscored.
+- Detailed evidence:
+  `shots/2026-08-17/standalone-diff-wheel-attribution/notes.md`.
