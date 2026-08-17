@@ -549,6 +549,13 @@
   border-radius: 6px;
 }
 
+.EnvironmentLocalServersFeedback {
+  padding: 4px 8px;
+  color: var(--destructive);
+  font-size: 10px;
+  line-height: 15px;
+}
+
 .EnvironmentLocalServersEmpty {
   padding: 12px;
   color: var(--muted-foreground);

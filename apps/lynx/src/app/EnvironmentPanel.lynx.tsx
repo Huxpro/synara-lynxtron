@@ -286,6 +286,7 @@ function EnvironmentLocalServers(props: {
   const { svgColors } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
   const [stoppingPid, setStoppingPid] = useState<number | null>(null);
+  const [stopFeedback, setStopFeedback] = useState<string | null>(null);
   const localServersQuery = useQuery({
     queryKey: ['environment-local-servers'],
     queryFn: () => {
@@ -303,12 +304,18 @@ function EnvironmentLocalServers(props: {
     'background only';
     if (!server.isStoppable || stoppingPid !== null) return;
     setStoppingPid(server.pid);
+    setStopFeedback(null);
     try {
-      await stopLocalServer({
+      const result = await stopLocalServer({
         pid: server.pid,
         port: server.ports[0] ?? 1,
       });
+      if (!result.stopped) {
+        setStopFeedback(result.message ?? 'Couldn’t stop local server.');
+      }
       await localServersQuery.refetch();
+    } catch {
+      setStopFeedback('Couldn’t stop local server.');
     } finally {
       setStoppingPid(null);
     }
@@ -358,6 +365,14 @@ function EnvironmentLocalServers(props: {
             />
           </MenuItem>
         </view>
+        {stopFeedback ? (
+          <text
+            className="EnvironmentLocalServersFeedback"
+            accessibility-role="alert"
+          >
+            {stopFeedback}
+          </text>
+        ) : null}
         {localServersQuery.isPending ? (
           <text className="EnvironmentLocalServersEmpty">
             Scanning local ports

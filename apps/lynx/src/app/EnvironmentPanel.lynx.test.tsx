@@ -235,6 +235,15 @@ describe('Lynx Environment panel', () => {
     expect(panelSource).not.toContain('EnvironmentChangesPopup');
     expect(panelSource).not.toContain('EnvironmentChangesFilePath');
     expect(panelSource).toContain('stopLocalServer({');
+    expect(panelSource).toContain('const [stopFeedback, setStopFeedback]');
+    expect(panelSource).toContain(
+      "setStopFeedback(result.message ?? 'Couldn’t stop local server.')"
+    );
+    expect(panelSource).toContain(
+      "setStopFeedback('Couldn’t stop local server.')"
+    );
+    expect(panelSource).toContain('className="EnvironmentLocalServersFeedback"');
+    expect(panelSource).toContain('accessibility-role="alert"');
     expect(panelSource).toContain('localServerPrimaryLabel(server)');
     expect(panelSource).toContain('localServerAddressLabel(server)');
     expect(panelSource).toContain('fetchServerConfig()');

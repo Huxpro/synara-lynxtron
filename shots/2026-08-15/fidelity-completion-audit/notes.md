@@ -3972,3 +3972,24 @@ former dynamic-event P1 is no longer a valid blocker.
 - Browser lifecycle ended at `sessions: []` with zero owned processes.
 - Detailed evidence:
   `shots/2026-08-17/environment-local-server-stale-stop/notes.md`.
+
+## 2026-08-17 Environment Local Server stop failure feedback
+
+- A harness-owned server deliberately ignored SIGTERM and returned
+  `Stop signal sent; the process is still shutting down.`.
+- Before, Environment discarded the normal `stopped:false` result; the row
+  remained with no user-visible reason.
+- Stop feedback now preserves server messages, uses stable fallback copy for
+  transport failure, and publishes an accessibility alert while the popup
+  remains open.
+- Final runtime showed the exact server message, role `alert`, contained
+  `184px` popup, retained row, and zero pending/RPC/page errors.
+- `lynx-environment-local-server-stop-feedback-missing`: P1 contribution
+  `1.00 -> 0.00`.
+- Browser sessions always returned to zero. Current-run Synara child processes
+  that orphaned after dev-runner exit were separately identified by exact PID,
+  ancestry, command, and port before cleanup.
+- Focused tests passed `8/8`; Web, Lynx-for-Web, and Native/Desktop builds
+  passed.
+- Detailed evidence:
+  `shots/2026-08-17/environment-local-server-stop-feedback/notes.md`.
