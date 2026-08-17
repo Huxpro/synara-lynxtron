@@ -10,10 +10,15 @@
   `LynxWindow.getContentBounds()` / `setContentSize()`. Synara now hydrates from
   content bounds and publishes every host resize through `viewport:resize`,
   while also listening to the canonical Lynx `onWindowResize` event.
-- Native RSpeedy output does not retain the existing Settings `@media
-  (max-width: 640px)` rule, and the Lynx environment intentionally has no
-  `matchMedia`. Native responsive behavior therefore uses user-space viewport
-  state projected to stable root classes, not browser CSS media queries.
+- With the default config, Native RSpeedy output does not retain the existing
+  Settings `@media (max-width: 640px)` rule, and the Lynx environment has no
+  runtime `matchMedia`.
+- A 2026-08-18 production flag experiment proved that
+  `enableCSSRule:true` makes Desktop retain `@media` / `@supports` and
+  dynamically re-evaluate a `max-width:1000px` rule across a real
+  `1100 -> 900 -> 1100` resize. The product config remains unchanged pending a
+  full responsive/motion regression, so Native responsive behavior continues
+  to use user-space viewport state projected to stable root classes.
 
 ## Shared API
 
@@ -77,11 +82,11 @@ scroll.
 
 Exact-owned Native production evidence:
 
-| Window | Band | Sidebar | Sidebar scroll | Main | Composer |
-| --- | --- | ---: | ---: | ---: | ---: |
-| 900x650 | medium | 256 | 560 high | 644 | 620 |
-| 1024x700 | wide | 256 | independent | 768 | 736 |
-| 1440x900 | wide | 256 | 810 high | 1184 | 736 |
+| Window   | Band   | Sidebar | Sidebar scroll | Main | Composer |
+| -------- | ------ | ------: | -------------: | ---: | -------: |
+| 900x650  | medium |     256 |       560 high |  644 |      620 |
+| 1024x700 | wide   |     256 |    independent |  768 |      736 |
+| 1440x900 | wide   |     256 |       810 high | 1184 |      736 |
 
 The 900px run started from a previously persisted 1280px window and changed to
 900px after renderer readiness. The root changed from `wide/1280` to

@@ -148,7 +148,11 @@
 - `shots/2026-08-14/new-thread-defaults/visual-matrix/web-wide-light.png`
 - `shots/2026-08-14/new-thread-defaults/visual-matrix/web-compact-light.png`
 - `shots/2026-08-14/new-thread-defaults/visual-matrix/web-compact-dark.png`
-- `shots/2026-08-14/new-thread-defaults/visual-matrix/lynx-wide-light-before.png`
 - `shots/2026-08-14/new-thread-defaults/visual-matrix/lynx-wide-light-after.png`
 - `shots/2026-08-14/new-thread-defaults/visual-matrix/lynx-compact-dark-after.png`
 - `shots/2026-08-14/new-thread-defaults/visual-matrix/lynx-compact-dark-input-after.png`
+
+Screenshot-budget rotation (2026-08-18): the superseded
+`lynx-wide-light-before.png` frame was removed after
+`lynx-wide-light-after.png` became the retained final wide evidence. The
+removed bytes remain available in Git history.

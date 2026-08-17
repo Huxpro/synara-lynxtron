@@ -5,10 +5,13 @@
 ## 已知模式（来自文档调研，待代码验证后标注 ✅）
 
 ### P-01 测量→渲染（getBoundingClientRect→setState）
+
 Web 写法同步测量后 setState。Lynx 中 `NodesRef.invoke({method:'boundingClientRect'})` 与 `lynx.createSelectorQuery()` 均为 **async 桥调用**；同步读取只能在 MTS（`'main thread'` 函数 + `main-thread:ref` / `main-thread:bindlayoutchange`）内。模式：能移入 MTS 的移入 MTS；否则接受一帧异步。
 
 ### P-02 滚动跟随（transcript 底部吸附）✅（P0-S4 实测，2026-07-27）
+
 `<list>` 语义差异全部坐实：子组件 JS 实例**提前全量创建**（150/150），`useEffect`/ref ≠ UI 可见（attachedCells 仅 9）。**已验证模式**（代码：spikes/p0-s1/app/src/app/Transcript.tsx）：
+
 - 状态机：`pinnedRef` + `bindscroll` 中 `eventSource===2(SCROLL) && scrollTop+listHeight < scrollHeight-30` 脱离、回底重吸附；追加后在 items effect 里 `scrollToPosition({index:last, alignTo:'bottom'})`。
 - **瞬时程序滚动报 LAYOUT(1) 不会误触发脱离**（设计安全）；**smooth:true 报 SCROLL(2)**，程序动画滚动要注意会走用户同门。
 - `scroll-event-throttle` 默认 200ms 太粗 → 设 16–32ms，handler 保持廉价（事件跨线程）。
@@ -16,21 +19,27 @@ Web 写法同步测量后 setState。Lynx 中 `NodesRef.invoke({method:'bounding
 - `estimated-main-axis-size-px`（list-item 属性）必给。MTS 化（P-03）留待帧率不足时升级。
 
 ### P-03 事件处理跨线程延迟
+
 普通 bind 事件在 background 线程执行 → 手势跟随 UI 必卡。手势/拖拽相关全部用 `main-thread:bind*` + MTS；捕获变量须 JSON 可序列化且仅 re-render 时同步；MTS 局部状态用 MainThreadRef。
 
 ### P-04 useLayoutEffect
+
 降级为异步 useEffect。同步 layout-read-then-render 模式不存在；用 `main-thread:bindlayoutchange` 或接受异步。
 
 ### P-05 'background only' 边界
+
 事件处理器、effects、refs、`lynx.*`/NativeModules/fetch/timers 调用必须 background-only；首屏代码双线程各跑一次——render 期副作用会双发或崩溃。handler 作为 prop 传递、包进自定义 hook 时编译器推断有缺口，需显式 `'background only'` 指令。
 
 ### P-06 无 DOM 检测分支
+
 库若 feature-detect `typeof document === 'undefined'` 会走 SSR 分支。TanStack Router 需显式 `isServer: false` + `url-search-params-polyfill` + `react$/compat` alias。
 
 ### P-08 路由：TanStack memory history + Lynx 渲染层 ✅（P2-V1 实测）
+
 `@tanstack/react-router` 组件层在本 Lynx 构建崩溃（`snapshotPatchApply failed: ctx not found, snapshot type: 'wrapper'`，Suspense/transition 机制不兼容）；`<Link>` 渲染原生 `<a>`（非法元素）。模式：`createMemoryHistory`（@tanstack/history，纯 JS ✅）+ `history.subscribe` 驱动 `useState` 路由态 + 手写 pathname→params 匹配 + `bindtap` 导航（`history.push`）。react$ alias 用 compat shim（`export *` + default 透传 + `use=undefined`）满足 Rspack 静态链接（TanStack `React["use"]` 动态探测、zustand `import React from 'react'`）。URLSearchParams polyfill 首行加载。
 
 ### P-09 Lynxtron 视觉验证陷阱 ✅（P2-V1 实测）
+
 devtool `take-screenshot` 对**不可见/未绘制**的 Lynx 窗口会超时挂起（表现酷似"白屏+无 console"，曾被误判为渲染崩溃整轮 bisect）。判定渲染问题：先 `screencapture` 看整屏（或 `alwaysOnTop`）；devtool 端口按进程 lsof 核实（多 lynxtron app 同名注册）；rspeedy dev 端口被占会自增，模板 main.ts 的 dev URL 硬编码 5969——端口错开会**加载到别家 bundle**。
 
 ### P-10 同步 KV port + 异步 host 持久化 ✅（P2-V2 实测）
@@ -490,20 +499,29 @@ file-bundle DevTool 实机正常，Threads gate 14.41%。完整 attachment/model
 snapshot 时补展开/折叠截图，或用随后删除的静态 fixture 专门命中。不得把空数据截图写成
 完整 disclosure 交互验收。
 
-### P-45 theme variant 不能靠 root inline/class custom properties 切换 ✅（P6-C1）
+### P-45 root inline theme vars 需要 `enableCSSInlineVariables` ✅（P6-C1，2026-08-18 翻案）
 
-Lynx Desktop 4.1 能读取 stylesheet `:root` 上的 concrete custom properties，但两种 Web
-式动态投影都不成立：ReactLynx root 的 `style={{"--background": ...}}` 不改变后代
-tokens；由同一 `theme.logic` 生成的
-`.SliceRoot--theme-dark { --background: ... }` 也不会覆盖现有 `:root` 值。把 Web macOS
-透明 material 原样投影时，dark white foreground 会落在 Lynxtron 白 host 上，截图看似
-空白但 console 正常；切 opaque 只能消除透明设计意图，不能修复 scoped var。
+原 P6-C1 / Lynxtron 0.0.7 实验能读取 stylesheet `:root` 上的 concrete custom
+properties，但 ReactLynx root 的 `style={{"--background": ...}}` 不改变后代 tokens；
+当时 class-scoped `.SliceRoot--theme-dark { --background: ... }` 也未覆盖 `:root`。
+把 Web macOS 透明 material 原样投影时，dark white foreground 会落在 Lynxtron 白 host
+上，截图看似空白但 console 正常。因此当时以 direct-value selector generator 收口是正确
+的止血方案。
 
-因此 theme 复用要分成两层：状态/颜色数学仍来自 Web `theme.logic`；Lynx CSS 生成器把
-最终 dark 值直接写到每个实际 selector/property（不依赖变量继承），或等待上游动态 root
-variable API。探针产品代码和生成物已全部撤回，阴性证据为
-`current-fixes/lynx-shared-theme-dark-probe.png`（透明假白屏）与
-`lynx-shared-theme-dark-generated.png`（class scoped vars 仍是 light）。
+2026-08-18 用 Lynxtron `0.0.12-dev` / DevTool SDK 4.2 / production bundle 重做显式
+off/on 配对后结论翻案：
+
+- `enableCSSInlineVariables:false`：inline 请求从红切蓝，后代始终读取 `:root` 绿；
+- `enableCSSInlineVariables:true`：后代初始精确为红，真实 tap 后动态变蓝；
+- class-scoped override 在 flag off/on 两轮都独立由绿变紫，说明当前 runtime 已支持该
+  路径，且它不归 inline flag 控制。
+
+因此能力缺口应改判为「默认关闭 + Desktop 平台文档缺失」，不是引擎完全不支持。产品
+config 仍保持原状：正式开启前必须跑 theme/density/composer 全屏视觉回归；删除
+`src/generated/native-theme-variables.css` 及其生成器是独立大工程，不能在本实验 issue
+顺手完成。探针产品代码已撤回；新证据为
+`shots/2026-08-18/flag-experiments/enableCSSInlineVariables/off-on.png` 与同目录
+`results.json`，旧阴性截图只保留为历史上下文。
 
 ### P-46 搜索先共享 ranking model，再扩 bounded data projection ✅（P6-C1）
 
@@ -808,6 +826,7 @@ content frame 共享过来，picker/navigation 会从滚动区外移入滚动区
 - 2026-07-27 P5-R5：P-26/P-27 标记 ✅；真实 Settings Behavior panel source gate=75%，双尺寸最大 anchor delta=1.75px；证据 `slice/docs/p5-r5-fidelity-gate.md`。
 
 ### P-07 后台线程网络 API 命名空间 ✅（P0-S2 实测）
+
 `fetch`/`EventSource` 挂在 `lynx.*`（`lynx.fetch` ✅、`lynx.EventSource` 存在但 0.0.7 消息不派发），`globalThis.fetch/WebSocket` 均 undefined；WS 用 `@lynx-js/websocket`（内部即 LynxWebSocketModule）。库代码若直接引用全局 fetch/WebSocket 需在 L1 port 收口。
 
 ### P-68 平台 port 必须双线程可导入，否则整片共享图无法进 compiler ✅（P6-C1）

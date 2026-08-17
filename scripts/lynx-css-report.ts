@@ -147,7 +147,12 @@ const PROP_RULES: Array<{
     note: "text-transform 缺",
   },
   {
-    match: (p) => p === "outline" || p === "outline-width" || p === "outline-style" || p === "outline-color" || p === "outline-offset",
+    match: (p) =>
+      p === "outline" ||
+      p === "outline-width" ||
+      p === "outline-style" ||
+      p === "outline-color" ||
+      p === "outline-offset",
     key: "prop:outline",
     state: "🔧",
     note: "outline 缺 — focus ring 接受差异/box-shadow 近似",
@@ -177,13 +182,16 @@ const PROP_RULES: Array<{
     note: "filter 仅 blur/grayscale/brightness/contrast/saturate — 逐值核对",
   },
   {
-    match: (p, v) => p === "display" && !["flex", "grid", "none", "linear", "relative"].includes(v.trim()),
+    match: (p, v) =>
+      p === "display" && !["flex", "grid", "none", "linear", "relative"].includes(v.trim()),
     key: "prop:display",
     state: "🔧",
     note: "display 仅 linear/flex/grid/relative/none — 默认 linear 布局注意",
   },
   {
-    match: (p, v) => (p === "align-items" || p === "align-self") && ["normal", "self-start", "self-end"].includes(v.trim()),
+    match: (p, v) =>
+      (p === "align-items" || p === "align-self") &&
+      ["normal", "self-start", "self-end"].includes(v.trim()),
     key: "prop:align-normal",
     state: "🔧",
     note: "align normal/self-start/end 缺",
@@ -231,11 +239,11 @@ function scanAtRule(name: string, params: string): void {
   if (name === "media") {
     add({
       key: `at:media:${params.trim()}`,
-      state: "⬆️",
+      state: "🔧",
       kind: "at-rule",
       item: `@media ${params.trim()}`,
       context: params,
-      note: "无媒体查询 — 构建期静态化（synara 4 处全为 prefers-reduced-motion）",
+      note: "Desktop 需 enableCSSRule:true；宽度查询与 resize 重求值已实证，system preference signal 仍需 host 验证",
     });
   } else if (name === "supports") {
     add({
@@ -244,7 +252,7 @@ function scanAtRule(name: string, params: string): void {
       kind: "at-rule",
       item: "@supports",
       context: params,
-      note: "未文档化 — 构建期展开",
+      note: "Desktop 需 enableCSSRule:true；恒真 display:flex 已实证命中",
     });
   } else if (name === "font-face") {
     add({
@@ -305,8 +313,17 @@ for (const rel of CSS_FILES) {
 findings.sort((a, b) => a.key.localeCompare(b.key));
 
 if (mode === "baseline") {
-  fs.writeFileSync(BASELINE_PATH, JSON.stringify(findings.map((f) => f.key), null, 2) + "\n");
-  console.log(`baseline written: ${findings.length} findings -> ${path.relative(REPO_ROOT, BASELINE_PATH)}`);
+  fs.writeFileSync(
+    BASELINE_PATH,
+    JSON.stringify(
+      findings.map((f) => f.key),
+      null,
+      2,
+    ) + "\n",
+  );
+  console.log(
+    `baseline written: ${findings.length} findings -> ${path.relative(REPO_ROOT, BASELINE_PATH)}`,
+  );
   process.exit(0);
 }
 
@@ -316,14 +333,18 @@ if (mode === "check") {
   const added = findings.filter((f) => !baselineSet.has(f.key));
   const removed = baseline.filter((k) => !seen.has(k));
   if (added.length > 0) {
-    console.error(`lynx-css-report: ${added.length} NEW unsupported finding(s) — decision required:`);
+    console.error(
+      `lynx-css-report: ${added.length} NEW unsupported finding(s) — decision required:`,
+    );
     for (const f of added) console.error(`  ${f.state} ${f.key}  ${f.context}  (${f.note})`);
     if (removed.length > 0) {
       console.error(`(${removed.length} finding(s) resolved — rerun with --baseline to shrink)`);
     }
     process.exit(1);
   }
-  console.log(`lynx-css-report: OK (${findings.length} findings, all in baseline; ${removed.length} resolved)`);
+  console.log(
+    `lynx-css-report: OK (${findings.length} findings, all in baseline; ${removed.length} resolved)`,
+  );
   process.exit(0);
 }
 
@@ -348,10 +369,13 @@ const lines: string[] = [
   "| 状态 | 类别 | 条目 | 语境示例 | 方案 |",
   "|---|---|---|---|---|",
   ...findings.map(
-    (f) => `| ${f.state} | ${f.kind} | \`${f.item}\` | \`${f.context.replace(/\|/g, "\\|")}\` | ${f.note} |`,
+    (f) =>
+      `| ${f.state} | ${f.kind} | \`${f.item}\` | \`${f.context.replace(/\|/g, "\\|")}\` | ${f.note} |`,
   ),
   "",
 ];
 fs.mkdirSync(path.dirname(REPORT_PATH), { recursive: true });
 fs.writeFileSync(REPORT_PATH, lines.join("\n"));
-console.log(`report written: ${findings.length} findings -> ${path.relative(REPO_ROOT, REPORT_PATH)}`);
+console.log(
+  `report written: ${findings.length} findings -> ${path.relative(REPO_ROOT, REPORT_PATH)}`,
+);

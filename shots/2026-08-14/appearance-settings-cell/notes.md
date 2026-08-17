@@ -93,7 +93,6 @@
 - `web-light-1280x820.png`
 - `lynx-light-1280x820.png`
 - `web-light-390x844.png`
-- `lynx-light-390x844.png`
 - `lynx-light-390x844-after.png`
 - `web-geometry.json`
 - `lynx-geometry.json`
@@ -104,3 +103,8 @@
 - `lynx-console.txt`
 - `web-compact-console.txt`
 - `lynx-compact-after-console.txt`
+
+Screenshot-budget rotation (2026-08-18): the superseded
+`lynx-light-390x844.png` before frame was removed after
+`lynx-light-390x844-after.png` became the retained final compact evidence. The
+removed bytes remain available in Git history.

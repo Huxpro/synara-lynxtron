@@ -1,0 +1,1687 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-08-18T01:15:30+09:00",
+  "environment": {
+    "os": "macOS",
+    "architecture": "arm64",
+    "lynxtron": "0.0.12-dev",
+    "lynxSdk": "4.2 (DevTool reported)",
+    "typeConfig": "4.1.1",
+    "reactLynxPlugin": "0.18.1",
+    "build": "production",
+    "viewport": {
+      "wide": [1100, 900],
+      "narrow": [900, 900],
+      "devicePixelRatio": 2
+    }
+  },
+  "rounds": {
+    "inline-off": {
+      "experiment": "inline:off",
+      "bundleSha256": "7ac971a3c105fe722ed80a7eabb955f8a1e24909415018e127f971f471e18c91",
+      "staging": "byte-identical",
+      "consoleErrorWarningBytes": 1,
+      "dimensions": {
+        "initial": [2200, 1800],
+        "resized": [1800, 1800],
+        "toggled": [2200, 1800]
+      },
+      "states": {
+        "initial": {
+          "inline": {
+            "label": "RED INLINE VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "classScoped": {
+            "label": "GREEN ROOT VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "media": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "supports": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "reducedMotion": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "resizeMedia": {
+            "label": "Resize to 900px",
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "originCenter": {
+            "quad": [58, 621, 72, 621, 72, 635, 58, 635],
+            "center": [65, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": "[50,11,50,11]"
+            }
+          },
+          "originPercent": {
+            "quad": [128, 621, 142, 621, 142, 635, 128, 635],
+            "center": [135, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": "[50,11,50,11]"
+            }
+          }
+        },
+        "resized": {
+          "inline": {
+            "label": "RED INLINE VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "classScoped": {
+            "label": "GREEN ROOT VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "media": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "supports": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "reducedMotion": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "resizeMedia": {
+            "label": "Resize to 1100px",
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "originCenter": {
+            "quad": [58, 621, 72, 621, 72, 635, 58, 635],
+            "center": [65, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": "[50,11,50,11]"
+            }
+          },
+          "originPercent": {
+            "quad": [128, 621, 142, 621, 142, 635, 128, 635],
+            "center": [135, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": "[50,11,50,11]"
+            }
+          }
+        },
+        "toggled": {
+          "inline": {
+            "label": "BLUE INLINE VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "classScoped": {
+            "label": "PURPLE CLASS VALUE",
+            "style": {
+              "background-color": "rgb(126,34,206)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "media": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "supports": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "reducedMotion": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "resizeMedia": {
+            "label": "Resize to 900px",
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "originCenter": {
+            "quad": [58, 621, 58, 635, 44, 635, 44, 621],
+            "center": [51, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "rotate(90deg)",
+              "transform-origin": "[50,11,50,11]"
+            }
+          },
+          "originPercent": {
+            "quad": [128, 621, 128, 635, 114, 635, 114, 621],
+            "center": [121, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "rotate(90deg)",
+              "transform-origin": "[50,11,50,11]"
+            }
+          }
+        }
+      }
+    },
+    "inline-on": {
+      "experiment": "inline:on",
+      "bundleSha256": "b396573df0635a740967da2d297da77b3387112536fe71271cfb6daca5053cc5",
+      "staging": "byte-identical",
+      "consoleErrorWarningBytes": 1,
+      "dimensions": {
+        "initial": [2200, 1800],
+        "resized": [1800, 1800],
+        "toggled": [2200, 1800]
+      },
+      "states": {
+        "initial": {
+          "inline": {
+            "label": "RED INLINE VALUE",
+            "style": {
+              "background-color": "rgb(239,68,68)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "classScoped": {
+            "label": "GREEN ROOT VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "media": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "supports": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "reducedMotion": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "resizeMedia": {
+            "label": "Resize to 900px",
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "originCenter": {
+            "quad": [58, 621, 72, 621, 72, 635, 58, 635],
+            "center": [65, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": "[50,11,50,11]"
+            }
+          },
+          "originPercent": {
+            "quad": [128, 621, 142, 621, 142, 635, 128, 635],
+            "center": [135, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": "[50,11,50,11]"
+            }
+          }
+        },
+        "resized": {
+          "inline": {
+            "label": "RED INLINE VALUE",
+            "style": {
+              "background-color": "rgb(239,68,68)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "classScoped": {
+            "label": "GREEN ROOT VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "media": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "supports": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "reducedMotion": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "resizeMedia": {
+            "label": "Resize to 1100px",
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "originCenter": {
+            "quad": [58, 621, 72, 621, 72, 635, 58, 635],
+            "center": [65, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": "[50,11,50,11]"
+            }
+          },
+          "originPercent": {
+            "quad": [128, 621, 142, 621, 142, 635, 128, 635],
+            "center": [135, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": "[50,11,50,11]"
+            }
+          }
+        },
+        "toggled": {
+          "inline": {
+            "label": "BLUE INLINE VALUE",
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "classScoped": {
+            "label": "PURPLE CLASS VALUE",
+            "style": {
+              "background-color": "rgb(126,34,206)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "media": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "supports": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "reducedMotion": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "resizeMedia": {
+            "label": "Resize to 900px",
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "originCenter": {
+            "quad": [58, 621, 58, 635, 44, 635, 44, 621],
+            "center": [51, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "rotate(90deg)",
+              "transform-origin": "[50,11,50,11]"
+            }
+          },
+          "originPercent": {
+            "quad": [128, 621, 128, 635, 114, 635, 114, 621],
+            "center": [121, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "rotate(90deg)",
+              "transform-origin": "[50,11,50,11]"
+            }
+          }
+        }
+      }
+    },
+    "rules-off": {
+      "experiment": "rules:off",
+      "bundleSha256": "b259260efca703c833b66fcee12cf818ceec0e4a835dcfdbbcc143b48a7879bf",
+      "staging": "byte-identical",
+      "consoleErrorWarningBytes": 1,
+      "dimensions": {
+        "initial": [2200, 1800],
+        "resized": [1800, 1800],
+        "toggled": [2200, 1800]
+      },
+      "states": {
+        "initial": {
+          "inline": {
+            "label": "RED INLINE VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "classScoped": {
+            "label": "GREEN ROOT VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "media": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "supports": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "reducedMotion": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "resizeMedia": {
+            "label": "Resize to 900px",
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "originCenter": {
+            "quad": [58, 621, 72, 621, 72, 635, 58, 635],
+            "center": [65, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": "[50,11,50,11]"
+            }
+          },
+          "originPercent": {
+            "quad": [128, 621, 142, 621, 142, 635, 128, 635],
+            "center": [135, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": "[50,11,50,11]"
+            }
+          }
+        },
+        "resized": {
+          "inline": {
+            "label": "RED INLINE VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "classScoped": {
+            "label": "GREEN ROOT VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "media": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "supports": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "reducedMotion": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "resizeMedia": {
+            "label": "Resize to 1100px",
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "originCenter": {
+            "quad": [58, 621, 72, 621, 72, 635, 58, 635],
+            "center": [65, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": "[50,11,50,11]"
+            }
+          },
+          "originPercent": {
+            "quad": [128, 621, 142, 621, 142, 635, 128, 635],
+            "center": [135, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": "[50,11,50,11]"
+            }
+          }
+        },
+        "toggled": {
+          "inline": {
+            "label": "BLUE INLINE VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "classScoped": {
+            "label": "PURPLE CLASS VALUE",
+            "style": {
+              "background-color": "rgb(126,34,206)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "media": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "supports": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "reducedMotion": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "resizeMedia": {
+            "label": "Resize to 900px",
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "originCenter": {
+            "quad": [58, 621, 58, 635, 44, 635, 44, 621],
+            "center": [51, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "rotate(90deg)",
+              "transform-origin": "[50,11,50,11]"
+            }
+          },
+          "originPercent": {
+            "quad": [128, 621, 128, 635, 114, 635, 114, 621],
+            "center": [121, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "rotate(90deg)",
+              "transform-origin": "[50,11,50,11]"
+            }
+          }
+        }
+      }
+    },
+    "rules-on": {
+      "experiment": "rules:on",
+      "bundleSha256": "38d6be41341c0173b292f91f6135f3c9df52663f44a74885b709e2377bff2d87",
+      "staging": "byte-identical",
+      "consoleErrorWarningBytes": 1,
+      "dimensions": {
+        "initial": [2200, 1800],
+        "resized": [1800, 1800],
+        "toggled": [2200, 1800]
+      },
+      "states": {
+        "initial": {
+          "inline": {
+            "label": "RED INLINE VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "classScoped": {
+            "label": "GREEN ROOT VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "media": {
+            "style": {
+              "background-color": "rgb(220,38,38)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "supports": {
+            "style": {
+              "background-color": "rgb(234,88,12)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "reducedMotion": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "resizeMedia": {
+            "label": "Resize to 900px",
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "originCenter": {
+            "quad": [58, 621, 72, 621, 72, 635, 58, 635],
+            "center": [65, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": "[50,11,50,11]"
+            }
+          },
+          "originPercent": {
+            "quad": [128, 621, 142, 621, 142, 635, 128, 635],
+            "center": [135, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": "[50,11,50,11]"
+            }
+          }
+        },
+        "resized": {
+          "inline": {
+            "label": "RED INLINE VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "classScoped": {
+            "label": "GREEN ROOT VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "media": {
+            "style": {
+              "background-color": "rgb(220,38,38)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "supports": {
+            "style": {
+              "background-color": "rgb(234,88,12)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "reducedMotion": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "resizeMedia": {
+            "label": "Resize to 1100px",
+            "style": {
+              "background-color": "rgb(190,18,60)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "originCenter": {
+            "quad": [58, 621, 72, 621, 72, 635, 58, 635],
+            "center": [65, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": "[50,11,50,11]"
+            }
+          },
+          "originPercent": {
+            "quad": [128, 621, 142, 621, 142, 635, 128, 635],
+            "center": [135, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": "[50,11,50,11]"
+            }
+          }
+        },
+        "toggled": {
+          "inline": {
+            "label": "BLUE INLINE VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "classScoped": {
+            "label": "PURPLE CLASS VALUE",
+            "style": {
+              "background-color": "rgb(126,34,206)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "media": {
+            "style": {
+              "background-color": "rgb(220,38,38)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "supports": {
+            "style": {
+              "background-color": "rgb(234,88,12)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "reducedMotion": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "resizeMedia": {
+            "label": "Resize to 900px",
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "originCenter": {
+            "quad": [58, 621, 58, 635, 44, 635, 44, 621],
+            "center": [51, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "rotate(90deg)",
+              "transform-origin": "[50,11,50,11]"
+            }
+          },
+          "originPercent": {
+            "quad": [128, 621, 128, 635, 114, 635, 114, 621],
+            "center": [121, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "rotate(90deg)",
+              "transform-origin": "[50,11,50,11]"
+            }
+          }
+        }
+      }
+    },
+    "origin-default": {
+      "experiment": "default",
+      "bundleSha256": "538984df0f72a927ec8d64f0241050d49aa3bd5c50bfe8189d3367a78eada245",
+      "staging": "byte-identical",
+      "consoleErrorWarningBytes": 1,
+      "dimensions": {
+        "initial": [2200, 1800],
+        "resized": [1800, 1800],
+        "toggled": [2200, 1800]
+      },
+      "states": {
+        "initial": {
+          "inline": {
+            "label": "RED INLINE VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "classScoped": {
+            "label": "GREEN ROOT VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "media": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "supports": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "reducedMotion": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "resizeMedia": {
+            "label": "Resize to 900px",
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "originCenter": {
+            "quad": [58, 621, 72, 621, 72, 635, 58, 635],
+            "center": [65, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": "[50,11,50,11]"
+            }
+          },
+          "originPercent": {
+            "quad": [128, 621, 142, 621, 142, 635, 128, 635],
+            "center": [135, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": "[50,11,50,11]"
+            }
+          }
+        },
+        "resized": {
+          "inline": {
+            "label": "RED INLINE VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "classScoped": {
+            "label": "GREEN ROOT VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "media": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "supports": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "reducedMotion": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "resizeMedia": {
+            "label": "Resize to 1100px",
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "originCenter": {
+            "quad": [58, 621, 72, 621, 72, 635, 58, 635],
+            "center": [65, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": "[50,11,50,11]"
+            }
+          },
+          "originPercent": {
+            "quad": [128, 621, 142, 621, 142, 635, 128, 635],
+            "center": [135, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": "[50,11,50,11]"
+            }
+          }
+        },
+        "toggled": {
+          "inline": {
+            "label": "BLUE INLINE VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "classScoped": {
+            "label": "PURPLE CLASS VALUE",
+            "style": {
+              "background-color": "rgb(126,34,206)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "media": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "supports": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "reducedMotion": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "resizeMedia": {
+            "label": "Resize to 900px",
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "originCenter": {
+            "quad": [58, 621, 58, 635, 44, 635, 44, 621],
+            "center": [51, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "rotate(90deg)",
+              "transform-origin": "[50,11,50,11]"
+            }
+          },
+          "originPercent": {
+            "quad": [128, 621, 128, 635, 114, 635, 114, 621],
+            "center": [121, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "rotate(90deg)",
+              "transform-origin": "[50,11,50,11]"
+            }
+          }
+        }
+      }
+    },
+    "origin-off": {
+      "experiment": "origin:off",
+      "bundleSha256": "67e2abb95be61dba969ae3df5e5307e3b8c198cb91cdb3a98b3c4b45556c610d",
+      "staging": "byte-identical",
+      "consoleErrorWarningBytes": 1,
+      "dimensions": {
+        "initial": [2200, 1800],
+        "resized": [1800, 1800],
+        "toggled": [2200, 1800]
+      },
+      "states": {
+        "initial": {
+          "inline": {
+            "label": "RED INLINE VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "classScoped": {
+            "label": "GREEN ROOT VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "media": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "supports": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "reducedMotion": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "resizeMedia": {
+            "label": "Resize to 900px",
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "originCenter": {
+            "quad": [58, 621, 72, 621, 72, 635, 58, 635],
+            "center": [65, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": "[50,11,50,11]"
+            }
+          },
+          "originPercent": {
+            "quad": [128, 621, 142, 621, 142, 635, 128, 635],
+            "center": [135, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": "[50,11,50,11]"
+            }
+          }
+        },
+        "resized": {
+          "inline": {
+            "label": "RED INLINE VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "classScoped": {
+            "label": "GREEN ROOT VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "media": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "supports": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "reducedMotion": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "resizeMedia": {
+            "label": "Resize to 1100px",
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "originCenter": {
+            "quad": [58, 621, 72, 621, 72, 635, 58, 635],
+            "center": [65, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": "[50,11,50,11]"
+            }
+          },
+          "originPercent": {
+            "quad": [128, 621, 142, 621, 142, 635, 128, 635],
+            "center": [135, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": "[50,11,50,11]"
+            }
+          }
+        },
+        "toggled": {
+          "inline": {
+            "label": "BLUE INLINE VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "classScoped": {
+            "label": "PURPLE CLASS VALUE",
+            "style": {
+              "background-color": "rgb(126,34,206)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "media": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "supports": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "reducedMotion": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "resizeMedia": {
+            "label": "Resize to 900px",
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "originCenter": {
+            "quad": [58, 621, 58, 635, 44, 635, 44, 621],
+            "center": [51, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "rotate(90deg)",
+              "transform-origin": "[50,11,50,11]"
+            }
+          },
+          "originPercent": {
+            "quad": [128, 621, 128, 635, 114, 635, 114, 621],
+            "center": [121, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "rotate(90deg)",
+              "transform-origin": "[50,11,50,11]"
+            }
+          }
+        }
+      }
+    },
+    "origin-on": {
+      "experiment": "origin:on",
+      "bundleSha256": "46e93bf726c7de0c3ad08d881b4c87b322008ab98af8ed0fac4f4b47dc9d4634",
+      "staging": "byte-identical",
+      "consoleErrorWarningBytes": 1,
+      "dimensions": {
+        "initial": [2200, 1800],
+        "resized": [1800, 1800],
+        "toggled": [2200, 1800]
+      },
+      "states": {
+        "initial": {
+          "inline": {
+            "label": "RED INLINE VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "classScoped": {
+            "label": "GREEN ROOT VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "media": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "supports": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "reducedMotion": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "resizeMedia": {
+            "label": "Resize to 900px",
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "originCenter": {
+            "quad": [58, 621, 72, 621, 72, 635, 58, 635],
+            "center": [65, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": "[50,11,50,11]"
+            }
+          },
+          "originPercent": {
+            "quad": [128, 621, 142, 621, 142, 635, 128, 635],
+            "center": [135, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": "[50,11,50,11]"
+            }
+          }
+        },
+        "resized": {
+          "inline": {
+            "label": "RED INLINE VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "classScoped": {
+            "label": "GREEN ROOT VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "media": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "supports": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "reducedMotion": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "resizeMedia": {
+            "label": "Resize to 1100px",
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "originCenter": {
+            "quad": [58, 621, 72, 621, 72, 635, 58, 635],
+            "center": [65, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": "[50,11,50,11]"
+            }
+          },
+          "originPercent": {
+            "quad": [128, 621, 142, 621, 142, 635, 128, 635],
+            "center": [135, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": "[50,11,50,11]"
+            }
+          }
+        },
+        "toggled": {
+          "inline": {
+            "label": "BLUE INLINE VALUE",
+            "style": {
+              "background-color": "rgb(22,163,74)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "classScoped": {
+            "label": "PURPLE CLASS VALUE",
+            "style": {
+              "background-color": "rgb(126,34,206)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "media": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "supports": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "reducedMotion": {
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "resizeMedia": {
+            "label": "Resize to 900px",
+            "style": {
+              "background-color": "rgb(212,212,216)",
+              "color": "rgb(0,0,0)",
+              "transform": "",
+              "transform-origin": ""
+            }
+          },
+          "originCenter": {
+            "quad": [58, 621, 58, 635, 44, 635, 44, 621],
+            "center": [51, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "rotate(90deg)",
+              "transform-origin": "[50,11,50,11]"
+            }
+          },
+          "originPercent": {
+            "quad": [128, 621, 128, 635, 114, 635, 114, 621],
+            "center": [121, 628],
+            "style": {
+              "background-color": "rgb(37,99,235)",
+              "color": "rgb(0,0,0)",
+              "transform": "rotate(90deg)",
+              "transform-origin": "[50,11,50,11]"
+            }
+          }
+        }
+      }
+    }
+  },
+  "conclusions": {
+    "enableCSSInlineVariables": {
+      "result": "supported-on-desktop-when-enabled",
+      "off": {
+        "initial": "rgb(22,163,74)",
+        "toggled": "rgb(22,163,74)"
+      },
+      "on": {
+        "initial": "rgb(239,68,68)",
+        "toggled": "rgb(37,99,235)"
+      },
+      "dynamicUpdate": true,
+      "classScopedIndependent": {
+        "offToggled": "rgb(126,34,206)",
+        "onToggled": "rgb(126,34,206)"
+      }
+    },
+    "enableCSSRule": {
+      "result": "supported-on-desktop-when-enabled",
+      "off": {
+        "media": "rgb(212,212,216)",
+        "supports": "rgb(212,212,216)",
+        "narrowResize": "rgb(212,212,216)"
+      },
+      "on": {
+        "media": "rgb(220,38,38)",
+        "supports": "rgb(234,88,12)",
+        "wideResize": "rgb(212,212,216)",
+        "narrowResize": "rgb(190,18,60)",
+        "restoredWide": "rgb(212,212,216)"
+      },
+      "dynamicResizeEvaluation": true,
+      "decodeRegression": false,
+      "reducedMotion": "not matched by current macOS preference; parsing path remained healthy"
+    },
+    "enableNewTransformOrigin": {
+      "result": "no-desktop-effect",
+      "states": ["omitted", "false", "true"],
+      "centerKeywordDelta": [-14, 0],
+      "percentageDelta": [-14, 0],
+      "workaround": "retain dual SVG state"
+    }
+  }
+}

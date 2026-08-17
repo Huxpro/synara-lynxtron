@@ -161,7 +161,6 @@
 
 ### Evidence
 
-- `shots/2026-08-14/plugins/visual-matrix/web-plugins-before-wide-light.png`
 - `shots/2026-08-14/plugins/visual-matrix/lynx-plugins-wide-light.png`
 - `shots/2026-08-14/plugins/visual-matrix/web-plugins-after-wide-light.png`
 - `shots/2026-08-14/plugins/visual-matrix/web-skills-wide-light.png`
@@ -171,6 +170,11 @@
 - `shots/2026-08-14/plugins/visual-matrix/lynx-skills-compact-light-after.png`
 - `shots/2026-08-14/plugins/visual-matrix/web-skills-compact-dark.png`
 - `shots/2026-08-14/plugins/visual-matrix/lynx-skills-search-compact-dark-after.png`
+
+Screenshot-budget rotation (2026-08-18): the superseded
+`web-plugins-before-wide-light.png` frame was removed after
+`web-plugins-after-wide-light.png` became the retained final Web plugin
+evidence. The removed bytes remain available in Git history.
 
 ## Provider-switching continuation
 
