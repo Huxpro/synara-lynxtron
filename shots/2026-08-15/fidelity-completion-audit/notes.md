@@ -4329,3 +4329,28 @@ former dynamic-event P1 is no longer a valid blocker.
   agent-browser-owned processes.
 - Detailed evidence:
   `shots/2026-08-17/native-diff-file-jump-roundtrip/notes.md`.
+
+## 2026-08-17 Native Diff file-jump close paths
+
+- A new exact-owned Native cell exercised both pointer-owned file-jump dismiss
+  paths: explicit Close and backdrop.
+- Every stage retained the same PID/lsof-derived
+  `localhost:8903/session 1`, `900x650` window, canonical two-file snapshot,
+  and staged bundle URL.
+- Real touches opened the picker, closed it at `(620,252)`, reopened it, and
+  closed it through backdrop `(100,100)`.
+- After each close the overlay was unmounted while expansion state stayed
+  first true/second false; no click-through or stale state changed the diff.
+- `native-diff-file-jump-explicit-close`: missing coverage
+  `1.00 -> 0.00`.
+- `native-diff-file-jump-backdrop-close`: missing coverage
+  `1.00 -> 0.00`.
+- Product contribution remained `0.00 -> 0.00`; no code change was required.
+- Physical Escape remains a separate PC host-key publication boundary and is
+  not claimed by pointer evidence.
+- Native warning/error console was empty, temporary JPEG was `1800x1300`, all
+  owned resources were removed, and screenshot count remained `100`.
+- Entry/exit `browser:gate` returned `sessions: []` and zero
+  agent-browser-owned processes.
+- Detailed evidence:
+  `shots/2026-08-17/native-diff-file-jump-close-paths/notes.md`.
