@@ -6,6 +6,8 @@ import type { ReactNode } from "react";
 
 import {
   SidebarContentFrameElement,
+  SidebarFixedRegionElement,
+  SidebarScrollRegionElement,
   SidebarSurfaceTransitionElement,
 } from "~/components/SidebarSurfaceContentElements";
 
@@ -27,22 +29,28 @@ export function SidebarSurfaceContent(props: {
     <SidebarContentFrameElement>
       {props.prelude}
       {props.settingsNavigation ? (
-        props.settingsNavigation
+        <SidebarScrollRegionElement>
+          {props.settingsNavigation}
+        </SidebarScrollRegionElement>
       ) : (
         <>
-          {props.picker}
+          <SidebarFixedRegionElement>
+            {props.picker}
+            {props.navigation}
+          </SidebarFixedRegionElement>
           {/*
             Keyed per segment so switching surfaces remounts the content with a
             short enter animation instead of a hard cut. The picker stays outside
             the key so its thumb can glide across the switch.
           */}
-          <SidebarSurfaceTransitionElement key={props.surfaceKey}>
-            {props.navigation}
-            {props.body}
-          </SidebarSurfaceTransitionElement>
+          <SidebarScrollRegionElement>
+            <SidebarSurfaceTransitionElement key={props.surfaceKey}>
+              {props.body}
+            </SidebarSurfaceTransitionElement>
+            {props.trailing}
+          </SidebarScrollRegionElement>
         </>
       )}
-      {props.trailing}
     </SidebarContentFrameElement>
   );
 }

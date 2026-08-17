@@ -107,6 +107,17 @@
   font-weight: 500;
 }
 
+.AppSidebarContentFrame {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+}
+
+.AppSidebarFixedRegion {
+  flex-shrink: 0;
+}
+
 .AppSidebarScroll {
   flex: 1;
   min-height: 0;

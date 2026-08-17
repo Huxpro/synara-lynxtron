@@ -4652,3 +4652,33 @@ former dynamic-event P1 is no longer a valid blocker.
   kept screenshot count at `100`.
 - Detailed evidence:
   `shots/2026-08-18/native-automations-create-policy-reachability/notes.md`.
+
+## 2026-08-18 Native Sidebar fixed navigation ownership
+
+- The Sidebar segmented picker and primary navigation now share one fixed
+  region; only Projects and Chats collection content is inside
+  `scroll-view.AppSidebarScroll`.
+- A canonical isolated snapshot used 12 projects and 36 threads created
+  through `orchestration.dispatchCommand`, reaching sequence `48`.
+- Exact Native geometry at `1280x820`:
+  - fixed picker/navigation: `y=46..246`;
+  - collection viewport: `y=246..777`;
+  - collection content: `y=246..817`;
+  - Project 01: `y=288..316`;
+  - Project 12: `y=684..712`;
+  - Settings footer: `y=776..820`.
+- Outer HTML proved Studio/Projects and New thread/Search/Kanban/Pull
+  requests/Automations are direct descendants of the fixed region; Projects
+  and Chats are direct descendants of the collection owner.
+- DevTool synthetic drag did not publish Native scrolling and is not counted
+  as real wheel evidence. Existing P7-I3 foreground wheel evidence continues
+  to cover the same `AppSidebarScroll` platform path.
+- The run exposed and corrected a harness issue: isolated Native still wrote
+  the default app KV. The unique schema-valid 1692-byte preflight
+  `synara:renderer-state:v8` value was restored atomically, window state stayed
+  byte-exact, and future Native preflight must back up both files.
+- Focused ownership contract passed `2/2`; Web Sidebar import smoke passed
+  `1/1`; Native/Desktop and Web production builds passed; no screenshot was
+  added and the count remained `100`.
+- Detailed evidence:
+  `shots/2026-08-18/native-sidebar-fixed-navigation-scroll-ownership/notes.md`.
