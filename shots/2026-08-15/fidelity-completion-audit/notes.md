@@ -4059,6 +4059,24 @@ former dynamic-event P1 is no longer a valid blocker.
 - Detailed evidence:
   `shots/2026-08-17/pull-requests-multi-project-filter/notes.md`.
 
+## 2026-08-17 Pull Requests multi-project filter at 320x200
+
+- The same two canonical real repositories produced 100 entries and zero
+  errors at a `320x200`, DPR 1 viewport.
+- The complete three-option popup remained `256x140`, moved to
+  `y=60..200`, and stayed exactly contained at the short viewport bottom.
+- Real measured-coordinate pointer input selected React and produced 50
+  `facebook/react` rows, with no Synara row remaining.
+- `pull-requests-multi-project-filter-short-height`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- Rejected setup/readiness/RPC/shadow-root attempts were classified as harness
+  failures. Every failure boundary and the retained exit independently passed
+  `browser:gate` with `sessions: []` and zero agent-browser-owned processes.
+- Ports, repositories, state, and temporary PNG were removed; screenshot count
+  remained `100`.
+- Detailed evidence:
+  `shots/2026-08-17/pull-requests-multi-project-filter-short-height/notes.md`.
+
 ## 2026-08-17 Long Local Server identity at 320x200
 
 - Four real rows included an extremely long page title.
