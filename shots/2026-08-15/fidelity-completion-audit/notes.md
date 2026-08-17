@@ -4089,6 +4089,27 @@ former dynamic-event P1 is no longer a valid blocker.
 - Detailed evidence:
   `shots/2026-08-17/native-pull-requests-detail-tabs-current/notes.md`.
 
+## 2026-08-17 Native Pull Requests multi-project filter
+
+- A genuine two-repository Native snapshot produced 100 canonical entries
+  across Synara and React with zero errors.
+- PID-derived `localhost:8903/session 1` loaded the current staged bundle at
+  `900x650`.
+- Real Native touches opened the project menu, selected React, reopened it,
+  and restored All at `(860,114)`, `(744,212)`, `(860,114)`, and `(744,178)`.
+- Trigger accessibility changed to React and back to All; host logs contained
+  initial aggregate, React-scoped, and restored aggregate list RPCs.
+- `native-pull-requests-multi-project-filter-roundtrip`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- Lynx DevTool search returned row containers plus matching descendants, so its
+  doubled raw counts are classified as a harness limitation and are not used
+  for product accounting.
+- Native warning/error console was empty; temporary JPEG was `1800x1300`.
+- Failed setup and bounded live-data retry paths each passed `browser:gate`;
+  all owned resources were removed and unrelated clients were untouched.
+- Detailed evidence:
+  `shots/2026-08-17/native-pull-requests-multi-project-filter/notes.md`.
+
 ## 2026-08-17 Pull Requests multi-project filter at 320x320
 
 - Two canonical projects pointed at distinct real public repositories and
