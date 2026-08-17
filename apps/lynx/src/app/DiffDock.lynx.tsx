@@ -75,6 +75,10 @@ function OpenDiffDock(props: {
   );
   const [fileJumpOpen, setFileJumpOpen] = useState(false);
   const [fileJumpQuery, setFileJumpQuery] = useState('');
+  const closeFileJump = () => {
+    setFileJumpOpen(false);
+    setFileJumpQuery('');
+  };
   const diffWordWrap = readSettingsBehaviorProjection(
     webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
   ).diffWordWrap;
@@ -275,13 +279,13 @@ function OpenDiffDock(props: {
           accessibility-traits="dialog"
           bindkeydown={(event: { readonly key?: string }) => {
             'background only';
-            if (event.key === 'Escape') setFileJumpOpen(false);
+            if (event.key === 'Escape') closeFileJump();
           }}
           tabindex={0}
         >
           <view
             className="DiffDockFileJumpBackdrop"
-            bindtap={() => setFileJumpOpen(false)}
+            bindtap={closeFileJump}
           />
           <view
             className="DiffDockFileJumpDialog"
@@ -293,7 +297,7 @@ function OpenDiffDock(props: {
               aria-label="Close file picker"
               className="DiffDockFileJumpClose"
               variant="ghost"
-              onClick={() => setFileJumpOpen(false)}
+              onClick={closeFileJump}
             >
               ×
             </Button>
@@ -325,8 +329,7 @@ function OpenDiffDock(props: {
                     variant="ghost"
                     onClick={() => {
                       setExpandedFileKeys([file.key]);
-                      setFileJumpOpen(false);
-                      setFileJumpQuery('');
+                      closeFileJump();
                       scrollLynxElementIntoViewById(fileElementId(file.key));
                     }}
                   >

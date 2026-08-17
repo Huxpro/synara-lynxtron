@@ -3598,3 +3598,17 @@ former dynamic-event P1 is no longer a valid blocker.
   `1.00 -> 0.00`.
 - Detailed evidence:
   `shots/2026-08-17/standalone-diff-file-jump-short-height/notes.md`.
+
+## 2026-08-17 Standalone Changes file-jump reset
+
+- A real `no-such-file` query produced the contained
+  `No matching files.` state at `y=87..127`.
+- All close paths now reuse one helper that closes the overlay and clears the
+  query, preventing stale no-match state on reopen.
+- Lynx-for-Web did not dispatch the custom Close/Escape paths, so Native
+  close/reopen interaction remains platform certification coverage rather than
+  a browser pass.
+- `lynx-diff-file-jump-query-leak`: P1 state contribution `1.00 -> 0.00`;
+  Native interaction coverage remains open.
+- Detailed evidence:
+  `shots/2026-08-17/standalone-diff-file-jump-reset/notes.md`.
