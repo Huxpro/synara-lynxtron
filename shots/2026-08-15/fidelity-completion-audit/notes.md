@@ -4602,3 +4602,27 @@ former dynamic-event P1 is no longer a valid blocker.
   agent-browser-owned processes.
 - Detailed evidence:
   `shots/2026-08-17/native-automations-create-schedule-switching/notes.md`.
+
+## 2026-08-17 Native Automations Create Heartbeat switching
+
+- A new exact-owned Native create-dialog cell exercised
+  `Standalone -> Heartbeat -> Standalone -> Cancel`.
+- Standalone initially had no Target thread label or Heartbeat stop condition.
+- Real Heartbeat touch at `(382.5,437)` selected Heartbeat, mounted one Target
+  thread field label and the focusable `Heartbeat stop condition` input, and
+  updated the summary.
+- Real Standalone touch at `(298,437)` restored Standalone selection and
+  unmounted both conditional fields.
+- Real Cancel at `(469,524)` closed the dialog; no `automation.create` request
+  occurred.
+- `native-automations-create-heartbeat-conditional-state`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- An initial exact thread-title assertion was rejected as sidebar readiness
+  harness loss; the retained contract uses stable conditional fields.
+- Native console had no warning/error entry, temporary JPEG was `1800x1300`,
+  all owned resources were removed, port `58090` was free, and screenshot
+  count remained `100`.
+- Entry/failure/exit `browser:gate` returned `sessions: []` and zero
+  agent-browser-owned processes.
+- Detailed evidence:
+  `shots/2026-08-17/native-automations-create-heartbeat-switching/notes.md`.
