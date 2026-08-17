@@ -3821,3 +3821,20 @@ former dynamic-event P1 is no longer a valid blocker.
   `sessions: []` with zero owned processes.
 - Detailed evidence:
   `shots/2026-08-17/diff-control-character-path/notes.md`.
+
+## 2026-08-17 Changed rename at 320x200
+
+- New coverage used a `58%` similarity rename with a real `+1/-1` hunk and
+  long old/new paths.
+- The compact header stayed `269x32`; destination path, `renamed from` source,
+  and both stats occupied separate non-overlapping allocations.
+- Accessibility retained the complete destination identity while visible path
+  surfaces truncated independently.
+- `changed-rename-long-identity-compact`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- No code change was required; the cell reused the final validated bundles
+  from the control-path slice.
+- Browser entry/exit returned `sessions: []` with zero owned processes and
+  screenshot count stayed `100`.
+- Detailed evidence:
+  `shots/2026-08-17/standalone-diff-changed-rename/notes.md`.
