@@ -3,7 +3,9 @@
 
 import {
   buildFileDiffRenderKey,
+  decodeGitPath,
   getRenderablePatch,
+  parseGitDiffHeader,
   resolveFileDiffPath,
   sortFileDiffsByPath,
   summarizeFileDiffStats,
@@ -111,9 +113,9 @@ function noNewlineMarkers(
   let contextIndex = 0;
   let previousKind: "addition" | "deletion" | "context" | null = null;
   for (const line of body.split(/\r?\n/)) {
-    const fileMatch = /^diff --git a\/(.+) b\/(.+)$/.exec(line);
-    if (fileMatch) {
-      currentPath = stripGitPathPrefix(fileMatch[2] ?? "");
+    const fileHeader = parseGitDiffHeader(line);
+    if (fileHeader) {
+      currentPath = fileHeader.path;
       inHunk = false;
       additionIndex = 0;
       deletionIndex = 0;
@@ -250,22 +252,21 @@ function projectFileLines(
   return lines;
 }
 
-function stripGitPathPrefix(path: string): string {
-  return path.startsWith("a/") || path.startsWith("b/") ? path.slice(2) : path;
-}
-
 function binaryFilePaths(patch: string | undefined): ReadonlySet<string> {
   const body = unifiedDiffBody(patch);
   if (!body) return new Set();
   const paths = new Set<string>();
   let currentPath: string | null = null;
   for (const line of body.split(/\r?\n/)) {
-    const fileMatch = /^diff --git a\/(.+) b\/(.+)$/.exec(line);
-    if (fileMatch) {
-      currentPath = stripGitPathPrefix(fileMatch[2] ?? "");
+    const fileHeader = parseGitDiffHeader(line);
+    if (fileHeader) {
+      currentPath = fileHeader.path;
       continue;
     }
-    if (currentPath && /^Binary files .+ and .+ differ$/.test(line)) {
+    if (
+      currentPath &&
+      (line === "GIT binary patch" || /^Binary files .+ and .+ differ$/.test(line))
+    ) {
       paths.add(currentPath);
     }
   }
@@ -281,9 +282,9 @@ function fileModeChanges(
   let currentPath: string | null = null;
   let previousMode: string | null = null;
   for (const line of body.split(/\r?\n/)) {
-    const fileMatch = /^diff --git a\/(.+) b\/(.+)$/.exec(line);
-    if (fileMatch) {
-      currentPath = stripGitPathPrefix(fileMatch[2] ?? "");
+    const fileHeader = parseGitDiffHeader(line);
+    if (fileHeader) {
+      currentPath = fileHeader.path;
       previousMode = null;
       continue;
     }
@@ -312,9 +313,9 @@ function fileLifecycles(
   const lifecycles = new Map<string, "added" | "deleted">();
   let currentPath: string | null = null;
   for (const line of body.split(/\r?\n/)) {
-    const fileMatch = /^diff --git a\/(.+) b\/(.+)$/.exec(line);
-    if (fileMatch) {
-      currentPath = stripGitPathPrefix(fileMatch[2] ?? "");
+    const fileHeader = parseGitDiffHeader(line);
+    if (fileHeader) {
+      currentPath = fileHeader.path;
       continue;
     }
     if (!currentPath) continue;
@@ -377,11 +378,10 @@ export function buildPortableUnifiedDiffView(
   };
 
   for (const line of sourceLines) {
-    const fileMatch = /^diff --git a\/(.+) b\/(.+)$/.exec(line);
-    if (fileMatch) {
+    const fileHeader = parseGitDiffHeader(line);
+    if (fileHeader) {
       finishCurrent();
-      const previousPath = stripGitPathPrefix(fileMatch[1] ?? "");
-      const path = stripGitPathPrefix(fileMatch[2] ?? "");
+      const { previousPath, path } = fileHeader;
       current = {
         key: `portable:${previousPath}:${path}:${files.length}`,
         path,
@@ -399,7 +399,17 @@ export function buildPortableUnifiedDiffView(
       continue;
     }
     if (!current) continue;
-    if (/^Binary files .+ and .+ differ$/.test(line)) {
+    if (line.startsWith("rename from ")) {
+      current.previousPath = decodeGitPath(line.slice("rename from ".length));
+      current.key = `portable:${current.previousPath}:${current.path}:${files.length}`;
+      continue;
+    }
+    if (line.startsWith("rename to ")) {
+      current.path = decodeGitPath(line.slice("rename to ".length));
+      current.key = `portable:${current.previousPath ?? current.path}:${current.path}:${files.length}`;
+      continue;
+    }
+    if (line === "GIT binary patch" || /^Binary files .+ and .+ differ$/.test(line)) {
       current.binary = true;
       continue;
     }

@@ -107,6 +107,39 @@ describe("buildPullRequestCodeView", () => {
     });
   });
 
+  it("preserves literal Git binary patch identity", () => {
+    const binaryPatch = [
+      "diff --git a/assets/data.bin b/assets/data.bin",
+      "index 1111111..2222222 100644",
+      "GIT binary patch",
+      "literal 2",
+      "JcmZQ@0ssI+07C!(",
+      "",
+      "literal 2",
+      "JcmZQ@1ONa-073u&",
+      "",
+    ].join("\n");
+
+    const parsed = buildPullRequestCodeView(
+      binaryPatch,
+      "pull-request:literal-binary-test",
+    );
+    expect(parsed.kind).toBe("files");
+    if (parsed.kind !== "files") return;
+    expect(parsed.files[0]).toMatchObject({
+      path: "assets/data.bin",
+      binary: true,
+      lines: [],
+    });
+
+    const portable = buildPortableUnifiedDiffView(binaryPatch);
+    expect(portable?.files[0]).toMatchObject({
+      path: "assets/data.bin",
+      binary: true,
+      lines: [],
+    });
+  });
+
   it("preserves file mode changes in parsed and portable views", () => {
     const modePatch = [
       "diff --git a/scripts/run.sh b/scripts/run.sh",
@@ -262,6 +295,72 @@ describe("buildPullRequestCodeView", () => {
     expect(portable?.files[0]?.lines.map((line) => [line.kind, line.text])).toEqual(
       expectedLines,
     );
+  });
+
+  it("decodes quoted Git paths and preserves their no-newline metadata", () => {
+    const patch = [
+      'diff --git "a/\\346\\226\\207\\346\\241\\243.txt" "b/\\346\\226\\207\\346\\241\\243.txt"',
+      "index ee2363a..5c80f32 100644",
+      '--- "a/\\346\\226\\207\\346\\241\\243.txt"',
+      '+++ "b/\\346\\226\\207\\346\\241\\243.txt"',
+      "@@ -1 +1 @@",
+      "-before",
+      "\\ No newline at end of file",
+      "+after",
+      "\\ No newline at end of file",
+      "",
+    ].join("\n");
+    const expected = {
+      path: "文档.txt",
+      previousPath: null,
+      kinds: [
+        "hunk",
+        "deletion",
+        "no-newline-deletion",
+        "addition",
+        "no-newline-addition",
+      ],
+    };
+
+    const parsed = buildPullRequestCodeView(patch, "pull-request:quoted-unicode");
+    expect(parsed.kind).toBe("files");
+    if (parsed.kind !== "files") return;
+    expect({
+      path: parsed.files[0]?.path,
+      previousPath: parsed.files[0]?.previousPath,
+      kinds: parsed.files[0]?.lines.map((line) => line.kind),
+    }).toEqual(expected);
+
+    const portable = buildPortableUnifiedDiffView(patch);
+    expect({
+      path: portable?.files[0]?.path,
+      previousPath: portable?.files[0]?.previousPath,
+      kinds: portable?.files[0]?.lines.map((line) => line.kind),
+    }).toEqual(expected);
+  });
+
+  it("uses rename metadata to resolve an ambiguous unquoted diff header", () => {
+    const patch = [
+      "diff --git a/foo b/old.txt b/foo b/new.txt",
+      "similarity index 100%",
+      "rename from foo b/old.txt",
+      "rename to foo b/new.txt",
+      "",
+    ].join("\n");
+
+    const parsed = buildPullRequestCodeView(patch, "pull-request:ambiguous-rename");
+    expect(parsed.kind).toBe("files");
+    if (parsed.kind !== "files") return;
+    expect(parsed.files[0]).toMatchObject({
+      path: "foo b/new.txt",
+      previousPath: "foo b/old.txt",
+    });
+
+    const portable = buildPortableUnifiedDiffView(patch);
+    expect(portable?.files[0]).toMatchObject({
+      path: "foo b/new.txt",
+      previousPath: "foo b/old.txt",
+    });
   });
 
   it("keeps empty and unparsable patches explicit", () => {

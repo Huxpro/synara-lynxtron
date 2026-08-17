@@ -3721,3 +3721,32 @@ former dynamic-event P1 is no longer a valid blocker.
   released and local screenshot count remained `100`.
 - Detailed evidence:
   `shots/2026-08-17/standalone-diff-no-newline-short-height/notes.md`.
+
+## 2026-08-17 Quoted-path and literal-binary Changes at 320x200
+
+- New discovery enumerated Git's default C-style path quoting, ambiguous
+  unquoted ` b/` separators, quoted rename metadata, and literal
+  `GIT binary patch` output.
+- Before, shared/Web file identities exposed escaped names such as
+  `\346\226\207\346\241\243.txt`, quoted headers bypassed portable metadata,
+  and `foo b/bar.txt` was split at the wrong separator.
+- A shared Git path decoder/header parser now owns decoded filenames and all
+  portable metadata scanners; `rename from/to` resolves ambiguous rename
+  headers.
+- `shared-diff-quoted-path-identity`: P1 contribution `1.00 -> 0.00`.
+- Before, literal binary patches remained `binary:false` and expanded to an
+  empty body. Both canonical and fallback models now recognize
+  `GIT binary patch`.
+- `shared-diff-literal-binary-identity`: P1 contribution `1.00 -> 0.00`.
+- One dark `320x200` snapshot retained separate real-pointer phases:
+  `文档.txt` showed both EOF rows at `y=115..175`, and `文档.bin` showed
+  `Binary file changed.` at `y=161..173`.
+- Programmatic scroll/`scrollIntoView` only positioned controls for retained
+  anatomy; it is not claimed as wheel or Native gesture evidence.
+- Optional-filter and UTF-8 browser helpers failed before product interaction;
+  out-of-viewport samples were rejected. Every failure and retained phase
+  returned to `sessions: []` with zero owned processes.
+- Focused tests passed `42/42`; Web, Lynx-for-Web, and Native/Desktop
+  production builds passed; screenshot count remained `100`.
+- Detailed evidence:
+  `shots/2026-08-17/standalone-diff-quoted-path-binary/notes.md`.

@@ -7,8 +7,10 @@ import { describe, expect, it } from "vitest";
 import {
   buildFileDiffRenderKey,
   buildPatchCacheKey,
+  decodeGitPath,
   fileDiffStatsByPath,
   getRenderablePatch,
+  parseGitDiffHeader,
   resolveDiffCopyText,
   resolveFileDiffStatByChangedPath,
   resolveFileDiffPath,
@@ -119,6 +121,56 @@ describe("file diff identity helpers", () => {
     if (!file) return;
     expect(resolveFileDiffPath(file)).toBe("assets/screenshot.png");
     expect(file.hunks).toEqual([]);
+  });
+
+  it.each([
+    ['"a/\\346\\226\\207\\346\\241\\243.txt"', "a/文档.txt"],
+    ['"a/say\\"hi.txt"', 'a/say"hi.txt'],
+    ['"a/tab\\tname.txt"', "a/tab\tname.txt"],
+    ['"a/back\\\\slash.txt"', "a/back\\slash.txt"],
+    ["a/with space.txt", "a/with space.txt"],
+  ])("decodes Git C-quoted path %s", (encoded, expected) => {
+    expect(decodeGitPath(encoded)).toBe(expected);
+  });
+
+  it.each([
+    {
+      header:
+        'diff --git "a/\\346\\226\\207\\346\\241\\243.txt" "b/\\346\\226\\207\\346\\241\\243.txt"',
+      expected: { previousPath: "文档.txt", path: "文档.txt" },
+    },
+    {
+      header: 'diff --git "a/say\\"hi.txt" "b/say\\"hi.txt"',
+      expected: { previousPath: 'say"hi.txt', path: 'say"hi.txt' },
+    },
+    {
+      header: "diff --git a/with space.txt b/with space.txt",
+      expected: { previousPath: "with space.txt", path: "with space.txt" },
+    },
+    {
+      header: "diff --git a/foo b/bar.txt b/foo b/bar.txt",
+      expected: { previousPath: "foo b/bar.txt", path: "foo b/bar.txt" },
+    },
+  ])("parses quoted and unquoted Git header $header", ({ header, expected }) => {
+    expect(parseGitDiffHeader(header)).toEqual(expected);
+  });
+
+  it("presents the decoded filename from a quoted parsed diff", () => {
+    const patch = [
+      'diff --git "a/\\346\\226\\207\\346\\241\\243.txt" "b/\\346\\226\\207\\346\\241\\243.txt"',
+      "index ee2363a..5c80f32 100644",
+      '--- "a/\\346\\226\\207\\346\\241\\243.txt"',
+      '+++ "b/\\346\\226\\207\\346\\241\\243.txt"',
+      "@@ -1 +1 @@",
+      "-before",
+      "+after",
+      "",
+    ].join("\n");
+    const renderable = getRenderablePatch(patch, "git-pane:quoted-unicode");
+    expect(renderable?.kind).toBe("files");
+    if (renderable?.kind !== "files") return;
+
+    expect(resolveFileDiffPath(renderable.files[0]!)).toBe("文档.txt");
   });
 });
 

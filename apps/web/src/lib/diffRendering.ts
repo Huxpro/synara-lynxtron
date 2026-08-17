@@ -259,14 +259,100 @@ export function getRenderablePatch(
   }
 }
 
-// Resolve the working-tree-relative path for a parsed file diff, stripping the
-// conventional `a/` / `b/` patch prefixes so callers can match git status paths.
-export function resolveFileDiffPath(fileDiff: FileDiffMetadata): string {
-  const raw = fileDiff.name ?? fileDiff.prevName ?? "";
-  if (raw.startsWith("a/") || raw.startsWith("b/")) {
-    return raw.slice(2);
+function decodeGitPathBytes(value: string): string {
+  const bytes: number[] = [];
+  const encoder = new TextEncoder();
+  const appendText = (text: string) => bytes.push(...encoder.encode(text));
+  for (let index = 0; index < value.length; index += 1) {
+    const character = value[index] ?? "";
+    if (character !== "\\") {
+      const codePoint = value.codePointAt(index);
+      if (codePoint === undefined) continue;
+      const text = String.fromCodePoint(codePoint);
+      appendText(text);
+      index += text.length - 1;
+      continue;
+    }
+    const escaped = value[++index];
+    if (escaped === undefined) {
+      appendText("\\");
+      break;
+    }
+    if (/[0-7]/.test(escaped)) {
+      let octal = escaped;
+      while (octal.length < 3 && /[0-7]/.test(value[index + 1] ?? "")) {
+        octal += value[++index];
+      }
+      bytes.push(Number.parseInt(octal, 8));
+      continue;
+    }
+    const simpleEscapes: Readonly<Record<string, number>> = {
+      a: 0x07,
+      b: 0x08,
+      f: 0x0c,
+      n: 0x0a,
+      r: 0x0d,
+      t: 0x09,
+      v: 0x0b,
+    };
+    bytes.push(simpleEscapes[escaped] ?? (encoder.encode(escaped)[0] ?? 0));
   }
-  return raw;
+  return new TextDecoder().decode(Uint8Array.from(bytes));
+}
+
+export function decodeGitPath(value: string): string {
+  const trimmed = value.trim();
+  const unquoted =
+    trimmed.length >= 2 && trimmed.startsWith('"') && trimmed.endsWith('"')
+      ? trimmed.slice(1, -1)
+      : trimmed;
+  return decodeGitPathBytes(unquoted);
+}
+
+function stripGitDiffPathPrefix(path: string): string {
+  return path.startsWith("a/") || path.startsWith("b/") ? path.slice(2) : path;
+}
+
+export function parseGitDiffHeader(
+  line: string,
+): { readonly previousPath: string; readonly path: string } | null {
+  const prefix = "diff --git ";
+  if (!line.startsWith(prefix)) return null;
+  const body = line.slice(prefix.length);
+  if (body.startsWith('"')) {
+    const tokens = body.match(/^("(?:\\.|[^"\\])*") ("(?:\\.|[^"\\])*")$/);
+    if (!tokens) return null;
+    return {
+      previousPath: stripGitDiffPathPrefix(decodeGitPath(tokens[1] ?? "")),
+      path: stripGitDiffPathPrefix(decodeGitPath(tokens[2] ?? "")),
+    };
+  }
+  if (!body.startsWith("a/")) return null;
+  const separators: number[] = [];
+  let searchIndex = 0;
+  while (true) {
+    const separator = body.indexOf(" b/", searchIndex);
+    if (separator === -1) break;
+    separators.push(separator);
+    searchIndex = separator + 1;
+  }
+  if (separators.length === 0) return null;
+  const separator =
+    separators.find(
+      (candidate) =>
+        body.slice(2, candidate) === body.slice(candidate + " b/".length),
+    ) ?? separators[0]!;
+  return {
+    previousPath: stripGitDiffPathPrefix(body.slice(0, separator)),
+    path: stripGitDiffPathPrefix(body.slice(separator + 1)),
+  };
+}
+
+// Resolve the working-tree-relative path for a parsed file diff, stripping the
+// conventional `a/` / `b/` patch prefixes and Git C-style quoting so callers
+// can match status paths and present the real filename.
+export function resolveFileDiffPath(fileDiff: FileDiffMetadata): string {
+  return stripGitDiffPathPrefix(decodeGitPath(fileDiff.name ?? fileDiff.prevName ?? ""));
 }
 
 // Stable identity for a parsed file diff, used as a React key and selection id.
