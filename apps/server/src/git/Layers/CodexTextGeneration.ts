@@ -10,6 +10,7 @@ import { sanitizeBranchFragment, sanitizeFeatureBranchName } from "@synara/share
 import { prepareWindowsSafeProcess } from "@synara/shared/windowsProcess";
 
 import { resolveProviderAttachmentPath } from "../../provider/providerAttachmentPaths.ts";
+import { resolveCodexBinaryPath as resolveInstalledCodexBinaryPath } from "../../provider/codexBinary.ts";
 import { buildCodexProcessEnv } from "../../codexProcessEnv.ts";
 import { formatMissingCodexWorkingDirectoryError } from "../../codexWorkingDirectory.ts";
 import { ServerConfig } from "../../config.ts";
@@ -673,7 +674,7 @@ const makeCodexTextGeneration = Effect.gen(function* () {
 function resolveCodexBinaryPath(
   providerOptions: BranchNameGenerationInput["providerOptions"] | undefined,
 ): string {
-  return providerOptions?.codex?.binaryPath?.trim() || "codex";
+  return resolveInstalledCodexBinaryPath(providerOptions?.codex?.binaryPath);
 }
 
 function resolveCodexHomePath(

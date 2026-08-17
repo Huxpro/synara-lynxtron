@@ -62,6 +62,7 @@ import {
   resolveCursorAgentBinaryPath,
 } from "../acp/CursorAcpCommand";
 import { hasDroidApiKeyEnv, resolveDroidCliBinaryPath } from "../acp/DroidAcpSupport";
+import { resolveCodexBinaryPath } from "../codexBinary";
 import { hasGrokApiKeyEnv } from "../acp/GrokAcpSupport";
 import {
   claudeAuthMetadata,
@@ -874,7 +875,7 @@ export const makeCheckCodexProviderStatus = (
 > =>
   Effect.gen(function* () {
     const checkedAt = new Date().toISOString();
-    const executable = nonEmptyTrimmed(binaryPath) ?? "codex";
+    const executable = resolveCodexBinaryPath(binaryPath);
     const probeEnv = yield* Effect.promise(() => makeCodexProbeEnv(homePath));
 
     // Probe 1: `codex --version` — is the CLI reachable?

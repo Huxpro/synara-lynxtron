@@ -42,6 +42,7 @@ import {
   isCodexCliVersionSupported,
   parseCodexCliVersion,
 } from "./provider/codexCliVersion";
+import { resolveCodexBinaryPath } from "./provider/codexBinary.ts";
 import {
   buildCodexMcpConfigToml,
   SYNARA_AGENT_GATEWAY_TOKEN_ENV,
@@ -860,7 +861,7 @@ export class CodexAppServerManager extends EventEmitter<CodexAppServerManagerEve
       };
 
       const codexOptions = readCodexProviderOptions(input);
-      const codexBinaryPath = codexOptions.binaryPath ?? "codex";
+      const codexBinaryPath = resolveCodexBinaryPath(codexOptions.binaryPath);
       const codexHomePath = codexOptions.homePath;
       await this.assertSupportedCodexCliVersion({
         binaryPath: codexBinaryPath,
@@ -1421,7 +1422,7 @@ export class CodexAppServerManager extends EventEmitter<CodexAppServerManagerEve
         runtimeMode: input.runtimeMode,
         ...(input.cwd !== undefined ? { cwd: input.cwd } : {}),
       });
-      const codexBinaryPath = codexOptions.binaryPath ?? "codex";
+      const codexBinaryPath = resolveCodexBinaryPath(codexOptions.binaryPath);
       const codexHomePath = codexOptions.homePath;
       await this.assertSupportedCodexCliVersion({
         binaryPath: codexBinaryPath,
