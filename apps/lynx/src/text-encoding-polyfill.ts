@@ -1,30 +1,47 @@
+function encodeCodePoint(codePoint: number): number[] {
+  const scalar =
+    codePoint >= 0xd800 && codePoint <= 0xdfff ? 0xfffd : codePoint;
+  if (scalar <= 0x7f) return [scalar];
+  if (scalar <= 0x7ff) {
+    return [0xc0 | (scalar >> 6), 0x80 | (scalar & 0x3f)];
+  }
+  if (scalar <= 0xffff) {
+    return [
+      0xe0 | (scalar >> 12),
+      0x80 | ((scalar >> 6) & 0x3f),
+      0x80 | (scalar & 0x3f),
+    ];
+  }
+  return [
+    0xf0 | (scalar >> 18),
+    0x80 | ((scalar >> 12) & 0x3f),
+    0x80 | ((scalar >> 6) & 0x3f),
+    0x80 | (scalar & 0x3f),
+  ];
+}
+
 export function encodeUtf8(input = ''): Uint8Array {
   const bytes: number[] = [];
   for (const symbol of String(input)) {
-    const codePoint = symbol.codePointAt(0) ?? 0;
-    if (codePoint <= 0x7f) {
-      bytes.push(codePoint);
-    } else if (codePoint <= 0x7ff) {
-      bytes.push(
-        0xc0 | (codePoint >> 6),
-        0x80 | (codePoint & 0x3f)
-      );
-    } else if (codePoint <= 0xffff) {
-      bytes.push(
-        0xe0 | (codePoint >> 12),
-        0x80 | ((codePoint >> 6) & 0x3f),
-        0x80 | (codePoint & 0x3f)
-      );
-    } else {
-      bytes.push(
-        0xf0 | (codePoint >> 18),
-        0x80 | ((codePoint >> 12) & 0x3f),
-        0x80 | ((codePoint >> 6) & 0x3f),
-        0x80 | (codePoint & 0x3f)
-      );
-    }
+    bytes.push(...encodeCodePoint(symbol.codePointAt(0) ?? 0));
   }
   return new Uint8Array(bytes);
+}
+
+export function encodeUtf8Into(
+  input: string,
+  destination: Uint8Array
+): TextEncoderEncodeIntoResult {
+  let read = 0;
+  let written = 0;
+  for (const symbol of String(input)) {
+    const bytes = encodeCodePoint(symbol.codePointAt(0) ?? 0);
+    if (written + bytes.length > destination.length) break;
+    destination.set(bytes, written);
+    read += symbol.length;
+    written += bytes.length;
+  }
+  return { read, written };
 }
 
 export function decodeUtf8(input?: ArrayBufferView | ArrayBuffer | null): string {
@@ -60,11 +77,18 @@ export function decodeUtf8(input?: ArrayBufferView | ArrayBuffer | null): string
   return output;
 }
 
-class LynxTextEncoder {
+export class LynxTextEncoder {
   readonly encoding = 'utf-8';
 
   encode(input = ''): Uint8Array {
     return encodeUtf8(input);
+  }
+
+  encodeInto(
+    input: string,
+    destination: Uint8Array
+  ): TextEncoderEncodeIntoResult {
+    return encodeUtf8Into(input, destination);
   }
 }
 
@@ -76,18 +100,32 @@ class LynxTextDecoder {
   }
 }
 
-if (typeof globalThis.TextEncoder === 'undefined') {
-  Object.defineProperty(globalThis, 'TextEncoder', {
-    configurable: true,
-    writable: true,
-    value: LynxTextEncoder,
-  });
+interface TextEncodingGlobal {
+  TextDecoder?: typeof TextDecoder;
+  TextEncoder?: typeof TextEncoder;
 }
 
-if (typeof globalThis.TextDecoder === 'undefined') {
-  Object.defineProperty(globalThis, 'TextDecoder', {
-    configurable: true,
-    writable: true,
-    value: LynxTextDecoder,
-  });
+export function installTextEncodingPolyfill(
+  target: TextEncodingGlobal
+): void {
+  if (
+    typeof target.TextEncoder === 'undefined' ||
+    typeof target.TextEncoder.prototype?.encodeInto !== 'function'
+  ) {
+    Object.defineProperty(target, 'TextEncoder', {
+      configurable: true,
+      writable: true,
+      value: LynxTextEncoder,
+    });
+  }
+
+  if (typeof target.TextDecoder === 'undefined') {
+    Object.defineProperty(target, 'TextDecoder', {
+      configurable: true,
+      writable: true,
+      value: LynxTextDecoder,
+    });
+  }
 }
+
+installTextEncodingPolyfill(globalThis);

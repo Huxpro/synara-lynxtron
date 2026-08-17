@@ -4273,3 +4273,37 @@ former dynamic-event P1 is no longer a valid blocker.
   console artifact, and JPEG were removed; screenshot count remained `100`.
 - Detailed evidence:
   `shots/2026-08-17/standalone-diff-native-wheel/notes.md`.
+
+## 2026-08-17 Native Diff file jump and TextEncoder encodeInto
+
+- A new exact-owned `900x650` Native cell exercised the previously
+  browser-only Changes file-jump pointer path on a canonical two-file,
+  `2537`-byte working-tree diff.
+- Real Native touches opened Changes, expanded the 30-line first patch, opened
+  Jump to file, and selected the second row.
+- The second header moved from offscreen `y=1409` to visible `y=189`; the first
+  file collapsed, the second expanded, and the picker closed.
+- `native-standalone-diff-file-jump-pointer`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- The first completed behavior run exposed a new P1 console failure:
+  `TypeError: PR.encodeInto is not a function`.
+- Root cause was the PrimJS partial `TextEncoder`: it exposed `encode()` but no
+  standard `encodeInto()`, while Synara installed its polyfill only when the
+  constructor was entirely missing.
+- The polyfill now implements bounded, symbol-safe UTF-8 `encodeInto`, standard
+  `read`/`written` counts, isolated-surrogate replacement, and replacement of
+  an existing partial constructor.
+- `native-text-encoder-encode-into-missing`: P1 product contribution
+  `1.00 -> 0.00`.
+- Focused tests passed Lynx `11/11` and shared diff parsing `16/16`; the
+  Native/Desktop production build passed.
+- Final staged bundle SHA-256:
+  `64aecc2b7aec67a2e62f76a1ffbba4f5b31a51476ea8bbf613a718dc414dabbe`.
+- The final exact-owned interaction repeated the complete state transition
+  with an empty Native error/warning console and a temporary `1800x1300` JPEG.
+- A stale staged bundle and overlay-DOM `ECONNRESET` attempts were rejected as
+  harness losses. Every failure boundary and exit passed `browser:gate` with
+  `sessions: []` and zero agent-browser-owned processes.
+- All owned resources were removed; screenshot count remained `100`.
+- Detailed evidence:
+  `shots/2026-08-17/native-diff-file-jump-encode-into/notes.md`.
