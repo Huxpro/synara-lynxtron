@@ -16,6 +16,12 @@ describe('runtime endpoint projection', () => {
       'ws://configured:2'
     );
     expect(resolveRuntimeSocketUrl(null, '  ')).toBe(DEFAULT_SYNARA_SOCKET_URL);
+    expect(
+      resolveRuntimeSocketUrl(
+        { wsUrl: 'ws://bad-explicit-shape:1' },
+        { value: 'ws://bad-config-shape:2' }
+      )
+    ).toBe(DEFAULT_SYNARA_SOCKET_URL);
   });
 
   it('projects ws and wss endpoints to the matching HTTP origin', () => {
@@ -26,6 +32,9 @@ describe('runtime endpoint projection', () => {
       'https://synara.example'
     );
     expect(resolveRuntimeHttpOrigin('not-a-socket-url')).toBe(
+      DEFAULT_SYNARA_HTTP_ORIGIN
+    );
+    expect(resolveRuntimeHttpOrigin({ wsUrl: 'ws://bad-shape:1' })).toBe(
       DEFAULT_SYNARA_HTTP_ORIGIN
     );
   });

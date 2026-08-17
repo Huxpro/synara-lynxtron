@@ -5,6 +5,9 @@ import { resolveSynaraWsUrl } from './runtimeEndpoint.logic';
 describe('Synara desktop runtime endpoint', () => {
   it('uses the product default when no override is configured', () => {
     expect(resolveSynaraWsUrl('')).toBe('ws://127.0.0.1:58090');
+    expect(resolveSynaraWsUrl({ value: 'ws://bad-shape:1' })).toBe(
+      'ws://127.0.0.1:58090'
+    );
   });
 
   it('normalizes an isolated server override to its WebSocket origin', () => {

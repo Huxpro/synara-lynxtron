@@ -4705,3 +4705,23 @@ former dynamic-event P1 is no longer a valid blocker.
   browser gate exited with `sessions: []`.
 - Detailed evidence:
   `shots/2026-08-18/native-sidebar-resize-and-primary-icons/notes.md`.
+
+## 2026-08-18 Native runtime endpoint trim guard
+
+- Lynx official runtime docs list `String.prototype.trim` as available and
+  state automatic polyfills are iOS-only. The preview error was therefore a
+  non-string receiver, not a missing trim polyfill.
+- Production bundle attribution identified unguarded endpoint-boundary
+  `.trim()` calls in minified module `7819`.
+- Desktop and renderer endpoint resolvers now accept `unknown` and trim only
+  real strings; object/number/partial define shapes safely use the product
+  fallback without changing valid endpoint precedence.
+- Rebuilt module `7819` contains explicit `typeof value === "string"` guards.
+- Exact Native runtime proved `String.prototype.trim` is a function,
+  `"  ok  ".trim()` returns `"ok"`, endpoint connection succeeded, and the
+  warning/error console remained empty.
+- Focused tests passed `5/5`; Native/Desktop production build passed; state
+  restored byte-exact, screenshot count remained `100`, and browser gate
+  exited with `sessions: []`.
+- Detailed evidence:
+  `shots/2026-08-18/native-runtime-endpoint-trim-guard/notes.md`.
