@@ -16,6 +16,14 @@
   color: var(--color-text-status-warning);
 }
 
+.SliceRoot--viewport-short-height
+  .ThreadPage
+  > .DiffDock
+  .SharedPrCodeNotice {
+  font-size: 10px;
+  line-height: 12px;
+}
+
 .SharedPrCodeStats {
   display: flex;
   flex-direction: row;

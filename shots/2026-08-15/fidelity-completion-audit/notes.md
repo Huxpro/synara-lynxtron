@@ -3570,3 +3570,16 @@ former dynamic-event P1 is no longer a valid blocker.
   product-loss contribution `0.00 -> 0.00`.
 - Detailed evidence:
   `shots/2026-08-17/untracked-empty-diff-contract/notes.md`.
+
+## 2026-08-17 Standalone binary addition at 320x200
+
+- A real binary addition combined `new file mode 100644` with
+  `Binary files /dev/null and b/new.bin differ`.
+- Before, normal notice rhythm placed `Binary file changed.` at `y=175..191`
+  and `File added.` at `y=191..207`, clipping the second identity.
+- Short-height standalone Changes now uses compact `10px/12px` notice rhythm;
+  after, the notices end at `187` and `199`.
+- `lynx-compact-combined-diff-notice-overflow`: P1 contribution
+  `1.00 -> 0.00`.
+- Detailed evidence:
+  `shots/2026-08-17/standalone-diff-binary-add-short-height/notes.md`.
