@@ -3858,3 +3858,21 @@ former dynamic-event P1 is no longer a valid blocker.
   screenshot count remained `100`.
 - Detailed evidence:
   `shots/2026-08-17/standalone-diff-progressive-lines/notes.md`.
+
+## 2026-08-17 Diff word wrap runtime at 320x320
+
+- A canonical 414-character line was opened with the same snapshot under wrap
+  off and on states.
+- Wrap off retained `white-space: pre` and a `2844px` horizontal code surface.
+- The setting was persisted through the real Lynx-for-Web storage bridge and
+  rehydrated after reload.
+- Wrap on used `white-space: pre-wrap`, constrained content to `269px`, and
+  increased the outer scroller from `230/230` to `230/530`.
+- `standalone-diff-word-wrap-runtime`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- Raw fallback remains PR/explicit-patch renderer missing coverage because
+  standalone Git RPC cannot construct arbitrary raw patches.
+- Final pending requests were zero; browser lifecycle returned to
+  `sessions: []` with zero owned processes.
+- Detailed evidence:
+  `shots/2026-08-17/standalone-diff-word-wrap/notes.md`.
