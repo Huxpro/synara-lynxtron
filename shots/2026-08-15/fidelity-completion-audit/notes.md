@@ -3993,3 +3993,18 @@ former dynamic-event P1 is no longer a valid blocker.
   passed.
 - Detailed evidence:
   `shots/2026-08-17/environment-local-server-stop-feedback/notes.md`.
+
+## 2026-08-17 Environment Local Server feedback lifecycle
+
+- Stop feedback now carries its target PID instead of an ownerless string.
+- Feedback remains while the resistant process is still listed and clears
+  after Refresh removes that PID.
+- `lynx-environment-local-server-stale-feedback`: P1 state contribution
+  `1.00 -> 0.00`.
+- Executable lifecycle tests cover retain, clear, and empty states; the prior
+  runtime slices already cover real alert presentation and dynamic list
+  refresh.
+- Focused tests passed `11/11`; Web, Lynx-for-Web, and Native/Desktop builds
+  passed.
+- Detailed evidence:
+  `shots/2026-08-17/environment-local-server-feedback-lifecycle/notes.md`.

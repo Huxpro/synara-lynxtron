@@ -120,6 +120,10 @@ import {
 } from '../components/ui/dialog.lynx';
 import { Button } from '../components/ui/button.lynx';
 import {
+  retainLocalServerStopFeedback,
+  type LocalServerStopFeedback,
+} from './environmentLocalServers.logic';
+import {
   Menu,
   MenuItem,
   MenuPopup,
@@ -286,7 +290,8 @@ function EnvironmentLocalServers(props: {
   const { svgColors } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
   const [stoppingPid, setStoppingPid] = useState<number | null>(null);
-  const [stopFeedback, setStopFeedback] = useState<string | null>(null);
+  const [stopFeedback, setStopFeedback] =
+    useState<LocalServerStopFeedback | null>(null);
   const localServersQuery = useQuery({
     queryKey: ['environment-local-servers'],
     queryFn: () => {
@@ -300,6 +305,16 @@ function EnvironmentLocalServers(props: {
   const servers = localServersQuery.data?.servers ?? [];
   const countLabel = `${servers.length}`;
 
+  useEffect(() => {
+    const nextFeedback = retainLocalServerStopFeedback(
+      stopFeedback,
+      servers.map((server) => server.pid)
+    );
+    if (nextFeedback !== stopFeedback) {
+      setStopFeedback(null);
+    }
+  }, [servers, stopFeedback]);
+
   async function stop(server: (typeof servers)[number]) {
     'background only';
     if (!server.isStoppable || stoppingPid !== null) return;
@@ -311,11 +326,17 @@ function EnvironmentLocalServers(props: {
         port: server.ports[0] ?? 1,
       });
       if (!result.stopped) {
-        setStopFeedback(result.message ?? 'Couldn’t stop local server.');
+        setStopFeedback({
+          pid: server.pid,
+          message: result.message ?? 'Couldn’t stop local server.',
+        });
       }
       await localServersQuery.refetch();
     } catch {
-      setStopFeedback('Couldn’t stop local server.');
+      setStopFeedback({
+        pid: server.pid,
+        message: 'Couldn’t stop local server.',
+      });
     } finally {
       setStoppingPid(null);
     }
@@ -370,7 +391,7 @@ function EnvironmentLocalServers(props: {
             className="EnvironmentLocalServersFeedback"
             accessibility-role="alert"
           >
-            {stopFeedback}
+            {stopFeedback.message}
           </text>
         ) : null}
         {localServersQuery.isPending ? (

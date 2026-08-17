@@ -237,11 +237,13 @@ describe('Lynx Environment panel', () => {
     expect(panelSource).toContain('stopLocalServer({');
     expect(panelSource).toContain('const [stopFeedback, setStopFeedback]');
     expect(panelSource).toContain(
-      "setStopFeedback(result.message ?? 'Couldn’t stop local server.')"
+      "message: result.message ?? 'Couldn’t stop local server.'"
     );
+    expect(panelSource).toContain("message: 'Couldn’t stop local server.'");
     expect(panelSource).toContain(
-      "setStopFeedback('Couldn’t stop local server.')"
+      'retainLocalServerStopFeedback('
     );
+    expect(panelSource).toContain('{stopFeedback.message}');
     expect(panelSource).toContain('className="EnvironmentLocalServersFeedback"');
     expect(panelSource).toContain('accessibility-role="alert"');
     expect(panelSource).toContain('localServerPrimaryLabel(server)');
