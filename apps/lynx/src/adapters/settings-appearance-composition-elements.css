@@ -224,6 +224,18 @@
   max-height: 320px;
 }
 
+.SliceRoot--viewport-short-height .SharedSettingsAppearanceFontPopup {
+  height: calc(100vh - 16px);
+  max-height: calc(100vh - 16px);
+}
+
+.SliceRoot--viewport-short-height .SharedSettingsAppearanceFontList {
+  max-height: none;
+  flex: 1;
+  min-height: 0;
+  overflow-y: scroll;
+}
+
 .SharedSettingsAppearanceFontEmpty {
   padding: 12px 10px;
   color: var(--muted-foreground);

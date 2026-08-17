@@ -2688,6 +2688,18 @@ former dynamic-event P1 is no longer a valid blocker.
   The declared 320px suggestion-list maximum is not scored without a real
   mounted popup; no speculative CSS patch was applied.
 
+### Current-head closure
+
+- A real click on the browser-published `Default (JetBrains Mono)` textbox now
+  mounted the actual terminal-font popup.
+- Before, popup `224x334 @ y=0` ended at `334`.
+- Short-height popup now measures `224x184 @ y=16..200`; its list is
+  `170/352` client/scroll height with `182px` scroll range.
+- `lynx-appearance-terminal-font-short-overflow`: P1 contribution
+  `1.00 -> 0.00`.
+- Detailed evidence:
+  `shots/2026-08-17/appearance-terminal-font-popup-short-height/notes.md`.
+
 ## 2026-08-17 Custom Models provider menu at 320x200
 
 - The rendered Models provider control opened the real eight-option menu at

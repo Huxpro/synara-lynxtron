@@ -121,6 +121,12 @@ describe('Settings Appearance fidelity', () => {
     expect(styles).toMatch(
       /\.SharedSettingsAppearanceFontPopup\s*\{[^}]*width:\s*224px;/s
     );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height \.SharedSettingsAppearanceFontPopup\s*\{[^}]*height:\s*calc\(100vh - 16px\);[^}]*max-height:\s*calc\(100vh - 16px\);/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height \.SharedSettingsAppearanceFontList\s*\{[^}]*max-height:\s*none;[^}]*flex:\s*1;[^}]*min-height:\s*0;[^}]*overflow-y:\s*scroll;/s
+    );
     expect(source).toContain('className="SharedSettingsAppearanceSelectLabel"');
     expect(source).toContain('className="SharedSettingsAppearanceSelectChevron"');
     expect(source).toContain('<MenuTrigger ariaLabel={props.ariaLabel}>');
