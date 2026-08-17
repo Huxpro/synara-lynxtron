@@ -130,6 +130,11 @@ issue establishes capability and upstream reporting, but does not enable the
 two successful flags without the required full-screen theme, density, composer,
 responsive, and motion regression matrix. That rollout remains separate.
 
+Upstream follow-ups filed from this evidence:
+
+- documentation/defaults: https://github.com/lynx-family/lynx/issues/8662
+- Desktop transform-origin bug: https://github.com/lynx-family/lynx/issues/8663
+
 ## Screenshot budget rotation
 
 The repository was already at the 100-image local limit. Three new contact

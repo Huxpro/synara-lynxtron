@@ -1,5 +1,7 @@
 # Draft issue 0005 — target: lynx-family/lynx
 
+Filed: https://github.com/lynx-family/lynx/issues/8662
+
 **Suggested title:** [Docs][Desktop] Document `enableCSSInlineVariables` and `enableCSSRule` support, defaults, and migration guidance
 
 **Labels:** documentation, css, platform/desktop
