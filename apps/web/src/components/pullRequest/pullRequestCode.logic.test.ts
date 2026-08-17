@@ -77,6 +77,34 @@ describe("buildPullRequestCodeView", () => {
       ]);
   });
 
+  it("preserves binary file identity in parsed and portable views", () => {
+    const binaryPatch = [
+      "diff --git a/assets/data.bin b/assets/data.bin",
+      "index 1111111..2222222 100644",
+      "Binary files a/assets/data.bin and b/assets/data.bin differ",
+      "",
+    ].join("\n");
+
+    const parsed = buildPullRequestCodeView(binaryPatch, "pull-request:binary-test");
+    expect(parsed.kind).toBe("files");
+    if (parsed.kind !== "files") return;
+    expect(parsed.files).toHaveLength(1);
+    expect(parsed.files[0]).toMatchObject({
+      path: "assets/data.bin",
+      additions: 0,
+      deletions: 0,
+      binary: true,
+      lines: [],
+    });
+
+    const portable = buildPortableUnifiedDiffView(binaryPatch);
+    expect(portable?.files[0]).toMatchObject({
+      path: "assets/data.bin",
+      binary: true,
+      lines: [],
+    });
+  });
+
   it("keeps empty and unparsable patches explicit", () => {
     expect(buildPullRequestCodeView("  ")).toEqual({ kind: "empty" });
     const raw = buildPullRequestCodeView("not a unified diff");

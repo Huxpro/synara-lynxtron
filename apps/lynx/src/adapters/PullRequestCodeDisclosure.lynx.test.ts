@@ -124,6 +124,8 @@ describe('Pull Request Code disclosure fidelity', () => {
     expect(composition).toContain(
       '<PullRequestCodeDisclosureElement expanded={isExpanded}>'
     );
+    expect(composition).toContain('file.binary ? (');
+    expect(composition).toContain('Binary file changed.');
     expect(composition).not.toContain('{isExpanded ? (');
     expect(composition).toContain('disabled={props.retrying}');
     expect(composition).toContain('onActivate={props.onRetry}');

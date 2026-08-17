@@ -27,6 +27,7 @@ export interface PullRequestDiffFileView {
   readonly previousPath: string | null;
   readonly additions: number;
   readonly deletions: number;
+  readonly binary: boolean;
   readonly lines: readonly PullRequestDiffLineView[];
 }
 
@@ -140,6 +141,24 @@ function stripGitPathPrefix(path: string): string {
   return path.startsWith("a/") || path.startsWith("b/") ? path.slice(2) : path;
 }
 
+function binaryFilePaths(patch: string | undefined): ReadonlySet<string> {
+  const body = unifiedDiffBody(patch);
+  if (!body) return new Set();
+  const paths = new Set<string>();
+  let currentPath: string | null = null;
+  for (const line of body.split(/\r?\n/)) {
+    const fileMatch = /^diff --git a\/(.+) b\/(.+)$/.exec(line);
+    if (fileMatch) {
+      currentPath = stripGitPathPrefix(fileMatch[2] ?? "");
+      continue;
+    }
+    if (currentPath && /^Binary files .+ and .+ differ$/.test(line)) {
+      paths.add(currentPath);
+    }
+  }
+  return paths;
+}
+
 /**
  * Pure-string fallback for runtimes where @pierre's parser cannot project a
  * valid unified patch. It deliberately covers the portable model only; Web's
@@ -159,6 +178,7 @@ export function buildPortableUnifiedDiffView(
         previousPath: string | null;
         additions: number;
         deletions: number;
+        binary: boolean;
         lines: PullRequestDiffLineView[];
         oldLine: number;
         newLine: number;
@@ -174,6 +194,7 @@ export function buildPortableUnifiedDiffView(
       previousPath: current.previousPath,
       additions: current.additions,
       deletions: current.deletions,
+      binary: current.binary,
       lines: current.lines,
     });
   };
@@ -190,6 +211,7 @@ export function buildPortableUnifiedDiffView(
         previousPath: previousPath !== path ? previousPath : null,
         additions: 0,
         deletions: 0,
+        binary: false,
         lines: [],
         oldLine: 0,
         newLine: 0,
@@ -198,6 +220,10 @@ export function buildPortableUnifiedDiffView(
       continue;
     }
     if (!current) continue;
+    if (/^Binary files .+ and .+ differ$/.test(line)) {
+      current.binary = true;
+      continue;
+    }
     const hunkMatch = /^@@ -(\d+)(?:,\d+)? \+(\d+)(?:,\d+)? @@/.exec(line);
     if (hunkMatch) {
       current.oldLine = Number(hunkMatch[1]);
@@ -278,6 +304,7 @@ export function buildPullRequestCodeView(
       })),
     };
   }
+  const binaryPaths = binaryFilePaths(patch);
   const files = renderableFiles.map((file) => {
     const stats = summarizeFileDiffStats([file]);
     const path = resolveFileDiffPath(file);
@@ -288,6 +315,7 @@ export function buildPullRequestCodeView(
       previousPath: previousPath && previousPath !== path ? previousPath : null,
       additions: stats.additions,
       deletions: stats.deletions,
+      binary: binaryPaths.has(path),
       lines: projectFileLines(file),
     };
   });

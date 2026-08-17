@@ -3488,3 +3488,18 @@ former dynamic-event P1 is no longer a valid blocker.
   product-loss contribution remains unscored.
 - Detailed evidence:
   `shots/2026-08-17/standalone-diff-wheel-attribution/notes.md`.
+
+## 2026-08-17 Standalone binary Changes at 320x200
+
+- A real `data.bin` working-tree modification produced the canonical
+  `Binary files ... differ` patch.
+- Before, the shared portable diff model exposed only `data.bin +0/-0`;
+  expanding the file produced no body or binary explanation.
+- Binary identity now belongs to the shared parsed/portable projection, and
+  the shared composition renders `Binary file changed.` for both Web and Lynx.
+- After, the notice was fully visible at `269x16 @ y=175..191` inside the
+  `110px` compact scroller.
+- `shared-diff-binary-identity-missing`: P1 contribution
+  `1.00 -> 0.00`.
+- Detailed evidence:
+  `shots/2026-08-17/standalone-diff-binary-short-height/notes.md`.

@@ -115,6 +115,9 @@ export function PullRequestCodeComposition(props: {
                   onActivate={() => props.onToggleFile(file.key)}
                 />
                 <PullRequestCodeDisclosureElement expanded={isExpanded}>
+                    {file.binary ? (
+                      <PullRequestCodeNoticeElement>Binary file changed.</PullRequestCodeNoticeElement>
+                    ) : null}
                     <PullRequestCodeLinesElement wordWrap={props.wordWrap ?? false}>
                       {file.lines.slice(0, visibleLineCount).map((line) => (
                         <PullRequestCodeLineElement
