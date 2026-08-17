@@ -4244,3 +4244,32 @@ former dynamic-event P1 is no longer a valid blocker.
   were clear at exit.
 - Detailed evidence:
   `shots/2026-08-17/environment-local-server-long-identity/notes.md`.
+
+## 2026-08-17 Standalone Diff Native wheel
+
+- A canonical two-file working-tree diff returned `2537` patch bytes and
+  settled the enabled `2 changed files` product trigger.
+- An exact-owned `900x650` Native instance used the current staged bundle and
+  PID/lsof-derived `localhost:8903/session 1`.
+- Real Native touches opened Changes and expanded the 30-line first patch.
+- `DiffDockScroller` measured `321x560`; its direct content measured
+  `297x1352`; the second file header began at `y=1409`.
+- Real positive and negative wheel input both left that header fixed:
+  `positiveDeltaY=0`, `negativeDeltaY=0`.
+- A non-nested top-of-scroller hit also stayed at `0/0`, rejecting an
+  inner-horizontal-owner-only explanation.
+- Orientation, JS wheel forwarding, platform gesture angles, a non-shrinking
+  direct child, and the complete previously successful HostInputProbe
+  activation combination were each tested against the exact Native cell and
+  reverted after failure.
+- `standalone-diff-native-wheel`: missing coverage `1.00 -> 0.00`; P1
+  product/platform contribution remains `1.00 -> 1.00`. Current Lynxtron host
+  limitation is a root-cause classification, not an intentional delta or
+  product pass.
+- Two high-load DevTool diagnostics ended in `ECONNRESET` and were rejected as
+  harness failures. Every failure boundary and exit passed `browser:gate`
+  with `sessions: []` and zero agent-browser-owned processes.
+- No speculative product code was retained. Temporary state, processes, logs,
+  console artifact, and JPEG were removed; screenshot count remained `100`.
+- Detailed evidence:
+  `shots/2026-08-17/standalone-diff-native-wheel/notes.md`.
