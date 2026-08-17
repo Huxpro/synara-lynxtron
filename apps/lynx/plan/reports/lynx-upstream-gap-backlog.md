@@ -39,13 +39,13 @@
 | 1 | 文本输入内核崩溃：`Flutter text model must not be null` | host | P0 | M | 坐标聚焦 native `<input>` 后发送按键即整应用崩溃（NSInternalInconsistencyException）。后果：Settings/PR 搜索只能渲染 `Search unavailable in this runtime`（P-94） |
 | 2 | `<textarea>` 吞掉 Arrow/Enter/Escape，JS 层永远收不到 | engine/host | P0 | M–L | `catchkeydown`、PC 别名、`global-bindkeydown` 全阴性（三分支实验后止损回滚）。Composer 命令/提及菜单无法做键盘导航（P-79/P-81） |
 | 3 | view 级按键投递缺失 + Tab 不发布焦点 | host | P0 | L | P9-D1 探针 25 事件矩阵：binding 25/25、delivery Native 仅 13/25；真实 Tab ×4 后 AX tree 无变化、`.ui-focus`=0（P-110/D15）。桌面应用无键盘可达性 |
-| 4 | 运行时 CSS 自定义属性不生效（动态主题） | engine | P0 | L | root inline `--var` 与 class-scoped 变量覆盖均不重新求值后代；仅静态 `:root` 可靠。被迫用代码生成器把暗色值直写进每个 selector（`src/generated/native-theme-variables.css`，P-45） |
+| 4 | 运行时 CSS 自定义属性不生效（动态主题） | engine | P0 | L | root inline `--var` 与 class-scoped 变量覆盖均不重新求值后代；仅静态 `:root` 可靠。被迫用代码生成器把暗色值直写进每个 selector（`src/generated/native-theme-variables.css`，P-45）。**⚠️ 2026-08-17 复核：提 issue 前先做 flag 实验** —— `@lynx-js/type-config@4.1.1` 存在 `enableCSSInlineVariables`（SDK 3.6+，默认 **false**；文档原文 "when disabled, inline style values are handled as ordinary static styles"，与 P-45 失败模式 #1 完全吻合），而 P-45 实验期间 config 只开过 `enableCSSInheritance`，从未开过它。需实机验证：(a) 开启后 root inline `--var` 是否生效；(b) class-scoped `.SliceRoot--theme-dark { --* }` 覆盖 `:root` 是否也归它管（按文档只覆盖 inline path，大概率不管）；(c) 标注平台仅 Android/iOS/HarmonyOS，Lynxtron Desktop 是否接线未知 |
 | 5 | macOS AX tree 只暴露单个 0-child `AXGroup` | host | P0 | XL | 已验证的 Lynx accessibility 属性（name/role/disabled）完全不投影到 macOS AX；`lynx.accessibilityAnnounce` 无可观察语音通道。读屏完全不可用（P-123/P-124） |
 | 6 | `:hover` / `:focus-visible` 等状态伪类缺失（仅 `:active`） | engine | P0 | M | Web 侧 312 处 `:hover`、155 处 focus class。被迫为每个 view-backed control 手写 `ui-hover`/`ui-pressed`/`ui-focus` 状态类 + mouse enter/leave 翻译（P7-I1，:hover 已在 CSS 报告标 ⬆️） |
 | 7 | PrimJS 标准库缺口五连：`Object.hasOwn` / `Array.toSorted` / `String.replaceAll` / `TextEncoder`/`TextDecoder` / `URLSearchParams` | primjs | P1 | S–M | 每个都以「build/测试全绿、运行期才 `not a function`」的形态爆炸，其中 `replaceAll` 曾造成 native 启动 crash（bisect 到 `7165953d`）。典型低垂果实 |
 | 8 | `setFocus`/`scrollToPosition` fulfilled ≠ 生效 | engine | P1 | M | `Element.invoke("setFocus")` resolve 成功但 OS 未授予焦点；tap 结束的 native blur 恒覆盖 sync/0ms/50ms 的 setFocus。API 契约应报告真实结果（P-110 item 4/9） |
 | 9 | CSS 静默剥离：不支持属性 build 期丢弃仅 warning，`!important` 运行期直接消失且无任何报错 | engine/工具链 | P1 | S | P5-R5 实测含 `!important` 声明从 matched styles 静默消失；`color-scheme`/`user-select`/`text-transform` 等十余属性被静默剥离，只有恰好被人工检查的 build 才发现。改成响亮诊断即可，低垂果实（P-26） |
-| 10 | `@media` / `matchMedia` 全缺（含 `prefers-reduced-motion`、`prefers-color-scheme`） | engine | P1 | M | Native bundle 静默丢弃现有 `@media` 规则；响应式被迫走 host `getContentBounds()` + resize 事件 + root viewport class 全套自建管道；系统深色模式无事件，`system` 主题只能回退 light |
+| 10 | `@media` / `matchMedia` 全缺（含 `prefers-reduced-motion`、`prefers-color-scheme`） | engine | P1 | M | Native bundle 静默丢弃现有 `@media` 规则；响应式被迫走 host `getContentBounds()` + resize 事件 + root viewport class 全套自建管道；系统深色模式无事件，`system` 主题只能回退 light。**⚠️ 2026-08-17 复核：提 issue 前先做 flag 实验** —— `enableCSSRule`（SDK 4.0+，默认 **false**）文档称启用后 `media`/`supports`/`keyframes`/`font-face`/`layer` 规则才走统一解析路径；"@media 被静默丢弃"可能只是该开关默认关。`matchMedia` runtime API 缺失则与该开关无关，仍需上游 |
 
 ---
 
@@ -61,7 +61,7 @@
 | `fetch` 只挂 `lynx.fetch`，`globalThis.fetch` 不存在 | engine | P2 | S | 别名即可，消除一整类调用点改写 |
 | EventSource 能连通但 message 事件永不派发 | engine/host | P2 | S–M | 「API 存在但不工作」型缺陷（Lynxtron 0.0.7 / P0-S2 实测），比完全缺失更危险 |
 | URL polyfill `pathname =` setter 静默无效 | engine | P2 | S | 抓包发现请求实际打到 `/`。静默正确性 bug，至少应 throw |
-| `transform-origin` 被忽略，旋转恒绕左上角 | engine | P1 | S–M | keyword（`center`）与百分比（`50% 50%`）均无效，chevron 旋转产生 14px 跳位；被迫用双 SVG 状态替代旋转 |
+| `transform-origin` 被忽略，旋转恒绕左上角 | engine | P1 | S–M | keyword（`center`）与百分比（`50% 50%`）均无效，chevron 旋转产生 14px 跳位；被迫用双 SVG 状态替代旋转。注：type-config 存在 `enableNewTransformOrigin`（默认 true，文档只提 iOS/Android/HarmonyOS 的 origin 算法），提 issue 前先确认 Desktop 是否走到该路径 |
 | ReactLynx compat 不导出 `React.version`（及 `React.use`；`export *` 不转发 default） | reactlynx | P1 | S | Base UI 的 `reactVersion.js` 模块加载期读取即编译失败；现靠 shim 伪造 `'18.3.1'` |
 | `@lynx-js/lynx-ui` Popover 在 Lynxtron PC 上 Presence `delayFrames`/`lynx.requestAnimationFrame` 不推进，popup 停在 `visibility:hidden` 且 console 全空 | lynx-ui | P1 | S–M | 静默失败；我们退回自制 fixed layer + `getRectByRef(...,true)` 锚点 |
 | `@lynx-js/websocket` 0.0.4 在 app close listener 运行前置 CLOSED；Lynxtron 遗留 CLOSE_WAIT fd | lynx-ui/host | P1 | S–M | 长时轮询下 fd 耗尽；现靠持有 native socket id 做幂等关闭 |
@@ -128,10 +128,19 @@
 | `!important` 声明从 matched styles 静默消失、无 build 错误 | engine | `docs/p5-r5-fidelity-gate.md`（P-26） |
 | 真实 Tab ×4 无 AX 变化、`.ui-focus`=0，而真实 click 可把 AX focus 移入 `container lynxtron` | host | `plan/LOG.md` + `plan/reports/p9-d1-host-input-bridge.md`（P-110/D15） |
 
-## 6. 后续步骤建议
+## 6. 后续步骤建议（2026-08-17 更新）
 
-1. **首批 issue（本周可发）**：Top 表 #1/#2/#3（输入/键盘三连，同属一条 host input bridge 主线，可作一个 tracking issue + 三个子 issue，直接附 P9-D1 的 25 事件矩阵）、#4（动态 CSS 变量，附 P-45 双重复现）、#9（静默剥离 → 只要求「响亮诊断」，最容易被接受）。
-2. **低垂果实打包**：PrimJS 标准库五连 + background timers + `globalThis.fetch` 别名，可合并为一个「ES/Web 平台基线追平」umbrella issue，逐项 checklist。
-3. **CSS 杂项**：以 `scripts/reports/lynx-css-report.md` 机器报告为附件开 umbrella issue，避免 20 个碎 issue。
-4. **需要先做最小复现再提**的：PrimJS 执行正确性三件（Effect / toLowerCase / Context construct failed）——没有 repro 上游无法行动，这是我们侧的前置工作。
-5. 提交前逐条核对 Lynx 最新 release notes（本清单基于 Lynx SDK 4.1 / Lynxtron 0.0.7–0.0.9 实测；0.0.9 已修复部分模板解码问题，其他项可能已有进展）。
+1. **首批 issue 草稿已就绪**（`apps/lynx/plan/issues/0001–0004`，英文自包含，可直接粘贴上游）：
+   - `0001` — Desktop 文本输入内核崩溃（Top #1）→ `lynx-family/lynx`
+   - `0002` — Desktop 键盘投递整条主线（Top #2/#3 + `setFocus` 契约，附 P9-D1 25 事件矩阵结论）→ `lynx-family/lynx`
+   - `0003` — `:hover`/`:focus-visible` 状态伪类（Top #6）→ `lynx-family/lynx`
+   - `0004` — PrimJS ES2021–2023 + WHATWG 基线（Top #7）→ `lynx-family/primjs`
+2. **先实验、再决定提不提**（本仓可自查，不用麻烦上游）：
+   - `enableCSSInlineVariables`（默认 false）↔ Top #4 动态 CSS 变量的 inline 失败模式；
+   - `enableCSSRule`（默认 false）↔ `@media`/`@supports`/`@font-face` 被静默丢弃；
+   - `enableNewTransformOrigin`（默认 true，但文档只提移动端）↔ transform-origin 恒左上角。
+   实验需 Lynxtron 实机（macOS），修改 `apps/lynx/lynx.config.ts` 的 `pluginLynxConfig` 块逐项开启并复跑 P-45 / @media / chevron 三个既有探针。若 flag 修复任一项，对应条目从"缺失"改判为"默认关 + 文档不可发现"，issue 改提 docs/defaults。
+3. **静默剥离诊断**（Top #9）：单独提，只要求「响亮诊断」，最容易被接受。
+4. **CSS 杂项**：以 `scripts/reports/lynx-css-report.md` 机器报告为附件开 umbrella issue，避免 20 个碎 issue。
+5. **需要先做最小复现再提**的：PrimJS 执行正确性三件（Effect / toLowerCase / Context construct failed）——没有 repro 上游无法行动，这是我们侧的前置工作。
+6. 提交前逐条核对 Lynx 最新 release notes（本清单基于 Lynx SDK 4.1 / Lynxtron 0.0.7–0.0.9 实测；0.0.9 已修复部分模板解码问题，其他项可能已有进展）。
