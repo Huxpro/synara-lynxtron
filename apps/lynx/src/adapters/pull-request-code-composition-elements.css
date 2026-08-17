@@ -152,6 +152,13 @@
   background-color: rgba(252, 252, 252, 0.0036);
 }
 
+.SharedPrCodeLine--no-newline-addition,
+.SharedPrCodeLine--no-newline-deletion,
+.SharedPrCodeLine--no-newline-context {
+  color: var(--muted-foreground);
+  font-style: italic;
+}
+
 .SharedPrCodeLineNumber {
   width: 40px;
   flex-shrink: 0;
@@ -197,7 +204,13 @@
 }
 
 .SharedPrCodeLine--hunk .SharedPrCodeLineText,
-.SharedPrCodeLine--hunk .SharedPrCodeLinePrefix {
+.SharedPrCodeLine--hunk .SharedPrCodeLinePrefix,
+.SharedPrCodeLine--no-newline-addition .SharedPrCodeLineText,
+.SharedPrCodeLine--no-newline-addition .SharedPrCodeLinePrefix,
+.SharedPrCodeLine--no-newline-deletion .SharedPrCodeLineText,
+.SharedPrCodeLine--no-newline-deletion .SharedPrCodeLinePrefix,
+.SharedPrCodeLine--no-newline-context .SharedPrCodeLineText,
+.SharedPrCodeLine--no-newline-context .SharedPrCodeLinePrefix {
   color: var(--muted-foreground);
 }
 

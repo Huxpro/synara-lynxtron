@@ -79,6 +79,20 @@ describe('Pull Request Code disclosure fidelity', () => {
     expect(lynxStyles).toMatch(
       /\.SliceRoot--theme-dark \.SharedPrCodeLine--hunk\s*\{[^}]*background-color:\s*rgba\(252,\s*252,\s*252,\s*0\.0036\);/s
     );
+    expect(lynxElements).toContain(
+      "props.kind.startsWith('no-newline-')"
+    );
+    expect(lynxElements).toContain("? '\\\\'");
+    expect(lynxStyles).toMatch(
+      /\.SharedPrCodeLine--no-newline-addition,[^{]*\{[^}]*color:\s*var\(--muted-foreground\);[^}]*font-style:\s*italic;/s
+    );
+    expect(lynxStyles).toContain(
+      '.SharedPrCodeLine--no-newline-context'
+    );
+    expect(webElements).toContain(
+      'props.kind.startsWith("no-newline-")'
+    );
+    expect(webElements).toContain('? "\\\\"');
     expect(lynxStyles).toMatch(
       /\.SharedPrCodeLine\s*\{[^}]*min-height:\s*20px;/s
     );

@@ -145,6 +145,8 @@ export function PullRequestCodeLineElement(props: {
         ? '-'
         : props.kind === 'hunk'
           ? '@'
+          : props.kind.startsWith('no-newline-')
+            ? '\\'
           : ' ';
   return (
     <view

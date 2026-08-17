@@ -3694,3 +3694,30 @@ former dynamic-event P1 is no longer a valid blocker.
   `1.00 -> 0.00`; product-loss contribution `0.00 -> 0.00`.
 - Detailed evidence:
   `shots/2026-08-17/standalone-diff-file-jump-ambiguous/notes.md`.
+
+## 2026-08-17 Standalone no-newline Changes at 320x200
+
+- Active discovery moved to a new canonical Git EOF-marker state rather than
+  repeating binary, mode, lifecycle, rename, or file-jump coverage.
+- Web authority preserves `\ No newline at end of file` as a dedicated row;
+  the shared portable projection previously discarded it.
+- The shared model now preserves marker ownership and source order after
+  addition, deletion, and shared context rows. Web and Lynx render the same
+  muted italic `\` row.
+- A final real context-tail patch rendered
+  `SharedPrCodeLine--no-newline-context` at
+  `277x20 @ (26,155)`, ending at `175`, in a true dark `320x200` cell.
+- `shared-diff-no-newline-identity-missing`: P1 contribution
+  `1.00 -> 0.00`.
+- Colored Git output, malformed RPC payload, fractional mouse-coordinate
+  handling, and a light-root theme mismatch were rejected and recorded as
+  harness failures. `codex not found in PATH` remained accepted provider noise.
+- Programmatic max-scroll was used only for retained anatomy visibility, not as
+  wheel or Native gesture evidence.
+- Focused tests passed `9/9` and `1/1`; Web, Lynx-for-Web, and Native/Desktop
+  production builds passed.
+- Every browser entry, failure, retained cell, and exit returned
+  `sessions: []` with zero agent-browser-owned processes; owned ports were
+  released and local screenshot count remained `100`.
+- Detailed evidence:
+  `shots/2026-08-17/standalone-diff-no-newline-short-height/notes.md`.

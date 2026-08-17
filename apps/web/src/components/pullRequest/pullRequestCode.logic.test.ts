@@ -183,6 +183,87 @@ describe("buildPullRequestCodeView", () => {
     });
   });
 
+  it("preserves no-newline markers after their deletion and addition rows", () => {
+    const patch = [
+      "diff --git a/note.txt b/note.txt",
+      "index ee2363a..5c80f32 100644",
+      "--- a/note.txt",
+      "+++ b/note.txt",
+      "@@ -1 +1 @@",
+      "-before",
+      "\\ No newline at end of file",
+      "+after",
+      "\\ No newline at end of file",
+      "",
+    ].join("\n");
+    const expectedLines = [
+      ["hunk", null, null, "@@ -1 +1 @@"],
+      ["deletion", 1, null, "before"],
+      ["no-newline-deletion", null, null, "No newline at end of file"],
+      ["addition", null, 1, "after"],
+      ["no-newline-addition", null, null, "No newline at end of file"],
+    ];
+
+    const parsed = buildPullRequestCodeView(patch, "pull-request:no-newline-test");
+    expect(parsed.kind).toBe("files");
+    if (parsed.kind !== "files") return;
+    expect(
+      parsed.files[0]?.lines.map((line) => [
+        line.kind,
+        line.oldLine,
+        line.newLine,
+        line.text,
+      ]),
+    ).toEqual(expectedLines);
+
+    const portable = buildPortableUnifiedDiffView(patch);
+    expect(
+      portable?.files[0]?.lines.map((line) => [
+        line.kind,
+        line.oldLine,
+        line.newLine,
+        line.text,
+      ]),
+    ).toEqual(expectedLines);
+  });
+
+  it("preserves a no-newline marker after a shared context row", () => {
+    const patch = [
+      "diff --git a/note.txt b/note.txt",
+      "index 6f6bc1f..aeaf40f 100644",
+      "--- a/note.txt",
+      "+++ b/note.txt",
+      "@@ -1,2 +1,2 @@",
+      "-before",
+      "+after",
+      " tail",
+      "\\ No newline at end of file",
+      "",
+    ].join("\n");
+    const expectedLines = [
+      ["hunk", "@@ -1,2 +1,2 @@"],
+      ["deletion", "before"],
+      ["addition", "after"],
+      ["context", "tail"],
+      ["no-newline-context", "No newline at end of file"],
+    ];
+
+    const parsed = buildPullRequestCodeView(
+      patch,
+      "pull-request:no-newline-context-test",
+    );
+    expect(parsed.kind).toBe("files");
+    if (parsed.kind !== "files") return;
+    expect(parsed.files[0]?.lines.map((line) => [line.kind, line.text])).toEqual(
+      expectedLines,
+    );
+
+    const portable = buildPortableUnifiedDiffView(patch);
+    expect(portable?.files[0]?.lines.map((line) => [line.kind, line.text])).toEqual(
+      expectedLines,
+    );
+  });
+
   it("keeps empty and unparsable patches explicit", () => {
     expect(buildPullRequestCodeView("  ")).toEqual({ kind: "empty" });
     const raw = buildPullRequestCodeView("not a unified diff");

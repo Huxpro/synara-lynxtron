@@ -11,7 +11,14 @@ import {
   type RenderablePatch,
 } from "~/lib/diffRendering";
 
-export type PullRequestDiffLineKind = "hunk" | "context" | "addition" | "deletion";
+export type PullRequestDiffLineKind =
+  | "hunk"
+  | "context"
+  | "addition"
+  | "deletion"
+  | "no-newline-addition"
+  | "no-newline-deletion"
+  | "no-newline-context";
 
 export interface PullRequestDiffLineView {
   readonly id: string;
@@ -86,10 +93,105 @@ function portableLineText(text: string): string {
   return text.replace(/\r?\n[ +\-]?$/, "");
 }
 
-function projectFileLines(file: Extract<RenderablePatch, { kind: "files" }>['files'][number]) {
+interface NoNewlineMarker {
+  readonly afterKind: "addition" | "deletion" | "context";
+  readonly afterIndex: number;
+}
+
+function noNewlineMarkers(
+  patch: string | undefined,
+): ReadonlyMap<string, readonly NoNewlineMarker[]> {
+  const body = unifiedDiffBody(patch);
+  if (!body) return new Map();
+  const markers = new Map<string, NoNewlineMarker[]>();
+  let currentPath: string | null = null;
+  let inHunk = false;
+  let additionIndex = 0;
+  let deletionIndex = 0;
+  let contextIndex = 0;
+  let previousKind: "addition" | "deletion" | "context" | null = null;
+  for (const line of body.split(/\r?\n/)) {
+    const fileMatch = /^diff --git a\/(.+) b\/(.+)$/.exec(line);
+    if (fileMatch) {
+      currentPath = stripGitPathPrefix(fileMatch[2] ?? "");
+      inHunk = false;
+      additionIndex = 0;
+      deletionIndex = 0;
+      contextIndex = 0;
+      previousKind = null;
+      continue;
+    }
+    if (/^@@ /.test(line)) {
+      inHunk = true;
+      previousKind = null;
+      continue;
+    }
+    if (!currentPath || !inHunk) continue;
+    if (line.startsWith("+")) {
+      additionIndex += 1;
+      previousKind = "addition";
+      continue;
+    }
+    if (line.startsWith("-")) {
+      deletionIndex += 1;
+      previousKind = "deletion";
+      continue;
+    }
+    if (line.startsWith(" ")) {
+      contextIndex += 1;
+      previousKind = "context";
+      continue;
+    }
+    if (line === "\\ No newline at end of file" && previousKind) {
+      const currentMarkers = markers.get(currentPath) ?? [];
+      currentMarkers.push({
+        afterKind: previousKind,
+        afterIndex:
+          previousKind === "addition"
+            ? additionIndex
+            : previousKind === "deletion"
+              ? deletionIndex
+              : contextIndex,
+      });
+      markers.set(currentPath, currentMarkers);
+    }
+    previousKind = null;
+  }
+  return markers;
+}
+
+function projectFileLines(
+  file: Extract<RenderablePatch, { kind: "files" }>['files'][number],
+  markers: readonly NoNewlineMarker[],
+) {
   const fileKey = buildFileDiffRenderKey(file);
   const lines: PullRequestDiffLineView[] = [];
+  const markerKeys = new Set(
+    markers.map((marker) => `${marker.afterKind}:${marker.afterIndex}`),
+  );
   let rowIndex = 0;
+  let additionIndex = 0;
+  let deletionIndex = 0;
+  let contextIndex = 0;
+  const appendNoNewlineMarker = (
+    afterKind: "addition" | "deletion" | "context",
+    afterIndex: number,
+  ) => {
+    if (!markerKeys.has(`${afterKind}:${afterIndex}`)) return;
+    const kind: PullRequestDiffLineKind =
+      afterKind === "addition"
+        ? "no-newline-addition"
+        : afterKind === "deletion"
+          ? "no-newline-deletion"
+          : "no-newline-context";
+    lines.push({
+      id: lineId(fileKey, kind, rowIndex++),
+      kind,
+      oldLine: null,
+      newLine: null,
+      text: "No newline at end of file",
+    });
+  };
   for (const hunk of file.hunks) {
     lines.push({
       id: lineId(fileKey, "hunk", rowIndex++),
@@ -105,6 +207,7 @@ function projectFileLines(file: Extract<RenderablePatch, { kind: "files" }>['fil
     for (const segment of hunk.hunkContent) {
       if (segment.type === "context") {
         for (let index = 0; index < segment.lines; index += 1) {
+          contextIndex += 1;
           lines.push({
             id: lineId(fileKey, "context", rowIndex++),
             kind: "context",
@@ -116,10 +219,12 @@ function projectFileLines(file: Extract<RenderablePatch, { kind: "files" }>['fil
               "",
             ),
           });
+          appendNoNewlineMarker("context", contextIndex);
         }
         continue;
       }
       for (let index = 0; index < segment.deletions; index += 1) {
+        deletionIndex += 1;
         lines.push({
           id: lineId(fileKey, "deletion", rowIndex++),
           kind: "deletion",
@@ -127,8 +232,10 @@ function projectFileLines(file: Extract<RenderablePatch, { kind: "files" }>['fil
           newLine: null,
           text: portableLineText(file.deletionLines[segment.deletionLineIndex + index] ?? ""),
         });
+        appendNoNewlineMarker("deletion", deletionIndex);
       }
       for (let index = 0; index < segment.additions; index += 1) {
+        additionIndex += 1;
         lines.push({
           id: lineId(fileKey, "addition", rowIndex++),
           kind: "addition",
@@ -136,6 +243,7 @@ function projectFileLines(file: Extract<RenderablePatch, { kind: "files" }>['fil
           newLine: newLine++,
           text: portableLineText(file.additionLines[segment.additionLineIndex + index] ?? ""),
         });
+        appendNoNewlineMarker("addition", additionIndex);
       }
     }
   }
@@ -333,7 +441,30 @@ export function buildPortableUnifiedDiffView(
       });
       continue;
     }
-    if (!current.inHunk || line.startsWith("\\ No newline at end of file")) continue;
+    if (!current.inHunk) continue;
+    if (line === "\\ No newline at end of file") {
+      const previousKind = current.lines.at(-1)?.kind;
+      if (
+        previousKind === "addition" ||
+        previousKind === "deletion" ||
+        previousKind === "context"
+      ) {
+        const kind: PullRequestDiffLineKind =
+          previousKind === "addition"
+            ? "no-newline-addition"
+            : previousKind === "deletion"
+              ? "no-newline-deletion"
+              : "no-newline-context";
+        current.lines.push({
+          id: lineId(current.key, kind, current.lines.length),
+          kind,
+          oldLine: null,
+          newLine: null,
+          text: "No newline at end of file",
+        });
+      }
+      continue;
+    }
     if (line.startsWith("+")) {
       current.lines.push({
         id: lineId(current.key, "addition", current.lines.length),
@@ -402,6 +533,7 @@ export function buildPullRequestCodeView(
   const binaryPaths = binaryFilePaths(patch);
   const modeChanges = fileModeChanges(patch);
   const lifecycles = fileLifecycles(patch);
+  const eofMarkers = noNewlineMarkers(patch);
   const files = renderableFiles.map((file) => {
     const stats = summarizeFileDiffStats([file]);
     const path = resolveFileDiffPath(file);
@@ -415,7 +547,7 @@ export function buildPullRequestCodeView(
       binary: binaryPaths.has(path),
       modeChange: modeChanges.get(path) ?? null,
       lifecycle: lifecycles.get(path) ?? null,
-      lines: projectFileLines(file),
+      lines: projectFileLines(file, eofMarkers.get(path) ?? []),
     };
   });
   const totals = summarizeFileDiffStats(renderable.files);

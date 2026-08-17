@@ -92,9 +92,18 @@ export function PullRequestCodeLineElement(props: {
   readonly text: string;
   readonly wordWrap: boolean;
 }) {
-  const prefix = props.kind === "addition" ? "+" : props.kind === "deletion" ? "-" : props.kind === "hunk" ? "@" : " ";
+  const prefix =
+    props.kind === "addition"
+      ? "+"
+      : props.kind === "deletion"
+        ? "-"
+        : props.kind === "hunk"
+          ? "@"
+          : props.kind.startsWith("no-newline-")
+            ? "\\"
+            : " ";
   return (
-    <div className={cn("flex", props.wordWrap ? "min-w-0" : "min-w-max", props.kind === "addition" && "bg-success/10", props.kind === "deletion" && "bg-destructive/10", props.kind === "hunk" && "bg-muted/60 text-muted-foreground")}>
+    <div className={cn("flex", props.wordWrap ? "min-w-0" : "min-w-max", props.kind === "addition" && "bg-success/10", props.kind === "deletion" && "bg-destructive/10", props.kind === "hunk" && "bg-muted/60 text-muted-foreground", props.kind.startsWith("no-newline-") && "italic text-muted-foreground")}>
       <span className="w-10 shrink-0 select-none px-1 text-right text-muted-foreground">{props.oldLine ?? ""}</span>
       <span className="w-10 shrink-0 select-none px-1 text-right text-muted-foreground">{props.newLine ?? ""}</span>
       <span className="w-5 shrink-0 select-none text-center">{prefix}</span>
