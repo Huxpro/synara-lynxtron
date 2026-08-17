@@ -4533,3 +4533,25 @@ former dynamic-event P1 is no longer a valid blocker.
   agent-browser-owned processes.
 - Detailed evidence:
   `shots/2026-08-17/native-settings-diff-word-wrap-off-restart/notes.md`.
+
+## 2026-08-17 Native Settings Diff word wrap Reset
+
+- A new exact-owned Native Settings cell exercised the conditional
+  `Reset diff line wrapping to default` action.
+- Real switch touch at `(847,250)` changed Off to On and mounted the exact
+  Reset action.
+- The Reset control measured `32x24 @ (395,219)` and received real touch at
+  `(411,231)`.
+- The switch returned to `aria-checked=false` / `Off`, the on-class disappeared,
+  and the Reset action unmounted.
+- A second cold-started owned Settings instance using the same user data kept
+  the switch Off and Reset absent.
+- `native-settings-diff-word-wrap-reset-restart`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- Native console had no warning/error entry, temporary JPEG was `1800x1300`,
+  all owned resources were removed, port `58090` was free, and screenshot
+  count remained `100`.
+- Entry/exit `browser:gate` returned `sessions: []` and zero
+  agent-browser-owned processes.
+- Detailed evidence:
+  `shots/2026-08-17/native-settings-diff-word-wrap-reset/notes.md`.
