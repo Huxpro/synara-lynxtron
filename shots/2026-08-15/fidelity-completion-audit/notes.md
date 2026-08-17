@@ -3410,3 +3410,21 @@ former dynamic-event P1 is no longer a valid blocker.
   harness losses or missing interaction coverage, not product passes.
 - Detailed evidence:
   `shots/2026-08-17/editor-diff-short-height/notes.md`.
+
+## 2026-08-17 Environment close containment at 320x200
+
+- Active discovery entered the standalone Changes dock through a real pointer
+  click on the rendered Environment `Changes` row in a canonical clean Git
+  workspace.
+- The clean dock itself passed: `320x154`, with the complete
+  `No working tree changes.` state in a `319x110` scroller.
+- Opening Changes translated the closed Environment overlay to `x=320..632`.
+  Before the fix this expanded root/page `scrollWidth` from `320` to `632`,
+  and a real Close interaction removed the dock without restoring the root.
+- `ThreadPage` now clips its page-internal overlays. Root width remains
+  `320/320` before open, while Changes is open, and after Close; the normal
+  `1280x820` Environment surface remains fully visible.
+- `lynx-environment-close-offcanvas-overflow`: P1 contribution
+  `1.00 -> 0.00`.
+- Detailed evidence:
+  `shots/2026-08-17/environment-close-containment-short-height/notes.md`.

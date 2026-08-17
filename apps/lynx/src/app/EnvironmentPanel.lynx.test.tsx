@@ -332,6 +332,9 @@ describe('Lynx Environment panel', () => {
     expect(appStyles).toMatch(
       /\.ThreadPage--diff-open\s*\{[^}]*padding-right:\s*50%;/s
     );
+    expect(appStyles).toMatch(
+      /\.ThreadPage\s*\{[^}]*position:\s*relative;[^}]*overflow:\s*hidden;[^}]*padding:\s*0;/s
+    );
     expect(panelSource).toContain('resolveThreadRecapIdleMs({');
     expect(panelSource).toContain('fetchThreadRecapSummary(props.threadId)');
     expect(panelSource).toContain('prepareThreadRecap(props.threadId)');
