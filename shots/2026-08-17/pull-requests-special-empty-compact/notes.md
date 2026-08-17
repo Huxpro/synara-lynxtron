@@ -174,6 +174,9 @@ by `bun run browser:gate` before the next browser command. All gates reported
   passed;
 - Native/Desktop production build and staging:
   passed;
+- React Doctor changed-lines scan against parent commit
+  `e023f65229be92b4f0bff09fbe1b56b98fe2cf1d`:
+  `4 files`, `0 errors`, `0 warnings`, complete;
 - Lynx-for-Web bundle:
   `be72834c744321ddb9a657180736dedf620bb6ac2726aea2bc70348c74f6a686`;
 - Native source/staged bundle:
