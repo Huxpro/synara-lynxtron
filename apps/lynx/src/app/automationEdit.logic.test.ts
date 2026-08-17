@@ -3,6 +3,7 @@ import { describe, expect, it } from '@rstest/core';
 
 import {
   automationEditIsDirty,
+  automationEditScheduleForKind,
   buildAutomationEditInput,
 } from './automationEdit.logic';
 
@@ -53,6 +54,7 @@ describe('Automation edit payload', () => {
       definition: current,
       name: current.name,
       prompt: current.prompt,
+      schedule: current.schedule,
       stopWhen: 'Original stop condition',
       maxIterations: null,
     };
@@ -71,6 +73,7 @@ describe('Automation edit payload', () => {
       definition: current,
       name: current.name,
       prompt: current.prompt,
+      schedule: current.schedule,
       stopWhen: '  Updated stop condition  ',
       maxIterations: null,
     };
@@ -93,6 +96,7 @@ describe('Automation edit payload', () => {
         definition: current,
         name: current.name,
         prompt: current.prompt,
+        schedule: current.schedule,
         stopWhen: '   ',
         maxIterations: null,
       })
@@ -107,6 +111,7 @@ describe('Automation edit payload', () => {
       definition: current,
       name: current.name,
       prompt: current.prompt,
+      schedule: current.schedule,
       stopWhen: 'Original stop condition',
       maxIterations: 10,
     };
@@ -117,6 +122,54 @@ describe('Automation edit payload', () => {
       name: current.name,
       prompt: current.prompt,
       maxIterations: 10,
+    });
+  });
+
+  it('updates Repeats without rewriting unrelated fields', () => {
+    const current = definition();
+    const schedule = automationEditScheduleForKind(current.schedule, 'weekdays');
+
+    expect(schedule).toEqual({
+      type: 'weekdays',
+      timeOfDay: '09:00',
+    });
+    expect(
+      buildAutomationEditInput({
+        definition: current,
+        name: current.name,
+        prompt: current.prompt,
+        schedule,
+        stopWhen: 'Original stop condition',
+        maxIterations: null,
+      })
+    ).toEqual({
+      id: current.id,
+      name: current.name,
+      prompt: current.prompt,
+      schedule,
+    });
+  });
+
+  it('preserves timed schedule details across daily and weekday edits', () => {
+    expect(
+      automationEditScheduleForKind(
+        {
+          type: 'daily',
+          timeOfDay: '14:30',
+          timezone: 'Asia/Seoul',
+        },
+        'weekdays'
+      )
+    ).toEqual({
+      type: 'weekdays',
+      timeOfDay: '14:30',
+      timezone: 'Asia/Seoul',
+    });
+    expect(
+      automationEditScheduleForKind({ type: 'manual' }, 'daily')
+    ).toEqual({
+      type: 'daily',
+      timeOfDay: '09:00',
     });
   });
 });

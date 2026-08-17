@@ -357,6 +357,12 @@ describe('Lynx Automations route', () => {
     expect(editSource).toContain("definition.mode === 'heartbeat'");
     expect(editSource).toContain('accessibleLabel="Heartbeat stop condition"');
     expect(editSource).toContain('<AutomationChoiceOption');
+    expect(editSource).toContain(
+      'automationEditScheduleForKind('
+    );
+    expect(editSource).toContain("['manual', 'Manual']");
+    expect(editSource).toContain("['daily', 'Daily']");
+    expect(editSource).toContain("['weekdays', 'Weekdays']");
     expect(editSource).toContain("[10, '10 runs']");
     expect(editLogicSource).toContain(
       'completionPolicyFromStopWhen(stopWhen)'

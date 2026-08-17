@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "lynx-automation-edit-repeats-missing",
+      "severity": "P1",
+      "classification": "product-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx Automation edit field parity"
+    },
+    {
+      "id": "native-background-system-mouse-hit-testing",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Native background interaction path"
+    },
+    {
+      "id": "lynx-automation-edit-advanced-schedules",
+      "severity": "platform",
+      "classification": "intentional-platform-delta",
+      "before": 1,
+      "after": 1,
+      "owner": "Focused Lynx schedule editor"
+    }
+  ]
+}

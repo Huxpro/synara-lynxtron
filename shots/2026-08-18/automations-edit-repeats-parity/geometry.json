@@ -1,0 +1,108 @@
+{
+  "cell": {
+    "route": "/automations/automation:1d3dcca6-6466-4489-9208-2bd2dbacab36",
+    "theme": "dark",
+    "viewport": {
+      "width": 900,
+      "height": 650,
+      "devicePixelRatio": 1
+    }
+  },
+  "web": {
+    "initialSchedule": "manual",
+    "afterFirstLynxSave": "weekdays",
+    "afterSecondLynxSave": "manual"
+  },
+  "lynxForWeb": {
+    "dialog": {
+      "x": 170,
+      "y": 78,
+      "width": 560,
+      "height": 494
+    },
+    "panel": {
+      "x": 187,
+      "y": 135,
+      "width": 526,
+      "height": 374
+    },
+    "manual": {
+      "x": 187,
+      "y": 421,
+      "width": 58.78125,
+      "height": 26
+    },
+    "daily": {
+      "x": 251.78125,
+      "y": 421,
+      "width": 45.859375,
+      "height": 26
+    },
+    "weekdays": {
+      "x": 303.640625,
+      "y": 421,
+      "width": 75.34375,
+      "height": 26
+    },
+    "save": {
+      "x": 659.265625,
+      "y": 523,
+      "width": 53.734375,
+      "height": 32
+    },
+    "connectionAttempts": 1,
+    "socketState": 1,
+    "pendingRequests": 0,
+    "lastTransportError": null,
+    "lastRpcError": null
+  },
+  "native": {
+    "pid": 84735,
+    "client": "localhost:8902",
+    "session": 1,
+    "bundleSha256": "a9102ce117eae5807b92bdc9bdba80044f90b2e283c81bc97101959625b8a4c0",
+    "window": {
+      "x": 181,
+      "y": 159,
+      "width": 1280,
+      "height": 820
+    },
+    "edit": {
+      "x": 1094,
+      "y": 9,
+      "width": 45,
+      "height": 28
+    },
+    "manual": {
+      "x": 447,
+      "y": 578,
+      "width": 63,
+      "height": 30
+    },
+    "daily": {
+      "x": 516,
+      "y": 578,
+      "width": 50,
+      "height": 30
+    },
+    "weekdays": {
+      "x": 572,
+      "y": 578,
+      "width": 80,
+      "height": 30
+    },
+    "save": {
+      "x": 778,
+      "y": 632,
+      "width": 55,
+      "height": 32
+    },
+    "persistedAfterFirstSave": {
+      "type": "weekdays",
+      "timeOfDay": "09:00"
+    },
+    "persistedAfterSecondSave": {
+      "type": "manual"
+    }
+  }
+}

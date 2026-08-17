@@ -14,8 +14,10 @@ import { Input } from '../components/ui/input.lynx';
 import { AutomationChoiceOption } from './AutomationChoiceOption.lynx';
 import {
   automationEditIsDirty,
+  automationEditScheduleForKind,
   automationEditStopWhen,
   buildAutomationEditInput,
+  type AutomationEditScheduleKind,
 } from './automationEdit.logic';
 
 interface NativeTextInputEvent {
@@ -41,6 +43,7 @@ export function AutomationEditDialog({
 }) {
   const [name, setName] = useState(definition.name);
   const [prompt, setPrompt] = useState(definition.prompt);
+  const [schedule, setSchedule] = useState(definition.schedule);
   const initialStopWhen = automationEditStopWhen(definition);
   const [stopWhen, setStopWhen] = useState(initialStopWhen);
   const [maxIterations, setMaxIterations] = useState<number | null>(
@@ -50,12 +53,14 @@ export function AutomationEditDialog({
     if (!open) return;
     setName(definition.name);
     setPrompt(definition.prompt);
+    setSchedule(definition.schedule);
     setStopWhen(initialStopWhen);
     setMaxIterations(definition.maxIterations);
   }, [
     definition.maxIterations,
     definition.name,
     definition.prompt,
+    definition.schedule,
     initialStopWhen,
     open,
   ]);
@@ -68,6 +73,7 @@ export function AutomationEditDialog({
       definition,
       name,
       prompt,
+      schedule,
       stopWhen,
       maxIterations,
     });
@@ -128,6 +134,33 @@ export function AutomationEditDialog({
             </view>
           ) : null}
           <view className="AutomationCreateField">
+            <text className="AutomationCreateLabel">Repeats</text>
+            <view className="AutomationCreateChoices">
+              {(
+                [
+                  ['manual', 'Manual'],
+                  ['daily', 'Daily'],
+                  ['weekdays', 'Weekdays'],
+                ] as const
+              ).map(([value, label]) => (
+                <AutomationChoiceOption
+                  key={value}
+                  disabled={pending}
+                  label={label}
+                  selected={schedule.type === value}
+                  onSelect={() =>
+                    setSchedule(
+                      automationEditScheduleForKind(
+                        schedule,
+                        value as AutomationEditScheduleKind
+                      )
+                    )
+                  }
+                />
+              ))}
+            </view>
+          </view>
+          <view className="AutomationCreateField">
             <text className="AutomationCreateLabel">Max iterations</text>
             <view className="AutomationCreateChoices">
               {(
@@ -172,6 +205,7 @@ export function AutomationEditDialog({
                   definition,
                   name,
                   prompt,
+                  schedule,
                   stopWhen: normalizedStopWhen,
                   maxIterations,
                 })
