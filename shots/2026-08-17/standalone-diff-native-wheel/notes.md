@@ -5,8 +5,8 @@
 - Story: `standalone-diff-native-wheel`.
 - Missing coverage: `1.00 -> 0.00`.
 - P1 product/platform loss contribution: `1.00 -> 1.00`.
-- Result: current Lynxtron host limitation, not an intentional platform delta
-  and not a passing product cell.
+- Result: active upstream Desktop nested-scroll routing blocker, not an
+  intentional platform delta and not a passing product cell.
 
 The Changes dock has a valid overflowing vertical layout, but Native wheel
 input does not move it. The limitation remains user-visible, so discovering
@@ -47,16 +47,25 @@ Measured geometry before wheel input:
 - second file header: `271x32 @ (604,1409)`;
 - wheel hit at the scroller center resolved to the visible diff subtree.
 
-Native `Input.emulateTouchFromMouseEvent(type="mouseWheel")` sent both
+The original run used DevTool
+`Input.emulateTouchFromMouseEvent(type="mouseWheel")` with both
 `deltaY=220` and `deltaY=-220`. The second file header remained at
 `y=1409` after both:
 
 - positive delta movement: `0`;
 - negative delta movement: `0`.
 
-A separate top-of-scroller control hit outside the nested horizontal code
-lines also produced `0/0`. This rejects the hypothesis that only the inner
-horizontal `SharedPrCodeLines` owner swallowed the vertical wheel.
+A later audit proved that this specific input path is a harness limitation,
+tracked upstream as `lynx-family/lynxtron#151`; it must not be called real
+system wheel evidence.
+
+The product loss remains active because a fresh exact-owned run then used a
+real macOS pixel-scroll `CGEvent`. The same product geometry still produced
+`deltaY=0` on `0.0.12-dev`. The latest published Lynxtron `0.0.15` was tested
+separately with the same product bundle and canonical fixture: after real
+system clicks opened Changes and expanded the 30-line first file, real
+pixel-scroll input over both the visible code rows and the outer scroller's
+empty area left byte-identical CoreGraphics frames.
 
 ## Scroll Extent Proof
 
@@ -86,12 +95,20 @@ The final direct-child/probe combination still measured `560/1352` viewport
 and content heights while wheel movement remained `0/0`. No speculative
 product patch was retained.
 
-The historical HostInputProbe remains important control evidence: the same
-host previously delivered three Native scroll events and reached
-`scrollTop=242` in a simple fixed-height scroll view. The current gap is
-therefore narrower than a globally missing Lynxtron wheel bridge, but it is
-not app-fixable by the scroll-view activation, orientation, event, angle, or
-direct-child contracts tested here.
+The HostInputProbe control was re-run with the same real macOS pixel-scroll
+input on both `0.0.12-dev` and `0.0.15`. On `0.0.12-dev` it delivered three
+`bindscroll` calls and reached `scrollTop=242`; `0.0.15` visibly moved from
+`Scroll start` to `Spacer three / Scroll end`. The current gap is therefore
+narrower than a globally missing wheel bridge and specific to the
+nested/product-shaped scroll routing.
+
+Upstream blocker:
+
+- https://github.com/lynx-family/lynx/issues/8665
+
+Separate DevTool emulation blocker:
+
+- https://github.com/lynx-family/lynxtron/issues/151
 
 ## Harness Failures
 

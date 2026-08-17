@@ -72,6 +72,14 @@ const reliabilityLedger = [
     fixed: '13561914d',
     summary: 'Explorer preview initializer crashed the Native runtime',
   },
+  {
+    id: 'native-diff-nested-wheel-routing',
+    severityPoints: 3,
+    introduced: '7edf76421',
+    fixed: null,
+    summary:
+      'Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present',
+  },
 ];
 const harnessIssueLedger = [
   {
@@ -129,6 +137,19 @@ const harnessIssueLedger = [
     resolvedBy: [],
     resolution:
       'Unresolved harness-only ownership boundary; the user-owned @t3tools/lynxtron client was not stopped, and Native Automations certification remains missing coverage.',
+    resolutionStoryPrefixes: [],
+  },
+  {
+    id: 'native-devtool-wheel-emulation',
+    type: 'interaction-harness-boundary',
+    detectedAt: '7edf76421',
+    affectedStoryPrefix: '2026-08-17--standalone-diff-native-wheel',
+    summary:
+      'Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.',
+    severityPoints: 0,
+    resolvedBy: [],
+    resolution:
+      'Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.',
     resolutionStoryPrefixes: [],
   },
 ];

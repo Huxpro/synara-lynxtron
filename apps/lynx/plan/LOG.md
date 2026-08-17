@@ -8626,3 +8626,18 @@ truncate` title与`shrink-0` pill contract，避免长provider/plan文字相撞�
 - ledger generator同时修复：不再用本地100张覆盖1287张remote history，改为remote
   history + local override/new scope + Git deleted paths merge，并从合并证据动态发现
   日期。证据：`shots/2026-08-18/usage-mixed-auth-warning-icons/`。
+
+### Native Diff real-wheel upstream attribution
+
+- 纠正旧`standalone-diff-native-wheel`证据：DevTool
+  `Input.emulateTouchFromMouseEvent(mouseWheel)`失败属于Lynxtron#151 harness blocker，
+  不能称为真实系统wheel。
+- 同一HostInputProbe使用真实macOS pixel-scroll CGEvent在0.0.12-dev产生3次
+  `bindscroll`并到`scrollTop=242`；最新正式0.0.15同样从Scroll start滚到
+  Spacer three/Scroll end，证明全局wheel bridge正常。
+- canonical产品Diff fixture仍为`321x560` viewport / `297x1352` content /
+  second header y1409。真实pixel-scroll在0.0.12-dev上`deltaY=0`；0.0.15通过
+  真实点击展开30+30行后，在代码区和outer空白区pixel-scroll均为byte-identical frame。
+- 五种产品scroll-view配置已在旧轮逐项排除且全部revert；P1 contribution保持
+  `1.00 -> 1.00`，不通过改权重或降级classification关闭。上游Lynx blocker：
+  https://github.com/lynx-family/lynx/issues/8665。
