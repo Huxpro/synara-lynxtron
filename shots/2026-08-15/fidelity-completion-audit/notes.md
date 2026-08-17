@@ -4023,6 +4023,23 @@ former dynamic-event P1 is no longer a valid blocker.
 - Detailed evidence:
   `shots/2026-08-17/environment-local-server-alert-combination/notes.md`.
 
+## 2026-08-17 Native medium DevTool preflight
+
+- Current host source and an exact isolated launch confirm the supported
+  minimum is now `900x650`; the older unconditional `1280x820` normalization
+  result is stale.
+- The final production bundle loaded at the exact persisted medium bounds and
+  completed Native bridge/RPC bootstrap.
+- Despite `SYNARA_ENABLE_DEVTOOL=1`, the healthy owned PID exposed no DevTool
+  listener and no `@synara/lynx` client/session appeared. The log reported
+  `LynxViewStateObserver not found in registry`.
+- `native-medium-devtool-registration`: harness missing coverage remains
+  `1.00`; no Native DOM, console, screenshot, or product result is claimed.
+- Exact PID/process-group cleanup released the isolated server and preserved
+  unrelated `8901`/`8902` clients.
+- Detailed evidence:
+  `shots/2026-08-17/native-medium-devtool-preflight/notes.md`.
+
 ## 2026-08-17 Long Local Server identity at 320x200
 
 - Four real rows included an extremely long page title.
