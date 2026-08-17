@@ -1,0 +1,470 @@
+NODE=180
+{
+  "compress": false,
+  "node": {
+    "attributes": [
+      "class",
+      "SettingsUsageCards"
+    ],
+    "backendNodeId": 180,
+    "childNodeCount": 3,
+    "localName": "view",
+    "nodeId": 180,
+    "nodeName": "VIEW",
+    "nodeType": 1,
+    "nodeValue": "",
+    "parentId": 168
+  }
+}
+{
+  "model": {
+    "border": [
+      496,
+      150,
+      1120,
+      150,
+      1120,
+      747,
+      496,
+      747
+    ],
+    "content": [
+      496,
+      150,
+      1120,
+      150,
+      1120,
+      747,
+      496,
+      747
+    ],
+    "height": 597,
+    "margin": [
+      496,
+      150,
+      1120,
+      150,
+      1120,
+      747,
+      496,
+      747
+    ],
+    "padding": [
+      496,
+      150,
+      1120,
+      150,
+      1120,
+      747,
+      496,
+      747
+    ],
+    "width": 624
+  }
+}
+NODE=237
+{
+  "compress": false,
+  "node": {
+    "attributes": [
+      "class",
+      "SettingsUsageCard"
+    ],
+    "backendNodeId": 237,
+    "childNodeCount": 2,
+    "localName": "view",
+    "nodeId": 237,
+    "nodeName": "VIEW",
+    "nodeType": 1,
+    "nodeValue": "",
+    "parentId": 180
+  }
+}
+{
+  "model": {
+    "border": [
+      496,
+      450,
+      1120,
+      450,
+      1120,
+      639,
+      496,
+      639
+    ],
+    "content": [
+      513,
+      467,
+      1103,
+      467,
+      1103,
+      622,
+      513,
+      622
+    ],
+    "height": 155,
+    "margin": [
+      496,
+      450,
+      1120,
+      450,
+      1120,
+      639,
+      496,
+      639
+    ],
+    "padding": [
+      497,
+      451,
+      1119,
+      451,
+      1119,
+      638,
+      497,
+      638
+    ],
+    "width": 590
+  }
+}
+NODE=276
+{
+  "compress": false,
+  "node": {
+    "attributes": [
+      "class",
+      "SettingsUsageCard"
+    ],
+    "backendNodeId": 276,
+    "childNodeCount": 2,
+    "localName": "view",
+    "nodeId": 276,
+    "nodeName": "VIEW",
+    "nodeType": 1,
+    "nodeValue": "",
+    "parentId": 180
+  }
+}
+{
+  "model": {
+    "border": [
+      496,
+      651,
+      1120,
+      651,
+      1120,
+      747,
+      496,
+      747
+    ],
+    "content": [
+      513,
+      668,
+      1103,
+      668,
+      1103,
+      730,
+      513,
+      730
+    ],
+    "height": 62,
+    "margin": [
+      496,
+      651,
+      1120,
+      651,
+      1120,
+      747,
+      496,
+      747
+    ],
+    "padding": [
+      497,
+      652,
+      1119,
+      652,
+      1119,
+      746,
+      497,
+      746
+    ],
+    "width": 590
+  }
+}
+NODE=193
+{
+  "compress": false,
+  "node": {
+    "attributes": [
+      "class",
+      "SettingsUsageNoticeText"
+    ],
+    "backendNodeId": 193,
+    "childNodeCount": 1,
+    "localName": "text",
+    "nodeId": 193,
+    "nodeName": "TEXT",
+    "nodeType": 1,
+    "nodeValue": "",
+    "parentId": 191
+  }
+}
+{
+  "model": {
+    "border": [
+      533,
+      209,
+      1103,
+      209,
+      1103,
+      229,
+      533,
+      229
+    ],
+    "content": [
+      533,
+      209,
+      1103,
+      209,
+      1103,
+      229,
+      533,
+      229
+    ],
+    "height": 20,
+    "margin": [
+      533,
+      209,
+      1103,
+      209,
+      1103,
+      229,
+      533,
+      229
+    ],
+    "padding": [
+      533,
+      209,
+      1103,
+      209,
+      1103,
+      229,
+      533,
+      229
+    ],
+    "width": 570
+  }
+}
+NODE=249
+{
+  "compress": false,
+  "node": {
+    "attributes": [
+      "class",
+      "SettingsUsageNoticeText"
+    ],
+    "backendNodeId": 249,
+    "childNodeCount": 1,
+    "localName": "text",
+    "nodeId": 249,
+    "nodeName": "TEXT",
+    "nodeType": 1,
+    "nodeValue": "",
+    "parentId": 247
+  }
+}
+{
+  "model": {
+    "border": [
+      533,
+      509,
+      1103,
+      509,
+      1103,
+      529,
+      533,
+      529
+    ],
+    "content": [
+      533,
+      509,
+      1103,
+      509,
+      1103,
+      529,
+      533,
+      529
+    ],
+    "height": 20,
+    "margin": [
+      533,
+      509,
+      1103,
+      509,
+      1103,
+      529,
+      533,
+      529
+    ],
+    "padding": [
+      533,
+      509,
+      1103,
+      509,
+      1103,
+      529,
+      533,
+      529
+    ],
+    "width": 570
+  }
+}
+NODE=169
+{
+  "compress": false,
+  "node": {
+    "attributes": [
+      "text",
+      "Usage is read locally from each provider CLI's stored credentials and fetched directly from the provider. OAuth providers may refresh short-lived tokens through their official token endpoint; if a provider shows “Not signed in”, re-authenticate with its CLI.",
+      "class",
+      "SettingsUsageFootnote"
+    ],
+    "backendNodeId": 169,
+    "childNodeCount": 0,
+    "localName": "text",
+    "nodeId": 169,
+    "nodeName": "TEXT",
+    "nodeType": 1,
+    "nodeValue": "",
+    "parentId": 166
+  }
+}
+{
+  "model": {
+    "border": [
+      496,
+      753,
+      1120,
+      753,
+      1120,
+      807,
+      496,
+      807
+    ],
+    "content": [
+      504,
+      753,
+      1112,
+      753,
+      1112,
+      807,
+      504,
+      807
+    ],
+    "height": 54,
+    "margin": [
+      496,
+      753,
+      1120,
+      753,
+      1120,
+      807,
+      496,
+      807
+    ],
+    "padding": [
+      496,
+      753,
+      1120,
+      753,
+      1120,
+      807,
+      496,
+      807
+    ],
+    "width": 608
+  }
+}
+NODE=172
+{
+  "compress": false,
+  "node": {
+    "attributes": [
+      "event-through",
+      "false",
+      "accessibility-element",
+      "true",
+      "accessibility-traits",
+      "button",
+      "accessibility-label",
+      "Refresh provider usage",
+      "bindtap",
+      "139:0:bindtap",
+      "bindmouseup",
+      "139:0:bindmouseup",
+      "bindmousedown",
+      "139:0:bindmousedown",
+      "bindtouchstart",
+      "139:0:bindtouchstart",
+      "bindtouchend",
+      "139:0:bindtouchend",
+      "bindtouchcancel",
+      "139:0:bindtouchcancel",
+      "class",
+      "LxButton LxButton--outline LxButton--xs SettingsUsageRefresh"
+    ],
+    "backendNodeId": 172,
+    "childNodeCount": 2,
+    "localName": "view",
+    "nodeId": 172,
+    "nodeName": "VIEW",
+    "nodeType": 1,
+    "nodeValue": "",
+    "parentId": 167
+  }
+}
+{
+  "model": {
+    "border": [
+      1048,
+      119,
+      1120,
+      119,
+      1120,
+      143,
+      1048,
+      143
+    ],
+    "content": [
+      1056,
+      120,
+      1112,
+      120,
+      1112,
+      142,
+      1056,
+      142
+    ],
+    "height": 22,
+    "margin": [
+      1048,
+      119,
+      1120,
+      119,
+      1120,
+      143,
+      1048,
+      143
+    ],
+    "padding": [
+      1049,
+      120,
+      1119,
+      120,
+      1119,
+      142,
+      1049,
+      142
+    ],
+    "width": 56
+  }
+}

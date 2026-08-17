@@ -12,9 +12,14 @@ import { SettingsHeadingElement } from '../adapters/SettingsHeadingElement.lynx'
 import { Button } from '../components/ui/button';
 import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
 import { RefreshCwIcon, TriangleAlertIcon } from '../lib/icons.lynx';
+import { useTheme } from '../adapters/useTheme.lynx';
 import './settings-usage-panel.css';
 
 const SETTINGS_PROVIDER_USAGE_QUERY_KEY = ['settings-provider-usage'] as const;
+const SETTINGS_USAGE_WARNING_ICON_COLOR = {
+  light: '#e17100',
+  dark: 'rgba(255, 210, 48, 0.9)',
+} as const;
 
 async function loadProviderUsage(forceRefresh = false) {
   'background only';
@@ -119,6 +124,7 @@ function UsageLimitRow(props: {
 
 export function SettingsUsagePanel() {
   const queryClient = useQueryClient();
+  const { resolvedTheme } = useTheme();
   const usageQuery = useQuery({
     queryKey: SETTINGS_PROVIDER_USAGE_QUERY_KEY,
     queryFn: () => loadProviderUsage(),
@@ -213,7 +219,9 @@ export function SettingsUsagePanel() {
                         <TriangleAlertIcon
                           className="SettingsUsageNoticeIcon"
                           size={14}
-                          color="var(--settings-usage-warning-text)"
+                          color={
+                            SETTINGS_USAGE_WARNING_ICON_COLOR[resolvedTheme]
+                          }
                         />
                         <text className="SettingsUsageNoticeText">
                           {snapshot.detail}

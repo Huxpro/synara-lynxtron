@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "lynx-usage-warning-icon-invisible",
+      "severity": "P1",
+      "classification": "product-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "SettingsUsagePanel warning SVG paint"
+    },
+    {
+      "id": "usage-dev-origin-5733-rejected",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "trusted dev origin selection"
+    },
+    {
+      "id": "lynx-web-settings-custom-click",
+      "severity": "coverage",
+      "classification": "missing-coverage",
+      "before": 1,
+      "after": 1,
+      "owner": "Lynx-for-Web custom element browser automation"
+    },
+    {
+      "id": "native-usage-half-pixel-line-rounding",
+      "severity": "noise",
+      "classification": "accepted-rendering-noise",
+      "before": 0,
+      "after": 0,
+      "owner": "Native integer line-box rounding"
+    }
+  ]
+}

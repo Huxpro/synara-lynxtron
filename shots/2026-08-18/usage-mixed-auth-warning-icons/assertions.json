@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "story": "settings-usage-mixed-auth-warning-icons",
+  "serverInstanceId": "1405e4a2-b612-442d-bc23-504011bd416b",
+  "snapshotSequence": 182,
+  "snapshotSha256": "0169e90df754def0dc36efa62dfff8d688cf1ed6fc2c49e777419cd8827b2eae",
+  "theme": "dark",
+  "density": "comfortable",
+  "sidebarWidth": 336,
+  "viewport": { "width": 1280, "height": 820, "dpr": 1 },
+  "native": {
+    "outerWindow": { "width": 1280, "height": 820 },
+    "image": { "width": 2560, "height": 1640, "dpr": 2 },
+    "pid": 11280,
+    "client": "localhost:8902",
+    "session": 1,
+    "bundleSha256": "12d35ee57093e6d9056161f7ce6b9e9ce8f6c8191a1a38738fbd162bd54a9141"
+  }
+}

@@ -111,6 +111,17 @@ describe('Lynx Settings section labels', () => {
     expect(usageSource).toContain('<TriangleAlertIcon');
     expect(usageSource).toContain('snapshot.detail?.trim()');
     expect(usageSource).toContain('className="SettingsUsageNotice"');
+    expect(usageSource).toContain(
+      "const SETTINGS_USAGE_WARNING_ICON_COLOR = {"
+    );
+    expect(usageSource).toContain("light: '#e17100'");
+    expect(usageSource).toContain("dark: 'rgba(255, 210, 48, 0.9)'");
+    expect(usageSource).toContain(
+      'SETTINGS_USAGE_WARNING_ICON_COLOR[resolvedTheme]'
+    );
+    expect(usageSource).not.toContain(
+      'color="var(--settings-usage-warning-text)"'
+    );
     expect(usageSource).toContain('accessibility-label={snapshot.detail}');
     expect(usageSource).not.toContain('accessibilityLabel="Usage warning"');
     expect(usageSource).toContain(

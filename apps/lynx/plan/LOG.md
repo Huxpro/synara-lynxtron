@@ -8608,3 +8608,21 @@ truncate` title与`shrink-0` pill contract，避免长provider/plan文字相撞�
 - `Cannot find 'error' field in json`定位到Lynx DevTool LogBox摘要解析fallback噪声，
   未进入应用console、未打开LogBox、未作为产品错误冒充上报。完整证据在
   `shots/2026-08-18/native-sidebar-resize-connection-audit/`。
+
+### Settings Usage mixed-auth warning identity
+
+- 新增当前真实mixed provider state：Codex authenticated CLI但live endpoint失败，
+  使用local fallback limit/history；Claude CLI存在但未认证，同时展示local history；
+  Cursor保持Unavailable。旧8/5-8/6 Usage证据不覆盖本轮resolver后的状态。
+- Web/Lynx-for-Web/Native统一dark、comfortable、1280x820、336px Settings sidebar，
+  同server instance `1405e4a2…`、snapshot sequence182；三端两个warning icon均为
+  `14x14 @ (513,211)/(513,509)`。
+- 修复`TriangleAlertIcon`不可见：raw-SVG helper只解析foreground/muted token，
+  原先把`var(--settings-usage-warning-text)`直接写进SVG stroke，Native/Lynx raw
+  SVG不解析。Usage owner改用与CSS token同值的light `#e17100` / dark
+  `rgba(255,210,48,0.9)`显式paint。P1 contribution `1.00 -> 0.00`。
+- Native exact-owned PID11280通过真实系统鼠标点击Refresh，host收到第二次
+  `server.listProviderUsage {forceRefresh:true}`；warning/error console为空。
+- ledger generator同时修复：不再用本地100张覆盖1287张remote history，改为remote
+  history + local override/new scope + Git deleted paths merge，并从合并证据动态发现
+  日期。证据：`shots/2026-08-18/usage-mixed-auth-warning-icons/`。

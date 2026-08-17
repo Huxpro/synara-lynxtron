@@ -9,6 +9,11 @@ import {
 import { extname, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import {
+  mergeScreenshotAssets,
+  screenshotDays,
+} from './screenshot-archive.logic.mjs';
+
 const scriptDirectory = fileURLToPath(new URL('.', import.meta.url));
 const repoRoot = resolve(scriptDirectory, '../../..');
 const shotsRoot = resolve(repoRoot, 'shots');
@@ -22,20 +27,6 @@ const assetManifestPath = resolve(
 );
 const assetBaseUrl =
   'https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main';
-const includedDays = new Set([
-  '2026-08-02',
-  '2026-08-03',
-  '2026-08-04',
-  '2026-08-05',
-  '2026-08-06',
-  '2026-08-07',
-  '2026-08-08',
-  '2026-08-09',
-  '2026-08-10',
-  '2026-08-11',
-  '2026-08-13',
-  '2026-08-14',
-]);
 const imageExtensions = new Set(['.jpeg', '.jpg', '.png']);
 const clientDirectoryNames = new Set([
   'browser',
@@ -70,6 +61,14 @@ const untrackedFiles = gitFileSet([
   '--',
   'shots',
 ]);
+const deletedFiles = gitFileSet([
+  'diff',
+  '--name-only',
+  '--diff-filter=D',
+  'HEAD',
+  '--',
+  'shots',
+]);
 
 const localImages = listFiles(shotsRoot)
   .filter((absolutePath) =>
@@ -79,7 +78,10 @@ const discoveredImages = localImages
   .map((absolutePath) => {
     const repoPath = relative(repoRoot, absolutePath).split(sep).join('/');
     const [, day, ...pathParts] = repoPath.split('/');
-    if (!includedDays.has(day) || !imageExtensions.has(extname(repoPath).toLowerCase())) {
+    if (
+      !/^\d{4}-\d{2}-\d{2}$/u.test(day) ||
+      !imageExtensions.has(extname(repoPath).toLowerCase())
+    ) {
       return null;
     }
     const directory = pathParts.slice(0, -1).join('/') || '.';
@@ -102,14 +104,16 @@ const discoveredImages = localImages
 if (!discoveredImages.length && !existsSync(assetManifestPath)) {
   throw new Error('No local screenshots or screenshot-assets.json manifest found');
 }
-const images = discoveredImages.length
-  ? discoveredImages
-  : JSON.parse(readFileSync(assetManifestPath, 'utf8')).images.map((image) => ({
-      ...image,
-      gitStatus: 'remote',
-    }));
+const remoteImages = existsSync(assetManifestPath)
+  ? JSON.parse(readFileSync(assetManifestPath, 'utf8')).images
+  : [];
+const images = mergeScreenshotAssets({
+  remoteImages,
+  localImages: discoveredImages,
+  deletedRepoPaths: deletedFiles,
+});
 
-if (discoveredImages.length) {
+if (images.length) {
   writeFileSync(
     assetManifestPath,
     `${JSON.stringify(
@@ -126,7 +130,7 @@ if (discoveredImages.length) {
   );
 }
 
-const days = [...includedDays].sort().map((day) => {
+const days = screenshotDays(images).map((day) => {
   const dayImages = images.filter((image) => image.day === day);
   const directories = new Map();
   for (const image of dayImages) {
