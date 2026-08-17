@@ -3876,3 +3876,19 @@ former dynamic-event P1 is no longer a valid blocker.
   `sessions: []` with zero owned processes.
 - Detailed evidence:
   `shots/2026-08-17/standalone-diff-word-wrap/notes.md`.
+
+## 2026-08-17 Large diff collapse and reopen at 320x200
+
+- A canonical 300-line patch was expanded to 280 rows, collapsed, and reopened
+  through real pointer interactions.
+- Before collapse: `280` rows, `Show 21 more lines`, scroller `110/5742`.
+- Collapsed: rows/control unmounted and scroller returned to `110/110`.
+- Reopened: `280` rows and `Show 21 more lines` were restored; scrollTop reset
+  safely to zero.
+- `standalone-diff-large-collapse-reopen`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- No measure/scroll feedback loop or pending request remained.
+- Browser failure/retained/exit gates returned `sessions: []` with zero owned
+  processes.
+- Detailed evidence:
+  `shots/2026-08-17/standalone-diff-large-reopen/notes.md`.
