@@ -4307,3 +4307,25 @@ former dynamic-event P1 is no longer a valid blocker.
 - All owned resources were removed; screenshot count remained `100`.
 - Detailed evidence:
   `shots/2026-08-17/native-diff-file-jump-encode-into/notes.md`.
+
+## 2026-08-17 Native Diff file-jump active roundtrip
+
+- A new exact-owned Native cell extended file-jump coverage from one-way
+  selection into `first -> second -> first` active-state navigation.
+- All eight interaction/verification stages retained the same
+  PID/lsof-derived `localhost:8903/session 1`, staged bundle URL, canonical
+  two-file snapshot, and `900x650` window.
+- Real touches moved the second header from offscreen `y=1409` to visible
+  `y=189`, then reopened the picker and restored the first header at visible
+  `y=143`.
+- Expansion ownership stayed unique in both directions: first false/second
+  true after the forward jump, then first true/second false after return.
+- `native-standalone-diff-file-jump-active-roundtrip`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- No runtime code changed. The exact-owned warning/error console was empty,
+  temporary JPEG was `1800x1300`, all owned resources were removed, and
+  screenshot count remained `100`.
+- Entry/exit `browser:gate` returned `sessions: []` and zero
+  agent-browser-owned processes.
+- Detailed evidence:
+  `shots/2026-08-17/native-diff-file-jump-roundtrip/notes.md`.
