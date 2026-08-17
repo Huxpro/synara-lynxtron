@@ -130,6 +130,10 @@ describe('Pull Request Code disclosure fidelity', () => {
     expect(composition).toContain(
       'File mode changed from {file.modeChange.previous} to {file.modeChange.next}.'
     );
+    expect(composition).toContain('file.lifecycle ? (');
+    expect(composition).toContain(
+      'file.lifecycle === "added" ? "File added." : "File deleted."'
+    );
     expect(composition).not.toContain('{isExpanded ? (');
     expect(composition).toContain('disabled={props.retrying}');
     expect(composition).toContain('onActivate={props.onRetry}');

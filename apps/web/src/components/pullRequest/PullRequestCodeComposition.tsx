@@ -123,6 +123,11 @@ export function PullRequestCodeComposition(props: {
                         File mode changed from {file.modeChange.previous} to {file.modeChange.next}.
                       </PullRequestCodeNoticeElement>
                     ) : null}
+                    {file.lifecycle ? (
+                      <PullRequestCodeNoticeElement>
+                        {file.lifecycle === "added" ? "File added." : "File deleted."}
+                      </PullRequestCodeNoticeElement>
+                    ) : null}
                     <PullRequestCodeLinesElement wordWrap={props.wordWrap ?? false}>
                       {file.lines.slice(0, visibleLineCount).map((line) => (
                         <PullRequestCodeLineElement

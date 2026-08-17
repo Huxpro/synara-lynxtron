@@ -95,6 +95,7 @@ describe("buildPullRequestCodeView", () => {
       deletions: 0,
       binary: true,
       modeChange: null,
+      lifecycle: null,
       lines: [],
     });
 
@@ -134,6 +135,50 @@ describe("buildPullRequestCodeView", () => {
         previous: "100644",
         next: "100755",
       },
+      lines: [],
+    });
+  });
+
+  it.each([
+    {
+      label: "added",
+      patch: [
+        "diff --git a/added.empty b/added.empty",
+        "new file mode 100644",
+        "index 0000000..e69de29",
+        "",
+      ].join("\n"),
+      path: "added.empty",
+      lifecycle: "added" as const,
+    },
+    {
+      label: "deleted",
+      patch: [
+        "diff --git a/deleted.empty b/deleted.empty",
+        "deleted file mode 100644",
+        "index e69de29..0000000",
+        "",
+      ].join("\n"),
+      path: "deleted.empty",
+      lifecycle: "deleted" as const,
+    },
+  ])("preserves empty $label file lifecycle in parsed and portable views", (fixture) => {
+    const parsed = buildPullRequestCodeView(
+      fixture.patch,
+      `pull-request:empty-${fixture.label}-test`,
+    );
+    expect(parsed.kind).toBe("files");
+    if (parsed.kind !== "files") return;
+    expect(parsed.files[0]).toMatchObject({
+      path: fixture.path,
+      lifecycle: fixture.lifecycle,
+      lines: [],
+    });
+
+    const portable = buildPortableUnifiedDiffView(fixture.patch);
+    expect(portable?.files[0]).toMatchObject({
+      path: fixture.path,
+      lifecycle: fixture.lifecycle,
       lines: [],
     });
   });

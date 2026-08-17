@@ -3529,3 +3529,16 @@ former dynamic-event P1 is no longer a valid blocker.
   product-loss contribution `0.00 -> 0.00`.
 - Detailed evidence:
   `shots/2026-08-17/standalone-diff-rename-short-height/notes.md`.
+
+## 2026-08-17 Standalone empty-file lifecycle at 320x200
+
+- Separate canonical repositories produced `new file mode 100644` and
+  `deleted file mode 100644` patches without Git collapsing them into a rename.
+- Before, empty add expanded to only `added.empty +0/-0`; the shared portable
+  model could not distinguish an empty add from an empty delete.
+- Shared lifecycle metadata now drives `File added.` / `File deleted.` in both
+  Web and Lynx.
+- Both after notices were complete at `269px @ y=175..191`.
+- `shared-diff-empty-lifecycle-missing`: P1 contribution `1.00 -> 0.00`.
+- Detailed evidence:
+  `shots/2026-08-17/standalone-diff-empty-lifecycle-short-height/notes.md`.

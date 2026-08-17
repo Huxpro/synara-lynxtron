@@ -32,6 +32,7 @@ export interface PullRequestDiffFileView {
     readonly previous: string;
     readonly next: string;
   } | null;
+  readonly lifecycle: "added" | "deleted" | null;
   readonly lines: readonly PullRequestDiffLineView[];
 }
 
@@ -195,6 +196,31 @@ function fileModeChanges(
   return changes;
 }
 
+function fileLifecycles(
+  patch: string | undefined,
+): ReadonlyMap<string, "added" | "deleted"> {
+  const body = unifiedDiffBody(patch);
+  if (!body) return new Map();
+  const lifecycles = new Map<string, "added" | "deleted">();
+  let currentPath: string | null = null;
+  for (const line of body.split(/\r?\n/)) {
+    const fileMatch = /^diff --git a\/(.+) b\/(.+)$/.exec(line);
+    if (fileMatch) {
+      currentPath = stripGitPathPrefix(fileMatch[2] ?? "");
+      continue;
+    }
+    if (!currentPath) continue;
+    if (/^new file mode \d+$/.test(line)) {
+      lifecycles.set(currentPath, "added");
+      continue;
+    }
+    if (/^deleted file mode \d+$/.test(line)) {
+      lifecycles.set(currentPath, "deleted");
+    }
+  }
+  return lifecycles;
+}
+
 /**
  * Pure-string fallback for runtimes where @pierre's parser cannot project a
  * valid unified patch. It deliberately covers the portable model only; Web's
@@ -219,6 +245,7 @@ export function buildPortableUnifiedDiffView(
           previous: string;
           next: string;
         } | null;
+        lifecycle: "added" | "deleted" | null;
         lines: PullRequestDiffLineView[];
         oldLine: number;
         newLine: number;
@@ -236,6 +263,7 @@ export function buildPortableUnifiedDiffView(
       deletions: current.deletions,
       binary: current.binary,
       modeChange: current.modeChange,
+      lifecycle: current.lifecycle,
       lines: current.lines,
     });
   };
@@ -254,6 +282,7 @@ export function buildPortableUnifiedDiffView(
         deletions: 0,
         binary: false,
         modeChange: null,
+        lifecycle: null,
         lines: [],
         oldLine: 0,
         newLine: 0,
@@ -272,6 +301,14 @@ export function buildPortableUnifiedDiffView(
         previous: oldModeMatch[1] ?? "",
         next: "",
       };
+      continue;
+    }
+    if (/^new file mode \d+$/.test(line)) {
+      current.lifecycle = "added";
+      continue;
+    }
+    if (/^deleted file mode \d+$/.test(line)) {
+      current.lifecycle = "deleted";
       continue;
     }
     const newModeMatch = /^new mode (\d+)$/.exec(line);
@@ -364,6 +401,7 @@ export function buildPullRequestCodeView(
   }
   const binaryPaths = binaryFilePaths(patch);
   const modeChanges = fileModeChanges(patch);
+  const lifecycles = fileLifecycles(patch);
   const files = renderableFiles.map((file) => {
     const stats = summarizeFileDiffStats([file]);
     const path = resolveFileDiffPath(file);
@@ -376,6 +414,7 @@ export function buildPullRequestCodeView(
       deletions: stats.deletions,
       binary: binaryPaths.has(path),
       modeChange: modeChanges.get(path) ?? null,
+      lifecycle: lifecycles.get(path) ?? null,
       lines: projectFileLines(file),
     };
   });
