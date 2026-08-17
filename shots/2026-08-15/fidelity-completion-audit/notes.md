@@ -4464,3 +4464,24 @@ former dynamic-event P1 is no longer a valid blocker.
   agent-browser-owned processes.
 - Detailed evidence:
   `shots/2026-08-17/native-environment-local-server-dynamic-refresh/notes.md`.
+
+## 2026-08-17 Native Environment two-owned-server Stop isolation
+
+- A new exact-owned Native cell rendered two current-run-owned servers on
+  `58191` and `58192`, each with an enabled, fully bound Stop control.
+- Only the exact `localhost:58191` row's `24x24` Stop received real touch at
+  `(866,332)`.
+- After settlement `58191` PID/port/row were gone while `58192` PID/port/row
+  remained; popup mount count stayed one.
+- `native-environment-two-owned-server-stop-isolation`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- The initial assumption that a naturally visible Synara-related row must have
+  disabled Stop was rejected before any unknown row was touched. It is not
+  counted as product loss.
+- Native console was empty, temporary JPEG was `1800x1300`, all owned
+  resources were removed, all three owned ports were free, and screenshot
+  count remained `100`.
+- Entry/exit `browser:gate` returned `sessions: []` and zero
+  agent-browser-owned processes.
+- Detailed evidence:
+  `shots/2026-08-17/native-environment-two-owned-server-stop-isolation/notes.md`.
