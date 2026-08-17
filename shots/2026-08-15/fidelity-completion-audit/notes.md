@@ -2711,6 +2711,16 @@ former dynamic-event P1 is no longer a valid blocker.
 - Detailed evidence:
   `shots/2026-08-17/appearance-terminal-font-selection/notes.md`.
 
+### Free-form input boundary
+
+- A real browser fill with `Custom Mono XYZ` did not dispatch the native input
+  change event in Lynx-for-Web: value stayed empty, no-match copy did not
+  appear, and isolated persisted settings remained unset.
+- `native-terminal-font-freeform-persistence`: missing coverage remains
+  `1.00`; no Native product loss is claimed.
+- Detailed evidence:
+  `shots/2026-08-17/appearance-terminal-font-freeform/notes.md`.
+
 ## 2026-08-17 Custom Models provider menu at 320x200
 
 - The rendered Models provider control opened the real eight-option menu at
