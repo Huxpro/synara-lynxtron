@@ -2,14 +2,15 @@
 
 ## Browser lifecycle gate
 
-Complete this checklist for every fast or Native loop, including loops that do
-not intend to open a browser:
+Complete this checklist for every discovery, fast, or Native loop, including
+loops that do not intend to open a browser:
 
-- Entry `bun run browser:cleanup`: `pass | fail`
+- Entry `bun run browser:gate`: `pass | fail`
 - All browser commands wrapped by `bun run browser:run -- ...`: `yes | n/a`
-- After every browser timeout, interruption, or script failure, cleanup reran
-  before the next command: `pass | n/a | fail`
-- Exit `bun run browser:cleanup`: `pass | fail`
+- After every timeout, interruption, failed script, failed probe, malformed
+  helper, or tool failure, `bun run browser:gate` reran before the next browser
+  command: `pass | n/a | fail`
+- Exit `bun run browser:gate`: `pass | fail`
 - Final `agent-browser session list --json`: `sessions: [] | fail`
 - Final agent-browser-owned daemon/browser process count: `0 | fail`
 

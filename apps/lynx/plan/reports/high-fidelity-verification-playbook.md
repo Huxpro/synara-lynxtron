@@ -22,22 +22,21 @@ status.
 
 ### Browser lifecycle gate
 
-Apply this gate to every fast or Native verification loop before doing product
-work:
+Apply this gate to every discovery, fast, or Native verification loop before
+doing product work, including loops that do not intend to open a browser:
 
-1. Run `bun run browser:cleanup` at loop entry.
+1. Run `bun run browser:gate` at loop entry. It must print both the ownership
+   cleanup success and `sessions: []`.
 2. Any workflow that can open `agent-browser` must run as
    `bun run browser:run -- <command> [args...]`; keep the complete
    open/interact/capture/close sequence inside that wrapper.
 3. Reuse named sessions inside the wrapped workflow. Do not launch a fresh
    browser for each measurement.
-4. At loop exit, run `bun run browser:cleanup` again and verify
-   `agent-browser session list --json` reports `sessions: []`. The cleanup
-   command must also report zero agent-browser-owned daemon or browser
-   processes.
-5. Treat a timeout, interruption, failed probe, or malformed helper as an
-   immediate cleanup boundary. Rerun cleanup and reconfirm both zero conditions
-   before the next browser command.
+4. At loop exit, run `bun run browser:gate` again. The gate must report zero
+   agent-browser-owned daemon/browser processes and `sessions: []`.
+5. Treat a timeout, interruption, failed script, failed probe, malformed
+   helper, or tool failure as an immediate cleanup boundary. Rerun
+   `bun run browser:gate` before the next browser command.
 6. Treat any nonzero remainder as a harness failure that blocks retained
    evidence, commit, push, and the next loop.
 

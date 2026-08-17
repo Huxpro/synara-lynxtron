@@ -20,9 +20,10 @@ The current historical scope contains 379 stories and 1,856 images.
 ## Per-loop browser lifecycle invariant
 
 Every discovery, fast, and Native loop begins and ends with
-`bun run browser:cleanup`, even when that loop does not intend to use a browser.
-Any command sequence that can invoke `agent-browser` runs wholly inside
-`bun run browser:run -- ...`.
+`bun run browser:gate`, even when that loop does not intend to use a browser.
+The gate runs the ownership cleanup and then an independently wrapped
+`agent-browser session list --json` proof. Any command sequence that can invoke
+`agent-browser` runs wholly inside `bun run browser:run -- ...`.
 
 A loop is not closed until both conditions are observed:
 
@@ -35,10 +36,10 @@ retained evidence, commit, push, and the next loop until cleanup succeeds. The
 ownership filter must never terminate unrelated Chrome or remote-debugging
 processes.
 
-Timeouts, interruptions, failed probes, and malformed helper scripts are
-intermediate loop exits for this invariant. Run `bun run browser:cleanup` and
-reconfirm both zero conditions before issuing any next browser command; do not
-defer cleanup until the nominal end of the loop.
+Timeouts, interruptions, failed scripts, failed probes, malformed helpers, and
+tool failures are intermediate loop exits for this invariant. Run
+`bun run browser:gate` before issuing any next browser command; do not defer the
+independent double-zero proof until the nominal end of the loop.
 
 ## Equation
 

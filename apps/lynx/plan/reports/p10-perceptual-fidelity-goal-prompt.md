@@ -562,6 +562,22 @@ Native 必须认证：
 
 迭代时优先 focused checks，不要每次运行全仓 heavy pass。
 
+每个 discovery、fast、Native loop（包括不计划打开浏览器的 loop）都必须：
+
+- 入口运行 `bun run browser:gate`，同时看到 ownership cleanup 通过和
+  `sessions: []`；
+- 所有可能调用 `agent-browser` 的完整 workflow 都通过
+  `bun run browser:run -- ...`；
+- 任何 timeout、interruption、failed script、failed probe、malformed helper
+  或 tool failure 后，下一条 browser command 前独立重跑
+  `bun run browser:gate`；
+- 出口再运行 `bun run browser:gate`；
+- 任一 nonzero session 或 agent-browser-owned process 都分类为 harness loss，
+  并阻塞 retained evidence、commit、push 和下一 loop；
+- process ownership 只以 `scripts/cleanup-agent-browser.sh` 为准，禁止 broad
+  `pgrep agent-browser` 或终止 unrelated Chrome、Playwright、
+  remote-debugging、Lynxtron process。
+
 每个 coherent slice：
 
 - relevant Web unit/browser tests；
