@@ -4077,6 +4077,33 @@ former dynamic-event P1 is no longer a valid blocker.
 - Detailed evidence:
   `shots/2026-08-17/pull-requests-multi-project-filter-short-height/notes.md`.
 
+## 2026-08-17 Pull Requests project scope across state roundtrip
+
+- A new dark `320x320` paired cell combined two real repositories, React
+  project scope, and a real `Open -> Merged -> Open` pointer roundtrip.
+- Canonical preflight independently proved 50 real `facebook/react` rows in
+  both Open and Merged with zero errors. Closed was rejected because its
+  current canonical result was empty.
+- Web and Lynx-for-Web retained `React Project`, 50 rows, and no Synara row
+  through both state changes. Web URL state preserved
+  `projectId=project-react`; Lynx preserved the same component/query state.
+- `pull-requests-project-state-roundtrip`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- The Lynx filter shell's 46px vertical offset is the registered compact
+  Native-titlebar correction and remains an intentional platform delta.
+- A one-off Web `_nonReactive` console entry was rejected until a fresh
+  four-phase attribution run completed with empty Web errors/console. Lynx had
+  only the known deprecated initialization warning.
+- Focused tests passed Web `10/10` and Lynx `16/16`; Web, Lynx-for-Web, and
+  Native/Desktop production builds passed.
+- Every failed/interrupted harness boundary and the retained exit passed
+  `browser:gate`; ports/state/projects/temp PNGs were cleaned and screenshot
+  count remained `100`.
+- Native interaction remains harness missing coverage under the existing
+  exact-owned DevTool registration blocker.
+- Detailed evidence:
+  `shots/2026-08-17/pull-requests-project-state-roundtrip/notes.md`.
+
 ## 2026-08-17 Long Local Server identity at 320x200
 
 - Four real rows included an extremely long page title.
