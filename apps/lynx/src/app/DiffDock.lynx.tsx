@@ -13,8 +13,11 @@ import {
 } from '@synara-web/appSettingsStorageProjection.logic';
 
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
-import { RefreshCwIcon, XIcon } from '../lib/icons.lynx';
+import { RefreshCwIcon, SearchIcon, XIcon } from '../lib/icons.lynx';
 import { fetchWorkingTreeDiff } from '../data/synaraClient.lynx';
+import { Button } from '../components/ui/button.lynx';
+import { Input } from '../components/ui/input.lynx';
+import { scrollLynxElementIntoViewById } from '../components/ui/scrollIntoView.lynx';
 import { ResizableRightPanel } from './ResizableRightPanel.lynx';
 import { webStorage } from '../platform/storage';
 
@@ -70,6 +73,8 @@ function OpenDiffDock(props: {
   const [rawVisibleLineCount, setRawVisibleLineCount] = useState(
     PULL_REQUEST_DIFF_INITIAL_LINE_COUNT
   );
+  const [fileJumpOpen, setFileJumpOpen] = useState(false);
+  const [fileJumpQuery, setFileJumpQuery] = useState('');
   const diffWordWrap = readSettingsBehaviorProjection(
     webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
   ).diffWordWrap;
@@ -106,6 +111,14 @@ function OpenDiffDock(props: {
   const visibleExpandedFileKeys =
     expandedFileKeys ??
     (selectedFile ? [selectedFile.key] : []);
+  const fileElementId = (fileKey: string) =>
+    `diff-dock-file-${view.kind === 'files' ? view.files.findIndex((file) => file.key === fileKey) : -1}`;
+  const fileJumpFiles =
+    view.kind === 'files'
+      ? view.files.filter((file) =>
+          file.path.toLowerCase().includes(fileJumpQuery.trim().toLowerCase())
+        )
+      : [];
   const closeInteraction = useLynxInteractiveState({
     baseClassName: 'DiffDockClose',
     accessibleLabel: 'Close changes',
@@ -143,13 +156,27 @@ function OpenDiffDock(props: {
             ) : null}
           </view>
           <view
-            className={closeInteraction.className}
-            {...closeInteraction.eventProps}
+            className="DiffDockHeaderActions"
           >
-            <XIcon
-              size={14}
-              color="var(--muted-foreground)"
-            />
+            {view.kind === 'files' && view.files.length > 1 ? (
+              <Button
+                aria-label="Jump to file"
+                className="DiffDockFileJumpTrigger"
+                variant="ghost"
+                onClick={() => setFileJumpOpen(true)}
+              >
+                <SearchIcon size={14} color="var(--muted-foreground)" />
+              </Button>
+            ) : null}
+            <view
+              className={closeInteraction.className}
+              {...closeInteraction.eventProps}
+            >
+              <XIcon
+                size={14}
+                color="var(--muted-foreground)"
+              />
+            </view>
           </view>
         </view>
       ) : null}
@@ -210,6 +237,7 @@ function OpenDiffDock(props: {
           <PullRequestCodeComposition
             emptyLabel="No working tree changes."
             wordWrap={diffWordWrap}
+            fileElementId={fileElementId}
             view={visibleView}
             truncated={false}
             expandedFileKeys={visibleExpandedFileKeys}
@@ -239,6 +267,83 @@ function OpenDiffDock(props: {
         )}
         </scroll-view>
       </view>
+      {fileJumpOpen ? (
+        <view
+          className="DiffDockFileJumpViewport"
+          accessibility-element
+          accessibility-label="Jump to file dialog"
+          accessibility-traits="dialog"
+          bindkeydown={(event: { readonly key?: string }) => {
+            'background only';
+            if (event.key === 'Escape') setFileJumpOpen(false);
+          }}
+          tabindex={0}
+        >
+          <view
+            className="DiffDockFileJumpBackdrop"
+            bindtap={() => setFileJumpOpen(false)}
+          />
+          <view
+            className="DiffDockFileJumpDialog"
+            accessibility-element
+            accessibility-label="Jump to file"
+            accessibility-traits="dialog"
+          >
+            <Button
+              aria-label="Close file picker"
+              className="DiffDockFileJumpClose"
+              variant="ghost"
+              onClick={() => setFileJumpOpen(false)}
+            >
+              ×
+            </Button>
+            <text className="DiffDockFileJumpHeading">Jump to file</text>
+            <Input
+              nativeInput
+              className="DiffDockFileJumpSearch"
+              accessibility-label="Search changed files"
+              placeholder="Jump to file"
+              onInput={setFileJumpQuery}
+            />
+            <scroll-view
+              className="DiffDockFileJumpList"
+              scroll-orientation="vertical"
+            >
+              {fileJumpFiles.length === 0 ? (
+                <text className="DiffDockFileJumpEmpty">
+                  No matching files.
+                </text>
+              ) : (
+                fileJumpFiles.map((file) => (
+                  <Button
+                    key={file.key}
+                    className={`DiffDockFileJumpItem${
+                      visibleExpandedFileKeys.includes(file.key)
+                        ? ' DiffDockFileJumpItem--active'
+                        : ''
+                    }`}
+                    variant="ghost"
+                    onClick={() => {
+                      setExpandedFileKeys([file.key]);
+                      setFileJumpOpen(false);
+                      setFileJumpQuery('');
+                      scrollLynxElementIntoViewById(fileElementId(file.key));
+                    }}
+                  >
+                    <text className="DiffDockFileJumpPath">{file.path}</text>
+                    <text className="SharedPrCodeStatsAddition">
+                      +{file.additions}
+                    </text>
+                    <text className="SharedPrCodeStatsDeletion">
+                      -{file.deletions}
+                    </text>
+                  </Button>
+                ))
+              )}
+            </scroll-view>
+          </view>
+        </view>
+      ) : null}
     </ResizableRightPanel>
   );
 }

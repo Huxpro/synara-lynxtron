@@ -35,8 +35,8 @@ export function PullRequestCodeStatsElement(props: {
   );
 }
 
-export function PullRequestCodeFileElement(props: ChildrenProps) {
-  return <section className="overflow-hidden rounded-md border border-border">{props.children}</section>;
+export function PullRequestCodeFileElement(props: ChildrenProps & { readonly id?: string }) {
+  return <section id={props.id} className="overflow-hidden rounded-md border border-border">{props.children}</section>;
 }
 
 export function PullRequestCodeFileHeaderElement(props: {

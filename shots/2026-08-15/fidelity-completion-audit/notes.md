@@ -3583,3 +3583,18 @@ former dynamic-event P1 is no longer a valid blocker.
   `1.00 -> 0.00`.
 - Detailed evidence:
   `shots/2026-08-17/standalone-diff-binary-add-short-height/notes.md`.
+
+## 2026-08-17 Standalone Changes file jump at 320x200
+
+- Web's current multi-file DiffPanel toolbar exposes `Jump to file`; Lynx
+  standalone Changes had no equivalent direct-navigation control.
+- A stable fixed overlay now provides native search and real file rows without
+  mounting the unstable Menu subtree.
+- In a canonical 12-file diff, the overlay fit at `304x184 @ (8,8)`. Searching
+  `zz-target` produced one row; selecting it closed the overlay, expanded the
+  target, moved the scroller to `scrollTop=506`, and placed its header at
+  visible `y=142`.
+- `lynx-standalone-diff-file-jump-missing`: P1 contribution
+  `1.00 -> 0.00`.
+- Detailed evidence:
+  `shots/2026-08-17/standalone-diff-file-jump-short-height/notes.md`.

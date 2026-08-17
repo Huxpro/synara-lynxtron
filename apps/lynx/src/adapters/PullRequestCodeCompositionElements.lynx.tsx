@@ -46,8 +46,14 @@ export function PullRequestCodeStatsElement(props: {
   );
 }
 
-export function PullRequestCodeFileElement(props: ChildrenProps) {
-  return <view className="SharedPrCodeFile">{props.children}</view>;
+export function PullRequestCodeFileElement(
+  props: ChildrenProps & { readonly id?: string }
+) {
+  return (
+    <view id={props.id} className="SharedPrCodeFile">
+      {props.children}
+    </view>
+  );
 }
 
 export function PullRequestCodeFileHeaderElement(props: {

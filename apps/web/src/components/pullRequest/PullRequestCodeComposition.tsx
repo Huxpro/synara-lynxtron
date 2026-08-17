@@ -47,6 +47,7 @@ export function PullRequestCodeComposition(props: {
   readonly expandedFileKeys: readonly string[];
   readonly visibleLineCounts: Readonly<Record<string, number>>;
   readonly rawVisibleLineCount: number;
+  readonly fileElementId?: (fileKey: string) => string | undefined;
   readonly onToggleFile: (fileKey: string) => void;
   readonly onShowMoreFile: (fileKey: string) => void;
   readonly onShowMoreRaw: () => void;
@@ -105,7 +106,10 @@ export function PullRequestCodeComposition(props: {
             const isExpanded = expanded.has(file.key);
             const visibleLineCount = props.visibleLineCounts[file.key] ?? PULL_REQUEST_DIFF_INITIAL_LINE_COUNT;
             return (
-              <PullRequestCodeFileElement key={file.key}>
+              <PullRequestCodeFileElement
+                key={file.key}
+                id={props.fileElementId?.(file.key)}
+              >
                 <PullRequestCodeFileHeaderElement
                   path={file.path}
                   previousPath={file.previousPath}
