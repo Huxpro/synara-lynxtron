@@ -4424,3 +4424,22 @@ former dynamic-event P1 is no longer a valid blocker.
   agent-browser-owned processes.
 - Detailed evidence:
   `shots/2026-08-17/native-environment-local-server-feedback-refresh/notes.md`.
+
+## 2026-08-17 Native Environment stale Local Server Stop
+
+- A new exact-owned Native cell rendered the current-run-owned
+  `localhost:58191` row, measured its `24x24 @ (854,320)` Stop, then killed
+  and reaped only that owned process before touching the stale Stop center.
+- Port `58191` was confirmed free before the real Native touch at `(866,332)`.
+- The product issued the real stale `server.stopLocalServer` request, safely
+  revalidated PID/port, removed the stale row, kept the popup mounted, and
+  showed no failure alert.
+- `native-environment-stale-local-server-stop-recovery`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- Native console had no warning/error entry, temporary JPEG was `1800x1300`,
+  all owned resources were removed, both ports were free, and screenshot count
+  remained `100`.
+- Entry/exit `browser:gate` returned `sessions: []` and zero
+  agent-browser-owned processes.
+- Detailed evidence:
+  `shots/2026-08-17/native-environment-stale-local-server-stop/notes.md`.
