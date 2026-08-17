@@ -3458,3 +3458,19 @@ former dynamic-event P1 is no longer a valid blocker.
   product-loss contribution `0.00 -> 0.00`.
 - Detailed evidence:
   `shots/2026-08-17/standalone-diff-recovery-short-height/notes.md`.
+
+## 2026-08-17 Standalone populated Changes at 320x200
+
+- A canonical `501`-byte, two-file working-tree diff was opened through a real
+  Environment `Changes` click.
+- Collapsed state retained `Changes`, `+4/-2`, the complete first file
+  identity, and the second file in a `319x110` scroll owner.
+- A real first-file click expanded `docs/readme.md` to `134px` and mounted its
+  real patch while root width stayed `320/320`.
+- `standalone-diff-populated-compact`: missing coverage `1.00 -> 0.00`;
+  product-loss contribution `0.00 -> 0.00`.
+- The attempted mouse-wheel probe did not produce retained scroll-position
+  evidence, so wheel behavior remains harness missing coverage rather than a
+  claimed pass.
+- Detailed evidence:
+  `shots/2026-08-17/standalone-diff-populated-short-height/notes.md`.
