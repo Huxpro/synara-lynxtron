@@ -4443,3 +4443,24 @@ former dynamic-event P1 is no longer a valid blocker.
   agent-browser-owned processes.
 - Detailed evidence:
   `shots/2026-08-17/native-environment-stale-local-server-stop/notes.md`.
+
+## 2026-08-17 Native Environment Local Servers dynamic Refresh
+
+- A new exact-owned Native cell kept Local Servers open through a real
+  add/remove sequence for a current-run-owned server on `58191`.
+- After starting the owned process, rendered Refresh `20x20 @ (862,245)`
+  received real touch at `(872,255)` and the exact address appeared without
+  remounting the popup.
+- The harness then killed/reaped only that owned process, verified its port
+  free, and activated the same rendered Refresh again.
+- The exact address disappeared, no stop-feedback alert remained, and popup
+  mount count stayed one.
+- `native-environment-local-servers-dynamic-refresh`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- Native console had no warning/error entry, temporary JPEG was `1800x1300`,
+  all owned resources were removed, both ports were free, and screenshot count
+  remained `100`.
+- Entry/exit `browser:gate` returned `sessions: []` and zero
+  agent-browser-owned processes.
+- Detailed evidence:
+  `shots/2026-08-17/native-environment-local-server-dynamic-refresh/notes.md`.
