@@ -1,8 +1,8 @@
 {
   "version": 1,
   "assetBaseUrl": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main",
-  "imageCount": 1390,
-  "byteCount": 213049470,
+  "imageCount": 1393,
+  "byteCount": 213653655,
   "images": [
     {
       "day": "2026-08-02",
@@ -11149,6 +11149,30 @@
       "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/usage-mixed-auth-warning-icons/web/raw.png",
       "repoPath": "shots/2026-08-18/usage-mixed-auth-warning-icons/web/raw.png",
       "bytes": 83513
+    },
+    {
+      "day": "2026-08-18",
+      "directory": "viewport-single-owner-update/lynx",
+      "name": "raw.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/viewport-single-owner-update/lynx/raw.png",
+      "repoPath": "shots/2026-08-18/viewport-single-owner-update/lynx/raw.png",
+      "bytes": 70929
+    },
+    {
+      "day": "2026-08-18",
+      "directory": "viewport-single-owner-update/native",
+      "name": "raw.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/viewport-single-owner-update/native/raw.png",
+      "repoPath": "shots/2026-08-18/viewport-single-owner-update/native/raw.png",
+      "bytes": 451407
+    },
+    {
+      "day": "2026-08-18",
+      "directory": "viewport-single-owner-update/web",
+      "name": "raw.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/viewport-single-owner-update/web/raw.png",
+      "repoPath": "shots/2026-08-18/viewport-single-owner-update/web/raw.png",
+      "bytes": 81849
     }
   ]
 }

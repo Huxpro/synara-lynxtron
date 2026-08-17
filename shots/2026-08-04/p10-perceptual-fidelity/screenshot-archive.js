@@ -6,12 +6,12 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     "lastDay": "2026-08-18",
     "consecutiveCalendarDays": 15
   },
-  "imageCount": 1390,
-  "byteCount": 213049470,
+  "imageCount": 1393,
+  "byteCount": 213653655,
   "trackedCount": 100,
   "untrackedCount": 0,
-  "remoteCount": 1290,
-  "storyCount": 435,
+  "remoteCount": 1293,
+  "storyCount": 436,
   "stories": [
     {
       "id": "2026-08-02--harness--composer",
@@ -19723,7 +19723,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-16/kanban-card-actions-delete-cancel/02-dismissed.png",
           "repoPath": "shots/2026-08-16/kanban-card-actions-delete-cancel/02-dismissed.png",
           "bytes": 17114,
-          "gitStatus": "tracked",
+          "gitStatus": "remote",
           "client": "evidence"
         }
       ],
@@ -19746,7 +19746,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-16/kanban-card-rename-cancel/01-edited.png",
           "repoPath": "shots/2026-08-16/kanban-card-rename-cancel/01-edited.png",
           "bytes": 25875,
-          "gitStatus": "tracked",
+          "gitStatus": "remote",
           "client": "evidence"
         }
       ],
@@ -19815,7 +19815,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-16/web-kanban-card-actions/01-open.png",
           "repoPath": "shots/2026-08-16/web-kanban-card-actions/01-open.png",
           "bytes": 32526,
-          "gitStatus": "tracked",
+          "gitStatus": "remote",
           "client": "evidence"
         }
       ],
@@ -19996,6 +19996,51 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/usage-mixed-auth-warning-icons/web/raw.png",
           "repoPath": "shots/2026-08-18/usage-mixed-auth-warning-icons/web/raw.png",
           "bytes": 83513,
+          "gitStatus": "tracked",
+          "client": "web"
+        }
+      ],
+      "imageCount": 3,
+      "clients": [
+        "lynx",
+        "native",
+        "web"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--viewport-single-owner-update",
+      "day": "2026-08-18",
+      "directory": "viewport-single-owner-update",
+      "label": "Viewport Single Owner Update",
+      "images": [
+        {
+          "day": "2026-08-18",
+          "directory": "viewport-single-owner-update/lynx",
+          "name": "raw.png",
+          "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/viewport-single-owner-update/lynx/raw.png",
+          "repoPath": "shots/2026-08-18/viewport-single-owner-update/lynx/raw.png",
+          "bytes": 70929,
+          "gitStatus": "tracked",
+          "client": "lynx"
+        },
+        {
+          "day": "2026-08-18",
+          "directory": "viewport-single-owner-update/native",
+          "name": "raw.png",
+          "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/viewport-single-owner-update/native/raw.png",
+          "repoPath": "shots/2026-08-18/viewport-single-owner-update/native/raw.png",
+          "bytes": 451407,
+          "gitStatus": "tracked",
+          "client": "native"
+        },
+        {
+          "day": "2026-08-18",
+          "directory": "viewport-single-owner-update/web",
+          "name": "raw.png",
+          "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/viewport-single-owner-update/web/raw.png",
+          "repoPath": "shots/2026-08-18/viewport-single-owner-update/web/raw.png",
+          "bytes": 81849,
           "gitStatus": "tracked",
           "client": "web"
         }
@@ -36682,9 +36727,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
       "day": "2026-08-16",
       "imageCount": 13,
       "byteCount": 1417337,
-      "trackedCount": 13,
+      "trackedCount": 10,
       "untrackedCount": 0,
-      "remoteCount": 0,
+      "remoteCount": 3,
       "directories": [
         {
           "directory": "editor-project-switch-empty",
@@ -36793,7 +36838,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
               "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-16/kanban-card-actions-delete-cancel/02-dismissed.png",
               "repoPath": "shots/2026-08-16/kanban-card-actions-delete-cancel/02-dismissed.png",
               "bytes": 17114,
-              "gitStatus": "tracked"
+              "gitStatus": "remote"
             }
           ]
         },
@@ -36808,7 +36853,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
               "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-16/kanban-card-rename-cancel/01-edited.png",
               "repoPath": "shots/2026-08-16/kanban-card-rename-cancel/01-edited.png",
               "bytes": 25875,
-              "gitStatus": "tracked"
+              "gitStatus": "remote"
             }
           ]
         },
@@ -36853,7 +36898,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
               "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-16/web-kanban-card-actions/01-open.png",
               "repoPath": "shots/2026-08-16/web-kanban-card-actions/01-open.png",
               "bytes": 32526,
-              "gitStatus": "tracked"
+              "gitStatus": "remote"
             }
           ]
         }
@@ -36861,9 +36906,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     },
     {
       "day": "2026-08-18",
-      "imageCount": 9,
-      "byteCount": 1928229,
-      "trackedCount": 6,
+      "imageCount": 12,
+      "byteCount": 2532414,
+      "trackedCount": 9,
       "untrackedCount": 0,
       "remoteCount": 3,
       "directories": [
@@ -36998,6 +37043,51 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
               "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/usage-mixed-auth-warning-icons/web/raw.png",
               "repoPath": "shots/2026-08-18/usage-mixed-auth-warning-icons/web/raw.png",
               "bytes": 83513,
+              "gitStatus": "tracked"
+            }
+          ]
+        },
+        {
+          "directory": "viewport-single-owner-update/lynx",
+          "imageCount": 1,
+          "images": [
+            {
+              "day": "2026-08-18",
+              "directory": "viewport-single-owner-update/lynx",
+              "name": "raw.png",
+              "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/viewport-single-owner-update/lynx/raw.png",
+              "repoPath": "shots/2026-08-18/viewport-single-owner-update/lynx/raw.png",
+              "bytes": 70929,
+              "gitStatus": "tracked"
+            }
+          ]
+        },
+        {
+          "directory": "viewport-single-owner-update/native",
+          "imageCount": 1,
+          "images": [
+            {
+              "day": "2026-08-18",
+              "directory": "viewport-single-owner-update/native",
+              "name": "raw.png",
+              "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/viewport-single-owner-update/native/raw.png",
+              "repoPath": "shots/2026-08-18/viewport-single-owner-update/native/raw.png",
+              "bytes": 451407,
+              "gitStatus": "tracked"
+            }
+          ]
+        },
+        {
+          "directory": "viewport-single-owner-update/web",
+          "imageCount": 1,
+          "images": [
+            {
+              "day": "2026-08-18",
+              "directory": "viewport-single-owner-update/web",
+              "name": "raw.png",
+              "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/viewport-single-owner-update/web/raw.png",
+              "repoPath": "shots/2026-08-18/viewport-single-owner-update/web/raw.png",
+              "bytes": 81849,
               "gitStatus": "tracked"
             }
           ]

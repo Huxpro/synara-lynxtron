@@ -15,7 +15,7 @@ continuous diagnostic sequence counts as one story, not one story per frame.
 This prevents the 744 Native flicker frames from manufacturing artificial
 coverage.
 
-The current historical scope contains 435 stories and 1,390 images.
+The current historical scope contains 436 stories and 1,393 images.
 
 ## Per-loop browser lifecycle invariant
 
@@ -149,7 +149,7 @@ capacity. Adding a future event therefore cannot rewrite historical loss.
 
 ## Time and commit binding
 
-The interval contains 1,031 commits. Of those, 690 are evidence-bearing or
+The interval contains 1,033 commits. Of those, 692 are evidence-bearing or
 reliability-event commits:
 
 - a screenshot, metric, note, or generated evidence artifact was added or

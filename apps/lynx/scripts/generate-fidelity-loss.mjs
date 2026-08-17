@@ -56,7 +56,7 @@ const reliabilityLedger = [
     id: 'viewport-state-fanout',
     severityPoints: 1,
     introduced: '664d8063e',
-    fixed: null,
+    fixed: '4ae9dedf4',
     summary: 'Viewport hydration race and duplicated resize subscriptions',
   },
   {
