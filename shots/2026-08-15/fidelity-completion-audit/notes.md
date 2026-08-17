@@ -3445,3 +3445,16 @@ former dynamic-event P1 is no longer a valid blocker.
   `1.00 -> 0.00`.
 - Detailed evidence:
   `shots/2026-08-17/standalone-diff-error-short-height/notes.md`.
+
+## 2026-08-17 Standalone Changes recovery at 320x200
+
+- After reaching the real contained Changes error, the same workspace path was
+  recreated as a clean Git repository and the rendered Retry control received
+  a real pointer click.
+- `git.readWorkingTreeDiff` calls increased from `1` to `2`; the error state
+  disappeared, `No working tree changes.` replaced it, `lastRpcError` cleared,
+  pending requests returned to zero, and root width stayed `320/320`.
+- `standalone-diff-error-recovery`: missing coverage `1.00 -> 0.00`;
+  product-loss contribution `0.00 -> 0.00`.
+- Detailed evidence:
+  `shots/2026-08-17/standalone-diff-recovery-short-height/notes.md`.
